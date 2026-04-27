@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,13 +20,24 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
     document.querySelectorAll('pre code').forEach(function(codeEl) {
       var pre = codeEl.parentElement;
       var lang = '';
       var cls = codeEl.className || '';
       var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
       if (m) lang = m[1];
+
+      // Add line numbers
+      var lines = codeEl.innerHTML.split('
+');
+      if (lines[lines.length - 1] === '') lines.pop();
+      var numbered = lines.map(function(line, i) {
+        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
+      }).join('
+');
+      codeEl.innerHTML = numbered;
+      codeEl.classList.add('hljs-ln');
+
       var wrapper = document.createElement('div');
       wrapper.className = 'code-block-wrapper';
       pre.parentNode.insertBefore(wrapper, pre);
@@ -45,7 +55,9 @@
       btn.className = 'copy-btn';
       btn.textContent = 'Copy';
       btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
+');
+        navigator.clipboard.writeText(text).then(function() {
           btn.textContent = 'Copied!';
           btn.classList.add('copied');
           setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
@@ -245,14 +257,14 @@
 </ul>
 <h4 id="example" tabindex="-1"><a class="header-anchor" href="#example"><span>Example:</span></a></h4>
 <p>Let’s say you have a complete binary tree like this:</p>
-<pre><code>        10
+<pre><code class="hljs">        10
        /  \
      15    20
     / \    /
    30 40  50
 </code></pre>
 <p>This tree as an <strong>array (1-based)</strong> would be:</p>
-<pre><code># `n is an &quot;index&quot;` in array
+<pre><code class="hljs"># `n is an &quot;index&quot;` in array
 
 Index:   1   2   3   4   5   6
 Value: [10, 15, 20, 30, 40, 50]
@@ -349,147 +361,147 @@ Value: [10, 15, 20, 30, 40, 50]
 </tbody>
 </table>
 <h3 id="universal-tree-template" tabindex="-1"><a class="header-anchor" href="#universal-tree-template"><span>Universal Tree Template</span></a></h3>
-<pre><code class="language-python">def tree_problem(root):
-    &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">tree_problem</span>(<span class="hljs-params">root</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
     Universal template for most binary tree problems
     Can be adapted for traversal, calculation, or modification
-    &quot;&quot;&quot;
-    # Base case
-    if not root:
-        return None  # or 0, [], depending on problem
+    &quot;&quot;&quot;</span>
+    <span class="hljs-comment"># Base case</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>  <span class="hljs-comment"># or 0, [], depending on problem</span>
     
-    # Pre-order processing (before recursion)
-    # process_current_node()
+    <span class="hljs-comment"># Pre-order processing (before recursion)</span>
+    <span class="hljs-comment"># process_current_node()</span>
     
-    # Recursive calls
+    <span class="hljs-comment"># Recursive calls</span>
     left_result = tree_problem(root.left)
     right_result = tree_problem(root.right)
     
-    # Post-order processing (after recursion)
-    # combine_results()
+    <span class="hljs-comment"># Post-order processing (after recursion)</span>
+    <span class="hljs-comment"># combine_results()</span>
     
-    return result
+    <span class="hljs-keyword">return</span> result
 </code></pre>
 <h3 id="template-1-tree-traversal-recursive" tabindex="-1"><a class="header-anchor" href="#template-1-tree-traversal-recursive"><span>Template 1: Tree Traversal (Recursive)</span></a></h3>
-<pre><code class="language-python"># Preorder Traversal
-def preorder(root):
-    if not root:
-        return []
-    return [root.val] + preorder(root.left) + preorder(root.right)
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Preorder Traversal</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">preorder</span>(<span class="hljs-params">root</span>):
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
+        <span class="hljs-keyword">return</span> []
+    <span class="hljs-keyword">return</span> [root.val] + preorder(root.left) + preorder(root.right)
 
-# Inorder Traversal  
-def inorder(root):
-    if not root:
-        return []
-    return inorder(root.left) + [root.val] + inorder(root.right)
+<span class="hljs-comment"># Inorder Traversal  </span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">inorder</span>(<span class="hljs-params">root</span>):
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
+        <span class="hljs-keyword">return</span> []
+    <span class="hljs-keyword">return</span> inorder(root.left) + [root.val] + inorder(root.right)
 
-# Postorder Traversal
-def postorder(root):
-    if not root:
-        return []
-    return postorder(root.left) + postorder(root.right) + [root.val]
+<span class="hljs-comment"># Postorder Traversal</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">postorder</span>(<span class="hljs-params">root</span>):
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
+        <span class="hljs-keyword">return</span> []
+    <span class="hljs-keyword">return</span> postorder(root.left) + postorder(root.right) + [root.val]
 </code></pre>
 <h3 id="template-2-tree-traversal-iterative" tabindex="-1"><a class="header-anchor" href="#template-2-tree-traversal-iterative"><span>Template 2: Tree Traversal (Iterative)</span></a></h3>
-<pre><code class="language-python"># Iterative Inorder with Stack
-def inorder_iterative(root):
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Iterative Inorder with Stack</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">inorder_iterative</span>(<span class="hljs-params">root</span>):
     result, stack = [], []
     current = root
     
-    while current or stack:
-        # Go to leftmost node
-        while current:
+    <span class="hljs-keyword">while</span> current <span class="hljs-keyword">or</span> stack:
+        <span class="hljs-comment"># Go to leftmost node</span>
+        <span class="hljs-keyword">while</span> current:
             stack.append(current)
             current = current.left
         
-        # Current must be None, so pop from stack
+        <span class="hljs-comment"># Current must be None, so pop from stack</span>
         current = stack.pop()
         result.append(current.val)
         
-        # Visit right subtree
+        <span class="hljs-comment"># Visit right subtree</span>
         current = current.right
     
-    return result
+    <span class="hljs-keyword">return</span> result
 
-# Level Order with Queue
-def level_order(root):
-    if not root:
-        return []
+<span class="hljs-comment"># Level Order with Queue</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">level_order</span>(<span class="hljs-params">root</span>):
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
+        <span class="hljs-keyword">return</span> []
     
     result = []
     queue = collections.deque([root])
     
-    while queue:
-        level_size = len(queue)
+    <span class="hljs-keyword">while</span> queue:
+        level_size = <span class="hljs-built_in">len</span>(queue)
         current_level = []
         
-        for _ in range(level_size):
+        <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(level_size):
             node = queue.popleft()
             current_level.append(node.val)
             
-            if node.left:
+            <span class="hljs-keyword">if</span> node.left:
                 queue.append(node.left)
-            if node.right:
+            <span class="hljs-keyword">if</span> node.right:
                 queue.append(node.right)
         
         result.append(current_level)
     
-    return result
+    <span class="hljs-keyword">return</span> result
 </code></pre>
 <h3 id="template-3-tree-construction" tabindex="-1"><a class="header-anchor" href="#template-3-tree-construction"><span>Template 3: Tree Construction</span></a></h3>
-<pre><code class="language-python">def build_tree_from_traversals(preorder, inorder):
-    &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">build_tree_from_traversals</span>(<span class="hljs-params">preorder, inorder</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
     Construct tree from preorder and inorder traversals
     Key insight: First element in preorder is always root
-    &quot;&quot;&quot;
-    if not preorder or not inorder:
-        return None
+    &quot;&quot;&quot;</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> preorder <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> inorder:
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
     
-    # Root is first element in preorder
-    root = TreeNode(preorder[0])
+    <span class="hljs-comment"># Root is first element in preorder</span>
+    root = TreeNode(preorder[<span class="hljs-number">0</span>])
     
-    # Find root position in inorder to split left/right
+    <span class="hljs-comment"># Find root position in inorder to split left/right</span>
     root_idx = inorder.index(root.val)
     
-    # Recursively build subtrees
-    # Left subtree: elements before root in inorder
+    <span class="hljs-comment"># Recursively build subtrees</span>
+    <span class="hljs-comment"># Left subtree: elements before root in inorder</span>
     root.left = build_tree_from_traversals(
-        preorder[1:root_idx+1],  # Skip root, take left elements
-        inorder[:root_idx]       # Everything before root
+        preorder[<span class="hljs-number">1</span>:root_idx+<span class="hljs-number">1</span>],  <span class="hljs-comment"># Skip root, take left elements</span>
+        inorder[:root_idx]       <span class="hljs-comment"># Everything before root</span>
     )
     
-    # Right subtree: elements after root in inorder
+    <span class="hljs-comment"># Right subtree: elements after root in inorder</span>
     root.right = build_tree_from_traversals(
-        preorder[root_idx+1:],   # Everything after left subtree
-        inorder[root_idx+1:]     # Everything after root
+        preorder[root_idx+<span class="hljs-number">1</span>:],   <span class="hljs-comment"># Everything after left subtree</span>
+        inorder[root_idx+<span class="hljs-number">1</span>:]     <span class="hljs-comment"># Everything after root</span>
     )
     
-    return root
+    <span class="hljs-keyword">return</span> root
 </code></pre>
 <h3 id="template-4-path-problems" tabindex="-1"><a class="header-anchor" href="#template-4-path-problems"><span>Template 4: Path Problems</span></a></h3>
-<pre><code class="language-python">def path_sum_template(root, target):
-    &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">path_sum_template</span>(<span class="hljs-params">root, target</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
     Template for path sum problems
     Can track paths, sums, or other properties
-    &quot;&quot;&quot;
-    def dfs(node, current_sum, path):
-        if not node:
-            return
+    &quot;&quot;&quot;</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">node, current_sum, path</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node:
+            <span class="hljs-keyword">return</span>
         
-        # Update current state
+        <span class="hljs-comment"># Update current state</span>
         current_sum += node.val
         path.append(node.val)
         
-        # Check if leaf node and condition met
-        if not node.left and not node.right:
-            if current_sum == target:
-                result.append(path[:])  # Copy current path
+        <span class="hljs-comment"># Check if leaf node and condition met</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node.left <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> node.right:
+            <span class="hljs-keyword">if</span> current_sum == target:
+                result.append(path[:])  <span class="hljs-comment"># Copy current path</span>
         
-        # Explore subtrees
+        <span class="hljs-comment"># Explore subtrees</span>
         dfs(node.left, current_sum, path)
         dfs(node.right, current_sum, path)
         
-        # Backtrack
-        &quot;&quot;&quot;
+        <span class="hljs-comment"># Backtrack</span>
+        <span class="hljs-string">&quot;&quot;&quot;
         NOTE !!! why do we need backtrack here ? (gemini)
         In simple terms, **backtracking** is the &quot;undo&quot; button for your recursion.
 
@@ -510,7 +522,7 @@ def level_order(root):
         1. Go to `1`: `path = [1]`
         2. Go to `2`: `path = [1, 2]`
         3. Finish `2`, go back to `1`.
-        4. Go to `3`: `path = [1, 2, 3]`  &lt;-- **ERROR!** (2 shouldn't be here)
+        4. Go to `3`: `path = [1, 2, 3]`  &lt;-- **ERROR!** (2 shouldn&#x27;t be here)
 
         **With `path.pop()`:**
 
@@ -518,86 +530,86 @@ def level_order(root):
         2. Go to `2`: `path = [1, 2]`
         3. Finish `2`, **`pop()`**: `path = [1]`
         4. Go to `3`: `path = [1, 3]` &lt;-- **CORRECT!**
-        &quot;&quot;&quot;
+        &quot;&quot;&quot;</span>
         path.pop()
     
     result = []
-    dfs(root, 0, [])
-    return result
+    dfs(root, <span class="hljs-number">0</span>, [])
+    <span class="hljs-keyword">return</span> result
 </code></pre>
 <h3 id="template-5-tree-properties" tabindex="-1"><a class="header-anchor" href="#template-5-tree-properties"><span>Template 5: Tree Properties</span></a></h3>
-<pre><code class="language-python">def tree_property_template(root):
-    &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">tree_property_template</span>(<span class="hljs-params">root</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
     Calculate tree properties (height, diameter, balance)
-    &quot;&quot;&quot;
-    def helper(node):
-        if not node:
-            return 0  # or (0, True) for multiple values
+    &quot;&quot;&quot;</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">helper</span>(<span class="hljs-params">node</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node:
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>  <span class="hljs-comment"># or (0, True) for multiple values</span>
         
-        # Get info from subtrees
+        <span class="hljs-comment"># Get info from subtrees</span>
         left_info = helper(node.left)
         right_info = helper(node.right)
         
-        # Calculate current node's property
+        <span class="hljs-comment"># Calculate current node&#x27;s property</span>
         current_property = calculate(left_info, right_info)
         
-        # Update global result if needed
-        self.result = max(self.result, current_property)
+        <span class="hljs-comment"># Update global result if needed</span>
+        <span class="hljs-variable language_">self</span>.result = <span class="hljs-built_in">max</span>(<span class="hljs-variable language_">self</span>.result, current_property)
         
-        return current_property
+        <span class="hljs-keyword">return</span> current_property
     
-    self.result = 0
+    <span class="hljs-variable language_">self</span>.result = <span class="hljs-number">0</span>
     helper(root)
-    return self.result
+    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.result
 </code></pre>
 <h3 id="template-6-lca-lowest-common-ancestor" tabindex="-1"><a class="header-anchor" href="#template-6-lca-lowest-common-ancestor"><span>Template 6: LCA (Lowest Common Ancestor)</span></a></h3>
-<pre><code class="language-python">def find_lca(root, p, q):
-    &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_lca</span>(<span class="hljs-params">root, p, q</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
     Find lowest common ancestor of nodes p and q
-    &quot;&quot;&quot;
-    if not root or root == p or root == q:
-        return root
+    &quot;&quot;&quot;</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root <span class="hljs-keyword">or</span> root == p <span class="hljs-keyword">or</span> root == q:
+        <span class="hljs-keyword">return</span> root
 
     left = find_lca(root.left, p, q)
     right = find_lca(root.right, p, q)
 
-    # Both found in different subtrees -&gt; current is LCA
-    if left and right:
-        return root
+    <span class="hljs-comment"># Both found in different subtrees -&gt; current is LCA</span>
+    <span class="hljs-keyword">if</span> left <span class="hljs-keyword">and</span> right:
+        <span class="hljs-keyword">return</span> root
 
-    # One or both found in same subtree
-    return left if left else right
+    <span class="hljs-comment"># One or both found in same subtree</span>
+    <span class="hljs-keyword">return</span> left <span class="hljs-keyword">if</span> left <span class="hljs-keyword">else</span> right
 </code></pre>
 <h3 id="template-7-binary-search-on-trees" tabindex="-1"><a class="header-anchor" href="#template-7-binary-search-on-trees"><span>Template 7: Binary Search on Trees</span></a></h3>
-<pre><code class="language-python">def count_complete_tree_nodes(root):
-    &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">count_complete_tree_nodes</span>(<span class="hljs-params">root</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
     Count nodes in complete binary tree in O(log²n) time
     Key: Use binary search on tree structure
-    &quot;&quot;&quot;
-    if not root:
-        return 0
+    &quot;&quot;&quot;</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
 
-    def get_height(node):
-        &quot;&quot;&quot;Get height by going left&quot;&quot;&quot;
-        height = 0
-        while node:
-            height += 1
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_height</span>(<span class="hljs-params">node</span>):
+        <span class="hljs-string">&quot;&quot;&quot;Get height by going left&quot;&quot;&quot;</span>
+        height = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">while</span> node:
+            height += <span class="hljs-number">1</span>
             node = node.left
-        return height
+        <span class="hljs-keyword">return</span> height
 
     left_height = get_height(root.left)
     right_height = get_height(root.right)
 
-    if left_height == right_height:
-        # Left subtree is perfect binary tree
-        # Nodes in left = 2^left_height - 1
-        # Plus root = 2^left_height
-        return (1 &lt;&lt; left_height) + count_complete_tree_nodes(root.right)
-    else:
-        # Right subtree is perfect binary tree
-        # Height = right_height, nodes = 2^right_height - 1
-        # Plus root = 2^right_height
-        return (1 &lt;&lt; right_height) + count_complete_tree_nodes(root.left)
+    <span class="hljs-keyword">if</span> left_height == right_height:
+        <span class="hljs-comment"># Left subtree is perfect binary tree</span>
+        <span class="hljs-comment"># Nodes in left = 2^left_height - 1</span>
+        <span class="hljs-comment"># Plus root = 2^left_height</span>
+        <span class="hljs-keyword">return</span> (<span class="hljs-number">1</span> &lt;&lt; left_height) + count_complete_tree_nodes(root.right)
+    <span class="hljs-keyword">else</span>:
+        <span class="hljs-comment"># Right subtree is perfect binary tree</span>
+        <span class="hljs-comment"># Height = right_height, nodes = 2^right_height - 1</span>
+        <span class="hljs-comment"># Plus root = 2^right_height</span>
+        <span class="hljs-keyword">return</span> (<span class="hljs-number">1</span> &lt;&lt; right_height) + count_complete_tree_nodes(root.left)
 </code></pre>
 <h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
 <h3 id="pattern-based-problem-classification" tabindex="-1"><a class="header-anchor" href="#pattern-based-problem-classification"><span>Pattern-Based Problem Classification</span></a></h3>
@@ -981,245 +993,245 @@ def level_order(root):
 </ul>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
 <h3 id="2-1-construct-binary-tree-from-preorder-and-inorder-traversal" tabindex="-1"><a class="header-anchor" href="#2-1-construct-binary-tree-from-preorder-and-inorder-traversal"><span>2-1) Construct Binary Tree from Preorder and Inorder Traversal</span></a></h3>
-<pre><code class="language-python"># python
-# LC 105. Construct Binary Tree from Preorder and Inorder Traversal
-# V0
-# IDEA : BST property
-class Solution(object):
-    def buildTree(self, preorder, inorder):
-        if len(preorder) == 0:
-            return None
-        if len(preorder) == 1:
-            return TreeNode(preorder[0])
-        ### NOTE : init root like below (via TreeNode and root value (preorder[0]))
-        root = TreeNode(preorder[0])
-        &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 105. Construct Binary Tree from Preorder and Inorder Traversal</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : BST property</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">buildTree</span>(<span class="hljs-params">self, preorder, inorder</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(preorder) == <span class="hljs-number">0</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(preorder) == <span class="hljs-number">1</span>:
+            <span class="hljs-keyword">return</span> TreeNode(preorder[<span class="hljs-number">0</span>])
+        <span class="hljs-comment">### NOTE : init root like below (via TreeNode and root value (preorder[0]))</span>
+        root = TreeNode(preorder[<span class="hljs-number">0</span>])
+        <span class="hljs-string">&quot;&quot;&quot;
         NOTE !!!
         -&gt; # we get index of root.val from &quot;INORDER&quot; to SPLIT TREE
-        &quot;&quot;&quot;
-        index = inorder.index(root.val)  # the index of root at inorder, and we can also get the length of left-sub-tree, right-sub-tree ( preorder[1:index+1]) for following using
-        # recursion for root.left
-        #### NOTE : the idx is from &quot;INORDER&quot;
-        #### NOTE : WE idx from inorder in preorder as well 
-        #### NOTE : preorder[1 : index + 1] (for left sub tree)
-        root.left = self.buildTree(preorder[1 : index + 1], inorder[ : index]) ### since the BST is symmery so the length of left-sub-tree is same in both Preorder and Inorder, so we can use the index to get the left-sub-tree of Preorder as well
-        # recursion for root.right 
-        root.right = self.buildTree(preorder[index + 1 : ], inorder[index + 1 :]) ### since the BST is symmery so the length of left-sub-tree is same in both Preorder and Inorder, so we can use the index to get the right-sub-tree of Preorder as well
-        return root
+        &quot;&quot;&quot;</span>
+        index = inorder.index(root.val)  <span class="hljs-comment"># the index of root at inorder, and we can also get the length of left-sub-tree, right-sub-tree ( preorder[1:index+1]) for following using</span>
+        <span class="hljs-comment"># recursion for root.left</span>
+        <span class="hljs-comment">#### NOTE : the idx is from &quot;INORDER&quot;</span>
+        <span class="hljs-comment">#### NOTE : WE idx from inorder in preorder as well </span>
+        <span class="hljs-comment">#### NOTE : preorder[1 : index + 1] (for left sub tree)</span>
+        root.left = <span class="hljs-variable language_">self</span>.buildTree(preorder[<span class="hljs-number">1</span> : index + <span class="hljs-number">1</span>], inorder[ : index]) <span class="hljs-comment">### since the BST is symmery so the length of left-sub-tree is same in both Preorder and Inorder, so we can use the index to get the left-sub-tree of Preorder as well</span>
+        <span class="hljs-comment"># recursion for root.right </span>
+        root.right = <span class="hljs-variable language_">self</span>.buildTree(preorder[index + <span class="hljs-number">1</span> : ], inorder[index + <span class="hljs-number">1</span> :]) <span class="hljs-comment">### since the BST is symmery so the length of left-sub-tree is same in both Preorder and Inorder, so we can use the index to get the right-sub-tree of Preorder as well</span>
+        <span class="hljs-keyword">return</span> root
 </code></pre>
 <h3 id="2-2-construct-binary-tree-from-inorder-and-postorder-traversal" tabindex="-1"><a class="header-anchor" href="#2-2-construct-binary-tree-from-inorder-and-postorder-traversal"><span>2-2) Construct Binary Tree from Inorder and Postorder Traversal</span></a></h3>
-<pre><code class="language-python"># python
-# LC 106 Construct Binary Tree from Inorder and Postorder Traversal
-# V0
-# IDEA : Binary Tree property, same as LC 105 
-class Solution(object):
-    def buildTree(self, inorder, postorder):
-        if not inorder:
-            return None
-        if len(inorder) == 1:
-            return TreeNode(inorder[0])
-        ### NOTE : we get root from postorder
-        root = TreeNode(postorder[-1])
-        &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 106 Construct Binary Tree from Inorder and Postorder Traversal</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : Binary Tree property, same as LC 105 </span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">buildTree</span>(<span class="hljs-params">self, inorder, postorder</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> inorder:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(inorder) == <span class="hljs-number">1</span>:
+            <span class="hljs-keyword">return</span> TreeNode(inorder[<span class="hljs-number">0</span>])
+        <span class="hljs-comment">### NOTE : we get root from postorder</span>
+        root = TreeNode(postorder[-<span class="hljs-number">1</span>])
+        <span class="hljs-string">&quot;&quot;&quot;
         ### NOTE : the index is from inorder
         ### NOTE : we get index of root in inorder
         #    -&gt; and this idx CAN BE USED IN BOTH inorder, postorder (Binary Tree property)
-        &quot;&quot;&quot;
+        &quot;&quot;&quot;</span>
         idx = inorder.index(root.val)
-        ### NOTE : inorder[:idx], postorder[:idx]
-        root.left = self.buildTree(inorder[:idx], postorder[:idx])
-        ### NOTE : postorder[idx:-1]
-        root.right =  self.buildTree(inorder[idx+1:], postorder[idx:-1])
-        return root
+        <span class="hljs-comment">### NOTE : inorder[:idx], postorder[:idx]</span>
+        root.left = <span class="hljs-variable language_">self</span>.buildTree(inorder[:idx], postorder[:idx])
+        <span class="hljs-comment">### NOTE : postorder[idx:-1]</span>
+        root.right =  <span class="hljs-variable language_">self</span>.buildTree(inorder[idx+<span class="hljs-number">1</span>:], postorder[idx:-<span class="hljs-number">1</span>])
+        <span class="hljs-keyword">return</span> root
 </code></pre>
 <h3 id="2-3-binary-tree-paths" tabindex="-1"><a class="header-anchor" href="#2-3-binary-tree-paths"><span>2-3) Binary Tree Paths</span></a></h3>
-<pre><code class="language-python"># LC 257 Binary Tree Paths
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 257 Binary Tree Paths</span>
 
-# V0
-# IDEA : BFS
-class Solution:
-    def binaryTreePaths(self, root):
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : BFS</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">binaryTreePaths</span>(<span class="hljs-params">self, root</span>):
         res = []
-        ### NOTE : we set q like this : [[root, cur]]
-        cur = &quot;&quot;
+        <span class="hljs-comment">### NOTE : we set q like this : [[root, cur]]</span>
+        cur = <span class="hljs-string">&quot;&quot;</span>
         q = [[root, cur]]
-        while q:
-            for i in range(len(q)):
-                node, cur = q.pop(0)
-                ### NOTE : if node exist, but no sub tree (i.e. not root.left and not root.right)
-                #         -&gt; append cur to result
-                if node:
-                    if not node.left and not node.right:
-                        res.append(cur + str(node.val))
-                ### NOTE : we keep cur to left sub tree
-                if node.left:
-                    q.append((node.left, cur + str(node.val) + '-&gt;'))
-                ### NOTE : we keep cur to left sub tree
-                if node.right:
-                    q.append((node.right, cur + str(node.val) + '-&gt;'))
-        return res
+        <span class="hljs-keyword">while</span> q:
+            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(q)):
+                node, cur = q.pop(<span class="hljs-number">0</span>)
+                <span class="hljs-comment">### NOTE : if node exist, but no sub tree (i.e. not root.left and not root.right)</span>
+                <span class="hljs-comment">#         -&gt; append cur to result</span>
+                <span class="hljs-keyword">if</span> node:
+                    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node.left <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> node.right:
+                        res.append(cur + <span class="hljs-built_in">str</span>(node.val))
+                <span class="hljs-comment">### NOTE : we keep cur to left sub tree</span>
+                <span class="hljs-keyword">if</span> node.left:
+                    q.append((node.left, cur + <span class="hljs-built_in">str</span>(node.val) + <span class="hljs-string">&#x27;-&gt;&#x27;</span>))
+                <span class="hljs-comment">### NOTE : we keep cur to left sub tree</span>
+                <span class="hljs-keyword">if</span> node.right:
+                    q.append((node.right, cur + <span class="hljs-built_in">str</span>(node.val) + <span class="hljs-string">&#x27;-&gt;&#x27;</span>))
+        <span class="hljs-keyword">return</span> res
 
-# V0'
-# IDEA : DFS 
-class Solution:
-    def binaryTreePaths(self, root):
+<span class="hljs-comment"># V0&#x27;</span>
+<span class="hljs-comment"># IDEA : DFS </span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">binaryTreePaths</span>(<span class="hljs-params">self, root</span>):
         ans = []
-        def dfs(r, tmp):
-            if r.left:
-                dfs(r.left, tmp + [str(r.left.val)])
-            if r.right:
-                dfs(r.right, tmp + [str(r.right.val)])
-            if not r.left and not r.right:
-                ans.append('-&gt;'.join(tmp))
-        if not root:
-            return []
-        dfs(root, [str(root.val)])
-        return ans
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">r, tmp</span>):
+            <span class="hljs-keyword">if</span> r.left:
+                dfs(r.left, tmp + [<span class="hljs-built_in">str</span>(r.left.val)])
+            <span class="hljs-keyword">if</span> r.right:
+                dfs(r.right, tmp + [<span class="hljs-built_in">str</span>(r.right.val)])
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> r.left <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> r.right:
+                ans.append(<span class="hljs-string">&#x27;-&gt;&#x27;</span>.join(tmp))
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
+            <span class="hljs-keyword">return</span> []
+        dfs(root, [<span class="hljs-built_in">str</span>(root.val)])
+        <span class="hljs-keyword">return</span> ans
 </code></pre>
 <h3 id="2-4-binary-tree-longest-consecutive-sequence" tabindex="-1"><a class="header-anchor" href="#2-4-binary-tree-longest-consecutive-sequence"><span>2-4) Binary Tree Longest Consecutive Sequence</span></a></h3>
-<pre><code class="language-python"># LC 298 Binary Tree Longest Consecutive Sequence
-# V0
-# IDEA : DFS
-class Solution(object):
-    def longestConsecutive(self, root):
-        if not root:
-            return 0
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 298 Binary Tree Longest Consecutive Sequence</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : DFS</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">longestConsecutive</span>(<span class="hljs-params">self, root</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
 
-        self.result = 0
-        self.helper(root, 1)
+        <span class="hljs-variable language_">self</span>.result = <span class="hljs-number">0</span>
+        <span class="hljs-variable language_">self</span>.helper(root, <span class="hljs-number">1</span>)
 
-        return self.result
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.result
 
-    def helper(self, root, curLen):
-        self.result = curLen if curLen &gt; self.result else self.result
-        if root.left:
-            if root.left.val == root.val + 1:
-                self.helper(root.left, curLen + 1)
-            else:
-                self.helper(root.left, 1)
-        if root.right:
-            if root.right.val == root.val + 1:
-                self.helper(root.right, curLen + 1)
-            else:
-                self.helper(root.right, 1)
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">helper</span>(<span class="hljs-params">self, root, curLen</span>):
+        <span class="hljs-variable language_">self</span>.result = curLen <span class="hljs-keyword">if</span> curLen &gt; <span class="hljs-variable language_">self</span>.result <span class="hljs-keyword">else</span> <span class="hljs-variable language_">self</span>.result
+        <span class="hljs-keyword">if</span> root.left:
+            <span class="hljs-keyword">if</span> root.left.val == root.val + <span class="hljs-number">1</span>:
+                <span class="hljs-variable language_">self</span>.helper(root.left, curLen + <span class="hljs-number">1</span>)
+            <span class="hljs-keyword">else</span>:
+                <span class="hljs-variable language_">self</span>.helper(root.left, <span class="hljs-number">1</span>)
+        <span class="hljs-keyword">if</span> root.right:
+            <span class="hljs-keyword">if</span> root.right.val == root.val + <span class="hljs-number">1</span>:
+                <span class="hljs-variable language_">self</span>.helper(root.right, curLen + <span class="hljs-number">1</span>)
+            <span class="hljs-keyword">else</span>:
+                <span class="hljs-variable language_">self</span>.helper(root.right, <span class="hljs-number">1</span>)
 
-# V0'
-# IDEA : BFS
-class Solution(object):
-    def longestConsecutive(self, root):
-        if root is None:
-            return 0
+<span class="hljs-comment"># V0&#x27;</span>
+<span class="hljs-comment"># IDEA : BFS</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">longestConsecutive</span>(<span class="hljs-params">self, root</span>):
+        <span class="hljs-keyword">if</span> root <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
 
-        stack = list()
-        stack.append((root, 1))
-        maxLen = 1
-        while len(stack) &gt; 0:
+        stack = <span class="hljs-built_in">list</span>()
+        stack.append((root, <span class="hljs-number">1</span>))
+        maxLen = <span class="hljs-number">1</span>
+        <span class="hljs-keyword">while</span> <span class="hljs-built_in">len</span>(stack) &gt; <span class="hljs-number">0</span>:
             node, pathLen = stack.pop()
-            if node.left is not None:
-                if node.val + 1 == node.left.val:
-                    stack.append((node.left, pathLen + 1))
-                    maxLen = max(maxLen, pathLen + 1)
-                else:
-                    stack.append((node.left, 1))
-            if node.right is not None:
-                if node.val + 1 == node.right.val:
-                    stack.append((node.right, pathLen + 1))
-                    maxLen = max(maxLen, pathLen + 1)
-                else:
-                    stack.append((node.right, 1))
+            <span class="hljs-keyword">if</span> node.left <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:
+                <span class="hljs-keyword">if</span> node.val + <span class="hljs-number">1</span> == node.left.val:
+                    stack.append((node.left, pathLen + <span class="hljs-number">1</span>))
+                    maxLen = <span class="hljs-built_in">max</span>(maxLen, pathLen + <span class="hljs-number">1</span>)
+                <span class="hljs-keyword">else</span>:
+                    stack.append((node.left, <span class="hljs-number">1</span>))
+            <span class="hljs-keyword">if</span> node.right <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:
+                <span class="hljs-keyword">if</span> node.val + <span class="hljs-number">1</span> == node.right.val:
+                    stack.append((node.right, pathLen + <span class="hljs-number">1</span>))
+                    maxLen = <span class="hljs-built_in">max</span>(maxLen, pathLen + <span class="hljs-number">1</span>)
+                <span class="hljs-keyword">else</span>:
+                    stack.append((node.right, <span class="hljs-number">1</span>))
 
-        return maxLen
+        <span class="hljs-keyword">return</span> maxLen
 </code></pre>
 <h3 id="2-5-binary-search-tree-iterator" tabindex="-1"><a class="header-anchor" href="#2-5-binary-search-tree-iterator"><span>2-5) Binary Search Tree Iterator</span></a></h3>
-<pre><code class="language-python"># LC 173. Binary Search Tree Iterator
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 173. Binary Search Tree Iterator</span>
 
-# V0
-# IDEA : STACK + tree
-class BSTIterator(object):
-    def __init__(self, root):
-        &quot;&quot;&quot;
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : STACK + tree</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">BSTIterator</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, root</span>):
+        <span class="hljs-string">&quot;&quot;&quot;
         :type root: TreeNode
-        &quot;&quot;&quot;
-        self.stack = []
-        self.inOrder(root)
+        &quot;&quot;&quot;</span>
+        <span class="hljs-variable language_">self</span>.stack = []
+        <span class="hljs-variable language_">self</span>.inOrder(root)
 
-    def inOrder(self, root):
-        if not root:
-            return
-        self.inOrder(root.right)
-        self.stack.append(root.val)
-        self.inOrder(root.left)
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">inOrder</span>(<span class="hljs-params">self, root</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
+            <span class="hljs-keyword">return</span>
+        <span class="hljs-variable language_">self</span>.inOrder(root.right)
+        <span class="hljs-variable language_">self</span>.stack.append(root.val)
+        <span class="hljs-variable language_">self</span>.inOrder(root.left)
 
-    def hasNext(self):
-        &quot;&quot;&quot;
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">hasNext</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-string">&quot;&quot;&quot;
         :rtype: bool
-        &quot;&quot;&quot;
-        return len(self.stack) &gt; 0
+        &quot;&quot;&quot;</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.stack) &gt; <span class="hljs-number">0</span>
 
-    def next(self):
-        &quot;&quot;&quot;
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">next</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-string">&quot;&quot;&quot;
         :rtype: int
-        &quot;&quot;&quot;
-        return self.stack.pop()
+        &quot;&quot;&quot;</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.stack.pop()
 </code></pre>
 <h3 id="2-6-count-complete-tree-nodes-binary-search-on-trees" tabindex="-1"><a class="header-anchor" href="#2-6-count-complete-tree-nodes-binary-search-on-trees"><span>2-6) Count Complete Tree Nodes (Binary Search on Trees)</span></a></h3>
-<pre><code class="language-java">// LC 222. Count Complete Tree Nodes
-// Java Implementation
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 222. Count Complete Tree Nodes</span>
+<span class="hljs-comment">// Java Implementation</span>
 
-// V0 - BFS Approach
-// IDEA: Level-order traversal to count all nodes
-/**
+<span class="hljs-comment">// V0 - BFS Approach</span>
+<span class="hljs-comment">// IDEA: Level-order traversal to count all nodes</span>
+<span class="hljs-comment">/**
  * time = O(N)
  * space = O(N)
- */
-public int countNodes_BFS(TreeNode root) {
-    if (root == null) {
-        return 0;
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">countNodes_BFS</span><span class="hljs-params">(TreeNode root)</span> {
+    <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) {
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
     }
 
-    List&lt;TreeNode&gt; collected = new ArrayList&lt;&gt;();
-    Queue&lt;TreeNode&gt; q = new LinkedList&lt;&gt;();
+    List&lt;TreeNode&gt; collected = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    Queue&lt;TreeNode&gt; q = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
     q.add(root);
 
-    while (!q.isEmpty()) {
-        TreeNode cur = q.poll();
+    <span class="hljs-keyword">while</span> (!q.isEmpty()) {
+        <span class="hljs-type">TreeNode</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> q.poll();
         collected.add(cur);
 
-        if (cur.left != null) {
+        <span class="hljs-keyword">if</span> (cur.left != <span class="hljs-literal">null</span>) {
             q.add(cur.left);
         }
-        if (cur.right != null) {
+        <span class="hljs-keyword">if</span> (cur.right != <span class="hljs-literal">null</span>) {
             q.add(cur.right);
         }
     }
 
-    return collected.size();
+    <span class="hljs-keyword">return</span> collected.size();
 }
 
-// V1 - DFS Approach
-// IDEA: Recursively count nodes in left and right subtrees
-/**
+<span class="hljs-comment">// V1 - DFS Approach</span>
+<span class="hljs-comment">// IDEA: Recursively count nodes in left and right subtrees</span>
+<span class="hljs-comment">/**
  * time = O(N)
  * space = O(log N)
- */
-public int countNodes_DFS(TreeNode root) {
-    if (root == null) {
-        return 0;
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">countNodes_DFS</span><span class="hljs-params">(TreeNode root)</span> {
+    <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) {
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
     }
 
-    // Recursively count the nodes in the left subtree
-    int leftCount = countNodes_DFS(root.left);
+    <span class="hljs-comment">// Recursively count the nodes in the left subtree</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">leftCount</span> <span class="hljs-operator">=</span> countNodes_DFS(root.left);
 
-    // Recursively count the nodes in the right subtree
-    int rightCount = countNodes_DFS(root.right);
+    <span class="hljs-comment">// Recursively count the nodes in the right subtree</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">rightCount</span> <span class="hljs-operator">=</span> countNodes_DFS(root.right);
 
-    // Return the total count (current node + left subtree + right subtree)
-    return 1 + leftCount + rightCount;
+    <span class="hljs-comment">// Return the total count (current node + left subtree + right subtree)</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> + leftCount + rightCount;
 }
 
-// V2 - Optimized Binary Search Approach for Complete Binary Tree
-// IDEA: Use complete tree property + binary search on height
-/**
+<span class="hljs-comment">// V2 - Optimized Binary Search Approach for Complete Binary Tree</span>
+<span class="hljs-comment">// IDEA: Use complete tree property + binary search on height</span>
+<span class="hljs-comment">/**
  * time = O(log²N)
  * space = O(log N)
  *
@@ -1227,41 +1239,41 @@ public int countNodes_DFS(TreeNode root) {
  * - In a complete binary tree, at least one subtree is a perfect binary tree
  * - For perfect binary tree with height h: nodes = 2^h - 1
  * - Check left and right subtree heights to determine which is perfect
- */
-public int countNodes_Optimized(TreeNode root) {
-    if (root == null) {
-        return 0;
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">countNodes_Optimized</span><span class="hljs-params">(TreeNode root)</span> {
+    <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) {
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
     }
 
-    int leftHeight = getHeight(root.left);
-    int rightHeight = getHeight(root.right);
+    <span class="hljs-type">int</span> <span class="hljs-variable">leftHeight</span> <span class="hljs-operator">=</span> getHeight(root.left);
+    <span class="hljs-type">int</span> <span class="hljs-variable">rightHeight</span> <span class="hljs-operator">=</span> getHeight(root.right);
 
-    if (leftHeight == rightHeight) {
-        // Left subtree is perfect binary tree
-        // Nodes in left = 2^leftHeight - 1, plus root = 2^leftHeight
-        return (1 &lt;&lt; leftHeight) + countNodes_Optimized(root.right);
-    } else {
-        // Right subtree is perfect binary tree
-        // Height = rightHeight, nodes = 2^rightHeight - 1, plus root = 2^rightHeight
-        return (1 &lt;&lt; rightHeight) + countNodes_Optimized(root.left);
+    <span class="hljs-keyword">if</span> (leftHeight == rightHeight) {
+        <span class="hljs-comment">// Left subtree is perfect binary tree</span>
+        <span class="hljs-comment">// Nodes in left = 2^leftHeight - 1, plus root = 2^leftHeight</span>
+        <span class="hljs-keyword">return</span> (<span class="hljs-number">1</span> &lt;&lt; leftHeight) + countNodes_Optimized(root.right);
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-comment">// Right subtree is perfect binary tree</span>
+        <span class="hljs-comment">// Height = rightHeight, nodes = 2^rightHeight - 1, plus root = 2^rightHeight</span>
+        <span class="hljs-keyword">return</span> (<span class="hljs-number">1</span> &lt;&lt; rightHeight) + countNodes_Optimized(root.left);
     }
 }
 
-/**
+<span class="hljs-comment">/**
  * Helper: Get height by traversing left path only
  * Works because in complete tree, leftmost path gives height
- */
-private int getHeight(TreeNode node) {
-    int height = 0;
-    while (node != null) {
+ */</span>
+<span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">getHeight</span><span class="hljs-params">(TreeNode node)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">height</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">while</span> (node != <span class="hljs-literal">null</span>) {
         height++;
         node = node.left;
     }
-    return height;
+    <span class="hljs-keyword">return</span> height;
 }
 </code></pre>
 <h2 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h2>
-<pre><code>Problem Analysis Flowchart:
+<pre><code class="hljs">Problem Analysis Flowchart:
 
 1. Does the problem require visiting nodes in specific order?
    ├── YES → Use Traversal Templates (1 or 2)
@@ -1436,40 +1448,40 @@ private int getHeight(TreeNode node) {
 </table>
 <h3 id="common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#common-patterns-tricks"><span>Common Patterns &amp; Tricks</span></a></h3>
 <h4 id="pattern-global-variable-for-optimization" tabindex="-1"><a class="header-anchor" href="#pattern-global-variable-for-optimization"><span><strong>Pattern: Global Variable for Optimization</strong></span></a></h4>
-<pre><code class="language-python">class Solution:
-    def maxPathSum(self, root):
-        self.max_sum = float('-inf')
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">maxPathSum</span>(<span class="hljs-params">self, root</span>):
+        <span class="hljs-variable language_">self</span>.max_sum = <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;-inf&#x27;</span>)
         
-        def helper(node):
-            if not node:
-                return 0
-            left = max(0, helper(node.left))
-            right = max(0, helper(node.right))
-            self.max_sum = max(self.max_sum, left + right + node.val)
-            return max(left, right) + node.val
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">helper</span>(<span class="hljs-params">node</span>):
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node:
+                <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+            left = <span class="hljs-built_in">max</span>(<span class="hljs-number">0</span>, helper(node.left))
+            right = <span class="hljs-built_in">max</span>(<span class="hljs-number">0</span>, helper(node.right))
+            <span class="hljs-variable language_">self</span>.max_sum = <span class="hljs-built_in">max</span>(<span class="hljs-variable language_">self</span>.max_sum, left + right + node.val)
+            <span class="hljs-keyword">return</span> <span class="hljs-built_in">max</span>(left, right) + node.val
         
         helper(root)
-        return self.max_sum
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.max_sum
 </code></pre>
 <h4 id="pattern-level-processing-with-delimiter" tabindex="-1"><a class="header-anchor" href="#pattern-level-processing-with-delimiter"><span><strong>Pattern: Level Processing with Delimiter</strong></span></a></h4>
-<pre><code class="language-python">def rightSideView(root):
-    if not root:
-        return []
-    result, queue = [], [root, None]
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">rightSideView</span>(<span class="hljs-params">root</span>):
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
+        <span class="hljs-keyword">return</span> []
+    result, queue = [], [root, <span class="hljs-literal">None</span>]
     
-    while queue:
-        node = queue.pop(0)
-        if node:
-            if queue[0] is None:  # Last node in level
+    <span class="hljs-keyword">while</span> queue:
+        node = queue.pop(<span class="hljs-number">0</span>)
+        <span class="hljs-keyword">if</span> node:
+            <span class="hljs-keyword">if</span> queue[<span class="hljs-number">0</span>] <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:  <span class="hljs-comment"># Last node in level</span>
                 result.append(node.val)
-            if node.left:
+            <span class="hljs-keyword">if</span> node.left:
                 queue.append(node.left)
-            if node.right:
+            <span class="hljs-keyword">if</span> node.right:
                 queue.append(node.right)
-        elif queue:  # Level delimiter
-            queue.append(None)
+        <span class="hljs-keyword">elif</span> queue:  <span class="hljs-comment"># Level delimiter</span>
+            queue.append(<span class="hljs-literal">None</span>)
     
-    return result
+    <span class="hljs-keyword">return</span> result
 </code></pre>
 <h3 id="problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#problem-solving-steps"><span>Problem-Solving Steps</span></a></h3>
 <ol>
@@ -1513,32 +1525,32 @@ private int getHeight(TreeNode node) {
 <li><strong>B-Tree</strong>: Self-balancing tree for databases</li>
 </ul>
 <h3 id="java-implementation-notes" tabindex="-1"><a class="header-anchor" href="#java-implementation-notes"><span>Java Implementation Notes</span></a></h3>
-<pre><code class="language-java">// Java TreeNode definition
-class TreeNode {
-    int val;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java TreeNode definition</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">TreeNode</span> {
+    <span class="hljs-type">int</span> val;
     TreeNode left, right;
-    TreeNode(int x) { val = x; }
+    TreeNode(<span class="hljs-type">int</span> x) { val = x; }
 }
 
-// Use Queue interface with LinkedList
-Queue&lt;TreeNode&gt; queue = new LinkedList&lt;&gt;();
+<span class="hljs-comment">// Use Queue interface with LinkedList</span>
+Queue&lt;TreeNode&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
 
-// Stack for iterative traversal
-Stack&lt;TreeNode&gt; stack = new Stack&lt;&gt;();
+<span class="hljs-comment">// Stack for iterative traversal</span>
+Stack&lt;TreeNode&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;();
 </code></pre>
 <h3 id="python-implementation-notes" tabindex="-1"><a class="header-anchor" href="#python-implementation-notes"><span>Python Implementation Notes</span></a></h3>
-<pre><code class="language-python"># TreeNode definition
-class TreeNode:
-    def __init__(self, val=0, left=None, right=None):
-        self.val = val
-        self.left = left
-        self.right = right
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># TreeNode definition</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">TreeNode</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, val=<span class="hljs-number">0</span>, left=<span class="hljs-literal">None</span>, right=<span class="hljs-literal">None</span></span>):
+        <span class="hljs-variable language_">self</span>.val = val
+        <span class="hljs-variable language_">self</span>.left = left
+        <span class="hljs-variable language_">self</span>.right = right
 
-# Use collections.deque for O(1) operations
-from collections import deque
+<span class="hljs-comment"># Use collections.deque for O(1) operations</span>
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
 queue = deque([root])
 
-# List as stack (append/pop)
+<span class="hljs-comment"># List as stack (append/pop)</span>
 stack = []
 </code></pre>
 <hr>

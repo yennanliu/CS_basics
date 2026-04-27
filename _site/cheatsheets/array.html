@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,13 +20,24 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
     document.querySelectorAll('pre code').forEach(function(codeEl) {
       var pre = codeEl.parentElement;
       var lang = '';
       var cls = codeEl.className || '';
       var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
       if (m) lang = m[1];
+
+      // Add line numbers
+      var lines = codeEl.innerHTML.split('
+');
+      if (lines[lines.length - 1] === '') lines.pop();
+      var numbered = lines.map(function(line, i) {
+        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
+      }).join('
+');
+      codeEl.innerHTML = numbered;
+      codeEl.classList.add('hljs-ln');
+
       var wrapper = document.createElement('div');
       wrapper.className = 'code-block-wrapper';
       pre.parentNode.insertBefore(wrapper, pre);
@@ -45,7 +55,9 @@
       btn.className = 'copy-btn';
       btn.textContent = 'Copy';
       btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
+');
+        navigator.clipboard.writeText(text).then(function() {
           btn.textContent = 'Copied!';
           btn.classList.add('copied');
           setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
@@ -184,331 +196,331 @@
 <h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
 <h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
 <h4 id="1-1-0-split-array" tabindex="-1"><a class="header-anchor" href="#1-1-0-split-array"><span>1-1-0) Split Array</span></a></h4>
-<pre><code class="language-python"># python_trick.html
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python_trick.html</span>
 
-#-----------------------------------------------------------------------------------------------------
-# example 7 : itertools.islice : slice on iterator
-#-----------------------------------------------------------------------------------------------------
-# https://docs.python.org/3/library/itertools.html#itertools.islice
-# syntax : itertools.islice(seq, [start,] stop [, step])
+<span class="hljs-comment">#-----------------------------------------------------------------------------------------------------</span>
+<span class="hljs-comment"># example 7 : itertools.islice : slice on iterator</span>
+<span class="hljs-comment">#-----------------------------------------------------------------------------------------------------</span>
+<span class="hljs-comment"># https://docs.python.org/3/library/itertools.html#itertools.islice</span>
+<span class="hljs-comment"># syntax : itertools.islice(seq, [start,] stop [, step])</span>
 
-In [6]:  x = itertools.islice(range(10), 0, 9, 2)
+In [<span class="hljs-number">6</span>]:  x = itertools.islice(<span class="hljs-built_in">range</span>(<span class="hljs-number">10</span>), <span class="hljs-number">0</span>, <span class="hljs-number">9</span>, <span class="hljs-number">2</span>)
 
-In [7]: print (list(x))
-[0, 2, 4, 6, 8]
+In [<span class="hljs-number">7</span>]: <span class="hljs-built_in">print</span> (<span class="hljs-built_in">list</span>(x))
+[<span class="hljs-number">0</span>, <span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>, <span class="hljs-number">8</span>]
 
 
-In [18]: y = itertools.islice(range(10), 0, 10, 3)
-    ...: print (list(y))
-[0, 3, 6, 9]
+In [<span class="hljs-number">18</span>]: y = itertools.islice(<span class="hljs-built_in">range</span>(<span class="hljs-number">10</span>), <span class="hljs-number">0</span>, <span class="hljs-number">10</span>, <span class="hljs-number">3</span>)
+    ...: <span class="hljs-built_in">print</span> (<span class="hljs-built_in">list</span>(y))
+[<span class="hljs-number">0</span>, <span class="hljs-number">3</span>, <span class="hljs-number">6</span>, <span class="hljs-number">9</span>]
 </code></pre>
 <h4 id="1-1-1-insert-into-array" tabindex="-1"><a class="header-anchor" href="#1-1-1-insert-into-array"><span>1-1-1) Insert into Array</span></a></h4>
-<pre><code class="language-python">p=[[7, 0], [7, 1], [6, 1], [5, 0], [5, 2], [4, 4]]
-Out[27]: [[7, 0], [7, 1], [6, 1], [5, 0], [5, 2], [4, 4]]
-In [28]: p.insert(1, [6,1])
-In [29]: p
-Out[29]: [[7, 0], [6, 1], [7, 1], [6, 1], [5, 0], [5, 2], [4, 4]]
+<pre data-lang="python"><code class="hljs language-python">p=[[<span class="hljs-number">7</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">7</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">6</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">4</span>, <span class="hljs-number">4</span>]]
+Out[<span class="hljs-number">27</span>]: [[<span class="hljs-number">7</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">7</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">6</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">4</span>, <span class="hljs-number">4</span>]]
+In [<span class="hljs-number">28</span>]: p.insert(<span class="hljs-number">1</span>, [<span class="hljs-number">6</span>,<span class="hljs-number">1</span>])
+In [<span class="hljs-number">29</span>]: p
+Out[<span class="hljs-number">29</span>]: [[<span class="hljs-number">7</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">6</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">7</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">6</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">4</span>, <span class="hljs-number">4</span>]]
 </code></pre>
 <h4 id="1-1-2-delete-from-array" tabindex="-1"><a class="header-anchor" href="#1-1-2-delete-from-array"><span>1-1-2) Delete from Array</span></a></h4>
-<pre><code class="language-python">p=[[7, 0], [7, 1], [6, 1], [5, 0], [5, 2], [4, 4]]
+<pre data-lang="python"><code class="hljs language-python">p=[[<span class="hljs-number">7</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">7</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">6</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">4</span>, <span class="hljs-number">4</span>]]
 
-In [4]: p
-Out[4]: [[7, 0], [7, 1], [6, 1], [5, 0], [5, 2], [4, 4]]
+In [<span class="hljs-number">4</span>]: p
+Out[<span class="hljs-number">4</span>]: [[<span class="hljs-number">7</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">7</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">6</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">4</span>, <span class="hljs-number">4</span>]]
 
-In [5]: p.remove([7, 1])
+In [<span class="hljs-number">5</span>]: p.remove([<span class="hljs-number">7</span>, <span class="hljs-number">1</span>])
 
-In [6]: p
-Out[6]: [[7, 0], [6, 1], [5, 0], [5, 2], [4, 4]]
+In [<span class="hljs-number">6</span>]: p
+Out[<span class="hljs-number">6</span>]: [[<span class="hljs-number">7</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">6</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">4</span>, <span class="hljs-number">4</span>]]
 </code></pre>
 <h4 id="1-1-3-check-if-element-in-array" tabindex="-1"><a class="header-anchor" href="#1-1-3-check-if-element-in-array"><span>1-1-3) check if element in Array</span></a></h4>
-<pre><code class="language-python">In [7]: p
-Out[7]: [[7, 0], [6, 1], [5, 0], [5, 2], [4, 4]]
+<pre data-lang="python"><code class="hljs language-python">In [<span class="hljs-number">7</span>]: p
+Out[<span class="hljs-number">7</span>]: [[<span class="hljs-number">7</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">6</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">4</span>, <span class="hljs-number">4</span>]]
 
-In [8]: [7,0] in p
-Out[8]: True
+In [<span class="hljs-number">8</span>]: [<span class="hljs-number">7</span>,<span class="hljs-number">0</span>] <span class="hljs-keyword">in</span> p
+Out[<span class="hljs-number">8</span>]: <span class="hljs-literal">True</span>
 </code></pre>
 <h4 id="1-1-4-append-to-array-head-tail" tabindex="-1"><a class="header-anchor" href="#1-1-4-append-to-array-head-tail"><span>1-1-4) append to array (head, tail)</span></a></h4>
-<pre><code class="language-python"># tail
-In [9]: p
-Out[9]: [[7, 0], [6, 1], [5, 0], [5, 2], [4, 4]]
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># tail</span>
+In [<span class="hljs-number">9</span>]: p
+Out[<span class="hljs-number">9</span>]: [[<span class="hljs-number">7</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">6</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">4</span>, <span class="hljs-number">4</span>]]
 
-In [10]: p.append([0,0])
+In [<span class="hljs-number">10</span>]: p.append([<span class="hljs-number">0</span>,<span class="hljs-number">0</span>])
 
-In [11]: p
-Out[11]: [[7, 0], [6, 1], [5, 0], [5, 2], [4, 4], [0, 0]]
+In [<span class="hljs-number">11</span>]: p
+Out[<span class="hljs-number">11</span>]: [[<span class="hljs-number">7</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">6</span>, <span class="hljs-number">1</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">0</span>], [<span class="hljs-number">5</span>, <span class="hljs-number">2</span>], [<span class="hljs-number">4</span>, <span class="hljs-number">4</span>], [<span class="hljs-number">0</span>, <span class="hljs-number">0</span>]]
 </code></pre>
 <h4 id="1-1-5-sort-array" tabindex="-1"><a class="header-anchor" href="#1-1-5-sort-array"><span>1-1-5) Sort Array*****</span></a></h4>
-<pre><code class="language-python"># Pattern :
-# V1
-_array.sort(key = lambda x : &lt;your_sorting_func&gt;)
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Pattern :</span>
+<span class="hljs-comment"># V1</span>
+_array.sort(key = <span class="hljs-keyword">lambda</span> x : &lt;your_sorting_func&gt;)
 
-# V2
-sorted(_array, key = lambda x : &lt;your_sorting_func&gt;)
+<span class="hljs-comment"># V2</span>
+<span class="hljs-built_in">sorted</span>(_array, key = <span class="hljs-keyword">lambda</span> x : &lt;your_sorting_func&gt;)
 
-# 049  Group Anagrams
-strs = [&quot;eat&quot;,&quot;tea&quot;,&quot;tan&quot;,&quot;ate&quot;,&quot;nat&quot;,&quot;bat&quot;]
-strs.sort(key = lambda x : ''.join(sorted(x)) )
-print (strs)
-# ['bat', 'eat', 'tea', 'ate', 'tan', 'nat']
+<span class="hljs-comment"># 049  Group Anagrams</span>
+strs = [<span class="hljs-string">&quot;eat&quot;</span>,<span class="hljs-string">&quot;tea&quot;</span>,<span class="hljs-string">&quot;tan&quot;</span>,<span class="hljs-string">&quot;ate&quot;</span>,<span class="hljs-string">&quot;nat&quot;</span>,<span class="hljs-string">&quot;bat&quot;</span>]
+strs.sort(key = <span class="hljs-keyword">lambda</span> x : <span class="hljs-string">&#x27;&#x27;</span>.join(<span class="hljs-built_in">sorted</span>(x)) )
+<span class="hljs-built_in">print</span> (strs)
+<span class="hljs-comment"># [&#x27;bat&#x27;, &#x27;eat&#x27;, &#x27;tea&#x27;, &#x27;ate&#x27;, &#x27;tan&#x27;, &#x27;nat&#x27;]</span>
 
-### NOTE can use this as well
-sorted(strs, key = lambda x : ''.join(sorted(x)))
+<span class="hljs-comment">### NOTE can use this as well</span>
+<span class="hljs-built_in">sorted</span>(strs, key = <span class="hljs-keyword">lambda</span> x : <span class="hljs-string">&#x27;&#x27;</span>.join(<span class="hljs-built_in">sorted</span>(x)))
 </code></pre>
 <h4 id="1-1-6-flatten-array" tabindex="-1"><a class="header-anchor" href="#1-1-6-flatten-array"><span>1-1-6) Flatten Array</span></a></h4>
-<pre><code class="language-python"># LC 341
-# V0
-class NestedIterator(object):
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 341</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">NestedIterator</span>(<span class="hljs-title class_ inherited__">object</span>):
 
-    def __init__(self, nestedList):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, nestedList</span>):
 
-        self.queue = []
+        <span class="hljs-variable language_">self</span>.queue = []
         
-        def getAll(nests):
-            for nest in nests:
-                if nest.isInteger():
-                    self.queue.append(nest.getInteger())
-                else:
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">getAll</span>(<span class="hljs-params">nests</span>):
+            <span class="hljs-keyword">for</span> nest <span class="hljs-keyword">in</span> nests:
+                <span class="hljs-keyword">if</span> nest.isInteger():
+                    <span class="hljs-variable language_">self</span>.queue.append(nest.getInteger())
+                <span class="hljs-keyword">else</span>:
                     getAll(nest.getList())
         getAll(nestedList)
 
-    def next(self):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">next</span>(<span class="hljs-params">self</span>):
 
-        return self.queue.pop(0)
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.queue.pop(<span class="hljs-number">0</span>)
 
-    def hasNext(self):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">hasNext</span>(<span class="hljs-params">self</span>):
 
-        return len(self.queue)
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.queue)
 
-# default py
-# V1
-def flatten_array(_array):
+<span class="hljs-comment"># default py</span>
+<span class="hljs-comment"># V1</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">flatten_array</span>(<span class="hljs-params">_array</span>):
     r = []
-    def helper(_array):
-        for i in _array:
-            if type(i) == int:
-                print (i)
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">helper</span>(<span class="hljs-params">_array</span>):
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> _array:
+            <span class="hljs-keyword">if</span> <span class="hljs-built_in">type</span>(i) == <span class="hljs-built_in">int</span>:
+                <span class="hljs-built_in">print</span> (i)
                 r.append(i)
-            else:
+            <span class="hljs-keyword">else</span>:
                 helper(i)
 
     helper(_array)
-    return r
+    <span class="hljs-keyword">return</span> r
     
-_input = [1,0, [1,2,[4,[5,[6,[7]]]]]]#[1,[4,[6]]] #[[1,1],2,[1,1]]
+_<span class="hljs-built_in">input</span> = [<span class="hljs-number">1</span>,<span class="hljs-number">0</span>, [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,[<span class="hljs-number">4</span>,[<span class="hljs-number">5</span>,[<span class="hljs-number">6</span>,[<span class="hljs-number">7</span>]]]]]]<span class="hljs-comment">#[1,[4,[6]]] #[[1,1],2,[1,1]]</span>
 
-res = flatten_array(_input)
-print (&quot;res = &quot; + str(res))
+res = flatten_array(_<span class="hljs-built_in">input</span>)
+<span class="hljs-built_in">print</span> (<span class="hljs-string">&quot;res = &quot;</span> + <span class="hljs-built_in">str</span>(res))
 
-# V2
-# https://stackoverflow.com/questions/2158395/flatten-an-irregular-list-of-lists
-def flatten(L):
-    for item in L:
-        try:
-            yield from flatten(item)
-        except TypeError:
-            yield item
+<span class="hljs-comment"># V2</span>
+<span class="hljs-comment"># https://stackoverflow.com/questions/2158395/flatten-an-irregular-list-of-lists</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">flatten</span>(<span class="hljs-params">L</span>):
+    <span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> L:
+        <span class="hljs-keyword">try</span>:
+            <span class="hljs-keyword">yield</span> <span class="hljs-keyword">from</span> flatten(item)
+        <span class="hljs-keyword">except</span> TypeError:
+            <span class="hljs-keyword">yield</span> item
 
-r2 = flatten(_input)
-r2_ = [x for x in r2]
-print (r2_)
+r2 = flatten(_<span class="hljs-built_in">input</span>)
+r2_ = [x <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> r2]
+<span class="hljs-built_in">print</span> (r2_)
 
-# V3
-def flatten2(L):
-    for item in L:
-        try:
-            yield from flatten2(item)
-        except:
-            yield item
+<span class="hljs-comment"># V3</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">flatten2</span>(<span class="hljs-params">L</span>):
+    <span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> L:
+        <span class="hljs-keyword">try</span>:
+            <span class="hljs-keyword">yield</span> <span class="hljs-keyword">from</span> flatten2(item)
+        <span class="hljs-keyword">except</span>:
+            <span class="hljs-keyword">yield</span> item
 
-r3 = flatten2(_input)
-r3_ = [x for x in r3]
-print (r3_)
+r3 = flatten2(_<span class="hljs-built_in">input</span>)
+r3_ = [x <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> r3]
+<span class="hljs-built_in">print</span> (r3_)
 </code></pre>
-<pre><code class="language-java">// java
-// algorithm book (labu) p.355
-//------------------------------------------
-// implement NestedInteger data structure
-//------------------------------------------
-public class NestedInteger {
-    private Integer val;
-    private List&lt;NestedInteger&gt; list;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// algorithm book (labu) p.355</span>
+<span class="hljs-comment">//------------------------------------------</span>
+<span class="hljs-comment">// implement NestedInteger data structure</span>
+<span class="hljs-comment">//------------------------------------------</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">NestedInteger</span> {
+    <span class="hljs-keyword">private</span> Integer val;
+    <span class="hljs-keyword">private</span> List&lt;NestedInteger&gt; list;
 
-    public NestedInteger(Integer val){
-        this.val = val;
-        this.list = null;
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">NestedInteger</span><span class="hljs-params">(Integer val)</span>{
+        <span class="hljs-built_in">this</span>.val = val;
+        <span class="hljs-built_in">this</span>.list = <span class="hljs-literal">null</span>;
     }
 
-    public NestedInteger(List&lt;NestedInteger&gt; list){
-        this.list = list;
-        this.val = null;
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">NestedInteger</span><span class="hljs-params">(List&lt;NestedInteger&gt; list)</span>{
+        <span class="hljs-built_in">this</span>.list = list;
+        <span class="hljs-built_in">this</span>.val = <span class="hljs-literal">null</span>;
     }
 
-    // if saved value is integer, return true, else false
-    public boolean isIntger(){
-        return val != null;
+    <span class="hljs-comment">// if saved value is integer, return true, else false</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isIntger</span><span class="hljs-params">()</span>{
+        <span class="hljs-keyword">return</span> val != <span class="hljs-literal">null</span>;
     }
 
-    // if saved value is integer, return it, else return null
-    public Integer getInteger(){
-        return this.val;
+    <span class="hljs-comment">// if saved value is integer, return it, else return null</span>
+    <span class="hljs-keyword">public</span> Integer <span class="hljs-title function_">getInteger</span><span class="hljs-params">()</span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.val;
     }
 
-    // if saved value is array, return it, else return null
-    public List&lt;NestedInteger&gt; getList(){
-        return this.list;
+    <span class="hljs-comment">// if saved value is array, return it, else return null</span>
+    <span class="hljs-keyword">public</span> List&lt;NestedInteger&gt; <span class="hljs-title function_">getList</span><span class="hljs-params">()</span>{
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.list;
     }
 
 }
 </code></pre>
-<pre><code class="language-java">// java
-// LC 341
-// algorithm book (labu) p.357
-//-----------------------------------------------------------
-// NestedInteger solution V1 :  via tree algorithm
-//-----------------------------------------------------------
-class NestedIterator implements Iterator&lt;Integer&gt;{
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 341</span>
+<span class="hljs-comment">// algorithm book (labu) p.357</span>
+<span class="hljs-comment">//-----------------------------------------------------------</span>
+<span class="hljs-comment">// NestedInteger solution V1 :  via tree algorithm</span>
+<span class="hljs-comment">//-----------------------------------------------------------</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">NestedIterator</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Iterator</span>&lt;Integer&gt;{
 
-    private Iterator&lt;Integer&gt; it;
+    <span class="hljs-keyword">private</span> Iterator&lt;Integer&gt; it;
 
-    public NestedInteger(List&lt;NestedInteger&gt; nestedList){
-        // save flatten result
-        List&lt;Integer&gt; result = new LinkedList&lt;&gt;();
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">NestedInteger</span><span class="hljs-params">(List&lt;NestedInteger&gt; nestedList)</span>{
+        <span class="hljs-comment">// save flatten result</span>
+        List&lt;Integer&gt; result = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
 
-        for (NestedInteger node: nestedList){
-            // start from each node and proceed
+        <span class="hljs-keyword">for</span> (NestedInteger node: nestedList){
+            <span class="hljs-comment">// start from each node and proceed</span>
             traverse(node, result);
         }
 
-        // get result's iterator
-        this.it = result.iterator();
+        <span class="hljs-comment">// get result&#x27;s iterator</span>
+        <span class="hljs-built_in">this</span>.it = result.iterator();
     }
 
-    public Integer next(){
-        return it.next();
+    <span class="hljs-keyword">public</span> Integer <span class="hljs-title function_">next</span><span class="hljs-params">()</span>{
+        <span class="hljs-keyword">return</span> it.next();
     }
 
-    public boolean hasNext(){
-        return it.hasNext();
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">hasNext</span><span class="hljs-params">()</span>{
+        <span class="hljs-keyword">return</span> it.hasNext();
     }
 
-    // traverse tree with root as root, and add nodes to result array
-    private void traverse(NestedInteger root, List&lt;Integer&gt; result){
-        if (root.isIntger()){
-            // arrive root node
+    <span class="hljs-comment">// traverse tree with root as root, and add nodes to result array</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">traverse</span><span class="hljs-params">(NestedInteger root, List&lt;Integer&gt; result)</span>{
+        <span class="hljs-keyword">if</span> (root.isIntger()){
+            <span class="hljs-comment">// arrive root node</span>
             result.add(root.getInteger());
-            return;
+            <span class="hljs-keyword">return</span>;
         }
 
-        // traverse framework
-        for (NestedInteger child: root.getList()){
+        <span class="hljs-comment">// traverse framework</span>
+        <span class="hljs-keyword">for</span> (NestedInteger child: root.getList()){
             traverse(child, result);
         }
     }
 }
 </code></pre>
-<pre><code class="language-java">// java
-// LC 341
-// algorithm book (labu) p.358
-//-----------------------------------------------------------
-// NestedInteger solution V2 :  via lazy calling
-//-----------------------------------------------------------
-public class NestedIterator implements Iterator&lt;Integer&gt;{
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 341</span>
+<span class="hljs-comment">// algorithm book (labu) p.358</span>
+<span class="hljs-comment">//-----------------------------------------------------------</span>
+<span class="hljs-comment">// NestedInteger solution V2 :  via lazy calling</span>
+<span class="hljs-comment">//-----------------------------------------------------------</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">NestedIterator</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Iterator</span>&lt;Integer&gt;{
 
-    private LinkedList&lt;NestedInteger&gt; list;
+    <span class="hljs-keyword">private</span> LinkedList&lt;NestedInteger&gt; list;
 
-    public NestedInteger(List&lt;NestedInteger&gt; nestedList){
-        // use LinkedList, for good performance in below op
-        list = new LinkedList&lt;&gt;(nestedList);
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">NestedInteger</span><span class="hljs-params">(List&lt;NestedInteger&gt; nestedList)</span>{
+        <span class="hljs-comment">// use LinkedList, for good performance in below op</span>
+        list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;(nestedList);
     }
 
-    public Integer next(){
-        // hasNext method make sure 1st element must be Integer type
-        return list.remove(0).getInteger();
+    <span class="hljs-keyword">public</span> Integer <span class="hljs-title function_">next</span><span class="hljs-params">()</span>{
+        <span class="hljs-comment">// hasNext method make sure 1st element must be Integer type</span>
+        <span class="hljs-keyword">return</span> list.remove(<span class="hljs-number">0</span>).getInteger();
     }
 
-    public boolean hasNext(){
-        // for loop split elements in array until 1st element is Integer type
-        while (!list.isEmpty() &amp;&amp; list.get(0).isIntger()){
-            // when 1st element is array type, go into the loop
-            List&lt;NestedInteger&gt; first = list.remove(0).getList();
-            // flatten 1st array, and add to &quot;start&quot; in ordering
-            for (int i = first.size() - 1; i &gt;= 0; i--){
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">hasNext</span><span class="hljs-params">()</span>{
+        <span class="hljs-comment">// for loop split elements in array until 1st element is Integer type</span>
+        <span class="hljs-keyword">while</span> (!list.isEmpty() &amp;&amp; list.get(<span class="hljs-number">0</span>).isIntger()){
+            <span class="hljs-comment">// when 1st element is array type, go into the loop</span>
+            List&lt;NestedInteger&gt; first = list.remove(<span class="hljs-number">0</span>).getList();
+            <span class="hljs-comment">// flatten 1st array, and add to &quot;start&quot; in ordering</span>
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> first.size() - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--){
                 list.addFirst(first.get(i));
             }  
         }
-        return !list.isEmpty();
+        <span class="hljs-keyword">return</span> !list.isEmpty();
     }
 }
 </code></pre>
 <h4 id="1-1-7-sort-array-with-2-keys" tabindex="-1"><a class="header-anchor" href="#1-1-7-sort-array-with-2-keys"><span>1-1-7) Sort array with 2 keys</span></a></h4>
-<pre><code class="language-python">y = [[7,0], [4,4], [7,1], [5,0], [6,1], [5,2]]
-print (y)
-y.sort(key = lambda x : (-x[0], x[1]))
-print (y)
-# [[7, 0], [4, 4], [7, 1], [5, 0], [6, 1], [5, 2]]
-# [[7, 0], [7, 1], [6, 1], [5, 0], [5, 2], [4, 4]]
+<pre data-lang="python"><code class="hljs language-python">y = [[<span class="hljs-number">7</span>,<span class="hljs-number">0</span>], [<span class="hljs-number">4</span>,<span class="hljs-number">4</span>], [<span class="hljs-number">7</span>,<span class="hljs-number">1</span>], [<span class="hljs-number">5</span>,<span class="hljs-number">0</span>], [<span class="hljs-number">6</span>,<span class="hljs-number">1</span>], [<span class="hljs-number">5</span>,<span class="hljs-number">2</span>]]
+<span class="hljs-built_in">print</span> (y)
+y.sort(key = <span class="hljs-keyword">lambda</span> x : (-x[<span class="hljs-number">0</span>], x[<span class="hljs-number">1</span>]))
+<span class="hljs-built_in">print</span> (y)
+<span class="hljs-comment"># [[7, 0], [4, 4], [7, 1], [5, 0], [6, 1], [5, 2]]</span>
+<span class="hljs-comment"># [[7, 0], [7, 1], [6, 1], [5, 0], [5, 2], [4, 4]]</span>
 </code></pre>
 <h4 id="1-1-8-go-through-2-arrays-length-could-be-different" tabindex="-1"><a class="header-anchor" href="#1-1-8-go-through-2-arrays-length-could-be-different"><span>1-1-8) go through 2 arrays (length could be different)</span></a></h4>
-<pre><code class="language-python">#--------------------
-# example 1
-#--------------------
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment">#--------------------</span>
+<span class="hljs-comment"># example 1</span>
+<span class="hljs-comment">#--------------------</span>
 
-# 2 array : s,t
-# len(s) = 10, len(t) = 7
-# or
-# len(s) = 10, len(t) = 11
-if len(s) &gt; len(t):
+<span class="hljs-comment"># 2 array : s,t</span>
+<span class="hljs-comment"># len(s) = 10, len(t) = 7</span>
+<span class="hljs-comment"># or</span>
+<span class="hljs-comment"># len(s) = 10, len(t) = 11</span>
+<span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(s) &gt; <span class="hljs-built_in">len</span>(t):
     s,t  = t,s
 
-for i in range(len(s)):
-    print (s[i], t[i])
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(s)):
+    <span class="hljs-built_in">print</span> (s[i], t[i])
 
 
-#--------------------
-# example 2
-#--------------------
-# LC 165
-class Solution:
-    def compareVersion(self, version1: str, version2: str) -&gt; int:
-        nums1 = version1.split('.')
-        nums2 = version2.split('.')
-        n1, n2 = len(nums1), len(nums2)
+<span class="hljs-comment">#--------------------</span>
+<span class="hljs-comment"># example 2</span>
+<span class="hljs-comment">#--------------------</span>
+<span class="hljs-comment"># LC 165</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">compareVersion</span>(<span class="hljs-params">self, version1: <span class="hljs-built_in">str</span>, version2: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">int</span>:
+        nums1 = version1.split(<span class="hljs-string">&#x27;.&#x27;</span>)
+        nums2 = version2.split(<span class="hljs-string">&#x27;.&#x27;</span>)
+        n1, n2 = <span class="hljs-built_in">len</span>(nums1), <span class="hljs-built_in">len</span>(nums2)
         
-        # NOTE here !!!
-        # compare versions
-        for i in range(max(n1, n2)):
-            i1 = int(nums1[i]) if i &lt; n1 else 0
-            i2 = int(nums2[i]) if i &lt; n2 else 0
-            if i1 != i2:
-                return 1 if i1 &gt; i2 else -1
+        <span class="hljs-comment"># NOTE here !!!</span>
+        <span class="hljs-comment"># compare versions</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">max</span>(n1, n2)):
+            i1 = <span class="hljs-built_in">int</span>(nums1[i]) <span class="hljs-keyword">if</span> i &lt; n1 <span class="hljs-keyword">else</span> <span class="hljs-number">0</span>
+            i2 = <span class="hljs-built_in">int</span>(nums2[i]) <span class="hljs-keyword">if</span> i &lt; n2 <span class="hljs-keyword">else</span> <span class="hljs-number">0</span>
+            <span class="hljs-keyword">if</span> i1 != i2:
+                <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> <span class="hljs-keyword">if</span> i1 &gt; i2 <span class="hljs-keyword">else</span> -<span class="hljs-number">1</span>
         
-        # the versions are equal
-        return 0
+        <span class="hljs-comment"># the versions are equal</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
 </code></pre>
 <h4 id="1-1-9-shallow-deep-copy" tabindex="-1"><a class="header-anchor" href="#1-1-9-shallow-deep-copy"><span>1-1-9) shallow, deep copy</span></a></h4>
-<pre><code class="language-python"># LC 670
-# V0'
-# IDEA : BRUTE FORCE
-# NOTE : there is also 2 pointers solution : 
-#        -&gt; https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/maximum-swap.py#L49
-# NOTE : ans = A[:]
-#        A[:] is a `shallow copy` syntax in python,
-#        it will copy &quot;parent obj&quot; (not child obj) to the other instance
-#        so the changes (&quot;parent obj&quot; only) in original instance will NOT affect the copied instance
-# https://stackoverflow.com/questions/4081561/what-is-the-difference-between-list-and-list-in-python
-# https://github.com/yennanliu/til#20210923
-class Solution(object):
-    def maximumSwap(self, num):
-        A = list(str(num))
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 670</span>
+<span class="hljs-comment"># V0&#x27;</span>
+<span class="hljs-comment"># IDEA : BRUTE FORCE</span>
+<span class="hljs-comment"># NOTE : there is also 2 pointers solution : </span>
+<span class="hljs-comment">#        -&gt; https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/maximum-swap.py#L49</span>
+<span class="hljs-comment"># NOTE : ans = A[:]</span>
+<span class="hljs-comment">#        A[:] is a `shallow copy` syntax in python,</span>
+<span class="hljs-comment">#        it will copy &quot;parent obj&quot; (not child obj) to the other instance</span>
+<span class="hljs-comment">#        so the changes (&quot;parent obj&quot; only) in original instance will NOT affect the copied instance</span>
+<span class="hljs-comment"># https://stackoverflow.com/questions/4081561/what-is-the-difference-between-list-and-list-in-python</span>
+<span class="hljs-comment"># https://github.com/yennanliu/til#20210923</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">maximumSwap</span>(<span class="hljs-params">self, num</span>):
+        A = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">str</span>(num))
         ans = A[:]
-        for i in range(len(A)):
-            for j in range(i+1, len(A)):
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(A)):
+            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(i+<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(A)):
                 A[i], A[j] = A[j], A[i]
-                if A &gt; ans: 
+                <span class="hljs-keyword">if</span> A &gt; ans: 
                     ans = A[:]
                 A[i], A[j] = A[j], A[i]
 
-        return int(&quot;&quot;.join(ans))
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">int</span>(<span class="hljs-string">&quot;&quot;</span>.join(ans))
 </code></pre>
 <hr>
 <h3 id="1-2-special-array-algorithms" tabindex="-1"><a class="header-anchor" href="#1-2-special-array-algorithms"><span>1-2) Special Array Algorithms</span></a></h3>
@@ -538,38 +550,38 @@ class Solution(object):
 <li>Increment count for same element, decrement for different</li>
 <li>Majority element survives</li>
 </ul>
-<pre><code class="language-python"># Python - LC 169
-def majorityElement(nums):
-    &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - LC 169</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">majorityElement</span>(<span class="hljs-params">nums</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
     Find element appearing &gt; n/2 times
     Time: O(n)
     Space: O(1)
-    &quot;&quot;&quot;
-    candidate = None
-    count = 0
+    &quot;&quot;&quot;</span>
+    candidate = <span class="hljs-literal">None</span>
+    count = <span class="hljs-number">0</span>
 
-    # Phase 1: Find candidate
-    for num in nums:
-        if count == 0:
+    <span class="hljs-comment"># Phase 1: Find candidate</span>
+    <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> nums:
+        <span class="hljs-keyword">if</span> count == <span class="hljs-number">0</span>:
             candidate = num
-            count = 1
-        elif num == candidate:
-            count += 1
-        else:
-            count -= 1  # Cancel out
+            count = <span class="hljs-number">1</span>
+        <span class="hljs-keyword">elif</span> num == candidate:
+            count += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">else</span>:
+            count -= <span class="hljs-number">1</span>  <span class="hljs-comment"># Cancel out</span>
 
-    # Phase 2: Verify (can skip if majority guaranteed)
-    # return candidate
+    <span class="hljs-comment"># Phase 2: Verify (can skip if majority guaranteed)</span>
+    <span class="hljs-comment"># return candidate</span>
 
-    # If not guaranteed, verify:
-    if nums.count(candidate) &gt; len(nums) // 2:
-        return candidate
-    return None
+    <span class="hljs-comment"># If not guaranteed, verify:</span>
+    <span class="hljs-keyword">if</span> nums.count(candidate) &gt; <span class="hljs-built_in">len</span>(nums) // <span class="hljs-number">2</span>:
+        <span class="hljs-keyword">return</span> candidate
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
 </code></pre>
-<pre><code class="language-java">// Java - LC 169
-// V0
-// IDEA: Boyer-Moore Majority Vote
-/**
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - LC 169</span>
+<span class="hljs-comment">// V0</span>
+<span class="hljs-comment">// IDEA: Boyer-Moore Majority Vote</span>
+<span class="hljs-comment">/**
  * Key Insight:
  * - Pair different elements and cancel them out
  * - Majority element will survive cancellation
@@ -577,44 +589,44 @@ def majorityElement(nums):
  *
  * Time: O(n)
  * Space: O(1)
- */
-public int majorityElement(int[] nums) {
-    /**
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">majorityElement</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+    <span class="hljs-comment">/**
      * time = O(N)
      * space = O(1)
-     */
-    int candidate = nums[0];
-    int count = 1;
+     */</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">candidate</span> <span class="hljs-operator">=</span> nums[<span class="hljs-number">0</span>];
+    <span class="hljs-type">int</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;
 
-    // Phase 1: Find candidate by cancellation
-    for (int i = 1; i &lt; nums.length; i++) {
-        if (count == 0) {
-            // Start new candidate when count reaches 0
+    <span class="hljs-comment">// Phase 1: Find candidate by cancellation</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; nums.length; i++) {
+        <span class="hljs-keyword">if</span> (count == <span class="hljs-number">0</span>) {
+            <span class="hljs-comment">// Start new candidate when count reaches 0</span>
             candidate = nums[i];
-            count = 1;
-        } else if (nums[i] == candidate) {
-            // Same element: increment count
+            count = <span class="hljs-number">1</span>;
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nums[i] == candidate) {
+            <span class="hljs-comment">// Same element: increment count</span>
             count++;
-        } else {
-            // Different element: cancel out
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-comment">// Different element: cancel out</span>
             count--;
         }
     }
 
-    // Phase 2: Verify (optional if majority guaranteed)
-    // If problem guarantees majority exists, return candidate directly
-    return candidate;
+    <span class="hljs-comment">// Phase 2: Verify (optional if majority guaranteed)</span>
+    <span class="hljs-comment">// If problem guarantees majority exists, return candidate directly</span>
+    <span class="hljs-keyword">return</span> candidate;
 
-    // Otherwise, verify:
-    // int actualCount = 0;
-    // for (int num : nums) {
-    //     if (num == candidate) actualCount++;
-    // }
-    // return actualCount &gt; nums.length / 2 ? candidate : -1;
+    <span class="hljs-comment">// Otherwise, verify:</span>
+    <span class="hljs-comment">// int actualCount = 0;</span>
+    <span class="hljs-comment">// for (int num : nums) {</span>
+    <span class="hljs-comment">//     if (num == candidate) actualCount++;</span>
+    <span class="hljs-comment">// }</span>
+    <span class="hljs-comment">// return actualCount &gt; nums.length / 2 ? candidate : -1;</span>
 }
 </code></pre>
 <p><strong>Example Trace:</strong> <code>nums = [2,2,1,1,1,2,2]</code></p>
-<pre><code>Index | num | candidate | count | Action
+<pre><code class="hljs">Index | num | candidate | count | Action
 --------------------------------------------
   0   |  2  |     2     |   1   | Initialize
   1   |  2  |     2     |   2   | Same, increment
@@ -635,43 +647,43 @@ Result: 2 (appears 4 times &gt; 7/2 = 3.5)
 <li>Cancellation requires decrementing both counts</li>
 <li>Must verify both candidates in phase 2</li>
 </ul>
-<pre><code class="language-python"># Python - LC 229
-def majorityElement(nums):
-    &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - LC 229</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">majorityElement</span>(<span class="hljs-params">nums</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
     Find all elements appearing &gt; n/3 times
     Time: O(n)
     Space: O(1)
-    &quot;&quot;&quot;
-    # Phase 1: Find up to 2 candidates
-    candidate1, candidate2 = None, None
-    count1, count2 = 0, 0
+    &quot;&quot;&quot;</span>
+    <span class="hljs-comment"># Phase 1: Find up to 2 candidates</span>
+    candidate1, candidate2 = <span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>
+    count1, count2 = <span class="hljs-number">0</span>, <span class="hljs-number">0</span>
 
-    for num in nums:
-        if num == candidate1:
-            count1 += 1
-        elif num == candidate2:
-            count2 += 1
-        elif count1 == 0:
-            candidate1, count1 = num, 1
-        elif count2 == 0:
-            candidate2, count2 = num, 1
-        else:
-            # Different from both: cancel out
-            count1 -= 1
-            count2 -= 1
+    <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> nums:
+        <span class="hljs-keyword">if</span> num == candidate1:
+            count1 += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">elif</span> num == candidate2:
+            count2 += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">elif</span> count1 == <span class="hljs-number">0</span>:
+            candidate1, count1 = num, <span class="hljs-number">1</span>
+        <span class="hljs-keyword">elif</span> count2 == <span class="hljs-number">0</span>:
+            candidate2, count2 = num, <span class="hljs-number">1</span>
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-comment"># Different from both: cancel out</span>
+            count1 -= <span class="hljs-number">1</span>
+            count2 -= <span class="hljs-number">1</span>
 
-    # Phase 2: Verify candidates
+    <span class="hljs-comment"># Phase 2: Verify candidates</span>
     result = []
-    for candidate in [candidate1, candidate2]:
-        if candidate is not None and nums.count(candidate) &gt; len(nums) // 3:
+    <span class="hljs-keyword">for</span> candidate <span class="hljs-keyword">in</span> [candidate1, candidate2]:
+        <span class="hljs-keyword">if</span> candidate <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">and</span> nums.count(candidate) &gt; <span class="hljs-built_in">len</span>(nums) // <span class="hljs-number">3</span>:
             result.append(candidate)
 
-    return result
+    <span class="hljs-keyword">return</span> result
 </code></pre>
-<pre><code class="language-java">// Java - LC 229
-// V0
-// IDEA: Boyer-Moore Majority Vote (Generalized)
-/**
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - LC 229</span>
+<span class="hljs-comment">// V0</span>
+<span class="hljs-comment">// IDEA: Boyer-Moore Majority Vote (Generalized)</span>
+<span class="hljs-comment">/**
  * Key Insight:
  * - At most 2 elements can appear &gt; n/3 times
  * - Use 2 candidates and 2 counts
@@ -680,51 +692,51 @@ def majorityElement(nums):
  *
  * Time: O(n)
  * Space: O(1)
- */
-public List&lt;Integer&gt; majorityElement(int[] nums) {
-    /**
+ */</span>
+<span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">majorityElement</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+    <span class="hljs-comment">/**
      * time = O(N)
      * space = O(1)
-     */
-    int candidate1 = 0, candidate2 = 0;
-    int count1 = 0, count2 = 0;
+     */</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">candidate1</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, candidate2 = <span class="hljs-number">0</span>;
+    <span class="hljs-type">int</span> <span class="hljs-variable">count1</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, count2 = <span class="hljs-number">0</span>;
 
-    // Phase 1: Find up to 2 candidates
-    for (int num : nums) {
-        if (num == candidate1) {
+    <span class="hljs-comment">// Phase 1: Find up to 2 candidates</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : nums) {
+        <span class="hljs-keyword">if</span> (num == candidate1) {
             count1++;
-        } else if (num == candidate2) {
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (num == candidate2) {
             count2++;
-        } else if (count1 == 0) {
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (count1 == <span class="hljs-number">0</span>) {
             candidate1 = num;
-            count1 = 1;
-        } else if (count2 == 0) {
+            count1 = <span class="hljs-number">1</span>;
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (count2 == <span class="hljs-number">0</span>) {
             candidate2 = num;
-            count2 = 1;
-        } else {
-            // Different from both: cancel out
+            count2 = <span class="hljs-number">1</span>;
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-comment">// Different from both: cancel out</span>
             count1--;
             count2--;
         }
     }
 
-    // Phase 2: Verify candidates (REQUIRED!)
-    count1 = 0;
-    count2 = 0;
-    for (int num : nums) {
-        if (num == candidate1) count1++;
-        else if (num == candidate2) count2++;
+    <span class="hljs-comment">// Phase 2: Verify candidates (REQUIRED!)</span>
+    count1 = <span class="hljs-number">0</span>;
+    count2 = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : nums) {
+        <span class="hljs-keyword">if</span> (num == candidate1) count1++;
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (num == candidate2) count2++;
     }
 
-    List&lt;Integer&gt; result = new ArrayList&lt;&gt;();
-    if (count1 &gt; nums.length / 3) result.add(candidate1);
-    if (count2 &gt; nums.length / 3) result.add(candidate2);
+    List&lt;Integer&gt; result = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    <span class="hljs-keyword">if</span> (count1 &gt; nums.length / <span class="hljs-number">3</span>) result.add(candidate1);
+    <span class="hljs-keyword">if</span> (count2 &gt; nums.length / <span class="hljs-number">3</span>) result.add(candidate2);
 
-    return result;
+    <span class="hljs-keyword">return</span> result;
 }
 </code></pre>
 <p><strong>Example Trace:</strong> <code>nums = [3,2,3]</code></p>
-<pre><code>Index | num | c1 | cnt1 | c2 | cnt2 | Action
+<pre><code class="hljs">Index | num | c1 | cnt1 | c2 | cnt2 | Action
 -------------------------------------------------
   0   |  3  | 3  |  1   | 0  |  0   | Set candidate1
   1   |  2  | 3  |  1   | 2  |  1   | Set candidate2
@@ -739,58 +751,58 @@ Result: [3]
 <hr>
 <h5 id="pattern-3-generalized-k-majority-n-k-times" tabindex="-1"><a class="header-anchor" href="#pattern-3-generalized-k-majority-n-k-times"><span><strong>Pattern 3: Generalized k-Majority (&gt; n/k times)</strong></span></a></h5>
 <p><strong>Concept:</strong> For elements appearing more than n/k times, at most k-1 candidates exist.</p>
-<pre><code class="language-java">// Generalized Boyer-Moore for n/k threshold
-import java.util.*;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Generalized Boyer-Moore for n/k threshold</span>
+<span class="hljs-keyword">import</span> java.util.*;
 
-class BoyerMooreGeneralized {
-    /**
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">BoyerMooreGeneralized</span> {
+    <span class="hljs-comment">/**
      * Find all elements appearing &gt; n/k times
      * time = O(N × k)
      * space = O(k)
-     */
-    public List&lt;Integer&gt; majorityElement(int[] nums, int k) {
-        // At most k-1 candidates for n/k threshold
-        Map&lt;Integer, Integer&gt; candidates = new HashMap&lt;&gt;();
+     */</span>
+    <span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">majorityElement</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k)</span> {
+        <span class="hljs-comment">// At most k-1 candidates for n/k threshold</span>
+        Map&lt;Integer, Integer&gt; candidates = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
 
-        // Phase 1: Find up to k-1 candidates
-        for (int num : nums) {
-            if (candidates.containsKey(num)) {
-                candidates.put(num, candidates.get(num) + 1);
-            } else if (candidates.size() &lt; k - 1) {
-                candidates.put(num, 1);
-            } else {
-                // Decrement all counts (cancellation)
-                List&lt;Integer&gt; toRemove = new ArrayList&lt;&gt;();
-                for (Map.Entry&lt;Integer, Integer&gt; entry : candidates.entrySet()) {
-                    int count = entry.getValue() - 1;
-                    if (count == 0) {
+        <span class="hljs-comment">// Phase 1: Find up to k-1 candidates</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : nums) {
+            <span class="hljs-keyword">if</span> (candidates.containsKey(num)) {
+                candidates.put(num, candidates.get(num) + <span class="hljs-number">1</span>);
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (candidates.size() &lt; k - <span class="hljs-number">1</span>) {
+                candidates.put(num, <span class="hljs-number">1</span>);
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-comment">// Decrement all counts (cancellation)</span>
+                List&lt;Integer&gt; toRemove = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+                <span class="hljs-keyword">for</span> (Map.Entry&lt;Integer, Integer&gt; entry : candidates.entrySet()) {
+                    <span class="hljs-type">int</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> entry.getValue() - <span class="hljs-number">1</span>;
+                    <span class="hljs-keyword">if</span> (count == <span class="hljs-number">0</span>) {
                         toRemove.add(entry.getKey());
-                    } else {
+                    } <span class="hljs-keyword">else</span> {
                         candidates.put(entry.getKey(), count);
                     }
                 }
-                for (int key : toRemove) {
+                <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> key : toRemove) {
                     candidates.remove(key);
                 }
             }
         }
 
-        // Phase 2: Verify all candidates
-        Map&lt;Integer, Integer&gt; counts = new HashMap&lt;&gt;();
-        for (int num : nums) {
-            if (candidates.containsKey(num)) {
-                counts.put(num, counts.getOrDefault(num, 0) + 1);
+        <span class="hljs-comment">// Phase 2: Verify all candidates</span>
+        Map&lt;Integer, Integer&gt; counts = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : nums) {
+            <span class="hljs-keyword">if</span> (candidates.containsKey(num)) {
+                counts.put(num, counts.getOrDefault(num, <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>);
             }
         }
 
-        List&lt;Integer&gt; result = new ArrayList&lt;&gt;();
-        for (Map.Entry&lt;Integer, Integer&gt; entry : counts.entrySet()) {
-            if (entry.getValue() &gt; nums.length / k) {
+        List&lt;Integer&gt; result = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+        <span class="hljs-keyword">for</span> (Map.Entry&lt;Integer, Integer&gt; entry : counts.entrySet()) {
+            <span class="hljs-keyword">if</span> (entry.getValue() &gt; nums.length / k) {
                 result.add(entry.getKey());
             }
         }
 
-        return result;
+        <span class="hljs-keyword">return</span> result;
     }
 }
 </code></pre>
@@ -800,44 +812,44 @@ class BoyerMooreGeneralized {
 <ol>
 <li>
 <p><strong>Missing Verification Phase</strong></p>
-<pre><code class="language-java">// ❌ WRONG: Assuming candidate is always majority
-return candidate;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: Assuming candidate is always majority</span>
+<span class="hljs-keyword">return</span> candidate;
 
-// ✅ CORRECT: Verify count (if not guaranteed)
-int actualCount = 0;
-for (int num : nums) {
-    if (num == candidate) actualCount++;
+<span class="hljs-comment">// ✅ CORRECT: Verify count (if not guaranteed)</span>
+<span class="hljs-type">int</span> <span class="hljs-variable">actualCount</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : nums) {
+    <span class="hljs-keyword">if</span> (num == candidate) actualCount++;
 }
-return actualCount &gt; nums.length / 2 ? candidate : -1;
+<span class="hljs-keyword">return</span> actualCount &gt; nums.length / <span class="hljs-number">2</span> ? candidate : -<span class="hljs-number">1</span>;
 </code></pre>
 </li>
 <li>
 <p><strong>Wrong Cancellation Logic for LC 229</strong></p>
-<pre><code class="language-java">// ❌ WRONG: Only checking candidate1
-if (num != candidate1) count1--;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: Only checking candidate1</span>
+<span class="hljs-keyword">if</span> (num != candidate1) count1--;
 
-// ✅ CORRECT: Check both, reset on count=0
-if (num == candidate1) {
+<span class="hljs-comment">// ✅ CORRECT: Check both, reset on count=0</span>
+<span class="hljs-keyword">if</span> (num == candidate1) {
     count1++;
-} else if (num == candidate2) {
+} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (num == candidate2) {
     count2++;
-} else if (count1 == 0) {
-    candidate1 = num; count1 = 1;
-} else if (count2 == 0) {
-    candidate2 = num; count2 = 1;
-} else {
+} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (count1 == <span class="hljs-number">0</span>) {
+    candidate1 = num; count1 = <span class="hljs-number">1</span>;
+} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (count2 == <span class="hljs-number">0</span>) {
+    candidate2 = num; count2 = <span class="hljs-number">1</span>;
+} <span class="hljs-keyword">else</span> {
     count1--; count2--;
 }
 </code></pre>
 </li>
 <li>
 <p><strong>Not Handling Duplicate Candidates (LC 229)</strong></p>
-<pre><code class="language-java">// ❌ WRONG: candidate1 and candidate2 can be same initially
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: candidate1 and candidate2 can be same initially</span>
 
-// ✅ CORRECT: Check candidate1 first, then candidate2
-if (num == candidate1) count1++;
-else if (num == candidate2) count2++;
-// ... rest of logic
+<span class="hljs-comment">// ✅ CORRECT: Check candidate1 first, then candidate2</span>
+<span class="hljs-keyword">if</span> (num == candidate1) count1++;
+<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (num == candidate2) count2++;
+<span class="hljs-comment">// ... rest of logic</span>
 </code></pre>
 </li>
 </ol>
@@ -940,9 +952,9 @@ else if (num == candidate2) count2++;
 <li>When any element’s frequency reaches 2, it’s common (seen in both arrays)</li>
 <li>Increment running count and store in result</li>
 </ul>
-<pre><code class="language-python"># Python - LC 2657
-def findThePrefixCommonArray(A, B):
-    &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - LC 2657</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">findThePrefixCommonArray</span>(<span class="hljs-params">A, B</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
     Find prefix common array using frequency counting.
 
     Key Insight:
@@ -951,31 +963,31 @@ def findThePrefixCommonArray(A, B):
 
     Time: O(n)
     Space: O(n)
-    &quot;&quot;&quot;
-    n = len(A)
-    res = [0] * n
-    count = [0] * (n + 1)  # values are 1..n
-    common = 0
+    &quot;&quot;&quot;</span>
+    n = <span class="hljs-built_in">len</span>(A)
+    res = [<span class="hljs-number">0</span>] * n
+    count = [<span class="hljs-number">0</span>] * (n + <span class="hljs-number">1</span>)  <span class="hljs-comment"># values are 1..n</span>
+    common = <span class="hljs-number">0</span>
 
-    for i in range(n):
-        # Process element from A
-        count[A[i]] += 1
-        if count[A[i]] == 2:
-            common += 1
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+        <span class="hljs-comment"># Process element from A</span>
+        count[A[i]] += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">if</span> count[A[i]] == <span class="hljs-number">2</span>:
+            common += <span class="hljs-number">1</span>
 
-        # Process element from B
-        count[B[i]] += 1
-        if count[B[i]] == 2:
-            common += 1
+        <span class="hljs-comment"># Process element from B</span>
+        count[B[i]] += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">if</span> count[B[i]] == <span class="hljs-number">2</span>:
+            common += <span class="hljs-number">1</span>
 
         res[i] = common
 
-    return res
+    <span class="hljs-keyword">return</span> res
 </code></pre>
-<pre><code class="language-java">// Java - LC 2657
-// V0
-// IDEA: Frequency Array + Running Count
-/**
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - LC 2657</span>
+<span class="hljs-comment">// V0</span>
+<span class="hljs-comment">// IDEA: Frequency Array + Running Count</span>
+<span class="hljs-comment">/**
  * Core Insight:
  * - Each number appears at most twice total (once in A, once in B)
  * - When frequency[x] == 2, x is present in both arrays → common element
@@ -989,37 +1001,37 @@ def findThePrefixCommonArray(A, B):
  *
  * Time: O(n) - single pass through both arrays
  * Space: O(n) - frequency array of size n+1
- */
-public int[] findThePrefixCommonArray(int[] A, int[] B) {
-    int n = A.length;
-    int[] res = new int[n];
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] findThePrefixCommonArray(<span class="hljs-type">int</span>[] A, <span class="hljs-type">int</span>[] B) {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> A.length;
+    <span class="hljs-type">int</span>[] res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
 
-    // Since values are 1 to n, use array as hash map
-    int[] frequency = new int[n + 1];
-    int commonCount = 0;
+    <span class="hljs-comment">// Since values are 1 to n, use array as hash map</span>
+    <span class="hljs-type">int</span>[] frequency = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n + <span class="hljs-number">1</span>];
+    <span class="hljs-type">int</span> <span class="hljs-variable">commonCount</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
 
-    for (int i = 0; i &lt; n; i++) {
-        // Process element from A
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-comment">// Process element from A</span>
         frequency[A[i]]++;
-        if (frequency[A[i]] == 2) {
-            commonCount++;  // Now seen in both arrays
+        <span class="hljs-keyword">if</span> (frequency[A[i]] == <span class="hljs-number">2</span>) {
+            commonCount++;  <span class="hljs-comment">// Now seen in both arrays</span>
         }
 
-        // Process element from B
+        <span class="hljs-comment">// Process element from B</span>
         frequency[B[i]]++;
-        if (frequency[B[i]] == 2) {
-            commonCount++;  // Now seen in both arrays
+        <span class="hljs-keyword">if</span> (frequency[B[i]] == <span class="hljs-number">2</span>) {
+            commonCount++;  <span class="hljs-comment">// Now seen in both arrays</span>
         }
 
-        // Store current prefix common count
+        <span class="hljs-comment">// Store current prefix common count</span>
         res[i] = commonCount;
     }
 
-    return res;
+    <span class="hljs-keyword">return</span> res;
 }
 </code></pre>
 <p><strong>Example Trace:</strong> <code>A = [1,3,2,4], B = [3,1,2,4]</code></p>
-<pre><code>Index | A[i] | B[i] | frequency (after)     | commonCount | Action
+<pre><code class="hljs">Index | A[i] | B[i] | frequency (after)     | commonCount | Action
 ----------------------------------------------------------------------
   0   |  1   |  3   | [0,1,0,1,0]           |     0       | freq[1]=1, freq[3]=1
   1   |  3   |  1   | [0,2,0,2,0]           |     2       | freq[3]=2 ✓, freq[1]=2 ✓
@@ -1031,29 +1043,29 @@ Result: [0, 2, 3, 4]
 <hr>
 <h5 id="generalized-pattern-frequency-threshold-detection" tabindex="-1"><a class="header-anchor" href="#generalized-pattern-frequency-threshold-detection"><span><strong>Generalized Pattern: Frequency Threshold Detection</strong></span></a></h5>
 <p>Use this pattern when you need to detect when elements reach a specific count threshold:</p>
-<pre><code class="language-java">// Generalized frequency threshold pattern
-/**
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Generalized frequency threshold pattern</span>
+<span class="hljs-comment">/**
  * Detect when elements reach threshold k
  * Useful for: intersection counting, duplicate detection, k-frequency problems
- */
-public void frequencyThresholdPattern(int[] arr1, int[] arr2, int maxVal, int threshold) {
-    int[] frequency = new int[maxVal + 1];
-    int count = 0;
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">frequencyThresholdPattern</span><span class="hljs-params">(<span class="hljs-type">int</span>[] arr1, <span class="hljs-type">int</span>[] arr2, <span class="hljs-type">int</span> maxVal, <span class="hljs-type">int</span> threshold)</span> {
+    <span class="hljs-type">int</span>[] frequency = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[maxVal + <span class="hljs-number">1</span>];
+    <span class="hljs-type">int</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
 
-    for (int i = 0; i &lt; arr1.length; i++) {
-        // Process from first source
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; arr1.length; i++) {
+        <span class="hljs-comment">// Process from first source</span>
         frequency[arr1[i]]++;
-        if (frequency[arr1[i]] == threshold) {
-            count++;  // Element reached threshold
+        <span class="hljs-keyword">if</span> (frequency[arr1[i]] == threshold) {
+            count++;  <span class="hljs-comment">// Element reached threshold</span>
         }
 
-        // Process from second source (if applicable)
+        <span class="hljs-comment">// Process from second source (if applicable)</span>
         frequency[arr2[i]]++;
-        if (frequency[arr2[i]] == threshold) {
+        <span class="hljs-keyword">if</span> (frequency[arr2[i]] == threshold) {
             count++;
         }
 
-        // Use count as needed...
+        <span class="hljs-comment">// Use count as needed...</span>
     }
 }
 </code></pre>
@@ -1063,28 +1075,28 @@ public void frequencyThresholdPattern(int[] arr1, int[] arr2, int maxVal, int th
 <ol>
 <li>
 <p><strong>Wrong Array Size</strong></p>
-<pre><code class="language-java">// ❌ WRONG: Off-by-one for 1-indexed values
-int[] frequency = new int[n];  // Can't access frequency[n]
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: Off-by-one for 1-indexed values</span>
+<span class="hljs-type">int</span>[] frequency = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];  <span class="hljs-comment">// Can&#x27;t access frequency[n]</span>
 
-// ✅ CORRECT: Size n+1 for values 1..n
-int[] frequency = new int[n + 1];
+<span class="hljs-comment">// ✅ CORRECT: Size n+1 for values 1..n</span>
+<span class="hljs-type">int</span>[] frequency = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n + <span class="hljs-number">1</span>];
 </code></pre>
 </li>
 <li>
 <p><strong>Checking Threshold Before Increment</strong></p>
-<pre><code class="language-java">// ❌ WRONG: Check before increment misses the transition
-if (frequency[x] == 2) count++;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: Check before increment misses the transition</span>
+<span class="hljs-keyword">if</span> (frequency[x] == <span class="hljs-number">2</span>) count++;
 frequency[x]++;
 
-// ✅ CORRECT: Increment first, then check
+<span class="hljs-comment">// ✅ CORRECT: Increment first, then check</span>
 frequency[x]++;
-if (frequency[x] == 2) count++;
+<span class="hljs-keyword">if</span> (frequency[x] == <span class="hljs-number">2</span>) count++;
 </code></pre>
 </li>
 <li>
 <p><strong>Not Handling Same Element in Both Arrays at Same Index</strong></p>
-<pre><code class="language-java">// For A[i] == B[i] case, frequency goes 0→1→2 in same iteration
-// This is handled correctly by processing A[i] then B[i] separately
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// For A[i] == B[i] case, frequency goes 0→1→2 in same iteration</span>
+<span class="hljs-comment">// This is handled correctly by processing A[i] then B[i] separately</span>
 </code></pre>
 </li>
 </ol>
@@ -1180,287 +1192,287 @@ if (frequency[x] == 2) count++;
 <hr>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
 <h3 id="2-1-queue-reconstruction-by-height" tabindex="-1"><a class="header-anchor" href="#2-1-queue-reconstruction-by-height"><span>2-1) Queue Reconstruction by Height</span></a></h3>
-<pre><code class="language-python"># LC 406 Queue Reconstruction by Height
-class Solution(object):
-    def reconstructQueue(self, people):
-        people.sort(key = lambda x : (-x[0], x[1]))
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 406 Queue Reconstruction by Height</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">reconstructQueue</span>(<span class="hljs-params">self, people</span>):
+        people.sort(key = <span class="hljs-keyword">lambda</span> x : (-x[<span class="hljs-number">0</span>], x[<span class="hljs-number">1</span>]))
         res = []
-        for p in people:
-        &quot;&quot;&quot;
+        <span class="hljs-keyword">for</span> p <span class="hljs-keyword">in</span> people:
+        <span class="hljs-string">&quot;&quot;&quot;
         py insert syntax
         # syntax : 
         # python_trick.html#1-6-insert-into-array-in-place
 
         # arr.insert(&lt;index&gt;,&lt;value&gt;)
-        &quot;&quot;&quot;
-            res.insert(p[1], p)
-        return res
+        &quot;&quot;&quot;</span>
+            res.insert(p[<span class="hljs-number">1</span>], p)
+        <span class="hljs-keyword">return</span> res
 </code></pre>
 <h3 id="2-2-product-of-array-except-self" tabindex="-1"><a class="header-anchor" href="#2-2-product-of-array-except-self"><span>2-2) Product of Array Except Self</span></a></h3>
-<pre><code class="language-python"># 238 Product of Array Except Self
-# IDEA : 
-# SINCE output[i] = (x0 * x1 * ... * xi-1) * (xi+1 * .... * xn-1)
-# -&gt; SO DO A 2 LOOP
-# -&gt; 1ST LOOP : GO THROGH THE ARRAY (-&gt;) : (x0 * x1 * ... * xi-1)
-# -&gt; 2ND LOOP : GO THROGH THE ARRAY (&lt;-) : (xi+1 * .... * xn-1)
-# e.g.
-# given [1,2,3,4], return [24,12,8,6].
-# -&gt; output = [2*3*4, 1,1,1]  &lt;-- 2*3*4    (right of 1: 2,3,4)
-# -&gt; output = [2*3*4, 1*3*4,1,1] &lt;-- 1*3*4 (left of 2 :1, right of 2: 3,4)
-# -&gt; output = [2*3*4, 1*3*4,1*2*4,1] &lt;-- 1*2*4 (left of 3: 1,2 right of 3 : 4)
-# -&gt; output = [2*3*4, 1*3*4,1*2*4,1*2*3] &lt;-- 1*2*3 (left of 4 : 1,2,3)
-# -&gt; final output  = [2*3*4, 1*3*4,1*2*4,1*2*3] = [24,12,8,6]
-class Solution:
-    def productExceptSelf(self, nums):
-        size = len(nums)
-        output = [1] * size
-        left = 1
-        for x in range(size - 1):
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 238 Product of Array Except Self</span>
+<span class="hljs-comment"># IDEA : </span>
+<span class="hljs-comment"># SINCE output[i] = (x0 * x1 * ... * xi-1) * (xi+1 * .... * xn-1)</span>
+<span class="hljs-comment"># -&gt; SO DO A 2 LOOP</span>
+<span class="hljs-comment"># -&gt; 1ST LOOP : GO THROGH THE ARRAY (-&gt;) : (x0 * x1 * ... * xi-1)</span>
+<span class="hljs-comment"># -&gt; 2ND LOOP : GO THROGH THE ARRAY (&lt;-) : (xi+1 * .... * xn-1)</span>
+<span class="hljs-comment"># e.g.</span>
+<span class="hljs-comment"># given [1,2,3,4], return [24,12,8,6].</span>
+<span class="hljs-comment"># -&gt; output = [2*3*4, 1,1,1]  &lt;-- 2*3*4    (right of 1: 2,3,4)</span>
+<span class="hljs-comment"># -&gt; output = [2*3*4, 1*3*4,1,1] &lt;-- 1*3*4 (left of 2 :1, right of 2: 3,4)</span>
+<span class="hljs-comment"># -&gt; output = [2*3*4, 1*3*4,1*2*4,1] &lt;-- 1*2*4 (left of 3: 1,2 right of 3 : 4)</span>
+<span class="hljs-comment"># -&gt; output = [2*3*4, 1*3*4,1*2*4,1*2*3] &lt;-- 1*2*3 (left of 4 : 1,2,3)</span>
+<span class="hljs-comment"># -&gt; final output  = [2*3*4, 1*3*4,1*2*4,1*2*3] = [24,12,8,6]</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">productExceptSelf</span>(<span class="hljs-params">self, nums</span>):
+        size = <span class="hljs-built_in">len</span>(nums)
+        output = [<span class="hljs-number">1</span>] * size
+        left = <span class="hljs-number">1</span>
+        <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(size - <span class="hljs-number">1</span>):
             left *= nums[x]
-            output[x + 1] *= left
-        right = 1
-        for x in range(size - 1, 0, -1):
+            output[x + <span class="hljs-number">1</span>] *= left
+        right = <span class="hljs-number">1</span>
+        <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(size - <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, -<span class="hljs-number">1</span>):
             right *= nums[x]
-            output[x - 1] *= right
-        return output
+            output[x - <span class="hljs-number">1</span>] *= right
+        <span class="hljs-keyword">return</span> output
 </code></pre>
 <h3 id="2-3-maximum-swap" tabindex="-1"><a class="header-anchor" href="#2-3-maximum-swap"><span>2-3) Maximum Swap</span></a></h3>
-<pre><code class="language-python"># 670 Maximum Swap
-class Solution(object):
-    def maximumSwap(self, num):
-        &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 670 Maximum Swap</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">maximumSwap</span>(<span class="hljs-params">self, num</span>):
+        <span class="hljs-string">&quot;&quot;&quot;
         :type num: int
         :rtype: int
-        &quot;&quot;&quot;
-        # BE AWARE OF IT 
-        digits = list(str(num))
-        left, right = 0, 0
-        max_idx = len(digits)-1
-        for i in range(len(digits))[::-1]:
-            # BE AWARE OF IT 
-            if digits[i] &gt; digits[max_idx]:
+        &quot;&quot;&quot;</span>
+        <span class="hljs-comment"># BE AWARE OF IT </span>
+        digits = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">str</span>(num))
+        left, right = <span class="hljs-number">0</span>, <span class="hljs-number">0</span>
+        max_idx = <span class="hljs-built_in">len</span>(digits)-<span class="hljs-number">1</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(digits))[::-<span class="hljs-number">1</span>]:
+            <span class="hljs-comment"># BE AWARE OF IT </span>
+            <span class="hljs-keyword">if</span> digits[i] &gt; digits[max_idx]:
                 max_idx = i
-            # BE AWARE OF IT  
-            # if current digit &gt; current max digit -&gt; swap them 
-            elif digits[max_idx] &gt; digits[i]:
-                left, right = i, max_idx        # if current max digit &gt; current digit -&gt; save current max digit to right idnex, and save current index to left
-        digits[left], digits[right] = digits[right], digits[left] # swap left and right when loop finished 
-        return int(&quot;&quot;.join(digits))
+            <span class="hljs-comment"># BE AWARE OF IT  </span>
+            <span class="hljs-comment"># if current digit &gt; current max digit -&gt; swap them </span>
+            <span class="hljs-keyword">elif</span> digits[max_idx] &gt; digits[i]:
+                left, right = i, max_idx        <span class="hljs-comment"># if current max digit &gt; current digit -&gt; save current max digit to right idnex, and save current index to left</span>
+        digits[left], digits[right] = digits[right], digits[left] <span class="hljs-comment"># swap left and right when loop finished </span>
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">int</span>(<span class="hljs-string">&quot;&quot;</span>.join(digits))
 </code></pre>
 <h3 id="2-7-best-time-to-buy-and-sell-stock" tabindex="-1"><a class="header-anchor" href="#2-7-best-time-to-buy-and-sell-stock"><span>2-7) Best Time to Buy and Sell Stock</span></a></h3>
-<pre><code class="language-python"># LC 121 Best Time to Buy and Sell Stock
-# V0
-# IDEA : array op + problem understanding
-class Solution(object):
-    def maxProfit(self, prices):
-        if len(prices) == 0:
-            return 0
-        ### NOTE : we define 1st minPrice as prices[0]
-        minPrice = prices[0]
-        maxProfit = 0
-        ### NOTE : we only loop prices ONCE
-        for p in prices:
-            # only if p &lt; minPrice, we get minPrice
-            if p &lt; minPrice:
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 121 Best Time to Buy and Sell Stock</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : array op + problem understanding</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">maxProfit</span>(<span class="hljs-params">self, prices</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(prices) == <span class="hljs-number">0</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+        <span class="hljs-comment">### NOTE : we define 1st minPrice as prices[0]</span>
+        minPrice = prices[<span class="hljs-number">0</span>]
+        maxProfit = <span class="hljs-number">0</span>
+        <span class="hljs-comment">### NOTE : we only loop prices ONCE</span>
+        <span class="hljs-keyword">for</span> p <span class="hljs-keyword">in</span> prices:
+            <span class="hljs-comment"># only if p &lt; minPrice, we get minPrice</span>
+            <span class="hljs-keyword">if</span> p &lt; minPrice:
                 minPrice = p
-            ### NOTE : only if p - minPrice &gt; maxProfit, we get maxProfit
-            elif p - minPrice &gt; maxProfit:
+            <span class="hljs-comment">### NOTE : only if p - minPrice &gt; maxProfit, we get maxProfit</span>
+            <span class="hljs-keyword">elif</span> p - minPrice &gt; maxProfit:
                 maxProfit = p - minPrice
-        return maxProfit
+        <span class="hljs-keyword">return</span> maxProfit
 </code></pre>
 <h3 id="2-8-bulb-switcher-iii" tabindex="-1"><a class="header-anchor" href="#2-8-bulb-switcher-iii"><span>2-8) Bulb Switcher III</span></a></h3>
-<pre><code class="language-python"># LC 1375. Bulb Switcher III
-# V0
-class Solution:
-    def numTimesAllBlue(self, light):
-        max_bulb_ind = 0
-        count = 0
-        turnedon_bulb = 0
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1375. Bulb Switcher III</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">numTimesAllBlue</span>(<span class="hljs-params">self, light</span>):
+        max_bulb_ind = <span class="hljs-number">0</span>
+        count = <span class="hljs-number">0</span>
+        turnedon_bulb = <span class="hljs-number">0</span>
         
-        for bulb in light:
-            max_bulb_ind = max(max_bulb_ind,bulb)
-            turnedon_bulb += 1
-            if turnedon_bulb == max_bulb_ind:
-                count += 1
+        <span class="hljs-keyword">for</span> bulb <span class="hljs-keyword">in</span> light:
+            max_bulb_ind = <span class="hljs-built_in">max</span>(max_bulb_ind,bulb)
+            turnedon_bulb += <span class="hljs-number">1</span>
+            <span class="hljs-keyword">if</span> turnedon_bulb == max_bulb_ind:
+                count += <span class="hljs-number">1</span>
         
-        return count
+        <span class="hljs-keyword">return</span> count
 </code></pre>
 <h3 id="2-9-robot-bounded-in-circle" tabindex="-1"><a class="header-anchor" href="#2-9-robot-bounded-in-circle"><span>2-9) Robot Bounded In Circle</span></a></h3>
-<pre><code class="language-python"># LC 1041. Robot Bounded In Circle
-# V0
-# IDEA : math + array
-class Solution:
-    def isRobotBounded(self, instructions):
-        &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1041. Robot Bounded In Circle</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : math + array</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">isRobotBounded</span>(<span class="hljs-params">self, instructions</span>):
+        <span class="hljs-string">&quot;&quot;&quot;
         NOTE !!! we make direction as below
 
-         c == 'L':  move LEFT : [0,-1]
-         c == 'R':  move RIGHT : [0,1]
-        &quot;&quot;&quot;
-        dirs = [[0,1], [1,0], [0,-1], [-1,0]]
-        x = 0;
-        y = 0;
-        idx = 0;
-        for c in instructions:
-            print (&quot;c = &quot; + str(c) + &quot; idx = &quot; + str(idx))
-            &quot;&quot;&quot;
+         c == &#x27;L&#x27;:  move LEFT : [0,-1]
+         c == &#x27;R&#x27;:  move RIGHT : [0,1]
+        &quot;&quot;&quot;</span>
+        dirs = [[<span class="hljs-number">0</span>,<span class="hljs-number">1</span>], [<span class="hljs-number">1</span>,<span class="hljs-number">0</span>], [<span class="hljs-number">0</span>,-<span class="hljs-number">1</span>], [-<span class="hljs-number">1</span>,<span class="hljs-number">0</span>]]
+        x = <span class="hljs-number">0</span>;
+        y = <span class="hljs-number">0</span>;
+        idx = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> instructions:
+            <span class="hljs-built_in">print</span> (<span class="hljs-string">&quot;c = &quot;</span> + <span class="hljs-built_in">str</span>(c) + <span class="hljs-string">&quot; idx = &quot;</span> + <span class="hljs-built_in">str</span>(idx))
+            <span class="hljs-string">&quot;&quot;&quot;
             NOTE !!! since we need to verify if robot back to start point
                 -&gt; we use (idx + k)  % 4 for detecting cyclic cases
-            &quot;&quot;&quot;
-            if c == 'L':
-                idx = (idx + 3) % 4
-            elif c == 'R':
-                idx = (idx + 1) % 4
-            elif c == 'G':
-                x = x + dirs[idx][0]
-                y = y + dirs[idx][1]
-        return (x == 0 and y ==0) or idx !=0
+            &quot;&quot;&quot;</span>
+            <span class="hljs-keyword">if</span> c == <span class="hljs-string">&#x27;L&#x27;</span>:
+                idx = (idx + <span class="hljs-number">3</span>) % <span class="hljs-number">4</span>
+            <span class="hljs-keyword">elif</span> c == <span class="hljs-string">&#x27;R&#x27;</span>:
+                idx = (idx + <span class="hljs-number">1</span>) % <span class="hljs-number">4</span>
+            <span class="hljs-keyword">elif</span> c == <span class="hljs-string">&#x27;G&#x27;</span>:
+                x = x + dirs[idx][<span class="hljs-number">0</span>]
+                y = y + dirs[idx][<span class="hljs-number">1</span>]
+        <span class="hljs-keyword">return</span> (x == <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> y ==<span class="hljs-number">0</span>) <span class="hljs-keyword">or</span> idx !=<span class="hljs-number">0</span>
 </code></pre>
 <h3 id="2-10-maximum-length-of-subarray-with-positive-product" tabindex="-1"><a class="header-anchor" href="#2-10-maximum-length-of-subarray-with-positive-product"><span>2-10) Maximum Length of Subarray With Positive Product</span></a></h3>
-<pre><code class="language-python"># LC 1567 Maximum Length of Subarray With Positive Product
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1567 Maximum Length of Subarray With Positive Product</span>
 
-# V0
-class Solution:
-    def getMaxLen(self, nums):
-        first_neg, zero = None, -1
-        mx = neg = 0
-        for i,v in enumerate(nums):
-            if v == 0:
-                first_neg, zero, neg = None, i, 0
-                continue
-            if v &lt; 0:
-                neg += 1
-                if first_neg == None:
+<span class="hljs-comment"># V0</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">getMaxLen</span>(<span class="hljs-params">self, nums</span>):
+        first_neg, zero = <span class="hljs-literal">None</span>, -<span class="hljs-number">1</span>
+        mx = neg = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> i,v <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(nums):
+            <span class="hljs-keyword">if</span> v == <span class="hljs-number">0</span>:
+                first_neg, zero, neg = <span class="hljs-literal">None</span>, i, <span class="hljs-number">0</span>
+                <span class="hljs-keyword">continue</span>
+            <span class="hljs-keyword">if</span> v &lt; <span class="hljs-number">0</span>:
+                neg += <span class="hljs-number">1</span>
+                <span class="hljs-keyword">if</span> first_neg == <span class="hljs-literal">None</span>:
                     first_neg = i
-            j = zero if not neg % 2 else first_neg if first_neg != None else 10**9
-            mx = max(mx, i-j)
-        return mx
+            j = zero <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> neg % <span class="hljs-number">2</span> <span class="hljs-keyword">else</span> first_neg <span class="hljs-keyword">if</span> first_neg != <span class="hljs-literal">None</span> <span class="hljs-keyword">else</span> <span class="hljs-number">10</span>**<span class="hljs-number">9</span>
+            mx = <span class="hljs-built_in">max</span>(mx, i-j)
+        <span class="hljs-keyword">return</span> mx
 
-# V0'
-# IDEA : 2 POINTERS
-class Solution:
-    def getMaxLen(self, nums):
-        res = 0
-        k = -1 # most recent 0
-        j = -1 # first negative after most recent 0
-        cnt = 0 # count of negatives after most recent 0
-        for i, n in enumerate(nums):
-            if n == 0:
+<span class="hljs-comment"># V0&#x27;</span>
+<span class="hljs-comment"># IDEA : 2 POINTERS</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">getMaxLen</span>(<span class="hljs-params">self, nums</span>):
+        res = <span class="hljs-number">0</span>
+        k = -<span class="hljs-number">1</span> <span class="hljs-comment"># most recent 0</span>
+        j = -<span class="hljs-number">1</span> <span class="hljs-comment"># first negative after most recent 0</span>
+        cnt = <span class="hljs-number">0</span> <span class="hljs-comment"># count of negatives after most recent 0</span>
+        <span class="hljs-keyword">for</span> i, n <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(nums):
+            <span class="hljs-keyword">if</span> n == <span class="hljs-number">0</span>:
                 k = i
                 j = i
-                cnt = 0
-            elif n &lt; 0:
-                cnt += 1
-                if cnt % 2 == 0:
-                    res = max(res, i - k)
-                else:
-                    if cnt == 1:
+                cnt = <span class="hljs-number">0</span>
+            <span class="hljs-keyword">elif</span> n &lt; <span class="hljs-number">0</span>:
+                cnt += <span class="hljs-number">1</span>
+                <span class="hljs-keyword">if</span> cnt % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>:
+                    res = <span class="hljs-built_in">max</span>(res, i - k)
+                <span class="hljs-keyword">else</span>:
+                    <span class="hljs-keyword">if</span> cnt == <span class="hljs-number">1</span>:
                         j = i
-                    else:
-                        res = max(res, i - j)        
-            else:
-                if cnt % 2 == 0:
-                    res = max(res, i - k)
-                else:
-                    res = max(res, i - j)
-        return res
+                    <span class="hljs-keyword">else</span>:
+                        res = <span class="hljs-built_in">max</span>(res, i - j)        
+            <span class="hljs-keyword">else</span>:
+                <span class="hljs-keyword">if</span> cnt % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>:
+                    res = <span class="hljs-built_in">max</span>(res, i - k)
+                <span class="hljs-keyword">else</span>:
+                    res = <span class="hljs-built_in">max</span>(res, i - j)
+        <span class="hljs-keyword">return</span> res
 </code></pre>
 <h3 id="2-11-corporate-flight-bookings" tabindex="-1"><a class="header-anchor" href="#2-11-corporate-flight-bookings"><span>2-11) Corporate Flight Bookings</span></a></h3>
-<pre><code class="language-python"># LC 1109. Corporate Flight Bookings
-# V1
-# IDEA : ARRAY + prefix sum
-# https://leetcode.com/problems/corporate-flight-bookings/discuss/328856/JavaC%2B%2BPython-Sweep-Line
-# IDEA :
-# Set the change of seats for each day.
-# If booking = [i, j, k],
-# it needs k more seat on ith day,
-# and we don't need these seats on j+1th day.
-# We accumulate these changes then we have the result that we want.
-# Complexity
-# Time O(booking + N) for one pass on bookings
-# Space O(N) for the result
-class Solution:
-    def corpFlightBookings(self, bookings, n):
-        res = [0] * (n + 1)
-        for i, j, k in bookings:
-            res[i - 1] += k
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1109. Corporate Flight Bookings</span>
+<span class="hljs-comment"># V1</span>
+<span class="hljs-comment"># IDEA : ARRAY + prefix sum</span>
+<span class="hljs-comment"># https://leetcode.com/problems/corporate-flight-bookings/discuss/328856/JavaC%2B%2BPython-Sweep-Line</span>
+<span class="hljs-comment"># IDEA :</span>
+<span class="hljs-comment"># Set the change of seats for each day.</span>
+<span class="hljs-comment"># If booking = [i, j, k],</span>
+<span class="hljs-comment"># it needs k more seat on ith day,</span>
+<span class="hljs-comment"># and we don&#x27;t need these seats on j+1th day.</span>
+<span class="hljs-comment"># We accumulate these changes then we have the result that we want.</span>
+<span class="hljs-comment"># Complexity</span>
+<span class="hljs-comment"># Time O(booking + N) for one pass on bookings</span>
+<span class="hljs-comment"># Space O(N) for the result</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">corpFlightBookings</span>(<span class="hljs-params">self, bookings, n</span>):
+        res = [<span class="hljs-number">0</span>] * (n + <span class="hljs-number">1</span>)
+        <span class="hljs-keyword">for</span> i, j, k <span class="hljs-keyword">in</span> bookings:
+            res[i - <span class="hljs-number">1</span>] += k
             res[j] -= k
-        for i in range(1, n):
-            res[i] += res[i - 1]
-        return res[:-1]
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n):
+            res[i] += res[i - <span class="hljs-number">1</span>]
+        <span class="hljs-keyword">return</span> res[:-<span class="hljs-number">1</span>]
 
-# V1''
-# IDEA : ARRAY
-# https://leetcode.com/problems/corporate-flight-bookings/discuss/328893/Short-python-solution
-# IDEA : Simply use two arrays to keep track of how many bookings are added for every flight.
-class Solution:
-    def corpFlightBookings(self, bookings: List[List[int]], n: int) -&gt; List[int]:        
-        opens = [0]*n
-        closes = [0]*n
+<span class="hljs-comment"># V1&#x27;&#x27;</span>
+<span class="hljs-comment"># IDEA : ARRAY</span>
+<span class="hljs-comment"># https://leetcode.com/problems/corporate-flight-bookings/discuss/328893/Short-python-solution</span>
+<span class="hljs-comment"># IDEA : Simply use two arrays to keep track of how many bookings are added for every flight.</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">corpFlightBookings</span>(<span class="hljs-params">self, bookings: <span class="hljs-type">List</span>[<span class="hljs-type">List</span>[<span class="hljs-built_in">int</span>]], n: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-type">List</span>[<span class="hljs-built_in">int</span>]:        
+        opens = [<span class="hljs-number">0</span>]*n
+        closes = [<span class="hljs-number">0</span>]*n
         
-        for e in bookings:
-            opens[e[0]-1] += e[2]
-            closes[e[1]-1] += e[2]
+        <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> bookings:
+            opens[e[<span class="hljs-number">0</span>]-<span class="hljs-number">1</span>] += e[<span class="hljs-number">2</span>]
+            closes[e[<span class="hljs-number">1</span>]-<span class="hljs-number">1</span>] += e[<span class="hljs-number">2</span>]
             
-        ret, tmp = [0]*n, 0
-        for i in range(n):
+        ret, tmp = [<span class="hljs-number">0</span>]*n, <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
             tmp += opens[i]
             ret[i] = tmp
             tmp -= closes[i]
             
-        return ret
+        <span class="hljs-keyword">return</span> ret
 </code></pre>
 <h3 id="2-12-first-missing-positive" tabindex="-1"><a class="header-anchor" href="#2-12-first-missing-positive"><span>2-12) First Missing Positive</span></a></h3>
-<pre><code class="language-python"># LC 41. First Missing Positive
-# V1'
-# IDEA :  Index as a hash key.
-# https://leetcode.com/problems/first-missing-positive/solution/
-# /doc/pic/first-missing-positive.png
-class Solution:
-    def firstMissingPositive(self, nums: List[int]) -&gt; int:
-        n = len(nums)
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 41. First Missing Positive</span>
+<span class="hljs-comment"># V1&#x27;</span>
+<span class="hljs-comment"># IDEA :  Index as a hash key.</span>
+<span class="hljs-comment"># https://leetcode.com/problems/first-missing-positive/solution/</span>
+<span class="hljs-comment"># /doc/pic/first-missing-positive.png</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">firstMissingPositive</span>(<span class="hljs-params">self, nums: <span class="hljs-type">List</span>[<span class="hljs-built_in">int</span>]</span>) -&gt; <span class="hljs-built_in">int</span>:
+        n = <span class="hljs-built_in">len</span>(nums)
 
-        # Base case.
-        if 1 not in nums:
-            return 1
+        <span class="hljs-comment"># Base case.</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-number">1</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> nums:
+            <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>
 
-        # Replace negative numbers, zeros,
-        # and numbers larger than n by 1s.
-        # After this convertion nums will contain
-        # only positive numbers.
-        for i in range(n):
-            if nums[i] &lt;= 0 or nums[i] &gt; n:
-                nums[i] = 1
+        <span class="hljs-comment"># Replace negative numbers, zeros,</span>
+        <span class="hljs-comment"># and numbers larger than n by 1s.</span>
+        <span class="hljs-comment"># After this convertion nums will contain</span>
+        <span class="hljs-comment"># only positive numbers.</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+            <span class="hljs-keyword">if</span> nums[i] &lt;= <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> nums[i] &gt; n:
+                nums[i] = <span class="hljs-number">1</span>
 
-        # Use index as a hash key and number sign as a presence detector.
-        # For example, if nums[1] is negative that means that number `1`
-        # is present in the array.
-        # If nums[2] is positive - number 2 is missing.
-        for i in range(n):
-            a = abs(nums[i])
-            # If you meet number a in the array - change the sign of a-th element.
-            # Be careful with duplicates : do it only once.
-            if a == n:
-                nums[0] = - abs(nums[0])
-            else:
-                nums[a] = - abs(nums[a])
+        <span class="hljs-comment"># Use index as a hash key and number sign as a presence detector.</span>
+        <span class="hljs-comment"># For example, if nums[1] is negative that means that number `1`</span>
+        <span class="hljs-comment"># is present in the array.</span>
+        <span class="hljs-comment"># If nums[2] is positive - number 2 is missing.</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+            a = <span class="hljs-built_in">abs</span>(nums[i])
+            <span class="hljs-comment"># If you meet number a in the array - change the sign of a-th element.</span>
+            <span class="hljs-comment"># Be careful with duplicates : do it only once.</span>
+            <span class="hljs-keyword">if</span> a == n:
+                nums[<span class="hljs-number">0</span>] = - <span class="hljs-built_in">abs</span>(nums[<span class="hljs-number">0</span>])
+            <span class="hljs-keyword">else</span>:
+                nums[a] = - <span class="hljs-built_in">abs</span>(nums[a])
 
-        # Now the index of the first positive number
-        # is equal to first missing positive.
-        for i in range(1, n):
-            if nums[i] &gt; 0:
-                return i
+        <span class="hljs-comment"># Now the index of the first positive number</span>
+        <span class="hljs-comment"># is equal to first missing positive.</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n):
+            <span class="hljs-keyword">if</span> nums[i] &gt; <span class="hljs-number">0</span>:
+                <span class="hljs-keyword">return</span> i
 
-        if nums[0] &gt; 0:
-            return n
+        <span class="hljs-keyword">if</span> nums[<span class="hljs-number">0</span>] &gt; <span class="hljs-number">0</span>:
+            <span class="hljs-keyword">return</span> n
 
-        return n + 1
+        <span class="hljs-keyword">return</span> n + <span class="hljs-number">1</span>
 </code></pre>
-<pre><code class="language-java">// java
-// LC 41. First Missing Positive
-// V0
-// IDEA: CYCLIC SORT
-/**
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 41. First Missing Positive</span>
+<span class="hljs-comment">// V0</span>
+<span class="hljs-comment">// IDEA: CYCLIC SORT</span>
+<span class="hljs-comment">/**
  * Cyclic Sort Pattern:
  * Place each positive number x at its &quot;correct&quot; index (x - 1)
  *
@@ -1482,110 +1494,110 @@ class Solution:
  *
  * Time: O(N) - each element is swapped at most once
  * Space: O(1) - in-place sorting
- */
-public int firstMissingPositive(int[] nums) {
-    int n = nums.length;
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">firstMissingPositive</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length;
 
-    // 1. &quot;Cyclic Sort&quot;: Place each number x at index x - 1
-    // Example: nums[i] = 3 should be at nums[2]
-    for (int i = 0; i &lt; n; i++) {
-        while (nums[i] &gt; 0 &amp;&amp; nums[i] &lt;= n &amp;&amp; nums[nums[i] - 1] != nums[i]) {
-            // Swap nums[i] with the element at its target index
-            int temp = nums[nums[i] - 1];
-            nums[nums[i] - 1] = nums[i];
+    <span class="hljs-comment">// 1. &quot;Cyclic Sort&quot;: Place each number x at index x - 1</span>
+    <span class="hljs-comment">// Example: nums[i] = 3 should be at nums[2]</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-keyword">while</span> (nums[i] &gt; <span class="hljs-number">0</span> &amp;&amp; nums[i] &lt;= n &amp;&amp; nums[nums[i] - <span class="hljs-number">1</span>] != nums[i]) {
+            <span class="hljs-comment">// Swap nums[i] with the element at its target index</span>
+            <span class="hljs-type">int</span> <span class="hljs-variable">temp</span> <span class="hljs-operator">=</span> nums[nums[i] - <span class="hljs-number">1</span>];
+            nums[nums[i] - <span class="hljs-number">1</span>] = nums[i];
             nums[i] = temp;
         }
     }
 
-    // 2. Scan for the first index where the number is wrong
-    for (int i = 0; i &lt; n; i++) {
-        if (nums[i] != i + 1) {
-            return i + 1; // Found the missing positive!
+    <span class="hljs-comment">// 2. Scan for the first index where the number is wrong</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-keyword">if</span> (nums[i] != i + <span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">return</span> i + <span class="hljs-number">1</span>; <span class="hljs-comment">// Found the missing positive!</span>
         }
     }
 
-    // 3. If all numbers 1 to n are present, the answer is n + 1
-    return n + 1;
+    <span class="hljs-comment">// 3. If all numbers 1 to n are present, the answer is n + 1</span>
+    <span class="hljs-keyword">return</span> n + <span class="hljs-number">1</span>;
 }
 </code></pre>
 <h3 id="2-13-increasing-triplet-subsequence" tabindex="-1"><a class="header-anchor" href="#2-13-increasing-triplet-subsequence"><span>2-13) Increasing Triplet Subsequence</span></a></h3>
-<pre><code class="language-python"># LC 334 Increasing Triplet Subsequence
-# V0
-# IDEA : MAINTAIN var first, second
-#        AND GO THROUGH nums to check if there exists x (on the right hand side of a, b )
-#        such that x &gt; second &gt; first
-class Solution(object):
-    def increasingTriplet(self, nums):
-        &quot;&quot;&quot;
-        NOTE !!! we init first, second as POSITIVE float('inf')
-        &quot;&quot;&quot;
-        first = float('inf')
-        second = float('inf')
-        # loop with normal ordering
-        for num in nums:
-            if num &lt;= first:     # min num
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 334 Increasing Triplet Subsequence</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : MAINTAIN var first, second</span>
+<span class="hljs-comment">#        AND GO THROUGH nums to check if there exists x (on the right hand side of a, b )</span>
+<span class="hljs-comment">#        such that x &gt; second &gt; first</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">increasingTriplet</span>(<span class="hljs-params">self, nums</span>):
+        <span class="hljs-string">&quot;&quot;&quot;
+        NOTE !!! we init first, second as POSITIVE float(&#x27;inf&#x27;)
+        &quot;&quot;&quot;</span>
+        first = <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)
+        second = <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)
+        <span class="hljs-comment"># loop with normal ordering</span>
+        <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> nums:
+            <span class="hljs-keyword">if</span> num &lt;= first:     <span class="hljs-comment"># min num</span>
                 first = num
-            elif num &lt;= second:  # 2nd min num
+            <span class="hljs-keyword">elif</span> num &lt;= second:  <span class="hljs-comment"># 2nd min num</span>
                 second = num
-            else:                # 3rd min num
-                return True      
-        return False
+            <span class="hljs-keyword">else</span>:                <span class="hljs-comment"># 3rd min num</span>
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>      
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 </code></pre>
 <h3 id="2-14-first-missing-positive" tabindex="-1"><a class="header-anchor" href="#2-14-first-missing-positive"><span>2-14) First Missing Positive</span></a></h3>
-<pre><code class="language-python"># LC 41. First Missing Positive
-# V0
-# IDEA : for loop + while loop + problem understanding
-class Solution:
-    def firstMissingPositive(self, nums):
-        for i, n in enumerate(nums):
-            if n &lt; 0:
-                continue
-            else:
-                while n &lt;= len(nums) and n &gt; 0:
-                    tmp = nums[n-1]
-                    nums[n-1] = float('inf')
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 41. First Missing Positive</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : for loop + while loop + problem understanding</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">firstMissingPositive</span>(<span class="hljs-params">self, nums</span>):
+        <span class="hljs-keyword">for</span> i, n <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(nums):
+            <span class="hljs-keyword">if</span> n &lt; <span class="hljs-number">0</span>:
+                <span class="hljs-keyword">continue</span>
+            <span class="hljs-keyword">else</span>:
+                <span class="hljs-keyword">while</span> n &lt;= <span class="hljs-built_in">len</span>(nums) <span class="hljs-keyword">and</span> n &gt; <span class="hljs-number">0</span>:
+                    tmp = nums[n-<span class="hljs-number">1</span>]
+                    nums[n-<span class="hljs-number">1</span>] = <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)
                     n = tmp
-        for i in range(len(nums)):
-            if nums[i] != float('inf'):
-                return i+1
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(nums)):
+            <span class="hljs-keyword">if</span> nums[i] != <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>):
+                <span class="hljs-keyword">return</span> i+<span class="hljs-number">1</span>
             
-        return len(nums)+1
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(nums)+<span class="hljs-number">1</span>
 </code></pre>
 <h3 id="2-15-rotate-array" tabindex="-1"><a class="header-anchor" href="#2-15-rotate-array"><span>2-15) Rotate Array</span></a></h3>
-<pre><code class="language-python"># LC 189. Rotate Array
-# V0
-# IDEA : pop + insert
-class Solution(object):
-    def rotate(self, nums, k):
-        _len = len(nums)
-        k = k % _len
-        while k &gt; 0:
-            tmp = nums.pop(-1)
-            nums.insert(0, tmp)
-            k -= 1
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 189. Rotate Array</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : pop + insert</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">rotate</span>(<span class="hljs-params">self, nums, k</span>):
+        _<span class="hljs-built_in">len</span> = <span class="hljs-built_in">len</span>(nums)
+        k = k % _<span class="hljs-built_in">len</span>
+        <span class="hljs-keyword">while</span> k &gt; <span class="hljs-number">0</span>:
+            tmp = nums.pop(-<span class="hljs-number">1</span>)
+            nums.insert(<span class="hljs-number">0</span>, tmp)
+            k -= <span class="hljs-number">1</span>
 
-# V0'
-# IDEA : SLICE (in place)
-class Solution(object):
-    def rotate(self, nums, k):
-        # edge case
-        if k == 0 or not nums or len(nums) == 1:
-            return nums
-        ### NOTE this
-        k = k % len(nums)
-        if k == 0:
-            return nums
-        &quot;&quot;&quot;
+<span class="hljs-comment"># V0&#x27;</span>
+<span class="hljs-comment"># IDEA : SLICE (in place)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">rotate</span>(<span class="hljs-params">self, nums, k</span>):
+        <span class="hljs-comment"># edge case</span>
+        <span class="hljs-keyword">if</span> k == <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> nums <span class="hljs-keyword">or</span> <span class="hljs-built_in">len</span>(nums) == <span class="hljs-number">1</span>:
+            <span class="hljs-keyword">return</span> nums
+        <span class="hljs-comment">### NOTE this</span>
+        k = k % <span class="hljs-built_in">len</span>(nums)
+        <span class="hljs-keyword">if</span> k == <span class="hljs-number">0</span>:
+            <span class="hljs-keyword">return</span> nums
+        <span class="hljs-string">&quot;&quot;&quot;
         NOTE this !!!!
-        &quot;&quot;&quot;
+        &quot;&quot;&quot;</span>
         nums[:k], nums[k:] = nums[-k:], nums[:-k]
-        return nums
+        <span class="hljs-keyword">return</span> nums
 </code></pre>
-<pre><code class="language-java">// java
-// LC 189. Rotate Array
-// V0
-// IDEA: REVERSE ARRAY (3-reverse trick)
-/**
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 189. Rotate Array</span>
+<span class="hljs-comment">// V0</span>
+<span class="hljs-comment">// IDEA: REVERSE ARRAY (3-reverse trick)</span>
+<span class="hljs-comment">/**
  * The 3-reverse trick:
  * 1. Reverse the entire array
  * 2. Reverse the first k elements
@@ -1598,29 +1610,29 @@ class Solution(object):
  *
  * Time: O(N) - each element is reversed twice
  * Space: O(1) - in-place rotation
- */
-public void rotate(int[] nums, int k) {
-    if (nums == null || nums.length &lt;= 1)
-        return;
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">rotate</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k)</span> {
+    <span class="hljs-keyword">if</span> (nums == <span class="hljs-literal">null</span> || nums.length &lt;= <span class="hljs-number">1</span>)
+        <span class="hljs-keyword">return</span>;
 
-    int n = nums.length;
-    // Step 1: Handle cases where k &gt; n
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length;
+    <span class="hljs-comment">// Step 1: Handle cases where k &gt; n</span>
     k = k % n;
-    if (k == 0)
-        return;
+    <span class="hljs-keyword">if</span> (k == <span class="hljs-number">0</span>)
+        <span class="hljs-keyword">return</span>;
 
-    // Step 2: Apply the 3-reverse trick
-    // 1. Reverse the whole array
-    reverse(nums, 0, n - 1);
-    // 2. Reverse the first k elements (0 to k-1)
-    reverse(nums, 0, k - 1);
-    // 3. Reverse the rest (k to n-1)
-    reverse(nums, k, n - 1);
+    <span class="hljs-comment">// Step 2: Apply the 3-reverse trick</span>
+    <span class="hljs-comment">// 1. Reverse the whole array</span>
+    reverse(nums, <span class="hljs-number">0</span>, n - <span class="hljs-number">1</span>);
+    <span class="hljs-comment">// 2. Reverse the first k elements (0 to k-1)</span>
+    reverse(nums, <span class="hljs-number">0</span>, k - <span class="hljs-number">1</span>);
+    <span class="hljs-comment">// 3. Reverse the rest (k to n-1)</span>
+    reverse(nums, k, n - <span class="hljs-number">1</span>);
 }
 
-private void reverse(int[] nums, int start, int end) {
-    while (start &lt; end) {
-        int temp = nums[start];
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">reverse</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> start, <span class="hljs-type">int</span> end)</span> {
+    <span class="hljs-keyword">while</span> (start &lt; end) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">temp</span> <span class="hljs-operator">=</span> nums[start];
         nums[start] = nums[end];
         nums[end] = temp;
         start++;
@@ -1629,37 +1641,37 @@ private void reverse(int[] nums, int start, int end) {
 }
 </code></pre>
 <h3 id="2-16-flatten-2d-vector" tabindex="-1"><a class="header-anchor" href="#2-16-flatten-2d-vector"><span>2-16) Flatten 2D Vector</span></a></h3>
-<pre><code class="language-python"># LC 251. Flatten 2D Vector
-# V0
-# IDEA : ARRAY OP
-class Vector2D:
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 251. Flatten 2D Vector</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : ARRAY OP</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Vector2D</span>:
 
-    def __init__(self, v):
-        # We need to iterate over the 2D vector, getting all the integers
-        # out of it and putting them into the nums list.
-        self.nums = []
-        for inner_list in v:
-            for num in inner_list:
-                self.nums.append(num)
-        # We'll keep position 1 behind the next number to return.
-        self.position = -1
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, v</span>):
+        <span class="hljs-comment"># We need to iterate over the 2D vector, getting all the integers</span>
+        <span class="hljs-comment"># out of it and putting them into the nums list.</span>
+        <span class="hljs-variable language_">self</span>.nums = []
+        <span class="hljs-keyword">for</span> inner_list <span class="hljs-keyword">in</span> v:
+            <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> inner_list:
+                <span class="hljs-variable language_">self</span>.nums.append(num)
+        <span class="hljs-comment"># We&#x27;ll keep position 1 behind the next number to return.</span>
+        <span class="hljs-variable language_">self</span>.position = -<span class="hljs-number">1</span>
 
-    def next(self):
-        # Move up to the current element and return it.
-        self.position += 1
-        return self.nums[self.position]
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">next</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-comment"># Move up to the current element and return it.</span>
+        <span class="hljs-variable language_">self</span>.position += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.nums[<span class="hljs-variable language_">self</span>.position]
 
-    def hasNext(self):
-        # If the next position is a valid index of nums, return True.
-        return self.position + 1 &lt; len(self.nums)
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">hasNext</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-comment"># If the next position is a valid index of nums, return True.</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.position + <span class="hljs-number">1</span> &lt; <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.nums)
 </code></pre>
 <h3 id="2-17-maximize-distance-to-closest-person" tabindex="-1"><a class="header-anchor" href="#2-17-maximize-distance-to-closest-person"><span>2-17) Maximize Distance to Closest Person</span></a></h3>
-<pre><code class="language-java">// java
-// LC 849. Maximize Distance to Closest Person
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 849. Maximize Distance to Closest Person</span>
 
-// V0-1
-// IDEA (fixed by gpt)
-/**
+<span class="hljs-comment">// V0-1</span>
+<span class="hljs-comment">// IDEA (fixed by gpt)</span>
+<span class="hljs-comment">/**
 *  IDEA :
 *
 *  Explanation of the Code:
@@ -1691,26 +1703,26 @@ class Vector2D:
 *
 *  output:  2
 *
-*/
-/**
+*/</span>
+<span class="hljs-comment">/**
 *  Cases
 *
 *  Case 1)  0001  ( all &quot;0&quot; till meat first &quot;1&quot;)
 *  Case 2)  1001001 (all &quot;0&quot; are enclosed by &quot;1&quot;)
 *  Case 3)  1001000 (there are &quot;0&quot; that NOT enclosed by &quot;1&quot; on the right hand side)
 *
-*/
-public int maxDistToClosest_0_1(int[] seats) {
-    int maxDistance = 0;
-    int lastOccupied = -1;
+*/</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxDistToClosest_0_1</span><span class="hljs-params">(<span class="hljs-type">int</span>[] seats)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">maxDistance</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-type">int</span> <span class="hljs-variable">lastOccupied</span> <span class="hljs-operator">=</span> -<span class="hljs-number">1</span>;
 
-    // Traverse the array to calculate maximum distances
-    for (int i = 0; i &lt; seats.length; i++) {
-        /** NOTE !!! handle the seat val == 1 cases */
-        if (seats[i] == 1) {
-            if (lastOccupied == -1) {
-                // Handle the case where the `first` occupied seat is found
-                /**
+    <span class="hljs-comment">// Traverse the array to calculate maximum distances</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; seats.length; i++) {
+        <span class="hljs-comment">/** NOTE !!! handle the seat val == 1 cases */</span>
+        <span class="hljs-keyword">if</span> (seats[i] == <span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">if</span> (lastOccupied == -<span class="hljs-number">1</span>) {
+                <span class="hljs-comment">// Handle the case where the `first` occupied seat is found</span>
+                <span class="hljs-comment">/**
                  * NOTE !!!
                  *
                  *  for handling below case:
@@ -1720,19 +1732,19 @@ public int maxDistToClosest_0_1(int[] seats) {
                  *  (so, elements are all &quot;0&quot; till first visit &quot;1&quot;)
                  *  in this case, we still can get put a person to seat, and get distance
                  *
-                 */
-                maxDistance = i; // Distance from the start to the first occupied seat
-            } else {
-                // Calculate the distance to the closest person for the middle segment
-                /** NOTE !!! need to divided by 2, since the person need to seat at `middle` seat */
-                maxDistance = Math.max(maxDistance, (i - lastOccupied) / 2);
+                 */</span>
+                maxDistance = i; <span class="hljs-comment">// Distance from the start to the first occupied seat</span>
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-comment">// Calculate the distance to the closest person for the middle segment</span>
+                <span class="hljs-comment">/** NOTE !!! need to divided by 2, since the person need to seat at `middle` seat */</span>
+                maxDistance = Math.max(maxDistance, (i - lastOccupied) / <span class="hljs-number">2</span>);
             }
             lastOccupied = i;
         }
     }
 
-    // Handle the case where the last segment is empty
-   /**
+    <span class="hljs-comment">// Handle the case where the last segment is empty</span>
+   <span class="hljs-comment">/**
     *  NOTE !!!
     *
     *   the condition is actually quite straightforward,
@@ -1743,12 +1755,12 @@ public int maxDistToClosest_0_1(int[] seats) {
     *
     *   e.g.  100010000
     *
-    */
-    if (seats[seats.length - 1] == 0) {
-        maxDistance = Math.max(maxDistance, seats.length - 1 - lastOccupied);
+    */</span>
+    <span class="hljs-keyword">if</span> (seats[seats.length - <span class="hljs-number">1</span>] == <span class="hljs-number">0</span>) {
+        maxDistance = Math.max(maxDistance, seats.length - <span class="hljs-number">1</span> - lastOccupied);
     }
 
-    return maxDistance;
+    <span class="hljs-keyword">return</span> maxDistance;
 }
 </code></pre>
 

@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,13 +20,24 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
     document.querySelectorAll('pre code').forEach(function(codeEl) {
       var pre = codeEl.parentElement;
       var lang = '';
       var cls = codeEl.className || '';
       var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
       if (m) lang = m[1];
+
+      // Add line numbers
+      var lines = codeEl.innerHTML.split('
+');
+      if (lines[lines.length - 1] === '') lines.pop();
+      var numbered = lines.map(function(line, i) {
+        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
+      }).join('
+');
+      codeEl.innerHTML = numbered;
+      codeEl.classList.add('hljs-ln');
+
       var wrapper = document.createElement('div');
       wrapper.className = 'code-block-wrapper';
       pre.parentNode.insertBefore(wrapper, pre);
@@ -45,7 +55,9 @@
       btn.className = 'copy-btn';
       btn.textContent = 'Copy';
       btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
+');
+        navigator.clipboard.writeText(text).then(function() {
           btn.textContent = 'Copied!';
           btn.classList.add('copied');
           setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
@@ -169,227 +181,227 @@
 <hr>
 <h2 id="advanced-concurrency" tabindex="-1"><a class="header-anchor" href="#advanced-concurrency"><span>Advanced Concurrency</span></a></h2>
 <h3 id="1-fork-join-framework" tabindex="-1"><a class="header-anchor" href="#1-fork-join-framework"><span>1. Fork/Join Framework</span></a></h3>
-<pre><code class="language-java">import java.util.concurrent.*;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.*;
 
-/**
+<span class="hljs-comment">/**
  * Fork/Join: Divide-and-conquer parallelism with work stealing.
  * Ideal for recursive algorithms that can be split into subtasks.
- */
-public class ForkJoinDemo {
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ForkJoinDemo</span> {
 
-    private static final ForkJoinPool pool = ForkJoinPool.commonPool();
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">ForkJoinPool</span> <span class="hljs-variable">pool</span> <span class="hljs-operator">=</span> ForkJoinPool.commonPool();
 
-    // Example: Parallel sum of array
-    static class SumTask extends RecursiveTask&lt;Long&gt; {
-        private static final int THRESHOLD = 10_000;
-        private final long[] array;
-        private final int start, end;
+    <span class="hljs-comment">// Example: Parallel sum of array</span>
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">SumTask</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">RecursiveTask</span>&lt;Long&gt; {
+        <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">THRESHOLD</span> <span class="hljs-operator">=</span> <span class="hljs-number">10_000</span>;
+        <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">long</span>[] array;
+        <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> start, end;
 
-        SumTask(long[] array, int start, int end) {
-            this.array = array;
-            this.start = start;
-            this.end = end;
+        SumTask(<span class="hljs-type">long</span>[] array, <span class="hljs-type">int</span> start, <span class="hljs-type">int</span> end) {
+            <span class="hljs-built_in">this</span>.array = array;
+            <span class="hljs-built_in">this</span>.start = start;
+            <span class="hljs-built_in">this</span>.end = end;
         }
 
-        @Override
-        protected Long compute() {
-            int length = end - start;
+        <span class="hljs-meta">@Override</span>
+        <span class="hljs-keyword">protected</span> Long <span class="hljs-title function_">compute</span><span class="hljs-params">()</span> {
+            <span class="hljs-type">int</span> <span class="hljs-variable">length</span> <span class="hljs-operator">=</span> end - start;
 
-            // Base case: compute directly
-            if (length &lt;= THRESHOLD) {
-                long sum = 0;
-                for (int i = start; i &lt; end; i++) {
+            <span class="hljs-comment">// Base case: compute directly</span>
+            <span class="hljs-keyword">if</span> (length &lt;= THRESHOLD) {
+                <span class="hljs-type">long</span> <span class="hljs-variable">sum</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+                <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> start; i &lt; end; i++) {
                     sum += array[i];
                 }
-                return sum;
+                <span class="hljs-keyword">return</span> sum;
             }
 
-            // Recursive case: split and fork
-            int mid = start + length / 2;
-            SumTask leftTask = new SumTask(array, start, mid);
-            SumTask rightTask = new SumTask(array, mid, end);
+            <span class="hljs-comment">// Recursive case: split and fork</span>
+            <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> start + length / <span class="hljs-number">2</span>;
+            <span class="hljs-type">SumTask</span> <span class="hljs-variable">leftTask</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">SumTask</span>(array, start, mid);
+            <span class="hljs-type">SumTask</span> <span class="hljs-variable">rightTask</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">SumTask</span>(array, mid, end);
 
-            // Fork left task (async)
+            <span class="hljs-comment">// Fork left task (async)</span>
             leftTask.fork();
 
-            // Compute right task in current thread
-            long rightResult = rightTask.compute();
+            <span class="hljs-comment">// Compute right task in current thread</span>
+            <span class="hljs-type">long</span> <span class="hljs-variable">rightResult</span> <span class="hljs-operator">=</span> rightTask.compute();
 
-            // Join left task result
-            long leftResult = leftTask.join();
+            <span class="hljs-comment">// Join left task result</span>
+            <span class="hljs-type">long</span> <span class="hljs-variable">leftResult</span> <span class="hljs-operator">=</span> leftTask.join();
 
-            return leftResult + rightResult;
+            <span class="hljs-keyword">return</span> leftResult + rightResult;
         }
     }
 
-    // Example: Parallel merge sort
-    static class MergeSortTask extends RecursiveAction {
-        private static final int THRESHOLD = 1000;
-        private final int[] array;
-        private final int start, end;
-        private final int[] temp;
+    <span class="hljs-comment">// Example: Parallel merge sort</span>
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MergeSortTask</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">RecursiveAction</span> {
+        <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">THRESHOLD</span> <span class="hljs-operator">=</span> <span class="hljs-number">1000</span>;
+        <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span>[] array;
+        <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> start, end;
+        <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span>[] temp;
 
-        MergeSortTask(int[] array, int start, int end, int[] temp) {
-            this.array = array;
-            this.start = start;
-            this.end = end;
-            this.temp = temp;
+        MergeSortTask(<span class="hljs-type">int</span>[] array, <span class="hljs-type">int</span> start, <span class="hljs-type">int</span> end, <span class="hljs-type">int</span>[] temp) {
+            <span class="hljs-built_in">this</span>.array = array;
+            <span class="hljs-built_in">this</span>.start = start;
+            <span class="hljs-built_in">this</span>.end = end;
+            <span class="hljs-built_in">this</span>.temp = temp;
         }
 
-        @Override
-        protected void compute() {
-            if (end - start &lt;= THRESHOLD) {
-                // Use sequential sort for small arrays
+        <span class="hljs-meta">@Override</span>
+        <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">compute</span><span class="hljs-params">()</span> {
+            <span class="hljs-keyword">if</span> (end - start &lt;= THRESHOLD) {
+                <span class="hljs-comment">// Use sequential sort for small arrays</span>
                 java.util.Arrays.sort(array, start, end);
-                return;
+                <span class="hljs-keyword">return</span>;
             }
 
-            int mid = start + (end - start) / 2;
+            <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> start + (end - start) / <span class="hljs-number">2</span>;
 
-            // Fork both subtasks
-            MergeSortTask left = new MergeSortTask(array, start, mid, temp);
-            MergeSortTask right = new MergeSortTask(array, mid, end, temp);
+            <span class="hljs-comment">// Fork both subtasks</span>
+            <span class="hljs-type">MergeSortTask</span> <span class="hljs-variable">left</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">MergeSortTask</span>(array, start, mid, temp);
+            <span class="hljs-type">MergeSortTask</span> <span class="hljs-variable">right</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">MergeSortTask</span>(array, mid, end, temp);
 
             invokeAll(left, right);
 
-            // Merge results
+            <span class="hljs-comment">// Merge results</span>
             merge(array, start, mid, end, temp);
         }
 
-        private void merge(int[] arr, int start, int mid, int end, int[] temp) {
+        <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">merge</span><span class="hljs-params">(<span class="hljs-type">int</span>[] arr, <span class="hljs-type">int</span> start, <span class="hljs-type">int</span> mid, <span class="hljs-type">int</span> end, <span class="hljs-type">int</span>[] temp)</span> {
             System.arraycopy(arr, start, temp, start, end - start);
 
-            int i = start, j = mid, k = start;
-            while (i &lt; mid &amp;&amp; j &lt; end) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> start, j = mid, k = start;
+            <span class="hljs-keyword">while</span> (i &lt; mid &amp;&amp; j &lt; end) {
                 arr[k++] = temp[i] &lt;= temp[j] ? temp[i++] : temp[j++];
             }
-            while (i &lt; mid) arr[k++] = temp[i++];
+            <span class="hljs-keyword">while</span> (i &lt; mid) arr[k++] = temp[i++];
         }
     }
 
-    public static void main(String[] args) {
-        long[] array = new long[1_000_000];
-        for (int i = 0; i &lt; array.length; i++) array[i] = i;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> {
+        <span class="hljs-type">long</span>[] array = <span class="hljs-keyword">new</span> <span class="hljs-title class_">long</span>[<span class="hljs-number">1_000_000</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; array.length; i++) array[i] = i;
 
-        long sum = pool.invoke(new SumTask(array, 0, array.length));
-        System.out.println(&quot;Sum: &quot; + sum);
+        <span class="hljs-type">long</span> <span class="hljs-variable">sum</span> <span class="hljs-operator">=</span> pool.invoke(<span class="hljs-keyword">new</span> <span class="hljs-title class_">SumTask</span>(array, <span class="hljs-number">0</span>, array.length));
+        System.out.println(<span class="hljs-string">&quot;Sum: &quot;</span> + sum);
     }
 }
 </code></pre>
 <h3 id="2-lock-free-programming" tabindex="-1"><a class="header-anchor" href="#2-lock-free-programming"><span>2. Lock-Free Programming</span></a></h3>
-<pre><code class="language-java">import java.util.concurrent.atomic.*;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.atomic.*;
 
-/**
+<span class="hljs-comment">/**
  * Lock-free stack using CAS (Compare-And-Swap).
  * No locks, but uses atomic operations for thread safety.
- */
-public class LockFreeStack&lt;T&gt; {
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">LockFreeStack</span>&lt;T&gt; {
 
-    private final AtomicReference&lt;Node&lt;T&gt;&gt; top = new AtomicReference&lt;&gt;();
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> AtomicReference&lt;Node&lt;T&gt;&gt; top = <span class="hljs-keyword">new</span> <span class="hljs-title class_">AtomicReference</span>&lt;&gt;();
 
-    private static class Node&lt;T&gt; {
-        final T value;
-        final Node&lt;T&gt; next;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Node</span>&lt;T&gt; {
+        <span class="hljs-keyword">final</span> T value;
+        <span class="hljs-keyword">final</span> Node&lt;T&gt; next;
 
         Node(T value, Node&lt;T&gt; next) {
-            this.value = value;
-            this.next = next;
+            <span class="hljs-built_in">this</span>.value = value;
+            <span class="hljs-built_in">this</span>.next = next;
         }
     }
 
-    public void push(T value) {
-        Node&lt;T&gt; newNode = new Node&lt;&gt;(value, null);
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">push</span><span class="hljs-params">(T value)</span> {
+        Node&lt;T&gt; newNode = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Node</span>&lt;&gt;(value, <span class="hljs-literal">null</span>);
 
-        while (true) {
+        <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) {
             Node&lt;T&gt; currentTop = top.get();
-            newNode = new Node&lt;&gt;(value, currentTop);
+            newNode = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Node</span>&lt;&gt;(value, currentTop);
 
-            // CAS: if top is still currentTop, set it to newNode
-            if (top.compareAndSet(currentTop, newNode)) {
-                return; // Success
+            <span class="hljs-comment">// CAS: if top is still currentTop, set it to newNode</span>
+            <span class="hljs-keyword">if</span> (top.compareAndSet(currentTop, newNode)) {
+                <span class="hljs-keyword">return</span>; <span class="hljs-comment">// Success</span>
             }
-            // Else: another thread modified top, retry
+            <span class="hljs-comment">// Else: another thread modified top, retry</span>
         }
     }
 
-    public T pop() {
-        while (true) {
+    <span class="hljs-keyword">public</span> T <span class="hljs-title function_">pop</span><span class="hljs-params">()</span> {
+        <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) {
             Node&lt;T&gt; currentTop = top.get();
 
-            if (currentTop == null) {
-                return null; // Stack is empty
+            <span class="hljs-keyword">if</span> (currentTop == <span class="hljs-literal">null</span>) {
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>; <span class="hljs-comment">// Stack is empty</span>
             }
 
             Node&lt;T&gt; newTop = currentTop.next;
 
-            // CAS: if top is still currentTop, set it to newTop
-            if (top.compareAndSet(currentTop, newTop)) {
-                return currentTop.value; // Success
+            <span class="hljs-comment">// CAS: if top is still currentTop, set it to newTop</span>
+            <span class="hljs-keyword">if</span> (top.compareAndSet(currentTop, newTop)) {
+                <span class="hljs-keyword">return</span> currentTop.value; <span class="hljs-comment">// Success</span>
             }
-            // Else: retry
+            <span class="hljs-comment">// Else: retry</span>
         }
     }
 
-    public T peek() {
+    <span class="hljs-keyword">public</span> T <span class="hljs-title function_">peek</span><span class="hljs-params">()</span> {
         Node&lt;T&gt; currentTop = top.get();
-        return currentTop != null ? currentTop.value : null;
+        <span class="hljs-keyword">return</span> currentTop != <span class="hljs-literal">null</span> ? currentTop.value : <span class="hljs-literal">null</span>;
     }
 
-    public boolean isEmpty() {
-        return top.get() == null;
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isEmpty</span><span class="hljs-params">()</span> {
+        <span class="hljs-keyword">return</span> top.get() == <span class="hljs-literal">null</span>;
     }
 }
 
-/**
+<span class="hljs-comment">/**
  * Lock-free counter using CAS with backoff.
- */
-public class LockFreeCounter {
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">LockFreeCounter</span> {
 
-    private final AtomicLong value = new AtomicLong(0);
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">AtomicLong</span> <span class="hljs-variable">value</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">AtomicLong</span>(<span class="hljs-number">0</span>);
 
-    public long incrementAndGet() {
-        while (true) {
-            long current = value.get();
-            long next = current + 1;
+    <span class="hljs-keyword">public</span> <span class="hljs-type">long</span> <span class="hljs-title function_">incrementAndGet</span><span class="hljs-params">()</span> {
+        <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) {
+            <span class="hljs-type">long</span> <span class="hljs-variable">current</span> <span class="hljs-operator">=</span> value.get();
+            <span class="hljs-type">long</span> <span class="hljs-variable">next</span> <span class="hljs-operator">=</span> current + <span class="hljs-number">1</span>;
 
-            if (value.compareAndSet(current, next)) {
-                return next;
+            <span class="hljs-keyword">if</span> (value.compareAndSet(current, next)) {
+                <span class="hljs-keyword">return</span> next;
             }
-            // Backoff on contention
+            <span class="hljs-comment">// Backoff on contention</span>
             Thread.onSpinWait();
         }
     }
 
-    // Better: use built-in atomic increment
-    public long incrementAndGetSimple() {
-        return value.incrementAndGet();
+    <span class="hljs-comment">// Better: use built-in atomic increment</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">long</span> <span class="hljs-title function_">incrementAndGetSimple</span><span class="hljs-params">()</span> {
+        <span class="hljs-keyword">return</span> value.incrementAndGet();
     }
 
-    public long get() {
-        return value.get();
+    <span class="hljs-keyword">public</span> <span class="hljs-type">long</span> <span class="hljs-title function_">get</span><span class="hljs-params">()</span> {
+        <span class="hljs-keyword">return</span> value.get();
     }
 }
 </code></pre>
 <h3 id="3-cas-and-aba-problem" tabindex="-1"><a class="header-anchor" href="#3-cas-and-aba-problem"><span>3. CAS and ABA Problem</span></a></h3>
-<pre><code class="language-java">import java.util.concurrent.atomic.*;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.atomic.*;
 
-/**
+<span class="hljs-comment">/**
  * ABA Problem: Value changes A -&gt; B -&gt; A, CAS succeeds but state changed.
  * Solution: Use AtomicStampedReference (version number).
- */
-public class ABADemo {
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ABADemo</span> {
 
-    // PROBLEM: ABA issue with AtomicReference
-    static class BrokenStack&lt;T&gt; {
-        private final AtomicReference&lt;Node&lt;T&gt;&gt; top = new AtomicReference&lt;&gt;();
+    <span class="hljs-comment">// PROBLEM: ABA issue with AtomicReference</span>
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">BrokenStack</span>&lt;T&gt; {
+        <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> AtomicReference&lt;Node&lt;T&gt;&gt; top = <span class="hljs-keyword">new</span> <span class="hljs-title class_">AtomicReference</span>&lt;&gt;();
 
-        static class Node&lt;T&gt; {
+        <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Node</span>&lt;T&gt; {
             T value;
             Node&lt;T&gt; next;
             Node(T v, Node&lt;T&gt; n) { value = v; next = n; }
         }
 
-        /*
+        <span class="hljs-comment">/*
          * ABA Scenario:
          * 1. Thread A reads top = [A -&gt; B -&gt; C]
          * 2. Thread A is suspended
@@ -397,140 +409,140 @@ public class ABADemo {
          * 4. top = [A -&gt; D -&gt; C]  (A is reused but different state!)
          * 5. Thread A resumes, CAS(A, B) succeeds (A == A)
          * 6. But now top = [B] with B pointing to freed memory or wrong node
-         */
+         */</span>
     }
 
-    // SOLUTION: AtomicStampedReference with version
-    static class SafeStack&lt;T&gt; {
-        private final AtomicStampedReference&lt;Node&lt;T&gt;&gt; top =
-            new AtomicStampedReference&lt;&gt;(null, 0);
+    <span class="hljs-comment">// SOLUTION: AtomicStampedReference with version</span>
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">SafeStack</span>&lt;T&gt; {
+        <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> AtomicStampedReference&lt;Node&lt;T&gt;&gt; top =
+            <span class="hljs-keyword">new</span> <span class="hljs-title class_">AtomicStampedReference</span>&lt;&gt;(<span class="hljs-literal">null</span>, <span class="hljs-number">0</span>);
 
-        static class Node&lt;T&gt; {
+        <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Node</span>&lt;T&gt; {
             T value;
             Node&lt;T&gt; next;
             Node(T v, Node&lt;T&gt; n) { value = v; next = n; }
         }
 
-        public void push(T value) {
-            int[] stampHolder = new int[1];
+        <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">push</span><span class="hljs-params">(T value)</span> {
+            <span class="hljs-type">int</span>[] stampHolder = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">1</span>];
 
-            while (true) {
+            <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) {
                 Node&lt;T&gt; currentTop = top.get(stampHolder);
-                int currentStamp = stampHolder[0];
+                <span class="hljs-type">int</span> <span class="hljs-variable">currentStamp</span> <span class="hljs-operator">=</span> stampHolder[<span class="hljs-number">0</span>];
 
-                Node&lt;T&gt; newNode = new Node&lt;&gt;(value, currentTop);
+                Node&lt;T&gt; newNode = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Node</span>&lt;&gt;(value, currentTop);
 
-                // CAS with stamp - detects ABA
-                if (top.compareAndSet(currentTop, newNode, currentStamp, currentStamp + 1)) {
-                    return;
+                <span class="hljs-comment">// CAS with stamp - detects ABA</span>
+                <span class="hljs-keyword">if</span> (top.compareAndSet(currentTop, newNode, currentStamp, currentStamp + <span class="hljs-number">1</span>)) {
+                    <span class="hljs-keyword">return</span>;
                 }
             }
         }
 
-        public T pop() {
-            int[] stampHolder = new int[1];
+        <span class="hljs-keyword">public</span> T <span class="hljs-title function_">pop</span><span class="hljs-params">()</span> {
+            <span class="hljs-type">int</span>[] stampHolder = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">1</span>];
 
-            while (true) {
+            <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) {
                 Node&lt;T&gt; currentTop = top.get(stampHolder);
-                int currentStamp = stampHolder[0];
+                <span class="hljs-type">int</span> <span class="hljs-variable">currentStamp</span> <span class="hljs-operator">=</span> stampHolder[<span class="hljs-number">0</span>];
 
-                if (currentTop == null) {
-                    return null;
+                <span class="hljs-keyword">if</span> (currentTop == <span class="hljs-literal">null</span>) {
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
                 }
 
                 Node&lt;T&gt; newTop = currentTop.next;
 
-                // CAS with stamp - detects ABA
-                if (top.compareAndSet(currentTop, newTop, currentStamp, currentStamp + 1)) {
-                    return currentTop.value;
+                <span class="hljs-comment">// CAS with stamp - detects ABA</span>
+                <span class="hljs-keyword">if</span> (top.compareAndSet(currentTop, newTop, currentStamp, currentStamp + <span class="hljs-number">1</span>)) {
+                    <span class="hljs-keyword">return</span> currentTop.value;
                 }
             }
         }
     }
 
-    // Alternative: AtomicMarkableReference for simpler mark/unmark
-    static class MarkableDemo {
-        private final AtomicMarkableReference&lt;String&gt; ref =
-            new AtomicMarkableReference&lt;&gt;(&quot;initial&quot;, false);
+    <span class="hljs-comment">// Alternative: AtomicMarkableReference for simpler mark/unmark</span>
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MarkableDemo</span> {
+        <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> AtomicMarkableReference&lt;String&gt; ref =
+            <span class="hljs-keyword">new</span> <span class="hljs-title class_">AtomicMarkableReference</span>&lt;&gt;(<span class="hljs-string">&quot;initial&quot;</span>, <span class="hljs-literal">false</span>);
 
-        public void markAsDeleted() {
-            while (true) {
-                String current = ref.getReference();
-                if (ref.compareAndSet(current, current, false, true)) {
-                    return;
+        <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">markAsDeleted</span><span class="hljs-params">()</span> {
+            <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) {
+                <span class="hljs-type">String</span> <span class="hljs-variable">current</span> <span class="hljs-operator">=</span> ref.getReference();
+                <span class="hljs-keyword">if</span> (ref.compareAndSet(current, current, <span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>)) {
+                    <span class="hljs-keyword">return</span>;
                 }
             }
         }
 
-        public boolean isMarked() {
-            return ref.isMarked();
+        <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isMarked</span><span class="hljs-params">()</span> {
+            <span class="hljs-keyword">return</span> ref.isMarked();
         }
     }
 }
 </code></pre>
 <h3 id="4-memory-barriers-happens-before" tabindex="-1"><a class="header-anchor" href="#4-memory-barriers-happens-before"><span>4. Memory Barriers &amp; Happens-Before</span></a></h3>
-<pre><code class="language-java">/**
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
  * Java Memory Model (JMM) guarantees with happens-before relationships.
- */
-public class MemoryBarrierDemo {
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MemoryBarrierDemo</span> {
 
-    // WRONG: No visibility guarantee
-    static class BrokenVisibility {
-        private boolean flag = false;
-        private int value = 0;
+    <span class="hljs-comment">// WRONG: No visibility guarantee</span>
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">BrokenVisibility</span> {
+        <span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-variable">flag</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;
+        <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-variable">value</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
 
-        public void writer() {
-            value = 42;
-            flag = true;  // Might be reordered before value = 42
+        <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">writer</span><span class="hljs-params">()</span> {
+            value = <span class="hljs-number">42</span>;
+            flag = <span class="hljs-literal">true</span>;  <span class="hljs-comment">// Might be reordered before value = 42</span>
         }
 
-        public void reader() {
-            if (flag) {
-                System.out.println(value);  // Might print 0!
+        <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">reader</span><span class="hljs-params">()</span> {
+            <span class="hljs-keyword">if</span> (flag) {
+                System.out.println(value);  <span class="hljs-comment">// Might print 0!</span>
             }
         }
     }
 
-    // CORRECT: volatile establishes happens-before
-    static class VolatileVisibility {
-        private volatile boolean flag = false;
-        private int value = 0;
+    <span class="hljs-comment">// CORRECT: volatile establishes happens-before</span>
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">VolatileVisibility</span> {
+        <span class="hljs-keyword">private</span> <span class="hljs-keyword">volatile</span> <span class="hljs-type">boolean</span> <span class="hljs-variable">flag</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;
+        <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-variable">value</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
 
-        public void writer() {
-            value = 42;
-            flag = true;  // volatile write - memory barrier
+        <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">writer</span><span class="hljs-params">()</span> {
+            value = <span class="hljs-number">42</span>;
+            flag = <span class="hljs-literal">true</span>;  <span class="hljs-comment">// volatile write - memory barrier</span>
         }
 
-        public void reader() {
-            if (flag) {  // volatile read - memory barrier
-                System.out.println(value);  // Guaranteed to print 42
+        <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">reader</span><span class="hljs-params">()</span> {
+            <span class="hljs-keyword">if</span> (flag) {  <span class="hljs-comment">// volatile read - memory barrier</span>
+                System.out.println(value);  <span class="hljs-comment">// Guaranteed to print 42</span>
             }
         }
     }
 
-    // CORRECT: synchronized establishes happens-before
-    static class SynchronizedVisibility {
-        private boolean flag = false;
-        private int value = 0;
-        private final Object lock = new Object();
+    <span class="hljs-comment">// CORRECT: synchronized establishes happens-before</span>
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">SynchronizedVisibility</span> {
+        <span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-variable">flag</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;
+        <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-variable">value</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">Object</span> <span class="hljs-variable">lock</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Object</span>();
 
-        public void writer() {
-            synchronized (lock) {
-                value = 42;
-                flag = true;
-            }  // Release lock - memory barrier
+        <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">writer</span><span class="hljs-params">()</span> {
+            <span class="hljs-keyword">synchronized</span> (lock) {
+                value = <span class="hljs-number">42</span>;
+                flag = <span class="hljs-literal">true</span>;
+            }  <span class="hljs-comment">// Release lock - memory barrier</span>
         }
 
-        public void reader() {
-            synchronized (lock) {  // Acquire lock - memory barrier
-                if (flag) {
-                    System.out.println(value);  // Guaranteed to print 42
+        <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">reader</span><span class="hljs-params">()</span> {
+            <span class="hljs-keyword">synchronized</span> (lock) {  <span class="hljs-comment">// Acquire lock - memory barrier</span>
+                <span class="hljs-keyword">if</span> (flag) {
+                    System.out.println(value);  <span class="hljs-comment">// Guaranteed to print 42</span>
                 }
             }
         }
     }
 
-    /**
+    <span class="hljs-comment">/**
      * Happens-Before Rules:
      * 1. Program order: Each action in a thread happens-before every subsequent action
      * 2. Monitor lock: unlock() happens-before subsequent lock()
@@ -538,111 +550,111 @@ public class MemoryBarrierDemo {
      * 4. Thread start: Thread.start() happens-before any action in started thread
      * 5. Thread join: All actions in thread happen-before join() returns
      * 6. Transitivity: If A happens-before B and B happens-before C, then A happens-before C
-     */
+     */</span>
 }
 </code></pre>
 <hr>
 <h2 id="advanced-locking" tabindex="-1"><a class="header-anchor" href="#advanced-locking"><span>Advanced Locking</span></a></h2>
 <h3 id="1-lock-striping" tabindex="-1"><a class="header-anchor" href="#1-lock-striping"><span>1. Lock Striping</span></a></h3>
-<pre><code class="language-java">import java.util.concurrent.locks.*;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.locks.*;
 
-/**
+<span class="hljs-comment">/**
  * Lock striping: Divide data into segments, each with its own lock.
  * Reduces contention compared to single global lock.
- */
-public class StripedMap&lt;K, V&gt; {
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">StripedMap</span>&lt;K, V&gt; {
 
-    private static final int DEFAULT_STRIPES = 16;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">DEFAULT_STRIPES</span> <span class="hljs-operator">=</span> <span class="hljs-number">16</span>;
 
-    private final int numStripes;
-    private final Node&lt;K, V&gt;[] buckets;
-    private final ReentrantLock[] locks;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> numStripes;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Node&lt;K, V&gt;[] buckets;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ReentrantLock[] locks;
 
-    @SuppressWarnings(&quot;unchecked&quot;)
-    public StripedMap(int numBuckets, int numStripes) {
-        this.numStripes = numStripes;
-        this.buckets = new Node[numBuckets];
-        this.locks = new ReentrantLock[numStripes];
+    <span class="hljs-meta">@SuppressWarnings(&quot;unchecked&quot;)</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">StripedMap</span><span class="hljs-params">(<span class="hljs-type">int</span> numBuckets, <span class="hljs-type">int</span> numStripes)</span> {
+        <span class="hljs-built_in">this</span>.numStripes = numStripes;
+        <span class="hljs-built_in">this</span>.buckets = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Node</span>[numBuckets];
+        <span class="hljs-built_in">this</span>.locks = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ReentrantLock</span>[numStripes];
 
-        for (int i = 0; i &lt; numStripes; i++) {
-            locks[i] = new ReentrantLock();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; numStripes; i++) {
+            locks[i] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ReentrantLock</span>();
         }
     }
 
-    private static class Node&lt;K, V&gt; {
-        final K key;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Node</span>&lt;K, V&gt; {
+        <span class="hljs-keyword">final</span> K key;
         V value;
         Node&lt;K, V&gt; next;
 
         Node(K key, V value, Node&lt;K, V&gt; next) {
-            this.key = key;
-            this.value = value;
-            this.next = next;
+            <span class="hljs-built_in">this</span>.key = key;
+            <span class="hljs-built_in">this</span>.value = value;
+            <span class="hljs-built_in">this</span>.next = next;
         }
     }
 
-    private int getBucketIndex(K key) {
-        return Math.abs(key.hashCode() % buckets.length);
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">getBucketIndex</span><span class="hljs-params">(K key)</span> {
+        <span class="hljs-keyword">return</span> Math.abs(key.hashCode() % buckets.length);
     }
 
-    private int getStripeIndex(K key) {
-        return Math.abs(key.hashCode() % numStripes);
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">getStripeIndex</span><span class="hljs-params">(K key)</span> {
+        <span class="hljs-keyword">return</span> Math.abs(key.hashCode() % numStripes);
     }
 
-    public V get(K key) {
-        int bucketIndex = getBucketIndex(key);
-        int stripeIndex = getStripeIndex(key);
+    <span class="hljs-keyword">public</span> V <span class="hljs-title function_">get</span><span class="hljs-params">(K key)</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">bucketIndex</span> <span class="hljs-operator">=</span> getBucketIndex(key);
+        <span class="hljs-type">int</span> <span class="hljs-variable">stripeIndex</span> <span class="hljs-operator">=</span> getStripeIndex(key);
 
         locks[stripeIndex].lock();
-        try {
+        <span class="hljs-keyword">try</span> {
             Node&lt;K, V&gt; node = buckets[bucketIndex];
-            while (node != null) {
-                if (node.key.equals(key)) {
-                    return node.value;
+            <span class="hljs-keyword">while</span> (node != <span class="hljs-literal">null</span>) {
+                <span class="hljs-keyword">if</span> (node.key.equals(key)) {
+                    <span class="hljs-keyword">return</span> node.value;
                 }
                 node = node.next;
             }
-            return null;
-        } finally {
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+        } <span class="hljs-keyword">finally</span> {
             locks[stripeIndex].unlock();
         }
     }
 
-    public void put(K key, V value) {
-        int bucketIndex = getBucketIndex(key);
-        int stripeIndex = getStripeIndex(key);
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">put</span><span class="hljs-params">(K key, V value)</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">bucketIndex</span> <span class="hljs-operator">=</span> getBucketIndex(key);
+        <span class="hljs-type">int</span> <span class="hljs-variable">stripeIndex</span> <span class="hljs-operator">=</span> getStripeIndex(key);
 
         locks[stripeIndex].lock();
-        try {
+        <span class="hljs-keyword">try</span> {
             Node&lt;K, V&gt; node = buckets[bucketIndex];
 
-            // Check if key exists
-            while (node != null) {
-                if (node.key.equals(key)) {
+            <span class="hljs-comment">// Check if key exists</span>
+            <span class="hljs-keyword">while</span> (node != <span class="hljs-literal">null</span>) {
+                <span class="hljs-keyword">if</span> (node.key.equals(key)) {
                     node.value = value;
-                    return;
+                    <span class="hljs-keyword">return</span>;
                 }
                 node = node.next;
             }
 
-            // Add new node
-            buckets[bucketIndex] = new Node&lt;&gt;(key, value, buckets[bucketIndex]);
-        } finally {
+            <span class="hljs-comment">// Add new node</span>
+            buckets[bucketIndex] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Node</span>&lt;&gt;(key, value, buckets[bucketIndex]);
+        } <span class="hljs-keyword">finally</span> {
             locks[stripeIndex].unlock();
         }
     }
 
-    // For operations requiring all locks (resize, clear, etc.)
-    public void clear() {
-        for (int i = 0; i &lt; numStripes; i++) {
+    <span class="hljs-comment">// For operations requiring all locks (resize, clear, etc.)</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">clear</span><span class="hljs-params">()</span> {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; numStripes; i++) {
             locks[i].lock();
         }
-        try {
-            for (int i = 0; i &lt; buckets.length; i++) {
-                buckets[i] = null;
+        <span class="hljs-keyword">try</span> {
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; buckets.length; i++) {
+                buckets[i] = <span class="hljs-literal">null</span>;
             }
-        } finally {
-            for (int i = numStripes - 1; i &gt;= 0; i--) {
+        } <span class="hljs-keyword">finally</span> {
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> numStripes - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
                 locks[i].unlock();
             }
         }
@@ -651,433 +663,433 @@ public class StripedMap&lt;K, V&gt; {
 </code></pre>
 <h3 id="2-distributed-lock-algorithms" tabindex="-1"><a class="header-anchor" href="#2-distributed-lock-algorithms"><span>2. Distributed Lock Algorithms</span></a></h3>
 <h4 id="redlock-redis" tabindex="-1"><a class="header-anchor" href="#redlock-redis"><span>Redlock (Redis)</span></a></h4>
-<pre><code class="language-java">import redis.clients.jedis.Jedis;
-import redis.clients.jedis.params.SetParams;
-import java.util.*;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> redis.clients.jedis.Jedis;
+<span class="hljs-keyword">import</span> redis.clients.jedis.params.SetParams;
+<span class="hljs-keyword">import</span> java.util.*;
 
-/**
+<span class="hljs-comment">/**
  * Redlock: Distributed lock using multiple Redis instances.
  * Requires majority (N/2 + 1) of nodes to agree.
- */
-public class RedlockDistributedLock {
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">RedlockDistributedLock</span> {
 
-    private final List&lt;Jedis&gt; redisNodes;
-    private final int quorum;
-    private final long lockTtlMs;
-    private final long retryDelayMs;
-    private final int maxRetries;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> List&lt;Jedis&gt; redisNodes;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> quorum;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">long</span> lockTtlMs;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">long</span> retryDelayMs;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> maxRetries;
 
-    public RedlockDistributedLock(List&lt;Jedis&gt; redisNodes, long lockTtlMs) {
-        this.redisNodes = redisNodes;
-        this.quorum = redisNodes.size() / 2 + 1;  // Majority
-        this.lockTtlMs = lockTtlMs;
-        this.retryDelayMs = 200;
-        this.maxRetries = 3;
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">RedlockDistributedLock</span><span class="hljs-params">(List&lt;Jedis&gt; redisNodes, <span class="hljs-type">long</span> lockTtlMs)</span> {
+        <span class="hljs-built_in">this</span>.redisNodes = redisNodes;
+        <span class="hljs-built_in">this</span>.quorum = redisNodes.size() / <span class="hljs-number">2</span> + <span class="hljs-number">1</span>;  <span class="hljs-comment">// Majority</span>
+        <span class="hljs-built_in">this</span>.lockTtlMs = lockTtlMs;
+        <span class="hljs-built_in">this</span>.retryDelayMs = <span class="hljs-number">200</span>;
+        <span class="hljs-built_in">this</span>.maxRetries = <span class="hljs-number">3</span>;
     }
 
-    public LockResult tryLock(String resource) {
-        String lockValue = UUID.randomUUID().toString();
-        String lockKey = &quot;lock:&quot; + resource;
+    <span class="hljs-keyword">public</span> LockResult <span class="hljs-title function_">tryLock</span><span class="hljs-params">(String resource)</span> {
+        <span class="hljs-type">String</span> <span class="hljs-variable">lockValue</span> <span class="hljs-operator">=</span> UUID.randomUUID().toString();
+        <span class="hljs-type">String</span> <span class="hljs-variable">lockKey</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;lock:&quot;</span> + resource;
 
-        for (int retry = 0; retry &lt; maxRetries; retry++) {
-            long startTime = System.currentTimeMillis();
-            int acquiredCount = 0;
-            List&lt;Jedis&gt; acquiredNodes = new ArrayList&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">retry</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; retry &lt; maxRetries; retry++) {
+            <span class="hljs-type">long</span> <span class="hljs-variable">startTime</span> <span class="hljs-operator">=</span> System.currentTimeMillis();
+            <span class="hljs-type">int</span> <span class="hljs-variable">acquiredCount</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+            List&lt;Jedis&gt; acquiredNodes = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
 
-            // Try to acquire lock on all nodes
-            for (Jedis node : redisNodes) {
-                try {
-                    String result = node.set(
+            <span class="hljs-comment">// Try to acquire lock on all nodes</span>
+            <span class="hljs-keyword">for</span> (Jedis node : redisNodes) {
+                <span class="hljs-keyword">try</span> {
+                    <span class="hljs-type">String</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> node.set(
                         lockKey, lockValue,
                         SetParams.setParams().nx().px(lockTtlMs)
                     );
-                    if (&quot;OK&quot;.equals(result)) {
+                    <span class="hljs-keyword">if</span> (<span class="hljs-string">&quot;OK&quot;</span>.equals(result)) {
                         acquiredCount++;
                         acquiredNodes.add(node);
                     }
-                } catch (Exception e) {
-                    // Node unavailable - continue
+                } <span class="hljs-keyword">catch</span> (Exception e) {
+                    <span class="hljs-comment">// Node unavailable - continue</span>
                 }
             }
 
-            // Calculate elapsed time
-            long elapsedMs = System.currentTimeMillis() - startTime;
+            <span class="hljs-comment">// Calculate elapsed time</span>
+            <span class="hljs-type">long</span> <span class="hljs-variable">elapsedMs</span> <span class="hljs-operator">=</span> System.currentTimeMillis() - startTime;
 
-            // Check if we acquired quorum within valid time
-            // (lock must be valid for at least some minimum time)
-            long validityTime = lockTtlMs - elapsedMs - 2; // drift factor
+            <span class="hljs-comment">// Check if we acquired quorum within valid time</span>
+            <span class="hljs-comment">// (lock must be valid for at least some minimum time)</span>
+            <span class="hljs-type">long</span> <span class="hljs-variable">validityTime</span> <span class="hljs-operator">=</span> lockTtlMs - elapsedMs - <span class="hljs-number">2</span>; <span class="hljs-comment">// drift factor</span>
 
-            if (acquiredCount &gt;= quorum &amp;&amp; validityTime &gt; 0) {
-                return new LockResult(true, lockValue, validityTime);
+            <span class="hljs-keyword">if</span> (acquiredCount &gt;= quorum &amp;&amp; validityTime &gt; <span class="hljs-number">0</span>) {
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">LockResult</span>(<span class="hljs-literal">true</span>, lockValue, validityTime);
             }
 
-            // Failed - release any acquired locks
-            for (Jedis node : acquiredNodes) {
+            <span class="hljs-comment">// Failed - release any acquired locks</span>
+            <span class="hljs-keyword">for</span> (Jedis node : acquiredNodes) {
                 releaseLock(node, lockKey, lockValue);
             }
 
-            // Wait before retry
-            try {
-                Thread.sleep(retryDelayMs + (long)(Math.random() * retryDelayMs));
-            } catch (InterruptedException e) {
+            <span class="hljs-comment">// Wait before retry</span>
+            <span class="hljs-keyword">try</span> {
+                Thread.sleep(retryDelayMs + (<span class="hljs-type">long</span>)(Math.random() * retryDelayMs));
+            } <span class="hljs-keyword">catch</span> (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                return new LockResult(false, null, 0);
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">LockResult</span>(<span class="hljs-literal">false</span>, <span class="hljs-literal">null</span>, <span class="hljs-number">0</span>);
             }
         }
 
-        return new LockResult(false, null, 0);
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">LockResult</span>(<span class="hljs-literal">false</span>, <span class="hljs-literal">null</span>, <span class="hljs-number">0</span>);
     }
 
-    public void unlock(String resource, String lockValue) {
-        String lockKey = &quot;lock:&quot; + resource;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">unlock</span><span class="hljs-params">(String resource, String lockValue)</span> {
+        <span class="hljs-type">String</span> <span class="hljs-variable">lockKey</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;lock:&quot;</span> + resource;
 
-        for (Jedis node : redisNodes) {
-            try {
+        <span class="hljs-keyword">for</span> (Jedis node : redisNodes) {
+            <span class="hljs-keyword">try</span> {
                 releaseLock(node, lockKey, lockValue);
-            } catch (Exception e) {
-                // Continue releasing on other nodes
+            } <span class="hljs-keyword">catch</span> (Exception e) {
+                <span class="hljs-comment">// Continue releasing on other nodes</span>
             }
         }
     }
 
-    private void releaseLock(Jedis node, String lockKey, String lockValue) {
-        // Lua script: only delete if value matches
-        String script =
-            &quot;if redis.call('get', KEYS[1]) == ARGV[1] then &quot; +
-            &quot;    return redis.call('del', KEYS[1]) &quot; +
-            &quot;else &quot; +
-            &quot;    return 0 &quot; +
-            &quot;end&quot;;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">releaseLock</span><span class="hljs-params">(Jedis node, String lockKey, String lockValue)</span> {
+        <span class="hljs-comment">// Lua script: only delete if value matches</span>
+        <span class="hljs-type">String</span> <span class="hljs-variable">script</span> <span class="hljs-operator">=</span>
+            <span class="hljs-string">&quot;if redis.call(&#x27;get&#x27;, KEYS[1]) == ARGV[1] then &quot;</span> +
+            <span class="hljs-string">&quot;    return redis.call(&#x27;del&#x27;, KEYS[1]) &quot;</span> +
+            <span class="hljs-string">&quot;else &quot;</span> +
+            <span class="hljs-string">&quot;    return 0 &quot;</span> +
+            <span class="hljs-string">&quot;end&quot;</span>;
 
         node.eval(script,
             Collections.singletonList(lockKey),
             Collections.singletonList(lockValue));
     }
 
-    public static class LockResult {
-        public final boolean acquired;
-        public final String lockValue;
-        public final long validityTimeMs;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">LockResult</span> {
+        <span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> <span class="hljs-type">boolean</span> acquired;
+        <span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> String lockValue;
+        <span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> <span class="hljs-type">long</span> validityTimeMs;
 
-        LockResult(boolean acquired, String lockValue, long validityTimeMs) {
-            this.acquired = acquired;
-            this.lockValue = lockValue;
-            this.validityTimeMs = validityTimeMs;
+        LockResult(<span class="hljs-type">boolean</span> acquired, String lockValue, <span class="hljs-type">long</span> validityTimeMs) {
+            <span class="hljs-built_in">this</span>.acquired = acquired;
+            <span class="hljs-built_in">this</span>.lockValue = lockValue;
+            <span class="hljs-built_in">this</span>.validityTimeMs = validityTimeMs;
         }
     }
 }
 </code></pre>
 <h4 id="zookeeper-lock" tabindex="-1"><a class="header-anchor" href="#zookeeper-lock"><span>ZooKeeper Lock</span></a></h4>
-<pre><code class="language-java">import org.apache.zookeeper.*;
-import java.util.*;
-import java.util.concurrent.CountDownLatch;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> org.apache.zookeeper.*;
+<span class="hljs-keyword">import</span> java.util.*;
+<span class="hljs-keyword">import</span> java.util.concurrent.CountDownLatch;
 
-/**
+<span class="hljs-comment">/**
  * Distributed lock using ZooKeeper ephemeral sequential nodes.
  * Fair lock: Requests are processed in order.
- */
-public class ZooKeeperDistributedLock {
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ZooKeeperDistributedLock</span> {
 
-    private final ZooKeeper zk;
-    private final String lockPath;
-    private String currentLockNode;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ZooKeeper zk;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> String lockPath;
+    <span class="hljs-keyword">private</span> String currentLockNode;
 
-    public ZooKeeperDistributedLock(ZooKeeper zk, String lockPath) {
-        this.zk = zk;
-        this.lockPath = lockPath;
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">ZooKeeperDistributedLock</span><span class="hljs-params">(ZooKeeper zk, String lockPath)</span> {
+        <span class="hljs-built_in">this</span>.zk = zk;
+        <span class="hljs-built_in">this</span>.lockPath = lockPath;
     }
 
-    public void lock() throws Exception {
-        // Create ephemeral sequential node
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">lock</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> Exception {
+        <span class="hljs-comment">// Create ephemeral sequential node</span>
         currentLockNode = zk.create(
-            lockPath + &quot;/lock_&quot;,
-            new byte[0],
+            lockPath + <span class="hljs-string">&quot;/lock_&quot;</span>,
+            <span class="hljs-keyword">new</span> <span class="hljs-title class_">byte</span>[<span class="hljs-number">0</span>],
             ZooDefs.Ids.OPEN_ACL_UNSAFE,
             CreateMode.EPHEMERAL_SEQUENTIAL
         );
 
-        while (true) {
-            // Get all children and sort
-            List&lt;String&gt; children = zk.getChildren(lockPath, false);
+        <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) {
+            <span class="hljs-comment">// Get all children and sort</span>
+            List&lt;String&gt; children = zk.getChildren(lockPath, <span class="hljs-literal">false</span>);
             Collections.sort(children);
 
-            String currentNodeName = currentLockNode.substring(lockPath.length() + 1);
-            int currentIndex = children.indexOf(currentNodeName);
+            <span class="hljs-type">String</span> <span class="hljs-variable">currentNodeName</span> <span class="hljs-operator">=</span> currentLockNode.substring(lockPath.length() + <span class="hljs-number">1</span>);
+            <span class="hljs-type">int</span> <span class="hljs-variable">currentIndex</span> <span class="hljs-operator">=</span> children.indexOf(currentNodeName);
 
-            if (currentIndex == 0) {
-                // We have the lock!
-                return;
+            <span class="hljs-keyword">if</span> (currentIndex == <span class="hljs-number">0</span>) {
+                <span class="hljs-comment">// We have the lock!</span>
+                <span class="hljs-keyword">return</span>;
             }
 
-            // Watch the previous node
-            String prevNode = children.get(currentIndex - 1);
-            CountDownLatch latch = new CountDownLatch(1);
+            <span class="hljs-comment">// Watch the previous node</span>
+            <span class="hljs-type">String</span> <span class="hljs-variable">prevNode</span> <span class="hljs-operator">=</span> children.get(currentIndex - <span class="hljs-number">1</span>);
+            <span class="hljs-type">CountDownLatch</span> <span class="hljs-variable">latch</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">CountDownLatch</span>(<span class="hljs-number">1</span>);
 
-            Stat stat = zk.exists(lockPath + &quot;/&quot; + prevNode, event -&gt; {
-                if (event.getType() == Watcher.Event.EventType.NodeDeleted) {
+            <span class="hljs-type">Stat</span> <span class="hljs-variable">stat</span> <span class="hljs-operator">=</span> zk.exists(lockPath + <span class="hljs-string">&quot;/&quot;</span> + prevNode, event -&gt; {
+                <span class="hljs-keyword">if</span> (event.getType() == Watcher.Event.EventType.NodeDeleted) {
                     latch.countDown();
                 }
             });
 
-            if (stat != null) {
-                // Wait for previous node to be deleted
+            <span class="hljs-keyword">if</span> (stat != <span class="hljs-literal">null</span>) {
+                <span class="hljs-comment">// Wait for previous node to be deleted</span>
                 latch.await();
             }
-            // Else: previous node already deleted, retry loop
+            <span class="hljs-comment">// Else: previous node already deleted, retry loop</span>
         }
     }
 
-    public void unlock() throws Exception {
-        if (currentLockNode != null) {
-            zk.delete(currentLockNode, -1);
-            currentLockNode = null;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">unlock</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> Exception {
+        <span class="hljs-keyword">if</span> (currentLockNode != <span class="hljs-literal">null</span>) {
+            zk.delete(currentLockNode, -<span class="hljs-number">1</span>);
+            currentLockNode = <span class="hljs-literal">null</span>;
         }
     }
 
-    // Try lock with timeout
-    public boolean tryLock(long timeoutMs) throws Exception {
-        long deadline = System.currentTimeMillis() + timeoutMs;
+    <span class="hljs-comment">// Try lock with timeout</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">tryLock</span><span class="hljs-params">(<span class="hljs-type">long</span> timeoutMs)</span> <span class="hljs-keyword">throws</span> Exception {
+        <span class="hljs-type">long</span> <span class="hljs-variable">deadline</span> <span class="hljs-operator">=</span> System.currentTimeMillis() + timeoutMs;
 
         currentLockNode = zk.create(
-            lockPath + &quot;/lock_&quot;,
-            new byte[0],
+            lockPath + <span class="hljs-string">&quot;/lock_&quot;</span>,
+            <span class="hljs-keyword">new</span> <span class="hljs-title class_">byte</span>[<span class="hljs-number">0</span>],
             ZooDefs.Ids.OPEN_ACL_UNSAFE,
             CreateMode.EPHEMERAL_SEQUENTIAL
         );
 
-        while (System.currentTimeMillis() &lt; deadline) {
-            List&lt;String&gt; children = zk.getChildren(lockPath, false);
+        <span class="hljs-keyword">while</span> (System.currentTimeMillis() &lt; deadline) {
+            List&lt;String&gt; children = zk.getChildren(lockPath, <span class="hljs-literal">false</span>);
             Collections.sort(children);
 
-            String currentNodeName = currentLockNode.substring(lockPath.length() + 1);
-            int currentIndex = children.indexOf(currentNodeName);
+            <span class="hljs-type">String</span> <span class="hljs-variable">currentNodeName</span> <span class="hljs-operator">=</span> currentLockNode.substring(lockPath.length() + <span class="hljs-number">1</span>);
+            <span class="hljs-type">int</span> <span class="hljs-variable">currentIndex</span> <span class="hljs-operator">=</span> children.indexOf(currentNodeName);
 
-            if (currentIndex == 0) {
-                return true;
+            <span class="hljs-keyword">if</span> (currentIndex == <span class="hljs-number">0</span>) {
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
             }
 
-            String prevNode = children.get(currentIndex - 1);
-            CountDownLatch latch = new CountDownLatch(1);
+            <span class="hljs-type">String</span> <span class="hljs-variable">prevNode</span> <span class="hljs-operator">=</span> children.get(currentIndex - <span class="hljs-number">1</span>);
+            <span class="hljs-type">CountDownLatch</span> <span class="hljs-variable">latch</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">CountDownLatch</span>(<span class="hljs-number">1</span>);
 
-            Stat stat = zk.exists(lockPath + &quot;/&quot; + prevNode, event -&gt; {
+            <span class="hljs-type">Stat</span> <span class="hljs-variable">stat</span> <span class="hljs-operator">=</span> zk.exists(lockPath + <span class="hljs-string">&quot;/&quot;</span> + prevNode, event -&gt; {
                 latch.countDown();
             });
 
-            if (stat != null) {
-                long remainingMs = deadline - System.currentTimeMillis();
-                if (remainingMs &gt; 0) {
+            <span class="hljs-keyword">if</span> (stat != <span class="hljs-literal">null</span>) {
+                <span class="hljs-type">long</span> <span class="hljs-variable">remainingMs</span> <span class="hljs-operator">=</span> deadline - System.currentTimeMillis();
+                <span class="hljs-keyword">if</span> (remainingMs &gt; <span class="hljs-number">0</span>) {
                     latch.await(remainingMs, java.util.concurrent.TimeUnit.MILLISECONDS);
                 }
             }
         }
 
-        // Timeout - cleanup
+        <span class="hljs-comment">// Timeout - cleanup</span>
         unlock();
-        return false;
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
     }
 }
 </code></pre>
 <h3 id="3-database-locking" tabindex="-1"><a class="header-anchor" href="#3-database-locking"><span>3. Database Locking</span></a></h3>
-<pre><code class="language-java">/**
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
  * Database locking strategies.
- */
-public class DatabaseLockingDemo {
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">DatabaseLockingDemo</span> {
 
-    // Pessimistic Locking: SELECT FOR UPDATE
-    public Order getOrderWithLock(Connection conn, long orderId) throws SQLException {
-        String sql = &quot;SELECT * FROM orders WHERE id = ? FOR UPDATE&quot;;
+    <span class="hljs-comment">// Pessimistic Locking: SELECT FOR UPDATE</span>
+    <span class="hljs-keyword">public</span> Order <span class="hljs-title function_">getOrderWithLock</span><span class="hljs-params">(Connection conn, <span class="hljs-type">long</span> orderId)</span> <span class="hljs-keyword">throws</span> SQLException {
+        <span class="hljs-type">String</span> <span class="hljs-variable">sql</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;SELECT * FROM orders WHERE id = ? FOR UPDATE&quot;</span>;
 
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setLong(1, orderId);
-            ResultSet rs = stmt.executeQuery();
+        <span class="hljs-keyword">try</span> (<span class="hljs-type">PreparedStatement</span> <span class="hljs-variable">stmt</span> <span class="hljs-operator">=</span> conn.prepareStatement(sql)) {
+            stmt.setLong(<span class="hljs-number">1</span>, orderId);
+            <span class="hljs-type">ResultSet</span> <span class="hljs-variable">rs</span> <span class="hljs-operator">=</span> stmt.executeQuery();
 
-            if (rs.next()) {
-                return mapToOrder(rs);
+            <span class="hljs-keyword">if</span> (rs.next()) {
+                <span class="hljs-keyword">return</span> mapToOrder(rs);
             }
-            return null;
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
         }
-        // Lock released when transaction commits/rollbacks
+        <span class="hljs-comment">// Lock released when transaction commits/rollbacks</span>
     }
 
-    // Pessimistic with NOWAIT (fail immediately if locked)
-    public Order getOrderWithLockNoWait(Connection conn, long orderId) throws SQLException {
-        String sql = &quot;SELECT * FROM orders WHERE id = ? FOR UPDATE NOWAIT&quot;;
-        // Throws exception if row is locked
-        // ...
-        return null;
+    <span class="hljs-comment">// Pessimistic with NOWAIT (fail immediately if locked)</span>
+    <span class="hljs-keyword">public</span> Order <span class="hljs-title function_">getOrderWithLockNoWait</span><span class="hljs-params">(Connection conn, <span class="hljs-type">long</span> orderId)</span> <span class="hljs-keyword">throws</span> SQLException {
+        <span class="hljs-type">String</span> <span class="hljs-variable">sql</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;SELECT * FROM orders WHERE id = ? FOR UPDATE NOWAIT&quot;</span>;
+        <span class="hljs-comment">// Throws exception if row is locked</span>
+        <span class="hljs-comment">// ...</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
     }
 
-    // Pessimistic with SKIP LOCKED (skip locked rows)
-    public List&lt;Order&gt; getUnlockedOrders(Connection conn, int limit) throws SQLException {
-        String sql = &quot;SELECT * FROM orders WHERE status = 'PENDING' &quot; +
-                     &quot;FOR UPDATE SKIP LOCKED LIMIT ?&quot;;
-        // Returns only unlocked rows - useful for job processing
-        // ...
-        return null;
+    <span class="hljs-comment">// Pessimistic with SKIP LOCKED (skip locked rows)</span>
+    <span class="hljs-keyword">public</span> List&lt;Order&gt; <span class="hljs-title function_">getUnlockedOrders</span><span class="hljs-params">(Connection conn, <span class="hljs-type">int</span> limit)</span> <span class="hljs-keyword">throws</span> SQLException {
+        <span class="hljs-type">String</span> <span class="hljs-variable">sql</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;SELECT * FROM orders WHERE status = &#x27;PENDING&#x27; &quot;</span> +
+                     <span class="hljs-string">&quot;FOR UPDATE SKIP LOCKED LIMIT ?&quot;</span>;
+        <span class="hljs-comment">// Returns only unlocked rows - useful for job processing</span>
+        <span class="hljs-comment">// ...</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
     }
 
-    // Optimistic Locking: Version column
-    public boolean updateOrderOptimistic(Connection conn, Order order) throws SQLException {
-        String sql = &quot;UPDATE orders SET status = ?, version = version + 1 &quot; +
-                     &quot;WHERE id = ? AND version = ?&quot;;
+    <span class="hljs-comment">// Optimistic Locking: Version column</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">updateOrderOptimistic</span><span class="hljs-params">(Connection conn, Order order)</span> <span class="hljs-keyword">throws</span> SQLException {
+        <span class="hljs-type">String</span> <span class="hljs-variable">sql</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;UPDATE orders SET status = ?, version = version + 1 &quot;</span> +
+                     <span class="hljs-string">&quot;WHERE id = ? AND version = ?&quot;</span>;
 
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, order.getStatus());
-            stmt.setLong(2, order.getId());
-            stmt.setInt(3, order.getVersion());
+        <span class="hljs-keyword">try</span> (<span class="hljs-type">PreparedStatement</span> <span class="hljs-variable">stmt</span> <span class="hljs-operator">=</span> conn.prepareStatement(sql)) {
+            stmt.setString(<span class="hljs-number">1</span>, order.getStatus());
+            stmt.setLong(<span class="hljs-number">2</span>, order.getId());
+            stmt.setInt(<span class="hljs-number">3</span>, order.getVersion());
 
-            int updated = stmt.executeUpdate();
+            <span class="hljs-type">int</span> <span class="hljs-variable">updated</span> <span class="hljs-operator">=</span> stmt.executeUpdate();
 
-            if (updated == 0) {
-                // Version mismatch - another transaction modified it
-                throw new OptimisticLockException(&quot;Order was modified by another transaction&quot;);
+            <span class="hljs-keyword">if</span> (updated == <span class="hljs-number">0</span>) {
+                <span class="hljs-comment">// Version mismatch - another transaction modified it</span>
+                <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">OptimisticLockException</span>(<span class="hljs-string">&quot;Order was modified by another transaction&quot;</span>);
             }
-            return true;
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
         }
     }
 
-    // Advisory Lock (PostgreSQL)
-    public void withAdvisoryLock(Connection conn, long lockId, Runnable action)
-            throws SQLException {
+    <span class="hljs-comment">// Advisory Lock (PostgreSQL)</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">withAdvisoryLock</span><span class="hljs-params">(Connection conn, <span class="hljs-type">long</span> lockId, Runnable action)</span>
+            <span class="hljs-keyword">throws</span> SQLException {
 
-        try (PreparedStatement lock = conn.prepareStatement(&quot;SELECT pg_advisory_lock(?)&quot;)) {
-            lock.setLong(1, lockId);
+        <span class="hljs-keyword">try</span> (<span class="hljs-type">PreparedStatement</span> <span class="hljs-variable">lock</span> <span class="hljs-operator">=</span> conn.prepareStatement(<span class="hljs-string">&quot;SELECT pg_advisory_lock(?)&quot;</span>)) {
+            lock.setLong(<span class="hljs-number">1</span>, lockId);
             lock.execute();
 
-            try {
+            <span class="hljs-keyword">try</span> {
                 action.run();
-            } finally {
-                try (PreparedStatement unlock = conn.prepareStatement(
-                        &quot;SELECT pg_advisory_unlock(?)&quot;)) {
-                    unlock.setLong(1, lockId);
+            } <span class="hljs-keyword">finally</span> {
+                <span class="hljs-keyword">try</span> (<span class="hljs-type">PreparedStatement</span> <span class="hljs-variable">unlock</span> <span class="hljs-operator">=</span> conn.prepareStatement(
+                        <span class="hljs-string">&quot;SELECT pg_advisory_unlock(?)&quot;</span>)) {
+                    unlock.setLong(<span class="hljs-number">1</span>, lockId);
                     unlock.execute();
                 }
             }
         }
     }
 
-    // Advisory Lock with timeout (PostgreSQL)
-    public boolean tryAdvisoryLock(Connection conn, long lockId, long timeoutMs)
-            throws SQLException {
+    <span class="hljs-comment">// Advisory Lock with timeout (PostgreSQL)</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">tryAdvisoryLock</span><span class="hljs-params">(Connection conn, <span class="hljs-type">long</span> lockId, <span class="hljs-type">long</span> timeoutMs)</span>
+            <span class="hljs-keyword">throws</span> SQLException {
 
-        String sql = &quot;SELECT pg_try_advisory_lock(?)&quot;;
-        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setLong(1, lockId);
-            ResultSet rs = stmt.executeQuery();
+        <span class="hljs-type">String</span> <span class="hljs-variable">sql</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;SELECT pg_try_advisory_lock(?)&quot;</span>;
+        <span class="hljs-keyword">try</span> (<span class="hljs-type">PreparedStatement</span> <span class="hljs-variable">stmt</span> <span class="hljs-operator">=</span> conn.prepareStatement(sql)) {
+            stmt.setLong(<span class="hljs-number">1</span>, lockId);
+            <span class="hljs-type">ResultSet</span> <span class="hljs-variable">rs</span> <span class="hljs-operator">=</span> stmt.executeQuery();
             rs.next();
-            return rs.getBoolean(1);
+            <span class="hljs-keyword">return</span> rs.getBoolean(<span class="hljs-number">1</span>);
         }
     }
 
-    private Order mapToOrder(ResultSet rs) throws SQLException {
-        return new Order(); // mapping logic
+    <span class="hljs-keyword">private</span> Order <span class="hljs-title function_">mapToOrder</span><span class="hljs-params">(ResultSet rs)</span> <span class="hljs-keyword">throws</span> SQLException {
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Order</span>(); <span class="hljs-comment">// mapping logic</span>
     }
 
-    static class OptimisticLockException extends RuntimeException {
-        OptimisticLockException(String msg) { super(msg); }
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">OptimisticLockException</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">RuntimeException</span> {
+        OptimisticLockException(String msg) { <span class="hljs-built_in">super</span>(msg); }
     }
 }
 </code></pre>
 <h3 id="4-spin-lock-vs-mutex" tabindex="-1"><a class="header-anchor" href="#4-spin-lock-vs-mutex"><span>4. Spin Lock vs Mutex</span></a></h3>
-<pre><code class="language-java">import java.util.concurrent.atomic.*;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.atomic.*;
 
-/**
+<span class="hljs-comment">/**
  * Spin Lock: Busy-wait loop, good for short critical sections.
- */
-public class SpinLock {
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">SpinLock</span> {
 
-    private final AtomicBoolean locked = new AtomicBoolean(false);
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">AtomicBoolean</span> <span class="hljs-variable">locked</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">AtomicBoolean</span>(<span class="hljs-literal">false</span>);
 
-    // Basic spin lock
-    public void lock() {
-        while (!locked.compareAndSet(false, true)) {
-            // Busy wait
+    <span class="hljs-comment">// Basic spin lock</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">lock</span><span class="hljs-params">()</span> {
+        <span class="hljs-keyword">while</span> (!locked.compareAndSet(<span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>)) {
+            <span class="hljs-comment">// Busy wait</span>
         }
     }
 
-    // Spin lock with exponential backoff
-    public void lockWithBackoff() {
-        int backoff = 1;
-        int maxBackoff = 1000;
+    <span class="hljs-comment">// Spin lock with exponential backoff</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">lockWithBackoff</span><span class="hljs-params">()</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">backoff</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;
+        <span class="hljs-type">int</span> <span class="hljs-variable">maxBackoff</span> <span class="hljs-operator">=</span> <span class="hljs-number">1000</span>;
 
-        while (!locked.compareAndSet(false, true)) {
-            // Backoff
-            for (int i = 0; i &lt; backoff; i++) {
+        <span class="hljs-keyword">while</span> (!locked.compareAndSet(<span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>)) {
+            <span class="hljs-comment">// Backoff</span>
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; backoff; i++) {
                 Thread.onSpinWait();
             }
-            backoff = Math.min(backoff * 2, maxBackoff);
+            backoff = Math.min(backoff * <span class="hljs-number">2</span>, maxBackoff);
         }
     }
 
-    // Spin lock with yield
-    public void lockWithYield() {
-        while (!locked.compareAndSet(false, true)) {
-            Thread.yield();  // Give up CPU time slice
+    <span class="hljs-comment">// Spin lock with yield</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">lockWithYield</span><span class="hljs-params">()</span> {
+        <span class="hljs-keyword">while</span> (!locked.compareAndSet(<span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>)) {
+            Thread.<span class="hljs-keyword">yield</span>();  <span class="hljs-comment">// Give up CPU time slice</span>
         }
     }
 
-    public void unlock() {
-        locked.set(false);
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">unlock</span><span class="hljs-params">()</span> {
+        locked.set(<span class="hljs-literal">false</span>);
     }
 
-    public boolean tryLock() {
-        return locked.compareAndSet(false, true);
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">tryLock</span><span class="hljs-params">()</span> {
+        <span class="hljs-keyword">return</span> locked.compareAndSet(<span class="hljs-literal">false</span>, <span class="hljs-literal">true</span>);
     }
 }
 
-/**
+<span class="hljs-comment">/**
  * Ticket Lock: Fair spin lock with FIFO ordering.
- */
-public class TicketLock {
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">TicketLock</span> {
 
-    private final AtomicLong ticketCounter = new AtomicLong(0);
-    private final AtomicLong nowServing = new AtomicLong(0);
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">AtomicLong</span> <span class="hljs-variable">ticketCounter</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">AtomicLong</span>(<span class="hljs-number">0</span>);
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">AtomicLong</span> <span class="hljs-variable">nowServing</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">AtomicLong</span>(<span class="hljs-number">0</span>);
 
-    public void lock() {
-        long myTicket = ticketCounter.getAndIncrement();
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">lock</span><span class="hljs-params">()</span> {
+        <span class="hljs-type">long</span> <span class="hljs-variable">myTicket</span> <span class="hljs-operator">=</span> ticketCounter.getAndIncrement();
 
-        while (nowServing.get() != myTicket) {
+        <span class="hljs-keyword">while</span> (nowServing.get() != myTicket) {
             Thread.onSpinWait();
         }
     }
 
-    public void unlock() {
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">unlock</span><span class="hljs-params">()</span> {
         nowServing.incrementAndGet();
     }
 }
 
-/**
+<span class="hljs-comment">/**
  * CLH Lock: Queue-based fair lock with better cache behavior.
- */
-public class CLHLock {
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CLHLock</span> {
 
-    private final AtomicReference&lt;Node&gt; tail = new AtomicReference&lt;&gt;(new Node());
-    private final ThreadLocal&lt;Node&gt; myNode = ThreadLocal.withInitial(Node::new);
-    private final ThreadLocal&lt;Node&gt; myPred = new ThreadLocal&lt;&gt;();
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> AtomicReference&lt;Node&gt; tail = <span class="hljs-keyword">new</span> <span class="hljs-title class_">AtomicReference</span>&lt;&gt;(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Node</span>());
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ThreadLocal&lt;Node&gt; myNode = ThreadLocal.withInitial(Node::<span class="hljs-keyword">new</span>);
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ThreadLocal&lt;Node&gt; myPred = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ThreadLocal</span>&lt;&gt;();
 
-    private static class Node {
-        volatile boolean locked = false;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Node</span> {
+        <span class="hljs-keyword">volatile</span> <span class="hljs-type">boolean</span> <span class="hljs-variable">locked</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;
     }
 
-    public void lock() {
-        Node node = myNode.get();
-        node.locked = true;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">lock</span><span class="hljs-params">()</span> {
+        <span class="hljs-type">Node</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> myNode.get();
+        node.locked = <span class="hljs-literal">true</span>;
 
-        // Add to queue
-        Node pred = tail.getAndSet(node);
+        <span class="hljs-comment">// Add to queue</span>
+        <span class="hljs-type">Node</span> <span class="hljs-variable">pred</span> <span class="hljs-operator">=</span> tail.getAndSet(node);
         myPred.set(pred);
 
-        // Spin on predecessor's lock
-        while (pred.locked) {
+        <span class="hljs-comment">// Spin on predecessor&#x27;s lock</span>
+        <span class="hljs-keyword">while</span> (pred.locked) {
             Thread.onSpinWait();
         }
     }
 
-    public void unlock() {
-        Node node = myNode.get();
-        node.locked = false;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">unlock</span><span class="hljs-params">()</span> {
+        <span class="hljs-type">Node</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> myNode.get();
+        node.locked = <span class="hljs-literal">false</span>;
 
-        // Reuse predecessor's node
+        <span class="hljs-comment">// Reuse predecessor&#x27;s node</span>
         myNode.set(myPred.get());
     }
 }
@@ -1127,468 +1139,468 @@ public class CLHLock {
 <hr>
 <h2 id="high-traffic-patterns" tabindex="-1"><a class="header-anchor" href="#high-traffic-patterns"><span>High Traffic Patterns</span></a></h2>
 <h3 id="1-request-coalescing" tabindex="-1"><a class="header-anchor" href="#1-request-coalescing"><span>1. Request Coalescing</span></a></h3>
-<pre><code class="language-java">import java.util.concurrent.*;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.*;
 
-/**
+<span class="hljs-comment">/**
  * Request Coalescing: Multiple identical requests share one backend call.
  * Prevents thundering herd problem.
- */
-public class RequestCoalescer&lt;K, V&gt; {
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">RequestCoalescer</span>&lt;K, V&gt; {
 
-    private final ConcurrentHashMap&lt;K, CompletableFuture&lt;V&gt;&gt; inFlightRequests =
-        new ConcurrentHashMap&lt;&gt;();
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ConcurrentHashMap&lt;K, CompletableFuture&lt;V&gt;&gt; inFlightRequests =
+        <span class="hljs-keyword">new</span> <span class="hljs-title class_">ConcurrentHashMap</span>&lt;&gt;();
 
-    private final Function&lt;K, V&gt; fetchFunction;
-    private final ExecutorService executor;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Function&lt;K, V&gt; fetchFunction;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ExecutorService executor;
 
-    public RequestCoalescer(Function&lt;K, V&gt; fetchFunction, ExecutorService executor) {
-        this.fetchFunction = fetchFunction;
-        this.executor = executor;
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">RequestCoalescer</span><span class="hljs-params">(Function&lt;K, V&gt; fetchFunction, ExecutorService executor)</span> {
+        <span class="hljs-built_in">this</span>.fetchFunction = fetchFunction;
+        <span class="hljs-built_in">this</span>.executor = executor;
     }
 
-    public CompletableFuture&lt;V&gt; get(K key) {
-        // Try to join existing request or create new one
-        return inFlightRequests.computeIfAbsent(key, k -&gt; {
+    <span class="hljs-keyword">public</span> CompletableFuture&lt;V&gt; <span class="hljs-title function_">get</span><span class="hljs-params">(K key)</span> {
+        <span class="hljs-comment">// Try to join existing request or create new one</span>
+        <span class="hljs-keyword">return</span> inFlightRequests.computeIfAbsent(key, k -&gt; {
             CompletableFuture&lt;V&gt; future = CompletableFuture.supplyAsync(
                 () -&gt; fetchFunction.apply(k),
                 executor
             );
 
-            // Remove from map when complete
+            <span class="hljs-comment">// Remove from map when complete</span>
             future.whenComplete((result, ex) -&gt; inFlightRequests.remove(k));
 
-            return future;
+            <span class="hljs-keyword">return</span> future;
         });
     }
 
-    // With timeout for stale entries
-    public CompletableFuture&lt;V&gt; getWithTimeout(K key, long timeoutMs) {
-        return get(key).orTimeout(timeoutMs, TimeUnit.MILLISECONDS);
+    <span class="hljs-comment">// With timeout for stale entries</span>
+    <span class="hljs-keyword">public</span> CompletableFuture&lt;V&gt; <span class="hljs-title function_">getWithTimeout</span><span class="hljs-params">(K key, <span class="hljs-type">long</span> timeoutMs)</span> {
+        <span class="hljs-keyword">return</span> get(key).orTimeout(timeoutMs, TimeUnit.MILLISECONDS);
     }
 }
 
-/**
+<span class="hljs-comment">/**
  * Batch Coalescer: Collect multiple requests into single batch call.
- */
-public class BatchCoalescer&lt;K, V&gt; {
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">BatchCoalescer</span>&lt;K, V&gt; {
 
-    private final int batchSize;
-    private final long maxWaitMs;
-    private final Function&lt;List&lt;K&gt;, Map&lt;K, V&gt;&gt; batchFunction;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> batchSize;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">long</span> maxWaitMs;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Function&lt;List&lt;K&gt;, Map&lt;K, V&gt;&gt; batchFunction;
 
-    private final ConcurrentHashMap&lt;K, CompletableFuture&lt;V&gt;&gt; pendingRequests =
-        new ConcurrentHashMap&lt;&gt;();
-    private final BlockingQueue&lt;K&gt; requestQueue = new LinkedBlockingQueue&lt;&gt;();
-    private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ConcurrentHashMap&lt;K, CompletableFuture&lt;V&gt;&gt; pendingRequests =
+        <span class="hljs-keyword">new</span> <span class="hljs-title class_">ConcurrentHashMap</span>&lt;&gt;();
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> BlockingQueue&lt;K&gt; requestQueue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedBlockingQueue</span>&lt;&gt;();
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">ScheduledExecutorService</span> <span class="hljs-variable">scheduler</span> <span class="hljs-operator">=</span> Executors.newSingleThreadScheduledExecutor();
 
-    public BatchCoalescer(int batchSize, long maxWaitMs,
-                          Function&lt;List&lt;K&gt;, Map&lt;K, V&gt;&gt; batchFunction) {
-        this.batchSize = batchSize;
-        this.maxWaitMs = maxWaitMs;
-        this.batchFunction = batchFunction;
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">BatchCoalescer</span><span class="hljs-params">(<span class="hljs-type">int</span> batchSize, <span class="hljs-type">long</span> maxWaitMs,
+                          Function&lt;List&lt;K&gt;, Map&lt;K, V&gt;&gt; batchFunction)</span> {
+        <span class="hljs-built_in">this</span>.batchSize = batchSize;
+        <span class="hljs-built_in">this</span>.maxWaitMs = maxWaitMs;
+        <span class="hljs-built_in">this</span>.batchFunction = batchFunction;
 
         startBatchProcessor();
     }
 
-    public CompletableFuture&lt;V&gt; get(K key) {
-        return pendingRequests.computeIfAbsent(key, k -&gt; {
+    <span class="hljs-keyword">public</span> CompletableFuture&lt;V&gt; <span class="hljs-title function_">get</span><span class="hljs-params">(K key)</span> {
+        <span class="hljs-keyword">return</span> pendingRequests.computeIfAbsent(key, k -&gt; {
             requestQueue.offer(k);
-            return new CompletableFuture&lt;&gt;();
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">CompletableFuture</span>&lt;&gt;();
         });
     }
 
-    private void startBatchProcessor() {
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">startBatchProcessor</span><span class="hljs-params">()</span> {
         scheduler.scheduleWithFixedDelay(() -&gt; {
-            List&lt;K&gt; batch = new ArrayList&lt;&gt;();
+            List&lt;K&gt; batch = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
             requestQueue.drainTo(batch, batchSize);
 
-            if (!batch.isEmpty()) {
-                try {
+            <span class="hljs-keyword">if</span> (!batch.isEmpty()) {
+                <span class="hljs-keyword">try</span> {
                     Map&lt;K, V&gt; results = batchFunction.apply(batch);
 
-                    for (K key : batch) {
+                    <span class="hljs-keyword">for</span> (K key : batch) {
                         CompletableFuture&lt;V&gt; future = pendingRequests.remove(key);
-                        if (future != null) {
-                            V value = results.get(key);
-                            if (value != null) {
+                        <span class="hljs-keyword">if</span> (future != <span class="hljs-literal">null</span>) {
+                            <span class="hljs-type">V</span> <span class="hljs-variable">value</span> <span class="hljs-operator">=</span> results.get(key);
+                            <span class="hljs-keyword">if</span> (value != <span class="hljs-literal">null</span>) {
                                 future.complete(value);
-                            } else {
+                            } <span class="hljs-keyword">else</span> {
                                 future.completeExceptionally(
-                                    new RuntimeException(&quot;Not found: &quot; + key));
+                                    <span class="hljs-keyword">new</span> <span class="hljs-title class_">RuntimeException</span>(<span class="hljs-string">&quot;Not found: &quot;</span> + key));
                             }
                         }
                     }
-                } catch (Exception e) {
-                    for (K key : batch) {
+                } <span class="hljs-keyword">catch</span> (Exception e) {
+                    <span class="hljs-keyword">for</span> (K key : batch) {
                         CompletableFuture&lt;V&gt; future = pendingRequests.remove(key);
-                        if (future != null) {
+                        <span class="hljs-keyword">if</span> (future != <span class="hljs-literal">null</span>) {
                             future.completeExceptionally(e);
                         }
                     }
                 }
             }
-        }, 0, maxWaitMs, TimeUnit.MILLISECONDS);
+        }, <span class="hljs-number">0</span>, maxWaitMs, TimeUnit.MILLISECONDS);
     }
 }
 </code></pre>
 <h3 id="2-load-shedding" tabindex="-1"><a class="header-anchor" href="#2-load-shedding"><span>2. Load Shedding</span></a></h3>
-<pre><code class="language-java">import java.util.concurrent.*;
-import java.util.concurrent.atomic.*;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.*;
+<span class="hljs-keyword">import</span> java.util.concurrent.atomic.*;
 
-/**
+<span class="hljs-comment">/**
  * Load Shedding: Reject excess requests to maintain service quality.
- */
-public class LoadShedder {
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">LoadShedder</span> {
 
-    private final int maxConcurrent;
-    private final AtomicInteger currentLoad = new AtomicInteger(0);
-    private final double shedThreshold;  // Start shedding at this percentage
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> maxConcurrent;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">AtomicInteger</span> <span class="hljs-variable">currentLoad</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">AtomicInteger</span>(<span class="hljs-number">0</span>);
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">double</span> shedThreshold;  <span class="hljs-comment">// Start shedding at this percentage</span>
 
-    public LoadShedder(int maxConcurrent, double shedThreshold) {
-        this.maxConcurrent = maxConcurrent;
-        this.shedThreshold = shedThreshold;
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">LoadShedder</span><span class="hljs-params">(<span class="hljs-type">int</span> maxConcurrent, <span class="hljs-type">double</span> shedThreshold)</span> {
+        <span class="hljs-built_in">this</span>.maxConcurrent = maxConcurrent;
+        <span class="hljs-built_in">this</span>.shedThreshold = shedThreshold;
     }
 
-    public &lt;T&gt; T execute(Callable&lt;T&gt; task) throws Exception {
-        int current = currentLoad.get();
+    <span class="hljs-keyword">public</span> &lt;T&gt; T <span class="hljs-title function_">execute</span><span class="hljs-params">(Callable&lt;T&gt; task)</span> <span class="hljs-keyword">throws</span> Exception {
+        <span class="hljs-type">int</span> <span class="hljs-variable">current</span> <span class="hljs-operator">=</span> currentLoad.get();
 
-        // Hard limit
-        if (current &gt;= maxConcurrent) {
-            throw new LoadSheddingException(&quot;System overloaded&quot;);
+        <span class="hljs-comment">// Hard limit</span>
+        <span class="hljs-keyword">if</span> (current &gt;= maxConcurrent) {
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">LoadSheddingException</span>(<span class="hljs-string">&quot;System overloaded&quot;</span>);
         }
 
-        // Probabilistic shedding near threshold
-        double loadPercentage = (double) current / maxConcurrent;
-        if (loadPercentage &gt; shedThreshold) {
-            double shedProbability = (loadPercentage - shedThreshold) / (1 - shedThreshold);
-            if (Math.random() &lt; shedProbability) {
-                throw new LoadSheddingException(&quot;Request shed due to high load&quot;);
+        <span class="hljs-comment">// Probabilistic shedding near threshold</span>
+        <span class="hljs-type">double</span> <span class="hljs-variable">loadPercentage</span> <span class="hljs-operator">=</span> (<span class="hljs-type">double</span>) current / maxConcurrent;
+        <span class="hljs-keyword">if</span> (loadPercentage &gt; shedThreshold) {
+            <span class="hljs-type">double</span> <span class="hljs-variable">shedProbability</span> <span class="hljs-operator">=</span> (loadPercentage - shedThreshold) / (<span class="hljs-number">1</span> - shedThreshold);
+            <span class="hljs-keyword">if</span> (Math.random() &lt; shedProbability) {
+                <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">LoadSheddingException</span>(<span class="hljs-string">&quot;Request shed due to high load&quot;</span>);
             }
         }
 
         currentLoad.incrementAndGet();
-        try {
-            return task.call();
-        } finally {
+        <span class="hljs-keyword">try</span> {
+            <span class="hljs-keyword">return</span> task.call();
+        } <span class="hljs-keyword">finally</span> {
             currentLoad.decrementAndGet();
         }
     }
 
-    public static class LoadSheddingException extends RuntimeException {
-        LoadSheddingException(String msg) { super(msg); }
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">LoadSheddingException</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">RuntimeException</span> {
+        LoadSheddingException(String msg) { <span class="hljs-built_in">super</span>(msg); }
     }
 }
 
-/**
+<span class="hljs-comment">/**
  * Adaptive Load Shedder: Adjusts based on latency.
- */
-public class AdaptiveLoadShedder {
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">AdaptiveLoadShedder</span> {
 
-    private final int maxConcurrent;
-    private final long targetLatencyMs;
-    private final AtomicInteger currentLoad = new AtomicInteger(0);
-    private final AtomicLong avgLatencyMs = new AtomicLong(0);
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> maxConcurrent;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">long</span> targetLatencyMs;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">AtomicInteger</span> <span class="hljs-variable">currentLoad</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">AtomicInteger</span>(<span class="hljs-number">0</span>);
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">AtomicLong</span> <span class="hljs-variable">avgLatencyMs</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">AtomicLong</span>(<span class="hljs-number">0</span>);
 
-    public AdaptiveLoadShedder(int maxConcurrent, long targetLatencyMs) {
-        this.maxConcurrent = maxConcurrent;
-        this.targetLatencyMs = targetLatencyMs;
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">AdaptiveLoadShedder</span><span class="hljs-params">(<span class="hljs-type">int</span> maxConcurrent, <span class="hljs-type">long</span> targetLatencyMs)</span> {
+        <span class="hljs-built_in">this</span>.maxConcurrent = maxConcurrent;
+        <span class="hljs-built_in">this</span>.targetLatencyMs = targetLatencyMs;
     }
 
-    public &lt;T&gt; T execute(Callable&lt;T&gt; task) throws Exception {
-        // Shed if latency is high, regardless of concurrent count
-        if (avgLatencyMs.get() &gt; targetLatencyMs * 2 &amp;&amp; currentLoad.get() &gt; maxConcurrent / 2) {
-            throw new LoadSheddingException(&quot;Shedding due to high latency&quot;);
+    <span class="hljs-keyword">public</span> &lt;T&gt; T <span class="hljs-title function_">execute</span><span class="hljs-params">(Callable&lt;T&gt; task)</span> <span class="hljs-keyword">throws</span> Exception {
+        <span class="hljs-comment">// Shed if latency is high, regardless of concurrent count</span>
+        <span class="hljs-keyword">if</span> (avgLatencyMs.get() &gt; targetLatencyMs * <span class="hljs-number">2</span> &amp;&amp; currentLoad.get() &gt; maxConcurrent / <span class="hljs-number">2</span>) {
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">LoadSheddingException</span>(<span class="hljs-string">&quot;Shedding due to high latency&quot;</span>);
         }
 
-        if (currentLoad.get() &gt;= maxConcurrent) {
-            throw new LoadSheddingException(&quot;Max concurrent reached&quot;);
+        <span class="hljs-keyword">if</span> (currentLoad.get() &gt;= maxConcurrent) {
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">LoadSheddingException</span>(<span class="hljs-string">&quot;Max concurrent reached&quot;</span>);
         }
 
         currentLoad.incrementAndGet();
-        long start = System.currentTimeMillis();
+        <span class="hljs-type">long</span> <span class="hljs-variable">start</span> <span class="hljs-operator">=</span> System.currentTimeMillis();
 
-        try {
-            return task.call();
-        } finally {
-            long latency = System.currentTimeMillis() - start;
+        <span class="hljs-keyword">try</span> {
+            <span class="hljs-keyword">return</span> task.call();
+        } <span class="hljs-keyword">finally</span> {
+            <span class="hljs-type">long</span> <span class="hljs-variable">latency</span> <span class="hljs-operator">=</span> System.currentTimeMillis() - start;
             updateLatency(latency);
             currentLoad.decrementAndGet();
         }
     }
 
-    private void updateLatency(long latency) {
-        // Exponential moving average
-        avgLatencyMs.updateAndGet(avg -&gt; (avg * 9 + latency) / 10);
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">updateLatency</span><span class="hljs-params">(<span class="hljs-type">long</span> latency)</span> {
+        <span class="hljs-comment">// Exponential moving average</span>
+        avgLatencyMs.updateAndGet(avg -&gt; (avg * <span class="hljs-number">9</span> + latency) / <span class="hljs-number">10</span>);
     }
 
-    public static class LoadSheddingException extends RuntimeException {
-        LoadSheddingException(String msg) { super(msg); }
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">LoadSheddingException</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">RuntimeException</span> {
+        LoadSheddingException(String msg) { <span class="hljs-built_in">super</span>(msg); }
     }
 }
 </code></pre>
 <h3 id="3-bulkhead-pattern" tabindex="-1"><a class="header-anchor" href="#3-bulkhead-pattern"><span>3. Bulkhead Pattern</span></a></h3>
-<pre><code class="language-java">import java.util.concurrent.*;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.*;
 
-/**
+<span class="hljs-comment">/**
  * Bulkhead: Isolate failures to prevent cascading.
  * Each service/operation has its own resource pool.
- */
-public class BulkheadManager {
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">BulkheadManager</span> {
 
-    private final ConcurrentHashMap&lt;String, Bulkhead&gt; bulkheads = new ConcurrentHashMap&lt;&gt;();
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ConcurrentHashMap&lt;String, Bulkhead&gt; bulkheads = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ConcurrentHashMap</span>&lt;&gt;();
 
-    public Bulkhead getBulkhead(String name, int maxConcurrent, int queueSize) {
-        return bulkheads.computeIfAbsent(name,
-            n -&gt; new Bulkhead(n, maxConcurrent, queueSize));
+    <span class="hljs-keyword">public</span> Bulkhead <span class="hljs-title function_">getBulkhead</span><span class="hljs-params">(String name, <span class="hljs-type">int</span> maxConcurrent, <span class="hljs-type">int</span> queueSize)</span> {
+        <span class="hljs-keyword">return</span> bulkheads.computeIfAbsent(name,
+            n -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">Bulkhead</span>(n, maxConcurrent, queueSize));
     }
 
-    public static class Bulkhead {
-        private final String name;
-        private final Semaphore semaphore;
-        private final ExecutorService executor;
-        private final AtomicLong rejectedCount = new AtomicLong(0);
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Bulkhead</span> {
+        <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> String name;
+        <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Semaphore semaphore;
+        <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ExecutorService executor;
+        <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">AtomicLong</span> <span class="hljs-variable">rejectedCount</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">AtomicLong</span>(<span class="hljs-number">0</span>);
 
-        public Bulkhead(String name, int maxConcurrent, int queueSize) {
-            this.name = name;
-            this.semaphore = new Semaphore(maxConcurrent);
-            this.executor = new ThreadPoolExecutor(
+        <span class="hljs-keyword">public</span> <span class="hljs-title function_">Bulkhead</span><span class="hljs-params">(String name, <span class="hljs-type">int</span> maxConcurrent, <span class="hljs-type">int</span> queueSize)</span> {
+            <span class="hljs-built_in">this</span>.name = name;
+            <span class="hljs-built_in">this</span>.semaphore = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Semaphore</span>(maxConcurrent);
+            <span class="hljs-built_in">this</span>.executor = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ThreadPoolExecutor</span>(
                 maxConcurrent, maxConcurrent,
-                0L, TimeUnit.MILLISECONDS,
-                new ArrayBlockingQueue&lt;&gt;(queueSize),
-                new ThreadPoolExecutor.AbortPolicy()
+                <span class="hljs-number">0L</span>, TimeUnit.MILLISECONDS,
+                <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayBlockingQueue</span>&lt;&gt;(queueSize),
+                <span class="hljs-keyword">new</span> <span class="hljs-title class_">ThreadPoolExecutor</span>.AbortPolicy()
             );
         }
 
-        public &lt;T&gt; T execute(Callable&lt;T&gt; task, long timeoutMs) throws Exception {
-            if (!semaphore.tryAcquire(timeoutMs, TimeUnit.MILLISECONDS)) {
+        <span class="hljs-keyword">public</span> &lt;T&gt; T <span class="hljs-title function_">execute</span><span class="hljs-params">(Callable&lt;T&gt; task, <span class="hljs-type">long</span> timeoutMs)</span> <span class="hljs-keyword">throws</span> Exception {
+            <span class="hljs-keyword">if</span> (!semaphore.tryAcquire(timeoutMs, TimeUnit.MILLISECONDS)) {
                 rejectedCount.incrementAndGet();
-                throw new BulkheadFullException(&quot;Bulkhead &quot; + name + &quot; is full&quot;);
+                <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BulkheadFullException</span>(<span class="hljs-string">&quot;Bulkhead &quot;</span> + name + <span class="hljs-string">&quot; is full&quot;</span>);
             }
 
-            try {
+            <span class="hljs-keyword">try</span> {
                 Future&lt;T&gt; future = executor.submit(task);
-                return future.get(timeoutMs, TimeUnit.MILLISECONDS);
-            } finally {
+                <span class="hljs-keyword">return</span> future.get(timeoutMs, TimeUnit.MILLISECONDS);
+            } <span class="hljs-keyword">finally</span> {
                 semaphore.release();
             }
         }
 
-        public CompletableFuture&lt;Void&gt; executeAsync(Runnable task) {
-            if (!semaphore.tryAcquire()) {
+        <span class="hljs-keyword">public</span> CompletableFuture&lt;Void&gt; <span class="hljs-title function_">executeAsync</span><span class="hljs-params">(Runnable task)</span> {
+            <span class="hljs-keyword">if</span> (!semaphore.tryAcquire()) {
                 rejectedCount.incrementAndGet();
-                CompletableFuture&lt;Void&gt; failed = new CompletableFuture&lt;&gt;();
+                CompletableFuture&lt;Void&gt; failed = <span class="hljs-keyword">new</span> <span class="hljs-title class_">CompletableFuture</span>&lt;&gt;();
                 failed.completeExceptionally(
-                    new BulkheadFullException(&quot;Bulkhead &quot; + name + &quot; is full&quot;));
-                return failed;
+                    <span class="hljs-keyword">new</span> <span class="hljs-title class_">BulkheadFullException</span>(<span class="hljs-string">&quot;Bulkhead &quot;</span> + name + <span class="hljs-string">&quot; is full&quot;</span>));
+                <span class="hljs-keyword">return</span> failed;
             }
 
-            return CompletableFuture.runAsync(task, executor)
+            <span class="hljs-keyword">return</span> CompletableFuture.runAsync(task, executor)
                 .whenComplete((result, ex) -&gt; semaphore.release());
         }
 
-        public long getRejectedCount() {
-            return rejectedCount.get();
+        <span class="hljs-keyword">public</span> <span class="hljs-type">long</span> <span class="hljs-title function_">getRejectedCount</span><span class="hljs-params">()</span> {
+            <span class="hljs-keyword">return</span> rejectedCount.get();
         }
     }
 
-    public static class BulkheadFullException extends RuntimeException {
-        BulkheadFullException(String msg) { super(msg); }
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">BulkheadFullException</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">RuntimeException</span> {
+        BulkheadFullException(String msg) { <span class="hljs-built_in">super</span>(msg); }
     }
 }
 
-// Usage example
-public class BulkheadUsageDemo {
+<span class="hljs-comment">// Usage example</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">BulkheadUsageDemo</span> {
 
-    private final BulkheadManager bulkheadManager = new BulkheadManager();
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">BulkheadManager</span> <span class="hljs-variable">bulkheadManager</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BulkheadManager</span>();
 
-    // Separate bulkheads for different downstream services
-    private final BulkheadManager.Bulkhead paymentBulkhead =
-        bulkheadManager.getBulkhead(&quot;payment&quot;, 10, 50);
+    <span class="hljs-comment">// Separate bulkheads for different downstream services</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> BulkheadManager.<span class="hljs-type">Bulkhead</span> <span class="hljs-variable">paymentBulkhead</span> <span class="hljs-operator">=</span>
+        bulkheadManager.getBulkhead(<span class="hljs-string">&quot;payment&quot;</span>, <span class="hljs-number">10</span>, <span class="hljs-number">50</span>);
 
-    private final BulkheadManager.Bulkhead inventoryBulkhead =
-        bulkheadManager.getBulkhead(&quot;inventory&quot;, 20, 100);
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> BulkheadManager.<span class="hljs-type">Bulkhead</span> <span class="hljs-variable">inventoryBulkhead</span> <span class="hljs-operator">=</span>
+        bulkheadManager.getBulkhead(<span class="hljs-string">&quot;inventory&quot;</span>, <span class="hljs-number">20</span>, <span class="hljs-number">100</span>);
 
-    public PaymentResult processPayment(PaymentRequest request) throws Exception {
-        return paymentBulkhead.execute(() -&gt; {
-            // Call payment service
-            return callPaymentService(request);
-        }, 5000);
+    <span class="hljs-keyword">public</span> PaymentResult <span class="hljs-title function_">processPayment</span><span class="hljs-params">(PaymentRequest request)</span> <span class="hljs-keyword">throws</span> Exception {
+        <span class="hljs-keyword">return</span> paymentBulkhead.execute(() -&gt; {
+            <span class="hljs-comment">// Call payment service</span>
+            <span class="hljs-keyword">return</span> callPaymentService(request);
+        }, <span class="hljs-number">5000</span>);
     }
 
-    public InventoryResult checkInventory(String productId) throws Exception {
-        return inventoryBulkhead.execute(() -&gt; {
-            // Call inventory service
-            return callInventoryService(productId);
-        }, 3000);
+    <span class="hljs-keyword">public</span> InventoryResult <span class="hljs-title function_">checkInventory</span><span class="hljs-params">(String productId)</span> <span class="hljs-keyword">throws</span> Exception {
+        <span class="hljs-keyword">return</span> inventoryBulkhead.execute(() -&gt; {
+            <span class="hljs-comment">// Call inventory service</span>
+            <span class="hljs-keyword">return</span> callInventoryService(productId);
+        }, <span class="hljs-number">3000</span>);
     }
 
-    private PaymentResult callPaymentService(PaymentRequest req) { return null; }
-    private InventoryResult callInventoryService(String id) { return null; }
+    <span class="hljs-keyword">private</span> PaymentResult <span class="hljs-title function_">callPaymentService</span><span class="hljs-params">(PaymentRequest req)</span> { <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>; }
+    <span class="hljs-keyword">private</span> InventoryResult <span class="hljs-title function_">callInventoryService</span><span class="hljs-params">(String id)</span> { <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>; }
 }
 </code></pre>
 <h3 id="4-hot-key-problem" tabindex="-1"><a class="header-anchor" href="#4-hot-key-problem"><span>4. Hot Key Problem</span></a></h3>
-<pre><code class="language-java">import java.util.concurrent.*;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.*;
 
-/**
+<span class="hljs-comment">/**
  * Hot Key Problem: Few keys receive disproportionate traffic.
  * Solutions: Local cache, key splitting, rate limiting per key.
- */
-public class HotKeyHandler {
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">HotKeyHandler</span> {
 
-    // Solution 1: Local cache for hot keys
-    private final ConcurrentHashMap&lt;String, CacheEntry&gt; localCache = new ConcurrentHashMap&lt;&gt;();
-    private final ConcurrentHashMap&lt;String, AtomicLong&gt; keyAccessCount = new ConcurrentHashMap&lt;&gt;();
-    private final long hotKeyThreshold;
-    private final long localCacheTtlMs;
+    <span class="hljs-comment">// Solution 1: Local cache for hot keys</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ConcurrentHashMap&lt;String, CacheEntry&gt; localCache = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ConcurrentHashMap</span>&lt;&gt;();
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ConcurrentHashMap&lt;String, AtomicLong&gt; keyAccessCount = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ConcurrentHashMap</span>&lt;&gt;();
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">long</span> hotKeyThreshold;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">long</span> localCacheTtlMs;
 
-    public HotKeyHandler(long hotKeyThreshold, long localCacheTtlMs) {
-        this.hotKeyThreshold = hotKeyThreshold;
-        this.localCacheTtlMs = localCacheTtlMs;
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">HotKeyHandler</span><span class="hljs-params">(<span class="hljs-type">long</span> hotKeyThreshold, <span class="hljs-type">long</span> localCacheTtlMs)</span> {
+        <span class="hljs-built_in">this</span>.hotKeyThreshold = hotKeyThreshold;
+        <span class="hljs-built_in">this</span>.localCacheTtlMs = localCacheTtlMs;
     }
 
-    public String get(String key) {
-        // Track access
-        long count = keyAccessCount
-            .computeIfAbsent(key, k -&gt; new AtomicLong(0))
+    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">get</span><span class="hljs-params">(String key)</span> {
+        <span class="hljs-comment">// Track access</span>
+        <span class="hljs-type">long</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> keyAccessCount
+            .computeIfAbsent(key, k -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">AtomicLong</span>(<span class="hljs-number">0</span>))
             .incrementAndGet();
 
-        // Check local cache first for hot keys
-        CacheEntry entry = localCache.get(key);
-        if (entry != null &amp;&amp; !entry.isExpired()) {
-            return entry.value;
+        <span class="hljs-comment">// Check local cache first for hot keys</span>
+        <span class="hljs-type">CacheEntry</span> <span class="hljs-variable">entry</span> <span class="hljs-operator">=</span> localCache.get(key);
+        <span class="hljs-keyword">if</span> (entry != <span class="hljs-literal">null</span> &amp;&amp; !entry.isExpired()) {
+            <span class="hljs-keyword">return</span> entry.value;
         }
 
-        // Fetch from remote cache/database
-        String value = fetchFromRemote(key);
+        <span class="hljs-comment">// Fetch from remote cache/database</span>
+        <span class="hljs-type">String</span> <span class="hljs-variable">value</span> <span class="hljs-operator">=</span> fetchFromRemote(key);
 
-        // Cache locally if hot
-        if (count &gt; hotKeyThreshold) {
-            localCache.put(key, new CacheEntry(value, localCacheTtlMs));
+        <span class="hljs-comment">// Cache locally if hot</span>
+        <span class="hljs-keyword">if</span> (count &gt; hotKeyThreshold) {
+            localCache.put(key, <span class="hljs-keyword">new</span> <span class="hljs-title class_">CacheEntry</span>(value, localCacheTtlMs));
         }
 
-        return value;
+        <span class="hljs-keyword">return</span> value;
     }
 
-    private String fetchFromRemote(String key) {
-        // Fetch from Redis/Database
-        return &quot;value_&quot; + key;
+    <span class="hljs-keyword">private</span> String <span class="hljs-title function_">fetchFromRemote</span><span class="hljs-params">(String key)</span> {
+        <span class="hljs-comment">// Fetch from Redis/Database</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;value_&quot;</span> + key;
     }
 
-    static class CacheEntry {
-        final String value;
-        final long expiresAt;
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CacheEntry</span> {
+        <span class="hljs-keyword">final</span> String value;
+        <span class="hljs-keyword">final</span> <span class="hljs-type">long</span> expiresAt;
 
-        CacheEntry(String value, long ttlMs) {
-            this.value = value;
-            this.expiresAt = System.currentTimeMillis() + ttlMs;
+        CacheEntry(String value, <span class="hljs-type">long</span> ttlMs) {
+            <span class="hljs-built_in">this</span>.value = value;
+            <span class="hljs-built_in">this</span>.expiresAt = System.currentTimeMillis() + ttlMs;
         }
 
-        boolean isExpired() {
-            return System.currentTimeMillis() &gt; expiresAt;
+        <span class="hljs-type">boolean</span> <span class="hljs-title function_">isExpired</span><span class="hljs-params">()</span> {
+            <span class="hljs-keyword">return</span> System.currentTimeMillis() &gt; expiresAt;
         }
     }
 }
 
-/**
+<span class="hljs-comment">/**
  * Solution 2: Key splitting for hot keys.
  * Split hot key into multiple keys to distribute load.
- */
-public class HotKeySplitter {
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">HotKeySplitter</span> {
 
-    private final int numSplits;
-    private final Set&lt;String&gt; hotKeys;
-    private final Random random = new Random();
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> numSplits;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Set&lt;String&gt; hotKeys;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">Random</span> <span class="hljs-variable">random</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Random</span>();
 
-    public HotKeySplitter(int numSplits, Set&lt;String&gt; hotKeys) {
-        this.numSplits = numSplits;
-        this.hotKeys = hotKeys;
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">HotKeySplitter</span><span class="hljs-params">(<span class="hljs-type">int</span> numSplits, Set&lt;String&gt; hotKeys)</span> {
+        <span class="hljs-built_in">this</span>.numSplits = numSplits;
+        <span class="hljs-built_in">this</span>.hotKeys = hotKeys;
     }
 
-    public String getEffectiveKey(String key) {
-        if (hotKeys.contains(key)) {
-            // Split hot key: key -&gt; key_0, key_1, ..., key_N
-            int split = random.nextInt(numSplits);
-            return key + &quot;_&quot; + split;
+    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getEffectiveKey</span><span class="hljs-params">(String key)</span> {
+        <span class="hljs-keyword">if</span> (hotKeys.contains(key)) {
+            <span class="hljs-comment">// Split hot key: key -&gt; key_0, key_1, ..., key_N</span>
+            <span class="hljs-type">int</span> <span class="hljs-variable">split</span> <span class="hljs-operator">=</span> random.nextInt(numSplits);
+            <span class="hljs-keyword">return</span> key + <span class="hljs-string">&quot;_&quot;</span> + split;
         }
-        return key;
+        <span class="hljs-keyword">return</span> key;
     }
 
-    public void set(String key, String value) {
-        if (hotKeys.contains(key)) {
-            // Write to all splits
-            for (int i = 0; i &lt; numSplits; i++) {
-                String splitKey = key + &quot;_&quot; + i;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">set</span><span class="hljs-params">(String key, String value)</span> {
+        <span class="hljs-keyword">if</span> (hotKeys.contains(key)) {
+            <span class="hljs-comment">// Write to all splits</span>
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; numSplits; i++) {
+                <span class="hljs-type">String</span> <span class="hljs-variable">splitKey</span> <span class="hljs-operator">=</span> key + <span class="hljs-string">&quot;_&quot;</span> + i;
                 setInCache(splitKey, value);
             }
-        } else {
+        } <span class="hljs-keyword">else</span> {
             setInCache(key, value);
         }
     }
 
-    public String get(String key) {
-        String effectiveKey = getEffectiveKey(key);
-        return getFromCache(effectiveKey);
+    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">get</span><span class="hljs-params">(String key)</span> {
+        <span class="hljs-type">String</span> <span class="hljs-variable">effectiveKey</span> <span class="hljs-operator">=</span> getEffectiveKey(key);
+        <span class="hljs-keyword">return</span> getFromCache(effectiveKey);
     }
 
-    private void setInCache(String key, String value) { /* ... */ }
-    private String getFromCache(String key) { return null; }
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setInCache</span><span class="hljs-params">(String key, String value)</span> { <span class="hljs-comment">/* ... */</span> }
+    <span class="hljs-keyword">private</span> String <span class="hljs-title function_">getFromCache</span><span class="hljs-params">(String key)</span> { <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>; }
 }
 
-/**
+<span class="hljs-comment">/**
  * Solution 3: Rate limiting per key.
- */
-public class PerKeyRateLimiter {
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">PerKeyRateLimiter</span> {
 
-    private final ConcurrentHashMap&lt;String, TokenBucket&gt; keyLimiters = new ConcurrentHashMap&lt;&gt;();
-    private final int tokensPerSecond;
-    private final int bucketSize;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ConcurrentHashMap&lt;String, TokenBucket&gt; keyLimiters = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ConcurrentHashMap</span>&lt;&gt;();
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> tokensPerSecond;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> bucketSize;
 
-    public PerKeyRateLimiter(int tokensPerSecond, int bucketSize) {
-        this.tokensPerSecond = tokensPerSecond;
-        this.bucketSize = bucketSize;
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">PerKeyRateLimiter</span><span class="hljs-params">(<span class="hljs-type">int</span> tokensPerSecond, <span class="hljs-type">int</span> bucketSize)</span> {
+        <span class="hljs-built_in">this</span>.tokensPerSecond = tokensPerSecond;
+        <span class="hljs-built_in">this</span>.bucketSize = bucketSize;
     }
 
-    public boolean tryAcquire(String key) {
-        TokenBucket bucket = keyLimiters.computeIfAbsent(key,
-            k -&gt; new TokenBucket(tokensPerSecond, bucketSize));
-        return bucket.tryAcquire();
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">tryAcquire</span><span class="hljs-params">(String key)</span> {
+        <span class="hljs-type">TokenBucket</span> <span class="hljs-variable">bucket</span> <span class="hljs-operator">=</span> keyLimiters.computeIfAbsent(key,
+            k -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">TokenBucket</span>(tokensPerSecond, bucketSize));
+        <span class="hljs-keyword">return</span> bucket.tryAcquire();
     }
 
-    // Cleanup old entries periodically
-    public void cleanup() {
-        long now = System.currentTimeMillis();
+    <span class="hljs-comment">// Cleanup old entries periodically</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">cleanup</span><span class="hljs-params">()</span> {
+        <span class="hljs-type">long</span> <span class="hljs-variable">now</span> <span class="hljs-operator">=</span> System.currentTimeMillis();
         keyLimiters.entrySet().removeIf(
-            entry -&gt; now - entry.getValue().lastAccess &gt; 60_000);
+            entry -&gt; now - entry.getValue().lastAccess &gt; <span class="hljs-number">60_000</span>);
     }
 
-    static class TokenBucket {
-        private final int refillRate;
-        private final int capacity;
-        private double tokens;
-        private long lastRefillTime;
-        volatile long lastAccess;
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">TokenBucket</span> {
+        <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> refillRate;
+        <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> capacity;
+        <span class="hljs-keyword">private</span> <span class="hljs-type">double</span> tokens;
+        <span class="hljs-keyword">private</span> <span class="hljs-type">long</span> lastRefillTime;
+        <span class="hljs-keyword">volatile</span> <span class="hljs-type">long</span> lastAccess;
 
-        TokenBucket(int refillRate, int capacity) {
-            this.refillRate = refillRate;
-            this.capacity = capacity;
-            this.tokens = capacity;
-            this.lastRefillTime = System.currentTimeMillis();
+        TokenBucket(<span class="hljs-type">int</span> refillRate, <span class="hljs-type">int</span> capacity) {
+            <span class="hljs-built_in">this</span>.refillRate = refillRate;
+            <span class="hljs-built_in">this</span>.capacity = capacity;
+            <span class="hljs-built_in">this</span>.tokens = capacity;
+            <span class="hljs-built_in">this</span>.lastRefillTime = System.currentTimeMillis();
         }
 
-        synchronized boolean tryAcquire() {
+        <span class="hljs-keyword">synchronized</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">tryAcquire</span><span class="hljs-params">()</span> {
             lastAccess = System.currentTimeMillis();
             refill();
 
-            if (tokens &gt;= 1) {
+            <span class="hljs-keyword">if</span> (tokens &gt;= <span class="hljs-number">1</span>) {
                 tokens--;
-                return true;
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
             }
-            return false;
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
         }
 
-        private void refill() {
-            long now = System.currentTimeMillis();
-            double elapsed = (now - lastRefillTime) / 1000.0;
+        <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">refill</span><span class="hljs-params">()</span> {
+            <span class="hljs-type">long</span> <span class="hljs-variable">now</span> <span class="hljs-operator">=</span> System.currentTimeMillis();
+            <span class="hljs-type">double</span> <span class="hljs-variable">elapsed</span> <span class="hljs-operator">=</span> (now - lastRefillTime) / <span class="hljs-number">1000.0</span>;
             tokens = Math.min(capacity, tokens + elapsed * refillRate);
             lastRefillTime = now;
         }
@@ -1596,300 +1608,300 @@ public class PerKeyRateLimiter {
 }
 </code></pre>
 <h3 id="5-connection-pool-tuning" tabindex="-1"><a class="header-anchor" href="#5-connection-pool-tuning"><span>5. Connection Pool Tuning</span></a></h3>
-<pre><code class="language-java">import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> com.zaxxer.hikari.HikariConfig;
+<span class="hljs-keyword">import</span> com.zaxxer.hikari.HikariDataSource;
 
-/**
+<span class="hljs-comment">/**
  * HikariCP connection pool tuning for high traffic.
- */
-public class ConnectionPoolConfig {
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ConnectionPoolConfig</span> {
 
-    public HikariDataSource createOptimizedPool() {
-        HikariConfig config = new HikariConfig();
+    <span class="hljs-keyword">public</span> HikariDataSource <span class="hljs-title function_">createOptimizedPool</span><span class="hljs-params">()</span> {
+        <span class="hljs-type">HikariConfig</span> <span class="hljs-variable">config</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">HikariConfig</span>();
 
-        // Basic settings
-        config.setJdbcUrl(&quot;jdbc:mysql://localhost:3306/mydb&quot;);
-        config.setUsername(&quot;user&quot;);
-        config.setPassword(&quot;password&quot;);
+        <span class="hljs-comment">// Basic settings</span>
+        config.setJdbcUrl(<span class="hljs-string">&quot;jdbc:mysql://localhost:3306/mydb&quot;</span>);
+        config.setUsername(<span class="hljs-string">&quot;user&quot;</span>);
+        config.setPassword(<span class="hljs-string">&quot;password&quot;</span>);
 
-        // Pool sizing
-        // Formula: connections = (core_count * 2) + effective_spindle_count
-        // For SSD: connections = (core_count * 2) + 1
-        config.setMaximumPoolSize(20);
-        config.setMinimumIdle(5);
+        <span class="hljs-comment">// Pool sizing</span>
+        <span class="hljs-comment">// Formula: connections = (core_count * 2) + effective_spindle_count</span>
+        <span class="hljs-comment">// For SSD: connections = (core_count * 2) + 1</span>
+        config.setMaximumPoolSize(<span class="hljs-number">20</span>);
+        config.setMinimumIdle(<span class="hljs-number">5</span>);
 
-        // Connection timeout (how long to wait for connection from pool)
-        config.setConnectionTimeout(30_000);  // 30 seconds
+        <span class="hljs-comment">// Connection timeout (how long to wait for connection from pool)</span>
+        config.setConnectionTimeout(<span class="hljs-number">30_000</span>);  <span class="hljs-comment">// 30 seconds</span>
 
-        // Idle timeout (how long connection can sit idle before being removed)
-        config.setIdleTimeout(600_000);  // 10 minutes
+        <span class="hljs-comment">// Idle timeout (how long connection can sit idle before being removed)</span>
+        config.setIdleTimeout(<span class="hljs-number">600_000</span>);  <span class="hljs-comment">// 10 minutes</span>
 
-        // Max lifetime (max lifetime of connection in pool)
-        config.setMaxLifetime(1_800_000);  // 30 minutes
+        <span class="hljs-comment">// Max lifetime (max lifetime of connection in pool)</span>
+        config.setMaxLifetime(<span class="hljs-number">1_800_000</span>);  <span class="hljs-comment">// 30 minutes</span>
 
-        // Validation
-        config.setConnectionTestQuery(&quot;SELECT 1&quot;);
-        config.setValidationTimeout(5_000);  // 5 seconds
+        <span class="hljs-comment">// Validation</span>
+        config.setConnectionTestQuery(<span class="hljs-string">&quot;SELECT 1&quot;</span>);
+        config.setValidationTimeout(<span class="hljs-number">5_000</span>);  <span class="hljs-comment">// 5 seconds</span>
 
-        // Leak detection
-        config.setLeakDetectionThreshold(60_000);  // 1 minute
+        <span class="hljs-comment">// Leak detection</span>
+        config.setLeakDetectionThreshold(<span class="hljs-number">60_000</span>);  <span class="hljs-comment">// 1 minute</span>
 
-        // Performance optimizations
-        config.addDataSourceProperty(&quot;cachePrepStmts&quot;, &quot;true&quot;);
-        config.addDataSourceProperty(&quot;prepStmtCacheSize&quot;, &quot;250&quot;);
-        config.addDataSourceProperty(&quot;prepStmtCacheSqlLimit&quot;, &quot;2048&quot;);
-        config.addDataSourceProperty(&quot;useServerPrepStmts&quot;, &quot;true&quot;);
+        <span class="hljs-comment">// Performance optimizations</span>
+        config.addDataSourceProperty(<span class="hljs-string">&quot;cachePrepStmts&quot;</span>, <span class="hljs-string">&quot;true&quot;</span>);
+        config.addDataSourceProperty(<span class="hljs-string">&quot;prepStmtCacheSize&quot;</span>, <span class="hljs-string">&quot;250&quot;</span>);
+        config.addDataSourceProperty(<span class="hljs-string">&quot;prepStmtCacheSqlLimit&quot;</span>, <span class="hljs-string">&quot;2048&quot;</span>);
+        config.addDataSourceProperty(<span class="hljs-string">&quot;useServerPrepStmts&quot;</span>, <span class="hljs-string">&quot;true&quot;</span>);
 
-        return new HikariDataSource(config);
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">HikariDataSource</span>(config);
     }
 
-    /**
+    <span class="hljs-comment">/**
      * Monitor connection pool health.
-     */
-    public void monitorPool(HikariDataSource ds) {
-        System.out.println(&quot;Active connections: &quot; + ds.getHikariPoolMXBean().getActiveConnections());
-        System.out.println(&quot;Idle connections: &quot; + ds.getHikariPoolMXBean().getIdleConnections());
-        System.out.println(&quot;Total connections: &quot; + ds.getHikariPoolMXBean().getTotalConnections());
-        System.out.println(&quot;Threads waiting: &quot; + ds.getHikariPoolMXBean().getThreadsAwaitingConnection());
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">monitorPool</span><span class="hljs-params">(HikariDataSource ds)</span> {
+        System.out.println(<span class="hljs-string">&quot;Active connections: &quot;</span> + ds.getHikariPoolMXBean().getActiveConnections());
+        System.out.println(<span class="hljs-string">&quot;Idle connections: &quot;</span> + ds.getHikariPoolMXBean().getIdleConnections());
+        System.out.println(<span class="hljs-string">&quot;Total connections: &quot;</span> + ds.getHikariPoolMXBean().getTotalConnections());
+        System.out.println(<span class="hljs-string">&quot;Threads waiting: &quot;</span> + ds.getHikariPoolMXBean().getThreadsAwaitingConnection());
     }
 }
 </code></pre>
 <h3 id="6-consistent-hashing" tabindex="-1"><a class="header-anchor" href="#6-consistent-hashing"><span>6. Consistent Hashing</span></a></h3>
-<pre><code class="language-java">import java.util.*;
-import java.util.concurrent.ConcurrentSkipListMap;
-import java.security.MessageDigest;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.*;
+<span class="hljs-keyword">import</span> java.util.concurrent.ConcurrentSkipListMap;
+<span class="hljs-keyword">import</span> java.security.MessageDigest;
 
-/**
+<span class="hljs-comment">/**
  * Consistent Hashing: Distribute load across nodes with minimal redistribution.
- */
-public class ConsistentHash&lt;T&gt; {
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ConsistentHash</span>&lt;T&gt; {
 
-    private final int virtualNodes;
-    private final ConcurrentSkipListMap&lt;Long, T&gt; ring = new ConcurrentSkipListMap&lt;&gt;();
-    private final MessageDigest md;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> virtualNodes;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ConcurrentSkipListMap&lt;Long, T&gt; ring = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ConcurrentSkipListMap</span>&lt;&gt;();
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> MessageDigest md;
 
-    public ConsistentHash(int virtualNodes) {
-        this.virtualNodes = virtualNodes;
-        try {
-            this.md = MessageDigest.getInstance(&quot;MD5&quot;);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">ConsistentHash</span><span class="hljs-params">(<span class="hljs-type">int</span> virtualNodes)</span> {
+        <span class="hljs-built_in">this</span>.virtualNodes = virtualNodes;
+        <span class="hljs-keyword">try</span> {
+            <span class="hljs-built_in">this</span>.md = MessageDigest.getInstance(<span class="hljs-string">&quot;MD5&quot;</span>);
+        } <span class="hljs-keyword">catch</span> (Exception e) {
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RuntimeException</span>(e);
         }
     }
 
-    public void addNode(T node) {
-        for (int i = 0; i &lt; virtualNodes; i++) {
-            long hash = hash(node.toString() + &quot;#&quot; + i);
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">addNode</span><span class="hljs-params">(T node)</span> {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; virtualNodes; i++) {
+            <span class="hljs-type">long</span> <span class="hljs-variable">hash</span> <span class="hljs-operator">=</span> hash(node.toString() + <span class="hljs-string">&quot;#&quot;</span> + i);
             ring.put(hash, node);
         }
     }
 
-    public void removeNode(T node) {
-        for (int i = 0; i &lt; virtualNodes; i++) {
-            long hash = hash(node.toString() + &quot;#&quot; + i);
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">removeNode</span><span class="hljs-params">(T node)</span> {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; virtualNodes; i++) {
+            <span class="hljs-type">long</span> <span class="hljs-variable">hash</span> <span class="hljs-operator">=</span> hash(node.toString() + <span class="hljs-string">&quot;#&quot;</span> + i);
             ring.remove(hash);
         }
     }
 
-    public T getNode(String key) {
-        if (ring.isEmpty()) {
-            return null;
+    <span class="hljs-keyword">public</span> T <span class="hljs-title function_">getNode</span><span class="hljs-params">(String key)</span> {
+        <span class="hljs-keyword">if</span> (ring.isEmpty()) {
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
         }
 
-        long hash = hash(key);
+        <span class="hljs-type">long</span> <span class="hljs-variable">hash</span> <span class="hljs-operator">=</span> hash(key);
 
-        // Find first node with hash &gt;= key hash
+        <span class="hljs-comment">// Find first node with hash &gt;= key hash</span>
         Map.Entry&lt;Long, T&gt; entry = ring.ceilingEntry(hash);
 
-        // Wrap around if necessary
-        if (entry == null) {
+        <span class="hljs-comment">// Wrap around if necessary</span>
+        <span class="hljs-keyword">if</span> (entry == <span class="hljs-literal">null</span>) {
             entry = ring.firstEntry();
         }
 
-        return entry.getValue();
+        <span class="hljs-keyword">return</span> entry.getValue();
     }
 
-    // Get N nodes for replication
-    public List&lt;T&gt; getNodes(String key, int count) {
-        if (ring.isEmpty()) {
-            return Collections.emptyList();
+    <span class="hljs-comment">// Get N nodes for replication</span>
+    <span class="hljs-keyword">public</span> List&lt;T&gt; <span class="hljs-title function_">getNodes</span><span class="hljs-params">(String key, <span class="hljs-type">int</span> count)</span> {
+        <span class="hljs-keyword">if</span> (ring.isEmpty()) {
+            <span class="hljs-keyword">return</span> Collections.emptyList();
         }
 
-        Set&lt;T&gt; nodes = new LinkedHashSet&lt;&gt;();
-        long hash = hash(key);
+        Set&lt;T&gt; nodes = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedHashSet</span>&lt;&gt;();
+        <span class="hljs-type">long</span> <span class="hljs-variable">hash</span> <span class="hljs-operator">=</span> hash(key);
 
-        // Get nodes starting from the key's position
+        <span class="hljs-comment">// Get nodes starting from the key&#x27;s position</span>
         SortedMap&lt;Long, T&gt; tailMap = ring.tailMap(hash);
-        for (T node : tailMap.values()) {
+        <span class="hljs-keyword">for</span> (T node : tailMap.values()) {
             nodes.add(node);
-            if (nodes.size() &gt;= count) break;
+            <span class="hljs-keyword">if</span> (nodes.size() &gt;= count) <span class="hljs-keyword">break</span>;
         }
 
-        // Wrap around if needed
-        if (nodes.size() &lt; count) {
-            for (T node : ring.values()) {
+        <span class="hljs-comment">// Wrap around if needed</span>
+        <span class="hljs-keyword">if</span> (nodes.size() &lt; count) {
+            <span class="hljs-keyword">for</span> (T node : ring.values()) {
                 nodes.add(node);
-                if (nodes.size() &gt;= count) break;
+                <span class="hljs-keyword">if</span> (nodes.size() &gt;= count) <span class="hljs-keyword">break</span>;
             }
         }
 
-        return new ArrayList&lt;&gt;(nodes);
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(nodes);
     }
 
-    private long hash(String key) {
+    <span class="hljs-keyword">private</span> <span class="hljs-type">long</span> <span class="hljs-title function_">hash</span><span class="hljs-params">(String key)</span> {
         md.reset();
-        byte[] digest = md.digest(key.getBytes());
+        <span class="hljs-type">byte</span>[] digest = md.digest(key.getBytes());
 
-        // Use first 8 bytes for long hash
-        long hash = 0;
-        for (int i = 0; i &lt; 8; i++) {
-            hash = (hash &lt;&lt; 8) | (digest[i] &amp; 0xFF);
+        <span class="hljs-comment">// Use first 8 bytes for long hash</span>
+        <span class="hljs-type">long</span> <span class="hljs-variable">hash</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">8</span>; i++) {
+            hash = (hash &lt;&lt; <span class="hljs-number">8</span>) | (digest[i] &amp; <span class="hljs-number">0xFF</span>);
         }
-        return hash;
+        <span class="hljs-keyword">return</span> hash;
     }
 }
 
-// Usage
-public class ConsistentHashDemo {
+<span class="hljs-comment">// Usage</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ConsistentHashDemo</span> {
 
-    public void demo() {
-        ConsistentHash&lt;String&gt; hash = new ConsistentHash&lt;&gt;(150);  // 150 virtual nodes
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">demo</span><span class="hljs-params">()</span> {
+        ConsistentHash&lt;String&gt; hash = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ConsistentHash</span>&lt;&gt;(<span class="hljs-number">150</span>);  <span class="hljs-comment">// 150 virtual nodes</span>
 
-        // Add cache servers
-        hash.addNode(&quot;cache-1.example.com&quot;);
-        hash.addNode(&quot;cache-2.example.com&quot;);
-        hash.addNode(&quot;cache-3.example.com&quot;);
+        <span class="hljs-comment">// Add cache servers</span>
+        hash.addNode(<span class="hljs-string">&quot;cache-1.example.com&quot;</span>);
+        hash.addNode(<span class="hljs-string">&quot;cache-2.example.com&quot;</span>);
+        hash.addNode(<span class="hljs-string">&quot;cache-3.example.com&quot;</span>);
 
-        // Get server for a key
-        String server = hash.getNode(&quot;user:123&quot;);
-        System.out.println(&quot;Key 'user:123' maps to: &quot; + server);
+        <span class="hljs-comment">// Get server for a key</span>
+        <span class="hljs-type">String</span> <span class="hljs-variable">server</span> <span class="hljs-operator">=</span> hash.getNode(<span class="hljs-string">&quot;user:123&quot;</span>);
+        System.out.println(<span class="hljs-string">&quot;Key &#x27;user:123&#x27; maps to: &quot;</span> + server);
 
-        // Simulate node failure - only ~1/N keys need remapping
-        hash.removeNode(&quot;cache-2.example.com&quot;);
+        <span class="hljs-comment">// Simulate node failure - only ~1/N keys need remapping</span>
+        hash.removeNode(<span class="hljs-string">&quot;cache-2.example.com&quot;</span>);
 
-        // Get replicas for redundancy
-        List&lt;String&gt; replicas = hash.getNodes(&quot;user:123&quot;, 2);
-        System.out.println(&quot;Replicas: &quot; + replicas);
+        <span class="hljs-comment">// Get replicas for redundancy</span>
+        List&lt;String&gt; replicas = hash.getNodes(<span class="hljs-string">&quot;user:123&quot;</span>, <span class="hljs-number">2</span>);
+        System.out.println(<span class="hljs-string">&quot;Replicas: &quot;</span> + replicas);
     }
 }
 </code></pre>
 <hr>
 <h2 id="real-world-scenarios" tabindex="-1"><a class="header-anchor" href="#real-world-scenarios"><span>Real-World Scenarios</span></a></h2>
 <h3 id="scenario-1-high-concurrency-counter-like-youtube-views" tabindex="-1"><a class="header-anchor" href="#scenario-1-high-concurrency-counter-like-youtube-views"><span>Scenario 1: High-Concurrency Counter (Like YouTube Views)</span></a></h3>
-<pre><code class="language-java">import java.util.concurrent.*;
-import java.util.concurrent.atomic.*;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.*;
+<span class="hljs-keyword">import</span> java.util.concurrent.atomic.*;
 
-/**
+<span class="hljs-comment">/**
  * Problem: Millions of view increments per second.
  * Solution: Local counters + periodic flush to database.
- */
-public class HighConcurrencyCounter {
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">HighConcurrencyCounter</span> {
 
-    // LongAdder is more efficient than AtomicLong under high contention
-    private final ConcurrentHashMap&lt;String, LongAdder&gt; localCounters = new ConcurrentHashMap&lt;&gt;();
-    private final ScheduledExecutorService flusher = Executors.newSingleThreadScheduledExecutor();
-    private final DatabaseService db;
+    <span class="hljs-comment">// LongAdder is more efficient than AtomicLong under high contention</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ConcurrentHashMap&lt;String, LongAdder&gt; localCounters = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ConcurrentHashMap</span>&lt;&gt;();
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">ScheduledExecutorService</span> <span class="hljs-variable">flusher</span> <span class="hljs-operator">=</span> Executors.newSingleThreadScheduledExecutor();
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> DatabaseService db;
 
-    public HighConcurrencyCounter(DatabaseService db) {
-        this.db = db;
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">HighConcurrencyCounter</span><span class="hljs-params">(DatabaseService db)</span> {
+        <span class="hljs-built_in">this</span>.db = db;
 
-        // Flush every 5 seconds
-        flusher.scheduleAtFixedRate(this::flushToDatabase, 5, 5, TimeUnit.SECONDS);
+        <span class="hljs-comment">// Flush every 5 seconds</span>
+        flusher.scheduleAtFixedRate(<span class="hljs-built_in">this</span>::flushToDatabase, <span class="hljs-number">5</span>, <span class="hljs-number">5</span>, TimeUnit.SECONDS);
     }
 
-    public void increment(String key) {
-        localCounters.computeIfAbsent(key, k -&gt; new LongAdder()).increment();
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">increment</span><span class="hljs-params">(String key)</span> {
+        localCounters.computeIfAbsent(key, k -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">LongAdder</span>()).increment();
     }
 
-    public void incrementBy(String key, long delta) {
-        localCounters.computeIfAbsent(key, k -&gt; new LongAdder()).add(delta);
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">incrementBy</span><span class="hljs-params">(String key, <span class="hljs-type">long</span> delta)</span> {
+        localCounters.computeIfAbsent(key, k -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">LongAdder</span>()).add(delta);
     }
 
-    public long getApproximateCount(String key) {
-        LongAdder adder = localCounters.get(key);
-        long local = adder != null ? adder.sum() : 0;
-        long persisted = db.getCount(key);
-        return local + persisted;
+    <span class="hljs-keyword">public</span> <span class="hljs-type">long</span> <span class="hljs-title function_">getApproximateCount</span><span class="hljs-params">(String key)</span> {
+        <span class="hljs-type">LongAdder</span> <span class="hljs-variable">adder</span> <span class="hljs-operator">=</span> localCounters.get(key);
+        <span class="hljs-type">long</span> <span class="hljs-variable">local</span> <span class="hljs-operator">=</span> adder != <span class="hljs-literal">null</span> ? adder.sum() : <span class="hljs-number">0</span>;
+        <span class="hljs-type">long</span> <span class="hljs-variable">persisted</span> <span class="hljs-operator">=</span> db.getCount(key);
+        <span class="hljs-keyword">return</span> local + persisted;
     }
 
-    private void flushToDatabase() {
-        // Swap out current counters
-        Map&lt;String, Long&gt; toFlush = new HashMap&lt;&gt;();
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">flushToDatabase</span><span class="hljs-params">()</span> {
+        <span class="hljs-comment">// Swap out current counters</span>
+        Map&lt;String, Long&gt; toFlush = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
 
         localCounters.forEach((key, adder) -&gt; {
-            long count = adder.sumThenReset();
-            if (count &gt; 0) {
+            <span class="hljs-type">long</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> adder.sumThenReset();
+            <span class="hljs-keyword">if</span> (count &gt; <span class="hljs-number">0</span>) {
                 toFlush.put(key, count);
             }
         });
 
-        if (!toFlush.isEmpty()) {
-            // Batch update to database
+        <span class="hljs-keyword">if</span> (!toFlush.isEmpty()) {
+            <span class="hljs-comment">// Batch update to database</span>
             db.batchIncrement(toFlush);
         }
     }
 
-    public void shutdown() {
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">shutdown</span><span class="hljs-params">()</span> {
         flusher.shutdown();
-        flushToDatabase();  // Final flush
+        flushToDatabase();  <span class="hljs-comment">// Final flush</span>
     }
 
-    interface DatabaseService {
-        long getCount(String key);
-        void batchIncrement(Map&lt;String, Long&gt; increments);
+    <span class="hljs-keyword">interface</span> <span class="hljs-title class_">DatabaseService</span> {
+        <span class="hljs-type">long</span> <span class="hljs-title function_">getCount</span><span class="hljs-params">(String key)</span>;
+        <span class="hljs-keyword">void</span> <span class="hljs-title function_">batchIncrement</span><span class="hljs-params">(Map&lt;String, Long&gt; increments)</span>;
     }
 }
 </code></pre>
 <h3 id="scenario-2-distributed-rate-limiter" tabindex="-1"><a class="header-anchor" href="#scenario-2-distributed-rate-limiter"><span>Scenario 2: Distributed Rate Limiter</span></a></h3>
-<pre><code class="language-java">import redis.clients.jedis.Jedis;
-import java.util.*;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> redis.clients.jedis.Jedis;
+<span class="hljs-keyword">import</span> java.util.*;
 
-/**
+<span class="hljs-comment">/**
  * Problem: Rate limit across multiple server instances.
  * Solution: Sliding window with Redis.
- */
-public class DistributedRateLimiter {
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">DistributedRateLimiter</span> {
 
-    private final Jedis redis;
-    private final int maxRequests;
-    private final long windowSizeMs;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Jedis redis;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> maxRequests;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">long</span> windowSizeMs;
 
-    public DistributedRateLimiter(Jedis redis, int maxRequests, long windowSizeMs) {
-        this.redis = redis;
-        this.maxRequests = maxRequests;
-        this.windowSizeMs = windowSizeMs;
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">DistributedRateLimiter</span><span class="hljs-params">(Jedis redis, <span class="hljs-type">int</span> maxRequests, <span class="hljs-type">long</span> windowSizeMs)</span> {
+        <span class="hljs-built_in">this</span>.redis = redis;
+        <span class="hljs-built_in">this</span>.maxRequests = maxRequests;
+        <span class="hljs-built_in">this</span>.windowSizeMs = windowSizeMs;
     }
 
-    // Sliding window using sorted set
-    public boolean tryAcquire(String userId) {
-        String key = &quot;ratelimit:&quot; + userId;
-        long now = System.currentTimeMillis();
-        long windowStart = now - windowSizeMs;
+    <span class="hljs-comment">// Sliding window using sorted set</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">tryAcquire</span><span class="hljs-params">(String userId)</span> {
+        <span class="hljs-type">String</span> <span class="hljs-variable">key</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;ratelimit:&quot;</span> + userId;
+        <span class="hljs-type">long</span> <span class="hljs-variable">now</span> <span class="hljs-operator">=</span> System.currentTimeMillis();
+        <span class="hljs-type">long</span> <span class="hljs-variable">windowStart</span> <span class="hljs-operator">=</span> now - windowSizeMs;
 
-        // Lua script for atomic operation
-        String script =
-            &quot;local key = KEYS[1]\n&quot; +
-            &quot;local now = tonumber(ARGV[1])\n&quot; +
-            &quot;local window_start = tonumber(ARGV[2])\n&quot; +
-            &quot;local max_requests = tonumber(ARGV[3])\n&quot; +
-            &quot;local window_size = tonumber(ARGV[4])\n&quot; +
-            &quot;\n&quot; +
-            &quot;-- Remove old entries\n&quot; +
-            &quot;redis.call('ZREMRANGEBYSCORE', key, '-inf', window_start)\n&quot; +
-            &quot;\n&quot; +
-            &quot;-- Count current requests\n&quot; +
-            &quot;local count = redis.call('ZCARD', key)\n&quot; +
-            &quot;\n&quot; +
-            &quot;if count &lt; max_requests then\n&quot; +
-            &quot;    -- Add new request\n&quot; +
-            &quot;    redis.call('ZADD', key, now, now .. ':' .. math.random())\n&quot; +
-            &quot;    redis.call('PEXPIRE', key, window_size)\n&quot; +
-            &quot;    return 1\n&quot; +
-            &quot;else\n&quot; +
-            &quot;    return 0\n&quot; +
-            &quot;end&quot;;
+        <span class="hljs-comment">// Lua script for atomic operation</span>
+        <span class="hljs-type">String</span> <span class="hljs-variable">script</span> <span class="hljs-operator">=</span>
+            <span class="hljs-string">&quot;local key = KEYS[1]\n&quot;</span> +
+            <span class="hljs-string">&quot;local now = tonumber(ARGV[1])\n&quot;</span> +
+            <span class="hljs-string">&quot;local window_start = tonumber(ARGV[2])\n&quot;</span> +
+            <span class="hljs-string">&quot;local max_requests = tonumber(ARGV[3])\n&quot;</span> +
+            <span class="hljs-string">&quot;local window_size = tonumber(ARGV[4])\n&quot;</span> +
+            <span class="hljs-string">&quot;\n&quot;</span> +
+            <span class="hljs-string">&quot;-- Remove old entries\n&quot;</span> +
+            <span class="hljs-string">&quot;redis.call(&#x27;ZREMRANGEBYSCORE&#x27;, key, &#x27;-inf&#x27;, window_start)\n&quot;</span> +
+            <span class="hljs-string">&quot;\n&quot;</span> +
+            <span class="hljs-string">&quot;-- Count current requests\n&quot;</span> +
+            <span class="hljs-string">&quot;local count = redis.call(&#x27;ZCARD&#x27;, key)\n&quot;</span> +
+            <span class="hljs-string">&quot;\n&quot;</span> +
+            <span class="hljs-string">&quot;if count &lt; max_requests then\n&quot;</span> +
+            <span class="hljs-string">&quot;    -- Add new request\n&quot;</span> +
+            <span class="hljs-string">&quot;    redis.call(&#x27;ZADD&#x27;, key, now, now .. &#x27;:&#x27; .. math.random())\n&quot;</span> +
+            <span class="hljs-string">&quot;    redis.call(&#x27;PEXPIRE&#x27;, key, window_size)\n&quot;</span> +
+            <span class="hljs-string">&quot;    return 1\n&quot;</span> +
+            <span class="hljs-string">&quot;else\n&quot;</span> +
+            <span class="hljs-string">&quot;    return 0\n&quot;</span> +
+            <span class="hljs-string">&quot;end&quot;</span>;
 
-        Long result = (Long) redis.eval(
+        <span class="hljs-type">Long</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> (Long) redis.eval(
             script,
             Collections.singletonList(key),
             Arrays.asList(
@@ -1900,232 +1912,232 @@ public class DistributedRateLimiter {
             )
         );
 
-        return result == 1;
+        <span class="hljs-keyword">return</span> result == <span class="hljs-number">1</span>;
     }
 
-    // Get remaining requests
-    public int getRemainingRequests(String userId) {
-        String key = &quot;ratelimit:&quot; + userId;
-        long windowStart = System.currentTimeMillis() - windowSizeMs;
+    <span class="hljs-comment">// Get remaining requests</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">getRemainingRequests</span><span class="hljs-params">(String userId)</span> {
+        <span class="hljs-type">String</span> <span class="hljs-variable">key</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;ratelimit:&quot;</span> + userId;
+        <span class="hljs-type">long</span> <span class="hljs-variable">windowStart</span> <span class="hljs-operator">=</span> System.currentTimeMillis() - windowSizeMs;
 
-        redis.zremrangeByScore(key, &quot;-inf&quot;, String.valueOf(windowStart));
-        long count = redis.zcard(key);
+        redis.zremrangeByScore(key, <span class="hljs-string">&quot;-inf&quot;</span>, String.valueOf(windowStart));
+        <span class="hljs-type">long</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> redis.zcard(key);
 
-        return Math.max(0, maxRequests - (int) count);
+        <span class="hljs-keyword">return</span> Math.max(<span class="hljs-number">0</span>, maxRequests - (<span class="hljs-type">int</span>) count);
     }
 }
 </code></pre>
 <h3 id="scenario-3-eventual-consistency-with-conflict-resolution" tabindex="-1"><a class="header-anchor" href="#scenario-3-eventual-consistency-with-conflict-resolution"><span>Scenario 3: Eventual Consistency with Conflict Resolution</span></a></h3>
-<pre><code class="language-java">import java.util.*;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.*;
 
-/**
+<span class="hljs-comment">/**
  * Problem: Multiple services may update same data concurrently.
  * Solution: Last-write-wins with vector clocks for conflict detection.
- */
-public class EventualConsistencyStore {
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">EventualConsistencyStore</span> {
 
-    private final ConcurrentHashMap&lt;String, VersionedValue&gt; store = new ConcurrentHashMap&lt;&gt;();
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ConcurrentHashMap&lt;String, VersionedValue&gt; store = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ConcurrentHashMap</span>&lt;&gt;();
 
-    static class VectorClock {
-        private final Map&lt;String, Long&gt; clock = new ConcurrentHashMap&lt;&gt;();
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">VectorClock</span> {
+        <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Map&lt;String, Long&gt; clock = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ConcurrentHashMap</span>&lt;&gt;();
 
-        public void increment(String nodeId) {
-            clock.merge(nodeId, 1L, Long::sum);
+        <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">increment</span><span class="hljs-params">(String nodeId)</span> {
+            clock.merge(nodeId, <span class="hljs-number">1L</span>, Long::sum);
         }
 
-        public void merge(VectorClock other) {
-            for (Map.Entry&lt;String, Long&gt; entry : other.clock.entrySet()) {
+        <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">merge</span><span class="hljs-params">(VectorClock other)</span> {
+            <span class="hljs-keyword">for</span> (Map.Entry&lt;String, Long&gt; entry : other.clock.entrySet()) {
                 clock.merge(entry.getKey(), entry.getValue(), Math::max);
             }
         }
 
-        public boolean happensBefore(VectorClock other) {
-            boolean atLeastOneLess = false;
+        <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">happensBefore</span><span class="hljs-params">(VectorClock other)</span> {
+            <span class="hljs-type">boolean</span> <span class="hljs-variable">atLeastOneLess</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;
 
-            for (String node : getAllNodes(other)) {
-                long thisValue = clock.getOrDefault(node, 0L);
-                long otherValue = other.clock.getOrDefault(node, 0L);
+            <span class="hljs-keyword">for</span> (String node : getAllNodes(other)) {
+                <span class="hljs-type">long</span> <span class="hljs-variable">thisValue</span> <span class="hljs-operator">=</span> clock.getOrDefault(node, <span class="hljs-number">0L</span>);
+                <span class="hljs-type">long</span> <span class="hljs-variable">otherValue</span> <span class="hljs-operator">=</span> other.clock.getOrDefault(node, <span class="hljs-number">0L</span>);
 
-                if (thisValue &gt; otherValue) {
-                    return false;  // Not strictly before
+                <span class="hljs-keyword">if</span> (thisValue &gt; otherValue) {
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;  <span class="hljs-comment">// Not strictly before</span>
                 }
-                if (thisValue &lt; otherValue) {
-                    atLeastOneLess = true;
+                <span class="hljs-keyword">if</span> (thisValue &lt; otherValue) {
+                    atLeastOneLess = <span class="hljs-literal">true</span>;
                 }
             }
 
-            return atLeastOneLess;
+            <span class="hljs-keyword">return</span> atLeastOneLess;
         }
 
-        public boolean isConcurrent(VectorClock other) {
-            return !happensBefore(other) &amp;&amp; !other.happensBefore(this);
+        <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isConcurrent</span><span class="hljs-params">(VectorClock other)</span> {
+            <span class="hljs-keyword">return</span> !happensBefore(other) &amp;&amp; !other.happensBefore(<span class="hljs-built_in">this</span>);
         }
 
-        private Set&lt;String&gt; getAllNodes(VectorClock other) {
-            Set&lt;String&gt; nodes = new HashSet&lt;&gt;(clock.keySet());
+        <span class="hljs-keyword">private</span> Set&lt;String&gt; <span class="hljs-title function_">getAllNodes</span><span class="hljs-params">(VectorClock other)</span> {
+            Set&lt;String&gt; nodes = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;(clock.keySet());
             nodes.addAll(other.clock.keySet());
-            return nodes;
+            <span class="hljs-keyword">return</span> nodes;
         }
 
-        public VectorClock copy() {
-            VectorClock copy = new VectorClock();
-            copy.clock.putAll(this.clock);
-            return copy;
+        <span class="hljs-keyword">public</span> VectorClock <span class="hljs-title function_">copy</span><span class="hljs-params">()</span> {
+            <span class="hljs-type">VectorClock</span> <span class="hljs-variable">copy</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">VectorClock</span>();
+            copy.clock.putAll(<span class="hljs-built_in">this</span>.clock);
+            <span class="hljs-keyword">return</span> copy;
         }
     }
 
-    static class VersionedValue {
-        final String value;
-        final VectorClock clock;
-        final long timestamp;
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">VersionedValue</span> {
+        <span class="hljs-keyword">final</span> String value;
+        <span class="hljs-keyword">final</span> VectorClock clock;
+        <span class="hljs-keyword">final</span> <span class="hljs-type">long</span> timestamp;
 
         VersionedValue(String value, VectorClock clock) {
-            this.value = value;
-            this.clock = clock;
-            this.timestamp = System.currentTimeMillis();
+            <span class="hljs-built_in">this</span>.value = value;
+            <span class="hljs-built_in">this</span>.clock = clock;
+            <span class="hljs-built_in">this</span>.timestamp = System.currentTimeMillis();
         }
     }
 
-    public void put(String key, String value, String nodeId) {
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">put</span><span class="hljs-params">(String key, String value, String nodeId)</span> {
         store.compute(key, (k, existing) -&gt; {
             VectorClock newClock;
 
-            if (existing == null) {
-                newClock = new VectorClock();
-            } else {
+            <span class="hljs-keyword">if</span> (existing == <span class="hljs-literal">null</span>) {
+                newClock = <span class="hljs-keyword">new</span> <span class="hljs-title class_">VectorClock</span>();
+            } <span class="hljs-keyword">else</span> {
                 newClock = existing.clock.copy();
             }
 
             newClock.increment(nodeId);
-            return new VersionedValue(value, newClock);
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">VersionedValue</span>(value, newClock);
         });
     }
 
-    public String get(String key) {
-        VersionedValue v = store.get(key);
-        return v != null ? v.value : null;
+    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">get</span><span class="hljs-params">(String key)</span> {
+        <span class="hljs-type">VersionedValue</span> <span class="hljs-variable">v</span> <span class="hljs-operator">=</span> store.get(key);
+        <span class="hljs-keyword">return</span> v != <span class="hljs-literal">null</span> ? v.value : <span class="hljs-literal">null</span>;
     }
 
-    // Handle incoming replication
-    public ConflictResult replicate(String key, String value, VectorClock incomingClock) {
-        return store.compute(key, (k, existing) -&gt; {
-            if (existing == null) {
-                return new VersionedValue(value, incomingClock);
+    <span class="hljs-comment">// Handle incoming replication</span>
+    <span class="hljs-keyword">public</span> ConflictResult <span class="hljs-title function_">replicate</span><span class="hljs-params">(String key, String value, VectorClock incomingClock)</span> {
+        <span class="hljs-keyword">return</span> store.compute(key, (k, existing) -&gt; {
+            <span class="hljs-keyword">if</span> (existing == <span class="hljs-literal">null</span>) {
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">VersionedValue</span>(value, incomingClock);
             }
 
-            if (incomingClock.happensBefore(existing.clock)) {
-                // Incoming is older - keep existing
-                return existing;
+            <span class="hljs-keyword">if</span> (incomingClock.happensBefore(existing.clock)) {
+                <span class="hljs-comment">// Incoming is older - keep existing</span>
+                <span class="hljs-keyword">return</span> existing;
             }
 
-            if (existing.clock.happensBefore(incomingClock)) {
-                // Incoming is newer - accept it
-                return new VersionedValue(value, incomingClock);
+            <span class="hljs-keyword">if</span> (existing.clock.happensBefore(incomingClock)) {
+                <span class="hljs-comment">// Incoming is newer - accept it</span>
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">VersionedValue</span>(value, incomingClock);
             }
 
-            // Concurrent - conflict! Use LWW (last-write-wins) or merge
-            VersionedValue winner = existing.timestamp &gt; 0 ? existing :
-                new VersionedValue(value, incomingClock);
+            <span class="hljs-comment">// Concurrent - conflict! Use LWW (last-write-wins) or merge</span>
+            <span class="hljs-type">VersionedValue</span> <span class="hljs-variable">winner</span> <span class="hljs-operator">=</span> existing.timestamp &gt; <span class="hljs-number">0</span> ? existing :
+                <span class="hljs-keyword">new</span> <span class="hljs-title class_">VersionedValue</span>(value, incomingClock);
 
-            // Merge clocks
+            <span class="hljs-comment">// Merge clocks</span>
             winner.clock.merge(incomingClock);
 
-            return winner;
-        }) != null ? ConflictResult.ACCEPTED : ConflictResult.REJECTED;
+            <span class="hljs-keyword">return</span> winner;
+        }) != <span class="hljs-literal">null</span> ? ConflictResult.ACCEPTED : ConflictResult.REJECTED;
     }
 
-    enum ConflictResult { ACCEPTED, REJECTED, CONFLICT }
+    <span class="hljs-keyword">enum</span> <span class="hljs-title class_">ConflictResult</span> { ACCEPTED, REJECTED, CONFLICT }
 }
 </code></pre>
 <hr>
 <h2 id="common-interview-questions" tabindex="-1"><a class="header-anchor" href="#common-interview-questions"><span>Common Interview Questions</span></a></h2>
 <h3 id="q1-how-would-you-implement-a-thread-safe-lru-cache" tabindex="-1"><a class="header-anchor" href="#q1-how-would-you-implement-a-thread-safe-lru-cache"><span>Q1: How would you implement a thread-safe LRU cache?</span></a></h3>
-<pre><code class="language-java">import java.util.*;
-import java.util.concurrent.locks.*;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.*;
+<span class="hljs-keyword">import</span> java.util.concurrent.locks.*;
 
-public class ConcurrentLRUCache&lt;K, V&gt; {
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ConcurrentLRUCache</span>&lt;K, V&gt; {
 
-    private final int capacity;
-    private final Map&lt;K, Node&lt;K, V&gt;&gt; map;
-    private final Node&lt;K, V&gt; head, tail;
-    private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> capacity;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Map&lt;K, Node&lt;K, V&gt;&gt; map;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Node&lt;K, V&gt; head, tail;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">ReentrantReadWriteLock</span> <span class="hljs-variable">lock</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ReentrantReadWriteLock</span>();
 
-    static class Node&lt;K, V&gt; {
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Node</span>&lt;K, V&gt; {
         K key;
         V value;
         Node&lt;K, V&gt; prev, next;
 
         Node(K key, V value) {
-            this.key = key;
-            this.value = value;
+            <span class="hljs-built_in">this</span>.key = key;
+            <span class="hljs-built_in">this</span>.value = value;
         }
     }
 
-    public ConcurrentLRUCache(int capacity) {
-        this.capacity = capacity;
-        this.map = new HashMap&lt;&gt;();
-        this.head = new Node&lt;&gt;(null, null);
-        this.tail = new Node&lt;&gt;(null, null);
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">ConcurrentLRUCache</span><span class="hljs-params">(<span class="hljs-type">int</span> capacity)</span> {
+        <span class="hljs-built_in">this</span>.capacity = capacity;
+        <span class="hljs-built_in">this</span>.map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+        <span class="hljs-built_in">this</span>.head = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Node</span>&lt;&gt;(<span class="hljs-literal">null</span>, <span class="hljs-literal">null</span>);
+        <span class="hljs-built_in">this</span>.tail = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Node</span>&lt;&gt;(<span class="hljs-literal">null</span>, <span class="hljs-literal">null</span>);
         head.next = tail;
         tail.prev = head;
     }
 
-    public V get(K key) {
+    <span class="hljs-keyword">public</span> V <span class="hljs-title function_">get</span><span class="hljs-params">(K key)</span> {
         lock.readLock().lock();
-        try {
+        <span class="hljs-keyword">try</span> {
             Node&lt;K, V&gt; node = map.get(key);
-            if (node == null) return null;
+            <span class="hljs-keyword">if</span> (node == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
 
-            // Need write lock to move to front
+            <span class="hljs-comment">// Need write lock to move to front</span>
             lock.readLock().unlock();
             lock.writeLock().lock();
-            try {
+            <span class="hljs-keyword">try</span> {
                 moveToFront(node);
-                return node.value;
-            } finally {
+                <span class="hljs-keyword">return</span> node.value;
+            } <span class="hljs-keyword">finally</span> {
                 lock.writeLock().unlock();
                 lock.readLock().lock();
             }
-        } finally {
+        } <span class="hljs-keyword">finally</span> {
             lock.readLock().unlock();
         }
     }
 
-    public void put(K key, V value) {
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">put</span><span class="hljs-params">(K key, V value)</span> {
         lock.writeLock().lock();
-        try {
+        <span class="hljs-keyword">try</span> {
             Node&lt;K, V&gt; node = map.get(key);
 
-            if (node != null) {
+            <span class="hljs-keyword">if</span> (node != <span class="hljs-literal">null</span>) {
                 node.value = value;
                 moveToFront(node);
-            } else {
-                node = new Node&lt;&gt;(key, value);
+            } <span class="hljs-keyword">else</span> {
+                node = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Node</span>&lt;&gt;(key, value);
                 map.put(key, node);
                 addToFront(node);
 
-                if (map.size() &gt; capacity) {
+                <span class="hljs-keyword">if</span> (map.size() &gt; capacity) {
                     Node&lt;K, V&gt; lru = tail.prev;
                     remove(lru);
                     map.remove(lru.key);
                 }
             }
-        } finally {
+        } <span class="hljs-keyword">finally</span> {
             lock.writeLock().unlock();
         }
     }
 
-    private void moveToFront(Node&lt;K, V&gt; node) {
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">moveToFront</span><span class="hljs-params">(Node&lt;K, V&gt; node)</span> {
         remove(node);
         addToFront(node);
     }
 
-    private void remove(Node&lt;K, V&gt; node) {
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">remove</span><span class="hljs-params">(Node&lt;K, V&gt; node)</span> {
         node.prev.next = node.next;
         node.next.prev = node.prev;
     }
 
-    private void addToFront(Node&lt;K, V&gt; node) {
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">addToFront</span><span class="hljs-params">(Node&lt;K, V&gt; node)</span> {
         node.next = head.next;
         node.prev = head;
         head.next.prev = node;
@@ -2176,21 +2188,21 @@ public class ConcurrentLRUCache&lt;K, V&gt; {
 </tr>
 </tbody>
 </table>
-<pre><code class="language-java">// Deadlock example
-Object lock1 = new Object();
-Object lock2 = new Object();
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Deadlock example</span>
+<span class="hljs-type">Object</span> <span class="hljs-variable">lock1</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Object</span>();
+<span class="hljs-type">Object</span> <span class="hljs-variable">lock2</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Object</span>();
 
-// Thread 1: synchronized(lock1) { synchronized(lock2) { } }
-// Thread 2: synchronized(lock2) { synchronized(lock1) { } }
+<span class="hljs-comment">// Thread 1: synchronized(lock1) { synchronized(lock2) { } }</span>
+<span class="hljs-comment">// Thread 2: synchronized(lock2) { synchronized(lock1) { } }</span>
 
-// Livelock example: Two people in corridor both moving same direction
-AtomicBoolean resourceAvailable = new AtomicBoolean(true);
-// Thread 1: while(!canProceed) { releaseResource(); waitRandom(); tryAcquire(); }
-// Thread 2: Same pattern - both keep backing off
+<span class="hljs-comment">// Livelock example: Two people in corridor both moving same direction</span>
+<span class="hljs-type">AtomicBoolean</span> <span class="hljs-variable">resourceAvailable</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">AtomicBoolean</span>(<span class="hljs-literal">true</span>);
+<span class="hljs-comment">// Thread 1: while(!canProceed) { releaseResource(); waitRandom(); tryAcquire(); }</span>
+<span class="hljs-comment">// Thread 2: Same pattern - both keep backing off</span>
 
-// Starvation: Non-fair lock with many high-priority threads
-ReentrantLock unfairLock = new ReentrantLock(false);  // unfair
-// Low priority thread may never acquire lock
+<span class="hljs-comment">// Starvation: Non-fair lock with many high-priority threads</span>
+<span class="hljs-type">ReentrantLock</span> <span class="hljs-variable">unfairLock</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ReentrantLock</span>(<span class="hljs-literal">false</span>);  <span class="hljs-comment">// unfair</span>
+<span class="hljs-comment">// Low priority thread may never acquire lock</span>
 </code></pre>
 <h3 id="q3-how-to-prevent-database-connection-pool-exhaustion" tabindex="-1"><a class="header-anchor" href="#q3-how-to-prevent-database-connection-pool-exhaustion"><span>Q3: How to prevent database connection pool exhaustion?</span></a></h3>
 <ol>

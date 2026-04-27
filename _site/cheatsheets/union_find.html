@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,13 +20,24 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
     document.querySelectorAll('pre code').forEach(function(codeEl) {
       var pre = codeEl.parentElement;
       var lang = '';
       var cls = codeEl.className || '';
       var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
       if (m) lang = m[1];
+
+      // Add line numbers
+      var lines = codeEl.innerHTML.split('
+');
+      if (lines[lines.length - 1] === '') lines.pop();
+      var numbered = lines.map(function(line, i) {
+        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
+      }).join('
+');
+      codeEl.innerHTML = numbered;
+      codeEl.classList.add('hljs-ln');
+
       var wrapper = document.createElement('div');
       wrapper.className = 'code-block-wrapper';
       pre.parentNode.insertBefore(wrapper, pre);
@@ -45,7 +55,9 @@
       btn.className = 'copy-btn';
       btn.textContent = 'Copy';
       btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
+');
+        navigator.clipboard.writeText(text).then(function() {
           btn.textContent = 'Copied!';
           btn.classList.add('copied');
           setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
@@ -150,48 +162,48 @@
 <li><strong>Use Case</strong>: When find operations greatly outnumber union operations</li>
 <li><strong>Implementation</strong>: Store component ID directly for each element</li>
 </ul>
-<pre><code class="language-java">// Quick Find Implementation
-class QuickFind {
-    private int[] id;
-    private int count; // number of components
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Quick Find Implementation</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">QuickFind</span> {
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span>[] id;
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> count; <span class="hljs-comment">// number of components</span>
 
-    public QuickFind(int n) {
-        id = new int[n];
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">QuickFind</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> {
+        id = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
         count = n;
-        for (int i = 0; i &lt; n; i++) {
-            id[i] = i; // Each element is its own component
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+            id[i] = i; <span class="hljs-comment">// Each element is its own component</span>
         }
     }
 
-    /**
+    <span class="hljs-comment">/**
      * time = O(1)
      * space = O(1)
-     */
-    public int find(int p) {
-        return id[p]; // Direct lookup
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">find</span><span class="hljs-params">(<span class="hljs-type">int</span> p)</span> {
+        <span class="hljs-keyword">return</span> id[p]; <span class="hljs-comment">// Direct lookup</span>
     }
 
-    /**
+    <span class="hljs-comment">/**
      * time = O(N)
      * space = O(1)
-     */
-    public void union(int p, int q) {
-        int pID = find(p);
-        int qID = find(q);
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">union</span><span class="hljs-params">(<span class="hljs-type">int</span> p, <span class="hljs-type">int</span> q)</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">pID</span> <span class="hljs-operator">=</span> find(p);
+        <span class="hljs-type">int</span> <span class="hljs-variable">qID</span> <span class="hljs-operator">=</span> find(q);
 
-        if (pID == qID) return;
+        <span class="hljs-keyword">if</span> (pID == qID) <span class="hljs-keyword">return</span>;
 
-        // Change all entries with id[p] to id[q]
-        for (int i = 0; i &lt; id.length; i++) {
-            if (id[i] == pID) {
+        <span class="hljs-comment">// Change all entries with id[p] to id[q]</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; id.length; i++) {
+            <span class="hljs-keyword">if</span> (id[i] == pID) {
                 id[i] = qID;
             }
         }
         count--;
     }
 
-    public boolean connected(int p, int q) {
-        return find(p) == find(q);
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">connected</span><span class="hljs-params">(<span class="hljs-type">int</span> p, <span class="hljs-type">int</span> q)</span> {
+        <span class="hljs-keyword">return</span> find(p) == find(q);
     }
 }
 </code></pre>
@@ -290,83 +302,83 @@ class QuickFind {
 <li><code>connected(x, y)</code>: Check if two nodes are in same component</li>
 </ul>
 <p><strong>Template (Union by Size):</strong></p>
-<pre><code class="language-java">class UnionFind {
-    int[] parent, size;
-    int components;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">UnionFind</span> {
+    <span class="hljs-type">int</span>[] parent, size;
+    <span class="hljs-type">int</span> components;
 
-    public UnionFind(int n) {
-        parent = new int[n];
-        size = new int[n];
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">UnionFind</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> {
+        parent = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
+        size = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
         components = n;
-        for (int i = 0; i &lt; n; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
             parent[i] = i;
-            size[i] = 1;
+            size[i] = <span class="hljs-number">1</span>;
         }
     }
 
-    // Path Compression: flatten tree by making nodes point directly to root
-    public int find(int x) {
-        if (parent[x] != x) {
-            parent[x] = find(parent[x]); // Compress path during recursion
+    <span class="hljs-comment">// Path Compression: flatten tree by making nodes point directly to root</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">find</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> {
+        <span class="hljs-keyword">if</span> (parent[x] != x) {
+            parent[x] = find(parent[x]); <span class="hljs-comment">// Compress path during recursion</span>
         }
-        return parent[x];
+        <span class="hljs-keyword">return</span> parent[x];
     }
 
-    // Union by Size: attach smaller tree to larger tree
-    public boolean union(int x, int y) {
-        int rootX = find(x), rootY = find(y);
-        if (rootX == rootY) return false; // Already connected
+    <span class="hljs-comment">// Union by Size: attach smaller tree to larger tree</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">union</span><span class="hljs-params">(<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">rootX</span> <span class="hljs-operator">=</span> find(x), rootY = find(y);
+        <span class="hljs-keyword">if</span> (rootX == rootY) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>; <span class="hljs-comment">// Already connected</span>
 
-        // Always attach smaller size to larger size
-        if (size[rootX] &lt; size[rootY]) {
+        <span class="hljs-comment">// Always attach smaller size to larger size</span>
+        <span class="hljs-keyword">if</span> (size[rootX] &lt; size[rootY]) {
             parent[rootX] = rootY;
             size[rootY] += size[rootX];
-        } else {
+        } <span class="hljs-keyword">else</span> {
             parent[rootY] = rootX;
             size[rootX] += size[rootY];
         }
         components--;
-        return true;
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
     }
 }
 </code></pre>
 <p><strong>Alternative Template (Union by Rank):</strong></p>
-<pre><code class="language-java">class UnionFind {
-    int[] parent, rank;
-    int components;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">UnionFind</span> {
+    <span class="hljs-type">int</span>[] parent, rank;
+    <span class="hljs-type">int</span> components;
 
-    public UnionFind(int n) {
-        parent = new int[n];
-        rank = new int[n];
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">UnionFind</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> {
+        parent = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
+        rank = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
         components = n;
-        for (int i = 0; i &lt; n; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
             parent[i] = i;
-            rank[i] = 0; // Initial rank is 0
+            rank[i] = <span class="hljs-number">0</span>; <span class="hljs-comment">// Initial rank is 0</span>
         }
     }
 
-    // Path Compression: recursively flatten tree structure
-    public int find(int x) {
-        if (parent[x] != x) {
-            parent[x] = find(parent[x]); // Make x point directly to root
+    <span class="hljs-comment">// Path Compression: recursively flatten tree structure</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">find</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> {
+        <span class="hljs-keyword">if</span> (parent[x] != x) {
+            parent[x] = find(parent[x]); <span class="hljs-comment">// Make x point directly to root</span>
         }
-        return parent[x];
+        <span class="hljs-keyword">return</span> parent[x];
     }
 
-    // Union by Rank: attach lower rank tree to higher rank tree
-    public void union(int x, int y) {
-        int rootX = find(x), rootY = find(y);
+    <span class="hljs-comment">// Union by Rank: attach lower rank tree to higher rank tree</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">union</span><span class="hljs-params">(<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">rootX</span> <span class="hljs-operator">=</span> find(x), rootY = find(y);
 
-        // Already in the same component
-        if (rootX == rootY) return;
+        <span class="hljs-comment">// Already in the same component</span>
+        <span class="hljs-keyword">if</span> (rootX == rootY) <span class="hljs-keyword">return</span>;
 
-        // Attach smaller rank tree to larger rank tree
-        if (rank[rootX] &lt; rank[rootY]) {
-            parent[rootX] = rootY; // X's tree becomes child of Y
-        } else if (rank[rootX] &gt; rank[rootY]) {
-            parent[rootY] = rootX; // Y's tree becomes child of X
-        } else {
-            // Equal ranks: attach either way, increment rank of new root
+        <span class="hljs-comment">// Attach smaller rank tree to larger rank tree</span>
+        <span class="hljs-keyword">if</span> (rank[rootX] &lt; rank[rootY]) {
+            parent[rootX] = rootY; <span class="hljs-comment">// X&#x27;s tree becomes child of Y</span>
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (rank[rootX] &gt; rank[rootY]) {
+            parent[rootY] = rootX; <span class="hljs-comment">// Y&#x27;s tree becomes child of X</span>
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-comment">// Equal ranks: attach either way, increment rank of new root</span>
             parent[rootX] = rootY;
             rank[rootY]++;
         }
@@ -399,68 +411,68 @@ class QuickFind {
 <h3 id="0-3-pattern-specific-code-examples" tabindex="-1"><a class="header-anchor" href="#0-3-pattern-specific-code-examples"><span>0-3) Pattern-Specific Code Examples</span></a></h3>
 <h4 id="pattern-1-basic-connectivity-cycle-detection" tabindex="-1"><a class="header-anchor" href="#pattern-1-basic-connectivity-cycle-detection"><span>Pattern 1: Basic Connectivity - Cycle Detection</span></a></h4>
 <p><strong>Problem: LC 261 - Graph Valid Tree</strong></p>
-<pre><code class="language-java">public boolean validTree(int n, int[][] edges) {
-    // A tree must have exactly n-1 edges
-    if (edges.length != n - 1) return false;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">validTree</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span>[][] edges)</span> {
+    <span class="hljs-comment">// A tree must have exactly n-1 edges</span>
+    <span class="hljs-keyword">if</span> (edges.length != n - <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
 
-    UnionFind uf = new UnionFind(n);
-    for (int[] edge : edges) {
-        if (!uf.union(edge[0], edge[1])) {
-            return false; // Cycle detected
+    <span class="hljs-type">UnionFind</span> <span class="hljs-variable">uf</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">UnionFind</span>(n);
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] edge : edges) {
+        <span class="hljs-keyword">if</span> (!uf.union(edge[<span class="hljs-number">0</span>], edge[<span class="hljs-number">1</span>])) {
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>; <span class="hljs-comment">// Cycle detected</span>
         }
     }
-    return true;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 }
 </code></pre>
 <h4 id="pattern-2-component-counting" tabindex="-1"><a class="header-anchor" href="#pattern-2-component-counting"><span>Pattern 2: Component Counting</span></a></h4>
 <p><strong>Problem: LC 323 - Number of Connected Components</strong></p>
-<pre><code class="language-java">public int countComponents(int n, int[][] edges) {
-    UnionFind uf = new UnionFind(n);
-    int components = n;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">countComponents</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span>[][] edges)</span> {
+    <span class="hljs-type">UnionFind</span> <span class="hljs-variable">uf</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">UnionFind</span>(n);
+    <span class="hljs-type">int</span> <span class="hljs-variable">components</span> <span class="hljs-operator">=</span> n;
 
-    for (int[] edge : edges) {
-        if (uf.union(edge[0], edge[1])) {
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] edge : edges) {
+        <span class="hljs-keyword">if</span> (uf.union(edge[<span class="hljs-number">0</span>], edge[<span class="hljs-number">1</span>])) {
             components--;
         }
     }
-    return components;
+    <span class="hljs-keyword">return</span> components;
 }
 </code></pre>
 <h4 id="pattern-3-find-redundant-edge-cycle-detection" tabindex="-1"><a class="header-anchor" href="#pattern-3-find-redundant-edge-cycle-detection"><span>Pattern 3: Find Redundant Edge (Cycle Detection)</span></a></h4>
 <p><strong>Problem: LC 684 - Redundant Connection</strong></p>
-<pre><code class="language-java">public int[] findRedundantConnection(int[][] edges) {
-    UnionFind uf = new UnionFind(edges.length + 1);
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] findRedundantConnection(<span class="hljs-type">int</span>[][] edges) {
+    <span class="hljs-type">UnionFind</span> <span class="hljs-variable">uf</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">UnionFind</span>(edges.length + <span class="hljs-number">1</span>);
 
-    for (int[] edge : edges) {
-        int x = edge[0], y = edge[1];
-        if (!uf.union(x, y)) {
-            return edge; // This edge creates a cycle
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] edge : edges) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">x</span> <span class="hljs-operator">=</span> edge[<span class="hljs-number">0</span>], y = edge[<span class="hljs-number">1</span>];
+        <span class="hljs-keyword">if</span> (!uf.union(x, y)) {
+            <span class="hljs-keyword">return</span> edge; <span class="hljs-comment">// This edge creates a cycle</span>
         }
     }
-    return null;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
 }
 </code></pre>
 <h4 id="pattern-4-2d-grid-connectivity" tabindex="-1"><a class="header-anchor" href="#pattern-4-2d-grid-connectivity"><span>Pattern 4: 2D Grid Connectivity</span></a></h4>
 <p><strong>Problem: LC 200 - Number of Islands</strong></p>
-<pre><code class="language-java">public int numIslands(char[][] grid) {
-    int rows = grid.length, cols = grid[0].length;
-    UnionFind uf = new UnionFind(rows * cols);
-    int islands = 0;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">numIslands</span><span class="hljs-params">(<span class="hljs-type">char</span>[][] grid)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">rows</span> <span class="hljs-operator">=</span> grid.length, cols = grid[<span class="hljs-number">0</span>].length;
+    <span class="hljs-type">UnionFind</span> <span class="hljs-variable">uf</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">UnionFind</span>(rows * cols);
+    <span class="hljs-type">int</span> <span class="hljs-variable">islands</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
 
-    for (int r = 0; r &lt; rows; r++) {
-        for (int c = 0; c &lt; cols; c++) {
-            if (grid[r][c] == '1') {
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; r &lt; rows; r++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; c &lt; cols; c++) {
+            <span class="hljs-keyword">if</span> (grid[r][c] == <span class="hljs-string">&#x27;1&#x27;</span>) {
                 islands++;
-                int idx = r * cols + c;
+                <span class="hljs-type">int</span> <span class="hljs-variable">idx</span> <span class="hljs-operator">=</span> r * cols + c;
 
-                // Check 4 directions
-                int[][] dirs = {{0,1}, {1,0}, {0,-1}, {-1,0}};
-                for (int[] d : dirs) {
-                    int nr = r + d[0], nc = c + d[1];
-                    if (nr &gt;= 0 &amp;&amp; nr &lt; rows &amp;&amp; nc &gt;= 0 &amp;&amp; nc &lt; cols
-                        &amp;&amp; grid[nr][nc] == '1') {
-                        int nidx = nr * cols + nc;
-                        if (uf.union(idx, nidx)) {
+                <span class="hljs-comment">// Check 4 directions</span>
+                <span class="hljs-type">int</span>[][] dirs = {{<span class="hljs-number">0</span>,<span class="hljs-number">1</span>}, {<span class="hljs-number">1</span>,<span class="hljs-number">0</span>}, {<span class="hljs-number">0</span>,-<span class="hljs-number">1</span>}, {-<span class="hljs-number">1</span>,<span class="hljs-number">0</span>}};
+                <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] d : dirs) {
+                    <span class="hljs-type">int</span> <span class="hljs-variable">nr</span> <span class="hljs-operator">=</span> r + d[<span class="hljs-number">0</span>], nc = c + d[<span class="hljs-number">1</span>];
+                    <span class="hljs-keyword">if</span> (nr &gt;= <span class="hljs-number">0</span> &amp;&amp; nr &lt; rows &amp;&amp; nc &gt;= <span class="hljs-number">0</span> &amp;&amp; nc &lt; cols
+                        &amp;&amp; grid[nr][nc] == <span class="hljs-string">&#x27;1&#x27;</span>) {
+                        <span class="hljs-type">int</span> <span class="hljs-variable">nidx</span> <span class="hljs-operator">=</span> nr * cols + nc;
+                        <span class="hljs-keyword">if</span> (uf.union(idx, nidx)) {
                             islands--;
                         }
                     }
@@ -468,71 +480,71 @@ class QuickFind {
             }
         }
     }
-    return islands;
+    <span class="hljs-keyword">return</span> islands;
 }
 </code></pre>
 <h4 id="pattern-5-weighted-union-find-with-ratios" tabindex="-1"><a class="header-anchor" href="#pattern-5-weighted-union-find-with-ratios"><span>Pattern 5: Weighted Union Find (with Ratios)</span></a></h4>
 <p><strong>Problem: LC 399 - Evaluate Division</strong></p>
-<pre><code class="language-java">class WeightedUnionFind {
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">WeightedUnionFind</span> {
     Map&lt;String, String&gt; parent;
-    Map&lt;String, Double&gt; ratio; // ratio[x] = x / parent[x]
+    Map&lt;String, Double&gt; ratio; <span class="hljs-comment">// ratio[x] = x / parent[x]</span>
 
-    public WeightedUnionFind() {
-        parent = new HashMap&lt;&gt;();
-        ratio = new HashMap&lt;&gt;();
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">WeightedUnionFind</span><span class="hljs-params">()</span> {
+        parent = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+        ratio = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
     }
 
-    public String find(String x) {
-        if (!parent.containsKey(x)) {
+    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">find</span><span class="hljs-params">(String x)</span> {
+        <span class="hljs-keyword">if</span> (!parent.containsKey(x)) {
             parent.put(x, x);
-            ratio.put(x, 1.0);
+            ratio.put(x, <span class="hljs-number">1.0</span>);
         }
-        if (!x.equals(parent.get(x))) {
-            String originalParent = parent.get(x);
+        <span class="hljs-keyword">if</span> (!x.equals(parent.get(x))) {
+            <span class="hljs-type">String</span> <span class="hljs-variable">originalParent</span> <span class="hljs-operator">=</span> parent.get(x);
             parent.put(x, find(originalParent));
             ratio.put(x, ratio.get(x) * ratio.get(originalParent));
         }
-        return parent.get(x);
+        <span class="hljs-keyword">return</span> parent.get(x);
     }
 
-    public void union(String x, String y, double value) {
-        String rootX = find(x);
-        String rootY = find(y);
-        if (!rootX.equals(rootY)) {
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">union</span><span class="hljs-params">(String x, String y, <span class="hljs-type">double</span> value)</span> {
+        <span class="hljs-type">String</span> <span class="hljs-variable">rootX</span> <span class="hljs-operator">=</span> find(x);
+        <span class="hljs-type">String</span> <span class="hljs-variable">rootY</span> <span class="hljs-operator">=</span> find(y);
+        <span class="hljs-keyword">if</span> (!rootX.equals(rootY)) {
             parent.put(rootX, rootY);
             ratio.put(rootX, value * ratio.get(y) / ratio.get(x));
         }
     }
 
-    public double query(String x, String y) {
-        if (!parent.containsKey(x) || !parent.containsKey(y)) {
-            return -1.0;
+    <span class="hljs-keyword">public</span> <span class="hljs-type">double</span> <span class="hljs-title function_">query</span><span class="hljs-params">(String x, String y)</span> {
+        <span class="hljs-keyword">if</span> (!parent.containsKey(x) || !parent.containsKey(y)) {
+            <span class="hljs-keyword">return</span> -<span class="hljs-number">1.0</span>;
         }
-        String rootX = find(x);
-        String rootY = find(y);
-        if (!rootX.equals(rootY)) return -1.0;
-        return ratio.get(x) / ratio.get(y);
+        <span class="hljs-type">String</span> <span class="hljs-variable">rootX</span> <span class="hljs-operator">=</span> find(x);
+        <span class="hljs-type">String</span> <span class="hljs-variable">rootY</span> <span class="hljs-operator">=</span> find(y);
+        <span class="hljs-keyword">if</span> (!rootX.equals(rootY)) <span class="hljs-keyword">return</span> -<span class="hljs-number">1.0</span>;
+        <span class="hljs-keyword">return</span> ratio.get(x) / ratio.get(y);
     }
 }
 
-public double[] calcEquation(List&lt;List&lt;String&gt;&gt; equations,
-                              double[] values,
+<span class="hljs-keyword">public</span> <span class="hljs-type">double</span>[] calcEquation(List&lt;List&lt;String&gt;&gt; equations,
+                              <span class="hljs-type">double</span>[] values,
                               List&lt;List&lt;String&gt;&gt; queries) {
-    WeightedUnionFind uf = new WeightedUnionFind();
+    <span class="hljs-type">WeightedUnionFind</span> <span class="hljs-variable">uf</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">WeightedUnionFind</span>();
 
-    for (int i = 0; i &lt; equations.size(); i++) {
-        String a = equations.get(i).get(0);
-        String b = equations.get(i).get(1);
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; equations.size(); i++) {
+        <span class="hljs-type">String</span> <span class="hljs-variable">a</span> <span class="hljs-operator">=</span> equations.get(i).get(<span class="hljs-number">0</span>);
+        <span class="hljs-type">String</span> <span class="hljs-variable">b</span> <span class="hljs-operator">=</span> equations.get(i).get(<span class="hljs-number">1</span>);
         uf.union(a, b, values[i]);
     }
 
-    double[] results = new double[queries.size()];
-    for (int i = 0; i &lt; queries.size(); i++) {
-        String c = queries.get(i).get(0);
-        String d = queries.get(i).get(1);
+    <span class="hljs-type">double</span>[] results = <span class="hljs-keyword">new</span> <span class="hljs-title class_">double</span>[queries.size()];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; queries.size(); i++) {
+        <span class="hljs-type">String</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> queries.get(i).get(<span class="hljs-number">0</span>);
+        <span class="hljs-type">String</span> <span class="hljs-variable">d</span> <span class="hljs-operator">=</span> queries.get(i).get(<span class="hljs-number">1</span>);
         results[i] = uf.query(c, d);
     }
-    return results;
+    <span class="hljs-keyword">return</span> results;
 }
 </code></pre>
 <h4 id="pattern-6-bfs-union-find-climb-tree-lca" tabindex="-1"><a class="header-anchor" href="#pattern-6-bfs-union-find-climb-tree-lca"><span>Pattern 6: BFS + Union-Find Climb (Tree LCA)</span></a></h4>
@@ -552,35 +564,35 @@ public double[] calcEquation(List&lt;List&lt;String&gt;&gt; equations,
 <li><strong>Trade-off vs DFS</strong>: More intuitive for iterative thinkers; DFS post-order approach (return <code>(node, depth)</code> pair) is more concise and commonly used</li>
 <li><strong>Similar Problems</strong>: LC 236 (LCA), LC 1123 (same as 865), LC 1644, LC 1650</li>
 </ul>
-<pre><code class="language-java">// LC 865 - BFS + Parent-Climb approach (simplified Union-Find concept)
-// time = O(N), space = O(N)
-public TreeNode subtreeWithAllDeepest(TreeNode root) {
-    Map&lt;TreeNode, TreeNode&gt; parent = new HashMap&lt;&gt;();
-    Queue&lt;TreeNode&gt; q = new LinkedList&lt;&gt;();
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 865 - BFS + Parent-Climb approach (simplified Union-Find concept)</span>
+<span class="hljs-comment">// time = O(N), space = O(N)</span>
+<span class="hljs-keyword">public</span> TreeNode <span class="hljs-title function_">subtreeWithAllDeepest</span><span class="hljs-params">(TreeNode root)</span> {
+    Map&lt;TreeNode, TreeNode&gt; parent = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+    Queue&lt;TreeNode&gt; q = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
     q.offer(root);
-    parent.put(root, null);
-    List&lt;TreeNode&gt; level = new ArrayList&lt;&gt;();
+    parent.put(root, <span class="hljs-literal">null</span>);
+    List&lt;TreeNode&gt; level = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
 
-    // Step 1: BFS to find deepest level + build parent map
-    while (!q.isEmpty()) {
-        int size = q.size();
-        level = new ArrayList&lt;&gt;();
-        for (int i = 0; i &lt; size; i++) {
-            TreeNode cur = q.poll();
+    <span class="hljs-comment">// Step 1: BFS to find deepest level + build parent map</span>
+    <span class="hljs-keyword">while</span> (!q.isEmpty()) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> q.size();
+        level = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; size; i++) {
+            <span class="hljs-type">TreeNode</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> q.poll();
             level.add(cur);
-            if (cur.left != null) { parent.put(cur.left, cur); q.offer(cur.left); }
-            if (cur.right != null) { parent.put(cur.right, cur); q.offer(cur.right); }
+            <span class="hljs-keyword">if</span> (cur.left != <span class="hljs-literal">null</span>) { parent.put(cur.left, cur); q.offer(cur.left); }
+            <span class="hljs-keyword">if</span> (cur.right != <span class="hljs-literal">null</span>) { parent.put(cur.right, cur); q.offer(cur.right); }
         }
     }
 
-    // Step 2: Climb upward until all deepest nodes converge
-    Set&lt;TreeNode&gt; set = new HashSet&lt;&gt;(level);
-    while (set.size() &gt; 1) {
-        Set&lt;TreeNode&gt; next = new HashSet&lt;&gt;();
-        for (TreeNode node : set) next.add(parent.get(node));
+    <span class="hljs-comment">// Step 2: Climb upward until all deepest nodes converge</span>
+    Set&lt;TreeNode&gt; set = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;(level);
+    <span class="hljs-keyword">while</span> (set.size() &gt; <span class="hljs-number">1</span>) {
+        Set&lt;TreeNode&gt; next = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
+        <span class="hljs-keyword">for</span> (TreeNode node : set) next.add(parent.get(node));
         set = next;
     }
-    return set.iterator().next();
+    <span class="hljs-keyword">return</span> set.iterator().next();
 }
 </code></pre>
 <h2 id="1-example-problems-with-code-references" tabindex="-1"><a class="header-anchor" href="#1-example-problems-with-code-references"><span>1) Example Problems with Code References</span></a></h2>
@@ -638,7 +650,7 @@ public TreeNode subtreeWithAllDeepest(TreeNode root) {
 </ul>
 <h2 id="2-diagrams" tabindex="-1"><a class="header-anchor" href="#2-diagrams"><span>2) Diagrams</span></a></h2>
 <h3 id="basic-union-operations" tabindex="-1"><a class="header-anchor" href="#basic-union-operations"><span>Basic Union Operations</span></a></h3>
-<pre><code>Initial: [0] [1] [2] [3] [4]
+<pre><code class="hljs">Initial: [0] [1] [2] [3] [4]
 
 After union(0,1): [0,1] [2] [3] [4]
                    1
@@ -651,7 +663,7 @@ After union(2,3): [0,1] [2,3] [4]
                  0     2
 </code></pre>
 <h3 id="path-compression-visualization" tabindex="-1"><a class="header-anchor" href="#path-compression-visualization"><span>Path Compression Visualization</span></a></h3>
-<pre><code>Before find(1):           After find(1):
+<pre><code class="hljs">Before find(1):           After find(1):
      4 (root)                4 (root)
      |                      /|\
      3                     1 2 3
@@ -666,7 +678,7 @@ Call find(1):
 - Result: All nodes point directly to root
 </code></pre>
 <h3 id="union-by-rank-example" tabindex="-1"><a class="header-anchor" href="#union-by-rank-example"><span>Union by Rank Example</span></a></h3>
-<pre><code>Initial state:
+<pre><code class="hljs">Initial state:
   0     1     2     3
 rank: 0 0 0 0
 
@@ -688,7 +700,7 @@ Why rank increased:
 - Attach 2 to 0, increment rank[0] to 2
 </code></pre>
 <h3 id="path-compression-in-action" tabindex="-1"><a class="header-anchor" href="#path-compression-in-action"><span>Path Compression in Action</span></a></h3>
-<pre><code>Scenario: find(A) in chain A→B→C→D→E (root)
+<pre><code class="hljs">Scenario: find(A) in chain A→B→C→D→E (root)
 
 Step 1: Recursive calls
   find(A) calls find(B)
@@ -715,34 +727,34 @@ After:   A → E
 <ol>
 <li>
 <p><strong>Forgetting Path Compression</strong>: Results in O(n) time instead of nearly O(1)</p>
-<pre><code class="language-java">// WRONG: No path compression
-public int find(int x) {
-    while (parent[x] != x) x = parent[x];
-    return x;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// WRONG: No path compression</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">find</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> {
+    <span class="hljs-keyword">while</span> (parent[x] != x) x = parent[x];
+    <span class="hljs-keyword">return</span> x;
 }
 
-// CORRECT: With path compression
-public int find(int x) {
-    if (parent[x] != x) {
-        parent[x] = find(parent[x]); // Flatten on return
+<span class="hljs-comment">// CORRECT: With path compression</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">find</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> {
+    <span class="hljs-keyword">if</span> (parent[x] != x) {
+        parent[x] = find(parent[x]); <span class="hljs-comment">// Flatten on return</span>
     }
-    return parent[x];
+    <span class="hljs-keyword">return</span> parent[x];
 }
 </code></pre>
 </li>
 <li>
 <p><strong>Not Tracking Component Count</strong>: Missing decrement in union operation</p>
-<pre><code class="language-java">// WRONG: Forgot to decrement
-public void union(int x, int y) {
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// WRONG: Forgot to decrement</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">union</span><span class="hljs-params">(<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)</span> {
     parent[find(x)] = find(y);
 }
 
-// CORRECT: Track components
-public void union(int x, int y) {
-    int rootX = find(x), rootY = find(y);
-    if (rootX != rootY) {
+<span class="hljs-comment">// CORRECT: Track components</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">union</span><span class="hljs-params">(<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">rootX</span> <span class="hljs-operator">=</span> find(x), rootY = find(y);
+    <span class="hljs-keyword">if</span> (rootX != rootY) {
         parent[rootX] = rootY;
-        components--; // Important!
+        components--; <span class="hljs-comment">// Important!</span>
     }
 }
 </code></pre>
@@ -755,11 +767,11 @@ public void union(int x, int y) {
 </li>
 <li>
 <p><strong>Wrong Parent Update</strong>: Updating node instead of root in union</p>
-<pre><code class="language-java">// WRONG: Update x directly
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// WRONG: Update x directly</span>
 parent[x] = parent[y];
 
-// CORRECT: Update roots
-int rootX = find(x), rootY = find(y);
+<span class="hljs-comment">// CORRECT: Update roots</span>
+<span class="hljs-type">int</span> <span class="hljs-variable">rootX</span> <span class="hljs-operator">=</span> find(x), rootY = find(y);
 parent[rootX] = rootY;
 </code></pre>
 </li>
@@ -804,24 +816,24 @@ parent[rootX] = rootY;
 <blockquote>
 <p>Add edges one by one; if two nodes are already connected, this edge is redundant.</p>
 </blockquote>
-<pre><code class="language-java">// LC 684 - Redundant Connection
-// IDEA: Union-Find — detect cycle; redundant edge connects already-connected nodes
-// time = O(N * α(N)), space = O(N)
-public int[] findRedundantConnection(int[][] edges) {
-    int n = edges.length;
-    int[] parent = new int[n + 1];
-    for (int i = 0; i &lt;= n; i++) parent[i] = i;
-    for (int[] edge : edges) {
-        if (find(parent, edge[0]) == find(parent, edge[1])) return edge;
-        union(parent, edge[0], edge[1]);
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 684 - Redundant Connection</span>
+<span class="hljs-comment">// IDEA: Union-Find — detect cycle; redundant edge connects already-connected nodes</span>
+<span class="hljs-comment">// time = O(N * α(N)), space = O(N)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] findRedundantConnection(<span class="hljs-type">int</span>[][] edges) {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> edges.length;
+    <span class="hljs-type">int</span>[] parent = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n + <span class="hljs-number">1</span>];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt;= n; i++) parent[i] = i;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] edge : edges) {
+        <span class="hljs-keyword">if</span> (find(parent, edge[<span class="hljs-number">0</span>]) == find(parent, edge[<span class="hljs-number">1</span>])) <span class="hljs-keyword">return</span> edge;
+        union(parent, edge[<span class="hljs-number">0</span>], edge[<span class="hljs-number">1</span>]);
     }
-    return new int[]{};
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{};
 }
-private int find(int[] parent, int x) {
-    if (parent[x] != x) parent[x] = find(parent, parent[x]); // path compression
-    return parent[x];
+<span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">find</span><span class="hljs-params">(<span class="hljs-type">int</span>[] parent, <span class="hljs-type">int</span> x)</span> {
+    <span class="hljs-keyword">if</span> (parent[x] != x) parent[x] = find(parent, parent[x]); <span class="hljs-comment">// path compression</span>
+    <span class="hljs-keyword">return</span> parent[x];
 }
-private void union(int[] parent, int x, int y) {
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">union</span><span class="hljs-params">(<span class="hljs-type">int</span>[] parent, <span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)</span> {
     parent[find(parent, x)] = find(parent, y);
 }
 </code></pre>
@@ -829,25 +841,25 @@ private void union(int[] parent, int x, int y) {
 <blockquote>
 <p>Count the number of distinct roots after unioning all direct friendships.</p>
 </blockquote>
-<pre><code class="language-java">// LC 547 - Number of Provinces
-// IDEA: Union-Find — count distinct components (roots)
-// time = O(N^2 * α(N)), space = O(N)
-public int findCircleNum(int[][] isConnected) {
-    int n = isConnected.length;
-    int[] parent = new int[n];
-    for (int i = 0; i &lt; n; i++) parent[i] = i;
-    for (int i = 0; i &lt; n; i++)
-        for (int j = i + 1; j &lt; n; j++)
-            if (isConnected[i][j] == 1) union(parent, i, j);
-    int count = 0;
-    for (int i = 0; i &lt; n; i++) if (find(parent, i) == i) count++;
-    return count;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 547 - Number of Provinces</span>
+<span class="hljs-comment">// IDEA: Union-Find — count distinct components (roots)</span>
+<span class="hljs-comment">// time = O(N^2 * α(N)), space = O(N)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">findCircleNum</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] isConnected)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> isConnected.length;
+    <span class="hljs-type">int</span>[] parent = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) parent[i] = i;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++)
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> i + <span class="hljs-number">1</span>; j &lt; n; j++)
+            <span class="hljs-keyword">if</span> (isConnected[i][j] == <span class="hljs-number">1</span>) union(parent, i, j);
+    <span class="hljs-type">int</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) <span class="hljs-keyword">if</span> (find(parent, i) == i) count++;
+    <span class="hljs-keyword">return</span> count;
 }
-private int find(int[] parent, int x) {
-    if (parent[x] != x) parent[x] = find(parent, parent[x]);
-    return parent[x];
+<span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">find</span><span class="hljs-params">(<span class="hljs-type">int</span>[] parent, <span class="hljs-type">int</span> x)</span> {
+    <span class="hljs-keyword">if</span> (parent[x] != x) parent[x] = find(parent, parent[x]);
+    <span class="hljs-keyword">return</span> parent[x];
 }
-private void union(int[] parent, int x, int y) {
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">union</span><span class="hljs-params">(<span class="hljs-type">int</span>[] parent, <span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)</span> {
     parent[find(parent, x)] = find(parent, y);
 }
 </code></pre>
@@ -855,40 +867,40 @@ private void union(int[] parent, int x, int y) {
 <blockquote>
 <p>Union emails belonging to the same person; group by root; sort and format.</p>
 </blockquote>
-<pre><code class="language-java">// LC 721 - Accounts Merge
-// IDEA: Union-Find — union all emails in same account; group by root
-// time = O(N * M * α(N*M)), space = O(N*M)
-public List&lt;List&lt;String&gt;&gt; accountsMerge(List&lt;List&lt;String&gt;&gt; accounts) {
-    Map&lt;String, String&gt; parent = new HashMap&lt;&gt;();
-    Map&lt;String, String&gt; emailToName = new HashMap&lt;&gt;();
-    // init
-    for (List&lt;String&gt; acc : accounts)
-        for (int i = 1; i &lt; acc.size(); i++) {
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 721 - Accounts Merge</span>
+<span class="hljs-comment">// IDEA: Union-Find — union all emails in same account; group by root</span>
+<span class="hljs-comment">// time = O(N * M * α(N*M)), space = O(N*M)</span>
+<span class="hljs-keyword">public</span> List&lt;List&lt;String&gt;&gt; <span class="hljs-title function_">accountsMerge</span><span class="hljs-params">(List&lt;List&lt;String&gt;&gt; accounts)</span> {
+    Map&lt;String, String&gt; parent = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+    Map&lt;String, String&gt; emailToName = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+    <span class="hljs-comment">// init</span>
+    <span class="hljs-keyword">for</span> (List&lt;String&gt; acc : accounts)
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; acc.size(); i++) {
             parent.put(acc.get(i), acc.get(i));
-            emailToName.put(acc.get(i), acc.get(0));
+            emailToName.put(acc.get(i), acc.get(<span class="hljs-number">0</span>));
         }
-    // union
-    for (List&lt;String&gt; acc : accounts)
-        for (int i = 2; i &lt; acc.size(); i++)
-            union(parent, acc.get(1), acc.get(i));
-    // group by root
-    Map&lt;String, TreeSet&lt;String&gt;&gt; groups = new HashMap&lt;&gt;();
-    for (String email : parent.keySet())
-        groups.computeIfAbsent(find(parent, email), k -&gt; new TreeSet&lt;&gt;()).add(email);
-    List&lt;List&lt;String&gt;&gt; result = new ArrayList&lt;&gt;();
-    for (Map.Entry&lt;String, TreeSet&lt;String&gt;&gt; entry : groups.entrySet()) {
-        List&lt;String&gt; list = new ArrayList&lt;&gt;();
+    <span class="hljs-comment">// union</span>
+    <span class="hljs-keyword">for</span> (List&lt;String&gt; acc : accounts)
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">2</span>; i &lt; acc.size(); i++)
+            union(parent, acc.get(<span class="hljs-number">1</span>), acc.get(i));
+    <span class="hljs-comment">// group by root</span>
+    Map&lt;String, TreeSet&lt;String&gt;&gt; groups = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (String email : parent.keySet())
+        groups.computeIfAbsent(find(parent, email), k -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">TreeSet</span>&lt;&gt;()).add(email);
+    List&lt;List&lt;String&gt;&gt; result = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (Map.Entry&lt;String, TreeSet&lt;String&gt;&gt; entry : groups.entrySet()) {
+        List&lt;String&gt; list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
         list.add(emailToName.get(entry.getKey()));
         list.addAll(entry.getValue());
         result.add(list);
     }
-    return result;
+    <span class="hljs-keyword">return</span> result;
 }
-private String find(Map&lt;String, String&gt; parent, String x) {
-    if (!parent.get(x).equals(x)) parent.put(x, find(parent, parent.get(x)));
-    return parent.get(x);
+<span class="hljs-keyword">private</span> String <span class="hljs-title function_">find</span><span class="hljs-params">(Map&lt;String, String&gt; parent, String x)</span> {
+    <span class="hljs-keyword">if</span> (!parent.get(x).equals(x)) parent.put(x, find(parent, parent.get(x)));
+    <span class="hljs-keyword">return</span> parent.get(x);
 }
-private void union(Map&lt;String, String&gt; parent, String x, String y) {
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">union</span><span class="hljs-params">(Map&lt;String, String&gt; parent, String x, String y)</span> {
     parent.put(find(parent, x), find(parent, y));
 }
 </code></pre>
@@ -896,210 +908,210 @@ private void union(Map&lt;String, String&gt; parent, String x, String y) {
 <blockquote>
 <p>Tree has exactly N-1 edges and no cycle; union each edge, return false on same-component edge.</p>
 </blockquote>
-<pre><code class="language-java">// LC 261 - Graph Valid Tree
-// IDEA: Union-Find — N-1 edges + no cycle = valid tree
-// time = O(N * α(N)), space = O(N)
-public boolean validTree(int n, int[][] edges) {
-    if (edges.length != n - 1) return false;
-    int[] p = new int[n];
-    for (int i = 0; i &lt; n; i++) p[i] = i;
-    for (int[] e : edges) {
-        if (find(p, e[0]) == find(p, e[1])) return false;
-        p[find(p, e[0])] = find(p, e[1]);
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 261 - Graph Valid Tree</span>
+<span class="hljs-comment">// IDEA: Union-Find — N-1 edges + no cycle = valid tree</span>
+<span class="hljs-comment">// time = O(N * α(N)), space = O(N)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">validTree</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span>[][] edges)</span> {
+    <span class="hljs-keyword">if</span> (edges.length != n - <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    <span class="hljs-type">int</span>[] p = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) p[i] = i;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] e : edges) {
+        <span class="hljs-keyword">if</span> (find(p, e[<span class="hljs-number">0</span>]) == find(p, e[<span class="hljs-number">1</span>])) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        p[find(p, e[<span class="hljs-number">0</span>])] = find(p, e[<span class="hljs-number">1</span>]);
     }
-    return true;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 }
-private int find(int[] p, int x) { return p[x] == x ? x : (p[x] = find(p, p[x])); }
+<span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">find</span><span class="hljs-params">(<span class="hljs-type">int</span>[] p, <span class="hljs-type">int</span> x)</span> { <span class="hljs-keyword">return</span> p[x] == x ? x : (p[x] = find(p, p[x])); }
 </code></pre>
 <h3 id="2-5-number-of-connected-components-in-undirected-graph-lc-323-union-find" tabindex="-1"><a class="header-anchor" href="#2-5-number-of-connected-components-in-undirected-graph-lc-323-union-find"><span>2-5) Number of Connected Components in Undirected Graph (LC 323) — Union-Find</span></a></h3>
 <blockquote>
 <p>Union each edge; count remaining distinct roots as connected components.</p>
 </blockquote>
-<pre><code class="language-java">// LC 323 - Number of Connected Components in Undirected Graph
-// IDEA: Union-Find — count distinct roots after unioning all edges
-// time = O(N * α(N)), space = O(N)
-public int countComponents(int n, int[][] edges) {
-    int[] p = new int[n];
-    for (int i = 0; i &lt; n; i++) p[i] = i;
-    int components = n;
-    for (int[] e : edges) {
-        int a = find(p, e[0]), b = find(p, e[1]);
-        if (a != b) { p[a] = b; components--; }
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 323 - Number of Connected Components in Undirected Graph</span>
+<span class="hljs-comment">// IDEA: Union-Find — count distinct roots after unioning all edges</span>
+<span class="hljs-comment">// time = O(N * α(N)), space = O(N)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">countComponents</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span>[][] edges)</span> {
+    <span class="hljs-type">int</span>[] p = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) p[i] = i;
+    <span class="hljs-type">int</span> <span class="hljs-variable">components</span> <span class="hljs-operator">=</span> n;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] e : edges) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">a</span> <span class="hljs-operator">=</span> find(p, e[<span class="hljs-number">0</span>]), b = find(p, e[<span class="hljs-number">1</span>]);
+        <span class="hljs-keyword">if</span> (a != b) { p[a] = b; components--; }
     }
-    return components;
+    <span class="hljs-keyword">return</span> components;
 }
-private int find(int[] p, int x) { return p[x] == x ? x : (p[x] = find(p, p[x])); }
+<span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">find</span><span class="hljs-params">(<span class="hljs-type">int</span>[] p, <span class="hljs-type">int</span> x)</span> { <span class="hljs-keyword">return</span> p[x] == x ? x : (p[x] = find(p, p[x])); }
 </code></pre>
 <h3 id="2-6-surrounded-regions-lc-130-union-find-with-virtual-border-node" tabindex="-1"><a class="header-anchor" href="#2-6-surrounded-regions-lc-130-union-find-with-virtual-border-node"><span>2-6) Surrounded Regions (LC 130) — Union-Find with Virtual Border Node</span></a></h3>
 <blockquote>
 <p>Union all border ‘O’ cells to a virtual node; any ‘O’ not connected gets flipped to ‘X’.</p>
 </blockquote>
-<pre><code class="language-java">// LC 130 - Surrounded Regions
-// IDEA: Union-Find — connect border O cells to virtual node; flip disconnected O cells
-// time = O(M*N), space = O(M*N)
-public void solve(char[][] board) {
-    int m = board.length, n = board[0].length, virtual = m * n;
-    int[] p = new int[virtual + 1];
-    for (int i = 0; i &lt;= virtual; i++) p[i] = i;
-    int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
-    for (int i = 0; i &lt; m; i++) for (int j = 0; j &lt; n; j++) if (board[i][j] == 'O') {
-        int id = i * n + j;
-        if (i == 0 || i == m-1 || j == 0 || j == n-1) union(p, id, virtual);
-        else for (int[] d : dirs) {
-            int ni = i+d[0], nj = j+d[1];
-            if (board[ni][nj] == 'O') union(p, id, ni*n+nj);
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 130 - Surrounded Regions</span>
+<span class="hljs-comment">// IDEA: Union-Find — connect border O cells to virtual node; flip disconnected O cells</span>
+<span class="hljs-comment">// time = O(M*N), space = O(M*N)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">solve</span><span class="hljs-params">(<span class="hljs-type">char</span>[][] board)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> board.length, n = board[<span class="hljs-number">0</span>].length, virtual = m * n;
+    <span class="hljs-type">int</span>[] p = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[virtual + <span class="hljs-number">1</span>];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt;= virtual; i++) p[i] = i;
+    <span class="hljs-type">int</span>[][] dirs = {{<span class="hljs-number">1</span>,<span class="hljs-number">0</span>},{-<span class="hljs-number">1</span>,<span class="hljs-number">0</span>},{<span class="hljs-number">0</span>,<span class="hljs-number">1</span>},{<span class="hljs-number">0</span>,-<span class="hljs-number">1</span>}};
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; m; i++) <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; n; j++) <span class="hljs-keyword">if</span> (board[i][j] == <span class="hljs-string">&#x27;O&#x27;</span>) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">id</span> <span class="hljs-operator">=</span> i * n + j;
+        <span class="hljs-keyword">if</span> (i == <span class="hljs-number">0</span> || i == m-<span class="hljs-number">1</span> || j == <span class="hljs-number">0</span> || j == n-<span class="hljs-number">1</span>) union(p, id, virtual);
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] d : dirs) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">ni</span> <span class="hljs-operator">=</span> i+d[<span class="hljs-number">0</span>], nj = j+d[<span class="hljs-number">1</span>];
+            <span class="hljs-keyword">if</span> (board[ni][nj] == <span class="hljs-string">&#x27;O&#x27;</span>) union(p, id, ni*n+nj);
         }
     }
-    for (int i = 0; i &lt; m; i++) for (int j = 0; j &lt; n; j++)
-        if (board[i][j] == 'O' &amp;&amp; find(p, i*n+j) != find(p, virtual)) board[i][j] = 'X';
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; m; i++) <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; n; j++)
+        <span class="hljs-keyword">if</span> (board[i][j] == <span class="hljs-string">&#x27;O&#x27;</span> &amp;&amp; find(p, i*n+j) != find(p, virtual)) board[i][j] = <span class="hljs-string">&#x27;X&#x27;</span>;
 }
-private int find(int[] p, int x) { return p[x]==x ? x : (p[x]=find(p,p[x])); }
-private void union(int[] p, int x, int y) { p[find(p,x)] = find(p,y); }
+<span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">find</span><span class="hljs-params">(<span class="hljs-type">int</span>[] p, <span class="hljs-type">int</span> x)</span> { <span class="hljs-keyword">return</span> p[x]==x ? x : (p[x]=find(p,p[x])); }
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">union</span><span class="hljs-params">(<span class="hljs-type">int</span>[] p, <span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)</span> { p[find(p,x)] = find(p,y); }
 </code></pre>
 <h3 id="2-7-smallest-string-with-swaps-lc-1202-union-find-sorting" tabindex="-1"><a class="header-anchor" href="#2-7-smallest-string-with-swaps-lc-1202-union-find-sorting"><span>2-7) Smallest String with Swaps (LC 1202) — Union-Find + Sorting</span></a></h3>
 <blockquote>
 <p>Union swap pairs; sort characters within each component; place sorted chars back.</p>
 </blockquote>
-<pre><code class="language-java">// LC 1202 - Smallest String with Swaps
-// IDEA: Union-Find — group indices; sort chars in each group and reassign
-// time = O(N log N), space = O(N)
-public String smallestStringWithSwaps(String s, List&lt;List&lt;Integer&gt;&gt; pairs) {
-    int n = s.length();
-    int[] p = new int[n];
-    for (int i = 0; i &lt; n; i++) p[i] = i;
-    for (List&lt;Integer&gt; pair : pairs) union(p, pair.get(0), pair.get(1));
-    Map&lt;Integer, List&lt;Integer&gt;&gt; groups = new HashMap&lt;&gt;();
-    for (int i = 0; i &lt; n; i++) groups.computeIfAbsent(find(p, i), k -&gt; new ArrayList&lt;&gt;()).add(i);
-    char[] res = s.toCharArray();
-    for (List&lt;Integer&gt; idx : groups.values()) {
-        char[] chars = new char[idx.size()];
-        for (int i = 0; i &lt; idx.size(); i++) chars[i] = s.charAt(idx.get(i));
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1202 - Smallest String with Swaps</span>
+<span class="hljs-comment">// IDEA: Union-Find — group indices; sort chars in each group and reassign</span>
+<span class="hljs-comment">// time = O(N log N), space = O(N)</span>
+<span class="hljs-keyword">public</span> String <span class="hljs-title function_">smallestStringWithSwaps</span><span class="hljs-params">(String s, List&lt;List&lt;Integer&gt;&gt; pairs)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> s.length();
+    <span class="hljs-type">int</span>[] p = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) p[i] = i;
+    <span class="hljs-keyword">for</span> (List&lt;Integer&gt; pair : pairs) union(p, pair.get(<span class="hljs-number">0</span>), pair.get(<span class="hljs-number">1</span>));
+    Map&lt;Integer, List&lt;Integer&gt;&gt; groups = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) groups.computeIfAbsent(find(p, i), k -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;()).add(i);
+    <span class="hljs-type">char</span>[] res = s.toCharArray();
+    <span class="hljs-keyword">for</span> (List&lt;Integer&gt; idx : groups.values()) {
+        <span class="hljs-type">char</span>[] chars = <span class="hljs-keyword">new</span> <span class="hljs-title class_">char</span>[idx.size()];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; idx.size(); i++) chars[i] = s.charAt(idx.get(i));
         Arrays.sort(chars);
         Collections.sort(idx);
-        for (int i = 0; i &lt; idx.size(); i++) res[idx.get(i)] = chars[i];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; idx.size(); i++) res[idx.get(i)] = chars[i];
     }
-    return new String(res);
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(res);
 }
-private int find(int[] p, int x) { return p[x]==x ? x : (p[x]=find(p,p[x])); }
-private void union(int[] p, int x, int y) { p[find(p,x)] = find(p,y); }
+<span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">find</span><span class="hljs-params">(<span class="hljs-type">int</span>[] p, <span class="hljs-type">int</span> x)</span> { <span class="hljs-keyword">return</span> p[x]==x ? x : (p[x]=find(p,p[x])); }
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">union</span><span class="hljs-params">(<span class="hljs-type">int</span>[] p, <span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)</span> { p[find(p,x)] = find(p,y); }
 </code></pre>
 <h3 id="2-8-most-stones-removed-with-same-row-or-column-lc-947-union-find" tabindex="-1"><a class="header-anchor" href="#2-8-most-stones-removed-with-same-row-or-column-lc-947-union-find"><span>2-8) Most Stones Removed with Same Row or Column (LC 947) — Union-Find</span></a></h3>
 <blockquote>
 <p>Union stones in the same row or column; answer = stones − number of components.</p>
 </blockquote>
-<pre><code class="language-java">// LC 947 - Most Stones Removed with Same Row or Column
-// IDEA: Union-Find — stones sharing row/column are in same component; remove all but one
-// time = O(N^2 * α(N)), space = O(N)
-public int removeStones(int[][] stones) {
-    int n = stones.length;
-    int[] p = new int[n];
-    for (int i = 0; i &lt; n; i++) p[i] = i;
-    for (int i = 0; i &lt; n; i++)
-        for (int j = i+1; j &lt; n; j++)
-            if (stones[i][0] == stones[j][0] || stones[i][1] == stones[j][1])
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 947 - Most Stones Removed with Same Row or Column</span>
+<span class="hljs-comment">// IDEA: Union-Find — stones sharing row/column are in same component; remove all but one</span>
+<span class="hljs-comment">// time = O(N^2 * α(N)), space = O(N)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">removeStones</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] stones)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> stones.length;
+    <span class="hljs-type">int</span>[] p = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) p[i] = i;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++)
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> i+<span class="hljs-number">1</span>; j &lt; n; j++)
+            <span class="hljs-keyword">if</span> (stones[i][<span class="hljs-number">0</span>] == stones[j][<span class="hljs-number">0</span>] || stones[i][<span class="hljs-number">1</span>] == stones[j][<span class="hljs-number">1</span>])
                 union(p, i, j);
-    Set&lt;Integer&gt; roots = new HashSet&lt;&gt;();
-    for (int i = 0; i &lt; n; i++) roots.add(find(p, i));
-    return n - roots.size();
+    Set&lt;Integer&gt; roots = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) roots.add(find(p, i));
+    <span class="hljs-keyword">return</span> n - roots.size();
 }
-private int find(int[] p, int x) { return p[x]==x ? x : (p[x]=find(p,p[x])); }
-private void union(int[] p, int x, int y) { p[find(p,x)] = find(p,y); }
+<span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">find</span><span class="hljs-params">(<span class="hljs-type">int</span>[] p, <span class="hljs-type">int</span> x)</span> { <span class="hljs-keyword">return</span> p[x]==x ? x : (p[x]=find(p,p[x])); }
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">union</span><span class="hljs-params">(<span class="hljs-type">int</span>[] p, <span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)</span> { p[find(p,x)] = find(p,y); }
 </code></pre>
 <h3 id="2-9-satisfiability-of-equality-equations-lc-990-union-find" tabindex="-1"><a class="header-anchor" href="#2-9-satisfiability-of-equality-equations-lc-990-union-find"><span>2-9) Satisfiability of Equality Equations (LC 990) — Union-Find</span></a></h3>
 <blockquote>
 <p>Process ‘==’ edges first; then check ‘!=’ pairs for contradiction.</p>
 </blockquote>
-<pre><code class="language-java">// LC 990 - Satisfiability of Equality Equations
-// IDEA: Union-Find — union on ==, validate != pairs for contradiction
-// time = O(N), space = O(26)
-public boolean equationsPossible(String[] equations) {
-    int[] p = new int[26];
-    for (int i = 0; i &lt; 26; i++) p[i] = i;
-    for (String eq : equations)
-        if (eq.charAt(1) == '=') union(p, eq.charAt(0)-'a', eq.charAt(3)-'a');
-    for (String eq : equations)
-        if (eq.charAt(1) == '!' &amp;&amp; find(p, eq.charAt(0)-'a') == find(p, eq.charAt(3)-'a'))
-            return false;
-    return true;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 990 - Satisfiability of Equality Equations</span>
+<span class="hljs-comment">// IDEA: Union-Find — union on ==, validate != pairs for contradiction</span>
+<span class="hljs-comment">// time = O(N), space = O(26)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">equationsPossible</span><span class="hljs-params">(String[] equations)</span> {
+    <span class="hljs-type">int</span>[] p = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">26</span>];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">26</span>; i++) p[i] = i;
+    <span class="hljs-keyword">for</span> (String eq : equations)
+        <span class="hljs-keyword">if</span> (eq.charAt(<span class="hljs-number">1</span>) == <span class="hljs-string">&#x27;=&#x27;</span>) union(p, eq.charAt(<span class="hljs-number">0</span>)-<span class="hljs-string">&#x27;a&#x27;</span>, eq.charAt(<span class="hljs-number">3</span>)-<span class="hljs-string">&#x27;a&#x27;</span>);
+    <span class="hljs-keyword">for</span> (String eq : equations)
+        <span class="hljs-keyword">if</span> (eq.charAt(<span class="hljs-number">1</span>) == <span class="hljs-string">&#x27;!&#x27;</span> &amp;&amp; find(p, eq.charAt(<span class="hljs-number">0</span>)-<span class="hljs-string">&#x27;a&#x27;</span>) == find(p, eq.charAt(<span class="hljs-number">3</span>)-<span class="hljs-string">&#x27;a&#x27;</span>))
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 }
-private int find(int[] p, int x) { return p[x]==x ? x : (p[x]=find(p,p[x])); }
-private void union(int[] p, int x, int y) { p[find(p,x)] = find(p,y); }
+<span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">find</span><span class="hljs-params">(<span class="hljs-type">int</span>[] p, <span class="hljs-type">int</span> x)</span> { <span class="hljs-keyword">return</span> p[x]==x ? x : (p[x]=find(p,p[x])); }
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">union</span><span class="hljs-params">(<span class="hljs-type">int</span>[] p, <span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)</span> { p[find(p,x)] = find(p,y); }
 </code></pre>
 <h3 id="2-10-number-of-operations-to-make-network-connected-lc-1319-union-find" tabindex="-1"><a class="header-anchor" href="#2-10-number-of-operations-to-make-network-connected-lc-1319-union-find"><span>2-10) Number of Operations to Make Network Connected (LC 1319) — Union-Find</span></a></h3>
 <blockquote>
 <p>Need at least N-1 edges; count components; extra edges reconnect disconnected components.</p>
 </blockquote>
-<pre><code class="language-java">// LC 1319 - Number of Operations to Make Network Connected
-// IDEA: Union-Find — count components; need (components-1) extra cables
-// time = O(N * α(N)), space = O(N)
-public int makeConnected(int n, int[][] connections) {
-    if (connections.length &lt; n - 1) return -1;
-    int[] p = new int[n];
-    for (int i = 0; i &lt; n; i++) p[i] = i;
-    int components = n;
-    for (int[] c : connections) {
-        int a = find(p, c[0]), b = find(p, c[1]);
-        if (a != b) { p[a] = b; components--; }
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1319 - Number of Operations to Make Network Connected</span>
+<span class="hljs-comment">// IDEA: Union-Find — count components; need (components-1) extra cables</span>
+<span class="hljs-comment">// time = O(N * α(N)), space = O(N)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">makeConnected</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span>[][] connections)</span> {
+    <span class="hljs-keyword">if</span> (connections.length &lt; n - <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+    <span class="hljs-type">int</span>[] p = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) p[i] = i;
+    <span class="hljs-type">int</span> <span class="hljs-variable">components</span> <span class="hljs-operator">=</span> n;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] c : connections) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">a</span> <span class="hljs-operator">=</span> find(p, c[<span class="hljs-number">0</span>]), b = find(p, c[<span class="hljs-number">1</span>]);
+        <span class="hljs-keyword">if</span> (a != b) { p[a] = b; components--; }
     }
-    return components - 1;
+    <span class="hljs-keyword">return</span> components - <span class="hljs-number">1</span>;
 }
-private int find(int[] p, int x) { return p[x]==x ? x : (p[x]=find(p,p[x])); }
+<span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">find</span><span class="hljs-params">(<span class="hljs-type">int</span>[] p, <span class="hljs-type">int</span> x)</span> { <span class="hljs-keyword">return</span> p[x]==x ? x : (p[x]=find(p,p[x])); }
 </code></pre>
 <h3 id="2-11-longest-consecutive-sequence-lc-128-hashset-o-n" tabindex="-1"><a class="header-anchor" href="#2-11-longest-consecutive-sequence-lc-128-hashset-o-n"><span>2-11) Longest Consecutive Sequence (LC 128) — HashSet O(N)</span></a></h3>
 <blockquote>
 <p>For each number, only start counting if (num-1) is absent — marks sequence start.</p>
 </blockquote>
-<pre><code class="language-java">// LC 128 - Longest Consecutive Sequence
-// IDEA: HashSet — only extend sequences from their start element
-// time = O(N), space = O(N)
-public int longestConsecutive(int[] nums) {
-    Set&lt;Integer&gt; set = new HashSet&lt;&gt;();
-    for (int n : nums) set.add(n);
-    int longest = 0;
-    for (int n : set) {
-        if (!set.contains(n - 1)) {   // sequence start
-            int len = 1;
-            while (set.contains(n + len)) len++;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 128 - Longest Consecutive Sequence</span>
+<span class="hljs-comment">// IDEA: HashSet — only extend sequences from their start element</span>
+<span class="hljs-comment">// time = O(N), space = O(N)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">longestConsecutive</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+    Set&lt;Integer&gt; set = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> n : nums) set.add(n);
+    <span class="hljs-type">int</span> <span class="hljs-variable">longest</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> n : set) {
+        <span class="hljs-keyword">if</span> (!set.contains(n - <span class="hljs-number">1</span>)) {   <span class="hljs-comment">// sequence start</span>
+            <span class="hljs-type">int</span> <span class="hljs-variable">len</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">while</span> (set.contains(n + len)) len++;
             longest = Math.max(longest, len);
         }
     }
-    return longest;
+    <span class="hljs-keyword">return</span> longest;
 }
 </code></pre>
 <h3 id="2-12-smallest-subtree-with-all-the-deepest-nodes-lc-865-bfs-union-find-climb" tabindex="-1"><a class="header-anchor" href="#2-12-smallest-subtree-with-all-the-deepest-nodes-lc-865-bfs-union-find-climb"><span>2-12) Smallest Subtree with all the Deepest Nodes (LC 865) — BFS + Union-Find Climb</span></a></h3>
 <blockquote>
 <p>BFS finds deepest nodes and parent map; then all deepest nodes “climb” upward via parents until they converge to the LCA. This is the same as LC 1123.</p>
 </blockquote>
-<pre><code class="language-java">// LC 865 - Smallest Subtree with all the Deepest Nodes
-// IDEA: BFS to find deepest level + build parent map, then climb upward until convergence
-// time = O(N), space = O(N)
-public TreeNode subtreeWithAllDeepest(TreeNode root) {
-    Map&lt;TreeNode, TreeNode&gt; parent = new HashMap&lt;&gt;();
-    Queue&lt;TreeNode&gt; q = new LinkedList&lt;&gt;();
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 865 - Smallest Subtree with all the Deepest Nodes</span>
+<span class="hljs-comment">// IDEA: BFS to find deepest level + build parent map, then climb upward until convergence</span>
+<span class="hljs-comment">// time = O(N), space = O(N)</span>
+<span class="hljs-keyword">public</span> TreeNode <span class="hljs-title function_">subtreeWithAllDeepest</span><span class="hljs-params">(TreeNode root)</span> {
+    Map&lt;TreeNode, TreeNode&gt; parent = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+    Queue&lt;TreeNode&gt; q = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
     q.offer(root);
-    parent.put(root, null);
-    List&lt;TreeNode&gt; level = new ArrayList&lt;&gt;();
+    parent.put(root, <span class="hljs-literal">null</span>);
+    List&lt;TreeNode&gt; level = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
 
-    // BFS: build parent map, track each level (last level = deepest)
-    while (!q.isEmpty()) {
-        int size = q.size();
-        level = new ArrayList&lt;&gt;();
-        for (int i = 0; i &lt; size; i++) {
-            TreeNode cur = q.poll();
+    <span class="hljs-comment">// BFS: build parent map, track each level (last level = deepest)</span>
+    <span class="hljs-keyword">while</span> (!q.isEmpty()) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> q.size();
+        level = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; size; i++) {
+            <span class="hljs-type">TreeNode</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> q.poll();
             level.add(cur);
-            if (cur.left != null) { parent.put(cur.left, cur); q.offer(cur.left); }
-            if (cur.right != null) { parent.put(cur.right, cur); q.offer(cur.right); }
+            <span class="hljs-keyword">if</span> (cur.left != <span class="hljs-literal">null</span>) { parent.put(cur.left, cur); q.offer(cur.left); }
+            <span class="hljs-keyword">if</span> (cur.right != <span class="hljs-literal">null</span>) { parent.put(cur.right, cur); q.offer(cur.right); }
         }
     }
 
-    // Climb: replace each node with its parent until all converge
-    Set&lt;TreeNode&gt; set = new HashSet&lt;&gt;(level);
-    while (set.size() &gt; 1) {
-        Set&lt;TreeNode&gt; next = new HashSet&lt;&gt;();
-        for (TreeNode node : set) next.add(parent.get(node));
+    <span class="hljs-comment">// Climb: replace each node with its parent until all converge</span>
+    Set&lt;TreeNode&gt; set = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;(level);
+    <span class="hljs-keyword">while</span> (set.size() &gt; <span class="hljs-number">1</span>) {
+        Set&lt;TreeNode&gt; next = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
+        <span class="hljs-keyword">for</span> (TreeNode node : set) next.add(parent.get(node));
         set = next;
     }
-    return set.iterator().next();
+    <span class="hljs-keyword">return</span> set.iterator().next();
 }
 </code></pre>
 

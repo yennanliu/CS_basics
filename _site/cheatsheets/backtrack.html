@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,13 +20,24 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
     document.querySelectorAll('pre code').forEach(function(codeEl) {
       var pre = codeEl.parentElement;
       var lang = '';
       var cls = codeEl.className || '';
       var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
       if (m) lang = m[1];
+
+      // Add line numbers
+      var lines = codeEl.innerHTML.split('
+');
+      if (lines[lines.length - 1] === '') lines.pop();
+      var numbered = lines.map(function(line, i) {
+        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
+      }).join('
+');
+      codeEl.innerHTML = numbered;
+      codeEl.classList.add('hljs-ln');
+
       var wrapper = document.createElement('div');
       wrapper.className = 'code-block-wrapper';
       pre.parentNode.insertBefore(wrapper, pre);
@@ -45,7 +55,9 @@
       btn.className = 'copy-btn';
       btn.textContent = 'Copy';
       btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
+');
+        navigator.clipboard.writeText(text).then(function() {
           btn.textContent = 'Copied!';
           btn.classList.add('copied');
           setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
@@ -168,7 +180,7 @@
 <p>pattern</p>
 </li>
 </ul>
-<pre><code># pseudo code 
+<pre><code class="hljs"># pseudo code 
 
 result = []
 
@@ -509,15 +521,15 @@ def backtrack(路徑, 選擇清單):
 <hr>
 <h2 id="quick-example" tabindex="-1"><a class="header-anchor" href="#quick-example"><span>🔧 Quick Example</span></a></h2>
 <h3 id="example-1-coin-change-ii-518" tabindex="-1"><a class="header-anchor" href="#example-1-coin-change-ii-518"><span>Example 1: <strong>Coin Change II</strong> (518)</span></a></h3>
-<pre><code class="language-java">// Unlimited coin usage
-for (int i = start; i &lt; coins.length; i++) {
-    backtrack(i, currentSum + coins[i]); // use coin[i] again
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Unlimited coin usage</span>
+<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> start; i &lt; coins.length; i++) {
+    backtrack(i, currentSum + coins[i]); <span class="hljs-comment">// use coin[i] again</span>
 }
 </code></pre>
 <h3 id="example-2-combination-sum-ii-40" tabindex="-1"><a class="header-anchor" href="#example-2-combination-sum-ii-40"><span>Example 2: <strong>Combination Sum II</strong> (40)</span></a></h3>
-<pre><code class="language-java">// Use each number at most once
-for (int i = start; i &lt; candidates.length; i++) {
-    backtrack(i + 1, currentSum + candidates[i]); // can't reuse candidates[i]
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Use each number at most once</span>
+<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> start; i &lt; candidates.length; i++) {
+    backtrack(i + <span class="hljs-number">1</span>, currentSum + candidates[i]); <span class="hljs-comment">// can&#x27;t reuse candidates[i]</span>
 }
 </code></pre>
 <hr>
@@ -704,58 +716,58 @@ for (int i = start; i &lt; candidates.length; i++) {
 <li>backtrack. find minumum case. transform the problem to <code>tree-problem</code>. via <code>start</code> remove already used numbers and return all cases</li>
 <li>Need <code>!cur.contains(nums[i])</code> -&gt; to NOT add duplicated element</li>
 </ul>
-<pre><code class="language-python"># V1
-# ...
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># V1</span>
+<span class="hljs-comment"># ...</span>
 cur = []
 res = []
-def help(start_idx, cur):
-    # ....
-    &quot;&quot;&quot;
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">help</span>(<span class="hljs-params">start_idx, cur</span>):
+    <span class="hljs-comment"># ....</span>
+    <span class="hljs-string">&quot;&quot;&quot;
     NOTE !!! start_idx
 
     we need start_idx here to AVOID re-select previous element
-    &quot;&quot;&quot;
-    for i in range(start_idx, len(wordDict)):
+    &quot;&quot;&quot;</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(start_idx, <span class="hljs-built_in">len</span>(wordDict)):
         cur.append(wordDict[i])
 
-        # NOTE !!! `start_idx + 1`
-        help(start_idx + 1, cur)
-        &quot;&quot;&quot;
+        <span class="hljs-comment"># NOTE !!! `start_idx + 1`</span>
+        <span class="hljs-built_in">help</span>(start_idx + <span class="hljs-number">1</span>, cur)
+        <span class="hljs-string">&quot;&quot;&quot;
         NOTE !!! pop(-1)
-        &quot;&quot;&quot;
-        cur.pop(-1)
-# ...
+        &quot;&quot;&quot;</span>
+        cur.pop(-<span class="hljs-number">1</span>)
+<span class="hljs-comment"># ...</span>
 </code></pre>
-<pre><code class="language-java">// java
-public List&lt;List&lt;Integer&gt;&gt; subsets(int[] nums) {
-    // ...
-    this.getSubSet(start_idx, nums, cur, res);
-    //System.out.println(&quot;(after) res = &quot; + res);
-    return res;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">subsets</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+    <span class="hljs-comment">// ...</span>
+    <span class="hljs-built_in">this</span>.getSubSet(start_idx, nums, cur, res);
+    <span class="hljs-comment">//System.out.println(&quot;(after) res = &quot; + res);</span>
+    <span class="hljs-keyword">return</span> res;
 }
 
-public void getSubSet(int start_idx, int[] nums, List&lt;Integer&gt; cur, List&lt;List&lt;Integer&gt;&gt; res){
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">getSubSet</span><span class="hljs-params">(<span class="hljs-type">int</span> start_idx, <span class="hljs-type">int</span>[] nums, List&lt;Integer&gt; cur, List&lt;List&lt;Integer&gt;&gt; res)</span>{
 
-    if (!res.contains(cur)){
-        // NOTE !!! init new list via below
-        res.add(new ArrayList&lt;&gt;(cur));
+    <span class="hljs-keyword">if</span> (!res.contains(cur)){
+        <span class="hljs-comment">// NOTE !!! init new list via below</span>
+        res.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(cur));
     }
 
-    if (cur.size() &gt; nums.length){
-        return;
+    <span class="hljs-keyword">if</span> (cur.size() &gt; nums.length){
+        <span class="hljs-keyword">return</span>;
     }
 
-    for (int i = start_idx; i &lt; nums.length; i++){
-        /**
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> start_idx; i &lt; nums.length; i++){
+        <span class="hljs-comment">/**
          * NOTE !!!
          *
          *  for subset,
          *  we need &quot;!cur.contains(nums[i])&quot;
          *  -&gt; to NOT add duplicated element
-         */
-        if (!cur.contains(nums[i])){
+         */</span>
+        <span class="hljs-keyword">if</span> (!cur.contains(nums[i])){
             cur.add(nums[i]);
-            /**
+            <span class="hljs-comment">/**
              *  NOTE !!!
              *
              *   at LC 78 subset, we need to use `i+1` idx
@@ -766,10 +778,10 @@ public void getSubSet(int start_idx, int[] nums, List&lt;Integer&gt; cur, List&l
              *
              *
              *   e.g. next start_idx is ` i+1`
-             */
-            this.getSubSet(i+1, nums, cur, res);
-            // undo
-            cur.remove(cur.size()-1);
+             */</span>
+            <span class="hljs-built_in">this</span>.getSubSet(i+<span class="hljs-number">1</span>, nums, cur, res);
+            <span class="hljs-comment">// undo</span>
+            cur.remove(cur.size()-<span class="hljs-number">1</span>);
         }
     }
 }
@@ -781,30 +793,30 @@ public void getSubSet(int start_idx, int[] nums, List&lt;Integer&gt; cur, List&l
 <li>LC 78</li>
 <li>start idx + backtrack</li>
 </ul>
-<pre><code class="language-java">// java
-// LC 78
-public void getSubSet(int start_idx, int[] nums, List&lt;Integer&gt; cur, List&lt;List&lt;Integer&gt;&gt; res){
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 78</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">getSubSet</span><span class="hljs-params">(<span class="hljs-type">int</span> start_idx, <span class="hljs-type">int</span>[] nums, List&lt;Integer&gt; cur, List&lt;List&lt;Integer&gt;&gt; res)</span>{
 
-        if (!res.contains(cur)){
-            // NOTE !!! init new list via below
-            res.add(new ArrayList&lt;&gt;(cur));
+        <span class="hljs-keyword">if</span> (!res.contains(cur)){
+            <span class="hljs-comment">// NOTE !!! init new list via below</span>
+            res.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(cur));
         }
 
-        if (cur.size() &gt; nums.length){
-            return;
+        <span class="hljs-keyword">if</span> (cur.size() &gt; nums.length){
+            <span class="hljs-keyword">return</span>;
         }
 
-        for (int i = start_idx; i &lt; nums.length; i++){
-            /**
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> start_idx; i &lt; nums.length; i++){
+            <span class="hljs-comment">/**
              * NOTE !!!
              *
              *  for subset,
              *  we need &quot;!cur.contains(nums[i])&quot;
              *  -&gt; to NOT add duplicated element
-             */
-            if (!cur.contains(nums[i])){
+             */</span>
+            <span class="hljs-keyword">if</span> (!cur.contains(nums[i])){
                 cur.add(nums[i]);
-                /**
+                <span class="hljs-comment">/**
                  *  NOTE !!!
                  *
                  *   at LC 78 subset, we need to use `i+1` idx
@@ -815,10 +827,10 @@ public void getSubSet(int start_idx, int[] nums, List&lt;Integer&gt; cur, List&l
                  *
                  *
                  *   e.g. next start_idx is ` i+1`
-                 */
-                this.getSubSet(i+1, nums, cur, res);
-                // undo
-                cur.remove(cur.size()-1);
+                 */</span>
+                <span class="hljs-built_in">this</span>.getSubSet(i+<span class="hljs-number">1</span>, nums, cur, res);
+                <span class="hljs-comment">// undo</span>
+                cur.remove(cur.size()-<span class="hljs-number">1</span>);
             }
         }
     }
@@ -832,24 +844,24 @@ public void getSubSet(int start_idx, int[] nums, List&lt;Integer&gt; cur, List&l
 <li>start idx + backtrack + dedup (seen)</li>
 <li>dedup : can use dict counter or idx</li>
 </ul>
-<pre><code class="language-java">// java
-// LC 90
-private void backtrack(List&lt;List&lt;Integer&gt;&gt; list, List&lt;Integer&gt; tempList, int [] nums, int start){
-    list.add(new ArrayList&lt;&gt;(tempList));
-    for(int i = start; i &lt; nums.length; i++){
-        // skip duplicates
-        /**
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 90</span>
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">backtrack</span><span class="hljs-params">(List&lt;List&lt;Integer&gt;&gt; list, List&lt;Integer&gt; tempList, <span class="hljs-type">int</span> [] nums, <span class="hljs-type">int</span> start)</span>{
+    list.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(tempList));
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> start; i &lt; nums.length; i++){
+        <span class="hljs-comment">// skip duplicates</span>
+        <span class="hljs-comment">/**
          *  NOTE !!!
          *
          *   below is the key shows how to simply skip duplicates
          *   (instead of using hashmap counter)
-         */
-        if(i &gt; start &amp;&amp; nums[i] == nums[i-1]){
-            continue;
+         */</span>
+        <span class="hljs-keyword">if</span>(i &gt; start &amp;&amp; nums[i] == nums[i-<span class="hljs-number">1</span>]){
+            <span class="hljs-keyword">continue</span>;
         }
         tempList.add(nums[i]);
-        backtrack(list, tempList, nums, i + 1);
-        tempList.remove(tempList.size() - 1);
+        backtrack(list, tempList, nums, i + <span class="hljs-number">1</span>);
+        tempList.remove(tempList.size() - <span class="hljs-number">1</span>);
     }
 }
 </code></pre>
@@ -862,22 +874,22 @@ private void backtrack(List&lt;List&lt;Integer&gt;&gt; list, List&lt;Integer&gt;
 <li>backtrack. via <code>contains</code> remove already used numbers and return all cases</li>
 <li><code>NO NEED</code> to use start_idx</li>
 </ul>
-<pre><code class="language-python"># ...
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># ...</span>
 res = []
 cur = []
-def help(cur):
-    if len(cur) == len(s):
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">help</span>(<span class="hljs-params">cur</span>):
+    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(cur) == <span class="hljs-built_in">len</span>(s):
         res.append(cur[:])
-        return
-    if len(cur) &gt; len(s):
-        return
-    for i in nums:
-        # NOTE this !!!
-        if i not in cur:
+        <span class="hljs-keyword">return</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(cur) &gt; <span class="hljs-built_in">len</span>(s):
+        <span class="hljs-keyword">return</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> nums:
+        <span class="hljs-comment"># NOTE this !!!</span>
+        <span class="hljs-keyword">if</span> i <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> cur:
             cur.append(i)
-            help(cur)
-            cur.pop(-1)
-# ...
+            <span class="hljs-built_in">help</span>(cur)
+            cur.pop(-<span class="hljs-number">1</span>)
+<span class="hljs-comment"># ...</span>
 </code></pre>
 </li>
 <li>
@@ -885,33 +897,33 @@ def help(cur):
 <ul>
 <li>LC 46</li>
 </ul>
-<pre><code class="language-python"># python
-class Solution(object):
-    def permute(self, nums):
-        def help(cur):
-            if len(cur) == n_len:
-                if cur not in res:
-                    res.append(list(cur))
-                    return
-            if len(cur) &gt; n_len:
-                return
-            for i in nums:
-                #print (&quot;i = &quot; + str(i) + &quot; cur = &quot; + str(cur))
-                if i not in cur:
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">permute</span>(<span class="hljs-params">self, nums</span>):
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">help</span>(<span class="hljs-params">cur</span>):
+            <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(cur) == n_len:
+                <span class="hljs-keyword">if</span> cur <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> res:
+                    res.append(<span class="hljs-built_in">list</span>(cur))
+                    <span class="hljs-keyword">return</span>
+            <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(cur) &gt; n_len:
+                <span class="hljs-keyword">return</span>
+            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> nums:
+                <span class="hljs-comment">#print (&quot;i = &quot; + str(i) + &quot; cur = &quot; + str(cur))</span>
+                <span class="hljs-keyword">if</span> i <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> cur:
                     cur.append(i)
-                    help(cur)
-                    &quot;&quot;&quot;
+                    <span class="hljs-built_in">help</span>(cur)
+                    <span class="hljs-string">&quot;&quot;&quot;
                     NOTE !!! : we UNDO the last op we just made (pop last element we put into array)
-                    &quot;&quot;&quot;
-                    cur.pop(-1)
-        # edge case
-        if not nums:
-            return [[]]
-        n_len = len(nums)
+                    &quot;&quot;&quot;</span>
+                    cur.pop(-<span class="hljs-number">1</span>)
+        <span class="hljs-comment"># edge case</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> nums:
+            <span class="hljs-keyword">return</span> [[]]
+        n_len = <span class="hljs-built_in">len</span>(nums)
         res = []
-        help([])
-        #print (&quot;res = &quot; + str(res))
-        return res
+        <span class="hljs-built_in">help</span>([])
+        <span class="hljs-comment">#print (&quot;res = &quot; + str(res))</span>
+        <span class="hljs-keyword">return</span> res
     ```
 
 </code></pre>
@@ -921,37 +933,37 @@ class Solution(object):
 <ul>
 <li>LC 47</li>
 </ul>
-<pre><code class="language-python"># python
-class Solution(object):
-    def permuteUnique(self, nums):
-        def help(res, cur, cnt):
-            if len(cur) == len(nums):
-                if cur not in res:
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">permuteUnique</span>(<span class="hljs-params">self, nums</span>):
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">help</span>(<span class="hljs-params">res, cur, cnt</span>):
+            <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(cur) == <span class="hljs-built_in">len</span>(nums):
+                <span class="hljs-keyword">if</span> cur <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> res:
                     res.append(cur[:])
-                    return
-            if len(cur) &gt; len(nums):
-                return
-            for x in _cnt:
-                #print (&quot;i = &quot; + str(i) + &quot; cur = &quot; + str(cur))
-                #if i not in cur:
-                if _cnt[x] &gt; 0:
+                    <span class="hljs-keyword">return</span>
+            <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(cur) &gt; <span class="hljs-built_in">len</span>(nums):
+                <span class="hljs-keyword">return</span>
+            <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> _cnt:
+                <span class="hljs-comment">#print (&quot;i = &quot; + str(i) + &quot; cur = &quot; + str(cur))</span>
+                <span class="hljs-comment">#if i not in cur:</span>
+                <span class="hljs-keyword">if</span> _cnt[x] &gt; <span class="hljs-number">0</span>:
                     cur.append(x)
-                    _cnt[x] -= 1
-                    help(res, cur, _cnt)
-                    &quot;&quot;&quot;
+                    _cnt[x] -= <span class="hljs-number">1</span>
+                    <span class="hljs-built_in">help</span>(res, cur, _cnt)
+                    <span class="hljs-string">&quot;&quot;&quot;
                     NOTE !!! : we UNDO the last op we just made (pop last element we put into array)
-                    &quot;&quot;&quot;
-                    cur.pop(-1)
-                    _cnt[x] += 1
-        # edge case
-        if not nums:
-            return [[]]
+                    &quot;&quot;&quot;</span>
+                    cur.pop(-<span class="hljs-number">1</span>)
+                    _cnt[x] += <span class="hljs-number">1</span>
+        <span class="hljs-comment"># edge case</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> nums:
+            <span class="hljs-keyword">return</span> [[]]
         _cnt = Counter(nums)
-        #print (&quot;_cnt = &quot; + str(_cnt))
+        <span class="hljs-comment">#print (&quot;_cnt = &quot; + str(_cnt))</span>
         res = []
         cur = []
-        help(res, cur, _cnt)
-        return res
+        <span class="hljs-built_in">help</span>(res, cur, _cnt)
+        <span class="hljs-keyword">return</span> res
 </code></pre>
 </li>
 <li>
@@ -960,18 +972,18 @@ class Solution(object):
 <li>LC 77</li>
 <li>(for loop call help func) +  start_idx + for loop + + check if len == k + pop(-1)</li>
 </ul>
-<pre><code class="language-python"># ...
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># ...</span>
 cur = []
 res = []
-def help(idx, cur):
-    if len(cur) == k:
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">help</span>(<span class="hljs-params">idx, cur</span>):
+    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(cur) == k:
         res.append(cur)
-        return
-    for i in range(idx, n+1):
+        <span class="hljs-keyword">return</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(idx, n+<span class="hljs-number">1</span>):
         cur.append(i)
-        help(idx+1, cur)
-        cur.pop(-1)
-# ...
+        <span class="hljs-built_in">help</span>(idx+<span class="hljs-number">1</span>, cur)
+        cur.pop(-<span class="hljs-number">1</span>)
+<span class="hljs-comment"># ...</span>
 </code></pre>
 </li>
 <li>
@@ -991,28 +1003,28 @@ def help(idx, cur):
 <ul>
 <li>LC 39</li>
 </ul>
-<pre><code class="language-java">// java
-// https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/
-public List&lt;List&lt;Integer&gt;&gt; combinationSum(int[] nums, int target) {
-    List&lt;List&lt;Integer&gt;&gt; list = new ArrayList&lt;&gt;();
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/</span>
+<span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">combinationSum</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> target)</span> {
+    List&lt;List&lt;Integer&gt;&gt; list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
     Arrays.sort(nums);
-    backtrack(list, new ArrayList&lt;&gt;(), nums, target, 0);
-    return list;
+    backtrack(list, <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(), nums, target, <span class="hljs-number">0</span>);
+    <span class="hljs-keyword">return</span> list;
 }
 
-private void backtrack(List&lt;List&lt;Integer&gt;&gt; list, List&lt;Integer&gt; tempList, int [] nums, int remain, int start){
-    if(remain &lt; 0) return;
-    else if(remain == 0) list.add(new ArrayList&lt;&gt;(tempList));
-    else{ 
-        for(int i = start; i &lt; nums.length; i++){
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">backtrack</span><span class="hljs-params">(List&lt;List&lt;Integer&gt;&gt; list, List&lt;Integer&gt; tempList, <span class="hljs-type">int</span> [] nums, <span class="hljs-type">int</span> remain, <span class="hljs-type">int</span> start)</span>{
+    <span class="hljs-keyword">if</span>(remain &lt; <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span>;
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(remain == <span class="hljs-number">0</span>) list.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(tempList));
+    <span class="hljs-keyword">else</span>{ 
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> start; i &lt; nums.length; i++){
             tempList.add(nums[i]);
-            /** NOTE !!!
+            <span class="hljs-comment">/** NOTE !!!
              *
              *   use i, since we need to use start from current (i) index in recursion call
              *    (reuse current index)
-             */
+             */</span>
             backtrack(list, tempList, nums, remain - nums[i], i);
-            tempList.remove(tempList.size() - 1);
+            tempList.remove(tempList.size() - <span class="hljs-number">1</span>);
         }
     }
 }
@@ -1023,25 +1035,25 @@ private void backtrack(List&lt;List&lt;Integer&gt;&gt; list, List&lt;Integer&gt;
 <ul>
 <li>LC 40</li>
 </ul>
-<pre><code class="language-java">// java
-// https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/
- public List&lt;List&lt;Integer&gt;&gt; combinationSum2(int[] nums, int target) {
-    List&lt;List&lt;Integer&gt;&gt; list = new ArrayList&lt;&gt;();
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/</span>
+ <span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">combinationSum2</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> target)</span> {
+    List&lt;List&lt;Integer&gt;&gt; list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
     Arrays.sort(nums);
-    backtrack(list, new ArrayList&lt;&gt;(), nums, target, 0);
-    return list;
+    backtrack(list, <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(), nums, target, <span class="hljs-number">0</span>);
+    <span class="hljs-keyword">return</span> list;
     
 }
 
-private void backtrack(List&lt;List&lt;Integer&gt;&gt; list, List&lt;Integer&gt; tempList, int [] nums, int remain, int start){
-    if(remain &lt; 0) return;
-    else if(remain == 0) list.add(new ArrayList&lt;&gt;(tempList));
-    else{
-        for(int i = start; i &lt; nums.length; i++){
-            if(i &gt; start &amp;&amp; nums[i] == nums[i-1]) continue; // skip duplicates
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">backtrack</span><span class="hljs-params">(List&lt;List&lt;Integer&gt;&gt; list, List&lt;Integer&gt; tempList, <span class="hljs-type">int</span> [] nums, <span class="hljs-type">int</span> remain, <span class="hljs-type">int</span> start)</span>{
+    <span class="hljs-keyword">if</span>(remain &lt; <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span>;
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(remain == <span class="hljs-number">0</span>) list.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(tempList));
+    <span class="hljs-keyword">else</span>{
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> start; i &lt; nums.length; i++){
+            <span class="hljs-keyword">if</span>(i &gt; start &amp;&amp; nums[i] == nums[i-<span class="hljs-number">1</span>]) <span class="hljs-keyword">continue</span>; <span class="hljs-comment">// skip duplicates</span>
             tempList.add(nums[i]);
-            backtrack(list, tempList, nums, remain - nums[i], i + 1);
-            tempList.remove(tempList.size() - 1); 
+            backtrack(list, tempList, nums, remain - nums[i], i + <span class="hljs-number">1</span>);
+            tempList.remove(tempList.size() - <span class="hljs-number">1</span>); 
         }
     }
 }        
@@ -1052,34 +1064,34 @@ private void backtrack(List&lt;List&lt;Integer&gt;&gt; list, List&lt;Integer&gt;
 <ul>
 <li>LC 131</li>
 </ul>
-<pre><code class="language-java">// java
-// https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/
-public List&lt;List&lt;String&gt;&gt; partition(String s) {
-   List&lt;List&lt;String&gt;&gt; list = new ArrayList&lt;&gt;();
-   backtrack(list, new ArrayList&lt;&gt;(), s, 0);
-   return list;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/</span>
+<span class="hljs-keyword">public</span> List&lt;List&lt;String&gt;&gt; <span class="hljs-title function_">partition</span><span class="hljs-params">(String s)</span> {
+   List&lt;List&lt;String&gt;&gt; list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+   backtrack(list, <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(), s, <span class="hljs-number">0</span>);
+   <span class="hljs-keyword">return</span> list;
 }
 
-public void backtrack(List&lt;List&lt;String&gt;&gt; list, List&lt;String&gt; tempList, String s, int start){
-   if(start == s.length())
-      list.add(new ArrayList&lt;&gt;(tempList));
-   else{
-      for(int i = start; i &lt; s.length(); i++){
-         if(isPalindrome(s, start, i)){
-            tempList.add(s.substring(start, i + 1));
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">backtrack</span><span class="hljs-params">(List&lt;List&lt;String&gt;&gt; list, List&lt;String&gt; tempList, String s, <span class="hljs-type">int</span> start)</span>{
+   <span class="hljs-keyword">if</span>(start == s.length())
+      list.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(tempList));
+   <span class="hljs-keyword">else</span>{
+      <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> start; i &lt; s.length(); i++){
+         <span class="hljs-keyword">if</span>(isPalindrome(s, start, i)){
+            tempList.add(s.substring(start, i + <span class="hljs-number">1</span>));
 
-            // NOTE !!! `i+1`
-            backtrack(list, tempList, s, i + 1);
-            tempList.remove(tempList.size() - 1);
+            <span class="hljs-comment">// NOTE !!! `i+1`</span>
+            backtrack(list, tempList, s, i + <span class="hljs-number">1</span>);
+            tempList.remove(tempList.size() - <span class="hljs-number">1</span>);
          }
       }
    }
 }
 
-public boolean isPalindrome(String s, int low, int high){
-   while(low &lt; high)
-      if(s.charAt(low++) != s.charAt(high--)) return false;
-   return true;
+<span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isPalindrome</span><span class="hljs-params">(String s, <span class="hljs-type">int</span> low, <span class="hljs-type">int</span> high)</span>{
+   <span class="hljs-keyword">while</span>(low &lt; high)
+      <span class="hljs-keyword">if</span>(s.charAt(low++) != s.charAt(high--)) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+   <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 } 
 </code></pre>
 </li>
@@ -1111,117 +1123,117 @@ public boolean isPalindrome(String s, int low, int high){
 <li>Avoid recomputing same states</li>
 </ul>
 <p><strong>Common Pruning Patterns</strong>:</p>
-<pre><code class="language-python">def backtrack_with_pruning(path, choices, target):
-    # Early termination (constraint pruning)
-    if current_sum &gt; target:
-        return  # No need to continue
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">backtrack_with_pruning</span>(<span class="hljs-params">path, choices, target</span>):
+    <span class="hljs-comment"># Early termination (constraint pruning)</span>
+    <span class="hljs-keyword">if</span> current_sum &gt; target:
+        <span class="hljs-keyword">return</span>  <span class="hljs-comment"># No need to continue</span>
 
-    # Bound pruning
-    if current_sum + min_remaining &gt; target:
-        return  # Cannot reach target
+    <span class="hljs-comment"># Bound pruning</span>
+    <span class="hljs-keyword">if</span> current_sum + min_remaining &gt; target:
+        <span class="hljs-keyword">return</span>  <span class="hljs-comment"># Cannot reach target</span>
 
-    # Base case
-    if len(path) == target_length:
-        if is_valid(path):
+    <span class="hljs-comment"># Base case</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(path) == target_length:
+        <span class="hljs-keyword">if</span> is_valid(path):
             result.append(path[:])
-        return
+        <span class="hljs-keyword">return</span>
 
-    # Symmetry pruning
-    for i in range(start_idx, len(choices)):
-        # Skip duplicates (symmetry pruning)
-        if i &gt; start_idx and choices[i] == choices[i-1]:
-            continue
+    <span class="hljs-comment"># Symmetry pruning</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(start_idx, <span class="hljs-built_in">len</span>(choices)):
+        <span class="hljs-comment"># Skip duplicates (symmetry pruning)</span>
+        <span class="hljs-keyword">if</span> i &gt; start_idx <span class="hljs-keyword">and</span> choices[i] == choices[i-<span class="hljs-number">1</span>]:
+            <span class="hljs-keyword">continue</span>
 
-        # Make choice
+        <span class="hljs-comment"># Make choice</span>
         path.append(choices[i])
 
-        # Recursive call with pruning
+        <span class="hljs-comment"># Recursive call with pruning</span>
         backtrack_with_pruning(path, choices, target)
 
-        # Undo choice
+        <span class="hljs-comment"># Undo choice</span>
         path.pop()
 </code></pre>
 <p><strong>Pruning Examples</strong>:</p>
 <p><strong>1. Sum-based Pruning (LC 39 Combination Sum)</strong>:</p>
-<pre><code class="language-python">def combinationSum(candidates, target):
-    def backtrack(start, path, current_sum):
-        # Pruning: if current sum exceeds target
-        if current_sum &gt; target:
-            return
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">combinationSum</span>(<span class="hljs-params">candidates, target</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">backtrack</span>(<span class="hljs-params">start, path, current_sum</span>):
+        <span class="hljs-comment"># Pruning: if current sum exceeds target</span>
+        <span class="hljs-keyword">if</span> current_sum &gt; target:
+            <span class="hljs-keyword">return</span>
 
-        if current_sum == target:
+        <span class="hljs-keyword">if</span> current_sum == target:
             result.append(path[:])
-            return
+            <span class="hljs-keyword">return</span>
 
-        for i in range(start, len(candidates)):
-            # Pruning: if adding current number exceeds target
-            if current_sum + candidates[i] &gt; target:
-                break  # Since array is sorted
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(start, <span class="hljs-built_in">len</span>(candidates)):
+            <span class="hljs-comment"># Pruning: if adding current number exceeds target</span>
+            <span class="hljs-keyword">if</span> current_sum + candidates[i] &gt; target:
+                <span class="hljs-keyword">break</span>  <span class="hljs-comment"># Since array is sorted</span>
 
             path.append(candidates[i])
             backtrack(i, path, current_sum + candidates[i])
             path.pop()
 
-    candidates.sort()  # Enable break pruning
+    candidates.sort()  <span class="hljs-comment"># Enable break pruning</span>
     result = []
-    backtrack(0, [], 0)
-    return result
+    backtrack(<span class="hljs-number">0</span>, [], <span class="hljs-number">0</span>)
+    <span class="hljs-keyword">return</span> result
 </code></pre>
 <p><strong>2. Duplicate Pruning (LC 40 Combination Sum II)</strong>:</p>
-<pre><code class="language-python">def combinationSum2(candidates, target):
-    def backtrack(start, path, current_sum):
-        if current_sum == target:
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">combinationSum2</span>(<span class="hljs-params">candidates, target</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">backtrack</span>(<span class="hljs-params">start, path, current_sum</span>):
+        <span class="hljs-keyword">if</span> current_sum == target:
             result.append(path[:])
-            return
+            <span class="hljs-keyword">return</span>
 
-        for i in range(start, len(candidates)):
-            # Pruning: skip duplicates at same level
-            if i &gt; start and candidates[i] == candidates[i-1]:
-                continue
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(start, <span class="hljs-built_in">len</span>(candidates)):
+            <span class="hljs-comment"># Pruning: skip duplicates at same level</span>
+            <span class="hljs-keyword">if</span> i &gt; start <span class="hljs-keyword">and</span> candidates[i] == candidates[i-<span class="hljs-number">1</span>]:
+                <span class="hljs-keyword">continue</span>
 
-            # Pruning: early termination
-            if current_sum + candidates[i] &gt; target:
-                break
+            <span class="hljs-comment"># Pruning: early termination</span>
+            <span class="hljs-keyword">if</span> current_sum + candidates[i] &gt; target:
+                <span class="hljs-keyword">break</span>
 
             path.append(candidates[i])
-            backtrack(i + 1, path, current_sum + candidates[i])
+            backtrack(i + <span class="hljs-number">1</span>, path, current_sum + candidates[i])
             path.pop()
 
     candidates.sort()
     result = []
-    backtrack(0, [], 0)
-    return result
+    backtrack(<span class="hljs-number">0</span>, [], <span class="hljs-number">0</span>)
+    <span class="hljs-keyword">return</span> result
 </code></pre>
 <p><strong>3. Bound Pruning (LC 698 Partition to K Equal Sum Subsets)</strong>:</p>
-<pre><code class="language-python">def canPartitionKSubsets(nums, k):
-    total = sum(nums)
-    if total % k != 0:
-        return False
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">canPartitionKSubsets</span>(<span class="hljs-params">nums, k</span>):
+    total = <span class="hljs-built_in">sum</span>(nums)
+    <span class="hljs-keyword">if</span> total % k != <span class="hljs-number">0</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 
     target = total // k
-    nums.sort(reverse=True)  # Pruning: try larger numbers first
+    nums.sort(reverse=<span class="hljs-literal">True</span>)  <span class="hljs-comment"># Pruning: try larger numbers first</span>
 
-    def backtrack(index, buckets):
-        if index == len(nums):
-            return all(bucket == target for bucket in buckets)
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">backtrack</span>(<span class="hljs-params">index, buckets</span>):
+        <span class="hljs-keyword">if</span> index == <span class="hljs-built_in">len</span>(nums):
+            <span class="hljs-keyword">return</span> <span class="hljs-built_in">all</span>(bucket == target <span class="hljs-keyword">for</span> bucket <span class="hljs-keyword">in</span> buckets)
 
-        for i in range(k):
-            # Pruning: skip if adding exceeds target
-            if buckets[i] + nums[index] &gt; target:
-                continue
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(k):
+            <span class="hljs-comment"># Pruning: skip if adding exceeds target</span>
+            <span class="hljs-keyword">if</span> buckets[i] + nums[index] &gt; target:
+                <span class="hljs-keyword">continue</span>
 
-            # Pruning: avoid duplicate empty buckets
-            if i &gt; 0 and buckets[i] == buckets[i-1]:
-                continue
+            <span class="hljs-comment"># Pruning: avoid duplicate empty buckets</span>
+            <span class="hljs-keyword">if</span> i &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> buckets[i] == buckets[i-<span class="hljs-number">1</span>]:
+                <span class="hljs-keyword">continue</span>
 
             buckets[i] += nums[index]
-            if backtrack(index + 1, buckets):
-                return True
+            <span class="hljs-keyword">if</span> backtrack(index + <span class="hljs-number">1</span>, buckets):
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
             buckets[i] -= nums[index]
 
-        return False
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 
-    return backtrack(0, [0] * k)
+    <span class="hljs-keyword">return</span> backtrack(<span class="hljs-number">0</span>, [<span class="hljs-number">0</span>] * k)
 </code></pre>
 <h4 id="partitioning-patterns" tabindex="-1"><a class="header-anchor" href="#partitioning-patterns"><span><strong>Partitioning Patterns</strong></span></a></h4>
 <p><strong>Definition</strong>: Divide input into groups or segments based on certain criteria.</p>
@@ -1243,165 +1255,165 @@ public boolean isPalindrome(String s, int low, int high){
 </ul>
 <p><strong>Partitioning Templates</strong>:</p>
 <p><strong>1. String Partitioning Template</strong>:</p>
-<pre><code class="language-python">def partition_string(s, is_valid_partition):
-    def backtrack(start, current_partition):
-        if start == len(s):
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">partition_string</span>(<span class="hljs-params">s, is_valid_partition</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">backtrack</span>(<span class="hljs-params">start, current_partition</span>):
+        <span class="hljs-keyword">if</span> start == <span class="hljs-built_in">len</span>(s):
             result.append(current_partition[:])
-            return
+            <span class="hljs-keyword">return</span>
 
-        for end in range(start + 1, len(s) + 1):
+        <span class="hljs-keyword">for</span> end <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(start + <span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(s) + <span class="hljs-number">1</span>):
             substring = s[start:end]
-            if is_valid_partition(substring):
+            <span class="hljs-keyword">if</span> is_valid_partition(substring):
                 current_partition.append(substring)
                 backtrack(end, current_partition)
                 current_partition.pop()
 
     result = []
-    backtrack(0, [])
-    return result
+    backtrack(<span class="hljs-number">0</span>, [])
+    <span class="hljs-keyword">return</span> result
 </code></pre>
 <p><strong>2. Array Partitioning Template</strong>:</p>
-<pre><code class="language-python">def partition_array(nums, k, target_sum):
-    def backtrack(index, groups):
-        if index == len(nums):
-            return all(sum(group) == target_sum for group in groups)
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">partition_array</span>(<span class="hljs-params">nums, k, target_sum</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">backtrack</span>(<span class="hljs-params">index, groups</span>):
+        <span class="hljs-keyword">if</span> index == <span class="hljs-built_in">len</span>(nums):
+            <span class="hljs-keyword">return</span> <span class="hljs-built_in">all</span>(<span class="hljs-built_in">sum</span>(group) == target_sum <span class="hljs-keyword">for</span> group <span class="hljs-keyword">in</span> groups)
 
-        for i in range(k):
-            if sum(groups[i]) + nums[index] &lt;= target_sum:
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(k):
+            <span class="hljs-keyword">if</span> <span class="hljs-built_in">sum</span>(groups[i]) + nums[index] &lt;= target_sum:
                 groups[i].append(nums[index])
-                if backtrack(index + 1, groups):
-                    return True
+                <span class="hljs-keyword">if</span> backtrack(index + <span class="hljs-number">1</span>, groups):
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
                 groups[i].pop()
 
-                # Pruning: if current group is empty, no need to try other empty groups
-                if not groups[i]:
-                    break
+                <span class="hljs-comment"># Pruning: if current group is empty, no need to try other empty groups</span>
+                <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> groups[i]:
+                    <span class="hljs-keyword">break</span>
 
-        return False
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 
-    return backtrack(0, [[] for _ in range(k)])
+    <span class="hljs-keyword">return</span> backtrack(<span class="hljs-number">0</span>, [[] <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(k)])
 </code></pre>
 <p><strong>Partitioning Examples</strong>:</p>
 <p><strong>1. Palindrome Partitioning (LC 131)</strong>:</p>
-<pre><code class="language-python">def partition(s):
-    def is_palindrome(string):
-        return string == string[::-1]
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">partition</span>(<span class="hljs-params">s</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">is_palindrome</span>(<span class="hljs-params">string</span>):
+        <span class="hljs-keyword">return</span> string == string[::-<span class="hljs-number">1</span>]
 
-    def backtrack(start, path):
-        if start == len(s):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">backtrack</span>(<span class="hljs-params">start, path</span>):
+        <span class="hljs-keyword">if</span> start == <span class="hljs-built_in">len</span>(s):
             result.append(path[:])
-            return
+            <span class="hljs-keyword">return</span>
 
-        for end in range(start + 1, len(s) + 1):
+        <span class="hljs-keyword">for</span> end <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(start + <span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(s) + <span class="hljs-number">1</span>):
             substring = s[start:end]
-            if is_palindrome(substring):
+            <span class="hljs-keyword">if</span> is_palindrome(substring):
                 path.append(substring)
                 backtrack(end, path)
                 path.pop()
 
     result = []
-    backtrack(0, [])
-    return result
+    backtrack(<span class="hljs-number">0</span>, [])
+    <span class="hljs-keyword">return</span> result
 </code></pre>
 <p><strong>2. Partition Equal Subset Sum (LC 416)</strong>:</p>
-<pre><code class="language-python">def canPartition(nums):
-    total = sum(nums)
-    if total % 2 != 0:
-        return False
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">canPartition</span>(<span class="hljs-params">nums</span>):
+    total = <span class="hljs-built_in">sum</span>(nums)
+    <span class="hljs-keyword">if</span> total % <span class="hljs-number">2</span> != <span class="hljs-number">0</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 
-    target = total // 2
+    target = total // <span class="hljs-number">2</span>
 
-    def backtrack(index, current_sum):
-        if current_sum == target:
-            return True
-        if index &gt;= len(nums) or current_sum &gt; target:
-            return False
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">backtrack</span>(<span class="hljs-params">index, current_sum</span>):
+        <span class="hljs-keyword">if</span> current_sum == target:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+        <span class="hljs-keyword">if</span> index &gt;= <span class="hljs-built_in">len</span>(nums) <span class="hljs-keyword">or</span> current_sum &gt; target:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 
-        # Include current number
-        if backtrack(index + 1, current_sum + nums[index]):
-            return True
+        <span class="hljs-comment"># Include current number</span>
+        <span class="hljs-keyword">if</span> backtrack(index + <span class="hljs-number">1</span>, current_sum + nums[index]):
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 
-        # Exclude current number
-        return backtrack(index + 1, current_sum)
+        <span class="hljs-comment"># Exclude current number</span>
+        <span class="hljs-keyword">return</span> backtrack(index + <span class="hljs-number">1</span>, current_sum)
 
-    return backtrack(0, 0)
+    <span class="hljs-keyword">return</span> backtrack(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>)
 </code></pre>
 <p><strong>3. Partition to K Equal Sum Subsets (LC 698)</strong>:</p>
-<pre><code class="language-python">def canPartitionKSubsets(nums, k):
-    total = sum(nums)
-    if total % k != 0:
-        return False
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">canPartitionKSubsets</span>(<span class="hljs-params">nums, k</span>):
+    total = <span class="hljs-built_in">sum</span>(nums)
+    <span class="hljs-keyword">if</span> total % k != <span class="hljs-number">0</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 
     target = total // k
-    nums.sort(reverse=True)  # Start with larger numbers
+    nums.sort(reverse=<span class="hljs-literal">True</span>)  <span class="hljs-comment"># Start with larger numbers</span>
 
-    def backtrack(index, buckets):
-        if index == len(nums):
-            return True
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">backtrack</span>(<span class="hljs-params">index, buckets</span>):
+        <span class="hljs-keyword">if</span> index == <span class="hljs-built_in">len</span>(nums):
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 
-        for i in range(k):
-            # Pruning techniques
-            if buckets[i] + nums[index] &gt; target:
-                continue
-            if i &gt; 0 and buckets[i] == buckets[i-1]:
-                continue
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(k):
+            <span class="hljs-comment"># Pruning techniques</span>
+            <span class="hljs-keyword">if</span> buckets[i] + nums[index] &gt; target:
+                <span class="hljs-keyword">continue</span>
+            <span class="hljs-keyword">if</span> i &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> buckets[i] == buckets[i-<span class="hljs-number">1</span>]:
+                <span class="hljs-keyword">continue</span>
 
             buckets[i] += nums[index]
-            if backtrack(index + 1, buckets):
-                return True
+            <span class="hljs-keyword">if</span> backtrack(index + <span class="hljs-number">1</span>, buckets):
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
             buckets[i] -= nums[index]
 
-        return False
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 
-    return backtrack(0, [0] * k)
+    <span class="hljs-keyword">return</span> backtrack(<span class="hljs-number">0</span>, [<span class="hljs-number">0</span>] * k)
 </code></pre>
 <p><strong>Advanced Partitioning Techniques</strong>:</p>
 <p><strong>1. Memoized Partitioning</strong>:</p>
-<pre><code class="language-python">def partition_with_memo(nums):
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">partition_with_memo</span>(<span class="hljs-params">nums</span>):
     memo = {}
 
-    def backtrack(index, state_tuple):
-        if index == len(nums):
-            return check_valid_partition(state_tuple)
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">backtrack</span>(<span class="hljs-params">index, state_tuple</span>):
+        <span class="hljs-keyword">if</span> index == <span class="hljs-built_in">len</span>(nums):
+            <span class="hljs-keyword">return</span> check_valid_partition(state_tuple)
 
-        if state_tuple in memo:
-            return memo[state_tuple]
+        <span class="hljs-keyword">if</span> state_tuple <span class="hljs-keyword">in</span> memo:
+            <span class="hljs-keyword">return</span> memo[state_tuple]
 
-        result = False
-        for choice in get_choices(index, state_tuple):
+        result = <span class="hljs-literal">False</span>
+        <span class="hljs-keyword">for</span> choice <span class="hljs-keyword">in</span> get_choices(index, state_tuple):
             new_state = update_state(state_tuple, choice)
-            if backtrack(index + 1, new_state):
-                result = True
-                break
+            <span class="hljs-keyword">if</span> backtrack(index + <span class="hljs-number">1</span>, new_state):
+                result = <span class="hljs-literal">True</span>
+                <span class="hljs-keyword">break</span>
 
         memo[state_tuple] = result
-        return result
+        <span class="hljs-keyword">return</span> result
 
-    return backtrack(0, initial_state)
+    <span class="hljs-keyword">return</span> backtrack(<span class="hljs-number">0</span>, initial_state)
 </code></pre>
 <p><strong>2. Optimized Partitioning with Early Termination</strong>:</p>
-<pre><code class="language-python">def optimized_partition(nums, k):
-    def backtrack(index, groups, remaining_sum):
-        if index == len(nums):
-            return remaining_sum == 0
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">optimized_partition</span>(<span class="hljs-params">nums, k</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">backtrack</span>(<span class="hljs-params">index, groups, remaining_sum</span>):
+        <span class="hljs-keyword">if</span> index == <span class="hljs-built_in">len</span>(nums):
+            <span class="hljs-keyword">return</span> remaining_sum == <span class="hljs-number">0</span>
 
-        # Pruning: if remaining sum is too small
-        if remaining_sum &lt; 0:
-            return False
+        <span class="hljs-comment"># Pruning: if remaining sum is too small</span>
+        <span class="hljs-keyword">if</span> remaining_sum &lt; <span class="hljs-number">0</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 
-        for i in range(len(groups)):
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(groups)):
             groups[i].append(nums[index])
-            if backtrack(index + 1, groups, remaining_sum - nums[index]):
-                return True
+            <span class="hljs-keyword">if</span> backtrack(index + <span class="hljs-number">1</span>, groups, remaining_sum - nums[index]):
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
             groups[i].pop()
 
-            # Important pruning: don't try other empty groups
-            if len(groups[i]) == 0:
-                break
+            <span class="hljs-comment"># Important pruning: don&#x27;t try other empty groups</span>
+            <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(groups[i]) == <span class="hljs-number">0</span>:
+                <span class="hljs-keyword">break</span>
 
-        return False
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 
-    return backtrack(0, [[] for _ in range(k)], sum(nums))
+    <span class="hljs-keyword">return</span> backtrack(<span class="hljs-number">0</span>, [[] <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(k)], <span class="hljs-built_in">sum</span>(nums))
 </code></pre>
 <p><strong>Pruning and Partitioning Comparison</strong>:</p>
 <table>
@@ -1447,156 +1459,156 @@ public boolean isPalindrome(String s, int low, int high){
 </tbody>
 </table>
 <h3 id="0-3-advanced-backtracking-patterns" tabindex="-1"><a class="header-anchor" href="#0-3-advanced-backtracking-patterns"><span>0-3) Advanced Backtracking Patterns</span></a></h3>
-<pre><code class="language-python"># python pseudo code 1
-# https://leetcode.com/explore/learn/card/recursion-ii/472/backtracking/2793/
-def backtrack(candidate):
-    if find_solution(candidate):
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python pseudo code 1</span>
+<span class="hljs-comment"># https://leetcode.com/explore/learn/card/recursion-ii/472/backtracking/2793/</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">backtrack</span>(<span class="hljs-params">candidate</span>):
+    <span class="hljs-keyword">if</span> find_solution(candidate):
         output(candidate)
-        return
+        <span class="hljs-keyword">return</span>
     
-    # iterate all possible candidates.
-    for next_candidate in list_of_candidates:
-        if is_valid(next_candidate):
-            # try this partial candidate solution
+    <span class="hljs-comment"># iterate all possible candidates.</span>
+    <span class="hljs-keyword">for</span> next_candidate <span class="hljs-keyword">in</span> list_of_candidates:
+        <span class="hljs-keyword">if</span> is_valid(next_candidate):
+            <span class="hljs-comment"># try this partial candidate solution</span>
             place(next_candidate)
-            # given the candidate, explore further.
+            <span class="hljs-comment"># given the candidate, explore further.</span>
             backtrack(next_candidate)
-            # backtrack
+            <span class="hljs-comment"># backtrack</span>
             remove(next_candidate)
 </code></pre>
-<pre><code class="language-python"># python pseudo code 2
-for choice in choice_list:
-    # do choice
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python pseudo code 2</span>
+<span class="hljs-keyword">for</span> choice <span class="hljs-keyword">in</span> choice_list:
+    <span class="hljs-comment"># do choice</span>
     routes.add(choice)
     backtrack(routes, choice_list)
-    # undo choice
+    <span class="hljs-comment"># undo choice</span>
     routes.remove(choice)
 </code></pre>
-<pre><code class="language-python"># python pseudo code 3
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python pseudo code 3</span>
 result = []
-def backtrack(route, choice_list):
-    if end_condition:
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">backtrack</span>(<span class="hljs-params">route, choice_list</span>):
+    <span class="hljs-keyword">if</span> end_condition:
         result.add(route)
-        return
+        <span class="hljs-keyword">return</span>
     
-    for choice in choice_list:
-        ### core of backtrack
-        do_choice   ### this one is necessary
+    <span class="hljs-keyword">for</span> choice <span class="hljs-keyword">in</span> choice_list:
+        <span class="hljs-comment">### core of backtrack</span>
+        do_choice   <span class="hljs-comment">### this one is necessary</span>
         backtrack(route, choice_list)
-        undo_choice ### this one is necessary
+        undo_choice <span class="hljs-comment">### this one is necessary</span>
 </code></pre>
 <h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
 <h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
 <h3 id="1-2-trick" tabindex="-1"><a class="header-anchor" href="#1-2-trick"><span>1-2) Trick</span></a></h3>
 <h4 id="1-2-1-append-to-cache-with-idx" tabindex="-1"><a class="header-anchor" href="#1-2-1-append-to-cache-with-idx"><span>1-2-1) append to cache with idx</span></a></h4>
-<pre><code class="language-python"># LC 131. Palindrome Partitioning
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 131. Palindrome Partitioning</span>
 
-# ...
-def help(s, res, path):
-    if not s:
+<span class="hljs-comment"># ...</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">help</span>(<span class="hljs-params">s, res, path</span>):
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> s:
         res.append(path)
-    for i in range(1, len(s)):
-        if s[:i] == s[:i][::-1]:
-            &quot;&quot;&quot;
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(s)):
+        <span class="hljs-keyword">if</span> s[:i] == s[:i][::-<span class="hljs-number">1</span>]:
+            <span class="hljs-string">&quot;&quot;&quot;
             NOTE below !!!
                 -&gt; we call help recursively with s[i:] subset
                 -&gt; we append [s[:i]] to tmp cache (path) 
-            &quot;&quot;&quot;
-            help(s[i:], res, path + [s[:i]])
-# ...
+            &quot;&quot;&quot;</span>
+            <span class="hljs-built_in">help</span>(s[i:], res, path + [s[:i]])
+<span class="hljs-comment"># ...</span>
 </code></pre>
 <h4 id="1-2-2-avoid-add-duplicated-element-in-same-level-same-recursion-call" tabindex="-1"><a class="header-anchor" href="#1-2-2-avoid-add-duplicated-element-in-same-level-same-recursion-call"><span>1-2-2) avoid add <code>duplicated</code> element in <code>same level</code> (same recursion call)</span></a></h4>
-<pre><code class="language-java">// LC 40
-// java
-// ...
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 40</span>
+<span class="hljs-comment">// java</span>
+<span class="hljs-comment">// ...</span>
 
-/**
+<span class="hljs-comment">/**
 *  NOTE !!!   skip a duplicate at the same recursive level.
 *
 *   -&gt; Key idea of the duplicate-skipping logic
 *       •    We do not skip all duplicates.
 *       •    We only skip a duplicate at the same recursive level.
-*/
+*/</span>
 
-if (i &gt; startIdx &amp;&amp; candidates[i] == candidates[i - 1]) {
-    continue;
+<span class="hljs-keyword">if</span> (i &gt; startIdx &amp;&amp; candidates[i] == candidates[i - <span class="hljs-number">1</span>]) {
+    <span class="hljs-keyword">continue</span>;
 }
 
-// ...
+<span class="hljs-comment">// ...</span>
 </code></pre>
-<pre><code class="language-java">// LC 90
-// java
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 90</span>
+<span class="hljs-comment">// java</span>
 
-// ...
-for (int j = i; j &lt; nums.length; j++) {
-    /** 
+<span class="hljs-comment">// ...</span>
+<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> i; j &lt; nums.length; j++) {
+    <span class="hljs-comment">/** 
      *  NOTE !!! below !!
      * 
      *  via below, we avoid add `duplicated` element
      * 
-     */
-    if (j &gt; i &amp;&amp; nums[j] == nums[j - 1]) {
-        continue;
+     */</span>
+    <span class="hljs-keyword">if</span> (j &gt; i &amp;&amp; nums[j] == nums[j - <span class="hljs-number">1</span>]) {
+        <span class="hljs-keyword">continue</span>;
     }
-    // ...
+    <span class="hljs-comment">// ...</span>
 }
-// ...
+<span class="hljs-comment">// ...</span>
 </code></pre>
-<pre><code class="language-java">// java
-// LC 47
-// ...
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 47</span>
+<span class="hljs-comment">// ...</span>
 
-// Skip duplicates in the same recursion layer
-if (i &gt; 0 &amp;&amp; nums[i] == nums[i - 1] &amp;&amp; !used[i - 1])
-    continue;
+<span class="hljs-comment">// Skip duplicates in the same recursion layer</span>
+<span class="hljs-keyword">if</span> (i &gt; <span class="hljs-number">0</span> &amp;&amp; nums[i] == nums[i - <span class="hljs-number">1</span>] &amp;&amp; !used[i - <span class="hljs-number">1</span>])
+    <span class="hljs-keyword">continue</span>;
             
-// ...
+<span class="hljs-comment">// ...</span>
 </code></pre>
 <h4 id="1-2-3-not-do-undo-on-primary-variable" tabindex="-1"><a class="header-anchor" href="#1-2-3-not-do-undo-on-primary-variable"><span>1-2-3) NOT do <code>undo</code> on primary variable</span></a></h4>
-<pre><code class="language-java">// java
-// LC 79
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 79</span>
 
-// https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/BackTrack/WordSearch.java#L133
-
-
-// In Java, primitive types like int are passed by value. This means when you do:
-
-// dfsFind(board, word, x+1, y, visited, start_idx + 1)
-
-//  1) You're passing a copy of start_idx + 1 to the recursive function. So, inside the recursive call, start_idx is a new variable, and changes to it won't affect the start_idx in the calling function.
+<span class="hljs-comment">// https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/BackTrack/WordSearch.java#L133</span>
 
 
-// 2) We don't need start_idx -= 1; because start_idx is passed by value, not by reference. So modifying it in the recursive call doesn't affect the caller's start_idx. We're already handling the correct index in each recursive call by passing start_idx + 1.
+<span class="hljs-comment">// In Java, primitive types like int are passed by value. This means when you do:</span>
+
+<span class="hljs-comment">// dfsFind(board, word, x+1, y, visited, start_idx + 1)</span>
+
+<span class="hljs-comment">//  1) You&#x27;re passing a copy of start_idx + 1 to the recursive function. So, inside the recursive call, start_idx is a new variable, and changes to it won&#x27;t affect the start_idx in the calling function.</span>
+
+
+<span class="hljs-comment">// 2) We don&#x27;t need start_idx -= 1; because start_idx is passed by value, not by reference. So modifying it in the recursive call doesn&#x27;t affect the caller&#x27;s start_idx. We&#x27;re already handling the correct index in each recursive call by passing start_idx + 1.</span>
 
 </code></pre>
 <p><strong>Important Note: When Backtracking is NOT Needed</strong></p>
-<pre><code class="language-java">// LC 1740
-// NOTE !!! we don't need a `backtrack` below,
-// since `int` is a `primitive dtype in java
-//  -&gt;     Each recursive call gets its own copy of move.
-// if we use dtype such as Mutable shared state (e.g. List, Set)
-// we need a backtrack (undo)
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1740</span>
+<span class="hljs-comment">// NOTE !!! we don&#x27;t need a `backtrack` below,</span>
+<span class="hljs-comment">// since `int` is a `primitive dtype in java</span>
+<span class="hljs-comment">//  -&gt;     Each recursive call gets its own copy of move.</span>
+<span class="hljs-comment">// if we use dtype such as Mutable shared state (e.g. List, Set)</span>
+<span class="hljs-comment">// we need a backtrack (undo)</span>
 
-private int getPathLen(TreeNode root, int target, int dist) {
-    if (root == null) {
-        return -1;  // not found
+<span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">getPathLen</span><span class="hljs-params">(TreeNode root, <span class="hljs-type">int</span> target, <span class="hljs-type">int</span> dist)</span> {
+    <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) {
+        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;  <span class="hljs-comment">// not found</span>
     }
-    if (root.val == target) {
-        return dist;
+    <span class="hljs-keyword">if</span> (root.val == target) {
+        <span class="hljs-keyword">return</span> dist;
     }
-    int left = getPathLen(root.left, target, dist + 1);
+    <span class="hljs-type">int</span> <span class="hljs-variable">left</span> <span class="hljs-operator">=</span> getPathLen(root.left, target, dist + <span class="hljs-number">1</span>);
 
-    if (left != -1) {
-        return left;
+    <span class="hljs-keyword">if</span> (left != -<span class="hljs-number">1</span>) {
+        <span class="hljs-keyword">return</span> left;
     }
-    int right = getPathLen(root.right, target, dist + 1);
+    <span class="hljs-type">int</span> <span class="hljs-variable">right</span> <span class="hljs-operator">=</span> getPathLen(root.right, target, dist + <span class="hljs-number">1</span>);
 
-    // NOTE !!! we don't need a `backtrack` below,
-    // since `int` is a `primitive dtype in java
-    //  -&gt;  Each recursive call gets its own copy of move.
-    // if we use dtype such as Mutable shared state (e.g. List, Set)
-    // we need a backtrack (undo)
-    return right;
+    <span class="hljs-comment">// NOTE !!! we don&#x27;t need a `backtrack` below,</span>
+    <span class="hljs-comment">// since `int` is a `primitive dtype in java</span>
+    <span class="hljs-comment">//  -&gt;  Each recursive call gets its own copy of move.</span>
+    <span class="hljs-comment">// if we use dtype such as Mutable shared state (e.g. List, Set)</span>
+    <span class="hljs-comment">// we need a backtrack (undo)</span>
+    <span class="hljs-keyword">return</span> right;
 }
 </code></pre>
 <p><strong>When to Use Backtracking (Undo)</strong>:</p>
@@ -1627,85 +1639,85 @@ private int getPathLen(TreeNode root, int target, int dist) {
 </tbody>
 </table>
 <p><strong>Example: When Backtracking IS Needed</strong>:</p>
-<pre><code class="language-java">// Mutable shared state - NEEDS backtracking
-void backtrack(List&lt;Integer&gt; path, int[] nums) {
-    if (path.size() == nums.length) {
-        result.add(new ArrayList&lt;&gt;(path));
-        return;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Mutable shared state - NEEDS backtracking</span>
+<span class="hljs-keyword">void</span> <span class="hljs-title function_">backtrack</span><span class="hljs-params">(List&lt;Integer&gt; path, <span class="hljs-type">int</span>[] nums)</span> {
+    <span class="hljs-keyword">if</span> (path.size() == nums.length) {
+        result.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(path));
+        <span class="hljs-keyword">return</span>;
     }
-    for (int num : nums) {
-        path.add(num);              // modify shared state
-        backtrack(path, nums);      // recursive call
-        path.remove(path.size()-1); // MUST undo - backtrack!
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : nums) {
+        path.add(num);              <span class="hljs-comment">// modify shared state</span>
+        backtrack(path, nums);      <span class="hljs-comment">// recursive call</span>
+        path.remove(path.size()-<span class="hljs-number">1</span>); <span class="hljs-comment">// MUST undo - backtrack!</span>
     }
 }
 </code></pre>
 <p><strong>Example: When Backtracking is NOT Needed</strong>:</p>
-<pre><code class="language-java">// Primitive types - NO backtracking needed
-int dfs(TreeNode root, int depth) {
-    if (root == null) return depth;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Primitive types - NO backtracking needed</span>
+<span class="hljs-type">int</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(TreeNode root, <span class="hljs-type">int</span> depth)</span> {
+    <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> depth;
 
-    int left = dfs(root.left, depth + 1);   // depth + 1 creates a NEW value
-    int right = dfs(root.right, depth + 1); // depth is unchanged for right call
+    <span class="hljs-type">int</span> <span class="hljs-variable">left</span> <span class="hljs-operator">=</span> dfs(root.left, depth + <span class="hljs-number">1</span>);   <span class="hljs-comment">// depth + 1 creates a NEW value</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">right</span> <span class="hljs-operator">=</span> dfs(root.right, depth + <span class="hljs-number">1</span>); <span class="hljs-comment">// depth is unchanged for right call</span>
 
-    // No need to do: depth -= 1;
-    // because depth was passed by value
-    return Math.max(left, right);
+    <span class="hljs-comment">// No need to do: depth -= 1;</span>
+    <span class="hljs-comment">// because depth was passed by value</span>
+    <span class="hljs-keyword">return</span> Math.max(left, right);
 }
 </code></pre>
 <h3 id="1-3-if-true-return-true-right-after-recursive-call" tabindex="-1"><a class="header-anchor" href="#1-3-if-true-return-true-right-after-recursive-call"><span>1-3)  if <code>true</code>, return true right after recursive call</span></a></h3>
-<pre><code class="language-java">// java
-// LC  698
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC  698</span>
 
-// ...
-if (backtrack_(nums, j + 1, k, subsetSum + nums[j], used)){
-            return true;
+<span class="hljs-comment">// ...</span>
+<span class="hljs-keyword">if</span> (backtrack_(nums, j + <span class="hljs-number">1</span>, k, subsetSum + nums[j], used)){
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
         }
 
-// ...
+<span class="hljs-comment">// ...</span>
 </code></pre>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
 <h3 id="2-1-letter-combinations-of-a-phone-number" tabindex="-1"><a class="header-anchor" href="#2-1-letter-combinations-of-a-phone-number"><span>2-1) Letter Combinations of a Phone Number</span></a></h3>
-<pre><code class="language-java">// java
-// LC 17
-// V0
-// IDEA: BACKTRACK + start_idx (on digit)
-List&lt;String&gt; _res = new ArrayList&lt;String&gt;();
-public List&lt;String&gt; letterCombinations(String _digits) {
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 17</span>
+<span class="hljs-comment">// V0</span>
+<span class="hljs-comment">// IDEA: BACKTRACK + start_idx (on digit)</span>
+List&lt;String&gt; _res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;String&gt;();
+<span class="hljs-keyword">public</span> List&lt;String&gt; <span class="hljs-title function_">letterCombinations</span><span class="hljs-params">(String _digits)</span> {
 
-    if (_digits.length() == 0){
-        return new ArrayList&lt;&gt;();
+    <span class="hljs-keyword">if</span> (_digits.length() == <span class="hljs-number">0</span>){
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
     }
 
-    HashMap&lt;java.lang.String, java.lang.String&gt; letters = new HashMap&lt;&gt;();
-    letters.put(&quot;2&quot;, &quot;abc&quot;);
-    letters.put(&quot;3&quot;, &quot;def&quot;);
-    letters.put(&quot;4&quot;, &quot;ghi&quot;);
-    letters.put(&quot;5&quot;, &quot;jkl&quot;);
-    letters.put(&quot;6&quot;, &quot;mno&quot;);
-    letters.put(&quot;7&quot;, &quot;pqrs&quot;);
-    letters.put(&quot;8&quot;, &quot;tuv&quot;);
-    letters.put(&quot;9&quot;, &quot;wxyz&quot;);
+    HashMap&lt;java.lang.String, java.lang.String&gt; letters = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+    letters.put(<span class="hljs-string">&quot;2&quot;</span>, <span class="hljs-string">&quot;abc&quot;</span>);
+    letters.put(<span class="hljs-string">&quot;3&quot;</span>, <span class="hljs-string">&quot;def&quot;</span>);
+    letters.put(<span class="hljs-string">&quot;4&quot;</span>, <span class="hljs-string">&quot;ghi&quot;</span>);
+    letters.put(<span class="hljs-string">&quot;5&quot;</span>, <span class="hljs-string">&quot;jkl&quot;</span>);
+    letters.put(<span class="hljs-string">&quot;6&quot;</span>, <span class="hljs-string">&quot;mno&quot;</span>);
+    letters.put(<span class="hljs-string">&quot;7&quot;</span>, <span class="hljs-string">&quot;pqrs&quot;</span>);
+    letters.put(<span class="hljs-string">&quot;8&quot;</span>, <span class="hljs-string">&quot;tuv&quot;</span>);
+    letters.put(<span class="hljs-string">&quot;9&quot;</span>, <span class="hljs-string">&quot;wxyz&quot;</span>);
 
-    _letter_builder(letters, 0, _digits, new StringBuilder());
-    return this._res;
+    _letter_builder(letters, <span class="hljs-number">0</span>, _digits, <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>());
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>._res;
 }
 
-private void _letter_builder(HashMap&lt;String, String&gt; map, int start_idx, String digits, StringBuilder builder){
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">_letter_builder</span><span class="hljs-params">(HashMap&lt;String, String&gt; map, <span class="hljs-type">int</span> start_idx, String digits, StringBuilder builder)</span>{
 
-    /**
+    <span class="hljs-comment">/**
      *  NOTE !!!
      *
      *   if builder (StringBuilder) length equals digits length,
      *   -&gt; means we first one of the `all digit visit`
      *   -&gt; we should add this cur to our result
-     */
-    if (builder.length() == digits.length()){
-        this._res.add(builder.toString()); // NOTE this
-        return;
+     */</span>
+    <span class="hljs-keyword">if</span> (builder.length() == digits.length()){
+        <span class="hljs-built_in">this</span>._res.add(builder.toString()); <span class="hljs-comment">// NOTE this</span>
+        <span class="hljs-keyword">return</span>;
     }
 
-    /**
+    <span class="hljs-comment">/**
      *  NOTE !!!
      *
      *
@@ -1723,12 +1735,12 @@ private void _letter_builder(HashMap&lt;String, String&gt; map, int start_idx, S
      *
      *      letters.put(&quot;2&quot;, &quot;abc&quot;);
      *
-     */
-    String _digit = String.valueOf(digits.toCharArray()[start_idx]); // NOTE this
-    String _alphabets = map.get(_digit);
+     */</span>
+    <span class="hljs-type">String</span> <span class="hljs-variable">_digit</span> <span class="hljs-operator">=</span> String.valueOf(digits.toCharArray()[start_idx]); <span class="hljs-comment">// NOTE this</span>
+    <span class="hljs-type">String</span> <span class="hljs-variable">_alphabets</span> <span class="hljs-operator">=</span> map.get(_digit);
 
-    // backtrack
-    /**
+    <span class="hljs-comment">// backtrack</span>
+    <span class="hljs-comment">/**
      *  NOTE !!!
      *
      *   we loop over `_alphabets` (digit with idx),
@@ -1736,207 +1748,207 @@ private void _letter_builder(HashMap&lt;String, String&gt; map, int start_idx, S
      *
      *   -&gt; so we can build our cur string accordingly
      *
-     */
-    for (char a : _alphabets.toCharArray()){
+     */</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> a : _alphabets.toCharArray()){
         builder.append(a);
-        _letter_builder(map, start_idx + 1, digits, builder);
+        _letter_builder(map, start_idx + <span class="hljs-number">1</span>, digits, builder);
 
 
-        // undo
-        // builder.deleteCharAt(0); // NOTE !!! in backtrack, we remove LAST element (idx = len - 1), instead of first element
-        builder.deleteCharAt(builder.toString().length() - 1);
-        // no need to `undo` start_idx, since it's primary type
-        // in java, it is copied as `new var` when pass the recursive call
-        // backtrack.html#1-2-3-not-do-undo-on-primary-variable
-        // start_idx -= 1; // this is WRONG!!!
+        <span class="hljs-comment">// undo</span>
+        <span class="hljs-comment">// builder.deleteCharAt(0); // NOTE !!! in backtrack, we remove LAST element (idx = len - 1), instead of first element</span>
+        builder.deleteCharAt(builder.toString().length() - <span class="hljs-number">1</span>);
+        <span class="hljs-comment">// no need to `undo` start_idx, since it&#x27;s primary type</span>
+        <span class="hljs-comment">// in java, it is copied as `new var` when pass the recursive call</span>
+        <span class="hljs-comment">// backtrack.html#1-2-3-not-do-undo-on-primary-variable</span>
+        <span class="hljs-comment">// start_idx -= 1; // this is WRONG!!!</span>
     }
 }
 </code></pre>
-<pre><code class="language-python"># 017   Letter Combinations of a Phone Number
-# V0
-# IDEA : backtracking
-class Solution(object):
-    def letterCombinations(self, digits):
-        # help func
-        def help(idx, cur):
-            if len(cur) == len(digits):
-                tmp = &quot;&quot;.join(cur[:])
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 017   Letter Combinations of a Phone Number</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : backtracking</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">letterCombinations</span>(<span class="hljs-params">self, digits</span>):
+        <span class="hljs-comment"># help func</span>
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">help</span>(<span class="hljs-params">idx, cur</span>):
+            <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(cur) == <span class="hljs-built_in">len</span>(digits):
+                tmp = <span class="hljs-string">&quot;&quot;</span>.join(cur[:])
                 res.append(tmp)
                 cur = []
-                return
-            if len(cur) &gt; len(digits):
+                <span class="hljs-keyword">return</span>
+            <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(cur) &gt; <span class="hljs-built_in">len</span>(digits):
                 cur = []
-                return
-            for a in d[digits[idx]]:
+                <span class="hljs-keyword">return</span>
+            <span class="hljs-keyword">for</span> a <span class="hljs-keyword">in</span> d[digits[idx]]:
                 cur.append(a)
-                help(idx+1, cur)
-                cur.pop(-1)  # NOTE this !!! : we pop last element
-        # edge case
-        if not digits:
-            return []
+                <span class="hljs-built_in">help</span>(idx+<span class="hljs-number">1</span>, cur)
+                cur.pop(-<span class="hljs-number">1</span>)  <span class="hljs-comment"># NOTE this !!! : we pop last element</span>
+        <span class="hljs-comment"># edge case</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> digits:
+            <span class="hljs-keyword">return</span> []
         res = []
         cur = []
-        idx = 0
-        d =  {'2': 'abc', '3': 'def', '4': 'ghi', '5': 'jkl', '6': 'mno', '7': 'pqrs', '8': 'tuv', '9': 'wxyz'}
-        help(idx, cur)
-        return res
+        idx = <span class="hljs-number">0</span>
+        d =  {<span class="hljs-string">&#x27;2&#x27;</span>: <span class="hljs-string">&#x27;abc&#x27;</span>, <span class="hljs-string">&#x27;3&#x27;</span>: <span class="hljs-string">&#x27;def&#x27;</span>, <span class="hljs-string">&#x27;4&#x27;</span>: <span class="hljs-string">&#x27;ghi&#x27;</span>, <span class="hljs-string">&#x27;5&#x27;</span>: <span class="hljs-string">&#x27;jkl&#x27;</span>, <span class="hljs-string">&#x27;6&#x27;</span>: <span class="hljs-string">&#x27;mno&#x27;</span>, <span class="hljs-string">&#x27;7&#x27;</span>: <span class="hljs-string">&#x27;pqrs&#x27;</span>, <span class="hljs-string">&#x27;8&#x27;</span>: <span class="hljs-string">&#x27;tuv&#x27;</span>, <span class="hljs-string">&#x27;9&#x27;</span>: <span class="hljs-string">&#x27;wxyz&#x27;</span>}
+        <span class="hljs-built_in">help</span>(idx, cur)
+        <span class="hljs-keyword">return</span> res
 
-# V0'
-# IDEA : dfs + backtracking
-class Solution(object):
-    def letterCombinations(self, digits):
+<span class="hljs-comment"># V0&#x27;</span>
+<span class="hljs-comment"># IDEA : dfs + backtracking</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">letterCombinations</span>(<span class="hljs-params">self, digits</span>):
 
-        def dfs(idx, tmp):
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">idx, tmp</span>):
 
-            &quot;&quot;&quot;
+            <span class="hljs-string">&quot;&quot;&quot;
             NOTE : if idx == len(digits)
                -&gt; if tmp is not null, then we append tmp to our result (res)
                -&gt; and we out of the loop
-            &quot;&quot;&quot;
-            if idx == len(digits):
-                if tmp != &quot;&quot;:
+            &quot;&quot;&quot;</span>
+            <span class="hljs-keyword">if</span> idx == <span class="hljs-built_in">len</span>(digits):
+                <span class="hljs-keyword">if</span> tmp != <span class="hljs-string">&quot;&quot;</span>:
                     res.append(tmp)
-                return
+                <span class="hljs-keyword">return</span>
 
-            ### NOTE : we loop alphabets in d map per number rather than loop over number !!!
-            for alpha in d[digits[idx]]:
-                &quot;&quot;&quot;
+            <span class="hljs-comment">### NOTE : we loop alphabets in d map per number rather than loop over number !!!</span>
+            <span class="hljs-keyword">for</span> alpha <span class="hljs-keyword">in</span> d[digits[idx]]:
+                <span class="hljs-string">&quot;&quot;&quot;
                 NOTE !!!!
                 idex+1 : for loop to next number
                 tmp+j : for collect cur update
-                &quot;&quot;&quot;
-                print (&quot;digits = &quot; + str(digits), &quot; tmp = &quot; + str(tmp) + &quot; alpha = &quot; + str(alpha))
-                dfs(idx+1, tmp + alpha)
+                &quot;&quot;&quot;</span>
+                <span class="hljs-built_in">print</span> (<span class="hljs-string">&quot;digits = &quot;</span> + <span class="hljs-built_in">str</span>(digits), <span class="hljs-string">&quot; tmp = &quot;</span> + <span class="hljs-built_in">str</span>(tmp) + <span class="hljs-string">&quot; alpha = &quot;</span> + <span class="hljs-built_in">str</span>(alpha))
+                dfs(idx+<span class="hljs-number">1</span>, tmp + alpha)
 
-        d = {'2' : &quot;abc&quot;, '3' : &quot;def&quot;, '4' : &quot;ghi&quot;, '5' : &quot;jkl&quot;, '6' : &quot;mno&quot;, '7' : &quot;pqrs&quot;, '8' : &quot;tuv&quot;, '9' : &quot;wxyz&quot;}
+        d = {<span class="hljs-string">&#x27;2&#x27;</span> : <span class="hljs-string">&quot;abc&quot;</span>, <span class="hljs-string">&#x27;3&#x27;</span> : <span class="hljs-string">&quot;def&quot;</span>, <span class="hljs-string">&#x27;4&#x27;</span> : <span class="hljs-string">&quot;ghi&quot;</span>, <span class="hljs-string">&#x27;5&#x27;</span> : <span class="hljs-string">&quot;jkl&quot;</span>, <span class="hljs-string">&#x27;6&#x27;</span> : <span class="hljs-string">&quot;mno&quot;</span>, <span class="hljs-string">&#x27;7&#x27;</span> : <span class="hljs-string">&quot;pqrs&quot;</span>, <span class="hljs-string">&#x27;8&#x27;</span> : <span class="hljs-string">&quot;tuv&quot;</span>, <span class="hljs-string">&#x27;9&#x27;</span> : <span class="hljs-string">&quot;wxyz&quot;</span>}
         res = []
-        dfs(0,&quot;&quot;)
-        return 
+        dfs(<span class="hljs-number">0</span>,<span class="hljs-string">&quot;&quot;</span>)
+        <span class="hljs-keyword">return</span> 
 
-# V1 
-# idea : for loop
-class Solution(object):
-    def letterCombinations(self, digits):
-        &quot;&quot;&quot;
+<span class="hljs-comment"># V1 </span>
+<span class="hljs-comment"># idea : for loop</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">letterCombinations</span>(<span class="hljs-params">self, digits</span>):
+        <span class="hljs-string">&quot;&quot;&quot;
         :type digits: str
         :rtype: List[str]
-        &quot;&quot;&quot;
-        if digits == &quot;&quot;: return []
-        d = {'2' : &quot;abc&quot;, '3' : &quot;def&quot;, '4' : &quot;ghi&quot;, '5' : &quot;jkl&quot;, '6' : &quot;mno&quot;, '7' : &quot;pqrs&quot;, '8' : &quot;tuv&quot;, '9' : &quot;wxyz&quot;}
-        res = ['']
-        for e in digits:
-            res = [w + c for c in d[e] for w in res]
-        return res
+        &quot;&quot;&quot;</span>
+        <span class="hljs-keyword">if</span> digits == <span class="hljs-string">&quot;&quot;</span>: <span class="hljs-keyword">return</span> []
+        d = {<span class="hljs-string">&#x27;2&#x27;</span> : <span class="hljs-string">&quot;abc&quot;</span>, <span class="hljs-string">&#x27;3&#x27;</span> : <span class="hljs-string">&quot;def&quot;</span>, <span class="hljs-string">&#x27;4&#x27;</span> : <span class="hljs-string">&quot;ghi&quot;</span>, <span class="hljs-string">&#x27;5&#x27;</span> : <span class="hljs-string">&quot;jkl&quot;</span>, <span class="hljs-string">&#x27;6&#x27;</span> : <span class="hljs-string">&quot;mno&quot;</span>, <span class="hljs-string">&#x27;7&#x27;</span> : <span class="hljs-string">&quot;pqrs&quot;</span>, <span class="hljs-string">&#x27;8&#x27;</span> : <span class="hljs-string">&quot;tuv&quot;</span>, <span class="hljs-string">&#x27;9&#x27;</span> : <span class="hljs-string">&quot;wxyz&quot;</span>}
+        res = [<span class="hljs-string">&#x27;&#x27;</span>]
+        <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> digits:
+            res = [w + c <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> d[e] <span class="hljs-keyword">for</span> w <span class="hljs-keyword">in</span> res]
+        <span class="hljs-keyword">return</span> res
 </code></pre>
 <h3 id="2-2-combination-sum" tabindex="-1"><a class="header-anchor" href="#2-2-combination-sum"><span>2-2) combination-sum</span></a></h3>
-<pre><code class="language-python"># LC 039, LC 040 combination-sum
-# V0
-# IDEA : DFS + BACKTRACK
-class Solution(object):
-    def combinationSum(self, candidates, target):
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 039, LC 040 combination-sum</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : DFS + BACKTRACK</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">combinationSum</span>(<span class="hljs-params">self, candidates, target</span>):
 
-        def dfs(tmp):
-            if sum(tmp) == target:
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">tmp</span>):
+            <span class="hljs-keyword">if</span> <span class="hljs-built_in">sum</span>(tmp) == target:
                 tmp.sort()
-                if tmp not in res:
+                <span class="hljs-keyword">if</span> tmp <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> res:
                     res.append(tmp)
-                return
-            if sum(tmp) &gt; target:
-                return
-            for c in candidates:
+                <span class="hljs-keyword">return</span>
+            <span class="hljs-keyword">if</span> <span class="hljs-built_in">sum</span>(tmp) &gt; target:
+                <span class="hljs-keyword">return</span>
+            <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> candidates:
                 dfs(tmp + [c])
 
         res = []
         tmp = []
         dfs(tmp)
-        return res
+        <span class="hljs-keyword">return</span> res
 </code></pre>
 <h3 id="2-3-word-search" tabindex="-1"><a class="header-anchor" href="#2-3-word-search"><span>2-3) Word Search</span></a></h3>
-<pre><code class="language-python"># LC 079 Word Search
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 079 Word Search</span>
 
-# V0
-# IDEA : DFS + backtracking
-class Solution(object):
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : DFS + backtracking</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
  
-    def exist(self, board, word):
-        ### NOTE : construct the visited matrix
-        visited = [[False for j in range(len(board[0]))] for i in range(len(board))]
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">exist</span>(<span class="hljs-params">self, board, word</span>):
+        <span class="hljs-comment">### NOTE : construct the visited matrix</span>
+        visited = [[<span class="hljs-literal">False</span> <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(board[<span class="hljs-number">0</span>]))] <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(board))]
 
-        ### NOTE : we visit every element in board and trigger the dfs
-        for i in range(len(board)):
-            for j in range(len(board[0])):
-                if self.dfs(board, word, 0, i, j, visited):
-                    return True
+        <span class="hljs-comment">### NOTE : we visit every element in board and trigger the dfs</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(board)):
+            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(board[<span class="hljs-number">0</span>])):
+                <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.dfs(board, word, <span class="hljs-number">0</span>, i, j, visited):
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 
-        return False
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 
-    def dfs(self, board, word, cur, i, j, visited):
-        # if &quot;not false&quot; till cur == len(word), means we already found the wprd in board
-        if cur == len(word):
-            return True
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">self, board, word, cur, i, j, visited</span>):
+        <span class="hljs-comment"># if &quot;not false&quot; till cur == len(word), means we already found the wprd in board</span>
+        <span class="hljs-keyword">if</span> cur == <span class="hljs-built_in">len</span>(word):
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 
-        ### NOTE this condition
-        # 1) if idx out of range
-        # 2) if already visited
-        # 3) if board[i][j] != word[cur] -&gt; not possible to be as same as word
-        if i &lt; 0 or i &gt;= len(board) or j &lt; 0 or j &gt;= len(board[0]) or visited[i][j] or board[i][j] != word[cur]:
-            return False
+        <span class="hljs-comment">### NOTE this condition</span>
+        <span class="hljs-comment"># 1) if idx out of range</span>
+        <span class="hljs-comment"># 2) if already visited</span>
+        <span class="hljs-comment"># 3) if board[i][j] != word[cur] -&gt; not possible to be as same as word</span>
+        <span class="hljs-keyword">if</span> i &lt; <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> i &gt;= <span class="hljs-built_in">len</span>(board) <span class="hljs-keyword">or</span> j &lt; <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> j &gt;= <span class="hljs-built_in">len</span>(board[<span class="hljs-number">0</span>]) <span class="hljs-keyword">or</span> visited[i][j] <span class="hljs-keyword">or</span> board[i][j] != word[cur]:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 
-        # mark as visited
-        visited[i][j] = True
-        ### NOTE THIS TRICK (run the existRecu on 4 directions on the same time)
-        result = self.dfs(board, word, cur + 1, i + 1, j, visited) or\
-                 self.dfs(board, word, cur + 1, i - 1, j, visited) or\
-                 self.dfs(board, word, cur + 1, i, j + 1, visited) or\
-                 self.dfs(board, word, cur + 1, i, j - 1, visited)
-        # mark as non-visited
-        visited[i][j] = False
+        <span class="hljs-comment"># mark as visited</span>
+        visited[i][j] = <span class="hljs-literal">True</span>
+        <span class="hljs-comment">### NOTE THIS TRICK (run the existRecu on 4 directions on the same time)</span>
+        result = <span class="hljs-variable language_">self</span>.dfs(board, word, cur + <span class="hljs-number">1</span>, i + <span class="hljs-number">1</span>, j, visited) <span class="hljs-keyword">or</span>\
+                 <span class="hljs-variable language_">self</span>.dfs(board, word, cur + <span class="hljs-number">1</span>, i - <span class="hljs-number">1</span>, j, visited) <span class="hljs-keyword">or</span>\
+                 <span class="hljs-variable language_">self</span>.dfs(board, word, cur + <span class="hljs-number">1</span>, i, j + <span class="hljs-number">1</span>, visited) <span class="hljs-keyword">or</span>\
+                 <span class="hljs-variable language_">self</span>.dfs(board, word, cur + <span class="hljs-number">1</span>, i, j - <span class="hljs-number">1</span>, visited)
+        <span class="hljs-comment"># mark as non-visited</span>
+        visited[i][j] = <span class="hljs-literal">False</span>
 
-        return result
+        <span class="hljs-keyword">return</span> result
 </code></pre>
-<pre><code class="language-java">// java
-// LC 079
-// V0'
-// IDEA : DFS + BACKTRACK (modified by GPT)
-public boolean exist_0(char[][] board, String word) {
-    if (board == null || board.length == 0) {
-        return false;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 079</span>
+<span class="hljs-comment">// V0&#x27;</span>
+<span class="hljs-comment">// IDEA : DFS + BACKTRACK (modified by GPT)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">exist_0</span><span class="hljs-params">(<span class="hljs-type">char</span>[][] board, String word)</span> {
+    <span class="hljs-keyword">if</span> (board == <span class="hljs-literal">null</span> || board.length == <span class="hljs-number">0</span>) {
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
     }
 
-    int l = board.length;
-    int w = board[0].length;
+    <span class="hljs-type">int</span> <span class="hljs-variable">l</span> <span class="hljs-operator">=</span> board.length;
+    <span class="hljs-type">int</span> <span class="hljs-variable">w</span> <span class="hljs-operator">=</span> board[<span class="hljs-number">0</span>].length;
 
-    boolean[][] visited = new boolean[l][w];
+    <span class="hljs-type">boolean</span>[][] visited = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[l][w];
 
-    for (int i = 0; i &lt; l; i++) {
-        for (int j = 0; j &lt; w; j++) {
-            if (dfs_(board, i, j, 0, word, visited)) {
-                return true;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; l; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; w; j++) {
+            <span class="hljs-keyword">if</span> (dfs_(board, i, j, <span class="hljs-number">0</span>, word, visited)) {
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
             }
         }
     }
 
-    return false;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
 }
 
-private boolean dfs_(char[][] board, int y, int x, int idx, String word, boolean[][] visited) {
+<span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">dfs_</span><span class="hljs-params">(<span class="hljs-type">char</span>[][] board, <span class="hljs-type">int</span> y, <span class="hljs-type">int</span> x, <span class="hljs-type">int</span> idx, String word, <span class="hljs-type">boolean</span>[][] visited)</span> {
 
-    if (idx == word.length()) {
-        return true;
+    <span class="hljs-keyword">if</span> (idx == word.length()) {
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
     }
 
-    int l = board.length;
-    int w = board[0].length;
+    <span class="hljs-type">int</span> <span class="hljs-variable">l</span> <span class="hljs-operator">=</span> board.length;
+    <span class="hljs-type">int</span> <span class="hljs-variable">w</span> <span class="hljs-operator">=</span> board[<span class="hljs-number">0</span>].length;
 
-    if (y &lt; 0 || y &gt;= l || x &lt; 0 || x &gt;= w || visited[y][x] || board[y][x] != word.charAt(idx)) {
-        return false;
+    <span class="hljs-keyword">if</span> (y &lt; <span class="hljs-number">0</span> || y &gt;= l || x &lt; <span class="hljs-number">0</span> || x &gt;= w || visited[y][x] || board[y][x] != word.charAt(idx)) {
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
     }
 
-    /** NOTE !!! we update visited on x, y here */
-    visited[y][x] = true;
+    <span class="hljs-comment">/** NOTE !!! we update visited on x, y here */</span>
+    visited[y][x] = <span class="hljs-literal">true</span>;
 
-    int[][] dirs = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
-    /**
+    <span class="hljs-type">int</span>[][] dirs = {{<span class="hljs-number">0</span>, <span class="hljs-number">1</span>}, {<span class="hljs-number">0</span>, -<span class="hljs-number">1</span>}, {<span class="hljs-number">1</span>, <span class="hljs-number">0</span>}, {-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>}};
+    <span class="hljs-comment">/**
      *  NOTE !!!
      *
      *   instead of below structure:
@@ -1955,570 +1967,570 @@ private boolean dfs_(char[][] board, int y, int x, int idx, String word, boolean
      *             }
      *         }
      *
-     */
-    for (int[] dir : dirs) {
-        if (dfs_(board, y + dir[0], x + dir[1], idx + 1, word, visited)) {
-            return true;
+     */</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] dir : dirs) {
+        <span class="hljs-keyword">if</span> (dfs_(board, y + dir[<span class="hljs-number">0</span>], x + dir[<span class="hljs-number">1</span>], idx + <span class="hljs-number">1</span>, word, visited)) {
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
         }
     }
 
-    /** NOTE !!! we undo (backtrack) updated x, y here */
-    visited[y][x] = false;
+    <span class="hljs-comment">/** NOTE !!! we undo (backtrack) updated x, y here */</span>
+    visited[y][x] = <span class="hljs-literal">false</span>;
 
-    return false;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
 }
 </code></pre>
 <h3 id="2-4-subsets" tabindex="-1"><a class="header-anchor" href="#2-4-subsets"><span>2-4) Subsets</span></a></h3>
-<pre><code class="language-python"># LC 078 Subsets
-# V0
-# IDEA : Backtracking
-class Solution:
-    def subsets(self, nums):
-        def backtrack(first = 0, curr = []):
-            # if the combination is done
-            if len(curr) == k:  
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 078 Subsets</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : Backtracking</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">subsets</span>(<span class="hljs-params">self, nums</span>):
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">backtrack</span>(<span class="hljs-params">first = <span class="hljs-number">0</span>, curr = []</span>):
+            <span class="hljs-comment"># if the combination is done</span>
+            <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(curr) == k:  
                 output.append(curr[:])
-                return
-            for i in range(first, n):
-                # add nums[i] into the current combination
+                <span class="hljs-keyword">return</span>
+            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(first, n):
+                <span class="hljs-comment"># add nums[i] into the current combination</span>
                 curr.append(nums[i])
-                # use next integers to complete the combination
-                backtrack(i + 1, curr)
-                # backtrack
+                <span class="hljs-comment"># use next integers to complete the combination</span>
+                backtrack(i + <span class="hljs-number">1</span>, curr)
+                <span class="hljs-comment"># backtrack</span>
                 curr.pop()
         
         output = []
-        n = len(nums)
-        for k in range(n + 1):
+        n = <span class="hljs-built_in">len</span>(nums)
+        <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n + <span class="hljs-number">1</span>):
             backtrack()
-        return output
+        <span class="hljs-keyword">return</span> output
 
-# V0'
-# brack tracking
-class Solution(object):
-    def subsets(self, nums):
-        def help(start, tmp, res):
+<span class="hljs-comment"># V0&#x27;</span>
+<span class="hljs-comment"># brack tracking</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">subsets</span>(<span class="hljs-params">self, nums</span>):
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">help</span>(<span class="hljs-params">start, tmp, res</span>):
             tmp.sort()
-            if tmp not in res:
+            <span class="hljs-keyword">if</span> tmp <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> res:
                 res.append(tmp)
-            for i in range(start, len(nums)):
-                if nums[i] not in tmp:
-                    help(start+1, tmp + [nums[i]], res)
+            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(start, <span class="hljs-built_in">len</span>(nums)):
+                <span class="hljs-keyword">if</span> nums[i] <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> tmp:
+                    <span class="hljs-built_in">help</span>(start+<span class="hljs-number">1</span>, tmp + [nums[i]], res)
         res = []
-        start = 0
+        start = <span class="hljs-number">0</span>
         tmp = []
-        if len(nums) == 1:
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(nums) == <span class="hljs-number">1</span>:
             res = [[]]
             res.append(nums)
-            return res
-        help(start, tmp, res)
-        return res
+            <span class="hljs-keyword">return</span> res
+        <span class="hljs-built_in">help</span>(start, tmp, res)
+        <span class="hljs-keyword">return</span> res
 
-# V0''
-# IDEA : DFS 
-class Solution(object):
-    def subsets(self, nums):
-        def dfs(layer, start, tmp):
-            if tmp not in res:
+<span class="hljs-comment"># V0&#x27;&#x27;</span>
+<span class="hljs-comment"># IDEA : DFS </span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">subsets</span>(<span class="hljs-params">self, nums</span>):
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">layer, start, tmp</span>):
+            <span class="hljs-keyword">if</span> tmp <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> res:
                 res.append(tmp)
-            if layer == len(nums):
-                return
-            ### NOTE : we have if condition first, then for loop
-            for i in range(start, len(nums)):
-                ### NOTE below can make loop start `start idx` updated each time
-                dfs(layer+1, i+1, tmp + [nums[i]])
+            <span class="hljs-keyword">if</span> layer == <span class="hljs-built_in">len</span>(nums):
+                <span class="hljs-keyword">return</span>
+            <span class="hljs-comment">### NOTE : we have if condition first, then for loop</span>
+            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(start, <span class="hljs-built_in">len</span>(nums)):
+                <span class="hljs-comment">### NOTE below can make loop start `start idx` updated each time</span>
+                dfs(layer+<span class="hljs-number">1</span>, i+<span class="hljs-number">1</span>, tmp + [nums[i]])
         nums.sort()
         res = []
-        dfs(0, 0, [])
-        return res
+        dfs(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, [])
+        <span class="hljs-keyword">return</span> res
 </code></pre>
-<pre><code class="language-java">// java
-// LC 78
-// V0'
-// IDEA : Backtracking
-// https://leetcode.com/problems/subsets/editorial/
-    List&lt;List&lt;Integer&gt;&gt; output = new ArrayList();
-    int n, k;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 78</span>
+<span class="hljs-comment">// V0&#x27;</span>
+<span class="hljs-comment">// IDEA : Backtracking</span>
+<span class="hljs-comment">// https://leetcode.com/problems/subsets/editorial/</span>
+    List&lt;List&lt;Integer&gt;&gt; output = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>();
+    <span class="hljs-type">int</span> n, k;
 
-    public void backtrack(int first, ArrayList&lt;Integer&gt; curr, int[] nums) {
-        // if the combination is done
-        if (curr.size() == k) {
-            output.add(new ArrayList(curr));
-            return;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">backtrack</span><span class="hljs-params">(<span class="hljs-type">int</span> first, ArrayList&lt;Integer&gt; curr, <span class="hljs-type">int</span>[] nums)</span> {
+        <span class="hljs-comment">// if the combination is done</span>
+        <span class="hljs-keyword">if</span> (curr.size() == k) {
+            output.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>(curr));
+            <span class="hljs-keyword">return</span>;
         }
-        /** NOTE HERE !!!
+        <span class="hljs-comment">/** NOTE HERE !!!
          *
          *  ++i : i+1 first,  then do op
          *  i++ : do op first, then i+1
          *
          *  -&gt; i++ or ++i is both OK here
-         */
-        for (int i = first; i &lt; n; i++) {
-            // add i into the current combination
+         */</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> first; i &lt; n; i++) {
+            <span class="hljs-comment">// add i into the current combination</span>
             curr.add(nums[i]);
-            // use next integers to complete the combination
-            backtrack(i + 1, curr, nums);
-            // backtrack
-            curr.remove(curr.size() - 1);
+            <span class="hljs-comment">// use next integers to complete the combination</span>
+            backtrack(i + <span class="hljs-number">1</span>, curr, nums);
+            <span class="hljs-comment">// backtrack</span>
+            curr.remove(curr.size() - <span class="hljs-number">1</span>);
         }
     }
 
-    public List&lt;List&lt;Integer&gt;&gt; subsets(int[] nums) {
+    <span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">subsets</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
         n = nums.length;
-        /** NOTE HERE !!!
+        <span class="hljs-comment">/** NOTE HERE !!!
          *
          *  ++k : k+1 first,  then do op
          *  k++ : do op first, then k+1
          *
          *  -&gt; k++ or ++k is both OK here
-         */
-        for (k = 0; k &lt; n + 1; k++) {
-            backtrack(0, new ArrayList&lt;Integer&gt;(), nums);
+         */</span>
+        <span class="hljs-keyword">for</span> (k = <span class="hljs-number">0</span>; k &lt; n + <span class="hljs-number">1</span>; k++) {
+            backtrack(<span class="hljs-number">0</span>, <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;Integer&gt;(), nums);
         }
-        return output;
+        <span class="hljs-keyword">return</span> output;
     }
 
 
 
-// V1
-// IDEA : BACKTRACK
-// https://www.youtube.com/watch?v=REOH22Xwdkk&amp;t=4s
-// https://github.com/neetcode-gh/leetcode/blob/main/java/0078-subsets.java
-    public List&lt;List&lt;Integer&gt;&gt; subsets_1_2(int[] nums) {
-        List&lt;List&lt;Integer&gt;&gt; ans = new ArrayList&lt;&gt;();
-        List&lt;Integer&gt; list = new ArrayList&lt;&gt;();
-        helper(ans, 0, nums, list);
-        return ans;
+<span class="hljs-comment">// V1</span>
+<span class="hljs-comment">// IDEA : BACKTRACK</span>
+<span class="hljs-comment">// https://www.youtube.com/watch?v=REOH22Xwdkk&amp;t=4s</span>
+<span class="hljs-comment">// https://github.com/neetcode-gh/leetcode/blob/main/java/0078-subsets.java</span>
+    <span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">subsets_1_2</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+        List&lt;List&lt;Integer&gt;&gt; ans = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+        List&lt;Integer&gt; list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+        helper(ans, <span class="hljs-number">0</span>, nums, list);
+        <span class="hljs-keyword">return</span> ans;
     }
 
-    public void helper(
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">helper</span><span class="hljs-params">(
             List&lt;List&lt;Integer&gt;&gt; ans,
-            int start,
-            int[] nums,
+            <span class="hljs-type">int</span> start,
+            <span class="hljs-type">int</span>[] nums,
             List&lt;Integer&gt; list
-    ) {
-        if (start &gt;= nums.length) {
-            ans.add(new ArrayList&lt;&gt;(list));
-        } else {
+    )</span> {
+        <span class="hljs-keyword">if</span> (start &gt;= nums.length) {
+            ans.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(list));
+        } <span class="hljs-keyword">else</span> {
 
-            // decision tree :  add the element and start the  recursive call
+            <span class="hljs-comment">// decision tree :  add the element and start the  recursive call</span>
             list.add(nums[start]);
-            helper(ans, start + 1, nums, list);
+            helper(ans, start + <span class="hljs-number">1</span>, nums, list);
 
-            // decision tree :  remove the element and do the backtracking call.
-            list.remove(list.size() - 1);
-            helper(ans, start + 1, nums, list);
+            <span class="hljs-comment">// decision tree :  remove the element and do the backtracking call.</span>
+            list.remove(list.size() - <span class="hljs-number">1</span>);
+            helper(ans, start + <span class="hljs-number">1</span>, nums, list);
         }
     }    
 </code></pre>
-<pre><code class="language-c++">// c++
-// backtrack
-// (algorithm book (labu) p.303)
+<pre data-lang="c++"><code class="hljs language-c++"><span class="hljs-comment">// c++</span>
+<span class="hljs-comment">// backtrack</span>
+<span class="hljs-comment">// (algorithm book (labu) p.303)</span>
 
-// save all subset
-vector&lt;vector&lt;int&gt;&gt; res;
+<span class="hljs-comment">// save all subset</span>
+vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt; res;
 
-/* main func */
-vector&lt;vector&lt;int&gt;&gt; subsets(vector&lt;int&gt; &amp; nums){
-    // record visited routes
-    vector&lt;int&gt; tracks;
-    backtrack(nums, 0, track);
-    return res;
+<span class="hljs-comment">/* main func */</span>
+vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt; <span class="hljs-built_in">subsets</span>(vector&lt;<span class="hljs-type">int</span>&gt; &amp; nums){
+    <span class="hljs-comment">// record visited routes</span>
+    vector&lt;<span class="hljs-type">int</span>&gt; tracks;
+    <span class="hljs-built_in">backtrack</span>(nums, <span class="hljs-number">0</span>, track);
+    <span class="hljs-keyword">return</span> res;
 }
 
-/* use backtrack pattern */
-void backtrack(vector&lt;int&gt; &amp; nums, int start, vector&lt;int&gt; &amp; track){
-    // pre-order tranverse
-    res.push_back(track);
-    // start from `start`, avoid duplivated subset
-    for (int i = start; i &lt; nums.size(); i++){
-        // make choice
-        track.push_back(nums[i]);
-        // iteration backtrack
-        backtrack(nums, i+1, track);
-        // undo choice
-        track.pop_back();
+<span class="hljs-comment">/* use backtrack pattern */</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">backtrack</span><span class="hljs-params">(vector&lt;<span class="hljs-type">int</span>&gt; &amp; nums, <span class="hljs-type">int</span> start, vector&lt;<span class="hljs-type">int</span>&gt; &amp; track)</span></span>{
+    <span class="hljs-comment">// pre-order tranverse</span>
+    res.<span class="hljs-built_in">push_back</span>(track);
+    <span class="hljs-comment">// start from `start`, avoid duplivated subset</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = start; i &lt; nums.<span class="hljs-built_in">size</span>(); i++){
+        <span class="hljs-comment">// make choice</span>
+        track.<span class="hljs-built_in">push_back</span>(nums[i]);
+        <span class="hljs-comment">// iteration backtrack</span>
+        <span class="hljs-built_in">backtrack</span>(nums, i<span class="hljs-number">+1</span>, track);
+        <span class="hljs-comment">// undo choice</span>
+        track.<span class="hljs-built_in">pop_back</span>();
     }
 }
 </code></pre>
 <h3 id="2-4-subsets-ii" tabindex="-1"><a class="header-anchor" href="#2-4-subsets-ii"><span>2-4’) Subsets II</span></a></h3>
-<pre><code class="language-python"># LC 90 Subsets II
-# V0
-# IDEA : BACKTRACKING + LC 078 Subsets
-from collections import Counter
-class Solution(object):
-    def subsetsWithDup(self, nums):
-        def help(start, tmp, _cnt):
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 90 Subsets II</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : BACKTRACKING + LC 078 Subsets</span>
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> Counter
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">subsetsWithDup</span>(<span class="hljs-params">self, nums</span>):
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">help</span>(<span class="hljs-params">start, tmp, _cnt</span>):
             tmp.sort()
-            if tmp not in res:
+            <span class="hljs-keyword">if</span> tmp <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> res:
                 res.append(tmp)
-            if start &gt;= len(nums):
-                return
-            for i in range(start, len(nums)):
-                if _cnt[nums[i]]  &gt; 0:
-                    _cnt[nums[i]] -= 1
-                    help(start+1, tmp + [nums[i]], _cnt)
-                    &quot;&quot;&quot;
+            <span class="hljs-keyword">if</span> start &gt;= <span class="hljs-built_in">len</span>(nums):
+                <span class="hljs-keyword">return</span>
+            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(start, <span class="hljs-built_in">len</span>(nums)):
+                <span class="hljs-keyword">if</span> _cnt[nums[i]]  &gt; <span class="hljs-number">0</span>:
+                    _cnt[nums[i]] -= <span class="hljs-number">1</span>
+                    <span class="hljs-built_in">help</span>(start+<span class="hljs-number">1</span>, tmp + [nums[i]], _cnt)
+                    <span class="hljs-string">&quot;&quot;&quot;
                     NOTE : here we &quot;undo&quot; the &quot;_cnt[nums[i]] -= 1&quot; op,
                           -&gt; so next recursive can still have the &quot;capacity&quot; of such element
-                    &quot;&quot;&quot;
-                    _cnt[nums[i]] += 1
+                    &quot;&quot;&quot;</span>
+                    _cnt[nums[i]] += <span class="hljs-number">1</span>
 
-        # edge case
-        if not nums:
-            return []
+        <span class="hljs-comment"># edge case</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> nums:
+            <span class="hljs-keyword">return</span> []
 
-        # edge case
-        if len(nums) == 1:
+        <span class="hljs-comment"># edge case</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(nums) == <span class="hljs-number">1</span>:
             res = [[]]
-            res.append([nums[0]])
-            return res
+            res.append([nums[<span class="hljs-number">0</span>]])
+            <span class="hljs-keyword">return</span> res
 
         res = [[]]
         _cnt = Counter(nums)
-        help(0, [], _cnt)
-        print (&quot;res = &quot; + str(res))
-        return res
+        <span class="hljs-built_in">help</span>(<span class="hljs-number">0</span>, [], _cnt)
+        <span class="hljs-built_in">print</span> (<span class="hljs-string">&quot;res = &quot;</span> + <span class="hljs-built_in">str</span>(res))
+        <span class="hljs-keyword">return</span> res
 
-# V0
-# IDEA : BRUTE FORCE
-class Solution:
-    def subsetsWithDup(self, nums):
-        # small trick (init with a null array)
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : BRUTE FORCE</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">subsetsWithDup</span>(<span class="hljs-params">self, nums</span>):
+        <span class="hljs-comment"># small trick (init with a null array)</span>
         ans=[[]]
-        for i in nums:
-            for l in list(ans):
-                # sorted here, since we want to the &quot;non-duplicated&quot; power set
-                temp=sorted(l+[i])
-                # avoid duplicated
-                if temp not in ans:
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> nums:
+            <span class="hljs-keyword">for</span> l <span class="hljs-keyword">in</span> <span class="hljs-built_in">list</span>(ans):
+                <span class="hljs-comment"># sorted here, since we want to the &quot;non-duplicated&quot; power set</span>
+                temp=<span class="hljs-built_in">sorted</span>(l+[i])
+                <span class="hljs-comment"># avoid duplicated</span>
+                <span class="hljs-keyword">if</span> temp <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> ans:
                     ans.append(temp) 
-        return ans
+        <span class="hljs-keyword">return</span> ans
 
 </code></pre>
 <h3 id="2-5-combinations" tabindex="-1"><a class="header-anchor" href="#2-5-combinations"><span>2-5) Combinations</span></a></h3>
-<pre><code class="language-python"># LC 77. Combinations
-# V0
-# BACKTRACK
-class Solution(object):
-    def combine(self, n, k): 
-        def dfs(current, start):
-            if(len(current) == k):
-                &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 77. Combinations</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># BACKTRACK</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">combine</span>(<span class="hljs-params">self, n, k</span>): 
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">current, start</span>):
+            <span class="hljs-keyword">if</span>(<span class="hljs-built_in">len</span>(current) == k):
+                <span class="hljs-string">&quot;&quot;&quot;
                 Both of below approach are OK
                 
                 list(current) : transform current reference to list
                 current[:] : shallow copy
-                &quot;&quot;&quot;
-                result.append(list(current))
-                return
+                &quot;&quot;&quot;</span>
+                result.append(<span class="hljs-built_in">list</span>(current))
+                <span class="hljs-keyword">return</span>
             
-            for i in range(start, n + 1):
+            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(start, n + <span class="hljs-number">1</span>):
                 current.append(i)
-                dfs(current, i + 1)
+                dfs(current, i + <span class="hljs-number">1</span>)
                 current.pop()
             
         result = []
-        dfs([], 1)
-        return result
+        dfs([], <span class="hljs-number">1</span>)
+        <span class="hljs-keyword">return</span> result
 
-# V0'
-# IDEA : BACKTRACK
-class Solution:
-    def combine(self, n, k):
+<span class="hljs-comment"># V0&#x27;</span>
+<span class="hljs-comment"># IDEA : BACKTRACK</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">combine</span>(<span class="hljs-params">self, n, k</span>):
         res=[]
-        def go(i,ma,ans):
-            if ma==k:
-                res.append(list(ans))
-                return
-            if i&gt;n:
-                return
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">go</span>(<span class="hljs-params">i,ma,ans</span>):
+            <span class="hljs-keyword">if</span> ma==k:
+                res.append(<span class="hljs-built_in">list</span>(ans))
+                <span class="hljs-keyword">return</span>
+            <span class="hljs-keyword">if</span> i&gt;n:
+                <span class="hljs-keyword">return</span>
             ans.append(i)
-            go(i+1,ma+1,ans)
+            go(i+<span class="hljs-number">1</span>,ma+<span class="hljs-number">1</span>,ans)
             ans.pop()
-            go(i+1,ma,ans)
-        go(1,0,[])
-        return res
+            go(i+<span class="hljs-number">1</span>,ma,ans)
+        go(<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,[])
+        <span class="hljs-keyword">return</span> res
 </code></pre>
-<pre><code class="language-c++">// c++
-// backtrack
-// (algorithm book (labu) p.305)
+<pre data-lang="c++"><code class="hljs language-c++"><span class="hljs-comment">// c++</span>
+<span class="hljs-comment">// backtrack</span>
+<span class="hljs-comment">// (algorithm book (labu) p.305)</span>
 
-// record all combinations
-vector&lt;vector&lt;int&gt;&gt; res;
+<span class="hljs-comment">// record all combinations</span>
+vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt; res;
 
-/* main func */
-vector&lt;vector&lt;int&gt;&gt; combine(int n, int k){
-    if (k &lt;= 0 || n &lt;= 0) return res;
-    vector&lt;int&gt; track;
-    backtrack(n, k, 1, track);
-    return res;
+<span class="hljs-comment">/* main func */</span>
+vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt; <span class="hljs-built_in">combine</span>(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span> k){
+    <span class="hljs-keyword">if</span> (k &lt;= <span class="hljs-number">0</span> || n &lt;= <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> res;
+    vector&lt;<span class="hljs-type">int</span>&gt; track;
+    <span class="hljs-built_in">backtrack</span>(n, k, <span class="hljs-number">1</span>, track);
+    <span class="hljs-keyword">return</span> res;
 }
 
-/* use backtrack pattern */
-void backtrack(int n, int k, int start, vector&lt;int&gt; &amp; track){
-    // not update res till visit leaf node
-    if (k == track.size()){
-        res.push_back(track);
-        return;
+<span class="hljs-comment">/* use backtrack pattern */</span>
+<span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">backtrack</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span> k, <span class="hljs-type">int</span> start, vector&lt;<span class="hljs-type">int</span>&gt; &amp; track)</span></span>{
+    <span class="hljs-comment">// not update res till visit leaf node</span>
+    <span class="hljs-keyword">if</span> (k == track.<span class="hljs-built_in">size</span>()){
+        res.<span class="hljs-built_in">push_back</span>(track);
+        <span class="hljs-keyword">return</span>;
     }
 
-    // increase from i
-    for (int i = start; i &lt;= n; i ++){
-        // do choice
-        track.push_back(i);
-        // backtrack
-        backtrack(n, k, i+1, track);
-        // undo choice
-        track.pop_back();
+    <span class="hljs-comment">// increase from i</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = start; i &lt;= n; i ++){
+        <span class="hljs-comment">// do choice</span>
+        track.<span class="hljs-built_in">push_back</span>(i);
+        <span class="hljs-comment">// backtrack</span>
+        <span class="hljs-built_in">backtrack</span>(n, k, i<span class="hljs-number">+1</span>, track);
+        <span class="hljs-comment">// undo choice</span>
+        track.<span class="hljs-built_in">pop_back</span>();
     }
 }
 </code></pre>
 <h3 id="2-6-permutations" tabindex="-1"><a class="header-anchor" href="#2-6-permutations"><span>2-6) Permutations</span></a></h3>
-<pre><code class="language-python"># LC 46. Permutations
-# V0
-# IDEA : BACKTRACK, 
-# similar idea as LC 77 -&gt; difference : contains VS start
-class Solution(object):
-    def permute(self, nums):
-        def help(cur):
-            if len(cur) == n_len:
-                if cur not in res:
-                    res.append(list(cur))
-                    return
-            if len(cur) &gt; n_len:
-                return
-            for i in nums:
-                #print (&quot;i = &quot; + str(i) + &quot; cur = &quot; + str(cur))
-                if i not in cur:
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 46. Permutations</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : BACKTRACK, </span>
+<span class="hljs-comment"># similar idea as LC 77 -&gt; difference : contains VS start</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">permute</span>(<span class="hljs-params">self, nums</span>):
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">help</span>(<span class="hljs-params">cur</span>):
+            <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(cur) == n_len:
+                <span class="hljs-keyword">if</span> cur <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> res:
+                    res.append(<span class="hljs-built_in">list</span>(cur))
+                    <span class="hljs-keyword">return</span>
+            <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(cur) &gt; n_len:
+                <span class="hljs-keyword">return</span>
+            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> nums:
+                <span class="hljs-comment">#print (&quot;i = &quot; + str(i) + &quot; cur = &quot; + str(cur))</span>
+                <span class="hljs-keyword">if</span> i <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> cur:
                     cur.append(i)
-                    help(cur)
-                    cur.pop(-1)
-        # edge case
-        if not nums:
-            return [[]]
-        n_len = len(nums)
+                    <span class="hljs-built_in">help</span>(cur)
+                    cur.pop(-<span class="hljs-number">1</span>)
+        <span class="hljs-comment"># edge case</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> nums:
+            <span class="hljs-keyword">return</span> [[]]
+        n_len = <span class="hljs-built_in">len</span>(nums)
         res = []
-        help([])
-        #print (&quot;res = &quot; + str(res))
-        return res
+        <span class="hljs-built_in">help</span>([])
+        <span class="hljs-comment">#print (&quot;res = &quot; + str(res))</span>
+        <span class="hljs-keyword">return</span> res
 
-# V0 
-class Solution(object):
-    def permute(self, nums):
-        visited = [0] * len(nums)
+<span class="hljs-comment"># V0 </span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">permute</span>(<span class="hljs-params">self, nums</span>):
+        visited = [<span class="hljs-number">0</span>] * <span class="hljs-built_in">len</span>(nums)
         res = []
         path = []
-        self.dfs(path)
-        return res
+        <span class="hljs-variable language_">self</span>.dfs(path)
+        <span class="hljs-keyword">return</span> res
         
-    def dfs(self, path):
-        if len(path) == len(nums):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">self, path</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(path) == <span class="hljs-built_in">len</span>(nums):
             res.append(path)
-        else:
-            for i in range(len(nums)):
-                if not visited[i]:
-                    visited[i] = 1
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(nums)):
+                <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> visited[i]:
+                    visited[i] = <span class="hljs-number">1</span>
                     dfs(path + [nums[i]])
-                    visited[i] = 0    ### to check if &quot;visited[i] = 0&quot; is necessary
+                    visited[i] = <span class="hljs-number">0</span>    <span class="hljs-comment">### to check if &quot;visited[i] = 0&quot; is necessary</span>
 </code></pre>
-<pre><code class="language-java">// LC 46. Permutations
-    List&lt;List&lt;Integer&gt;&gt; ans = new ArrayList&lt;&gt;();
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 46. Permutations</span>
+    List&lt;List&lt;Integer&gt;&gt; ans = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
 
-    // V0
-    // IDEA : BACKTRACK
-    public List&lt;List&lt;Integer&gt;&gt; permute(int[] nums) {
+    <span class="hljs-comment">// V0</span>
+    <span class="hljs-comment">// IDEA : BACKTRACK</span>
+    <span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">permute</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
 
-        if (nums.length == 1){
-            List&lt;List&lt;Integer&gt;&gt; _ans = new ArrayList&lt;&gt;();
-            List&lt;Integer&gt; cur = new ArrayList&lt;&gt;();
-            cur.add(nums[0]);
+        <span class="hljs-keyword">if</span> (nums.length == <span class="hljs-number">1</span>){
+            List&lt;List&lt;Integer&gt;&gt; _ans = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+            List&lt;Integer&gt; cur = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+            cur.add(nums[<span class="hljs-number">0</span>]);
             _ans.add(cur);
-            return _ans;
+            <span class="hljs-keyword">return</span> _ans;
         }
 
-        List&lt;Integer&gt; cur = new ArrayList&lt;&gt;();
-        /** NOTE !!! we don't need to set idx param */
+        List&lt;Integer&gt; cur = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+        <span class="hljs-comment">/** NOTE !!! we don&#x27;t need to set idx param */</span>
         helper(nums, cur);
 
-        return this.ans;
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.ans;
     }
 
-    private void helper(int[] nums, List&lt;Integer&gt; cur){
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">helper</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, List&lt;Integer&gt; cur)</span>{
 
-        if (cur.size() &gt; nums.length){
-            return;
+        <span class="hljs-keyword">if</span> (cur.size() &gt; nums.length){
+            <span class="hljs-keyword">return</span>;
         }
 
-        if (!this.ans.contains(cur) &amp;&amp; cur.size() == nums.length){
+        <span class="hljs-keyword">if</span> (!<span class="hljs-built_in">this</span>.ans.contains(cur) &amp;&amp; cur.size() == nums.length){
 
-            /** NOTE !!! we use below to add current ArrayList instance to ans */
-            this.ans.add(new ArrayList&lt;&gt;(cur));
+            <span class="hljs-comment">/** NOTE !!! we use below to add current ArrayList instance to ans */</span>
+            <span class="hljs-built_in">this</span>.ans.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(cur));
         }
 
         
-        for (int i = 0; i &lt; nums.length; i++){
-            int val = nums[i];
-            // input nums is array with distinct integers
-            /** NOTE !!! ONLY do recursive, backtrack when meet distinct element */
-            if(!cur.contains(val)){
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; nums.length; i++){
+            <span class="hljs-type">int</span> <span class="hljs-variable">val</span> <span class="hljs-operator">=</span> nums[i];
+            <span class="hljs-comment">// input nums is array with distinct integers</span>
+            <span class="hljs-comment">/** NOTE !!! ONLY do recursive, backtrack when meet distinct element */</span>
+            <span class="hljs-keyword">if</span>(!cur.contains(val)){
                 cur.add(val);
-                // recursive call
+                <span class="hljs-comment">// recursive call</span>
                 helper(nums, cur);
-                // undo last op
-                cur.remove(cur.size()-1); // NOTE !!! remove last element
+                <span class="hljs-comment">// undo last op</span>
+                cur.remove(cur.size()-<span class="hljs-number">1</span>); <span class="hljs-comment">// NOTE !!! remove last element</span>
             }
         }
     }
 </code></pre>
 <h3 id="2-7-generate-parentheses" tabindex="-1"><a class="header-anchor" href="#2-7-generate-parentheses"><span>2-7) Generate Parentheses</span></a></h3>
-<pre><code class="language-python"># python
-# LC 022 Generate Parentheses
-# V0
-# IDEA : bracktrack + Valid Parentheses (LC 020)
-class Solution(object):
-    def generateParenthesis(self, n):
-        # help func for backtracking
-        def help(tmp, res, n):
-            if len(tmp) == n * 2 and check(tmp):
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 022 Generate Parentheses</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : bracktrack + Valid Parentheses (LC 020)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">generateParenthesis</span>(<span class="hljs-params">self, n</span>):
+        <span class="hljs-comment"># help func for backtracking</span>
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">help</span>(<span class="hljs-params">tmp, res, n</span>):
+            <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(tmp) == n * <span class="hljs-number">2</span> <span class="hljs-keyword">and</span> check(tmp):
                 res.append(tmp)
-                return
-            if len(tmp) == n * 2:
-                return
-            for l in _list:
-                print (&quot;l = &quot; + str(l))
-                help(tmp + l, res, n)
+                <span class="hljs-keyword">return</span>
+            <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(tmp) == n * <span class="hljs-number">2</span>:
+                <span class="hljs-keyword">return</span>
+            <span class="hljs-keyword">for</span> l <span class="hljs-keyword">in</span> _<span class="hljs-built_in">list</span>:
+                <span class="hljs-built_in">print</span> (<span class="hljs-string">&quot;l = &quot;</span> + <span class="hljs-built_in">str</span>(l))
+                <span class="hljs-built_in">help</span>(tmp + l, res, n)
 
-        &quot;&quot;&quot;
+        <span class="hljs-string">&quot;&quot;&quot;
         LC 020 Valid Parentheses
-        &quot;&quot;&quot;
-        def check(s):
-            lookup = {&quot;(&quot;:&quot;)&quot;, &quot;[&quot;:&quot;]&quot;, &quot;{&quot;:&quot;}&quot;}
+        &quot;&quot;&quot;</span>
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">check</span>(<span class="hljs-params">s</span>):
+            lookup = {<span class="hljs-string">&quot;(&quot;</span>:<span class="hljs-string">&quot;)&quot;</span>, <span class="hljs-string">&quot;[&quot;</span>:<span class="hljs-string">&quot;]&quot;</span>, <span class="hljs-string">&quot;{&quot;</span>:<span class="hljs-string">&quot;}&quot;</span>}
             q = []
-            for i in s:
-                if i not in lookup and len(q) == 0:
-                    return False
-                elif i in lookup:
+            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> s:
+                <span class="hljs-keyword">if</span> i <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> lookup <span class="hljs-keyword">and</span> <span class="hljs-built_in">len</span>(q) == <span class="hljs-number">0</span>:
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+                <span class="hljs-keyword">elif</span> i <span class="hljs-keyword">in</span> lookup:
                     q.append(i)
-                else:
+                <span class="hljs-keyword">else</span>:
                     tmp = q.pop()
-                    if lookup[tmp] != i:
-                        return False
-            return True if len(q) == 0 else False
+                    <span class="hljs-keyword">if</span> lookup[tmp] != i:
+                        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span> <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(q) == <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> <span class="hljs-literal">False</span>
 
-        _list = ['(', ')']
-        if n == 1:
-            return [&quot;()&quot;]
+        _<span class="hljs-built_in">list</span> = [<span class="hljs-string">&#x27;(&#x27;</span>, <span class="hljs-string">&#x27;)&#x27;</span>]
+        <span class="hljs-keyword">if</span> n == <span class="hljs-number">1</span>:
+            <span class="hljs-keyword">return</span> [<span class="hljs-string">&quot;()&quot;</span>]
         res = []
-        help(&quot;&quot;, res, n)
-        return res
+        <span class="hljs-built_in">help</span>(<span class="hljs-string">&quot;&quot;</span>, res, n)
+        <span class="hljs-keyword">return</span> res
 
-# V0'
-# https://blog.csdn.net/fuxuemingzhu/article/details/79362373
-# IDEA: BACKTRACKING + DFS 
-# NOTE : KEEP DFS WHEN MEAT 2 CONDTIONS:
-#  1) len(path) &lt; n 
-#  2) # of &quot;(&quot;  &gt; # of &quot;)&quot; (means it's still possible to form a &quot;paratheses&quot; as expected)
-class Solution(object):
-    def generateParenthesis(self, n):
+<span class="hljs-comment"># V0&#x27;</span>
+<span class="hljs-comment"># https://blog.csdn.net/fuxuemingzhu/article/details/79362373</span>
+<span class="hljs-comment"># IDEA: BACKTRACKING + DFS </span>
+<span class="hljs-comment"># NOTE : KEEP DFS WHEN MEAT 2 CONDTIONS:</span>
+<span class="hljs-comment">#  1) len(path) &lt; n </span>
+<span class="hljs-comment">#  2) # of &quot;(&quot;  &gt; # of &quot;)&quot; (means it&#x27;s still possible to form a &quot;paratheses&quot; as expected)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">generateParenthesis</span>(<span class="hljs-params">self, n</span>):
         res = []
-        self.dfs(res, n, n, '')
-        return res
+        <span class="hljs-variable language_">self</span>.dfs(res, n, n, <span class="hljs-string">&#x27;&#x27;</span>)
+        <span class="hljs-keyword">return</span> res
         
-    def dfs(self, res, left, right, path):
-        if left == 0 and right == 0:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">self, res, left, right, path</span>):
+        <span class="hljs-keyword">if</span> left == <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> right == <span class="hljs-number">0</span>:
             res.append(path)
-            return
-        if left &gt; 0:
-            self.dfs(res, left - 1, right, path + '(')
-        if left &lt; right:
-            self.dfs(res, left, right - 1, path + ')')
+            <span class="hljs-keyword">return</span>
+        <span class="hljs-keyword">if</span> left &gt; <span class="hljs-number">0</span>:
+            <span class="hljs-variable language_">self</span>.dfs(res, left - <span class="hljs-number">1</span>, right, path + <span class="hljs-string">&#x27;(&#x27;</span>)
+        <span class="hljs-keyword">if</span> left &lt; right:
+            <span class="hljs-variable language_">self</span>.dfs(res, left, right - <span class="hljs-number">1</span>, path + <span class="hljs-string">&#x27;)&#x27;</span>)
 </code></pre>
-<pre><code class="language-java">// java
-// LC 022 Generate Parentheses
-// (algorithm book (labu) p.316)
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 022 Generate Parentheses</span>
+<span class="hljs-comment">// (algorithm book (labu) p.316)</span>
 
-/* main func */
-vector&lt;String&gt; generateParentheses(int n){
-    if (n == 0) return {};
-    // record all legal collections
+<span class="hljs-comment">/* main func */</span>
+vector&lt;String&gt; <span class="hljs-title function_">generateParentheses</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span>{
+    <span class="hljs-keyword">if</span> (n == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> {};
+    <span class="hljs-comment">// record all legal collections</span>
     vector&lt;string&gt; res;
-    // backtrack the routes (in process)
+    <span class="hljs-comment">// backtrack the routes (in process)</span>
     string track;
-    // init : available left Parentheses and right Parentheses counts as n
+    <span class="hljs-comment">// init : available left Parentheses and right Parentheses counts as n</span>
     backtrack(n, n, track, res);
-    return res;
+    <span class="hljs-keyword">return</span> res;
 }
 
-/* remain left Parentheses count : left ;.. remain right Parentheses : right */
-void backtrack(int left, int right, string&amp; track, vector&lt;string&gt; &amp; res){
-    // if count &lt; 0 : illegal
-    if (left &lt; 0 || right &lt; 0) return;
-    // if remain  left Parentheses count &gt;  right Parentheses count : illegal
-    if (right &lt; left) return;
-    // if all Parentheses are used : legal, we got one OK solution
-    if (left == 0 &amp;&amp; right == 0){
+<span class="hljs-comment">/* remain left Parentheses count : left ;.. remain right Parentheses : right */</span>
+<span class="hljs-keyword">void</span> <span class="hljs-title function_">backtrack</span><span class="hljs-params">(<span class="hljs-type">int</span> left, <span class="hljs-type">int</span> right, string&amp; track, vector&lt;string&gt; &amp; res)</span>{
+    <span class="hljs-comment">// if count &lt; 0 : illegal</span>
+    <span class="hljs-keyword">if</span> (left &lt; <span class="hljs-number">0</span> || right &lt; <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span>;
+    <span class="hljs-comment">// if remain  left Parentheses count &gt;  right Parentheses count : illegal</span>
+    <span class="hljs-keyword">if</span> (right &lt; left) <span class="hljs-keyword">return</span>;
+    <span class="hljs-comment">// if all Parentheses are used : legal, we got one OK solution</span>
+    <span class="hljs-keyword">if</span> (left == <span class="hljs-number">0</span> &amp;&amp; right == <span class="hljs-number">0</span>){
         res.push_back(track);
-        return;
+        <span class="hljs-keyword">return</span>;
     }
 
-    // add one more left Parentheses
-    track.push_back('(') // do choice
-    backtrack(left - 1, right, track, res);
-    track.push_back(); // undo choice
+    <span class="hljs-comment">// add one more left Parentheses</span>
+    track.push_back(<span class="hljs-string">&#x27;(&#x27;</span>) <span class="hljs-comment">// do choice</span>
+    backtrack(left - <span class="hljs-number">1</span>, right, track, res);
+    track.push_back(); <span class="hljs-comment">// undo choice</span>
 
-    // add one more right Parentheses
-    track.push_back(')') // do choice
-    backtrack(left, right - 1, track, res);
-    track.push_back(); // undo choice
+    <span class="hljs-comment">// add one more right Parentheses</span>
+    track.push_back(<span class="hljs-string">&#x27;)&#x27;</span>) <span class="hljs-comment">// do choice</span>
+    backtrack(left, right - <span class="hljs-number">1</span>, track, res);
+    track.push_back(); <span class="hljs-comment">// undo choice</span>
 }
 </code></pre>
-<pre><code class="language-java">// java
-// V2
-// IDEA :  Backtracking, Keep Candidate Valid
-// https://leetcode.com/problems/generate-parentheses/editorial/
-public List&lt;String&gt; generateParenthesis_3(int n) {
-    List&lt;String&gt; answer = new ArrayList&lt;&gt;();
-    backtracking(answer, new StringBuilder(), 0, 0, n);
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// V2</span>
+<span class="hljs-comment">// IDEA :  Backtracking, Keep Candidate Valid</span>
+<span class="hljs-comment">// https://leetcode.com/problems/generate-parentheses/editorial/</span>
+<span class="hljs-keyword">public</span> List&lt;String&gt; <span class="hljs-title function_">generateParenthesis_3</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> {
+    List&lt;String&gt; answer = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    backtracking(answer, <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>(), <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, n);
 
-    return answer;
+    <span class="hljs-keyword">return</span> answer;
 }
 
-private void backtracking(List&lt;String&gt; answer, StringBuilder curString, int leftCount, int rightCount, int n) {
-    if (curString.length() == 2 * n) {
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">backtracking</span><span class="hljs-params">(List&lt;String&gt; answer, StringBuilder curString, <span class="hljs-type">int</span> leftCount, <span class="hljs-type">int</span> rightCount, <span class="hljs-type">int</span> n)</span> {
+    <span class="hljs-keyword">if</span> (curString.length() == <span class="hljs-number">2</span> * n) {
         answer.add(curString.toString());
-        return;
+        <span class="hljs-keyword">return</span>;
     }
-    if (leftCount &lt; n) {
-        curString.append(&quot;(&quot;);
-        backtracking(answer, curString, leftCount + 1, rightCount, n);
-        curString.deleteCharAt(curString.length() - 1);
+    <span class="hljs-keyword">if</span> (leftCount &lt; n) {
+        curString.append(<span class="hljs-string">&quot;(&quot;</span>);
+        backtracking(answer, curString, leftCount + <span class="hljs-number">1</span>, rightCount, n);
+        curString.deleteCharAt(curString.length() - <span class="hljs-number">1</span>);
     }
-    if (leftCount &gt; rightCount) {
-        curString.append(&quot;)&quot;);
-        backtracking(answer, curString, leftCount, rightCount + 1, n);
-        curString.deleteCharAt(curString.length() - 1);
+    <span class="hljs-keyword">if</span> (leftCount &gt; rightCount) {
+        curString.append(<span class="hljs-string">&quot;)&quot;</span>);
+        backtracking(answer, curString, leftCount, rightCount + <span class="hljs-number">1</span>, n);
+        curString.deleteCharAt(curString.length() - <span class="hljs-number">1</span>);
     }
 }
 </code></pre>
 <h3 id="2-8-palindrome-partitioning" tabindex="-1"><a class="header-anchor" href="#2-8-palindrome-partitioning"><span>2-8) Palindrome Partitioning</span></a></h3>
-<pre><code class="language-java">// java
-// LC 131
-// V0-1
-// IDEA: BACKTRACK + start_idx (fixed by gpt)
-List&lt;List&lt;String&gt;&gt; partitionRes = new ArrayList&lt;&gt;();
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 131</span>
+<span class="hljs-comment">// V0-1</span>
+<span class="hljs-comment">// IDEA: BACKTRACK + start_idx (fixed by gpt)</span>
+List&lt;List&lt;String&gt;&gt; partitionRes = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
 
-public List&lt;List&lt;String&gt;&gt; partition_0_1(String s) {
-    if (s == null || s.isEmpty()) {
-        return new ArrayList&lt;&gt;();
+<span class="hljs-keyword">public</span> List&lt;List&lt;String&gt;&gt; <span class="hljs-title function_">partition_0_1</span><span class="hljs-params">(String s)</span> {
+    <span class="hljs-keyword">if</span> (s == <span class="hljs-literal">null</span> || s.isEmpty()) {
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
     }
 
-    backtrack(s, 0, new ArrayList&lt;&gt;());
-    return partitionRes;
+    backtrack(s, <span class="hljs-number">0</span>, <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;());
+    <span class="hljs-keyword">return</span> partitionRes;
 }
 
-private void backtrack(String s, int start, List&lt;String&gt; currentList) {
-/**
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">backtrack</span><span class="hljs-params">(String s, <span class="hljs-type">int</span> start, List&lt;String&gt; currentList)</span> {
+<span class="hljs-comment">/**
  *
  *  •   This is the base case of the recursion.
  *
@@ -2528,8 +2540,8 @@ private void backtrack(String s, int start, List&lt;String&gt; currentList) {
  *
  *  •   -&gt; So we add a copy of currentList into
  *         the final result list partitionRes.
- */
-/**
+ */</span>
+<span class="hljs-comment">/**
  *  - Why start == s.length()?
  *
  *  •   Because start is the index from which
@@ -2538,13 +2550,13 @@ private void backtrack(String s, int start, List&lt;String&gt; currentList) {
  *  •   If start == s.length(), it means we’ve
  *       used up all characters in s, and currentList is now a full,
  *       valid partition.
- */
-if (start == s.length()) {
-        partitionRes.add(new ArrayList&lt;&gt;(currentList));
-        return;
+ */</span>
+<span class="hljs-keyword">if</span> (start == s.length()) {
+        partitionRes.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(currentList));
+        <span class="hljs-keyword">return</span>;
     }
 
-/**
+<span class="hljs-comment">/**
 *  NOTE !!!
 *
 *   1) we loop from `start + 1` to `s.length()`
@@ -2554,302 +2566,302 @@ if (start == s.length()) {
 *          - add sub string to current cache
 *          - recursive call backtrack
 *          - undo cache add
-*/
-for (int end = start + 1; end &lt;= s.length(); end++) {
-        String sub = s.substring(start, end);
-        if (isPalindrome(sub)) {
+*/</span>
+<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">end</span> <span class="hljs-operator">=</span> start + <span class="hljs-number">1</span>; end &lt;= s.length(); end++) {
+        <span class="hljs-type">String</span> <span class="hljs-variable">sub</span> <span class="hljs-operator">=</span> s.substring(start, end);
+        <span class="hljs-keyword">if</span> (isPalindrome(sub)) {
             currentList.add(sub);
             backtrack(s, end, currentList);
-            currentList.remove(currentList.size() - 1); // undo
+            currentList.remove(currentList.size() - <span class="hljs-number">1</span>); <span class="hljs-comment">// undo</span>
         }
     }
 
 }
 
-// helper func check if a string is `Palindrome`
-public boolean isPalindrome(String x) {
-    int l = 0;
-    int r = x.length() - 1;
-    while (r &gt; l) {
-        if (x.charAt(l) != x.charAt(r)) {
-            return false;
+<span class="hljs-comment">// helper func check if a string is `Palindrome`</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isPalindrome</span><span class="hljs-params">(String x)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">l</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> x.length() - <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">while</span> (r &gt; l) {
+        <span class="hljs-keyword">if</span> (x.charAt(l) != x.charAt(r)) {
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
         }
         r--;
         l++;
     }
-    return true;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 }
 </code></pre>
-<pre><code class="language-python"># LC 131 Palindrome Partitioning
-# V0
-# IDEA : BACKTRCK, similar as LC 046 permutations
-class Solution(object):
-    def partition(self, s):
-        def help(s, res, path):
-            if not s:
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 131 Palindrome Partitioning</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : BACKTRCK, similar as LC 046 permutations</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">partition</span>(<span class="hljs-params">self, s</span>):
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">help</span>(<span class="hljs-params">s, res, path</span>):
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> s:
                 res.append(path)
-                return
-            for i in range(1, len(s)+1):
-                if s[:i] == s[:i][::-1]:
-                    help(s[i:], res, path + [s[:i]])
-        # edge case
-        if not s:
-            return
+                <span class="hljs-keyword">return</span>
+            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(s)+<span class="hljs-number">1</span>):
+                <span class="hljs-keyword">if</span> s[:i] == s[:i][::-<span class="hljs-number">1</span>]:
+                    <span class="hljs-built_in">help</span>(s[i:], res, path + [s[:i]])
+        <span class="hljs-comment"># edge case</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> s:
+            <span class="hljs-keyword">return</span>
         res = []
         path = []
-        help(s, res, path)
-        return res
+        <span class="hljs-built_in">help</span>(s, res, path)
+        <span class="hljs-keyword">return</span> res
 
-# V0'
-# IDEA : BACKTRCK, similar as LC 046 permutations
-class Solution(object):
-    def partition(self, s):
+<span class="hljs-comment"># V0&#x27;</span>
+<span class="hljs-comment"># IDEA : BACKTRCK, similar as LC 046 permutations</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">partition</span>(<span class="hljs-params">self, s</span>):
         res = []
-        self.helper(s, res, [])
-        return res
+        <span class="hljs-variable language_">self</span>.helper(s, res, [])
+        <span class="hljs-keyword">return</span> res
         
-    def helper(self, s, res, path):
-        if not s:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">helper</span>(<span class="hljs-params">self, s, res, path</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> s:
             res.append(path)
-            return
-        # beware of the start and the end index
-        for i in range(1, len(s) + 1): 
-            if self.isPalindrome(s[:i]):
-                &quot;&quot;&quot;
+            <span class="hljs-keyword">return</span>
+        <span class="hljs-comment"># beware of the start and the end index</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(s) + <span class="hljs-number">1</span>): 
+            <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.isPalindrome(s[:i]):
+                <span class="hljs-string">&quot;&quot;&quot;
                 ### backtrcking 
                 if s[:i] is palindrome, then check if there is palindrome in s[i:] as well
                 e.g.  
                     a a b b a 
                   =&gt; 
-                    if 'aa' (&lt;-) is palindrome, then check a b b a (-&gt;)
-                &quot;&quot;&quot;
-                self.helper(s[i:], res, path + [s[:i]])
+                    if &#x27;aa&#x27; (&lt;-) is palindrome, then check a b b a (-&gt;)
+                &quot;&quot;&quot;</span>
+                <span class="hljs-variable language_">self</span>.helper(s[i:], res, path + [s[:i]])
 
-    def isPalindrome(self, x):
-        return x == x[::-1]
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">isPalindrome</span>(<span class="hljs-params">self, x</span>):
+        <span class="hljs-keyword">return</span> x == x[::-<span class="hljs-number">1</span>]
 </code></pre>
 <h3 id="2-9-restore-ip-addresses" tabindex="-1"><a class="header-anchor" href="#2-9-restore-ip-addresses"><span>2-9) Restore IP Addresses</span></a></h3>
-<pre><code class="language-python"># 093 Restore IP Addresses
-# V0 
-# IDEA : DFS
-class Solution(object):
-    def restoreIpAddresses(self, s):
-        # if not valid input form (ip address length should &lt; 12)
-        if len(s) &gt; 12:
-            return []
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 093 Restore IP Addresses</span>
+<span class="hljs-comment"># V0 </span>
+<span class="hljs-comment"># IDEA : DFS</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">restoreIpAddresses</span>(<span class="hljs-params">self, s</span>):
+        <span class="hljs-comment"># if not valid input form (ip address length should &lt; 12)</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(s) &gt; <span class="hljs-number">12</span>:
+            <span class="hljs-keyword">return</span> []
         res = []
-        self.dfs(s, [], res)
-        return res
+        <span class="hljs-variable language_">self</span>.dfs(s, [], res)
+        <span class="hljs-keyword">return</span> res
         
-    def dfs(self, s, path, res):
-        # if not remaining elments (not s) and path is in &quot;xxx.xxx.xxx.xxx&quot; form
-        if not s and len(path) == 4:
-            res.append('.'.join(path))
-            return
-        for i in [1,2,3]:
-            # avoid &quot;out of index&quot; error
-            if i &gt; len(s):
-                continue
-            number = int(s[:i])
-            # str(number) == s[:i] for checking if digit is not starting from &quot;0&quot;
-            # e.g. 030 is not accepted form, while 30 is OK
-            if str(number) == s[:i] and number &lt;= 255:
-                self.dfs(s[i:], path + [s[:i]], res)
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">self, s, path, res</span>):
+        <span class="hljs-comment"># if not remaining elments (not s) and path is in &quot;xxx.xxx.xxx.xxx&quot; form</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> s <span class="hljs-keyword">and</span> <span class="hljs-built_in">len</span>(path) == <span class="hljs-number">4</span>:
+            res.append(<span class="hljs-string">&#x27;.&#x27;</span>.join(path))
+            <span class="hljs-keyword">return</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]:
+            <span class="hljs-comment"># avoid &quot;out of index&quot; error</span>
+            <span class="hljs-keyword">if</span> i &gt; <span class="hljs-built_in">len</span>(s):
+                <span class="hljs-keyword">continue</span>
+            number = <span class="hljs-built_in">int</span>(s[:i])
+            <span class="hljs-comment"># str(number) == s[:i] for checking if digit is not starting from &quot;0&quot;</span>
+            <span class="hljs-comment"># e.g. 030 is not accepted form, while 30 is OK</span>
+            <span class="hljs-keyword">if</span> <span class="hljs-built_in">str</span>(number) == s[:i] <span class="hljs-keyword">and</span> number &lt;= <span class="hljs-number">255</span>:
+                <span class="hljs-variable language_">self</span>.dfs(s[i:], path + [s[:i]], res)
 </code></pre>
 <h3 id="2-9-word-break" tabindex="-1"><a class="header-anchor" href="#2-9-word-break"><span>2-9) Word Break</span></a></h3>
-<pre><code class="language-python"># LC 139 Word Break
-# V0
-# IDEA : BFS
-class Solution:
-    def wordBreak(self, s, wordDict):
-        if not s or not wordDict:
-            return
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 139 Word Break</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : BFS</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">wordBreak</span>(<span class="hljs-params">self, s, wordDict</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> s <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> wordDict:
+            <span class="hljs-keyword">return</span>
         q = collections.deque()
-        q.append(0)
-        visited = [None]*len(s)
-        while q:
+        q.append(<span class="hljs-number">0</span>)
+        visited = [<span class="hljs-literal">None</span>]*<span class="hljs-built_in">len</span>(s)
+        <span class="hljs-keyword">while</span> q:
             i = q.popleft()
-            if not visited[i]:
-                for j in range(i+1,len(s)+1):                 
-                    if s[i:j] in wordDict:                    
-                        if j == len(s):
-                            return True  
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> visited[i]:
+                <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(i+<span class="hljs-number">1</span>,<span class="hljs-built_in">len</span>(s)+<span class="hljs-number">1</span>):                 
+                    <span class="hljs-keyword">if</span> s[i:j] <span class="hljs-keyword">in</span> wordDict:                    
+                        <span class="hljs-keyword">if</span> j == <span class="hljs-built_in">len</span>(s):
+                            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>  
                         q.append(j)
-                visited[i]=True
+                visited[i]=<span class="hljs-literal">True</span>
 </code></pre>
 <h3 id="2-10-word-break-ii" tabindex="-1"><a class="header-anchor" href="#2-10-word-break-ii"><span>2-10) Word Break II</span></a></h3>
-<pre><code class="language-python"># LC 140 Word Break II
-# NOTE : there is also dfs, dp approaches
-# V0
-# IDEA : BACKTRCK, LC 078 Subsets
-class Solution(object):
-    def wordBreak(self, s, wordDict):
-        def help(cur):
-            &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 140 Word Break II</span>
+<span class="hljs-comment"># NOTE : there is also dfs, dp approaches</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : BACKTRCK, LC 078 Subsets</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">wordBreak</span>(<span class="hljs-params">self, s, wordDict</span>):
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">help</span>(<span class="hljs-params">cur</span>):
+            <span class="hljs-string">&quot;&quot;&quot;
             NOTE this !!! : 
                 -&gt; shallow copy cur[:]
-            &quot;&quot;&quot;
-            if &quot;&quot;.join(cur[:]) == s:
-                res.append(&quot; &quot;.join(cur[:]))
-                return
-            if len(&quot;&quot;.join(cur[:])) &gt; len(s):
-                return
-            for i in range(len(wordDict)):
+            &quot;&quot;&quot;</span>
+            <span class="hljs-keyword">if</span> <span class="hljs-string">&quot;&quot;</span>.join(cur[:]) == s:
+                res.append(<span class="hljs-string">&quot; &quot;</span>.join(cur[:]))
+                <span class="hljs-keyword">return</span>
+            <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(<span class="hljs-string">&quot;&quot;</span>.join(cur[:])) &gt; <span class="hljs-built_in">len</span>(s):
+                <span class="hljs-keyword">return</span>
+            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(wordDict)):
                 cur.append(wordDict[i])
-                help(cur)
-                # NOTE this
+                <span class="hljs-built_in">help</span>(cur)
+                <span class="hljs-comment"># NOTE this</span>
                 cur.pop()
 
-        # edge case
-        if not wordDict:
-            return []
+        <span class="hljs-comment"># edge case</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> wordDict:
+            <span class="hljs-keyword">return</span> []
         res = []
         cur = []
-        cnt = 0
-        help(cur)
-        print (&quot;res = &quot; + str(res))
-        return res
+        cnt = <span class="hljs-number">0</span>
+        <span class="hljs-built_in">help</span>(cur)
+        <span class="hljs-built_in">print</span> (<span class="hljs-string">&quot;res = &quot;</span> + <span class="hljs-built_in">str</span>(res))
+        <span class="hljs-keyword">return</span> res
 
-# V1
-# IDEA : RECURSION
-# https://leetcode.com/problems/word-break-ii/discuss/1426014/Python-interview-friendly-simple-recursion
-class Solution:
-    def wordBreak(self, s: str, wordDict: List[str]) -&gt; List[str]:
-        def recur(s, path):
-            if not s:
-                out.append(' '.join(path))
-                return
-            for i in range(1,len(s)+1):
+<span class="hljs-comment"># V1</span>
+<span class="hljs-comment"># IDEA : RECURSION</span>
+<span class="hljs-comment"># https://leetcode.com/problems/word-break-ii/discuss/1426014/Python-interview-friendly-simple-recursion</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">wordBreak</span>(<span class="hljs-params">self, s: <span class="hljs-built_in">str</span>, wordDict: <span class="hljs-type">List</span>[<span class="hljs-built_in">str</span>]</span>) -&gt; <span class="hljs-type">List</span>[<span class="hljs-built_in">str</span>]:
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">recur</span>(<span class="hljs-params">s, path</span>):
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> s:
+                out.append(<span class="hljs-string">&#x27; &#x27;</span>.join(path))
+                <span class="hljs-keyword">return</span>
+            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>,<span class="hljs-built_in">len</span>(s)+<span class="hljs-number">1</span>):
                 w,new_s = s[:i], s[i:]
-                if w in wordDict:
+                <span class="hljs-keyword">if</span> w <span class="hljs-keyword">in</span> wordDict:
                     recur(new_s, path + [w])
-        wordDict, out = set(wordDict), []
+        wordDict, out = <span class="hljs-built_in">set</span>(wordDict), []
         recur(s,[])
-        return out
+        <span class="hljs-keyword">return</span> out
 
-# V1'
-# IDEA : BACKTRCK
-# https://leetcode.com/problems/word-break-ii/discuss/44404/Python-backtracking
-class Solution:
-    def wordBreak(self, s, dic):
-        if not dic:
-            return []
-        n = max(len(d) for d in dic)
-        stack, parents = [0], collections.defaultdict(set)
-        while stack:
+<span class="hljs-comment"># V1&#x27;</span>
+<span class="hljs-comment"># IDEA : BACKTRCK</span>
+<span class="hljs-comment"># https://leetcode.com/problems/word-break-ii/discuss/44404/Python-backtracking</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">wordBreak</span>(<span class="hljs-params">self, s, dic</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> dic:
+            <span class="hljs-keyword">return</span> []
+        n = <span class="hljs-built_in">max</span>(<span class="hljs-built_in">len</span>(d) <span class="hljs-keyword">for</span> d <span class="hljs-keyword">in</span> dic)
+        stack, parents = [<span class="hljs-number">0</span>], collections.defaultdict(<span class="hljs-built_in">set</span>)
+        <span class="hljs-keyword">while</span> stack:
             parent = stack.pop()
-            for child in range(parent+1, parent+n+1):
-                if s[parent:child] in dic:
-                    if child not in parents:
+            <span class="hljs-keyword">for</span> child <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(parent+<span class="hljs-number">1</span>, parent+n+<span class="hljs-number">1</span>):
+                <span class="hljs-keyword">if</span> s[parent:child] <span class="hljs-keyword">in</span> dic:
+                    <span class="hljs-keyword">if</span> child <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> parents:
                         stack.append(child)
                     parents[child].add(parent)
-        stack, res = [[len(s)]], []
-        while stack:
+        stack, res = [[<span class="hljs-built_in">len</span>(s)]], []
+        <span class="hljs-keyword">while</span> stack:
             r = stack.pop()
-            if r[0] == 0:
-                r = [s[i:j] for i, j in zip(r[:-1], r[1:])]
-                res.append(' '.join(r))
-            for parent in parents[r[0]]:
+            <span class="hljs-keyword">if</span> r[<span class="hljs-number">0</span>] == <span class="hljs-number">0</span>:
+                r = [s[i:j] <span class="hljs-keyword">for</span> i, j <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(r[:-<span class="hljs-number">1</span>], r[<span class="hljs-number">1</span>:])]
+                res.append(<span class="hljs-string">&#x27; &#x27;</span>.join(r))
+            <span class="hljs-keyword">for</span> parent <span class="hljs-keyword">in</span> parents[r[<span class="hljs-number">0</span>]]:
                 stack.append([parent]+r)
-        return res
+        <span class="hljs-keyword">return</span> res
 </code></pre>
 <h3 id="2-11-course-schedule" tabindex="-1"><a class="header-anchor" href="#2-11-course-schedule"><span>2-11) Course Schedule</span></a></h3>
-<pre><code class="language-java">// java
-// LC 207
-// V0
-// IDEA : DFS (fix by gpt)
-// NOTE !!! instead of maintain status (0,1,2), below video offers a simpler approach
-//      -&gt; e.g. use a set, recording the current visiting course, if ANY duplicated (already in set) course being met,
-//      -&gt; means &quot;cyclic&quot;, so return false directly
-// https://www.youtube.com/watch?v=EgI5nU9etnU
-public boolean canFinish(int numCourses, int[][] prerequisites) {
-    // Initialize adjacency list for storing prerequisites
-    /**
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 207</span>
+<span class="hljs-comment">// V0</span>
+<span class="hljs-comment">// IDEA : DFS (fix by gpt)</span>
+<span class="hljs-comment">// NOTE !!! instead of maintain status (0,1,2), below video offers a simpler approach</span>
+<span class="hljs-comment">//      -&gt; e.g. use a set, recording the current visiting course, if ANY duplicated (already in set) course being met,</span>
+<span class="hljs-comment">//      -&gt; means &quot;cyclic&quot;, so return false directly</span>
+<span class="hljs-comment">// https://www.youtube.com/watch?v=EgI5nU9etnU</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">canFinish</span><span class="hljs-params">(<span class="hljs-type">int</span> numCourses, <span class="hljs-type">int</span>[][] prerequisites)</span> {
+    <span class="hljs-comment">// Initialize adjacency list for storing prerequisites</span>
+    <span class="hljs-comment">/**
      *  NOTE !!!
      *
      *  init prerequisites map
      *  {course : [prerequisites_array]}
      *  below init map with null array as first step
-     */
-    Map&lt;Integer, List&lt;Integer&gt;&gt; preMap = new HashMap&lt;&gt;();
-    for (int i = 0; i &lt; numCourses; i++) {
-        preMap.put(i, new ArrayList&lt;&gt;());
+     */</span>
+    Map&lt;Integer, List&lt;Integer&gt;&gt; preMap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; numCourses; i++) {
+        preMap.put(i, <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;());
     }
 
-    // Populate the adjacency list with prerequisites
-    /**
+    <span class="hljs-comment">// Populate the adjacency list with prerequisites</span>
+    <span class="hljs-comment">/**
      *  NOTE !!!
      *
      *  update prerequisites map
      *  {course : [prerequisites_array]}
      *  so we go through prerequisites,
-     *  then append each course's prerequisites to preMap
-     */
-    for (int[] pair : prerequisites) {
-        int crs = pair[0];
-        int pre = pair[1];
+     *  then append each course&#x27;s prerequisites to preMap
+     */</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] pair : prerequisites) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">crs</span> <span class="hljs-operator">=</span> pair[<span class="hljs-number">0</span>];
+        <span class="hljs-type">int</span> <span class="hljs-variable">pre</span> <span class="hljs-operator">=</span> pair[<span class="hljs-number">1</span>];
         preMap.get(crs).add(pre);
     }
 
-    /** NOTE !!!
+    <span class="hljs-comment">/** NOTE !!!
      *
      *  init below set for checking if there is &quot;cyclic&quot; case
-     */
-    // Set for tracking courses during the current DFS path
-    Set&lt;Integer&gt; visiting = new HashSet&lt;&gt;();
+     */</span>
+    <span class="hljs-comment">// Set for tracking courses during the current DFS path</span>
+    Set&lt;Integer&gt; visiting = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
 
-    // Recursive DFS function
-    for (int c = 0; c &lt; numCourses; c++) {
-        if (!dfs(c, preMap, visiting)) {
-            return false;
+    <span class="hljs-comment">// Recursive DFS function</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; c &lt; numCourses; c++) {
+        <span class="hljs-keyword">if</span> (!dfs(c, preMap, visiting)) {
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
         }
     }
-    return true;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 }
 
-private boolean dfs(int crs, Map&lt;Integer, List&lt;Integer&gt;&gt; preMap, Set&lt;Integer&gt; visiting) {
-    /** NOTE !!!
+<span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> crs, Map&lt;Integer, List&lt;Integer&gt;&gt; preMap, Set&lt;Integer&gt; visiting)</span> {
+    <span class="hljs-comment">/** NOTE !!!
      *
      *  if visiting contains current course,
      *  means there is a &quot;cyclic&quot;,
      *  (e.g. : needs to take course a, then can take course b, and needs to take course b, then can take course a)
      *  so return false directly
-     */
-    if (visiting.contains(crs)) {
-        return false;
+     */</span>
+    <span class="hljs-keyword">if</span> (visiting.contains(crs)) {
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
     }
-    /**
+    <span class="hljs-comment">/**
      *  NOTE !!!
      *
      *  if such course has NO preRequisite,
      *  return true directly
-     */
-    if (preMap.get(crs).isEmpty()) {
-        return true;
+     */</span>
+    <span class="hljs-keyword">if</span> (preMap.get(crs).isEmpty()) {
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
     }
 
-    /**
+    <span class="hljs-comment">/**
      *  NOTE !!!
      *
      *  add current course to set (Set&lt;Integer&gt; visiting)
-     */
+     */</span>
     visiting.add(crs);
-    for (int pre : preMap.get(crs)) {
-        if (!dfs(pre, preMap, visiting)) {
-            return false;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> pre : preMap.get(crs)) {
+        <span class="hljs-keyword">if</span> (!dfs(pre, preMap, visiting)) {
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
         }
     }
-    /**
+    <span class="hljs-comment">/**
      *  NOTE !!!
      *
      *  remove current course from set,
      *  since already finish visiting
      *
      *  e.g. undo changes
-     */
+     */</span>
     visiting.remove(crs);
-    preMap.get(crs).clear(); // Clear prerequisites as the course is confirmed to be processed
-    return true;
+    preMap.get(crs).clear(); <span class="hljs-comment">// Clear prerequisites as the course is confirmed to be processed</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 }
 </code></pre>
 

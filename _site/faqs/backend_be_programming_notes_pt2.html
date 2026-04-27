@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,13 +20,24 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
     document.querySelectorAll('pre code').forEach(function(codeEl) {
       var pre = codeEl.parentElement;
       var lang = '';
       var cls = codeEl.className || '';
       var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
       if (m) lang = m[1];
+
+      // Add line numbers
+      var lines = codeEl.innerHTML.split('
+');
+      if (lines[lines.length - 1] === '') lines.pop();
+      var numbered = lines.map(function(line, i) {
+        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
+      }).join('
+');
+      codeEl.innerHTML = numbered;
+      codeEl.classList.add('hljs-ln');
+
       var wrapper = document.createElement('div');
       wrapper.className = 'code-block-wrapper';
       pre.parentNode.insertBefore(wrapper, pre);
@@ -45,7 +55,9 @@
       btn.className = 'copy-btn';
       btn.textContent = 'Copy';
       btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
+');
+        navigator.clipboard.writeText(text).then(function() {
           btn.textContent = 'Copied!';
           btn.classList.add('copied');
           setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
@@ -150,11 +162,11 @@
 <hr>
 <h2 id="thread-pool-executor-framework" tabindex="-1"><a class="header-anchor" href="#thread-pool-executor-framework"><span>Thread Pool &amp; Executor Framework</span></a></h2>
 <h3 id="1-threadpoolexecutor-deep-dive" tabindex="-1"><a class="header-anchor" href="#1-threadpoolexecutor-deep-dive"><span>1. ThreadPoolExecutor Deep Dive</span></a></h3>
-<pre><code class="language-java">import java.util.concurrent.*;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.*;
 
-public class ThreadPoolDemo {
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ThreadPoolDemo</span> {
 
-    /**
+    <span class="hljs-comment">/**
      * ThreadPoolExecutor parameters:
      * - corePoolSize: minimum threads always kept alive
      * - maximumPoolSize: maximum threads allowed
@@ -162,34 +174,34 @@ public class ThreadPoolDemo {
      * - workQueue: queue to hold tasks before execution
      * - threadFactory: creates new threads
      * - handler: rejection policy when queue is full
-     */
-    public static ThreadPoolExecutor createCustomPool() {
-        return new ThreadPoolExecutor(
-            4,                              // corePoolSize
-            8,                              // maximumPoolSize
-            60L, TimeUnit.SECONDS,          // keepAliveTime
-            new LinkedBlockingQueue&lt;&gt;(100), // workQueue with capacity
-            new CustomThreadFactory(&quot;worker&quot;),
-            new ThreadPoolExecutor.CallerRunsPolicy() // rejection policy
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> ThreadPoolExecutor <span class="hljs-title function_">createCustomPool</span><span class="hljs-params">()</span> {
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ThreadPoolExecutor</span>(
+            <span class="hljs-number">4</span>,                              <span class="hljs-comment">// corePoolSize</span>
+            <span class="hljs-number">8</span>,                              <span class="hljs-comment">// maximumPoolSize</span>
+            <span class="hljs-number">60L</span>, TimeUnit.SECONDS,          <span class="hljs-comment">// keepAliveTime</span>
+            <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedBlockingQueue</span>&lt;&gt;(<span class="hljs-number">100</span>), <span class="hljs-comment">// workQueue with capacity</span>
+            <span class="hljs-keyword">new</span> <span class="hljs-title class_">CustomThreadFactory</span>(<span class="hljs-string">&quot;worker&quot;</span>),
+            <span class="hljs-keyword">new</span> <span class="hljs-title class_">ThreadPoolExecutor</span>.CallerRunsPolicy() <span class="hljs-comment">// rejection policy</span>
         );
     }
 
-    static class CustomThreadFactory implements ThreadFactory {
-        private final String namePrefix;
-        private final AtomicInteger counter = new AtomicInteger(0);
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CustomThreadFactory</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">ThreadFactory</span> {
+        <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> String namePrefix;
+        <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">AtomicInteger</span> <span class="hljs-variable">counter</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">AtomicInteger</span>(<span class="hljs-number">0</span>);
 
         CustomThreadFactory(String namePrefix) {
-            this.namePrefix = namePrefix;
+            <span class="hljs-built_in">this</span>.namePrefix = namePrefix;
         }
 
-        @Override
-        public Thread newThread(Runnable r) {
-            Thread t = new Thread(r, namePrefix + &quot;-&quot; + counter.incrementAndGet());
-            t.setDaemon(false);
+        <span class="hljs-meta">@Override</span>
+        <span class="hljs-keyword">public</span> Thread <span class="hljs-title function_">newThread</span><span class="hljs-params">(Runnable r)</span> {
+            <span class="hljs-type">Thread</span> <span class="hljs-variable">t</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Thread</span>(r, namePrefix + <span class="hljs-string">&quot;-&quot;</span> + counter.incrementAndGet());
+            t.setDaemon(<span class="hljs-literal">false</span>);
             t.setUncaughtExceptionHandler((thread, ex) -&gt; {
-                System.err.println(&quot;Thread &quot; + thread.getName() + &quot; failed: &quot; + ex.getMessage());
+                System.err.println(<span class="hljs-string">&quot;Thread &quot;</span> + thread.getName() + <span class="hljs-string">&quot; failed: &quot;</span> + ex.getMessage());
             });
-            return t;
+            <span class="hljs-keyword">return</span> t;
         }
     }
 }
@@ -226,36 +238,36 @@ public class ThreadPoolDemo {
 </tr>
 </tbody>
 </table>
-<pre><code class="language-java">// Custom rejection handler with logging and metrics
-public class LoggingRejectionHandler implements RejectedExecutionHandler {
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Custom rejection handler with logging and metrics</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">LoggingRejectionHandler</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">RejectedExecutionHandler</span> {
 
-    private final AtomicLong rejectedCount = new AtomicLong(0);
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">AtomicLong</span> <span class="hljs-variable">rejectedCount</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">AtomicLong</span>(<span class="hljs-number">0</span>);
 
-    @Override
-    public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">rejectedExecution</span><span class="hljs-params">(Runnable r, ThreadPoolExecutor executor)</span> {
         rejectedCount.incrementAndGet();
 
-        // Log details
-        System.err.println(&quot;Task rejected. Pool size: &quot; + executor.getPoolSize() +
-                          &quot;, Active: &quot; + executor.getActiveCount() +
-                          &quot;, Queue size: &quot; + executor.getQueue().size());
+        <span class="hljs-comment">// Log details</span>
+        System.err.println(<span class="hljs-string">&quot;Task rejected. Pool size: &quot;</span> + executor.getPoolSize() +
+                          <span class="hljs-string">&quot;, Active: &quot;</span> + executor.getActiveCount() +
+                          <span class="hljs-string">&quot;, Queue size: &quot;</span> + executor.getQueue().size());
 
-        // Option 1: Block and wait
-        try {
+        <span class="hljs-comment">// Option 1: Block and wait</span>
+        <span class="hljs-keyword">try</span> {
             executor.getQueue().put(r);
-        } catch (InterruptedException e) {
+        } <span class="hljs-keyword">catch</span> (InterruptedException e) {
             Thread.currentThread().interrupt();
-            throw new RejectedExecutionException(&quot;Interrupted while waiting&quot;, e);
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RejectedExecutionException</span>(<span class="hljs-string">&quot;Interrupted while waiting&quot;</span>, e);
         }
 
-        // Option 2: Execute in caller thread (like CallerRunsPolicy)
-        // if (!executor.isShutdown()) {
-        //     r.run();
-        // }
+        <span class="hljs-comment">// Option 2: Execute in caller thread (like CallerRunsPolicy)</span>
+        <span class="hljs-comment">// if (!executor.isShutdown()) {</span>
+        <span class="hljs-comment">//     r.run();</span>
+        <span class="hljs-comment">// }</span>
     }
 
-    public long getRejectedCount() {
-        return rejectedCount.get();
+    <span class="hljs-keyword">public</span> <span class="hljs-type">long</span> <span class="hljs-title function_">getRejectedCount</span><span class="hljs-params">()</span> {
+        <span class="hljs-keyword">return</span> rejectedCount.get();
     }
 }
 </code></pre>
@@ -291,39 +303,39 @@ public class LoggingRejectionHandler implements RejectedExecutionHandler {
 </tr>
 </tbody>
 </table>
-<pre><code class="language-java">// SynchronousQueue: Creates new thread for each task (up to max)
-// Good for short-lived tasks with unpredictable load
-ThreadPoolExecutor cachedLikePool = new ThreadPoolExecutor(
-    0, Integer.MAX_VALUE,
-    60L, TimeUnit.SECONDS,
-    new SynchronousQueue&lt;&gt;()
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// SynchronousQueue: Creates new thread for each task (up to max)</span>
+<span class="hljs-comment">// Good for short-lived tasks with unpredictable load</span>
+<span class="hljs-type">ThreadPoolExecutor</span> <span class="hljs-variable">cachedLikePool</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ThreadPoolExecutor</span>(
+    <span class="hljs-number">0</span>, Integer.MAX_VALUE,
+    <span class="hljs-number">60L</span>, TimeUnit.SECONDS,
+    <span class="hljs-keyword">new</span> <span class="hljs-title class_">SynchronousQueue</span>&lt;&gt;()
 );
 
-// Bounded queue: Predictable memory usage
-ThreadPoolExecutor boundedPool = new ThreadPoolExecutor(
-    4, 8,
-    60L, TimeUnit.SECONDS,
-    new ArrayBlockingQueue&lt;&gt;(100)
+<span class="hljs-comment">// Bounded queue: Predictable memory usage</span>
+<span class="hljs-type">ThreadPoolExecutor</span> <span class="hljs-variable">boundedPool</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ThreadPoolExecutor</span>(
+    <span class="hljs-number">4</span>, <span class="hljs-number">8</span>,
+    <span class="hljs-number">60L</span>, TimeUnit.SECONDS,
+    <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayBlockingQueue</span>&lt;&gt;(<span class="hljs-number">100</span>)
 );
 </code></pre>
 <h3 id="4-monitor-thread-pool-health" tabindex="-1"><a class="header-anchor" href="#4-monitor-thread-pool-health"><span>4. Monitor Thread Pool Health</span></a></h3>
-<pre><code class="language-java">public class ThreadPoolMonitor {
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ThreadPoolMonitor</span> {
 
-    private final ScheduledExecutorService monitor = Executors.newSingleThreadScheduledExecutor();
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">ScheduledExecutorService</span> <span class="hljs-variable">monitor</span> <span class="hljs-operator">=</span> Executors.newSingleThreadScheduledExecutor();
 
-    public void startMonitoring(ThreadPoolExecutor pool, long intervalMs) {
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">startMonitoring</span><span class="hljs-params">(ThreadPoolExecutor pool, <span class="hljs-type">long</span> intervalMs)</span> {
         monitor.scheduleAtFixedRate(() -&gt; {
-            System.out.println(&quot;=== Thread Pool Stats ===&quot;);
-            System.out.println(&quot;Pool Size: &quot; + pool.getPoolSize());
-            System.out.println(&quot;Active Threads: &quot; + pool.getActiveCount());
-            System.out.println(&quot;Queued Tasks: &quot; + pool.getQueue().size());
-            System.out.println(&quot;Completed Tasks: &quot; + pool.getCompletedTaskCount());
-            System.out.println(&quot;Core Pool Size: &quot; + pool.getCorePoolSize());
-            System.out.println(&quot;Max Pool Size: &quot; + pool.getMaximumPoolSize());
-        }, 0, intervalMs, TimeUnit.MILLISECONDS);
+            System.out.println(<span class="hljs-string">&quot;=== Thread Pool Stats ===&quot;</span>);
+            System.out.println(<span class="hljs-string">&quot;Pool Size: &quot;</span> + pool.getPoolSize());
+            System.out.println(<span class="hljs-string">&quot;Active Threads: &quot;</span> + pool.getActiveCount());
+            System.out.println(<span class="hljs-string">&quot;Queued Tasks: &quot;</span> + pool.getQueue().size());
+            System.out.println(<span class="hljs-string">&quot;Completed Tasks: &quot;</span> + pool.getCompletedTaskCount());
+            System.out.println(<span class="hljs-string">&quot;Core Pool Size: &quot;</span> + pool.getCorePoolSize());
+            System.out.println(<span class="hljs-string">&quot;Max Pool Size: &quot;</span> + pool.getMaximumPoolSize());
+        }, <span class="hljs-number">0</span>, intervalMs, TimeUnit.MILLISECONDS);
     }
 
-    public void stop() {
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">stop</span><span class="hljs-params">()</span> {
         monitor.shutdown();
     }
 }
@@ -331,429 +343,429 @@ ThreadPoolExecutor boundedPool = new ThreadPoolExecutor(
 <hr>
 <h2 id="completablefuture-async-programming" tabindex="-1"><a class="header-anchor" href="#completablefuture-async-programming"><span>CompletableFuture &amp; Async Programming</span></a></h2>
 <h3 id="1-basic-completablefuture-patterns" tabindex="-1"><a class="header-anchor" href="#1-basic-completablefuture-patterns"><span>1. Basic CompletableFuture Patterns</span></a></h3>
-<pre><code class="language-java">import java.util.concurrent.*;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.concurrent.*;
 
-public class CompletableFutureDemo {
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CompletableFutureDemo</span> {
 
-    private final ExecutorService executor = Executors.newFixedThreadPool(4);
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">ExecutorService</span> <span class="hljs-variable">executor</span> <span class="hljs-operator">=</span> Executors.newFixedThreadPool(<span class="hljs-number">4</span>);
 
-    // Basic async execution
-    public CompletableFuture&lt;String&gt; fetchDataAsync(String id) {
-        return CompletableFuture.supplyAsync(() -&gt; {
-            // Simulate API call
-            sleep(100);
-            return &quot;Data for &quot; + id;
+    <span class="hljs-comment">// Basic async execution</span>
+    <span class="hljs-keyword">public</span> CompletableFuture&lt;String&gt; <span class="hljs-title function_">fetchDataAsync</span><span class="hljs-params">(String id)</span> {
+        <span class="hljs-keyword">return</span> CompletableFuture.supplyAsync(() -&gt; {
+            <span class="hljs-comment">// Simulate API call</span>
+            sleep(<span class="hljs-number">100</span>);
+            <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Data for &quot;</span> + id;
         }, executor);
     }
 
-    // Chain transformations
-    public CompletableFuture&lt;Integer&gt; processData(String id) {
-        return fetchDataAsync(id)
-            .thenApply(data -&gt; data.toUpperCase())      // Transform
-            .thenApply(data -&gt; data.length());           // Transform again
+    <span class="hljs-comment">// Chain transformations</span>
+    <span class="hljs-keyword">public</span> CompletableFuture&lt;Integer&gt; <span class="hljs-title function_">processData</span><span class="hljs-params">(String id)</span> {
+        <span class="hljs-keyword">return</span> fetchDataAsync(id)
+            .thenApply(data -&gt; data.toUpperCase())      <span class="hljs-comment">// Transform</span>
+            .thenApply(data -&gt; data.length());           <span class="hljs-comment">// Transform again</span>
     }
 
-    // Chain async operations
-    public CompletableFuture&lt;String&gt; fetchAndEnrich(String id) {
-        return fetchDataAsync(id)
-            .thenCompose(data -&gt; enrichDataAsync(data)); // Async chain
+    <span class="hljs-comment">// Chain async operations</span>
+    <span class="hljs-keyword">public</span> CompletableFuture&lt;String&gt; <span class="hljs-title function_">fetchAndEnrich</span><span class="hljs-params">(String id)</span> {
+        <span class="hljs-keyword">return</span> fetchDataAsync(id)
+            .thenCompose(data -&gt; enrichDataAsync(data)); <span class="hljs-comment">// Async chain</span>
     }
 
-    // Combine two independent futures
-    public CompletableFuture&lt;String&gt; fetchBothAndCombine(String id1, String id2) {
+    <span class="hljs-comment">// Combine two independent futures</span>
+    <span class="hljs-keyword">public</span> CompletableFuture&lt;String&gt; <span class="hljs-title function_">fetchBothAndCombine</span><span class="hljs-params">(String id1, String id2)</span> {
         CompletableFuture&lt;String&gt; future1 = fetchDataAsync(id1);
         CompletableFuture&lt;String&gt; future2 = fetchDataAsync(id2);
 
-        return future1.thenCombine(future2, (data1, data2) -&gt; {
-            return data1 + &quot; + &quot; + data2;
+        <span class="hljs-keyword">return</span> future1.thenCombine(future2, (data1, data2) -&gt; {
+            <span class="hljs-keyword">return</span> data1 + <span class="hljs-string">&quot; + &quot;</span> + data2;
         });
     }
 
-    private CompletableFuture&lt;String&gt; enrichDataAsync(String data) {
-        return CompletableFuture.supplyAsync(() -&gt; &quot;Enriched: &quot; + data, executor);
+    <span class="hljs-keyword">private</span> CompletableFuture&lt;String&gt; <span class="hljs-title function_">enrichDataAsync</span><span class="hljs-params">(String data)</span> {
+        <span class="hljs-keyword">return</span> CompletableFuture.supplyAsync(() -&gt; <span class="hljs-string">&quot;Enriched: &quot;</span> + data, executor);
     }
 
-    private void sleep(long ms) {
-        try { Thread.sleep(ms); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">sleep</span><span class="hljs-params">(<span class="hljs-type">long</span> ms)</span> {
+        <span class="hljs-keyword">try</span> { Thread.sleep(ms); } <span class="hljs-keyword">catch</span> (InterruptedException e) { Thread.currentThread().interrupt(); }
     }
 }
 </code></pre>
 <h3 id="2-error-handling" tabindex="-1"><a class="header-anchor" href="#2-error-handling"><span>2. Error Handling</span></a></h3>
-<pre><code class="language-java">public class CompletableFutureErrorHandling {
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CompletableFutureErrorHandling</span> {
 
-    // Handle exceptions
-    public CompletableFuture&lt;String&gt; fetchWithFallback(String id) {
-        return fetchDataAsync(id)
+    <span class="hljs-comment">// Handle exceptions</span>
+    <span class="hljs-keyword">public</span> CompletableFuture&lt;String&gt; <span class="hljs-title function_">fetchWithFallback</span><span class="hljs-params">(String id)</span> {
+        <span class="hljs-keyword">return</span> fetchDataAsync(id)
             .exceptionally(ex -&gt; {
-                System.err.println(&quot;Error: &quot; + ex.getMessage());
-                return &quot;Default Value&quot;;  // Fallback
+                System.err.println(<span class="hljs-string">&quot;Error: &quot;</span> + ex.getMessage());
+                <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Default Value&quot;</span>;  <span class="hljs-comment">// Fallback</span>
             });
     }
 
-    // Handle both success and failure
-    public CompletableFuture&lt;String&gt; fetchWithHandle(String id) {
-        return fetchDataAsync(id)
+    <span class="hljs-comment">// Handle both success and failure</span>
+    <span class="hljs-keyword">public</span> CompletableFuture&lt;String&gt; <span class="hljs-title function_">fetchWithHandle</span><span class="hljs-params">(String id)</span> {
+        <span class="hljs-keyword">return</span> fetchDataAsync(id)
             .handle((result, ex) -&gt; {
-                if (ex != null) {
-                    return &quot;Error: &quot; + ex.getMessage();
+                <span class="hljs-keyword">if</span> (ex != <span class="hljs-literal">null</span>) {
+                    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Error: &quot;</span> + ex.getMessage();
                 }
-                return &quot;Success: &quot; + result;
+                <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Success: &quot;</span> + result;
             });
     }
 
-    // Recover with another async operation
-    public CompletableFuture&lt;String&gt; fetchWithAsyncFallback(String id) {
-        return fetchDataAsync(id)
+    <span class="hljs-comment">// Recover with another async operation</span>
+    <span class="hljs-keyword">public</span> CompletableFuture&lt;String&gt; <span class="hljs-title function_">fetchWithAsyncFallback</span><span class="hljs-params">(String id)</span> {
+        <span class="hljs-keyword">return</span> fetchDataAsync(id)
             .exceptionallyCompose(ex -&gt; {
-                System.err.println(&quot;Primary failed, trying backup...&quot;);
-                return fetchFromBackupAsync(id);
+                System.err.println(<span class="hljs-string">&quot;Primary failed, trying backup...&quot;</span>);
+                <span class="hljs-keyword">return</span> fetchFromBackupAsync(id);
             });
     }
 
-    // Timeout handling
-    public CompletableFuture&lt;String&gt; fetchWithTimeout(String id) {
-        return fetchDataAsync(id)
-            .orTimeout(5, TimeUnit.SECONDS)
+    <span class="hljs-comment">// Timeout handling</span>
+    <span class="hljs-keyword">public</span> CompletableFuture&lt;String&gt; <span class="hljs-title function_">fetchWithTimeout</span><span class="hljs-params">(String id)</span> {
+        <span class="hljs-keyword">return</span> fetchDataAsync(id)
+            .orTimeout(<span class="hljs-number">5</span>, TimeUnit.SECONDS)
             .exceptionally(ex -&gt; {
-                if (ex instanceof TimeoutException) {
-                    return &quot;Timeout - using cached value&quot;;
+                <span class="hljs-keyword">if</span> (ex <span class="hljs-keyword">instanceof</span> TimeoutException) {
+                    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Timeout - using cached value&quot;</span>;
                 }
-                throw new CompletionException(ex);
+                <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">CompletionException</span>(ex);
             });
     }
 
-    private CompletableFuture&lt;String&gt; fetchDataAsync(String id) {
-        return CompletableFuture.supplyAsync(() -&gt; &quot;Data: &quot; + id);
+    <span class="hljs-keyword">private</span> CompletableFuture&lt;String&gt; <span class="hljs-title function_">fetchDataAsync</span><span class="hljs-params">(String id)</span> {
+        <span class="hljs-keyword">return</span> CompletableFuture.supplyAsync(() -&gt; <span class="hljs-string">&quot;Data: &quot;</span> + id);
     }
 
-    private CompletableFuture&lt;String&gt; fetchFromBackupAsync(String id) {
-        return CompletableFuture.supplyAsync(() -&gt; &quot;Backup Data: &quot; + id);
+    <span class="hljs-keyword">private</span> CompletableFuture&lt;String&gt; <span class="hljs-title function_">fetchFromBackupAsync</span><span class="hljs-params">(String id)</span> {
+        <span class="hljs-keyword">return</span> CompletableFuture.supplyAsync(() -&gt; <span class="hljs-string">&quot;Backup Data: &quot;</span> + id);
     }
 }
 </code></pre>
 <h3 id="3-parallel-execution-patterns" tabindex="-1"><a class="header-anchor" href="#3-parallel-execution-patterns"><span>3. Parallel Execution Patterns</span></a></h3>
-<pre><code class="language-java">public class ParallelExecutionPatterns {
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ParallelExecutionPatterns</span> {
 
-    private final ExecutorService executor = Executors.newFixedThreadPool(10);
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">ExecutorService</span> <span class="hljs-variable">executor</span> <span class="hljs-operator">=</span> Executors.newFixedThreadPool(<span class="hljs-number">10</span>);
 
-    // Wait for all futures to complete
-    public CompletableFuture&lt;List&lt;String&gt;&gt; fetchAll(List&lt;String&gt; ids) {
+    <span class="hljs-comment">// Wait for all futures to complete</span>
+    <span class="hljs-keyword">public</span> CompletableFuture&lt;List&lt;String&gt;&gt; <span class="hljs-title function_">fetchAll</span><span class="hljs-params">(List&lt;String&gt; ids)</span> {
         List&lt;CompletableFuture&lt;String&gt;&gt; futures = ids.stream()
-            .map(this::fetchDataAsync)
+            .map(<span class="hljs-built_in">this</span>::fetchDataAsync)
             .collect(Collectors.toList());
 
-        return CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
+        <span class="hljs-keyword">return</span> CompletableFuture.allOf(futures.toArray(<span class="hljs-keyword">new</span> <span class="hljs-title class_">CompletableFuture</span>[<span class="hljs-number">0</span>]))
             .thenApply(v -&gt; futures.stream()
                 .map(CompletableFuture::join)
                 .collect(Collectors.toList()));
     }
 
-    // Return first completed result
-    public CompletableFuture&lt;String&gt; fetchFirst(List&lt;String&gt; ids) {
+    <span class="hljs-comment">// Return first completed result</span>
+    <span class="hljs-keyword">public</span> CompletableFuture&lt;String&gt; <span class="hljs-title function_">fetchFirst</span><span class="hljs-params">(List&lt;String&gt; ids)</span> {
         List&lt;CompletableFuture&lt;String&gt;&gt; futures = ids.stream()
-            .map(this::fetchDataAsync)
+            .map(<span class="hljs-built_in">this</span>::fetchDataAsync)
             .collect(Collectors.toList());
 
-        return CompletableFuture.anyOf(futures.toArray(new CompletableFuture[0]))
+        <span class="hljs-keyword">return</span> CompletableFuture.anyOf(futures.toArray(<span class="hljs-keyword">new</span> <span class="hljs-title class_">CompletableFuture</span>[<span class="hljs-number">0</span>]))
             .thenApply(result -&gt; (String) result);
     }
 
-    // Collect results as they complete (with timeout per item)
-    public List&lt;String&gt; fetchAllWithIndividualTimeout(List&lt;String&gt; ids, long timeoutMs) {
+    <span class="hljs-comment">// Collect results as they complete (with timeout per item)</span>
+    <span class="hljs-keyword">public</span> List&lt;String&gt; <span class="hljs-title function_">fetchAllWithIndividualTimeout</span><span class="hljs-params">(List&lt;String&gt; ids, <span class="hljs-type">long</span> timeoutMs)</span> {
         List&lt;CompletableFuture&lt;String&gt;&gt; futures = ids.stream()
             .map(id -&gt; fetchDataAsync(id)
                 .orTimeout(timeoutMs, TimeUnit.MILLISECONDS)
-                .exceptionally(ex -&gt; &quot;Failed: &quot; + id))
+                .exceptionally(ex -&gt; <span class="hljs-string">&quot;Failed: &quot;</span> + id))
             .collect(Collectors.toList());
 
-        return futures.stream()
+        <span class="hljs-keyword">return</span> futures.stream()
             .map(CompletableFuture::join)
             .collect(Collectors.toList());
     }
 
-    // Limit concurrency with Semaphore
-    public CompletableFuture&lt;List&lt;String&gt;&gt; fetchWithConcurrencyLimit(
-            List&lt;String&gt; ids, int maxConcurrent) {
+    <span class="hljs-comment">// Limit concurrency with Semaphore</span>
+    <span class="hljs-keyword">public</span> CompletableFuture&lt;List&lt;String&gt;&gt; <span class="hljs-title function_">fetchWithConcurrencyLimit</span><span class="hljs-params">(
+            List&lt;String&gt; ids, <span class="hljs-type">int</span> maxConcurrent)</span> {
 
-        Semaphore semaphore = new Semaphore(maxConcurrent);
+        <span class="hljs-type">Semaphore</span> <span class="hljs-variable">semaphore</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Semaphore</span>(maxConcurrent);
 
         List&lt;CompletableFuture&lt;String&gt;&gt; futures = ids.stream()
             .map(id -&gt; CompletableFuture.supplyAsync(() -&gt; {
-                try {
+                <span class="hljs-keyword">try</span> {
                     semaphore.acquire();
-                    try {
-                        return fetchDataSync(id);
-                    } finally {
+                    <span class="hljs-keyword">try</span> {
+                        <span class="hljs-keyword">return</span> fetchDataSync(id);
+                    } <span class="hljs-keyword">finally</span> {
                         semaphore.release();
                     }
-                } catch (InterruptedException e) {
+                } <span class="hljs-keyword">catch</span> (InterruptedException e) {
                     Thread.currentThread().interrupt();
-                    throw new CompletionException(e);
+                    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">CompletionException</span>(e);
                 }
             }, executor))
             .collect(Collectors.toList());
 
-        return CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
+        <span class="hljs-keyword">return</span> CompletableFuture.allOf(futures.toArray(<span class="hljs-keyword">new</span> <span class="hljs-title class_">CompletableFuture</span>[<span class="hljs-number">0</span>]))
             .thenApply(v -&gt; futures.stream()
                 .map(CompletableFuture::join)
                 .collect(Collectors.toList()));
     }
 
-    private CompletableFuture&lt;String&gt; fetchDataAsync(String id) {
-        return CompletableFuture.supplyAsync(() -&gt; fetchDataSync(id), executor);
+    <span class="hljs-keyword">private</span> CompletableFuture&lt;String&gt; <span class="hljs-title function_">fetchDataAsync</span><span class="hljs-params">(String id)</span> {
+        <span class="hljs-keyword">return</span> CompletableFuture.supplyAsync(() -&gt; fetchDataSync(id), executor);
     }
 
-    private String fetchDataSync(String id) {
-        // Simulate work
-        return &quot;Data: &quot; + id;
+    <span class="hljs-keyword">private</span> String <span class="hljs-title function_">fetchDataSync</span><span class="hljs-params">(String id)</span> {
+        <span class="hljs-comment">// Simulate work</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Data: &quot;</span> + id;
     }
 }
 </code></pre>
 <hr>
 <h2 id="caching-strategies" tabindex="-1"><a class="header-anchor" href="#caching-strategies"><span>Caching Strategies</span></a></h2>
 <h3 id="1-cache-aside-pattern-lazy-loading" tabindex="-1"><a class="header-anchor" href="#1-cache-aside-pattern-lazy-loading"><span>1. Cache-Aside Pattern (Lazy Loading)</span></a></h3>
-<pre><code class="language-java">public class CacheAsidePattern {
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CacheAsidePattern</span> {
 
-    private final Cache&lt;String, User&gt; cache;
-    private final UserRepository repository;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Cache&lt;String, User&gt; cache;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> UserRepository repository;
 
-    public CacheAsidePattern(Cache&lt;String, User&gt; cache, UserRepository repository) {
-        this.cache = cache;
-        this.repository = repository;
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">CacheAsidePattern</span><span class="hljs-params">(Cache&lt;String, User&gt; cache, UserRepository repository)</span> {
+        <span class="hljs-built_in">this</span>.cache = cache;
+        <span class="hljs-built_in">this</span>.repository = repository;
     }
 
-    public User getUser(String userId) {
-        // 1. Check cache first
-        User user = cache.get(userId);
+    <span class="hljs-keyword">public</span> User <span class="hljs-title function_">getUser</span><span class="hljs-params">(String userId)</span> {
+        <span class="hljs-comment">// 1. Check cache first</span>
+        <span class="hljs-type">User</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> cache.get(userId);
 
-        if (user != null) {
-            return user;  // Cache hit
+        <span class="hljs-keyword">if</span> (user != <span class="hljs-literal">null</span>) {
+            <span class="hljs-keyword">return</span> user;  <span class="hljs-comment">// Cache hit</span>
         }
 
-        // 2. Cache miss - load from database
+        <span class="hljs-comment">// 2. Cache miss - load from database</span>
         user = repository.findById(userId);
 
-        if (user != null) {
-            // 3. Store in cache
+        <span class="hljs-keyword">if</span> (user != <span class="hljs-literal">null</span>) {
+            <span class="hljs-comment">// 3. Store in cache</span>
             cache.put(userId, user);
         }
 
-        return user;
+        <span class="hljs-keyword">return</span> user;
     }
 
-    public void updateUser(User user) {
-        // 1. Update database first
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">updateUser</span><span class="hljs-params">(User user)</span> {
+        <span class="hljs-comment">// 1. Update database first</span>
         repository.save(user);
 
-        // 2. Invalidate cache (or update)
+        <span class="hljs-comment">// 2. Invalidate cache (or update)</span>
         cache.invalidate(user.getId());
 
-        // Alternative: Update cache
-        // cache.put(user.getId(), user);
+        <span class="hljs-comment">// Alternative: Update cache</span>
+        <span class="hljs-comment">// cache.put(user.getId(), user);</span>
     }
 }
 </code></pre>
 <h3 id="2-write-through-pattern" tabindex="-1"><a class="header-anchor" href="#2-write-through-pattern"><span>2. Write-Through Pattern</span></a></h3>
-<pre><code class="language-java">public class WriteThroughPattern {
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">WriteThroughPattern</span> {
 
-    private final Cache&lt;String, User&gt; cache;
-    private final UserRepository repository;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Cache&lt;String, User&gt; cache;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> UserRepository repository;
 
-    public User getUser(String userId) {
-        // Always read from cache (cache is source of truth for reads)
-        User user = cache.get(userId);
+    <span class="hljs-keyword">public</span> User <span class="hljs-title function_">getUser</span><span class="hljs-params">(String userId)</span> {
+        <span class="hljs-comment">// Always read from cache (cache is source of truth for reads)</span>
+        <span class="hljs-type">User</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> cache.get(userId);
 
-        if (user == null) {
+        <span class="hljs-keyword">if</span> (user == <span class="hljs-literal">null</span>) {
             user = repository.findById(userId);
-            if (user != null) {
+            <span class="hljs-keyword">if</span> (user != <span class="hljs-literal">null</span>) {
                 cache.put(userId, user);
             }
         }
 
-        return user;
+        <span class="hljs-keyword">return</span> user;
     }
 
-    public void saveUser(User user) {
-        // Write to both cache and database synchronously
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">saveUser</span><span class="hljs-params">(User user)</span> {
+        <span class="hljs-comment">// Write to both cache and database synchronously</span>
         repository.save(user);
         cache.put(user.getId(), user);
     }
 }
 </code></pre>
 <h3 id="3-write-behind-write-back-pattern" tabindex="-1"><a class="header-anchor" href="#3-write-behind-write-back-pattern"><span>3. Write-Behind (Write-Back) Pattern</span></a></h3>
-<pre><code class="language-java">public class WriteBehindPattern {
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">WriteBehindPattern</span> {
 
-    private final Cache&lt;String, User&gt; cache;
-    private final UserRepository repository;
-    private final BlockingQueue&lt;User&gt; writeQueue = new LinkedBlockingQueue&lt;&gt;();
-    private final ScheduledExecutorService writer = Executors.newSingleThreadScheduledExecutor();
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Cache&lt;String, User&gt; cache;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> UserRepository repository;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> BlockingQueue&lt;User&gt; writeQueue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedBlockingQueue</span>&lt;&gt;();
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">ScheduledExecutorService</span> <span class="hljs-variable">writer</span> <span class="hljs-operator">=</span> Executors.newSingleThreadScheduledExecutor();
 
-    public WriteBehindPattern(Cache&lt;String, User&gt; cache, UserRepository repository) {
-        this.cache = cache;
-        this.repository = repository;
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">WriteBehindPattern</span><span class="hljs-params">(Cache&lt;String, User&gt; cache, UserRepository repository)</span> {
+        <span class="hljs-built_in">this</span>.cache = cache;
+        <span class="hljs-built_in">this</span>.repository = repository;
 
-        // Start background writer
-        writer.scheduleWithFixedDelay(this::flushWrites, 100, 100, TimeUnit.MILLISECONDS);
+        <span class="hljs-comment">// Start background writer</span>
+        writer.scheduleWithFixedDelay(<span class="hljs-built_in">this</span>::flushWrites, <span class="hljs-number">100</span>, <span class="hljs-number">100</span>, TimeUnit.MILLISECONDS);
     }
 
-    public void saveUser(User user) {
-        // 1. Write to cache immediately
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">saveUser</span><span class="hljs-params">(User user)</span> {
+        <span class="hljs-comment">// 1. Write to cache immediately</span>
         cache.put(user.getId(), user);
 
-        // 2. Queue for async database write
+        <span class="hljs-comment">// 2. Queue for async database write</span>
         writeQueue.offer(user);
     }
 
-    private void flushWrites() {
-        List&lt;User&gt; batch = new ArrayList&lt;&gt;();
-        writeQueue.drainTo(batch, 100);  // Batch up to 100 items
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">flushWrites</span><span class="hljs-params">()</span> {
+        List&lt;User&gt; batch = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+        writeQueue.drainTo(batch, <span class="hljs-number">100</span>);  <span class="hljs-comment">// Batch up to 100 items</span>
 
-        if (!batch.isEmpty()) {
-            try {
-                repository.saveAll(batch);  // Batch write to DB
-            } catch (Exception e) {
-                // Re-queue failed items
+        <span class="hljs-keyword">if</span> (!batch.isEmpty()) {
+            <span class="hljs-keyword">try</span> {
+                repository.saveAll(batch);  <span class="hljs-comment">// Batch write to DB</span>
+            } <span class="hljs-keyword">catch</span> (Exception e) {
+                <span class="hljs-comment">// Re-queue failed items</span>
                 writeQueue.addAll(batch);
             }
         }
     }
 
-    public void shutdown() {
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">shutdown</span><span class="hljs-params">()</span> {
         writer.shutdown();
-        flushWrites();  // Final flush
+        flushWrites();  <span class="hljs-comment">// Final flush</span>
     }
 }
 </code></pre>
 <h3 id="4-cache-with-distributed-lock-prevent-stampede" tabindex="-1"><a class="header-anchor" href="#4-cache-with-distributed-lock-prevent-stampede"><span>4. Cache with Distributed Lock (Prevent Stampede)</span></a></h3>
-<pre><code class="language-java">public class CacheWithLock {
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CacheWithLock</span> {
 
-    private final Cache&lt;String, User&gt; cache;
-    private final UserRepository repository;
-    private final ConcurrentHashMap&lt;String, ReentrantLock&gt; locks = new ConcurrentHashMap&lt;&gt;();
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Cache&lt;String, User&gt; cache;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> UserRepository repository;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ConcurrentHashMap&lt;String, ReentrantLock&gt; locks = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ConcurrentHashMap</span>&lt;&gt;();
 
-    public User getUser(String userId) {
-        // 1. Check cache
-        User user = cache.get(userId);
-        if (user != null) {
-            return user;
+    <span class="hljs-keyword">public</span> User <span class="hljs-title function_">getUser</span><span class="hljs-params">(String userId)</span> {
+        <span class="hljs-comment">// 1. Check cache</span>
+        <span class="hljs-type">User</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> cache.get(userId);
+        <span class="hljs-keyword">if</span> (user != <span class="hljs-literal">null</span>) {
+            <span class="hljs-keyword">return</span> user;
         }
 
-        // 2. Get lock for this specific key
-        ReentrantLock lock = locks.computeIfAbsent(userId, k -&gt; new ReentrantLock());
+        <span class="hljs-comment">// 2. Get lock for this specific key</span>
+        <span class="hljs-type">ReentrantLock</span> <span class="hljs-variable">lock</span> <span class="hljs-operator">=</span> locks.computeIfAbsent(userId, k -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">ReentrantLock</span>());
 
         lock.lock();
-        try {
-            // 3. Double-check cache after acquiring lock
+        <span class="hljs-keyword">try</span> {
+            <span class="hljs-comment">// 3. Double-check cache after acquiring lock</span>
             user = cache.get(userId);
-            if (user != null) {
-                return user;
+            <span class="hljs-keyword">if</span> (user != <span class="hljs-literal">null</span>) {
+                <span class="hljs-keyword">return</span> user;
             }
 
-            // 4. Load from database
+            <span class="hljs-comment">// 4. Load from database</span>
             user = repository.findById(userId);
-            if (user != null) {
+            <span class="hljs-keyword">if</span> (user != <span class="hljs-literal">null</span>) {
                 cache.put(userId, user);
             }
 
-            return user;
-        } finally {
+            <span class="hljs-keyword">return</span> user;
+        } <span class="hljs-keyword">finally</span> {
             lock.unlock();
         }
     }
 }
 </code></pre>
 <h3 id="5-refresh-ahead-pattern" tabindex="-1"><a class="header-anchor" href="#5-refresh-ahead-pattern"><span>5. Refresh-Ahead Pattern</span></a></h3>
-<pre><code class="language-java">public class RefreshAheadCache {
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">RefreshAheadCache</span> {
 
-    private final Cache&lt;String, CacheEntry&lt;User&gt;&gt; cache;
-    private final UserRepository repository;
-    private final ExecutorService refreshExecutor = Executors.newFixedThreadPool(2);
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Cache&lt;String, CacheEntry&lt;User&gt;&gt; cache;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> UserRepository repository;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">ExecutorService</span> <span class="hljs-variable">refreshExecutor</span> <span class="hljs-operator">=</span> Executors.newFixedThreadPool(<span class="hljs-number">2</span>);
 
-    private static final long TTL_MS = 60_000;           // 60 seconds TTL
-    private static final long REFRESH_THRESHOLD = 45_000; // Refresh at 75% of TTL
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">long</span> <span class="hljs-variable">TTL_MS</span> <span class="hljs-operator">=</span> <span class="hljs-number">60_000</span>;           <span class="hljs-comment">// 60 seconds TTL</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">long</span> <span class="hljs-variable">REFRESH_THRESHOLD</span> <span class="hljs-operator">=</span> <span class="hljs-number">45_000</span>; <span class="hljs-comment">// Refresh at 75% of TTL</span>
 
-    static class CacheEntry&lt;T&gt; {
-        final T value;
-        final long createdAt;
-        volatile boolean refreshing = false;
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CacheEntry</span>&lt;T&gt; {
+        <span class="hljs-keyword">final</span> T value;
+        <span class="hljs-keyword">final</span> <span class="hljs-type">long</span> createdAt;
+        <span class="hljs-keyword">volatile</span> <span class="hljs-type">boolean</span> <span class="hljs-variable">refreshing</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;
 
         CacheEntry(T value) {
-            this.value = value;
-            this.createdAt = System.currentTimeMillis();
+            <span class="hljs-built_in">this</span>.value = value;
+            <span class="hljs-built_in">this</span>.createdAt = System.currentTimeMillis();
         }
 
-        boolean shouldRefresh() {
-            return System.currentTimeMillis() - createdAt &gt; REFRESH_THRESHOLD;
+        <span class="hljs-type">boolean</span> <span class="hljs-title function_">shouldRefresh</span><span class="hljs-params">()</span> {
+            <span class="hljs-keyword">return</span> System.currentTimeMillis() - createdAt &gt; REFRESH_THRESHOLD;
         }
 
-        boolean isExpired() {
-            return System.currentTimeMillis() - createdAt &gt; TTL_MS;
+        <span class="hljs-type">boolean</span> <span class="hljs-title function_">isExpired</span><span class="hljs-params">()</span> {
+            <span class="hljs-keyword">return</span> System.currentTimeMillis() - createdAt &gt; TTL_MS;
         }
     }
 
-    public User getUser(String userId) {
+    <span class="hljs-keyword">public</span> User <span class="hljs-title function_">getUser</span><span class="hljs-params">(String userId)</span> {
         CacheEntry&lt;User&gt; entry = cache.get(userId);
 
-        if (entry == null || entry.isExpired()) {
-            // Cache miss or expired - synchronous load
-            return loadAndCache(userId);
+        <span class="hljs-keyword">if</span> (entry == <span class="hljs-literal">null</span> || entry.isExpired()) {
+            <span class="hljs-comment">// Cache miss or expired - synchronous load</span>
+            <span class="hljs-keyword">return</span> loadAndCache(userId);
         }
 
-        // Trigger async refresh if approaching expiry
-        if (entry.shouldRefresh() &amp;&amp; !entry.refreshing) {
-            entry.refreshing = true;
+        <span class="hljs-comment">// Trigger async refresh if approaching expiry</span>
+        <span class="hljs-keyword">if</span> (entry.shouldRefresh() &amp;&amp; !entry.refreshing) {
+            entry.refreshing = <span class="hljs-literal">true</span>;
             refreshExecutor.submit(() -&gt; {
-                try {
+                <span class="hljs-keyword">try</span> {
                     loadAndCache(userId);
-                } catch (Exception e) {
-                    entry.refreshing = false;
+                } <span class="hljs-keyword">catch</span> (Exception e) {
+                    entry.refreshing = <span class="hljs-literal">false</span>;
                 }
             });
         }
 
-        return entry.value;
+        <span class="hljs-keyword">return</span> entry.value;
     }
 
-    private User loadAndCache(String userId) {
-        User user = repository.findById(userId);
-        if (user != null) {
-            cache.put(userId, new CacheEntry&lt;&gt;(user));
+    <span class="hljs-keyword">private</span> User <span class="hljs-title function_">loadAndCache</span><span class="hljs-params">(String userId)</span> {
+        <span class="hljs-type">User</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> repository.findById(userId);
+        <span class="hljs-keyword">if</span> (user != <span class="hljs-literal">null</span>) {
+            cache.put(userId, <span class="hljs-keyword">new</span> <span class="hljs-title class_">CacheEntry</span>&lt;&gt;(user));
         }
-        return user;
+        <span class="hljs-keyword">return</span> user;
     }
 }
 </code></pre>
 <hr>
 <h2 id="message-queue-patterns" tabindex="-1"><a class="header-anchor" href="#message-queue-patterns"><span>Message Queue Patterns</span></a></h2>
 <h3 id="1-at-least-once-delivery-with-idempotency" tabindex="-1"><a class="header-anchor" href="#1-at-least-once-delivery-with-idempotency"><span>1. At-Least-Once Delivery with Idempotency</span></a></h3>
-<pre><code class="language-java">public class AtLeastOnceConsumer {
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">AtLeastOnceConsumer</span> {
 
-    private final MessageQueue queue;
-    private final IdempotencyStore idempotencyStore;
-    private final OrderService orderService;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> MessageQueue queue;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> IdempotencyStore idempotencyStore;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> OrderService orderService;
 
-    public void processMessages() {
-        while (true) {
-            Message message = queue.receive();
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">processMessages</span><span class="hljs-params">()</span> {
+        <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) {
+            <span class="hljs-type">Message</span> <span class="hljs-variable">message</span> <span class="hljs-operator">=</span> queue.receive();
 
-            try {
-                // Check if already processed
-                if (idempotencyStore.isProcessed(message.getId())) {
+            <span class="hljs-keyword">try</span> {
+                <span class="hljs-comment">// Check if already processed</span>
+                <span class="hljs-keyword">if</span> (idempotencyStore.isProcessed(message.getId())) {
                     queue.acknowledge(message);
-                    continue;
+                    <span class="hljs-keyword">continue</span>;
                 }
 
-                // Process the message
+                <span class="hljs-comment">// Process the message</span>
                 orderService.processOrder(message.getPayload());
 
-                // Mark as processed BEFORE acknowledging
+                <span class="hljs-comment">// Mark as processed BEFORE acknowledging</span>
                 idempotencyStore.markProcessed(message.getId());
 
-                // Acknowledge to queue
+                <span class="hljs-comment">// Acknowledge to queue</span>
                 queue.acknowledge(message);
 
-            } catch (Exception e) {
-                // Don't acknowledge - message will be redelivered
+            } <span class="hljs-keyword">catch</span> (Exception e) {
+                <span class="hljs-comment">// Don&#x27;t acknowledge - message will be redelivered</span>
                 queue.nack(message);
             }
         }
@@ -761,398 +773,398 @@ public class CompletableFutureDemo {
 }
 </code></pre>
 <h3 id="2-transactional-outbox-pattern" tabindex="-1"><a class="header-anchor" href="#2-transactional-outbox-pattern"><span>2. Transactional Outbox Pattern</span></a></h3>
-<pre><code class="language-java">/**
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
  * Ensures message is sent if and only if database transaction commits.
  * Solves dual-write problem.
- */
-public class TransactionalOutbox {
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">TransactionalOutbox</span> {
 
-    private final DataSource dataSource;
-    private final ScheduledExecutorService publisher = Executors.newSingleThreadScheduledExecutor();
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> DataSource dataSource;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">ScheduledExecutorService</span> <span class="hljs-variable">publisher</span> <span class="hljs-operator">=</span> Executors.newSingleThreadScheduledExecutor();
 
-    public TransactionalOutbox() {
-        // Poll and publish outbox messages
-        publisher.scheduleWithFixedDelay(this::publishPendingMessages, 100, 100, TimeUnit.MILLISECONDS);
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">TransactionalOutbox</span><span class="hljs-params">()</span> {
+        <span class="hljs-comment">// Poll and publish outbox messages</span>
+        publisher.scheduleWithFixedDelay(<span class="hljs-built_in">this</span>::publishPendingMessages, <span class="hljs-number">100</span>, <span class="hljs-number">100</span>, TimeUnit.MILLISECONDS);
     }
 
-    @Transactional
-    public void createOrder(Order order) {
-        // 1. Save order to database
+    <span class="hljs-meta">@Transactional</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">createOrder</span><span class="hljs-params">(Order order)</span> {
+        <span class="hljs-comment">// 1. Save order to database</span>
         saveOrder(order);
 
-        // 2. Save event to outbox table (same transaction)
-        OutboxEvent event = new OutboxEvent(
+        <span class="hljs-comment">// 2. Save event to outbox table (same transaction)</span>
+        <span class="hljs-type">OutboxEvent</span> <span class="hljs-variable">event</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">OutboxEvent</span>(
             UUID.randomUUID().toString(),
-            &quot;order.created&quot;,
+            <span class="hljs-string">&quot;order.created&quot;</span>,
             toJson(order),
-            &quot;PENDING&quot;
+            <span class="hljs-string">&quot;PENDING&quot;</span>
         );
         saveOutboxEvent(event);
 
-        // Transaction commits both or neither
+        <span class="hljs-comment">// Transaction commits both or neither</span>
     }
 
-    private void publishPendingMessages() {
-        List&lt;OutboxEvent&gt; pending = fetchPendingEvents(100);
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">publishPendingMessages</span><span class="hljs-params">()</span> {
+        List&lt;OutboxEvent&gt; pending = fetchPendingEvents(<span class="hljs-number">100</span>);
 
-        for (OutboxEvent event : pending) {
-            try {
-                // Publish to message queue
+        <span class="hljs-keyword">for</span> (OutboxEvent event : pending) {
+            <span class="hljs-keyword">try</span> {
+                <span class="hljs-comment">// Publish to message queue</span>
                 messageQueue.publish(event.getTopic(), event.getPayload());
 
-                // Mark as published
+                <span class="hljs-comment">// Mark as published</span>
                 markEventPublished(event.getId());
 
-            } catch (Exception e) {
-                // Will retry on next poll
+            } <span class="hljs-keyword">catch</span> (Exception e) {
+                <span class="hljs-comment">// Will retry on next poll</span>
                 markEventFailed(event.getId());
             }
         }
     }
 
-    // Database operations
-    private void saveOrder(Order order) { /* ... */ }
-    private void saveOutboxEvent(OutboxEvent event) { /* ... */ }
-    private List&lt;OutboxEvent&gt; fetchPendingEvents(int limit) { /* ... */ return List.of(); }
-    private void markEventPublished(String id) { /* ... */ }
-    private void markEventFailed(String id) { /* ... */ }
+    <span class="hljs-comment">// Database operations</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">saveOrder</span><span class="hljs-params">(Order order)</span> { <span class="hljs-comment">/* ... */</span> }
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">saveOutboxEvent</span><span class="hljs-params">(OutboxEvent event)</span> { <span class="hljs-comment">/* ... */</span> }
+    <span class="hljs-keyword">private</span> List&lt;OutboxEvent&gt; <span class="hljs-title function_">fetchPendingEvents</span><span class="hljs-params">(<span class="hljs-type">int</span> limit)</span> { <span class="hljs-comment">/* ... */</span> <span class="hljs-keyword">return</span> List.of(); }
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">markEventPublished</span><span class="hljs-params">(String id)</span> { <span class="hljs-comment">/* ... */</span> }
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">markEventFailed</span><span class="hljs-params">(String id)</span> { <span class="hljs-comment">/* ... */</span> }
 }
 </code></pre>
 <h3 id="3-dead-letter-queue-handler" tabindex="-1"><a class="header-anchor" href="#3-dead-letter-queue-handler"><span>3. Dead Letter Queue Handler</span></a></h3>
-<pre><code class="language-java">public class DeadLetterQueueHandler {
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">DeadLetterQueueHandler</span> {
 
-    private final MessageQueue mainQueue;
-    private final MessageQueue dlq;
-    private final int maxRetries = 3;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> MessageQueue mainQueue;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> MessageQueue dlq;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">maxRetries</span> <span class="hljs-operator">=</span> <span class="hljs-number">3</span>;
 
-    public void processWithDLQ() {
-        while (true) {
-            Message message = mainQueue.receive();
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">processWithDLQ</span><span class="hljs-params">()</span> {
+        <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) {
+            <span class="hljs-type">Message</span> <span class="hljs-variable">message</span> <span class="hljs-operator">=</span> mainQueue.receive();
 
-            try {
+            <span class="hljs-keyword">try</span> {
                 processMessage(message);
                 mainQueue.acknowledge(message);
 
-            } catch (RetryableException e) {
-                int retryCount = message.getRetryCount();
+            } <span class="hljs-keyword">catch</span> (RetryableException e) {
+                <span class="hljs-type">int</span> <span class="hljs-variable">retryCount</span> <span class="hljs-operator">=</span> message.getRetryCount();
 
-                if (retryCount &lt; maxRetries) {
-                    // Requeue with incremented retry count
-                    message.setRetryCount(retryCount + 1);
+                <span class="hljs-keyword">if</span> (retryCount &lt; maxRetries) {
+                    <span class="hljs-comment">// Requeue with incremented retry count</span>
+                    message.setRetryCount(retryCount + <span class="hljs-number">1</span>);
                     message.setNextRetryTime(calculateBackoff(retryCount));
                     mainQueue.requeue(message);
-                } else {
-                    // Move to DLQ
+                } <span class="hljs-keyword">else</span> {
+                    <span class="hljs-comment">// Move to DLQ</span>
                     dlq.publish(message);
                     mainQueue.acknowledge(message);
                 }
 
-            } catch (NonRetryableException e) {
-                // Immediately move to DLQ
+            } <span class="hljs-keyword">catch</span> (NonRetryableException e) {
+                <span class="hljs-comment">// Immediately move to DLQ</span>
                 dlq.publish(message);
                 mainQueue.acknowledge(message);
             }
         }
     }
 
-    private long calculateBackoff(int retryCount) {
-        // Exponential backoff: 1s, 2s, 4s, 8s...
-        return System.currentTimeMillis() + (1000L * (1 &lt;&lt; retryCount));
+    <span class="hljs-keyword">private</span> <span class="hljs-type">long</span> <span class="hljs-title function_">calculateBackoff</span><span class="hljs-params">(<span class="hljs-type">int</span> retryCount)</span> {
+        <span class="hljs-comment">// Exponential backoff: 1s, 2s, 4s, 8s...</span>
+        <span class="hljs-keyword">return</span> System.currentTimeMillis() + (<span class="hljs-number">1000L</span> * (<span class="hljs-number">1</span> &lt;&lt; retryCount));
     }
 
-    private void processMessage(Message message) throws RetryableException, NonRetryableException {
-        // Business logic
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">processMessage</span><span class="hljs-params">(Message message)</span> <span class="hljs-keyword">throws</span> RetryableException, NonRetryableException {
+        <span class="hljs-comment">// Business logic</span>
     }
 }
 </code></pre>
 <h3 id="4-consumer-group-with-partition-assignment" tabindex="-1"><a class="header-anchor" href="#4-consumer-group-with-partition-assignment"><span>4. Consumer Group with Partition Assignment</span></a></h3>
-<pre><code class="language-java">public class PartitionedConsumer {
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">PartitionedConsumer</span> {
 
-    private final int consumerId;
-    private final int totalConsumers;
-    private final MessageQueue queue;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> consumerId;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> totalConsumers;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> MessageQueue queue;
 
-    public PartitionedConsumer(int consumerId, int totalConsumers) {
-        this.consumerId = consumerId;
-        this.totalConsumers = totalConsumers;
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">PartitionedConsumer</span><span class="hljs-params">(<span class="hljs-type">int</span> consumerId, <span class="hljs-type">int</span> totalConsumers)</span> {
+        <span class="hljs-built_in">this</span>.consumerId = consumerId;
+        <span class="hljs-built_in">this</span>.totalConsumers = totalConsumers;
     }
 
-    public void consume() {
-        while (true) {
-            Message message = queue.receive();
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">consume</span><span class="hljs-params">()</span> {
+        <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) {
+            <span class="hljs-type">Message</span> <span class="hljs-variable">message</span> <span class="hljs-operator">=</span> queue.receive();
 
-            // Check if this message belongs to this consumer
-            int partition = getPartition(message.getKey());
+            <span class="hljs-comment">// Check if this message belongs to this consumer</span>
+            <span class="hljs-type">int</span> <span class="hljs-variable">partition</span> <span class="hljs-operator">=</span> getPartition(message.getKey());
 
-            if (partition == consumerId) {
+            <span class="hljs-keyword">if</span> (partition == consumerId) {
                 processMessage(message);
                 queue.acknowledge(message);
-            } else {
-                // Requeue for correct consumer (or skip if using proper partitioning)
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-comment">// Requeue for correct consumer (or skip if using proper partitioning)</span>
                 queue.requeue(message);
             }
         }
     }
 
-    private int getPartition(String key) {
-        // Consistent hash to determine partition
-        return Math.abs(key.hashCode() % totalConsumers);
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">getPartition</span><span class="hljs-params">(String key)</span> {
+        <span class="hljs-comment">// Consistent hash to determine partition</span>
+        <span class="hljs-keyword">return</span> Math.abs(key.hashCode() % totalConsumers);
     }
 
-    private void processMessage(Message message) {
-        // Process message
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">processMessage</span><span class="hljs-params">(Message message)</span> {
+        <span class="hljs-comment">// Process message</span>
     }
 }
 </code></pre>
 <hr>
 <h2 id="distributed-transactions" tabindex="-1"><a class="header-anchor" href="#distributed-transactions"><span>Distributed Transactions</span></a></h2>
 <h3 id="1-saga-pattern-choreography" tabindex="-1"><a class="header-anchor" href="#1-saga-pattern-choreography"><span>1. Saga Pattern (Choreography)</span></a></h3>
-<pre><code class="language-java">/**
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
  * Each service publishes events, others react.
  * Compensating transactions for rollback.
- */
-public class OrderSagaChoreography {
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">OrderSagaChoreography</span> {
 
-    // Order Service
-    public void createOrder(Order order) {
-        saveOrder(order, &quot;PENDING&quot;);
-        publishEvent(new OrderCreatedEvent(order));
+    <span class="hljs-comment">// Order Service</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">createOrder</span><span class="hljs-params">(Order order)</span> {
+        saveOrder(order, <span class="hljs-string">&quot;PENDING&quot;</span>);
+        publishEvent(<span class="hljs-keyword">new</span> <span class="hljs-title class_">OrderCreatedEvent</span>(order));
     }
 
-    public void handlePaymentCompleted(PaymentCompletedEvent event) {
-        updateOrderStatus(event.getOrderId(), &quot;PAYMENT_COMPLETED&quot;);
-        publishEvent(new OrderPaidEvent(event.getOrderId()));
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">handlePaymentCompleted</span><span class="hljs-params">(PaymentCompletedEvent event)</span> {
+        updateOrderStatus(event.getOrderId(), <span class="hljs-string">&quot;PAYMENT_COMPLETED&quot;</span>);
+        publishEvent(<span class="hljs-keyword">new</span> <span class="hljs-title class_">OrderPaidEvent</span>(event.getOrderId()));
     }
 
-    public void handlePaymentFailed(PaymentFailedEvent event) {
-        // Compensating transaction
-        updateOrderStatus(event.getOrderId(), &quot;CANCELLED&quot;);
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">handlePaymentFailed</span><span class="hljs-params">(PaymentFailedEvent event)</span> {
+        <span class="hljs-comment">// Compensating transaction</span>
+        updateOrderStatus(event.getOrderId(), <span class="hljs-string">&quot;CANCELLED&quot;</span>);
     }
 
-    // Payment Service
-    public void handleOrderCreated(OrderCreatedEvent event) {
-        try {
+    <span class="hljs-comment">// Payment Service</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">handleOrderCreated</span><span class="hljs-params">(OrderCreatedEvent event)</span> {
+        <span class="hljs-keyword">try</span> {
             processPayment(event.getOrder());
-            publishEvent(new PaymentCompletedEvent(event.getOrderId()));
-        } catch (Exception e) {
-            publishEvent(new PaymentFailedEvent(event.getOrderId(), e.getMessage()));
+            publishEvent(<span class="hljs-keyword">new</span> <span class="hljs-title class_">PaymentCompletedEvent</span>(event.getOrderId()));
+        } <span class="hljs-keyword">catch</span> (Exception e) {
+            publishEvent(<span class="hljs-keyword">new</span> <span class="hljs-title class_">PaymentFailedEvent</span>(event.getOrderId(), e.getMessage()));
         }
     }
 
-    // Inventory Service
-    public void handleOrderPaid(OrderPaidEvent event) {
-        try {
+    <span class="hljs-comment">// Inventory Service</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">handleOrderPaid</span><span class="hljs-params">(OrderPaidEvent event)</span> {
+        <span class="hljs-keyword">try</span> {
             reserveInventory(event.getOrderId());
-            publishEvent(new InventoryReservedEvent(event.getOrderId()));
-        } catch (Exception e) {
-            // Compensate: refund payment
-            publishEvent(new InventoryFailedEvent(event.getOrderId()));
+            publishEvent(<span class="hljs-keyword">new</span> <span class="hljs-title class_">InventoryReservedEvent</span>(event.getOrderId()));
+        } <span class="hljs-keyword">catch</span> (Exception e) {
+            <span class="hljs-comment">// Compensate: refund payment</span>
+            publishEvent(<span class="hljs-keyword">new</span> <span class="hljs-title class_">InventoryFailedEvent</span>(event.getOrderId()));
         }
     }
 }
 </code></pre>
 <h3 id="2-saga-pattern-orchestrator" tabindex="-1"><a class="header-anchor" href="#2-saga-pattern-orchestrator"><span>2. Saga Pattern (Orchestrator)</span></a></h3>
-<pre><code class="language-java">/**
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
  * Central orchestrator controls the saga flow.
  * Easier to understand and debug.
- */
-public class OrderSagaOrchestrator {
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">OrderSagaOrchestrator</span> {
 
-    private final OrderService orderService;
-    private final PaymentService paymentService;
-    private final InventoryService inventoryService;
-    private final ShippingService shippingService;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> OrderService orderService;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> PaymentService paymentService;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> InventoryService inventoryService;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ShippingService shippingService;
 
-    public OrderResult executeOrderSaga(OrderRequest request) {
-        String sagaId = UUID.randomUUID().toString();
-        SagaState state = new SagaState(sagaId);
+    <span class="hljs-keyword">public</span> OrderResult <span class="hljs-title function_">executeOrderSaga</span><span class="hljs-params">(OrderRequest request)</span> {
+        <span class="hljs-type">String</span> <span class="hljs-variable">sagaId</span> <span class="hljs-operator">=</span> UUID.randomUUID().toString();
+        <span class="hljs-type">SagaState</span> <span class="hljs-variable">state</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">SagaState</span>(sagaId);
 
-        try {
-            // Step 1: Create order
-            Order order = orderService.createOrder(request);
+        <span class="hljs-keyword">try</span> {
+            <span class="hljs-comment">// Step 1: Create order</span>
+            <span class="hljs-type">Order</span> <span class="hljs-variable">order</span> <span class="hljs-operator">=</span> orderService.createOrder(request);
             state.setOrderId(order.getId());
             state.addCompensation(() -&gt; orderService.cancelOrder(order.getId()));
 
-            // Step 2: Process payment
-            PaymentResult payment = paymentService.processPayment(order);
+            <span class="hljs-comment">// Step 2: Process payment</span>
+            <span class="hljs-type">PaymentResult</span> <span class="hljs-variable">payment</span> <span class="hljs-operator">=</span> paymentService.processPayment(order);
             state.setPaymentId(payment.getId());
             state.addCompensation(() -&gt; paymentService.refund(payment.getId()));
 
-            // Step 3: Reserve inventory
-            InventoryReservation reservation = inventoryService.reserve(order);
+            <span class="hljs-comment">// Step 3: Reserve inventory</span>
+            <span class="hljs-type">InventoryReservation</span> <span class="hljs-variable">reservation</span> <span class="hljs-operator">=</span> inventoryService.reserve(order);
             state.setReservationId(reservation.getId());
             state.addCompensation(() -&gt; inventoryService.release(reservation.getId()));
 
-            // Step 4: Schedule shipping
-            Shipment shipment = shippingService.schedule(order);
+            <span class="hljs-comment">// Step 4: Schedule shipping</span>
+            <span class="hljs-type">Shipment</span> <span class="hljs-variable">shipment</span> <span class="hljs-operator">=</span> shippingService.schedule(order);
             state.setShipmentId(shipment.getId());
 
-            // All steps succeeded
+            <span class="hljs-comment">// All steps succeeded</span>
             orderService.confirmOrder(order.getId());
-            return OrderResult.success(order.getId());
+            <span class="hljs-keyword">return</span> OrderResult.success(order.getId());
 
-        } catch (Exception e) {
-            // Execute compensations in reverse order
+        } <span class="hljs-keyword">catch</span> (Exception e) {
+            <span class="hljs-comment">// Execute compensations in reverse order</span>
             state.compensate();
-            return OrderResult.failure(e.getMessage());
+            <span class="hljs-keyword">return</span> OrderResult.failure(e.getMessage());
         }
     }
 
-    static class SagaState {
-        private final String sagaId;
-        private final Deque&lt;Runnable&gt; compensations = new ArrayDeque&lt;&gt;();
-        private String orderId;
-        private String paymentId;
-        private String reservationId;
-        private String shipmentId;
+    <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">SagaState</span> {
+        <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> String sagaId;
+        <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Deque&lt;Runnable&gt; compensations = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();
+        <span class="hljs-keyword">private</span> String orderId;
+        <span class="hljs-keyword">private</span> String paymentId;
+        <span class="hljs-keyword">private</span> String reservationId;
+        <span class="hljs-keyword">private</span> String shipmentId;
 
         SagaState(String sagaId) {
-            this.sagaId = sagaId;
+            <span class="hljs-built_in">this</span>.sagaId = sagaId;
         }
 
-        void addCompensation(Runnable compensation) {
+        <span class="hljs-keyword">void</span> <span class="hljs-title function_">addCompensation</span><span class="hljs-params">(Runnable compensation)</span> {
             compensations.push(compensation);
         }
 
-        void compensate() {
-            while (!compensations.isEmpty()) {
-                try {
+        <span class="hljs-keyword">void</span> <span class="hljs-title function_">compensate</span><span class="hljs-params">()</span> {
+            <span class="hljs-keyword">while</span> (!compensations.isEmpty()) {
+                <span class="hljs-keyword">try</span> {
                     compensations.pop().run();
-                } catch (Exception e) {
-                    // Log and continue with other compensations
-                    System.err.println(&quot;Compensation failed: &quot; + e.getMessage());
+                } <span class="hljs-keyword">catch</span> (Exception e) {
+                    <span class="hljs-comment">// Log and continue with other compensations</span>
+                    System.err.println(<span class="hljs-string">&quot;Compensation failed: &quot;</span> + e.getMessage());
                 }
             }
         }
 
-        // Setters omitted for brevity
-        void setOrderId(String id) { this.orderId = id; }
-        void setPaymentId(String id) { this.paymentId = id; }
-        void setReservationId(String id) { this.reservationId = id; }
-        void setShipmentId(String id) { this.shipmentId = id; }
+        <span class="hljs-comment">// Setters omitted for brevity</span>
+        <span class="hljs-keyword">void</span> <span class="hljs-title function_">setOrderId</span><span class="hljs-params">(String id)</span> { <span class="hljs-built_in">this</span>.orderId = id; }
+        <span class="hljs-keyword">void</span> <span class="hljs-title function_">setPaymentId</span><span class="hljs-params">(String id)</span> { <span class="hljs-built_in">this</span>.paymentId = id; }
+        <span class="hljs-keyword">void</span> <span class="hljs-title function_">setReservationId</span><span class="hljs-params">(String id)</span> { <span class="hljs-built_in">this</span>.reservationId = id; }
+        <span class="hljs-keyword">void</span> <span class="hljs-title function_">setShipmentId</span><span class="hljs-params">(String id)</span> { <span class="hljs-built_in">this</span>.shipmentId = id; }
     }
 }
 </code></pre>
 <h3 id="3-two-phase-commit-2pc-simulation" tabindex="-1"><a class="header-anchor" href="#3-two-phase-commit-2pc-simulation"><span>3. Two-Phase Commit (2PC) Simulation</span></a></h3>
-<pre><code class="language-java">/**
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
  * Coordinator-based 2PC implementation.
  * Note: Rarely used in practice due to blocking nature.
- */
-public class TwoPhaseCommitCoordinator {
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">TwoPhaseCommitCoordinator</span> {
 
-    private final List&lt;Participant&gt; participants;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> List&lt;Participant&gt; participants;
 
-    public boolean executeTransaction(TransactionContext context) {
-        String txId = UUID.randomUUID().toString();
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">executeTransaction</span><span class="hljs-params">(TransactionContext context)</span> {
+        <span class="hljs-type">String</span> <span class="hljs-variable">txId</span> <span class="hljs-operator">=</span> UUID.randomUUID().toString();
 
-        // Phase 1: Prepare
-        boolean allPrepared = true;
-        for (Participant participant : participants) {
-            try {
-                boolean prepared = participant.prepare(txId, context);
-                if (!prepared) {
-                    allPrepared = false;
-                    break;
+        <span class="hljs-comment">// Phase 1: Prepare</span>
+        <span class="hljs-type">boolean</span> <span class="hljs-variable">allPrepared</span> <span class="hljs-operator">=</span> <span class="hljs-literal">true</span>;
+        <span class="hljs-keyword">for</span> (Participant participant : participants) {
+            <span class="hljs-keyword">try</span> {
+                <span class="hljs-type">boolean</span> <span class="hljs-variable">prepared</span> <span class="hljs-operator">=</span> participant.prepare(txId, context);
+                <span class="hljs-keyword">if</span> (!prepared) {
+                    allPrepared = <span class="hljs-literal">false</span>;
+                    <span class="hljs-keyword">break</span>;
                 }
-            } catch (Exception e) {
-                allPrepared = false;
-                break;
+            } <span class="hljs-keyword">catch</span> (Exception e) {
+                allPrepared = <span class="hljs-literal">false</span>;
+                <span class="hljs-keyword">break</span>;
             }
         }
 
-        // Phase 2: Commit or Rollback
-        if (allPrepared) {
-            for (Participant participant : participants) {
+        <span class="hljs-comment">// Phase 2: Commit or Rollback</span>
+        <span class="hljs-keyword">if</span> (allPrepared) {
+            <span class="hljs-keyword">for</span> (Participant participant : participants) {
                 participant.commit(txId);
             }
-            return true;
-        } else {
-            for (Participant participant : participants) {
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">for</span> (Participant participant : participants) {
                 participant.rollback(txId);
             }
-            return false;
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
         }
     }
 
-    interface Participant {
-        boolean prepare(String txId, TransactionContext context);
-        void commit(String txId);
-        void rollback(String txId);
+    <span class="hljs-keyword">interface</span> <span class="hljs-title class_">Participant</span> {
+        <span class="hljs-type">boolean</span> <span class="hljs-title function_">prepare</span><span class="hljs-params">(String txId, TransactionContext context)</span>;
+        <span class="hljs-keyword">void</span> <span class="hljs-title function_">commit</span><span class="hljs-params">(String txId)</span>;
+        <span class="hljs-keyword">void</span> <span class="hljs-title function_">rollback</span><span class="hljs-params">(String txId)</span>;
     }
 }
 </code></pre>
 <hr>
 <h2 id="coordination-utilities" tabindex="-1"><a class="header-anchor" href="#coordination-utilities"><span>Coordination Utilities</span></a></h2>
 <h3 id="1-countdownlatch-wait-for-n-events" tabindex="-1"><a class="header-anchor" href="#1-countdownlatch-wait-for-n-events"><span>1. CountDownLatch - Wait for N Events</span></a></h3>
-<pre><code class="language-java">public class CountDownLatchDemo {
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CountDownLatchDemo</span> {
 
-    /**
+    <span class="hljs-comment">/**
      * Wait for multiple services to initialize before starting main application.
-     */
-    public void initializeServices() throws InterruptedException {
-        int serviceCount = 3;
-        CountDownLatch latch = new CountDownLatch(serviceCount);
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">initializeServices</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> InterruptedException {
+        <span class="hljs-type">int</span> <span class="hljs-variable">serviceCount</span> <span class="hljs-operator">=</span> <span class="hljs-number">3</span>;
+        <span class="hljs-type">CountDownLatch</span> <span class="hljs-variable">latch</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">CountDownLatch</span>(serviceCount);
 
-        // Start services in parallel
-        new Thread(() -&gt; {
+        <span class="hljs-comment">// Start services in parallel</span>
+        <span class="hljs-keyword">new</span> <span class="hljs-title class_">Thread</span>(() -&gt; {
             initDatabase();
             latch.countDown();
         }).start();
 
-        new Thread(() -&gt; {
+        <span class="hljs-keyword">new</span> <span class="hljs-title class_">Thread</span>(() -&gt; {
             initCache();
             latch.countDown();
         }).start();
 
-        new Thread(() -&gt; {
+        <span class="hljs-keyword">new</span> <span class="hljs-title class_">Thread</span>(() -&gt; {
             initMessageQueue();
             latch.countDown();
         }).start();
 
-        // Wait for all services
-        boolean completed = latch.await(30, TimeUnit.SECONDS);
+        <span class="hljs-comment">// Wait for all services</span>
+        <span class="hljs-type">boolean</span> <span class="hljs-variable">completed</span> <span class="hljs-operator">=</span> latch.await(<span class="hljs-number">30</span>, TimeUnit.SECONDS);
 
-        if (completed) {
-            System.out.println(&quot;All services initialized!&quot;);
-        } else {
-            throw new RuntimeException(&quot;Service initialization timeout&quot;);
+        <span class="hljs-keyword">if</span> (completed) {
+            System.out.println(<span class="hljs-string">&quot;All services initialized!&quot;</span>);
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RuntimeException</span>(<span class="hljs-string">&quot;Service initialization timeout&quot;</span>);
         }
     }
 
-    private void initDatabase() { sleep(1000); }
-    private void initCache() { sleep(500); }
-    private void initMessageQueue() { sleep(800); }
-    private void sleep(long ms) { try { Thread.sleep(ms); } catch (InterruptedException e) {} }
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">initDatabase</span><span class="hljs-params">()</span> { sleep(<span class="hljs-number">1000</span>); }
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">initCache</span><span class="hljs-params">()</span> { sleep(<span class="hljs-number">500</span>); }
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">initMessageQueue</span><span class="hljs-params">()</span> { sleep(<span class="hljs-number">800</span>); }
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">sleep</span><span class="hljs-params">(<span class="hljs-type">long</span> ms)</span> { <span class="hljs-keyword">try</span> { Thread.sleep(ms); } <span class="hljs-keyword">catch</span> (InterruptedException e) {} }
 }
 </code></pre>
 <h3 id="2-cyclicbarrier-synchronization-point" tabindex="-1"><a class="header-anchor" href="#2-cyclicbarrier-synchronization-point"><span>2. CyclicBarrier - Synchronization Point</span></a></h3>
-<pre><code class="language-java">public class CyclicBarrierDemo {
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CyclicBarrierDemo</span> {
 
-    /**
+    <span class="hljs-comment">/**
      * All threads wait at barrier, then proceed together.
      * Useful for parallel algorithms with phases.
-     */
-    public void parallelMatrixComputation() {
-        int threadCount = 4;
-        CyclicBarrier barrier = new CyclicBarrier(threadCount, () -&gt; {
-            System.out.println(&quot;All threads completed phase, merging results...&quot;);
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">parallelMatrixComputation</span><span class="hljs-params">()</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">threadCount</span> <span class="hljs-operator">=</span> <span class="hljs-number">4</span>;
+        <span class="hljs-type">CyclicBarrier</span> <span class="hljs-variable">barrier</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">CyclicBarrier</span>(threadCount, () -&gt; {
+            System.out.println(<span class="hljs-string">&quot;All threads completed phase, merging results...&quot;</span>);
         });
 
-        for (int i = 0; i &lt; threadCount; i++) {
-            final int threadId = i;
-            new Thread(() -&gt; {
-                try {
-                    // Phase 1: Compute partial result
-                    System.out.println(&quot;Thread &quot; + threadId + &quot; computing...&quot;);
-                    Thread.sleep(100 * threadId);
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; threadCount; i++) {
+            <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">threadId</span> <span class="hljs-operator">=</span> i;
+            <span class="hljs-keyword">new</span> <span class="hljs-title class_">Thread</span>(() -&gt; {
+                <span class="hljs-keyword">try</span> {
+                    <span class="hljs-comment">// Phase 1: Compute partial result</span>
+                    System.out.println(<span class="hljs-string">&quot;Thread &quot;</span> + threadId + <span class="hljs-string">&quot; computing...&quot;</span>);
+                    Thread.sleep(<span class="hljs-number">100</span> * threadId);
 
-                    // Wait for all threads
+                    <span class="hljs-comment">// Wait for all threads</span>
                     barrier.await();
 
-                    // Phase 2: All threads proceed together
-                    System.out.println(&quot;Thread &quot; + threadId + &quot; proceeding to phase 2&quot;);
+                    <span class="hljs-comment">// Phase 2: All threads proceed together</span>
+                    System.out.println(<span class="hljs-string">&quot;Thread &quot;</span> + threadId + <span class="hljs-string">&quot; proceeding to phase 2&quot;</span>);
 
-                } catch (Exception e) {
+                } <span class="hljs-keyword">catch</span> (Exception e) {
                     e.printStackTrace();
                 }
             }).start();
@@ -1161,78 +1173,78 @@ public class TwoPhaseCommitCoordinator {
 }
 </code></pre>
 <h3 id="3-semaphore-limit-concurrent-access" tabindex="-1"><a class="header-anchor" href="#3-semaphore-limit-concurrent-access"><span>3. Semaphore - Limit Concurrent Access</span></a></h3>
-<pre><code class="language-java">public class SemaphoreDemo {
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">SemaphoreDemo</span> {
 
-    /**
+    <span class="hljs-comment">/**
      * Connection pool with limited connections.
-     */
-    private final Semaphore connectionSemaphore;
-    private final Queue&lt;Connection&gt; connectionPool;
+     */</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Semaphore connectionSemaphore;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Queue&lt;Connection&gt; connectionPool;
 
-    public SemaphoreDemo(int maxConnections) {
-        this.connectionSemaphore = new Semaphore(maxConnections);
-        this.connectionPool = new ConcurrentLinkedQueue&lt;&gt;();
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">SemaphoreDemo</span><span class="hljs-params">(<span class="hljs-type">int</span> maxConnections)</span> {
+        <span class="hljs-built_in">this</span>.connectionSemaphore = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Semaphore</span>(maxConnections);
+        <span class="hljs-built_in">this</span>.connectionPool = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ConcurrentLinkedQueue</span>&lt;&gt;();
 
-        // Pre-create connections
-        for (int i = 0; i &lt; maxConnections; i++) {
+        <span class="hljs-comment">// Pre-create connections</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; maxConnections; i++) {
             connectionPool.offer(createConnection());
         }
     }
 
-    public Connection acquireConnection(long timeout, TimeUnit unit)
-            throws InterruptedException, TimeoutException {
+    <span class="hljs-keyword">public</span> Connection <span class="hljs-title function_">acquireConnection</span><span class="hljs-params">(<span class="hljs-type">long</span> timeout, TimeUnit unit)</span>
+            <span class="hljs-keyword">throws</span> InterruptedException, TimeoutException {
 
-        if (!connectionSemaphore.tryAcquire(timeout, unit)) {
-            throw new TimeoutException(&quot;Could not acquire connection&quot;);
+        <span class="hljs-keyword">if</span> (!connectionSemaphore.tryAcquire(timeout, unit)) {
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">TimeoutException</span>(<span class="hljs-string">&quot;Could not acquire connection&quot;</span>);
         }
 
-        Connection conn = connectionPool.poll();
-        if (conn == null || !conn.isValid()) {
+        <span class="hljs-type">Connection</span> <span class="hljs-variable">conn</span> <span class="hljs-operator">=</span> connectionPool.poll();
+        <span class="hljs-keyword">if</span> (conn == <span class="hljs-literal">null</span> || !conn.isValid()) {
             conn = createConnection();
         }
-        return conn;
+        <span class="hljs-keyword">return</span> conn;
     }
 
-    public void releaseConnection(Connection conn) {
-        if (conn != null) {
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">releaseConnection</span><span class="hljs-params">(Connection conn)</span> {
+        <span class="hljs-keyword">if</span> (conn != <span class="hljs-literal">null</span>) {
             connectionPool.offer(conn);
             connectionSemaphore.release();
         }
     }
 
-    private Connection createConnection() {
-        return new Connection();
+    <span class="hljs-keyword">private</span> Connection <span class="hljs-title function_">createConnection</span><span class="hljs-params">()</span> {
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Connection</span>();
     }
 }
 </code></pre>
 <h3 id="4-phaser-flexible-barrier" tabindex="-1"><a class="header-anchor" href="#4-phaser-flexible-barrier"><span>4. Phaser - Flexible Barrier</span></a></h3>
-<pre><code class="language-java">public class PhaserDemo {
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">PhaserDemo</span> {
 
-    /**
+    <span class="hljs-comment">/**
      * Dynamic number of parties, multiple phases.
-     */
-    public void dynamicParallelProcessing() {
-        Phaser phaser = new Phaser(1); // Register self
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">dynamicParallelProcessing</span><span class="hljs-params">()</span> {
+        <span class="hljs-type">Phaser</span> <span class="hljs-variable">phaser</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Phaser</span>(<span class="hljs-number">1</span>); <span class="hljs-comment">// Register self</span>
 
-        for (int i = 0; i &lt; 3; i++) {
-            final int taskId = i;
-            phaser.register(); // Register new party
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">3</span>; i++) {
+            <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">taskId</span> <span class="hljs-operator">=</span> i;
+            phaser.register(); <span class="hljs-comment">// Register new party</span>
 
-            new Thread(() -&gt; {
-                for (int phase = 0; phase &lt; 3; phase++) {
-                    System.out.println(&quot;Task &quot; + taskId + &quot; executing phase &quot; + phase);
+            <span class="hljs-keyword">new</span> <span class="hljs-title class_">Thread</span>(() -&gt; {
+                <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">phase</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; phase &lt; <span class="hljs-number">3</span>; phase++) {
+                    System.out.println(<span class="hljs-string">&quot;Task &quot;</span> + taskId + <span class="hljs-string">&quot; executing phase &quot;</span> + phase);
 
-                    // Wait for others to complete this phase
+                    <span class="hljs-comment">// Wait for others to complete this phase</span>
                     phaser.arriveAndAwaitAdvance();
                 }
 
-                // Deregister when done
+                <span class="hljs-comment">// Deregister when done</span>
                 phaser.arriveAndDeregister();
             }).start();
         }
 
-        // Wait for all tasks to complete
-        while (!phaser.isTerminated()) {
+        <span class="hljs-comment">// Wait for all tasks to complete</span>
+        <span class="hljs-keyword">while</span> (!phaser.isTerminated()) {
             phaser.arriveAndAwaitAdvance();
         }
     }
@@ -1241,87 +1253,87 @@ public class TwoPhaseCommitCoordinator {
 <hr>
 <h2 id="graceful-shutdown" tabindex="-1"><a class="header-anchor" href="#graceful-shutdown"><span>Graceful Shutdown</span></a></h2>
 <h3 id="1-executorservice-graceful-shutdown" tabindex="-1"><a class="header-anchor" href="#1-executorservice-graceful-shutdown"><span>1. ExecutorService Graceful Shutdown</span></a></h3>
-<pre><code class="language-java">public class GracefulShutdownDemo {
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">GracefulShutdownDemo</span> {
 
-    private final ExecutorService executor = Executors.newFixedThreadPool(10);
-    private volatile boolean shuttingDown = false;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">ExecutorService</span> <span class="hljs-variable">executor</span> <span class="hljs-operator">=</span> Executors.newFixedThreadPool(<span class="hljs-number">10</span>);
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">volatile</span> <span class="hljs-type">boolean</span> <span class="hljs-variable">shuttingDown</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;
 
-    public void shutdown() {
-        shuttingDown = true;
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">shutdown</span><span class="hljs-params">()</span> {
+        shuttingDown = <span class="hljs-literal">true</span>;
 
-        // Stop accepting new tasks
+        <span class="hljs-comment">// Stop accepting new tasks</span>
         executor.shutdown();
 
-        try {
-            // Wait for existing tasks to complete
-            if (!executor.awaitTermination(30, TimeUnit.SECONDS)) {
-                System.err.println(&quot;Forcing shutdown...&quot;);
+        <span class="hljs-keyword">try</span> {
+            <span class="hljs-comment">// Wait for existing tasks to complete</span>
+            <span class="hljs-keyword">if</span> (!executor.awaitTermination(<span class="hljs-number">30</span>, TimeUnit.SECONDS)) {
+                System.err.println(<span class="hljs-string">&quot;Forcing shutdown...&quot;</span>);
 
-                // Force shutdown
+                <span class="hljs-comment">// Force shutdown</span>
                 List&lt;Runnable&gt; pendingTasks = executor.shutdownNow();
-                System.err.println(&quot;Pending tasks: &quot; + pendingTasks.size());
+                System.err.println(<span class="hljs-string">&quot;Pending tasks: &quot;</span> + pendingTasks.size());
 
-                // Wait again
-                if (!executor.awaitTermination(10, TimeUnit.SECONDS)) {
-                    System.err.println(&quot;Executor did not terminate&quot;);
+                <span class="hljs-comment">// Wait again</span>
+                <span class="hljs-keyword">if</span> (!executor.awaitTermination(<span class="hljs-number">10</span>, TimeUnit.SECONDS)) {
+                    System.err.println(<span class="hljs-string">&quot;Executor did not terminate&quot;</span>);
                 }
             }
-        } catch (InterruptedException e) {
+        } <span class="hljs-keyword">catch</span> (InterruptedException e) {
             executor.shutdownNow();
             Thread.currentThread().interrupt();
         }
     }
 
-    public void submitTask(Runnable task) {
-        if (shuttingDown) {
-            throw new RejectedExecutionException(&quot;Service is shutting down&quot;);
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">submitTask</span><span class="hljs-params">(Runnable task)</span> {
+        <span class="hljs-keyword">if</span> (shuttingDown) {
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RejectedExecutionException</span>(<span class="hljs-string">&quot;Service is shutting down&quot;</span>);
         }
         executor.submit(task);
     }
 }
 </code></pre>
 <h3 id="2-spring-boot-graceful-shutdown" tabindex="-1"><a class="header-anchor" href="#2-spring-boot-graceful-shutdown"><span>2. Spring Boot Graceful Shutdown</span></a></h3>
-<pre><code class="language-java">@Component
-public class GracefulShutdownHandler implements ApplicationListener&lt;ContextClosedEvent&gt; {
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-meta">@Component</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">GracefulShutdownHandler</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">ApplicationListener</span>&lt;ContextClosedEvent&gt; {
 
-    private final ExecutorService executor;
-    private final AtomicInteger activeRequests = new AtomicInteger(0);
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ExecutorService executor;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">AtomicInteger</span> <span class="hljs-variable">activeRequests</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">AtomicInteger</span>(<span class="hljs-number">0</span>);
 
-    @Override
-    public void onApplicationEvent(ContextClosedEvent event) {
-        System.out.println(&quot;Shutdown initiated, waiting for active requests...&quot;);
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onApplicationEvent</span><span class="hljs-params">(ContextClosedEvent event)</span> {
+        System.out.println(<span class="hljs-string">&quot;Shutdown initiated, waiting for active requests...&quot;</span>);
 
-        // Wait for active requests to complete
-        int maxWaitSeconds = 30;
-        int waited = 0;
+        <span class="hljs-comment">// Wait for active requests to complete</span>
+        <span class="hljs-type">int</span> <span class="hljs-variable">maxWaitSeconds</span> <span class="hljs-operator">=</span> <span class="hljs-number">30</span>;
+        <span class="hljs-type">int</span> <span class="hljs-variable">waited</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
 
-        while (activeRequests.get() &gt; 0 &amp;&amp; waited &lt; maxWaitSeconds) {
-            try {
-                Thread.sleep(1000);
+        <span class="hljs-keyword">while</span> (activeRequests.get() &gt; <span class="hljs-number">0</span> &amp;&amp; waited &lt; maxWaitSeconds) {
+            <span class="hljs-keyword">try</span> {
+                Thread.sleep(<span class="hljs-number">1000</span>);
                 waited++;
-                System.out.println(&quot;Active requests: &quot; + activeRequests.get());
-            } catch (InterruptedException e) {
+                System.out.println(<span class="hljs-string">&quot;Active requests: &quot;</span> + activeRequests.get());
+            } <span class="hljs-keyword">catch</span> (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                break;
+                <span class="hljs-keyword">break</span>;
             }
         }
 
-        // Shutdown executor
+        <span class="hljs-comment">// Shutdown executor</span>
         executor.shutdown();
-        try {
-            executor.awaitTermination(10, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
+        <span class="hljs-keyword">try</span> {
+            executor.awaitTermination(<span class="hljs-number">10</span>, TimeUnit.SECONDS);
+        } <span class="hljs-keyword">catch</span> (InterruptedException e) {
             executor.shutdownNow();
         }
 
-        System.out.println(&quot;Shutdown complete&quot;);
+        System.out.println(<span class="hljs-string">&quot;Shutdown complete&quot;</span>);
     }
 
-    public void trackRequest() {
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">trackRequest</span><span class="hljs-params">()</span> {
         activeRequests.incrementAndGet();
     }
 
-    public void completeRequest() {
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">completeRequest</span><span class="hljs-params">()</span> {
         activeRequests.decrementAndGet();
     }
 }
@@ -1329,85 +1341,85 @@ public class GracefulShutdownHandler implements ApplicationListener&lt;ContextCl
 <hr>
 <h2 id="backpressure-handling" tabindex="-1"><a class="header-anchor" href="#backpressure-handling"><span>Backpressure Handling</span></a></h2>
 <h3 id="1-blocking-with-bounded-queue" tabindex="-1"><a class="header-anchor" href="#1-blocking-with-bounded-queue"><span>1. Blocking with Bounded Queue</span></a></h3>
-<pre><code class="language-java">public class BackpressureWithBoundedQueue {
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">BackpressureWithBoundedQueue</span> {
 
-    // Bounded queue - producer blocks when full
-    private final BlockingQueue&lt;Task&gt; queue = new ArrayBlockingQueue&lt;&gt;(100);
+    <span class="hljs-comment">// Bounded queue - producer blocks when full</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> BlockingQueue&lt;Task&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayBlockingQueue</span>&lt;&gt;(<span class="hljs-number">100</span>);
 
-    public void produce(Task task) throws InterruptedException {
-        // Blocks if queue is full - natural backpressure
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">produce</span><span class="hljs-params">(Task task)</span> <span class="hljs-keyword">throws</span> InterruptedException {
+        <span class="hljs-comment">// Blocks if queue is full - natural backpressure</span>
         queue.put(task);
     }
 
-    public void produceWithTimeout(Task task, long timeout, TimeUnit unit)
-            throws InterruptedException {
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">produceWithTimeout</span><span class="hljs-params">(Task task, <span class="hljs-type">long</span> timeout, TimeUnit unit)</span>
+            <span class="hljs-keyword">throws</span> InterruptedException {
 
-        if (!queue.offer(task, timeout, unit)) {
-            throw new RejectedExecutionException(&quot;Queue full, try again later&quot;);
+        <span class="hljs-keyword">if</span> (!queue.offer(task, timeout, unit)) {
+            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RejectedExecutionException</span>(<span class="hljs-string">&quot;Queue full, try again later&quot;</span>);
         }
     }
 
-    public void consume() throws InterruptedException {
-        Task task = queue.take(); // Blocks if empty
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">consume</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> InterruptedException {
+        <span class="hljs-type">Task</span> <span class="hljs-variable">task</span> <span class="hljs-operator">=</span> queue.take(); <span class="hljs-comment">// Blocks if empty</span>
         process(task);
     }
 
-    private void process(Task task) { }
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">process</span><span class="hljs-params">(Task task)</span> { }
 }
 </code></pre>
 <h3 id="2-rate-based-backpressure" tabindex="-1"><a class="header-anchor" href="#2-rate-based-backpressure"><span>2. Rate-Based Backpressure</span></a></h3>
-<pre><code class="language-java">public class RateBasedBackpressure {
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">RateBasedBackpressure</span> {
 
-    private final RateLimiter rateLimiter;
-    private final BlockingQueue&lt;Task&gt; queue;
-    private final ExecutorService executor;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> RateLimiter rateLimiter;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> BlockingQueue&lt;Task&gt; queue;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ExecutorService executor;
 
-    public RateBasedBackpressure(int maxRatePerSecond, int queueCapacity) {
-        this.rateLimiter = new TokenBucketRateLimiter(maxRatePerSecond, maxRatePerSecond);
-        this.queue = new ArrayBlockingQueue&lt;&gt;(queueCapacity);
-        this.executor = Executors.newFixedThreadPool(4);
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">RateBasedBackpressure</span><span class="hljs-params">(<span class="hljs-type">int</span> maxRatePerSecond, <span class="hljs-type">int</span> queueCapacity)</span> {
+        <span class="hljs-built_in">this</span>.rateLimiter = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TokenBucketRateLimiter</span>(maxRatePerSecond, maxRatePerSecond);
+        <span class="hljs-built_in">this</span>.queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayBlockingQueue</span>&lt;&gt;(queueCapacity);
+        <span class="hljs-built_in">this</span>.executor = Executors.newFixedThreadPool(<span class="hljs-number">4</span>);
 
         startConsumer();
     }
 
-    public boolean submit(Task task) {
-        // Check rate limit
-        if (!rateLimiter.tryAcquire()) {
-            return false; // Rate limited
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">submit</span><span class="hljs-params">(Task task)</span> {
+        <span class="hljs-comment">// Check rate limit</span>
+        <span class="hljs-keyword">if</span> (!rateLimiter.tryAcquire()) {
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>; <span class="hljs-comment">// Rate limited</span>
         }
 
-        // Check queue capacity
-        return queue.offer(task);
+        <span class="hljs-comment">// Check queue capacity</span>
+        <span class="hljs-keyword">return</span> queue.offer(task);
     }
 
-    private void startConsumer() {
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">startConsumer</span><span class="hljs-params">()</span> {
         executor.submit(() -&gt; {
-            while (!Thread.currentThread().isInterrupted()) {
-                try {
-                    Task task = queue.take();
+            <span class="hljs-keyword">while</span> (!Thread.currentThread().isInterrupted()) {
+                <span class="hljs-keyword">try</span> {
+                    <span class="hljs-type">Task</span> <span class="hljs-variable">task</span> <span class="hljs-operator">=</span> queue.take();
                     process(task);
-                } catch (InterruptedException e) {
+                } <span class="hljs-keyword">catch</span> (InterruptedException e) {
                     Thread.currentThread().interrupt();
-                    break;
+                    <span class="hljs-keyword">break</span>;
                 }
             }
         });
     }
 
-    private void process(Task task) { }
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">process</span><span class="hljs-params">(Task task)</span> { }
 }
 </code></pre>
 <h3 id="3-reactive-backpressure-conceptual" tabindex="-1"><a class="header-anchor" href="#3-reactive-backpressure-conceptual"><span>3. Reactive Backpressure (Conceptual)</span></a></h3>
-<pre><code class="language-java">/**
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
  * Reactive Streams backpressure with request-based flow control.
- */
-public class ReactiveBackpressureExample {
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ReactiveBackpressureExample</span> {
 
-    // Subscriber requests N items at a time
-    public void demonstrateBackpressure() {
-        // Conceptual - using Project Reactor/RxJava syntax
+    <span class="hljs-comment">// Subscriber requests N items at a time</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">demonstrateBackpressure</span><span class="hljs-params">()</span> {
+        <span class="hljs-comment">// Conceptual - using Project Reactor/RxJava syntax</span>
 
-        /*
+        <span class="hljs-comment">/*
         Flux.range(1, 1000)
             .onBackpressureBuffer(100)      // Buffer up to 100
             .onBackpressureDrop(i -&gt; log(&quot;Dropped: &quot; + i))  // Drop if buffer full
@@ -1424,7 +1436,7 @@ public class ReactiveBackpressureExample {
                     request(1); // Request next item after processing
                 }
             });
-        */
+        */</span>
     }
 }
 </code></pre>
@@ -1438,12 +1450,12 @@ public class ReactiveBackpressureExample {
 <li><strong>Request coalescing</strong>: Multiple identical requests share one backend call</li>
 <li><strong>Circuit breaker</strong>: Prevent cascading failures</li>
 </ol>
-<pre><code class="language-java">// Request coalescing example
-ConcurrentHashMap&lt;String, CompletableFuture&lt;Data&gt;&gt; inFlightRequests = new ConcurrentHashMap&lt;&gt;();
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Request coalescing example</span>
+ConcurrentHashMap&lt;String, CompletableFuture&lt;Data&gt;&gt; inFlightRequests = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ConcurrentHashMap</span>&lt;&gt;();
 
-public CompletableFuture&lt;Data&gt; getData(String key) {
-    return inFlightRequests.computeIfAbsent(key, k -&gt; {
-        return fetchFromBackend(k)
+<span class="hljs-keyword">public</span> CompletableFuture&lt;Data&gt; <span class="hljs-title function_">getData</span><span class="hljs-params">(String key)</span> {
+    <span class="hljs-keyword">return</span> inFlightRequests.computeIfAbsent(key, k -&gt; {
+        <span class="hljs-keyword">return</span> fetchFromBackend(k)
             .whenComplete((result, ex) -&gt; inFlightRequests.remove(k));
     });
 }
@@ -1492,13 +1504,13 @@ public CompletableFuture&lt;Data&gt; getData(String key) {
 <li><strong>Idempotency key</strong>: Track processed request IDs</li>
 <li><strong>Transactional outbox</strong>: Atomically update DB and outbox</li>
 </ol>
-<pre><code class="language-java">// At-least-once delivery + idempotent processing = effectively exactly-once
-public void processMessage(Message msg) {
-    if (isAlreadyProcessed(msg.getId())) {
-        return; // Skip duplicate
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// At-least-once delivery + idempotent processing = effectively exactly-once</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">processMessage</span><span class="hljs-params">(Message msg)</span> {
+    <span class="hljs-keyword">if</span> (isAlreadyProcessed(msg.getId())) {
+        <span class="hljs-keyword">return</span>; <span class="hljs-comment">// Skip duplicate</span>
     }
 
-    // Process idempotently (use upsert, conditional updates)
+    <span class="hljs-comment">// Process idempotently (use upsert, conditional updates)</span>
     processIdempotently(msg);
 
     markAsProcessed(msg.getId());
@@ -1544,14 +1556,14 @@ public void processMessage(Message msg) {
 <li><strong>Reject policy</strong>: Handle rejected tasks properly</li>
 <li><strong>Monitor queue size</strong>: Alert on growing queues</li>
 </ol>
-<pre><code class="language-java">// ThreadLocal cleanup
-public void processInPool(Task task) {
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ThreadLocal cleanup</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">processInPool</span><span class="hljs-params">(Task task)</span> {
     executor.submit(() -&gt; {
-        try {
+        <span class="hljs-keyword">try</span> {
             threadLocalContext.set(createContext());
             process(task);
-        } finally {
-            threadLocalContext.remove(); // IMPORTANT!
+        } <span class="hljs-keyword">finally</span> {
+            threadLocalContext.remove(); <span class="hljs-comment">// IMPORTANT!</span>
         }
     });
 }

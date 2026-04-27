@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,13 +20,24 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
     document.querySelectorAll('pre code').forEach(function(codeEl) {
       var pre = codeEl.parentElement;
       var lang = '';
       var cls = codeEl.className || '';
       var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
       if (m) lang = m[1];
+
+      // Add line numbers
+      var lines = codeEl.innerHTML.split('
+');
+      if (lines[lines.length - 1] === '') lines.pop();
+      var numbered = lines.map(function(line, i) {
+        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
+      }).join('
+');
+      codeEl.innerHTML = numbered;
+      codeEl.classList.add('hljs-ln');
+
       var wrapper = document.createElement('div');
       wrapper.className = 'code-block-wrapper';
       pre.parentNode.insertBefore(wrapper, pre);
@@ -45,7 +55,9 @@
       btn.className = 'copy-btn';
       btn.textContent = 'Copy';
       btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
+');
+        navigator.clipboard.writeText(text).then(function() {
           btn.textContent = 'Copied!';
           btn.classList.add('copied');
           setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
@@ -264,152 +276,152 @@
 <li><strong>Proof</strong>: Element at index i has k/i chance to enter, k/(i+1) to stay → k/n final probability</li>
 </ul>
 <p><strong>Template 1: Single Random Element (k=1)</strong></p>
-<pre><code class="language-java">// LC 382 - Linked List Random Node
-class Solution {
-    private ListNode head;
-    private Random random;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 382 - Linked List Random Node</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-keyword">private</span> ListNode head;
+    <span class="hljs-keyword">private</span> Random random;
 
-    public Solution(ListNode head) {
-        this.head = head;
-        this.random = new Random();
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">Solution</span><span class="hljs-params">(ListNode head)</span> {
+        <span class="hljs-built_in">this</span>.head = head;
+        <span class="hljs-built_in">this</span>.random = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Random</span>();
     }
 
-    /**
+    <span class="hljs-comment">/**
      * time = O(N)
      * space = O(1)
-     */
-    public int getRandom() {
-        ListNode cur = head;
-        int result = cur.val;
-        int count = 1;
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">getRandom</span><span class="hljs-params">()</span> {
+        <span class="hljs-type">ListNode</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> head;
+        <span class="hljs-type">int</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> cur.val;
+        <span class="hljs-type">int</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;
 
-        // Process stream: for each element i, include with prob 1/i
-        while (cur != null) {
-            // Generate random in [0, count-1], replace if 0
-            if (random.nextInt(count) == 0) {
+        <span class="hljs-comment">// Process stream: for each element i, include with prob 1/i</span>
+        <span class="hljs-keyword">while</span> (cur != <span class="hljs-literal">null</span>) {
+            <span class="hljs-comment">// Generate random in [0, count-1], replace if 0</span>
+            <span class="hljs-keyword">if</span> (random.nextInt(count) == <span class="hljs-number">0</span>) {
                 result = cur.val;
             }
             count++;
             cur = cur.next;
         }
-        return result;
+        <span class="hljs-keyword">return</span> result;
     }
 }
 </code></pre>
-<pre><code class="language-python"># Python implementation
-import random
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python implementation</span>
+<span class="hljs-keyword">import</span> random
 
-class Solution:
-    def __init__(self, head: ListNode):
-        self.head = head
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, head: ListNode</span>):
+        <span class="hljs-variable language_">self</span>.head = head
 
-    def getRandom(self) -&gt; int:
-        cur = self.head
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">getRandom</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">int</span>:
+        cur = <span class="hljs-variable language_">self</span>.head
         result = cur.val
-        count = 1
+        count = <span class="hljs-number">1</span>
 
-        cur = cur.next
-        while cur:
-            count += 1
-            # Include current element with probability 1/count
-            if random.randint(1, count) == count:
+        cur = cur.<span class="hljs-built_in">next</span>
+        <span class="hljs-keyword">while</span> cur:
+            count += <span class="hljs-number">1</span>
+            <span class="hljs-comment"># Include current element with probability 1/count</span>
+            <span class="hljs-keyword">if</span> random.randint(<span class="hljs-number">1</span>, count) == count:
                 result = cur.val
-            cur = cur.next
+            cur = cur.<span class="hljs-built_in">next</span>
 
-        return result
+        <span class="hljs-keyword">return</span> result
 </code></pre>
 <p><strong>Template 2: k Random Elements</strong></p>
-<pre><code class="language-java">// LC 398 - Random Pick Index (variant: pick from array with duplicates)
-class Solution {
-    private int[] nums;
-    private Random random;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 398 - Random Pick Index (variant: pick from array with duplicates)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span>[] nums;
+    <span class="hljs-keyword">private</span> Random random;
 
-    public Solution(int[] nums) {
-        this.nums = nums;
-        this.random = new Random();
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">Solution</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+        <span class="hljs-built_in">this</span>.nums = nums;
+        <span class="hljs-built_in">this</span>.random = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Random</span>();
     }
 
-    /**
+    <span class="hljs-comment">/**
      * time = O(N)
      * space = O(1)
-     */
-    public int pick(int target) {
-        int result = -1;
-        int count = 0;
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">pick</span><span class="hljs-params">(<span class="hljs-type">int</span> target)</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> -<span class="hljs-number">1</span>;
+        <span class="hljs-type">int</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
 
-        for (int i = 0; i &lt; nums.length; i++) {
-            if (nums[i] == target) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; nums.length; i++) {
+            <span class="hljs-keyword">if</span> (nums[i] == target) {
                 count++;
-                // Replace with probability 1/count
-                if (random.nextInt(count) == 0) {
+                <span class="hljs-comment">// Replace with probability 1/count</span>
+                <span class="hljs-keyword">if</span> (random.nextInt(count) == <span class="hljs-number">0</span>) {
                     result = i;
                 }
             }
         }
-        return result;
+        <span class="hljs-keyword">return</span> result;
     }
 }
 </code></pre>
 <p><strong>Template 3: General k-Reservoir Sampling</strong></p>
-<pre><code class="language-java">class ReservoirSampling {
-    private int k;
-    private int[] reservoir;
-    private Random random;
-    private int count; // Elements seen so far
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">ReservoirSampling</span> {
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> k;
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span>[] reservoir;
+    <span class="hljs-keyword">private</span> Random random;
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> count; <span class="hljs-comment">// Elements seen so far</span>
 
-    public ReservoirSampling(int k) {
-        this.k = k;
-        this.reservoir = new int[k];
-        this.random = new Random();
-        this.count = 0;
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">ReservoirSampling</span><span class="hljs-params">(<span class="hljs-type">int</span> k)</span> {
+        <span class="hljs-built_in">this</span>.k = k;
+        <span class="hljs-built_in">this</span>.reservoir = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[k];
+        <span class="hljs-built_in">this</span>.random = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Random</span>();
+        <span class="hljs-built_in">this</span>.count = <span class="hljs-number">0</span>;
     }
 
-    /**
+    <span class="hljs-comment">/**
      * time = O(1) per element
      * space = O(k)
-     */
-    public void add(int val) {
-        if (count &lt; k) {
-            // Fill reservoir first
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">add</span><span class="hljs-params">(<span class="hljs-type">int</span> val)</span> {
+        <span class="hljs-keyword">if</span> (count &lt; k) {
+            <span class="hljs-comment">// Fill reservoir first</span>
             reservoir[count] = val;
-        } else {
-            // Generate random index in [0, count]
-            int j = random.nextInt(count + 1);
-            if (j &lt; k) {
-                // Replace element in reservoir
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-comment">// Generate random index in [0, count]</span>
+            <span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> random.nextInt(count + <span class="hljs-number">1</span>);
+            <span class="hljs-keyword">if</span> (j &lt; k) {
+                <span class="hljs-comment">// Replace element in reservoir</span>
                 reservoir[j] = val;
             }
         }
         count++;
     }
 
-    public int[] getSample() {
-        return Arrays.copyOf(reservoir, Math.min(k, count));
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] getSample() {
+        <span class="hljs-keyword">return</span> Arrays.copyOf(reservoir, Math.min(k, count));
     }
 }
 </code></pre>
-<pre><code class="language-python"># Python k-reservoir sampling
-import random
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python k-reservoir sampling</span>
+<span class="hljs-keyword">import</span> random
 
-class ReservoirSampling:
-    def __init__(self, k: int):
-        self.k = k
-        self.reservoir = []
-        self.count = 0
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">ReservoirSampling</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, k: <span class="hljs-built_in">int</span></span>):
+        <span class="hljs-variable language_">self</span>.k = k
+        <span class="hljs-variable language_">self</span>.reservoir = []
+        <span class="hljs-variable language_">self</span>.count = <span class="hljs-number">0</span>
 
-    def add(self, val: int) -&gt; None:
-        &quot;&quot;&quot;Time: O(1), Space: O(k)&quot;&quot;&quot;
-        if self.count &lt; self.k:
-            self.reservoir.append(val)
-        else:
-            # Random index in [0, count]
-            j = random.randint(0, self.count)
-            if j &lt; self.k:
-                self.reservoir[j] = val
-        self.count += 1
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">add</span>(<span class="hljs-params">self, val: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-literal">None</span>:
+        <span class="hljs-string">&quot;&quot;&quot;Time: O(1), Space: O(k)&quot;&quot;&quot;</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.count &lt; <span class="hljs-variable language_">self</span>.k:
+            <span class="hljs-variable language_">self</span>.reservoir.append(val)
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-comment"># Random index in [0, count]</span>
+            j = random.randint(<span class="hljs-number">0</span>, <span class="hljs-variable language_">self</span>.count)
+            <span class="hljs-keyword">if</span> j &lt; <span class="hljs-variable language_">self</span>.k:
+                <span class="hljs-variable language_">self</span>.reservoir[j] = val
+        <span class="hljs-variable language_">self</span>.count += <span class="hljs-number">1</span>
 
-    def get_sample(self) -&gt; list:
-        return self.reservoir[:]
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_sample</span>(<span class="hljs-params">self</span>) -&gt; <span class="hljs-built_in">list</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.reservoir[:]
 </code></pre>
 <p><strong>Key Insight:</strong> Probability math ensures uniform distribution</p>
 <ul>
@@ -427,177 +439,177 @@ class ReservoirSampling:
 <li><strong>Two-phase</strong>: (1) Find candidates, (2) Verify counts</li>
 </ul>
 <p><strong>Template 1: Standard Majority Element (&gt; n/2)</strong></p>
-<pre><code class="language-java">// LC 169 - Majority Element
-class Solution {
-    /**
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 169 - Majority Element</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-comment">/**
      * time = O(N)
      * space = O(1)
-     */
-    public int majorityElement(int[] nums) {
-        int candidate = nums[0];
-        int count = 1;
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">majorityElement</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">candidate</span> <span class="hljs-operator">=</span> nums[<span class="hljs-number">0</span>];
+        <span class="hljs-type">int</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;
 
-        // Phase 1: Find candidate
-        for (int i = 1; i &lt; nums.length; i++) {
-            if (count == 0) {
+        <span class="hljs-comment">// Phase 1: Find candidate</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; nums.length; i++) {
+            <span class="hljs-keyword">if</span> (count == <span class="hljs-number">0</span>) {
                 candidate = nums[i];
-                count = 1;
-            } else if (nums[i] == candidate) {
+                count = <span class="hljs-number">1</span>;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (nums[i] == candidate) {
                 count++;
-            } else {
-                count--; // Cancel out different element
+            } <span class="hljs-keyword">else</span> {
+                count--; <span class="hljs-comment">// Cancel out different element</span>
             }
         }
 
-        // Phase 2: Verify (not needed if majority guaranteed)
-        // If not guaranteed, count candidate appearances
-        return candidate;
+        <span class="hljs-comment">// Phase 2: Verify (not needed if majority guaranteed)</span>
+        <span class="hljs-comment">// If not guaranteed, count candidate appearances</span>
+        <span class="hljs-keyword">return</span> candidate;
     }
 }
 </code></pre>
-<pre><code class="language-python"># Python implementation
-def majorityElement(nums: list[int]) -&gt; int:
-    &quot;&quot;&quot;Time: O(n), Space: O(1)&quot;&quot;&quot;
-    candidate = None
-    count = 0
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python implementation</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">majorityElement</span>(<span class="hljs-params">nums: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>]</span>) -&gt; <span class="hljs-built_in">int</span>:
+    <span class="hljs-string">&quot;&quot;&quot;Time: O(n), Space: O(1)&quot;&quot;&quot;</span>
+    candidate = <span class="hljs-literal">None</span>
+    count = <span class="hljs-number">0</span>
 
-    # Phase 1: Find candidate
-    for num in nums:
-        if count == 0:
+    <span class="hljs-comment"># Phase 1: Find candidate</span>
+    <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> nums:
+        <span class="hljs-keyword">if</span> count == <span class="hljs-number">0</span>:
             candidate = num
-            count = 1
-        elif num == candidate:
-            count += 1
-        else:
-            count -= 1
+            count = <span class="hljs-number">1</span>
+        <span class="hljs-keyword">elif</span> num == candidate:
+            count += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">else</span>:
+            count -= <span class="hljs-number">1</span>
 
-    return candidate
+    <span class="hljs-keyword">return</span> candidate
 </code></pre>
 <p><strong>Template 2: Generalized - Elements Appearing &gt; n/3 Times (LC 229)</strong></p>
-<pre><code class="language-java">// LC 229 - Majority Element II (&gt; n/3)
-class Solution {
-    /**
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 229 - Majority Element II (&gt; n/3)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-comment">/**
      * time = O(N)
      * space = O(1)
-     */
-    public List&lt;Integer&gt; majorityElement(int[] nums) {
-        // At most 2 elements can appear &gt; n/3 times
-        int candidate1 = 0, candidate2 = 0;
-        int count1 = 0, count2 = 0;
+     */</span>
+    <span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">majorityElement</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+        <span class="hljs-comment">// At most 2 elements can appear &gt; n/3 times</span>
+        <span class="hljs-type">int</span> <span class="hljs-variable">candidate1</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, candidate2 = <span class="hljs-number">0</span>;
+        <span class="hljs-type">int</span> <span class="hljs-variable">count1</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, count2 = <span class="hljs-number">0</span>;
 
-        // Phase 1: Find candidates (at most k-1 candidates for n/k)
-        for (int num : nums) {
-            if (num == candidate1) {
+        <span class="hljs-comment">// Phase 1: Find candidates (at most k-1 candidates for n/k)</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : nums) {
+            <span class="hljs-keyword">if</span> (num == candidate1) {
                 count1++;
-            } else if (num == candidate2) {
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (num == candidate2) {
                 count2++;
-            } else if (count1 == 0) {
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (count1 == <span class="hljs-number">0</span>) {
                 candidate1 = num;
-                count1 = 1;
-            } else if (count2 == 0) {
+                count1 = <span class="hljs-number">1</span>;
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (count2 == <span class="hljs-number">0</span>) {
                 candidate2 = num;
-                count2 = 1;
-            } else {
-                // Different from both: cancel out
+                count2 = <span class="hljs-number">1</span>;
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-comment">// Different from both: cancel out</span>
                 count1--;
                 count2--;
             }
         }
 
-        // Phase 2: Verify candidates
-        count1 = 0;
-        count2 = 0;
-        for (int num : nums) {
-            if (num == candidate1) count1++;
-            else if (num == candidate2) count2++;
+        <span class="hljs-comment">// Phase 2: Verify candidates</span>
+        count1 = <span class="hljs-number">0</span>;
+        count2 = <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : nums) {
+            <span class="hljs-keyword">if</span> (num == candidate1) count1++;
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (num == candidate2) count2++;
         }
 
-        List&lt;Integer&gt; result = new ArrayList&lt;&gt;();
-        if (count1 &gt; nums.length / 3) result.add(candidate1);
-        if (count2 &gt; nums.length / 3) result.add(candidate2);
+        List&lt;Integer&gt; result = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+        <span class="hljs-keyword">if</span> (count1 &gt; nums.length / <span class="hljs-number">3</span>) result.add(candidate1);
+        <span class="hljs-keyword">if</span> (count2 &gt; nums.length / <span class="hljs-number">3</span>) result.add(candidate2);
 
-        return result;
+        <span class="hljs-keyword">return</span> result;
     }
 }
 </code></pre>
-<pre><code class="language-python"># Python - Majority Element II
-def majorityElement(nums: list[int]) -&gt; list[int]:
-    &quot;&quot;&quot;Time: O(n), Space: O(1)&quot;&quot;&quot;
-    # Phase 1: Find up to 2 candidates
-    candidate1, candidate2 = None, None
-    count1, count2 = 0, 0
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Majority Element II</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">majorityElement</span>(<span class="hljs-params">nums: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>]</span>) -&gt; <span class="hljs-built_in">list</span>[<span class="hljs-built_in">int</span>]:
+    <span class="hljs-string">&quot;&quot;&quot;Time: O(n), Space: O(1)&quot;&quot;&quot;</span>
+    <span class="hljs-comment"># Phase 1: Find up to 2 candidates</span>
+    candidate1, candidate2 = <span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>
+    count1, count2 = <span class="hljs-number">0</span>, <span class="hljs-number">0</span>
 
-    for num in nums:
-        if num == candidate1:
-            count1 += 1
-        elif num == candidate2:
-            count2 += 1
-        elif count1 == 0:
-            candidate1, count1 = num, 1
-        elif count2 == 0:
-            candidate2, count2 = num, 1
-        else:
-            count1 -= 1
-            count2 -= 1
+    <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> nums:
+        <span class="hljs-keyword">if</span> num == candidate1:
+            count1 += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">elif</span> num == candidate2:
+            count2 += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">elif</span> count1 == <span class="hljs-number">0</span>:
+            candidate1, count1 = num, <span class="hljs-number">1</span>
+        <span class="hljs-keyword">elif</span> count2 == <span class="hljs-number">0</span>:
+            candidate2, count2 = num, <span class="hljs-number">1</span>
+        <span class="hljs-keyword">else</span>:
+            count1 -= <span class="hljs-number">1</span>
+            count2 -= <span class="hljs-number">1</span>
 
-    # Phase 2: Verify
+    <span class="hljs-comment"># Phase 2: Verify</span>
     result = []
-    for candidate in [candidate1, candidate2]:
-        if nums.count(candidate) &gt; len(nums) // 3:
+    <span class="hljs-keyword">for</span> candidate <span class="hljs-keyword">in</span> [candidate1, candidate2]:
+        <span class="hljs-keyword">if</span> nums.count(candidate) &gt; <span class="hljs-built_in">len</span>(nums) // <span class="hljs-number">3</span>:
             result.append(candidate)
 
-    return result
+    <span class="hljs-keyword">return</span> result
 </code></pre>
 <p><strong>Generalized Template: Top k-1 Elements (&gt; n/k)</strong></p>
-<pre><code class="language-java">class BoyerMooreGeneralized {
-    /**
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">BoyerMooreGeneralized</span> {
+    <span class="hljs-comment">/**
      * Find elements appearing &gt; n/k times
      * time = O(N * k)
      * space = O(k)
-     */
-    public List&lt;Integer&gt; majorityElement(int[] nums, int k) {
-        // Can have at most k-1 elements appearing &gt; n/k times
-        Map&lt;Integer, Integer&gt; candidates = new HashMap&lt;&gt;();
+     */</span>
+    <span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">majorityElement</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k)</span> {
+        <span class="hljs-comment">// Can have at most k-1 elements appearing &gt; n/k times</span>
+        Map&lt;Integer, Integer&gt; candidates = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
 
-        // Phase 1: Find candidates
-        for (int num : nums) {
-            if (candidates.containsKey(num)) {
-                candidates.put(num, candidates.get(num) + 1);
-            } else if (candidates.size() &lt; k - 1) {
-                candidates.put(num, 1);
-            } else {
-                // Decrement all counts (cancellation)
-                List&lt;Integer&gt; toRemove = new ArrayList&lt;&gt;();
-                for (Map.Entry&lt;Integer, Integer&gt; entry : candidates.entrySet()) {
-                    int count = entry.getValue() - 1;
-                    if (count == 0) {
+        <span class="hljs-comment">// Phase 1: Find candidates</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : nums) {
+            <span class="hljs-keyword">if</span> (candidates.containsKey(num)) {
+                candidates.put(num, candidates.get(num) + <span class="hljs-number">1</span>);
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (candidates.size() &lt; k - <span class="hljs-number">1</span>) {
+                candidates.put(num, <span class="hljs-number">1</span>);
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-comment">// Decrement all counts (cancellation)</span>
+                List&lt;Integer&gt; toRemove = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+                <span class="hljs-keyword">for</span> (Map.Entry&lt;Integer, Integer&gt; entry : candidates.entrySet()) {
+                    <span class="hljs-type">int</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> entry.getValue() - <span class="hljs-number">1</span>;
+                    <span class="hljs-keyword">if</span> (count == <span class="hljs-number">0</span>) {
                         toRemove.add(entry.getKey());
-                    } else {
+                    } <span class="hljs-keyword">else</span> {
                         candidates.put(entry.getKey(), count);
                     }
                 }
-                for (int key : toRemove) {
+                <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> key : toRemove) {
                     candidates.remove(key);
                 }
             }
         }
 
-        // Phase 2: Verify candidates
-        Map&lt;Integer, Integer&gt; counts = new HashMap&lt;&gt;();
-        for (int num : nums) {
-            if (candidates.containsKey(num)) {
-                counts.put(num, counts.getOrDefault(num, 0) + 1);
+        <span class="hljs-comment">// Phase 2: Verify candidates</span>
+        Map&lt;Integer, Integer&gt; counts = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : nums) {
+            <span class="hljs-keyword">if</span> (candidates.containsKey(num)) {
+                counts.put(num, counts.getOrDefault(num, <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>);
             }
         }
 
-        List&lt;Integer&gt; result = new ArrayList&lt;&gt;();
-        for (Map.Entry&lt;Integer, Integer&gt; entry : counts.entrySet()) {
-            if (entry.getValue() &gt; nums.length / k) {
+        List&lt;Integer&gt; result = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+        <span class="hljs-keyword">for</span> (Map.Entry&lt;Integer, Integer&gt; entry : counts.entrySet()) {
+            <span class="hljs-keyword">if</span> (entry.getValue() &gt; nums.length / k) {
                 result.add(entry.getKey());
             }
         }
 
-        return result;
+        <span class="hljs-keyword">return</span> result;
     }
 }
 </code></pre>
@@ -612,119 +624,119 @@ def majorityElement(nums: list[int]) -&gt; list[int]:
 <li><strong>Parameters</strong>: w = ⌈e/ε⌉, d = ⌈ln(1/δ)⌉</li>
 </ul>
 <p><strong>Template:</strong></p>
-<pre><code class="language-java">class CountMinSketch {
-    private int[][] count; // d × w matrix
-    private int d; // Number of hash functions
-    private int w; // Width of each row
-    private long[] hashA, hashB; // Hash parameters
-    private static final long PRIME = 2147483647L; // Large prime
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">CountMinSketch</span> {
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span>[][] count; <span class="hljs-comment">// d × w matrix</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> d; <span class="hljs-comment">// Number of hash functions</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> w; <span class="hljs-comment">// Width of each row</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-type">long</span>[] hashA, hashB; <span class="hljs-comment">// Hash parameters</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">long</span> <span class="hljs-variable">PRIME</span> <span class="hljs-operator">=</span> <span class="hljs-number">2147483647L</span>; <span class="hljs-comment">// Large prime</span>
 
-    /**
+    <span class="hljs-comment">/**
      * Constructor
      * epsilon: error tolerance (e.g., 0.01 for 1% error)
      * delta: failure probability (e.g., 0.01 for 99% confidence)
-     */
-    public CountMinSketch(double epsilon, double delta) {
-        this.w = (int) Math.ceil(Math.E / epsilon);
-        this.d = (int) Math.ceil(Math.log(1.0 / delta));
-        this.count = new int[d][w];
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">CountMinSketch</span><span class="hljs-params">(<span class="hljs-type">double</span> epsilon, <span class="hljs-type">double</span> delta)</span> {
+        <span class="hljs-built_in">this</span>.w = (<span class="hljs-type">int</span>) Math.ceil(Math.E / epsilon);
+        <span class="hljs-built_in">this</span>.d = (<span class="hljs-type">int</span>) Math.ceil(Math.log(<span class="hljs-number">1.0</span> / delta));
+        <span class="hljs-built_in">this</span>.count = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[d][w];
 
-        // Initialize hash functions: h(x) = ((a*x + b) % p) % w
-        Random random = new Random();
-        hashA = new long[d];
-        hashB = new long[d];
-        for (int i = 0; i &lt; d; i++) {
+        <span class="hljs-comment">// Initialize hash functions: h(x) = ((a*x + b) % p) % w</span>
+        <span class="hljs-type">Random</span> <span class="hljs-variable">random</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Random</span>();
+        hashA = <span class="hljs-keyword">new</span> <span class="hljs-title class_">long</span>[d];
+        hashB = <span class="hljs-keyword">new</span> <span class="hljs-title class_">long</span>[d];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; d; i++) {
             hashA[i] = random.nextInt(Integer.MAX_VALUE);
             hashB[i] = random.nextInt(Integer.MAX_VALUE);
         }
     }
 
-    private int hash(int item, int i) {
-        // Hash function i
-        long hash = ((hashA[i] * item + hashB[i]) % PRIME) % w;
-        return (int) hash;
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">hash</span><span class="hljs-params">(<span class="hljs-type">int</span> item, <span class="hljs-type">int</span> i)</span> {
+        <span class="hljs-comment">// Hash function i</span>
+        <span class="hljs-type">long</span> <span class="hljs-variable">hash</span> <span class="hljs-operator">=</span> ((hashA[i] * item + hashB[i]) % PRIME) % w;
+        <span class="hljs-keyword">return</span> (<span class="hljs-type">int</span>) hash;
     }
 
-    /**
+    <span class="hljs-comment">/**
      * Add item to sketch
      * time = O(d)
      * space = O(1)
-     */
-    public void add(int item) {
-        for (int i = 0; i &lt; d; i++) {
-            int index = hash(item, i);
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">add</span><span class="hljs-params">(<span class="hljs-type">int</span> item)</span> {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; d; i++) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">index</span> <span class="hljs-operator">=</span> hash(item, i);
             count[i][index]++;
         }
     }
 
-    /**
+    <span class="hljs-comment">/**
      * Estimate frequency of item
      * time = O(d)
      * space = O(1)
      * Returns: estimated count (may overestimate, never underestimate)
-     */
-    public int estimateCount(int item) {
-        int minCount = Integer.MAX_VALUE;
-        for (int i = 0; i &lt; d; i++) {
-            int index = hash(item, i);
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">estimateCount</span><span class="hljs-params">(<span class="hljs-type">int</span> item)</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">minCount</span> <span class="hljs-operator">=</span> Integer.MAX_VALUE;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; d; i++) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">index</span> <span class="hljs-operator">=</span> hash(item, i);
             minCount = Math.min(minCount, count[i][index]);
         }
-        return minCount;
+        <span class="hljs-keyword">return</span> minCount;
     }
 
-    /**
+    <span class="hljs-comment">/**
      * Get space usage
-     */
-    public int getSpace() {
-        return d * w; // Number of counters
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">getSpace</span><span class="hljs-params">()</span> {
+        <span class="hljs-keyword">return</span> d * w; <span class="hljs-comment">// Number of counters</span>
     }
 }
 </code></pre>
-<pre><code class="language-python"># Python Count-Min Sketch
-import math
-import random
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python Count-Min Sketch</span>
+<span class="hljs-keyword">import</span> math
+<span class="hljs-keyword">import</span> random
 
-class CountMinSketch:
-    def __init__(self, epsilon: float, delta: float):
-        &quot;&quot;&quot;
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">CountMinSketch</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, epsilon: <span class="hljs-built_in">float</span>, delta: <span class="hljs-built_in">float</span></span>):
+        <span class="hljs-string">&quot;&quot;&quot;
         epsilon: error tolerance
         delta: failure probability
-        &quot;&quot;&quot;
-        self.w = math.ceil(math.e / epsilon)
-        self.d = math.ceil(math.log(1.0 / delta))
-        self.count = [[0] * self.w for _ in range(self.d)]
+        &quot;&quot;&quot;</span>
+        <span class="hljs-variable language_">self</span>.w = math.ceil(math.e / epsilon)
+        <span class="hljs-variable language_">self</span>.d = math.ceil(math.log(<span class="hljs-number">1.0</span> / delta))
+        <span class="hljs-variable language_">self</span>.count = [[<span class="hljs-number">0</span>] * <span class="hljs-variable language_">self</span>.w <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-variable language_">self</span>.d)]
 
-        # Initialize hash parameters
-        PRIME = 2147483647
-        self.hash_a = [random.randint(1, PRIME-1) for _ in range(self.d)]
-        self.hash_b = [random.randint(0, PRIME-1) for _ in range(self.d)]
-        self.PRIME = PRIME
+        <span class="hljs-comment"># Initialize hash parameters</span>
+        PRIME = <span class="hljs-number">2147483647</span>
+        <span class="hljs-variable language_">self</span>.hash_a = [random.randint(<span class="hljs-number">1</span>, PRIME-<span class="hljs-number">1</span>) <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-variable language_">self</span>.d)]
+        <span class="hljs-variable language_">self</span>.hash_b = [random.randint(<span class="hljs-number">0</span>, PRIME-<span class="hljs-number">1</span>) <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-variable language_">self</span>.d)]
+        <span class="hljs-variable language_">self</span>.PRIME = PRIME
 
-    def _hash(self, item: int, i: int) -&gt; int:
-        &quot;&quot;&quot;Hash function i&quot;&quot;&quot;
-        return ((self.hash_a[i] * item + self.hash_b[i]) % self.PRIME) % self.w
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">_hash</span>(<span class="hljs-params">self, item: <span class="hljs-built_in">int</span>, i: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">int</span>:
+        <span class="hljs-string">&quot;&quot;&quot;Hash function i&quot;&quot;&quot;</span>
+        <span class="hljs-keyword">return</span> ((<span class="hljs-variable language_">self</span>.hash_a[i] * item + <span class="hljs-variable language_">self</span>.hash_b[i]) % <span class="hljs-variable language_">self</span>.PRIME) % <span class="hljs-variable language_">self</span>.w
 
-    def add(self, item: int) -&gt; None:
-        &quot;&quot;&quot;Time: O(d), Space: O(1)&quot;&quot;&quot;
-        for i in range(self.d):
-            index = self._hash(item, i)
-            self.count[i][index] += 1
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">add</span>(<span class="hljs-params">self, item: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-literal">None</span>:
+        <span class="hljs-string">&quot;&quot;&quot;Time: O(d), Space: O(1)&quot;&quot;&quot;</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-variable language_">self</span>.d):
+            index = <span class="hljs-variable language_">self</span>._<span class="hljs-built_in">hash</span>(item, i)
+            <span class="hljs-variable language_">self</span>.count[i][index] += <span class="hljs-number">1</span>
 
-    def estimate_count(self, item: int) -&gt; int:
-        &quot;&quot;&quot;Time: O(d), Returns estimated frequency&quot;&quot;&quot;
-        return min(self.count[i][self._hash(item, i)] for i in range(self.d))
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">estimate_count</span>(<span class="hljs-params">self, item: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">int</span>:
+        <span class="hljs-string">&quot;&quot;&quot;Time: O(d), Returns estimated frequency&quot;&quot;&quot;</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">min</span>(<span class="hljs-variable language_">self</span>.count[i][<span class="hljs-variable language_">self</span>._<span class="hljs-built_in">hash</span>(item, i)] <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-variable language_">self</span>.d))
 </code></pre>
 <p><strong>Usage Example:</strong></p>
-<pre><code class="language-java">// Track top-k frequent elements in stream
-CountMinSketch cms = new CountMinSketch(0.01, 0.01); // 1% error, 99% confidence
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Track top-k frequent elements in stream</span>
+<span class="hljs-type">CountMinSketch</span> <span class="hljs-variable">cms</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">CountMinSketch</span>(<span class="hljs-number">0.01</span>, <span class="hljs-number">0.01</span>); <span class="hljs-comment">// 1% error, 99% confidence</span>
 
-// Process stream
-for (int item : stream) {
+<span class="hljs-comment">// Process stream</span>
+<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> item : stream) {
     cms.add(item);
 }
 
-// Query frequencies
-int freq = cms.estimateCount(42); // Estimated frequency of item 42
+<span class="hljs-comment">// Query frequencies</span>
+<span class="hljs-type">int</span> <span class="hljs-variable">freq</span> <span class="hljs-operator">=</span> cms.estimateCount(<span class="hljs-number">42</span>); <span class="hljs-comment">// Estimated frequency of item 42</span>
 </code></pre>
 <hr>
 <h3 id="1-4-bloom-filter-membership-testing" tabindex="-1"><a class="header-anchor" href="#1-4-bloom-filter-membership-testing"><span>1-4) Bloom Filter - Membership Testing</span></a></h3>
@@ -737,132 +749,132 @@ int freq = cms.estimateCount(42); // Estimated frequency of item 42
 <li><strong>Optimal k</strong>: (m/n) × ln(2)</li>
 </ul>
 <p><strong>Template:</strong></p>
-<pre><code class="language-java">class BloomFilter {
-    private BitSet bitSet;
-    private int m; // Bit array size
-    private int k; // Number of hash functions
-    private long[] hashSeeds;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">BloomFilter</span> {
+    <span class="hljs-keyword">private</span> BitSet bitSet;
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> m; <span class="hljs-comment">// Bit array size</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> k; <span class="hljs-comment">// Number of hash functions</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-type">long</span>[] hashSeeds;
 
-    /**
+    <span class="hljs-comment">/**
      * Constructor
      * expectedElements: expected number of elements
      * falsePositiveRate: desired false positive probability (e.g., 0.01)
-     */
-    public BloomFilter(int expectedElements, double falsePositiveRate) {
-        // Optimal m: -(n * ln(p)) / (ln(2)^2)
-        this.m = (int) Math.ceil(
-            -(expectedElements * Math.log(falsePositiveRate)) / Math.pow(Math.log(2), 2)
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">BloomFilter</span><span class="hljs-params">(<span class="hljs-type">int</span> expectedElements, <span class="hljs-type">double</span> falsePositiveRate)</span> {
+        <span class="hljs-comment">// Optimal m: -(n * ln(p)) / (ln(2)^2)</span>
+        <span class="hljs-built_in">this</span>.m = (<span class="hljs-type">int</span>) Math.ceil(
+            -(expectedElements * Math.log(falsePositiveRate)) / Math.pow(Math.log(<span class="hljs-number">2</span>), <span class="hljs-number">2</span>)
         );
 
-        // Optimal k: (m/n) * ln(2)
-        this.k = (int) Math.ceil((m / (double) expectedElements) * Math.log(2));
+        <span class="hljs-comment">// Optimal k: (m/n) * ln(2)</span>
+        <span class="hljs-built_in">this</span>.k = (<span class="hljs-type">int</span>) Math.ceil((m / (<span class="hljs-type">double</span>) expectedElements) * Math.log(<span class="hljs-number">2</span>));
 
-        this.bitSet = new BitSet(m);
+        <span class="hljs-built_in">this</span>.bitSet = <span class="hljs-keyword">new</span> <span class="hljs-title class_">BitSet</span>(m);
 
-        // Initialize hash seeds
-        Random random = new Random();
-        hashSeeds = new long[k];
-        for (int i = 0; i &lt; k; i++) {
+        <span class="hljs-comment">// Initialize hash seeds</span>
+        <span class="hljs-type">Random</span> <span class="hljs-variable">random</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Random</span>();
+        hashSeeds = <span class="hljs-keyword">new</span> <span class="hljs-title class_">long</span>[k];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; k; i++) {
             hashSeeds[i] = random.nextLong();
         }
     }
 
-    private int hash(String item, int i) {
-        long hash = hashSeeds[i];
-        for (char c : item.toCharArray()) {
-            hash = hash * 31 + c;
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">hash</span><span class="hljs-params">(String item, <span class="hljs-type">int</span> i)</span> {
+        <span class="hljs-type">long</span> <span class="hljs-variable">hash</span> <span class="hljs-operator">=</span> hashSeeds[i];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : item.toCharArray()) {
+            hash = hash * <span class="hljs-number">31</span> + c;
         }
-        return Math.abs((int) (hash % m));
+        <span class="hljs-keyword">return</span> Math.abs((<span class="hljs-type">int</span>) (hash % m));
     }
 
-    /**
+    <span class="hljs-comment">/**
      * Add item to filter
      * time = O(k)
      * space = O(1)
-     */
-    public void add(String item) {
-        for (int i = 0; i &lt; k; i++) {
-            int index = hash(item, i);
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">add</span><span class="hljs-params">(String item)</span> {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; k; i++) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">index</span> <span class="hljs-operator">=</span> hash(item, i);
             bitSet.set(index);
         }
     }
 
-    /**
+    <span class="hljs-comment">/**
      * Check if item might be in set
      * time = O(k)
      * space = O(1)
      * Returns: true if might exist (possible false positive)
      *          false if definitely not in set (no false negative)
-     */
-    public boolean mightContain(String item) {
-        for (int i = 0; i &lt; k; i++) {
-            int index = hash(item, i);
-            if (!bitSet.get(index)) {
-                return false; // Definitely not in set
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">mightContain</span><span class="hljs-params">(String item)</span> {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; k; i++) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">index</span> <span class="hljs-operator">=</span> hash(item, i);
+            <span class="hljs-keyword">if</span> (!bitSet.get(index)) {
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>; <span class="hljs-comment">// Definitely not in set</span>
             }
         }
-        return true; // Might be in set
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>; <span class="hljs-comment">// Might be in set</span>
     }
 
-    /**
+    <span class="hljs-comment">/**
      * Get expected false positive rate
-     */
-    public double getFalsePositiveRate(int insertedElements) {
-        return Math.pow(1 - Math.exp(-k * insertedElements / (double) m), k);
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">double</span> <span class="hljs-title function_">getFalsePositiveRate</span><span class="hljs-params">(<span class="hljs-type">int</span> insertedElements)</span> {
+        <span class="hljs-keyword">return</span> Math.pow(<span class="hljs-number">1</span> - Math.exp(-k * insertedElements / (<span class="hljs-type">double</span>) m), k);
     }
 }
 </code></pre>
-<pre><code class="language-python"># Python Bloom Filter
-import math
-import mmh3  # MurmurHash3 (install: pip install mmh3)
-from bitarray import bitarray  # (install: pip install bitarray)
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python Bloom Filter</span>
+<span class="hljs-keyword">import</span> math
+<span class="hljs-keyword">import</span> mmh3  <span class="hljs-comment"># MurmurHash3 (install: pip install mmh3)</span>
+<span class="hljs-keyword">from</span> bitarray <span class="hljs-keyword">import</span> bitarray  <span class="hljs-comment"># (install: pip install bitarray)</span>
 
-class BloomFilter:
-    def __init__(self, expected_elements: int, false_positive_rate: float):
-        &quot;&quot;&quot;
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">BloomFilter</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, expected_elements: <span class="hljs-built_in">int</span>, false_positive_rate: <span class="hljs-built_in">float</span></span>):
+        <span class="hljs-string">&quot;&quot;&quot;
         expected_elements: expected number of items
         false_positive_rate: desired false positive probability
-        &quot;&quot;&quot;
-        # Optimal m
-        self.m = math.ceil(
-            -(expected_elements * math.log(false_positive_rate)) / (math.log(2) ** 2)
+        &quot;&quot;&quot;</span>
+        <span class="hljs-comment"># Optimal m</span>
+        <span class="hljs-variable language_">self</span>.m = math.ceil(
+            -(expected_elements * math.log(false_positive_rate)) / (math.log(<span class="hljs-number">2</span>) ** <span class="hljs-number">2</span>)
         )
 
-        # Optimal k
-        self.k = math.ceil((self.m / expected_elements) * math.log(2))
+        <span class="hljs-comment"># Optimal k</span>
+        <span class="hljs-variable language_">self</span>.k = math.ceil((<span class="hljs-variable language_">self</span>.m / expected_elements) * math.log(<span class="hljs-number">2</span>))
 
-        self.bit_array = bitarray(self.m)
-        self.bit_array.setall(0)
+        <span class="hljs-variable language_">self</span>.bit_array = bitarray(<span class="hljs-variable language_">self</span>.m)
+        <span class="hljs-variable language_">self</span>.bit_array.setall(<span class="hljs-number">0</span>)
 
-    def add(self, item: str) -&gt; None:
-        &quot;&quot;&quot;Time: O(k)&quot;&quot;&quot;
-        for i in range(self.k):
-            index = mmh3.hash(item, i) % self.m
-            self.bit_array[index] = 1
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">add</span>(<span class="hljs-params">self, item: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-literal">None</span>:
+        <span class="hljs-string">&quot;&quot;&quot;Time: O(k)&quot;&quot;&quot;</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-variable language_">self</span>.k):
+            index = mmh3.<span class="hljs-built_in">hash</span>(item, i) % <span class="hljs-variable language_">self</span>.m
+            <span class="hljs-variable language_">self</span>.bit_array[index] = <span class="hljs-number">1</span>
 
-    def might_contain(self, item: str) -&gt; bool:
-        &quot;&quot;&quot;Time: O(k), False positives possible, no false negatives&quot;&quot;&quot;
-        for i in range(self.k):
-            index = mmh3.hash(item, i) % self.m
-            if not self.bit_array[index]:
-                return False  # Definitely not in set
-        return True  # Might be in set
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">might_contain</span>(<span class="hljs-params">self, item: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">bool</span>:
+        <span class="hljs-string">&quot;&quot;&quot;Time: O(k), False positives possible, no false negatives&quot;&quot;&quot;</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-variable language_">self</span>.k):
+            index = mmh3.<span class="hljs-built_in">hash</span>(item, i) % <span class="hljs-variable language_">self</span>.m
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-variable language_">self</span>.bit_array[index]:
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>  <span class="hljs-comment"># Definitely not in set</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>  <span class="hljs-comment"># Might be in set</span>
 </code></pre>
 <p><strong>Usage Example:</strong></p>
-<pre><code class="language-java">// Check if URL has been visited
-BloomFilter bf = new BloomFilter(10000, 0.01); // 10k URLs, 1% false positive
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Check if URL has been visited</span>
+<span class="hljs-type">BloomFilter</span> <span class="hljs-variable">bf</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BloomFilter</span>(<span class="hljs-number">10000</span>, <span class="hljs-number">0.01</span>); <span class="hljs-comment">// 10k URLs, 1% false positive</span>
 
-// Add URLs
-bf.add(&quot;https://example.com&quot;);
-bf.add(&quot;https://google.com&quot;);
+<span class="hljs-comment">// Add URLs</span>
+bf.add(<span class="hljs-string">&quot;https://example.com&quot;</span>);
+bf.add(<span class="hljs-string">&quot;https://google.com&quot;</span>);
 
-// Query
-if (bf.mightContain(&quot;https://example.com&quot;)) {
-    // Might be visited (99% confident)
+<span class="hljs-comment">// Query</span>
+<span class="hljs-keyword">if</span> (bf.mightContain(<span class="hljs-string">&quot;https://example.com&quot;</span>)) {
+    <span class="hljs-comment">// Might be visited (99% confident)</span>
 }
 
-if (!bf.mightContain(&quot;https://new-site.com&quot;)) {
-    // Definitely NOT visited (100% sure)
+<span class="hljs-keyword">if</span> (!bf.mightContain(<span class="hljs-string">&quot;https://new-site.com&quot;</span>)) {
+    <span class="hljs-comment">// Definitely NOT visited (100% sure)</span>
 }
 </code></pre>
 <hr>
@@ -1029,30 +1041,30 @@ if (!bf.mightContain(&quot;https://new-site.com&quot;)) {
 <ol>
 <li>
 <p><strong>Wrong Probability Calculation</strong></p>
-<pre><code class="language-java">// ❌ WRONG: This is NOT uniform
-if (random.nextInt(i + 1) &lt; k) { // Incorrect for k=1
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: This is NOT uniform</span>
+<span class="hljs-keyword">if</span> (random.nextInt(i + <span class="hljs-number">1</span>) &lt; k) { <span class="hljs-comment">// Incorrect for k=1</span>
     reservoir[...] = element;
 }
 
-// ✅ CORRECT: For k=1
-if (random.nextInt(count) == 0) {
+<span class="hljs-comment">// ✅ CORRECT: For k=1</span>
+<span class="hljs-keyword">if</span> (random.nextInt(count) == <span class="hljs-number">0</span>) {
     result = element;
 }
 </code></pre>
 </li>
 <li>
 <p><strong>Forgetting to Update Count</strong></p>
-<pre><code class="language-java">// ❌ WRONG: Count not incremented
-while (cur != null) {
-    if (random.nextInt(count) == 0) result = cur.val;
-    cur = cur.next; // Forgot: count++
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: Count not incremented</span>
+<span class="hljs-keyword">while</span> (cur != <span class="hljs-literal">null</span>) {
+    <span class="hljs-keyword">if</span> (random.nextInt(count) == <span class="hljs-number">0</span>) result = cur.val;
+    cur = cur.next; <span class="hljs-comment">// Forgot: count++</span>
 }
 </code></pre>
 </li>
 <li>
 <p><strong>Off-by-One in Random Range</strong></p>
-<pre><code class="language-java">// ❌ WRONG: random.nextInt(count + 1) for decision
-// ✅ CORRECT: random.nextInt(count) for k=1
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: random.nextInt(count + 1) for decision</span>
+<span class="hljs-comment">// ✅ CORRECT: random.nextInt(count) for k=1</span>
 </code></pre>
 </li>
 </ol>
@@ -1060,36 +1072,36 @@ while (cur != null) {
 <ol>
 <li>
 <p><strong>Missing Verification Phase</strong></p>
-<pre><code class="language-java">// ❌ WRONG: Assuming candidate is always majority
-return candidate; // What if no majority exists?
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: Assuming candidate is always majority</span>
+<span class="hljs-keyword">return</span> candidate; <span class="hljs-comment">// What if no majority exists?</span>
 
-// ✅ CORRECT: Verify count
-int actualCount = 0;
-for (int num : nums) {
-    if (num == candidate) actualCount++;
+<span class="hljs-comment">// ✅ CORRECT: Verify count</span>
+<span class="hljs-type">int</span> <span class="hljs-variable">actualCount</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : nums) {
+    <span class="hljs-keyword">if</span> (num == candidate) actualCount++;
 }
-return actualCount &gt; nums.length / 2 ? candidate : -1;
+<span class="hljs-keyword">return</span> actualCount &gt; nums.length / <span class="hljs-number">2</span> ? candidate : -<span class="hljs-number">1</span>;
 </code></pre>
 </li>
 <li>
 <p><strong>Wrong Cancellation Logic</strong></p>
-<pre><code class="language-java">// ❌ WRONG: Only decrement candidate's count
-if (num != candidate) count--;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: Only decrement candidate&#x27;s count</span>
+<span class="hljs-keyword">if</span> (num != candidate) count--;
 
-// ✅ CORRECT: Check count == 0 to reset
-if (count == 0) {
+<span class="hljs-comment">// ✅ CORRECT: Check count == 0 to reset</span>
+<span class="hljs-keyword">if</span> (count == <span class="hljs-number">0</span>) {
     candidate = num;
-    count = 1;
+    count = <span class="hljs-number">1</span>;
 }
 </code></pre>
 </li>
 <li>
 <p><strong>For LC 229: Not Handling Same Candidates</strong></p>
-<pre><code class="language-java">// ❌ WRONG: candidate1 and candidate2 can be same initially
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: candidate1 and candidate2 can be same initially</span>
 
-// ✅ CORRECT: Check candidate1 first, then candidate2
-if (num == candidate1) count1++;
-else if (num == candidate2) count2++;
+<span class="hljs-comment">// ✅ CORRECT: Check candidate1 first, then candidate2</span>
+<span class="hljs-keyword">if</span> (num == candidate1) count1++;
+<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (num == candidate2) count2++;
 </code></pre>
 </li>
 </ol>
@@ -1097,11 +1109,11 @@ else if (num == candidate2) count2++;
 <ol>
 <li>
 <p><strong>Using Max Instead of Min</strong></p>
-<pre><code class="language-java">// ❌ WRONG: Taking maximum (gives wrong estimate)
-int max = Arrays.stream(counts).max().getAsInt();
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: Taking maximum (gives wrong estimate)</span>
+<span class="hljs-type">int</span> <span class="hljs-variable">max</span> <span class="hljs-operator">=</span> Arrays.stream(counts).max().getAsInt();
 
-// ✅ CORRECT: Taking minimum (minimizes overestimation)
-int min = Arrays.stream(counts).min().getAsInt();
+<span class="hljs-comment">// ✅ CORRECT: Taking minimum (minimizes overestimation)</span>
+<span class="hljs-type">int</span> <span class="hljs-variable">min</span> <span class="hljs-operator">=</span> Arrays.stream(counts).min().getAsInt();
 </code></pre>
 </li>
 <li>
@@ -1116,14 +1128,14 @@ int min = Arrays.stream(counts).min().getAsInt();
 <ol>
 <li>
 <p><strong>Resetting Bits on Delete</strong></p>
-<pre><code class="language-java">// ❌ WRONG: Bloom filters don't support deletion
-public void delete(String item) {
-    for (int i = 0; i &lt; k; i++) {
-        bitSet.clear(hash(item, i)); // Breaks other items!
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG: Bloom filters don&#x27;t support deletion</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">delete</span><span class="hljs-params">(String item)</span> {
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; k; i++) {
+        bitSet.clear(hash(item, i)); <span class="hljs-comment">// Breaks other items!</span>
     }
 }
 
-// ✅ CORRECT: Use Counting Bloom Filter for deletions
+<span class="hljs-comment">// ✅ CORRECT: Use Counting Bloom Filter for deletions</span>
 </code></pre>
 </li>
 <li>
@@ -1187,7 +1199,7 @@ public void delete(String item) {
 <li><strong>“Have you seen before?”</strong> → Bloom Filter</li>
 </ol>
 <h4 id="problem-solving-framework" tabindex="-1"><a class="header-anchor" href="#problem-solving-framework"><span>Problem-Solving Framework:</span></a></h4>
-<pre><code>1. Identify constraint: Memory vs Accuracy
+<pre><code class="hljs">1. Identify constraint: Memory vs Accuracy
    ├─ Exact answer needed? → Reservoir Sampling or Boyer-Moore
    └─ Approximate OK? → Count-Min Sketch or Bloom Filter
 
@@ -1328,81 +1340,81 @@ public void delete(String item) {
 <hr>
 <h2 id="5-complete-code-examples" tabindex="-1"><a class="header-anchor" href="#5-complete-code-examples"><span>5) Complete Code Examples</span></a></h2>
 <h3 id="example-1-weighted-reservoir-sampling-lc-528" tabindex="-1"><a class="header-anchor" href="#example-1-weighted-reservoir-sampling-lc-528"><span>Example 1: Weighted Reservoir Sampling (LC 528)</span></a></h3>
-<pre><code class="language-java">// LC 528 - Random Pick with Weight
-class Solution {
-    private int[] prefixSum;
-    private Random random;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 528 - Random Pick with Weight</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span>[] prefixSum;
+    <span class="hljs-keyword">private</span> Random random;
 
-    /**
+    <span class="hljs-comment">/**
      * time = O(N) for constructor
      * space = O(N)
-     */
-    public Solution(int[] w) {
-        prefixSum = new int[w.length];
-        prefixSum[0] = w[0];
-        for (int i = 1; i &lt; w.length; i++) {
-            prefixSum[i] = prefixSum[i - 1] + w[i];
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">Solution</span><span class="hljs-params">(<span class="hljs-type">int</span>[] w)</span> {
+        prefixSum = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[w.length];
+        prefixSum[<span class="hljs-number">0</span>] = w[<span class="hljs-number">0</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; w.length; i++) {
+            prefixSum[i] = prefixSum[i - <span class="hljs-number">1</span>] + w[i];
         }
-        random = new Random();
+        random = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Random</span>();
     }
 
-    /**
+    <span class="hljs-comment">/**
      * time = O(log N) using binary search
      * space = O(1)
-     */
-    public int pickIndex() {
-        int target = random.nextInt(prefixSum[prefixSum.length - 1]) + 1;
-        // Binary search for target in prefixSum
-        int left = 0, right = prefixSum.length - 1;
-        while (left &lt; right) {
-            int mid = left + (right - left) / 2;
-            if (prefixSum[mid] &lt; target) {
-                left = mid + 1;
-            } else {
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">pickIndex</span><span class="hljs-params">()</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">target</span> <span class="hljs-operator">=</span> random.nextInt(prefixSum[prefixSum.length - <span class="hljs-number">1</span>]) + <span class="hljs-number">1</span>;
+        <span class="hljs-comment">// Binary search for target in prefixSum</span>
+        <span class="hljs-type">int</span> <span class="hljs-variable">left</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, right = prefixSum.length - <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">while</span> (left &lt; right) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> left + (right - left) / <span class="hljs-number">2</span>;
+            <span class="hljs-keyword">if</span> (prefixSum[mid] &lt; target) {
+                left = mid + <span class="hljs-number">1</span>;
+            } <span class="hljs-keyword">else</span> {
                 right = mid;
             }
         }
-        return left;
+        <span class="hljs-keyword">return</span> left;
     }
 }
 </code></pre>
 <h3 id="example-2-stream-median-related-problem-lc-295" tabindex="-1"><a class="header-anchor" href="#example-2-stream-median-related-problem-lc-295"><span>Example 2: Stream Median (Related Problem LC 295)</span></a></h3>
-<pre><code class="language-java">// LC 295 - Find Median from Data Stream
-class MedianFinder {
-    private PriorityQueue&lt;Integer&gt; maxHeap; // Lower half
-    private PriorityQueue&lt;Integer&gt; minHeap; // Upper half
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 295 - Find Median from Data Stream</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MedianFinder</span> {
+    <span class="hljs-keyword">private</span> PriorityQueue&lt;Integer&gt; maxHeap; <span class="hljs-comment">// Lower half</span>
+    <span class="hljs-keyword">private</span> PriorityQueue&lt;Integer&gt; minHeap; <span class="hljs-comment">// Upper half</span>
 
-    public MedianFinder() {
-        maxHeap = new PriorityQueue&lt;&gt;((a, b) -&gt; b - a);
-        minHeap = new PriorityQueue&lt;&gt;();
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">MedianFinder</span><span class="hljs-params">()</span> {
+        maxHeap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;((a, b) -&gt; b - a);
+        minHeap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;();
     }
 
-    /**
+    <span class="hljs-comment">/**
      * time = O(log N)
      * space = O(N)
-     */
-    public void addNum(int num) {
-        // Add to max heap first
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">addNum</span><span class="hljs-params">(<span class="hljs-type">int</span> num)</span> {
+        <span class="hljs-comment">// Add to max heap first</span>
         maxHeap.offer(num);
 
-        // Balance: move largest from max to min
+        <span class="hljs-comment">// Balance: move largest from max to min</span>
         minHeap.offer(maxHeap.poll());
 
-        // Maintain size property: maxHeap.size &gt;= minHeap.size
-        if (maxHeap.size() &lt; minHeap.size()) {
+        <span class="hljs-comment">// Maintain size property: maxHeap.size &gt;= minHeap.size</span>
+        <span class="hljs-keyword">if</span> (maxHeap.size() &lt; minHeap.size()) {
             maxHeap.offer(minHeap.poll());
         }
     }
 
-    /**
+    <span class="hljs-comment">/**
      * time = O(1)
      * space = O(1)
-     */
-    public double findMedian() {
-        if (maxHeap.size() &gt; minHeap.size()) {
-            return maxHeap.peek();
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">double</span> <span class="hljs-title function_">findMedian</span><span class="hljs-params">()</span> {
+        <span class="hljs-keyword">if</span> (maxHeap.size() &gt; minHeap.size()) {
+            <span class="hljs-keyword">return</span> maxHeap.peek();
         }
-        return (maxHeap.peek() + minHeap.peek()) / 2.0;
+        <span class="hljs-keyword">return</span> (maxHeap.peek() + minHeap.peek()) / <span class="hljs-number">2.0</span>;
     }
 }
 </code></pre>

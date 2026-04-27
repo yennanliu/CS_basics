@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,13 +20,24 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
     document.querySelectorAll('pre code').forEach(function(codeEl) {
       var pre = codeEl.parentElement;
       var lang = '';
       var cls = codeEl.className || '';
       var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
       if (m) lang = m[1];
+
+      // Add line numbers
+      var lines = codeEl.innerHTML.split('
+');
+      if (lines[lines.length - 1] === '') lines.pop();
+      var numbered = lines.map(function(line, i) {
+        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
+      }).join('
+');
+      codeEl.innerHTML = numbered;
+      codeEl.classList.add('hljs-ln');
+
       var wrapper = document.createElement('div');
       wrapper.className = 'code-block-wrapper';
       pre.parentNode.insertBefore(wrapper, pre);
@@ -45,7 +55,9 @@
       btn.className = 'copy-btn';
       btn.textContent = 'Copy';
       btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
+');
+        navigator.clipboard.writeText(text).then(function() {
           btn.textContent = 'Copied!';
           btn.classList.add('copied');
           setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
@@ -154,74 +166,74 @@
 <ul>
 <li>so, need to be at <code>cur</code> node, than can <code>cur.next</code> node</li>
 </ul>
-<pre><code class="language-python"># python
-# https://youtu.be/Y4oQJklHxVo?t=965
-cur.next = cur.next.next
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># https://youtu.be/Y4oQJklHxVo?t=965</span>
+cur.<span class="hljs-built_in">next</span> = cur.<span class="hljs-built_in">next</span>.<span class="hljs-built_in">next</span>
 </code></pre>
 </li>
 </ul>
-<pre><code class="language-python"># python
-# Definition for singly-linked list.
-class ListNode(object):
-    def __init__(self, val=0, next=None):
-        self.val = val
-        self.next = next
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># Definition for singly-linked list.</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">ListNode</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, val=<span class="hljs-number">0</span>, <span class="hljs-built_in">next</span>=<span class="hljs-literal">None</span></span>):
+        <span class="hljs-variable language_">self</span>.val = val
+        <span class="hljs-variable language_">self</span>.<span class="hljs-built_in">next</span> = <span class="hljs-built_in">next</span>
 </code></pre>
-<pre><code class="language-java">// java
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 
-// Single Linkedlist
+<span class="hljs-comment">// Single Linkedlist</span>
 
-public class ListNode{
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ListNode</span>{
 
-    // attr
-    public int val;
-    public ListNode next;
+    <span class="hljs-comment">// attr</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> val;
+    <span class="hljs-keyword">public</span> ListNode next;
 
-    // constructor
-    public ListNode(){
+    <span class="hljs-comment">// constructor</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">ListNode</span><span class="hljs-params">()</span>{
 
     }
 
-    public ListNode(int val){
-        this.val = val;
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">ListNode</span><span class="hljs-params">(<span class="hljs-type">int</span> val)</span>{
+        <span class="hljs-built_in">this</span>.val = val;
     }
 
-    ListNode(int val, ListNode next){
-        this.val = val;
-        this.next = next;
+    ListNode(<span class="hljs-type">int</span> val, ListNode next){
+        <span class="hljs-built_in">this</span>.val = val;
+        <span class="hljs-built_in">this</span>.next = next;
     }
 
 }
 
-// init a ListNode
-ListNode node1 = new ListNode(1);
-ListNode node2 = new ListNode(2);
-ListNode node3 = new ListNode(3);
+<span class="hljs-comment">// init a ListNode</span>
+<span class="hljs-type">ListNode</span> <span class="hljs-variable">node1</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ListNode</span>(<span class="hljs-number">1</span>);
+<span class="hljs-type">ListNode</span> <span class="hljs-variable">node2</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ListNode</span>(<span class="hljs-number">2</span>);
+<span class="hljs-type">ListNode</span> <span class="hljs-variable">node3</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ListNode</span>(<span class="hljs-number">3</span>);
 
-// motify node's value
-node1.val = 0;
+<span class="hljs-comment">// motify node&#x27;s value</span>
+node1.val = <span class="hljs-number">0</span>;
 
-// connect nodes
+<span class="hljs-comment">// connect nodes</span>
 node1.next = node2;
 node2.next = node3;
 </code></pre>
-<pre><code class="language-java">// java
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 
-// Double linked list
+<span class="hljs-comment">// Double linked list</span>
 
-// LC 146
+<span class="hljs-comment">// LC 146</span>
 
-public class Node {
-    int key;
-    int val;
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Node</span> {
+    <span class="hljs-type">int</span> key;
+    <span class="hljs-type">int</span> val;
     Node prev;
     Node next;
 
-    public Node(int key, int val) {
-        this.key = key;
-        this.val = val;
-        this.prev = null;
-        this.next = null;
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">Node</span><span class="hljs-params">(<span class="hljs-type">int</span> key, <span class="hljs-type">int</span> val)</span> {
+        <span class="hljs-built_in">this</span>.key = key;
+        <span class="hljs-built_in">this</span>.val = val;
+        <span class="hljs-built_in">this</span>.prev = <span class="hljs-literal">null</span>;
+        <span class="hljs-built_in">this</span>.next = <span class="hljs-literal">null</span>;
     }
 }
 </code></pre>
@@ -239,7 +251,7 @@ public class Node {
 <ul>
 <li>LC 138 :</li>
 </ul>
-<pre><code class="language-python">dic = dict()
+<pre data-lang="python"><code class="hljs language-python">dic = <span class="hljs-built_in">dict</span>()
 m = n = head
 dic[m] = Node(m.val)
 </code></pre>
@@ -247,7 +259,7 @@ dic[m] = Node(m.val)
 <li>LC 208 :</li>
 <li><a href="trie.html">trie</a></li>
 </ul>
-<pre><code class="language-python">self.children = defaultdict(Node)
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-variable language_">self</span>.children = defaultdict(Node)
 </code></pre>
 </li>
 <li>problem types
@@ -305,26 +317,26 @@ dic[m] = Node(m.val)
 <p><strong>Time Complexity</strong>: O(n) - same as without dummy head
 <strong>Space Complexity</strong>: O(1) - only one extra node</p>
 <p><strong>Template Pattern</strong>:</p>
-<pre><code class="language-python">def linked_list_operation(head):
-    # Create dummy head
-    dummy = ListNode(0)
-    dummy.next = head
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">linked_list_operation</span>(<span class="hljs-params">head</span>):
+    <span class="hljs-comment"># Create dummy head</span>
+    dummy = ListNode(<span class="hljs-number">0</span>)
+    dummy.<span class="hljs-built_in">next</span> = head
 
-    # Use prev to track previous node
+    <span class="hljs-comment"># Use prev to track previous node</span>
     prev = dummy
     curr = head
 
-    while curr:
-        # Perform operations
-        if condition:
-            # Remove current node
-            prev.next = curr.next
-        else:
+    <span class="hljs-keyword">while</span> curr:
+        <span class="hljs-comment"># Perform operations</span>
+        <span class="hljs-keyword">if</span> condition:
+            <span class="hljs-comment"># Remove current node</span>
+            prev.<span class="hljs-built_in">next</span> = curr.<span class="hljs-built_in">next</span>
+        <span class="hljs-keyword">else</span>:
             prev = curr
-        curr = curr.next
+        curr = curr.<span class="hljs-built_in">next</span>
 
-    # Return new head (dummy.next)
-    return dummy.next
+    <span class="hljs-comment"># Return new head (dummy.next)</span>
+    <span class="hljs-keyword">return</span> dummy.<span class="hljs-built_in">next</span>
 </code></pre>
 <p><strong>Advantages</strong>:</p>
 <ul>
@@ -335,117 +347,117 @@ dic[m] = Node(m.val)
 </ul>
 <p><strong>Common Use Cases</strong>:</p>
 <p><strong>1. Remove Nth Node From End (LC 19)</strong>:</p>
-<pre><code class="language-python">def removeNthFromEnd(self, head, n):
-    dummy = ListNode(0)
-    dummy.next = head
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">removeNthFromEnd</span>(<span class="hljs-params">self, head, n</span>):
+    dummy = ListNode(<span class="hljs-number">0</span>)
+    dummy.<span class="hljs-built_in">next</span> = head
     fast = slow = dummy
 
-    # Move fast n+1 steps ahead
-    for _ in range(n + 1):
-        fast = fast.next
+    <span class="hljs-comment"># Move fast n+1 steps ahead</span>
+    <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n + <span class="hljs-number">1</span>):
+        fast = fast.<span class="hljs-built_in">next</span>
 
-    # Move both until fast reaches end
-    while fast:
-        fast = fast.next
-        slow = slow.next
+    <span class="hljs-comment"># Move both until fast reaches end</span>
+    <span class="hljs-keyword">while</span> fast:
+        fast = fast.<span class="hljs-built_in">next</span>
+        slow = slow.<span class="hljs-built_in">next</span>
 
-    # Remove nth node
-    slow.next = slow.next.next
-    return dummy.next
+    <span class="hljs-comment"># Remove nth node</span>
+    slow.<span class="hljs-built_in">next</span> = slow.<span class="hljs-built_in">next</span>.<span class="hljs-built_in">next</span>
+    <span class="hljs-keyword">return</span> dummy.<span class="hljs-built_in">next</span>
 </code></pre>
 <p><strong>2. Remove Duplicates (LC 83)</strong>:</p>
-<pre><code class="language-python">def deleteDuplicates(self, head):
-    dummy = ListNode(0)
-    dummy.next = head
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">deleteDuplicates</span>(<span class="hljs-params">self, head</span>):
+    dummy = ListNode(<span class="hljs-number">0</span>)
+    dummy.<span class="hljs-built_in">next</span> = head
     prev = dummy
 
-    while head and head.next:
-        if head.val == head.next.val:
-            # Skip all duplicates
+    <span class="hljs-keyword">while</span> head <span class="hljs-keyword">and</span> head.<span class="hljs-built_in">next</span>:
+        <span class="hljs-keyword">if</span> head.val == head.<span class="hljs-built_in">next</span>.val:
+            <span class="hljs-comment"># Skip all duplicates</span>
             val = head.val
-            while head and head.val == val:
-                head = head.next
-            prev.next = head
-        else:
+            <span class="hljs-keyword">while</span> head <span class="hljs-keyword">and</span> head.val == val:
+                head = head.<span class="hljs-built_in">next</span>
+            prev.<span class="hljs-built_in">next</span> = head
+        <span class="hljs-keyword">else</span>:
             prev = head
-            head = head.next
+            head = head.<span class="hljs-built_in">next</span>
 
-    return dummy.next
+    <span class="hljs-keyword">return</span> dummy.<span class="hljs-built_in">next</span>
 </code></pre>
 <p><strong>3. Merge Two Sorted Lists (LC 21)</strong>:</p>
-<pre><code class="language-python">def mergeTwoLists(self, l1, l2):
-    dummy = ListNode(0)
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">mergeTwoLists</span>(<span class="hljs-params">self, l1, l2</span>):
+    dummy = ListNode(<span class="hljs-number">0</span>)
     current = dummy
 
-    while l1 and l2:
-        if l1.val &lt;= l2.val:
-            current.next = l1
-            l1 = l1.next
-        else:
-            current.next = l2
-            l2 = l2.next
-        current = current.next
+    <span class="hljs-keyword">while</span> l1 <span class="hljs-keyword">and</span> l2:
+        <span class="hljs-keyword">if</span> l1.val &lt;= l2.val:
+            current.<span class="hljs-built_in">next</span> = l1
+            l1 = l1.<span class="hljs-built_in">next</span>
+        <span class="hljs-keyword">else</span>:
+            current.<span class="hljs-built_in">next</span> = l2
+            l2 = l2.<span class="hljs-built_in">next</span>
+        current = current.<span class="hljs-built_in">next</span>
 
-    # Attach remaining nodes
-    current.next = l1 or l2
-    return dummy.next
+    <span class="hljs-comment"># Attach remaining nodes</span>
+    current.<span class="hljs-built_in">next</span> = l1 <span class="hljs-keyword">or</span> l2
+    <span class="hljs-keyword">return</span> dummy.<span class="hljs-built_in">next</span>
 </code></pre>
 <p><strong>4. Partition List (LC 86)</strong>:</p>
-<pre><code class="language-python">def partition(self, head, x):
-    before_dummy = ListNode(0)
-    after_dummy = ListNode(0)
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">partition</span>(<span class="hljs-params">self, head, x</span>):
+    before_dummy = ListNode(<span class="hljs-number">0</span>)
+    after_dummy = ListNode(<span class="hljs-number">0</span>)
     before = before_dummy
     after = after_dummy
 
-    while head:
-        if head.val &lt; x:
-            before.next = head
-            before = before.next
-        else:
-            after.next = head
-            after = after.next
-        head = head.next
+    <span class="hljs-keyword">while</span> head:
+        <span class="hljs-keyword">if</span> head.val &lt; x:
+            before.<span class="hljs-built_in">next</span> = head
+            before = before.<span class="hljs-built_in">next</span>
+        <span class="hljs-keyword">else</span>:
+            after.<span class="hljs-built_in">next</span> = head
+            after = after.<span class="hljs-built_in">next</span>
+        head = head.<span class="hljs-built_in">next</span>
 
-    # Connect the two parts
-    after.next = None
-    before.next = after_dummy.next
-    return before_dummy.next
+    <span class="hljs-comment"># Connect the two parts</span>
+    after.<span class="hljs-built_in">next</span> = <span class="hljs-literal">None</span>
+    before.<span class="hljs-built_in">next</span> = after_dummy.<span class="hljs-built_in">next</span>
+    <span class="hljs-keyword">return</span> before_dummy.<span class="hljs-built_in">next</span>
 </code></pre>
 <p><strong>5. Add Two Numbers (LC 2)</strong>:</p>
-<pre><code class="language-python">def addTwoNumbers(self, l1, l2):
-    dummy = ListNode(0)
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">addTwoNumbers</span>(<span class="hljs-params">self, l1, l2</span>):
+    dummy = ListNode(<span class="hljs-number">0</span>)
     current = dummy
-    carry = 0
+    carry = <span class="hljs-number">0</span>
 
-    while l1 or l2 or carry:
-        val1 = l1.val if l1 else 0
-        val2 = l2.val if l2 else 0
+    <span class="hljs-keyword">while</span> l1 <span class="hljs-keyword">or</span> l2 <span class="hljs-keyword">or</span> carry:
+        val1 = l1.val <span class="hljs-keyword">if</span> l1 <span class="hljs-keyword">else</span> <span class="hljs-number">0</span>
+        val2 = l2.val <span class="hljs-keyword">if</span> l2 <span class="hljs-keyword">else</span> <span class="hljs-number">0</span>
 
         total = val1 + val2 + carry
-        carry = total // 10
-        current.next = ListNode(total % 10)
+        carry = total // <span class="hljs-number">10</span>
+        current.<span class="hljs-built_in">next</span> = ListNode(total % <span class="hljs-number">10</span>)
 
-        current = current.next
-        l1 = l1.next if l1 else None
-        l2 = l2.next if l2 else None
+        current = current.<span class="hljs-built_in">next</span>
+        l1 = l1.<span class="hljs-built_in">next</span> <span class="hljs-keyword">if</span> l1 <span class="hljs-keyword">else</span> <span class="hljs-literal">None</span>
+        l2 = l2.<span class="hljs-built_in">next</span> <span class="hljs-keyword">if</span> l2 <span class="hljs-keyword">else</span> <span class="hljs-literal">None</span>
 
-    return dummy.next
+    <span class="hljs-keyword">return</span> dummy.<span class="hljs-built_in">next</span>
 </code></pre>
 <p><strong>Java Implementation</strong>:</p>
-<pre><code class="language-java">public ListNode removeElements(ListNode head, int val) {
-    ListNode dummy = new ListNode(0);
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> ListNode <span class="hljs-title function_">removeElements</span><span class="hljs-params">(ListNode head, <span class="hljs-type">int</span> val)</span> {
+    <span class="hljs-type">ListNode</span> <span class="hljs-variable">dummy</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ListNode</span>(<span class="hljs-number">0</span>);
     dummy.next = head;
-    ListNode current = dummy;
+    <span class="hljs-type">ListNode</span> <span class="hljs-variable">current</span> <span class="hljs-operator">=</span> dummy;
 
-    while (current.next != null) {
-        if (current.next.val == val) {
+    <span class="hljs-keyword">while</span> (current.next != <span class="hljs-literal">null</span>) {
+        <span class="hljs-keyword">if</span> (current.next.val == val) {
             current.next = current.next.next;
-        } else {
+        } <span class="hljs-keyword">else</span> {
             current = current.next;
         }
     }
 
-    return dummy.next;
+    <span class="hljs-keyword">return</span> dummy.next;
 }
 </code></pre>
 <p><strong>Key Benefits of Dummy Head</strong>:</p>
@@ -507,47 +519,47 @@ dic[m] = Node(m.val)
 <p><strong>Time Complexity</strong>: O(n)
 <strong>Space Complexity</strong>: O(1)</p>
 <p><strong>Template Pattern</strong>:</p>
-<pre><code class="language-java">// Java
-public ListNode removeElements(ListNode head, int val) {
-    // 1. Create dummy node pointing to head
-    ListNode dummy = new ListNode(0);
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
+<span class="hljs-keyword">public</span> ListNode <span class="hljs-title function_">removeElements</span><span class="hljs-params">(ListNode head, <span class="hljs-type">int</span> val)</span> {
+    <span class="hljs-comment">// 1. Create dummy node pointing to head</span>
+    <span class="hljs-type">ListNode</span> <span class="hljs-variable">dummy</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ListNode</span>(<span class="hljs-number">0</span>);
     dummy.next = head;
 
-    // 2. Use curr pointer (starts at dummy, looks ahead)
-    ListNode curr = dummy;
+    <span class="hljs-comment">// 2. Use curr pointer (starts at dummy, looks ahead)</span>
+    <span class="hljs-type">ListNode</span> <span class="hljs-variable">curr</span> <span class="hljs-operator">=</span> dummy;
 
-    // 3. Look ahead at NEXT node
-    while (curr.next != null) {
-        if (curr.next.val == val) {
-            // Found match - skip the next node
-            // NOTE: curr does NOT move!
+    <span class="hljs-comment">// 3. Look ahead at NEXT node</span>
+    <span class="hljs-keyword">while</span> (curr.next != <span class="hljs-literal">null</span>) {
+        <span class="hljs-keyword">if</span> (curr.next.val == val) {
+            <span class="hljs-comment">// Found match - skip the next node</span>
+            <span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> curr does NOT move!</span>
             curr.next = curr.next.next;
-        } else {
-            // No match - move pointer forward
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-comment">// No match - move pointer forward</span>
             curr = curr.next;
         }
     }
 
-    // 4. Return actual head
-    return dummy.next;
+    <span class="hljs-comment">// 4. Return actual head</span>
+    <span class="hljs-keyword">return</span> dummy.next;
 }
 </code></pre>
-<pre><code class="language-python"># Python
-def removeElements(self, head: ListNode, val: int) -&gt; ListNode:
-    dummy = ListNode(0)
-    dummy.next = head
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">removeElements</span>(<span class="hljs-params">self, head: ListNode, val: <span class="hljs-built_in">int</span></span>) -&gt; ListNode:
+    dummy = ListNode(<span class="hljs-number">0</span>)
+    dummy.<span class="hljs-built_in">next</span> = head
     curr = dummy
 
-    while curr.next:
-        if curr.next.val == val:
-            curr.next = curr.next.next  # skip, don't move curr
-        else:
-            curr = curr.next  # move forward
+    <span class="hljs-keyword">while</span> curr.<span class="hljs-built_in">next</span>:
+        <span class="hljs-keyword">if</span> curr.<span class="hljs-built_in">next</span>.val == val:
+            curr.<span class="hljs-built_in">next</span> = curr.<span class="hljs-built_in">next</span>.<span class="hljs-built_in">next</span>  <span class="hljs-comment"># skip, don&#x27;t move curr</span>
+        <span class="hljs-keyword">else</span>:
+            curr = curr.<span class="hljs-built_in">next</span>  <span class="hljs-comment"># move forward</span>
 
-    return dummy.next
+    <span class="hljs-keyword">return</span> dummy.<span class="hljs-built_in">next</span>
 </code></pre>
 <p><strong>Dry Run Example</strong> (<code>[6,6,6,3]</code>, val=6):</p>
-<pre><code>Initial: dummy -&gt; 6 -&gt; 6 -&gt; 6 -&gt; 3, curr at dummy
+<pre><code class="hljs">Initial: dummy -&gt; 6 -&gt; 6 -&gt; 6 -&gt; 3, curr at dummy
 
 Step 1: curr.next.val = 6 (match!)
   Action: curr.next = curr.next.next
@@ -601,103 +613,103 @@ Return: dummy.next = [3]
 </ul>
 <hr>
 <h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
-<pre><code class="language-java">// java
-// single Linklist
-public class ListNode {
-    int val;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// single Linklist</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ListNode</span> {
+    <span class="hljs-type">int</span> val;
     ListNode next;
-    ListNode(int x) { val = x; }
+    ListNode(<span class="hljs-type">int</span> x) { val = x; }
 }
 </code></pre>
-<pre><code class="language-python"># python
-class Node:
-  &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Node</span>:
+  <span class="hljs-string">&quot;&quot;&quot;
   # constructor
   # A single node of a singly linked list
-  &quot;&quot;&quot;
-  def __init__(self, data=None, next=None): 
-    self.data = data
-    self.next = next
+  &quot;&quot;&quot;</span>
+  <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, data=<span class="hljs-literal">None</span>, <span class="hljs-built_in">next</span>=<span class="hljs-literal">None</span></span>): 
+    <span class="hljs-variable language_">self</span>.data = data
+    <span class="hljs-variable language_">self</span>.<span class="hljs-built_in">next</span> = <span class="hljs-built_in">next</span>
 
-class LinkedList:
-  &quot;&quot;&quot;
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">LinkedList</span>:
+  <span class="hljs-string">&quot;&quot;&quot;
   # A Linked List class with a single head node
-  &quot;&quot;&quot;
-  def __init__(self):  
-    self.head = Node()
+  &quot;&quot;&quot;</span>
+  <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):  
+    <span class="hljs-variable language_">self</span>.head = Node()
 
-  def get_length(self):
-    &quot;&quot;&quot;
+  <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_length</span>(<span class="hljs-params">self</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
     # get list length method for the linked list
     i.e. 
        before : 1 -&gt; 2 -&gt; 3
        after  : 3
-    &quot;&quot;&quot;
-    current = self.head
-    length = 0 
-    while current:
-        current = current.next
-        length += 1 
-    return length
+    &quot;&quot;&quot;</span>
+    current = <span class="hljs-variable language_">self</span>.head
+    length = <span class="hljs-number">0</span> 
+    <span class="hljs-keyword">while</span> current:
+        current = current.<span class="hljs-built_in">next</span>
+        length += <span class="hljs-number">1</span> 
+    <span class="hljs-keyword">return</span> length
 
-  def get_tail(self):
-    &quot;&quot;&quot;
+  <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_tail</span>(<span class="hljs-params">self</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
     # get list tail method for the linked list
     i.e. 
        before : a -&gt; b -&gt; c
        after  : c
-    &quot;&quot;&quot;
-    current = self.head
-    while current:
-        current = current.next
-    return current
+    &quot;&quot;&quot;</span>
+    current = <span class="hljs-variable language_">self</span>.head
+    <span class="hljs-keyword">while</span> current:
+        current = current.<span class="hljs-built_in">next</span>
+    <span class="hljs-keyword">return</span> current
 
-  def print(self):
-    &quot;&quot;&quot;
+  <span class="hljs-keyword">def</span> <span class="hljs-title function_">print</span>(<span class="hljs-params">self</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
     # print method for the linked list
     i.e. 
        before : 1 -&gt; 2 -&gt; 3
        after  : 1 2 3 
-    &quot;&quot;&quot;
-    current = self.head
-    while current:
-      print (current.data)
-      current = current.next
+    &quot;&quot;&quot;</span>
+    current = <span class="hljs-variable language_">self</span>.head
+    <span class="hljs-keyword">while</span> current:
+      <span class="hljs-built_in">print</span> (current.data)
+      current = current.<span class="hljs-built_in">next</span>
 
-  def append(self, data):
-    &quot;&quot;&quot;
+  <span class="hljs-keyword">def</span> <span class="hljs-title function_">append</span>(<span class="hljs-params">self, data</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
     # append method that append a new item at the end of the linkedlist 
     i.e. 
          before :  1 -&gt; 2 -&gt; 3
          after  :  1 -&gt; 2 -&gt; 3 -&gt; 4
-    &quot;&quot;&quot;
+    &quot;&quot;&quot;</span>
     newNode = Node(data)
-    if self.head:
-      current = self.head
-      while current.next:
-        current = current.next
-      current.next = newNode
-    else:
-      self.head = newNode
+    <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.head:
+      current = <span class="hljs-variable language_">self</span>.head
+      <span class="hljs-keyword">while</span> current.<span class="hljs-built_in">next</span>:
+        current = current.<span class="hljs-built_in">next</span>
+      current.<span class="hljs-built_in">next</span> = newNode
+    <span class="hljs-keyword">else</span>:
+      <span class="hljs-variable language_">self</span>.head = newNode
   
-  def prepend(self, data):
-    &quot;&quot;&quot;
+  <span class="hljs-keyword">def</span> <span class="hljs-title function_">prepend</span>(<span class="hljs-params">self, data</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
     # append method that append a new item at the head of the linkedlist 
     i.e. 
          before :  1 -&gt; 2 -&gt; 3
          after  :  0 -&gt; 1 -&gt; 2 -&gt; 3
-    &quot;&quot;&quot;
+    &quot;&quot;&quot;</span>
     newNode = Node(data)
-    if self.head:
-        current = self.head
-        self.head = newNode
-        newNode.next = current
-        current = current.next
-    else:
-        self.head = newNode
+    <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.head:
+        current = <span class="hljs-variable language_">self</span>.head
+        <span class="hljs-variable language_">self</span>.head = newNode
+        newNode.<span class="hljs-built_in">next</span> = current
+        current = current.<span class="hljs-built_in">next</span>
+    <span class="hljs-keyword">else</span>:
+        <span class="hljs-variable language_">self</span>.head = newNode
 
-  def insert(self, idx, data):
-    &quot;&quot;&quot;
+  <span class="hljs-keyword">def</span> <span class="hljs-title function_">insert</span>(<span class="hljs-params">self, idx, data</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
     # append method that append a new item within the linkedlist 
     i.e. 
          before :  1 -&gt; 2 -&gt; 3
@@ -709,29 +721,29 @@ class LinkedList:
          before :  1 -&gt; 2 -&gt; 3
          insert(2, 4)
          after  :  1 -&gt; 2 -&gt; 3 -&gt; 4
-    &quot;&quot;&quot;
-    current = self.head
-    ll_length = self.get_length()
+    &quot;&quot;&quot;</span>
+    current = <span class="hljs-variable language_">self</span>.head
+    ll_length = <span class="hljs-variable language_">self</span>.get_length()
 
-    if idx &lt; 0 or idx &gt; self.get_length():
-      print (&quot;idx out of linkedlist range, idx : {}&quot;.format(idx))
-      return
-    elif idx == 0:
-        self.prepend(data)
-    elif idx == ll_length:
-        self.append(data)
-    else:
+    <span class="hljs-keyword">if</span> idx &lt; <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> idx &gt; <span class="hljs-variable language_">self</span>.get_length():
+      <span class="hljs-built_in">print</span> (<span class="hljs-string">&quot;idx out of linkedlist range, idx : {}&quot;</span>.<span class="hljs-built_in">format</span>(idx))
+      <span class="hljs-keyword">return</span>
+    <span class="hljs-keyword">elif</span> idx == <span class="hljs-number">0</span>:
+        <span class="hljs-variable language_">self</span>.prepend(data)
+    <span class="hljs-keyword">elif</span> idx == ll_length:
+        <span class="hljs-variable language_">self</span>.append(data)
+    <span class="hljs-keyword">else</span>:
         newNode = Node(data)
-        current = self.head
-        cur_idx = 0 
-        while cur_idx &lt; idx-1:
-            current = current.next
-            cur_idx += 1 
-        newNode.next = current.next
-        current.next = newNode
+        current = <span class="hljs-variable language_">self</span>.head
+        cur_idx = <span class="hljs-number">0</span> 
+        <span class="hljs-keyword">while</span> cur_idx &lt; idx-<span class="hljs-number">1</span>:
+            current = current.<span class="hljs-built_in">next</span>
+            cur_idx += <span class="hljs-number">1</span> 
+        newNode.<span class="hljs-built_in">next</span> = current.<span class="hljs-built_in">next</span>
+        current.<span class="hljs-built_in">next</span> = newNode
 
-  def remove(self, idx):
-    &quot;&quot;&quot;
+  <span class="hljs-keyword">def</span> <span class="hljs-title function_">remove</span>(<span class="hljs-params">self, idx</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
     # remove method for the linked list
     i.e. 
        before : 1 -&gt; 2 -&gt; 3
@@ -743,32 +755,32 @@ class LinkedList:
        before : 1 -&gt; 2 -&gt; 3
        remove(0) 
        after  : 2 -&gt; 3
-    &quot;&quot;&quot;
-    if idx &lt; 0 or idx &gt; self.get_length():
-        print (&quot;idx out of linkedlist range, idx : {}&quot;.format(idx))
-        return 
-    elif idx == 0:
-        current = self.head
-        self.head = current.next
-    elif idx == self.get_length():
-        current = self.head
-        cur_idx = 0
-        while cur_idx &lt; idx -1:
-            current = current.next
-            cur_idx += 1
-        current.next = None
-    else:
-        current = self.head
-        cur_idx = 0 
-        while cur_idx &lt; idx - 1:
-            current = current.next
-            cur_idx += 1 
-        next_ = current.next.next
-        current.next = next_
+    &quot;&quot;&quot;</span>
+    <span class="hljs-keyword">if</span> idx &lt; <span class="hljs-number">0</span> <span class="hljs-keyword">or</span> idx &gt; <span class="hljs-variable language_">self</span>.get_length():
+        <span class="hljs-built_in">print</span> (<span class="hljs-string">&quot;idx out of linkedlist range, idx : {}&quot;</span>.<span class="hljs-built_in">format</span>(idx))
+        <span class="hljs-keyword">return</span> 
+    <span class="hljs-keyword">elif</span> idx == <span class="hljs-number">0</span>:
+        current = <span class="hljs-variable language_">self</span>.head
+        <span class="hljs-variable language_">self</span>.head = current.<span class="hljs-built_in">next</span>
+    <span class="hljs-keyword">elif</span> idx == <span class="hljs-variable language_">self</span>.get_length():
+        current = <span class="hljs-variable language_">self</span>.head
+        cur_idx = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">while</span> cur_idx &lt; idx -<span class="hljs-number">1</span>:
+            current = current.<span class="hljs-built_in">next</span>
+            cur_idx += <span class="hljs-number">1</span>
+        current.<span class="hljs-built_in">next</span> = <span class="hljs-literal">None</span>
+    <span class="hljs-keyword">else</span>:
+        current = <span class="hljs-variable language_">self</span>.head
+        cur_idx = <span class="hljs-number">0</span> 
+        <span class="hljs-keyword">while</span> cur_idx &lt; idx - <span class="hljs-number">1</span>:
+            current = current.<span class="hljs-built_in">next</span>
+            cur_idx += <span class="hljs-number">1</span> 
+        next_ = current.<span class="hljs-built_in">next</span>.<span class="hljs-built_in">next</span>
+        current.<span class="hljs-built_in">next</span> = next_
         current = next_ 
 
-  def reverse(self): 
-    &quot;&quot;&quot;
+  <span class="hljs-keyword">def</span> <span class="hljs-title function_">reverse</span>(<span class="hljs-params">self</span>): 
+    <span class="hljs-string">&quot;&quot;&quot;
     https://www.youtube.com/watch?v=D7y_hoT_YZI
 
     # reverse method for the linked list
@@ -776,94 +788,94 @@ class LinkedList:
     i.e. 
      before : 1 -&gt; 2 -&gt; 3
      after  : 3 -&gt; 2 -&gt; 1 
-    &quot;&quot;&quot;
-    prev = None
-    current = self.head 
-    while(current is not None): 
-        next_ = current.next
-        current.next = prev 
+    &quot;&quot;&quot;</span>
+    prev = <span class="hljs-literal">None</span>
+    current = <span class="hljs-variable language_">self</span>.head 
+    <span class="hljs-keyword">while</span>(current <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>): 
+        next_ = current.<span class="hljs-built_in">next</span>
+        current.<span class="hljs-built_in">next</span> = prev 
         prev = current 
         current = next_
-    self.head = prev 
+    <span class="hljs-variable language_">self</span>.head = prev 
 
 </code></pre>
 <h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
 <h4 id="1-1-0-remove-nth-node-from-end" tabindex="-1"><a class="header-anchor" href="#1-1-0-remove-nth-node-from-end"><span>1-1-0) Remove Nth node from end</span></a></h4>
-<pre><code class="language-java">// java
-// LC 19
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 19</span>
 
-// ...
-ListNode dummy = new ListNode(0);
+<span class="hljs-comment">// ...</span>
+<span class="hljs-type">ListNode</span> <span class="hljs-variable">dummy</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ListNode</span>(<span class="hljs-number">0</span>);
 dummy.next = head;
-ListNode fast = dummy;
-ListNode slow = dummy;
+<span class="hljs-type">ListNode</span> <span class="hljs-variable">fast</span> <span class="hljs-operator">=</span> dummy;
+<span class="hljs-type">ListNode</span> <span class="hljs-variable">slow</span> <span class="hljs-operator">=</span> dummy;
 
-for (int i = 1; i &lt;= n+1; i++){
-    //System.out.println(&quot;i = &quot; + i);
+<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt;= n+<span class="hljs-number">1</span>; i++){
+    <span class="hljs-comment">//System.out.println(&quot;i = &quot; + i);</span>
     fast = fast.next;
 }
 
-// move fast and slow pointers on the same time
-while (fast != null){
+<span class="hljs-comment">// move fast and slow pointers on the same time</span>
+<span class="hljs-keyword">while</span> (fast != <span class="hljs-literal">null</span>){
     fast = fast.next;
     slow = slow.next;
 }
 
-// NOTE here
+<span class="hljs-comment">// NOTE here</span>
 slow.next = slow.next.next;
-// ...
+<span class="hljs-comment">// ...</span>
 </code></pre>
 <h4 id="1-1-1-transversal-linked-list" tabindex="-1"><a class="header-anchor" href="#1-1-1-transversal-linked-list"><span>1-1-1) transversal linked list</span></a></h4>
 <h4 id="1-1-2-plus-one-on-linked-list" tabindex="-1"><a class="header-anchor" href="#1-1-2-plus-one-on-linked-list"><span>1-1-2) plus one on linked list</span></a></h4>
 <h4 id="1-1-3-reverse-linked-list-iteration" tabindex="-1"><a class="header-anchor" href="#1-1-3-reverse-linked-list-iteration"><span>1-1-3) Reverse linked list (iteration)</span></a></h4>
-<pre><code class="language-python"># python
-#-------------------------
-# iteration
-#-------------------------
-# LC 206
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment">#-------------------------</span>
+<span class="hljs-comment"># iteration</span>
+<span class="hljs-comment">#-------------------------</span>
+<span class="hljs-comment"># LC 206</span>
 
-# V0
-# IDEA : Linkedlist basics
-# https://www.youtube.com/watch?v=D7y_hoT_YZI
-# STEPS)
-# -&gt; STEP 1) cache &quot;next&quot;
-# -&gt; STEP 2) point head.next to prev
-# -&gt; STEP 3) move prev to head
-# -&gt; STEP 4) move head to &quot;next&quot;
-class Solution(object):
-    def reverseList(self, head):
-        # edge case
-        if not head:
-            return
-        prev = None
-        while head:
-            # cache &quot;next&quot;
-            tmp = head.next
-            # point head.next to prev
-            head.next = prev
-            # move prev to head (for next iteration)
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : Linkedlist basics</span>
+<span class="hljs-comment"># https://www.youtube.com/watch?v=D7y_hoT_YZI</span>
+<span class="hljs-comment"># STEPS)</span>
+<span class="hljs-comment"># -&gt; STEP 1) cache &quot;next&quot;</span>
+<span class="hljs-comment"># -&gt; STEP 2) point head.next to prev</span>
+<span class="hljs-comment"># -&gt; STEP 3) move prev to head</span>
+<span class="hljs-comment"># -&gt; STEP 4) move head to &quot;next&quot;</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">reverseList</span>(<span class="hljs-params">self, head</span>):
+        <span class="hljs-comment"># edge case</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> head:
+            <span class="hljs-keyword">return</span>
+        prev = <span class="hljs-literal">None</span>
+        <span class="hljs-keyword">while</span> head:
+            <span class="hljs-comment"># cache &quot;next&quot;</span>
+            tmp = head.<span class="hljs-built_in">next</span>
+            <span class="hljs-comment"># point head.next to prev</span>
+            head.<span class="hljs-built_in">next</span> = prev
+            <span class="hljs-comment"># move prev to head (for next iteration)</span>
             prev = head
-            # move head to &quot;next&quot; (for next iteration)
+            <span class="hljs-comment"># move head to &quot;next&quot; (for next iteration)</span>
             head = tmp
-        # NOTE!!! we return prev
-        return prev
+        <span class="hljs-comment"># NOTE!!! we return prev</span>
+        <span class="hljs-keyword">return</span> prev
 </code></pre>
-<pre><code class="language-java">// java
-//---------------------------
-// iteration
-//---------------------------
-// LC 206
-// V0
-public ListNode reverseList(ListNode head) {
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">//---------------------------</span>
+<span class="hljs-comment">// iteration</span>
+<span class="hljs-comment">//---------------------------</span>
+<span class="hljs-comment">// LC 206</span>
+<span class="hljs-comment">// V0</span>
+<span class="hljs-keyword">public</span> ListNode <span class="hljs-title function_">reverseList</span><span class="hljs-params">(ListNode head)</span> {
 
-    if (head == null) {
-        return null;
+    <span class="hljs-keyword">if</span> (head == <span class="hljs-literal">null</span>) {
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
     }
 
-    ListNode _prev = null;
+    <span class="hljs-type">ListNode</span> <span class="hljs-variable">_prev</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;
 
-    while (head != null) {
-        /**
+    <span class="hljs-keyword">while</span> (head != <span class="hljs-literal">null</span>) {
+        <span class="hljs-comment">/**
          *  NOTE !!!!
          *
          *   4 operations
@@ -873,441 +885,441 @@ public ListNode reverseList(ListNode head) {
          *    step 3) move prev to cur
          *    step 4) move cur to next
          *
-         */
-        ListNode _next = head.next;
+         */</span>
+        <span class="hljs-type">ListNode</span> <span class="hljs-variable">_next</span> <span class="hljs-operator">=</span> head.next;
         head.next = _prev;
         _prev = head;
         head = _next;
     }
 
-    // NOTE!!! we return _prev here, since it's now &quot;new head&quot;
-    return _prev;
+    <span class="hljs-comment">// NOTE!!! we return _prev here, since it&#x27;s now &quot;new head&quot;</span>
+    <span class="hljs-keyword">return</span> _prev;
 
 }
 </code></pre>
 <h4 id="1-1-4-reverse-linked-list-recursion" tabindex="-1"><a class="header-anchor" href="#1-1-4-reverse-linked-list-recursion"><span>1-1-4) Reverse linked list (recursion)</span></a></h4>
-<pre><code class="language-java">// java
-//---------------------------
-// recursion
-//---------------------------
-// LC 206
-// algorithm book (labu) p.290
-// IDEA : Recursive
-// https://leetcode.com/problems/reverse-linked-list/editorial/
-// https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/LinkedList/ReverseLinkedList.java
-// same as above 
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">//---------------------------</span>
+<span class="hljs-comment">// recursion</span>
+<span class="hljs-comment">//---------------------------</span>
+<span class="hljs-comment">// LC 206</span>
+<span class="hljs-comment">// algorithm book (labu) p.290</span>
+<span class="hljs-comment">// IDEA : Recursive</span>
+<span class="hljs-comment">// https://leetcode.com/problems/reverse-linked-list/editorial/</span>
+<span class="hljs-comment">// https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/LinkedList/ReverseLinkedList.java</span>
+<span class="hljs-comment">// same as above </span>
 </code></pre>
 <h4 id="1-1-5-reverse-nodes-in-a-b-linked-list-iteration" tabindex="-1"><a class="header-anchor" href="#1-1-5-reverse-nodes-in-a-b-linked-list-iteration"><span>1-1-5) Reverse <em>nodes in [a,b]</em>  linked list (iteration)</span></a></h4>
-<pre><code class="language-java">// java
-//---------------------------
-// iteration
-//---------------------------
-// algorithm book (labu) p.298
-ListNode reverse(ListNode a, Listnode b){
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">//---------------------------</span>
+<span class="hljs-comment">// iteration</span>
+<span class="hljs-comment">//---------------------------</span>
+<span class="hljs-comment">// algorithm book (labu) p.298</span>
+ListNode <span class="hljs-title function_">reverse</span><span class="hljs-params">(ListNode a, Listnode b)</span>{
     ListNode pre, cur, nxt;
-    pre = null;
+    pre = <span class="hljs-literal">null</span>;
     cur = a;
     nxt = a;
-    /** THE ONLY DIFFERENCE (reverse nodes VS reverse nodes in [a,b]) */
-    while (cur != b){
+    <span class="hljs-comment">/** THE ONLY DIFFERENCE (reverse nodes VS reverse nodes in [a,b]) */</span>
+    <span class="hljs-keyword">while</span> (cur != b){
         nxt = cur.next;
-        // reverse on each node
+        <span class="hljs-comment">// reverse on each node</span>
         cur.next = pre;
-        // update pointer
+        <span class="hljs-comment">// update pointer</span>
         pre = cur;
         cur = nxt;
     }
 
-    // return reversed nodes
-    return pre;
+    <span class="hljs-comment">// return reversed nodes</span>
+    <span class="hljs-keyword">return</span> pre;
 }
 </code></pre>
 <h4 id="1-1-6-reverse-nodes-in-k-group-linked-list-iteration" tabindex="-1"><a class="header-anchor" href="#1-1-6-reverse-nodes-in-k-group-linked-list-iteration"><span>1-1-6) Reverse <em>nodes in k group</em>  linked list (iteration)</span></a></h4>
-<pre><code class="language-java">// java
-//---------------------------
-// iteration
-//---------------------------
-// LC 25
-// algorithm book (labu) p.298
-ListNode reverse(ListNode a, Listnode b){
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">//---------------------------</span>
+<span class="hljs-comment">// iteration</span>
+<span class="hljs-comment">//---------------------------</span>
+<span class="hljs-comment">// LC 25</span>
+<span class="hljs-comment">// algorithm book (labu) p.298</span>
+ListNode <span class="hljs-title function_">reverse</span><span class="hljs-params">(ListNode a, Listnode b)</span>{
     ListNode pre, cur, nxt;
-    pre = null;
+    pre = <span class="hljs-literal">null</span>;
     cur = a;
     nxt = a;
-    /** THE ONLY DIFFERENCE (reverse first N nodes VS reverse nodes in [a,b]) */
-    while (cur != b){
+    <span class="hljs-comment">/** THE ONLY DIFFERENCE (reverse first N nodes VS reverse nodes in [a,b]) */</span>
+    <span class="hljs-keyword">while</span> (cur != b){
         nxt = cur.next;
-        // reverse on each node
+        <span class="hljs-comment">// reverse on each node</span>
         cur.next = pre;
-        // update pointer
+        <span class="hljs-comment">// update pointer</span>
         pre = cur;
         cur = nxt;
     }
 
-    // return reversed nodes
-    return pre;
+    <span class="hljs-comment">// return reversed nodes</span>
+    <span class="hljs-keyword">return</span> pre;
 }
 
-ListNode reverseKGroup(ListNode head, int k){
-    if (head == null) return null;
-    // inverval [a,b] has k to-reverse elements
+ListNode <span class="hljs-title function_">reverseKGroup</span><span class="hljs-params">(ListNode head, <span class="hljs-type">int</span> k)</span>{
+    <span class="hljs-keyword">if</span> (head == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+    <span class="hljs-comment">// inverval [a,b] has k to-reverse elements</span>
     ListNode a, b;
     a = b = head;
-    for (int i = 0; i &lt; k; i++){
-        // not enough elements (amount &lt; k), no need to reverse -&gt; base case
-        if (b == null) return head;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; k; i++){
+        <span class="hljs-comment">// not enough elements (amount &lt; k), no need to reverse -&gt; base case</span>
+        <span class="hljs-keyword">if</span> (b == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> head;
         b = b.next;
     }
-    // reverse k elements
-    ListNode newHead = reverse(a,b);
-    // reverse remaining nodes, and connect with head
+    <span class="hljs-comment">// reverse k elements</span>
+    <span class="hljs-type">ListNode</span> <span class="hljs-variable">newHead</span> <span class="hljs-operator">=</span> reverse(a,b);
+    <span class="hljs-comment">// reverse remaining nodes, and connect with head</span>
     a.next = reverseKGroup(b,k);
-    return newHead;
+    <span class="hljs-keyword">return</span> newHead;
 }
 </code></pre>
-<pre><code class="language-python"># LC 025
-class Solution:
-    def reverseKGroup(self, head, k):
-        # help func
-        # check if # of sub nodes still &gt; k
-        def check(head, k):
-            ans = 0
-            while head:
-                ans += 1
-                if ans &gt;= k:
-                    return True
-                head = head.next
-            return False
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 025</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">reverseKGroup</span>(<span class="hljs-params">self, head, k</span>):
+        <span class="hljs-comment"># help func</span>
+        <span class="hljs-comment"># check if # of sub nodes still &gt; k</span>
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">check</span>(<span class="hljs-params">head, k</span>):
+            ans = <span class="hljs-number">0</span>
+            <span class="hljs-keyword">while</span> head:
+                ans += <span class="hljs-number">1</span>
+                <span class="hljs-keyword">if</span> ans &gt;= k:
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+                head = head.<span class="hljs-built_in">next</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 
-        # edge case
-        if not head:
-            return
-        d = dummy = ListNode(None)
-        pre = None
+        <span class="hljs-comment"># edge case</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> head:
+            <span class="hljs-keyword">return</span>
+        d = dummy = ListNode(<span class="hljs-literal">None</span>)
+        pre = <span class="hljs-literal">None</span>
         preHead = curHead = head
-        while check(curHead, k):
-            for _ in range(k):
-                # reverse linked list
-                tmp = curHead.next
-                curHead.next = pre
+        <span class="hljs-keyword">while</span> check(curHead, k):
+            <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(k):
+                <span class="hljs-comment"># reverse linked list</span>
+                tmp = curHead.<span class="hljs-built_in">next</span>
+                curHead.<span class="hljs-built_in">next</span> = pre
                 pre = curHead
                 curHead = tmp
-            # reverse linked list
-            # ???
-            dummy.next = pre
+            <span class="hljs-comment"># reverse linked list</span>
+            <span class="hljs-comment"># ???</span>
+            dummy.<span class="hljs-built_in">next</span> = pre
             dummy = preHead
-            preHead.next = curHead
+            preHead.<span class="hljs-built_in">next</span> = curHead
             preHead = curHead
-        return d.next
+        <span class="hljs-keyword">return</span> d.<span class="hljs-built_in">next</span>
 </code></pre>
 <h4 id="1-1-7-reverse-first-n-linked-list-recursion" tabindex="-1"><a class="header-anchor" href="#1-1-7-reverse-first-n-linked-list-recursion"><span>1-1-7) Reverse <em>first N</em>  linked list (recursion)</span></a></h4>
-<pre><code class="language-java">//---------------------------
-// recursion
-//---------------------------
-// java
-// algorithm book (labu) p.293
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">//---------------------------</span>
+<span class="hljs-comment">// recursion</span>
+<span class="hljs-comment">//---------------------------</span>
+<span class="hljs-comment">// java</span>
+<span class="hljs-comment">// algorithm book (labu) p.293</span>
 
-// &quot;postorder&quot; node
-ListNode successor = null;
+<span class="hljs-comment">// &quot;postorder&quot; node</span>
+<span class="hljs-type">ListNode</span> <span class="hljs-variable">successor</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;
 
-// reverse first N node (from head), and return new head
-ListNode reverseN(ListNode head, int n){
-    if (n == 1){
-        // record n + 1 nodes, will be used in following steps
+<span class="hljs-comment">// reverse first N node (from head), and return new head</span>
+ListNode <span class="hljs-title function_">reverseN</span><span class="hljs-params">(ListNode head, <span class="hljs-type">int</span> n)</span>{
+    <span class="hljs-keyword">if</span> (n == <span class="hljs-number">1</span>){
+        <span class="hljs-comment">// record n + 1 nodes, will be used in following steps</span>
         successor = head.next;
-        return head;
+        <span class="hljs-keyword">return</span> head;
     }
 
-    // set head.next as start point, return first n - 1 nodes
-    ListNode last = reverseN(head.next, n-1);
+    <span class="hljs-comment">// set head.next as start point, return first n - 1 nodes</span>
+    <span class="hljs-type">ListNode</span> <span class="hljs-variable">last</span> <span class="hljs-operator">=</span> reverseN(head.next, n-<span class="hljs-number">1</span>);
 
     head.next.next = head;
-    // connect reversed head node and following nodes
+    <span class="hljs-comment">// connect reversed head node and following nodes</span>
     head.next = successor;
-    return last;
+    <span class="hljs-keyword">return</span> last;
 }
 </code></pre>
 <h4 id="1-1-8-reverse-middle-n-nodes-in-linked-list-start-end-as-interval-recursion" tabindex="-1"><a class="header-anchor" href="#1-1-8-reverse-middle-n-nodes-in-linked-list-start-end-as-interval-recursion"><span>1-1-8) Reverse <em>middle N nodes</em> in linked list (<em>start, end</em> as interval) (recursion)</span></a></h4>
-<pre><code class="language-java">// java
-//---------------------------
-// recursion
-//---------------------------
-// algorithm book (labu) p.293
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">//---------------------------</span>
+<span class="hljs-comment">// recursion</span>
+<span class="hljs-comment">//---------------------------</span>
+<span class="hljs-comment">// algorithm book (labu) p.293</span>
 
-// &quot;postorder&quot; node
-ListNode successor = null;
+<span class="hljs-comment">// &quot;postorder&quot; node</span>
+<span class="hljs-type">ListNode</span> <span class="hljs-variable">successor</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;
 
-// reverse first N node (from head), and return new head
-ListNode reverseN(ListNode head, int n){
-    if (n == 1){
-        // record n + 1 nodes, will be used in following steps
+<span class="hljs-comment">// reverse first N node (from head), and return new head</span>
+ListNode <span class="hljs-title function_">reverseN</span><span class="hljs-params">(ListNode head, <span class="hljs-type">int</span> n)</span>{
+    <span class="hljs-keyword">if</span> (n == <span class="hljs-number">1</span>){
+        <span class="hljs-comment">// record n + 1 nodes, will be used in following steps</span>
         successor = head.next;
-        return head;
+        <span class="hljs-keyword">return</span> head;
     }
 
-// reverse nodes in index = m to index = n
-ListNode reverseBetween(ListNode head, int m, int n){
-    // base case
-    if (m == 1){
-        return reverseN(head, n);
+<span class="hljs-comment">// reverse nodes in index = m to index = n</span>
+ListNode <span class="hljs-title function_">reverseBetween</span><span class="hljs-params">(ListNode head, <span class="hljs-type">int</span> m, <span class="hljs-type">int</span> n)</span>{
+    <span class="hljs-comment">// base case</span>
+    <span class="hljs-keyword">if</span> (m == <span class="hljs-number">1</span>){
+        <span class="hljs-keyword">return</span> reverseN(head, n);
     }
 
-    // for head.next, the op is reverse interval : [m-1, n-1]
-    // will trigger base case when when meet reverse start point
-    head.next = reverseBetween(head.next, m - 1, n - 1);
-    return head;
+    <span class="hljs-comment">// for head.next, the op is reverse interval : [m-1, n-1]</span>
+    <span class="hljs-comment">// will trigger base case when when meet reverse start point</span>
+    head.next = reverseBetween(head.next, m - <span class="hljs-number">1</span>, n - <span class="hljs-number">1</span>);
+    <span class="hljs-keyword">return</span> head;
 </code></pre>
 <h4 id="1-1-9-delete-node" tabindex="-1"><a class="header-anchor" href="#1-1-9-delete-node"><span>1-1-9) delete node</span></a></h4>
 <h4 id="1-1-10-swap-node" tabindex="-1"><a class="header-anchor" href="#1-1-10-swap-node"><span>1-1-10) swap node</span></a></h4>
 <h4 id="1-1-11-add-2-linked-list" tabindex="-1"><a class="header-anchor" href="#1-1-11-add-2-linked-list"><span>1-1-11) add 2 linked list</span></a></h4>
-<pre><code class="language-python"># LC 002
-class Solution(object):
-    def addTwoNumbers(self, l1, l2):
-        &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 002</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">addTwoNumbers</span>(<span class="hljs-params">self, l1, l2</span>):
+        <span class="hljs-string">&quot;&quot;&quot;
         NOTE :
          1. we init linkedlist via ListNode()
          2. we NEED make extra head refer same linkedlist, since we need to return beginning of linkedlist of this func, while res will meet &quot;tail&quot; at the end of while loop
-        &quot;&quot;&quot;
+        &quot;&quot;&quot;</span>
         head = res = ListNode()
-        plus = 0
-        tmp = 0
-        while l1 or l2:
+        plus = <span class="hljs-number">0</span>
+        tmp = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">while</span> l1 <span class="hljs-keyword">or</span> l2:
             tmp += plus
-            plus = 0
-            if l1:
+            plus = <span class="hljs-number">0</span>
+            <span class="hljs-keyword">if</span> l1:
                 tmp += l1.val
-                l1 = l1.next
-            if l2:
+                l1 = l1.<span class="hljs-built_in">next</span>
+            <span class="hljs-keyword">if</span> l2:
                 tmp += l2.val
-                l2 = l2.next
-            if tmp &gt; 9:
-                tmp -= 10
-                plus = 1
+                l2 = l2.<span class="hljs-built_in">next</span>
+            <span class="hljs-keyword">if</span> tmp &gt; <span class="hljs-number">9</span>:
+                tmp -= <span class="hljs-number">10</span>
+                plus = <span class="hljs-number">1</span>
 
-            res.next = ListNode(tmp)
-            res = res.next
-            tmp = 0
-        ### NOTE : need to deal with case : l1, l2 are completed, but still &quot;remaining&quot; plus
-        if plus != 0:
-            res.next = ListNode(plus)
-            res = res.next
-        #print (&quot;res = &quot; + str(res))
-        #print (&quot;head = &quot; + str(head))
-        return head.next
+            res.<span class="hljs-built_in">next</span> = ListNode(tmp)
+            res = res.<span class="hljs-built_in">next</span>
+            tmp = <span class="hljs-number">0</span>
+        <span class="hljs-comment">### NOTE : need to deal with case : l1, l2 are completed, but still &quot;remaining&quot; plus</span>
+        <span class="hljs-keyword">if</span> plus != <span class="hljs-number">0</span>:
+            res.<span class="hljs-built_in">next</span> = ListNode(plus)
+            res = res.<span class="hljs-built_in">next</span>
+        <span class="hljs-comment">#print (&quot;res = &quot; + str(res))</span>
+        <span class="hljs-comment">#print (&quot;head = &quot; + str(head))</span>
+        <span class="hljs-keyword">return</span> head.<span class="hljs-built_in">next</span>
 </code></pre>
-<pre><code class="language-python"># LC 445 Add Two Numbers II
-# V0
-# IDEA : string + linked list
-# DEMO
-# input :
-# [7,2,4,3]
-# [5,6,4]
-# intermedia output : 
-# l1_num = 7243
-# l2_num = 564
-class Solution:
-    def addTwoNumbers(self, l1, l2):
-        if not l1 and not l2:
-            return None
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 445 Add Two Numbers II</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : string + linked list</span>
+<span class="hljs-comment"># DEMO</span>
+<span class="hljs-comment"># input :</span>
+<span class="hljs-comment"># [7,2,4,3]</span>
+<span class="hljs-comment"># [5,6,4]</span>
+<span class="hljs-comment"># intermedia output : </span>
+<span class="hljs-comment"># l1_num = 7243</span>
+<span class="hljs-comment"># l2_num = 564</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">addTwoNumbers</span>(<span class="hljs-params">self, l1, l2</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> l1 <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> l2:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
 
-        l1_num = 0
-        while l1:
-            l1_num = l1_num * 10 + l1.val
-            l1 = l1.next
+        l1_num = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">while</span> l1:
+            l1_num = l1_num * <span class="hljs-number">10</span> + l1.val
+            l1 = l1.<span class="hljs-built_in">next</span>
 
-        l2_num = 0
-        while l2:
-            l2_num = l2_num * 10 + l2.val
-            l2 = l2.next
+        l2_num = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">while</span> l2:
+            l2_num = l2_num * <span class="hljs-number">10</span> + l2.val
+            l2 = l2.<span class="hljs-built_in">next</span>
 
-        print (&quot;l1_num = &quot; + str(l1_num))
-        print (&quot;l2_num = &quot; + str(l2_num))
+        <span class="hljs-built_in">print</span> (<span class="hljs-string">&quot;l1_num = &quot;</span> + <span class="hljs-built_in">str</span>(l1_num))
+        <span class="hljs-built_in">print</span> (<span class="hljs-string">&quot;l2_num = &quot;</span> + <span class="hljs-built_in">str</span>(l2_num))
 
 
-        ### NOTE : trick here :
-        #    -&gt; get int format of 2 linked list first (l1, l2)
-        #    -&gt; then sum them (l1_num + l2_num)
+        <span class="hljs-comment">### NOTE : trick here :</span>
+        <span class="hljs-comment">#    -&gt; get int format of 2 linked list first (l1, l2)</span>
+        <span class="hljs-comment">#    -&gt; then sum them (l1_num + l2_num)</span>
         lsum = l1_num + l2_num
 
-        head = ListNode(None)
+        head = ListNode(<span class="hljs-literal">None</span>)
         cur = head
-        ### NOTE : go thrpigh the linked list int sum, append each digit to ListNode and return it
-        for istr in str(lsum):
-            cur.next = ListNode(int(istr))
-            cur = cur.next
-        # NOTE : need to return head (but not cur, since cur already meet the end of ListNode)
-        return head.next
+        <span class="hljs-comment">### NOTE : go thrpigh the linked list int sum, append each digit to ListNode and return it</span>
+        <span class="hljs-keyword">for</span> istr <span class="hljs-keyword">in</span> <span class="hljs-built_in">str</span>(lsum):
+            cur.<span class="hljs-built_in">next</span> = ListNode(<span class="hljs-built_in">int</span>(istr))
+            cur = cur.<span class="hljs-built_in">next</span>
+        <span class="hljs-comment"># NOTE : need to return head (but not cur, since cur already meet the end of ListNode)</span>
+        <span class="hljs-keyword">return</span> head.<span class="hljs-built_in">next</span>
 </code></pre>
 <h4 id="1-1-12-find-linked-list-middle-point" tabindex="-1"><a class="header-anchor" href="#1-1-12-find-linked-list-middle-point"><span>1-1-12) Find linked list middle point</span></a></h4>
-<pre><code class="language-java">// algorithm book p. 286
-// java
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// algorithm book p. 286</span>
+<span class="hljs-comment">// java</span>
 Listnode slow, fast;
 slow = fast = head;
-while (fast &amp;&amp; fast.next){
+<span class="hljs-keyword">while</span> (fast &amp;&amp; fast.next){
     fast = fast.next.next;
     slow = slow.next;
 }
-// slow pointer will be linked list middle point
+<span class="hljs-comment">// slow pointer will be linked list middle point</span>
 
-// if element count in linked list is odd (TO VERIFY)
-if (fast != null){
+<span class="hljs-comment">// if element count in linked list is odd (TO VERIFY)</span>
+<span class="hljs-keyword">if</span> (fast != <span class="hljs-literal">null</span>){
     slow = slow.next;
 }
 </code></pre>
-<pre><code class="language-python"># LC 876 Middle of the Linked List
-# V0
-# IDEA : fast, slow pointers + linkedlist
-class Solution(object):
-    def middleNode(self, head):
-        # edge case
-        if not head:
-            return
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 876 Middle of the Linked List</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : fast, slow pointers + linkedlist</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">middleNode</span>(<span class="hljs-params">self, head</span>):
+        <span class="hljs-comment"># edge case</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> head:
+            <span class="hljs-keyword">return</span>
         s = f = head
-        while f and f.next:
-            # if not f:
-            #     break
-            f = f.next.next
-            s = s.next
-        return s
+        <span class="hljs-keyword">while</span> f <span class="hljs-keyword">and</span> f.<span class="hljs-built_in">next</span>:
+            <span class="hljs-comment"># if not f:</span>
+            <span class="hljs-comment">#     break</span>
+            f = f.<span class="hljs-built_in">next</span>.<span class="hljs-built_in">next</span>
+            s = s.<span class="hljs-built_in">next</span>
+        <span class="hljs-keyword">return</span> s
 </code></pre>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
 <h3 id="2-1-palindrome-linked-list" tabindex="-1"><a class="header-anchor" href="#2-1-palindrome-linked-list"><span>2-1) palindrome-linked-list</span></a></h3>
-<pre><code class="language-python"># LC 234 : palindrome-linked-list
-# V0
-# IDEA : LINKED LIST -&gt; LIST
-# EXAMPLE INPUT :
-# [1,2,2,1]
-# WHILE GO THROUGH :
-# head = ListNode{val: 2, next: ListNode{val: 2, next: ListNode{val: 1, next: None}}}
-# head = ListNode{val: 2, next: ListNode{val: 1, next: None}}
-# head = ListNode{val: 1, next: None}
-class Solution(object):
-    def isPalindrome(self, head):
-        ### NOTE : THE CONDITION
-        if not head or not head.next:
-            return True
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 234 : palindrome-linked-list</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : LINKED LIST -&gt; LIST</span>
+<span class="hljs-comment"># EXAMPLE INPUT :</span>
+<span class="hljs-comment"># [1,2,2,1]</span>
+<span class="hljs-comment"># WHILE GO THROUGH :</span>
+<span class="hljs-comment"># head = ListNode{val: 2, next: ListNode{val: 2, next: ListNode{val: 1, next: None}}}</span>
+<span class="hljs-comment"># head = ListNode{val: 2, next: ListNode{val: 1, next: None}}</span>
+<span class="hljs-comment"># head = ListNode{val: 1, next: None}</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">isPalindrome</span>(<span class="hljs-params">self, head</span>):
+        <span class="hljs-comment">### NOTE : THE CONDITION</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> head <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> head.<span class="hljs-built_in">next</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
         r = []
-        ### NOTE : THE CONDITION
-        while head:
+        <span class="hljs-comment">### NOTE : THE CONDITION</span>
+        <span class="hljs-keyword">while</span> head:
             r.append(head.val)
-            head = head.next
-        return r == r[::-1]
+            head = head.<span class="hljs-built_in">next</span>
+        <span class="hljs-keyword">return</span> r == r[::-<span class="hljs-number">1</span>]
 </code></pre>
 <h3 id="2-2-merge-two-sorted-lists" tabindex="-1"><a class="header-anchor" href="#2-2-merge-two-sorted-lists"><span>2-2) Merge Two Sorted Lists</span></a></h3>
-<pre><code class="language-python"># LC 021
-# V0
-# IDEA : LOOP 2 LINKED LISTS
-class Solution(object):
-    def mergeTwoLists(self, l1, l2):
-        if not l1 or not l2:
-            return l1 or l2
-        ### NOTICE THIS
-        #   -&gt; we init head, and cur
-        #   -&gt; use cur for `link` op
-        #   -&gt; and return the `head.next`
-        head = cur = ListNode(0)
-        while l1 and l2:
-            if l1.val &lt; l2.val:
-                &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 021</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : LOOP 2 LINKED LISTS</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">mergeTwoLists</span>(<span class="hljs-params">self, l1, l2</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> l1 <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> l2:
+            <span class="hljs-keyword">return</span> l1 <span class="hljs-keyword">or</span> l2
+        <span class="hljs-comment">### NOTICE THIS</span>
+        <span class="hljs-comment">#   -&gt; we init head, and cur</span>
+        <span class="hljs-comment">#   -&gt; use cur for `link` op</span>
+        <span class="hljs-comment">#   -&gt; and return the `head.next`</span>
+        head = cur = ListNode(<span class="hljs-number">0</span>)
+        <span class="hljs-keyword">while</span> l1 <span class="hljs-keyword">and</span> l2:
+            <span class="hljs-keyword">if</span> l1.val &lt; l2.val:
+                <span class="hljs-string">&quot;&quot;&quot;
                 ### NOTE
                  1) assign node to cur.next !!! (not cur)
                  2) assign node rather than node.val
-                &quot;&quot;&quot; 
-                cur.next = l1
-                l1 = l1.next
-            else:
-                &quot;&quot;&quot;
+                &quot;&quot;&quot;</span> 
+                cur.<span class="hljs-built_in">next</span> = l1
+                l1 = l1.<span class="hljs-built_in">next</span>
+            <span class="hljs-keyword">else</span>:
+                <span class="hljs-string">&quot;&quot;&quot;
                 ### NOTE
                  1) assign node to cur.next !!! (not cur)
                  2) assign node rather than node.val
-                &quot;&quot;&quot; 
-                cur.next = l2
-                l2 = l2.next
-            # note this
-            cur = cur.next
-        ### NOTE this (in case either l1 or l2 is remaining so we need to append one of them to cur)
-        cur.next = l1 or l2
-        ### NOTICE THIS : we return head.next
-        return head.next
+                &quot;&quot;&quot;</span> 
+                cur.<span class="hljs-built_in">next</span> = l2
+                l2 = l2.<span class="hljs-built_in">next</span>
+            <span class="hljs-comment"># note this</span>
+            cur = cur.<span class="hljs-built_in">next</span>
+        <span class="hljs-comment">### NOTE this (in case either l1 or l2 is remaining so we need to append one of them to cur)</span>
+        cur.<span class="hljs-built_in">next</span> = l1 <span class="hljs-keyword">or</span> l2
+        <span class="hljs-comment">### NOTICE THIS : we return head.next</span>
+        <span class="hljs-keyword">return</span> head.<span class="hljs-built_in">next</span>
 </code></pre>
 <h3 id="2-2-merge-k-sorted-lists" tabindex="-1"><a class="header-anchor" href="#2-2-merge-k-sorted-lists"><span>2-2’) Merge K Sorted Lists</span></a></h3>
-<pre><code class="language-python"># LC 023 Merge k sorted lists
-# V0
-# IDEA : LC 021 Merge Two Sorted Lists + implement mergeTwoLists on every 2 linedlist
-# linked_list.html#1-1-6-reverse-nodes-in-k-group--linked-list-iteration
-class Solution(object):
-    def mergeKLists(self, lists):
-        if len(lists) == 0:
-            return
-        if len(lists) == 1:
-            return lists[0]
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 023 Merge k sorted lists</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : LC 021 Merge Two Sorted Lists + implement mergeTwoLists on every 2 linedlist</span>
+<span class="hljs-comment"># linked_list.html#1-1-6-reverse-nodes-in-k-group--linked-list-iteration</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">mergeKLists</span>(<span class="hljs-params">self, lists</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(lists) == <span class="hljs-number">0</span>:
+            <span class="hljs-keyword">return</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(lists) == <span class="hljs-number">1</span>:
+            <span class="hljs-keyword">return</span> lists[<span class="hljs-number">0</span>]
         
-        _init_list = lists[0]
-        for _list in lists[1:]:
-            tmp = self.mergeTwoLists(_init_list, _list)
+        _init_list = lists[<span class="hljs-number">0</span>]
+        <span class="hljs-keyword">for</span> _<span class="hljs-built_in">list</span> <span class="hljs-keyword">in</span> lists[<span class="hljs-number">1</span>:]:
+            tmp = <span class="hljs-variable language_">self</span>.mergeTwoLists(_init_list, _<span class="hljs-built_in">list</span>)
             _init_list = tmp
-        return tmp
+        <span class="hljs-keyword">return</span> tmp
 
-    # LC 021 : https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Linked_list/merge-two-sorted-lists.py
-    def mergeTwoLists(self, l1, l2):
+    <span class="hljs-comment"># LC 021 : https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Linked_list/merge-two-sorted-lists.py</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">mergeTwoLists</span>(<span class="hljs-params">self, l1, l2</span>):
 
-        if not l1 or not l2:
-            return l1 or l2
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> l1 <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> l2:
+            <span class="hljs-keyword">return</span> l1 <span class="hljs-keyword">or</span> l2
             
         res = head = ListNode()
-        while l1 and l2:
-            if l1.val &lt; l2.val:
-                res.next = l1
-                l1 = l1.next
-            else:
-                res.next = l2
-                l2 = l2.next
-            res = res.next
+        <span class="hljs-keyword">while</span> l1 <span class="hljs-keyword">and</span> l2:
+            <span class="hljs-keyword">if</span> l1.val &lt; l2.val:
+                res.<span class="hljs-built_in">next</span> = l1
+                l1 = l1.<span class="hljs-built_in">next</span>
+            <span class="hljs-keyword">else</span>:
+                res.<span class="hljs-built_in">next</span> = l2
+                l2 = l2.<span class="hljs-built_in">next</span>
+            res = res.<span class="hljs-built_in">next</span>
 
-        if l1 or l2:
-            res.next = l1 or l2
+        <span class="hljs-keyword">if</span> l1 <span class="hljs-keyword">or</span> l2:
+            res.<span class="hljs-built_in">next</span> = l1 <span class="hljs-keyword">or</span> l2
 
-        return head.next
+        <span class="hljs-keyword">return</span> head.<span class="hljs-built_in">next</span>
 </code></pre>
 <h3 id="2-3-reverse-linked-list" tabindex="-1"><a class="header-anchor" href="#2-3-reverse-linked-list"><span>2-3) Reverse Linked List</span></a></h3>
-<pre><code class="language-python"># LC 206
-class Solution(object):
-    def reverseList(self, head):
-        # edge case
-        if not head:
-            return
-        prev = None
-        while head:
-            # cache &quot;next&quot;
-            tmp = head.next
-            # point head.next to prev
-            head.next = prev
-            # move prev to head
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 206</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">reverseList</span>(<span class="hljs-params">self, head</span>):
+        <span class="hljs-comment"># edge case</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> head:
+            <span class="hljs-keyword">return</span>
+        prev = <span class="hljs-literal">None</span>
+        <span class="hljs-keyword">while</span> head:
+            <span class="hljs-comment"># cache &quot;next&quot;</span>
+            tmp = head.<span class="hljs-built_in">next</span>
+            <span class="hljs-comment"># point head.next to prev</span>
+            head.<span class="hljs-built_in">next</span> = prev
+            <span class="hljs-comment"># move prev to head</span>
             prev = head
-            # move head to &quot;next&quot;
+            <span class="hljs-comment"># move head to &quot;next&quot;</span>
             head = tmp
-        return prev
+        <span class="hljs-keyword">return</span> prev
 </code></pre>
 <h3 id="2-4-reverse-linked-list-ii" tabindex="-1"><a class="header-anchor" href="#2-4-reverse-linked-list-ii"><span>2-4) Reverse Linked List II</span></a></h3>
-<pre><code class="language-java">// java
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 
-  // V0-1
-  // IDEA: LINKED LIST OP (iteration 1)
-  // https://neetcode.io/solutions/reverse-linked-list-ii
-  // https://youtu.be/RF_M9tX4Eag?si=vTfAtfbmGwzsmtpi
-  public ListNode reverseBetween_0_1(ListNode head, int left, int right) {
-      ListNode dummy = new ListNode(0);
+  <span class="hljs-comment">// V0-1</span>
+  <span class="hljs-comment">// IDEA: LINKED LIST OP (iteration 1)</span>
+  <span class="hljs-comment">// https://neetcode.io/solutions/reverse-linked-list-ii</span>
+  <span class="hljs-comment">// https://youtu.be/RF_M9tX4Eag?si=vTfAtfbmGwzsmtpi</span>
+  <span class="hljs-keyword">public</span> ListNode <span class="hljs-title function_">reverseBetween_0_1</span><span class="hljs-params">(ListNode head, <span class="hljs-type">int</span> left, <span class="hljs-type">int</span> right)</span> {
+      <span class="hljs-type">ListNode</span> <span class="hljs-variable">dummy</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ListNode</span>(<span class="hljs-number">0</span>);
       dummy.next = head;
-      ListNode leftPrev = dummy, cur = head;
+      <span class="hljs-type">ListNode</span> <span class="hljs-variable">leftPrev</span> <span class="hljs-operator">=</span> dummy, cur = head;
 
-      for (int i = 0; i &lt; left - 1; i++) {
+      <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; left - <span class="hljs-number">1</span>; i++) {
           leftPrev = cur;
           cur = cur.next;
       }
 
-      ListNode prev = null;
-      for (int i = 0; i &lt; right - left + 1; i++) {
-          ListNode tmpNext = cur.next;
+      <span class="hljs-type">ListNode</span> <span class="hljs-variable">prev</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;
+      <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; right - left + <span class="hljs-number">1</span>; i++) {
+          <span class="hljs-type">ListNode</span> <span class="hljs-variable">tmpNext</span> <span class="hljs-operator">=</span> cur.next;
           cur.next = prev;
           prev = cur;
           cur = tmpNext;
@@ -1316,257 +1328,257 @@ class Solution(object):
       leftPrev.next.next = cur;
       leftPrev.next = prev;
 
-      return dummy.next;
+      <span class="hljs-keyword">return</span> dummy.next;
   }
 </code></pre>
-<pre><code class="language-python"># LC 92 Reverse Linked List II
-# V1
-# IDEA : Iterative Link Reversal
-# https://leetcode.com/problems/reverse-linked-list-ii/solution/
-class Solution:
-    def reverseBetween(self, head, m, n):
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 92 Reverse Linked List II</span>
+<span class="hljs-comment"># V1</span>
+<span class="hljs-comment"># IDEA : Iterative Link Reversal</span>
+<span class="hljs-comment"># https://leetcode.com/problems/reverse-linked-list-ii/solution/</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">reverseBetween</span>(<span class="hljs-params">self, head, m, n</span>):
 
-        # Empty list
-        if not head:
-            return None
+        <span class="hljs-comment"># Empty list</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> head:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
 
-        # Move the two pointers until they reach the proper starting point
-        # in the list.
-        cur, prev = head, None
-        while m &gt; 1:
+        <span class="hljs-comment"># Move the two pointers until they reach the proper starting point</span>
+        <span class="hljs-comment"># in the list.</span>
+        cur, prev = head, <span class="hljs-literal">None</span>
+        <span class="hljs-keyword">while</span> m &gt; <span class="hljs-number">1</span>:
             prev = cur
-            cur = cur.next
-            m, n = m - 1, n - 1
+            cur = cur.<span class="hljs-built_in">next</span>
+            m, n = m - <span class="hljs-number">1</span>, n - <span class="hljs-number">1</span>
 
-        # The two pointers that will fix the final connections.
+        <span class="hljs-comment"># The two pointers that will fix the final connections.</span>
         tail, con = cur, prev
 
-        # Iteratively reverse the nodes until n becomes 0.
-        while n:
-            third = cur.next
-            cur.next = prev
+        <span class="hljs-comment"># Iteratively reverse the nodes until n becomes 0.</span>
+        <span class="hljs-keyword">while</span> n:
+            third = cur.<span class="hljs-built_in">next</span>
+            cur.<span class="hljs-built_in">next</span> = prev
             prev = cur
             cur = third
-            n -= 1
+            n -= <span class="hljs-number">1</span>
 
-        # Adjust the final connections as explained in the algorithm
-        if con:
-            con.next = prev
-        else:
+        <span class="hljs-comment"># Adjust the final connections as explained in the algorithm</span>
+        <span class="hljs-keyword">if</span> con:
+            con.<span class="hljs-built_in">next</span> = prev
+        <span class="hljs-keyword">else</span>:
             head = prev
-        tail.next = cur
-        return head
+        tail.<span class="hljs-built_in">next</span> = cur
+        <span class="hljs-keyword">return</span> head
 </code></pre>
 <h3 id="2-5-copy-list-with-random-pointer" tabindex="-1"><a class="header-anchor" href="#2-5-copy-list-with-random-pointer"><span>2-5) Copy List with Random Pointer</span></a></h3>
-<pre><code class="language-python"># LC 138. Copy List with Random Pointer
-# V0
-# IDEA : 
-#   step 1) make 2 objects (m, n) refer to same instance (head)
-#   step 2) go through m, and set up the dict
-#   step 3) go through n, and get the random pointer via the dict we set up in step 2)
-class Node(object):
-    def __init__(self, val, next, random):
-        self.val = val
-        self.next = next
-        self.random = random
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 138. Copy List with Random Pointer</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : </span>
+<span class="hljs-comment">#   step 1) make 2 objects (m, n) refer to same instance (head)</span>
+<span class="hljs-comment">#   step 2) go through m, and set up the dict</span>
+<span class="hljs-comment">#   step 3) go through n, and get the random pointer via the dict we set up in step 2)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Node</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, val, <span class="hljs-built_in">next</span>, random</span>):
+        <span class="hljs-variable language_">self</span>.val = val
+        <span class="hljs-variable language_">self</span>.<span class="hljs-built_in">next</span> = <span class="hljs-built_in">next</span>
+        <span class="hljs-variable language_">self</span>.random = random
 
-class Solution:
-    def copyRandomList(self, head):
-        dic = dict()
-        ### NOTE : make m, and n refer to same instance (head)
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">copyRandomList</span>(<span class="hljs-params">self, head</span>):
+        dic = <span class="hljs-built_in">dict</span>()
+        <span class="hljs-comment">### NOTE : make m, and n refer to same instance (head)</span>
         m = n = head
-        while m:
-            ### NOTE : the value in dict is Node type (LinkedList)
+        <span class="hljs-keyword">while</span> m:
+            <span class="hljs-comment">### NOTE : the value in dict is Node type (LinkedList)</span>
             dic[m] = Node(m.val)
-            m = m.next
-        while n:
-            dic[n].next = dic.get(n.next)
+            m = m.<span class="hljs-built_in">next</span>
+        <span class="hljs-keyword">while</span> n:
+            dic[n].<span class="hljs-built_in">next</span> = dic.get(n.<span class="hljs-built_in">next</span>)
             dic[n].random = dic.get(n.random)
-            n = n.next
-        return dic.get(head)
+            n = n.<span class="hljs-built_in">next</span>
+        <span class="hljs-keyword">return</span> dic.get(head)
 </code></pre>
-<pre><code class="language-java">// java
-// NOTE : there is also recursive solution
-// LC 138
-// V2
-// IDEA :  Iterative with O(N) Space
-// https://leetcode.com/problems/copy-list-with-random-pointer/editorial/
-// Visited dictionary to hold old node reference as &quot;key&quot; and new node reference as the &quot;value&quot;
-HashMap&lt;Node, Node&gt; visited = new HashMap&lt;Node, Node&gt;();
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// NOTE : there is also recursive solution</span>
+<span class="hljs-comment">// LC 138</span>
+<span class="hljs-comment">// V2</span>
+<span class="hljs-comment">// IDEA :  Iterative with O(N) Space</span>
+<span class="hljs-comment">// https://leetcode.com/problems/copy-list-with-random-pointer/editorial/</span>
+<span class="hljs-comment">// Visited dictionary to hold old node reference as &quot;key&quot; and new node reference as the &quot;value&quot;</span>
+HashMap&lt;Node, Node&gt; visited = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;Node, Node&gt;();
 
-public Node getClonedNode(Node node) {
-    // If the node exists then
-    if (node != null) {
-        // Check if the node is in the visited dictionary
-        if (this.visited.containsKey(node)) {
-            // If its in the visited dictionary then return the new node reference from the dictionary
-            return this.visited.get(node);
-        } else {
-            // Otherwise create a new node, add to the dictionary and return it
-            this.visited.put(node, new Node(node.val, null, null));
-            return this.visited.get(node);
+<span class="hljs-keyword">public</span> Node <span class="hljs-title function_">getClonedNode</span><span class="hljs-params">(Node node)</span> {
+    <span class="hljs-comment">// If the node exists then</span>
+    <span class="hljs-keyword">if</span> (node != <span class="hljs-literal">null</span>) {
+        <span class="hljs-comment">// Check if the node is in the visited dictionary</span>
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">this</span>.visited.containsKey(node)) {
+            <span class="hljs-comment">// If its in the visited dictionary then return the new node reference from the dictionary</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.visited.get(node);
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-comment">// Otherwise create a new node, add to the dictionary and return it</span>
+            <span class="hljs-built_in">this</span>.visited.put(node, <span class="hljs-keyword">new</span> <span class="hljs-title class_">Node</span>(node.val, <span class="hljs-literal">null</span>, <span class="hljs-literal">null</span>));
+            <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.visited.get(node);
         }
     }
-    return null;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
 }
 
-public Node copyRandomList_3(Node head) {
+<span class="hljs-keyword">public</span> Node <span class="hljs-title function_">copyRandomList_3</span><span class="hljs-params">(Node head)</span> {
 
-    if (head == null) {
-        return null;
+    <span class="hljs-keyword">if</span> (head == <span class="hljs-literal">null</span>) {
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
     }
 
-    Node oldNode = head;
+    <span class="hljs-type">Node</span> <span class="hljs-variable">oldNode</span> <span class="hljs-operator">=</span> head;
 
-    // Creating the new head node.
-    Node newNode = new Node(oldNode.val);
-    this.visited.put(oldNode, newNode);
+    <span class="hljs-comment">// Creating the new head node.</span>
+    <span class="hljs-type">Node</span> <span class="hljs-variable">newNode</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Node</span>(oldNode.val);
+    <span class="hljs-built_in">this</span>.visited.put(oldNode, newNode);
 
-    // Iterate on the linked list until all nodes are cloned.
-    while (oldNode != null) {
-        // Get the clones of the nodes referenced by random and next pointers.
-        newNode.random = this.getClonedNode(oldNode.random);
-        newNode.next = this.getClonedNode(oldNode.next);
+    <span class="hljs-comment">// Iterate on the linked list until all nodes are cloned.</span>
+    <span class="hljs-keyword">while</span> (oldNode != <span class="hljs-literal">null</span>) {
+        <span class="hljs-comment">// Get the clones of the nodes referenced by random and next pointers.</span>
+        newNode.random = <span class="hljs-built_in">this</span>.getClonedNode(oldNode.random);
+        newNode.next = <span class="hljs-built_in">this</span>.getClonedNode(oldNode.next);
 
-        // Move one step ahead in the linked list.
+        <span class="hljs-comment">// Move one step ahead in the linked list.</span>
         oldNode = oldNode.next;
         newNode = newNode.next;
     }
-    return this.visited.get(head);
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.visited.get(head);
 }
 </code></pre>
 <h3 id="2-6-intersection-of-two-linked-lists" tabindex="-1"><a class="header-anchor" href="#2-6-intersection-of-two-linked-lists"><span>2-6) Intersection of Two Linked Lists</span></a></h3>
-<pre><code class="language-python"># LC 160 Intersection of Two Linked Lists
-# V0
-# IDEA : if the given 2 linked list have intersection, then 
-#        they must overlap in SOMEWHERE if we go through
-#        each of them in the same length
-#        -&gt; e.g.
-#             process1 : headA -&gt; headB -&gt; headA ...
-#             process2 : headB -&gt; headA -&gt; headB ...
-class Solution(object):
-    def getIntersectionNode(self, headA, headB):
-        if not headA or not headB:
-            return None
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 160 Intersection of Two Linked Lists</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : if the given 2 linked list have intersection, then </span>
+<span class="hljs-comment">#        they must overlap in SOMEWHERE if we go through</span>
+<span class="hljs-comment">#        each of them in the same length</span>
+<span class="hljs-comment">#        -&gt; e.g.</span>
+<span class="hljs-comment">#             process1 : headA -&gt; headB -&gt; headA ...</span>
+<span class="hljs-comment">#             process2 : headB -&gt; headA -&gt; headB ...</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">getIntersectionNode</span>(<span class="hljs-params">self, headA, headB</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> headA <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> headB:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
         p, q = headA, headB
-        while p and q and p != q:
-            p = p.next
-            q = q.next
-            if p == q:
-                return p
-            if not p:
+        <span class="hljs-keyword">while</span> p <span class="hljs-keyword">and</span> q <span class="hljs-keyword">and</span> p != q:
+            p = p.<span class="hljs-built_in">next</span>
+            q = q.<span class="hljs-built_in">next</span>
+            <span class="hljs-keyword">if</span> p == q:
+                <span class="hljs-keyword">return</span> p
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> p:
                 p = headB
-            if not q:
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> q:
                 q = headA
-        return p
+        <span class="hljs-keyword">return</span> p
 </code></pre>
 <h3 id="2-7-split-linked-list-in-parts" tabindex="-1"><a class="header-anchor" href="#2-7-split-linked-list-in-parts"><span>2-7) Split Linked List in Parts</span></a></h3>
-<pre><code class="language-python"># LC 725. Split Linked List in Parts
-# V0
-# IDEA : LINKED LIST OP + mod op
-class Solution(object):
-    def splitListToParts(self, head, k):
-        # NO need to deal with edge case !!!
-        # get linked list length
-        _len = 0
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 725. Split Linked List in Parts</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : LINKED LIST OP + mod op</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">splitListToParts</span>(<span class="hljs-params">self, head, k</span>):
+        <span class="hljs-comment"># NO need to deal with edge case !!!</span>
+        <span class="hljs-comment"># get linked list length</span>
+        _<span class="hljs-built_in">len</span> = <span class="hljs-number">0</span>
         _head = cur = head
-        while _head:
-            _len += 1
-            _head = _head.next
-        # init res
-        res = [None] * k
-        ### NOTE : we loop over k
-        for i in range(k):
-            &quot;&quot;&quot;
+        <span class="hljs-keyword">while</span> _head:
+            _<span class="hljs-built_in">len</span> += <span class="hljs-number">1</span>
+            _head = _head.<span class="hljs-built_in">next</span>
+        <span class="hljs-comment"># init res</span>
+        res = [<span class="hljs-literal">None</span>] * k
+        <span class="hljs-comment">### NOTE : we loop over k</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(k):
+            <span class="hljs-string">&quot;&quot;&quot;
             2 cases
 
             case 1) i &lt; (_len % k) : there is &quot;remainder&quot; ((_len % k)), so we need to add extra 1
                     -&gt; _cnt_elem = (_len // k) + 1
             case 2) i == (_len % k) : there is NO &quot;remainder&quot;
                     -&gt; _cnt_elem = (_len // k)
-            &quot;&quot;&quot;
-            # NOTE THIS !!!
-            _cnt_elem = (_len // k) + (1 if i &lt; (_len % k) else 0)
-            ### NOTE : we loop over _cnt_elem (length of each &quot;split&quot; linkedlist)
-            for j in range(_cnt_elem):
-                &quot;&quot;&quot;
+            &quot;&quot;&quot;</span>
+            <span class="hljs-comment"># NOTE THIS !!!</span>
+            _cnt_elem = (_<span class="hljs-built_in">len</span> // k) + (<span class="hljs-number">1</span> <span class="hljs-keyword">if</span> i &lt; (_<span class="hljs-built_in">len</span> % k) <span class="hljs-keyword">else</span> <span class="hljs-number">0</span>)
+            <span class="hljs-comment">### NOTE : we loop over _cnt_elem (length of each &quot;split&quot; linkedlist)</span>
+            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(_cnt_elem):
+                <span class="hljs-string">&quot;&quot;&quot;
                 3 cases
                  1) j == 0                (begin of sub linked list)
                  2) j == _cnt_elem - 1    (end of sub linked list)
                  3) 0 &lt; j &lt; _cnt_elem - 1 (middle within sub linked list)
-                &quot;&quot;&quot;
-                # NOTE THIS !!!
-                # NOTE we need keep if - else in BELOW ORDER !!
-                #  -&gt; j == 0, j == _cnt_elem - 1, else
-                if j == 0:
+                &quot;&quot;&quot;</span>
+                <span class="hljs-comment"># NOTE THIS !!!</span>
+                <span class="hljs-comment"># NOTE we need keep if - else in BELOW ORDER !!</span>
+                <span class="hljs-comment">#  -&gt; j == 0, j == _cnt_elem - 1, else</span>
+                <span class="hljs-keyword">if</span> j == <span class="hljs-number">0</span>:
                     res[i] = cur
-                ### NOTE this !!! : 
-                #    -&gt; IF (but not elif)
-                #    -&gt; since we also need to deal with j == 0 and j == _cnt_elem - 1 case
-                if j == _cnt_elem - 1:  # note this !!!
-                    # get next first
-                    tmp = cur.next
-                    # point cur.next to None
-                    cur.next = None
-                    # move cur to next (tmp) for op in next i (for i in range(k))
+                <span class="hljs-comment">### NOTE this !!! : </span>
+                <span class="hljs-comment">#    -&gt; IF (but not elif)</span>
+                <span class="hljs-comment">#    -&gt; since we also need to deal with j == 0 and j == _cnt_elem - 1 case</span>
+                <span class="hljs-keyword">if</span> j == _cnt_elem - <span class="hljs-number">1</span>:  <span class="hljs-comment"># note this !!!</span>
+                    <span class="hljs-comment"># get next first</span>
+                    tmp = cur.<span class="hljs-built_in">next</span>
+                    <span class="hljs-comment"># point cur.next to None</span>
+                    cur.<span class="hljs-built_in">next</span> = <span class="hljs-literal">None</span>
+                    <span class="hljs-comment"># move cur to next (tmp) for op in next i (for i in range(k))</span>
                     cur = tmp
-                else:
-                    cur = cur.next
-        #print (&quot;res = &quot; + str(res))
-        return res
+                <span class="hljs-keyword">else</span>:
+                    cur = cur.<span class="hljs-built_in">next</span>
+        <span class="hljs-comment">#print (&quot;res = &quot; + str(res))</span>
+        <span class="hljs-keyword">return</span> res
 </code></pre>
 <h3 id="2-7-remove-nth-node-from-end-of-list" tabindex="-1"><a class="header-anchor" href="#2-7-remove-nth-node-from-end-of-list"><span>2-7) Remove Nth Node From End of List</span></a></h3>
-<pre><code class="language-python"># LC 19. Remove Nth Node From End of List
-# NOTE : there is (two pass algorithm) approach
-# V0
-# IDEA : FAST-SLOW POINTERS (One pass algorithm)
-# IDEA :
-#   step 1) we move fast pointers n+1 steps -&gt; so slow, fast pointers has n distance (n+1-1 == n)
-#   step 2) we move fast, and slow pointers till fast pointer meet the end
-#   step 3) then we point slow.next to slow.next.next (same as we remove n node)
-#   step 4) we return new_head.next as final result
-class Solution(object):
-    def removeNthFromEnd(self, head, n):
-        new_head = ListNode(0)
-        new_head.next = head
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 19. Remove Nth Node From End of List</span>
+<span class="hljs-comment"># NOTE : there is (two pass algorithm) approach</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : FAST-SLOW POINTERS (One pass algorithm)</span>
+<span class="hljs-comment"># IDEA :</span>
+<span class="hljs-comment">#   step 1) we move fast pointers n+1 steps -&gt; so slow, fast pointers has n distance (n+1-1 == n)</span>
+<span class="hljs-comment">#   step 2) we move fast, and slow pointers till fast pointer meet the end</span>
+<span class="hljs-comment">#   step 3) then we point slow.next to slow.next.next (same as we remove n node)</span>
+<span class="hljs-comment">#   step 4) we return new_head.next as final result</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">removeNthFromEnd</span>(<span class="hljs-params">self, head, n</span>):
+        new_head = ListNode(<span class="hljs-number">0</span>)
+        new_head.<span class="hljs-built_in">next</span> = head
         fast = slow = new_head
-        for i in range(n+1):
-            fast = fast.next
-        while fast:
-            fast = fast.next
-            slow = slow.next
-        slow.next = slow.next.next
-        return new_head.next
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n+<span class="hljs-number">1</span>):
+            fast = fast.<span class="hljs-built_in">next</span>
+        <span class="hljs-keyword">while</span> fast:
+            fast = fast.<span class="hljs-built_in">next</span>
+            slow = slow.<span class="hljs-built_in">next</span>
+        slow.<span class="hljs-built_in">next</span> = slow.<span class="hljs-built_in">next</span>.<span class="hljs-built_in">next</span>
+        <span class="hljs-keyword">return</span> new_head.<span class="hljs-built_in">next</span>
 </code></pre>
-<pre><code class="language-java">// java
-    public ListNode removeNthFromEnd(ListNode head, int n) {
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+    <span class="hljs-keyword">public</span> ListNode <span class="hljs-title function_">removeNthFromEnd</span><span class="hljs-params">(ListNode head, <span class="hljs-type">int</span> n)</span> {
 
-        if (head == null){
-            return head;
+        <span class="hljs-keyword">if</span> (head == <span class="hljs-literal">null</span>){
+            <span class="hljs-keyword">return</span> head;
         }
 
-        if (head.next == null &amp;&amp; head.val == n){
-            return null;
+        <span class="hljs-keyword">if</span> (head.next == <span class="hljs-literal">null</span> &amp;&amp; head.val == n){
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
         }
 
-        // move fast pointer only with n+1 step
-        // 2 cases:
-        //   - 1) node count is even
-        //   - 2) node count is odd
-        /** NOTE !! we init dummy pointer, and let fast, slow pointers point to it */
-        ListNode dummy = new ListNode(0);
+        <span class="hljs-comment">// move fast pointer only with n+1 step</span>
+        <span class="hljs-comment">// 2 cases:</span>
+        <span class="hljs-comment">//   - 1) node count is even</span>
+        <span class="hljs-comment">//   - 2) node count is odd</span>
+        <span class="hljs-comment">/** NOTE !! we init dummy pointer, and let fast, slow pointers point to it */</span>
+        <span class="hljs-type">ListNode</span> <span class="hljs-variable">dummy</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ListNode</span>(<span class="hljs-number">0</span>);
         dummy.next = head;
-        // NOTE here
-        ListNode fast = dummy;
-        ListNode slow = dummy;
-        /**
+        <span class="hljs-comment">// NOTE here</span>
+        <span class="hljs-type">ListNode</span> <span class="hljs-variable">fast</span> <span class="hljs-operator">=</span> dummy;
+        <span class="hljs-type">ListNode</span> <span class="hljs-variable">slow</span> <span class="hljs-operator">=</span> dummy;
+        <span class="hljs-comment">/**
          *  Explanation V1:
          *
          *   -&gt; So we have fast, and slow pointer,
          *   if we move fast N steps first,
          *   then slow starts to move
          *      -&gt; fast, slow has N step difference
-         *      -&gt; what's more, when fast reach the end,
+         *      -&gt; what&#x27;s more, when fast reach the end,
          *      -&gt; fast, slow STILL has N step difference
          *      -&gt; and slow has N step difference with the end,
          *      -&gt; so we can remove N th pointer accordingly
@@ -1580,61 +1592,61 @@ class Solution(object):
          *   // so All we need to do is :
          *   // point slow.next to slow.next.next
          *   // then we remove N node from linked list
-         */
-        for (int i = 1; i &lt;= n+1; i++){
-            //System.out.println(&quot;i = &quot; + i);
+         */</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt;= n+<span class="hljs-number">1</span>; i++){
+            <span class="hljs-comment">//System.out.println(&quot;i = &quot; + i);</span>
             fast = fast.next;
         }
 
-        // move fast and slow pointers on the same time
-        while (fast != null){
+        <span class="hljs-comment">// move fast and slow pointers on the same time</span>
+        <span class="hljs-keyword">while</span> (fast != <span class="hljs-literal">null</span>){
             fast = fast.next;
             slow = slow.next;
         }
 
-        // NOTE here
+        <span class="hljs-comment">// NOTE here</span>
         slow.next = slow.next.next;
-        // NOTE !!! we return dummy.next instead of slow
-        return dummy.next;
+        <span class="hljs-comment">// NOTE !!! we return dummy.next instead of slow</span>
+        <span class="hljs-keyword">return</span> dummy.next;
     }
 </code></pre>
-<pre><code class="language-java">// java
-    // V0
-    // IDEA : get len of linkedlist, and re-point node
-    public ListNode removeNthFromEnd_0(ListNode head, int n) {
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+    <span class="hljs-comment">// V0</span>
+    <span class="hljs-comment">// IDEA : get len of linkedlist, and re-point node</span>
+    <span class="hljs-keyword">public</span> ListNode <span class="hljs-title function_">removeNthFromEnd_0</span><span class="hljs-params">(ListNode head, <span class="hljs-type">int</span> n)</span> {
 
-        if (head.next == null){
-            return null;
+        <span class="hljs-keyword">if</span> (head.next == <span class="hljs-literal">null</span>){
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
         }
 
-        // below op is optional
-//        if (head.next.next == null){
-//            if (n == 1){
-//                return new ListNode(head.val);
-//            }
-//            return new ListNode(head.next.val);
-//        }
+        <span class="hljs-comment">// below op is optional</span>
+<span class="hljs-comment">//        if (head.next.next == null){</span>
+<span class="hljs-comment">//            if (n == 1){</span>
+<span class="hljs-comment">//                return new ListNode(head.val);</span>
+<span class="hljs-comment">//            }</span>
+<span class="hljs-comment">//            return new ListNode(head.next.val);</span>
+<span class="hljs-comment">//        }</span>
 
-        // get len
-        int len = 0;
-        ListNode head_ = head;
-        while (head_ != null){
+        <span class="hljs-comment">// get len</span>
+        <span class="hljs-type">int</span> <span class="hljs-variable">len</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+        <span class="hljs-type">ListNode</span> <span class="hljs-variable">head_</span> <span class="hljs-operator">=</span> head;
+        <span class="hljs-keyword">while</span> (head_ != <span class="hljs-literal">null</span>){
             head_ = head_.next;
-            len += 1;
+            len += <span class="hljs-number">1</span>;
         }
 
-        ListNode root = new ListNode();
-        /** NOTE !!! root_ is the actual final result */
-        ListNode root_ = root;
+        <span class="hljs-type">ListNode</span> <span class="hljs-variable">root</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ListNode</span>();
+        <span class="hljs-comment">/** NOTE !!! root_ is the actual final result */</span>
+        <span class="hljs-type">ListNode</span> <span class="hljs-variable">root_</span> <span class="hljs-operator">=</span> root;
 
-        // if n == len
-        if (n == len){
+        <span class="hljs-comment">// if n == len</span>
+        <span class="hljs-keyword">if</span> (n == len){
             head = head.next;
             root.next = head;
             root = root.next;
         }
 
-        /**
+        <span class="hljs-comment">/**
          *  IDEA: get length of linked list,
          *        then if want to delete n node from the end of linked list,
          *        -&gt; then we need to stop at &quot;len - n&quot; idx,
@@ -1648,298 +1660,298 @@ class Solution(object):
          *
          *   if n = 1, then &quot;k-1&quot; is the node to be removed.
          *   -&gt; so we find &quot;k-2&quot; node, and re-connect it to &quot;k&quot; node
-         */
-        /** NOTE !!!
+         */</span>
+        <span class="hljs-comment">/** NOTE !!!
          *
          *  idx is the index, that we &quot;stop&quot;,  and re-connect
          *  from idx to its next next node (which is the actual &quot;delete&quot; node op
-         */
-        int idx = len - n; // NOTE !!! this
-        while (idx &gt; 0){
+         */</span>
+        <span class="hljs-type">int</span> <span class="hljs-variable">idx</span> <span class="hljs-operator">=</span> len - n; <span class="hljs-comment">// NOTE !!! this</span>
+        <span class="hljs-keyword">while</span> (idx &gt; <span class="hljs-number">0</span>){
             root.next = head;
             root = root.next;
             head = head.next;
-            idx -= 1;
+            idx -= <span class="hljs-number">1</span>;
         }
 
-        ListNode next = head.next;
+        <span class="hljs-type">ListNode</span> <span class="hljs-variable">next</span> <span class="hljs-operator">=</span> head.next;
         root.next = next;
 
-        return root_.next;
+        <span class="hljs-keyword">return</span> root_.next;
     }
 </code></pre>
 <h3 id="2-8-reorder-list" tabindex="-1"><a class="header-anchor" href="#2-8-reorder-list"><span>2-8) Reorder List</span></a></h3>
-<pre><code class="language-java">// java
-    public void reorderList(ListNode head) {
-        // Edge case: empty or single node list
-        if (head == null || head.next == null) {
-            return;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">reorderList</span><span class="hljs-params">(ListNode head)</span> {
+        <span class="hljs-comment">// Edge case: empty or single node list</span>
+        <span class="hljs-keyword">if</span> (head == <span class="hljs-literal">null</span> || head.next == <span class="hljs-literal">null</span>) {
+            <span class="hljs-keyword">return</span>;
         }
 
-        // Step 1: Find the middle node
-        ListNode slow = head, fast = head;
-        while (fast != null &amp;&amp; fast.next != null) {
+        <span class="hljs-comment">// Step 1: Find the middle node</span>
+        <span class="hljs-type">ListNode</span> <span class="hljs-variable">slow</span> <span class="hljs-operator">=</span> head, fast = head;
+        <span class="hljs-keyword">while</span> (fast != <span class="hljs-literal">null</span> &amp;&amp; fast.next != <span class="hljs-literal">null</span>) {
             slow = slow.next;
             fast = fast.next.next;
         }
 
-        // Step 2: Reverse the second half of the list
-        /** NOTE !!!
+        <span class="hljs-comment">// Step 2: Reverse the second half of the list</span>
+        <span class="hljs-comment">/** NOTE !!!
          *
          *  reverse on `slow.next` node
-         */
-        ListNode secondHalf = reverseNode_(slow.next);
-        /** NOTE !!!
+         */</span>
+        <span class="hljs-type">ListNode</span> <span class="hljs-variable">secondHalf</span> <span class="hljs-operator">=</span> reverseNode_(slow.next);
+        <span class="hljs-comment">/** NOTE !!!
          *
-         *  `cut off` slow node's next nodes via point it to null node
+         *  `cut off` slow node&#x27;s next nodes via point it to null node
          *  (if not cut off, then in merge step, we will merge duplicated nodes
-         */
-        slow.next = null; // Break the list into two halves
+         */</span>
+        slow.next = <span class="hljs-literal">null</span>; <span class="hljs-comment">// Break the list into two halves</span>
 
-        // Step 3: Merge two halves
-        ListNode firstHalf = head;
-        while (secondHalf != null) {
+        <span class="hljs-comment">// Step 3: Merge two halves</span>
+        <span class="hljs-type">ListNode</span> <span class="hljs-variable">firstHalf</span> <span class="hljs-operator">=</span> head;
+        <span class="hljs-keyword">while</span> (secondHalf != <span class="hljs-literal">null</span>) {
 
-            // NOTE !!! cache `next node` before any op
-            ListNode _nextFirstHalf = firstHalf.next;
-            ListNode _nextSecondHalf = secondHalf.next;
+            <span class="hljs-comment">// NOTE !!! cache `next node` before any op</span>
+            <span class="hljs-type">ListNode</span> <span class="hljs-variable">_nextFirstHalf</span> <span class="hljs-operator">=</span> firstHalf.next;
+            <span class="hljs-type">ListNode</span> <span class="hljs-variable">_nextSecondHalf</span> <span class="hljs-operator">=</span> secondHalf.next;
 
-            // NOTE !!! point first node to second node, then point second node to first node's next node
+            <span class="hljs-comment">// NOTE !!! point first node to second node, then point second node to first node&#x27;s next node</span>
             firstHalf.next = secondHalf;
             secondHalf.next = _nextFirstHalf;
 
-            // NOTE !!! move both node to `next` node
+            <span class="hljs-comment">// NOTE !!! move both node to `next` node</span>
             firstHalf = _nextFirstHalf;
             secondHalf = _nextSecondHalf;
         }
     }
 
-    // Helper function to reverse a linked list
-    private ListNode reverseNode_(ListNode head) {
-        ListNode prev = null;
-        while (head != null) {
-            ListNode next = head.next;
+    <span class="hljs-comment">// Helper function to reverse a linked list</span>
+    <span class="hljs-keyword">private</span> ListNode <span class="hljs-title function_">reverseNode_</span><span class="hljs-params">(ListNode head)</span> {
+        <span class="hljs-type">ListNode</span> <span class="hljs-variable">prev</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;
+        <span class="hljs-keyword">while</span> (head != <span class="hljs-literal">null</span>) {
+            <span class="hljs-type">ListNode</span> <span class="hljs-variable">next</span> <span class="hljs-operator">=</span> head.next;
             head.next = prev;
             prev = head;
             head = next;
         }
-        return prev;
+        <span class="hljs-keyword">return</span> prev;
     }
 </code></pre>
-<pre><code class="language-python"># LC 143. Reorder List
-# V0
-# IDEA : Reverse the Second Part of the List and Merge Two Sorted Lists
-class Solution:
-    def reorderList(self, head):
-        if not head:
-            return 
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 143. Reorder List</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : Reverse the Second Part of the List and Merge Two Sorted Lists</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">reorderList</span>(<span class="hljs-params">self, head</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> head:
+            <span class="hljs-keyword">return</span> 
         
-        # find the middle of linked list [Problem 876]
-        # in 1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;6 find 4 
+        <span class="hljs-comment"># find the middle of linked list [Problem 876]</span>
+        <span class="hljs-comment"># in 1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;6 find 4 </span>
         slow = fast = head
-        while fast and fast.next:
-            slow = slow.next
-            fast = fast.next.next 
+        <span class="hljs-keyword">while</span> fast <span class="hljs-keyword">and</span> fast.<span class="hljs-built_in">next</span>:
+            slow = slow.<span class="hljs-built_in">next</span>
+            fast = fast.<span class="hljs-built_in">next</span>.<span class="hljs-built_in">next</span> 
             
-        # reverse the second part of the list [Problem 206]
-        # convert 1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;6 into 1-&gt;2-&gt;3-&gt;4 and 6-&gt;5-&gt;4
-        # reverse the second half in-place
-        prev, curr = None, slow
-        while curr:
-            tmp = curr.next
+        <span class="hljs-comment"># reverse the second part of the list [Problem 206]</span>
+        <span class="hljs-comment"># convert 1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;6 into 1-&gt;2-&gt;3-&gt;4 and 6-&gt;5-&gt;4</span>
+        <span class="hljs-comment"># reverse the second half in-place</span>
+        prev, curr = <span class="hljs-literal">None</span>, slow
+        <span class="hljs-keyword">while</span> curr:
+            tmp = curr.<span class="hljs-built_in">next</span>
             
-            curr.next = prev
+            curr.<span class="hljs-built_in">next</span> = prev
             prev = curr
             curr = tmp    
 
-        # merge two sorted linked lists [Problem 21]
-        # merge 1-&gt;2-&gt;3-&gt;4 and 6-&gt;5-&gt;4 into 1-&gt;6-&gt;2-&gt;5-&gt;3-&gt;4
+        <span class="hljs-comment"># merge two sorted linked lists [Problem 21]</span>
+        <span class="hljs-comment"># merge 1-&gt;2-&gt;3-&gt;4 and 6-&gt;5-&gt;4 into 1-&gt;6-&gt;2-&gt;5-&gt;3-&gt;4</span>
         first, second = head, prev
-        while second.next:
-            tmp = first.next
-            first.next = second
+        <span class="hljs-keyword">while</span> second.<span class="hljs-built_in">next</span>:
+            tmp = first.<span class="hljs-built_in">next</span>
+            first.<span class="hljs-built_in">next</span> = second
             first = tmp
             
-            tmp = second.next
-            second.next = first
+            tmp = second.<span class="hljs-built_in">next</span>
+            second.<span class="hljs-built_in">next</span> = first
             second = tmp
 
-# V0'
-# IDEA : Reverse the Second Part of the List and Merge Two Sorted Lists (simplified code from V1)
-class Solution:
-    def reorderList(self, head):
-        if not head:
-            return 
+<span class="hljs-comment"># V0&#x27;</span>
+<span class="hljs-comment"># IDEA : Reverse the Second Part of the List and Merge Two Sorted Lists (simplified code from V1)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">reorderList</span>(<span class="hljs-params">self, head</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> head:
+            <span class="hljs-keyword">return</span> 
         
-        # find the middle of linked list [Problem 876]
-        # in 1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;6 find 4 
+        <span class="hljs-comment"># find the middle of linked list [Problem 876]</span>
+        <span class="hljs-comment"># in 1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;6 find 4 </span>
         slow = fast = head
-        while fast and fast.next:
-            slow = slow.next
-            fast = fast.next.next 
+        <span class="hljs-keyword">while</span> fast <span class="hljs-keyword">and</span> fast.<span class="hljs-built_in">next</span>:
+            slow = slow.<span class="hljs-built_in">next</span>
+            fast = fast.<span class="hljs-built_in">next</span>.<span class="hljs-built_in">next</span> 
             
-        # reverse the second part of the list [Problem 206]
-        # convert 1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;6 into 1-&gt;2-&gt;3-&gt;4 and 6-&gt;5-&gt;4
-        # reverse the second half in-place
-        prev, curr = None, slow
-        while curr:
-            curr.next, prev, curr = prev, curr, curr.next       
+        <span class="hljs-comment"># reverse the second part of the list [Problem 206]</span>
+        <span class="hljs-comment"># convert 1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;6 into 1-&gt;2-&gt;3-&gt;4 and 6-&gt;5-&gt;4</span>
+        <span class="hljs-comment"># reverse the second half in-place</span>
+        prev, curr = <span class="hljs-literal">None</span>, slow
+        <span class="hljs-keyword">while</span> curr:
+            curr.<span class="hljs-built_in">next</span>, prev, curr = prev, curr, curr.<span class="hljs-built_in">next</span>       
 
-        # merge two sorted linked lists [Problem 21]
-        # merge 1-&gt;2-&gt;3-&gt;4 and 6-&gt;5-&gt;4 into 1-&gt;6-&gt;2-&gt;5-&gt;3-&gt;4
+        <span class="hljs-comment"># merge two sorted linked lists [Problem 21]</span>
+        <span class="hljs-comment"># merge 1-&gt;2-&gt;3-&gt;4 and 6-&gt;5-&gt;4 into 1-&gt;6-&gt;2-&gt;5-&gt;3-&gt;4</span>
         first, second = head, prev
-        while second.next:
-            first.next, first = second, first.next
-            second.next, second = first, second.next
+        <span class="hljs-keyword">while</span> second.<span class="hljs-built_in">next</span>:
+            first.<span class="hljs-built_in">next</span>, first = second, first.<span class="hljs-built_in">next</span>
+            second.<span class="hljs-built_in">next</span>, second = first, second.<span class="hljs-built_in">next</span>
 
-# V0'''
-class Solution:
-    def reorderList(self, head):
-        if head is None:
-            return head
+<span class="hljs-comment"># V0&#x27;&#x27;&#x27;</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">reorderList</span>(<span class="hljs-params">self, head</span>):
+        <span class="hljs-keyword">if</span> head <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+            <span class="hljs-keyword">return</span> head
 
-        #find mid
+        <span class="hljs-comment">#find mid</span>
         slow = head
         fast = head
-        while fast.next and fast.next.next:
-            slow = slow.next
-            fast = fast.next.next
+        <span class="hljs-keyword">while</span> fast.<span class="hljs-built_in">next</span> <span class="hljs-keyword">and</span> fast.<span class="hljs-built_in">next</span>.<span class="hljs-built_in">next</span>:
+            slow = slow.<span class="hljs-built_in">next</span>
+            fast = fast.<span class="hljs-built_in">next</span>.<span class="hljs-built_in">next</span>
         mid = slow
 
-        #cut in the mid
+        <span class="hljs-comment">#cut in the mid</span>
         left = head
-        right = mid.next
-        if right is None:
-            return head
-        mid.next = None
+        right = mid.<span class="hljs-built_in">next</span>
+        <span class="hljs-keyword">if</span> right <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+            <span class="hljs-keyword">return</span> head
+        mid.<span class="hljs-built_in">next</span> = <span class="hljs-literal">None</span>
 
-        #reverse right half
-        cursor = right.next
-        right.next = None
-        while cursor:
-            next = cursor.next
-            cursor.next = right
+        <span class="hljs-comment">#reverse right half</span>
+        cursor = right.<span class="hljs-built_in">next</span>
+        right.<span class="hljs-built_in">next</span> = <span class="hljs-literal">None</span>
+        <span class="hljs-keyword">while</span> cursor:
+            <span class="hljs-built_in">next</span> = cursor.<span class="hljs-built_in">next</span>
+            cursor.<span class="hljs-built_in">next</span> = right
             right = cursor
-            cursor = next
+            cursor = <span class="hljs-built_in">next</span>
         
-        #merge left and right
-        dummy = ListNode(0)
-        while left or right:
-            if left is not None:
-                dummy.next = left
-                left = left.next
-                dummy = dummy.next
-            if right is not None:
-                dummy.next = right
-                right = right.next
-                dummy = dummy.next
-        return head
+        <span class="hljs-comment">#merge left and right</span>
+        dummy = ListNode(<span class="hljs-number">0</span>)
+        <span class="hljs-keyword">while</span> left <span class="hljs-keyword">or</span> right:
+            <span class="hljs-keyword">if</span> left <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:
+                dummy.<span class="hljs-built_in">next</span> = left
+                left = left.<span class="hljs-built_in">next</span>
+                dummy = dummy.<span class="hljs-built_in">next</span>
+            <span class="hljs-keyword">if</span> right <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:
+                dummy.<span class="hljs-built_in">next</span> = right
+                right = right.<span class="hljs-built_in">next</span>
+                dummy = dummy.<span class="hljs-built_in">next</span>
+        <span class="hljs-keyword">return</span> head
 </code></pre>
 <h3 id="2-9-swap-nodes-in-pairs" tabindex="-1"><a class="header-anchor" href="#2-9-swap-nodes-in-pairs"><span>2-9) Swap Nodes in Pairs</span></a></h3>
-<pre><code class="language-python"># LC 24. Swap Nodes in Pairs
-# V0 
-# IDEA : LINKED LIST
-# NOTE : 
-#   1) define 2 node via : n1, n2 = head.next, head.next.next
-#   2) START THE PROCESS FROM &quot;RIGHT HAND SIDE&quot;,
-#      i.e. : n1.next = n2.next ( connect n1 to next node) -&gt; connect n2 to n1 (n2.next = n1) -&gt; connect dummy to n2 (head.next = n2)
-#   3) THEN MOVE HEAD FORWARD (head = n1)
-class Solution:
-    def swapPairs(self, head):
-        if not head or not head.next:
-            return head
-        dummy = ListNode(0)
-        dummy.next = head
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 24. Swap Nodes in Pairs</span>
+<span class="hljs-comment"># V0 </span>
+<span class="hljs-comment"># IDEA : LINKED LIST</span>
+<span class="hljs-comment"># NOTE : </span>
+<span class="hljs-comment">#   1) define 2 node via : n1, n2 = head.next, head.next.next</span>
+<span class="hljs-comment">#   2) START THE PROCESS FROM &quot;RIGHT HAND SIDE&quot;,</span>
+<span class="hljs-comment">#      i.e. : n1.next = n2.next ( connect n1 to next node) -&gt; connect n2 to n1 (n2.next = n1) -&gt; connect dummy to n2 (head.next = n2)</span>
+<span class="hljs-comment">#   3) THEN MOVE HEAD FORWARD (head = n1)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">swapPairs</span>(<span class="hljs-params">self, head</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> head <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> head.<span class="hljs-built_in">next</span>:
+            <span class="hljs-keyword">return</span> head
+        dummy = ListNode(<span class="hljs-number">0</span>)
+        dummy.<span class="hljs-built_in">next</span> = head
         head = dummy
-        while head.next and head.next.next:
-            n1, n2 = head.next, head.next.next
-            n1.next = n2.next
-            n2.next = n1
-            head.next = n2      
+        <span class="hljs-keyword">while</span> head.<span class="hljs-built_in">next</span> <span class="hljs-keyword">and</span> head.<span class="hljs-built_in">next</span>.<span class="hljs-built_in">next</span>:
+            n1, n2 = head.<span class="hljs-built_in">next</span>, head.<span class="hljs-built_in">next</span>.<span class="hljs-built_in">next</span>
+            n1.<span class="hljs-built_in">next</span> = n2.<span class="hljs-built_in">next</span>
+            n2.<span class="hljs-built_in">next</span> = n1
+            head.<span class="hljs-built_in">next</span> = n2      
             head = n1
-        return dummy.next
+        <span class="hljs-keyword">return</span> dummy.<span class="hljs-built_in">next</span>
 </code></pre>
 <h3 id="2-10-plus-one-linked-list" tabindex="-1"><a class="header-anchor" href="#2-10-plus-one-linked-list"><span>2-10) Plus One Linked List</span></a></h3>
-<pre><code class="language-java">// java
-// LC 369
-// V1
-// IDEA : LINKED LIST OP (gpt)
-/**
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 369</span>
+<span class="hljs-comment">// V1</span>
+<span class="hljs-comment">// IDEA : LINKED LIST OP (gpt)</span>
+<span class="hljs-comment">/**
 *  Step 1) reverse linked list
 *  Step 2) plus 1, bring `carry` to next digit if curSum &gt; 9, ... repeat for all nodes
 *  Step 3) reverse linked list again
-*/
-public ListNode plusOne_1(ListNode head) {
-if (head == null) return new ListNode(1); // Handle edge case
+*/</span>
+<span class="hljs-keyword">public</span> ListNode <span class="hljs-title function_">plusOne_1</span><span class="hljs-params">(ListNode head)</span> {
+<span class="hljs-keyword">if</span> (head == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ListNode</span>(<span class="hljs-number">1</span>); <span class="hljs-comment">// Handle edge case</span>
 
-// Reverse the linked list
+<span class="hljs-comment">// Reverse the linked list</span>
 head = reverseList(head);
 
-// Add one to the reversed list
-ListNode current = head;
-int carry = 1; // Start with adding one
+<span class="hljs-comment">// Add one to the reversed list</span>
+<span class="hljs-type">ListNode</span> <span class="hljs-variable">current</span> <span class="hljs-operator">=</span> head;
+<span class="hljs-type">int</span> <span class="hljs-variable">carry</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; <span class="hljs-comment">// Start with adding one</span>
 
-while (current != null &amp;&amp; carry &gt; 0) {
-  int sum = current.val + carry;
-  current.val = sum % 10; // Update the current node value
-  carry = sum / 10; // Calculate carry for the next node
-  if (current.next == null &amp;&amp; carry &gt; 0) {
-    current.next = new ListNode(carry); // Add a new node for carry
-    carry = 0; // No more carry after this
+<span class="hljs-keyword">while</span> (current != <span class="hljs-literal">null</span> &amp;&amp; carry &gt; <span class="hljs-number">0</span>) {
+  <span class="hljs-type">int</span> <span class="hljs-variable">sum</span> <span class="hljs-operator">=</span> current.val + carry;
+  current.val = sum % <span class="hljs-number">10</span>; <span class="hljs-comment">// Update the current node value</span>
+  carry = sum / <span class="hljs-number">10</span>; <span class="hljs-comment">// Calculate carry for the next node</span>
+  <span class="hljs-keyword">if</span> (current.next == <span class="hljs-literal">null</span> &amp;&amp; carry &gt; <span class="hljs-number">0</span>) {
+    current.next = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ListNode</span>(carry); <span class="hljs-comment">// Add a new node for carry</span>
+    carry = <span class="hljs-number">0</span>; <span class="hljs-comment">// No more carry after this</span>
   }
   current = current.next;
 }
 
-// Reverse the list back to original order
-return reverseList(head);
+<span class="hljs-comment">// Reverse the list back to original order</span>
+<span class="hljs-keyword">return</span> reverseList(head);
 }
 
-// Utility to reverse a linked list
-private ListNode reverseList(ListNode head) {
-ListNode prev = null;
-ListNode current = head;
+<span class="hljs-comment">// Utility to reverse a linked list</span>
+<span class="hljs-keyword">private</span> ListNode <span class="hljs-title function_">reverseList</span><span class="hljs-params">(ListNode head)</span> {
+<span class="hljs-type">ListNode</span> <span class="hljs-variable">prev</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;
+<span class="hljs-type">ListNode</span> <span class="hljs-variable">current</span> <span class="hljs-operator">=</span> head;
 
-while (current != null) {
-  ListNode next = current.next; // Save the next node
-  current.next = prev; // Reverse the link
-  prev = current; // Move prev forward
-  current = next; // Move current forward
+<span class="hljs-keyword">while</span> (current != <span class="hljs-literal">null</span>) {
+  <span class="hljs-type">ListNode</span> <span class="hljs-variable">next</span> <span class="hljs-operator">=</span> current.next; <span class="hljs-comment">// Save the next node</span>
+  current.next = prev; <span class="hljs-comment">// Reverse the link</span>
+  prev = current; <span class="hljs-comment">// Move prev forward</span>
+  current = next; <span class="hljs-comment">// Move current forward</span>
 }
 
-return prev;
+<span class="hljs-keyword">return</span> prev;
 }
 </code></pre>
 <h3 id="2-11-linked-list-components" tabindex="-1"><a class="header-anchor" href="#2-11-linked-list-components"><span>2-11) Linked List Components</span></a></h3>
-<pre><code class="language-java">// java
-// LC 817
-    // V1
-    // IDEA: set, linkedlist (gpt)
-    public int numComponents_1(ListNode head, int[] nums) {
-        // Convert nums array to a HashSet for O(1) lookups
-        Set&lt;Integer&gt; numsSet = new HashSet&lt;&gt;();
-        for (int num : nums) {
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 817</span>
+    <span class="hljs-comment">// V1</span>
+    <span class="hljs-comment">// IDEA: set, linkedlist (gpt)</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">numComponents_1</span><span class="hljs-params">(ListNode head, <span class="hljs-type">int</span>[] nums)</span> {
+        <span class="hljs-comment">// Convert nums array to a HashSet for O(1) lookups</span>
+        Set&lt;Integer&gt; numsSet = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : nums) {
             numsSet.add(num);
         }
 
-        int count = 0;
-        boolean inComponent = false;
+        <span class="hljs-type">int</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+        <span class="hljs-type">boolean</span> <span class="hljs-variable">inComponent</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;
 
-        // Traverse the linked list
-        while (head != null) {
-            if (numsSet.contains(head.val)) {
-                // Start a new component if not already in one
-                if (!inComponent) {
+        <span class="hljs-comment">// Traverse the linked list</span>
+        <span class="hljs-keyword">while</span> (head != <span class="hljs-literal">null</span>) {
+            <span class="hljs-keyword">if</span> (numsSet.contains(head.val)) {
+                <span class="hljs-comment">// Start a new component if not already in one</span>
+                <span class="hljs-keyword">if</span> (!inComponent) {
                     count++;
-                    inComponent = true;
+                    inComponent = <span class="hljs-literal">true</span>;
                 }
-            } else {
-                // End the current component
-                inComponent = false;
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-comment">// End the current component</span>
+                inComponent = <span class="hljs-literal">false</span>;
             }
             head = head.next;
         }
 
-        return count;
+        <span class="hljs-keyword">return</span> count;
     }
 </code></pre>
 

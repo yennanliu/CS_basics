@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,13 +20,24 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
     document.querySelectorAll('pre code').forEach(function(codeEl) {
       var pre = codeEl.parentElement;
       var lang = '';
       var cls = codeEl.className || '';
       var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
       if (m) lang = m[1];
+
+      // Add line numbers
+      var lines = codeEl.innerHTML.split('
+');
+      if (lines[lines.length - 1] === '') lines.pop();
+      var numbered = lines.map(function(line, i) {
+        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
+      }).join('
+');
+      codeEl.innerHTML = numbered;
+      codeEl.classList.add('hljs-ln');
+
       var wrapper = document.createElement('div');
       wrapper.className = 'code-block-wrapper';
       pre.parentNode.insertBefore(wrapper, pre);
@@ -45,7 +55,9 @@
       btn.className = 'copy-btn';
       btn.textContent = 'Copy';
       btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
+');
+        navigator.clipboard.writeText(text).then(function() {
           btn.textContent = 'Copied!';
           btn.classList.add('copied');
           setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
@@ -147,9 +159,9 @@ Google interviewers heavily probe this — expect follow-up questions like
 </ol>
 <hr>
 <h2 id="drill-1-nested-loops" tabindex="-1"><a class="header-anchor" href="#drill-1-nested-loops"><span>Drill 1: Nested Loops</span></a></h2>
-<pre><code class="language-java">for (int i = 0; i &lt; n; i++) {
-    for (int j = i; j &lt; n; j++) {
-        // O(1) work
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> i; j &lt; n; j++) {
+        <span class="hljs-comment">// O(1) work</span>
     }
 }
 </code></pre>
@@ -162,10 +174,10 @@ Inner loop runs: N + (N-1) + (N-2) + … + 1 = N(N+1)/2 → O(N²)</p>
 </details>
 <hr>
 <h2 id="drill-2-loop-with-multiply" tabindex="-1"><a class="header-anchor" href="#drill-2-loop-with-multiply"><span>Drill 2: Loop with Multiply</span></a></h2>
-<pre><code class="language-java">int i = 1;
-while (i &lt; n) {
-    // O(1) work
-    i *= 2;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;
+<span class="hljs-keyword">while</span> (i &lt; n) {
+    <span class="hljs-comment">// O(1) work</span>
+    i *= <span class="hljs-number">2</span>;
 }
 </code></pre>
 <details>
@@ -176,9 +188,9 @@ i takes values 1, 2, 4, 8, …, until i ≥ N. That’s log₂(N) iterations.</p
 </details>
 <hr>
 <h2 id="drill-3-loop-with-divide" tabindex="-1"><a class="header-anchor" href="#drill-3-loop-with-divide"><span>Drill 3: Loop with Divide</span></a></h2>
-<pre><code class="language-java">for (int i = n; i &gt;= 1; i /= 2) {
-    for (int j = 0; j &lt; i; j++) {
-        // O(1) work
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> n; i &gt;= <span class="hljs-number">1</span>; i /= <span class="hljs-number">2</span>) {
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; i; j++) {
+        <span class="hljs-comment">// O(1) work</span>
     }
 }
 </code></pre>
@@ -191,9 +203,9 @@ Inner loop runs: N + N/2 + N/4 + … + 1 = 2N → O(N) (geometric series!)</p>
 </details>
 <hr>
 <h2 id="drill-4-recursive-fibonacci-naive" tabindex="-1"><a class="header-anchor" href="#drill-4-recursive-fibonacci-naive"><span>Drill 4: Recursive Fibonacci (Naive)</span></a></h2>
-<pre><code class="language-python">def fib(n):
-    if n &lt;= 1: return n
-    return fib(n-1) + fib(n-2)
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">fib</span>(<span class="hljs-params">n</span>):
+    <span class="hljs-keyword">if</span> n &lt;= <span class="hljs-number">1</span>: <span class="hljs-keyword">return</span> n
+    <span class="hljs-keyword">return</span> fib(n-<span class="hljs-number">1</span>) + fib(n-<span class="hljs-number">2</span>)
 </code></pre>
 <details>
 <summary>Answer</summary>
@@ -204,13 +216,13 @@ Each call branches into 2 subcalls. Tree has ~2^N nodes.</p>
 </details>
 <hr>
 <h2 id="drill-5-hashmap-in-a-loop" tabindex="-1"><a class="header-anchor" href="#drill-5-hashmap-in-a-loop"><span>Drill 5: HashMap in a Loop</span></a></h2>
-<pre><code class="language-java">Map&lt;Integer, Integer&gt; map = new HashMap&lt;&gt;();
-for (int i = 0; i &lt; n; i++) {
+<pre data-lang="java"><code class="hljs language-java">Map&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
     map.put(nums[i], i);
 }
-for (int i = 0; i &lt; n; i++) {
-    int complement = target - nums[i];
-    if (map.containsKey(complement)) return true;
+<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+    <span class="hljs-type">int</span> <span class="hljs-variable">complement</span> <span class="hljs-operator">=</span> target - nums[i];
+    <span class="hljs-keyword">if</span> (map.containsKey(complement)) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 }
 </code></pre>
 <details>
@@ -221,8 +233,8 @@ for (int i = 0; i &lt; n; i++) {
 </details>
 <hr>
 <h2 id="drill-6-sorting-binary-search" tabindex="-1"><a class="header-anchor" href="#drill-6-sorting-binary-search"><span>Drill 6: Sorting + Binary Search</span></a></h2>
-<pre><code class="language-python">nums.sort()  # Timsort
-for x in nums:
+<pre data-lang="python"><code class="hljs language-python">nums.sort()  <span class="hljs-comment"># Timsort</span>
+<span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> nums:
     idx = bisect_left(nums, target - x)
 </code></pre>
 <details>
@@ -232,15 +244,15 @@ for x in nums:
 </details>
 <hr>
 <h2 id="drill-7-bfs-on-grid" tabindex="-1"><a class="header-anchor" href="#drill-7-bfs-on-grid"><span>Drill 7: BFS on Grid</span></a></h2>
-<pre><code class="language-python">from collections import deque
-queue = deque([(0, 0)])
-visited = set()
-visited.add((0, 0))
-while queue:
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
+queue = deque([(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>)])
+visited = <span class="hljs-built_in">set</span>()
+visited.add((<span class="hljs-number">0</span>, <span class="hljs-number">0</span>))
+<span class="hljs-keyword">while</span> queue:
     r, c = queue.popleft()
-    for dr, dc in [(0,1),(0,-1),(1,0),(-1,0)]:
+    <span class="hljs-keyword">for</span> dr, dc <span class="hljs-keyword">in</span> [(<span class="hljs-number">0</span>,<span class="hljs-number">1</span>),(<span class="hljs-number">0</span>,-<span class="hljs-number">1</span>),(<span class="hljs-number">1</span>,<span class="hljs-number">0</span>),(-<span class="hljs-number">1</span>,<span class="hljs-number">0</span>)]:
         nr, nc = r+dr, c+dc
-        if 0 &lt;= nr &lt; m and 0 &lt;= nc &lt; n and (nr,nc) not in visited:
+        <span class="hljs-keyword">if</span> <span class="hljs-number">0</span> &lt;= nr &lt; m <span class="hljs-keyword">and</span> <span class="hljs-number">0</span> &lt;= nc &lt; n <span class="hljs-keyword">and</span> (nr,nc) <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> visited:
             visited.add((nr, nc))
             queue.append((nr, nc))
 </code></pre>
@@ -252,12 +264,12 @@ while queue:
 </details>
 <hr>
 <h2 id="drill-8-merge-sort" tabindex="-1"><a class="header-anchor" href="#drill-8-merge-sort"><span>Drill 8: Merge Sort</span></a></h2>
-<pre><code class="language-python">def mergeSort(arr):
-    if len(arr) &lt;= 1: return arr
-    mid = len(arr) // 2
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">mergeSort</span>(<span class="hljs-params">arr</span>):
+    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(arr) &lt;= <span class="hljs-number">1</span>: <span class="hljs-keyword">return</span> arr
+    mid = <span class="hljs-built_in">len</span>(arr) // <span class="hljs-number">2</span>
     left = mergeSort(arr[:mid])
     right = mergeSort(arr[mid:])
-    return merge(left, right)  # merge is O(N)
+    <span class="hljs-keyword">return</span> merge(left, right)  <span class="hljs-comment"># merge is O(N)</span>
 </code></pre>
 <details>
 <summary>Answer</summary>
@@ -267,11 +279,11 @@ while queue:
 </details>
 <hr>
 <h2 id="drill-9-subsets-generation" tabindex="-1"><a class="header-anchor" href="#drill-9-subsets-generation"><span>Drill 9: Subsets Generation</span></a></h2>
-<pre><code class="language-python">def subsets(nums):
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">subsets</span>(<span class="hljs-params">nums</span>):
     result = [[]]
-    for num in nums:
-        result += [curr + [num] for curr in result]
-    return result
+    <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> nums:
+        result += [curr + [num] <span class="hljs-keyword">for</span> curr <span class="hljs-keyword">in</span> result]
+    <span class="hljs-keyword">return</span> result
 </code></pre>
 <details>
 <summary>Answer</summary>
@@ -281,16 +293,16 @@ while queue:
 </details>
 <hr>
 <h2 id="drill-10-sliding-window" tabindex="-1"><a class="header-anchor" href="#drill-10-sliding-window"><span>Drill 10: Sliding Window</span></a></h2>
-<pre><code class="language-python">left = 0
-max_len = 0
+<pre data-lang="python"><code class="hljs language-python">left = <span class="hljs-number">0</span>
+max_len = <span class="hljs-number">0</span>
 freq = {}
-for right in range(len(s)):
-    freq[s[right]] = freq.get(s[right], 0) + 1
-    while len(freq) &gt; k:
-        freq[s[left]] -= 1
-        if freq[s[left]] == 0: del freq[s[left]]
-        left += 1
-    max_len = max(max_len, right - left + 1)
+<span class="hljs-keyword">for</span> right <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(s)):
+    freq[s[right]] = freq.get(s[right], <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>
+    <span class="hljs-keyword">while</span> <span class="hljs-built_in">len</span>(freq) &gt; k:
+        freq[s[left]] -= <span class="hljs-number">1</span>
+        <span class="hljs-keyword">if</span> freq[s[left]] == <span class="hljs-number">0</span>: <span class="hljs-keyword">del</span> freq[s[left]]
+        left += <span class="hljs-number">1</span>
+    max_len = <span class="hljs-built_in">max</span>(max_len, right - left + <span class="hljs-number">1</span>)
 </code></pre>
 <details>
 <summary>Answer</summary>
@@ -300,16 +312,16 @@ for right in range(len(s)):
 </details>
 <hr>
 <h2 id="drill-11-union-find-with-path-compression-union-by-rank" tabindex="-1"><a class="header-anchor" href="#drill-11-union-find-with-path-compression-union-by-rank"><span>Drill 11: Union-Find with Path Compression + Union by Rank</span></a></h2>
-<pre><code class="language-java">int find(int x) {
-    if (parent[x] != x) parent[x] = find(parent[x]);  // path compression
-    return parent[x];
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-type">int</span> <span class="hljs-title function_">find</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> {
+    <span class="hljs-keyword">if</span> (parent[x] != x) parent[x] = find(parent[x]);  <span class="hljs-comment">// path compression</span>
+    <span class="hljs-keyword">return</span> parent[x];
 }
-void union(int x, int y) {
-    int px = find(x), py = find(y);
-    if (px == py) return;
-    if (rank[px] &lt; rank[py]) parent[px] = py;
-    else if (rank[px] &gt; rank[py]) parent[py] = px;
-    else { parent[py] = px; rank[px]++; }
+<span class="hljs-keyword">void</span> <span class="hljs-title function_">union</span><span class="hljs-params">(<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">px</span> <span class="hljs-operator">=</span> find(x), py = find(y);
+    <span class="hljs-keyword">if</span> (px == py) <span class="hljs-keyword">return</span>;
+    <span class="hljs-keyword">if</span> (rank[px] &lt; rank[py]) parent[px] = py;
+    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (rank[px] &gt; rank[py]) parent[py] = px;
+    <span class="hljs-keyword">else</span> { parent[py] = px; rank[px]++; }
 }
 </code></pre>
 <details>
@@ -320,14 +332,14 @@ void union(int x, int y) {
 </details>
 <hr>
 <h2 id="drill-12-trie-insert-search" tabindex="-1"><a class="header-anchor" href="#drill-12-trie-insert-search"><span>Drill 12: Trie Insert + Search</span></a></h2>
-<pre><code class="language-java">void insert(String word) {
-    TrieNode node = root;
-    for (char c : word.toCharArray()) {
-        if (node.children[c - 'a'] == null)
-            node.children[c - 'a'] = new TrieNode();
-        node = node.children[c - 'a'];
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">void</span> <span class="hljs-title function_">insert</span><span class="hljs-params">(String word)</span> {
+    <span class="hljs-type">TrieNode</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> root;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : word.toCharArray()) {
+        <span class="hljs-keyword">if</span> (node.children[c - <span class="hljs-string">&#x27;a&#x27;</span>] == <span class="hljs-literal">null</span>)
+            node.children[c - <span class="hljs-string">&#x27;a&#x27;</span>] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">TrieNode</span>();
+        node = node.children[c - <span class="hljs-string">&#x27;a&#x27;</span>];
     }
-    node.isEnd = true;
+    node.isEnd = <span class="hljs-literal">true</span>;
 }
 </code></pre>
 <details>
@@ -338,9 +350,9 @@ void union(int x, int y) {
 </details>
 <hr>
 <h2 id="drill-13-heap-k-closest-points" tabindex="-1"><a class="header-anchor" href="#drill-13-heap-k-closest-points"><span>Drill 13: Heap — K Closest Points</span></a></h2>
-<pre><code class="language-python">import heapq
-def kClosest(points, k):
-    return heapq.nsmallest(k, points, key=lambda p: p[0]**2 + p[1]**2)
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">import</span> heapq
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">kClosest</span>(<span class="hljs-params">points, k</span>):
+    <span class="hljs-keyword">return</span> heapq.nsmallest(k, points, key=<span class="hljs-keyword">lambda</span> p: p[<span class="hljs-number">0</span>]**<span class="hljs-number">2</span> + p[<span class="hljs-number">1</span>]**<span class="hljs-number">2</span>)
 </code></pre>
 <details>
 <summary>Answer</summary>
@@ -350,17 +362,17 @@ def kClosest(points, k):
 </details>
 <hr>
 <h2 id="drill-14-dp-with-2d-table" tabindex="-1"><a class="header-anchor" href="#drill-14-dp-with-2d-table"><span>Drill 14: DP with 2D Table</span></a></h2>
-<pre><code class="language-java">// LC 72 — Edit Distance
-int[][] dp = new int[m + 1][n + 1];
-for (int i = 0; i &lt;= m; i++) dp[i][0] = i;
-for (int j = 0; j &lt;= n; j++) dp[0][j] = j;
-for (int i = 1; i &lt;= m; i++) {
-    for (int j = 1; j &lt;= n; j++) {
-        if (word1.charAt(i-1) == word2.charAt(j-1))
-            dp[i][j] = dp[i-1][j-1];
-        else
-            dp[i][j] = 1 + Math.min(dp[i-1][j-1],
-                            Math.min(dp[i-1][j], dp[i][j-1]));
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 72 — Edit Distance</span>
+<span class="hljs-type">int</span>[][] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[m + <span class="hljs-number">1</span>][n + <span class="hljs-number">1</span>];
+<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt;= m; i++) dp[i][<span class="hljs-number">0</span>] = i;
+<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt;= n; j++) dp[<span class="hljs-number">0</span>][j] = j;
+<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt;= m; i++) {
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; j &lt;= n; j++) {
+        <span class="hljs-keyword">if</span> (word1.charAt(i-<span class="hljs-number">1</span>) == word2.charAt(j-<span class="hljs-number">1</span>))
+            dp[i][j] = dp[i-<span class="hljs-number">1</span>][j-<span class="hljs-number">1</span>];
+        <span class="hljs-keyword">else</span>
+            dp[i][j] = <span class="hljs-number">1</span> + Math.min(dp[i-<span class="hljs-number">1</span>][j-<span class="hljs-number">1</span>],
+                            Math.min(dp[i-<span class="hljs-number">1</span>][j], dp[i][j-<span class="hljs-number">1</span>]));
     }
 }
 </code></pre>
@@ -372,16 +384,16 @@ for (int i = 1; i &lt;= m; i++) {
 </details>
 <hr>
 <h2 id="drill-15-backtracking-n-queens" tabindex="-1"><a class="header-anchor" href="#drill-15-backtracking-n-queens"><span>Drill 15: Backtracking — N-Queens</span></a></h2>
-<pre><code class="language-python">def solveNQueens(n):
-    def backtrack(row, cols, diags, anti_diags):
-        if row == n:
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">solveNQueens</span>(<span class="hljs-params">n</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">backtrack</span>(<span class="hljs-params">row, cols, diags, anti_diags</span>):
+        <span class="hljs-keyword">if</span> row == n:
             result.append(board_snapshot())
-            return
-        for col in range(n):
-            if col in cols or (row-col) in diags or (row+col) in anti_diags:
-                continue
-            # place queen and recurse
-            backtrack(row+1, cols|{col}, diags|{row-col}, anti_diags|{row+col})
+            <span class="hljs-keyword">return</span>
+        <span class="hljs-keyword">for</span> col <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+            <span class="hljs-keyword">if</span> col <span class="hljs-keyword">in</span> cols <span class="hljs-keyword">or</span> (row-col) <span class="hljs-keyword">in</span> diags <span class="hljs-keyword">or</span> (row+col) <span class="hljs-keyword">in</span> anti_diags:
+                <span class="hljs-keyword">continue</span>
+            <span class="hljs-comment"># place queen and recurse</span>
+            backtrack(row+<span class="hljs-number">1</span>, cols|{col}, diags|{row-col}, anti_diags|{row+col})
 </code></pre>
 <details>
 <summary>Answer</summary>
@@ -391,9 +403,9 @@ for (int i = 1; i &lt;= m; i++) {
 </details>
 <hr>
 <h2 id="drill-16-amortized-dynamic-array" tabindex="-1"><a class="header-anchor" href="#drill-16-amortized-dynamic-array"><span>Drill 16: Amortized — Dynamic Array</span></a></h2>
-<pre><code class="language-java">ArrayList&lt;Integer&gt; list = new ArrayList&lt;&gt;();
-for (int i = 0; i &lt; n; i++) {
-    list.add(i);  // occasionally triggers resize and copy
+<pre data-lang="java"><code class="hljs language-java">ArrayList&lt;Integer&gt; list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+    list.add(i);  <span class="hljs-comment">// occasionally triggers resize and copy</span>
 }
 </code></pre>
 <details>
@@ -405,9 +417,9 @@ for (int i = 0; i &lt; n; i++) {
 </details>
 <hr>
 <h2 id="drill-17-string-concatenation-in-loop" tabindex="-1"><a class="header-anchor" href="#drill-17-string-concatenation-in-loop"><span>Drill 17: String Concatenation in Loop</span></a></h2>
-<pre><code class="language-java">String result = &quot;&quot;;
-for (int i = 0; i &lt; n; i++) {
-    result += chars[i];  // creates new String each time
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-type">String</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;&quot;</span>;
+<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+    result += chars[i];  <span class="hljs-comment">// creates new String each time</span>
 }
 </code></pre>
 <details>
@@ -419,14 +431,14 @@ for (int i = 0; i &lt; n; i++) {
 </details>
 <hr>
 <h2 id="drill-18-two-pointers-container-with-most-water" tabindex="-1"><a class="header-anchor" href="#drill-18-two-pointers-container-with-most-water"><span>Drill 18: Two Pointers — Container with Most Water</span></a></h2>
-<pre><code class="language-python">left, right = 0, len(height) - 1
-max_area = 0
-while left &lt; right:
-    max_area = max(max_area, min(height[left], height[right]) * (right - left))
-    if height[left] &lt; height[right]:
-        left += 1
-    else:
-        right -= 1
+<pre data-lang="python"><code class="hljs language-python">left, right = <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(height) - <span class="hljs-number">1</span>
+max_area = <span class="hljs-number">0</span>
+<span class="hljs-keyword">while</span> left &lt; right:
+    max_area = <span class="hljs-built_in">max</span>(max_area, <span class="hljs-built_in">min</span>(height[left], height[right]) * (right - left))
+    <span class="hljs-keyword">if</span> height[left] &lt; height[right]:
+        left += <span class="hljs-number">1</span>
+    <span class="hljs-keyword">else</span>:
+        right -= <span class="hljs-number">1</span>
 </code></pre>
 <details>
 <summary>Answer</summary>
@@ -436,43 +448,43 @@ while left &lt; right:
 </details>
 <hr>
 <h2 id="drill-19-dfs-on-tree-with-serialization" tabindex="-1"><a class="header-anchor" href="#drill-19-dfs-on-tree-with-serialization"><span>Drill 19: DFS on Tree with Serialization</span></a></h2>
-<pre><code class="language-python">def serialize(root):
-    if not root: return &quot;null&quot;
-    return str(root.val) + &quot;,&quot; + serialize(root.left) + &quot;,&quot; + serialize(root.right)
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">serialize</span>(<span class="hljs-params">root</span>):
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root: <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;null&quot;</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">str</span>(root.val) + <span class="hljs-string">&quot;,&quot;</span> + serialize(root.left) + <span class="hljs-string">&quot;,&quot;</span> + serialize(root.right)
 </code></pre>
 <details>
 <summary>Answer</summary>
 <p><strong>Time: O(N²)</strong> in languages where string concatenation creates copies (Python, Java String). Each concat copies growing string.</p>
 <p><strong>Space: O(N)</strong> for recursion stack (if balanced: O(log N) stack + O(N) result string)</p>
 <p>Fix: Use a list and join at the end → O(N) time.</p>
-<pre><code class="language-python">def serialize(root):
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">serialize</span>(<span class="hljs-params">root</span>):
     parts = []
-    def dfs(node):
-        if not node: parts.append(&quot;null&quot;); return
-        parts.append(str(node.val))
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">node</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node: parts.append(<span class="hljs-string">&quot;null&quot;</span>); <span class="hljs-keyword">return</span>
+        parts.append(<span class="hljs-built_in">str</span>(node.val))
         dfs(node.left)
         dfs(node.right)
     dfs(root)
-    return &quot;,&quot;.join(parts)  # O(N) total
+    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;,&quot;</span>.join(parts)  <span class="hljs-comment"># O(N) total</span>
 </code></pre>
 </details>
 <hr>
 <h2 id="drill-20-dijkstra-with-priority-queue" tabindex="-1"><a class="header-anchor" href="#drill-20-dijkstra-with-priority-queue"><span>Drill 20: Dijkstra with Priority Queue</span></a></h2>
-<pre><code class="language-java">PriorityQueue&lt;int[]&gt; pq = new PriorityQueue&lt;&gt;((a,b) -&gt; a[1] - b[1]);
-pq.offer(new int[]{src, 0});
-int[] dist = new int[V];
+<pre data-lang="java"><code class="hljs language-java">PriorityQueue&lt;<span class="hljs-type">int</span>[]&gt; pq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;((a,b) -&gt; a[<span class="hljs-number">1</span>] - b[<span class="hljs-number">1</span>]);
+pq.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{src, <span class="hljs-number">0</span>});
+<span class="hljs-type">int</span>[] dist = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[V];
 Arrays.fill(dist, Integer.MAX_VALUE);
-dist[src] = 0;
+dist[src] = <span class="hljs-number">0</span>;
 
-while (!pq.isEmpty()) {
-    int[] curr = pq.poll();
-    int u = curr[0], d = curr[1];
-    if (d &gt; dist[u]) continue;  // skip outdated entries
-    for (int[] edge : graph[u]) {
-        int v = edge[0], w = edge[1];
-        if (dist[u] + w &lt; dist[v]) {
+<span class="hljs-keyword">while</span> (!pq.isEmpty()) {
+    <span class="hljs-type">int</span>[] curr = pq.poll();
+    <span class="hljs-type">int</span> <span class="hljs-variable">u</span> <span class="hljs-operator">=</span> curr[<span class="hljs-number">0</span>], d = curr[<span class="hljs-number">1</span>];
+    <span class="hljs-keyword">if</span> (d &gt; dist[u]) <span class="hljs-keyword">continue</span>;  <span class="hljs-comment">// skip outdated entries</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] edge : graph[u]) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">v</span> <span class="hljs-operator">=</span> edge[<span class="hljs-number">0</span>], w = edge[<span class="hljs-number">1</span>];
+        <span class="hljs-keyword">if</span> (dist[u] + w &lt; dist[v]) {
             dist[v] = dist[u] + w;
-            pq.offer(new int[]{v, dist[v]});
+            pq.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{v, dist[v]});
         }
     }
 }

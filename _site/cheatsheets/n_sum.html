@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,13 +20,24 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
     document.querySelectorAll('pre code').forEach(function(codeEl) {
       var pre = codeEl.parentElement;
       var lang = '';
       var cls = codeEl.className || '';
       var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
       if (m) lang = m[1];
+
+      // Add line numbers
+      var lines = codeEl.innerHTML.split('
+');
+      if (lines[lines.length - 1] === '') lines.pop();
+      var numbered = lines.map(function(line, i) {
+        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
+      }).join('
+');
+      codeEl.innerHTML = numbered;
+      codeEl.classList.add('hljs-ln');
+
       var wrapper = document.createElement('div');
       wrapper.className = 'code-block-wrapper';
       pre.parentNode.insertBefore(wrapper, pre);
@@ -45,7 +55,9 @@
       btn.className = 'copy-btn';
       btn.textContent = 'Copy';
       btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
+');
+        navigator.clipboard.writeText(text).then(function() {
           btn.textContent = 'Copied!';
           btn.classList.add('copied');
           setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
@@ -177,338 +189,338 @@
 </ul>
 <h3 id="0-2-pattern" tabindex="-1"><a class="header-anchor" href="#0-2-pattern"><span>0-2) Pattern</span></a></h3>
 <h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
-<pre><code class="language-c++">// c++
-//---------------------------------
-// 2 SUM general form (target = 0)
-//---------------------------------
-// (algorithm book (labu) p.329)
-vector&lt;vector&lt;int&gt;&gt; twoSumTarget(vector&lt;int&gt; &amp; nums, int integer){
-    // need to sort nums first !
-    sort(nums.begin(), nums.end());
+<pre data-lang="c++"><code class="hljs language-c++"><span class="hljs-comment">// c++</span>
+<span class="hljs-comment">//---------------------------------</span>
+<span class="hljs-comment">// 2 SUM general form (target = 0)</span>
+<span class="hljs-comment">//---------------------------------</span>
+<span class="hljs-comment">// (algorithm book (labu) p.329)</span>
+vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt; <span class="hljs-built_in">twoSumTarget</span>(vector&lt;<span class="hljs-type">int</span>&gt; &amp; nums, <span class="hljs-type">int</span> integer){
+    <span class="hljs-comment">// need to sort nums first !</span>
+    <span class="hljs-built_in">sort</span>(nums.<span class="hljs-built_in">begin</span>(), nums.<span class="hljs-built_in">end</span>());
 
-    // init 2 pointers
-    int lo = 0, hi = nums.size() - 1;
+    <span class="hljs-comment">// init 2 pointers</span>
+    <span class="hljs-type">int</span> lo = <span class="hljs-number">0</span>, hi = nums.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>;
 
-    vector&lt;vector&lt;int&gt;&gt; res;
+    vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt; res;
     
-    while (lo &lt; hi){
-        int sum = nums[lo] + nums[hi];
-        int left = nums[lo], right = nums[hi];
-        if (sum &lt; target){
-            while (lo &lt; hi &amp;&amp; nums[lo] == left) lo++;
-        }else if (sum &gt; target){
-            while (lo &lt; hi &amp;&amp; nums[hi] == right) hi--;
-        }else{
-            res.push_back((left, right));
-            /** AVOID ADDING duplicated combinations */
-            while (lo &lt; hi &amp;&amp; nums[lo] == left) lo++;
-            while (lo &lt; hi &amp;&amp; nums[hi] == right) hi++;
+    <span class="hljs-keyword">while</span> (lo &lt; hi){
+        <span class="hljs-type">int</span> sum = nums[lo] + nums[hi];
+        <span class="hljs-type">int</span> left = nums[lo], right = nums[hi];
+        <span class="hljs-keyword">if</span> (sum &lt; target){
+            <span class="hljs-keyword">while</span> (lo &lt; hi &amp;&amp; nums[lo] == left) lo++;
+        }<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (sum &gt; target){
+            <span class="hljs-keyword">while</span> (lo &lt; hi &amp;&amp; nums[hi] == right) hi--;
+        }<span class="hljs-keyword">else</span>{
+            res.<span class="hljs-built_in">push_back</span>((left, right));
+            <span class="hljs-comment">/** AVOID ADDING duplicated combinations */</span>
+            <span class="hljs-keyword">while</span> (lo &lt; hi &amp;&amp; nums[lo] == left) lo++;
+            <span class="hljs-keyword">while</span> (lo &lt; hi &amp;&amp; nums[hi] == right) hi++;
         }
     }
-    return res;
+    <span class="hljs-keyword">return</span> res;
 }
 </code></pre>
-<pre><code class="language-c++">// c++
-//---------------------------------
-// 3 SUM general form (target = N)
-//---------------------------------
-// (algorithm book (labu) p.331)
-vector&lt;vector&lt;int&gt;&gt; twoSumTarget(vector&lt;int&gt; &amp; nums, int start, int target){ // difference
+<pre data-lang="c++"><code class="hljs language-c++"><span class="hljs-comment">// c++</span>
+<span class="hljs-comment">//---------------------------------</span>
+<span class="hljs-comment">// 3 SUM general form (target = N)</span>
+<span class="hljs-comment">//---------------------------------</span>
+<span class="hljs-comment">// (algorithm book (labu) p.331)</span>
+vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt; <span class="hljs-built_in">twoSumTarget</span>(vector&lt;<span class="hljs-type">int</span>&gt; &amp; nums, <span class="hljs-type">int</span> start, <span class="hljs-type">int</span> target){ <span class="hljs-comment">// difference</span>
 
-    /** CHANGE left idx starts from &quot;start&quot;, else are the same */
-    // init 2 pointers
-    int lo = start, hi = nums.size() - 1;
+    <span class="hljs-comment">/** CHANGE left idx starts from &quot;start&quot;, else are the same */</span>
+    <span class="hljs-comment">// init 2 pointers</span>
+    <span class="hljs-type">int</span> lo = start, hi = nums.<span class="hljs-built_in">size</span>() - <span class="hljs-number">1</span>;
 
-    vector&lt;vector&lt;int&gt;&gt; res;
+    vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt; res;
     
-    while (lo &lt; hi){
-        int sum = nums[lo] + nums[hi];
-        int left = nums[lo], right = nums[hi];
-        if (sum &lt; target){
-            while (lo &lt; hi &amp;&amp; nums[lo] == left) lo++;
-        }else if (sum &gt; target){
-            while (lo &lt; hi &amp;&amp; nums[hi] == right) hi--;
-        }else{
-            res.push_back((left, right));
-            /** AVOID ADDING duplicated combinations */
-            while (lo &lt; hi &amp;&amp; nums[lo] == left) lo++;
-            while (lo &lt; hi &amp;&amp; nums[hi] == right) hi++;
+    <span class="hljs-keyword">while</span> (lo &lt; hi){
+        <span class="hljs-type">int</span> sum = nums[lo] + nums[hi];
+        <span class="hljs-type">int</span> left = nums[lo], right = nums[hi];
+        <span class="hljs-keyword">if</span> (sum &lt; target){
+            <span class="hljs-keyword">while</span> (lo &lt; hi &amp;&amp; nums[lo] == left) lo++;
+        }<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (sum &gt; target){
+            <span class="hljs-keyword">while</span> (lo &lt; hi &amp;&amp; nums[hi] == right) hi--;
+        }<span class="hljs-keyword">else</span>{
+            res.<span class="hljs-built_in">push_back</span>((left, right));
+            <span class="hljs-comment">/** AVOID ADDING duplicated combinations */</span>
+            <span class="hljs-keyword">while</span> (lo &lt; hi &amp;&amp; nums[lo] == left) lo++;
+            <span class="hljs-keyword">while</span> (lo &lt; hi &amp;&amp; nums[hi] == right) hi++;
         }
     }
-    return res;
+    <span class="hljs-keyword">return</span> res;
 }
 
 
-/** get all triplet combinations with sum = target */
-vector&lt;vector&lt;int&gt;&gt; threeSumTarget(vector&lt;int&gt; &amp; nums, int target){
-    // need to sort nums first !
-    sort(nums.begin(), nums.end());
+<span class="hljs-comment">/** get all triplet combinations with sum = target */</span>
+vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt; <span class="hljs-built_in">threeSumTarget</span>(vector&lt;<span class="hljs-type">int</span>&gt; &amp; nums, <span class="hljs-type">int</span> target){
+    <span class="hljs-comment">// need to sort nums first !</span>
+    <span class="hljs-built_in">sort</span>(nums.<span class="hljs-built_in">begin</span>(), nums.<span class="hljs-built_in">end</span>());
 
-    // init
-    int n = nums.size();
-    vector&lt;vector&lt;int&gt;&gt; res;
+    <span class="hljs-comment">// init</span>
+    <span class="hljs-type">int</span> n = nums.<span class="hljs-built_in">size</span>();
+    vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt; res;
 
-    // looping for the 1st element in threeSum
-    for (int i = 0; i &lt; n; i++){
-        // get twoSum from target - nums[i]
-        vector&lt;vector&lt;int&gt;&gt;
-        tuples = twoSumTarget(nums, i+1, target - nums[i]);
+    <span class="hljs-comment">// looping for the 1st element in threeSum</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++){
+        <span class="hljs-comment">// get twoSum from target - nums[i]</span>
+        vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt;
+        tuples = <span class="hljs-built_in">twoSumTarget</span>(nums, i<span class="hljs-number">+1</span>, target - nums[i]);
 
-        // if exists two sum fit requirement, add nums[i] is what we need
-        for (vector&lt;int&gt; &amp; tuple: tuples){
-            tuple.push_back(nums[i]);
-            res.push_back(tuple);
+        <span class="hljs-comment">// if exists two sum fit requirement, add nums[i] is what we need</span>
+        <span class="hljs-keyword">for</span> (vector&lt;<span class="hljs-type">int</span>&gt; &amp; tuple: tuples){
+            tuple.<span class="hljs-built_in">push_back</span>(nums[i]);
+            res.<span class="hljs-built_in">push_back</span>(tuple);
         }
 
-        /** neglect duplicated 1st element case, since duplocated combinations is NOT allowed */
-        while (i &lt; n - 1 &amp;&amp; nums[i] == nums[i+1]) i++;
+        <span class="hljs-comment">/** neglect duplicated 1st element case, since duplocated combinations is NOT allowed */</span>
+        <span class="hljs-keyword">while</span> (i &lt; n - <span class="hljs-number">1</span> &amp;&amp; nums[i] == nums[i<span class="hljs-number">+1</span>]) i++;
     }
-    return res;
+    <span class="hljs-keyword">return</span> res;
 }
 </code></pre>
-<pre><code class="language-c++">// c++
-//---------------------------------
-// K SUM general form (target = N)
-//---------------------------------
-// (algorithm book (labu) p.334)
+<pre data-lang="c++"><code class="hljs language-c++"><span class="hljs-comment">// c++</span>
+<span class="hljs-comment">//---------------------------------</span>
+<span class="hljs-comment">// K SUM general form (target = N)</span>
+<span class="hljs-comment">//---------------------------------</span>
+<span class="hljs-comment">// (algorithm book (labu) p.334)</span>
 
-vector&lt;vector&lt;int&gt;&gt; nSumTarget(vector&lt;int&gt; &amp; nums, int n, int start, int target){
+vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt; <span class="hljs-built_in">nSumTarget</span>(vector&lt;<span class="hljs-type">int</span>&gt; &amp; nums, <span class="hljs-type">int</span> n, <span class="hljs-type">int</span> start, <span class="hljs-type">int</span> target){
 
-    int sz = nums.size();
-    vector&lt;vector&lt;int&gt;&gt; res;
+    <span class="hljs-type">int</span> sz = nums.<span class="hljs-built_in">size</span>();
+    vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt; res;
 
-    // NEED to be AT LEAST 2 sum, and array size &gt;= n
-    if (n &lt; 2 || sz &lt; n) return res;
+    <span class="hljs-comment">// NEED to be AT LEAST 2 sum, and array size &gt;= n</span>
+    <span class="hljs-keyword">if</span> (n &lt; <span class="hljs-number">2</span> || sz &lt; n) <span class="hljs-keyword">return</span> res;
 
-    // 2 sum is base case
-    if (n == 2){
-        // 2 pointers op
-        int lo = start, hi = sz - 1;
-        while (lo &lt; hi){
-            int sum = nums[lo] + nums[hi];
-            int left = nums[lo], int right = nums[hi];
-            if (sum &lt; target){
-                while (lo &lt; hi &amp;&amp; nums[lo] == left) lo ++;
-            }else if (sum &gt; target){
-                while (lo &lt; hi &amp;&amp; nums[hi] == right) hi --;
-            }else{
-                res.push_back((left, right));
-                /** AVOID ADDING duplicated combinations */
-                while (lo &lt; hi &amp;&amp; nums[lo] == left) lo++;
-                while (lo &lt; hi &amp;&amp; nums[hi] == right) hi++;
+    <span class="hljs-comment">// 2 sum is base case</span>
+    <span class="hljs-keyword">if</span> (n == <span class="hljs-number">2</span>){
+        <span class="hljs-comment">// 2 pointers op</span>
+        <span class="hljs-type">int</span> lo = start, hi = sz - <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">while</span> (lo &lt; hi){
+            <span class="hljs-type">int</span> sum = nums[lo] + nums[hi];
+            <span class="hljs-type">int</span> left = nums[lo], <span class="hljs-type">int</span> right = nums[hi];
+            <span class="hljs-keyword">if</span> (sum &lt; target){
+                <span class="hljs-keyword">while</span> (lo &lt; hi &amp;&amp; nums[lo] == left) lo ++;
+            }<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (sum &gt; target){
+                <span class="hljs-keyword">while</span> (lo &lt; hi &amp;&amp; nums[hi] == right) hi --;
+            }<span class="hljs-keyword">else</span>{
+                res.<span class="hljs-built_in">push_back</span>((left, right));
+                <span class="hljs-comment">/** AVOID ADDING duplicated combinations */</span>
+                <span class="hljs-keyword">while</span> (lo &lt; hi &amp;&amp; nums[lo] == left) lo++;
+                <span class="hljs-keyword">while</span> (lo &lt; hi &amp;&amp; nums[hi] == right) hi++;
             }
         }
-    }else{
-        /** n &gt; 2, recursive get (n-1) Sum result */
-        for (int i = start; i &lt; sz; i++){
-            vector&lt;vector&lt;int&gt;&gt;;
-            sub = nSumTarget(nums, n-1, i+1, target - nums[i]);
-            for (vector&lt;int&gt; &amp; arr : sub){
-                // (n-1) Sum plus nums[i] is nSum
-                arr.push_back(nums[i]);
-                res.push_back(arr);
+    }<span class="hljs-keyword">else</span>{
+        <span class="hljs-comment">/** n &gt; 2, recursive get (n-1) Sum result */</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = start; i &lt; sz; i++){
+            vector&lt;vector&lt;<span class="hljs-type">int</span>&gt;&gt;;
+            sub = <span class="hljs-built_in">nSumTarget</span>(nums, n<span class="hljs-number">-1</span>, i<span class="hljs-number">+1</span>, target - nums[i]);
+            <span class="hljs-keyword">for</span> (vector&lt;<span class="hljs-type">int</span>&gt; &amp; arr : sub){
+                <span class="hljs-comment">// (n-1) Sum plus nums[i] is nSum</span>
+                arr.<span class="hljs-built_in">push_back</span>(nums[i]);
+                res.<span class="hljs-built_in">push_back</span>(arr);
             }
-            while (i &lt; sz-1 &amp;&amp; nums[i] == nums[i+1]) i++;
+            <span class="hljs-keyword">while</span> (i &lt; sz<span class="hljs-number">-1</span> &amp;&amp; nums[i] == nums[i<span class="hljs-number">+1</span>]) i++;
         }
     }
-    return  res;
+    <span class="hljs-keyword">return</span>  res;
 }
 </code></pre>
 <h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
 <h3 id="2-1-2-sum" tabindex="-1"><a class="header-anchor" href="#2-1-2-sum"><span>2-1) 2 Sum</span></a></h3>
-<pre><code class="language-python"># LC 001
-class Solution(object):
-    def twoSum(self, nums, target):
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 001</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">twoSum</span>(<span class="hljs-params">self, nums, target</span>):
         lookup = {}
-        for i, num in enumerate(nums):
-            if target - num in lookup:
-                return [lookup[target - num], i]
+        <span class="hljs-keyword">for</span> i, num <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(nums):
+            <span class="hljs-keyword">if</span> target - num <span class="hljs-keyword">in</span> lookup:
+                <span class="hljs-keyword">return</span> [lookup[target - num], i]
             lookup[num] = i
-        return [-1, -1]
+        <span class="hljs-keyword">return</span> [-<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>]
 </code></pre>
 <h3 id="2-1-2-sum-ii" tabindex="-1"><a class="header-anchor" href="#2-1-2-sum-ii"><span>2-1’) 2 Sum II</span></a></h3>
-<pre><code class="language-python"># LC 167 Two Sum II - Input Array Is Sorted
-# NOTE : we can also use &quot;2 sum&quot; dict approach
-# V0
-# IDEA : TWO POINTERS
-#       -&gt; l = 0, r = len(numbers) - 1
-class Solution(object):
-    def twoSum(self, numbers, target):
-        l = 0
-        ### NOTE this
-        r = len(numbers) - 1
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 167 Two Sum II - Input Array Is Sorted</span>
+<span class="hljs-comment"># NOTE : we can also use &quot;2 sum&quot; dict approach</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : TWO POINTERS</span>
+<span class="hljs-comment">#       -&gt; l = 0, r = len(numbers) - 1</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">twoSum</span>(<span class="hljs-params">self, numbers, target</span>):
+        l = <span class="hljs-number">0</span>
+        <span class="hljs-comment">### NOTE this</span>
+        r = <span class="hljs-built_in">len</span>(numbers) - <span class="hljs-number">1</span>
         res = []
-        while r &gt; l:
-            #print (&quot;l, r = {}, {}&quot;.format(l, r))
+        <span class="hljs-keyword">while</span> r &gt; l:
+            <span class="hljs-comment">#print (&quot;l, r = {}, {}&quot;.format(l, r))</span>
             tmp = numbers[l] + numbers[r]
-            if tmp == target:
-                return [l+1, r+1]
-            ### NOTE this
-            elif tmp &gt; target:
-                r -= 1
-            ### NOTE this
-            else:
-                l += 1
-        return [-1, -1]
+            <span class="hljs-keyword">if</span> tmp == target:
+                <span class="hljs-keyword">return</span> [l+<span class="hljs-number">1</span>, r+<span class="hljs-number">1</span>]
+            <span class="hljs-comment">### NOTE this</span>
+            <span class="hljs-keyword">elif</span> tmp &gt; target:
+                r -= <span class="hljs-number">1</span>
+            <span class="hljs-comment">### NOTE this</span>
+            <span class="hljs-keyword">else</span>:
+                l += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">return</span> [-<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>]
 </code></pre>
 <h3 id="2-2-3-sum" tabindex="-1"><a class="header-anchor" href="#2-2-3-sum"><span>2-2) 3 Sum</span></a></h3>
-<pre><code class="language-python"># LC 015
-# V0
-# IDEA : for loop + 2 sum
-class Solution(object):
-    def threeSum(self, nums):
-        # edge case
-        if not nums or len(nums) &lt; 3:
-            return []
-        if len(nums) == 3:
-            return [nums] if sum(nums) == 0 else []
-        if nums.count(0) == len(nums):
-            return [[0,0,0]]
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 015</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : for loop + 2 sum</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">threeSum</span>(<span class="hljs-params">self, nums</span>):
+        <span class="hljs-comment"># edge case</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> nums <span class="hljs-keyword">or</span> <span class="hljs-built_in">len</span>(nums) &lt; <span class="hljs-number">3</span>:
+            <span class="hljs-keyword">return</span> []
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(nums) == <span class="hljs-number">3</span>:
+            <span class="hljs-keyword">return</span> [nums] <span class="hljs-keyword">if</span> <span class="hljs-built_in">sum</span>(nums) == <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> []
+        <span class="hljs-keyword">if</span> nums.count(<span class="hljs-number">0</span>) == <span class="hljs-built_in">len</span>(nums):
+            <span class="hljs-keyword">return</span> [[<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>]]
         res = []
         nums.sort()
-        # for loop
-        for i in range(len(nums)):
+        <span class="hljs-comment"># for loop</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(nums)):
             cur = nums[i]
-            # 2 sum
+            <span class="hljs-comment"># 2 sum</span>
             d = {}
-            &quot;&quot;&quot;
+            <span class="hljs-string">&quot;&quot;&quot;
             NOTE !!!
-             -&gt; we don't need below implementation (will cause TLE)
+             -&gt; we don&#x27;t need below implementation (will cause TLE)
 
                 #_nums = nums[:i] + nums[i+1:]
                 #for j, x in enumerate(_nums):
 
              -&gt; this one is enough : for j, x in enumerate(nums[i+1:])
-            &quot;&quot;&quot;
-            for j, x in enumerate(nums[i+1:]):
-                # cur + x + y = 0
-                # -&gt; y = -x - cur
-                if -x-cur in d:
+            &quot;&quot;&quot;</span>
+            <span class="hljs-keyword">for</span> j, x <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(nums[i+<span class="hljs-number">1</span>:]):
+                <span class="hljs-comment"># cur + x + y = 0</span>
+                <span class="hljs-comment"># -&gt; y = -x - cur</span>
+                <span class="hljs-keyword">if</span> -x-cur <span class="hljs-keyword">in</span> d:
                     tmp = [cur, x, -x-cur]
                     tmp.sort()
-                    if tmp not in res:
+                    <span class="hljs-keyword">if</span> tmp <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> res:
                         res.append(tmp)
-                    #res.append([cur, x, -x-cur])
-                else:
+                    <span class="hljs-comment">#res.append([cur, x, -x-cur])</span>
+                <span class="hljs-keyword">else</span>:
                     d[x] = j
-        return res
+        <span class="hljs-keyword">return</span> res
 
-# V0
-# IDEA : 2 SUM -&gt; 3 SUM
-class Solution(object):
-    def threeSum(self, nums):
-        if not nums or len(nums) &lt;= 2:
-            return []
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : 2 SUM -&gt; 3 SUM</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">threeSum</span>(<span class="hljs-params">self, nums</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> nums <span class="hljs-keyword">or</span> <span class="hljs-built_in">len</span>(nums) &lt;= <span class="hljs-number">2</span>:
+            <span class="hljs-keyword">return</span> []
         res = []
-        # optimize, not necessary
+        <span class="hljs-comment"># optimize, not necessary</span>
         nums.sort()
-        # loop over i
-        for i in range(len(nums)):
-            &quot;&quot;&quot;
+        <span class="hljs-comment"># loop over i</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(nums)):
+            <span class="hljs-string">&quot;&quot;&quot;
             2 sum
-            &quot;&quot;&quot;
+            &quot;&quot;&quot;</span>
             d = {}
-            &quot;&quot;&quot;
+            <span class="hljs-string">&quot;&quot;&quot;
             NOTE !!! here we loop over range(i+1, len(nums))
             #   -&gt; since we need non duplicated results
-            &quot;&quot;&quot;
-            for j in range(i+1, len(nums)):
-                &quot;&quot;&quot;
+            &quot;&quot;&quot;</span>
+            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(i+<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(nums)):
+                <span class="hljs-string">&quot;&quot;&quot;
                 NOTE : nums[i] + nums[j] + nums[k] = 0
                 #    -&gt; so - (nums[i] + nums[j]) = nums[k]
                 #    -&gt; and we are trying to find if such k already in the dict
-                &quot;&quot;&quot;
-                if -(nums[i] + nums[j]) in d:
+                &quot;&quot;&quot;</span>
+                <span class="hljs-keyword">if</span> -(nums[i] + nums[j]) <span class="hljs-keyword">in</span> d:
                     tmp = [nums[i]] + [nums[j], -(nums[i]+nums[j])]
                     tmp.sort()
-                    if tmp not in res:
+                    <span class="hljs-keyword">if</span> tmp <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> res:
                         res.append(tmp)
-                else:
+                <span class="hljs-keyword">else</span>:
                     d[nums[j]] = j
-        return res
+        <span class="hljs-keyword">return</span> res
 
-# V0'
-# IDEA : 2 SUM -&gt; 3 SUM
-class Solution(object):
-    def threeSum(self, nums):
+<span class="hljs-comment"># V0&#x27;</span>
+<span class="hljs-comment"># IDEA : 2 SUM -&gt; 3 SUM</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">threeSum</span>(<span class="hljs-params">self, nums</span>):
         res = []
-        if not nums or len(nums) &lt;= 2:
-            return res
-        # this sort may not be necessary
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> nums <span class="hljs-keyword">or</span> <span class="hljs-built_in">len</span>(nums) &lt;= <span class="hljs-number">2</span>:
+            <span class="hljs-keyword">return</span> res
+        <span class="hljs-comment"># this sort may not be necessary</span>
         nums.sort()
-        for i in range(len(nums)):
-            # NOTE : set target = -nums[i]
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(nums)):
+            <span class="hljs-comment"># NOTE : set target = -nums[i]</span>
             t = -nums[i]
             d = {}
-            ### NOTE : we NEED tp loop from idx = i+1 to len(nums)
-            for j in range(i+1, len(nums)):
-                if  (-nums[j] + t) in d:
+            <span class="hljs-comment">### NOTE : we NEED tp loop from idx = i+1 to len(nums)</span>
+            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(i+<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(nums)):
+                <span class="hljs-keyword">if</span>  (-nums[j] + t) <span class="hljs-keyword">in</span> d:
                         tmp = [ nums[i], nums[j], -nums[j] + t ]
                         tmp.sort()
-                        # note :  this trick to not append duplicated ans
-                        if tmp not in res:
+                        <span class="hljs-comment"># note :  this trick to not append duplicated ans</span>
+                        <span class="hljs-keyword">if</span> tmp <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> res:
                             res.append(tmp)
                 d[nums[j]] = j
-        return res
+        <span class="hljs-keyword">return</span> res
 </code></pre>
 <h3 id="2-3-4-sum" tabindex="-1"><a class="header-anchor" href="#2-3-4-sum"><span>2-3) 4 Sum</span></a></h3>
-<pre><code class="language-python"># LC 018
-# V0 
-class Solution(object):
-    def fourSum(self, nums, target):
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 018</span>
+<span class="hljs-comment"># V0 </span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">fourSum</span>(<span class="hljs-params">self, nums, target</span>):
         resultList = []
         nums.sort()
-        for num1 in range(0, len(nums)-3):
-            for num2 in range(num1 + 1, len(nums)-2):
-                num3 = num2 + 1
-                num4 = len(nums) -1
-                while num3 != num4:
+        <span class="hljs-keyword">for</span> num1 <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(nums)-<span class="hljs-number">3</span>):
+            <span class="hljs-keyword">for</span> num2 <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(num1 + <span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(nums)-<span class="hljs-number">2</span>):
+                num3 = num2 + <span class="hljs-number">1</span>
+                num4 = <span class="hljs-built_in">len</span>(nums) -<span class="hljs-number">1</span>
+                <span class="hljs-keyword">while</span> num3 != num4:
                     summer = nums[num1] + nums[num2] + nums[num3] + nums[num4]
-                    if summer == target:
+                    <span class="hljs-keyword">if</span> summer == target:
                         list_temp = [nums[num1],nums[num2],nums[num3],nums[num4]]
-                        if list_temp not in resultList:
+                        <span class="hljs-keyword">if</span> list_temp <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> resultList:
                             resultList.append(list_temp)
-                        num3 += 1
-                    elif summer &gt; target:
-                        num4 -= 1
-                    else:
-                        num3 += 1
-        return resultList
+                        num3 += <span class="hljs-number">1</span>
+                    <span class="hljs-keyword">elif</span> summer &gt; target:
+                        num4 -= <span class="hljs-number">1</span>
+                    <span class="hljs-keyword">else</span>:
+                        num3 += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">return</span> resultList
 </code></pre>
 <h3 id="2-4-two-sum-less-than-k" tabindex="-1"><a class="header-anchor" href="#2-4-two-sum-less-than-k"><span>2-4) Two Sum Less Than K</span></a></h3>
-<pre><code class="language-python"># LC 1099 Two Sum Less Than K
-# V1
-# https://goodtecher.com/leetcode-1099-two-sum-less-than-k/
-class Solution:
-    def twoSumLessThanK(self, nums, k):    
-        nums = sorted(nums)
-        i = 0
-        j = len(nums) - 1
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1099 Two Sum Less Than K</span>
+<span class="hljs-comment"># V1</span>
+<span class="hljs-comment"># https://goodtecher.com/leetcode-1099-two-sum-less-than-k/</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">twoSumLessThanK</span>(<span class="hljs-params">self, nums, k</span>):    
+        nums = <span class="hljs-built_in">sorted</span>(nums)
+        i = <span class="hljs-number">0</span>
+        j = <span class="hljs-built_in">len</span>(nums) - <span class="hljs-number">1</span>
       
-        max_sum = -1
+        max_sum = -<span class="hljs-number">1</span>
         
-        while i &lt; j:
-            if nums[i] + nums[j] &gt;= k:
-                j -= 1
-            else:
-                max_sum = max(max_sum, nums[i] + nums[j])
-                i += 1      
-        return max_sum
+        <span class="hljs-keyword">while</span> i &lt; j:
+            <span class="hljs-keyword">if</span> nums[i] + nums[j] &gt;= k:
+                j -= <span class="hljs-number">1</span>
+            <span class="hljs-keyword">else</span>:
+                max_sum = <span class="hljs-built_in">max</span>(max_sum, nums[i] + nums[j])
+                i += <span class="hljs-number">1</span>      
+        <span class="hljs-keyword">return</span> max_sum
 
-# V1'
-# https://blog.51cto.com/u_15344287/3647641
-class Solution:
-    def twoSumLessThanK(self, nums: List[int], k: int) -&gt; int:
+<span class="hljs-comment"># V1&#x27;</span>
+<span class="hljs-comment"># https://blog.51cto.com/u_15344287/3647641</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">twoSumLessThanK</span>(<span class="hljs-params">self, nums: <span class="hljs-type">List</span>[<span class="hljs-built_in">int</span>], k: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">int</span>:
         nums.sort()
-        ans = -1
-        for i1 in range(len(nums)):
+        ans = -<span class="hljs-number">1</span>
+        <span class="hljs-keyword">for</span> i1 <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(nums)):
             n1 = nums[i1]
-            i2 = bisect.bisect_left(nums, k - nums[i1], lo=i1 + 1) - 1
+            i2 = bisect.bisect_left(nums, k - nums[i1], lo=i1 + <span class="hljs-number">1</span>) - <span class="hljs-number">1</span>
             n2 = nums[i2]
-            if i2 &gt; i1:
-                ans = max(ans, n1 + n2)
-        return ans
+            <span class="hljs-keyword">if</span> i2 &gt; i1:
+                ans = <span class="hljs-built_in">max</span>(ans, n1 + n2)
+        <span class="hljs-keyword">return</span> ans
 </code></pre>
 
       </div>

@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,13 +20,24 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
     document.querySelectorAll('pre code').forEach(function(codeEl) {
       var pre = codeEl.parentElement;
       var lang = '';
       var cls = codeEl.className || '';
       var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
       if (m) lang = m[1];
+
+      // Add line numbers
+      var lines = codeEl.innerHTML.split('
+');
+      if (lines[lines.length - 1] === '') lines.pop();
+      var numbered = lines.map(function(line, i) {
+        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
+      }).join('
+');
+      codeEl.innerHTML = numbered;
+      codeEl.classList.add('hljs-ln');
+
       var wrapper = document.createElement('div');
       wrapper.className = 'code-block-wrapper';
       pre.parentNode.insertBefore(wrapper, pre);
@@ -45,7 +55,9 @@
       btn.className = 'copy-btn';
       btn.textContent = 'Copy';
       btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
+');
+        navigator.clipboard.writeText(text).then(function() {
           btn.textContent = 'Copied!';
           btn.classList.add('copied');
           setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
@@ -156,8 +168,8 @@
 </ul>
 </li>
 </ul>
-<pre><code class="language-sql"> 		# output : 
-			 a | b | c1 | c2 | d
+<pre data-lang="sql"><code class="hljs language-sql"> 		# output : 
+			 a <span class="hljs-operator">|</span> b <span class="hljs-operator">|</span> c1 <span class="hljs-operator">|</span> c2 <span class="hljs-operator">|</span> d
 			 a1  b1  c11  c21   d1
 			 a2 b2  c12  c22   d2
 			 a3  b3  c13  c23   d3
@@ -172,8 +184,8 @@
 </ul>
 </li>
 </ul>
-<pre><code class="language-sql">		# output :   
-		  	  col1 | col2
+<pre data-lang="sql"><code class="hljs language-sql">		# output :   
+		  	  col1 <span class="hljs-operator">|</span> col2
 		  	   a1     b1
 		  	   a2     b2
 		  	   c1     d2
@@ -193,72 +205,72 @@
 <li><a href="https://www.solutionfactory.in/posts/Difference-between-Join-And-Union-in-SQL">https://www.solutionfactory.in/posts/Difference-between-Join-And-Union-in-SQL</a></li>
 </ul>
 <h4 id="3-find-the-orders-in-quater-no-hard-code" tabindex="-1"><a class="header-anchor" href="#3-find-the-orders-in-quater-no-hard-code"><span>3. Find the orders in Quater ? (no hard-code)</span></a></h4>
-<pre><code class="language-sql">-- postgre
+<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- postgre</span>
 
-SELECT extract(QUARTER
-               FROM order_timestamp) AS QUARTER,
-       count(*)
-FROM orders 
-GROUP BY 1;
+<span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">extract</span>(QUARTER
+               <span class="hljs-keyword">FROM</span> order_timestamp) <span class="hljs-keyword">AS</span> QUARTER,
+       <span class="hljs-built_in">count</span>(<span class="hljs-operator">*</span>)
+<span class="hljs-keyword">FROM</span> orders 
+<span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> <span class="hljs-number">1</span>;
 
 </code></pre>
-<pre><code class="language-sql">-- mysql
+<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- mysql</span>
 
-SELECT QUARTER(order_timestamp) AS QUARTER,
-       count(*)
-FROM orders 
-GROUP BY 1;
+<span class="hljs-keyword">SELECT</span> QUARTER(order_timestamp) <span class="hljs-keyword">AS</span> QUARTER,
+       <span class="hljs-built_in">count</span>(<span class="hljs-operator">*</span>)
+<span class="hljs-keyword">FROM</span> orders 
+<span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> <span class="hljs-number">1</span>;
 
 </code></pre>
 <h4 id="4-select-value-and-max-value-with-conditions-in-one-query" tabindex="-1"><a class="header-anchor" href="#4-select-value-and-max-value-with-conditions-in-one-query"><span>4. Select value, and max value with conditions in one query?</span></a></h4>
-<pre><code class="language-sql">-- postgre
+<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- postgre</span>
 
-SELECT commit_timestamp,
-       max(commit_timestamp) max_commit_time,
+<span class="hljs-keyword">SELECT</span> commit_timestamp,
+       <span class="hljs-built_in">max</span>(commit_timestamp) max_commit_time,
 
-  (SELECT max(commit_timestamp)
-   FROM git_commit
-   WHERE commit_timestamp &gt;= '2019-01-01'
-     AND commit_timestamp &lt;= '2019-12-31' ) AS max_commit_time_in_timeslot
-FROM git_commit
-GROUP BY 1
-LIMIT 10 ;
+  (<span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">max</span>(commit_timestamp)
+   <span class="hljs-keyword">FROM</span> git_commit
+   <span class="hljs-keyword">WHERE</span> commit_timestamp <span class="hljs-operator">&gt;=</span> <span class="hljs-string">&#x27;2019-01-01&#x27;</span>
+     <span class="hljs-keyword">AND</span> commit_timestamp <span class="hljs-operator">&lt;=</span> <span class="hljs-string">&#x27;2019-12-31&#x27;</span> ) <span class="hljs-keyword">AS</span> max_commit_time_in_timeslot
+<span class="hljs-keyword">FROM</span> git_commit
+<span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> <span class="hljs-number">1</span>
+LIMIT <span class="hljs-number">10</span> ;
 
 
 </code></pre>
 <h4 id="5-select-data-with-value-larger-than-average-value" tabindex="-1"><a class="header-anchor" href="#5-select-data-with-value-larger-than-average-value"><span>5. Select data with value larger than average value?</span></a></h4>
-<pre><code class="language-sql">-- postgre
--- V1
+<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- postgre</span>
+<span class="hljs-comment">-- V1</span>
 
-WITH user_commit_count AS
-  (SELECT user_id,
-          count(*) AS commit_count
-   FROM git_commit
-   GROUP BY 1),
-     avg_commit AS
-  (SELECT avg(commit_count)::int AS avg_commit_count
-   FROM user_commit_count)
-SELECT user_id,
+<span class="hljs-keyword">WITH</span> user_commit_count <span class="hljs-keyword">AS</span>
+  (<span class="hljs-keyword">SELECT</span> user_id,
+          <span class="hljs-built_in">count</span>(<span class="hljs-operator">*</span>) <span class="hljs-keyword">AS</span> commit_count
+   <span class="hljs-keyword">FROM</span> git_commit
+   <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> <span class="hljs-number">1</span>),
+     avg_commit <span class="hljs-keyword">AS</span>
+  (<span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">avg</span>(commit_count)::<span class="hljs-type">int</span> <span class="hljs-keyword">AS</span> avg_commit_count
+   <span class="hljs-keyword">FROM</span> user_commit_count)
+<span class="hljs-keyword">SELECT</span> user_id,
        commit_count,
-  (SELECT *
-   FROM avg_commit)
-FROM user_commit_count
-WHERE commit_count &gt;
-    (SELECT avg_commit_count
-     FROM avg_commit)
-LIMIT 30;
+  (<span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span>
+   <span class="hljs-keyword">FROM</span> avg_commit)
+<span class="hljs-keyword">FROM</span> user_commit_count
+<span class="hljs-keyword">WHERE</span> commit_count <span class="hljs-operator">&gt;</span>
+    (<span class="hljs-keyword">SELECT</span> avg_commit_count
+     <span class="hljs-keyword">FROM</span> avg_commit)
+LIMIT <span class="hljs-number">30</span>;
 
 </code></pre>
 <h3 id="6-select-list-of-integer-from-1-100-recursive-cte" tabindex="-1"><a class="header-anchor" href="#6-select-list-of-integer-from-1-100-recursive-cte"><span>6. select list of integer from 1 -&gt; 100 (recursive CTE)?</span></a></h3>
-<pre><code class="language-sql">-- postgre
+<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- postgre</span>
 
-WITH RECURSIVE my_num AS
-  (SELECT 1 AS seqnum
-   UNION ALL SELECT seqnum + 1
-   FROM my_num
-   WHERE seqnum &lt; 100 )
-SELECT seqnum
-FROM my_num;
+<span class="hljs-keyword">WITH</span> <span class="hljs-keyword">RECURSIVE</span> my_num <span class="hljs-keyword">AS</span>
+  (<span class="hljs-keyword">SELECT</span> <span class="hljs-number">1</span> <span class="hljs-keyword">AS</span> seqnum
+   <span class="hljs-keyword">UNION</span> <span class="hljs-keyword">ALL</span> <span class="hljs-keyword">SELECT</span> seqnum <span class="hljs-operator">+</span> <span class="hljs-number">1</span>
+   <span class="hljs-keyword">FROM</span> my_num
+   <span class="hljs-keyword">WHERE</span> seqnum <span class="hljs-operator">&lt;</span> <span class="hljs-number">100</span> )
+<span class="hljs-keyword">SELECT</span> seqnum
+<span class="hljs-keyword">FROM</span> my_num;
 
 </code></pre>
 <h3 id="7-given-tables-movie-actor-multi-to-multi-relations-please-design-a-data-model-and-query-that-can-report-number-of-actor-with-given-movie-id-movie-name" tabindex="-1"><a class="header-anchor" href="#7-given-tables-movie-actor-multi-to-multi-relations-please-design-a-data-model-and-query-that-can-report-number-of-actor-with-given-movie-id-movie-name"><span>7. Given tables: movie, actor (multi to multi relations), please design a data model and query that can report number of actor with given movie-id/movie-name ?</span></a></h3>
@@ -278,64 +290,64 @@ FROM my_num;
 <li><a href="http://sqlqna.blogspot.com/2013/08/union-union-all.html">http://sqlqna.blogspot.com/2013/08/union-union-all.html</a></li>
 </ul>
 <h3 id="10-example-of-use-variable-in-sql" tabindex="-1"><a class="header-anchor" href="#10-example-of-use-variable-in-sql"><span>10. Example of use variable in SQL ?</span></a></h3>
-<pre><code class="language-sql"># mysql
-SELECT 
-@x AS x, 
-@y AS y, 
-@x + 1 AS x_Plus_1, 
-@x := @x + 1 AS updated_x
-FROM
-  (SELECT @x := 0, @y := 1) INIT;
+<pre data-lang="sql"><code class="hljs language-sql"># mysql
+<span class="hljs-keyword">SELECT</span> 
+<span class="hljs-variable">@x</span> <span class="hljs-keyword">AS</span> x, 
+<span class="hljs-variable">@y</span> <span class="hljs-keyword">AS</span> y, 
+<span class="hljs-variable">@x</span> <span class="hljs-operator">+</span> <span class="hljs-number">1</span> <span class="hljs-keyword">AS</span> x_Plus_1, 
+<span class="hljs-variable">@x</span> :<span class="hljs-operator">=</span> <span class="hljs-variable">@x</span> <span class="hljs-operator">+</span> <span class="hljs-number">1</span> <span class="hljs-keyword">AS</span> updated_x
+<span class="hljs-keyword">FROM</span>
+  (<span class="hljs-keyword">SELECT</span> <span class="hljs-variable">@x</span> :<span class="hljs-operator">=</span> <span class="hljs-number">0</span>, <span class="hljs-variable">@y</span> :<span class="hljs-operator">=</span> <span class="hljs-number">1</span>) INIT;
 
 </code></pre>
 <h3 id="11-delete-duplicate-record-from-table" tabindex="-1"><a class="header-anchor" href="#11-delete-duplicate-record-from-table"><span>11. Delete duplicate record from table ?</span></a></h3>
 <ul>
 <li><a href="https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/delete-duplicate-emails.sql">https://github.com/yennanliu/CS_basics/blob/master/leetcode_SQL/delete-duplicate-emails.sql</a></li>
 </ul>
-<pre><code class="language-sql">DELETE a
-FROM TABLE a,
-           TABLE b
-WHERE a.id = b.id
-  AND a.timestamp &gt; b.timestamp
+<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-keyword">DELETE</span> a
+<span class="hljs-keyword">FROM</span> <span class="hljs-keyword">TABLE</span> a,
+           <span class="hljs-keyword">TABLE</span> b
+<span class="hljs-keyword">WHERE</span> a.id <span class="hljs-operator">=</span> b.id
+  <span class="hljs-keyword">AND</span> a.timestamp <span class="hljs-operator">&gt;</span> b.timestamp
 </code></pre>
 <ul>
 <li>Follow up : if in the “whole column duplicate” case?</li>
 </ul>
-<pre><code class="language-sql">
--- build the table 
-CREATE TABLE IF NOT EXIST test( id int, age int);
-TRUNCATE TABLE test; 
-INSERT INTO test VALUES (1,1);
-INSERT INTO test VALUES (2,2);
-INSERT INTO test VALUES (3,3);
-INSERT INTO test VALUES (3,3);
-INSERT INTO test VALUES (3,3);
-INSERT INTO test VALUES (3,3);
-SELECT * FROM test;
+<pre data-lang="sql"><code class="hljs language-sql">
+<span class="hljs-comment">-- build the table </span>
+<span class="hljs-keyword">CREATE TABLE</span> IF <span class="hljs-keyword">NOT</span> EXIST test( id <span class="hljs-type">int</span>, age <span class="hljs-type">int</span>);
+<span class="hljs-keyword">TRUNCATE</span> <span class="hljs-keyword">TABLE</span> test; 
+<span class="hljs-keyword">INSERT INTO</span> test <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">1</span>,<span class="hljs-number">1</span>);
+<span class="hljs-keyword">INSERT INTO</span> test <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">2</span>,<span class="hljs-number">2</span>);
+<span class="hljs-keyword">INSERT INTO</span> test <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">3</span>,<span class="hljs-number">3</span>);
+<span class="hljs-keyword">INSERT INTO</span> test <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">3</span>,<span class="hljs-number">3</span>);
+<span class="hljs-keyword">INSERT INTO</span> test <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">3</span>,<span class="hljs-number">3</span>);
+<span class="hljs-keyword">INSERT INTO</span> test <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">3</span>,<span class="hljs-number">3</span>);
+<span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> test;
 
--- delete duplicated
--- V1 
-DELETE
-FROM test
-WHERE id IN
-    (SELECT id
-     FROM
-       (SELECT 
+<span class="hljs-comment">-- delete duplicated</span>
+<span class="hljs-comment">-- V1 </span>
+<span class="hljs-keyword">DELETE</span>
+<span class="hljs-keyword">FROM</span> test
+<span class="hljs-keyword">WHERE</span> id <span class="hljs-keyword">IN</span>
+    (<span class="hljs-keyword">SELECT</span> id
+     <span class="hljs-keyword">FROM</span>
+       (<span class="hljs-keyword">SELECT</span> 
         id,
         age,
-        ROW_NUMBER() OVER (PARTITION BY id ORDER BY id) AS order_
-        FROM test) sub
-     WHERE order_ &gt; 2 )
+        <span class="hljs-built_in">ROW_NUMBER</span>() <span class="hljs-keyword">OVER</span> (<span class="hljs-keyword">PARTITION</span> <span class="hljs-keyword">BY</span> id <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> id) <span class="hljs-keyword">AS</span> order_
+        <span class="hljs-keyword">FROM</span> test) sub
+     <span class="hljs-keyword">WHERE</span> order_ <span class="hljs-operator">&gt;</span> <span class="hljs-number">2</span> )
 
--- delete duplicated
--- V2
-DELETE FROM test
-WHERE id IN (
-  SELECT calc_id FROM (
-    SELECT MAX(id) AS calc_id
-    FROM test
-    GROUP BY id, age
-    HAVING COUNT(id) &gt; 1
+<span class="hljs-comment">-- delete duplicated</span>
+<span class="hljs-comment">-- V2</span>
+<span class="hljs-keyword">DELETE</span> <span class="hljs-keyword">FROM</span> test
+<span class="hljs-keyword">WHERE</span> id <span class="hljs-keyword">IN</span> (
+  <span class="hljs-keyword">SELECT</span> calc_id <span class="hljs-keyword">FROM</span> (
+    <span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">MAX</span>(id) <span class="hljs-keyword">AS</span> calc_id
+    <span class="hljs-keyword">FROM</span> test
+    <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> id, age
+    <span class="hljs-keyword">HAVING</span> <span class="hljs-built_in">COUNT</span>(id) <span class="hljs-operator">&gt;</span> <span class="hljs-number">1</span>
   ) temp
 ); 
 
@@ -344,70 +356,70 @@ WHERE id IN (
 <ul>
 <li><code>IS NULL</code> VS <code> = NULL</code></li>
 </ul>
-<pre><code class="language-sql">-- select data where SALARY is not null
- SELECT  ID, NAME, AGE, ADDRESS, SALARY
-   FROM CUSTOMERS
-   WHERE SALARY IS NOT NULL; 
+<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- select data where SALARY is not null</span>
+ <span class="hljs-keyword">SELECT</span>  ID, NAME, AGE, ADDRESS, SALARY
+   <span class="hljs-keyword">FROM</span> CUSTOMERS
+   <span class="hljs-keyword">WHERE</span> SALARY <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NOT NULL</span>; 
 
--- select data where SALARY is null
- SELECT  ID, NAME, AGE, ADDRESS, SALARY
-   FROM CUSTOMERS
-   WHERE SALARY IS NULL; 
+<span class="hljs-comment">-- select data where SALARY is null</span>
+ <span class="hljs-keyword">SELECT</span>  ID, NAME, AGE, ADDRESS, SALARY
+   <span class="hljs-keyword">FROM</span> CUSTOMERS
+   <span class="hljs-keyword">WHERE</span> SALARY <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NULL</span>; 
 
 </code></pre>
 <ul>
 <li>COALESCE</li>
 </ul>
-<pre><code class="language-sql">
--- COALESCE
-SELECT StudentId, StudentName, Department, 
+<pre data-lang="sql"><code class="hljs language-sql">
+<span class="hljs-comment">-- COALESCE</span>
+<span class="hljs-keyword">SELECT</span> StudentId, StudentName, Department, 
 Semester_I, Semester_II, Semester_III,
-COALESCE(Semester_I, Semester_II, Semester_III, 0) AS COALESCE_Result
-FROM StudentDetails
+<span class="hljs-built_in">COALESCE</span>(Semester_I, Semester_II, Semester_III, <span class="hljs-number">0</span>) <span class="hljs-keyword">AS</span> COALESCE_Result
+<span class="hljs-keyword">FROM</span> StudentDetails
 
--- above SQL is as same as below 
--- i.e. COALESCE(a, b, c, 0)
---  -&gt; if a is not null then a 
---      -&gt; if b is not null then b
---          -&gt; if c is not null then c 
---                -&gt; else 0 
-SELECT StudentId, StudentName, Department, 
+<span class="hljs-comment">-- above SQL is as same as below </span>
+<span class="hljs-comment">-- i.e. COALESCE(a, b, c, 0)</span>
+<span class="hljs-comment">--  -&gt; if a is not null then a </span>
+<span class="hljs-comment">--      -&gt; if b is not null then b</span>
+<span class="hljs-comment">--          -&gt; if c is not null then c </span>
+<span class="hljs-comment">--                -&gt; else 0 </span>
+<span class="hljs-keyword">SELECT</span> StudentId, StudentName, Department, 
 Semester_I, Semester_II, Semester_III,
-COALESCE(Semester_I, Semester_II, Semester_III, 0) AS COALESCE_Result,
-CASE
-  WHEN Semester_I IS NOT NULL THEN Semester_I
-  WHEN Semester_II IS NOT NULL THEN Semester_II
-  WHEN Semester_III IS NOT NULL THEN Semester_III
-  ELSE 0
-END CASE_Result
-FROM StudentDetails
+<span class="hljs-built_in">COALESCE</span>(Semester_I, Semester_II, Semester_III, <span class="hljs-number">0</span>) <span class="hljs-keyword">AS</span> COALESCE_Result,
+<span class="hljs-keyword">CASE</span>
+  <span class="hljs-keyword">WHEN</span> Semester_I <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">THEN</span> Semester_I
+  <span class="hljs-keyword">WHEN</span> Semester_II <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">THEN</span> Semester_II
+  <span class="hljs-keyword">WHEN</span> Semester_III <span class="hljs-keyword">IS</span> <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">THEN</span> Semester_III
+  <span class="hljs-keyword">ELSE</span> <span class="hljs-number">0</span>
+<span class="hljs-keyword">END</span> CASE_Result
+<span class="hljs-keyword">FROM</span> StudentDetails
 
 </code></pre>
 <ul>
 <li>Addition value with Null</li>
 </ul>
-<pre><code class="language-sql">
--- Method 1  : IFNULL
-SELECT IFNULL(NULL, 0) + value; 
+<pre data-lang="sql"><code class="hljs language-sql">
+<span class="hljs-comment">-- Method 1  : IFNULL</span>
+<span class="hljs-keyword">SELECT</span> IFNULL(<span class="hljs-keyword">NULL</span>, <span class="hljs-number">0</span>) <span class="hljs-operator">+</span> <span class="hljs-keyword">value</span>; 
 
--- Method 2  : COALESCE
-SELECT COALESCE(NULL, value); 
+<span class="hljs-comment">-- Method 2  : COALESCE</span>
+<span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">COALESCE</span>(<span class="hljs-keyword">NULL</span>, <span class="hljs-keyword">value</span>); 
 
 </code></pre>
 <ul>
 <li>Any Value + NULL = Any Value?</li>
 </ul>
-<pre><code class="language-sql">SELECT NULL + 100;
--- NULL 
+<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">NULL</span> <span class="hljs-operator">+</span> <span class="hljs-number">100</span>;
+<span class="hljs-comment">-- NULL </span>
 </code></pre>
 <ul>
 <li>Output of NULL != NULL, NULL = NULL ?</li>
 </ul>
-<pre><code class="language-sql">SELECT NULL != NULL;
--- NULL 
+<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">NULL</span> <span class="hljs-operator">!=</span> <span class="hljs-keyword">NULL</span>;
+<span class="hljs-comment">-- NULL </span>
 
-SELECT NULL = NULL;
--- NULL 
+<span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">NULL</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">NULL</span>;
+<span class="hljs-comment">-- NULL </span>
 
 </code></pre>
 <ul>
@@ -434,13 +446,13 @@ SELECT NULL = NULL;
 <p>How</p>
 </li>
 </ul>
-<pre><code class="language-sql">-- sub-query pattern
-SELECT column_name [, column_name ]
-FROM   table1 [, table2 ]
-WHERE  column_name OPERATOR
-   (SELECT column_name [, column_name ]
-   FROM table1 [, table2 ]
-   [WHERE])
+<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- sub-query pattern</span>
+<span class="hljs-keyword">SELECT</span> column_name [, column_name ]
+<span class="hljs-keyword">FROM</span>   table1 [, table2 ]
+<span class="hljs-keyword">WHERE</span>  column_name OPERATOR
+   (<span class="hljs-keyword">SELECT</span> column_name [, column_name ]
+   <span class="hljs-keyword">FROM</span> table1 [, table2 ]
+   [<span class="hljs-keyword">WHERE</span>])
 
 </code></pre>
 <ul>
@@ -461,42 +473,42 @@ WHERE  column_name OPERATOR
 <li>A window function performs a calculation across a set of table rows that are somehow related to the current row</li>
 <li>Pattern</li>
 </ul>
-<pre><code class="language-sql">SELECT
-aggre_func() OVER (PARTITION BY ... ORDER BY ...),
-ROW_NUMBER() OVER (PARTITION BY ... ORDER BY ...),
-RANK() OVER (PARTITION BY ... ORDER BY ...),
-LAG(timestamp, 1) OVER (PARTITION BY ... ORDER BY ...) AS prev_record,
-RANK() OVER (PARTITION BY timestamp, ORDER BY count(product_id)) AS rank # NOTE : rank can order by count
+<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span>
+aggre_func() <span class="hljs-keyword">OVER</span> (<span class="hljs-keyword">PARTITION</span> <span class="hljs-keyword">BY</span> ... <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> ...),
+<span class="hljs-built_in">ROW_NUMBER</span>() <span class="hljs-keyword">OVER</span> (<span class="hljs-keyword">PARTITION</span> <span class="hljs-keyword">BY</span> ... <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> ...),
+<span class="hljs-built_in">RANK</span>() <span class="hljs-keyword">OVER</span> (<span class="hljs-keyword">PARTITION</span> <span class="hljs-keyword">BY</span> ... <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> ...),
+<span class="hljs-built_in">LAG</span>(<span class="hljs-type">timestamp</span>, <span class="hljs-number">1</span>) <span class="hljs-keyword">OVER</span> (<span class="hljs-keyword">PARTITION</span> <span class="hljs-keyword">BY</span> ... <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> ...) <span class="hljs-keyword">AS</span> prev_record,
+<span class="hljs-built_in">RANK</span>() <span class="hljs-keyword">OVER</span> (<span class="hljs-keyword">PARTITION</span> <span class="hljs-keyword">BY</span> <span class="hljs-type">timestamp</span>, <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> <span class="hljs-built_in">count</span>(product_id)) <span class="hljs-keyword">AS</span> rank # NOTE : rank can <span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> count
 ...
 </code></pre>
 <ul>
 <li>Example</li>
 </ul>
-<pre><code class="language-sql">-- example 1 
-SELECT duration_seconds,
-       SUM(duration_seconds) OVER (ORDER BY start_time) AS running_total
-  FROM tutorial.dc_bikeshare_q1_2012
+<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- example 1 </span>
+<span class="hljs-keyword">SELECT</span> duration_seconds,
+       <span class="hljs-built_in">SUM</span>(duration_seconds) <span class="hljs-keyword">OVER</span> (<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> start_time) <span class="hljs-keyword">AS</span> running_total
+  <span class="hljs-keyword">FROM</span> tutorial.dc_bikeshare_q1_2012
 
--- example 2 
-SELECT start_terminal,
+<span class="hljs-comment">-- example 2 </span>
+<span class="hljs-keyword">SELECT</span> start_terminal,
        duration_seconds,
-       SUM(duration_seconds) OVER
-         (PARTITION BY start_terminal ORDER BY start_time)
-         AS running_total
-  FROM tutorial.dc_bikeshare_q1_2012
- WHERE start_time &lt; '2012-01-08'
+       <span class="hljs-built_in">SUM</span>(duration_seconds) <span class="hljs-keyword">OVER</span>
+         (<span class="hljs-keyword">PARTITION</span> <span class="hljs-keyword">BY</span> start_terminal <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> start_time)
+         <span class="hljs-keyword">AS</span> running_total
+  <span class="hljs-keyword">FROM</span> tutorial.dc_bikeshare_q1_2012
+ <span class="hljs-keyword">WHERE</span> start_time <span class="hljs-operator">&lt;</span> <span class="hljs-string">&#x27;2012-01-08&#x27;</span>
 
--- example 3 
-SELECT start_terminal,
+<span class="hljs-comment">-- example 3 </span>
+<span class="hljs-keyword">SELECT</span> start_terminal,
        duration_seconds,
-       SUM(duration_seconds) OVER
-         (PARTITION BY start_terminal) AS running_total,
-       COUNT(duration_seconds) OVER
-         (PARTITION BY start_terminal) AS running_count,
-       AVG(duration_seconds) OVER
-         (PARTITION BY start_terminal) AS running_avg
-  FROM tutorial.dc_bikeshare_q1_2012
- WHERE start_time &lt; '2012-01-08'
+       <span class="hljs-built_in">SUM</span>(duration_seconds) <span class="hljs-keyword">OVER</span>
+         (<span class="hljs-keyword">PARTITION</span> <span class="hljs-keyword">BY</span> start_terminal) <span class="hljs-keyword">AS</span> running_total,
+       <span class="hljs-built_in">COUNT</span>(duration_seconds) <span class="hljs-keyword">OVER</span>
+         (<span class="hljs-keyword">PARTITION</span> <span class="hljs-keyword">BY</span> start_terminal) <span class="hljs-keyword">AS</span> running_count,
+       <span class="hljs-built_in">AVG</span>(duration_seconds) <span class="hljs-keyword">OVER</span>
+         (<span class="hljs-keyword">PARTITION</span> <span class="hljs-keyword">BY</span> start_terminal) <span class="hljs-keyword">AS</span> running_avg
+  <span class="hljs-keyword">FROM</span> tutorial.dc_bikeshare_q1_2012
+ <span class="hljs-keyword">WHERE</span> start_time <span class="hljs-operator">&lt;</span> <span class="hljs-string">&#x27;2012-01-08&#x27;</span>
 
 </code></pre>
 <ul>
@@ -507,14 +519,14 @@ SELECT start_terminal,
 </li>
 <li>Example</li>
 </ul>
-<pre><code class="language-sql">SELECT start_terminal,
+<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> start_terminal,
        start_time,
        duration_seconds,
-       ROW_NUMBER() OVER (PARTITION BY start_terminal
-                          ORDER BY start_time)
-                    AS row_number
-  FROM tutorial.dc_bikeshare_q1_2012
- WHERE start_time &lt; '2012-01-08'
+       <span class="hljs-built_in">ROW_NUMBER</span>() <span class="hljs-keyword">OVER</span> (<span class="hljs-keyword">PARTITION</span> <span class="hljs-keyword">BY</span> start_terminal
+                          <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> start_time)
+                    <span class="hljs-keyword">AS</span> row_number
+  <span class="hljs-keyword">FROM</span> tutorial.dc_bikeshare_q1_2012
+ <span class="hljs-keyword">WHERE</span> start_time <span class="hljs-operator">&lt;</span> <span class="hljs-string">&#x27;2012-01-08&#x27;</span>
 </code></pre>
 <ul>
 <li>RANK() and DENSE_RANK()
@@ -526,13 +538,13 @@ SELECT start_terminal,
 </li>
 <li>Example</li>
 </ul>
-<pre><code class="language-sql">SELECT start_terminal,
+<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> start_terminal,
        duration_seconds,
-       RANK() OVER (PARTITION BY start_terminal
-                    ORDER BY start_time)
-              AS rank
-  FROM tutorial.dc_bikeshare_q1_2012
- WHERE start_time &lt; '2012-01-08'
+       <span class="hljs-built_in">RANK</span>() <span class="hljs-keyword">OVER</span> (<span class="hljs-keyword">PARTITION</span> <span class="hljs-keyword">BY</span> start_terminal
+                    <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> start_time)
+              <span class="hljs-keyword">AS</span> rank
+  <span class="hljs-keyword">FROM</span> tutorial.dc_bikeshare_q1_2012
+ <span class="hljs-keyword">WHERE</span> start_time <span class="hljs-operator">&lt;</span> <span class="hljs-string">&#x27;2012-01-08&#x27;</span>
 
 </code></pre>
 <ul>
@@ -543,26 +555,26 @@ SELECT start_terminal,
 </li>
 <li>Example</li>
 </ul>
-<pre><code class="language-sql">-- example 1 
-SELECT start_terminal,
+<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- example 1 </span>
+<span class="hljs-keyword">SELECT</span> start_terminal,
        duration_seconds,
-       LAG(duration_seconds, 1) OVER
-         (PARTITION BY start_terminal ORDER BY duration_seconds) AS lag,
-       LEAD(duration_seconds, 1) OVER
-         (PARTITION BY start_terminal ORDER BY duration_seconds) AS lead
-  FROM tutorial.dc_bikeshare_q1_2012
- WHERE start_time &lt; '2012-01-08'
- ORDER BY start_terminal, duration_seconds
+       <span class="hljs-built_in">LAG</span>(duration_seconds, <span class="hljs-number">1</span>) <span class="hljs-keyword">OVER</span>
+         (<span class="hljs-keyword">PARTITION</span> <span class="hljs-keyword">BY</span> start_terminal <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> duration_seconds) <span class="hljs-keyword">AS</span> lag,
+       <span class="hljs-built_in">LEAD</span>(duration_seconds, <span class="hljs-number">1</span>) <span class="hljs-keyword">OVER</span>
+         (<span class="hljs-keyword">PARTITION</span> <span class="hljs-keyword">BY</span> start_terminal <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> duration_seconds) <span class="hljs-keyword">AS</span> lead
+  <span class="hljs-keyword">FROM</span> tutorial.dc_bikeshare_q1_2012
+ <span class="hljs-keyword">WHERE</span> start_time <span class="hljs-operator">&lt;</span> <span class="hljs-string">&#x27;2012-01-08&#x27;</span>
+ <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> start_terminal, duration_seconds
 
--- example 2 
-SELECT start_terminal,
+<span class="hljs-comment">-- example 2 </span>
+<span class="hljs-keyword">SELECT</span> start_terminal,
        duration_seconds,
-       duration_seconds -LAG(duration_seconds, 1) OVER
-         (PARTITION BY start_terminal ORDER BY duration_seconds)
-         AS difference
-  FROM tutorial.dc_bikeshare_q1_2012
- WHERE start_time &lt; '2012-01-08'
- ORDER BY start_terminal, duration_seconds
+       duration_seconds <span class="hljs-operator">-</span><span class="hljs-built_in">LAG</span>(duration_seconds, <span class="hljs-number">1</span>) <span class="hljs-keyword">OVER</span>
+         (<span class="hljs-keyword">PARTITION</span> <span class="hljs-keyword">BY</span> start_terminal <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> duration_seconds)
+         <span class="hljs-keyword">AS</span> difference
+  <span class="hljs-keyword">FROM</span> tutorial.dc_bikeshare_q1_2012
+ <span class="hljs-keyword">WHERE</span> start_time <span class="hljs-operator">&lt;</span> <span class="hljs-string">&#x27;2012-01-08&#x27;</span>
+ <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> start_terminal, duration_seconds
 
 </code></pre>
 <ul>
@@ -573,36 +585,36 @@ SELECT start_terminal,
 </li>
 <li>Example</li>
 </ul>
-<pre><code class="language-sql">SELECT start_terminal,
+<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> start_terminal,
        duration_seconds,
-       NTILE(4) OVER
-         (PARTITION BY start_terminal ORDER BY duration_seconds)
-          AS quartile,
-       NTILE(5) OVER
-         (PARTITION BY start_terminal ORDER BY duration_seconds)
-         AS quintile,
-       NTILE(100) OVER
-         (PARTITION BY start_terminal ORDER BY duration_seconds)
-         AS percentile
-  FROM tutorial.dc_bikeshare_q1_2012
- WHERE start_time &lt; '2012-01-08'
- ORDER BY start_terminal, duration_seconds
+       <span class="hljs-built_in">NTILE</span>(<span class="hljs-number">4</span>) <span class="hljs-keyword">OVER</span>
+         (<span class="hljs-keyword">PARTITION</span> <span class="hljs-keyword">BY</span> start_terminal <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> duration_seconds)
+          <span class="hljs-keyword">AS</span> quartile,
+       <span class="hljs-built_in">NTILE</span>(<span class="hljs-number">5</span>) <span class="hljs-keyword">OVER</span>
+         (<span class="hljs-keyword">PARTITION</span> <span class="hljs-keyword">BY</span> start_terminal <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> duration_seconds)
+         <span class="hljs-keyword">AS</span> quintile,
+       <span class="hljs-built_in">NTILE</span>(<span class="hljs-number">100</span>) <span class="hljs-keyword">OVER</span>
+         (<span class="hljs-keyword">PARTITION</span> <span class="hljs-keyword">BY</span> start_terminal <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> duration_seconds)
+         <span class="hljs-keyword">AS</span> percentile
+  <span class="hljs-keyword">FROM</span> tutorial.dc_bikeshare_q1_2012
+ <span class="hljs-keyword">WHERE</span> start_time <span class="hljs-operator">&lt;</span> <span class="hljs-string">&#x27;2012-01-08&#x27;</span>
+ <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> start_terminal, duration_seconds
 
 </code></pre>
 <ul>
 <li>Can also define window function as alias (Defining a window alias)</li>
 <li>Example</li>
 </ul>
-<pre><code class="language-sql">SELECT start_terminal,
+<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> start_terminal,
        duration_seconds,
-       NTILE(4) OVER ntile_window AS quartile,
-       NTILE(5) OVER ntile_window AS quintile,
-       NTILE(100) OVER ntile_window AS percentile
-  FROM tutorial.dc_bikeshare_q1_2012
- WHERE start_time &lt; '2012-01-08'
-WINDOW ntile_window AS
-         (PARTITION BY start_terminal ORDER BY duration_seconds)
- ORDER BY start_terminal, duration_seconds
+       <span class="hljs-built_in">NTILE</span>(<span class="hljs-number">4</span>) <span class="hljs-keyword">OVER</span> ntile_window <span class="hljs-keyword">AS</span> quartile,
+       <span class="hljs-built_in">NTILE</span>(<span class="hljs-number">5</span>) <span class="hljs-keyword">OVER</span> ntile_window <span class="hljs-keyword">AS</span> quintile,
+       <span class="hljs-built_in">NTILE</span>(<span class="hljs-number">100</span>) <span class="hljs-keyword">OVER</span> ntile_window <span class="hljs-keyword">AS</span> percentile
+  <span class="hljs-keyword">FROM</span> tutorial.dc_bikeshare_q1_2012
+ <span class="hljs-keyword">WHERE</span> start_time <span class="hljs-operator">&lt;</span> <span class="hljs-string">&#x27;2012-01-08&#x27;</span>
+<span class="hljs-keyword">WINDOW</span> ntile_window <span class="hljs-keyword">AS</span>
+         (<span class="hljs-keyword">PARTITION</span> <span class="hljs-keyword">BY</span> start_terminal <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> duration_seconds)
+ <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> start_terminal, duration_seconds
 </code></pre>
 <ul>
 <li><a href="https://mode.com/sql-tutorial/sql-window-functions/">https://mode.com/sql-tutorial/sql-window-functions/</a></li>
@@ -645,44 +657,44 @@ WINDOW ntile_window AS
 <p>example</p>
 </li>
 </ul>
-<pre><code class="language-sql">-- build table 
-CREATE table if not exists user(id int, age int); 
-truncate table user; 
-INSERT INTO user values (1, 10);
-INSERT INTO user values (1, 10);
-INSERT INTO user values (1, 10);
-INSERT INTO user values (1, 10);
-INSERT INTO user values (1, 10);
-INSERT INTO user values (NULL, 10);
-INSERT INTO user values (1, NULL);
+<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- build table </span>
+<span class="hljs-keyword">CREATE table</span> if <span class="hljs-keyword">not</span> <span class="hljs-keyword">exists</span> <span class="hljs-keyword">user</span>(id <span class="hljs-type">int</span>, age <span class="hljs-type">int</span>); 
+<span class="hljs-keyword">truncate</span> <span class="hljs-keyword">table</span> <span class="hljs-keyword">user</span>; 
+<span class="hljs-keyword">INSERT INTO</span> <span class="hljs-keyword">user</span> <span class="hljs-keyword">values</span> (<span class="hljs-number">1</span>, <span class="hljs-number">10</span>);
+<span class="hljs-keyword">INSERT INTO</span> <span class="hljs-keyword">user</span> <span class="hljs-keyword">values</span> (<span class="hljs-number">1</span>, <span class="hljs-number">10</span>);
+<span class="hljs-keyword">INSERT INTO</span> <span class="hljs-keyword">user</span> <span class="hljs-keyword">values</span> (<span class="hljs-number">1</span>, <span class="hljs-number">10</span>);
+<span class="hljs-keyword">INSERT INTO</span> <span class="hljs-keyword">user</span> <span class="hljs-keyword">values</span> (<span class="hljs-number">1</span>, <span class="hljs-number">10</span>);
+<span class="hljs-keyword">INSERT INTO</span> <span class="hljs-keyword">user</span> <span class="hljs-keyword">values</span> (<span class="hljs-number">1</span>, <span class="hljs-number">10</span>);
+<span class="hljs-keyword">INSERT INTO</span> <span class="hljs-keyword">user</span> <span class="hljs-keyword">values</span> (<span class="hljs-keyword">NULL</span>, <span class="hljs-number">10</span>);
+<span class="hljs-keyword">INSERT INTO</span> <span class="hljs-keyword">user</span> <span class="hljs-keyword">values</span> (<span class="hljs-number">1</span>, <span class="hljs-keyword">NULL</span>);
 
--- select 
-SELECT * FROM user;
+<span class="hljs-comment">-- select </span>
+<span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> <span class="hljs-keyword">user</span>;
 
--- mysql&gt; SELECT * FROM user;
--- +------+------+
--- | id   | age  |
--- +------+------+
--- |    1 |   10 |
--- |    1 |   10 |
--- |    1 |   10 |
--- |    1 |   10 |
--- |    1 |   10 |
--- | NULL |   10 |
--- |    1 | NULL |
--- +------+------+
--- 7 rows in set (0.00 sec)
+<span class="hljs-comment">-- mysql&gt; SELECT * FROM user;</span>
+<span class="hljs-comment">-- +------+------+</span>
+<span class="hljs-comment">-- | id   | age  |</span>
+<span class="hljs-comment">-- +------+------+</span>
+<span class="hljs-comment">-- |    1 |   10 |</span>
+<span class="hljs-comment">-- |    1 |   10 |</span>
+<span class="hljs-comment">-- |    1 |   10 |</span>
+<span class="hljs-comment">-- |    1 |   10 |</span>
+<span class="hljs-comment">-- |    1 |   10 |</span>
+<span class="hljs-comment">-- | NULL |   10 |</span>
+<span class="hljs-comment">-- |    1 | NULL |</span>
+<span class="hljs-comment">-- +------+------+</span>
+<span class="hljs-comment">-- 7 rows in set (0.00 sec)</span>
 
--- select 
-SELECT COUNT(id), COUNT(*) ,COUNT(1) FROM user;
+<span class="hljs-comment">-- select </span>
+<span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">COUNT</span>(id), <span class="hljs-built_in">COUNT</span>(<span class="hljs-operator">*</span>) ,<span class="hljs-built_in">COUNT</span>(<span class="hljs-number">1</span>) <span class="hljs-keyword">FROM</span> <span class="hljs-keyword">user</span>;
 
--- mysql&gt; SELECT COUNT(id), COUNT(*) ,COUNT(1) FROM user;
--- +-----------+----------+----------+
--- | COUNT(id) | COUNT(*) | COUNT(1) |
--- +-----------+----------+----------+
--- |         6 |        7 |        7 |
--- +-----------+----------+----------+
--- 1 row in set (0.00 sec)
+<span class="hljs-comment">-- mysql&gt; SELECT COUNT(id), COUNT(*) ,COUNT(1) FROM user;</span>
+<span class="hljs-comment">-- +-----------+----------+----------+</span>
+<span class="hljs-comment">-- | COUNT(id) | COUNT(*) | COUNT(1) |</span>
+<span class="hljs-comment">-- +-----------+----------+----------+</span>
+<span class="hljs-comment">-- |         6 |        7 |        7 |</span>
+<span class="hljs-comment">-- +-----------+----------+----------+</span>
+<span class="hljs-comment">-- 1 row in set (0.00 sec)</span>
 
 </code></pre>
 <ul>
@@ -710,12 +722,12 @@ SELECT COUNT(id), COUNT(*) ,COUNT(1) FROM user;
 <p>Example</p>
 </li>
 </ul>
-<pre><code class="language-sql">-- example 1 
-SELECT d.DEPT_NAME, count(e.EMP_NAME) as NUM_EMPLOYEE, avg(e.EMP_SALARY) as AVG_SALARY FROM Employee e,
-Department d WHERE e.DEPT_ID=d.DEPT_ID AND EMP_SALARY &gt; 5000 GROUP BY d.DEPT_NAME HAVING AVG_SALARY &gt; 7000;
+<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- example 1 </span>
+<span class="hljs-keyword">SELECT</span> d.DEPT_NAME, <span class="hljs-built_in">count</span>(e.EMP_NAME) <span class="hljs-keyword">as</span> NUM_EMPLOYEE, <span class="hljs-built_in">avg</span>(e.EMP_SALARY) <span class="hljs-keyword">as</span> AVG_SALARY <span class="hljs-keyword">FROM</span> Employee e,
+Department d <span class="hljs-keyword">WHERE</span> e.DEPT_ID<span class="hljs-operator">=</span>d.DEPT_ID <span class="hljs-keyword">AND</span> EMP_SALARY <span class="hljs-operator">&gt;</span> <span class="hljs-number">5000</span> <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> d.DEPT_NAME <span class="hljs-keyword">HAVING</span> AVG_SALARY <span class="hljs-operator">&gt;</span> <span class="hljs-number">7000</span>;
 
--- example 2 
-update DEPARTMENT set DEPT_NAME=&quot;NewSales&quot; WHERE DEPT_ID=1 ; 
+<span class="hljs-comment">-- example 2 </span>
+<span class="hljs-keyword">update</span> DEPARTMENT <span class="hljs-keyword">set</span> DEPT_NAME<span class="hljs-operator">=</span>&quot;NewSales&quot; <span class="hljs-keyword">WHERE</span> DEPT_ID<span class="hljs-operator">=</span><span class="hljs-number">1</span> ; 
 
 </code></pre>
 <ul>
@@ -727,34 +739,34 @@ update DEPARTMENT set DEPT_NAME=&quot;NewSales&quot; WHERE DEPT_ID=1 ;
 <ul>
 <li>Pattern</li>
 </ul>
-<pre><code class="language-sql">
-CASE expression   
-    WHEN expression_1 THEN result_1
-    WHEN expression_2 THEN result_2
+<pre data-lang="sql"><code class="hljs language-sql">
+<span class="hljs-keyword">CASE</span> expression   
+    <span class="hljs-keyword">WHEN</span> expression_1 <span class="hljs-keyword">THEN</span> result_1
+    <span class="hljs-keyword">WHEN</span> expression_2 <span class="hljs-keyword">THEN</span> result_2
     ...
-    WHEN expression_n THEN result_n
-    [ ELSE else_result ]   
-END  
+    <span class="hljs-keyword">WHEN</span> expression_n <span class="hljs-keyword">THEN</span> result_n
+    [ <span class="hljs-keyword">ELSE</span> else_result ]   
+<span class="hljs-keyword">END</span>  
 </code></pre>
 <ul>
 <li>Example</li>
 </ul>
-<pre><code class="language-sql">
-SELECT 
+<pre data-lang="sql"><code class="hljs language-sql">
+<span class="hljs-keyword">SELECT</span> 
     title, 
     rating,
-    CASE 
-        WHEN (rating &gt;= 1 AND rating &lt; 2) THEN 'Not so good' 
-        WHEN (rating &gt;= 2 AND rating &lt; 3) THEN 'Limited useful information'
-        WHEN (rating &gt;= 3 AND rating &lt; 4) THEN 'Good book, but nothing special'
-        WHEN (rating &gt;= 4 AND rating &lt; 5) THEN 'Incredbly special'
-        WHEN rating = 5 THEN 'Life changing. Must Read.'
-        ELSE
-            'No rating yet'
-    END AS comment
-FROM 
+    <span class="hljs-keyword">CASE</span> 
+        <span class="hljs-keyword">WHEN</span> (rating <span class="hljs-operator">&gt;=</span> <span class="hljs-number">1</span> <span class="hljs-keyword">AND</span> rating <span class="hljs-operator">&lt;</span> <span class="hljs-number">2</span>) <span class="hljs-keyword">THEN</span> <span class="hljs-string">&#x27;Not so good&#x27;</span> 
+        <span class="hljs-keyword">WHEN</span> (rating <span class="hljs-operator">&gt;=</span> <span class="hljs-number">2</span> <span class="hljs-keyword">AND</span> rating <span class="hljs-operator">&lt;</span> <span class="hljs-number">3</span>) <span class="hljs-keyword">THEN</span> <span class="hljs-string">&#x27;Limited useful information&#x27;</span>
+        <span class="hljs-keyword">WHEN</span> (rating <span class="hljs-operator">&gt;=</span> <span class="hljs-number">3</span> <span class="hljs-keyword">AND</span> rating <span class="hljs-operator">&lt;</span> <span class="hljs-number">4</span>) <span class="hljs-keyword">THEN</span> <span class="hljs-string">&#x27;Good book, but nothing special&#x27;</span>
+        <span class="hljs-keyword">WHEN</span> (rating <span class="hljs-operator">&gt;=</span> <span class="hljs-number">4</span> <span class="hljs-keyword">AND</span> rating <span class="hljs-operator">&lt;</span> <span class="hljs-number">5</span>) <span class="hljs-keyword">THEN</span> <span class="hljs-string">&#x27;Incredbly special&#x27;</span>
+        <span class="hljs-keyword">WHEN</span> rating <span class="hljs-operator">=</span> <span class="hljs-number">5</span> <span class="hljs-keyword">THEN</span> <span class="hljs-string">&#x27;Life changing. Must Read.&#x27;</span>
+        <span class="hljs-keyword">ELSE</span>
+            <span class="hljs-string">&#x27;No rating yet&#x27;</span>
+    <span class="hljs-keyword">END</span> <span class="hljs-keyword">AS</span> comment
+<span class="hljs-keyword">FROM</span> 
     books
-ORDER BY 
+<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> 
     title;
 </code></pre>
 <ul>
@@ -796,17 +808,17 @@ ORDER BY
 <p>Example</p>
 </li>
 </ul>
-<pre><code>1) Count()
+<pre><code class="hljs">1) Count()
 2) Sum()
 3) Avg()
 4) Min()
 5) Max()
 </code></pre>
-<pre><code class="language-sql">
-SELECT COUNT()
-SELECT Count(Distinct Salary)
-SELECT Avg(salary)  --  Sum(salary) / count(salary) = 310/5
-SELECT Avg(Distinct salary) -- = sum(Distinct salary) / Count(Distinct Salary) 
+<pre data-lang="sql"><code class="hljs language-sql">
+<span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">COUNT</span>()
+<span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">Count</span>(<span class="hljs-keyword">Distinct</span> Salary)
+<span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">Avg</span>(salary)  <span class="hljs-comment">--  Sum(salary) / count(salary) = 310/5</span>
+<span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">Avg</span>(<span class="hljs-keyword">Distinct</span> salary) <span class="hljs-comment">-- = sum(Distinct salary) / Count(Distinct Salary) </span>
 
 </code></pre>
 <h3 id="21-explain-demo-on-hierarchy-select-in-sql" tabindex="-1"><a class="header-anchor" href="#21-explain-demo-on-hierarchy-select-in-sql"><span>21. Explain/demo on <code>hierarchy select</code> in SQL ?</span></a></h3>
@@ -820,22 +832,22 @@ SELECT Avg(Distinct salary) -- = sum(Distinct salary) / Count(Distinct Salary)
 <ul>
 <li><a href="https://www.sqlservertutorial.net/sql-server-basics/sql-server-recursive-cte/">https://www.sqlservertutorial.net/sql-server-basics/sql-server-recursive-cte/</a></li>
 </ul>
-<pre><code class="language-sql">WITH recursive cte(columns_name) 
-AS (
+<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-keyword">WITH</span> <span class="hljs-keyword">recursive</span> cte(columns_name) 
+<span class="hljs-keyword">AS</span> (
 
   initial_query
-  UNION ALL
+  <span class="hljs-keyword">UNION</span> <span class="hljs-keyword">ALL</span>
   recursive_query
 
 )
-SELECT * 
-FROM cte
+<span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> 
+<span class="hljs-keyword">FROM</span> cte
 </code></pre>
 <h3 id="24-explain-meaning" tabindex="-1"><a class="header-anchor" href="#24-explain-meaning"><span>24. explain <code>&lt;&gt;</code> meaning ?</span></a></h3>
-<pre><code class="language-sql"># https://docs.microsoft.com/en-us/sql/t-sql/language-elements/not-equal-to-transact-sql-traditional?view=sql-server-ver15
-# Not Equal To (Transact SQL)
-# Compares two expressions (a comparison operator). When you compare nonnull expressions, the result is TRUE if the left operand is not equal to the right operand; otherwise, the result is FALSE. If either or both operands are NULL, see the topic SET ANSI_NULLS (Transact-SQL).
-expression &lt;&gt; expression  
+<pre data-lang="sql"><code class="hljs language-sql"># https:<span class="hljs-operator">/</span><span class="hljs-operator">/</span>docs.microsoft.com<span class="hljs-operator">/</span>en<span class="hljs-operator">-</span>us<span class="hljs-operator">/</span><span class="hljs-keyword">sql</span><span class="hljs-operator">/</span>t<span class="hljs-operator">-</span><span class="hljs-keyword">sql</span><span class="hljs-operator">/</span><span class="hljs-keyword">language</span><span class="hljs-operator">-</span>elements<span class="hljs-operator">/</span><span class="hljs-keyword">not</span><span class="hljs-operator">-</span>equal<span class="hljs-operator">-</span><span class="hljs-keyword">to</span><span class="hljs-operator">-</span>transact<span class="hljs-operator">-</span><span class="hljs-keyword">sql</span><span class="hljs-operator">-</span>traditional?<span class="hljs-keyword">view</span><span class="hljs-operator">=</span><span class="hljs-keyword">sql</span><span class="hljs-operator">-</span>server<span class="hljs-operator">-</span>ver15
+# <span class="hljs-keyword">Not</span> Equal <span class="hljs-keyword">To</span> (Transact <span class="hljs-keyword">SQL</span>)
+# Compares two expressions (a comparison operator). <span class="hljs-keyword">When</span> you compare nonnull expressions, the <span class="hljs-keyword">result</span> <span class="hljs-keyword">is</span> <span class="hljs-literal">TRUE</span> if the <span class="hljs-keyword">left</span> operand <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> equal <span class="hljs-keyword">to</span> the <span class="hljs-keyword">right</span> operand; otherwise, the <span class="hljs-keyword">result</span> <span class="hljs-keyword">is</span> FALSE. If either <span class="hljs-keyword">or</span> <span class="hljs-keyword">both</span> operands <span class="hljs-keyword">are</span> <span class="hljs-keyword">NULL</span>, see the topic <span class="hljs-keyword">SET</span> ANSI_NULLS (Transact<span class="hljs-operator">-</span><span class="hljs-keyword">SQL</span>).
+expression <span class="hljs-operator">&lt;&gt;</span> expression  
 
 </code></pre>
 <h3 id="25-char-vs-varchar" tabindex="-1"><a class="header-anchor" href="#25-char-vs-varchar"><span>25. <code>char</code> VS <code>varchar</code> ?</span></a></h3>
@@ -859,21 +871,21 @@ expression &lt;&gt; expression
 <li>The LEAD function provides data on rows after the current row in the row set. For example, in a SELECT statement, you can compare values in the current row with values in the following row.</li>
 <li>example :</li>
 </ul>
-<pre><code class="language-sql"># LC 1790 : Biggest Window Between Visits
-WITH cte1 AS
-  (SELECT user_id,
-          coalesce(lead(visit_date) OVER (PARTITION BY user_id
-                                          ORDER BY visit_date), '2021-01-01') AS lead_visit_date,
+<pre data-lang="sql"><code class="hljs language-sql"># LC <span class="hljs-number">1790</span> : Biggest <span class="hljs-keyword">Window</span> <span class="hljs-keyword">Between</span> Visits
+<span class="hljs-keyword">WITH</span> cte1 <span class="hljs-keyword">AS</span>
+  (<span class="hljs-keyword">SELECT</span> user_id,
+          <span class="hljs-built_in">coalesce</span>(<span class="hljs-built_in">lead</span>(visit_date) <span class="hljs-keyword">OVER</span> (<span class="hljs-keyword">PARTITION</span> <span class="hljs-keyword">BY</span> user_id
+                                          <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> visit_date), <span class="hljs-string">&#x27;2021-01-01&#x27;</span>) <span class="hljs-keyword">AS</span> lead_visit_date,
           visit_date
-   FROM UserVisits),
-     cte2 AS
-  (SELECT user_id,
-          max(datediff(lead_visit_date, visit_date)) AS max_diff
-   FROM cte1
-   GROUP BY user_id)
-SELECT *
-FROM cte2
-ORDER BY user_id
+   <span class="hljs-keyword">FROM</span> UserVisits),
+     cte2 <span class="hljs-keyword">AS</span>
+  (<span class="hljs-keyword">SELECT</span> user_id,
+          <span class="hljs-built_in">max</span>(datediff(lead_visit_date, visit_date)) <span class="hljs-keyword">AS</span> max_diff
+   <span class="hljs-keyword">FROM</span> cte1
+   <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> user_id)
+<span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span>
+<span class="hljs-keyword">FROM</span> cte2
+<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> user_id
 </code></pre>
 <h3 id="27-explain-foreign-key-fk" tabindex="-1"><a class="header-anchor" href="#27-explain-foreign-key-fk"><span>27. Explain <code>foreign key</code> (fk) ?</span></a></h3>
 <ul>
@@ -897,32 +909,32 @@ ORDER BY user_id
 <li><a href="https://aws.amazon.com/data-warehouse/?nc1=h_ls">https://aws.amazon.com/data-warehouse/?nc1=h_ls</a></li>
 </ul>
 <h3 id="29-rank-example" tabindex="-1"><a class="header-anchor" href="#29-rank-example"><span>29. Rank() example ?</span></a></h3>
-<pre><code class="language-sql"># LC 1831
-WITH cte AS
-  (SELECT transaction_id,
-          RANK() OVER (PARTITION BY DATE(DAY)
-                       ORDER BY amount DESC) AS rank
-   FROM transactions)
-SELECT transaction_id
-FROM cte
-WHERE rank = 1
-ORDER BY transaction_id
+<pre data-lang="sql"><code class="hljs language-sql"># LC <span class="hljs-number">1831</span>
+<span class="hljs-keyword">WITH</span> cte <span class="hljs-keyword">AS</span>
+  (<span class="hljs-keyword">SELECT</span> transaction_id,
+          <span class="hljs-built_in">RANK</span>() <span class="hljs-keyword">OVER</span> (<span class="hljs-keyword">PARTITION</span> <span class="hljs-keyword">BY</span> <span class="hljs-type">DATE</span>(<span class="hljs-keyword">DAY</span>)
+                       <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> amount <span class="hljs-keyword">DESC</span>) <span class="hljs-keyword">AS</span> rank
+   <span class="hljs-keyword">FROM</span> transactions)
+<span class="hljs-keyword">SELECT</span> transaction_id
+<span class="hljs-keyword">FROM</span> cte
+<span class="hljs-keyword">WHERE</span> rank <span class="hljs-operator">=</span> <span class="hljs-number">1</span>
+<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> transaction_id
 </code></pre>
 <h3 id="30-exists-example" tabindex="-1"><a class="header-anchor" href="#30-exists-example"><span>30. <code>EXISTS</code> example ?</span></a></h3>
 <ul>
 <li><a href="https://www.fooish.com/sql/exists.html">https://www.fooish.com/sql/exists.html</a></li>
 </ul>
-<pre><code class="language-sql"># V1
-SELECT * FROM table_a
-WHERE EXISTS
-(SELECT * FROM table_b WHERE table_b.id=table_a.id);
+<pre data-lang="sql"><code class="hljs language-sql"># V1
+<span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> table_a
+<span class="hljs-keyword">WHERE</span> <span class="hljs-keyword">EXISTS</span>
+(<span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> table_b <span class="hljs-keyword">WHERE</span> table_b.id<span class="hljs-operator">=</span>table_a.id);
 
-# is equal to below
+# <span class="hljs-keyword">is</span> equal <span class="hljs-keyword">to</span> below
 
 # V2
-SELECT * FROM table_a
-WHERE id
-in (SELECT id FROM table_b);
+<span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> table_a
+<span class="hljs-keyword">WHERE</span> id
+<span class="hljs-keyword">in</span> (<span class="hljs-keyword">SELECT</span> id <span class="hljs-keyword">FROM</span> table_b);
 </code></pre>
 <h3 id="31-explain-cross-join" tabindex="-1"><a class="header-anchor" href="#31-explain-cross-join"><span>31. explain <code>cross join</code> ?</span></a></h3>
 <ul>
@@ -930,53 +942,53 @@ in (SELECT id FROM table_b);
 <li>Cross join will return <code>ALL POSSIBLE COMBINATION OF ROWS IN GIVEN columns and tables</code></li>
 <li>NOTE : below sql are eaual to each other</li>
 </ul>
-<pre><code class="language-sql"># sql 1
-SELECT table_column1, table_column2...
-FROM table_name1
-CROSS JOIN table_name2;
+<pre data-lang="sql"><code class="hljs language-sql"># <span class="hljs-keyword">sql</span> <span class="hljs-number">1</span>
+<span class="hljs-keyword">SELECT</span> table_column1, table_column2...
+<span class="hljs-keyword">FROM</span> table_name1
+<span class="hljs-keyword">CROSS</span> <span class="hljs-keyword">JOIN</span> table_name2;
 
-# sql 2
-SELECT table_column1, table_column2...
-FROM table_name1, table_name2;
+# <span class="hljs-keyword">sql</span> <span class="hljs-number">2</span>
+<span class="hljs-keyword">SELECT</span> table_column1, table_column2...
+<span class="hljs-keyword">FROM</span> table_name1, table_name2;
 
-# sql 3
-SELECT table_column1, table_column2...
-FROM table_name1
-JOIN table_name2;
+# <span class="hljs-keyword">sql</span> <span class="hljs-number">3</span>
+<span class="hljs-keyword">SELECT</span> table_column1, table_column2...
+<span class="hljs-keyword">FROM</span> table_name1
+<span class="hljs-keyword">JOIN</span> table_name2;
 </code></pre>
 <h3 id="33-left-join-example" tabindex="-1"><a class="header-anchor" href="#33-left-join-example"><span>33. Left join example ?</span></a></h3>
 <ul>
 <li>Note : Should use <code>IS NULL</code> (rather than “= null”)</li>
 </ul>
-<pre><code class="language-sql"># LC 0183
+<pre data-lang="sql"><code class="hljs language-sql"># LC <span class="hljs-number">0183</span>
 ### NOTE : 
-#       -&gt; SHOULD BE o.CustomerId is NULL
-#       -&gt; RATHER THAN o.CustomerId = NULL
-SELECT
-c.Name AS Customers
-FROM
+#       <span class="hljs-operator">-</span><span class="hljs-operator">&gt;</span> SHOULD BE o.CustomerId <span class="hljs-keyword">is</span> <span class="hljs-keyword">NULL</span>
+#       <span class="hljs-operator">-</span><span class="hljs-operator">&gt;</span> RATHER THAN o.CustomerId <span class="hljs-operator">=</span> <span class="hljs-keyword">NULL</span>
+<span class="hljs-keyword">SELECT</span>
+c.Name <span class="hljs-keyword">AS</span> Customers
+<span class="hljs-keyword">FROM</span>
 Customers c
-left join
+<span class="hljs-keyword">left</span> <span class="hljs-keyword">join</span>
 Orders o
-on c.Id = o.CustomerId
-WHERE
-o.CustomerId is NULL -- note this condition
+<span class="hljs-keyword">on</span> c.Id <span class="hljs-operator">=</span> o.CustomerId
+<span class="hljs-keyword">WHERE</span>
+o.CustomerId <span class="hljs-keyword">is</span> <span class="hljs-keyword">NULL</span> <span class="hljs-comment">-- note this condition</span>
 </code></pre>
 <h3 id="34-where-in-multiple-cols" tabindex="-1"><a class="header-anchor" href="#34-where-in-multiple-cols"><span>34. where in multiple cols</span></a></h3>
-<pre><code class="language-sql">-- LC 184 Department Highest Salary
-/* V0 */
-SELECT d.name AS Department,
-       e.name AS Employee,
-       e.salary AS Salary
-FROM Employee e
-INNER JOIN Department d ON e.DepartmentId = d.Id
---  NOTE : below where has 2 columns !!!
-WHERE (e.DepartmentId,
-       e.salary) in
-    (SELECT DepartmentId,
-            max(Salary) AS salary
-     FROM Employee GROUP
-BY DepartmentId)
+<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- LC 184 Department Highest Salary</span>
+<span class="hljs-comment">/* V0 */</span>
+<span class="hljs-keyword">SELECT</span> d.name <span class="hljs-keyword">AS</span> Department,
+       e.name <span class="hljs-keyword">AS</span> Employee,
+       e.salary <span class="hljs-keyword">AS</span> Salary
+<span class="hljs-keyword">FROM</span> Employee e
+<span class="hljs-keyword">INNER</span> <span class="hljs-keyword">JOIN</span> Department d <span class="hljs-keyword">ON</span> e.DepartmentId <span class="hljs-operator">=</span> d.Id
+<span class="hljs-comment">--  NOTE : below where has 2 columns !!!</span>
+<span class="hljs-keyword">WHERE</span> (e.DepartmentId,
+       e.salary) <span class="hljs-keyword">in</span>
+    (<span class="hljs-keyword">SELECT</span> DepartmentId,
+            <span class="hljs-built_in">max</span>(Salary) <span class="hljs-keyword">AS</span> salary
+     <span class="hljs-keyword">FROM</span> Employee <span class="hljs-keyword">GROUP</span>
+<span class="hljs-keyword">BY</span> DepartmentId)
 </code></pre>
 <h3 id="35-the-best-medium-hard-data-analyst-sql-interview-questions" tabindex="-1"><a class="header-anchor" href="#35-the-best-medium-hard-data-analyst-sql-interview-questions"><span>35. The Best Medium-Hard Data Analyst SQL Interview Questions</span></a></h3>
 <ul>
@@ -987,20 +999,20 @@ BY DepartmentId)
 </ul>
 </li>
 </ul>
-<pre><code class="language-sql">-- data
-| user_id | date       |
-|---------|------------|
-| 1       | 2018-07-01 |
-| 234     | 2018-07-02 |
-| 3       | 2018-07-02 |
-| 1       | 2018-07-02 |
-| ...     | ...        |
-| 234     | 2018-10-04 |
+<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- data</span>
+<span class="hljs-operator">|</span> user_id <span class="hljs-operator">|</span> <span class="hljs-type">date</span>       <span class="hljs-operator">|</span>
+<span class="hljs-operator">|</span><span class="hljs-comment">---------|------------|</span>
+<span class="hljs-operator">|</span> <span class="hljs-number">1</span>       <span class="hljs-operator">|</span> <span class="hljs-number">2018</span><span class="hljs-number">-07</span><span class="hljs-number">-01</span> <span class="hljs-operator">|</span>
+<span class="hljs-operator">|</span> <span class="hljs-number">234</span>     <span class="hljs-operator">|</span> <span class="hljs-number">2018</span><span class="hljs-number">-07</span><span class="hljs-number">-02</span> <span class="hljs-operator">|</span>
+<span class="hljs-operator">|</span> <span class="hljs-number">3</span>       <span class="hljs-operator">|</span> <span class="hljs-number">2018</span><span class="hljs-number">-07</span><span class="hljs-number">-02</span> <span class="hljs-operator">|</span>
+<span class="hljs-operator">|</span> <span class="hljs-number">1</span>       <span class="hljs-operator">|</span> <span class="hljs-number">2018</span><span class="hljs-number">-07</span><span class="hljs-number">-02</span> <span class="hljs-operator">|</span>
+<span class="hljs-operator">|</span> ...     <span class="hljs-operator">|</span> ...        <span class="hljs-operator">|</span>
+<span class="hljs-operator">|</span> <span class="hljs-number">234</span>     <span class="hljs-operator">|</span> <span class="hljs-number">2018</span><span class="hljs-number">-10</span><span class="hljs-number">-04</span> <span class="hljs-operator">|</span>
 </code></pre>
-<pre><code class="language-sql">WITH mau AS 
+<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-keyword">WITH</span> mau <span class="hljs-keyword">AS</span> 
 (
-  SELECT 
-   /* 
+  <span class="hljs-keyword">SELECT</span> 
+   <span class="hljs-comment">/* 
     * Typically, interviewers allow you to write psuedocode for date functions 
     * i.e. will NOT be checking if you have memorized date functions. 
     * Just explain what your function does as you whiteboard 
@@ -1008,35 +1020,35 @@ BY DepartmentId)
     * DATE_TRUNC() is available in Postgres, but other SQL date functions or 
     * combinations of date functions can give you a identical results   
     * See https://www.postgresql.org/docs/9.0/functions-datetime.html#FUNCTIONS-DATETIME-TRUNC
-    */ 
-    DATE_TRUNC('month', date) month_timestamp,
-    COUNT(DISTINCT user_id) mau
-  FROM 
+    */</span> 
+    DATE_TRUNC(<span class="hljs-string">&#x27;month&#x27;</span>, <span class="hljs-type">date</span>) month_timestamp,
+    <span class="hljs-built_in">COUNT</span>(<span class="hljs-keyword">DISTINCT</span> user_id) mau
+  <span class="hljs-keyword">FROM</span> 
     logins 
-  GROUP BY 
-    DATE_TRUNC('month', date)
+  <span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> 
+    DATE_TRUNC(<span class="hljs-string">&#x27;month&#x27;</span>, <span class="hljs-type">date</span>)
   )
  
- SELECT 
-    /*
-    * You don't literally need to include the previous month in this SELECT statement. 
+ <span class="hljs-keyword">SELECT</span> 
+    <span class="hljs-comment">/*
+    * You don&#x27;t literally need to include the previous month in this SELECT statement. 
     * 
     * However, as mentioned in the &quot;Tips&quot; section of this guide, it can be helpful 
     * to at least sketch out self-joins to avoid getting confused which table 
     * represents the prior month vs current month, etc. 
-    */ 
+    */</span> 
     a.month_timestamp previous_month, 
     a.mau previous_mau, 
     b.month_timestamp current_month, 
     b.mau current_mau, 
-    ROUND(100.0*(b.mau - a.mau)/a.mau,2) AS percent_change 
- FROM
+    ROUND(<span class="hljs-number">100.0</span><span class="hljs-operator">*</span>(b.mau <span class="hljs-operator">-</span> a.mau)<span class="hljs-operator">/</span>a.mau,<span class="hljs-number">2</span>) <span class="hljs-keyword">AS</span> percent_change 
+ <span class="hljs-keyword">FROM</span>
     mau a 
- JOIN 
-    /*
-    * Could also have done `ON b.month_timestamp = a.month_timestamp + interval '1 month'` 
-    */
-    mau b ON a.month_timestamp = b.month_timestamp - interval '1 month' 
+ <span class="hljs-keyword">JOIN</span> 
+    <span class="hljs-comment">/*
+    * Could also have done `ON b.month_timestamp = a.month_timestamp + interval &#x27;1 month&#x27;` 
+    */</span>
+    mau b <span class="hljs-keyword">ON</span> a.month_timestamp <span class="hljs-operator">=</span> b.month_timestamp <span class="hljs-operator">-</span> <span class="hljs-type">interval</span> <span class="hljs-string">&#x27;1 month&#x27;</span> 
 
 </code></pre>
 <ul>
@@ -1044,20 +1056,20 @@ BY DepartmentId)
 <li>Other Medium/Hard SQL Practice Problems</li>
 </ul>
 <h3 id="36-sql-sort-by-desc-and-asc-on-different-columns" tabindex="-1"><a class="header-anchor" href="#36-sql-sort-by-desc-and-asc-on-different-columns"><span>36. SQL sort by desc and asc (on different columns)</span></a></h3>
-<pre><code class="language-sql">-- LC 580 Count Student Number in Departments
+<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- LC 580 Count Student Number in Departments</span>
 # V1
-# https://www.datageekinme.com/general/leetcode/leetcode-sql-580-count-student-number-in-departments/
-select 
+# https:<span class="hljs-operator">/</span><span class="hljs-operator">/</span>www.datageekinme.com<span class="hljs-operator">/</span>general<span class="hljs-operator">/</span>leetcode<span class="hljs-operator">/</span>leetcode<span class="hljs-operator">-</span><span class="hljs-keyword">sql</span><span class="hljs-number">-580</span><span class="hljs-operator">-</span>count<span class="hljs-operator">-</span>student<span class="hljs-operator">-</span>number<span class="hljs-operator">-</span><span class="hljs-keyword">in</span><span class="hljs-operator">-</span>departments<span class="hljs-operator">/</span>
+<span class="hljs-keyword">select</span> 
     a.dept_name,
-    coalesce(count(student_id), 0) student_number
-from 
+    <span class="hljs-built_in">coalesce</span>(<span class="hljs-built_in">count</span>(student_id), <span class="hljs-number">0</span>) student_number
+<span class="hljs-keyword">from</span> 
     department a 
-left join
+<span class="hljs-keyword">left</span> <span class="hljs-keyword">join</span>
     student b
-on 
-    (a.dept_id = b.dept_id)
-group by a.dept_name
-order by student_number desc, a.dept_name asc; --- NOTE this !!!
+<span class="hljs-keyword">on</span> 
+    (a.dept_id <span class="hljs-operator">=</span> b.dept_id)
+<span class="hljs-keyword">group</span> <span class="hljs-keyword">by</span> a.dept_name
+<span class="hljs-keyword">order</span> <span class="hljs-keyword">by</span> student_number <span class="hljs-keyword">desc</span>, a.dept_name <span class="hljs-keyword">asc</span>; <span class="hljs-comment">--- NOTE this !!!</span>
 </code></pre>
 
       </div>

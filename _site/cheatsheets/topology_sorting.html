@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,13 +20,24 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
     document.querySelectorAll('pre code').forEach(function(codeEl) {
       var pre = codeEl.parentElement;
       var lang = '';
       var cls = codeEl.className || '';
       var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
       if (m) lang = m[1];
+
+      // Add line numbers
+      var lines = codeEl.innerHTML.split('
+');
+      if (lines[lines.length - 1] === '') lines.pop();
+      var numbered = lines.map(function(line, i) {
+        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
+      }).join('
+');
+      codeEl.innerHTML = numbered;
+      codeEl.classList.add('hljs-ln');
+
       var wrapper = document.createElement('div');
       wrapper.className = 'code-block-wrapper';
       pre.parentNode.insertBefore(wrapper, pre);
@@ -45,7 +55,9 @@
       btn.className = 'copy-btn';
       btn.textContent = 'Copy';
       btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
+');
+        navigator.clipboard.writeText(text).then(function() {
           btn.textContent = 'Copied!';
           btn.classList.add('copied');
           setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
@@ -238,410 +250,410 @@
 </ul>
 <h2 id="core-templates" tabindex="-1"><a class="header-anchor" href="#core-templates"><span>Core Templates</span></a></h2>
 <h3 id="template-1-bfs-kahn-s-algorithm" tabindex="-1"><a class="header-anchor" href="#template-1-bfs-kahn-s-algorithm"><span>Template 1: BFS (Kahn’s Algorithm)</span></a></h3>
-<pre><code class="language-python">def topologicalSort_BFS(numNodes, edges):
-    &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">topologicalSort_BFS</span>(<span class="hljs-params">numNodes, edges</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
     BFS-based topological sort using in-degree tracking.
     Time: O(V + E), Space: O(V)
-    &quot;&quot;&quot;
-    from collections import defaultdict, deque
+    &quot;&quot;&quot;</span>
+    <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict, deque
     
-    # Build graph and calculate in-degrees
-    graph = defaultdict(list)
-    in_degree = [0] * numNodes
+    <span class="hljs-comment"># Build graph and calculate in-degrees</span>
+    graph = defaultdict(<span class="hljs-built_in">list</span>)
+    in_degree = [<span class="hljs-number">0</span>] * numNodes
     
-    for u, v in edges:
+    <span class="hljs-keyword">for</span> u, v <span class="hljs-keyword">in</span> edges:
         graph[u].append(v)
-        in_degree[v] += 1
+        in_degree[v] += <span class="hljs-number">1</span>
     
-    # Initialize queue with nodes having no dependencies
-    queue = deque([i for i in range(numNodes) if in_degree[i] == 0])
+    <span class="hljs-comment"># Initialize queue with nodes having no dependencies</span>
+    queue = deque([i <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(numNodes) <span class="hljs-keyword">if</span> in_degree[i] == <span class="hljs-number">0</span>])
     result = []
     
-    while queue:
+    <span class="hljs-keyword">while</span> queue:
         node = queue.popleft()
         result.append(node)
         
-        # Process neighbors
-        for neighbor in graph[node]:
-            in_degree[neighbor] -= 1
-            if in_degree[neighbor] == 0:
+        <span class="hljs-comment"># Process neighbors</span>
+        <span class="hljs-keyword">for</span> neighbor <span class="hljs-keyword">in</span> graph[node]:
+            in_degree[neighbor] -= <span class="hljs-number">1</span>
+            <span class="hljs-keyword">if</span> in_degree[neighbor] == <span class="hljs-number">0</span>:
                 queue.append(neighbor)
     
-    # Check for cycles
-    return result if len(result) == numNodes else []
+    <span class="hljs-comment"># Check for cycles</span>
+    <span class="hljs-keyword">return</span> result <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(result) == numNodes <span class="hljs-keyword">else</span> []
 
-# Java version
-public List&lt;Integer&gt; topologicalSort_BFS(int numNodes, int[][] edges) {
-    Map&lt;Integer, List&lt;Integer&gt;&gt; graph = new HashMap&lt;&gt;();
-    int[] inDegree = new int[numNodes];
+<span class="hljs-comment"># Java version</span>
+public <span class="hljs-type">List</span>&lt;Integer&gt; topologicalSort_BFS(<span class="hljs-built_in">int</span> numNodes, <span class="hljs-built_in">int</span>[][] edges) {
+    Map&lt;Integer, <span class="hljs-type">List</span>&lt;Integer&gt;&gt; graph = new HashMap&lt;&gt;();
+    <span class="hljs-built_in">int</span>[] inDegree = new <span class="hljs-built_in">int</span>[numNodes];
     
     // Build graph
-    for (int i = 0; i &lt; numNodes; i++) {
+    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; numNodes; i++) {
         graph.put(i, new ArrayList&lt;&gt;());
     }
     
-    for (int[] edge : edges) {
-        graph.get(edge[0]).add(edge[1]);
-        inDegree[edge[1]]++;
+    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span>[] edge : edges) {
+        graph.get(edge[<span class="hljs-number">0</span>]).add(edge[<span class="hljs-number">1</span>]);
+        inDegree[edge[<span class="hljs-number">1</span>]]++;
     }
     
     // BFS
     Queue&lt;Integer&gt; queue = new LinkedList&lt;&gt;();
-    for (int i = 0; i &lt; numNodes; i++) {
-        if (inDegree[i] == 0) queue.offer(i);
+    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; numNodes; i++) {
+        <span class="hljs-keyword">if</span> (inDegree[i] == <span class="hljs-number">0</span>) queue.offer(i);
     }
     
-    List&lt;Integer&gt; result = new ArrayList&lt;&gt;();
-    while (!queue.isEmpty()) {
-        int node = queue.poll();
+    <span class="hljs-type">List</span>&lt;Integer&gt; result = new ArrayList&lt;&gt;();
+    <span class="hljs-keyword">while</span> (!queue.isEmpty()) {
+        <span class="hljs-built_in">int</span> node = queue.poll();
         result.add(node);
         
-        for (int neighbor : graph.get(node)) {
-            if (--inDegree[neighbor] == 0) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> neighbor : graph.get(node)) {
+            <span class="hljs-keyword">if</span> (--inDegree[neighbor] == <span class="hljs-number">0</span>) {
                 queue.offer(neighbor);
             }
         }
     }
     
-    return result.size() == numNodes ? result : new ArrayList&lt;&gt;();
+    <span class="hljs-keyword">return</span> result.size() == numNodes ? result : new ArrayList&lt;&gt;();
 }
 </code></pre>
 <h3 id="template-2-dfs-three-color" tabindex="-1"><a class="header-anchor" href="#template-2-dfs-three-color"><span>Template 2: DFS (Three-Color)</span></a></h3>
-<pre><code class="language-python">def topologicalSort_DFS(numNodes, edges):
-    &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">topologicalSort_DFS</span>(<span class="hljs-params">numNodes, edges</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
     DFS-based topological sort with three-color marking.
     Time: O(V + E), Space: O(V)
-    &quot;&quot;&quot;
-    from collections import defaultdict
+    &quot;&quot;&quot;</span>
+    <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
     
-    graph = defaultdict(list)
-    for u, v in edges:
+    graph = defaultdict(<span class="hljs-built_in">list</span>)
+    <span class="hljs-keyword">for</span> u, v <span class="hljs-keyword">in</span> edges:
         graph[u].append(v)
     
-    # 0: white (unvisited), 1: gray (visiting), 2: black (visited)
-    color = [0] * numNodes
+    <span class="hljs-comment"># 0: white (unvisited), 1: gray (visiting), 2: black (visited)</span>
+    color = [<span class="hljs-number">0</span>] * numNodes
     result = []
-    has_cycle = False
+    has_cycle = <span class="hljs-literal">False</span>
     
-    def dfs(node):
-        nonlocal has_cycle
-        if color[node] == 1:  # Gray = cycle detected
-            has_cycle = True
-            return
-        if color[node] == 2:  # Black = already processed
-            return
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">node</span>):
+        <span class="hljs-keyword">nonlocal</span> has_cycle
+        <span class="hljs-keyword">if</span> color[node] == <span class="hljs-number">1</span>:  <span class="hljs-comment"># Gray = cycle detected</span>
+            has_cycle = <span class="hljs-literal">True</span>
+            <span class="hljs-keyword">return</span>
+        <span class="hljs-keyword">if</span> color[node] == <span class="hljs-number">2</span>:  <span class="hljs-comment"># Black = already processed</span>
+            <span class="hljs-keyword">return</span>
         
-        color[node] = 1  # Mark as visiting
-        for neighbor in graph[node]:
+        color[node] = <span class="hljs-number">1</span>  <span class="hljs-comment"># Mark as visiting</span>
+        <span class="hljs-keyword">for</span> neighbor <span class="hljs-keyword">in</span> graph[node]:
             dfs(neighbor)
-        color[node] = 2  # Mark as visited
-        result.append(node)  # Add to result in reverse order
+        color[node] = <span class="hljs-number">2</span>  <span class="hljs-comment"># Mark as visited</span>
+        result.append(node)  <span class="hljs-comment"># Add to result in reverse order</span>
     
-    for i in range(numNodes):
-        if color[i] == 0:
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(numNodes):
+        <span class="hljs-keyword">if</span> color[i] == <span class="hljs-number">0</span>:
             dfs(i)
     
-    return [] if has_cycle else result[::-1]
+    <span class="hljs-keyword">return</span> [] <span class="hljs-keyword">if</span> has_cycle <span class="hljs-keyword">else</span> result[::-<span class="hljs-number">1</span>]
 
-# Java version
-public List&lt;Integer&gt; topologicalSort_DFS(int numNodes, int[][] edges) {
-    Map&lt;Integer, List&lt;Integer&gt;&gt; graph = new HashMap&lt;&gt;();
-    for (int i = 0; i &lt; numNodes; i++) {
+<span class="hljs-comment"># Java version</span>
+public <span class="hljs-type">List</span>&lt;Integer&gt; topologicalSort_DFS(<span class="hljs-built_in">int</span> numNodes, <span class="hljs-built_in">int</span>[][] edges) {
+    Map&lt;Integer, <span class="hljs-type">List</span>&lt;Integer&gt;&gt; graph = new HashMap&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; numNodes; i++) {
         graph.put(i, new ArrayList&lt;&gt;());
     }
-    for (int[] edge : edges) {
-        graph.get(edge[0]).add(edge[1]);
+    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span>[] edge : edges) {
+        graph.get(edge[<span class="hljs-number">0</span>]).add(edge[<span class="hljs-number">1</span>]);
     }
     
-    int[] color = new int[numNodes]; // 0: white, 1: gray, 2: black
-    List&lt;Integer&gt; result = new ArrayList&lt;&gt;();
+    <span class="hljs-built_in">int</span>[] color = new <span class="hljs-built_in">int</span>[numNodes]; // <span class="hljs-number">0</span>: white, <span class="hljs-number">1</span>: gray, <span class="hljs-number">2</span>: black
+    <span class="hljs-type">List</span>&lt;Integer&gt; result = new ArrayList&lt;&gt;();
     boolean[] hasCycle = {false};
     
-    for (int i = 0; i &lt; numNodes; i++) {
-        if (color[i] == 0) {
+    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; numNodes; i++) {
+        <span class="hljs-keyword">if</span> (color[i] == <span class="hljs-number">0</span>) {
             dfs(i, graph, color, result, hasCycle);
         }
     }
     
-    if (hasCycle[0]) return new ArrayList&lt;&gt;();
+    <span class="hljs-keyword">if</span> (hasCycle[<span class="hljs-number">0</span>]) <span class="hljs-keyword">return</span> new ArrayList&lt;&gt;();
     Collections.reverse(result);
-    return result;
+    <span class="hljs-keyword">return</span> result;
 }
 
-private void dfs(int node, Map&lt;Integer, List&lt;Integer&gt;&gt; graph, 
-                 int[] color, List&lt;Integer&gt; result, boolean[] hasCycle) {
-    if (color[node] == 1) {
-        hasCycle[0] = true;
-        return;
+private void dfs(<span class="hljs-built_in">int</span> node, Map&lt;Integer, <span class="hljs-type">List</span>&lt;Integer&gt;&gt; graph, 
+                 <span class="hljs-built_in">int</span>[] color, <span class="hljs-type">List</span>&lt;Integer&gt; result, boolean[] hasCycle) {
+    <span class="hljs-keyword">if</span> (color[node] == <span class="hljs-number">1</span>) {
+        hasCycle[<span class="hljs-number">0</span>] = true;
+        <span class="hljs-keyword">return</span>;
     }
-    if (color[node] == 2) return;
+    <span class="hljs-keyword">if</span> (color[node] == <span class="hljs-number">2</span>) <span class="hljs-keyword">return</span>;
     
-    color[node] = 1;
-    for (int neighbor : graph.get(node)) {
+    color[node] = <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> neighbor : graph.get(node)) {
         dfs(neighbor, graph, color, result, hasCycle);
     }
-    color[node] = 2;
+    color[node] = <span class="hljs-number">2</span>;
     result.add(node);
 }
 </code></pre>
 <h3 id="template-3-dfs-stack-based" tabindex="-1"><a class="header-anchor" href="#template-3-dfs-stack-based"><span>Template 3: DFS (Stack-based)</span></a></h3>
-<pre><code class="language-python"># V0
-# IDEA : implement topologicalSortUtil, topologicalSort, and addEdge methods
-# step 1) maintain a stack, save &quot;ordering&quot; nodes in it (and return in final step)
-# step 2) init visited as [False]*self.V  (all nodes are NOT visited yet)
-# step 3) iterate over all vertices in graph, if not visited, then run topologicalSortUtil
-# step 4) return result (stack)
-from collections import defaultdict
-class Graph:
-    def __init__(self, vertices):
-        self.graph = defaultdict(list)
-        self.V = vertices
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : implement topologicalSortUtil, topologicalSort, and addEdge methods</span>
+<span class="hljs-comment"># step 1) maintain a stack, save &quot;ordering&quot; nodes in it (and return in final step)</span>
+<span class="hljs-comment"># step 2) init visited as [False]*self.V  (all nodes are NOT visited yet)</span>
+<span class="hljs-comment"># step 3) iterate over all vertices in graph, if not visited, then run topologicalSortUtil</span>
+<span class="hljs-comment"># step 4) return result (stack)</span>
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Graph</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, vertices</span>):
+        <span class="hljs-variable language_">self</span>.graph = defaultdict(<span class="hljs-built_in">list</span>)
+        <span class="hljs-variable language_">self</span>.V = vertices
 
-    # for build graph
-    def addEdge(self, u, v):
-        self.graph[u].append(v)
+    <span class="hljs-comment"># for build graph</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">addEdge</span>(<span class="hljs-params">self, u, v</span>):
+        <span class="hljs-variable language_">self</span>.graph[u].append(v)
 
-    def topologicalSortUtil(self, v, visited, stack):
-        visited[v] = True
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">topologicalSortUtil</span>(<span class="hljs-params">self, v, visited, stack</span>):
+        visited[v] = <span class="hljs-literal">True</span>
 
-        ### NOTE this !!! (self.graph[v])
-        for k in self.graph[v]:
-            if visited[k] == False:
-                self.topologicalSortUtil(k, visited, stack)
-        # stack.insert(0,v) # instead of insert v to idx = 0, we can still append v to stack and reverse it and return (e.g. return stack[::-1])
-        &quot;&quot;&quot;
+        <span class="hljs-comment">### NOTE this !!! (self.graph[v])</span>
+        <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.graph[v]:
+            <span class="hljs-keyword">if</span> visited[k] == <span class="hljs-literal">False</span>:
+                <span class="hljs-variable language_">self</span>.topologicalSortUtil(k, visited, stack)
+        <span class="hljs-comment"># stack.insert(0,v) # instead of insert v to idx = 0, we can still append v to stack and reverse it and return (e.g. return stack[::-1])</span>
+        <span class="hljs-string">&quot;&quot;&quot;
         ### NOTE !! stack.append(v) is wrong, we SHOULD use  stack.insert(0,v)
-        &quot;&quot;&quot;
-        stack.insert(0,v)
+        &quot;&quot;&quot;</span>
+        stack.insert(<span class="hljs-number">0</span>,v)
 
-    def topologicalSort(self):
-        visited = [False] * self.V
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">topologicalSort</span>(<span class="hljs-params">self</span>):
+        visited = [<span class="hljs-literal">False</span>] * <span class="hljs-variable language_">self</span>.V
         stack = []
-        ### NOTE this !!! (range(self.V))
-        for v in range(self.V):
-            # call tologicalSortUtil only if visited[v] == False (the vertice is not visited yet)
-            if visited[v] == False:
-                self.topologicalSortUtil(v, visited, stack)
-        # return the result in inverse order
-        return stack[::-1]
+        <span class="hljs-comment">### NOTE this !!! (range(self.V))</span>
+        <span class="hljs-keyword">for</span> v <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-variable language_">self</span>.V):
+            <span class="hljs-comment"># call tologicalSortUtil only if visited[v] == False (the vertice is not visited yet)</span>
+            <span class="hljs-keyword">if</span> visited[v] == <span class="hljs-literal">False</span>:
+                <span class="hljs-variable language_">self</span>.topologicalSortUtil(v, visited, stack)
+        <span class="hljs-comment"># return the result in inverse order</span>
+        <span class="hljs-keyword">return</span> stack[::-<span class="hljs-number">1</span>]
 
-### TEST
-{&quot;A&quot;: 0, &quot;B&quot;:1, &quot;C&quot;:2, &quot;D&quot;: 3}
-v = 4
+<span class="hljs-comment">### TEST</span>
+{<span class="hljs-string">&quot;A&quot;</span>: <span class="hljs-number">0</span>, <span class="hljs-string">&quot;B&quot;</span>:<span class="hljs-number">1</span>, <span class="hljs-string">&quot;C&quot;</span>:<span class="hljs-number">2</span>, <span class="hljs-string">&quot;D&quot;</span>: <span class="hljs-number">3</span>}
+v = <span class="hljs-number">4</span>
 g = Graph(v)
-g.addEdge(0, 1)
-g.addEdge(0, 2)
-g.addEdge(2, 3)
-g.addEdge(3, 1)
+g.addEdge(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>)
+g.addEdge(<span class="hljs-number">0</span>, <span class="hljs-number">2</span>)
+g.addEdge(<span class="hljs-number">2</span>, <span class="hljs-number">3</span>)
+g.addEdge(<span class="hljs-number">3</span>, <span class="hljs-number">1</span>)
 
-print (g.graph)
+<span class="hljs-built_in">print</span> (g.graph)
 
-# ans should be TableB, TableD, TableC, TableA.
+<span class="hljs-comment"># ans should be TableB, TableD, TableC, TableA.</span>
 r = g.topologicalSort()
-print (r)
+<span class="hljs-built_in">print</span> (r)
 </code></pre>
 <h3 id="template-4-lexicographical-order" tabindex="-1"><a class="header-anchor" href="#template-4-lexicographical-order"><span>Template 4: Lexicographical Order</span></a></h3>
-<pre><code class="language-python">def topologicalSort_Lexicographical(numNodes, edges):
-    &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">topologicalSort_Lexicographical</span>(<span class="hljs-params">numNodes, edges</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
     Find smallest lexicographical topological order.
     Time: O((V + E) log V), Space: O(V)
-    &quot;&quot;&quot;
-    from collections import defaultdict
-    import heapq
+    &quot;&quot;&quot;</span>
+    <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
+    <span class="hljs-keyword">import</span> heapq
     
-    graph = defaultdict(list)
-    in_degree = [0] * numNodes
+    graph = defaultdict(<span class="hljs-built_in">list</span>)
+    in_degree = [<span class="hljs-number">0</span>] * numNodes
     
-    for u, v in edges:
+    <span class="hljs-keyword">for</span> u, v <span class="hljs-keyword">in</span> edges:
         graph[u].append(v)
-        in_degree[v] += 1
+        in_degree[v] += <span class="hljs-number">1</span>
     
-    # Use min-heap for smallest lexicographical order
-    heap = [i for i in range(numNodes) if in_degree[i] == 0]
+    <span class="hljs-comment"># Use min-heap for smallest lexicographical order</span>
+    heap = [i <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(numNodes) <span class="hljs-keyword">if</span> in_degree[i] == <span class="hljs-number">0</span>]
     heapq.heapify(heap)
     result = []
     
-    while heap:
+    <span class="hljs-keyword">while</span> heap:
         node = heapq.heappop(heap)
         result.append(node)
         
-        for neighbor in graph[node]:
-            in_degree[neighbor] -= 1
-            if in_degree[neighbor] == 0:
+        <span class="hljs-keyword">for</span> neighbor <span class="hljs-keyword">in</span> graph[node]:
+            in_degree[neighbor] -= <span class="hljs-number">1</span>
+            <span class="hljs-keyword">if</span> in_degree[neighbor] == <span class="hljs-number">0</span>:
                 heapq.heappush(heap, neighbor)
     
-    return result if len(result) == numNodes else []
+    <span class="hljs-keyword">return</span> result <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(result) == numNodes <span class="hljs-keyword">else</span> []
 
-# Java version
-public List&lt;Integer&gt; topologicalSort_Lexicographical(int numNodes, int[][] edges) {
-    Map&lt;Integer, List&lt;Integer&gt;&gt; graph = new HashMap&lt;&gt;();
-    int[] inDegree = new int[numNodes];
+<span class="hljs-comment"># Java version</span>
+public <span class="hljs-type">List</span>&lt;Integer&gt; topologicalSort_Lexicographical(<span class="hljs-built_in">int</span> numNodes, <span class="hljs-built_in">int</span>[][] edges) {
+    Map&lt;Integer, <span class="hljs-type">List</span>&lt;Integer&gt;&gt; graph = new HashMap&lt;&gt;();
+    <span class="hljs-built_in">int</span>[] inDegree = new <span class="hljs-built_in">int</span>[numNodes];
     
-    for (int i = 0; i &lt; numNodes; i++) {
+    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; numNodes; i++) {
         graph.put(i, new ArrayList&lt;&gt;());
     }
     
-    for (int[] edge : edges) {
-        graph.get(edge[0]).add(edge[1]);
-        inDegree[edge[1]]++;
+    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span>[] edge : edges) {
+        graph.get(edge[<span class="hljs-number">0</span>]).add(edge[<span class="hljs-number">1</span>]);
+        inDegree[edge[<span class="hljs-number">1</span>]]++;
     }
     
-    // Min-heap for lexicographical order
+    // Min-heap <span class="hljs-keyword">for</span> lexicographical order
     PriorityQueue&lt;Integer&gt; pq = new PriorityQueue&lt;&gt;();
-    for (int i = 0; i &lt; numNodes; i++) {
-        if (inDegree[i] == 0) pq.offer(i);
+    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; numNodes; i++) {
+        <span class="hljs-keyword">if</span> (inDegree[i] == <span class="hljs-number">0</span>) pq.offer(i);
     }
     
-    List&lt;Integer&gt; result = new ArrayList&lt;&gt;();
-    while (!pq.isEmpty()) {
-        int node = pq.poll();
+    <span class="hljs-type">List</span>&lt;Integer&gt; result = new ArrayList&lt;&gt;();
+    <span class="hljs-keyword">while</span> (!pq.isEmpty()) {
+        <span class="hljs-built_in">int</span> node = pq.poll();
         result.add(node);
         
-        for (int neighbor : graph.get(node)) {
-            if (--inDegree[neighbor] == 0) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> neighbor : graph.get(node)) {
+            <span class="hljs-keyword">if</span> (--inDegree[neighbor] == <span class="hljs-number">0</span>) {
                 pq.offer(neighbor);
             }
         }
     }
     
-    return result.size() == numNodes ? result : new ArrayList&lt;&gt;();
+    <span class="hljs-keyword">return</span> result.size() == numNodes ? result : new ArrayList&lt;&gt;();
 }
 </code></pre>
 <h3 id="template-5-all-topological-orders" tabindex="-1"><a class="header-anchor" href="#template-5-all-topological-orders"><span>Template 5: All Topological Orders</span></a></h3>
-<pre><code class="language-python">def allTopologicalSorts(graph, in_degree, path, result, visited):
-    &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">allTopologicalSorts</span>(<span class="hljs-params">graph, in_degree, path, result, visited</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
     Find all possible topological orderings.
     Time: O(V! × (V + E)), Space: O(V)
-    &quot;&quot;&quot;
-    if len(path) == len(graph):
+    &quot;&quot;&quot;</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(path) == <span class="hljs-built_in">len</span>(graph):
         result.append(path[:])
-        return
+        <span class="hljs-keyword">return</span>
     
-    for node in range(len(graph)):
-        if in_degree[node] == 0 and not visited[node]:
-            # Choose node
-            visited[node] = True
+    <span class="hljs-keyword">for</span> node <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(graph)):
+        <span class="hljs-keyword">if</span> in_degree[node] == <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> visited[node]:
+            <span class="hljs-comment"># Choose node</span>
+            visited[node] = <span class="hljs-literal">True</span>
             path.append(node)
             
-            # Update in-degrees
-            for neighbor in graph[node]:
-                in_degree[neighbor] -= 1
+            <span class="hljs-comment"># Update in-degrees</span>
+            <span class="hljs-keyword">for</span> neighbor <span class="hljs-keyword">in</span> graph[node]:
+                in_degree[neighbor] -= <span class="hljs-number">1</span>
             
-            # Recurse
+            <span class="hljs-comment"># Recurse</span>
             allTopologicalSorts(graph, in_degree, path, result, visited)
             
-            # Backtrack
-            for neighbor in graph[node]:
-                in_degree[neighbor] += 1
+            <span class="hljs-comment"># Backtrack</span>
+            <span class="hljs-keyword">for</span> neighbor <span class="hljs-keyword">in</span> graph[node]:
+                in_degree[neighbor] += <span class="hljs-number">1</span>
             path.pop()
-            visited[node] = False
+            visited[node] = <span class="hljs-literal">False</span>
 
-# Usage
-def findAllOrders(numNodes, edges):
-    from collections import defaultdict
+<span class="hljs-comment"># Usage</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">findAllOrders</span>(<span class="hljs-params">numNodes, edges</span>):
+    <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
     
-    graph = defaultdict(list)
-    in_degree = [0] * numNodes
+    graph = defaultdict(<span class="hljs-built_in">list</span>)
+    in_degree = [<span class="hljs-number">0</span>] * numNodes
     
-    for u, v in edges:
+    <span class="hljs-keyword">for</span> u, v <span class="hljs-keyword">in</span> edges:
         graph[u].append(v)
-        in_degree[v] += 1
+        in_degree[v] += <span class="hljs-number">1</span>
     
     result = []
-    visited = [False] * numNodes
+    visited = [<span class="hljs-literal">False</span>] * numNodes
     allTopologicalSorts(graph, in_degree, [], result, visited)
-    return result
+    <span class="hljs-keyword">return</span> result
 </code></pre>
 <h3 id="template-6-parallel-task-scheduling" tabindex="-1"><a class="header-anchor" href="#template-6-parallel-task-scheduling"><span>Template 6: Parallel Task Scheduling</span></a></h3>
-<pre><code class="language-python">def parallelTaskScheduling(numTasks, edges, times):
-    &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">parallelTaskScheduling</span>(<span class="hljs-params">numTasks, edges, times</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
     Find minimum time to complete all tasks with parallel execution.
     Time: O(V + E), Space: O(V)
-    &quot;&quot;&quot;
-    from collections import defaultdict, deque
+    &quot;&quot;&quot;</span>
+    <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict, deque
     
-    graph = defaultdict(list)
-    in_degree = [0] * numTasks
+    graph = defaultdict(<span class="hljs-built_in">list</span>)
+    in_degree = [<span class="hljs-number">0</span>] * numTasks
     
-    for u, v in edges:
+    <span class="hljs-keyword">for</span> u, v <span class="hljs-keyword">in</span> edges:
         graph[u].append(v)
-        in_degree[v] += 1
+        in_degree[v] += <span class="hljs-number">1</span>
     
-    # Track completion time for each task
-    completion_time = [0] * numTasks
+    <span class="hljs-comment"># Track completion time for each task</span>
+    completion_time = [<span class="hljs-number">0</span>] * numTasks
     queue = deque()
     
-    # Initialize with tasks having no dependencies
-    for i in range(numTasks):
-        if in_degree[i] == 0:
+    <span class="hljs-comment"># Initialize with tasks having no dependencies</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(numTasks):
+        <span class="hljs-keyword">if</span> in_degree[i] == <span class="hljs-number">0</span>:
             queue.append(i)
             completion_time[i] = times[i]
     
-    while queue:
+    <span class="hljs-keyword">while</span> queue:
         task = queue.popleft()
         
-        for next_task in graph[task]:
-            # Update completion time
-            completion_time[next_task] = max(
+        <span class="hljs-keyword">for</span> next_task <span class="hljs-keyword">in</span> graph[task]:
+            <span class="hljs-comment"># Update completion time</span>
+            completion_time[next_task] = <span class="hljs-built_in">max</span>(
                 completion_time[next_task],
                 completion_time[task] + times[next_task]
             )
             
-            in_degree[next_task] -= 1
-            if in_degree[next_task] == 0:
+            in_degree[next_task] -= <span class="hljs-number">1</span>
+            <span class="hljs-keyword">if</span> in_degree[next_task] == <span class="hljs-number">0</span>:
                 queue.append(next_task)
     
-    return max(completion_time)
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">max</span>(completion_time)
 
-# Java version
-public int parallelTaskScheduling(int numTasks, int[][] edges, int[] times) {
-    Map&lt;Integer, List&lt;Integer&gt;&gt; graph = new HashMap&lt;&gt;();
-    int[] inDegree = new int[numTasks];
-    int[] completionTime = new int[numTasks];
+<span class="hljs-comment"># Java version</span>
+public <span class="hljs-built_in">int</span> parallelTaskScheduling(<span class="hljs-built_in">int</span> numTasks, <span class="hljs-built_in">int</span>[][] edges, <span class="hljs-built_in">int</span>[] times) {
+    Map&lt;Integer, <span class="hljs-type">List</span>&lt;Integer&gt;&gt; graph = new HashMap&lt;&gt;();
+    <span class="hljs-built_in">int</span>[] inDegree = new <span class="hljs-built_in">int</span>[numTasks];
+    <span class="hljs-built_in">int</span>[] completionTime = new <span class="hljs-built_in">int</span>[numTasks];
     
-    for (int i = 0; i &lt; numTasks; i++) {
+    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; numTasks; i++) {
         graph.put(i, new ArrayList&lt;&gt;());
     }
     
-    for (int[] edge : edges) {
-        graph.get(edge[0]).add(edge[1]);
-        inDegree[edge[1]]++;
+    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span>[] edge : edges) {
+        graph.get(edge[<span class="hljs-number">0</span>]).add(edge[<span class="hljs-number">1</span>]);
+        inDegree[edge[<span class="hljs-number">1</span>]]++;
     }
     
     Queue&lt;Integer&gt; queue = new LinkedList&lt;&gt;();
-    for (int i = 0; i &lt; numTasks; i++) {
-        if (inDegree[i] == 0) {
+    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; numTasks; i++) {
+        <span class="hljs-keyword">if</span> (inDegree[i] == <span class="hljs-number">0</span>) {
             queue.offer(i);
             completionTime[i] = times[i];
         }
     }
     
-    while (!queue.isEmpty()) {
-        int task = queue.poll();
+    <span class="hljs-keyword">while</span> (!queue.isEmpty()) {
+        <span class="hljs-built_in">int</span> task = queue.poll();
         
-        for (int nextTask : graph.get(task)) {
-            completionTime[nextTask] = Math.max(
+        <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> nextTask : graph.get(task)) {
+            completionTime[nextTask] = Math.<span class="hljs-built_in">max</span>(
                 completionTime[nextTask],
                 completionTime[task] + times[nextTask]
             );
             
-            if (--inDegree[nextTask] == 0) {
+            <span class="hljs-keyword">if</span> (--inDegree[nextTask] == <span class="hljs-number">0</span>) {
                 queue.offer(nextTask);
             }
         }
     }
     
-    int maxTime = 0;
-    for (int time : completionTime) {
-        maxTime = Math.max(maxTime, time);
+    <span class="hljs-built_in">int</span> maxTime = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> time : completionTime) {
+        maxTime = Math.<span class="hljs-built_in">max</span>(maxTime, time);
     }
-    return maxTime;
+    <span class="hljs-keyword">return</span> maxTime;
 }
 </code></pre>
 <h3 id="template-7-tree-centroid-finding-leaf-trimming-for-undirected-trees" tabindex="-1"><a class="header-anchor" href="#template-7-tree-centroid-finding-leaf-trimming-for-undirected-trees"><span>Template 7: Tree Centroid Finding (Leaf Trimming for Undirected Trees)</span></a></h3>
-<pre><code class="language-python">def findMinHeightTrees(n, edges):
-    &quot;&quot;&quot;
-    Find tree centroids using leaf trimming (similar to Kahn's Algorithm for undirected trees).
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">findMinHeightTrees</span>(<span class="hljs-params">n, edges</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
+    Find tree centroids using leaf trimming (similar to Kahn&#x27;s Algorithm for undirected trees).
     Time: O(V + E), Space: O(V)
 
     Key Insight:
@@ -649,169 +661,169 @@ public int parallelTaskScheduling(int numTasks, int[][] edges, int[] times) {
     - Remove leaves layer by layer until 1-2 nodes remain
     - These remaining nodes are the centroids (MHT roots)
     - Different from standard topological sort: works on undirected trees, not DAGs
-    &quot;&quot;&quot;
-    from collections import deque
+    &quot;&quot;&quot;</span>
+    <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
 
-    # Edge case: single node
-    if n == 1:
-        return [0]
+    <span class="hljs-comment"># Edge case: single node</span>
+    <span class="hljs-keyword">if</span> n == <span class="hljs-number">1</span>:
+        <span class="hljs-keyword">return</span> [<span class="hljs-number">0</span>]
 
-    # Build adjacency list and track degrees
-    graph = [[] for _ in range(n)]
-    degree = [0] * n
+    <span class="hljs-comment"># Build adjacency list and track degrees</span>
+    graph = [[] <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)]
+    degree = [<span class="hljs-number">0</span>] * n
 
-    for u, v in edges:
+    <span class="hljs-keyword">for</span> u, v <span class="hljs-keyword">in</span> edges:
         graph[u].append(v)
         graph[v].append(u)
-        degree[u] += 1
-        degree[v] += 1
+        degree[u] += <span class="hljs-number">1</span>
+        degree[v] += <span class="hljs-number">1</span>
 
-    # Initialize queue with all leaf nodes (degree = 1)
-    leaves = deque([i for i in range(n) if degree[i] == 1])
+    <span class="hljs-comment"># Initialize queue with all leaf nodes (degree = 1)</span>
+    leaves = deque([i <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n) <span class="hljs-keyword">if</span> degree[i] == <span class="hljs-number">1</span>])
 
-    # Trim leaves layer by layer
+    <span class="hljs-comment"># Trim leaves layer by layer</span>
     remaining = n
-    while remaining &gt; 2:
-        leaf_count = len(leaves)
+    <span class="hljs-keyword">while</span> remaining &gt; <span class="hljs-number">2</span>:
+        leaf_count = <span class="hljs-built_in">len</span>(leaves)
         remaining -= leaf_count
 
-        for _ in range(leaf_count):
+        <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(leaf_count):
             leaf = leaves.popleft()
 
-            # Process neighbors of current leaf
-            for neighbor in graph[leaf]:
-                degree[neighbor] -= 1
-                # If neighbor becomes a leaf, add to queue
-                if degree[neighbor] == 1:
+            <span class="hljs-comment"># Process neighbors of current leaf</span>
+            <span class="hljs-keyword">for</span> neighbor <span class="hljs-keyword">in</span> graph[leaf]:
+                degree[neighbor] -= <span class="hljs-number">1</span>
+                <span class="hljs-comment"># If neighbor becomes a leaf, add to queue</span>
+                <span class="hljs-keyword">if</span> degree[neighbor] == <span class="hljs-number">1</span>:
                     leaves.append(neighbor)
 
-    # The remaining nodes (1 or 2) are the centroids
-    return list(leaves)
+    <span class="hljs-comment"># The remaining nodes (1 or 2) are the centroids</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">list</span>(leaves)
 
-# Java version
-public List&lt;Integer&gt; findMinHeightTrees(int n, int[][] edges) {
-    // Edge case: single node
-    if (n == 1) {
-        return Collections.singletonList(0);
+<span class="hljs-comment"># Java version</span>
+public <span class="hljs-type">List</span>&lt;Integer&gt; findMinHeightTrees(<span class="hljs-built_in">int</span> n, <span class="hljs-built_in">int</span>[][] edges) {
+    // Edge <span class="hljs-keyword">case</span>: single node
+    <span class="hljs-keyword">if</span> (n == <span class="hljs-number">1</span>) {
+        <span class="hljs-keyword">return</span> Collections.singletonList(<span class="hljs-number">0</span>);
     }
 
-    // Build adjacency list and track degrees
-    List&lt;List&lt;Integer&gt;&gt; graph = new ArrayList&lt;&gt;();
-    for (int i = 0; i &lt; n; i++) {
+    // Build adjacency <span class="hljs-built_in">list</span> <span class="hljs-keyword">and</span> track degrees
+    <span class="hljs-type">List</span>&lt;<span class="hljs-type">List</span>&lt;Integer&gt;&gt; graph = new ArrayList&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
         graph.add(new ArrayList&lt;&gt;());
     }
 
-    int[] degree = new int[n];
+    <span class="hljs-built_in">int</span>[] degree = new <span class="hljs-built_in">int</span>[n];
 
-    for (int[] edge : edges) {
-        int u = edge[0], v = edge[1];
+    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span>[] edge : edges) {
+        <span class="hljs-built_in">int</span> u = edge[<span class="hljs-number">0</span>], v = edge[<span class="hljs-number">1</span>];
         graph.get(u).add(v);
         graph.get(v).add(u);
         degree[u]++;
         degree[v]++;
     }
 
-    // Initialize queue with all leaf nodes (degree = 1)
+    // Initialize queue <span class="hljs-keyword">with</span> <span class="hljs-built_in">all</span> leaf nodes (degree = <span class="hljs-number">1</span>)
     Queue&lt;Integer&gt; leaves = new LinkedList&lt;&gt;();
-    for (int i = 0; i &lt; n; i++) {
-        if (degree[i] == 1) {
+    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-keyword">if</span> (degree[i] == <span class="hljs-number">1</span>) {
             leaves.offer(i);
         }
     }
 
     // Trim leaves layer by layer
-    int remaining = n;
-    while (remaining &gt; 2) {
-        int leafCount = leaves.size();
+    <span class="hljs-built_in">int</span> remaining = n;
+    <span class="hljs-keyword">while</span> (remaining &gt; <span class="hljs-number">2</span>) {
+        <span class="hljs-built_in">int</span> leafCount = leaves.size();
         remaining -= leafCount;
 
-        for (int i = 0; i &lt; leafCount; i++) {
-            int leaf = leaves.poll();
+        <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; leafCount; i++) {
+            <span class="hljs-built_in">int</span> leaf = leaves.poll();
 
             // Process neighbors of current leaf
-            for (int neighbor : graph.get(leaf)) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> neighbor : graph.get(leaf)) {
                 degree[neighbor]--;
                 // If neighbor becomes a leaf, add to queue
-                if (degree[neighbor] == 1) {
+                <span class="hljs-keyword">if</span> (degree[neighbor] == <span class="hljs-number">1</span>) {
                     leaves.offer(neighbor);
                 }
             }
         }
     }
 
-    // The remaining nodes (1 or 2) are the centroids
-    return new ArrayList&lt;&gt;(leaves);
+    // The remaining nodes (<span class="hljs-number">1</span> <span class="hljs-keyword">or</span> <span class="hljs-number">2</span>) are the centroids
+    <span class="hljs-keyword">return</span> new ArrayList&lt;&gt;(leaves);
 }
 </code></pre>
 <h3 id="template-8-union-find-connected-components" tabindex="-1"><a class="header-anchor" href="#template-8-union-find-connected-components"><span>Template 8: Union Find (Connected Components)</span></a></h3>
-<pre><code class="language-python">class UnionFind:
-    &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">UnionFind</span>:
+    <span class="hljs-string">&quot;&quot;&quot;
     Union Find with path compression and union by rank.
     Time: O(α(N)) per operation (nearly O(1)), Space: O(N)
-    &quot;&quot;&quot;
-    def __init__(self, n):
-        self.parent = list(range(n))
-        self.rank = [0] * n
-        self.count = n  # number of connected components
+    &quot;&quot;&quot;</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, n</span>):
+        <span class="hljs-variable language_">self</span>.parent = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">range</span>(n))
+        <span class="hljs-variable language_">self</span>.rank = [<span class="hljs-number">0</span>] * n
+        <span class="hljs-variable language_">self</span>.count = n  <span class="hljs-comment"># number of connected components</span>
 
-    def find(self, x):
-        if self.parent[x] != x:
-            self.parent[x] = self.find(self.parent[x])  # path compression
-        return self.parent[x]
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">find</span>(<span class="hljs-params">self, x</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.parent[x] != x:
+            <span class="hljs-variable language_">self</span>.parent[x] = <span class="hljs-variable language_">self</span>.find(<span class="hljs-variable language_">self</span>.parent[x])  <span class="hljs-comment"># path compression</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.parent[x]
 
-    def union(self, x, y):
-        px, py = self.find(x), self.find(y)
-        if px == py:
-            return
-        # union by rank
-        if self.rank[px] &lt; self.rank[py]:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">union</span>(<span class="hljs-params">self, x, y</span>):
+        px, py = <span class="hljs-variable language_">self</span>.find(x), <span class="hljs-variable language_">self</span>.find(y)
+        <span class="hljs-keyword">if</span> px == py:
+            <span class="hljs-keyword">return</span>
+        <span class="hljs-comment"># union by rank</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.rank[px] &lt; <span class="hljs-variable language_">self</span>.rank[py]:
             px, py = py, px
-        self.parent[py] = px
-        if self.rank[px] == self.rank[py]:
-            self.rank[px] += 1
-        self.count -= 1
+        <span class="hljs-variable language_">self</span>.parent[py] = px
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.rank[px] == <span class="hljs-variable language_">self</span>.rank[py]:
+            <span class="hljs-variable language_">self</span>.rank[px] += <span class="hljs-number">1</span>
+        <span class="hljs-variable language_">self</span>.count -= <span class="hljs-number">1</span>
 
-# Usage: LC 547 Number of Provinces
-def findCircleNum(isConnected):
-    n = len(isConnected)
+<span class="hljs-comment"># Usage: LC 547 Number of Provinces</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">findCircleNum</span>(<span class="hljs-params">isConnected</span>):
+    n = <span class="hljs-built_in">len</span>(isConnected)
     uf = UnionFind(n)
-    for i in range(n):
-        for j in range(i + 1, n):
-            if isConnected[i][j] == 1:
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(i + <span class="hljs-number">1</span>, n):
+            <span class="hljs-keyword">if</span> isConnected[i][j] == <span class="hljs-number">1</span>:
                 uf.union(i, j)
-    return uf.count
+    <span class="hljs-keyword">return</span> uf.count
 
-# Java version
-class UnionFind {
-    int[] parent;
-    int[] rank;
-    int count;
+<span class="hljs-comment"># Java version</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">UnionFind</span> {
+    <span class="hljs-built_in">int</span>[] parent;
+    <span class="hljs-built_in">int</span>[] rank;
+    <span class="hljs-built_in">int</span> count;
 
-    UnionFind(int n) {
-        parent = new int[n];
-        rank = new int[n];
+    UnionFind(<span class="hljs-built_in">int</span> n) {
+        parent = new <span class="hljs-built_in">int</span>[n];
+        rank = new <span class="hljs-built_in">int</span>[n];
         count = n;
-        for (int i = 0; i &lt; n; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
             parent[i] = i;
         }
     }
 
-    int find(int x) {
-        if (parent[x] != x) {
+    <span class="hljs-built_in">int</span> find(<span class="hljs-built_in">int</span> x) {
+        <span class="hljs-keyword">if</span> (parent[x] != x) {
             parent[x] = find(parent[x]); // path compression
         }
-        return parent[x];
+        <span class="hljs-keyword">return</span> parent[x];
     }
 
-    void union(int x, int y) {
-        int px = find(x), py = find(y);
-        if (px == py) return;
+    void union(<span class="hljs-built_in">int</span> x, <span class="hljs-built_in">int</span> y) {
+        <span class="hljs-built_in">int</span> px = find(x), py = find(y);
+        <span class="hljs-keyword">if</span> (px == py) <span class="hljs-keyword">return</span>;
         // union by rank
-        if (rank[px] &lt; rank[py]) {
+        <span class="hljs-keyword">if</span> (rank[px] &lt; rank[py]) {
             parent[px] = py;
-        } else if (rank[px] &gt; rank[py]) {
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (rank[px] &gt; rank[py]) {
             parent[py] = px;
-        } else {
+        } <span class="hljs-keyword">else</span> {
             parent[py] = px;
             rank[px]++;
         }
@@ -819,18 +831,18 @@ class UnionFind {
     }
 }
 
-// Usage: LC 547 Number of Provinces
-public int findCircleNum(int[][] isConnected) {
-    int n = isConnected.length;
+// Usage: LC <span class="hljs-number">547</span> Number of Provinces
+public <span class="hljs-built_in">int</span> findCircleNum(<span class="hljs-built_in">int</span>[][] isConnected) {
+    <span class="hljs-built_in">int</span> n = isConnected.length;
     UnionFind uf = new UnionFind(n);
-    for (int i = 0; i &lt; n; i++) {
-        for (int j = i + 1; j &lt; n; j++) {
-            if (isConnected[i][j] == 1) {
+    <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> i = <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-built_in">int</span> j = i + <span class="hljs-number">1</span>; j &lt; n; j++) {
+            <span class="hljs-keyword">if</span> (isConnected[i][j] == <span class="hljs-number">1</span>) {
                 uf.union(i, j);
             }
         }
     }
-    return uf.count;
+    <span class="hljs-keyword">return</span> uf.count;
 }
 </code></pre>
 <h2 id="problem-classification" tabindex="-1"><a class="header-anchor" href="#problem-classification"><span>Problem Classification</span></a></h2>
@@ -1187,7 +1199,7 @@ public int findCircleNum(int[][] isConnected) {
 </tbody>
 </table>
 <h2 id="decision-framework" tabindex="-1"><a class="header-anchor" href="#decision-framework"><span>Decision Framework</span></a></h2>
-<pre><code>START: Topological Sort Problem
+<pre><code class="hljs">START: Topological Sort Problem
 │
 ├── Working with undirected tree?
 │   │
@@ -1233,671 +1245,671 @@ public int findCircleNum(int[][] isConnected) {
 </code></pre>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
 <h3 id="2-2-course-schedule-ii" tabindex="-1"><a class="header-anchor" href="#2-2-course-schedule-ii"><span>2-2) Course Schedule II</span></a></h3>
-<pre><code class="language-java">// java
-// LC 210
-// ref: leetcode_java/src/main/java/LeetCodeJava/BFS/CourseSchedule2.java
-public class CourseSchedule2 {
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 210</span>
+<span class="hljs-comment">// ref: leetcode_java/src/main/java/LeetCodeJava/BFS/CourseSchedule2.java</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CourseSchedule2</span> {
 
-    // V0
-    // IDEA : BFS Kahn's Algorithm with followingMap (pre -&gt; next map)
-    // NOTE: With followingMap (Kahn's), we DO NOT need to reverse.
-    //       The order is already correct (starts with 0-dependency courses).
-    /**
+    <span class="hljs-comment">// V0</span>
+    <span class="hljs-comment">// IDEA : BFS Kahn&#x27;s Algorithm with followingMap (pre -&gt; next map)</span>
+    <span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> With followingMap (Kahn&#x27;s), we DO NOT need to reverse.</span>
+    <span class="hljs-comment">//       The order is already correct (starts with 0-dependency courses).</span>
+    <span class="hljs-comment">/**
      * time = O(V + E)
      * space = O(V + E)
-     */
-    public int[] findOrder(int numCourses, int[][] prerequisites) {
-        if (numCourses == 0) {
-            return null;
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] findOrder(<span class="hljs-type">int</span> numCourses, <span class="hljs-type">int</span>[][] prerequisites) {
+        <span class="hljs-keyword">if</span> (numCourses == <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
         }
-        if (numCourses == 1) {
-            return new int[] { 0 };
+        <span class="hljs-keyword">if</span> (numCourses == <span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[] { <span class="hljs-number">0</span> };
         }
 
-        /**
+        <span class="hljs-comment">/**
          *  map : {pre_course : [next_course_1, next_course_2, ...] }
          *  key is pre_course, value is the list of next-courses
-         */
-        Map&lt;Integer, List&lt;Integer&gt;&gt; followingMap = new HashMap&lt;&gt;();
-        int[] degrees = new int[numCourses];
+         */</span>
+        Map&lt;Integer, List&lt;Integer&gt;&gt; followingMap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+        <span class="hljs-type">int</span>[] degrees = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[numCourses];
 
-        for (int[] p : prerequisites) {
-            int cur = p[0];   // next course (depends on prev)
-            int prev = p[1];  // prerequisite course
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] p : prerequisites) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> p[<span class="hljs-number">0</span>];   <span class="hljs-comment">// next course (depends on prev)</span>
+            <span class="hljs-type">int</span> <span class="hljs-variable">prev</span> <span class="hljs-operator">=</span> p[<span class="hljs-number">1</span>];  <span class="hljs-comment">// prerequisite course</span>
 
-            // Build graph: prev -&gt; [next courses]
-            if (!followingMap.containsKey(prev)) {
-                followingMap.put(prev, new ArrayList&lt;&gt;());
+            <span class="hljs-comment">// Build graph: prev -&gt; [next courses]</span>
+            <span class="hljs-keyword">if</span> (!followingMap.containsKey(prev)) {
+                followingMap.put(prev, <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;());
             }
             followingMap.get(prev).add(cur);
 
-            // Update in-degree for the next course
-            degrees[cur] += 1;
+            <span class="hljs-comment">// Update in-degree for the next course</span>
+            degrees[cur] += <span class="hljs-number">1</span>;
         }
 
-        Queue&lt;Integer&gt; q = new LinkedList&lt;&gt;();
-        List&lt;Integer&gt; collected = new ArrayList&lt;&gt;();
+        Queue&lt;Integer&gt; q = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+        List&lt;Integer&gt; collected = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
 
-        // Add all courses with 0 in-degree to queue
-        for (int i = 0; i &lt; degrees.length; i++) {
-            if (degrees[i] == 0) {
+        <span class="hljs-comment">// Add all courses with 0 in-degree to queue</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; degrees.length; i++) {
+            <span class="hljs-keyword">if</span> (degrees[i] == <span class="hljs-number">0</span>) {
                 q.add(i);
             }
         }
 
-        while (!q.isEmpty()) {
-            int cur = q.poll();
-            collected.add(cur); // Add to result right after pop
+        <span class="hljs-keyword">while</span> (!q.isEmpty()) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> q.poll();
+            collected.add(cur); <span class="hljs-comment">// Add to result right after pop</span>
 
-            if (followingMap.containsKey(cur)) {
-                for (int next : followingMap.get(cur)) {
-                    degrees[next] -= 1;
-                    if (degrees[next] == 0) {
+            <span class="hljs-keyword">if</span> (followingMap.containsKey(cur)) {
+                <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> next : followingMap.get(cur)) {
+                    degrees[next] -= <span class="hljs-number">1</span>;
+                    <span class="hljs-keyword">if</span> (degrees[next] == <span class="hljs-number">0</span>) {
                         q.add(next);
                     }
                 }
             }
         }
 
-        // Cycle check: if not all courses collected, cycle exists
-        if (collected.size() != numCourses) {
-            return new int[]{};
+        <span class="hljs-comment">// Cycle check: if not all courses collected, cycle exists</span>
+        <span class="hljs-keyword">if</span> (collected.size() != numCourses) {
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{};
         }
 
-        // NO need to reverse with followingMap approach
-        int[] res = new int[collected.size()];
-        for (int i = 0; i &lt; collected.size(); i++) {
+        <span class="hljs-comment">// NO need to reverse with followingMap approach</span>
+        <span class="hljs-type">int</span>[] res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[collected.size()];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; collected.size(); i++) {
             res[i] = collected.get(i);
         }
-        return res;
+        <span class="hljs-keyword">return</span> res;
     }
 
-    // V1
-    // IDEA: DFS Cycle Detection
-    /**
+    <span class="hljs-comment">// V1</span>
+    <span class="hljs-comment">// IDEA: DFS Cycle Detection</span>
+    <span class="hljs-comment">/**
      * time = O(V + E)
      * space = O(V + E)
-     */
-    public int[] findOrder_1_1(int numCourses, int[][] prerequisites) {
-        Map&lt;Integer, List&lt;Integer&gt;&gt; prereq = new HashMap&lt;&gt;();
-        for (int[] pair : prerequisites) {
-            prereq.computeIfAbsent(pair[0],
-                    k -&gt; new ArrayList&lt;&gt;()).add(pair[1]);
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] findOrder_1_1(<span class="hljs-type">int</span> numCourses, <span class="hljs-type">int</span>[][] prerequisites) {
+        Map&lt;Integer, List&lt;Integer&gt;&gt; prereq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] pair : prerequisites) {
+            prereq.computeIfAbsent(pair[<span class="hljs-number">0</span>],
+                    k -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;()).add(pair[<span class="hljs-number">1</span>]);
         }
 
-        List&lt;Integer&gt; output = new ArrayList&lt;&gt;();
-        Set&lt;Integer&gt; visit = new HashSet&lt;&gt;();
-        Set&lt;Integer&gt; cycle = new HashSet&lt;&gt;();
+        List&lt;Integer&gt; output = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+        Set&lt;Integer&gt; visit = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
+        Set&lt;Integer&gt; cycle = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
 
-        for (int course = 0; course &lt; numCourses; course++) {
-            if (!dfs(course, prereq, visit, cycle, output)) {
-                return new int[0];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">course</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; course &lt; numCourses; course++) {
+            <span class="hljs-keyword">if</span> (!dfs(course, prereq, visit, cycle, output)) {
+                <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">0</span>];
             }
         }
 
-        int[] result = new int[numCourses];
-        for (int i = 0; i &lt; numCourses; i++) {
+        <span class="hljs-type">int</span>[] result = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[numCourses];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; numCourses; i++) {
             result[i] = output.get(i);
         }
-        return result;
+        <span class="hljs-keyword">return</span> result;
     }
 
-    private boolean dfs(int course, Map&lt;Integer, List&lt;Integer&gt;&gt; prereq,
+    <span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> course, Map&lt;Integer, List&lt;Integer&gt;&gt; prereq,
                         Set&lt;Integer&gt; visit, Set&lt;Integer&gt; cycle,
-                        List&lt;Integer&gt; output) {
-        if (cycle.contains(course)) return false;  // cycle detected
-        if (visit.contains(course)) return true;    // already processed
+                        List&lt;Integer&gt; output)</span> {
+        <span class="hljs-keyword">if</span> (cycle.contains(course)) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;  <span class="hljs-comment">// cycle detected</span>
+        <span class="hljs-keyword">if</span> (visit.contains(course)) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;    <span class="hljs-comment">// already processed</span>
 
         cycle.add(course);
-        for (int pre : prereq.getOrDefault(course, Collections.emptyList())) {
-            if (!dfs(pre, prereq, visit, cycle, output)) {
-                return false;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> pre : prereq.getOrDefault(course, Collections.emptyList())) {
+            <span class="hljs-keyword">if</span> (!dfs(pre, prereq, visit, cycle, output)) {
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
             }
         }
         cycle.remove(course);
         visit.add(course);
         output.add(course);
-        return true;
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
     }
 }
 </code></pre>
-<pre><code class="language-python"># LC 210 Course Schedule II
-# V0
-# IDEA : DFS + topological sort
-# SAME dfs logic as LC 207 (Course Schedule)
-from collections import defaultdict
-class Solution(object):
-    def findOrder(self, numCourses, prerequisites):
-        # edge case
-        if not prerequisites:
-            return [x for x in range(numCourses)]
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 210 Course Schedule II</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : DFS + topological sort</span>
+<span class="hljs-comment"># SAME dfs logic as LC 207 (Course Schedule)</span>
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">findOrder</span>(<span class="hljs-params">self, numCourses, prerequisites</span>):
+        <span class="hljs-comment"># edge case</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> prerequisites:
+            <span class="hljs-keyword">return</span> [x <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(numCourses)]
         
-        # help func : dfs
-        # 3 cases :  0 : unknown, 1 :visiting, 2 : visited   
-        def dfs(idx, visited, g, res):
-            if visited[idx] == 1:
-                return False
-            # NOTE !!! if visited[idx] == 2, means already visited, return True directly (and check next idx in range(numCourses))
-            if visited[idx] == 2:
-                return True
-            visited[idx] = 1
-            &quot;&quot;&quot;
+        <span class="hljs-comment"># help func : dfs</span>
+        <span class="hljs-comment"># 3 cases :  0 : unknown, 1 :visiting, 2 : visited   </span>
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">idx, visited, g, res</span>):
+            <span class="hljs-keyword">if</span> visited[idx] == <span class="hljs-number">1</span>:
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+            <span class="hljs-comment"># NOTE !!! if visited[idx] == 2, means already visited, return True directly (and check next idx in range(numCourses))</span>
+            <span class="hljs-keyword">if</span> visited[idx] == <span class="hljs-number">2</span>:
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+            visited[idx] = <span class="hljs-number">1</span>
+            <span class="hljs-string">&quot;&quot;&quot;
             NOTE this !!!
 
                 1) for j in g[idx] (but not for i in range(numCourses))
                 2) go through idx in g[idx]
-            &quot;&quot;&quot;
-            for j in g[idx]:
-                if not dfs(j, visited, g, res):
-                    return False
-            &quot;&quot;&quot;
-            don't forget to make idx as visited (visited[idx] = 2)
-            &quot;&quot;&quot;
-            visited[idx] = 2
-            &quot;&quot;&quot;
+            &quot;&quot;&quot;</span>
+            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> g[idx]:
+                <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> dfs(j, visited, g, res):
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+            <span class="hljs-string">&quot;&quot;&quot;
+            don&#x27;t forget to make idx as visited (visited[idx] = 2)
+            &quot;&quot;&quot;</span>
+            visited[idx] = <span class="hljs-number">2</span>
+            <span class="hljs-string">&quot;&quot;&quot;
             NOTE : the main difference between LC 207, 210
 
             -&gt; we append idx to res (our ans)
-            &quot;&quot;&quot;
+            &quot;&quot;&quot;</span>
             res.append(idx)
-            return True
-        # init
-        visited = [0] * numCourses
-        # build grath
-        g = defaultdict(list)
-        for p in prerequisites:
-            g[p[0]].append(p[1])
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+        <span class="hljs-comment"># init</span>
+        visited = [<span class="hljs-number">0</span>] * numCourses
+        <span class="hljs-comment"># build grath</span>
+        g = defaultdict(<span class="hljs-built_in">list</span>)
+        <span class="hljs-keyword">for</span> p <span class="hljs-keyword">in</span> prerequisites:
+            g[p[<span class="hljs-number">0</span>]].append(p[<span class="hljs-number">1</span>])
         res = []
-        &quot;&quot;&quot;
+        <span class="hljs-string">&quot;&quot;&quot;
         NOTE :  go through idx in numCourses (for idx in range(numCourses))
-        &quot;&quot;&quot;
-        for idx in range(numCourses):
-            if not dfs(idx, visited, g, res):
-                return []
-        return res
+        &quot;&quot;&quot;</span>
+        <span class="hljs-keyword">for</span> idx <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(numCourses):
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> dfs(idx, visited, g, res):
+                <span class="hljs-keyword">return</span> []
+        <span class="hljs-keyword">return</span> res
 
-# V0'
-# IDEA : DFS + topological sort
-# SAME dfs logic as LC 207 (Course Schedule)
-import collections
-class Solution:
-    def findOrder(self, numCourses, prerequisites):
-        # build graph
-        _graph = collections.defaultdict(list)
-        for i in range(len(prerequisites)):
-            _graph[prerequisites[i][0]].append(prerequisites[i][1])
+<span class="hljs-comment"># V0&#x27;</span>
+<span class="hljs-comment"># IDEA : DFS + topological sort</span>
+<span class="hljs-comment"># SAME dfs logic as LC 207 (Course Schedule)</span>
+<span class="hljs-keyword">import</span> collections
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">findOrder</span>(<span class="hljs-params">self, numCourses, prerequisites</span>):
+        <span class="hljs-comment"># build graph</span>
+        _graph = collections.defaultdict(<span class="hljs-built_in">list</span>)
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(prerequisites)):
+            _graph[prerequisites[i][<span class="hljs-number">0</span>]].append(prerequisites[i][<span class="hljs-number">1</span>])
 
-        visited = [0] * numCourses
+        visited = [<span class="hljs-number">0</span>] * numCourses
         res = []
-        for i in range(numCourses):
-            if not self.dfs(_graph, visited, i, res):
-                return []
-        print (&quot;res = &quot; + str(res))
-        return res
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(numCourses):
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-variable language_">self</span>.dfs(_graph, visited, i, res):
+                <span class="hljs-keyword">return</span> []
+        <span class="hljs-built_in">print</span> (<span class="hljs-string">&quot;res = &quot;</span> + <span class="hljs-built_in">str</span>(res))
+        <span class="hljs-keyword">return</span> res
 
-    # 0 : unknown, 1 :visiting, 2 : visited    
-    def dfs(self, _graph, visited, i, res):
-        if visited[i] == 1:
-            return False
-        if visited[i] == 2:
-            return True
-        visited[i] = 1
-        for item in _graph[i]:
-            if not self.dfs(_graph, visited, item, res):
-                return False
-        visited[i] = 2
+    <span class="hljs-comment"># 0 : unknown, 1 :visiting, 2 : visited    </span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">self, _graph, visited, i, res</span>):
+        <span class="hljs-keyword">if</span> visited[i] == <span class="hljs-number">1</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        <span class="hljs-keyword">if</span> visited[i] == <span class="hljs-number">2</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+        visited[i] = <span class="hljs-number">1</span>
+        <span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> _graph[i]:
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-variable language_">self</span>.dfs(_graph, visited, item, res):
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        visited[i] = <span class="hljs-number">2</span>
         res.append(i)
-        return True
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 
-# V0'
-# IDEA : DFS + topological sort
-# SAME dfs logic as LC 207 (Course Schedule)
-class Solution(object):
-    def findOrder(self, numCourses, prerequisites):
-        &quot;&quot;&quot;
+<span class="hljs-comment"># V0&#x27;</span>
+<span class="hljs-comment"># IDEA : DFS + topological sort</span>
+<span class="hljs-comment"># SAME dfs logic as LC 207 (Course Schedule)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">findOrder</span>(<span class="hljs-params">self, numCourses, prerequisites</span>):
+        <span class="hljs-string">&quot;&quot;&quot;
         :type numCourses: int
         :type prerequisites: List[List[int]]
         :rtype: List[int]
-        &quot;&quot;&quot;
-        graph = collections.defaultdict(list)
-        for u, v in prerequisites:
+        &quot;&quot;&quot;</span>
+        graph = collections.defaultdict(<span class="hljs-built_in">list</span>)
+        <span class="hljs-keyword">for</span> u, v <span class="hljs-keyword">in</span> prerequisites:
             graph[u].append(v)
-        # 0 = Unknown, 1 = visiting, 2 = visited
-        visited = [0] * numCourses
+        <span class="hljs-comment"># 0 = Unknown, 1 = visiting, 2 = visited</span>
+        visited = [<span class="hljs-number">0</span>] * numCourses
         path = []
-        for i in range(numCourses):
-            ### NOTE : if not a valid &quot;prerequisites&quot;, then will return NULL list
-            if not self.dfs(graph, visited, i, path):
-                return []
-        return path
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(numCourses):
+            <span class="hljs-comment">### NOTE : if not a valid &quot;prerequisites&quot;, then will return NULL list</span>
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-variable language_">self</span>.dfs(graph, visited, i, path):
+                <span class="hljs-keyword">return</span> []
+        <span class="hljs-keyword">return</span> path
     
-    def dfs(self, graph, visited, i, path):
-        # 0 = Unknown, 1 = visiting, 2 = visited
-        if visited[i] == 1: return False
-        if visited[i] == 2: return True
-        visited[i] = 1
-        for j in graph[i]:
-            if not self.dfs(graph, visited, j, path):
-                ### NOTE : the quit condition
-                return False
-        visited[i] = 2
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">self, graph, visited, i, path</span>):
+        <span class="hljs-comment"># 0 = Unknown, 1 = visiting, 2 = visited</span>
+        <span class="hljs-keyword">if</span> visited[i] == <span class="hljs-number">1</span>: <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        <span class="hljs-keyword">if</span> visited[i] == <span class="hljs-number">2</span>: <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+        visited[i] = <span class="hljs-number">1</span>
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> graph[i]:
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-variable language_">self</span>.dfs(graph, visited, j, path):
+                <span class="hljs-comment">### NOTE : the quit condition</span>
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        visited[i] = <span class="hljs-number">2</span>
         path.append(i)
-        return True
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 </code></pre>
 <h3 id="2-2-course-schedule" tabindex="-1"><a class="header-anchor" href="#2-2-course-schedule"><span>2-2) Course Schedule</span></a></h3>
-<pre><code class="language-java">// java
-// LC 207
-// same as LC 210
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 207</span>
+<span class="hljs-comment">// same as LC 210</span>
 </code></pre>
-<pre><code class="language-python"># LC 207 Course Schedule
-# NOTE : there are also bracktrack, dfs approachs for this problem
-# V0
-# IDEA : LC Course Schedule II 
-from collections import defaultdict
-class Solution(object):
-    def canFinish(self, numCourses, prerequisites):
-        # edge case
-        if not prerequisites:
-            return [x for x in range(numCourses)]
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 207 Course Schedule</span>
+<span class="hljs-comment"># NOTE : there are also bracktrack, dfs approachs for this problem</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : LC Course Schedule II </span>
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">canFinish</span>(<span class="hljs-params">self, numCourses, prerequisites</span>):
+        <span class="hljs-comment"># edge case</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> prerequisites:
+            <span class="hljs-keyword">return</span> [x <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(numCourses)]
         
-        # help func : dfs
-        # 3 cases :  0 : unknown, 1 :visiting, 2 : visited   
-        def dfs(idx, visited, g, res):
-            if visited[idx] == 1:
-                return False
-            # NOTE !!! if visited[idx] == 2, means already visited, return True directly (and check next idx in range(numCourses))
-            if visited[idx] == 2:
-                return True
-            visited[idx] = 1
-            &quot;&quot;&quot;
+        <span class="hljs-comment"># help func : dfs</span>
+        <span class="hljs-comment"># 3 cases :  0 : unknown, 1 :visiting, 2 : visited   </span>
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">idx, visited, g, res</span>):
+            <span class="hljs-keyword">if</span> visited[idx] == <span class="hljs-number">1</span>:
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+            <span class="hljs-comment"># NOTE !!! if visited[idx] == 2, means already visited, return True directly (and check next idx in range(numCourses))</span>
+            <span class="hljs-keyword">if</span> visited[idx] == <span class="hljs-number">2</span>:
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+            visited[idx] = <span class="hljs-number">1</span>
+            <span class="hljs-string">&quot;&quot;&quot;
             NOTE this !!!
                 1) for j in g[idx] (but not for i in range(numCourses))
                 2) go through idx in g[idx]
-            &quot;&quot;&quot;
-            for j in g[idx]:
-                if not dfs(j, visited, g, res):
-                    return False
-            &quot;&quot;&quot;
-            don't forget to make idx as visited (visited[idx] = 2)
-            &quot;&quot;&quot;
-            visited[idx] = 2
-            &quot;&quot;&quot;
+            &quot;&quot;&quot;</span>
+            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> g[idx]:
+                <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> dfs(j, visited, g, res):
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+            <span class="hljs-string">&quot;&quot;&quot;
+            don&#x27;t forget to make idx as visited (visited[idx] = 2)
+            &quot;&quot;&quot;</span>
+            visited[idx] = <span class="hljs-number">2</span>
+            <span class="hljs-string">&quot;&quot;&quot;
             NOTE : the main difference between LC 207, 210
             -&gt; we append idx to res (our ans)
-            &quot;&quot;&quot;
+            &quot;&quot;&quot;</span>
             res.append(idx)
-            return True
-        # init
-        visited = [0] * numCourses
-        # build grath
-        g = defaultdict(list)
-        for p in prerequisites:
-            g[p[0]].append(p[1])
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+        <span class="hljs-comment"># init</span>
+        visited = [<span class="hljs-number">0</span>] * numCourses
+        <span class="hljs-comment"># build grath</span>
+        g = defaultdict(<span class="hljs-built_in">list</span>)
+        <span class="hljs-keyword">for</span> p <span class="hljs-keyword">in</span> prerequisites:
+            g[p[<span class="hljs-number">0</span>]].append(p[<span class="hljs-number">1</span>])
         res = []
-        &quot;&quot;&quot;
+        <span class="hljs-string">&quot;&quot;&quot;
         NOTE :  go through idx in numCourses (for idx in range(numCourses))
-        &quot;&quot;&quot;
-        for idx in range(numCourses):
-            if not dfs(idx, visited, g, res):
-                return False #[]
-        return len(res) &gt; 0
+        &quot;&quot;&quot;</span>
+        <span class="hljs-keyword">for</span> idx <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(numCourses):
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> dfs(idx, visited, g, res):
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span> <span class="hljs-comment">#[]</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(res) &gt; <span class="hljs-number">0</span>
 
-# V1
-# IDEA : Topological Sort
-# https://leetcode.com/problems/course-schedule/solution/
-class GNode(object):
-    &quot;&quot;&quot;  data structure represent a vertex in the graph.&quot;&quot;&quot;
-    def __init__(self):
-        self.inDegrees = 0
-        self.outNodes = []
+<span class="hljs-comment"># V1</span>
+<span class="hljs-comment"># IDEA : Topological Sort</span>
+<span class="hljs-comment"># https://leetcode.com/problems/course-schedule/solution/</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">GNode</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-string">&quot;&quot;&quot;  data structure represent a vertex in the graph.&quot;&quot;&quot;</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.inDegrees = <span class="hljs-number">0</span>
+        <span class="hljs-variable language_">self</span>.outNodes = []
 
-class Solution(object):
-    def canFinish(self, numCourses, prerequisites):
-        &quot;&quot;&quot;
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">canFinish</span>(<span class="hljs-params">self, numCourses, prerequisites</span>):
+        <span class="hljs-string">&quot;&quot;&quot;
         :type numCourses: int
         :type prerequisites: List[List[int]]
         :rtype: bool
-        &quot;&quot;&quot;
-        from collections import defaultdict, deque
-        # key: index of node; value: GNode
+        &quot;&quot;&quot;</span>
+        <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict, deque
+        <span class="hljs-comment"># key: index of node; value: GNode</span>
         graph = defaultdict(GNode)
 
-        totalDeps = 0
-        for relation in prerequisites:
-            nextCourse, prevCourse = relation[0], relation[1]
+        totalDeps = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> relation <span class="hljs-keyword">in</span> prerequisites:
+            nextCourse, prevCourse = relation[<span class="hljs-number">0</span>], relation[<span class="hljs-number">1</span>]
             graph[prevCourse].outNodes.append(nextCourse)
-            graph[nextCourse].inDegrees += 1
-            totalDeps += 1
+            graph[nextCourse].inDegrees += <span class="hljs-number">1</span>
+            totalDeps += <span class="hljs-number">1</span>
 
-        # we start from courses that have no prerequisites.
-        # we could use either set, stack or queue to keep track of courses with no dependence.
+        <span class="hljs-comment"># we start from courses that have no prerequisites.</span>
+        <span class="hljs-comment"># we could use either set, stack or queue to keep track of courses with no dependence.</span>
         nodepCourses = deque()
-        for index, node in graph.items():
-            if node.inDegrees == 0:
+        <span class="hljs-keyword">for</span> index, node <span class="hljs-keyword">in</span> graph.items():
+            <span class="hljs-keyword">if</span> node.inDegrees == <span class="hljs-number">0</span>:
                 nodepCourses.append(index)
 
-        removedEdges = 0
-        while nodepCourses:
-            # pop out course without dependency
+        removedEdges = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">while</span> nodepCourses:
+            <span class="hljs-comment"># pop out course without dependency</span>
             course = nodepCourses.pop()
 
-            # remove its outgoing edges one by one
-            for nextCourse in graph[course].outNodes:
-                graph[nextCourse].inDegrees -= 1
-                removedEdges += 1
-                # while removing edges, we might discover new courses with prerequisites removed, i.e. new courses without prerequisites.
-                if graph[nextCourse].inDegrees == 0:
+            <span class="hljs-comment"># remove its outgoing edges one by one</span>
+            <span class="hljs-keyword">for</span> nextCourse <span class="hljs-keyword">in</span> graph[course].outNodes:
+                graph[nextCourse].inDegrees -= <span class="hljs-number">1</span>
+                removedEdges += <span class="hljs-number">1</span>
+                <span class="hljs-comment"># while removing edges, we might discover new courses with prerequisites removed, i.e. new courses without prerequisites.</span>
+                <span class="hljs-keyword">if</span> graph[nextCourse].inDegrees == <span class="hljs-number">0</span>:
                     nodepCourses.append(nextCourse)
 
-        if removedEdges == totalDeps:
-            return True
-        else:
-            # if there are still some edges left, then there exist some cycles
-            # Due to the dead-lock (dependencies), we cannot remove the cyclic edges
-            return False
+        <span class="hljs-keyword">if</span> removedEdges == totalDeps:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-comment"># if there are still some edges left, then there exist some cycles</span>
+            <span class="hljs-comment"># Due to the dead-lock (dependencies), we cannot remove the cyclic edges</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 
-# V0
-# IDEA : DFS + topological sort 
-# dfs
-from collections import defaultdict
-class Solution(object):
-    def canFinish(self, numCourses, prerequisites):
-        # edge case
-        if not prerequisites:
-            return True
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : DFS + topological sort </span>
+<span class="hljs-comment"># dfs</span>
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">canFinish</span>(<span class="hljs-params">self, numCourses, prerequisites</span>):
+        <span class="hljs-comment"># edge case</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> prerequisites:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
         
-        # help func : dfs
-        # 3 cases :  0 : unknown, 1 :visiting, 2 : visited   
-        def dfs(idx, visited, g):
-            if visited[idx] == 1:
-                return False
-            # NOTE !!! if visited[idx] == 2, means already visited, return True directly (and check next idx in range(numCourses))
-            if visited[idx] == 2:
-                return True
-            visited[idx] = 1
-            &quot;&quot;&quot;
+        <span class="hljs-comment"># help func : dfs</span>
+        <span class="hljs-comment"># 3 cases :  0 : unknown, 1 :visiting, 2 : visited   </span>
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">idx, visited, g</span>):
+            <span class="hljs-keyword">if</span> visited[idx] == <span class="hljs-number">1</span>:
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+            <span class="hljs-comment"># NOTE !!! if visited[idx] == 2, means already visited, return True directly (and check next idx in range(numCourses))</span>
+            <span class="hljs-keyword">if</span> visited[idx] == <span class="hljs-number">2</span>:
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+            visited[idx] = <span class="hljs-number">1</span>
+            <span class="hljs-string">&quot;&quot;&quot;
             NOTE this !!!
 
                 1) for j in g[idx] (but not for i in range(numCourses))
                 2) go through idx in g[idx]
-            &quot;&quot;&quot;
-            for j in g[idx]:
-                if not dfs(j, visited, g):
-                    return False
-            &quot;&quot;&quot;
-            don't forget to make idx as visited (visited[idx] = 2)
-            &quot;&quot;&quot;
-            visited[idx] = 2
-            return True
-        # init
-        visited = [0] * numCourses
-        # build grath
-        g = defaultdict(list)
-        for p in prerequisites:
-            g[p[0]].append(p[1])
-        #print (&quot;g = &quot; + str(p))
-        # dfs
-        &quot;&quot;&quot;
+            &quot;&quot;&quot;</span>
+            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> g[idx]:
+                <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> dfs(j, visited, g):
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+            <span class="hljs-string">&quot;&quot;&quot;
+            don&#x27;t forget to make idx as visited (visited[idx] = 2)
+            &quot;&quot;&quot;</span>
+            visited[idx] = <span class="hljs-number">2</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+        <span class="hljs-comment"># init</span>
+        visited = [<span class="hljs-number">0</span>] * numCourses
+        <span class="hljs-comment"># build grath</span>
+        g = defaultdict(<span class="hljs-built_in">list</span>)
+        <span class="hljs-keyword">for</span> p <span class="hljs-keyword">in</span> prerequisites:
+            g[p[<span class="hljs-number">0</span>]].append(p[<span class="hljs-number">1</span>])
+        <span class="hljs-comment">#print (&quot;g = &quot; + str(p))</span>
+        <span class="hljs-comment"># dfs</span>
+        <span class="hljs-string">&quot;&quot;&quot;
         NOTE :  go through idx in numCourses (for idx in range(numCourses))
-        &quot;&quot;&quot;
-        for idx in range(numCourses):
-            if not dfs(idx, visited, g):
-                return False
-        return True
+        &quot;&quot;&quot;</span>
+        <span class="hljs-keyword">for</span> idx <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(numCourses):
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> dfs(idx, visited, g):
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 
-# V0
-# IDEA : DFS + topological sort 
-import collections
-class Solution:
-    def canFinish(self, numCourses, prerequisites):
-        _graph = collections.defaultdict(list)
-        for i in range(len(prerequisites)):
-            _graph[prerequisites[i][0]].append(prerequisites[i][1])
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : DFS + topological sort </span>
+<span class="hljs-keyword">import</span> collections
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">canFinish</span>(<span class="hljs-params">self, numCourses, prerequisites</span>):
+        _graph = collections.defaultdict(<span class="hljs-built_in">list</span>)
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(prerequisites)):
+            _graph[prerequisites[i][<span class="hljs-number">0</span>]].append(prerequisites[i][<span class="hljs-number">1</span>])
 
-        visited = [0] * numCourses
-        for i in range(numCourses):
-            if not self.dfs(_graph, visited, i):
-                return False
-        return True
+        visited = [<span class="hljs-number">0</span>] * numCourses
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(numCourses):
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-variable language_">self</span>.dfs(_graph, visited, i):
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 
-    # 0 : unknown, 1 :visiting, 2 : visited    
-    def dfs(self, _graph, visited, i):
-        if visited[i] == 1:
-            return False
-        if visited[i] == 2:
-            return True
-        visited[i] = 1
-        for item in _graph[i]:
-            if not self.dfs(_graph, visited, item):
-                return False
-        visited[i] = 2
-        return True
+    <span class="hljs-comment"># 0 : unknown, 1 :visiting, 2 : visited    </span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">self, _graph, visited, i</span>):
+        <span class="hljs-keyword">if</span> visited[i] == <span class="hljs-number">1</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        <span class="hljs-keyword">if</span> visited[i] == <span class="hljs-number">2</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+        visited[i] = <span class="hljs-number">1</span>
+        <span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> _graph[i]:
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-variable language_">self</span>.dfs(_graph, visited, item):
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        visited[i] = <span class="hljs-number">2</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 
-# V0'
-# IDEA : BFS + topological sort 
-from collections import defaultdict, deque
-class Solution:
-    def canFinish(self, numCourses, prerequisites):
-        degree = defaultdict(int)   
-        graph = defaultdict(set)
+<span class="hljs-comment"># V0&#x27;</span>
+<span class="hljs-comment"># IDEA : BFS + topological sort </span>
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict, deque
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">canFinish</span>(<span class="hljs-params">self, numCourses, prerequisites</span>):
+        degree = defaultdict(<span class="hljs-built_in">int</span>)   
+        graph = defaultdict(<span class="hljs-built_in">set</span>)
         q = deque()
         
-        # init the courses with 0 deg
-        for i in range(numCourses):
-            degree[i] = 0
+        <span class="hljs-comment"># init the courses with 0 deg</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(numCourses):
+            degree[i] = <span class="hljs-number">0</span>
         
-        # add 1 to degree of course that needs prereq
-        # build edge from prerequisite to child course (directed graph)
-        for pair in prerequisites:
-            degree[pair[0]] += 1
-            graph[pair[1]].add(pair[0])
+        <span class="hljs-comment"># add 1 to degree of course that needs prereq</span>
+        <span class="hljs-comment"># build edge from prerequisite to child course (directed graph)</span>
+        <span class="hljs-keyword">for</span> pair <span class="hljs-keyword">in</span> prerequisites:
+            degree[pair[<span class="hljs-number">0</span>]] += <span class="hljs-number">1</span>
+            graph[pair[<span class="hljs-number">1</span>]].add(pair[<span class="hljs-number">0</span>])
         
-        # start bfs queue with all classes that dont have a prerequisite
-        for key, val in degree.items():
-            if val == 0:
+        <span class="hljs-comment"># start bfs queue with all classes that dont have a prerequisite</span>
+        <span class="hljs-keyword">for</span> key, val <span class="hljs-keyword">in</span> degree.items():
+            <span class="hljs-keyword">if</span> val == <span class="hljs-number">0</span>:
                 q.append(key)
                 
         stack = []
         
-        while q:
+        <span class="hljs-keyword">while</span> q:
             curr = q.popleft()
             stack.append(curr)
-            for child in graph[curr]:
-                degree[child] -= 1
-                if degree[child] == 0:
+            <span class="hljs-keyword">for</span> child <span class="hljs-keyword">in</span> graph[curr]:
+                degree[child] -= <span class="hljs-number">1</span>
+                <span class="hljs-keyword">if</span> degree[child] == <span class="hljs-number">0</span>:
                     q.append(child)
         
-        return len(stack) == numCourses
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(stack) == numCourses
 </code></pre>
 <h3 id="2-3-number-of-provinces-lc-547" tabindex="-1"><a class="header-anchor" href="#2-3-number-of-provinces-lc-547"><span>2-3) Number of Provinces (LC 547)</span></a></h3>
-<pre><code class="language-java">// java
-// LC 547
-// ref: leetcode_java/src/main/java/LeetCodeJava/DFS/NumberOfProvinces.java
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 547</span>
+<span class="hljs-comment">// ref: leetcode_java/src/main/java/LeetCodeJava/DFS/NumberOfProvinces.java</span>
 
-public class NumberOfProvinces {
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">NumberOfProvinces</span> {
 
-    // V0
-    // IDEA: UNION FIND
-    /**
+    <span class="hljs-comment">// V0</span>
+    <span class="hljs-comment">// IDEA: UNION FIND</span>
+    <span class="hljs-comment">/**
      * time = O(N^2 * α(N))
      * space = O(N)
-     */
-    public int findCircleNum(int[][] isConnected) {
-        int n = isConnected.length;
-        UnionFind uf = new UnionFind(n);
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">findCircleNum</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] isConnected)</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> isConnected.length;
+        <span class="hljs-type">UnionFind</span> <span class="hljs-variable">uf</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">UnionFind</span>(n);
 
-        for (int y = 0; y &lt; n; y++) {
-            for (int x = y + 1; x &lt; n; x++) {
-                if (isConnected[y][x] == 1) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">y</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; y &lt; n; y++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">x</span> <span class="hljs-operator">=</span> y + <span class="hljs-number">1</span>; x &lt; n; x++) {
+                <span class="hljs-keyword">if</span> (isConnected[y][x] == <span class="hljs-number">1</span>) {
                     uf.union(y, x);
                 }
             }
         }
 
-        return uf.cluster;
+        <span class="hljs-keyword">return</span> uf.cluster;
     }
 
-    class UnionFind {
-        int[] parents;
-        int cluster;
+    <span class="hljs-keyword">class</span> <span class="hljs-title class_">UnionFind</span> {
+        <span class="hljs-type">int</span>[] parents;
+        <span class="hljs-type">int</span> cluster;
 
-        UnionFind(int n) {
-            this.parents = new int[n];
-            this.cluster = n;
-            for (int i = 0; i &lt; n; i++) {
-                this.parents[i] = i;
+        UnionFind(<span class="hljs-type">int</span> n) {
+            <span class="hljs-built_in">this</span>.parents = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
+            <span class="hljs-built_in">this</span>.cluster = n;
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+                <span class="hljs-built_in">this</span>.parents[i] = i;
             }
         }
 
-        public void union(int x, int y) {
-            int parentX = find(x);
-            int parentY = find(y);
-            if (parentX != parentY) {
-                this.parents[parentX] = parentY;
-                this.cluster -= 1;
+        <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">union</span><span class="hljs-params">(<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)</span> {
+            <span class="hljs-type">int</span> <span class="hljs-variable">parentX</span> <span class="hljs-operator">=</span> find(x);
+            <span class="hljs-type">int</span> <span class="hljs-variable">parentY</span> <span class="hljs-operator">=</span> find(y);
+            <span class="hljs-keyword">if</span> (parentX != parentY) {
+                <span class="hljs-built_in">this</span>.parents[parentX] = parentY;
+                <span class="hljs-built_in">this</span>.cluster -= <span class="hljs-number">1</span>;
             }
         }
 
-        public int find(int x) {
-            if (this.parents[x] != x) {
-                this.parents[x] = find(this.parents[x]); // path compression
+        <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">find</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> {
+            <span class="hljs-keyword">if</span> (<span class="hljs-built_in">this</span>.parents[x] != x) {
+                <span class="hljs-built_in">this</span>.parents[x] = find(<span class="hljs-built_in">this</span>.parents[x]); <span class="hljs-comment">// path compression</span>
             }
-            return this.parents[x];
+            <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.parents[x];
         }
     }
 
-    // V1
-    // IDEA: DFS directly on adjacency matrix
-    /**
+    <span class="hljs-comment">// V1</span>
+    <span class="hljs-comment">// IDEA: DFS directly on adjacency matrix</span>
+    <span class="hljs-comment">/**
      * time = O(N^2)
      * space = O(N)
-     */
-    public int findCircleNum_dfs(int[][] isConnected) {
-        int n = isConnected.length;
-        boolean[] visited = new boolean[n];
-        int provinces = 0;
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">findCircleNum_dfs</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] isConnected)</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> isConnected.length;
+        <span class="hljs-type">boolean</span>[] visited = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[n];
+        <span class="hljs-type">int</span> <span class="hljs-variable">provinces</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
 
-        for (int i = 0; i &lt; n; i++) {
-            if (!visited[i]) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+            <span class="hljs-keyword">if</span> (!visited[i]) {
                 dfs(isConnected, visited, i, n);
                 provinces++;
             }
         }
 
-        return provinces;
+        <span class="hljs-keyword">return</span> provinces;
     }
 
-    private void dfs(int[][] isConnected, boolean[] visited, int city, int n) {
-        visited[city] = true;
-        for (int j = 0; j &lt; n; j++) {
-            if (isConnected[city][j] == 1 &amp;&amp; !visited[j]) {
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] isConnected, <span class="hljs-type">boolean</span>[] visited, <span class="hljs-type">int</span> city, <span class="hljs-type">int</span> n)</span> {
+        visited[city] = <span class="hljs-literal">true</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; n; j++) {
+            <span class="hljs-keyword">if</span> (isConnected[city][j] == <span class="hljs-number">1</span> &amp;&amp; !visited[j]) {
                 dfs(isConnected, visited, j, n);
             }
         }
     }
 
-    // V2
-    // IDEA: BFS
-    /**
+    <span class="hljs-comment">// V2</span>
+    <span class="hljs-comment">// IDEA: BFS</span>
+    <span class="hljs-comment">/**
      * time = O(N^2)
      * space = O(N)
-     */
-    public int findCircleNum_bfs(int[][] isConnected) {
-        int n = isConnected.length;
-        boolean[] visited = new boolean[n];
-        int provinces = 0;
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">findCircleNum_bfs</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] isConnected)</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> isConnected.length;
+        <span class="hljs-type">boolean</span>[] visited = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[n];
+        <span class="hljs-type">int</span> <span class="hljs-variable">provinces</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
 
-        for (int i = 0; i &lt; n; i++) {
-            if (!visited[i]) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+            <span class="hljs-keyword">if</span> (!visited[i]) {
                 provinces++;
-                Queue&lt;Integer&gt; q = new LinkedList&lt;&gt;();
+                Queue&lt;Integer&gt; q = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
                 q.offer(i);
-                visited[i] = true;
+                visited[i] = <span class="hljs-literal">true</span>;
 
-                while (!q.isEmpty()) {
-                    int node = q.poll();
-                    for (int j = 0; j &lt; n; j++) {
-                        if (isConnected[node][j] == 1 &amp;&amp; !visited[j]) {
+                <span class="hljs-keyword">while</span> (!q.isEmpty()) {
+                    <span class="hljs-type">int</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> q.poll();
+                    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; n; j++) {
+                        <span class="hljs-keyword">if</span> (isConnected[node][j] == <span class="hljs-number">1</span> &amp;&amp; !visited[j]) {
                             q.offer(j);
-                            visited[j] = true;
+                            visited[j] = <span class="hljs-literal">true</span>;
                         }
                     }
                 }
             }
         }
 
-        return provinces;
+        <span class="hljs-keyword">return</span> provinces;
     }
 }
 </code></pre>
-<pre><code class="language-python"># python
-# LC 547 Number of Provinces
-# V0 - Union Find
-class UnionFind:
-    def __init__(self, n):
-        self.parent = list(range(n))
-        self.count = n
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 547 Number of Provinces</span>
+<span class="hljs-comment"># V0 - Union Find</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">UnionFind</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, n</span>):
+        <span class="hljs-variable language_">self</span>.parent = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">range</span>(n))
+        <span class="hljs-variable language_">self</span>.count = n
 
-    def find(self, x):
-        if self.parent[x] != x:
-            self.parent[x] = self.find(self.parent[x])
-        return self.parent[x]
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">find</span>(<span class="hljs-params">self, x</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.parent[x] != x:
+            <span class="hljs-variable language_">self</span>.parent[x] = <span class="hljs-variable language_">self</span>.find(<span class="hljs-variable language_">self</span>.parent[x])
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.parent[x]
 
-    def union(self, x, y):
-        px, py = self.find(x), self.find(y)
-        if px != py:
-            self.parent[px] = py
-            self.count -= 1
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">union</span>(<span class="hljs-params">self, x, y</span>):
+        px, py = <span class="hljs-variable language_">self</span>.find(x), <span class="hljs-variable language_">self</span>.find(y)
+        <span class="hljs-keyword">if</span> px != py:
+            <span class="hljs-variable language_">self</span>.parent[px] = py
+            <span class="hljs-variable language_">self</span>.count -= <span class="hljs-number">1</span>
 
-class Solution:
-    def findCircleNum(self, isConnected):
-        n = len(isConnected)
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">findCircleNum</span>(<span class="hljs-params">self, isConnected</span>):
+        n = <span class="hljs-built_in">len</span>(isConnected)
         uf = UnionFind(n)
-        for i in range(n):
-            for j in range(i + 1, n):
-                if isConnected[i][j] == 1:
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(i + <span class="hljs-number">1</span>, n):
+                <span class="hljs-keyword">if</span> isConnected[i][j] == <span class="hljs-number">1</span>:
                     uf.union(i, j)
-        return uf.count
+        <span class="hljs-keyword">return</span> uf.count
 
-# V1 - DFS
-class Solution:
-    def findCircleNum(self, isConnected):
-        n = len(isConnected)
-        visited = [False] * n
-        provinces = 0
+<span class="hljs-comment"># V1 - DFS</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">findCircleNum</span>(<span class="hljs-params">self, isConnected</span>):
+        n = <span class="hljs-built_in">len</span>(isConnected)
+        visited = [<span class="hljs-literal">False</span>] * n
+        provinces = <span class="hljs-number">0</span>
 
-        def dfs(city):
-            visited[city] = True
-            for j in range(n):
-                if isConnected[city][j] == 1 and not visited[j]:
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">city</span>):
+            visited[city] = <span class="hljs-literal">True</span>
+            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+                <span class="hljs-keyword">if</span> isConnected[city][j] == <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> visited[j]:
                     dfs(j)
 
-        for i in range(n):
-            if not visited[i]:
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> visited[i]:
                 dfs(i)
-                provinces += 1
-        return provinces
+                provinces += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">return</span> provinces
 </code></pre>
 <h3 id="2-5-alien-dictionary" tabindex="-1"><a class="header-anchor" href="#2-5-alien-dictionary"><span>2-5) Alien Dictionary</span></a></h3>
-<pre><code class="language-java">// java
-// LC 269
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 269</span>
 
- // V0
-    // IDEA: TOPOLOGICAL SORT (neetcode, comments created by gpt)
-    // TOPOLOGICAL SORT : `degrees`, map, BFS
-    public String foreignDictionary(String[] words) {
-        Map&lt;Character, Set&lt;Character&gt;&gt; adj = new HashMap&lt;&gt;();
-        // NOTE !!! we use `map` as degrees storage
-        Map&lt;Character, Integer&gt; indegree = new HashMap&lt;&gt;();
+ <span class="hljs-comment">// V0</span>
+    <span class="hljs-comment">// IDEA: TOPOLOGICAL SORT (neetcode, comments created by gpt)</span>
+    <span class="hljs-comment">// TOPOLOGICAL SORT : `degrees`, map, BFS</span>
+    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">foreignDictionary</span><span class="hljs-params">(String[] words)</span> {
+        Map&lt;Character, Set&lt;Character&gt;&gt; adj = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+        <span class="hljs-comment">// NOTE !!! we use `map` as degrees storage</span>
+        Map&lt;Character, Integer&gt; indegree = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
 
-        for (String word : words) {
-            for (char c : word.toCharArray()) {
-                adj.putIfAbsent(c, new HashSet&lt;&gt;());
-                indegree.putIfAbsent(c, 0);
+        <span class="hljs-keyword">for</span> (String word : words) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : word.toCharArray()) {
+                adj.putIfAbsent(c, <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;());
+                indegree.putIfAbsent(c, <span class="hljs-number">0</span>);
             }
         }
 
-        /**
+        <span class="hljs-comment">/**
          *   NOTE !!! below
          *
          *   -&gt; build the character `ordering`
@@ -1916,12 +1928,12 @@ class Solution:
          * This is important because the alien language is
          * sorted — and order relationships only exist between adjacent words.
          *
-         */
-        for (int i = 0; i &lt; words.length - 1; i++) {
-            String w1 = words[i];
-            String w2 = words[i + 1];
+         */</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; words.length - <span class="hljs-number">1</span>; i++) {
+            <span class="hljs-type">String</span> <span class="hljs-variable">w1</span> <span class="hljs-operator">=</span> words[i];
+            <span class="hljs-type">String</span> <span class="hljs-variable">w2</span> <span class="hljs-operator">=</span> words[i + <span class="hljs-number">1</span>];
 
-            /**
+            <span class="hljs-comment">/**
              *  NOTE !!! below
              *
              *
@@ -1946,16 +1958,16 @@ class Solution:
              *
              * -&gt; Hence, we return &quot;&quot; to signal an invalid dictionary order.
              *
-             */
-            int minLen = Math.min(w1.length(), w2.length());
-            // handle `ordering` edge case
-            // e.g. words = [&quot;apple&quot;, &quot;app&quot;]
-            if (w1.length() &gt; w2.length() &amp;&amp;
-                    w1.substring(0, minLen).equals(w2.substring(0, minLen))) {
-                return &quot;&quot;;
+             */</span>
+            <span class="hljs-type">int</span> <span class="hljs-variable">minLen</span> <span class="hljs-operator">=</span> Math.min(w1.length(), w2.length());
+            <span class="hljs-comment">// handle `ordering` edge case</span>
+            <span class="hljs-comment">// e.g. words = [&quot;apple&quot;, &quot;app&quot;]</span>
+            <span class="hljs-keyword">if</span> (w1.length() &gt; w2.length() &amp;&amp;
+                    w1.substring(<span class="hljs-number">0</span>, minLen).equals(w2.substring(<span class="hljs-number">0</span>, minLen))) {
+                <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>;
             }
 
-            /**
+            <span class="hljs-comment">/**
              *  NOTE !!! below
              *
              *
@@ -1970,8 +1982,8 @@ class Solution:
              *
              *
              *
-             *  At index 2, 't' and 'f' differ → so we know:
-             * 't' &lt; 'f' → Add a directed edge: t → f
+             *  At index 2, &#x27;t&#x27; and &#x27;f&#x27; differ → so we know:
+             * &#x27;t&#x27; &lt; &#x27;f&#x27; → Add a directed edge: t → f
              *
              * adj.get(w1.charAt(j)).add(w2.charAt(j)): Adds this edge in the adjacency list.
              *
@@ -1984,248 +1996,248 @@ class Solution:
              *     -&gt; because they don’t affect the order.
              *
              *
-             */
-            // compare the `first different character within w1, w2`
-            // The first place where they differ defines the ordering.
-            for (int j = 0; j &lt; minLen; j++) {
-                if (w1.charAt(j) != w2.charAt(j)) {
-                    if (!adj.get(w1.charAt(j)).contains(w2.charAt(j))) {
+             */</span>
+            <span class="hljs-comment">// compare the `first different character within w1, w2`</span>
+            <span class="hljs-comment">// The first place where they differ defines the ordering.</span>
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; minLen; j++) {
+                <span class="hljs-keyword">if</span> (w1.charAt(j) != w2.charAt(j)) {
+                    <span class="hljs-keyword">if</span> (!adj.get(w1.charAt(j)).contains(w2.charAt(j))) {
                         adj.get(w1.charAt(j)).add(w2.charAt(j));
                         indegree.put(w2.charAt(j),
-                                indegree.get(w2.charAt(j)) + 1);
+                                indegree.get(w2.charAt(j)) + <span class="hljs-number">1</span>);
                     }
-                    break;
+                    <span class="hljs-keyword">break</span>;
                 }
             }
         }
 
-        Queue&lt;Character&gt; q = new LinkedList&lt;&gt;();
-        for (char c : indegree.keySet()) {
-            if (indegree.get(c) == 0) {
+        Queue&lt;Character&gt; q = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : indegree.keySet()) {
+            <span class="hljs-keyword">if</span> (indegree.get(c) == <span class="hljs-number">0</span>) {
                 q.offer(c);
             }
         }
 
-        StringBuilder res = new StringBuilder();
+        <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">res</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>();
 
-        while (!q.isEmpty()) {
-            char char_ = q.poll();
+        <span class="hljs-keyword">while</span> (!q.isEmpty()) {
+            <span class="hljs-type">char</span> <span class="hljs-variable">char_</span> <span class="hljs-operator">=</span> q.poll();
             res.append(char_);
-            for (char neighbor : adj.get(char_)) {
-                indegree.put(neighbor, indegree.get(neighbor) - 1);
-                if (indegree.get(neighbor) == 0) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> neighbor : adj.get(char_)) {
+                indegree.put(neighbor, indegree.get(neighbor) - <span class="hljs-number">1</span>);
+                <span class="hljs-keyword">if</span> (indegree.get(neighbor) == <span class="hljs-number">0</span>) {
                     q.offer(neighbor);
                 }
             }
         }
 
-        if (res.length() != indegree.size()) {
-            return &quot;&quot;;
+        <span class="hljs-keyword">if</span> (res.length() != indegree.size()) {
+            <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>;
         }
 
-        return res.toString();
+        <span class="hljs-keyword">return</span> res.toString();
     }
 
 </code></pre>
-<pre><code class="language-python"># python
-# 269 alien-dictionary
-class Solution(object):
-    def alienOrder(self, words):
-        &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># 269 alien-dictionary</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">alienOrder</span>(<span class="hljs-params">self, words</span>):
+        <span class="hljs-string">&quot;&quot;&quot;
         :type words: List[str]
         :rtype: str
-        &quot;&quot;&quot;
+        &quot;&quot;&quot;</span>
         result, zero_in_degree_queue, in_degree, out_degree = [], collections.deque(), {}, {}
-        nodes = sets.Set()
-        for word in words:
-            for c in word:
+        nodes = sets.<span class="hljs-type">Set</span>()
+        <span class="hljs-keyword">for</span> word <span class="hljs-keyword">in</span> words:
+            <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> word:
                 nodes.add(c)
          
-        for i in range(1, len(words)):
-            if len(words[i-1]) &gt; len(words[i]) and \
-                words[i-1][:len(words[i])] == words[i]:
-                    return &quot;&quot;
-            self.findEdges(words[i - 1], words[i], in_degree, out_degree)
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(words)):
+            <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(words[i-<span class="hljs-number">1</span>]) &gt; <span class="hljs-built_in">len</span>(words[i]) <span class="hljs-keyword">and</span> \
+                words[i-<span class="hljs-number">1</span>][:<span class="hljs-built_in">len</span>(words[i])] == words[i]:
+                    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>
+            <span class="hljs-variable language_">self</span>.findEdges(words[i - <span class="hljs-number">1</span>], words[i], in_degree, out_degree)
          
-        for node in nodes:
-            if node not in in_degree:
+        <span class="hljs-keyword">for</span> node <span class="hljs-keyword">in</span> nodes:
+            <span class="hljs-keyword">if</span> node <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> in_degree:
                 zero_in_degree_queue.append(node)
          
-        while zero_in_degree_queue:
+        <span class="hljs-keyword">while</span> zero_in_degree_queue:
             precedence = zero_in_degree_queue.popleft()
             result.append(precedence)
              
-            if precedence in out_degree:
-                for c in out_degree[precedence]:
+            <span class="hljs-keyword">if</span> precedence <span class="hljs-keyword">in</span> out_degree:
+                <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> out_degree[precedence]:
                     in_degree[c].discard(precedence)
-                    if not in_degree[c]:
+                    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> in_degree[c]:
                         zero_in_degree_queue.append(c)
              
-                del out_degree[precedence]
+                <span class="hljs-keyword">del</span> out_degree[precedence]
          
-        if out_degree:
-            return &quot;&quot;
+        <span class="hljs-keyword">if</span> out_degree:
+            <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>
  
-        return &quot;&quot;.join(result)
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>.join(result)
  
  
-    # Construct the graph.
-    def findEdges(self, word1, word2, in_degree, out_degree):
-        str_len = min(len(word1), len(word2))
-        for i in range(str_len):
-            if word1[i] != word2[i]:
-                if word2[i] not in in_degree:
-                    in_degree[word2[i]] = sets.Set()
-                if word1[i] not in out_degree:
-                    out_degree[word1[i]] = sets.Set()
+    <span class="hljs-comment"># Construct the graph.</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">findEdges</span>(<span class="hljs-params">self, word1, word2, in_degree, out_degree</span>):
+        str_len = <span class="hljs-built_in">min</span>(<span class="hljs-built_in">len</span>(word1), <span class="hljs-built_in">len</span>(word2))
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(str_len):
+            <span class="hljs-keyword">if</span> word1[i] != word2[i]:
+                <span class="hljs-keyword">if</span> word2[i] <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> in_degree:
+                    in_degree[word2[i]] = sets.<span class="hljs-type">Set</span>()
+                <span class="hljs-keyword">if</span> word1[i] <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> out_degree:
+                    out_degree[word1[i]] = sets.<span class="hljs-type">Set</span>()
                 in_degree[word2[i]].add(word1[i])
                 out_degree[word1[i]].add(word2[i])
-                break　　
+                <span class="hljs-keyword">break</span>　　
 </code></pre>
 <h3 id="2-6-sequence-reconstruction" tabindex="-1"><a class="header-anchor" href="#2-6-sequence-reconstruction"><span>2-6) Sequence Reconstruction</span></a></h3>
-<pre><code class="language-java">// java
-// LC 444
-    // V1
-    // https://www.youtube.com/watch?v=FHY1q1h9gq0
-    // https://www.jiakaobo.com/leetcode/444.%20Sequence%20Reconstruction.html
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 444</span>
+    <span class="hljs-comment">// V1</span>
+    <span class="hljs-comment">// https://www.youtube.com/watch?v=FHY1q1h9gq0</span>
+    <span class="hljs-comment">// https://www.jiakaobo.com/leetcode/444.%20Sequence%20Reconstruction.html</span>
     Map&lt;Integer, Set&lt;Integer&gt;&gt; map;
     Map&lt;Integer, Integer&gt; indegree;
 
-    public boolean sequenceReconstruction_1(int[] nums, List&lt;List&lt;Integer&gt;&gt; sequences) {
-        map = new HashMap&lt;&gt;();
-        indegree = new HashMap&lt;&gt;();
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">sequenceReconstruction_1</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, List&lt;List&lt;Integer&gt;&gt; sequences)</span> {
+        map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+        indegree = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
 
-        for(List&lt;Integer&gt; seq: sequences) {
-            if(seq.size() == 1) {
-                addNode(seq.get(0));
-            } else {
-                for(int i = 0; i &lt; seq.size() - 1; i++) {
+        <span class="hljs-keyword">for</span>(List&lt;Integer&gt; seq: sequences) {
+            <span class="hljs-keyword">if</span>(seq.size() == <span class="hljs-number">1</span>) {
+                addNode(seq.get(<span class="hljs-number">0</span>));
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; seq.size() - <span class="hljs-number">1</span>; i++) {
                     addNode(seq.get(i));
-                    addNode(seq.get(i + 1));
+                    addNode(seq.get(i + <span class="hljs-number">1</span>));
 
-                    // 加入子节点, 子节点增加一个入度
-                    // [1,2] =&gt; 1 -&gt; 2
-                    // 1: [2]
-                    int curr = seq.get(i);
-                    int next = seq.get(i + 1);
-                    if(map.get(curr).add(next)) {
-                        indegree.put(next, indegree.get(next) + 1);
+                    <span class="hljs-comment">// 加入子节点, 子节点增加一个入度</span>
+                    <span class="hljs-comment">// [1,2] =&gt; 1 -&gt; 2</span>
+                    <span class="hljs-comment">// 1: [2]</span>
+                    <span class="hljs-type">int</span> <span class="hljs-variable">curr</span> <span class="hljs-operator">=</span> seq.get(i);
+                    <span class="hljs-type">int</span> <span class="hljs-variable">next</span> <span class="hljs-operator">=</span> seq.get(i + <span class="hljs-number">1</span>);
+                    <span class="hljs-keyword">if</span>(map.get(curr).add(next)) {
+                        indegree.put(next, indegree.get(next) + <span class="hljs-number">1</span>);
                     }
                 }
             }
         }
 
-        Queue&lt;Integer&gt; queue = new LinkedList&lt;&gt;();
-        for(int key : indegree.keySet()) {
-            if(indegree.get(key) == 0){
+        Queue&lt;Integer&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> key : indegree.keySet()) {
+            <span class="hljs-keyword">if</span>(indegree.get(key) == <span class="hljs-number">0</span>){
                 queue.offer(key);
             }
         }
 
-        int index = 0;
-        while(!queue.isEmpty()) {
-            // 如果只有唯一解, 那么queue的大小永远都是1
-            if(queue.size() != 1) return false;
+        <span class="hljs-type">int</span> <span class="hljs-variable">index</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">while</span>(!queue.isEmpty()) {
+            <span class="hljs-comment">// 如果只有唯一解, 那么queue的大小永远都是1</span>
+            <span class="hljs-keyword">if</span>(queue.size() != <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
 
-            int curr = queue.poll();
-            if(curr != nums[index++]) return false;
+            <span class="hljs-type">int</span> <span class="hljs-variable">curr</span> <span class="hljs-operator">=</span> queue.poll();
+            <span class="hljs-keyword">if</span>(curr != nums[index++]) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
 
-            for(int next: map.get(curr)) {
-                indegree.put(next, indegree.get(next) - 1);
-                if(indegree.get(next) == 0) {
+            <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> next: map.get(curr)) {
+                indegree.put(next, indegree.get(next) - <span class="hljs-number">1</span>);
+                <span class="hljs-keyword">if</span>(indegree.get(next) == <span class="hljs-number">0</span>) {
                     queue.offer(next);
                 }
             }
         }
 
-        return index == nums.length;
+        <span class="hljs-keyword">return</span> index == nums.length;
     }
 
-    private void addNode(int node) {
-        if(!map.containsKey(node)) {
-            map.put(node, new HashSet&lt;&gt;());
-            indegree.put(node, 0);
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">addNode</span><span class="hljs-params">(<span class="hljs-type">int</span> node)</span> {
+        <span class="hljs-keyword">if</span>(!map.containsKey(node)) {
+            map.put(node, <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;());
+            indegree.put(node, <span class="hljs-number">0</span>);
         }
     }
 </code></pre>
 <h3 id="2-7-parallel-courses" tabindex="-1"><a class="header-anchor" href="#2-7-parallel-courses"><span>2-7) Parallel Courses</span></a></h3>
-<pre><code class="language-python"># LC 1136
-def minimumSemesters(n, relations):
-    &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1136</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">minimumSemesters</span>(<span class="hljs-params">n, relations</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
     Find minimum number of semesters to take all courses.
     Time: O(V + E), Space: O(V)
-    &quot;&quot;&quot;
-    from collections import defaultdict, deque
+    &quot;&quot;&quot;</span>
+    <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict, deque
     
-    graph = defaultdict(list)
-    in_degree = [0] * (n + 1)
+    graph = defaultdict(<span class="hljs-built_in">list</span>)
+    in_degree = [<span class="hljs-number">0</span>] * (n + <span class="hljs-number">1</span>)
     
-    for pre, next_course in relations:
+    <span class="hljs-keyword">for</span> pre, next_course <span class="hljs-keyword">in</span> relations:
         graph[pre].append(next_course)
-        in_degree[next_course] += 1
+        in_degree[next_course] += <span class="hljs-number">1</span>
     
-    queue = deque([i for i in range(1, n + 1) if in_degree[i] == 0])
-    semesters = 0
-    studied = 0
+    queue = deque([i <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n + <span class="hljs-number">1</span>) <span class="hljs-keyword">if</span> in_degree[i] == <span class="hljs-number">0</span>])
+    semesters = <span class="hljs-number">0</span>
+    studied = <span class="hljs-number">0</span>
     
-    while queue:
-        # Process all courses in current semester
-        semesters += 1
+    <span class="hljs-keyword">while</span> queue:
+        <span class="hljs-comment"># Process all courses in current semester</span>
+        semesters += <span class="hljs-number">1</span>
         next_queue = []
         
-        for _ in range(len(queue)):
+        <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(queue)):
             course = queue.popleft()
-            studied += 1
+            studied += <span class="hljs-number">1</span>
             
-            for next_course in graph[course]:
-                in_degree[next_course] -= 1
-                if in_degree[next_course] == 0:
+            <span class="hljs-keyword">for</span> next_course <span class="hljs-keyword">in</span> graph[course]:
+                in_degree[next_course] -= <span class="hljs-number">1</span>
+                <span class="hljs-keyword">if</span> in_degree[next_course] == <span class="hljs-number">0</span>:
                     next_queue.append(next_course)
         
         queue.extend(next_queue)
     
-    return semesters if studied == n else -1
+    <span class="hljs-keyword">return</span> semesters <span class="hljs-keyword">if</span> studied == n <span class="hljs-keyword">else</span> -<span class="hljs-number">1</span>
 </code></pre>
 <h3 id="2-8-find-eventual-safe-states" tabindex="-1"><a class="header-anchor" href="#2-8-find-eventual-safe-states"><span>2-8) Find Eventual Safe States</span></a></h3>
-<pre><code class="language-python"># LC 802
-def eventualSafeNodes(graph):
-    &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 802</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">eventualSafeNodes</span>(<span class="hljs-params">graph</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
     Find all safe nodes (nodes from which all paths lead to terminal).
     Time: O(V + E), Space: O(V)
-    &quot;&quot;&quot;
-    n = len(graph)
-    # Reverse the graph
-    reverse_graph = [[] for _ in range(n)]
-    out_degree = [0] * n
+    &quot;&quot;&quot;</span>
+    n = <span class="hljs-built_in">len</span>(graph)
+    <span class="hljs-comment"># Reverse the graph</span>
+    reverse_graph = [[] <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)]
+    out_degree = [<span class="hljs-number">0</span>] * n
     
-    for i in range(n):
-        for j in graph[i]:
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> graph[i]:
             reverse_graph[j].append(i)
-        out_degree[i] = len(graph[i])
+        out_degree[i] = <span class="hljs-built_in">len</span>(graph[i])
     
-    # Start with terminal nodes (out-degree = 0)
-    from collections import deque
-    queue = deque([i for i in range(n) if out_degree[i] == 0])
+    <span class="hljs-comment"># Start with terminal nodes (out-degree = 0)</span>
+    <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
+    queue = deque([i <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n) <span class="hljs-keyword">if</span> out_degree[i] == <span class="hljs-number">0</span>])
     safe = []
     
-    while queue:
+    <span class="hljs-keyword">while</span> queue:
         node = queue.popleft()
         safe.append(node)
         
-        for prev in reverse_graph[node]:
-            out_degree[prev] -= 1
-            if out_degree[prev] == 0:
+        <span class="hljs-keyword">for</span> prev <span class="hljs-keyword">in</span> reverse_graph[node]:
+            out_degree[prev] -= <span class="hljs-number">1</span>
+            <span class="hljs-keyword">if</span> out_degree[prev] == <span class="hljs-number">0</span>:
                 queue.append(prev)
     
-    return sorted(safe)
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">sorted</span>(safe)
 </code></pre>
 <h3 id="2-9-minimum-height-trees-lc-310" tabindex="-1"><a class="header-anchor" href="#2-9-minimum-height-trees-lc-310"><span>2-9) Minimum Height Trees (LC 310)</span></a></h3>
-<pre><code class="language-java">// java
-// LC 310
-// IDEA: Tree Centroid Finding - Leaf Trimming (Topological Sort for Undirected Trees)
-public class MinimumHeightTrees {
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 310</span>
+<span class="hljs-comment">// IDEA: Tree Centroid Finding - Leaf Trimming (Topological Sort for Undirected Trees)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MinimumHeightTrees</span> {
 
-    /**
+    <span class="hljs-comment">/**
      * Core Concept: Tree Centroid Finding via Leaf Trimming
      *
      * This is a special application of topological sort to UNDIRECTED TREES:
@@ -2241,7 +2253,7 @@ public class MinimumHeightTrees {
      * 1. Build adjacency list + track degrees for undirected edges
      * 2. Put all leaves (degree = 1) into queue
      * 3. Remove leaves layer by layer (like peeling an onion)
-     * 4. When neighbors' degree becomes 1, they become new leaves
+     * 4. When neighbors&#x27; degree becomes 1, they become new leaves
      * 5. Stop when ≤ 2 nodes remain - these are the centroids
      *
      * Why it works:
@@ -2251,155 +2263,155 @@ public class MinimumHeightTrees {
      *
      * Time: O(N) - Each node and edge processed once
      * Space: O(N) - Adjacency list and queue storage
-     */
-    public List&lt;Integer&gt; findMinHeightTrees(int n, int[][] edges) {
-        // Edge case: single node tree
-        if (n == 1) {
-            return Collections.singletonList(0);
+     */</span>
+    <span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">findMinHeightTrees</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span>[][] edges)</span> {
+        <span class="hljs-comment">// Edge case: single node tree</span>
+        <span class="hljs-keyword">if</span> (n == <span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">return</span> Collections.singletonList(<span class="hljs-number">0</span>);
         }
 
-        // Step 1: Build adjacency list and track degrees
-        List&lt;List&lt;Integer&gt;&gt; graph = new ArrayList&lt;&gt;();
-        for (int i = 0; i &lt; n; i++) {
-            graph.add(new ArrayList&lt;&gt;());
+        <span class="hljs-comment">// Step 1: Build adjacency list and track degrees</span>
+        List&lt;List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+            graph.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;());
         }
 
-        int[] degree = new int[n];
+        <span class="hljs-type">int</span>[] degree = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
 
-        // For undirected tree: add edges in both directions
-        for (int[] edge : edges) {
-            int u = edge[0], v = edge[1];
+        <span class="hljs-comment">// For undirected tree: add edges in both directions</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] edge : edges) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">u</span> <span class="hljs-operator">=</span> edge[<span class="hljs-number">0</span>], v = edge[<span class="hljs-number">1</span>];
             graph.get(u).add(v);
             graph.get(v).add(u);
             degree[u]++;
             degree[v]++;
         }
 
-        // Step 2: Initialize queue with all leaf nodes (degree = 1)
-        Queue&lt;Integer&gt; leaves = new LinkedList&lt;&gt;();
-        for (int i = 0; i &lt; n; i++) {
-            if (degree[i] == 1) {
+        <span class="hljs-comment">// Step 2: Initialize queue with all leaf nodes (degree = 1)</span>
+        Queue&lt;Integer&gt; leaves = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+            <span class="hljs-keyword">if</span> (degree[i] == <span class="hljs-number">1</span>) {
                 leaves.offer(i);
             }
         }
 
-        // Step 3: Trim leaves layer by layer
-        int remaining = n;
+        <span class="hljs-comment">// Step 3: Trim leaves layer by layer</span>
+        <span class="hljs-type">int</span> <span class="hljs-variable">remaining</span> <span class="hljs-operator">=</span> n;
 
-        // Continue until only 1 or 2 nodes remain
-        while (remaining &gt; 2) {
-            int leafCount = leaves.size();
+        <span class="hljs-comment">// Continue until only 1 or 2 nodes remain</span>
+        <span class="hljs-keyword">while</span> (remaining &gt; <span class="hljs-number">2</span>) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">leafCount</span> <span class="hljs-operator">=</span> leaves.size();
             remaining -= leafCount;
 
-            // Process all leaves in current layer
-            for (int i = 0; i &lt; leafCount; i++) {
-                int leaf = leaves.poll();
+            <span class="hljs-comment">// Process all leaves in current layer</span>
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; leafCount; i++) {
+                <span class="hljs-type">int</span> <span class="hljs-variable">leaf</span> <span class="hljs-operator">=</span> leaves.poll();
 
-                // Update degrees of neighbors
-                for (int neighbor : graph.get(leaf)) {
+                <span class="hljs-comment">// Update degrees of neighbors</span>
+                <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> neighbor : graph.get(leaf)) {
                     degree[neighbor]--;
 
-                    // If neighbor becomes a leaf, add to queue for next layer
-                    if (degree[neighbor] == 1) {
+                    <span class="hljs-comment">// If neighbor becomes a leaf, add to queue for next layer</span>
+                    <span class="hljs-keyword">if</span> (degree[neighbor] == <span class="hljs-number">1</span>) {
                         leaves.offer(neighbor);
                     }
                 }
             }
         }
 
-        // Step 4: The remaining nodes (1 or 2) are the centroids
-        return new ArrayList&lt;&gt;(leaves);
+        <span class="hljs-comment">// Step 4: The remaining nodes (1 or 2) are the centroids</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(leaves);
     }
 }
 </code></pre>
-<pre><code class="language-python"># python
-# LC 310
-# V0 - Tree Centroid Finding (Leaf Trimming for Undirected Trees)
-from collections import deque
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 310</span>
+<span class="hljs-comment"># V0 - Tree Centroid Finding (Leaf Trimming for Undirected Trees)</span>
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
 
-class Solution:
-    def findMinHeightTrees(self, n: int, edges: List[List[int]]) -&gt; List[int]:
-        &quot;&quot;&quot;
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">findMinHeightTrees</span>(<span class="hljs-params">self, n: <span class="hljs-built_in">int</span>, edges: <span class="hljs-type">List</span>[<span class="hljs-type">List</span>[<span class="hljs-built_in">int</span>]]</span>) -&gt; <span class="hljs-type">List</span>[<span class="hljs-built_in">int</span>]:
+        <span class="hljs-string">&quot;&quot;&quot;
         Find tree centroids using leaf trimming.
 
-        Key Pattern: Similar to Kahn's Algorithm but for undirected trees
+        Key Pattern: Similar to Kahn&#x27;s Algorithm but for undirected trees
         - Use degree (not in-degree)
         - Leaves are nodes with degree = 1
         - Trim layers until 1-2 nodes remain
 
         Time: O(N), Space: O(N)
-        &quot;&quot;&quot;
-        # Edge case
-        if n == 1:
-            return [0]
+        &quot;&quot;&quot;</span>
+        <span class="hljs-comment"># Edge case</span>
+        <span class="hljs-keyword">if</span> n == <span class="hljs-number">1</span>:
+            <span class="hljs-keyword">return</span> [<span class="hljs-number">0</span>]
 
-        # Build adjacency list and track degrees
-        graph = [[] for _ in range(n)]
-        degree = [0] * n
+        <span class="hljs-comment"># Build adjacency list and track degrees</span>
+        graph = [[] <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)]
+        degree = [<span class="hljs-number">0</span>] * n
 
-        for u, v in edges:
+        <span class="hljs-keyword">for</span> u, v <span class="hljs-keyword">in</span> edges:
             graph[u].append(v)
             graph[v].append(u)
-            degree[u] += 1
-            degree[v] += 1
+            degree[u] += <span class="hljs-number">1</span>
+            degree[v] += <span class="hljs-number">1</span>
 
-        # Initialize queue with all leaves (degree = 1)
-        leaves = deque([i for i in range(n) if degree[i] == 1])
+        <span class="hljs-comment"># Initialize queue with all leaves (degree = 1)</span>
+        leaves = deque([i <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n) <span class="hljs-keyword">if</span> degree[i] == <span class="hljs-number">1</span>])
 
-        # Trim leaves layer by layer
+        <span class="hljs-comment"># Trim leaves layer by layer</span>
         remaining = n
-        while remaining &gt; 2:
-            leaf_count = len(leaves)
+        <span class="hljs-keyword">while</span> remaining &gt; <span class="hljs-number">2</span>:
+            leaf_count = <span class="hljs-built_in">len</span>(leaves)
             remaining -= leaf_count
 
-            for _ in range(leaf_count):
+            <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(leaf_count):
                 leaf = leaves.popleft()
 
-                # Decrease degree of neighbors
-                for neighbor in graph[leaf]:
-                    degree[neighbor] -= 1
-                    # If neighbor becomes leaf, add to queue
-                    if degree[neighbor] == 1:
+                <span class="hljs-comment"># Decrease degree of neighbors</span>
+                <span class="hljs-keyword">for</span> neighbor <span class="hljs-keyword">in</span> graph[leaf]:
+                    degree[neighbor] -= <span class="hljs-number">1</span>
+                    <span class="hljs-comment"># If neighbor becomes leaf, add to queue</span>
+                    <span class="hljs-keyword">if</span> degree[neighbor] == <span class="hljs-number">1</span>:
                         leaves.append(neighbor)
 
-        # Return remaining centroids (1 or 2 nodes)
-        return list(leaves)
+        <span class="hljs-comment"># Return remaining centroids (1 or 2 nodes)</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">list</span>(leaves)
 
 
-# V1 - Alternative: Using Set for adjacency (faster removal)
-class Solution:
-    def findMinHeightTrees(self, n: int, edges: List[List[int]]) -&gt; List[int]:
-        if n == 1:
-            return [0]
+<span class="hljs-comment"># V1 - Alternative: Using Set for adjacency (faster removal)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">findMinHeightTrees</span>(<span class="hljs-params">self, n: <span class="hljs-built_in">int</span>, edges: <span class="hljs-type">List</span>[<span class="hljs-type">List</span>[<span class="hljs-built_in">int</span>]]</span>) -&gt; <span class="hljs-type">List</span>[<span class="hljs-built_in">int</span>]:
+        <span class="hljs-keyword">if</span> n == <span class="hljs-number">1</span>:
+            <span class="hljs-keyword">return</span> [<span class="hljs-number">0</span>]
 
-        # Build graph with sets for O(1) removal
-        graph = [set() for _ in range(n)]
+        <span class="hljs-comment"># Build graph with sets for O(1) removal</span>
+        graph = [<span class="hljs-built_in">set</span>() <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)]
 
-        for u, v in edges:
+        <span class="hljs-keyword">for</span> u, v <span class="hljs-keyword">in</span> edges:
             graph[u].add(v)
             graph[v].add(u)
 
-        # Find initial leaves
-        leaves = [i for i in range(n) if len(graph[i]) == 1]
+        <span class="hljs-comment"># Find initial leaves</span>
+        leaves = [i <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n) <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(graph[i]) == <span class="hljs-number">1</span>]
 
-        # Trim leaves until 1-2 nodes remain
-        while n &gt; 2:
-            n -= len(leaves)
+        <span class="hljs-comment"># Trim leaves until 1-2 nodes remain</span>
+        <span class="hljs-keyword">while</span> n &gt; <span class="hljs-number">2</span>:
+            n -= <span class="hljs-built_in">len</span>(leaves)
             new_leaves = []
 
-            for leaf in leaves:
-                # Get the only neighbor
+            <span class="hljs-keyword">for</span> leaf <span class="hljs-keyword">in</span> leaves:
+                <span class="hljs-comment"># Get the only neighbor</span>
                 neighbor = graph[leaf].pop()
-                # Remove leaf from neighbor's adjacency set
+                <span class="hljs-comment"># Remove leaf from neighbor&#x27;s adjacency set</span>
                 graph[neighbor].remove(leaf)
 
-                # If neighbor becomes leaf, add to next layer
-                if len(graph[neighbor]) == 1:
+                <span class="hljs-comment"># If neighbor becomes leaf, add to next layer</span>
+                <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(graph[neighbor]) == <span class="hljs-number">1</span>:
                     new_leaves.append(neighbor)
 
             leaves = new_leaves
 
-        return leaves
+        <span class="hljs-keyword">return</span> leaves
 </code></pre>
 <p><strong>Core Logic Explanation:</strong></p>
 <ol>
@@ -2438,7 +2450,7 @@ class Solution:
 <li>Stop when ≤ 2 nodes remain — these are the <strong>centroids</strong></li>
 <li>This is <strong>multi-source BFS from leaves inward</strong>, NOT BFS from a single root</li>
 </ul>
-<pre><code>[0,1,2,3,4]  (linear tree: 0-1-2-3-4)
+<pre><code class="hljs">[0,1,2,3,4]  (linear tree: 0-1-2-3-4)
 
 → remove 0,4       (outer leaves)
 → remove 1,3       (new leaves after trimming)

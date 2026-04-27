@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,13 +20,24 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
     document.querySelectorAll('pre code').forEach(function(codeEl) {
       var pre = codeEl.parentElement;
       var lang = '';
       var cls = codeEl.className || '';
       var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
       if (m) lang = m[1];
+
+      // Add line numbers
+      var lines = codeEl.innerHTML.split('
+');
+      if (lines[lines.length - 1] === '') lines.pop();
+      var numbered = lines.map(function(line, i) {
+        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
+      }).join('
+');
+      codeEl.innerHTML = numbered;
+      codeEl.classList.add('hljs-ln');
+
       var wrapper = document.createElement('div');
       wrapper.className = 'code-block-wrapper';
       pre.parentNode.insertBefore(wrapper, pre);
@@ -45,7 +55,9 @@
       btn.className = 'copy-btn';
       btn.textContent = 'Copy';
       btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
+');
+        navigator.clipboard.writeText(text).then(function() {
           btn.textContent = 'Copied!';
           btn.classList.add('copied');
           setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
@@ -155,214 +167,214 @@
 <h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General Form</span></a></h2>
 <h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
 <h4 id="state-definition" tabindex="-1"><a class="header-anchor" href="#state-definition"><span>State Definition</span></a></h4>
-<pre><code class="language-python"># Basic states
-hold[i] = max profit when holding stock at day i
-sold[i] = max profit when not holding stock at day i
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Basic states</span>
+hold[i] = <span class="hljs-built_in">max</span> profit when holding stock at day i
+sold[i] = <span class="hljs-built_in">max</span> profit when <span class="hljs-keyword">not</span> holding stock at day i
 
-# With transaction count
-buy[i][k] = max profit after at most k transactions, currently holding
-sell[i][k] = max profit after at most k transactions, currently not holding
+<span class="hljs-comment"># With transaction count</span>
+buy[i][k] = <span class="hljs-built_in">max</span> profit after at most k transactions, currently holding
+sell[i][k] = <span class="hljs-built_in">max</span> profit after at most k transactions, currently <span class="hljs-keyword">not</span> holding
 </code></pre>
 <h4 id="state-transitions" tabindex="-1"><a class="header-anchor" href="#state-transitions"><span>State Transitions</span></a></h4>
-<pre><code class="language-python"># Basic transitions
-hold[i] = max(hold[i-1], sold[i-1] - prices[i])  # Keep holding or buy
-sold[i] = max(sold[i-1], hold[i-1] + prices[i])  # Keep not holding or sell
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Basic transitions</span>
+hold[i] = <span class="hljs-built_in">max</span>(hold[i-<span class="hljs-number">1</span>], sold[i-<span class="hljs-number">1</span>] - prices[i])  <span class="hljs-comment"># Keep holding or buy</span>
+sold[i] = <span class="hljs-built_in">max</span>(sold[i-<span class="hljs-number">1</span>], hold[i-<span class="hljs-number">1</span>] + prices[i])  <span class="hljs-comment"># Keep not holding or sell</span>
 </code></pre>
 <h4 id="template-code" tabindex="-1"><a class="header-anchor" href="#template-code"><span>Template Code</span></a></h4>
-<pre><code class="language-python">def maxProfit(prices):
-    n = len(prices)
-    if n &lt;= 1:
-        return 0
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">maxProfit</span>(<span class="hljs-params">prices</span>):
+    n = <span class="hljs-built_in">len</span>(prices)
+    <span class="hljs-keyword">if</span> n &lt;= <span class="hljs-number">1</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
     
-    # Initialize states
-    hold = -prices[0]  # Bought on first day
-    sold = 0           # No action on first day
+    <span class="hljs-comment"># Initialize states</span>
+    hold = -prices[<span class="hljs-number">0</span>]  <span class="hljs-comment"># Bought on first day</span>
+    sold = <span class="hljs-number">0</span>           <span class="hljs-comment"># No action on first day</span>
     
-    for i in range(1, n):
-        new_hold = max(hold, sold - prices[i])  # Keep holding or buy
-        new_sold = max(sold, hold + prices[i])  # Keep sold or sell
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n):
+        new_hold = <span class="hljs-built_in">max</span>(hold, sold - prices[i])  <span class="hljs-comment"># Keep holding or buy</span>
+        new_sold = <span class="hljs-built_in">max</span>(sold, hold + prices[i])  <span class="hljs-comment"># Keep sold or sell</span>
         hold, sold = new_hold, new_sold
     
-    return sold  # Must end without holding stock
+    <span class="hljs-keyword">return</span> sold  <span class="hljs-comment"># Must end without holding stock</span>
 </code></pre>
 <h2 id="2-lc-examples" tabindex="-1"><a class="header-anchor" href="#2-lc-examples"><span>2) LC Examples</span></a></h2>
 <h3 id="lc-121-best-time-to-buy-and-sell-stock-single-transaction" tabindex="-1"><a class="header-anchor" href="#lc-121-best-time-to-buy-and-sell-stock-single-transaction"><span>LC 121: Best Time to Buy and Sell Stock (Single Transaction)</span></a></h3>
-<pre><code class="language-python">def maxProfit(prices):
-    &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">maxProfit</span>(<span class="hljs-params">prices</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
     At most 1 transaction (1 buy + 1 sell)
     Track minimum price seen so far and max profit
-    &quot;&quot;&quot;
-    min_price = float('inf')
-    max_profit = 0
+    &quot;&quot;&quot;</span>
+    min_price = <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)
+    max_profit = <span class="hljs-number">0</span>
     
-    for price in prices:
-        min_price = min(min_price, price)
-        max_profit = max(max_profit, price - min_price)
+    <span class="hljs-keyword">for</span> price <span class="hljs-keyword">in</span> prices:
+        min_price = <span class="hljs-built_in">min</span>(min_price, price)
+        max_profit = <span class="hljs-built_in">max</span>(max_profit, price - min_price)
     
-    return max_profit
+    <span class="hljs-keyword">return</span> max_profit
 
-# State machine approach
-def maxProfit(prices):
-    hold = -prices[0]  # Max profit when holding stock
-    sold = 0           # Max profit when not holding stock
+<span class="hljs-comment"># State machine approach</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">maxProfit</span>(<span class="hljs-params">prices</span>):
+    hold = -prices[<span class="hljs-number">0</span>]  <span class="hljs-comment"># Max profit when holding stock</span>
+    sold = <span class="hljs-number">0</span>           <span class="hljs-comment"># Max profit when not holding stock</span>
     
-    for i in range(1, len(prices)):
-        hold = max(hold, -prices[i])         # Buy at prices[i] or keep holding
-        sold = max(sold, hold + prices[i])   # Sell at prices[i] or keep sold
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(prices)):
+        hold = <span class="hljs-built_in">max</span>(hold, -prices[i])         <span class="hljs-comment"># Buy at prices[i] or keep holding</span>
+        sold = <span class="hljs-built_in">max</span>(sold, hold + prices[i])   <span class="hljs-comment"># Sell at prices[i] or keep sold</span>
     
-    return sold
+    <span class="hljs-keyword">return</span> sold
 </code></pre>
 <h3 id="lc-122-best-time-to-buy-and-sell-stock-ii-unlimited-transactions" tabindex="-1"><a class="header-anchor" href="#lc-122-best-time-to-buy-and-sell-stock-ii-unlimited-transactions"><span>LC 122: Best Time to Buy and Sell Stock II (Unlimited Transactions)</span></a></h3>
-<pre><code class="language-python">def maxProfit(prices):
-    &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">maxProfit</span>(<span class="hljs-params">prices</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
     Unlimited transactions - greedy approach
     Buy before every price increase
-    &quot;&quot;&quot;
-    profit = 0
-    for i in range(1, len(prices)):
-        if prices[i] &gt; prices[i-1]:
-            profit += prices[i] - prices[i-1]
-    return profit
+    &quot;&quot;&quot;</span>
+    profit = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(prices)):
+        <span class="hljs-keyword">if</span> prices[i] &gt; prices[i-<span class="hljs-number">1</span>]:
+            profit += prices[i] - prices[i-<span class="hljs-number">1</span>]
+    <span class="hljs-keyword">return</span> profit
 
-# State machine approach
-def maxProfit(prices):
-    hold = -prices[0]
-    sold = 0
+<span class="hljs-comment"># State machine approach</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">maxProfit</span>(<span class="hljs-params">prices</span>):
+    hold = -prices[<span class="hljs-number">0</span>]
+    sold = <span class="hljs-number">0</span>
     
-    for i in range(1, len(prices)):
-        hold = max(hold, sold - prices[i])   # Can buy multiple times
-        sold = max(sold, hold + prices[i])
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(prices)):
+        hold = <span class="hljs-built_in">max</span>(hold, sold - prices[i])   <span class="hljs-comment"># Can buy multiple times</span>
+        sold = <span class="hljs-built_in">max</span>(sold, hold + prices[i])
     
-    return sold
+    <span class="hljs-keyword">return</span> sold
 </code></pre>
 <h3 id="lc-714-best-time-to-buy-and-sell-stock-with-transaction-fee" tabindex="-1"><a class="header-anchor" href="#lc-714-best-time-to-buy-and-sell-stock-with-transaction-fee"><span>LC 714: Best Time to Buy and Sell Stock with Transaction Fee</span></a></h3>
-<pre><code class="language-python">def maxProfit(prices, fee):
-    &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">maxProfit</span>(<span class="hljs-params">prices, fee</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
     Unlimited transactions with fee
     Pay fee when selling
-    &quot;&quot;&quot;
-    hold = -prices[0]
-    sold = 0
+    &quot;&quot;&quot;</span>
+    hold = -prices[<span class="hljs-number">0</span>]
+    sold = <span class="hljs-number">0</span>
     
-    for i in range(1, len(prices)):
-        hold = max(hold, sold - prices[i])
-        sold = max(sold, hold + prices[i] - fee)  # Subtract fee when selling
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(prices)):
+        hold = <span class="hljs-built_in">max</span>(hold, sold - prices[i])
+        sold = <span class="hljs-built_in">max</span>(sold, hold + prices[i] - fee)  <span class="hljs-comment"># Subtract fee when selling</span>
     
-    return sold
+    <span class="hljs-keyword">return</span> sold
 </code></pre>
 <h3 id="lc-309-best-time-to-buy-and-sell-stock-with-cooldown" tabindex="-1"><a class="header-anchor" href="#lc-309-best-time-to-buy-and-sell-stock-with-cooldown"><span>LC 309: Best Time to Buy and Sell Stock with Cooldown</span></a></h3>
-<pre><code class="language-python">def maxProfit(prices):
-    &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">maxProfit</span>(<span class="hljs-params">prices</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
     Unlimited transactions with 1 day cooldown
     After selling, must wait 1 day before buying
-    &quot;&quot;&quot;
-    if len(prices) &lt;= 1:
-        return 0
+    &quot;&quot;&quot;</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(prices) &lt;= <span class="hljs-number">1</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
     
-    # Three states: hold, sold (can buy tomorrow), rest (just sold, cooldown)
-    hold = -prices[0]
-    sold = 0
-    rest = 0
+    <span class="hljs-comment"># Three states: hold, sold (can buy tomorrow), rest (just sold, cooldown)</span>
+    hold = -prices[<span class="hljs-number">0</span>]
+    sold = <span class="hljs-number">0</span>
+    rest = <span class="hljs-number">0</span>
     
-    for i in range(1, len(prices)):
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(prices)):
         prev_hold, prev_sold, prev_rest = hold, sold, rest
-        hold = max(prev_hold, prev_rest - prices[i])  # Buy after cooldown
-        sold = prev_hold + prices[i]                  # Sell -&gt; enter cooldown
-        rest = max(prev_sold, prev_rest)              # Continue resting
+        hold = <span class="hljs-built_in">max</span>(prev_hold, prev_rest - prices[i])  <span class="hljs-comment"># Buy after cooldown</span>
+        sold = prev_hold + prices[i]                  <span class="hljs-comment"># Sell -&gt; enter cooldown</span>
+        rest = <span class="hljs-built_in">max</span>(prev_sold, prev_rest)              <span class="hljs-comment"># Continue resting</span>
     
-    return max(sold, rest)  # Don't hold stock at the end
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">max</span>(sold, rest)  <span class="hljs-comment"># Don&#x27;t hold stock at the end</span>
 </code></pre>
 <h3 id="lc-123-best-time-to-buy-and-sell-stock-iii-at-most-2-transactions" tabindex="-1"><a class="header-anchor" href="#lc-123-best-time-to-buy-and-sell-stock-iii-at-most-2-transactions"><span>LC 123: Best Time to Buy and Sell Stock III (At Most 2 Transactions)</span></a></h3>
-<pre><code class="language-python">def maxProfit(prices):
-    &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">maxProfit</span>(<span class="hljs-params">prices</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
     At most 2 transactions (k=2)
     Track states for each transaction
-    &quot;&quot;&quot;
-    # First transaction
-    buy1 = -prices[0]
-    sell1 = 0
-    # Second transaction
-    buy2 = -prices[0]
-    sell2 = 0
+    &quot;&quot;&quot;</span>
+    <span class="hljs-comment"># First transaction</span>
+    buy1 = -prices[<span class="hljs-number">0</span>]
+    sell1 = <span class="hljs-number">0</span>
+    <span class="hljs-comment"># Second transaction</span>
+    buy2 = -prices[<span class="hljs-number">0</span>]
+    sell2 = <span class="hljs-number">0</span>
     
-    for i in range(1, len(prices)):
-        buy1 = max(buy1, -prices[i])           # First buy
-        sell1 = max(sell1, buy1 + prices[i])   # First sell
-        buy2 = max(buy2, sell1 - prices[i])    # Second buy (use profit from first)
-        sell2 = max(sell2, buy2 + prices[i])   # Second sell
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(prices)):
+        buy1 = <span class="hljs-built_in">max</span>(buy1, -prices[i])           <span class="hljs-comment"># First buy</span>
+        sell1 = <span class="hljs-built_in">max</span>(sell1, buy1 + prices[i])   <span class="hljs-comment"># First sell</span>
+        buy2 = <span class="hljs-built_in">max</span>(buy2, sell1 - prices[i])    <span class="hljs-comment"># Second buy (use profit from first)</span>
+        sell2 = <span class="hljs-built_in">max</span>(sell2, buy2 + prices[i])   <span class="hljs-comment"># Second sell</span>
     
-    return sell2
+    <span class="hljs-keyword">return</span> sell2
 </code></pre>
 <h3 id="lc-188-best-time-to-buy-and-sell-stock-iv-at-most-k-transactions" tabindex="-1"><a class="header-anchor" href="#lc-188-best-time-to-buy-and-sell-stock-iv-at-most-k-transactions"><span>LC 188: Best Time to Buy and Sell Stock IV (At Most K Transactions)</span></a></h3>
-<pre><code class="language-python">def maxProfit(k, prices):
-    &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">maxProfit</span>(<span class="hljs-params">k, prices</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
     At most k transactions
     Optimize for large k (unlimited case)
-    &quot;&quot;&quot;
-    n = len(prices)
-    if n &lt;= 1 or k == 0:
-        return 0
+    &quot;&quot;&quot;</span>
+    n = <span class="hljs-built_in">len</span>(prices)
+    <span class="hljs-keyword">if</span> n &lt;= <span class="hljs-number">1</span> <span class="hljs-keyword">or</span> k == <span class="hljs-number">0</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
     
-    # If k &gt;= n//2, it's equivalent to unlimited transactions
-    if k &gt;= n // 2:
-        profit = 0
-        for i in range(1, n):
-            if prices[i] &gt; prices[i-1]:
-                profit += prices[i] - prices[i-1]
-        return profit
+    <span class="hljs-comment"># If k &gt;= n//2, it&#x27;s equivalent to unlimited transactions</span>
+    <span class="hljs-keyword">if</span> k &gt;= n // <span class="hljs-number">2</span>:
+        profit = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n):
+            <span class="hljs-keyword">if</span> prices[i] &gt; prices[i-<span class="hljs-number">1</span>]:
+                profit += prices[i] - prices[i-<span class="hljs-number">1</span>]
+        <span class="hljs-keyword">return</span> profit
     
-    # DP for limited transactions
-    buy = [-prices[0]] * k   # buy[i] = max profit after at most i+1 buys
-    sell = [0] * k           # sell[i] = max profit after at most i+1 sells
+    <span class="hljs-comment"># DP for limited transactions</span>
+    buy = [-prices[<span class="hljs-number">0</span>]] * k   <span class="hljs-comment"># buy[i] = max profit after at most i+1 buys</span>
+    sell = [<span class="hljs-number">0</span>] * k           <span class="hljs-comment"># sell[i] = max profit after at most i+1 sells</span>
     
-    for i in range(1, n):
-        for j in range(k):
-            buy[j] = max(buy[j], (sell[j-1] if j &gt; 0 else 0) - prices[i])
-            sell[j] = max(sell[j], buy[j] + prices[i])
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n):
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(k):
+            buy[j] = <span class="hljs-built_in">max</span>(buy[j], (sell[j-<span class="hljs-number">1</span>] <span class="hljs-keyword">if</span> j &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> <span class="hljs-number">0</span>) - prices[i])
+            sell[j] = <span class="hljs-built_in">max</span>(sell[j], buy[j] + prices[i])
     
-    return sell[k-1]
+    <span class="hljs-keyword">return</span> sell[k-<span class="hljs-number">1</span>]
 </code></pre>
 <h3 id="lc-1235-maximum-profit-in-job-scheduling-weighted-job-scheduling" tabindex="-1"><a class="header-anchor" href="#lc-1235-maximum-profit-in-job-scheduling-weighted-job-scheduling"><span>LC 1235: Maximum Profit in Job Scheduling (Weighted Job Scheduling)</span></a></h3>
-<pre><code class="language-python">def jobScheduling(startTime, endTime, profit):
-    &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">jobScheduling</span>(<span class="hljs-params">startTime, endTime, profit</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
     Similar to stock trading but with weighted intervals
     Use DP with binary search for optimization
-    &quot;&quot;&quot;
-    jobs = sorted(zip(startTime, endTime, profit), key=lambda x: x[1])
-    n = len(jobs)
+    &quot;&quot;&quot;</span>
+    jobs = <span class="hljs-built_in">sorted</span>(<span class="hljs-built_in">zip</span>(startTime, endTime, profit), key=<span class="hljs-keyword">lambda</span> x: x[<span class="hljs-number">1</span>])
+    n = <span class="hljs-built_in">len</span>(jobs)
     
-    # dp[i] = max profit considering jobs 0 to i
-    dp = [0] * n
-    dp[0] = jobs[0][2]
+    <span class="hljs-comment"># dp[i] = max profit considering jobs 0 to i</span>
+    dp = [<span class="hljs-number">0</span>] * n
+    dp[<span class="hljs-number">0</span>] = jobs[<span class="hljs-number">0</span>][<span class="hljs-number">2</span>]
     
-    def findLatestNonOverlap(i):
-        # Binary search for latest job that doesn't overlap with job i
-        left, right = 0, i - 1
-        result = -1
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">findLatestNonOverlap</span>(<span class="hljs-params">i</span>):
+        <span class="hljs-comment"># Binary search for latest job that doesn&#x27;t overlap with job i</span>
+        left, right = <span class="hljs-number">0</span>, i - <span class="hljs-number">1</span>
+        result = -<span class="hljs-number">1</span>
         
-        while left &lt;= right:
-            mid = (left + right) // 2
-            if jobs[mid][1] &lt;= jobs[i][0]:
+        <span class="hljs-keyword">while</span> left &lt;= right:
+            mid = (left + right) // <span class="hljs-number">2</span>
+            <span class="hljs-keyword">if</span> jobs[mid][<span class="hljs-number">1</span>] &lt;= jobs[i][<span class="hljs-number">0</span>]:
                 result = mid
-                left = mid + 1
-            else:
-                right = mid - 1
+                left = mid + <span class="hljs-number">1</span>
+            <span class="hljs-keyword">else</span>:
+                right = mid - <span class="hljs-number">1</span>
         
-        return result
+        <span class="hljs-keyword">return</span> result
     
-    for i in range(1, n):
-        # Option 1: Don't take current job
-        profit_without = dp[i-1]
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n):
+        <span class="hljs-comment"># Option 1: Don&#x27;t take current job</span>
+        profit_without = dp[i-<span class="hljs-number">1</span>]
         
-        # Option 2: Take current job
-        profit_with = jobs[i][2]
+        <span class="hljs-comment"># Option 2: Take current job</span>
+        profit_with = jobs[i][<span class="hljs-number">2</span>]
         latest_non_overlap = findLatestNonOverlap(i)
-        if latest_non_overlap != -1:
+        <span class="hljs-keyword">if</span> latest_non_overlap != -<span class="hljs-number">1</span>:
             profit_with += dp[latest_non_overlap]
         
-        dp[i] = max(profit_without, profit_with)
+        dp[i] = <span class="hljs-built_in">max</span>(profit_without, profit_with)
     
-    return dp[n-1]
+    <span class="hljs-keyword">return</span> dp[n-<span class="hljs-number">1</span>]
 </code></pre>
 <h2 id="3-key-patterns-techniques" tabindex="-1"><a class="header-anchor" href="#3-key-patterns-techniques"><span>3) Key Patterns &amp; Techniques</span></a></h2>
 <h3 id="pattern-1-state-machine-dp" tabindex="-1"><a class="header-anchor" href="#pattern-1-state-machine-dp"><span>Pattern 1: State Machine DP</span></a></h3>

@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,13 +20,24 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
     document.querySelectorAll('pre code').forEach(function(codeEl) {
       var pre = codeEl.parentElement;
       var lang = '';
       var cls = codeEl.className || '';
       var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
       if (m) lang = m[1];
+
+      // Add line numbers
+      var lines = codeEl.innerHTML.split('
+');
+      if (lines[lines.length - 1] === '') lines.pop();
+      var numbered = lines.map(function(line, i) {
+        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
+      }).join('
+');
+      codeEl.innerHTML = numbered;
+      codeEl.classList.add('hljs-ln');
+
       var wrapper = document.createElement('div');
       wrapper.className = 'code-block-wrapper';
       pre.parentNode.insertBefore(wrapper, pre);
@@ -45,7 +55,9 @@
       btn.className = 'copy-btn';
       btn.textContent = 'Copy';
       btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
+');
+        navigator.clipboard.writeText(text).then(function() {
           btn.textContent = 'Copied!';
           btn.classList.add('copied');
           setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
@@ -169,91 +181,91 @@
 <h3 id="0-2-pattern" tabindex="-1"><a class="header-anchor" href="#0-2-pattern"><span>0-2) Pattern</span></a></h3>
 <h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
 <h4 id="1-0-get-element-if-existed-in-collecitons-custom-sort" tabindex="-1"><a class="header-anchor" href="#1-0-get-element-if-existed-in-collecitons-custom-sort"><span>1-0) get element if existed in collecitons (custom sort)</span></a></h4>
-<pre><code class="language-python"># LC 791. Custom Sort String
-# ...
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 791. Custom Sort String</span>
+<span class="hljs-comment"># ...</span>
 s_map = Counter(s)
-res = &quot;&quot;
-for o in order:
-    if o in s_map:
+res = <span class="hljs-string">&quot;&quot;</span>
+<span class="hljs-keyword">for</span> o <span class="hljs-keyword">in</span> order:
+    <span class="hljs-keyword">if</span> o <span class="hljs-keyword">in</span> s_map:
         res += (o * s_map[o])
-        del s_map[o]
-for s in s_map:
+        <span class="hljs-keyword">del</span> s_map[o]
+<span class="hljs-keyword">for</span> s <span class="hljs-keyword">in</span> s_map:
     res += (s * s_map[s])
-# ...
+<span class="hljs-comment"># ...</span>
 </code></pre>
 <h4 id="1-1-collection-counter" tabindex="-1"><a class="header-anchor" href="#1-1-collection-counter"><span>1-1) collection.Counter</span></a></h4>
-<pre><code class="language-python">import collections
-s = ['a','b','c','c']
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">import</span> collections
+s = [<span class="hljs-string">&#x27;a&#x27;</span>,<span class="hljs-string">&#x27;b&#x27;</span>,<span class="hljs-string">&#x27;c&#x27;</span>,<span class="hljs-string">&#x27;c&#x27;</span>]
 c= collections.Counter(s)
-print (c)
-print (c.keys())
-print (c.values())
+<span class="hljs-built_in">print</span> (c)
+<span class="hljs-built_in">print</span> (c.keys())
+<span class="hljs-built_in">print</span> (c.values())
 </code></pre>
 <h4 id="1-2-important-method-most-common" tabindex="-1"><a class="header-anchor" href="#1-2-important-method-most-common"><span>1-2) Important method - most_common()</span></a></h4>
-<pre><code class="language-python"># 451 Sort Characters By Frequency
-import collections
-s = ['a','b','c','c']
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 451 Sort Characters By Frequency</span>
+<span class="hljs-keyword">import</span> collections
+s = [<span class="hljs-string">&#x27;a&#x27;</span>,<span class="hljs-string">&#x27;b&#x27;</span>,<span class="hljs-string">&#x27;c&#x27;</span>,<span class="hljs-string">&#x27;c&#x27;</span>]
 count = collections.Counter(s).most_common()
-for item, freq in count:
-    print (item, freq)   
-#c 2
-#a 1
-#b 1
+<span class="hljs-keyword">for</span> item, freq <span class="hljs-keyword">in</span> count:
+    <span class="hljs-built_in">print</span> (item, freq)   
+<span class="hljs-comment">#c 2</span>
+<span class="hljs-comment">#a 1</span>
+<span class="hljs-comment">#b 1</span>
 </code></pre>
 <h4 id="1-3-collection-defaultdict-int-list" tabindex="-1"><a class="header-anchor" href="#1-3-collection-defaultdict-int-list"><span>1-3) collection.defaultdict (int, list…)</span></a></h4>
-<pre><code class="language-python">import collections
-s = ['a','b','c','c']
-count = collections.defaultdict(int)
-for i in s:
-    count[i] += 1 
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">import</span> collections
+s = [<span class="hljs-string">&#x27;a&#x27;</span>,<span class="hljs-string">&#x27;b&#x27;</span>,<span class="hljs-string">&#x27;c&#x27;</span>,<span class="hljs-string">&#x27;c&#x27;</span>]
+count = collections.defaultdict(<span class="hljs-built_in">int</span>)
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> s:
+    count[i] += <span class="hljs-number">1</span> 
 
-print (count)
-print (dict(count))
+<span class="hljs-built_in">print</span> (count)
+<span class="hljs-built_in">print</span> (<span class="hljs-built_in">dict</span>(count))
 </code></pre>
-<pre><code class="language-python">import collections
-s=[('yellow', 1), ('blue', 2), ('yellow', 3), ('blue', 4), ('red', 1)]
-count = collections.defaultdict(list)
-for k, v in s:
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">import</span> collections
+s=[(<span class="hljs-string">&#x27;yellow&#x27;</span>, <span class="hljs-number">1</span>), (<span class="hljs-string">&#x27;blue&#x27;</span>, <span class="hljs-number">2</span>), (<span class="hljs-string">&#x27;yellow&#x27;</span>, <span class="hljs-number">3</span>), (<span class="hljs-string">&#x27;blue&#x27;</span>, <span class="hljs-number">4</span>), (<span class="hljs-string">&#x27;red&#x27;</span>, <span class="hljs-number">1</span>)]
+count = collections.defaultdict(<span class="hljs-built_in">list</span>)
+<span class="hljs-keyword">for</span> k, v <span class="hljs-keyword">in</span> s:
     count[k].append(v)
 
-print (count)
-print (count.keys())
-print (count.values())
-print(count.items())
+<span class="hljs-built_in">print</span> (count)
+<span class="hljs-built_in">print</span> (count.keys())
+<span class="hljs-built_in">print</span> (count.values())
+<span class="hljs-built_in">print</span>(count.items())
 </code></pre>
 <h4 id="1-3-collection-update" tabindex="-1"><a class="header-anchor" href="#1-3-collection-update"><span>1-3) collection.update()</span></a></h4>
-<pre><code class="language-python"># LC # 554 rick Wall
-import collections
-In [87]: _counter = collections.Counter()
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC # 554 rick Wall</span>
+<span class="hljs-keyword">import</span> collections
+In [<span class="hljs-number">87</span>]: _counter = collections.Counter()
 
-In [88]: _counter
-Out[88]: Counter()
+In [<span class="hljs-number">88</span>]: _counter
+Out[<span class="hljs-number">88</span>]: Counter()
 
-In [89]: _counter.update([1])
+In [<span class="hljs-number">89</span>]: _counter.update([<span class="hljs-number">1</span>])
 
-In [90]: _counter
-Out[90]: Counter({1: 1})
+In [<span class="hljs-number">90</span>]: _counter
+Out[<span class="hljs-number">90</span>]: Counter({<span class="hljs-number">1</span>: <span class="hljs-number">1</span>})
 
-In [91]: _counter.update([1])
+In [<span class="hljs-number">91</span>]: _counter.update([<span class="hljs-number">1</span>])
 
-In [92]: _counter
-Out[92]: Counter({1: 2})
+In [<span class="hljs-number">92</span>]: _counter
+Out[<span class="hljs-number">92</span>]: Counter({<span class="hljs-number">1</span>: <span class="hljs-number">2</span>})
 
-In [93]: _counter.update([2])
+In [<span class="hljs-number">93</span>]: _counter.update([<span class="hljs-number">2</span>])
 
-In [94]: _counter
-Out[94]: Counter({1: 2, 2: 1})
+In [<span class="hljs-number">94</span>]: _counter
+Out[<span class="hljs-number">94</span>]: Counter({<span class="hljs-number">1</span>: <span class="hljs-number">2</span>, <span class="hljs-number">2</span>: <span class="hljs-number">1</span>})
 </code></pre>
 <h3 id="1-4-ordereddict-hashmap-linked-list" tabindex="-1"><a class="header-anchor" href="#1-4-ordereddict-hashmap-linked-list"><span>1-4) <code>OrderedDict </code> ( hashmap + linked list)</span></a></h3>
-<pre><code class="language-python"># LC 146 LRU Cache
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 146 LRU Cache</span>
 
-# There is a structure called ordered dictionary, it combines behind both hashmap and linked list. In Python this structure is called OrderedDict and in Java LinkedHashMap.
+<span class="hljs-comment"># There is a structure called ordered dictionary, it combines behind both hashmap and linked list. In Python this structure is called OrderedDict and in Java LinkedHashMap.</span>
 
-# https://docs.python.org/3/library/collections.html#collections.OrderedDict
-# https://codertw.com/%E7%A8%8B%E5%BC%8F%E8%AA%9E%E8%A8%80/367557/
-# https://www.w3help.cc/a/202107/420653.html
+<span class="hljs-comment"># https://docs.python.org/3/library/collections.html#collections.OrderedDict</span>
+<span class="hljs-comment"># https://codertw.com/%E7%A8%8B%E5%BC%8F%E8%AA%9E%E8%A8%80/367557/</span>
+<span class="hljs-comment"># https://www.w3help.cc/a/202107/420653.html</span>
 
-&quot;&quot;&quot;
+<span class="hljs-string">&quot;&quot;&quot;
 
 # OrderedDict = hashmap + linked list
 # CAN make dict ordering (default dict is NOT ordering)
@@ -265,44 +277,44 @@ Out[94]: Counter({1: 2, 2: 1})
 * move_to_end(key, last=True)
     Move an existing key to either end of an ordered dictionary. The item is moved to the right end if last is true (the default) or to the beginning if last is false. Raises KeyError if the key does not exist:
 
-&quot;&quot;&quot;
+&quot;&quot;&quot;</span>
 
-#----------------------------
-# example 0
-#----------------------------
+<span class="hljs-comment">#----------------------------</span>
+<span class="hljs-comment"># example 0</span>
+<span class="hljs-comment">#----------------------------</span>
 
-# default dict
-In [34]: d = {}
-    ...: d['a'] = 'A'
-    ...: d['b'] = 'B'
-    ...: d['c'] = 'C'
-    ...: d['d'] = 'D'
-    ...: d['e'] = 'E'
+<span class="hljs-comment"># default dict</span>
+In [<span class="hljs-number">34</span>]: d = {}
+    ...: d[<span class="hljs-string">&#x27;a&#x27;</span>] = <span class="hljs-string">&#x27;A&#x27;</span>
+    ...: d[<span class="hljs-string">&#x27;b&#x27;</span>] = <span class="hljs-string">&#x27;B&#x27;</span>
+    ...: d[<span class="hljs-string">&#x27;c&#x27;</span>] = <span class="hljs-string">&#x27;C&#x27;</span>
+    ...: d[<span class="hljs-string">&#x27;d&#x27;</span>] = <span class="hljs-string">&#x27;D&#x27;</span>
+    ...: d[<span class="hljs-string">&#x27;e&#x27;</span>] = <span class="hljs-string">&#x27;E&#x27;</span>
     ...:
-    ...: for k, v in d.items():
-    ...:     print (k, v)
+    ...: <span class="hljs-keyword">for</span> k, v <span class="hljs-keyword">in</span> d.items():
+    ...:     <span class="hljs-built_in">print</span> (k, v)
     ...:
-# NON ordering
+<span class="hljs-comment"># NON ordering</span>
 a A
 b B
 c C
 d D
 e E
 
-# OrderedDict
-In [35]: from collections import OrderedDict
+<span class="hljs-comment"># OrderedDict</span>
+In [<span class="hljs-number">35</span>]: <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> OrderedDict
     ...: d = OrderedDict()
-    ...: d['a'] = 'A'
-    ...: d['b'] = 'B'
-    ...: d['c'] = 'C'
-    ...: d['d'] = 'D'
-    ...: d['e'] = 'E'
+    ...: d[<span class="hljs-string">&#x27;a&#x27;</span>] = <span class="hljs-string">&#x27;A&#x27;</span>
+    ...: d[<span class="hljs-string">&#x27;b&#x27;</span>] = <span class="hljs-string">&#x27;B&#x27;</span>
+    ...: d[<span class="hljs-string">&#x27;c&#x27;</span>] = <span class="hljs-string">&#x27;C&#x27;</span>
+    ...: d[<span class="hljs-string">&#x27;d&#x27;</span>] = <span class="hljs-string">&#x27;D&#x27;</span>
+    ...: d[<span class="hljs-string">&#x27;e&#x27;</span>] = <span class="hljs-string">&#x27;E&#x27;</span>
     ...:
-    ...: for k, v in d.items():
-    ...:     print (k, v)
+    ...: <span class="hljs-keyword">for</span> k, v <span class="hljs-keyword">in</span> d.items():
+    ...:     <span class="hljs-built_in">print</span> (k, v)
     ...:
 
-# ordering !!!
+<span class="hljs-comment"># ordering !!!</span>
 a A
 b B
 c C
@@ -310,79 +322,79 @@ d D
 e E
 
 
-#----------------------------
-# example 1
-#----------------------------
-In [28]:  d = OrderedDict.fromkeys('abcde')
+<span class="hljs-comment">#----------------------------</span>
+<span class="hljs-comment"># example 1</span>
+<span class="hljs-comment">#----------------------------</span>
+In [<span class="hljs-number">28</span>]:  d = OrderedDict.fromkeys(<span class="hljs-string">&#x27;abcde&#x27;</span>)
 
-In [29]: d
-Out[29]: OrderedDict([('a', None), ('b', None), ('c', None), ('d', None), ('e', None)])
+In [<span class="hljs-number">29</span>]: d
+Out[<span class="hljs-number">29</span>]: OrderedDict([(<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-literal">None</span>), (<span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-literal">None</span>), (<span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-literal">None</span>), (<span class="hljs-string">&#x27;d&#x27;</span>, <span class="hljs-literal">None</span>), (<span class="hljs-string">&#x27;e&#x27;</span>, <span class="hljs-literal">None</span>)])
 
-In [30]: d.move_to_end('b')
+In [<span class="hljs-number">30</span>]: d.move_to_end(<span class="hljs-string">&#x27;b&#x27;</span>)
 
-In [31]: &quot;&quot;.join(d)
-Out[31]: 'acdeb'
+In [<span class="hljs-number">31</span>]: <span class="hljs-string">&quot;&quot;</span>.join(d)
+Out[<span class="hljs-number">31</span>]: <span class="hljs-string">&#x27;acdeb&#x27;</span>
 
-In [32]:
+In [<span class="hljs-number">32</span>]:
 
-In [32]: d.move_to_end('b', last=False)
+In [<span class="hljs-number">32</span>]: d.move_to_end(<span class="hljs-string">&#x27;b&#x27;</span>, last=<span class="hljs-literal">False</span>)
 
-In [33]: &quot;&quot;.join(d)
-Out[33]: 'bacde'
+In [<span class="hljs-number">33</span>]: <span class="hljs-string">&quot;&quot;</span>.join(d)
+Out[<span class="hljs-number">33</span>]: <span class="hljs-string">&#x27;bacde&#x27;</span>
 
-#----------------------------
-# example 2
-#----------------------------
-class LastUpdatedOrderedDict(OrderedDict):
-    'Store items in the order the keys were last added'
+<span class="hljs-comment">#----------------------------</span>
+<span class="hljs-comment"># example 2</span>
+<span class="hljs-comment">#----------------------------</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">LastUpdatedOrderedDict</span>(<span class="hljs-title class_ inherited__">OrderedDict</span>):
+    <span class="hljs-string">&#x27;Store items in the order the keys were last added&#x27;</span>
 
-    def __setitem__(self, key, value):
-        super().__setitem__(key, value)
-        self.move_to_end(key)
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__setitem__</span>(<span class="hljs-params">self, key, value</span>):
+        <span class="hljs-built_in">super</span>().__setitem__(key, value)
+        <span class="hljs-variable language_">self</span>.move_to_end(key)
 
-#----------------------------
-# example 3
-#----------------------------
-from time import time
+<span class="hljs-comment">#----------------------------</span>
+<span class="hljs-comment"># example 3</span>
+<span class="hljs-comment">#----------------------------</span>
+<span class="hljs-keyword">from</span> time <span class="hljs-keyword">import</span> time
 
-class TimeBoundedLRU:
-    &quot;LRU Cache that invalidates and refreshes old entries.&quot;
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">TimeBoundedLRU</span>:
+    <span class="hljs-string">&quot;LRU Cache that invalidates and refreshes old entries.&quot;</span>
 
-    def __init__(self, func, maxsize=128, maxage=30):
-        self.cache = OrderedDict()      # { args : (timestamp, result)}
-        self.func = func
-        self.maxsize = maxsize
-        self.maxage = maxage
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, func, maxsize=<span class="hljs-number">128</span>, maxage=<span class="hljs-number">30</span></span>):
+        <span class="hljs-variable language_">self</span>.cache = OrderedDict()      <span class="hljs-comment"># { args : (timestamp, result)}</span>
+        <span class="hljs-variable language_">self</span>.func = func
+        <span class="hljs-variable language_">self</span>.maxsize = maxsize
+        <span class="hljs-variable language_">self</span>.maxage = maxage
 
-    def __call__(self, *args):
-        if args in self.cache:
-            self.cache.move_to_end(args)
-            timestamp, result = self.cache[args]
-            if time() - timestamp &lt;= self.maxage:
-                return result
-        result = self.func(*args)
-        self.cache[args] = time(), result
-        if len(self.cache) &gt; self.maxsize:
-            self.cache.popitem(0)
-        return result
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__call__</span>(<span class="hljs-params">self, *args</span>):
+        <span class="hljs-keyword">if</span> args <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.cache:
+            <span class="hljs-variable language_">self</span>.cache.move_to_end(args)
+            timestamp, result = <span class="hljs-variable language_">self</span>.cache[args]
+            <span class="hljs-keyword">if</span> time() - timestamp &lt;= <span class="hljs-variable language_">self</span>.maxage:
+                <span class="hljs-keyword">return</span> result
+        result = <span class="hljs-variable language_">self</span>.func(*args)
+        <span class="hljs-variable language_">self</span>.cache[args] = time(), result
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.cache) &gt; <span class="hljs-variable language_">self</span>.maxsize:
+            <span class="hljs-variable language_">self</span>.cache.popitem(<span class="hljs-number">0</span>)
+        <span class="hljs-keyword">return</span> result
 </code></pre>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
 <h3 id="2-1-custom-sort-string" tabindex="-1"><a class="header-anchor" href="#2-1-custom-sort-string"><span>2-1) Custom Sort String</span></a></h3>
-<pre><code class="language-python"># LC 791. Custom Sort String
-# V0
-# IDEA : COUNTER
-from collections import Counter
-class Solution(object):
-    def customSortString(self, order, s):
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 791. Custom Sort String</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : COUNTER</span>
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> Counter
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">customSortString</span>(<span class="hljs-params">self, order, s</span>):
         s_map = Counter(s)
-        res = &quot;&quot;
-        for o in order:
-            if o in s_map:
+        res = <span class="hljs-string">&quot;&quot;</span>
+        <span class="hljs-keyword">for</span> o <span class="hljs-keyword">in</span> order:
+            <span class="hljs-keyword">if</span> o <span class="hljs-keyword">in</span> s_map:
                 res += (o * s_map[o])
-                del s_map[o]
-        for s in s_map:
+                <span class="hljs-keyword">del</span> s_map[o]
+        <span class="hljs-keyword">for</span> s <span class="hljs-keyword">in</span> s_map:
             res += s * s_map[s]
-        return res
+        <span class="hljs-keyword">return</span> res
 </code></pre>
 
       </div>

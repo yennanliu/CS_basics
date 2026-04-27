@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,13 +20,24 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
     document.querySelectorAll('pre code').forEach(function(codeEl) {
       var pre = codeEl.parentElement;
       var lang = '';
       var cls = codeEl.className || '';
       var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
       if (m) lang = m[1];
+
+      // Add line numbers
+      var lines = codeEl.innerHTML.split('
+');
+      if (lines[lines.length - 1] === '') lines.pop();
+      var numbered = lines.map(function(line, i) {
+        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
+      }).join('
+');
+      codeEl.innerHTML = numbered;
+      codeEl.classList.add('hljs-ln');
+
       var wrapper = document.createElement('div');
       wrapper.className = 'code-block-wrapper';
       pre.parentNode.insertBefore(wrapper, pre);
@@ -45,7 +55,9 @@
       btn.className = 'copy-btn';
       btn.textContent = 'Copy';
       btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
+');
+        navigator.clipboard.writeText(text).then(function() {
           btn.textContent = 'Copied!';
           btn.classList.add('copied');
           setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
@@ -341,439 +353,439 @@
 </tbody>
 </table>
 <h3 id="template-1-quick-sort" tabindex="-1"><a class="header-anchor" href="#template-1-quick-sort"><span>Template 1: Quick Sort</span></a></h3>
-<pre><code class="language-python"># Python - Classic Quick Sort
-def quickSort(arr, low=0, high=None):
-    if high is None:
-        high = len(arr) - 1
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Classic Quick Sort</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">quickSort</span>(<span class="hljs-params">arr, low=<span class="hljs-number">0</span>, high=<span class="hljs-literal">None</span></span>):
+    <span class="hljs-keyword">if</span> high <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+        high = <span class="hljs-built_in">len</span>(arr) - <span class="hljs-number">1</span>
     
-    if low &lt; high:
-        # Partition and get pivot index
+    <span class="hljs-keyword">if</span> low &lt; high:
+        <span class="hljs-comment"># Partition and get pivot index</span>
         pi = partition(arr, low, high)
         
-        # Recursively sort left and right
-        quickSort(arr, low, pi - 1)
-        quickSort(arr, pi + 1, high)
+        <span class="hljs-comment"># Recursively sort left and right</span>
+        quickSort(arr, low, pi - <span class="hljs-number">1</span>)
+        quickSort(arr, pi + <span class="hljs-number">1</span>, high)
     
-    return arr
+    <span class="hljs-keyword">return</span> arr
 
-def partition(arr, low, high):
-    # Choose rightmost as pivot
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">partition</span>(<span class="hljs-params">arr, low, high</span>):
+    <span class="hljs-comment"># Choose rightmost as pivot</span>
     pivot = arr[high]
-    i = low - 1  # Smaller element index
+    i = low - <span class="hljs-number">1</span>  <span class="hljs-comment"># Smaller element index</span>
     
-    for j in range(low, high):
-        if arr[j] &lt;= pivot:
-            i += 1
+    <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(low, high):
+        <span class="hljs-keyword">if</span> arr[j] &lt;= pivot:
+            i += <span class="hljs-number">1</span>
             arr[i], arr[j] = arr[j], arr[i]
     
-    arr[i + 1], arr[high] = arr[high], arr[i + 1]
-    return i + 1
+    arr[i + <span class="hljs-number">1</span>], arr[high] = arr[high], arr[i + <span class="hljs-number">1</span>]
+    <span class="hljs-keyword">return</span> i + <span class="hljs-number">1</span>
 
-# 3-way Quick Sort for duplicates
-def quickSort3Way(arr, low=0, high=None):
-    if high is None:
-        high = len(arr) - 1
+<span class="hljs-comment"># 3-way Quick Sort for duplicates</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">quickSort3Way</span>(<span class="hljs-params">arr, low=<span class="hljs-number">0</span>, high=<span class="hljs-literal">None</span></span>):
+    <span class="hljs-keyword">if</span> high <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+        high = <span class="hljs-built_in">len</span>(arr) - <span class="hljs-number">1</span>
     
-    if low &lt; high:
+    <span class="hljs-keyword">if</span> low &lt; high:
         lt, gt = partition3Way(arr, low, high)
-        quickSort3Way(arr, low, lt - 1)
-        quickSort3Way(arr, gt + 1, high)
+        quickSort3Way(arr, low, lt - <span class="hljs-number">1</span>)
+        quickSort3Way(arr, gt + <span class="hljs-number">1</span>, high)
     
-    return arr
+    <span class="hljs-keyword">return</span> arr
 
-def partition3Way(arr, low, high):
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">partition3Way</span>(<span class="hljs-params">arr, low, high</span>):
     pivot = arr[low]
     i = low
     lt = low
     gt = high
     
-    while i &lt;= gt:
-        if arr[i] &lt; pivot:
+    <span class="hljs-keyword">while</span> i &lt;= gt:
+        <span class="hljs-keyword">if</span> arr[i] &lt; pivot:
             arr[lt], arr[i] = arr[i], arr[lt]
-            lt += 1
-            i += 1
-        elif arr[i] &gt; pivot:
+            lt += <span class="hljs-number">1</span>
+            i += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">elif</span> arr[i] &gt; pivot:
             arr[i], arr[gt] = arr[gt], arr[i]
-            gt -= 1
-        else:
-            i += 1
+            gt -= <span class="hljs-number">1</span>
+        <span class="hljs-keyword">else</span>:
+            i += <span class="hljs-number">1</span>
     
-    return lt, gt
+    <span class="hljs-keyword">return</span> lt, gt
 </code></pre>
-<pre><code class="language-java">// Java - Quick Sort
-public void quickSort(int[] arr, int low, int high) {
-    if (low &lt; high) {
-        int pi = partition(arr, low, high);
-        quickSort(arr, low, pi - 1);
-        quickSort(arr, pi + 1, high);
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Quick Sort</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">quickSort</span><span class="hljs-params">(<span class="hljs-type">int</span>[] arr, <span class="hljs-type">int</span> low, <span class="hljs-type">int</span> high)</span> {
+    <span class="hljs-keyword">if</span> (low &lt; high) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">pi</span> <span class="hljs-operator">=</span> partition(arr, low, high);
+        quickSort(arr, low, pi - <span class="hljs-number">1</span>);
+        quickSort(arr, pi + <span class="hljs-number">1</span>, high);
     }
 }
 
-private int partition(int[] arr, int low, int high) {
-    int pivot = arr[high];
-    int i = low - 1;
+<span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">partition</span><span class="hljs-params">(<span class="hljs-type">int</span>[] arr, <span class="hljs-type">int</span> low, <span class="hljs-type">int</span> high)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">pivot</span> <span class="hljs-operator">=</span> arr[high];
+    <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> low - <span class="hljs-number">1</span>;
     
-    for (int j = low; j &lt; high; j++) {
-        if (arr[j] &lt;= pivot) {
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> low; j &lt; high; j++) {
+        <span class="hljs-keyword">if</span> (arr[j] &lt;= pivot) {
             i++;
             swap(arr, i, j);
         }
     }
     
-    swap(arr, i + 1, high);
-    return i + 1;
+    swap(arr, i + <span class="hljs-number">1</span>, high);
+    <span class="hljs-keyword">return</span> i + <span class="hljs-number">1</span>;
 }
 
-private void swap(int[] arr, int i, int j) {
-    int temp = arr[i];
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">swap</span><span class="hljs-params">(<span class="hljs-type">int</span>[] arr, <span class="hljs-type">int</span> i, <span class="hljs-type">int</span> j)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">temp</span> <span class="hljs-operator">=</span> arr[i];
     arr[i] = arr[j];
     arr[j] = temp;
 }
 </code></pre>
 <h3 id="template-2-merge-sort" tabindex="-1"><a class="header-anchor" href="#template-2-merge-sort"><span>Template 2: Merge Sort</span></a></h3>
-<pre><code class="language-python"># Python - Merge Sort
-def mergeSort(arr):
-    if len(arr) &lt;= 1:
-        return arr
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Merge Sort</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">mergeSort</span>(<span class="hljs-params">arr</span>):
+    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(arr) &lt;= <span class="hljs-number">1</span>:
+        <span class="hljs-keyword">return</span> arr
     
-    mid = len(arr) // 2
+    mid = <span class="hljs-built_in">len</span>(arr) // <span class="hljs-number">2</span>
     left = mergeSort(arr[:mid])
     right = mergeSort(arr[mid:])
     
-    return merge(left, right)
+    <span class="hljs-keyword">return</span> merge(left, right)
 
-def merge(left, right):
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">merge</span>(<span class="hljs-params">left, right</span>):
     result = []
-    i = j = 0
+    i = j = <span class="hljs-number">0</span>
     
-    while i &lt; len(left) and j &lt; len(right):
-        if left[i] &lt;= right[j]:
+    <span class="hljs-keyword">while</span> i &lt; <span class="hljs-built_in">len</span>(left) <span class="hljs-keyword">and</span> j &lt; <span class="hljs-built_in">len</span>(right):
+        <span class="hljs-keyword">if</span> left[i] &lt;= right[j]:
             result.append(left[i])
-            i += 1
-        else:
+            i += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">else</span>:
             result.append(right[j])
-            j += 1
+            j += <span class="hljs-number">1</span>
     
     result.extend(left[i:])
     result.extend(right[j:])
-    return result
+    <span class="hljs-keyword">return</span> result
 
-# In-place merge sort
-def mergeSortInPlace(arr, left=0, right=None):
-    if right is None:
-        right = len(arr) - 1
+<span class="hljs-comment"># In-place merge sort</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">mergeSortInPlace</span>(<span class="hljs-params">arr, left=<span class="hljs-number">0</span>, right=<span class="hljs-literal">None</span></span>):
+    <span class="hljs-keyword">if</span> right <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+        right = <span class="hljs-built_in">len</span>(arr) - <span class="hljs-number">1</span>
     
-    if left &lt; right:
-        mid = (left + right) // 2
+    <span class="hljs-keyword">if</span> left &lt; right:
+        mid = (left + right) // <span class="hljs-number">2</span>
         mergeSortInPlace(arr, left, mid)
-        mergeSortInPlace(arr, mid + 1, right)
+        mergeSortInPlace(arr, mid + <span class="hljs-number">1</span>, right)
         mergeInPlace(arr, left, mid, right)
     
-    return arr
+    <span class="hljs-keyword">return</span> arr
 
-def mergeInPlace(arr, left, mid, right):
-    left_arr = arr[left:mid + 1]
-    right_arr = arr[mid + 1:right + 1]
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">mergeInPlace</span>(<span class="hljs-params">arr, left, mid, right</span>):
+    left_arr = arr[left:mid + <span class="hljs-number">1</span>]
+    right_arr = arr[mid + <span class="hljs-number">1</span>:right + <span class="hljs-number">1</span>]
     
-    i = j = 0
+    i = j = <span class="hljs-number">0</span>
     k = left
     
-    while i &lt; len(left_arr) and j &lt; len(right_arr):
-        if left_arr[i] &lt;= right_arr[j]:
+    <span class="hljs-keyword">while</span> i &lt; <span class="hljs-built_in">len</span>(left_arr) <span class="hljs-keyword">and</span> j &lt; <span class="hljs-built_in">len</span>(right_arr):
+        <span class="hljs-keyword">if</span> left_arr[i] &lt;= right_arr[j]:
             arr[k] = left_arr[i]
-            i += 1
-        else:
+            i += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">else</span>:
             arr[k] = right_arr[j]
-            j += 1
-        k += 1
+            j += <span class="hljs-number">1</span>
+        k += <span class="hljs-number">1</span>
     
-    while i &lt; len(left_arr):
+    <span class="hljs-keyword">while</span> i &lt; <span class="hljs-built_in">len</span>(left_arr):
         arr[k] = left_arr[i]
-        i += 1
-        k += 1
+        i += <span class="hljs-number">1</span>
+        k += <span class="hljs-number">1</span>
     
-    while j &lt; len(right_arr):
+    <span class="hljs-keyword">while</span> j &lt; <span class="hljs-built_in">len</span>(right_arr):
         arr[k] = right_arr[j]
-        j += 1
-        k += 1
+        j += <span class="hljs-number">1</span>
+        k += <span class="hljs-number">1</span>
 </code></pre>
-<pre><code class="language-java">// Java - Merge Sort
-public void mergeSort(int[] arr, int left, int right) {
-    if (left &lt; right) {
-        int mid = left + (right - left) / 2;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Merge Sort</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">mergeSort</span><span class="hljs-params">(<span class="hljs-type">int</span>[] arr, <span class="hljs-type">int</span> left, <span class="hljs-type">int</span> right)</span> {
+    <span class="hljs-keyword">if</span> (left &lt; right) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> left + (right - left) / <span class="hljs-number">2</span>;
         
         mergeSort(arr, left, mid);
-        mergeSort(arr, mid + 1, right);
+        mergeSort(arr, mid + <span class="hljs-number">1</span>, right);
         
         merge(arr, left, mid, right);
     }
 }
 
-private void merge(int[] arr, int left, int mid, int right) {
-    int n1 = mid - left + 1;
-    int n2 = right - mid;
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">merge</span><span class="hljs-params">(<span class="hljs-type">int</span>[] arr, <span class="hljs-type">int</span> left, <span class="hljs-type">int</span> mid, <span class="hljs-type">int</span> right)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n1</span> <span class="hljs-operator">=</span> mid - left + <span class="hljs-number">1</span>;
+    <span class="hljs-type">int</span> <span class="hljs-variable">n2</span> <span class="hljs-operator">=</span> right - mid;
     
-    int[] leftArr = new int[n1];
-    int[] rightArr = new int[n2];
+    <span class="hljs-type">int</span>[] leftArr = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n1];
+    <span class="hljs-type">int</span>[] rightArr = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n2];
     
-    for (int i = 0; i &lt; n1; i++) {
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n1; i++) {
         leftArr[i] = arr[left + i];
     }
-    for (int j = 0; j &lt; n2; j++) {
-        rightArr[j] = arr[mid + 1 + j];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; n2; j++) {
+        rightArr[j] = arr[mid + <span class="hljs-number">1</span> + j];
     }
     
-    int i = 0, j = 0, k = left;
+    <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, j = <span class="hljs-number">0</span>, k = left;
     
-    while (i &lt; n1 &amp;&amp; j &lt; n2) {
-        if (leftArr[i] &lt;= rightArr[j]) {
+    <span class="hljs-keyword">while</span> (i &lt; n1 &amp;&amp; j &lt; n2) {
+        <span class="hljs-keyword">if</span> (leftArr[i] &lt;= rightArr[j]) {
             arr[k++] = leftArr[i++];
-        } else {
+        } <span class="hljs-keyword">else</span> {
             arr[k++] = rightArr[j++];
         }
     }
     
-    while (i &lt; n1) {
+    <span class="hljs-keyword">while</span> (i &lt; n1) {
         arr[k++] = leftArr[i++];
     }
     
-    while (j &lt; n2) {
+    <span class="hljs-keyword">while</span> (j &lt; n2) {
         arr[k++] = rightArr[j++];
     }
 }
 </code></pre>
 <h3 id="template-3-custom-comparator-sorting" tabindex="-1"><a class="header-anchor" href="#template-3-custom-comparator-sorting"><span>Template 3: Custom Comparator Sorting</span></a></h3>
-<pre><code class="language-python"># Python - Custom sorting
-class Solution:
-    def customSort(self, items):
-        # Single key
-        items.sort(key=lambda x: x[0])
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Custom sorting</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">customSort</span>(<span class="hljs-params">self, items</span>):
+        <span class="hljs-comment"># Single key</span>
+        items.sort(key=<span class="hljs-keyword">lambda</span> x: x[<span class="hljs-number">0</span>])
         
-        # Multiple keys
-        items.sort(key=lambda x: (x[0], -x[1], x[2]))
+        <span class="hljs-comment"># Multiple keys</span>
+        items.sort(key=<span class="hljs-keyword">lambda</span> x: (x[<span class="hljs-number">0</span>], -x[<span class="hljs-number">1</span>], x[<span class="hljs-number">2</span>]))
         
-        # Complex comparison
-        def compare(item):
-            # Return tuple of sort keys
-            if condition:
-                return (0, item.value, item.name)
-            else:
-                return (1, -item.priority, item.id)
+        <span class="hljs-comment"># Complex comparison</span>
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">compare</span>(<span class="hljs-params">item</span>):
+            <span class="hljs-comment"># Return tuple of sort keys</span>
+            <span class="hljs-keyword">if</span> condition:
+                <span class="hljs-keyword">return</span> (<span class="hljs-number">0</span>, item.value, item.name)
+            <span class="hljs-keyword">else</span>:
+                <span class="hljs-keyword">return</span> (<span class="hljs-number">1</span>, -item.priority, item.<span class="hljs-built_in">id</span>)
         
         items.sort(key=compare)
         
-        # Using functools for traditional comparison
-        from functools import cmp_to_key
+        <span class="hljs-comment"># Using functools for traditional comparison</span>
+        <span class="hljs-keyword">from</span> functools <span class="hljs-keyword">import</span> cmp_to_key
         
-        def compare_func(a, b):
-            if a &lt; b:
-                return -1
-            elif a &gt; b:
-                return 1
-            else:
-                return 0
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">compare_func</span>(<span class="hljs-params">a, b</span>):
+            <span class="hljs-keyword">if</span> a &lt; b:
+                <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
+            <span class="hljs-keyword">elif</span> a &gt; b:
+                <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>
+            <span class="hljs-keyword">else</span>:
+                <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
         
         items.sort(key=cmp_to_key(compare_func))
         
-        return items
+        <span class="hljs-keyword">return</span> items
 
-# Custom class for sorting
-class CustomComparable:
-    def __init__(self, value, priority):
-        self.value = value
-        self.priority = priority
+<span class="hljs-comment"># Custom class for sorting</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">CustomComparable</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, value, priority</span>):
+        <span class="hljs-variable language_">self</span>.value = value
+        <span class="hljs-variable language_">self</span>.priority = priority
     
-    def __lt__(self, other):
-        # Define less than for sorting
-        if self.priority != other.priority:
-            return self.priority &gt; other.priority
-        return self.value &lt; other.value
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__lt__</span>(<span class="hljs-params">self, other</span>):
+        <span class="hljs-comment"># Define less than for sorting</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.priority != other.priority:
+            <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.priority &gt; other.priority
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.value &lt; other.value
 </code></pre>
-<pre><code class="language-java">// Java - Custom comparator
-public void customSort(List&lt;Item&gt; items) {
-    // Lambda comparator
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Custom comparator</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">customSort</span><span class="hljs-params">(List&lt;Item&gt; items)</span> {
+    <span class="hljs-comment">// Lambda comparator</span>
     items.sort((a, b) -&gt; a.value - b.value);
     
-    // Multiple criteria
+    <span class="hljs-comment">// Multiple criteria</span>
     items.sort((a, b) -&gt; {
-        if (a.priority != b.priority) {
-            return b.priority - a.priority;  // Descending
+        <span class="hljs-keyword">if</span> (a.priority != b.priority) {
+            <span class="hljs-keyword">return</span> b.priority - a.priority;  <span class="hljs-comment">// Descending</span>
         }
-        return a.name.compareTo(b.name);    // Ascending
+        <span class="hljs-keyword">return</span> a.name.compareTo(b.name);    <span class="hljs-comment">// Ascending</span>
     });
     
-    // Using Comparator methods
+    <span class="hljs-comment">// Using Comparator methods</span>
     items.sort(Comparator
         .comparingInt(Item::getPriority).reversed()
         .thenComparing(Item::getName));
     
-    // Custom Comparator class
-    items.sort(new Comparator&lt;Item&gt;() {
-        @Override
-        public int compare(Item a, Item b) {
-            // Custom logic
-            return customCompare(a, b);
+    <span class="hljs-comment">// Custom Comparator class</span>
+    items.sort(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Comparator</span>&lt;Item&gt;() {
+        <span class="hljs-meta">@Override</span>
+        <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">compare</span><span class="hljs-params">(Item a, Item b)</span> {
+            <span class="hljs-comment">// Custom logic</span>
+            <span class="hljs-keyword">return</span> customCompare(a, b);
         }
     });
 }
 
-// Comparable interface
-class Item implements Comparable&lt;Item&gt; {
-    int value;
+<span class="hljs-comment">// Comparable interface</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Item</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Comparable</span>&lt;Item&gt; {
+    <span class="hljs-type">int</span> value;
     String name;
     
-    @Override
-    public int compareTo(Item other) {
-        if (this.value != other.value) {
-            return this.value - other.value;
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">compareTo</span><span class="hljs-params">(Item other)</span> {
+        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">this</span>.value != other.value) {
+            <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.value - other.value;
         }
-        return this.name.compareTo(other.name);
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.name.compareTo(other.name);
     }
 }
 </code></pre>
 <h3 id="template-4-quick-select-k-th-element" tabindex="-1"><a class="header-anchor" href="#template-4-quick-select-k-th-element"><span>Template 4: Quick Select (K-th Element)</span></a></h3>
-<pre><code class="language-python"># Python - Quick Select for k-th smallest
-def quickSelect(arr, k):
-    # Find k-th smallest (0-indexed)
-    return quickSelectHelper(arr, 0, len(arr) - 1, k - 1)
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Quick Select for k-th smallest</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">quickSelect</span>(<span class="hljs-params">arr, k</span>):
+    <span class="hljs-comment"># Find k-th smallest (0-indexed)</span>
+    <span class="hljs-keyword">return</span> quickSelectHelper(arr, <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(arr) - <span class="hljs-number">1</span>, k - <span class="hljs-number">1</span>)
 
-def quickSelectHelper(arr, left, right, k):
-    if left == right:
-        return arr[left]
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">quickSelectHelper</span>(<span class="hljs-params">arr, left, right, k</span>):
+    <span class="hljs-keyword">if</span> left == right:
+        <span class="hljs-keyword">return</span> arr[left]
     
-    # Random pivot for better average case
-    import random
+    <span class="hljs-comment"># Random pivot for better average case</span>
+    <span class="hljs-keyword">import</span> random
     pivot_idx = random.randint(left, right)
     pivot_idx = partition(arr, left, right, pivot_idx)
     
-    if k == pivot_idx:
-        return arr[k]
-    elif k &lt; pivot_idx:
-        return quickSelectHelper(arr, left, pivot_idx - 1, k)
-    else:
-        return quickSelectHelper(arr, pivot_idx + 1, right, k)
+    <span class="hljs-keyword">if</span> k == pivot_idx:
+        <span class="hljs-keyword">return</span> arr[k]
+    <span class="hljs-keyword">elif</span> k &lt; pivot_idx:
+        <span class="hljs-keyword">return</span> quickSelectHelper(arr, left, pivot_idx - <span class="hljs-number">1</span>, k)
+    <span class="hljs-keyword">else</span>:
+        <span class="hljs-keyword">return</span> quickSelectHelper(arr, pivot_idx + <span class="hljs-number">1</span>, right, k)
 
-def partition(arr, left, right, pivot_idx):
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">partition</span>(<span class="hljs-params">arr, left, right, pivot_idx</span>):
     pivot = arr[pivot_idx]
-    # Move pivot to end
+    <span class="hljs-comment"># Move pivot to end</span>
     arr[pivot_idx], arr[right] = arr[right], arr[pivot_idx]
     
     store_idx = left
-    for i in range(left, right):
-        if arr[i] &lt; pivot:
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(left, right):
+        <span class="hljs-keyword">if</span> arr[i] &lt; pivot:
             arr[store_idx], arr[i] = arr[i], arr[store_idx]
-            store_idx += 1
+            store_idx += <span class="hljs-number">1</span>
     
-    # Move pivot to final position
+    <span class="hljs-comment"># Move pivot to final position</span>
     arr[store_idx], arr[right] = arr[right], arr[store_idx]
-    return store_idx
+    <span class="hljs-keyword">return</span> store_idx
 </code></pre>
 <h3 id="template-5-counting-sort" tabindex="-1"><a class="header-anchor" href="#template-5-counting-sort"><span>Template 5: Counting Sort</span></a></h3>
-<pre><code class="language-python"># Python - Counting Sort
-def countingSort(arr, max_val=None):
-    if not arr:
-        return arr
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Counting Sort</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">countingSort</span>(<span class="hljs-params">arr, max_val=<span class="hljs-literal">None</span></span>):
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> arr:
+        <span class="hljs-keyword">return</span> arr
     
-    if max_val is None:
-        max_val = max(arr)
-    min_val = min(arr)
+    <span class="hljs-keyword">if</span> max_val <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+        max_val = <span class="hljs-built_in">max</span>(arr)
+    min_val = <span class="hljs-built_in">min</span>(arr)
     
-    # Create counting array
-    range_size = max_val - min_val + 1
-    count = [0] * range_size
+    <span class="hljs-comment"># Create counting array</span>
+    range_size = max_val - min_val + <span class="hljs-number">1</span>
+    count = [<span class="hljs-number">0</span>] * range_size
     
-    # Count occurrences
-    for num in arr:
-        count[num - min_val] += 1
+    <span class="hljs-comment"># Count occurrences</span>
+    <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> arr:
+        count[num - min_val] += <span class="hljs-number">1</span>
     
-    # Reconstruct sorted array
-    idx = 0
-    for i in range(range_size):
-        while count[i] &gt; 0:
+    <span class="hljs-comment"># Reconstruct sorted array</span>
+    idx = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(range_size):
+        <span class="hljs-keyword">while</span> count[i] &gt; <span class="hljs-number">0</span>:
             arr[idx] = i + min_val
-            idx += 1
-            count[i] -= 1
+            idx += <span class="hljs-number">1</span>
+            count[i] -= <span class="hljs-number">1</span>
     
-    return arr
+    <span class="hljs-keyword">return</span> arr
 
-# Stable counting sort
-def stableCountingSort(arr):
-    if not arr:
-        return arr
+<span class="hljs-comment"># Stable counting sort</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">stableCountingSort</span>(<span class="hljs-params">arr</span>):
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> arr:
+        <span class="hljs-keyword">return</span> arr
     
-    max_val = max(arr)
-    min_val = min(arr)
-    range_size = max_val - min_val + 1
+    max_val = <span class="hljs-built_in">max</span>(arr)
+    min_val = <span class="hljs-built_in">min</span>(arr)
+    range_size = max_val - min_val + <span class="hljs-number">1</span>
     
-    count = [0] * range_size
-    output = [0] * len(arr)
+    count = [<span class="hljs-number">0</span>] * range_size
+    output = [<span class="hljs-number">0</span>] * <span class="hljs-built_in">len</span>(arr)
     
-    # Count occurrences
-    for num in arr:
-        count[num - min_val] += 1
+    <span class="hljs-comment"># Count occurrences</span>
+    <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> arr:
+        count[num - min_val] += <span class="hljs-number">1</span>
     
-    # Cumulative count
-    for i in range(1, range_size):
-        count[i] += count[i - 1]
+    <span class="hljs-comment"># Cumulative count</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, range_size):
+        count[i] += count[i - <span class="hljs-number">1</span>]
     
-    # Build output array (stable)
-    for i in range(len(arr) - 1, -1, -1):
-        output[count[arr[i] - min_val] - 1] = arr[i]
-        count[arr[i] - min_val] -= 1
+    <span class="hljs-comment"># Build output array (stable)</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(arr) - <span class="hljs-number">1</span>, -<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>):
+        output[count[arr[i] - min_val] - <span class="hljs-number">1</span>] = arr[i]
+        count[arr[i] - min_val] -= <span class="hljs-number">1</span>
     
-    return output
+    <span class="hljs-keyword">return</span> output
 </code></pre>
 <h3 id="template-6-topological-sort" tabindex="-1"><a class="header-anchor" href="#template-6-topological-sort"><span>Template 6: Topological Sort</span></a></h3>
-<pre><code class="language-python"># Python - Topological Sort (Kahn's Algorithm)
-def topologicalSort(numNodes, edges):
-    # Build graph and in-degree
-    graph = defaultdict(list)
-    in_degree = [0] * numNodes
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Topological Sort (Kahn&#x27;s Algorithm)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">topologicalSort</span>(<span class="hljs-params">numNodes, edges</span>):
+    <span class="hljs-comment"># Build graph and in-degree</span>
+    graph = defaultdict(<span class="hljs-built_in">list</span>)
+    in_degree = [<span class="hljs-number">0</span>] * numNodes
     
-    for u, v in edges:
+    <span class="hljs-keyword">for</span> u, v <span class="hljs-keyword">in</span> edges:
         graph[u].append(v)
-        in_degree[v] += 1
+        in_degree[v] += <span class="hljs-number">1</span>
     
-    # Queue for nodes with no dependencies
-    queue = deque([i for i in range(numNodes) if in_degree[i] == 0])
+    <span class="hljs-comment"># Queue for nodes with no dependencies</span>
+    queue = deque([i <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(numNodes) <span class="hljs-keyword">if</span> in_degree[i] == <span class="hljs-number">0</span>])
     result = []
     
-    while queue:
+    <span class="hljs-keyword">while</span> queue:
         node = queue.popleft()
         result.append(node)
         
-        for neighbor in graph[node]:
-            in_degree[neighbor] -= 1
-            if in_degree[neighbor] == 0:
+        <span class="hljs-keyword">for</span> neighbor <span class="hljs-keyword">in</span> graph[node]:
+            in_degree[neighbor] -= <span class="hljs-number">1</span>
+            <span class="hljs-keyword">if</span> in_degree[neighbor] == <span class="hljs-number">0</span>:
                 queue.append(neighbor)
     
-    # Check for cycle
-    if len(result) != numNodes:
-        return []  # Cycle detected
+    <span class="hljs-comment"># Check for cycle</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(result) != numNodes:
+        <span class="hljs-keyword">return</span> []  <span class="hljs-comment"># Cycle detected</span>
     
-    return result
+    <span class="hljs-keyword">return</span> result
 
-# DFS-based Topological Sort
-def topologicalSortDFS(numNodes, edges):
-    graph = defaultdict(list)
-    for u, v in edges:
+<span class="hljs-comment"># DFS-based Topological Sort</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">topologicalSortDFS</span>(<span class="hljs-params">numNodes, edges</span>):
+    graph = defaultdict(<span class="hljs-built_in">list</span>)
+    <span class="hljs-keyword">for</span> u, v <span class="hljs-keyword">in</span> edges:
         graph[u].append(v)
     
-    visited = set()
+    visited = <span class="hljs-built_in">set</span>()
     stack = []
     
-    def dfs(node):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">node</span>):
         visited.add(node)
-        for neighbor in graph[node]:
-            if neighbor not in visited:
+        <span class="hljs-keyword">for</span> neighbor <span class="hljs-keyword">in</span> graph[node]:
+            <span class="hljs-keyword">if</span> neighbor <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> visited:
                 dfs(neighbor)
         stack.append(node)
     
-    for i in range(numNodes):
-        if i not in visited:
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(numNodes):
+        <span class="hljs-keyword">if</span> i <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> visited:
             dfs(i)
     
-    return stack[::-1]
+    <span class="hljs-keyword">return</span> stack[::-<span class="hljs-number">1</span>]
 </code></pre>
 <h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
 <h3 id="pattern-based-problem-tables" tabindex="-1"><a class="header-anchor" href="#pattern-based-problem-tables"><span>Pattern-Based Problem Tables</span></a></h3>
@@ -1066,7 +1078,7 @@ def topologicalSortDFS(numNodes, edges):
 </tbody>
 </table>
 <h2 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h2>
-<pre><code>Problem Analysis Flowchart:
+<pre><code class="hljs">Problem Analysis Flowchart:
 
 1. Need custom ordering rules?
    ├── YES → Custom Comparator
@@ -1206,33 +1218,33 @@ def topologicalSortDFS(numNodes, edges):
 </table>
 <h3 id="common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#common-patterns-tricks"><span>Common Patterns &amp; Tricks</span></a></h3>
 <h4 id="python-sorting-tricks" tabindex="-1"><a class="header-anchor" href="#python-sorting-tricks"><span><strong>Python Sorting Tricks</strong></span></a></h4>
-<pre><code class="language-python"># Sort with multiple keys
-items.sort(key=lambda x: (x[0], -x[1], x[2]))
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Sort with multiple keys</span>
+items.sort(key=<span class="hljs-keyword">lambda</span> x: (x[<span class="hljs-number">0</span>], -x[<span class="hljs-number">1</span>], x[<span class="hljs-number">2</span>]))
 
-# Sort by custom class
-items.sort(key=lambda x: x.priority, reverse=True)
+<span class="hljs-comment"># Sort by custom class</span>
+items.sort(key=<span class="hljs-keyword">lambda</span> x: x.priority, reverse=<span class="hljs-literal">True</span>)
 
-# Stable sort in multiple passes
-items.sort(key=lambda x: x.secondary)  # First
-items.sort(key=lambda x: x.primary)    # Then primary
+<span class="hljs-comment"># Stable sort in multiple passes</span>
+items.sort(key=<span class="hljs-keyword">lambda</span> x: x.secondary)  <span class="hljs-comment"># First</span>
+items.sort(key=<span class="hljs-keyword">lambda</span> x: x.primary)    <span class="hljs-comment"># Then primary</span>
 
-# In-place vs new list
-arr.sort()           # In-place
-sorted_arr = sorted(arr)  # New list
+<span class="hljs-comment"># In-place vs new list</span>
+arr.sort()           <span class="hljs-comment"># In-place</span>
+sorted_arr = <span class="hljs-built_in">sorted</span>(arr)  <span class="hljs-comment"># New list</span>
 </code></pre>
 <h4 id="java-sorting-tricks" tabindex="-1"><a class="header-anchor" href="#java-sorting-tricks"><span><strong>Java Sorting Tricks</strong></span></a></h4>
-<pre><code class="language-java">// Lambda comparator
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Lambda comparator</span>
 Arrays.sort(arr, (a, b) -&gt; a - b);
 
-// Method reference
+<span class="hljs-comment">// Method reference</span>
 Arrays.sort(arr, Integer::compare);
 
-// Comparator chaining
+<span class="hljs-comment">// Comparator chaining</span>
 Arrays.sort(items, Comparator
     .comparing(Item::getPriority)
     .thenComparing(Item::getName));
 
-// Reverse order
+<span class="hljs-comment">// Reverse order</span>
 Arrays.sort(arr, Collections.reverseOrder());
 </code></pre>
 <h3 id="problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#problem-solving-steps"><span>Problem-Solving Steps</span></a></h3>
@@ -1350,18 +1362,18 @@ Arrays.sort(arr, Collections.reverseOrder());
 </ul>
 <h2 id="lc-example" tabindex="-1"><a class="header-anchor" href="#lc-example"><span>LC Example</span></a></h2>
 <h3 id="2-1-pancake-sorting" tabindex="-1"><a class="header-anchor" href="#2-1-pancake-sorting"><span>2-1) Pancake Sorting</span></a></h3>
-<pre><code class="language-python"># python
-# LC 969 Pancake Sorting
-# V0
-# IDEA : pankcake sort + while loop
-# IDEA : 3 STEPS
-#   -&gt; step 1) Find the maximum number in arr
-#   -&gt; step 2) Reverse from 0 to max_idx
-#   -&gt; step 3) Reverse whole list
-# https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/pancake_sort.py
-class Solution(object):
-    def pancakeSort(self, arr):
-        &quot;&quot;&quot;Sort Array with Pancake Sort.
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 969 Pancake Sorting</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : pankcake sort + while loop</span>
+<span class="hljs-comment"># IDEA : 3 STEPS</span>
+<span class="hljs-comment">#   -&gt; step 1) Find the maximum number in arr</span>
+<span class="hljs-comment">#   -&gt; step 2) Reverse from 0 to max_idx</span>
+<span class="hljs-comment">#   -&gt; step 3) Reverse whole list</span>
+<span class="hljs-comment"># https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/pancake_sort.py</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">pancakeSort</span>(<span class="hljs-params">self, arr</span>):
+        <span class="hljs-string">&quot;&quot;&quot;Sort Array with Pancake Sort.
         :param arr: Collection containing comparable items
         :return: Collection ordered in ascending order of items
         Examples:
@@ -1371,44 +1383,44 @@ class Solution(object):
         []
         &gt;&gt;&gt; pancake_sort([-2, -5, -45])
         [-45, -5, -2]
-        &quot;&quot;&quot;
-        cur = len(arr)
+        &quot;&quot;&quot;</span>
+        cur = <span class="hljs-built_in">len</span>(arr)
         res = []
-        while cur &gt; 1:
-            # step 1) Find the maximum number in arr
-            max_idx = arr.index(max(arr[0:cur]))
-            res = res + [max_idx+1, cur] # idx is 1 based
-            # step 2) Reverse from 0 to max_idx
-            #arr = arr[max_idx::-1] + arr[max_idx + 1 : len(arr)] # this is OK as well
-            arr = arr[:max_idx][::-1] + arr[max_idx + 1 : len(arr)]
-            # step 3) Reverse whole list
-            #arr = arr[cur - 1 :: -1] + arr[cur : len(arr)] # this is OK as well
-            #arr = arr[:cur - 1][::-1] + arr[cur : len(arr)] # this is OK as well
-            tmp = arr[::-1]
+        <span class="hljs-keyword">while</span> cur &gt; <span class="hljs-number">1</span>:
+            <span class="hljs-comment"># step 1) Find the maximum number in arr</span>
+            max_idx = arr.index(<span class="hljs-built_in">max</span>(arr[<span class="hljs-number">0</span>:cur]))
+            res = res + [max_idx+<span class="hljs-number">1</span>, cur] <span class="hljs-comment"># idx is 1 based</span>
+            <span class="hljs-comment"># step 2) Reverse from 0 to max_idx</span>
+            <span class="hljs-comment">#arr = arr[max_idx::-1] + arr[max_idx + 1 : len(arr)] # this is OK as well</span>
+            arr = arr[:max_idx][::-<span class="hljs-number">1</span>] + arr[max_idx + <span class="hljs-number">1</span> : <span class="hljs-built_in">len</span>(arr)]
+            <span class="hljs-comment"># step 3) Reverse whole list</span>
+            <span class="hljs-comment">#arr = arr[cur - 1 :: -1] + arr[cur : len(arr)] # this is OK as well</span>
+            <span class="hljs-comment">#arr = arr[:cur - 1][::-1] + arr[cur : len(arr)] # this is OK as well</span>
+            tmp = arr[::-<span class="hljs-number">1</span>]
             arr = tmp
-            cur -= 1
-        print (&quot;arr = &quot; + str(arr))
-        return res
+            cur -= <span class="hljs-number">1</span>
+        <span class="hljs-built_in">print</span> (<span class="hljs-string">&quot;arr = &quot;</span> + <span class="hljs-built_in">str</span>(arr))
+        <span class="hljs-keyword">return</span> res
 
-# V1
-# https://leetcode.com/problems/pancake-sorting/discuss/817978/Python-O(n2)-by-simulation-w-Comment
-# https://leetcode.com/problems/pancake-sorting/discuss/330990/Python
-class Solution:
-    def pancakeSort(self, A):
+<span class="hljs-comment"># V1</span>
+<span class="hljs-comment"># https://leetcode.com/problems/pancake-sorting/discuss/817978/Python-O(n2)-by-simulation-w-Comment</span>
+<span class="hljs-comment"># https://leetcode.com/problems/pancake-sorting/discuss/330990/Python</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">pancakeSort</span>(<span class="hljs-params">self, A</span>):
 
         res = []
 
-        for x in range(len(A), 1, -1):
-            # Carry out pancake-sort from largest number n to smallest number 1
+        <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(A), <span class="hljs-number">1</span>, -<span class="hljs-number">1</span>):
+            <span class="hljs-comment"># Carry out pancake-sort from largest number n to smallest number 1</span>
 
-            # find the index of x
+            <span class="hljs-comment"># find the index of x</span>
             i = A.index(x)
 
-            # flip first i+1 elements to put x on A[0]
-            # flip first x elements to put x on A[x-1]
-            # now, x is on its corresponding position A[x-1] on ascending order
-            # 
-            &quot;&quot;&quot;
+            <span class="hljs-comment"># flip first i+1 elements to put x on A[0]</span>
+            <span class="hljs-comment"># flip first x elements to put x on A[x-1]</span>
+            <span class="hljs-comment"># now, x is on its corresponding position A[x-1] on ascending order</span>
+            <span class="hljs-comment"># </span>
+            <span class="hljs-string">&quot;&quot;&quot;
             # array extend
             In [10]: x = [1,2,3]
 
@@ -1424,12 +1436,12 @@ class Solution:
             In [15]: x
             Out[15]: [1, 2, 3, 4]
 
-            &quot;&quot;&quot;
-            #res.extend([i + 1, x])
-            res = res + [i + 1, x]
+            &quot;&quot;&quot;</span>
+            <span class="hljs-comment">#res.extend([i + 1, x])</span>
+            res = res + [i + <span class="hljs-number">1</span>, x]
 
-            # update A
-            &quot;&quot;&quot;
+            <span class="hljs-comment"># update A</span>
+            <span class="hljs-string">&quot;&quot;&quot;
             https://stackoverflow.com/questions/509211/understanding-slice-notation
 
             a[::-1]    # all items in the array, reversed
@@ -1439,71 +1451,71 @@ class Solution:
 
             -&gt; A[:i:-1] : last i items, reversed
 
-            &quot;&quot;&quot;
-            A = A[:i:-1] + A[:i]
-        #print (&quot;res = &quot; + str(res))
-        return res
+            &quot;&quot;&quot;</span>
+            A = A[:i:-<span class="hljs-number">1</span>] + A[:i]
+        <span class="hljs-comment">#print (&quot;res = &quot; + str(res))</span>
+        <span class="hljs-keyword">return</span> res
 
-# V1
-# IDEA : RECURSIVE
-# https://leetcode.com/problems/pancake-sorting/discuss/553116/My-python-solution
-# https://leetcode.com/problems/pancake-sorting/discuss/274921/PythonDetailed-Explanation-for-This-Problem
-class Solution:
-    def pancakeSort(self, A):
-        pointer = len(A)
+<span class="hljs-comment"># V1</span>
+<span class="hljs-comment"># IDEA : RECURSIVE</span>
+<span class="hljs-comment"># https://leetcode.com/problems/pancake-sorting/discuss/553116/My-python-solution</span>
+<span class="hljs-comment"># https://leetcode.com/problems/pancake-sorting/discuss/274921/PythonDetailed-Explanation-for-This-Problem</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">pancakeSort</span>(<span class="hljs-params">self, A</span>):
+        pointer = <span class="hljs-built_in">len</span>(A)
         result = []
 
-        while pointer &gt; 1:
+        <span class="hljs-keyword">while</span> pointer &gt; <span class="hljs-number">1</span>:
             idx = A.index(pointer)
-            result.append(idx + 1)
-            A = A[idx::-1] + A[idx + 1:]
+            result.append(idx + <span class="hljs-number">1</span>)
+            A = A[idx::-<span class="hljs-number">1</span>] + A[idx + <span class="hljs-number">1</span>:]
             result.append(pointer)
-            A = A[pointer - 1::-1] + A[pointer:]
-            pointer -= 1
+            A = A[pointer - <span class="hljs-number">1</span>::-<span class="hljs-number">1</span>] + A[pointer:]
+            pointer -= <span class="hljs-number">1</span>
             
-        return result
+        <span class="hljs-keyword">return</span> result
 </code></pre>
-<pre><code class="language-java">// java
-// aAlgorithm book (labu) p. 347
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// aAlgorithm book (labu) p. 347</span>
 
-// record reverse op array
-LinkedList&lt;Integer&gt; res = new LinkedList&lt;&gt;{};
+<span class="hljs-comment">// record reverse op array</span>
+LinkedList&lt;Integer&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;{};
 
-List&lt;Integer&gt; pancakeSort(int[] cakes){
+List&lt;Integer&gt; <span class="hljs-title function_">pancakeSort</span><span class="hljs-params">(<span class="hljs-type">int</span>[] cakes)</span>{
 	sort(cakes, cakes.length);
-	return res;
+	<span class="hljs-keyword">return</span> res;
 }
 
-// order first N pancakes
-void sort(int[] cakes, int n){
-	// base case
-	if (n == 1) return;
+<span class="hljs-comment">// order first N pancakes</span>
+<span class="hljs-keyword">void</span> <span class="hljs-title function_">sort</span><span class="hljs-params">(<span class="hljs-type">int</span>[] cakes, <span class="hljs-type">int</span> n)</span>{
+	<span class="hljs-comment">// base case</span>
+	<span class="hljs-keyword">if</span> (n == <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span>;
 
-	// find max index
-	int maxCake = 0;
-	int maxCakeIndex = 0;
-	for (int i = 0; i &lt; n; i ++){
-		if (cakes[i] &gt; maxCake){
+	<span class="hljs-comment">// find max index</span>
+	<span class="hljs-type">int</span> <span class="hljs-variable">maxCake</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+	<span class="hljs-type">int</span> <span class="hljs-variable">maxCakeIndex</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+	<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i ++){
+		<span class="hljs-keyword">if</span> (cakes[i] &gt; maxCake){
 			maxCakeIndex = i;
 			maxCake = cakes[i];
 		}
 	}
-	// after 1st flip, put max pancake to the 1st layer
-	reverse(cakes, 0, maxCakeIndex);
-	// record this flip
-	res.add(maxCakeIndex+1);
-	// 2nd flip, make max pancake to the bottom (last layer)
-	reverse(cakes, 0, n-1);
-	// record this flop
+	<span class="hljs-comment">// after 1st flip, put max pancake to the 1st layer</span>
+	reverse(cakes, <span class="hljs-number">0</span>, maxCakeIndex);
+	<span class="hljs-comment">// record this flip</span>
+	res.add(maxCakeIndex+<span class="hljs-number">1</span>);
+	<span class="hljs-comment">// 2nd flip, make max pancake to the bottom (last layer)</span>
+	reverse(cakes, <span class="hljs-number">0</span>, n-<span class="hljs-number">1</span>);
+	<span class="hljs-comment">// record this flop</span>
 	res.add(n);
-	// recursive call : flip the remaining pancakes
-	sort(cakes, n-1);
+	<span class="hljs-comment">// recursive call : flip the remaining pancakes</span>
+	sort(cakes, n-<span class="hljs-number">1</span>);
 }
 
-/** flip arr[i..j] elements */
-void reverse(int[] arr, int i, int j){
-	while (i &lt; j){
-		int tmp = arr[i];
+<span class="hljs-comment">/** flip arr[i..j] elements */</span>
+<span class="hljs-keyword">void</span> <span class="hljs-title function_">reverse</span><span class="hljs-params">(<span class="hljs-type">int</span>[] arr, <span class="hljs-type">int</span> i, <span class="hljs-type">int</span> j)</span>{
+	<span class="hljs-keyword">while</span> (i &lt; j){
+		<span class="hljs-type">int</span> <span class="hljs-variable">tmp</span> <span class="hljs-operator">=</span> arr[i];
 		arr[i] = arr[j];
 		arr[j] = tmp;
 		i++;
@@ -1512,14 +1524,14 @@ void reverse(int[] arr, int i, int j){
 }
 </code></pre>
 <h3 id="2-1-reorder-data-in-log-files" tabindex="-1"><a class="header-anchor" href="#2-1-reorder-data-in-log-files"><span>2-1) Reorder Data in Log Files</span></a></h3>
-<pre><code class="language-python"># LC 937. Reorder Data in Log Files
-# V0
-# IDEA : SORT BY KEY
-class Solution:
-    def reorderLogFiles(self, logs):
-        def f(log):
-            id_, rest = log.split(&quot; &quot;, 1)
-            &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 937. Reorder Data in Log Files</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : SORT BY KEY</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">reorderLogFiles</span>(<span class="hljs-params">self, logs</span>):
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">f</span>(<span class="hljs-params">log</span>):
+            id_, rest = log.split(<span class="hljs-string">&quot; &quot;</span>, <span class="hljs-number">1</span>)
+            <span class="hljs-string">&quot;&quot;&quot;
             NOTE !!!
               2 cases:
                1) case 1: rest[0].isalpha() =&gt; sort by rest, id_
@@ -1528,156 +1540,156 @@ class Solution:
                syntax:
                  if condition:
                     return key1, key2, key3 ....
-            &quot;&quot;&quot;
-            if rest[0].isalpha():
-                return 0, rest, id_
-            else:
-                return 1, None, None
-                #return 100, None, None  # since we need to put Digit-logs behind of Letter-logs, so first key should be ANY DIGIT BIGGER THAN 0 
+            &quot;&quot;&quot;</span>
+            <span class="hljs-keyword">if</span> rest[<span class="hljs-number">0</span>].isalpha():
+                <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>, rest, id_
+            <span class="hljs-keyword">else</span>:
+                <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>, <span class="hljs-literal">None</span>, <span class="hljs-literal">None</span>
+                <span class="hljs-comment">#return 100, None, None  # since we need to put Digit-logs behind of Letter-logs, so first key should be ANY DIGIT BIGGER THAN 0 </span>
 
-        logs.sort(key = lambda x : f(x))
-        return logs
+        logs.sort(key = <span class="hljs-keyword">lambda</span> x : f(x))
+        <span class="hljs-keyword">return</span> logs
 
-# V1
-# IDEA : SORT BY keys
-# https://leetcode.com/problems/reorder-data-in-log-files/solution/
-class Solution:
-    def reorderLogFiles(self, logs):
+<span class="hljs-comment"># V1</span>
+<span class="hljs-comment"># IDEA : SORT BY keys</span>
+<span class="hljs-comment"># https://leetcode.com/problems/reorder-data-in-log-files/solution/</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">reorderLogFiles</span>(<span class="hljs-params">self, logs</span>):
 
-        def get_key(log):
-            _id, rest = log.split(&quot; &quot;, maxsplit=1)
-            &quot;&quot;&quot;
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_key</span>(<span class="hljs-params">log</span>):
+            _<span class="hljs-built_in">id</span>, rest = log.split(<span class="hljs-string">&quot; &quot;</span>, maxsplit=<span class="hljs-number">1</span>)
+            <span class="hljs-string">&quot;&quot;&quot;
             NOTE !!!
               2 cases:
                1) case 1: rest[0].isalpha() =&gt; sort by rest, id_
                2) case 2: rest[0] is digit =&gt;  DO NOTHING (keep original order)
-            &quot;&quot;&quot;
-            return (0, rest, _id) if rest[0].isalpha() else (1, )
+            &quot;&quot;&quot;</span>
+            <span class="hljs-keyword">return</span> (<span class="hljs-number">0</span>, rest, _<span class="hljs-built_in">id</span>) <span class="hljs-keyword">if</span> rest[<span class="hljs-number">0</span>].isalpha() <span class="hljs-keyword">else</span> (<span class="hljs-number">1</span>, )
 
-        return sorted(logs, key=get_key)
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">sorted</span>(logs, key=get_key)
 </code></pre>
 <h3 id="2-2-meeting-rooms" tabindex="-1"><a class="header-anchor" href="#2-2-meeting-rooms"><span>2-2) Meeting Rooms</span></a></h3>
-<pre><code class="language-python"># LC 252. Meeting Rooms
-# V0
-class Solution:
-    def canAttendMeetings(self, intervals):
-        &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 252. Meeting Rooms</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">canAttendMeetings</span>(<span class="hljs-params">self, intervals</span>):
+        <span class="hljs-string">&quot;&quot;&quot;
         NOTE this
-        &quot;&quot;&quot;
-        intervals.sort(key=lambda x: x[0])
-        for i in range(1, len(intervals)):
-            &quot;&quot;&quot;
+        &quot;&quot;&quot;</span>
+        intervals.sort(key=<span class="hljs-keyword">lambda</span> x: x[<span class="hljs-number">0</span>])
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(intervals)):
+            <span class="hljs-string">&quot;&quot;&quot;
             NOTE this : 
                 -&gt; we compare ntervals[i][0] and ntervals[i-1][1]
-            &quot;&quot;&quot;
-            if intervals[i][0] &lt; intervals[i-1][1]:
-                return False
-        return True
+            &quot;&quot;&quot;</span>
+            <span class="hljs-keyword">if</span> intervals[i][<span class="hljs-number">0</span>] &lt; intervals[i-<span class="hljs-number">1</span>][<span class="hljs-number">1</span>]:
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 </code></pre>
 <h3 id="2-3-custom-sort-string" tabindex="-1"><a class="header-anchor" href="#2-3-custom-sort-string"><span>2-3) Custom Sort String</span></a></h3>
-<pre><code class="language-python"># LC 791. Custom Sort String
-# V0
-# IDEA : COUNTER
-from collections import Counter
-class Solution(object):
-    def customSortString(self, order, s):
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 791. Custom Sort String</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : COUNTER</span>
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> Counter
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">customSortString</span>(<span class="hljs-params">self, order, s</span>):
         s_map = Counter(s)
-        res = &quot;&quot;
-        for o in order:
-            if o in s_map:
+        res = <span class="hljs-string">&quot;&quot;</span>
+        <span class="hljs-keyword">for</span> o <span class="hljs-keyword">in</span> order:
+            <span class="hljs-keyword">if</span> o <span class="hljs-keyword">in</span> s_map:
                 res += (o * s_map[o])
-                del s_map[o]
-        for s in s_map:
+                <span class="hljs-keyword">del</span> s_map[o]
+        <span class="hljs-keyword">for</span> s <span class="hljs-keyword">in</span> s_map:
             res += s * s_map[s]
-        return res
+        <span class="hljs-keyword">return</span> res
 </code></pre>
 <h3 id="2-4-find-k-closest-elements" tabindex="-1"><a class="header-anchor" href="#2-4-find-k-closest-elements"><span>2-4) Find K Closest Elements</span></a></h3>
-<pre><code class="language-python"># LC 658. Find K Closest Elements
-# NOTE : there is also stack, binary search.. approaches
-# V0'
-# IDEA : SORTING
-class Solution:
-    def findClosestElements(self, arr, k, x):
-        # Sort using custom comparator
-        sorted_arr = sorted(arr, key = lambda num: abs(x - num))
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 658. Find K Closest Elements</span>
+<span class="hljs-comment"># NOTE : there is also stack, binary search.. approaches</span>
+<span class="hljs-comment"># V0&#x27;</span>
+<span class="hljs-comment"># IDEA : SORTING</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">findClosestElements</span>(<span class="hljs-params">self, arr, k, x</span>):
+        <span class="hljs-comment"># Sort using custom comparator</span>
+        sorted_arr = <span class="hljs-built_in">sorted</span>(arr, key = <span class="hljs-keyword">lambda</span> num: <span class="hljs-built_in">abs</span>(x - num))
 
-        # Only take k elements
+        <span class="hljs-comment"># Only take k elements</span>
         result = []
-        for i in range(k):
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(k):
             result.append(sorted_arr[i])
         
-        # Sort again to have output in ascending order
-        return sorted(result)
+        <span class="hljs-comment"># Sort again to have output in ascending order</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">sorted</span>(result)
 </code></pre>
 <h3 id="2-5-largest-number" tabindex="-1"><a class="header-anchor" href="#2-5-largest-number"><span>2-5) Largest Number</span></a></h3>
-<pre><code class="language-python"># LC 179. Largest Number
-# V0
-# IDEA : Sorting via Custom Comparator
-class compare(str):
-    # __lt__ defines &quot;&gt;&quot; operator in python
-    def __lt__(x, y):
-        return x+y &gt; y+x
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 179. Largest Number</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : Sorting via Custom Comparator</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">compare</span>(<span class="hljs-title class_ inherited__">str</span>):
+    <span class="hljs-comment"># __lt__ defines &quot;&gt;&quot; operator in python</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__lt__</span>(<span class="hljs-params">x, y</span>):
+        <span class="hljs-keyword">return</span> x+y &gt; y+x
 
-class Solution:
-    def largestNumber(self, nums):
-        largest = sorted([str(v) for v in nums], key=compare) 
-        largest = ''.join(largest) 
-        return '0' if largest[0] == '0' else largest 
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">largestNumber</span>(<span class="hljs-params">self, nums</span>):
+        largest = <span class="hljs-built_in">sorted</span>([<span class="hljs-built_in">str</span>(v) <span class="hljs-keyword">for</span> v <span class="hljs-keyword">in</span> nums], key=compare) 
+        largest = <span class="hljs-string">&#x27;&#x27;</span>.join(largest) 
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;0&#x27;</span> <span class="hljs-keyword">if</span> largest[<span class="hljs-number">0</span>] == <span class="hljs-string">&#x27;0&#x27;</span> <span class="hljs-keyword">else</span> largest 
 </code></pre>
 <h3 id="2-6-permutation-in-string" tabindex="-1"><a class="header-anchor" href="#2-6-permutation-in-string"><span>2-6) Permutation in String</span></a></h3>
-<pre><code class="language-python"># LC 567 
-# V0
-# IDEA : collections + sliding window
-from collections import Counter
-class Solution(object):
-    def checkInclusion(self, s1, s2):
-        if len(s1) &gt; len(s2):
-            return False   
-        l = 0
-        tmp = &quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 567 </span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : collections + sliding window</span>
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> Counter
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">checkInclusion</span>(<span class="hljs-params">self, s1, s2</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(s1) &gt; <span class="hljs-built_in">len</span>(s2):
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>   
+        l = <span class="hljs-number">0</span>
+        tmp = <span class="hljs-string">&quot;&quot;</span>
         _s1 = Counter(s1)
         _s2 = Counter()     
-        for i, item in enumerate(s2):
-            ### NOTE : we need to append new element first, then compare
-            _s2[item] += 1
-            tmp = s2[l:i+1]
-            if _s2 == _s1 and len(tmp) &gt; 0:
-                return True
-            if len(tmp) &gt;= len(s1):
-                _s2[tmp[0]] -= 1
-                if _s2[tmp[0]] == 0:
-                    del _s2[tmp[0]]
-                l += 1
-        return False
+        <span class="hljs-keyword">for</span> i, item <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(s2):
+            <span class="hljs-comment">### NOTE : we need to append new element first, then compare</span>
+            _s2[item] += <span class="hljs-number">1</span>
+            tmp = s2[l:i+<span class="hljs-number">1</span>]
+            <span class="hljs-keyword">if</span> _s2 == _s1 <span class="hljs-keyword">and</span> <span class="hljs-built_in">len</span>(tmp) &gt; <span class="hljs-number">0</span>:
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+            <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(tmp) &gt;= <span class="hljs-built_in">len</span>(s1):
+                _s2[tmp[<span class="hljs-number">0</span>]] -= <span class="hljs-number">1</span>
+                <span class="hljs-keyword">if</span> _s2[tmp[<span class="hljs-number">0</span>]] == <span class="hljs-number">0</span>:
+                    <span class="hljs-keyword">del</span> _s2[tmp[<span class="hljs-number">0</span>]]
+                l += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 </code></pre>
-<pre><code class="language-java">// java
-// LC 567
-// V2
-// IDEA : SORTING
-// https://leetcode.com/problems/permutation-in-string/editorial/
-public boolean checkInclusion_3(String s1, String s2) {
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 567</span>
+<span class="hljs-comment">// V2</span>
+<span class="hljs-comment">// IDEA : SORTING</span>
+<span class="hljs-comment">// https://leetcode.com/problems/permutation-in-string/editorial/</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">checkInclusion_3</span><span class="hljs-params">(String s1, String s2)</span> {
     s1 = sort(s1);
-    for (int i = 0; i &lt;= s2.length() - s1.length(); i++) {
-        if (s1.equals(sort(s2.substring(i, i + s1.length()))))
-            return true;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt;= s2.length() - s1.length(); i++) {
+        <span class="hljs-keyword">if</span> (s1.equals(sort(s2.substring(i, i + s1.length()))))
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
     }
-    return false;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
 }
 
-public String sort(String s) {
-    char[] t = s.toCharArray();
+<span class="hljs-keyword">public</span> String <span class="hljs-title function_">sort</span><span class="hljs-params">(String s)</span> {
+    <span class="hljs-type">char</span>[] t = s.toCharArray();
     Arrays.sort(t);
-    return new String(t);
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(t);
 } 
 </code></pre>
 <h3 id="2-7-car-fleet" tabindex="-1"><a class="header-anchor" href="#2-7-car-fleet"><span>2-7) Car Fleet</span></a></h3>
-<pre><code class="language-java">// java
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 
-// LC 853. Car Fleet
+<span class="hljs-comment">// LC 853. Car Fleet</span>
 
-    // V0
-    // IDEA: pair position and speed, sorting (gpt)
-    /**
+    <span class="hljs-comment">// V0</span>
+    <span class="hljs-comment">// IDEA: pair position and speed, sorting (gpt)</span>
+    <span class="hljs-comment">/**
      * IDEA :
      *
      * The approach involves sorting the cars by their starting positions
@@ -1704,69 +1716,69 @@ public String sort(String s) {
      *  5.  Return Fleet Count:
      *      •   The number of distinct times that exceed lastTime corresponds to the number of fleets.
      *
-     */
-    public int carFleet(int target, int[] position, int[] speed) {
-        int n = position.length;
-        // Pair positions with speeds and `sort by position in descending order`
-        // cars : [position][speed]
-        int[][] cars = new int[n][2];
-        for (int i = 0; i &lt; n; i++) {
-            cars[i][0] = position[i];
-            cars[i][1] = speed[i];
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">carFleet</span><span class="hljs-params">(<span class="hljs-type">int</span> target, <span class="hljs-type">int</span>[] position, <span class="hljs-type">int</span>[] speed)</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> position.length;
+        <span class="hljs-comment">// Pair positions with speeds and `sort by position in descending order`</span>
+        <span class="hljs-comment">// cars : [position][speed]</span>
+        <span class="hljs-type">int</span>[][] cars = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n][<span class="hljs-number">2</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+            cars[i][<span class="hljs-number">0</span>] = position[i];
+            cars[i][<span class="hljs-number">1</span>] = speed[i];
         }
 
-        /**
+        <span class="hljs-comment">/**
          * NOTE !!!
          *
          *  Sort by position descending (simulate the &quot;car arriving&quot; process
-         */
-        Arrays.sort(cars, (a, b) -&gt; b[0] - a[0]); // Sort by position descending
+         */</span>
+        Arrays.sort(cars, (a, b) -&gt; b[<span class="hljs-number">0</span>] - a[<span class="hljs-number">0</span>]); <span class="hljs-comment">// Sort by position descending</span>
 
-        // Calculate arrival times
-        double[] times = new double[n];
-        for (int i = 0; i &lt; n; i++) {
-            times[i] = (double) (target - cars[i][0]) / cars[i][1];
+        <span class="hljs-comment">// Calculate arrival times</span>
+        <span class="hljs-type">double</span>[] times = <span class="hljs-keyword">new</span> <span class="hljs-title class_">double</span>[n];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+            times[i] = (<span class="hljs-type">double</span>) (target - cars[i][<span class="hljs-number">0</span>]) / cars[i][<span class="hljs-number">1</span>];
         }
 
-        // Count fleets
-        int fleets = 0;
-        double lastTime = 0;
-        for (double time : times) {
-            /**
+        <span class="hljs-comment">// Count fleets</span>
+        <span class="hljs-type">int</span> <span class="hljs-variable">fleets</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+        <span class="hljs-type">double</span> <span class="hljs-variable">lastTime</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">double</span> time : times) {
+            <span class="hljs-comment">/**
              *  4.  Count Fleets:
              *  •   Iterate through the times array:
              *  •   If the current car’s arrival time is greater than the lastTime (time of the last fleet), it forms a new fleet.
              *  •   Update lastTime to the current car’s time.
-             */
-            // If current car's time is greater than the last fleet's time, it forms a new fleet
-            if (time &gt; lastTime) {
+             */</span>
+            <span class="hljs-comment">// If current car&#x27;s time is greater than the last fleet&#x27;s time, it forms a new fleet</span>
+            <span class="hljs-keyword">if</span> (time &gt; lastTime) {
                 fleets++;
                 lastTime = time;
             }
         }
 
-        return fleets;
+        <span class="hljs-keyword">return</span> fleets;
     }
 </code></pre>
 <h3 id="2-7-topk-frequent-words" tabindex="-1"><a class="header-anchor" href="#2-7-topk-frequent-words"><span>2-7)  TopK Frequent Words</span></a></h3>
-<pre><code class="language-java">// java
-// LC 692
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 692</span>
 
-// V0-1
-// IDEA: Sort on map key set
-public List&lt;String&gt; topKFrequent_0_1(String[] words, int k) {
+<span class="hljs-comment">// V0-1</span>
+<span class="hljs-comment">// IDEA: Sort on map key set</span>
+<span class="hljs-keyword">public</span> List&lt;String&gt; <span class="hljs-title function_">topKFrequent_0_1</span><span class="hljs-params">(String[] words, <span class="hljs-type">int</span> k)</span> {
 
-    // IDEA: map sorting
-    HashMap&lt;String, Integer&gt; freq = new HashMap&lt;&gt;();
-    for (int i = 0; i &lt; words.length; i++) {
-        freq.put(words[i], freq.getOrDefault(words[i], 0) + 1);
+    <span class="hljs-comment">// IDEA: map sorting</span>
+    HashMap&lt;String, Integer&gt; freq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; words.length; i++) {
+        freq.put(words[i], freq.getOrDefault(words[i], <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>);
     }
-    List&lt;String&gt; res = new ArrayList(freq.keySet());
+    List&lt;String&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>(freq.keySet());
 
-    /**
+    <span class="hljs-comment">/**
      * NOTE !!!
      *
-     *  we directly sort over map's keySet
+     *  we directly sort over map&#x27;s keySet
      *  (with the data val, key that read from map)
      *
      *
@@ -1774,19 +1786,19 @@ public List&lt;String&gt; topKFrequent_0_1(String[] words, int k) {
      *
      *          Collections.sort(res,
      *                 (w1, w2) -&gt; freq.get(w1).equals(freq.get(w2)) ? w1.compareTo(w2) : freq.get(w2) - freq.get(w1));
-     */
+     */</span>
     Collections.sort(res, (x, y) -&gt; {
-        int valDiff = freq.get(y) - freq.get(x); // sort on `value` bigger number first (decreasing order)
-        if (valDiff == 0){
-            // Sort on `key ` with `lexicographically` order (increasing order)
-            //return y.length() - x.length(); // ?
-            return x.compareTo(y);
+        <span class="hljs-type">int</span> <span class="hljs-variable">valDiff</span> <span class="hljs-operator">=</span> freq.get(y) - freq.get(x); <span class="hljs-comment">// sort on `value` bigger number first (decreasing order)</span>
+        <span class="hljs-keyword">if</span> (valDiff == <span class="hljs-number">0</span>){
+            <span class="hljs-comment">// Sort on `key ` with `lexicographically` order (increasing order)</span>
+            <span class="hljs-comment">//return y.length() - x.length(); // ?</span>
+            <span class="hljs-keyword">return</span> x.compareTo(y);
         }
-        return valDiff;
+        <span class="hljs-keyword">return</span> valDiff;
     });
 
-    // get top K result
-    return res.subList(0, k);
+    <span class="hljs-comment">// get top K result</span>
+    <span class="hljs-keyword">return</span> res.subList(<span class="hljs-number">0</span>, k);
 }
 </code></pre>
 

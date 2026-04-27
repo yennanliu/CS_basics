@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,13 +20,24 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
     document.querySelectorAll('pre code').forEach(function(codeEl) {
       var pre = codeEl.parentElement;
       var lang = '';
       var cls = codeEl.className || '';
       var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
       if (m) lang = m[1];
+
+      // Add line numbers
+      var lines = codeEl.innerHTML.split('
+');
+      if (lines[lines.length - 1] === '') lines.pop();
+      var numbered = lines.map(function(line, i) {
+        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
+      }).join('
+');
+      codeEl.innerHTML = numbered;
+      codeEl.classList.add('hljs-ln');
+
       var wrapper = document.createElement('div');
       wrapper.className = 'code-block-wrapper';
       pre.parentNode.insertBefore(wrapper, pre);
@@ -45,7 +55,9 @@
       btn.className = 'copy-btn';
       btn.textContent = 'Copy';
       btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
+');
+        navigator.clipboard.writeText(text).then(function() {
           btn.textContent = 'Copied!';
           btn.classList.add('copied');
           setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
@@ -127,9 +139,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Dijkstra</span></nav>
       <div class="cheatsheet-header">
         <h1>Dijkstra</h1>
-        <span class="last-updated">Last updated: Apr 8, 2026</span>
+        <span class="last-updated">Last updated: Apr 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#core-characteristics">Core Characteristics</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#category-1-classic-shortest-path">Category 1: Classic Shortest Path</a></li><li class="toc-sub"><a href="#category-2-shortest-path-with-constraints">Category 2: Shortest Path with Constraints</a></li><li class="toc-sub"><a href="#category-3-grid-based-shortest-path">Category 3: Grid-based Shortest Path</a></li><li class="toc-sub"><a href="#category-4-multi-source-shortest-path">Category 4: Multi-Source Shortest Path</a></li><li class="toc-sub"><a href="#category-5-time-dependent-shortest-path">Category 5: Time-Dependent Shortest Path</a></li><li><a href="#critical-decision-when-to-use-dijkstra-vs-dp">⚠️ Critical Decision: When to Use Dijkstra vs DP</a></li><li class="toc-sub"><a href="#lc-64-vs-lc-1631-the-dist-question">LC 64 vs LC 1631: The dist[][] Question</a></li><li class="toc-sub"><a href="#summary-table">Summary Table</a></li><li class="toc-sub"><a href="#the-dist-purpose">The dist[][] Purpose</a></li><li class="toc-sub"><a href="#dijkstra-implementation-variants-for-lc-1631">Dijkstra Implementation Variants for LC 1631</a></li><li class="toc-sub"><a href="#alternative-approaches-for-lc-1631">Alternative Approaches for LC 1631</a></li><li class="toc-sub"><a href="#approach-selection-for-lc-1631">Approach Selection for LC 1631</a></li><li><a href="#frequently-asked-questions">⚠️ Frequently Asked Questions</a></li><li class="toc-sub"><a href="#q1-do-i-need-both-dist-and-visited">Q1: Do I need BOTH dist[] AND visited[]?</a></li><li class="toc-sub"><a href="#q2-why-can-t-i-use-dp-for-lc-1631-like-i-do-for-lc-64">Q2: Why can’t I use DP for LC 1631 like I do for LC 64?</a></li><li class="toc-sub"><a href="#q3-what-s-the-difference-between-cost-and-effort-in-lc-1631">Q3: What’s the difference between “cost” and “effort” in LC 1631?</a></li><li class="toc-sub"><a href="#q4-when-should-i-use-union-find-instead-of-dijkstra">Q4: When should I use Union Find instead of Dijkstra?</a></li><li class="toc-sub"><a href="#q5-does-dist-r-c-check-work-without-explicit-visited">Q5: Does dist[r][c] check work without explicit visited[]?</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#universal-dijkstra-template">Universal Dijkstra Template</a></li><li class="toc-sub"><a href="#template-1-basic-dijkstra">Template 1: Basic Dijkstra</a></li><li class="toc-sub"><a href="#template-2-dijkstra-with-constraints">Template 2: Dijkstra with Constraints</a></li><li class="toc-sub"><a href="#template-3-grid-based-dijkstra">Template 3: Grid-based Dijkstra</a></li><li class="toc-sub"><a href="#template-4-multi-source-dijkstra">Template 4: Multi-Source Dijkstra</a></li><li class="toc-sub"><a href="#template-5-bidirectional-dijkstra">Template 5: Bidirectional Dijkstra</a></li><li><a href="#lc-examples">LC Examples</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#classic-shortest-path-problems">Classic Shortest Path Problems</a></li><li class="toc-sub"><a href="#constrained-path-problems">Constrained Path Problems</a></li><li class="toc-sub"><a href="#grid-based-problems">Grid-based Problems</a></li><li class="toc-sub"><a href="#multi-source-problems">Multi-Source Problems</a></li><li class="toc-sub"><a href="#time-state-dependent-problems">Time/State Dependent Problems</a></li><li class="toc-sub"><a href="#2-1-network-delay-time">2-1) Network Delay Time</a></li><li class="toc-sub"><a href="#2-2-cheapest-flights-within-k-stops">2-2) Cheapest Flights Within K Stops</a></li><li class="toc-sub"><a href="#2-3-path-with-minimum-effort">2-3) Path With Minimum Effort</a></li><li class="toc-sub"><a href="#2-4-path-with-maximum-probability">2-4) Path with Maximum Probability</a></li><li class="toc-sub"><a href="#2-5-number-of-ways-to-arrive-at-destination">2-5) Number of Ways to Arrive at Destination</a></li><li class="toc-sub"><a href="#2-6-swim-in-rising-water">2-6) Swim in Rising Water</a></li><li class="toc-sub"><a href="#2-7-trapping-rain-water-ii">2-7) Trapping Rain Water II</a></li><li class="toc-sub"><a href="#2-8-minimum-obstacle-removal-to-reach-corner">2-8) Minimum Obstacle Removal to Reach Corner</a></li><li><a href="#decision-framework">Decision Framework</a></li><li class="toc-sub"><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-sub"><a href="#when-to-use-dijkstra-vs-bfs">When to Use Dijkstra vs BFS</a></li><li class="toc-sub"><a href="#when-to-use-dijkstra-vs-other-algorithms">When to Use Dijkstra vs Other Algorithms</a></li><li><a href="#algorithm-comparison-dijkstra-vs-floyd-warshall-vs-bellman-ford">Algorithm Comparison: Dijkstra vs Floyd-Warshall vs Bellman-Ford</a></li><li class="toc-sub"><a href="#comprehensive-comparison-table">Comprehensive Comparison Table</a></li><li class="toc-sub"><a href="#when-to-use-each-algorithm">When to Use Each Algorithm</a></li><li class="toc-sub"><a href="#practical-comparison-examples">Practical Comparison Examples</a></li><li class="toc-sub"><a href="#performance-benchmarks">Performance Benchmarks</a></li><li class="toc-sub"><a href="#algorithm-selection-matrix">Algorithm Selection Matrix</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li><a href="#similar-leetcode-problems-reference">Similar LeetCode Problems Reference</a></li><li class="toc-sub"><a href="#grid-based-problems-1">Grid-Based Problems</a></li><li class="toc-sub"><a href="#classic-shortest-path-problems-1">Classic Shortest Path Problems</a></li><li class="toc-sub"><a href="#multi-source-shortest-path">Multi-Source Shortest Path</a></li><li class="toc-sub"><a href="#key-implementation-files">Key Implementation Files</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#core-characteristics">Core Characteristics</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#category-1-classic-shortest-path">Category 1: Classic Shortest Path</a></li><li class="toc-sub"><a href="#category-2-shortest-path-with-constraints">Category 2: Shortest Path with Constraints</a></li><li class="toc-sub"><a href="#category-3-grid-based-shortest-path">Category 3: Grid-based Shortest Path</a></li><li class="toc-sub"><a href="#category-4-multi-source-shortest-path">Category 4: Multi-Source Shortest Path</a></li><li class="toc-sub"><a href="#category-5-time-dependent-shortest-path">Category 5: Time-Dependent Shortest Path</a></li><li><a href="#critical-decision-when-to-use-dijkstra-vs-dp">⚠️ Critical Decision: When to Use Dijkstra vs DP</a></li><li class="toc-sub"><a href="#lc-64-vs-lc-1631-the-dist-question">LC 64 vs LC 1631: The dist[][] Question</a></li><li class="toc-sub"><a href="#summary-table">Summary Table</a></li><li class="toc-sub"><a href="#the-dist-purpose">The dist[][] Purpose</a></li><li class="toc-sub"><a href="#dijkstra-implementation-variants-for-lc-1631">Dijkstra Implementation Variants for LC 1631</a></li><li class="toc-sub"><a href="#alternative-approaches-for-lc-1631">Alternative Approaches for LC 1631</a></li><li class="toc-sub"><a href="#approach-selection-for-lc-1631">Approach Selection for LC 1631</a></li><li><a href="#frequently-asked-questions">⚠️ Frequently Asked Questions</a></li><li class="toc-sub"><a href="#q1-do-i-need-both-dist-and-visited">Q1: Do I need BOTH dist[] AND visited[]?</a></li><li class="toc-sub"><a href="#q2-why-can-t-i-use-dp-for-lc-1631-like-i-do-for-lc-64">Q2: Why can’t I use DP for LC 1631 like I do for LC 64?</a></li><li class="toc-sub"><a href="#q3-what-s-the-difference-between-cost-and-effort-in-lc-1631">Q3: What’s the difference between “cost” and “effort” in LC 1631?</a></li><li class="toc-sub"><a href="#q4-when-should-i-use-union-find-instead-of-dijkstra">Q4: When should I use Union Find instead of Dijkstra?</a></li><li class="toc-sub"><a href="#q5-does-dist-r-c-check-work-without-explicit-visited">Q5: Does dist[r][c] check work without explicit visited[]?</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#universal-dijkstra-template">Universal Dijkstra Template</a></li><li class="toc-sub"><a href="#template-1-basic-dijkstra">Template 1: Basic Dijkstra</a></li><li class="toc-sub"><a href="#template-2-dijkstra-with-constraints">Template 2: Dijkstra with Constraints</a></li><li class="toc-sub"><a href="#template-3-grid-based-dijkstra">Template 3: Grid-based Dijkstra</a></li><li class="toc-sub"><a href="#template-4-multi-source-dijkstra">Template 4: Multi-Source Dijkstra</a></li><li class="toc-sub"><a href="#template-5-bidirectional-dijkstra">Template 5: Bidirectional Dijkstra</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#classic-shortest-path-problems">Classic Shortest Path Problems</a></li><li class="toc-sub"><a href="#constrained-path-problems">Constrained Path Problems</a></li><li class="toc-sub"><a href="#grid-based-problems">Grid-based Problems</a></li><li class="toc-sub"><a href="#multi-source-problems">Multi-Source Problems</a></li><li class="toc-sub"><a href="#time-state-dependent-problems">Time/State Dependent Problems</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-network-delay-time-lc-743-dijkstra-single-source">2-1) Network Delay Time (LC 743) — Dijkstra Single Source</a></li><li class="toc-sub"><a href="#2-2-cheapest-flights-within-k-stops-lc-787-dijkstra-with-stop-counter">2-2) Cheapest Flights Within K Stops (LC 787) — Dijkstra with Stop Counter</a></li><li class="toc-sub"><a href="#2-3-path-with-minimum-effort-lc-1631-dijkstra-min-effort-on-grid">2-3) Path With Minimum Effort (LC 1631) — Dijkstra Min Effort on Grid</a></li><li class="toc-sub"><a href="#2-4-path-with-maximum-probability-lc-1514-dijkstra-max-heap-on-probabilities">2-4) Path with Maximum Probability (LC 1514) — Dijkstra Max-Heap on Probabilities</a></li><li class="toc-sub"><a href="#2-5-number-of-ways-to-arrive-at-destination-lc-1976-dijkstra-path-count">2-5) Number of Ways to Arrive at Destination (LC 1976) — Dijkstra + Path Count</a></li><li class="toc-sub"><a href="#2-6-swim-in-rising-water-lc-778-dijkstra-min-max-on-grid">2-6) Swim in Rising Water (LC 778) — Dijkstra Min-Max on Grid</a></li><li class="toc-sub"><a href="#2-7-trapping-rain-water-ii-lc-407-multi-source-dijkstra-from-boundary">2-7) Trapping Rain Water II (LC 407) — Multi-Source Dijkstra from Boundary</a></li><li class="toc-sub"><a href="#2-8-minimum-obstacle-removal-to-reach-corner-lc-2290-0-1-bfs-dijkstra">2-8) Minimum Obstacle Removal to Reach Corner (LC 2290) — 0-1 BFS / Dijkstra</a></li><li><a href="#decision-framework">Decision Framework</a></li><li class="toc-sub"><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-sub"><a href="#when-to-use-dijkstra-vs-bfs">When to Use Dijkstra vs BFS</a></li><li class="toc-sub"><a href="#when-to-use-dijkstra-vs-other-algorithms">When to Use Dijkstra vs Other Algorithms</a></li><li><a href="#algorithm-comparison-dijkstra-vs-floyd-warshall-vs-bellman-ford">Algorithm Comparison: Dijkstra vs Floyd-Warshall vs Bellman-Ford</a></li><li class="toc-sub"><a href="#comprehensive-comparison-table">Comprehensive Comparison Table</a></li><li class="toc-sub"><a href="#when-to-use-each-algorithm">When to Use Each Algorithm</a></li><li class="toc-sub"><a href="#practical-comparison-examples">Practical Comparison Examples</a></li><li class="toc-sub"><a href="#performance-benchmarks">Performance Benchmarks</a></li><li class="toc-sub"><a href="#algorithm-selection-matrix">Algorithm Selection Matrix</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li><a href="#similar-leetcode-problems-reference">Similar LeetCode Problems Reference</a></li><li class="toc-sub"><a href="#grid-based-problems-1">Grid-Based Problems</a></li><li class="toc-sub"><a href="#classic-shortest-path-problems-1">Classic Shortest Path Problems</a></li><li class="toc-sub"><a href="#multi-source-shortest-path">Multi-Source Shortest Path</a></li><li class="toc-sub"><a href="#key-implementation-files">Key Implementation Files</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="dijkstra-s-algorithm" tabindex="-1"><a class="header-anchor" href="#dijkstra-s-algorithm"><span>Dijkstra’s Algorithm</span></a></h1>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
@@ -193,7 +205,7 @@
 <p><strong>Question</strong>: Do we really need <code>dist[r][c]</code> (tracking minimum cost to reach each cell) for Dijkstra? Or is pure DP enough?</p>
 <p><strong>Answer</strong>: It depends on <strong>movement directions</strong>:</p>
 <h4 id="lc-64-minimum-path-sum-pure-dp-is-sufficient" tabindex="-1"><a class="header-anchor" href="#lc-64-minimum-path-sum-pure-dp-is-sufficient"><span><strong>LC 64: Minimum Path Sum</strong> ✅ Pure DP is Sufficient</span></a></h4>
-<pre><code>Movement: RIGHT only ↓ or DOWN only →
+<pre><code class="hljs">Movement: RIGHT only ↓ or DOWN only →
 </code></pre>
 <ul>
 <li><strong>Why DP works</strong>: You can only reach cell <code>(i,j)</code> from <code>(i-1,j)</code> or <code>(i,j-1)</code></li>
@@ -201,31 +213,31 @@
 <li><strong>No revisits</strong>: You can never find a “better path” after already computing a cell</li>
 <li><strong>Solution</strong>: Simple 2D DP or O(min(m,n)) space 1D DP</li>
 </ul>
-<pre><code class="language-java">// Pure DP - NO dist[][] needed
-public int minPathSum(int[][] grid) {
-    int m = grid.length, n = grid[0].length;
-    int[][] dp = new int[m][n];
-    dp[0][0] = grid[0][0];
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Pure DP - NO dist[][] needed</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minPathSum</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] grid)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> grid.length, n = grid[<span class="hljs-number">0</span>].length;
+    <span class="hljs-type">int</span>[][] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[m][n];
+    dp[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = grid[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>];
     
-    // First column: only from above
-    for (int i = 1; i &lt; m; i++)
-        dp[i][0] = dp[i-1][0] + grid[i][0];
+    <span class="hljs-comment">// First column: only from above</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; m; i++)
+        dp[i][<span class="hljs-number">0</span>] = dp[i-<span class="hljs-number">1</span>][<span class="hljs-number">0</span>] + grid[i][<span class="hljs-number">0</span>];
     
-    // First row: only from left
-    for (int j = 1; j &lt; n; j++)
-        dp[0][j] = dp[0][j-1] + grid[0][j];
+    <span class="hljs-comment">// First row: only from left</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; j &lt; n; j++)
+        dp[<span class="hljs-number">0</span>][j] = dp[<span class="hljs-number">0</span>][j-<span class="hljs-number">1</span>] + grid[<span class="hljs-number">0</span>][j];
     
-    // Fill rest
-    for (int i = 1; i &lt; m; i++)
-        for (int j = 1; j &lt; n; j++)
-            dp[i][j] = grid[i][j] + Math.min(dp[i-1][j], dp[i][j-1]);
+    <span class="hljs-comment">// Fill rest</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; m; i++)
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; j &lt; n; j++)
+            dp[i][j] = grid[i][j] + Math.min(dp[i-<span class="hljs-number">1</span>][j], dp[i][j-<span class="hljs-number">1</span>]);
     
-    return dp[m-1][n-1];
+    <span class="hljs-keyword">return</span> dp[m-<span class="hljs-number">1</span>][n-<span class="hljs-number">1</span>];
 }
-// Time: O(m*n), Space: O(min(m,n))
+<span class="hljs-comment">// Time: O(m*n), Space: O(min(m,n))</span>
 </code></pre>
 <h4 id="lc-1631-path-with-minimum-effort-dijkstra-dist-needed" tabindex="-1"><a class="header-anchor" href="#lc-1631-path-with-minimum-effort-dijkstra-dist-needed"><span><strong>LC 1631: Path With Minimum Effort</strong> ⚠️ Dijkstra + dist[][] Needed</span></a></h4>
-<pre><code>Movement: UP, DOWN, LEFT, RIGHT (all 4 directions)
+<pre><code class="hljs">Movement: UP, DOWN, LEFT, RIGHT (all 4 directions)
 </code></pre>
 <ul>
 <li><strong>Why Dijkstra needed</strong>: You might reach a cell from multiple paths, and later find a better path</li>
@@ -233,44 +245,44 @@ public int minPathSum(int[][] grid) {
 <li><strong>Revisits possible</strong>: When moving in all 4 directions, you can revisit cells with better costs</li>
 <li><strong>Solution</strong>: Dijkstra with dist[][] + PriorityQueue</li>
 </ul>
-<pre><code class="language-java">// Dijkstra + dist[][] - NECESSARY for 4-directional movement
-public int minimumEffortPath(int[][] heights) {
-    int m = heights.length, n = heights[0].length;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Dijkstra + dist[][] - NECESSARY for 4-directional movement</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minimumEffortPath</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] heights)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> heights.length, n = heights[<span class="hljs-number">0</span>].length;
     
-    // dist[r][c] = minimum effort found so far to reach (r,c)
-    int[][] dist = new int[m][n];
-    for (int[] row : dist)
+    <span class="hljs-comment">// dist[r][c] = minimum effort found so far to reach (r,c)</span>
+    <span class="hljs-type">int</span>[][] dist = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[m][n];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] row : dist)
         Arrays.fill(row, Integer.MAX_VALUE);
     
-    PriorityQueue&lt;int[]&gt; pq = new PriorityQueue&lt;&gt;((a, b) -&gt; a[2] - b[2]);
-    pq.offer(new int[]{0, 0, 0});
-    dist[0][0] = 0;
+    PriorityQueue&lt;<span class="hljs-type">int</span>[]&gt; pq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;((a, b) -&gt; a[<span class="hljs-number">2</span>] - b[<span class="hljs-number">2</span>]);
+    pq.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>});
+    dist[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>;
     
-    int[][] dirs = {{0,1}, {0,-1}, {1,0}, {-1,0}};
+    <span class="hljs-type">int</span>[][] dirs = {{<span class="hljs-number">0</span>,<span class="hljs-number">1</span>}, {<span class="hljs-number">0</span>,-<span class="hljs-number">1</span>}, {<span class="hljs-number">1</span>,<span class="hljs-number">0</span>}, {-<span class="hljs-number">1</span>,<span class="hljs-number">0</span>}};
     
-    while (!pq.isEmpty()) {
-        int[] cur = pq.poll();
-        int r = cur[0], c = cur[1], cost = cur[2];
+    <span class="hljs-keyword">while</span> (!pq.isEmpty()) {
+        <span class="hljs-type">int</span>[] cur = pq.poll();
+        <span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> cur[<span class="hljs-number">0</span>], c = cur[<span class="hljs-number">1</span>], cost = cur[<span class="hljs-number">2</span>];
         
-        // Already processed with better cost
-        if (cost &gt; dist[r][c]) continue;
+        <span class="hljs-comment">// Already processed with better cost</span>
+        <span class="hljs-keyword">if</span> (cost &gt; dist[r][c]) <span class="hljs-keyword">continue</span>;
         
-        if (r == m-1 &amp;&amp; c == n-1) return cost;
+        <span class="hljs-keyword">if</span> (r == m-<span class="hljs-number">1</span> &amp;&amp; c == n-<span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> cost;
         
-        for (int[] d : dirs) {
-            int nr = r + d[0], nc = c + d[1];
-            if (nr &gt;= 0 &amp;&amp; nr &lt; m &amp;&amp; nc &gt;= 0 &amp;&amp; nc &lt; n) {
-                int newCost = Math.max(cost, Math.abs(heights[nr][nc] - heights[r][c]));
-                if (newCost &lt; dist[nr][nc]) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] d : dirs) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">nr</span> <span class="hljs-operator">=</span> r + d[<span class="hljs-number">0</span>], nc = c + d[<span class="hljs-number">1</span>];
+            <span class="hljs-keyword">if</span> (nr &gt;= <span class="hljs-number">0</span> &amp;&amp; nr &lt; m &amp;&amp; nc &gt;= <span class="hljs-number">0</span> &amp;&amp; nc &lt; n) {
+                <span class="hljs-type">int</span> <span class="hljs-variable">newCost</span> <span class="hljs-operator">=</span> Math.max(cost, Math.abs(heights[nr][nc] - heights[r][c]));
+                <span class="hljs-keyword">if</span> (newCost &lt; dist[nr][nc]) {
                     dist[nr][nc] = newCost;
-                    pq.offer(new int[]{nr, nc, newCost});
+                    pq.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{nr, nc, newCost});
                 }
             }
         }
     }
-    return -1;
+    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
 }
-// Time: O(m*n*log(m*n)), Space: O(m*n)
+<span class="hljs-comment">// Time: O(m*n*log(m*n)), Space: O(m*n)</span>
 </code></pre>
 <h3 id="summary-table" tabindex="-1"><a class="header-anchor" href="#summary-table"><span>Summary Table</span></a></h3>
 <table>
@@ -312,7 +324,7 @@ public int minimumEffortPath(int[][] heights) {
 </tbody>
 </table>
 <h3 id="the-dist-purpose" tabindex="-1"><a class="header-anchor" href="#the-dist-purpose"><span>The dist[][] Purpose</span></a></h3>
-<pre><code>dist[r][c] = &quot;What's the MINIMUM cost I've found SO FAR to reach (r,c)?&quot;
+<pre><code class="hljs">dist[r][c] = &quot;What's the MINIMUM cost I've found SO FAR to reach (r,c)?&quot;
 </code></pre>
 <ul>
 <li><strong>Initialize</strong>: <code>dist[r][c] = Integer.MAX_VALUE</code> (unknown)</li>
@@ -326,74 +338,74 @@ public int minimumEffortPath(int[][] heights) {
 </ul>
 <h3 id="dijkstra-implementation-variants-for-lc-1631" tabindex="-1"><a class="header-anchor" href="#dijkstra-implementation-variants-for-lc-1631"><span>Dijkstra Implementation Variants for LC 1631</span></a></h3>
 <h4 id="variant-1-using-dist-array-recommended" tabindex="-1"><a class="header-anchor" href="#variant-1-using-dist-array-recommended"><span><strong>Variant 1: Using dist[][] Array (Recommended)</strong></span></a></h4>
-<pre><code class="language-java">// dist[r][c] stores minimum cost found so far to reach (r,c)
-public int minimumEffortPath(int[][] heights) {
-    int m = heights.length, n = heights[0].length;
-    int[][] dist = new int[m][n];
-    for (int[] row : dist) Arrays.fill(row, Integer.MAX_VALUE);
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// dist[r][c] stores minimum cost found so far to reach (r,c)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minimumEffortPath</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] heights)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> heights.length, n = heights[<span class="hljs-number">0</span>].length;
+    <span class="hljs-type">int</span>[][] dist = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[m][n];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] row : dist) Arrays.fill(row, Integer.MAX_VALUE);
     
-    PriorityQueue&lt;int[]&gt; pq = new PriorityQueue&lt;&gt;((a, b) -&gt; a[2] - b[2]);
-    pq.offer(new int[]{0, 0, 0}); // {row, col, effort}
-    dist[0][0] = 0;
+    PriorityQueue&lt;<span class="hljs-type">int</span>[]&gt; pq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;((a, b) -&gt; a[<span class="hljs-number">2</span>] - b[<span class="hljs-number">2</span>]);
+    pq.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>}); <span class="hljs-comment">// {row, col, effort}</span>
+    dist[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>;
     
-    int[][] dirs = {{0,1}, {0,-1}, {1,0}, {-1,0}};
+    <span class="hljs-type">int</span>[][] dirs = {{<span class="hljs-number">0</span>,<span class="hljs-number">1</span>}, {<span class="hljs-number">0</span>,-<span class="hljs-number">1</span>}, {<span class="hljs-number">1</span>,<span class="hljs-number">0</span>}, {-<span class="hljs-number">1</span>,<span class="hljs-number">0</span>}};
     
-    while (!pq.isEmpty()) {
-        int[] cur = pq.poll();
-        int r = cur[0], c = cur[1], effort = cur[2];
+    <span class="hljs-keyword">while</span> (!pq.isEmpty()) {
+        <span class="hljs-type">int</span>[] cur = pq.poll();
+        <span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> cur[<span class="hljs-number">0</span>], c = cur[<span class="hljs-number">1</span>], effort = cur[<span class="hljs-number">2</span>];
         
-        // Destination check
-        if (r == m-1 &amp;&amp; c == n-1) return effort;
+        <span class="hljs-comment">// Destination check</span>
+        <span class="hljs-keyword">if</span> (r == m-<span class="hljs-number">1</span> &amp;&amp; c == n-<span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> effort;
         
-        // Skip if already found better path
-        if (effort &gt; dist[r][c]) continue;
+        <span class="hljs-comment">// Skip if already found better path</span>
+        <span class="hljs-keyword">if</span> (effort &gt; dist[r][c]) <span class="hljs-keyword">continue</span>;
         
-        // Explore neighbors
-        for (int[] d : dirs) {
-            int nr = r + d[0], nc = c + d[1];
-            if (nr &gt;= 0 &amp;&amp; nr &lt; m &amp;&amp; nc &gt;= 0 &amp;&amp; nc &lt; n) {
-                int nextEffort = Math.max(effort, Math.abs(heights[nr][nc] - heights[r][c]));
-                if (nextEffort &lt; dist[nr][nc]) {
+        <span class="hljs-comment">// Explore neighbors</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] d : dirs) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">nr</span> <span class="hljs-operator">=</span> r + d[<span class="hljs-number">0</span>], nc = c + d[<span class="hljs-number">1</span>];
+            <span class="hljs-keyword">if</span> (nr &gt;= <span class="hljs-number">0</span> &amp;&amp; nr &lt; m &amp;&amp; nc &gt;= <span class="hljs-number">0</span> &amp;&amp; nc &lt; n) {
+                <span class="hljs-type">int</span> <span class="hljs-variable">nextEffort</span> <span class="hljs-operator">=</span> Math.max(effort, Math.abs(heights[nr][nc] - heights[r][c]));
+                <span class="hljs-keyword">if</span> (nextEffort &lt; dist[nr][nc]) {
                     dist[nr][nc] = nextEffort;
-                    pq.offer(new int[]{nr, nc, nextEffort});
+                    pq.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{nr, nc, nextEffort});
                 }
             }
         }
     }
-    return -1;
+    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
 }
 </code></pre>
 <p><strong>Why it works</strong>: The <code>dist[][]</code> check <code>if (effort &gt; dist[r][c]) continue;</code> automatically skips any path that’s worse than the best we’ve found.</p>
 <h4 id="variant-2-using-visited-array" tabindex="-1"><a class="header-anchor" href="#variant-2-using-visited-array"><span><strong>Variant 2: Using visited[] Array</strong></span></a></h4>
-<pre><code class="language-java">// visited[] marks cells whose minimum effort is finalized
-public int minimumEffortPath_visited(int[][] heights) {
-    int m = heights.length, n = heights[0].length;
-    boolean[][] visited = new boolean[m][n];
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// visited[] marks cells whose minimum effort is finalized</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minimumEffortPath_visited</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] heights)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> heights.length, n = heights[<span class="hljs-number">0</span>].length;
+    <span class="hljs-type">boolean</span>[][] visited = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[m][n];
     
-    PriorityQueue&lt;int[]&gt; pq = new PriorityQueue&lt;&gt;((a, b) -&gt; a[0] - b[0]);
-    pq.offer(new int[]{0, 0, 0}); // {effort, row, col}
+    PriorityQueue&lt;<span class="hljs-type">int</span>[]&gt; pq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;((a, b) -&gt; a[<span class="hljs-number">0</span>] - b[<span class="hljs-number">0</span>]);
+    pq.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>}); <span class="hljs-comment">// {effort, row, col}</span>
     
-    int[][] dirs = {{0,1}, {0,-1}, {1,0}, {-1,0}};
+    <span class="hljs-type">int</span>[][] dirs = {{<span class="hljs-number">0</span>,<span class="hljs-number">1</span>}, {<span class="hljs-number">0</span>,-<span class="hljs-number">1</span>}, {<span class="hljs-number">1</span>,<span class="hljs-number">0</span>}, {-<span class="hljs-number">1</span>,<span class="hljs-number">0</span>}};
     
-    while (!pq.isEmpty()) {
-        int[] cur = pq.poll();
-        int effort = cur[0], r = cur[1], c = cur[2];
+    <span class="hljs-keyword">while</span> (!pq.isEmpty()) {
+        <span class="hljs-type">int</span>[] cur = pq.poll();
+        <span class="hljs-type">int</span> <span class="hljs-variable">effort</span> <span class="hljs-operator">=</span> cur[<span class="hljs-number">0</span>], r = cur[<span class="hljs-number">1</span>], c = cur[<span class="hljs-number">2</span>];
         
-        if (r == m-1 &amp;&amp; c == n-1) return effort;
+        <span class="hljs-keyword">if</span> (r == m-<span class="hljs-number">1</span> &amp;&amp; c == n-<span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> effort;
         
-        // Once visited, we have minimum effort (thanks to min-heap)
-        if (visited[r][c]) continue;
-        visited[r][c] = true;
+        <span class="hljs-comment">// Once visited, we have minimum effort (thanks to min-heap)</span>
+        <span class="hljs-keyword">if</span> (visited[r][c]) <span class="hljs-keyword">continue</span>;
+        visited[r][c] = <span class="hljs-literal">true</span>;
         
-        for (int[] d : dirs) {
-            int nr = r + d[0], nc = c + d[1];
-            if (nr &gt;= 0 &amp;&amp; nr &lt; m &amp;&amp; nc &gt;= 0 &amp;&amp; nc &lt; n &amp;&amp; !visited[nr][nc]) {
-                int nextEffort = Math.max(effort, Math.abs(heights[nr][nc] - heights[r][c]));
-                pq.offer(new int[]{nextEffort, nr, nc});
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] d : dirs) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">nr</span> <span class="hljs-operator">=</span> r + d[<span class="hljs-number">0</span>], nc = c + d[<span class="hljs-number">1</span>];
+            <span class="hljs-keyword">if</span> (nr &gt;= <span class="hljs-number">0</span> &amp;&amp; nr &lt; m &amp;&amp; nc &gt;= <span class="hljs-number">0</span> &amp;&amp; nc &lt; n &amp;&amp; !visited[nr][nc]) {
+                <span class="hljs-type">int</span> <span class="hljs-variable">nextEffort</span> <span class="hljs-operator">=</span> Math.max(effort, Math.abs(heights[nr][nc] - heights[r][c]));
+                pq.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{nextEffort, nr, nc});
             }
         }
     }
-    return -1;
+    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
 }
 </code></pre>
 <p><strong>Why visited works</strong>: The min-heap guarantees that the first time we pop a cell is with optimal effort, so marking it visited prevents reprocessing.</p>
@@ -424,97 +436,97 @@ public int minimumEffortPath_visited(int[][] heights) {
 </table>
 <h3 id="alternative-approaches-for-lc-1631" tabindex="-1"><a class="header-anchor" href="#alternative-approaches-for-lc-1631"><span>Alternative Approaches for LC 1631</span></a></h3>
 <h4 id="approach-3-binary-search-dfs" tabindex="-1"><a class="header-anchor" href="#approach-3-binary-search-dfs"><span><strong>Approach 3: Binary Search + DFS</strong></span></a></h4>
-<pre><code class="language-java">// Binary search on effort + DFS to check if reachable
-public int minimumEffortPath_binarySearch(int[][] heights) {
-    int lo = 0, hi = 1_000_000;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Binary search on effort + DFS to check if reachable</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minimumEffortPath_binarySearch</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] heights)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">lo</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, hi = <span class="hljs-number">1_000_000</span>;
     
-    while (lo &lt; hi) {
-        int mid = (lo + hi) / 2;
-        if (canReach(heights, mid)) {
+    <span class="hljs-keyword">while</span> (lo &lt; hi) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> (lo + hi) / <span class="hljs-number">2</span>;
+        <span class="hljs-keyword">if</span> (canReach(heights, mid)) {
             hi = mid;
-        } else {
-            lo = mid + 1;
+        } <span class="hljs-keyword">else</span> {
+            lo = mid + <span class="hljs-number">1</span>;
         }
     }
-    return lo;
+    <span class="hljs-keyword">return</span> lo;
 }
 
-private boolean canReach(int[][] h, int limit) {
-    int m = h.length, n = h[0].length;
-    boolean[][] visited = new boolean[m][n];
-    return dfs(h, 0, 0, limit, visited);
+<span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">canReach</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] h, <span class="hljs-type">int</span> limit)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> h.length, n = h[<span class="hljs-number">0</span>].length;
+    <span class="hljs-type">boolean</span>[][] visited = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[m][n];
+    <span class="hljs-keyword">return</span> dfs(h, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, limit, visited);
 }
 
-private boolean dfs(int[][] h, int r, int c, int limit, boolean[][] visited) {
-    if (r &lt; 0 || r &gt;= h.length || c &lt; 0 || c &gt;= h[0].length || visited[r][c])
-        return false;
+<span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] h, <span class="hljs-type">int</span> r, <span class="hljs-type">int</span> c, <span class="hljs-type">int</span> limit, <span class="hljs-type">boolean</span>[][] visited)</span> {
+    <span class="hljs-keyword">if</span> (r &lt; <span class="hljs-number">0</span> || r &gt;= h.length || c &lt; <span class="hljs-number">0</span> || c &gt;= h[<span class="hljs-number">0</span>].length || visited[r][c])
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
     
-    visited[r][c] = true;
-    if (r == h.length-1 &amp;&amp; c == h[0].length-1) return true;
+    visited[r][c] = <span class="hljs-literal">true</span>;
+    <span class="hljs-keyword">if</span> (r == h.length-<span class="hljs-number">1</span> &amp;&amp; c == h[<span class="hljs-number">0</span>].length-<span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
     
-    int[][] dirs = {{0,1}, {0,-1}, {1,0}, {-1,0}};
-    for (int[] d : dirs) {
-        int nr = r + d[0], nc = c + d[1];
-        if (nr &gt;= 0 &amp;&amp; nr &lt; h.length &amp;&amp; nc &gt;= 0 &amp;&amp; nc &lt; h[0].length) {
-            if (Math.abs(h[nr][nc] - h[r][c]) &lt;= limit &amp;&amp; dfs(h, nr, nc, limit, visited)) {
-                return true;
+    <span class="hljs-type">int</span>[][] dirs = {{<span class="hljs-number">0</span>,<span class="hljs-number">1</span>}, {<span class="hljs-number">0</span>,-<span class="hljs-number">1</span>}, {<span class="hljs-number">1</span>,<span class="hljs-number">0</span>}, {-<span class="hljs-number">1</span>,<span class="hljs-number">0</span>}};
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] d : dirs) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">nr</span> <span class="hljs-operator">=</span> r + d[<span class="hljs-number">0</span>], nc = c + d[<span class="hljs-number">1</span>];
+        <span class="hljs-keyword">if</span> (nr &gt;= <span class="hljs-number">0</span> &amp;&amp; nr &lt; h.length &amp;&amp; nc &gt;= <span class="hljs-number">0</span> &amp;&amp; nc &lt; h[<span class="hljs-number">0</span>].length) {
+            <span class="hljs-keyword">if</span> (Math.abs(h[nr][nc] - h[r][c]) &lt;= limit &amp;&amp; dfs(h, nr, nc, limit, visited)) {
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
             }
         }
     }
-    return false;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
 }
 </code></pre>
 <p><strong>Time</strong>: O((V+E) × log(maxH)) | <strong>Space</strong>: O(V)</p>
 <h4 id="approach-4-union-find-kruskal-s-algorithm" tabindex="-1"><a class="header-anchor" href="#approach-4-union-find-kruskal-s-algorithm"><span><strong>Approach 4: Union Find (Kruskal’s Algorithm)</strong></span></a></h4>
-<pre><code class="language-java">// Build graph as edges, sort by weight, union until src-dest connected
-public int minimumEffortPath_unionFind(int[][] heights) {
-    int m = heights.length, n = heights[0].length;
-    List&lt;int[]&gt; edges = new ArrayList&lt;&gt;();
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Build graph as edges, sort by weight, union until src-dest connected</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minimumEffortPath_unionFind</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] heights)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> heights.length, n = heights[<span class="hljs-number">0</span>].length;
+    List&lt;<span class="hljs-type">int</span>[]&gt; edges = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
     
-    // Build all edges
-    for (int i = 0; i &lt; m; i++) {
-        for (int j = 0; j &lt; n; j++) {
-            if (i &gt; 0) // edge down
-                edges.add(new int[]{i*n+j, (i-1)*n+j, Math.abs(heights[i][j]-heights[i-1][j])});
-            if (j &gt; 0) // edge right
-                edges.add(new int[]{i*n+j, i*n+j-1, Math.abs(heights[i][j]-heights[i][j-1])});
+    <span class="hljs-comment">// Build all edges</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; m; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; n; j++) {
+            <span class="hljs-keyword">if</span> (i &gt; <span class="hljs-number">0</span>) <span class="hljs-comment">// edge down</span>
+                edges.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{i*n+j, (i-<span class="hljs-number">1</span>)*n+j, Math.abs(heights[i][j]-heights[i-<span class="hljs-number">1</span>][j])});
+            <span class="hljs-keyword">if</span> (j &gt; <span class="hljs-number">0</span>) <span class="hljs-comment">// edge right</span>
+                edges.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{i*n+j, i*n+j-<span class="hljs-number">1</span>, Math.abs(heights[i][j]-heights[i][j-<span class="hljs-number">1</span>])});
         }
     }
     
-    // Sort edges by effort (Kruskal's principle)
-    edges.sort((a, b) -&gt; a[2] - b[2]);
+    <span class="hljs-comment">// Sort edges by effort (Kruskal&#x27;s principle)</span>
+    edges.sort((a, b) -&gt; a[<span class="hljs-number">2</span>] - b[<span class="hljs-number">2</span>]);
     
-    UnionFind uf = new UnionFind(m * n);
-    int src = 0, dst = m*n - 1;
+    <span class="hljs-type">UnionFind</span> <span class="hljs-variable">uf</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">UnionFind</span>(m * n);
+    <span class="hljs-type">int</span> <span class="hljs-variable">src</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, dst = m*n - <span class="hljs-number">1</span>;
     
-    for (int[] edge : edges) {
-        uf.union(edge[0], edge[1]);
-        if (uf.find(src) == uf.find(dst)) {
-            return edge[2]; // Return effort when src-dst first connected
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] edge : edges) {
+        uf.union(edge[<span class="hljs-number">0</span>], edge[<span class="hljs-number">1</span>]);
+        <span class="hljs-keyword">if</span> (uf.find(src) == uf.find(dst)) {
+            <span class="hljs-keyword">return</span> edge[<span class="hljs-number">2</span>]; <span class="hljs-comment">// Return effort when src-dst first connected</span>
         }
     }
-    return 0;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
 }
 
-class UnionFind {
-    int[] parent, rank;
-    UnionFind(int n) {
-        parent = new int[n];
-        rank = new int[n];
-        for (int i = 0; i &lt; n; i++) parent[i] = i;
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">UnionFind</span> {
+    <span class="hljs-type">int</span>[] parent, rank;
+    UnionFind(<span class="hljs-type">int</span> n) {
+        parent = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
+        rank = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) parent[i] = i;
     }
     
-    int find(int x) {
-        if (parent[x] != x) parent[x] = find(parent[x]);
-        return parent[x];
+    <span class="hljs-type">int</span> <span class="hljs-title function_">find</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> {
+        <span class="hljs-keyword">if</span> (parent[x] != x) parent[x] = find(parent[x]);
+        <span class="hljs-keyword">return</span> parent[x];
     }
     
-    void union(int x, int y) {
-        int px = find(x), py = find(y);
-        if (px == py) return;
-        if (rank[px] &lt; rank[py]) { int t = px; px = py; py = t; }
+    <span class="hljs-keyword">void</span> <span class="hljs-title function_">union</span><span class="hljs-params">(<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">px</span> <span class="hljs-operator">=</span> find(x), py = find(y);
+        <span class="hljs-keyword">if</span> (px == py) <span class="hljs-keyword">return</span>;
+        <span class="hljs-keyword">if</span> (rank[px] &lt; rank[py]) { <span class="hljs-type">int</span> <span class="hljs-variable">t</span> <span class="hljs-operator">=</span> px; px = py; py = t; }
         parent[py] = px;
-        if (rank[px] == rank[py]) rank[px]++;
+        <span class="hljs-keyword">if</span> (rank[px] == rank[py]) rank[px]++;
     }
 }
 </code></pre>
@@ -571,7 +583,7 @@ class UnionFind {
 <li><strong>LC 1631</strong>: Can move UP/DOWN/LEFT/RIGHT → Cycles exist → DP fails ❌</li>
 </ul>
 <p>With 4-directional movement, you can have circular dependencies:</p>
-<pre><code>(1,1) → (1,2) → (2,2) → (2,1) → (1,1)
+<pre><code class="hljs">(1,1) → (1,2) → (2,2) → (2,1) → (1,1)
 </code></pre>
 <p>DP requires dependencies to form a DAG (no cycles), so <strong>Dijkstra or Binary Search required</strong>.</p>
 <h3 id="q3-what-s-the-difference-between-cost-and-effort-in-lc-1631" tabindex="-1"><a class="header-anchor" href="#q3-what-s-the-difference-between-cost-and-effort-in-lc-1631"><span>Q3: What’s the difference between “cost” and “effort” in LC 1631?</span></a></h3>
@@ -642,196 +654,195 @@ class UnionFind {
 </tbody>
 </table>
 <h3 id="universal-dijkstra-template" tabindex="-1"><a class="header-anchor" href="#universal-dijkstra-template"><span>Universal Dijkstra Template</span></a></h3>
-<pre><code class="language-python">import heapq
-import collections
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">import</span> heapq
+<span class="hljs-keyword">import</span> collections
 
-def dijkstra(n, edges, src, dst):
-    # Build adjacency list
-    graph = collections.defaultdict(list)
-    for u, v, w in edges:
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">dijkstra</span>(<span class="hljs-params">n, edges, src, dst</span>):
+    <span class="hljs-comment"># Build adjacency list</span>
+    graph = collections.defaultdict(<span class="hljs-built_in">list</span>)
+    <span class="hljs-keyword">for</span> u, v, w <span class="hljs-keyword">in</span> edges:
         graph[u].append((v, w))
     
-    # Min heap: (distance, node)
-    pq = [(0, src)]
-    # Distance array
-    dist = [float('inf')] * n
-    dist[src] = 0
-    # Visited set (optional but recommended)
-    visited = set()
+    <span class="hljs-comment"># Min heap: (distance, node)</span>
+    pq = [(<span class="hljs-number">0</span>, src)]
+    <span class="hljs-comment"># Distance array</span>
+    dist = [<span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)] * n
+    dist[src] = <span class="hljs-number">0</span>
+    <span class="hljs-comment"># Visited set (optional but recommended)</span>
+    visited = <span class="hljs-built_in">set</span>()
     
-    while pq:
+    <span class="hljs-keyword">while</span> pq:
         d, u = heapq.heappop(pq)
         
-        # Skip if already processed with better distance
-        if u in visited:
-            continue
+        <span class="hljs-comment"># Skip if already processed with better distance</span>
+        <span class="hljs-keyword">if</span> u <span class="hljs-keyword">in</span> visited:
+            <span class="hljs-keyword">continue</span>
         visited.add(u)
         
-        # Found destination
-        if u == dst:
-            return d
+        <span class="hljs-comment"># Found destination</span>
+        <span class="hljs-keyword">if</span> u == dst:
+            <span class="hljs-keyword">return</span> d
         
-        # Relax edges
-        for v, w in graph[u]:
-            if dist[u] + w &lt; dist[v]:
+        <span class="hljs-comment"># Relax edges</span>
+        <span class="hljs-keyword">for</span> v, w <span class="hljs-keyword">in</span> graph[u]:
+            <span class="hljs-keyword">if</span> dist[u] + w &lt; dist[v]:
                 dist[v] = dist[u] + w
                 heapq.heappush(pq, (dist[v], v))
     
-    return dist[dst] if dist[dst] != float('inf') else -1
+    <span class="hljs-keyword">return</span> dist[dst] <span class="hljs-keyword">if</span> dist[dst] != <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>) <span class="hljs-keyword">else</span> -<span class="hljs-number">1</span>
 </code></pre>
 <h3 id="template-1-basic-dijkstra" tabindex="-1"><a class="header-anchor" href="#template-1-basic-dijkstra"><span>Template 1: Basic Dijkstra</span></a></h3>
-<pre><code class="language-python">def dijkstra_basic(n, edges, src):
-    &quot;&quot;&quot;Find shortest paths from src to all nodes&quot;&quot;&quot;
-    graph = collections.defaultdict(list)
-    for u, v, w in edges:
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">dijkstra_basic</span>(<span class="hljs-params">n, edges, src</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Find shortest paths from src to all nodes&quot;&quot;&quot;</span>
+    graph = collections.defaultdict(<span class="hljs-built_in">list</span>)
+    <span class="hljs-keyword">for</span> u, v, w <span class="hljs-keyword">in</span> edges:
         graph[u].append((v, w))
     
-    dist = [float('inf')] * n
-    dist[src] = 0
-    pq = [(0, src)]  # (distance, node)
+    dist = [<span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)] * n
+    dist[src] = <span class="hljs-number">0</span>
+    pq = [(<span class="hljs-number">0</span>, src)]  <span class="hljs-comment"># (distance, node)</span>
     
-    while pq:
+    <span class="hljs-keyword">while</span> pq:
         d, u = heapq.heappop(pq)
-        if d &gt; dist[u]:  # Already processed
-            continue
+        <span class="hljs-keyword">if</span> d &gt; dist[u]:  <span class="hljs-comment"># Already processed</span>
+            <span class="hljs-keyword">continue</span>
         
-        for v, w in graph[u]:
-            if dist[u] + w &lt; dist[v]:
+        <span class="hljs-keyword">for</span> v, w <span class="hljs-keyword">in</span> graph[u]:
+            <span class="hljs-keyword">if</span> dist[u] + w &lt; dist[v]:
                 dist[v] = dist[u] + w
                 heapq.heappush(pq, (dist[v], v))
     
-    return dist
+    <span class="hljs-keyword">return</span> dist
 </code></pre>
 <h3 id="template-2-dijkstra-with-constraints" tabindex="-1"><a class="header-anchor" href="#template-2-dijkstra-with-constraints"><span>Template 2: Dijkstra with Constraints</span></a></h3>
-<pre><code class="language-python">def dijkstra_constrained(n, edges, src, dst, k):
-    &quot;&quot;&quot;Shortest path with at most k stops/constraints&quot;&quot;&quot;
-    graph = collections.defaultdict(list)
-    for u, v, w in edges:
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">dijkstra_constrained</span>(<span class="hljs-params">n, edges, src, dst, k</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Shortest path with at most k stops/constraints&quot;&quot;&quot;</span>
+    graph = collections.defaultdict(<span class="hljs-built_in">list</span>)
+    <span class="hljs-keyword">for</span> u, v, w <span class="hljs-keyword">in</span> edges:
         graph[u].append((v, w))
     
-    # (cost, node, stops_left)
-    pq = [(0, src, k + 1)]
-    # Track best stops count for each node
+    <span class="hljs-comment"># (cost, node, stops_left)</span>
+    pq = [(<span class="hljs-number">0</span>, src, k + <span class="hljs-number">1</span>)]
+    <span class="hljs-comment"># Track best stops count for each node</span>
     best = {}
     
-    while pq:
+    <span class="hljs-keyword">while</span> pq:
         cost, u, stops = heapq.heappop(pq)
         
-        if u == dst:
-            return cost
+        <span class="hljs-keyword">if</span> u == dst:
+            <span class="hljs-keyword">return</span> cost
         
-        # Prune if we've seen this node with more stops
-        if u in best and best[u] &gt;= stops:
-            continue
+        <span class="hljs-comment"># Prune if we&#x27;ve seen this node with more stops</span>
+        <span class="hljs-keyword">if</span> u <span class="hljs-keyword">in</span> best <span class="hljs-keyword">and</span> best[u] &gt;= stops:
+            <span class="hljs-keyword">continue</span>
         best[u] = stops
         
-        if stops &gt; 0:
-            for v, w in graph[u]:
-                heapq.heappush(pq, (cost + w, v, stops - 1))
+        <span class="hljs-keyword">if</span> stops &gt; <span class="hljs-number">0</span>:
+            <span class="hljs-keyword">for</span> v, w <span class="hljs-keyword">in</span> graph[u]:
+                heapq.heappush(pq, (cost + w, v, stops - <span class="hljs-number">1</span>))
     
-    return -1
+    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
 </code></pre>
 <h3 id="template-3-grid-based-dijkstra" tabindex="-1"><a class="header-anchor" href="#template-3-grid-based-dijkstra"><span>Template 3: Grid-based Dijkstra</span></a></h3>
-<pre><code class="language-python">def dijkstra_grid(grid):
-    &quot;&quot;&quot;Find minimum cost path in 2D grid&quot;&quot;&quot;
-    rows, cols = len(grid), len(grid[0])
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">dijkstra_grid</span>(<span class="hljs-params">grid</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Find minimum cost path in 2D grid&quot;&quot;&quot;</span>
+    rows, cols = <span class="hljs-built_in">len</span>(grid), <span class="hljs-built_in">len</span>(grid[<span class="hljs-number">0</span>])
     
-    # Min heap: (cost, row, col)
-    pq = [(0, 0, 0)]
-    # Distance matrix
-    dist = [[float('inf')] * cols for _ in range(rows)]
-    dist[0][0] = 0
+    <span class="hljs-comment"># Min heap: (cost, row, col)</span>
+    pq = [(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)]
+    <span class="hljs-comment"># Distance matrix</span>
+    dist = [[<span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)] * cols <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(rows)]
+    dist[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>
     
-    directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+    directions = [(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>), (<span class="hljs-number">1</span>, <span class="hljs-number">0</span>), (<span class="hljs-number">0</span>, -<span class="hljs-number">1</span>), (-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>)]
     
-    while pq:
+    <span class="hljs-keyword">while</span> pq:
         cost, r, c = heapq.heappop(pq)
         
-        if r == rows - 1 and c == cols - 1:
-            return cost
+        <span class="hljs-keyword">if</span> r == rows - <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> c == cols - <span class="hljs-number">1</span>:
+            <span class="hljs-keyword">return</span> cost
         
-        if cost &gt; dist[r][c]:
-            continue
+        <span class="hljs-keyword">if</span> cost &gt; dist[r][c]:
+            <span class="hljs-keyword">continue</span>
         
-        for dr, dc in directions:
+        <span class="hljs-keyword">for</span> dr, dc <span class="hljs-keyword">in</span> directions:
             nr, nc = r + dr, c + dc
-            if 0 &lt;= nr &lt; rows and 0 &lt;= nc &lt; cols:
-                # Calculate new cost (problem-specific)
-                new_cost = max(cost, abs(grid[nr][nc] - grid[r][c]))
+            <span class="hljs-keyword">if</span> <span class="hljs-number">0</span> &lt;= nr &lt; rows <span class="hljs-keyword">and</span> <span class="hljs-number">0</span> &lt;= nc &lt; cols:
+                <span class="hljs-comment"># Calculate new cost (problem-specific)</span>
+                new_cost = <span class="hljs-built_in">max</span>(cost, <span class="hljs-built_in">abs</span>(grid[nr][nc] - grid[r][c]))
                 
-                if new_cost &lt; dist[nr][nc]:
+                <span class="hljs-keyword">if</span> new_cost &lt; dist[nr][nc]:
                     dist[nr][nc] = new_cost
                     heapq.heappush(pq, (new_cost, nr, nc))
     
-    return -1
+    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
 </code></pre>
 <h3 id="template-4-multi-source-dijkstra" tabindex="-1"><a class="header-anchor" href="#template-4-multi-source-dijkstra"><span>Template 4: Multi-Source Dijkstra</span></a></h3>
-<pre><code class="language-python">def dijkstra_multi_source(n, edges, sources):
-    &quot;&quot;&quot;Shortest paths from multiple sources&quot;&quot;&quot;
-    graph = collections.defaultdict(list)
-    for u, v, w in edges:
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">dijkstra_multi_source</span>(<span class="hljs-params">n, edges, sources</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Shortest paths from multiple sources&quot;&quot;&quot;</span>
+    graph = collections.defaultdict(<span class="hljs-built_in">list</span>)
+    <span class="hljs-keyword">for</span> u, v, w <span class="hljs-keyword">in</span> edges:
         graph[u].append((v, w))
     
-    dist = [float('inf')] * n
+    dist = [<span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)] * n
     pq = []
     
-    # Initialize all sources
-    for src in sources:
-        dist[src] = 0
-        heapq.heappush(pq, (0, src))
+    <span class="hljs-comment"># Initialize all sources</span>
+    <span class="hljs-keyword">for</span> src <span class="hljs-keyword">in</span> sources:
+        dist[src] = <span class="hljs-number">0</span>
+        heapq.heappush(pq, (<span class="hljs-number">0</span>, src))
     
-    while pq:
+    <span class="hljs-keyword">while</span> pq:
         d, u = heapq.heappop(pq)
-        if d &gt; dist[u]:
-            continue
+        <span class="hljs-keyword">if</span> d &gt; dist[u]:
+            <span class="hljs-keyword">continue</span>
         
-        for v, w in graph[u]:
-            if dist[u] + w &lt; dist[v]:
+        <span class="hljs-keyword">for</span> v, w <span class="hljs-keyword">in</span> graph[u]:
+            <span class="hljs-keyword">if</span> dist[u] + w &lt; dist[v]:
                 dist[v] = dist[u] + w
                 heapq.heappush(pq, (dist[v], v))
     
-    return dist
+    <span class="hljs-keyword">return</span> dist
 </code></pre>
 <h3 id="template-5-bidirectional-dijkstra" tabindex="-1"><a class="header-anchor" href="#template-5-bidirectional-dijkstra"><span>Template 5: Bidirectional Dijkstra</span></a></h3>
-<pre><code class="language-python">def dijkstra_bidirectional(n, edges, src, dst):
-    &quot;&quot;&quot;Optimize by searching from both ends&quot;&quot;&quot;
-    graph = collections.defaultdict(list)
-    reverse = collections.defaultdict(list)
-    for u, v, w in edges:
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">dijkstra_bidirectional</span>(<span class="hljs-params">n, edges, src, dst</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Optimize by searching from both ends&quot;&quot;&quot;</span>
+    graph = collections.defaultdict(<span class="hljs-built_in">list</span>)
+    reverse = collections.defaultdict(<span class="hljs-built_in">list</span>)
+    <span class="hljs-keyword">for</span> u, v, w <span class="hljs-keyword">in</span> edges:
         graph[u].append((v, w))
         reverse[v].append((u, w))
     
-    def dijkstra_helper(start, adj, other_dist):
-        dist = [float('inf')] * n
-        dist[start] = 0
-        pq = [(0, start)]
-        visited = set()
-        min_path = float('inf')
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dijkstra_helper</span>(<span class="hljs-params">start, adj, other_dist</span>):
+        dist = [<span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)] * n
+        dist[start] = <span class="hljs-number">0</span>
+        pq = [(<span class="hljs-number">0</span>, start)]
+        visited = <span class="hljs-built_in">set</span>()
+        min_path = <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)
         
-        while pq:
+        <span class="hljs-keyword">while</span> pq:
             d, u = heapq.heappop(pq)
-            if u in visited:
-                continue
+            <span class="hljs-keyword">if</span> u <span class="hljs-keyword">in</span> visited:
+                <span class="hljs-keyword">continue</span>
             visited.add(u)
             
-            # Check if we can form a complete path
-            if other_dist[u] != float('inf'):
-                min_path = min(min_path, d + other_dist[u])
+            <span class="hljs-comment"># Check if we can form a complete path</span>
+            <span class="hljs-keyword">if</span> other_dist[u] != <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>):
+                min_path = <span class="hljs-built_in">min</span>(min_path, d + other_dist[u])
             
-            for v, w in adj[u]:
-                if dist[u] + w &lt; dist[v]:
+            <span class="hljs-keyword">for</span> v, w <span class="hljs-keyword">in</span> adj[u]:
+                <span class="hljs-keyword">if</span> dist[u] + w &lt; dist[v]:
                     dist[v] = dist[u] + w
                     heapq.heappush(pq, (dist[v], v))
         
-        return dist, min_path
+        <span class="hljs-keyword">return</span> dist, min_path
     
-    # Run both directions
-    dist_fwd, path1 = dijkstra_helper(src, graph, [float('inf')] * n)
+    <span class="hljs-comment"># Run both directions</span>
+    dist_fwd, path1 = dijkstra_helper(src, graph, [<span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)] * n)
     dist_bwd, path2 = dijkstra_helper(dst, reverse, dist_fwd)
     
-    return min(path1, path2, dist_fwd[dst])
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">min</span>(path1, path2, dist_fwd[dst])
 </code></pre>
-<h2 id="lc-examples" tabindex="-1"><a class="header-anchor" href="#lc-examples"><span>LC Examples</span></a></h2>
 <h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
 <h3 id="classic-shortest-path-problems" tabindex="-1"><a class="header-anchor" href="#classic-shortest-path-problems"><span><strong>Classic Shortest Path Problems</strong></span></a></h3>
 <table>
@@ -1042,86 +1053,141 @@ def dijkstra(n, edges, src, dst):
 </tr>
 </tbody>
 </table>
-<h3 id="2-1-network-delay-time" tabindex="-1"><a class="header-anchor" href="#2-1-network-delay-time"><span>2-1) Network Delay Time</span></a></h3>
-<pre><code class="language-python"># LC 743 Network Delay Time
-# V0 
-# IDEA : Dijkstra
-class Solution:
-    def networkDelayTime(self, times, N, K):
-        K -= 1
-        nodes = collections.defaultdict(list)
-        for u, v, w in times:
-            nodes[u - 1].append((v - 1, w))
-        dist = [float('inf')] * N
-        dist[K] = 0
-        done = set()
-        for _ in range(N):
-            smallest = min((d, i) for (i, d) in enumerate(dist) if i not in done)[1]
-            for v, w in nodes[smallest]:
-                if v not in done and dist[smallest] + w &lt; dist[v]:
+<h2 id="lc-examples" tabindex="-1"><a class="header-anchor" href="#lc-examples"><span>LC Examples</span></a></h2>
+<h3 id="2-1-network-delay-time-lc-743-dijkstra-single-source" tabindex="-1"><a class="header-anchor" href="#2-1-network-delay-time-lc-743-dijkstra-single-source"><span>2-1) Network Delay Time (LC 743) — Dijkstra Single Source</span></a></h3>
+<blockquote>
+<p>Dijkstra from source k; answer is max of all shortest distances, or -1 if any unreachable.</p>
+</blockquote>
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 743 - Network Delay Time</span>
+<span class="hljs-comment">// IDEA: Dijkstra from source k; max shortest dist = time for signal to reach all nodes</span>
+<span class="hljs-comment">// time = O((V+E) log V), space = O(V+E)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">networkDelayTime</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] times, <span class="hljs-type">int</span> n, <span class="hljs-type">int</span> k)</span> {
+    Map&lt;Integer, List&lt;<span class="hljs-type">int</span>[]&gt;&gt; graph = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] t : times) graph.computeIfAbsent(t[<span class="hljs-number">0</span>], x -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;()).add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{t[<span class="hljs-number">1</span>], t[<span class="hljs-number">2</span>]});
+    <span class="hljs-type">int</span>[] dist = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n + <span class="hljs-number">1</span>];
+    Arrays.fill(dist, Integer.MAX_VALUE);
+    dist[k] = <span class="hljs-number">0</span>;
+    PriorityQueue&lt;<span class="hljs-type">int</span>[]&gt; pq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;((a, b) -&gt; a[<span class="hljs-number">0</span>] - b[<span class="hljs-number">0</span>]);
+    pq.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{<span class="hljs-number">0</span>, k});
+    <span class="hljs-keyword">while</span> (!pq.isEmpty()) {
+        <span class="hljs-type">int</span>[] cur = pq.poll();
+        <span class="hljs-type">int</span> <span class="hljs-variable">d</span> <span class="hljs-operator">=</span> cur[<span class="hljs-number">0</span>], u = cur[<span class="hljs-number">1</span>];
+        <span class="hljs-keyword">if</span> (d &gt; dist[u]) <span class="hljs-keyword">continue</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] e : graph.getOrDefault(u, <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;())) {
+            <span class="hljs-keyword">if</span> (dist[u] + e[<span class="hljs-number">1</span>] &lt; dist[e[<span class="hljs-number">0</span>]]) { dist[e[<span class="hljs-number">0</span>]] = dist[u] + e[<span class="hljs-number">1</span>]; pq.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{dist[e[<span class="hljs-number">0</span>]], e[<span class="hljs-number">0</span>]}); }
+        }
+    }
+    <span class="hljs-type">int</span> <span class="hljs-variable">max</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt;= n; i++) { <span class="hljs-keyword">if</span> (dist[i] == Integer.MAX_VALUE) <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>; max = Math.max(max, dist[i]); }
+    <span class="hljs-keyword">return</span> max;
+}
+</code></pre>
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 743 Network Delay Time</span>
+<span class="hljs-comment"># V0 </span>
+<span class="hljs-comment"># IDEA : Dijkstra</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">networkDelayTime</span>(<span class="hljs-params">self, times, N, K</span>):
+        K -= <span class="hljs-number">1</span>
+        nodes = collections.defaultdict(<span class="hljs-built_in">list</span>)
+        <span class="hljs-keyword">for</span> u, v, w <span class="hljs-keyword">in</span> times:
+            nodes[u - <span class="hljs-number">1</span>].append((v - <span class="hljs-number">1</span>, w))
+        dist = [<span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)] * N
+        dist[K] = <span class="hljs-number">0</span>
+        done = <span class="hljs-built_in">set</span>()
+        <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(N):
+            smallest = <span class="hljs-built_in">min</span>((d, i) <span class="hljs-keyword">for</span> (i, d) <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(dist) <span class="hljs-keyword">if</span> i <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> done)[<span class="hljs-number">1</span>]
+            <span class="hljs-keyword">for</span> v, w <span class="hljs-keyword">in</span> nodes[smallest]:
+                <span class="hljs-keyword">if</span> v <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> done <span class="hljs-keyword">and</span> dist[smallest] + w &lt; dist[v]:
                     dist[v] = dist[smallest] + w
             done.add(smallest)
-        return -1 if float('inf') in dist else max(dist)
+        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span> <span class="hljs-keyword">if</span> <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>) <span class="hljs-keyword">in</span> dist <span class="hljs-keyword">else</span> <span class="hljs-built_in">max</span>(dist)
 </code></pre>
-<h3 id="2-2-cheapest-flights-within-k-stops" tabindex="-1"><a class="header-anchor" href="#2-2-cheapest-flights-within-k-stops"><span>2-2) Cheapest Flights Within K Stops</span></a></h3>
-<pre><code class="language-python"># LC 787 Cheapest Flights Within K Stops
-# V1
-# IDEA : Dijkstra
-# https://leetcode.com/problems/cheapest-flights-within-k-stops/discuss/267200/Python-Dijkstra
-# IDEA
-# -&gt; To implement Dijkstra, we need a priority queue to pop out the lowest weight node for next search. In this case, the weight would be the accumulated flight cost. So my node takes a form of (cost, src, k). cost is the accumulated cost, src is the current node's location, k is stop times we left as we only have at most K stops. I also convert edges to an adjacent list based graph g.
-# -&gt; Use a vis array to maintain visited nodes to avoid loop. vis[x] record the remaining steps to reach x with the lowest cost. If vis[x] &gt;= k, then no need to visit that case (start from x with k steps left) as a better solution has been visited before (more remaining step and lower cost as heappopped beforehand). And we should initialize vis[x] to 0 to ensure visit always stop at a negative k.
-# -&gt; Once k is used up (k == 0) or vis[x] &gt;= k, we no longer push that node x to our queue. Once a popped cost is our destination, we get our lowest valid cost.
-# -&gt; For Dijkstra, there is not need to maintain a best cost for each node since it's kind of greedy search. It always chooses the lowest cost node for next search. So the previous searched node always has a lower cost and has no chance to be updated. The first time we pop our destination from our queue, we have found the lowest cost to our destination.
-import collections
-import math
-class Solution:
-    def findCheapestPrice(self, n, flights, src, dst, K):
-        graph = collections.defaultdict(dict)
-        for s, d, w in flights:
+<h3 id="2-2-cheapest-flights-within-k-stops-lc-787-dijkstra-with-stop-counter" tabindex="-1"><a class="header-anchor" href="#2-2-cheapest-flights-within-k-stops-lc-787-dijkstra-with-stop-counter"><span>2-2) Cheapest Flights Within K Stops (LC 787) — Dijkstra with Stop Counter</span></a></h3>
+<blockquote>
+<p>State = (cost, node, stops); skip if stops &gt; k; don’t use visited set (stops matter).</p>
+</blockquote>
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 787 - Cheapest Flights Within K Stops</span>
+<span class="hljs-comment">// IDEA: Dijkstra with state (cost, node, stops); stop expanding when stops &gt; k</span>
+<span class="hljs-comment">// time = O(E * K log(E*K)), space = O(E*K)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">findCheapestPrice</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span>[][] flights, <span class="hljs-type">int</span> src, <span class="hljs-type">int</span> dst, <span class="hljs-type">int</span> k)</span> {
+    Map&lt;Integer, List&lt;<span class="hljs-type">int</span>[]&gt;&gt; graph = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] f : flights) graph.computeIfAbsent(f[<span class="hljs-number">0</span>], x -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;()).add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{f[<span class="hljs-number">1</span>], f[<span class="hljs-number">2</span>]});
+    <span class="hljs-type">int</span>[] dist = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
+    Arrays.fill(dist, Integer.MAX_VALUE);
+    PriorityQueue&lt;<span class="hljs-type">int</span>[]&gt; pq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;((a, b) -&gt; a[<span class="hljs-number">0</span>] - b[<span class="hljs-number">0</span>]); <span class="hljs-comment">// [cost, node, stops]</span>
+    pq.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{<span class="hljs-number">0</span>, src, <span class="hljs-number">0</span>});
+    <span class="hljs-keyword">while</span> (!pq.isEmpty()) {
+        <span class="hljs-type">int</span>[] cur = pq.poll();
+        <span class="hljs-type">int</span> <span class="hljs-variable">cost</span> <span class="hljs-operator">=</span> cur[<span class="hljs-number">0</span>], u = cur[<span class="hljs-number">1</span>], stops = cur[<span class="hljs-number">2</span>];
+        <span class="hljs-keyword">if</span> (u == dst) <span class="hljs-keyword">return</span> cost;
+        <span class="hljs-keyword">if</span> (stops &gt; k) <span class="hljs-keyword">continue</span>;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] e : graph.getOrDefault(u, <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;()))
+            <span class="hljs-keyword">if</span> (cost + e[<span class="hljs-number">1</span>] &lt; dist[e[<span class="hljs-number">0</span>]]) { dist[e[<span class="hljs-number">0</span>]] = cost + e[<span class="hljs-number">1</span>]; pq.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{dist[e[<span class="hljs-number">0</span>]], e[<span class="hljs-number">0</span>], stops + <span class="hljs-number">1</span>}); }
+    }
+    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+}
+</code></pre>
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 787 Cheapest Flights Within K Stops</span>
+<span class="hljs-comment"># V1</span>
+<span class="hljs-comment"># IDEA : Dijkstra</span>
+<span class="hljs-comment"># https://leetcode.com/problems/cheapest-flights-within-k-stops/discuss/267200/Python-Dijkstra</span>
+<span class="hljs-comment"># IDEA</span>
+<span class="hljs-comment"># -&gt; To implement Dijkstra, we need a priority queue to pop out the lowest weight node for next search. In this case, the weight would be the accumulated flight cost. So my node takes a form of (cost, src, k). cost is the accumulated cost, src is the current node&#x27;s location, k is stop times we left as we only have at most K stops. I also convert edges to an adjacent list based graph g.</span>
+<span class="hljs-comment"># -&gt; Use a vis array to maintain visited nodes to avoid loop. vis[x] record the remaining steps to reach x with the lowest cost. If vis[x] &gt;= k, then no need to visit that case (start from x with k steps left) as a better solution has been visited before (more remaining step and lower cost as heappopped beforehand). And we should initialize vis[x] to 0 to ensure visit always stop at a negative k.</span>
+<span class="hljs-comment"># -&gt; Once k is used up (k == 0) or vis[x] &gt;= k, we no longer push that node x to our queue. Once a popped cost is our destination, we get our lowest valid cost.</span>
+<span class="hljs-comment"># -&gt; For Dijkstra, there is not need to maintain a best cost for each node since it&#x27;s kind of greedy search. It always chooses the lowest cost node for next search. So the previous searched node always has a lower cost and has no chance to be updated. The first time we pop our destination from our queue, we have found the lowest cost to our destination.</span>
+<span class="hljs-keyword">import</span> collections
+<span class="hljs-keyword">import</span> math
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">findCheapestPrice</span>(<span class="hljs-params">self, n, flights, src, dst, K</span>):
+        graph = collections.defaultdict(<span class="hljs-built_in">dict</span>)
+        <span class="hljs-keyword">for</span> s, d, w <span class="hljs-keyword">in</span> flights:
             graph[s][d] = w
-        pq = [(0, src, K+1)]
-        vis = [0] * n
-        while pq:
+        pq = [(<span class="hljs-number">0</span>, src, K+<span class="hljs-number">1</span>)]
+        vis = [<span class="hljs-number">0</span>] * n
+        <span class="hljs-keyword">while</span> pq:
             w, x, k = heapq.heappop(pq)
-            if x == dst:
-                return w
-            if vis[x] &gt;= k:
-                continue
+            <span class="hljs-keyword">if</span> x == dst:
+                <span class="hljs-keyword">return</span> w
+            <span class="hljs-keyword">if</span> vis[x] &gt;= k:
+                <span class="hljs-keyword">continue</span>
             vis[x] = k
-            for y, dw in graph[x].items():
-                heapq.heappush(pq, (w+dw, y, k-1))
-        return -1
+            <span class="hljs-keyword">for</span> y, dw <span class="hljs-keyword">in</span> graph[x].items():
+                heapq.heappush(pq, (w+dw, y, k-<span class="hljs-number">1</span>))
+        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
 </code></pre>
-<h3 id="2-3-path-with-minimum-effort" tabindex="-1"><a class="header-anchor" href="#2-3-path-with-minimum-effort"><span>2-3) Path With Minimum Effort</span></a></h3>
-<pre><code class="language-java">// java
-// LC 1631
+<h3 id="2-3-path-with-minimum-effort-lc-1631-dijkstra-min-effort-on-grid" tabindex="-1"><a class="header-anchor" href="#2-3-path-with-minimum-effort-lc-1631-dijkstra-min-effort-on-grid"><span>2-3) Path With Minimum Effort (LC 1631) — Dijkstra Min Effort on Grid</span></a></h3>
+<blockquote>
+<p>Minimize the maximum absolute difference along path; use min-heap with effort as priority key.</p>
+</blockquote>
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 1631</span>
 
-// V0-1
-// IDEA: Dijkstra's ALGO ( fixed by gpt) : min PQ + BFS
-public int minimumEffortPath_0_1(int[][] heights) {
-    if (heights == null || heights.length == 0)
-        return 0;
+<span class="hljs-comment">// V0-1</span>
+<span class="hljs-comment">// IDEA: Dijkstra&#x27;s ALGO ( fixed by gpt) : min PQ + BFS</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minimumEffortPath_0_1</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] heights)</span> {
+    <span class="hljs-keyword">if</span> (heights == <span class="hljs-literal">null</span> || heights.length == <span class="hljs-number">0</span>)
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
 
-    int rows = heights.length;
-    int cols = heights[0].length;
+    <span class="hljs-type">int</span> <span class="hljs-variable">rows</span> <span class="hljs-operator">=</span> heights.length;
+    <span class="hljs-type">int</span> <span class="hljs-variable">cols</span> <span class="hljs-operator">=</span> heights[<span class="hljs-number">0</span>].length;
 
-    // Min-heap: [effort, x, y]
-    PriorityQueue&lt;int[]&gt; minPQ = new PriorityQueue&lt;&gt;(Comparator.comparingInt(a -&gt; a[0]));
-    minPQ.offer(new int[] { 0, 0, 0 }); // effort, x, y
+    <span class="hljs-comment">// Min-heap: [effort, x, y]</span>
+    PriorityQueue&lt;<span class="hljs-type">int</span>[]&gt; minPQ = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;(Comparator.comparingInt(a -&gt; a[<span class="hljs-number">0</span>]));
+    minPQ.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[] { <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span> }); <span class="hljs-comment">// effort, x, y</span>
 
-    boolean[][] visited = new boolean[rows][cols];
-    int[][] directions = { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
+    <span class="hljs-type">boolean</span>[][] visited = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[rows][cols];
+    <span class="hljs-type">int</span>[][] directions = { { <span class="hljs-number">0</span>, <span class="hljs-number">1</span> }, { <span class="hljs-number">0</span>, -<span class="hljs-number">1</span> }, { <span class="hljs-number">1</span>, <span class="hljs-number">0</span> }, { -<span class="hljs-number">1</span>, <span class="hljs-number">0</span> } };
 
-    while (!minPQ.isEmpty()) {
-        int[] cur = minPQ.poll();
-        int effort = cur[0], x = cur[1], y = cur[2];
+    <span class="hljs-keyword">while</span> (!minPQ.isEmpty()) {
+        <span class="hljs-type">int</span>[] cur = minPQ.poll();
+        <span class="hljs-type">int</span> <span class="hljs-variable">effort</span> <span class="hljs-operator">=</span> cur[<span class="hljs-number">0</span>], x = cur[<span class="hljs-number">1</span>], y = cur[<span class="hljs-number">2</span>];
 
-        if (x == rows - 1 &amp;&amp; y == cols - 1) {
-            return effort;
+        <span class="hljs-keyword">if</span> (x == rows - <span class="hljs-number">1</span> &amp;&amp; y == cols - <span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">return</span> effort;
         }
 
-  /**  NOTE !!!  need `visited, to NOT revisited visited cells (`Dijkstra algo`)
+  <span class="hljs-comment">/**  NOTE !!!  need `visited, to NOT revisited visited cells (`Dijkstra algo`)
    *
    *   Reason:
    *
@@ -1174,307 +1240,322 @@ public int minimumEffortPath_0_1(int[][] heights) {
    * Once you pop a node (x, y) from the min-heap and mark it visited,
    * you do not need to revisit it — its shortest (or in this case, minimum effort) path is finalized.
    *
-   */
-  if (visited[x][y]) {
-            continue;
+   */</span>
+  <span class="hljs-keyword">if</span> (visited[x][y]) {
+            <span class="hljs-keyword">continue</span>;
         }
 
-        visited[x][y] = true;
+        visited[x][y] = <span class="hljs-literal">true</span>;
 
-        for (int[] dir : directions) {
-            int nx = x + dir[0];
-            int ny = y + dir[1];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] dir : directions) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">nx</span> <span class="hljs-operator">=</span> x + dir[<span class="hljs-number">0</span>];
+            <span class="hljs-type">int</span> <span class="hljs-variable">ny</span> <span class="hljs-operator">=</span> y + dir[<span class="hljs-number">1</span>];
 
-            if (nx &gt;= 0 &amp;&amp; ny &gt;= 0 &amp;&amp; nx &lt; rows &amp;&amp; ny &lt; cols &amp;&amp; !visited[nx][ny]) {
-                int newEffort = Math.max(effort, Math.abs(heights[nx][ny] - heights[x][y]));
-                minPQ.offer(new int[] { newEffort, nx, ny });
+            <span class="hljs-keyword">if</span> (nx &gt;= <span class="hljs-number">0</span> &amp;&amp; ny &gt;= <span class="hljs-number">0</span> &amp;&amp; nx &lt; rows &amp;&amp; ny &lt; cols &amp;&amp; !visited[nx][ny]) {
+                <span class="hljs-type">int</span> <span class="hljs-variable">newEffort</span> <span class="hljs-operator">=</span> Math.max(effort, Math.abs(heights[nx][ny] - heights[x][y]));
+                minPQ.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[] { newEffort, nx, ny });
             }
         }
     }
 
-    return -1; // Should never reach here if input is valid
+    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>; <span class="hljs-comment">// Should never reach here if input is valid</span>
 }
 </code></pre>
-<h3 id="2-4-path-with-maximum-probability" tabindex="-1"><a class="header-anchor" href="#2-4-path-with-maximum-probability"><span>2-4) Path with Maximum Probability</span></a></h3>
-<pre><code class="language-java">// java
-// LC 1514
-// IDEA: Modified Dijkstra (max-heap, multiply probabilities instead of adding distances)
-// NOTE: Use MAX heap since we want maximum probability
-// NOTE: Initialize probabilities to -1 (unreachable), source to 1
-class Solution {
-    public double maxProbability(int n, int[][] edges, double[] succProb, int start, int end) {
-        List&lt;double[]&gt;[] graph = new LinkedList[n];
-        for (int i = 0; i &lt; n; i++) {
-            graph[i] = new LinkedList&lt;&gt;();
+<h3 id="2-4-path-with-maximum-probability-lc-1514-dijkstra-max-heap-on-probabilities" tabindex="-1"><a class="header-anchor" href="#2-4-path-with-maximum-probability-lc-1514-dijkstra-max-heap-on-probabilities"><span>2-4) Path with Maximum Probability (LC 1514) — Dijkstra Max-Heap on Probabilities</span></a></h3>
+<blockquote>
+<p>Max-heap Dijkstra multiplying edge probabilities; start at 1.0, maximize reach-probability.</p>
+</blockquote>
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 1514</span>
+<span class="hljs-comment">// IDEA: Modified Dijkstra (max-heap, multiply probabilities instead of adding distances)</span>
+<span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> Use MAX heap since we want maximum probability</span>
+<span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> Initialize probabilities to -1 (unreachable), source to 1</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-keyword">public</span> <span class="hljs-type">double</span> <span class="hljs-title function_">maxProbability</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span>[][] edges, <span class="hljs-type">double</span>[] succProb, <span class="hljs-type">int</span> start, <span class="hljs-type">int</span> end)</span> {
+        List&lt;<span class="hljs-type">double</span>[]&gt;[] graph = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>[n];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+            graph[i] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
         }
-        for (int i = 0; i &lt; edges.length; i++) {
-            graph[edges[i][0]].add(new double[]{edges[i][1], succProb[i]});
-            graph[edges[i][1]].add(new double[]{edges[i][0], succProb[i]});
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; edges.length; i++) {
+            graph[edges[i][<span class="hljs-number">0</span>]].add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">double</span>[]{edges[i][<span class="hljs-number">1</span>], succProb[i]});
+            graph[edges[i][<span class="hljs-number">1</span>]].add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">double</span>[]{edges[i][<span class="hljs-number">0</span>], succProb[i]});
         }
 
-        double[] proTo = new double[n];
-        Arrays.fill(proTo, -1);
-        proTo[start] = 1;
+        <span class="hljs-type">double</span>[] proTo = <span class="hljs-keyword">new</span> <span class="hljs-title class_">double</span>[n];
+        Arrays.fill(proTo, -<span class="hljs-number">1</span>);
+        proTo[start] = <span class="hljs-number">1</span>;
 
-        // NOTE: MAX heap (compare b vs a)
-        PriorityQueue&lt;double[]&gt; pq = new PriorityQueue&lt;&gt;((a, b) -&gt; Double.compare(b[1], a[1]));
-        pq.offer(new double[]{start, 1});
+        <span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> MAX heap (compare b vs a)</span>
+        PriorityQueue&lt;<span class="hljs-type">double</span>[]&gt; pq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;((a, b) -&gt; Double.compare(b[<span class="hljs-number">1</span>], a[<span class="hljs-number">1</span>]));
+        pq.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">double</span>[]{start, <span class="hljs-number">1</span>});
 
-        while (!pq.isEmpty()) {
-            double[] cur = pq.poll();
-            int curId = (int) cur[0];
-            double curProb = cur[1];
+        <span class="hljs-keyword">while</span> (!pq.isEmpty()) {
+            <span class="hljs-type">double</span>[] cur = pq.poll();
+            <span class="hljs-type">int</span> <span class="hljs-variable">curId</span> <span class="hljs-operator">=</span> (<span class="hljs-type">int</span>) cur[<span class="hljs-number">0</span>];
+            <span class="hljs-type">double</span> <span class="hljs-variable">curProb</span> <span class="hljs-operator">=</span> cur[<span class="hljs-number">1</span>];
 
-            if (curId == end) return curProb;
-            if (proTo[curId] &gt; curProb) continue;
+            <span class="hljs-keyword">if</span> (curId == end) <span class="hljs-keyword">return</span> curProb;
+            <span class="hljs-keyword">if</span> (proTo[curId] &gt; curProb) <span class="hljs-keyword">continue</span>;
 
-            for (double[] next : graph[curId]) {
-                int nextId = (int) next[0];
-                double newProb = proTo[curId] * next[1];
-                if (newProb &gt; proTo[nextId]) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">double</span>[] next : graph[curId]) {
+                <span class="hljs-type">int</span> <span class="hljs-variable">nextId</span> <span class="hljs-operator">=</span> (<span class="hljs-type">int</span>) next[<span class="hljs-number">0</span>];
+                <span class="hljs-type">double</span> <span class="hljs-variable">newProb</span> <span class="hljs-operator">=</span> proTo[curId] * next[<span class="hljs-number">1</span>];
+                <span class="hljs-keyword">if</span> (newProb &gt; proTo[nextId]) {
                     proTo[nextId] = newProb;
-                    pq.offer(new double[]{nextId, newProb});
+                    pq.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">double</span>[]{nextId, newProb});
                 }
             }
         }
-        return 0;
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
     }
 }
 </code></pre>
-<pre><code class="language-python"># python
-# LC 1514
-# IDEA: Modified Dijkstra with max-heap (negate probability for max behavior)
-import heapq
-import collections
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 1514</span>
+<span class="hljs-comment"># IDEA: Modified Dijkstra with max-heap (negate probability for max behavior)</span>
+<span class="hljs-keyword">import</span> heapq
+<span class="hljs-keyword">import</span> collections
 
-class Solution:
-    def maxProbability(self, n, edges, succProb, start_node, end_node):
-        graph = collections.defaultdict(list)
-        for i, (u, v) in enumerate(edges):
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">maxProbability</span>(<span class="hljs-params">self, n, edges, succProb, start_node, end_node</span>):
+        graph = collections.defaultdict(<span class="hljs-built_in">list</span>)
+        <span class="hljs-keyword">for</span> i, (u, v) <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(edges):
             graph[u].append((v, succProb[i]))
             graph[v].append((u, succProb[i]))
 
-        # Max-heap: negate probability since heapq is min-heap
-        pq = [(-1.0, start_node)]
-        dist = [0.0] * n
-        dist[start_node] = 1.0
+        <span class="hljs-comment"># Max-heap: negate probability since heapq is min-heap</span>
+        pq = [(-<span class="hljs-number">1.0</span>, start_node)]
+        dist = [<span class="hljs-number">0.0</span>] * n
+        dist[start_node] = <span class="hljs-number">1.0</span>
 
-        while pq:
+        <span class="hljs-keyword">while</span> pq:
             neg_prob, u = heapq.heappop(pq)
             prob = -neg_prob
 
-            if u == end_node:
-                return prob
-            if prob &lt; dist[u]:
-                continue
+            <span class="hljs-keyword">if</span> u == end_node:
+                <span class="hljs-keyword">return</span> prob
+            <span class="hljs-keyword">if</span> prob &lt; dist[u]:
+                <span class="hljs-keyword">continue</span>
 
-            for v, w in graph[u]:
+            <span class="hljs-keyword">for</span> v, w <span class="hljs-keyword">in</span> graph[u]:
                 new_prob = prob * w
-                if new_prob &gt; dist[v]:
+                <span class="hljs-keyword">if</span> new_prob &gt; dist[v]:
                     dist[v] = new_prob
                     heapq.heappush(pq, (-new_prob, v))
 
-        return 0.0
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0.0</span>
 </code></pre>
-<h3 id="2-5-number-of-ways-to-arrive-at-destination" tabindex="-1"><a class="header-anchor" href="#2-5-number-of-ways-to-arrive-at-destination"><span>2-5) Number of Ways to Arrive at Destination</span></a></h3>
-<pre><code class="language-java">// java
-// LC 1976
-// IDEA: Dijkstra + count paths
-// NOTE: Track both shortest distance AND number of ways to reach each node
-class Solution {
-    public int countPaths(int n, int[][] roads) {
-        int MOD = 1_000_000_007;
-        List&lt;long[]&gt;[] graph = new ArrayList[n];
-        for (int i = 0; i &lt; n; i++) graph[i] = new ArrayList&lt;&gt;();
+<h3 id="2-5-number-of-ways-to-arrive-at-destination-lc-1976-dijkstra-path-count" tabindex="-1"><a class="header-anchor" href="#2-5-number-of-ways-to-arrive-at-destination-lc-1976-dijkstra-path-count"><span>2-5) Number of Ways to Arrive at Destination (LC 1976) — Dijkstra + Path Count</span></a></h3>
+<blockquote>
+<p>Standard Dijkstra; track count of shortest paths at each node alongside minimum distance.</p>
+</blockquote>
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 1976</span>
+<span class="hljs-comment">// IDEA: Dijkstra + count paths</span>
+<span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> Track both shortest distance AND number of ways to reach each node</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">countPaths</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span>[][] roads)</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">MOD</span> <span class="hljs-operator">=</span> <span class="hljs-number">1_000_000_007</span>;
+        List&lt;<span class="hljs-type">long</span>[]&gt;[] graph = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>[n];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) graph[i] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
 
-        for (int[] r : roads) {
-            graph[r[0]].add(new long[]{r[1], r[2]});
-            graph[r[1]].add(new long[]{r[0], r[2]});
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] r : roads) {
+            graph[r[<span class="hljs-number">0</span>]].add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">long</span>[]{r[<span class="hljs-number">1</span>], r[<span class="hljs-number">2</span>]});
+            graph[r[<span class="hljs-number">1</span>]].add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">long</span>[]{r[<span class="hljs-number">0</span>], r[<span class="hljs-number">2</span>]});
         }
 
-        long[] dist = new long[n];
-        long[] ways = new long[n];
+        <span class="hljs-type">long</span>[] dist = <span class="hljs-keyword">new</span> <span class="hljs-title class_">long</span>[n];
+        <span class="hljs-type">long</span>[] ways = <span class="hljs-keyword">new</span> <span class="hljs-title class_">long</span>[n];
         Arrays.fill(dist, Long.MAX_VALUE);
-        dist[0] = 0;
-        ways[0] = 1;
+        dist[<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>;
+        ways[<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>;
 
-        // (distance, node)
-        PriorityQueue&lt;long[]&gt; pq = new PriorityQueue&lt;&gt;(Comparator.comparingLong(a -&gt; a[0]));
-        pq.offer(new long[]{0, 0});
+        <span class="hljs-comment">// (distance, node)</span>
+        PriorityQueue&lt;<span class="hljs-type">long</span>[]&gt; pq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;(Comparator.comparingLong(a -&gt; a[<span class="hljs-number">0</span>]));
+        pq.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">long</span>[]{<span class="hljs-number">0</span>, <span class="hljs-number">0</span>});
 
-        while (!pq.isEmpty()) {
-            long[] cur = pq.poll();
-            long d = cur[0];
-            int u = (int) cur[1];
+        <span class="hljs-keyword">while</span> (!pq.isEmpty()) {
+            <span class="hljs-type">long</span>[] cur = pq.poll();
+            <span class="hljs-type">long</span> <span class="hljs-variable">d</span> <span class="hljs-operator">=</span> cur[<span class="hljs-number">0</span>];
+            <span class="hljs-type">int</span> <span class="hljs-variable">u</span> <span class="hljs-operator">=</span> (<span class="hljs-type">int</span>) cur[<span class="hljs-number">1</span>];
 
-            if (d &gt; dist[u]) continue;
+            <span class="hljs-keyword">if</span> (d &gt; dist[u]) <span class="hljs-keyword">continue</span>;
 
-            for (long[] next : graph[u]) {
-                int v = (int) next[0];
-                long w = next[1];
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">long</span>[] next : graph[u]) {
+                <span class="hljs-type">int</span> <span class="hljs-variable">v</span> <span class="hljs-operator">=</span> (<span class="hljs-type">int</span>) next[<span class="hljs-number">0</span>];
+                <span class="hljs-type">long</span> <span class="hljs-variable">w</span> <span class="hljs-operator">=</span> next[<span class="hljs-number">1</span>];
 
-                if (dist[u] + w &lt; dist[v]) {
+                <span class="hljs-keyword">if</span> (dist[u] + w &lt; dist[v]) {
                     dist[v] = dist[u] + w;
                     ways[v] = ways[u];
-                    pq.offer(new long[]{dist[v], v});
-                } else if (dist[u] + w == dist[v]) {
+                    pq.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">long</span>[]{dist[v], v});
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (dist[u] + w == dist[v]) {
                     ways[v] = (ways[v] + ways[u]) % MOD;
                 }
             }
         }
 
-        return (int) (ways[n - 1] % MOD);
+        <span class="hljs-keyword">return</span> (<span class="hljs-type">int</span>) (ways[n - <span class="hljs-number">1</span>] % MOD);
     }
 }
 </code></pre>
-<pre><code class="language-python"># python
-# LC 1976
-# IDEA: Dijkstra + count shortest paths
-import heapq
-import collections
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 1976</span>
+<span class="hljs-comment"># IDEA: Dijkstra + count shortest paths</span>
+<span class="hljs-keyword">import</span> heapq
+<span class="hljs-keyword">import</span> collections
 
-class Solution:
-    def countPaths(self, n, roads):
-        MOD = 10**9 + 7
-        graph = collections.defaultdict(list)
-        for u, v, w in roads:
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">countPaths</span>(<span class="hljs-params">self, n, roads</span>):
+        MOD = <span class="hljs-number">10</span>**<span class="hljs-number">9</span> + <span class="hljs-number">7</span>
+        graph = collections.defaultdict(<span class="hljs-built_in">list</span>)
+        <span class="hljs-keyword">for</span> u, v, w <span class="hljs-keyword">in</span> roads:
             graph[u].append((v, w))
             graph[v].append((u, w))
 
-        dist = [float('inf')] * n
-        ways = [0] * n
-        dist[0] = 0
-        ways[0] = 1
-        pq = [(0, 0)]  # (distance, node)
+        dist = [<span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)] * n
+        ways = [<span class="hljs-number">0</span>] * n
+        dist[<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>
+        ways[<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>
+        pq = [(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>)]  <span class="hljs-comment"># (distance, node)</span>
 
-        while pq:
+        <span class="hljs-keyword">while</span> pq:
             d, u = heapq.heappop(pq)
-            if d &gt; dist[u]:
-                continue
-            for v, w in graph[u]:
-                if dist[u] + w &lt; dist[v]:
+            <span class="hljs-keyword">if</span> d &gt; dist[u]:
+                <span class="hljs-keyword">continue</span>
+            <span class="hljs-keyword">for</span> v, w <span class="hljs-keyword">in</span> graph[u]:
+                <span class="hljs-keyword">if</span> dist[u] + w &lt; dist[v]:
                     dist[v] = dist[u] + w
                     ways[v] = ways[u]
                     heapq.heappush(pq, (dist[v], v))
-                elif dist[u] + w == dist[v]:
+                <span class="hljs-keyword">elif</span> dist[u] + w == dist[v]:
                     ways[v] = (ways[v] + ways[u]) % MOD
 
-        return ways[n - 1] % MOD
+        <span class="hljs-keyword">return</span> ways[n - <span class="hljs-number">1</span>] % MOD
 </code></pre>
-<h3 id="2-6-swim-in-rising-water" tabindex="-1"><a class="header-anchor" href="#2-6-swim-in-rising-water"><span>2-6) Swim in Rising Water</span></a></h3>
-<pre><code class="language-java">// java
-// LC 778
-// IDEA: Dijkstra (min PQ + BFS on grid)
-// NOTE: Track max elevation along path (not sum of weights)
-public int swimInWater(int[][] grid) {
-    int n = grid.length;
-    PriorityQueue&lt;int[]&gt; minHeap = new PriorityQueue&lt;&gt;(Comparator.comparingInt(a -&gt; a[0]));
-    boolean[][] visited = new boolean[n][n];
+<h3 id="2-6-swim-in-rising-water-lc-778-dijkstra-min-max-on-grid" tabindex="-1"><a class="header-anchor" href="#2-6-swim-in-rising-water-lc-778-dijkstra-min-max-on-grid"><span>2-6) Swim in Rising Water (LC 778) — Dijkstra Min-Max on Grid</span></a></h3>
+<blockquote>
+<p>Min-heap where priority = max elevation seen so far; answer = time to reach bottom-right.</p>
+</blockquote>
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 778</span>
+<span class="hljs-comment">// IDEA: Dijkstra (min PQ + BFS on grid)</span>
+<span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> Track max elevation along path (not sum of weights)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">swimInWater</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] grid)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> grid.length;
+    PriorityQueue&lt;<span class="hljs-type">int</span>[]&gt; minHeap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;(Comparator.comparingInt(a -&gt; a[<span class="hljs-number">0</span>]));
+    <span class="hljs-type">boolean</span>[][] visited = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[n][n];
 
-    minHeap.offer(new int[]{grid[0][0], 0, 0});
-    visited[0][0] = true;
+    minHeap.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{grid[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>], <span class="hljs-number">0</span>, <span class="hljs-number">0</span>});
+    visited[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = <span class="hljs-literal">true</span>;
 
-    int[][] directions = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
-    int res = 0;
+    <span class="hljs-type">int</span>[][] directions = {{<span class="hljs-number">0</span>, <span class="hljs-number">1</span>}, {<span class="hljs-number">0</span>, -<span class="hljs-number">1</span>}, {<span class="hljs-number">1</span>, <span class="hljs-number">0</span>}, {-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>}};
+    <span class="hljs-type">int</span> <span class="hljs-variable">res</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
 
-    while (!minHeap.isEmpty()) {
-        int[] cur = minHeap.poll();
-        int elevation = cur[0], x = cur[1], y = cur[2];
+    <span class="hljs-keyword">while</span> (!minHeap.isEmpty()) {
+        <span class="hljs-type">int</span>[] cur = minHeap.poll();
+        <span class="hljs-type">int</span> <span class="hljs-variable">elevation</span> <span class="hljs-operator">=</span> cur[<span class="hljs-number">0</span>], x = cur[<span class="hljs-number">1</span>], y = cur[<span class="hljs-number">2</span>];
 
-        // NOTE: track MAX elevation along path
+        <span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> track MAX elevation along path</span>
         res = Math.max(res, elevation);
 
-        if (x == n - 1 &amp;&amp; y == n - 1) return res;
+        <span class="hljs-keyword">if</span> (x == n - <span class="hljs-number">1</span> &amp;&amp; y == n - <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> res;
 
-        for (int[] d : directions) {
-            int nx = x + d[0], ny = y + d[1];
-            if (nx &gt;= 0 &amp;&amp; ny &gt;= 0 &amp;&amp; nx &lt; n &amp;&amp; ny &lt; n &amp;&amp; !visited[ny][nx]) {
-                visited[ny][nx] = true;
-                minHeap.offer(new int[]{grid[ny][nx], nx, ny});
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] d : directions) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">nx</span> <span class="hljs-operator">=</span> x + d[<span class="hljs-number">0</span>], ny = y + d[<span class="hljs-number">1</span>];
+            <span class="hljs-keyword">if</span> (nx &gt;= <span class="hljs-number">0</span> &amp;&amp; ny &gt;= <span class="hljs-number">0</span> &amp;&amp; nx &lt; n &amp;&amp; ny &lt; n &amp;&amp; !visited[ny][nx]) {
+                visited[ny][nx] = <span class="hljs-literal">true</span>;
+                minHeap.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{grid[ny][nx], nx, ny});
             }
         }
     }
-    return -1;
+    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
 }
 </code></pre>
-<h3 id="2-7-trapping-rain-water-ii" tabindex="-1"><a class="header-anchor" href="#2-7-trapping-rain-water-ii"><span>2-7) Trapping Rain Water II</span></a></h3>
-<pre><code class="language-java">// java
-// LC 407
-// IDEA: Multi-source Dijkstra (PQ from boundary inward)
-// NOTE: Start from all boundary cells, expand inward with min-heap
-// NOTE: Water trapped at a cell = max(0, boundary_height - cell_height)
-public int trapRainWater(int[][] heightMap) {
-    if (heightMap == null || heightMap.length &lt; 3 || heightMap[0].length &lt; 3)
-        return 0;
+<h3 id="2-7-trapping-rain-water-ii-lc-407-multi-source-dijkstra-from-boundary" tabindex="-1"><a class="header-anchor" href="#2-7-trapping-rain-water-ii-lc-407-multi-source-dijkstra-from-boundary"><span>2-7) Trapping Rain Water II (LC 407) — Multi-Source Dijkstra from Boundary</span></a></h3>
+<blockquote>
+<p>Process boundary cells with min-heap; water trapped = max(boundary height) - cell height.</p>
+</blockquote>
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 407</span>
+<span class="hljs-comment">// IDEA: Multi-source Dijkstra (PQ from boundary inward)</span>
+<span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> Start from all boundary cells, expand inward with min-heap</span>
+<span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> Water trapped at a cell = max(0, boundary_height - cell_height)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">trapRainWater</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] heightMap)</span> {
+    <span class="hljs-keyword">if</span> (heightMap == <span class="hljs-literal">null</span> || heightMap.length &lt; <span class="hljs-number">3</span> || heightMap[<span class="hljs-number">0</span>].length &lt; <span class="hljs-number">3</span>)
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
 
-    int rows = heightMap.length, cols = heightMap[0].length;
-    boolean[][] visited = new boolean[rows][cols];
-    // PQ: [height, row, col]
-    PriorityQueue&lt;int[]&gt; pq = new PriorityQueue&lt;&gt;(Comparator.comparingInt(a -&gt; a[0]));
+    <span class="hljs-type">int</span> <span class="hljs-variable">rows</span> <span class="hljs-operator">=</span> heightMap.length, cols = heightMap[<span class="hljs-number">0</span>].length;
+    <span class="hljs-type">boolean</span>[][] visited = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[rows][cols];
+    <span class="hljs-comment">// PQ: [height, row, col]</span>
+    PriorityQueue&lt;<span class="hljs-type">int</span>[]&gt; pq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;(Comparator.comparingInt(a -&gt; a[<span class="hljs-number">0</span>]));
 
-    // Push all border cells
-    for (int c = 0; c &lt; cols; c++) {
-        pq.offer(new int[]{heightMap[0][c], 0, c});
-        pq.offer(new int[]{heightMap[rows - 1][c], rows - 1, c});
-        visited[0][c] = true;
-        visited[rows - 1][c] = true;
+    <span class="hljs-comment">// Push all border cells</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; c &lt; cols; c++) {
+        pq.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{heightMap[<span class="hljs-number">0</span>][c], <span class="hljs-number">0</span>, c});
+        pq.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{heightMap[rows - <span class="hljs-number">1</span>][c], rows - <span class="hljs-number">1</span>, c});
+        visited[<span class="hljs-number">0</span>][c] = <span class="hljs-literal">true</span>;
+        visited[rows - <span class="hljs-number">1</span>][c] = <span class="hljs-literal">true</span>;
     }
-    for (int r = 1; r &lt; rows - 1; r++) {
-        pq.offer(new int[]{heightMap[r][0], r, 0});
-        pq.offer(new int[]{heightMap[r][cols - 1], r, cols - 1});
-        visited[r][0] = true;
-        visited[r][cols - 1] = true;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; r &lt; rows - <span class="hljs-number">1</span>; r++) {
+        pq.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{heightMap[r][<span class="hljs-number">0</span>], r, <span class="hljs-number">0</span>});
+        pq.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{heightMap[r][cols - <span class="hljs-number">1</span>], r, cols - <span class="hljs-number">1</span>});
+        visited[r][<span class="hljs-number">0</span>] = <span class="hljs-literal">true</span>;
+        visited[r][cols - <span class="hljs-number">1</span>] = <span class="hljs-literal">true</span>;
     }
 
-    int totalWater = 0;
-    int[][] dirs = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+    <span class="hljs-type">int</span> <span class="hljs-variable">totalWater</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-type">int</span>[][] dirs = {{-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>}, {<span class="hljs-number">1</span>, <span class="hljs-number">0</span>}, {<span class="hljs-number">0</span>, -<span class="hljs-number">1</span>}, {<span class="hljs-number">0</span>, <span class="hljs-number">1</span>}};
 
-    while (!pq.isEmpty()) {
-        int[] cell = pq.poll();
-        for (int[] d : dirs) {
-            int nr = cell[1] + d[0], nc = cell[2] + d[1];
-            if (nr &lt; 0 || nr &gt;= rows || nc &lt; 0 || nc &gt;= cols || visited[nr][nc])
-                continue;
-            visited[nr][nc] = true;
-            int h = heightMap[nr][nc];
-            if (h &lt; cell[0]) {
-                totalWater += cell[0] - h;
-                pq.offer(new int[]{cell[0], nr, nc}); // raise to boundary level
-            } else {
-                pq.offer(new int[]{h, nr, nc});
+    <span class="hljs-keyword">while</span> (!pq.isEmpty()) {
+        <span class="hljs-type">int</span>[] cell = pq.poll();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] d : dirs) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">nr</span> <span class="hljs-operator">=</span> cell[<span class="hljs-number">1</span>] + d[<span class="hljs-number">0</span>], nc = cell[<span class="hljs-number">2</span>] + d[<span class="hljs-number">1</span>];
+            <span class="hljs-keyword">if</span> (nr &lt; <span class="hljs-number">0</span> || nr &gt;= rows || nc &lt; <span class="hljs-number">0</span> || nc &gt;= cols || visited[nr][nc])
+                <span class="hljs-keyword">continue</span>;
+            visited[nr][nc] = <span class="hljs-literal">true</span>;
+            <span class="hljs-type">int</span> <span class="hljs-variable">h</span> <span class="hljs-operator">=</span> heightMap[nr][nc];
+            <span class="hljs-keyword">if</span> (h &lt; cell[<span class="hljs-number">0</span>]) {
+                totalWater += cell[<span class="hljs-number">0</span>] - h;
+                pq.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{cell[<span class="hljs-number">0</span>], nr, nc}); <span class="hljs-comment">// raise to boundary level</span>
+            } <span class="hljs-keyword">else</span> {
+                pq.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{h, nr, nc});
             }
         }
     }
-    return totalWater;
+    <span class="hljs-keyword">return</span> totalWater;
 }
 </code></pre>
-<h3 id="2-8-minimum-obstacle-removal-to-reach-corner" tabindex="-1"><a class="header-anchor" href="#2-8-minimum-obstacle-removal-to-reach-corner"><span>2-8) Minimum Obstacle Removal to Reach Corner</span></a></h3>
-<pre><code class="language-java">// java
-// LC 2290
+<h3 id="2-8-minimum-obstacle-removal-to-reach-corner-lc-2290-0-1-bfs-dijkstra" tabindex="-1"><a class="header-anchor" href="#2-8-minimum-obstacle-removal-to-reach-corner-lc-2290-0-1-bfs-dijkstra"><span>2-8) Minimum Obstacle Removal to Reach Corner (LC 2290) — 0-1 BFS / Dijkstra</span></a></h3>
+<blockquote>
+<p>Cost = 1 for obstacle, 0 for empty cell; use 0-1 BFS (deque) or Dijkstra to minimize total.</p>
+</blockquote>
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 2290</span>
 
-// V0-1
-// IDEA: Dijkstra's Algorithm (fixed by gpt)
-/**
+<span class="hljs-comment">// V0-1</span>
+<span class="hljs-comment">// IDEA: Dijkstra&#x27;s Algorithm (fixed by gpt)</span>
+<span class="hljs-comment">/**
  *  NOTE !!!
  *
  * ✅ Summary:
  *  •   Single cost var won’t work → need dist[][] to track per-cell minimum cost.
  *  •   No explicit visited needed → the dist[][] + early skip (if (cost &gt; dist[y][x]) continue) handles that.
  *
- */
-public int minimumObstacles(int[][] grid) {
-    if (grid == null || grid.length == 0 || grid[0].length == 0) {
-        return 0;
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minimumObstacles</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] grid)</span> {
+    <span class="hljs-keyword">if</span> (grid == <span class="hljs-literal">null</span> || grid.length == <span class="hljs-number">0</span> || grid[<span class="hljs-number">0</span>].length == <span class="hljs-number">0</span>) {
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
     }
 
-    int m = grid.length; // rows
-    int n = grid[0].length; // cols
+    <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> grid.length; <span class="hljs-comment">// rows</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> grid[<span class="hljs-number">0</span>].length; <span class="hljs-comment">// cols</span>
 
-    /**
+    <span class="hljs-comment">/**
      *   NOTE !!!
      *
      *    we need a 2D array to save the cost when BFS loop over the grid
-     *    (CAN'T just use a single var (cost))
+     *    (CAN&#x27;T just use a single var (cost))
      *
      * ---
      *
@@ -1492,34 +1573,34 @@ public int minimumObstacles(int[][] grid) {
      * Without dist[][], you’d either:
      *  •   Revisit nodes unnecessarily (potential infinite loops), or
      *  •   Miss better paths (return wrong result).
-     */
-    // distance[y][x] = min obstacles to reach (y,x)
-    int[][] dist = new int[m][n];
-    for (int[] row : dist) {
+     */</span>
+    <span class="hljs-comment">// distance[y][x] = min obstacles to reach (y,x)</span>
+    <span class="hljs-type">int</span>[][] dist = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[m][n];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] row : dist) {
         Arrays.fill(row, Integer.MAX_VALUE);
     }
-    dist[0][0] = 0;
+    dist[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = <span class="hljs-number">0</span>;
 
-    // PQ stores [cost, x, y]
-    PriorityQueue&lt;int[]&gt; pq = new PriorityQueue&lt;&gt;(Comparator.comparingInt(a -&gt; a[0]));
-    pq.offer(new int[] { 0, 0, 0 }); // start at (0,0) with cost=0
+    <span class="hljs-comment">// PQ stores [cost, x, y]</span>
+    PriorityQueue&lt;<span class="hljs-type">int</span>[]&gt; pq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;(Comparator.comparingInt(a -&gt; a[<span class="hljs-number">0</span>]));
+    pq.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[] { <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span> }); <span class="hljs-comment">// start at (0,0) with cost=0</span>
 
-    int[][] moves = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
+    <span class="hljs-type">int</span>[][] moves = { { <span class="hljs-number">1</span>, <span class="hljs-number">0</span> }, { -<span class="hljs-number">1</span>, <span class="hljs-number">0</span> }, { <span class="hljs-number">0</span>, <span class="hljs-number">1</span> }, { <span class="hljs-number">0</span>, -<span class="hljs-number">1</span> } };
 
-    while (!pq.isEmpty()) {
-        int[] cur = pq.poll();
-        int cost = cur[0], x = cur[1], y = cur[2];
+    <span class="hljs-keyword">while</span> (!pq.isEmpty()) {
+        <span class="hljs-type">int</span>[] cur = pq.poll();
+        <span class="hljs-type">int</span> <span class="hljs-variable">cost</span> <span class="hljs-operator">=</span> cur[<span class="hljs-number">0</span>], x = cur[<span class="hljs-number">1</span>], y = cur[<span class="hljs-number">2</span>];
 
-        // Reached destination
-        if (x == n - 1 &amp;&amp; y == m - 1) {
-            return cost;
+        <span class="hljs-comment">// Reached destination</span>
+        <span class="hljs-keyword">if</span> (x == n - <span class="hljs-number">1</span> &amp;&amp; y == m - <span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">return</span> cost;
         }
 
-        // Skip if we already found better
-        /**
+        <span class="hljs-comment">// Skip if we already found better</span>
+        <span class="hljs-comment">/**
          *  NOTE !!!
          *
-         *   why DON'T need to maintain a `visited` var
+         *   why DON&#x27;T need to maintain a `visited` var
          *   to prevent repeating visit ?
          *
          *  -----
@@ -1543,30 +1624,30 @@ public int minimumObstacles(int[][] grid) {
          *
          * 👉 That’s why visited isn’t needed in Dijkstra — the dist[][] array + priority queue ensure correctness.
          *
-         */
-        if (cost &gt; dist[y][x])
-            continue;
+         */</span>
+        <span class="hljs-keyword">if</span> (cost &gt; dist[y][x])
+            <span class="hljs-keyword">continue</span>;
 
-        for (int[] mv : moves) {
-            int nx = x + mv[0];
-            int ny = y + mv[1];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] mv : moves) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">nx</span> <span class="hljs-operator">=</span> x + mv[<span class="hljs-number">0</span>];
+            <span class="hljs-type">int</span> <span class="hljs-variable">ny</span> <span class="hljs-operator">=</span> y + mv[<span class="hljs-number">1</span>];
 
-            if (nx &gt;= 0 &amp;&amp; nx &lt; n &amp;&amp; ny &gt;= 0 &amp;&amp; ny &lt; m) {
-                int newCost = cost + grid[ny][nx];
-                if (newCost &lt; dist[ny][nx]) {
+            <span class="hljs-keyword">if</span> (nx &gt;= <span class="hljs-number">0</span> &amp;&amp; nx &lt; n &amp;&amp; ny &gt;= <span class="hljs-number">0</span> &amp;&amp; ny &lt; m) {
+                <span class="hljs-type">int</span> <span class="hljs-variable">newCost</span> <span class="hljs-operator">=</span> cost + grid[ny][nx];
+                <span class="hljs-keyword">if</span> (newCost &lt; dist[ny][nx]) {
                     dist[ny][nx] = newCost;
-                    pq.offer(new int[] { newCost, nx, ny });
+                    pq.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[] { newCost, nx, ny });
                 }
             }
         }
     }
 
-    return -1; // should never happen
+    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>; <span class="hljs-comment">// should never happen</span>
 }
 </code></pre>
 <h2 id="decision-framework" tabindex="-1"><a class="header-anchor" href="#decision-framework"><span>Decision Framework</span></a></h2>
 <h3 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h3>
-<pre><code>Dijkstra Algorithm Selection Flowchart:
+<pre><code class="hljs">Dijkstra Algorithm Selection Flowchart:
 
 1. Is it a shortest path problem?
    ├── NO → Consider other algorithms (DFS, BFS, DP)
@@ -1789,7 +1870,7 @@ public int minimumObstacles(int[][] grid) {
 </tbody>
 </table>
 <h3 id="when-to-use-each-algorithm" tabindex="-1"><a class="header-anchor" href="#when-to-use-each-algorithm"><span>When to Use Each Algorithm</span></a></h3>
-<pre><code>Shortest Path Algorithm Selection:
+<pre><code class="hljs">Shortest Path Algorithm Selection:
 
 1. What type of problem?
    ├── All-pairs shortest path? → Continue to 2
@@ -2035,36 +2116,36 @@ public int minimumObstacles(int[][] grid) {
 </table>
 <h3 id="common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#common-patterns-tricks"><span>Common Patterns &amp; Tricks</span></a></h3>
 <h4 id="priority-queue-state" tabindex="-1"><a class="header-anchor" href="#priority-queue-state"><span><strong>Priority Queue State</strong></span></a></h4>
-<pre><code class="language-python"># Basic state
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Basic state</span>
 (distance, node)
 
-# With constraints
+<span class="hljs-comment"># With constraints</span>
 (cost, node, stops_remaining)
 
-# Grid problems
+<span class="hljs-comment"># Grid problems</span>
 (cost, row, col)
 
-# With path tracking
+<span class="hljs-comment"># With path tracking</span>
 (distance, node, path)
 </code></pre>
 <h4 id="visited-set-optimization" tabindex="-1"><a class="header-anchor" href="#visited-set-optimization"><span><strong>Visited Set Optimization</strong></span></a></h4>
-<pre><code class="language-python"># Option 1: Check after pop (recommended)
-if node in visited:
-    continue
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Option 1: Check after pop (recommended)</span>
+<span class="hljs-keyword">if</span> node <span class="hljs-keyword">in</span> visited:
+    <span class="hljs-keyword">continue</span>
 visited.add(node)
 
-# Option 2: Check distance
-if d &gt; dist[node]:
-    continue
+<span class="hljs-comment"># Option 2: Check distance</span>
+<span class="hljs-keyword">if</span> d &gt; dist[node]:
+    <span class="hljs-keyword">continue</span>
 </code></pre>
 <h4 id="path-reconstruction" tabindex="-1"><a class="header-anchor" href="#path-reconstruction"><span><strong>Path Reconstruction</strong></span></a></h4>
-<pre><code class="language-python">parent = {}
-# During relaxation:
+<pre data-lang="python"><code class="hljs language-python">parent = {}
+<span class="hljs-comment"># During relaxation:</span>
 parent[v] = u
 
-# Reconstruct path:
+<span class="hljs-comment"># Reconstruct path:</span>
 path = []
-while node != source:
+<span class="hljs-keyword">while</span> node != source:
     path.append(node)
     node = parent[node]
 path.reverse()

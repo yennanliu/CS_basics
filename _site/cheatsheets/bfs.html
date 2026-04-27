@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,13 +20,24 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
     document.querySelectorAll('pre code').forEach(function(codeEl) {
       var pre = codeEl.parentElement;
       var lang = '';
       var cls = codeEl.className || '';
       var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
       if (m) lang = m[1];
+
+      // Add line numbers
+      var lines = codeEl.innerHTML.split('
+');
+      if (lines[lines.length - 1] === '') lines.pop();
+      var numbered = lines.map(function(line, i) {
+        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
+      }).join('
+');
+      codeEl.innerHTML = numbered;
+      codeEl.classList.add('hljs-ln');
+
       var wrapper = document.createElement('div');
       wrapper.className = 'code-block-wrapper';
       pre.parentNode.insertBefore(wrapper, pre);
@@ -45,7 +55,9 @@
       btn.className = 'copy-btn';
       btn.textContent = 'Copy';
       btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
+');
+        navigator.clipboard.writeText(text).then(function() {
           btn.textContent = 'Copied!';
           btn.classList.add('copied');
           setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
@@ -213,161 +225,161 @@
 </table>
 <h2 id="implementation-patterns" tabindex="-1"><a class="header-anchor" href="#implementation-patterns"><span>Implementation Patterns</span></a></h2>
 <h3 id="pattern-1-basic-tree-bfs" tabindex="-1"><a class="header-anchor" href="#pattern-1-basic-tree-bfs"><span>Pattern 1: Basic Tree BFS</span></a></h3>
-<pre><code class="language-python">from collections import deque
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
 
-def bfs_tree(root):
-    if not root:
-        return []
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">bfs_tree</span>(<span class="hljs-params">root</span>):
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
+        <span class="hljs-keyword">return</span> []
     
     queue = deque([root])
     result = []
     
-    while queue:
+    <span class="hljs-keyword">while</span> queue:
         node = queue.popleft()
         result.append(node.val)
         
-        if node.left:
+        <span class="hljs-keyword">if</span> node.left:
             queue.append(node.left)
-        if node.right:
+        <span class="hljs-keyword">if</span> node.right:
             queue.append(node.right)
     
-    return result
+    <span class="hljs-keyword">return</span> result
 </code></pre>
 <h3 id="pattern-2-level-by-level-bfs" tabindex="-1"><a class="header-anchor" href="#pattern-2-level-by-level-bfs"><span>Pattern 2: Level-by-Level BFS</span></a></h3>
-<pre><code class="language-python">def bfs_levels(root):
-    if not root:
-        return []
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bfs_levels</span>(<span class="hljs-params">root</span>):
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
+        <span class="hljs-keyword">return</span> []
     
     queue = deque([root])
     levels = []
     
-    while queue:
-        level_size = len(queue)
+    <span class="hljs-keyword">while</span> queue:
+        level_size = <span class="hljs-built_in">len</span>(queue)
         current_level = []
         
-        for _ in range(level_size):
+        <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(level_size):
             node = queue.popleft()
             current_level.append(node.val)
             
-            if node.left:
+            <span class="hljs-keyword">if</span> node.left:
                 queue.append(node.left)
-            if node.right:
+            <span class="hljs-keyword">if</span> node.right:
                 queue.append(node.right)
         
         levels.append(current_level)
     
-    return levels
+    <span class="hljs-keyword">return</span> levels
 </code></pre>
 <h3 id="pattern-3-graph-bfs-with-visited-set" tabindex="-1"><a class="header-anchor" href="#pattern-3-graph-bfs-with-visited-set"><span>Pattern 3: Graph BFS with Visited Set</span></a></h3>
-<pre><code class="language-python">def bfs_graph(start, graph):
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bfs_graph</span>(<span class="hljs-params">start, graph</span>):
     queue = deque([start])
-    visited = set([start])
+    visited = <span class="hljs-built_in">set</span>([start])
     result = []
     
-    while queue:
+    <span class="hljs-keyword">while</span> queue:
         node = queue.popleft()
         result.append(node)
         
-        for neighbor in graph[node]:
-            if neighbor not in visited:
+        <span class="hljs-keyword">for</span> neighbor <span class="hljs-keyword">in</span> graph[node]:
+            <span class="hljs-keyword">if</span> neighbor <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> visited:
                 visited.add(neighbor)
                 queue.append(neighbor)
     
-    return result
+    <span class="hljs-keyword">return</span> result
 </code></pre>
 <h3 id="pattern-4-multi-source-bfs-distance-calculation" tabindex="-1"><a class="header-anchor" href="#pattern-4-multi-source-bfs-distance-calculation"><span>Pattern 4: Multi-Source BFS (Distance Calculation)</span></a></h3>
-<pre><code class="language-python">def multi_source_bfs(grid, sources):
-    &quot;&quot;&quot;Start BFS from multiple sources simultaneously&quot;&quot;&quot;
-    queue = deque(sources)  # All sources at once
-    visited = set(sources)
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">multi_source_bfs</span>(<span class="hljs-params">grid, sources</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Start BFS from multiple sources simultaneously&quot;&quot;&quot;</span>
+    queue = deque(sources)  <span class="hljs-comment"># All sources at once</span>
+    visited = <span class="hljs-built_in">set</span>(sources)
 
-    while queue:
+    <span class="hljs-keyword">while</span> queue:
         x, y = queue.popleft()
 
-        for dx, dy in [(0,1), (0,-1), (1,0), (-1,0)]:
+        <span class="hljs-keyword">for</span> dx, dy <span class="hljs-keyword">in</span> [(<span class="hljs-number">0</span>,<span class="hljs-number">1</span>), (<span class="hljs-number">0</span>,-<span class="hljs-number">1</span>), (<span class="hljs-number">1</span>,<span class="hljs-number">0</span>), (-<span class="hljs-number">1</span>,<span class="hljs-number">0</span>)]:
             nx, ny = x + dx, y + dy
 
-            if (0 &lt;= nx &lt; len(grid) and 0 &lt;= ny &lt; len(grid[0])
-                and (nx, ny) not in visited):
+            <span class="hljs-keyword">if</span> (<span class="hljs-number">0</span> &lt;= nx &lt; <span class="hljs-built_in">len</span>(grid) <span class="hljs-keyword">and</span> <span class="hljs-number">0</span> &lt;= ny &lt; <span class="hljs-built_in">len</span>(grid[<span class="hljs-number">0</span>])
+                <span class="hljs-keyword">and</span> (nx, ny) <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> visited):
                 visited.add((nx, ny))
                 queue.append((nx, ny))
 </code></pre>
 <p><strong>Java Implementation (LC 542 - 01 Matrix Pattern):</strong></p>
-<pre><code class="language-java">/**
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
  * Pattern: Multi-Source BFS for Distance Calculation
  * Use case: Calculate shortest distance from each cell to any source cell
  * Key insight: Start BFS from ALL sources simultaneously - first visit guarantees shortest path
  *
  * Time: O(m × n) - each cell visited at most once
  * Space: O(m × n) - queue can hold entire grid in worst case
- */
-public int[][] multiSourceBFS(int[][] mat) {
-    int rows = mat.length;
-    int cols = mat[0].length;
-    Queue&lt;int[]&gt; queue = new LinkedList&lt;&gt;();
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[][] multiSourceBFS(<span class="hljs-type">int</span>[][] mat) {
+    <span class="hljs-type">int</span> <span class="hljs-variable">rows</span> <span class="hljs-operator">=</span> mat.length;
+    <span class="hljs-type">int</span> <span class="hljs-variable">cols</span> <span class="hljs-operator">=</span> mat[<span class="hljs-number">0</span>].length;
+    Queue&lt;<span class="hljs-type">int</span>[]&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
 
-    // Step 1: Initialize - Add all sources (0s) to queue, mark others as unvisited
-    for (int r = 0; r &lt; rows; r++) {
-        for (int c = 0; c &lt; cols; c++) {
-            if (mat[r][c] == 0) {
-                queue.offer(new int[]{r, c});  // Multi-source starting points
-            } else {
-                // Mark as unvisited - two common approaches:
-                // Option A: mat[r][c] = -1 (easier to check)
-                // Option B: mat[r][c] = Integer.MAX_VALUE (easier for min comparison)
-                mat[r][c] = -1;
+    <span class="hljs-comment">// Step 1: Initialize - Add all sources (0s) to queue, mark others as unvisited</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; r &lt; rows; r++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; c &lt; cols; c++) {
+            <span class="hljs-keyword">if</span> (mat[r][c] == <span class="hljs-number">0</span>) {
+                queue.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{r, c});  <span class="hljs-comment">// Multi-source starting points</span>
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-comment">// Mark as unvisited - two common approaches:</span>
+                <span class="hljs-comment">// Option A: mat[r][c] = -1 (easier to check)</span>
+                <span class="hljs-comment">// Option B: mat[r][c] = Integer.MAX_VALUE (easier for min comparison)</span>
+                mat[r][c] = -<span class="hljs-number">1</span>;
             }
         }
     }
 
-    int[][] dirs = {{1,0}, {-1,0}, {0,1}, {0,-1}};
+    <span class="hljs-type">int</span>[][] dirs = {{<span class="hljs-number">1</span>,<span class="hljs-number">0</span>}, {-<span class="hljs-number">1</span>,<span class="hljs-number">0</span>}, {<span class="hljs-number">0</span>,<span class="hljs-number">1</span>}, {<span class="hljs-number">0</span>,-<span class="hljs-number">1</span>}};
 
-    // Step 2: BFS expansion from all sources
-    while (!queue.isEmpty()) {
-        int[] cur = queue.poll();
-        int r = cur[0], c = cur[1];
+    <span class="hljs-comment">// Step 2: BFS expansion from all sources</span>
+    <span class="hljs-keyword">while</span> (!queue.isEmpty()) {
+        <span class="hljs-type">int</span>[] cur = queue.poll();
+        <span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> cur[<span class="hljs-number">0</span>], c = cur[<span class="hljs-number">1</span>];
 
-        for (int[] d : dirs) {
-            int nr = r + d[0];
-            int nc = c + d[1];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] d : dirs) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">nr</span> <span class="hljs-operator">=</span> r + d[<span class="hljs-number">0</span>];
+            <span class="hljs-type">int</span> <span class="hljs-variable">nc</span> <span class="hljs-operator">=</span> c + d[<span class="hljs-number">1</span>];
 
-            // Only process unvisited cells
-            if (nr &gt;= 0 &amp;&amp; nr &lt; rows &amp;&amp; nc &gt;= 0 &amp;&amp; nc &lt; cols &amp;&amp; mat[nr][nc] == -1) {
-                // KEY: Distance = parent's distance + 1
-                mat[nr][nc] = mat[r][c] + 1;
-                queue.offer(new int[]{nr, nc});
+            <span class="hljs-comment">// Only process unvisited cells</span>
+            <span class="hljs-keyword">if</span> (nr &gt;= <span class="hljs-number">0</span> &amp;&amp; nr &lt; rows &amp;&amp; nc &gt;= <span class="hljs-number">0</span> &amp;&amp; nc &lt; cols &amp;&amp; mat[nr][nc] == -<span class="hljs-number">1</span>) {
+                <span class="hljs-comment">// KEY: Distance = parent&#x27;s distance + 1</span>
+                mat[nr][nc] = mat[r][c] + <span class="hljs-number">1</span>;
+                queue.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{nr, nc});
             }
         }
     }
 
-    return mat;
+    <span class="hljs-keyword">return</span> mat;
 }
 </code></pre>
 <p><strong>Alternative: Using MAX_VALUE for initialization (allows for optimization)</strong></p>
-<pre><code class="language-java">public int[][] multiSourceBFS_optimized(int[][] mat) {
-    int rows = mat.length;
-    int cols = mat[0].length;
-    Queue&lt;int[]&gt; queue = new LinkedList&lt;&gt;();
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[][] multiSourceBFS_optimized(<span class="hljs-type">int</span>[][] mat) {
+    <span class="hljs-type">int</span> <span class="hljs-variable">rows</span> <span class="hljs-operator">=</span> mat.length;
+    <span class="hljs-type">int</span> <span class="hljs-variable">cols</span> <span class="hljs-operator">=</span> mat[<span class="hljs-number">0</span>].length;
+    Queue&lt;<span class="hljs-type">int</span>[]&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
 
-    // Initialize with MAX_VALUE for non-sources
-    for (int r = 0; r &lt; rows; r++) {
-        for (int c = 0; c &lt; cols; c++) {
-            if (mat[r][c] == 0) {
-                queue.offer(new int[]{r, c});
-            } else {
-                mat[r][c] = Integer.MAX_VALUE;  // Treat as infinity
+    <span class="hljs-comment">// Initialize with MAX_VALUE for non-sources</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; r &lt; rows; r++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; c &lt; cols; c++) {
+            <span class="hljs-keyword">if</span> (mat[r][c] == <span class="hljs-number">0</span>) {
+                queue.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{r, c});
+            } <span class="hljs-keyword">else</span> {
+                mat[r][c] = Integer.MAX_VALUE;  <span class="hljs-comment">// Treat as infinity</span>
             }
         }
     }
 
-    int[][] dirs = {{1,0}, {-1,0}, {0,1}, {0,-1}};
+    <span class="hljs-type">int</span>[][] dirs = {{<span class="hljs-number">1</span>,<span class="hljs-number">0</span>}, {-<span class="hljs-number">1</span>,<span class="hljs-number">0</span>}, {<span class="hljs-number">0</span>,<span class="hljs-number">1</span>}, {<span class="hljs-number">0</span>,-<span class="hljs-number">1</span>}};
 
-    while (!queue.isEmpty()) {
-        int[] cur = queue.poll();
-        int r = cur[0], c = cur[1];
+    <span class="hljs-keyword">while</span> (!queue.isEmpty()) {
+        <span class="hljs-type">int</span>[] cur = queue.poll();
+        <span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> cur[<span class="hljs-number">0</span>], c = cur[<span class="hljs-number">1</span>];
 
-        for (int[] d : dirs) {
-            /** NOTE !!!
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] d : dirs) {
+            <span class="hljs-comment">/** NOTE !!!
              * 
              * - mat[r][c] + 1: 
              * This is the &quot;new potential distance&quot; you just calculated
@@ -377,37 +389,37 @@ public int[][] multiSourceBFS(int[][] mat) {
              * - mat[nr][nc]: 
              * This is the &quot;best distance found so far&quot; for that neighb
              * 
-             */
-            int nr = r + d[0];
-            int nc = c + d[1];
+             */</span>
+            <span class="hljs-type">int</span> <span class="hljs-variable">nr</span> <span class="hljs-operator">=</span> r + d[<span class="hljs-number">0</span>];
+            <span class="hljs-type">int</span> <span class="hljs-variable">nc</span> <span class="hljs-operator">=</span> c + d[<span class="hljs-number">1</span>];
 
-            if (nr &lt; 0 || nr &gt;= rows || nc &lt; 0 || nc &gt;= cols) continue;
+            <span class="hljs-keyword">if</span> (nr &lt; <span class="hljs-number">0</span> || nr &gt;= rows || nc &lt; <span class="hljs-number">0</span> || nc &gt;= cols) <span class="hljs-keyword">continue</span>;
 
-            /**
+            <span class="hljs-comment">/**
              * KEY OPTIMIZATION: Only update when new distance is shorter
              * Why this works:
              * - In unweighted BFS, first visit = shortest distance
              * - If mat[nr][nc] &lt;= mat[r][c] + 1, cell already has better/equal path
-             * - No need to re-process cells that won't improve
+             * - No need to re-process cells that won&#x27;t improve
              *
              * This prevents redundant enqueuing and guarantees O(m×n) time
-             */
-            /** e.g.
+             */</span>
+            <span class="hljs-comment">/** e.g.
              * 
              * &quot;If the existing distance at the neighbor is worse than the one I just found, update the neighbor and put it in the queue.&quot;
-             */
-            if (mat[nr][nc] &gt; mat[r][c] + 1) {
-                mat[nr][nc] = mat[r][c] + 1;
-                queue.offer(new int[]{nr, nc});
+             */</span>
+            <span class="hljs-keyword">if</span> (mat[nr][nc] &gt; mat[r][c] + <span class="hljs-number">1</span>) {
+                mat[nr][nc] = mat[r][c] + <span class="hljs-number">1</span>;
+                queue.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{nr, nc});
             }
         }
     }
 
-    return mat;
+    <span class="hljs-keyword">return</span> mat;
 }
 </code></pre>
 <p><strong>Concrete Example: LC 542 - 01 Matrix</strong></p>
-<pre><code>Problem: Find distance to nearest 0 for each cell
+<pre><code class="hljs">Problem: Find distance to nearest 0 for each cell
 Input:  [[0,0,0],     Output: [[0,0,0],
          [0,1,0],              [0,1,0],
          [1,1,1]]              [1,2,1]]
@@ -451,56 +463,56 @@ Step 3 - BFS Layer 2 (distance = 2):
 <li><strong>Principle</strong>: Flip the problem - instead of “how far is this 1 from any 0?”, ask “how far can all 0s reach?”</li>
 </ul>
 <h3 id="pattern-4-5-dfs-multi-source-bfs-island-expansion" tabindex="-1"><a class="header-anchor" href="#pattern-4-5-dfs-multi-source-bfs-island-expansion"><span>Pattern 4.5: DFS + Multi-Source BFS (Island Expansion)</span></a></h3>
-<pre><code class="language-java">/**
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
  * Pattern: DFS to identify first component, then Multi-Source BFS to find shortest distance to second component
  * Use case: Find shortest bridge between two islands, connect two separate regions
  * Key insight: DFS marks entire first island, BFS expands from ALL cells of first island simultaneously
  *
  * Time: O(m × n) - each cell visited at most once by DFS + once by BFS
  * Space: O(m × n) - queue can hold entire island boundary
- */
-public int dfsMarkThenMultiSourceBFS(int[][] grid) {
-    int n = grid.length;
-    Queue&lt;int[]&gt; queue = new LinkedList&lt;&gt;();
-    boolean found = false;
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">dfsMarkThenMultiSourceBFS</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] grid)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> grid.length;
+    Queue&lt;<span class="hljs-type">int</span>[]&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+    <span class="hljs-type">boolean</span> <span class="hljs-variable">found</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;
 
-    // Step 1: DFS to find and mark first island (change 1 → 2)
-    // Add ALL cells of first island to queue for multi-source BFS
-    for (int y = 0; y &lt; n &amp;&amp; !found; y++) {
-        for (int x = 0; x &lt; n &amp;&amp; !found; x++) {
-            if (grid[y][x] == 1) {
+    <span class="hljs-comment">// Step 1: DFS to find and mark first island (change 1 → 2)</span>
+    <span class="hljs-comment">// Add ALL cells of first island to queue for multi-source BFS</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">y</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; y &lt; n &amp;&amp; !found; y++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">x</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; x &lt; n &amp;&amp; !found; x++) {
+            <span class="hljs-keyword">if</span> (grid[y][x] == <span class="hljs-number">1</span>) {
                 dfsMarkIsland(grid, x, y, queue);
-                found = true;
+                found = <span class="hljs-literal">true</span>;
             }
         }
     }
 
-    // Step 2: Multi-Source BFS from entire first island
-    // Expand outward layer by layer until reaching second island
-    int[][] dirs = {{1,0}, {-1,0}, {0,1}, {0,-1}};
-    int steps = 0;
-    boolean[][] visited = new boolean[n][n];
+    <span class="hljs-comment">// Step 2: Multi-Source BFS from entire first island</span>
+    <span class="hljs-comment">// Expand outward layer by layer until reaching second island</span>
+    <span class="hljs-type">int</span>[][] dirs = {{<span class="hljs-number">1</span>,<span class="hljs-number">0</span>}, {-<span class="hljs-number">1</span>,<span class="hljs-number">0</span>}, {<span class="hljs-number">0</span>,<span class="hljs-number">1</span>}, {<span class="hljs-number">0</span>,-<span class="hljs-number">1</span>}};
+    <span class="hljs-type">int</span> <span class="hljs-variable">steps</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-type">boolean</span>[][] visited = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[n][n];
 
-    while (!queue.isEmpty()) {
-        int size = queue.size();
+    <span class="hljs-keyword">while</span> (!queue.isEmpty()) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> queue.size();
 
-        for (int i = 0; i &lt; size; i++) {
-            int[] cur = queue.poll();
-            int x = cur[0], y = cur[1];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; size; i++) {
+            <span class="hljs-type">int</span>[] cur = queue.poll();
+            <span class="hljs-type">int</span> <span class="hljs-variable">x</span> <span class="hljs-operator">=</span> cur[<span class="hljs-number">0</span>], y = cur[<span class="hljs-number">1</span>];
 
-            for (int[] d : dirs) {
-                int nx = x + d[0];
-                int ny = y + d[1];
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] d : dirs) {
+                <span class="hljs-type">int</span> <span class="hljs-variable">nx</span> <span class="hljs-operator">=</span> x + d[<span class="hljs-number">0</span>];
+                <span class="hljs-type">int</span> <span class="hljs-variable">ny</span> <span class="hljs-operator">=</span> y + d[<span class="hljs-number">1</span>];
 
-                if (nx &gt;= 0 &amp;&amp; nx &lt; n &amp;&amp; ny &gt;= 0 &amp;&amp; ny &lt; n &amp;&amp; !visited[ny][nx]) {
-                    visited[ny][nx] = true;
+                <span class="hljs-keyword">if</span> (nx &gt;= <span class="hljs-number">0</span> &amp;&amp; nx &lt; n &amp;&amp; ny &gt;= <span class="hljs-number">0</span> &amp;&amp; ny &lt; n &amp;&amp; !visited[ny][nx]) {
+                    visited[ny][nx] = <span class="hljs-literal">true</span>;
 
-                    if (grid[ny][nx] == 1) {
-                        return steps; // Reached second island
+                    <span class="hljs-keyword">if</span> (grid[ny][nx] == <span class="hljs-number">1</span>) {
+                        <span class="hljs-keyword">return</span> steps; <span class="hljs-comment">// Reached second island</span>
                     }
 
-                    if (grid[ny][nx] == 0) {
-                        queue.add(new int[]{nx, ny});
+                    <span class="hljs-keyword">if</span> (grid[ny][nx] == <span class="hljs-number">0</span>) {
+                        queue.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{nx, ny});
                     }
                 }
             }
@@ -508,28 +520,28 @@ public int dfsMarkThenMultiSourceBFS(int[][] grid) {
         steps++;
     }
 
-    return -1;
+    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
 }
 
-// DFS helper: Mark all cells of first island and add to queue
-void dfsMarkIsland(int[][] grid, int x, int y, Queue&lt;int[]&gt; queue) {
-    int n = grid.length;
-    if (x &lt; 0 || x &gt;= n || y &lt; 0 || y &gt;= n || grid[y][x] != 1) {
-        return;
+<span class="hljs-comment">// DFS helper: Mark all cells of first island and add to queue</span>
+<span class="hljs-keyword">void</span> <span class="hljs-title function_">dfsMarkIsland</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] grid, <span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y, Queue&lt;<span class="hljs-type">int</span>[]&gt; queue)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> grid.length;
+    <span class="hljs-keyword">if</span> (x &lt; <span class="hljs-number">0</span> || x &gt;= n || y &lt; <span class="hljs-number">0</span> || y &gt;= n || grid[y][x] != <span class="hljs-number">1</span>) {
+        <span class="hljs-keyword">return</span>;
     }
 
-    grid[y][x] = 2; // Mark as visited (part of first island)
-    queue.add(new int[]{x, y}); // Add to BFS queue
+    grid[y][x] = <span class="hljs-number">2</span>; <span class="hljs-comment">// Mark as visited (part of first island)</span>
+    queue.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{x, y}); <span class="hljs-comment">// Add to BFS queue</span>
 
-    // Recursively mark all connected cells
-    dfsMarkIsland(grid, x + 1, y, queue);
-    dfsMarkIsland(grid, x - 1, y, queue);
-    dfsMarkIsland(grid, x, y + 1, queue);
-    dfsMarkIsland(grid, x, y - 1, queue);
+    <span class="hljs-comment">// Recursively mark all connected cells</span>
+    dfsMarkIsland(grid, x + <span class="hljs-number">1</span>, y, queue);
+    dfsMarkIsland(grid, x - <span class="hljs-number">1</span>, y, queue);
+    dfsMarkIsland(grid, x, y + <span class="hljs-number">1</span>, queue);
+    dfsMarkIsland(grid, x, y - <span class="hljs-number">1</span>, queue);
 }
 </code></pre>
 <p><strong>Concrete Example: LC 934 - Shortest Bridge</strong></p>
-<pre><code>Problem: Connect two islands with minimum number of flips (0→1)
+<pre><code class="hljs">Problem: Connect two islands with minimum number of flips (0→1)
 Grid: [[0,1],     Two islands: Island A at (0,1), Island B at (1,0)
        [1,0]]     Need to flip 1 cell to connect them
 
@@ -609,26 +621,26 @@ Key insight:
 <li>LC 994 (Rotting Oranges): Time for infection to spread</li>
 <li>LC 1162 (As Far from Land): Distance to nearest land</li>
 </ul>
-<pre><code class="language-java">// Simultaneous Multi-Source BFS Template
-public int[][] simultaneousMultiSourceBFS(int[][] grid) {
-    Queue&lt;int[]&gt; queue = new LinkedList&lt;&gt;();
-    boolean[][] visited = new boolean[rows][cols];
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Simultaneous Multi-Source BFS Template</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[][] simultaneousMultiSourceBFS(<span class="hljs-type">int</span>[][] grid) {
+    Queue&lt;<span class="hljs-type">int</span>[]&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+    <span class="hljs-type">boolean</span>[][] visited = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[rows][cols];
 
-    // Add ALL sources to queue at once
-    for (int r = 0; r &lt; rows; r++) {
-        for (int c = 0; c &lt; cols; c++) {
-            if (grid[r][c] == SOURCE) {
-                queue.offer(new int[]{r, c});
-                visited[r][c] = true;  // ONE shared visited array
+    <span class="hljs-comment">// Add ALL sources to queue at once</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; r &lt; rows; r++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; c &lt; cols; c++) {
+            <span class="hljs-keyword">if</span> (grid[r][c] == SOURCE) {
+                queue.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{r, c});
+                visited[r][c] = <span class="hljs-literal">true</span>;  <span class="hljs-comment">// ONE shared visited array</span>
             }
         }
     }
 
-    // Single BFS run - all sources expand together
-    while (!queue.isEmpty()) {
-        int[] cur = queue.poll();
-        // Process neighbors...
-        // First visit to any cell = shortest distance from ANY source
+    <span class="hljs-comment">// Single BFS run - all sources expand together</span>
+    <span class="hljs-keyword">while</span> (!queue.isEmpty()) {
+        <span class="hljs-type">int</span>[] cur = queue.poll();
+        <span class="hljs-comment">// Process neighbors...</span>
+        <span class="hljs-comment">// First visit to any cell = shortest distance from ANY source</span>
     }
 }
 </code></pre>
@@ -644,78 +656,78 @@ public int[][] simultaneousMultiSourceBFS(int[][] grid) {
 <ul>
 <li>LC 317 (Shortest Distance from All Buildings): Sum of distances to all buildings</li>
 </ul>
-<pre><code class="language-java">// Independent BFS Runs Template - LC 317 Pattern
-public int independentBFSRuns(int[][] grid) {
-    int rows = grid.length;
-    int cols = grid[0].length;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Independent BFS Runs Template - LC 317 Pattern</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">independentBFSRuns</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] grid)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">rows</span> <span class="hljs-operator">=</span> grid.length;
+    <span class="hljs-type">int</span> <span class="hljs-variable">cols</span> <span class="hljs-operator">=</span> grid[<span class="hljs-number">0</span>].length;
 
-    // Global accumulator - each BFS adds to this
-    int[][] totalDist = new int[rows][cols];
-    int[][] reachCount = new int[rows][cols];
+    <span class="hljs-comment">// Global accumulator - each BFS adds to this</span>
+    <span class="hljs-type">int</span>[][] totalDist = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[rows][cols];
+    <span class="hljs-type">int</span>[][] reachCount = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[rows][cols];
 
-    int buildingCount = 0;
+    <span class="hljs-type">int</span> <span class="hljs-variable">buildingCount</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
 
-    // Run SEPARATE BFS for each source
-    for (int r = 0; r &lt; rows; r++) {
-        for (int c = 0; c &lt; cols; c++) {
-            if (grid[r][c] == 1) {  // Found a building (source)
+    <span class="hljs-comment">// Run SEPARATE BFS for each source</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; r &lt; rows; r++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; c &lt; cols; c++) {
+            <span class="hljs-keyword">if</span> (grid[r][c] == <span class="hljs-number">1</span>) {  <span class="hljs-comment">// Found a building (source)</span>
                 buildingCount++;
 
-                // FRESH visited array for this building's BFS
-                boolean[][] visited = new boolean[rows][cols];
+                <span class="hljs-comment">// FRESH visited array for this building&#x27;s BFS</span>
+                <span class="hljs-type">boolean</span>[][] visited = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[rows][cols];
 
                 bfsSingleSource(grid, r, c, visited, totalDist, reachCount);
             }
         }
     }
 
-    // Find best cell that was reached by ALL buildings
-    int minDist = Integer.MAX_VALUE;
-    for (int r = 0; r &lt; rows; r++) {
-        for (int c = 0; c &lt; cols; c++) {
-            if (grid[r][c] == 0 &amp;&amp; reachCount[r][c] == buildingCount) {
+    <span class="hljs-comment">// Find best cell that was reached by ALL buildings</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">minDist</span> <span class="hljs-operator">=</span> Integer.MAX_VALUE;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; r &lt; rows; r++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; c &lt; cols; c++) {
+            <span class="hljs-keyword">if</span> (grid[r][c] == <span class="hljs-number">0</span> &amp;&amp; reachCount[r][c] == buildingCount) {
                 minDist = Math.min(minDist, totalDist[r][c]);
             }
         }
     }
 
-    return minDist == Integer.MAX_VALUE ? -1 : minDist;
+    <span class="hljs-keyword">return</span> minDist == Integer.MAX_VALUE ? -<span class="hljs-number">1</span> : minDist;
 }
 
-// BFS from single source - accumulates distances
-private void bfsSingleSource(int[][] grid, int sr, int sc,
-                             boolean[][] visited,
-                             int[][] totalDist,
-                             int[][] reachCount) {
-    Queue&lt;int[]&gt; queue = new LinkedList&lt;&gt;();
-    queue.offer(new int[]{sr, sc});
-    visited[sr][sc] = true;
+<span class="hljs-comment">// BFS from single source - accumulates distances</span>
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">bfsSingleSource</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] grid, <span class="hljs-type">int</span> sr, <span class="hljs-type">int</span> sc,
+                             <span class="hljs-type">boolean</span>[][] visited,
+                             <span class="hljs-type">int</span>[][] totalDist,
+                             <span class="hljs-type">int</span>[][] reachCount)</span> {
+    Queue&lt;<span class="hljs-type">int</span>[]&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+    queue.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{sr, sc});
+    visited[sr][sc] = <span class="hljs-literal">true</span>;
 
-    int[][] dirs = {{0,1}, {0,-1}, {1,0}, {-1,0}};
-    int dist = 0;
+    <span class="hljs-type">int</span>[][] dirs = {{<span class="hljs-number">0</span>,<span class="hljs-number">1</span>}, {<span class="hljs-number">0</span>,-<span class="hljs-number">1</span>}, {<span class="hljs-number">1</span>,<span class="hljs-number">0</span>}, {-<span class="hljs-number">1</span>,<span class="hljs-number">0</span>}};
+    <span class="hljs-type">int</span> <span class="hljs-variable">dist</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
 
-    while (!queue.isEmpty()) {
-        int size = queue.size();
+    <span class="hljs-keyword">while</span> (!queue.isEmpty()) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> queue.size();
         dist++;
 
-        for (int i = 0; i &lt; size; i++) {
-            int[] cur = queue.poll();
-            int r = cur[0], c = cur[1];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; size; i++) {
+            <span class="hljs-type">int</span>[] cur = queue.poll();
+            <span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> cur[<span class="hljs-number">0</span>], c = cur[<span class="hljs-number">1</span>];
 
-            for (int[] d : dirs) {
-                int nr = r + d[0];
-                int nc = c + d[1];
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] d : dirs) {
+                <span class="hljs-type">int</span> <span class="hljs-variable">nr</span> <span class="hljs-operator">=</span> r + d[<span class="hljs-number">0</span>];
+                <span class="hljs-type">int</span> <span class="hljs-variable">nc</span> <span class="hljs-operator">=</span> c + d[<span class="hljs-number">1</span>];
 
-                if (nr &gt;= 0 &amp;&amp; nr &lt; grid.length &amp;&amp; nc &gt;= 0 &amp;&amp; nc &lt; grid[0].length
-                    &amp;&amp; !visited[nr][nc] &amp;&amp; grid[nr][nc] == 0) {
+                <span class="hljs-keyword">if</span> (nr &gt;= <span class="hljs-number">0</span> &amp;&amp; nr &lt; grid.length &amp;&amp; nc &gt;= <span class="hljs-number">0</span> &amp;&amp; nc &lt; grid[<span class="hljs-number">0</span>].length
+                    &amp;&amp; !visited[nr][nc] &amp;&amp; grid[nr][nc] == <span class="hljs-number">0</span>) {
 
-                    visited[nr][nc] = true;
+                    visited[nr][nc] = <span class="hljs-literal">true</span>;
 
-                    // Accumulate distance from this building
+                    <span class="hljs-comment">// Accumulate distance from this building</span>
                     totalDist[nr][nc] += dist;
                     reachCount[nr][nc]++;
 
-                    queue.offer(new int[]{nr, nc});
+                    queue.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{nr, nc});
                 }
             }
         }
@@ -767,7 +779,7 @@ private void bfsSingleSource(int[][] grid, int sr, int sc,
 <h4 id="why-fresh-visited-arrays-in-independent-bfs" tabindex="-1"><a class="header-anchor" href="#why-fresh-visited-arrays-in-independent-bfs"><span><strong>Why Fresh Visited Arrays in Independent BFS?</strong></span></a></h4>
 <p><strong>The Key Question:</strong> <em>“Why can’t we reuse the visited array across different buildings in LC 317?”</em></p>
 <p><strong>The Answer:</strong></p>
-<pre><code>Building A runs BFS:
+<pre><code class="hljs">Building A runs BFS:
   - Visits land cell (2,3) and marks it visited ✓
   - Calculates: distance from A to (2,3) = 5 steps
 
@@ -780,54 +792,54 @@ But we NEED both distances because:
 </code></pre>
 <p><strong>Each building needs to “see” every empty cell independently</strong> to contribute its distance.</p>
 <h4 id="common-mistake-example" tabindex="-1"><a class="header-anchor" href="#common-mistake-example"><span><strong>Common Mistake Example</strong></span></a></h4>
-<pre><code class="language-java">// ❌ WRONG - Reusing visited array
-boolean[][] visited = new boolean[rows][cols];  // Created ONCE
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ❌ WRONG - Reusing visited array</span>
+<span class="hljs-type">boolean</span>[][] visited = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[rows][cols];  <span class="hljs-comment">// Created ONCE</span>
 
-for (Building b : allBuildings) {
-    bfs(b, visited);  // All buildings share same visited array
-    // Later buildings can't visit cells that earlier buildings marked!
+<span class="hljs-keyword">for</span> (Building b : allBuildings) {
+    bfs(b, visited);  <span class="hljs-comment">// All buildings share same visited array</span>
+    <span class="hljs-comment">// Later buildings can&#x27;t visit cells that earlier buildings marked!</span>
 }
 
-// ✅ CORRECT - Fresh visited array
-for (Building b : allBuildings) {
-    boolean[][] visited = new boolean[rows][cols];  // Fresh each time
-    bfs(b, visited);  // Each building can visit all reachable cells
+<span class="hljs-comment">// ✅ CORRECT - Fresh visited array</span>
+<span class="hljs-keyword">for</span> (Building b : allBuildings) {
+    <span class="hljs-type">boolean</span>[][] visited = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[rows][cols];  <span class="hljs-comment">// Fresh each time</span>
+    bfs(b, visited);  <span class="hljs-comment">// Each building can visit all reachable cells</span>
 }
 </code></pre>
 <h4 id="optimization-grid-value-trick-space-efficient-alternative" tabindex="-1"><a class="header-anchor" href="#optimization-grid-value-trick-space-efficient-alternative"><span><strong>Optimization: Grid Value Trick</strong> (Space-efficient alternative)</span></a></h4>
 <p>Instead of creating fresh <code>boolean[][] visited</code> arrays, modify the grid itself:</p>
-<pre><code class="language-java">// LC 317 Optimization: Decrement empty cells for each building
-public int shortestDistance(int[][] grid) {
-    int[][] totalDist = new int[rows][cols];
-    int emptyValue = 0;  // Changes with each BFS: 0 → -1 → -2 → -3...
-    int buildingCount = 0;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 317 Optimization: Decrement empty cells for each building</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">shortestDistance</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] grid)</span> {
+    <span class="hljs-type">int</span>[][] totalDist = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[rows][cols];
+    <span class="hljs-type">int</span> <span class="hljs-variable">emptyValue</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;  <span class="hljs-comment">// Changes with each BFS: 0 → -1 → -2 → -3...</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">buildingCount</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
 
-    for (int r = 0; r &lt; rows; r++) {
-        for (int c = 0; c &lt; cols; c++) {
-            if (grid[r][c] == 1) {
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; r &lt; rows; r++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; c &lt; cols; c++) {
+            <span class="hljs-keyword">if</span> (grid[r][c] == <span class="hljs-number">1</span>) {
                 buildingCount++;
 
-                // BFS from this building, only visit cells with value = emptyValue
+                <span class="hljs-comment">// BFS from this building, only visit cells with value = emptyValue</span>
                 bfsWithGridMarking(grid, r, c, emptyValue, totalDist);
 
-                emptyValue--;  // Next building looks for different value
+                emptyValue--;  <span class="hljs-comment">// Next building looks for different value</span>
             }
         }
     }
 
-    // Find best cell with value = (emptyValue + 1)
-    // That cell was reached by ALL buildings
+    <span class="hljs-comment">// Find best cell with value = (emptyValue + 1)</span>
+    <span class="hljs-comment">// That cell was reached by ALL buildings</span>
 }
 
-private void bfsWithGridMarking(int[][] grid, int sr, int sc,
-                               int targetValue, int[][] totalDist) {
-    // Only process cells with grid[r][c] == targetValue
-    // After processing, change to (targetValue - 1)
-    // This ensures cell must be reached by ALL previous buildings
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">bfsWithGridMarking</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] grid, <span class="hljs-type">int</span> sr, <span class="hljs-type">int</span> sc,
+                               <span class="hljs-type">int</span> targetValue, <span class="hljs-type">int</span>[][] totalDist)</span> {
+    <span class="hljs-comment">// Only process cells with grid[r][c] == targetValue</span>
+    <span class="hljs-comment">// After processing, change to (targetValue - 1)</span>
+    <span class="hljs-comment">// This ensures cell must be reached by ALL previous buildings</span>
 }
 </code></pre>
 <p><strong>How Grid Trick Works:</strong></p>
-<pre><code>Initial grid: All empty cells = 0
+<pre><code class="hljs">Initial grid: All empty cells = 0
 
 Building 1 BFS:
   - Visit cells with value 0
@@ -897,128 +909,128 @@ Building 3 BFS:
 </tbody>
 </table>
 <h3 id="pattern-5-bfs-with-path-tracking" tabindex="-1"><a class="header-anchor" href="#pattern-5-bfs-with-path-tracking"><span>Pattern 5: BFS with Path Tracking</span></a></h3>
-<pre><code class="language-python">def bfs_with_path(start, target):
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bfs_with_path</span>(<span class="hljs-params">start, target</span>):
     queue = deque([(start, [start])])
     visited = {start}
 
-    while queue:
+    <span class="hljs-keyword">while</span> queue:
         node, path = queue.popleft()
 
-        if node == target:
-            return path
+        <span class="hljs-keyword">if</span> node == target:
+            <span class="hljs-keyword">return</span> path
 
-        for neighbor in get_neighbors(node):
-            if neighbor not in visited:
+        <span class="hljs-keyword">for</span> neighbor <span class="hljs-keyword">in</span> get_neighbors(node):
+            <span class="hljs-keyword">if</span> neighbor <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> visited:
                 visited.add(neighbor)
                 queue.append((neighbor, path + [neighbor]))
 
-    return None
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
 </code></pre>
 <h3 id="pattern-6-sort-repeated-bfs-sequential-shortest-paths" tabindex="-1"><a class="header-anchor" href="#pattern-6-sort-repeated-bfs-sequential-shortest-paths"><span>Pattern 6: Sort + Repeated BFS (Sequential Shortest Paths)</span></a></h3>
-<pre><code class="language-java">/**
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
  * Pattern: Sort targets by priority, then repeatedly call BFS to find shortest paths
  * Use case: Visit multiple targets in specific order, minimize total travel distance
  * Key insight: BFS guarantees shortest path between each pair of consecutive targets
  *
  * Time: O(k × m × n) where k = number of targets, m×n = grid size
  * Space: O(m × n) for visited array in each BFS call
- */
-public int sortAndBFS(List&lt;List&lt;Integer&gt;&gt; grid) {
-    int rows = grid.size();
-    int cols = grid.get(0).size();
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">sortAndBFS</span><span class="hljs-params">(List&lt;List&lt;Integer&gt;&gt; grid)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">rows</span> <span class="hljs-operator">=</span> grid.size();
+    <span class="hljs-type">int</span> <span class="hljs-variable">cols</span> <span class="hljs-operator">=</span> grid.get(<span class="hljs-number">0</span>).size();
 
-    // Step 1: Collect all targets and sort by priority (e.g., value)
-    List&lt;int[]&gt; targets = new ArrayList&lt;&gt;();
-    for (int r = 0; r &lt; rows; r++) {
-        for (int c = 0; c &lt; cols; c++) {
-            if (grid.get(r).get(c) &gt; 1) {
-                // Store [value, row, col]
-                targets.add(new int[]{grid.get(r).get(c), r, c});
+    <span class="hljs-comment">// Step 1: Collect all targets and sort by priority (e.g., value)</span>
+    List&lt;<span class="hljs-type">int</span>[]&gt; targets = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; r &lt; rows; r++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; c &lt; cols; c++) {
+            <span class="hljs-keyword">if</span> (grid.get(r).get(c) &gt; <span class="hljs-number">1</span>) {
+                <span class="hljs-comment">// Store [value, row, col]</span>
+                targets.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{grid.get(r).get(c), r, c});
             }
         }
     }
 
-    // Sort by value (ascending) - defines visit order
-    targets.sort(Comparator.comparingInt(a -&gt; a[0]));
+    <span class="hljs-comment">// Sort by value (ascending) - defines visit order</span>
+    targets.sort(Comparator.comparingInt(a -&gt; a[<span class="hljs-number">0</span>]));
 
-    // Step 2: Sequentially visit each target using BFS
-    int totalSteps = 0;
-    int startR = 0, startC = 0; // Starting position
+    <span class="hljs-comment">// Step 2: Sequentially visit each target using BFS</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">totalSteps</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-type">int</span> <span class="hljs-variable">startR</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, startC = <span class="hljs-number">0</span>; <span class="hljs-comment">// Starting position</span>
 
-    for (int[] target : targets) {
-        int targetR = target[1];
-        int targetC = target[2];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] target : targets) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">targetR</span> <span class="hljs-operator">=</span> target[<span class="hljs-number">1</span>];
+        <span class="hljs-type">int</span> <span class="hljs-variable">targetC</span> <span class="hljs-operator">=</span> target[<span class="hljs-number">2</span>];
 
-        // Find shortest path from current position to next target
-        int steps = bfs(grid, startR, startC, targetR, targetC);
+        <span class="hljs-comment">// Find shortest path from current position to next target</span>
+        <span class="hljs-type">int</span> <span class="hljs-variable">steps</span> <span class="hljs-operator">=</span> bfs(grid, startR, startC, targetR, targetC);
 
-        if (steps == -1) {
-            return -1; // Target unreachable
+        <span class="hljs-keyword">if</span> (steps == -<span class="hljs-number">1</span>) {
+            <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>; <span class="hljs-comment">// Target unreachable</span>
         }
 
         totalSteps += steps;
 
-        // Update starting position for next iteration
+        <span class="hljs-comment">// Update starting position for next iteration</span>
         startR = targetR;
         startC = targetC;
     }
 
-    return totalSteps;
+    <span class="hljs-keyword">return</span> totalSteps;
 }
 
-/**
+<span class="hljs-comment">/**
  * Standard BFS to find shortest path in grid
  * Returns minimum steps from (sr, sc) to (tr, tc), or -1 if unreachable
- */
-private int bfs(List&lt;List&lt;Integer&gt;&gt; grid, int sr, int sc, int tr, int tc) {
-    if (sr == tr &amp;&amp; sc == tc) return 0;
+ */</span>
+<span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">bfs</span><span class="hljs-params">(List&lt;List&lt;Integer&gt;&gt; grid, <span class="hljs-type">int</span> sr, <span class="hljs-type">int</span> sc, <span class="hljs-type">int</span> tr, <span class="hljs-type">int</span> tc)</span> {
+    <span class="hljs-keyword">if</span> (sr == tr &amp;&amp; sc == tc) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
 
-    int rows = grid.size();
-    int cols = grid.get(0).size();
+    <span class="hljs-type">int</span> <span class="hljs-variable">rows</span> <span class="hljs-operator">=</span> grid.size();
+    <span class="hljs-type">int</span> <span class="hljs-variable">cols</span> <span class="hljs-operator">=</span> grid.get(<span class="hljs-number">0</span>).size();
 
-    Queue&lt;int[]&gt; queue = new LinkedList&lt;&gt;();
-    queue.offer(new int[]{sr, sc});
+    Queue&lt;<span class="hljs-type">int</span>[]&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+    queue.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{sr, sc});
 
-    boolean[][] visited = new boolean[rows][cols];
-    visited[sr][sc] = true;
+    <span class="hljs-type">boolean</span>[][] visited = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[rows][cols];
+    visited[sr][sc] = <span class="hljs-literal">true</span>;
 
-    int[][] dirs = {{0,1}, {0,-1}, {1,0}, {-1,0}};
-    int steps = 0;
+    <span class="hljs-type">int</span>[][] dirs = {{<span class="hljs-number">0</span>,<span class="hljs-number">1</span>}, {<span class="hljs-number">0</span>,-<span class="hljs-number">1</span>}, {<span class="hljs-number">1</span>,<span class="hljs-number">0</span>}, {-<span class="hljs-number">1</span>,<span class="hljs-number">0</span>}};
+    <span class="hljs-type">int</span> <span class="hljs-variable">steps</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
 
-    while (!queue.isEmpty()) {
-        int size = queue.size();
+    <span class="hljs-keyword">while</span> (!queue.isEmpty()) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> queue.size();
         steps++;
 
-        for (int i = 0; i &lt; size; i++) {
-            int[] cur = queue.poll();
-            int r = cur[0], c = cur[1];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; size; i++) {
+            <span class="hljs-type">int</span>[] cur = queue.poll();
+            <span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> cur[<span class="hljs-number">0</span>], c = cur[<span class="hljs-number">1</span>];
 
-            for (int[] dir : dirs) {
-                int nr = r + dir[0];
-                int nc = c + dir[1];
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] dir : dirs) {
+                <span class="hljs-type">int</span> <span class="hljs-variable">nr</span> <span class="hljs-operator">=</span> r + dir[<span class="hljs-number">0</span>];
+                <span class="hljs-type">int</span> <span class="hljs-variable">nc</span> <span class="hljs-operator">=</span> c + dir[<span class="hljs-number">1</span>];
 
-                // Check bounds and obstacles
-                if (nr &lt; 0 || nr &gt;= rows || nc &lt; 0 || nc &gt;= cols
-                    || visited[nr][nc] || grid.get(nr).get(nc) == 0) {
-                    continue;
+                <span class="hljs-comment">// Check bounds and obstacles</span>
+                <span class="hljs-keyword">if</span> (nr &lt; <span class="hljs-number">0</span> || nr &gt;= rows || nc &lt; <span class="hljs-number">0</span> || nc &gt;= cols
+                    || visited[nr][nc] || grid.get(nr).get(nc) == <span class="hljs-number">0</span>) {
+                    <span class="hljs-keyword">continue</span>;
                 }
 
-                // Found target
-                if (nr == tr &amp;&amp; nc == tc) {
-                    return steps;
+                <span class="hljs-comment">// Found target</span>
+                <span class="hljs-keyword">if</span> (nr == tr &amp;&amp; nc == tc) {
+                    <span class="hljs-keyword">return</span> steps;
                 }
 
-                visited[nr][nc] = true;
-                queue.offer(new int[]{nr, nc});
+                visited[nr][nc] = <span class="hljs-literal">true</span>;
+                queue.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{nr, nc});
             }
         }
     }
 
-    return -1; // Unreachable
+    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>; <span class="hljs-comment">// Unreachable</span>
 }
 </code></pre>
 <p><strong>Concrete Example: LC 675 - Cut Off Trees for Golf Event</strong></p>
-<pre><code>Problem: Cut trees in forest from shortest to tallest, return minimum steps
+<pre><code class="hljs">Problem: Cut trees in forest from shortest to tallest, return minimum steps
 Grid: [[1,2,3],    Trees: (0,1)=2, (0,2)=3, (1,2)=4, (2,0)=7, (2,1)=6, (2,2)=5
        [0,0,4],    Sorted: 2→3→4→5→6→7
        [7,6,5]]
@@ -1063,39 +1075,39 @@ Key insight: Must cut in sorted order, BFS finds shortest path between each pair
 <li>LC 317: Shortest Distance from All Buildings (multi-source BFS)</li>
 </ul>
 <h3 id="pattern-7-bfs-backtracking-state-space-exploration" tabindex="-1"><a class="header-anchor" href="#pattern-7-bfs-backtracking-state-space-exploration"><span>Pattern 7: BFS + Backtracking (State Space Exploration)</span></a></h3>
-<pre><code class="language-java">/**
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
  * Pattern: BFS + Backtracking for exploring transformations
  * Use case: Word transformations, state space exploration where each state can transform to multiple neighbors
  * Key insight: Modify state in-place, explore all neighbors, restore state before moving to next position
  *
  * Time: Depends on state space (e.g., O(N * M * 26) for word ladder where N=words, M=length)
  * Space: O(N) for visited set, O(M) for char array
- */
-public int bfsWithBacktracking(String beginWord, String endWord, List&lt;String&gt; wordList) {
-    Set&lt;String&gt; dict = new HashSet&lt;&gt;(wordList);
-    Set&lt;String&gt; visited = new HashSet&lt;&gt;();
-    Queue&lt;String&gt; q = new LinkedList&lt;&gt;();
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">bfsWithBacktracking</span><span class="hljs-params">(String beginWord, String endWord, List&lt;String&gt; wordList)</span> {
+    Set&lt;String&gt; dict = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;(wordList);
+    Set&lt;String&gt; visited = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
+    Queue&lt;String&gt; q = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
 
     q.add(beginWord);
     visited.add(beginWord);
 
-    int steps = 1;  // beginWord counts as step 1
-    String alpha = &quot;abcdefghijklmnopqrstuvwxyz&quot;;
+    <span class="hljs-type">int</span> <span class="hljs-variable">steps</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;  <span class="hljs-comment">// beginWord counts as step 1</span>
+    <span class="hljs-type">String</span> <span class="hljs-variable">alpha</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;abcdefghijklmnopqrstuvwxyz&quot;</span>;
 
-    while (!q.isEmpty()) {
-        int size = q.size();
+    <span class="hljs-keyword">while</span> (!q.isEmpty()) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> q.size();
 
-        for (int i = 0; i &lt; size; i++) {
-            String cur = q.poll();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; size; i++) {
+            <span class="hljs-type">String</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> q.poll();
 
-            // Early exit when target found
-            if (cur.equals(endWord))
-                return steps;
+            <span class="hljs-comment">// Early exit when target found</span>
+            <span class="hljs-keyword">if</span> (cur.equals(endWord))
+                <span class="hljs-keyword">return</span> steps;
 
-            // Convert to char array for efficient modification
-            char[] arr = cur.toCharArray();
+            <span class="hljs-comment">// Convert to char array for efficient modification</span>
+            <span class="hljs-type">char</span>[] arr = cur.toCharArray();
 
-            /**
+            <span class="hljs-comment">/**
              * Key Insight: Backtracking allows exploring ALL transformations
              *
              * For each position, we try ALL 26 letters:
@@ -1104,17 +1116,17 @@ public int bfsWithBacktracking(String beginWord, String endWord, List&lt;String&
              * - Position 2: try a-z → explore all words with same letters at positions 0,1,...
              *
              * This ensures no valid neighbor is missed.
-             */
-            // Loop 1: Try all positions in the word
-            for (int j = 0; j &lt; arr.length; j++) {
-                char original = arr[j];
+             */</span>
+            <span class="hljs-comment">// Loop 1: Try all positions in the word</span>
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; arr.length; j++) {
+                <span class="hljs-type">char</span> <span class="hljs-variable">original</span> <span class="hljs-operator">=</span> arr[j];
 
-                // Loop 2: Try all 26 letters at this position
-                for (char c : alpha.toCharArray()) {
-                    if (c == original)
-                        continue;
+                <span class="hljs-comment">// Loop 2: Try all 26 letters at this position</span>
+                <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : alpha.toCharArray()) {
+                    <span class="hljs-keyword">if</span> (c == original)
+                        <span class="hljs-keyword">continue</span>;
 
-                    /**
+                    <span class="hljs-comment">/**
                      * TRICK: Modify char array in-place to create new word
                      *
                      * This is more efficient than string concatenation:
@@ -1124,25 +1136,25 @@ public int bfsWithBacktracking(String beginWord, String endWord, List&lt;String&
                      * ✅ char[] arr = word.toCharArray();
                      *    arr[j] = c;
                      *    String newStr = new String(arr);  ← Reuse array (fast)
-                     */
+                     */</span>
                     arr[j] = c;
-                    String newStr = new String(arr);
+                    <span class="hljs-type">String</span> <span class="hljs-variable">newStr</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(arr);
 
-                    if (dict.contains(newStr) &amp;&amp; !visited.contains(newStr)) {
-                        /**
+                    <span class="hljs-keyword">if</span> (dict.contains(newStr) &amp;&amp; !visited.contains(newStr)) {
+                        <span class="hljs-comment">/**
                          * CRITICAL: Mark as visited BEFORE adding to queue
                          *
                          * This prevents duplicate enqueuing:
                          * - If we defer marking until dequeue, multiple neighbors
                          *   could see the same unvisited word and enqueue it multiple times
                          * - Marking before enqueue ensures each word processed exactly once
-                         */
+                         */</span>
                         visited.add(newStr);
                         q.add(newStr);
                     }
                 }
 
-                /**
+                <span class="hljs-comment">/**
                  * CRITICAL: Restore original character AFTER exploring all 26 letters at this position
                  *
                  * This is the &quot;backtracking&quot; step:
@@ -1151,22 +1163,22 @@ public int bfsWithBacktracking(String beginWord, String endWord, List&lt;String&
                  * - Otherwise, arr[j+1] modification would operate on wrong base state
                  *
                  * Example:
-                 * Position 0: Try 'a','b','c',... → restore to 'h'
-                 * Position 1: Try 'a','b','c',... → restore to 'i'  ← must have 'h' at position 0!
-                 * Position 2: Try 'a','b','c',... → restore to 't'  ← must have 'h','i' at positions 0,1!
-                 */
-                arr[j] = original;  // Restore before next iteration
+                 * Position 0: Try &#x27;a&#x27;,&#x27;b&#x27;,&#x27;c&#x27;,... → restore to &#x27;h&#x27;
+                 * Position 1: Try &#x27;a&#x27;,&#x27;b&#x27;,&#x27;c&#x27;,... → restore to &#x27;i&#x27;  ← must have &#x27;h&#x27; at position 0!
+                 * Position 2: Try &#x27;a&#x27;,&#x27;b&#x27;,&#x27;c&#x27;,... → restore to &#x27;t&#x27;  ← must have &#x27;h&#x27;,&#x27;i&#x27; at positions 0,1!
+                 */</span>
+                arr[j] = original;  <span class="hljs-comment">// Restore before next iteration</span>
             }
         }
 
         steps++;
     }
 
-    return 0;  // No path found
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;  <span class="hljs-comment">// No path found</span>
 }
 </code></pre>
 <p><strong>Concrete Example: LC 127 - Word Ladder</strong></p>
-<pre><code>Problem: Transform &quot;hit&quot; → &quot;cog&quot; using dictionary [&quot;hot&quot;,&quot;dot&quot;,&quot;dog&quot;,&quot;lot&quot;,&quot;log&quot;,&quot;cog&quot;]
+<pre><code class="hljs">Problem: Transform &quot;hit&quot; → &quot;cog&quot; using dictionary [&quot;hot&quot;,&quot;dot&quot;,&quot;dog&quot;,&quot;lot&quot;,&quot;log&quot;,&quot;cog&quot;]
 Expected: 5 (hit → hot → dot → dog → cog)
 
 BFS + Backtracking Execution:
@@ -1213,7 +1225,7 @@ Layer 4: Queue = [cog], steps = 5
   RETURN steps = 5 ✓
 </code></pre>
 <p><strong>Why Backtracking is Essential Here:</strong></p>
-<pre><code>❌ Naive Approach (without backtracking):
+<pre><code class="hljs">❌ Naive Approach (without backtracking):
    For each position, generate ONE new word per letter
    Problem: Must process all positions with CORRECT base state
 
@@ -1319,53 +1331,53 @@ Layer 4: Queue = [cog], steps = 5
 <li>LC 1008: Construct Binary Search Tree from Preorder Traversal (different pattern)</li>
 </ul>
 <h3 id="pattern-8-bfs-on-abstract-graph-route-level-bfs" tabindex="-1"><a class="header-anchor" href="#pattern-8-bfs-on-abstract-graph-route-level-bfs"><span>Pattern 8: BFS on Abstract Graph (Route-Level BFS)</span></a></h3>
-<pre><code class="language-java">/**
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
  * Pattern: BFS where nodes are ROUTES (buses/lines), not physical locations
  * Use case: Find minimum number of transfers/buses to reach a destination
  * Key insight: Build stop→routes mapping, BFS on routes with two visited sets (buses + stops)
  *
  * Time: O(N * M) where N = number of routes, M = avg stops per route
  * Space: O(N * M) for the stop-to-routes map and visited sets
- */
-public int routeLevelBFS(int[][] routes, int source, int target) {
-    if (source == target) return 0;
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">routeLevelBFS</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] routes, <span class="hljs-type">int</span> source, <span class="hljs-type">int</span> target)</span> {
+    <span class="hljs-keyword">if</span> (source == target) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
 
-    // Step 1: Build mapping from stop → list of route IDs
-    Map&lt;Integer, List&lt;Integer&gt;&gt; stopToRoutes = new HashMap&lt;&gt;();
-    for (int i = 0; i &lt; routes.length; i++) {
-        for (int stop : routes[i]) {
-            stopToRoutes.computeIfAbsent(stop, k -&gt; new ArrayList&lt;&gt;()).add(i);
+    <span class="hljs-comment">// Step 1: Build mapping from stop → list of route IDs</span>
+    Map&lt;Integer, List&lt;Integer&gt;&gt; stopToRoutes = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; routes.length; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> stop : routes[i]) {
+            stopToRoutes.computeIfAbsent(stop, k -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;()).add(i);
         }
     }
 
-    // Step 2: BFS on route IDs (not stops!)
-    Queue&lt;Integer&gt; queue = new LinkedList&lt;&gt;();
-    Set&lt;Integer&gt; visitedRoutes = new HashSet&lt;&gt;();
-    Set&lt;Integer&gt; visitedStops = new HashSet&lt;&gt;();
+    <span class="hljs-comment">// Step 2: BFS on route IDs (not stops!)</span>
+    Queue&lt;Integer&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+    Set&lt;Integer&gt; visitedRoutes = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
+    Set&lt;Integer&gt; visitedStops = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
 
-    // Seed: all routes that pass through the source stop
-    for (int routeId : stopToRoutes.getOrDefault(source, new ArrayList&lt;&gt;())) {
+    <span class="hljs-comment">// Seed: all routes that pass through the source stop</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> routeId : stopToRoutes.getOrDefault(source, <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;())) {
         queue.offer(routeId);
         visitedRoutes.add(routeId);
     }
 
-    int busCount = 1; // Already on the first bus
+    <span class="hljs-type">int</span> <span class="hljs-variable">busCount</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; <span class="hljs-comment">// Already on the first bus</span>
 
-    while (!queue.isEmpty()) {
-        int size = queue.size();
-        for (int i = 0; i &lt; size; i++) {
-            int currRoute = queue.poll();
+    <span class="hljs-keyword">while</span> (!queue.isEmpty()) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> queue.size();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; size; i++) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">currRoute</span> <span class="hljs-operator">=</span> queue.poll();
 
-            // Check all stops on this route
-            for (int stop : routes[currRoute]) {
-                if (stop == target) return busCount;
+            <span class="hljs-comment">// Check all stops on this route</span>
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> stop : routes[currRoute]) {
+                <span class="hljs-keyword">if</span> (stop == target) <span class="hljs-keyword">return</span> busCount;
 
-                if (visitedStops.contains(stop)) continue;
+                <span class="hljs-keyword">if</span> (visitedStops.contains(stop)) <span class="hljs-keyword">continue</span>;
                 visitedStops.add(stop);
 
-                // Transfer: enqueue all OTHER routes at this stop
-                for (int nextRoute : stopToRoutes.getOrDefault(stop, new ArrayList&lt;&gt;())) {
-                    if (!visitedRoutes.contains(nextRoute)) {
+                <span class="hljs-comment">// Transfer: enqueue all OTHER routes at this stop</span>
+                <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> nextRoute : stopToRoutes.getOrDefault(stop, <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;())) {
+                    <span class="hljs-keyword">if</span> (!visitedRoutes.contains(nextRoute)) {
                         visitedRoutes.add(nextRoute);
                         queue.offer(nextRoute);
                     }
@@ -1375,11 +1387,11 @@ public int routeLevelBFS(int[][] routes, int source, int target) {
         busCount++;
     }
 
-    return -1;
+    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
 }
 </code></pre>
 <p><strong>Concrete Example: LC 815 - Bus Routes</strong></p>
-<pre><code>Problem: Find minimum buses to travel from source=1 to target=6
+<pre><code class="hljs">Problem: Find minimum buses to travel from source=1 to target=6
 Routes: [[1,2,7], [3,6,7]]
   Route 0: stops 1→2→7→1→...
   Route 1: stops 3→6→7→3→...
@@ -1411,7 +1423,7 @@ Step 2 - BFS:
       Stop 6: == target! → return busCount = 2 ✓
 </code></pre>
 <p><strong>Why Two Visited Sets?</strong></p>
-<pre><code>visitedRoutes: Prevents boarding the same bus twice (infinite loop)
+<pre><code class="hljs">visitedRoutes: Prevents boarding the same bus twice (infinite loop)
 visitedStops:  Prevents re-processing transfer points
                (stop 7 connects Routes 0 and 1, but once explored, no need to revisit)
 
@@ -1419,7 +1431,7 @@ Without visitedStops: Every stop would re-check all its routes
   → Redundant work, potentially O(N²*M) instead of O(N*M)
 </code></pre>
 <p><strong>Why BFS on Routes, Not Stops?</strong></p>
-<pre><code>❌ BFS on stops: Queue = [stop1, stop2, ...]
+<pre><code class="hljs">❌ BFS on stops: Queue = [stop1, stop2, ...]
    Problem: How do you define &quot;neighbors&quot; of a stop?
    All other stops on the SAME route → huge adjacency list
    Loses the concept of &quot;how many buses taken&quot;
@@ -1445,39 +1457,39 @@ Without visitedStops: Every stop would re-check all its routes
 </ul>
 <hr>
 <h3 id="pattern-8-bfs-dfs-find-all-shortest-paths-dag-enumeration" tabindex="-1"><a class="header-anchor" href="#pattern-8-bfs-dfs-find-all-shortest-paths-dag-enumeration"><span>Pattern 8: BFS + DFS (Find All Shortest Paths - DAG Enumeration)</span></a></h3>
-<pre><code class="language-java">/**
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
  * Pattern: BFS to build shortest-path DAG, then DFS to enumerate all paths
  * Use case: Find ALL shortest transformation sequences (not just one)
  * Key insight: BFS builds a reverse graph of predecessors, DFS reconstructs all valid paths
  *
  * Time: O(N * M * 26 + paths) where N=words, M=length, paths=output size
  * Space: O(N * M) for graph + O(M) for DFS recursion stack
- */
-public List&lt;List&lt;String&gt;&gt; findAllShortestPaths(String beginWord, String endWord, List&lt;String&gt; wordList) {
-    List&lt;List&lt;String&gt;&gt; result = new ArrayList&lt;&gt;();
-    Set&lt;String&gt; wordSet = new HashSet&lt;&gt;(wordList);
+ */</span>
+<span class="hljs-keyword">public</span> List&lt;List&lt;String&gt;&gt; <span class="hljs-title function_">findAllShortestPaths</span><span class="hljs-params">(String beginWord, String endWord, List&lt;String&gt; wordList)</span> {
+    List&lt;List&lt;String&gt;&gt; result = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    Set&lt;String&gt; wordSet = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;(wordList);
 
-    if (!wordSet.contains(endWord))
-        return result;
+    <span class="hljs-keyword">if</span> (!wordSet.contains(endWord))
+        <span class="hljs-keyword">return</span> result;
 
-    // Map to store: word → list of predecessors (parents) at shortest distance
-    Map&lt;String, List&lt;String&gt;&gt; parents = new HashMap&lt;&gt;();
+    <span class="hljs-comment">// Map to store: word → list of predecessors (parents) at shortest distance</span>
+    Map&lt;String, List&lt;String&gt;&gt; parents = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
 
-    // Map to store: word → shortest distance from beginWord
-    Map&lt;String, Integer&gt; distances = new HashMap&lt;&gt;();
+    <span class="hljs-comment">// Map to store: word → shortest distance from beginWord</span>
+    Map&lt;String, Integer&gt; distances = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
 
-    // ========== PHASE 1: BFS to build shortest-path DAG ==========
-    Queue&lt;String&gt; queue = new LinkedList&lt;&gt;();
+    <span class="hljs-comment">// ========== PHASE 1: BFS to build shortest-path DAG ==========</span>
+    Queue&lt;String&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
     queue.add(beginWord);
-    distances.put(beginWord, 0);
+    distances.put(beginWord, <span class="hljs-number">0</span>);
 
-    boolean found = false;
-    String alpha = &quot;abcdefghijklmnopqrstuvwxyz&quot;;
+    <span class="hljs-type">boolean</span> <span class="hljs-variable">found</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;
+    <span class="hljs-type">String</span> <span class="hljs-variable">alpha</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;abcdefghijklmnopqrstuvwxyz&quot;</span>;
 
-    while (!queue.isEmpty() &amp;&amp; !found) {
-        int size = queue.size();
+    <span class="hljs-keyword">while</span> (!queue.isEmpty() &amp;&amp; !found) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> queue.size();
 
-        /**
+        <span class="hljs-comment">/**
          * CRITICAL: Use levelVisited to allow multiple parents at same distance
          *
          * Why separate from main visited set?
@@ -1485,31 +1497,31 @@ public List&lt;List&lt;String&gt;&gt; findAllShortestPaths(String beginWord, Str
          * - We record ALL parents that reach it in shortest distance
          * - Main visited updated AFTER processing entire level
          *
-         * Without this, we'd lose valid shortest paths!
-         */
-        Set&lt;String&gt; levelVisited = new HashSet&lt;&gt;();
+         * Without this, we&#x27;d lose valid shortest paths!
+         */</span>
+        Set&lt;String&gt; levelVisited = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
 
-        for (int i = 0; i &lt; size; i++) {
-            String word = queue.poll();
-            char[] chars = word.toCharArray();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; size; i++) {
+            <span class="hljs-type">String</span> <span class="hljs-variable">word</span> <span class="hljs-operator">=</span> queue.poll();
+            <span class="hljs-type">char</span>[] chars = word.toCharArray();
 
-            for (int j = 0; j &lt; chars.length; j++) {
-                char original = chars[j];
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; chars.length; j++) {
+                <span class="hljs-type">char</span> <span class="hljs-variable">original</span> <span class="hljs-operator">=</span> chars[j];
 
-                for (char c : alpha.toCharArray()) {
-                    if (c == original)
-                        continue;
+                <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : alpha.toCharArray()) {
+                    <span class="hljs-keyword">if</span> (c == original)
+                        <span class="hljs-keyword">continue</span>;
 
                     chars[j] = c;
-                    String nextWord = new String(chars);
+                    <span class="hljs-type">String</span> <span class="hljs-variable">nextWord</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(chars);
 
-                    // Skip words not in dictionary
-                    if (!wordSet.contains(nextWord))
-                        continue;
+                    <span class="hljs-comment">// Skip words not in dictionary</span>
+                    <span class="hljs-keyword">if</span> (!wordSet.contains(nextWord))
+                        <span class="hljs-keyword">continue</span>;
 
-                    int newDistance = distances.get(word) + 1;
+                    <span class="hljs-type">int</span> <span class="hljs-variable">newDistance</span> <span class="hljs-operator">=</span> distances.get(word) + <span class="hljs-number">1</span>;
 
-                    /**
+                    <span class="hljs-comment">/**
                      * KEY LOGIC: Record ALL predecessors at shortest distance
                      *
                      * Case 1: First time reaching nextWord
@@ -1519,78 +1531,78 @@ public List&lt;List&lt;String&gt;&gt; findAllShortestPaths(String beginWord, Str
                      *
                      * Case 2: Reaching nextWord again at SAME distance (same level)
                      * - Add current word as ANOTHER predecessor
-                     * - Don't enqueue again (already enqueued in this level)
+                     * - Don&#x27;t enqueue again (already enqueued in this level)
                      *
                      * Case 3: Reaching nextWord at LONGER distance
                      * - Ignore (we only want shortest paths)
-                     */
-                    if (!distances.containsKey(nextWord)) {
-                        // Case 1: First time reaching this word
+                     */</span>
+                    <span class="hljs-keyword">if</span> (!distances.containsKey(nextWord)) {
+                        <span class="hljs-comment">// Case 1: First time reaching this word</span>
                         distances.put(nextWord, newDistance);
-                        parents.computeIfAbsent(nextWord, k -&gt; new ArrayList&lt;&gt;()).add(word);
+                        parents.computeIfAbsent(nextWord, k -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;()).add(word);
 
-                        if (!levelVisited.contains(nextWord)) {
+                        <span class="hljs-keyword">if</span> (!levelVisited.contains(nextWord)) {
                             levelVisited.add(nextWord);
                             queue.add(nextWord);
                         }
 
-                        if (nextWord.equals(endWord)) {
-                            found = true;
+                        <span class="hljs-keyword">if</span> (nextWord.equals(endWord)) {
+                            found = <span class="hljs-literal">true</span>;
                         }
-                    } else if (distances.get(nextWord) == newDistance) {
-                        // Case 2: Same distance from another parent
-                        parents.computeIfAbsent(nextWord, k -&gt; new ArrayList&lt;&gt;()).add(word);
+                    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (distances.get(nextWord) == newDistance) {
+                        <span class="hljs-comment">// Case 2: Same distance from another parent</span>
+                        parents.computeIfAbsent(nextWord, k -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;()).add(word);
                     }
-                    // Case 3: Longer distance - ignore
+                    <span class="hljs-comment">// Case 3: Longer distance - ignore</span>
                 }
 
-                chars[j] = original;  // Restore after exploring all letters
+                chars[j] = original;  <span class="hljs-comment">// Restore after exploring all letters</span>
             }
         }
     }
 
-    // ========== PHASE 2: DFS to enumerate all paths ==========
-    if (distances.containsKey(endWord)) {
-        List&lt;String&gt; path = new LinkedList&lt;&gt;();
+    <span class="hljs-comment">// ========== PHASE 2: DFS to enumerate all paths ==========</span>
+    <span class="hljs-keyword">if</span> (distances.containsKey(endWord)) {
+        List&lt;String&gt; path = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
         dfsEnumeratePaths(endWord, beginWord, parents, path, result);
     }
 
-    return result;
+    <span class="hljs-keyword">return</span> result;
 }
 
-/**
+<span class="hljs-comment">/**
  * DFS backtracking to reconstruct all paths from endWord to beginWord
  *
  * Why backward (from endWord to beginWord)?
  * - parents map stores: word → predecessors
  * - Easier to traverse backward from target to source
- * - Build path in reverse, then it's already correct order when we reach beginWord
- */
-private void dfsEnumeratePaths(String current, String beginWord,
+ * - Build path in reverse, then it&#x27;s already correct order when we reach beginWord
+ */</span>
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">dfsEnumeratePaths</span><span class="hljs-params">(String current, String beginWord,
                                Map&lt;String, List&lt;String&gt;&gt; parents,
-                               List&lt;String&gt; path, List&lt;List&lt;String&gt;&gt; result) {
-    // Add current word to path (building backward)
-    path.add(0, current);
+                               List&lt;String&gt; path, List&lt;List&lt;String&gt;&gt; result)</span> {
+    <span class="hljs-comment">// Add current word to path (building backward)</span>
+    path.add(<span class="hljs-number">0</span>, current);
 
-    // Base case: reached the beginning
-    if (current.equals(beginWord)) {
-        result.add(new ArrayList&lt;&gt;(path));
-    } else {
-        // Recursive case: explore all predecessors
+    <span class="hljs-comment">// Base case: reached the beginning</span>
+    <span class="hljs-keyword">if</span> (current.equals(beginWord)) {
+        result.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(path));
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-comment">// Recursive case: explore all predecessors</span>
         List&lt;String&gt; predecessors = parents.get(current);
-        if (predecessors != null) {
-            for (String prev : predecessors) {
+        <span class="hljs-keyword">if</span> (predecessors != <span class="hljs-literal">null</span>) {
+            <span class="hljs-keyword">for</span> (String prev : predecessors) {
                 dfsEnumeratePaths(prev, beginWord, parents, path, result);
             }
         }
     }
 
-    // Backtrack: remove current word before returning
-    path.remove(0);
+    <span class="hljs-comment">// Backtrack: remove current word before returning</span>
+    path.remove(<span class="hljs-number">0</span>);
 }
 </code></pre>
 <p><strong>Concrete Example: LC 126 - Word Ladder II</strong></p>
-<pre><code>Problem: Find ALL shortest paths from &quot;hit&quot; to &quot;cog&quot;
+<pre><code class="hljs">Problem: Find ALL shortest paths from &quot;hit&quot; to &quot;cog&quot;
 Dictionary: [&quot;hot&quot;,&quot;dot&quot;,&quot;dog&quot;,&quot;lot&quot;,&quot;log&quot;,&quot;cog&quot;]
 Expected: [[&quot;hit&quot;,&quot;hot&quot;,&quot;dot&quot;,&quot;dog&quot;,&quot;cog&quot;], [&quot;hit&quot;,&quot;hot&quot;,&quot;lot&quot;,&quot;log&quot;,&quot;cog&quot;]]
 
@@ -1978,25 +1990,25 @@ Final result: 2 paths found ✓
 </tbody>
 </table>
 <h4 id="why-o-v-e-for-adjacency-list" tabindex="-1"><a class="header-anchor" href="#why-o-v-e-for-adjacency-list"><span>Why O(V + E) for Adjacency List?</span></a></h4>
-<pre><code class="language-python"># Detailed analysis of BFS with adjacency list
-def bfs_analysis(graph, start):
-    queue = deque([start])        # O(1)
-    visited = {start}             # O(1)
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Detailed analysis of BFS with adjacency list</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">bfs_analysis</span>(<span class="hljs-params">graph, start</span>):
+    queue = deque([start])        <span class="hljs-comment"># O(1)</span>
+    visited = {start}             <span class="hljs-comment"># O(1)</span>
 
-    while queue:                  # Executes at most V times
-        vertex = queue.popleft()  # O(1) - each vertex dequeued once
+    <span class="hljs-keyword">while</span> queue:                  <span class="hljs-comment"># Executes at most V times</span>
+        vertex = queue.popleft()  <span class="hljs-comment"># O(1) - each vertex dequeued once</span>
 
-        # This inner loop runs exactly deg(vertex) times
-        for neighbor in graph[vertex]:  # Total across all vertices = E
-            if neighbor not in visited:  # O(1) with set
-                visited.add(neighbor)    # O(1) - each vertex added once
-                queue.append(neighbor)   # O(1) - each vertex enqueued once
+        <span class="hljs-comment"># This inner loop runs exactly deg(vertex) times</span>
+        <span class="hljs-keyword">for</span> neighbor <span class="hljs-keyword">in</span> graph[vertex]:  <span class="hljs-comment"># Total across all vertices = E</span>
+            <span class="hljs-keyword">if</span> neighbor <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> visited:  <span class="hljs-comment"># O(1) with set</span>
+                visited.add(neighbor)    <span class="hljs-comment"># O(1) - each vertex added once</span>
+                queue.append(neighbor)   <span class="hljs-comment"># O(1) - each vertex enqueued once</span>
 
-    # Analysis:
-    # - Outer while loop: O(V) iterations
-    # - Inner for loop: Sum of deg(v) for all v = 2E (undirected) or E (directed)
-    # - Each operation inside: O(1)
-    # Total: O(V + E)
+    <span class="hljs-comment"># Analysis:</span>
+    <span class="hljs-comment"># - Outer while loop: O(V) iterations</span>
+    <span class="hljs-comment"># - Inner for loop: Sum of deg(v) for all v = 2E (undirected) or E (directed)</span>
+    <span class="hljs-comment"># - Each operation inside: O(1)</span>
+    <span class="hljs-comment"># Total: O(V + E)</span>
 </code></pre>
 <h2 id="common-mistakes-tips" tabindex="-1"><a class="header-anchor" href="#common-mistakes-tips"><span>Common Mistakes &amp; Tips</span></a></h2>
 <h3 id="common-mistakes" tabindex="-1"><a class="header-anchor" href="#common-mistakes"><span>❌ Common Mistakes</span></a></h3>
@@ -2017,22 +2029,22 @@ def bfs_analysis(graph, start):
 <h3 id="when-to-update-grid-status-count-mark-before-vs-after-enqueue" tabindex="-1"><a class="header-anchor" href="#when-to-update-grid-status-count-mark-before-vs-after-enqueue"><span>When to Update Grid Status &amp; Count (Mark Before vs After Enqueue)</span></a></h3>
 <p>A critical BFS implementation detail: <strong>always mark a cell as visited (update grid status and counters) BEFORE adding it to the queue</strong>, not when you dequeue it.</p>
 <h4 id="the-rule" tabindex="-1"><a class="header-anchor" href="#the-rule"><span>The Rule</span></a></h4>
-<pre><code>Mark visited + update count → THEN add to queue
+<pre><code class="hljs">Mark visited + update count → THEN add to queue
 </code></pre>
-<pre><code class="language-java">// CORRECT: Mark BEFORE enqueue
-if (grid[nr][nc] == 1) {
-    grid[nr][nc] = 2;       // mark immediately
-    freshOrange--;           // update count immediately
-    q.add(new int[]{nr, nc});
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// CORRECT: Mark BEFORE enqueue</span>
+<span class="hljs-keyword">if</span> (grid[nr][nc] == <span class="hljs-number">1</span>) {
+    grid[nr][nc] = <span class="hljs-number">2</span>;       <span class="hljs-comment">// mark immediately</span>
+    freshOrange--;           <span class="hljs-comment">// update count immediately</span>
+    q.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{nr, nc});
 }
 
-// WRONG: Mark AFTER dequeue
-int[] cur = q.poll();
-grid[cur[0]][cur[1]] = 2;   // too late! duplicates already in queue
+<span class="hljs-comment">// WRONG: Mark AFTER dequeue</span>
+<span class="hljs-type">int</span>[] cur = q.poll();
+grid[cur[<span class="hljs-number">0</span>]][cur[<span class="hljs-number">1</span>]] = <span class="hljs-number">2</span>;   <span class="hljs-comment">// too late! duplicates already in queue</span>
 </code></pre>
 <h4 id="why-this-matters" tabindex="-1"><a class="header-anchor" href="#why-this-matters"><span>Why This Matters</span></a></h4>
 <p>If you defer marking until dequeue, <strong>multiple neighbors can enqueue the same cell</strong> before any of them processes it:</p>
-<pre><code>BFS Layer 1: Cells A and B are both neighbors of cell X (fresh orange)
+<pre><code class="hljs">BFS Layer 1: Cells A and B are both neighbors of cell X (fresh orange)
 
 Thread of execution:
   1. Process A → sees X is fresh → enqueues X
@@ -2069,24 +2081,24 @@ Thread of execution:
 </tbody>
 </table>
 <h4 id="concrete-example-lc-994-rotting-oranges" tabindex="-1"><a class="header-anchor" href="#concrete-example-lc-994-rotting-oranges"><span>Concrete Example: LC 994 - Rotting Oranges</span></a></h4>
-<pre><code class="language-java">// From RottingOranges.java - V0 solution
-while (!q.isEmpty() &amp;&amp; freshOrange &gt; 0) {
-    int size = q.size();
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// From RottingOranges.java - V0 solution</span>
+<span class="hljs-keyword">while</span> (!q.isEmpty() &amp;&amp; freshOrange &gt; <span class="hljs-number">0</span>) {
+    <span class="hljs-type">int</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> q.size();
     time++;
 
-    for (int i = 0; i &lt; size; i++) {
-        int[] cur = q.poll();
-        int r = cur[0], c = cur[1];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; size; i++) {
+        <span class="hljs-type">int</span>[] cur = q.poll();
+        <span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> cur[<span class="hljs-number">0</span>], c = cur[<span class="hljs-number">1</span>];
 
-        for (int[] m : moves) {
-            int nr = r + m[0];
-            int nc = c + m[1];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] m : moves) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">nr</span> <span class="hljs-operator">=</span> r + m[<span class="hljs-number">0</span>];
+            <span class="hljs-type">int</span> <span class="hljs-variable">nc</span> <span class="hljs-operator">=</span> c + m[<span class="hljs-number">1</span>];
 
-            if (nr &gt;= 0 &amp;&amp; nr &lt; rows &amp;&amp; nc &gt;= 0 &amp;&amp; nc &lt; cols &amp;&amp; grid[nr][nc] == 1) {
-                // CRITICAL: Mark rotten and decrement count BEFORE enqueue
-                grid[nr][nc] = 2;
+            <span class="hljs-keyword">if</span> (nr &gt;= <span class="hljs-number">0</span> &amp;&amp; nr &lt; rows &amp;&amp; nc &gt;= <span class="hljs-number">0</span> &amp;&amp; nc &lt; cols &amp;&amp; grid[nr][nc] == <span class="hljs-number">1</span>) {
+                <span class="hljs-comment">// CRITICAL: Mark rotten and decrement count BEFORE enqueue</span>
+                grid[nr][nc] = <span class="hljs-number">2</span>;
                 freshOrange--;
-                q.add(new int[] { nr, nc });
+                q.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[] { nr, nc });
             }
         }
     }
@@ -2122,15 +2134,15 @@ while (!q.isEmpty() &amp;&amp; freshOrange &gt; 0) {
 </table>
 <h4 id="when-using-a-separate-visited-set" tabindex="-1"><a class="header-anchor" href="#when-using-a-separate-visited-set"><span>When Using a Separate <code>visited</code> Set</span></a></h4>
 <p>The same principle applies — add to <code>visited</code> <strong>when enqueuing</strong>, not when dequeuing:</p>
-<pre><code class="language-java">// CORRECT
-if (!visited[nr][nc]) {
-    visited[nr][nc] = true;          // mark BEFORE enqueue
-    queue.offer(new int[]{nr, nc});
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// CORRECT</span>
+<span class="hljs-keyword">if</span> (!visited[nr][nc]) {
+    visited[nr][nc] = <span class="hljs-literal">true</span>;          <span class="hljs-comment">// mark BEFORE enqueue</span>
+    queue.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{nr, nc});
 }
 
-// WRONG
-int[] cur = queue.poll();
-visited[cur[0]][cur[1]] = true;      // too late
+<span class="hljs-comment">// WRONG</span>
+<span class="hljs-type">int</span>[] cur = queue.poll();
+visited[cur[<span class="hljs-number">0</span>]][cur[<span class="hljs-number">1</span>]] = <span class="hljs-literal">true</span>;      <span class="hljs-comment">// too late</span>
 </code></pre>
 <h4 id="related-leetcode-problems" tabindex="-1"><a class="header-anchor" href="#related-leetcode-problems"><span>Related LeetCode Problems</span></a></h4>
 <table>
@@ -2179,35 +2191,35 @@ visited[cur[0]][cur[1]] = true;      // too late
 <p>A common source of bugs in level-by-level BFS is <strong>where to place the time/distance increment</strong>. There are two valid approaches, each with different trade-offs.</p>
 <h4 id="the-two-approaches" tabindex="-1"><a class="header-anchor" href="#the-two-approaches"><span>The Two Approaches</span></a></h4>
 <p><strong>Approach A: Increment at BEGINNING of level (before processing)</strong></p>
-<pre><code class="language-java">// From LC 994 - RottingOranges.java V0
-while (!queue.isEmpty() &amp;&amp; freshOrange &gt; 0) {  // NOTE: extra condition!
-    int size = queue.size();
-    time++;  // Increment FIRST - we're about to process a &quot;minute&quot; level
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// From LC 994 - RottingOranges.java V0</span>
+<span class="hljs-keyword">while</span> (!queue.isEmpty() &amp;&amp; freshOrange &gt; <span class="hljs-number">0</span>) {  <span class="hljs-comment">// <span class="hljs-doctag">NOTE:</span> extra condition!</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> queue.size();
+    time++;  <span class="hljs-comment">// Increment FIRST - we&#x27;re about to process a &quot;minute&quot; level</span>
 
-    for (int i = 0; i &lt; size; i++) {
-        int[] cur = queue.poll();
-        // process neighbors, infect fresh oranges...
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; size; i++) {
+        <span class="hljs-type">int</span>[] cur = queue.poll();
+        <span class="hljs-comment">// process neighbors, infect fresh oranges...</span>
     }
 }
-return freshOrange == 0 ? time : -1;
+<span class="hljs-keyword">return</span> freshOrange == <span class="hljs-number">0</span> ? time : -<span class="hljs-number">1</span>;
 </code></pre>
 <p><strong>Approach B: Increment at END of level (only if work was done)</strong></p>
-<pre><code class="language-java">// From LC 994 - RottingOranges.java V0-0-2, V0-1, V0-4
-while (!queue.isEmpty()) {
-    int size = queue.size();
-    boolean rottedThisMinute = false;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// From LC 994 - RottingOranges.java V0-0-2, V0-1, V0-4</span>
+<span class="hljs-keyword">while</span> (!queue.isEmpty()) {
+    <span class="hljs-type">int</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> queue.size();
+    <span class="hljs-type">boolean</span> <span class="hljs-variable">rottedThisMinute</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;
 
-    for (int i = 0; i &lt; size; i++) {
-        int[] cur = queue.poll();
-        // process neighbors...
-        if (/* infected a fresh neighbor */) {
-            rottedThisMinute = true;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; size; i++) {
+        <span class="hljs-type">int</span>[] cur = queue.poll();
+        <span class="hljs-comment">// process neighbors...</span>
+        <span class="hljs-keyword">if</span> (<span class="hljs-comment">/* infected a fresh neighbor */</span>) {
+            rottedThisMinute = <span class="hljs-literal">true</span>;
         }
     }
 
-    if (rottedThisMinute) time++;  // Only count if actual infection happened
+    <span class="hljs-keyword">if</span> (rottedThisMinute) time++;  <span class="hljs-comment">// Only count if actual infection happened</span>
 }
-return freshOrange == 0 ? time : -1;
+<span class="hljs-keyword">return</span> freshOrange == <span class="hljs-number">0</span> ? time : -<span class="hljs-number">1</span>;
 </code></pre>
 <h4 id="detailed-comparison" tabindex="-1"><a class="header-anchor" href="#detailed-comparison"><span>Detailed Comparison</span></a></h4>
 <table>
@@ -2248,7 +2260,7 @@ return freshOrange == 0 ? time : -1;
 </table>
 <h4 id="why-approach-a-needs-freshorange-0-in-while-condition" tabindex="-1"><a class="header-anchor" href="#why-approach-a-needs-freshorange-0-in-while-condition"><span>Why Approach A Needs <code>freshOrange &gt; 0</code> in While Condition</span></a></h4>
 <p><strong>The Problem:</strong> If we only check <code>!queue.isEmpty()</code>, we’ll increment time for processing already-rotten cells that have nothing left to infect.</p>
-<pre><code>Scenario: After all oranges are infected
+<pre><code class="hljs">Scenario: After all oranges are infected
 
 Layer N: Queue = [(2,1)], freshOrange = 1
   - time++ → time = 4
@@ -2260,25 +2272,25 @@ Layer N+1: Queue = [(2,2)], freshOrange = 0
   - WITH `freshOrange &gt; 0`: Exit loop, return time = 4 (CORRECT!)
 </code></pre>
 <p><strong>The Key Insight:</strong> When <code>freshOrange == 0</code>, all oranges are ALREADY infected (marked as 2). The queue may still contain rotten cells, but they have no fresh neighbors to infect. Processing them would waste time and over-count.</p>
-<pre><code class="language-java">// CORRECT: Exit early when nothing left to infect
-while (!queue.isEmpty() &amp;&amp; freshOrange &gt; 0) {
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// CORRECT: Exit early when nothing left to infect</span>
+<span class="hljs-keyword">while</span> (!queue.isEmpty() &amp;&amp; freshOrange &gt; <span class="hljs-number">0</span>) {
     time++;
-    // ...
+    <span class="hljs-comment">// ...</span>
 }
 </code></pre>
 <h4 id="why-approach-b-naturally-handles-edge-cases" tabindex="-1"><a class="header-anchor" href="#why-approach-b-naturally-handles-edge-cases"><span>Why Approach B Naturally Handles Edge Cases</span></a></h4>
-<pre><code class="language-java">while (!queue.isEmpty()) {
-    int size = queue.size();
-    boolean rottedThisMinute = false;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">while</span> (!queue.isEmpty()) {
+    <span class="hljs-type">int</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> queue.size();
+    <span class="hljs-type">boolean</span> <span class="hljs-variable">rottedThisMinute</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;
 
-    for (int i = 0; i &lt; size; i++) {
-        // process...
-        if (/* infected a neighbor */) {
-            rottedThisMinute = true;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; size; i++) {
+        <span class="hljs-comment">// process...</span>
+        <span class="hljs-keyword">if</span> (<span class="hljs-comment">/* infected a neighbor */</span>) {
+            rottedThisMinute = <span class="hljs-literal">true</span>;
         }
     }
 
-    if (rottedThisMinute) time++;  // Only count if actual infection happened
+    <span class="hljs-keyword">if</span> (rottedThisMinute) time++;  <span class="hljs-comment">// Only count if actual infection happened</span>
 }
 </code></pre>
 <p><strong>Why it works:</strong></p>
@@ -2288,12 +2300,12 @@ while (!queue.isEmpty() &amp;&amp; freshOrange &gt; 0) {
 <li>No increment → no over-counting</li>
 </ul>
 <h4 id="concrete-example-lc-994-rotting-oranges-1" tabindex="-1"><a class="header-anchor" href="#concrete-example-lc-994-rotting-oranges-1"><span>Concrete Example: LC 994 - Rotting Oranges</span></a></h4>
-<pre><code>Grid: [[2,1,1],    Initial: 6 fresh oranges, 1 rotten at (0,0)
+<pre><code class="hljs">Grid: [[2,1,1],    Initial: 6 fresh oranges, 1 rotten at (0,0)
        [1,1,0],
        [0,1,1]]    Expected answer: 4 minutes
 </code></pre>
 <p><strong>Approach A Trace (time++ at beginning with <code>freshOrange &gt; 0</code>):</strong></p>
-<pre><code>Initial: Queue=[(0,0)], fresh=6, time=0
+<pre><code class="hljs">Initial: Queue=[(0,0)], fresh=6, time=0
 
 Check: queue not empty &amp;&amp; fresh&gt;0 → TRUE
   time++ → time=1
@@ -2322,7 +2334,7 @@ Check: queue not empty &amp;&amp; fresh&gt;0 → FALSE (fresh=0)
   Return fresh==0 ? time : -1 → time=4 ✓ CORRECT!
 </code></pre>
 <p><strong>What if we removed <code>freshOrange &gt; 0</code> from while condition?</strong></p>
-<pre><code>...continuing from above...
+<pre><code class="hljs">...continuing from above...
 
 Check: queue not empty → TRUE (Queue=[(2,2)])
   time++ → time=5  ← WRONG! Over-counting
@@ -2406,58 +2418,58 @@ Return time=5 ✗ WRONG!
 <hr>
 <h2 id="advanced-techniques" tabindex="-1"><a class="header-anchor" href="#advanced-techniques"><span>Advanced Techniques</span></a></h2>
 <h3 id="bidirectional-bfs" tabindex="-1"><a class="header-anchor" href="#bidirectional-bfs"><span>Bidirectional BFS</span></a></h3>
-<pre><code class="language-python">def bidirectional_bfs(start, end):
-    &quot;&quot;&quot;Meet in the middle - faster for long paths&quot;&quot;&quot;
-    if start == end:
-        return 0
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bidirectional_bfs</span>(<span class="hljs-params">start, end</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Meet in the middle - faster for long paths&quot;&quot;&quot;</span>
+    <span class="hljs-keyword">if</span> start == end:
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
     
-    forward = {start: 0}
-    backward = {end: 0}
+    forward = {start: <span class="hljs-number">0</span>}
+    backward = {end: <span class="hljs-number">0</span>}
     queue_forward = deque([start])
     queue_backward = deque([end])
     
-    while queue_forward or queue_backward:
-        # Expand smaller frontier
-        if len(forward) &lt;= len(backward):
-            if expand_level(queue_forward, forward, backward):
-                return True
-        else:
-            if expand_level(queue_backward, backward, forward):
-                return True
+    <span class="hljs-keyword">while</span> queue_forward <span class="hljs-keyword">or</span> queue_backward:
+        <span class="hljs-comment"># Expand smaller frontier</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(forward) &lt;= <span class="hljs-built_in">len</span>(backward):
+            <span class="hljs-keyword">if</span> expand_level(queue_forward, forward, backward):
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-keyword">if</span> expand_level(queue_backward, backward, forward):
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
     
-    return False
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 </code></pre>
 <h3 id="bfs-with-priority-dijkstra-like" tabindex="-1"><a class="header-anchor" href="#bfs-with-priority-dijkstra-like"><span>BFS with Priority (Dijkstra-like)</span></a></h3>
-<pre><code class="language-python">import heapq
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">import</span> heapq
 
-def weighted_bfs(start, end, graph):
-    &quot;&quot;&quot;BFS variant for weighted graphs&quot;&quot;&quot;
-    heap = [(0, start)]
-    distances = {start: 0}
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">weighted_bfs</span>(<span class="hljs-params">start, end, graph</span>):
+    <span class="hljs-string">&quot;&quot;&quot;BFS variant for weighted graphs&quot;&quot;&quot;</span>
+    heap = [(<span class="hljs-number">0</span>, start)]
+    distances = {start: <span class="hljs-number">0</span>}
     
-    while heap:
+    <span class="hljs-keyword">while</span> heap:
         dist, node = heapq.heappop(heap)
         
-        if node == end:
-            return dist
+        <span class="hljs-keyword">if</span> node == end:
+            <span class="hljs-keyword">return</span> dist
             
-        if dist &gt; distances.get(node, float('inf')):
-            continue
+        <span class="hljs-keyword">if</span> dist &gt; distances.get(node, <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)):
+            <span class="hljs-keyword">continue</span>
             
-        for neighbor, weight in graph[node]:
+        <span class="hljs-keyword">for</span> neighbor, weight <span class="hljs-keyword">in</span> graph[node]:
             new_dist = dist + weight
-            if new_dist &lt; distances.get(neighbor, float('inf')):
+            <span class="hljs-keyword">if</span> new_dist &lt; distances.get(neighbor, <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)):
                 distances[neighbor] = new_dist
                 heapq.heappush(heap, (new_dist, neighbor))
     
-    return -1
+    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
 </code></pre>
 <h2 id="core-concepts-summary" tabindex="-1"><a class="header-anchor" href="#core-concepts-summary"><span>Core Concepts Summary</span></a></h2>
 <h3 id="multi-source-bfs-distance-calculation-lc-542-pattern" tabindex="-1"><a class="header-anchor" href="#multi-source-bfs-distance-calculation-lc-542-pattern"><span>Multi-Source BFS Distance Calculation (LC 542 Pattern)</span></a></h3>
 <p><strong>The Problem Type:</strong>
 Calculate shortest distance from each cell to ANY source cell in a grid.</p>
 <p><strong>Why Multi-Source BFS?</strong></p>
-<pre><code>❌ Naive Approach: Start BFS from each target cell
+<pre><code class="hljs">❌ Naive Approach: Start BFS from each target cell
    - For each 1, run BFS to find nearest 0
    - Time: O(m×n) targets × O(m×n) BFS = O(m²×n²) ❌
 
@@ -2470,30 +2482,30 @@ Calculate shortest distance from each cell to ANY source cell in a grid.</p>
 <ol>
 <li>
 <p><strong>Initialization Strategy:</strong></p>
-<pre><code class="language-java">// Option A: Use sentinel value -1
-mat[r][c] = -1;  // Easier to check: if (mat[nr][nc] == -1)
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Option A: Use sentinel value -1</span>
+mat[r][c] = -<span class="hljs-number">1</span>;  <span class="hljs-comment">// Easier to check: if (mat[nr][nc] == -1)</span>
 
-// Option B: Use MAX_VALUE
-mat[r][c] = Integer.MAX_VALUE;  // Easier for comparison: if (mat[nr][nc] &gt; mat[r][c] + 1)
+<span class="hljs-comment">// Option B: Use MAX_VALUE</span>
+mat[r][c] = Integer.MAX_VALUE;  <span class="hljs-comment">// Easier for comparison: if (mat[nr][nc] &gt; mat[r][c] + 1)</span>
 </code></pre>
 </li>
 <li>
 <p><strong>The Update Condition:</strong></p>
-<pre><code class="language-java">// Why only update when new distance is shorter?
-if (mat[nr][nc] &gt; mat[r][c] + 1) {
-    mat[nr][nc] = mat[r][c] + 1;
-    queue.offer(new int[]{nr, nc});
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Why only update when new distance is shorter?</span>
+<span class="hljs-keyword">if</span> (mat[nr][nc] &gt; mat[r][c] + <span class="hljs-number">1</span>) {
+    mat[nr][nc] = mat[r][c] + <span class="hljs-number">1</span>;
+    queue.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{nr, nc});
 }
 
-// Explanation:
-// - In unweighted BFS, first visit = shortest path
-// - If cell already has distance ≤ current + 1, it has a better path
-// - Prevents redundant re-processing and ensures O(m×n) time
+<span class="hljs-comment">// Explanation:</span>
+<span class="hljs-comment">// - In unweighted BFS, first visit = shortest path</span>
+<span class="hljs-comment">// - If cell already has distance ≤ current + 1, it has a better path</span>
+<span class="hljs-comment">// - Prevents redundant re-processing and ensures O(m×n) time</span>
 </code></pre>
 </li>
 <li>
 <p><strong>Why First Visit = Shortest Distance:</strong></p>
-<pre><code>BFS expands in layers (level-by-level):
+<pre><code class="hljs">BFS expands in layers (level-by-level):
 Layer 0: All sources (distance = 0)
 Layer 1: All cells 1 step away (distance = 1)
 Layer 2: All cells 2 steps away (distance = 2)
@@ -2694,148 +2706,148 @@ because all shorter paths were explored in earlier layers.
 <blockquote>
 <p>Spread rot from all initial rotten oranges simultaneously level by level.</p>
 </blockquote>
-<pre><code class="language-java">// LC 994 - Rotting Oranges
-// IDEA: Multi-source BFS
-// time = O(M*N), space = O(M*N)
-public int orangesRotting(int[][] grid) {
-    int rows = grid.length, cols = grid[0].length;
-    Queue&lt;int[]&gt; queue = new LinkedList&lt;&gt;();
-    int fresh = 0;
-    for (int r = 0; r &lt; rows; r++)
-        for (int c = 0; c &lt; cols; c++) {
-            if (grid[r][c] == 2) queue.offer(new int[]{r, c});
-            else if (grid[r][c] == 1) fresh++;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 994 - Rotting Oranges</span>
+<span class="hljs-comment">// IDEA: Multi-source BFS</span>
+<span class="hljs-comment">// time = O(M*N), space = O(M*N)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">orangesRotting</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] grid)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">rows</span> <span class="hljs-operator">=</span> grid.length, cols = grid[<span class="hljs-number">0</span>].length;
+    Queue&lt;<span class="hljs-type">int</span>[]&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+    <span class="hljs-type">int</span> <span class="hljs-variable">fresh</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; r &lt; rows; r++)
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; c &lt; cols; c++) {
+            <span class="hljs-keyword">if</span> (grid[r][c] == <span class="hljs-number">2</span>) queue.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{r, c});
+            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (grid[r][c] == <span class="hljs-number">1</span>) fresh++;
         }
-    if (fresh == 0) return 0;
-    int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
-    int minutes = 0;
-    while (!queue.isEmpty() &amp;&amp; fresh &gt; 0) {
+    <span class="hljs-keyword">if</span> (fresh == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    <span class="hljs-type">int</span>[][] dirs = {{<span class="hljs-number">1</span>,<span class="hljs-number">0</span>},{-<span class="hljs-number">1</span>,<span class="hljs-number">0</span>},{<span class="hljs-number">0</span>,<span class="hljs-number">1</span>},{<span class="hljs-number">0</span>,-<span class="hljs-number">1</span>}};
+    <span class="hljs-type">int</span> <span class="hljs-variable">minutes</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">while</span> (!queue.isEmpty() &amp;&amp; fresh &gt; <span class="hljs-number">0</span>) {
         minutes++;
-        int size = queue.size();
-        for (int i = 0; i &lt; size; i++) {
-            int[] cell = queue.poll();
-            for (int[] d : dirs) {
-                int nr = cell[0] + d[0], nc = cell[1] + d[1];
-                if (nr &gt;= 0 &amp;&amp; nr &lt; rows &amp;&amp; nc &gt;= 0 &amp;&amp; nc &lt; cols &amp;&amp; grid[nr][nc] == 1) {
-                    grid[nr][nc] = 2;
+        <span class="hljs-type">int</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> queue.size();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; size; i++) {
+            <span class="hljs-type">int</span>[] cell = queue.poll();
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] d : dirs) {
+                <span class="hljs-type">int</span> <span class="hljs-variable">nr</span> <span class="hljs-operator">=</span> cell[<span class="hljs-number">0</span>] + d[<span class="hljs-number">0</span>], nc = cell[<span class="hljs-number">1</span>] + d[<span class="hljs-number">1</span>];
+                <span class="hljs-keyword">if</span> (nr &gt;= <span class="hljs-number">0</span> &amp;&amp; nr &lt; rows &amp;&amp; nc &gt;= <span class="hljs-number">0</span> &amp;&amp; nc &lt; cols &amp;&amp; grid[nr][nc] == <span class="hljs-number">1</span>) {
+                    grid[nr][nc] = <span class="hljs-number">2</span>;
                     fresh--;
-                    queue.offer(new int[]{nr, nc});
+                    queue.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{nr, nc});
                 }
             }
         }
     }
-    return fresh == 0 ? minutes : -1;
+    <span class="hljs-keyword">return</span> fresh == <span class="hljs-number">0</span> ? minutes : -<span class="hljs-number">1</span>;
 }
 </code></pre>
 <h3 id="2-2-word-ladder-lc-127-bfs-shortest-transformation" tabindex="-1"><a class="header-anchor" href="#2-2-word-ladder-lc-127-bfs-shortest-transformation"><span>2-2) Word Ladder (LC 127) — BFS Shortest Transformation</span></a></h3>
 <blockquote>
 <p>BFS on word graph; each edge connects words differing by one letter.</p>
 </blockquote>
-<pre><code class="language-java">// LC 127 - Word Ladder
-// IDEA: BFS level by level on word transformations
-// time = O(M^2 * N), space = O(M^2 * N)  M=word length, N=wordList size
-public int ladderLength(String beginWord, String endWord, List&lt;String&gt; wordList) {
-    Set&lt;String&gt; wordSet = new HashSet&lt;&gt;(wordList);
-    if (!wordSet.contains(endWord)) return 0;
-    Queue&lt;String&gt; queue = new LinkedList&lt;&gt;();
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 127 - Word Ladder</span>
+<span class="hljs-comment">// IDEA: BFS level by level on word transformations</span>
+<span class="hljs-comment">// time = O(M^2 * N), space = O(M^2 * N)  M=word length, N=wordList size</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">ladderLength</span><span class="hljs-params">(String beginWord, String endWord, List&lt;String&gt; wordList)</span> {
+    Set&lt;String&gt; wordSet = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;(wordList);
+    <span class="hljs-keyword">if</span> (!wordSet.contains(endWord)) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    Queue&lt;String&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
     queue.offer(beginWord);
-    int steps = 1;
-    while (!queue.isEmpty()) {
-        int size = queue.size();
-        for (int i = 0; i &lt; size; i++) {
-            String word = queue.poll();
-            char[] chars = word.toCharArray();
-            for (int j = 0; j &lt; chars.length; j++) {
-                char orig = chars[j];
-                for (char c = 'a'; c &lt;= 'z'; c++) {
+    <span class="hljs-type">int</span> <span class="hljs-variable">steps</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">while</span> (!queue.isEmpty()) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> queue.size();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; size; i++) {
+            <span class="hljs-type">String</span> <span class="hljs-variable">word</span> <span class="hljs-operator">=</span> queue.poll();
+            <span class="hljs-type">char</span>[] chars = word.toCharArray();
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; chars.length; j++) {
+                <span class="hljs-type">char</span> <span class="hljs-variable">orig</span> <span class="hljs-operator">=</span> chars[j];
+                <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;a&#x27;</span>; c &lt;= <span class="hljs-string">&#x27;z&#x27;</span>; c++) {
                     chars[j] = c;
-                    String next = new String(chars);
-                    if (next.equals(endWord)) return steps + 1;
-                    if (wordSet.remove(next)) queue.offer(next);
+                    <span class="hljs-type">String</span> <span class="hljs-variable">next</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(chars);
+                    <span class="hljs-keyword">if</span> (next.equals(endWord)) <span class="hljs-keyword">return</span> steps + <span class="hljs-number">1</span>;
+                    <span class="hljs-keyword">if</span> (wordSet.remove(next)) queue.offer(next);
                 }
                 chars[j] = orig;
             }
         }
         steps++;
     }
-    return 0;
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
 }
 </code></pre>
 <h3 id="2-3-word-ladder-ii-lc-126-bfs-dfs-all-shortest-paths" tabindex="-1"><a class="header-anchor" href="#2-3-word-ladder-ii-lc-126-bfs-dfs-all-shortest-paths"><span>2-3) Word Ladder II (LC 126) — BFS + DFS All Shortest Paths</span></a></h3>
 <blockquote>
 <p>BFS builds a DAG of shortest-path predecessors; DFS enumerates all valid paths.</p>
 </blockquote>
-<pre><code class="language-java">// LC 126 - Word Ladder II
-// IDEA: BFS to build predecessors map, then DFS to reconstruct all shortest paths
-// time = O(N * M * 26 + output), space = O(N * M)
-public List&lt;List&lt;String&gt;&gt; findLadders(String beginWord, String endWord, List&lt;String&gt; wordList) {
-    List&lt;List&lt;String&gt;&gt; result = new ArrayList&lt;&gt;();
-    Set&lt;String&gt; wordSet = new HashSet&lt;&gt;(wordList);
-    if (!wordSet.contains(endWord)) return result;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 126 - Word Ladder II</span>
+<span class="hljs-comment">// IDEA: BFS to build predecessors map, then DFS to reconstruct all shortest paths</span>
+<span class="hljs-comment">// time = O(N * M * 26 + output), space = O(N * M)</span>
+<span class="hljs-keyword">public</span> List&lt;List&lt;String&gt;&gt; <span class="hljs-title function_">findLadders</span><span class="hljs-params">(String beginWord, String endWord, List&lt;String&gt; wordList)</span> {
+    List&lt;List&lt;String&gt;&gt; result = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    Set&lt;String&gt; wordSet = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;(wordList);
+    <span class="hljs-keyword">if</span> (!wordSet.contains(endWord)) <span class="hljs-keyword">return</span> result;
 
-    // Map: word → list of predecessors (parents) at shortest distance
-    Map&lt;String, List&lt;String&gt;&gt; parents = new HashMap&lt;&gt;();
-    // BFS to build the parent graph
-    Queue&lt;String&gt; queue = new LinkedList&lt;&gt;();
-    Set&lt;String&gt; visited = new HashSet&lt;&gt;();
+    <span class="hljs-comment">// Map: word → list of predecessors (parents) at shortest distance</span>
+    Map&lt;String, List&lt;String&gt;&gt; parents = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+    <span class="hljs-comment">// BFS to build the parent graph</span>
+    Queue&lt;String&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+    Set&lt;String&gt; visited = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
     queue.offer(beginWord);
     visited.add(beginWord);
 
-    boolean found = false;
-    while (!queue.isEmpty() &amp;&amp; !found) {
-        int size = queue.size();
-        Set&lt;String&gt; levelVisited = new HashSet&lt;&gt;();  // Critical: track nodes at this level
+    <span class="hljs-type">boolean</span> <span class="hljs-variable">found</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;
+    <span class="hljs-keyword">while</span> (!queue.isEmpty() &amp;&amp; !found) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> queue.size();
+        Set&lt;String&gt; levelVisited = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();  <span class="hljs-comment">// Critical: track nodes at this level</span>
 
-        for (int i = 0; i &lt; size; i++) {
-            String word = queue.poll();
-            char[] chars = word.toCharArray();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; size; i++) {
+            <span class="hljs-type">String</span> <span class="hljs-variable">word</span> <span class="hljs-operator">=</span> queue.poll();
+            <span class="hljs-type">char</span>[] chars = word.toCharArray();
 
-            for (int j = 0; j &lt; chars.length; j++) {
-                char orig = chars[j];
-                for (char c = 'a'; c &lt;= 'z'; c++) {
-                    if (c == orig) continue;
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; chars.length; j++) {
+                <span class="hljs-type">char</span> <span class="hljs-variable">orig</span> <span class="hljs-operator">=</span> chars[j];
+                <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;a&#x27;</span>; c &lt;= <span class="hljs-string">&#x27;z&#x27;</span>; c++) {
+                    <span class="hljs-keyword">if</span> (c == orig) <span class="hljs-keyword">continue</span>;
                     chars[j] = c;
-                    String next = new String(chars);
+                    <span class="hljs-type">String</span> <span class="hljs-variable">next</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(chars);
 
-                    if (!wordSet.contains(next)) continue;
+                    <span class="hljs-keyword">if</span> (!wordSet.contains(next)) <span class="hljs-keyword">continue</span>;
 
-                    if (!visited.contains(next)) {
-                        parents.computeIfAbsent(next, k -&gt; new ArrayList&lt;&gt;()).add(word);
+                    <span class="hljs-keyword">if</span> (!visited.contains(next)) {
+                        parents.computeIfAbsent(next, k -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;()).add(word);
                         levelVisited.add(next);
-                        if (next.equals(endWord)) found = true;
+                        <span class="hljs-keyword">if</span> (next.equals(endWord)) found = <span class="hljs-literal">true</span>;
                     }
                 }
                 chars[j] = orig;
             }
         }
 
-        // Update visited after entire level (allows multiple parents from same level)
+        <span class="hljs-comment">// Update visited after entire level (allows multiple parents from same level)</span>
         visited.addAll(levelVisited);
-        for (String node : levelVisited) {
+        <span class="hljs-keyword">for</span> (String node : levelVisited) {
             queue.offer(node);
         }
     }
 
-    // DFS to enumerate all paths
-    if (found) {
-        List&lt;String&gt; path = new LinkedList&lt;&gt;();
+    <span class="hljs-comment">// DFS to enumerate all paths</span>
+    <span class="hljs-keyword">if</span> (found) {
+        List&lt;String&gt; path = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
         dfsEnumerate(endWord, beginWord, parents, path, result);
     }
 
-    return result;
+    <span class="hljs-keyword">return</span> result;
 }
 
-private void dfsEnumerate(String word, String beginWord, Map&lt;String, List&lt;String&gt;&gt; parents,
-                          List&lt;String&gt; path, List&lt;List&lt;String&gt;&gt; result) {
-    path.add(0, word);
-    if (word.equals(beginWord)) {
-        result.add(new ArrayList&lt;&gt;(path));
-    } else if (parents.containsKey(word)) {
-        for (String prev : parents.get(word)) {
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">dfsEnumerate</span><span class="hljs-params">(String word, String beginWord, Map&lt;String, List&lt;String&gt;&gt; parents,
+                          List&lt;String&gt; path, List&lt;List&lt;String&gt;&gt; result)</span> {
+    path.add(<span class="hljs-number">0</span>, word);
+    <span class="hljs-keyword">if</span> (word.equals(beginWord)) {
+        result.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(path));
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (parents.containsKey(word)) {
+        <span class="hljs-keyword">for</span> (String prev : parents.get(word)) {
             dfsEnumerate(prev, beginWord, parents, path, result);
         }
     }
-    path.remove(0);
+    path.remove(<span class="hljs-number">0</span>);
 }
 </code></pre>
 <p><strong>Key Differences from LC 127:</strong></p>
@@ -2849,89 +2861,89 @@ private void dfsEnumerate(String word, String beginWord, Map&lt;String, List&lt;
 <blockquote>
 <p>BFS from top-left to bottom-right through 0-cells (8-directional).</p>
 </blockquote>
-<pre><code class="language-java">// LC 1091 - Shortest Path in Binary Matrix
-// IDEA: BFS — shortest path in unweighted graph
-// time = O(N^2), space = O(N^2)
-public int shortestPathBinaryMatrix(int[][] grid) {
-    int n = grid.length;
-    if (grid[0][0] == 1 || grid[n-1][n-1] == 1) return -1;
-    int[][] dirs = {{0,1},{1,0},{0,-1},{-1,0},{1,1},{1,-1},{-1,1},{-1,-1}};
-    Queue&lt;int[]&gt; queue = new LinkedList&lt;&gt;();
-    queue.offer(new int[]{0, 0, 1});
-    grid[0][0] = 1; // mark visited
-    while (!queue.isEmpty()) {
-        int[] curr = queue.poll();
-        int r = curr[0], c = curr[1], dist = curr[2];
-        if (r == n-1 &amp;&amp; c == n-1) return dist;
-        for (int[] d : dirs) {
-            int nr = r + d[0], nc = c + d[1];
-            if (nr &gt;= 0 &amp;&amp; nr &lt; n &amp;&amp; nc &gt;= 0 &amp;&amp; nc &lt; n &amp;&amp; grid[nr][nc] == 0) {
-                grid[nr][nc] = 1;
-                queue.offer(new int[]{nr, nc, dist + 1});
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1091 - Shortest Path in Binary Matrix</span>
+<span class="hljs-comment">// IDEA: BFS — shortest path in unweighted graph</span>
+<span class="hljs-comment">// time = O(N^2), space = O(N^2)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">shortestPathBinaryMatrix</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] grid)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> grid.length;
+    <span class="hljs-keyword">if</span> (grid[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] == <span class="hljs-number">1</span> || grid[n-<span class="hljs-number">1</span>][n-<span class="hljs-number">1</span>] == <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+    <span class="hljs-type">int</span>[][] dirs = {{<span class="hljs-number">0</span>,<span class="hljs-number">1</span>},{<span class="hljs-number">1</span>,<span class="hljs-number">0</span>},{<span class="hljs-number">0</span>,-<span class="hljs-number">1</span>},{-<span class="hljs-number">1</span>,<span class="hljs-number">0</span>},{<span class="hljs-number">1</span>,<span class="hljs-number">1</span>},{<span class="hljs-number">1</span>,-<span class="hljs-number">1</span>},{-<span class="hljs-number">1</span>,<span class="hljs-number">1</span>},{-<span class="hljs-number">1</span>,-<span class="hljs-number">1</span>}};
+    Queue&lt;<span class="hljs-type">int</span>[]&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+    queue.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1</span>});
+    grid[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>; <span class="hljs-comment">// mark visited</span>
+    <span class="hljs-keyword">while</span> (!queue.isEmpty()) {
+        <span class="hljs-type">int</span>[] curr = queue.poll();
+        <span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> curr[<span class="hljs-number">0</span>], c = curr[<span class="hljs-number">1</span>], dist = curr[<span class="hljs-number">2</span>];
+        <span class="hljs-keyword">if</span> (r == n-<span class="hljs-number">1</span> &amp;&amp; c == n-<span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> dist;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] d : dirs) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">nr</span> <span class="hljs-operator">=</span> r + d[<span class="hljs-number">0</span>], nc = c + d[<span class="hljs-number">1</span>];
+            <span class="hljs-keyword">if</span> (nr &gt;= <span class="hljs-number">0</span> &amp;&amp; nr &lt; n &amp;&amp; nc &gt;= <span class="hljs-number">0</span> &amp;&amp; nc &lt; n &amp;&amp; grid[nr][nc] == <span class="hljs-number">0</span>) {
+                grid[nr][nc] = <span class="hljs-number">1</span>;
+                queue.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{nr, nc, dist + <span class="hljs-number">1</span>});
             }
         }
     }
-    return -1;
+    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
 }
 </code></pre>
 <h3 id="2-4-01-matrix-lc-542-multi-source-bfs-from-all-zeros" tabindex="-1"><a class="header-anchor" href="#2-4-01-matrix-lc-542-multi-source-bfs-from-all-zeros"><span>2-4) 01 Matrix (LC 542) — Multi-source BFS from All Zeros</span></a></h3>
 <blockquote>
 <p>Start BFS from all 0-cells simultaneously; distance propagates outward.</p>
 </blockquote>
-<pre><code class="language-java">// LC 542 - 01 Matrix
-// IDEA: Multi-source BFS — enqueue all 0s first, then expand
-// time = O(M*N), space = O(M*N)
-public int[][] updateMatrix(int[][] mat) {
-    int m = mat.length, n = mat[0].length;
-    int[][] dist = new int[m][n];
-    Queue&lt;int[]&gt; queue = new LinkedList&lt;&gt;();
-    for (int i = 0; i &lt; m; i++)
-        for (int j = 0; j &lt; n; j++) {
-            if (mat[i][j] == 0) queue.offer(new int[]{i, j});
-            else dist[i][j] = Integer.MAX_VALUE;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 542 - 01 Matrix</span>
+<span class="hljs-comment">// IDEA: Multi-source BFS — enqueue all 0s first, then expand</span>
+<span class="hljs-comment">// time = O(M*N), space = O(M*N)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[][] updateMatrix(<span class="hljs-type">int</span>[][] mat) {
+    <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> mat.length, n = mat[<span class="hljs-number">0</span>].length;
+    <span class="hljs-type">int</span>[][] dist = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[m][n];
+    Queue&lt;<span class="hljs-type">int</span>[]&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; m; i++)
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; n; j++) {
+            <span class="hljs-keyword">if</span> (mat[i][j] == <span class="hljs-number">0</span>) queue.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{i, j});
+            <span class="hljs-keyword">else</span> dist[i][j] = Integer.MAX_VALUE;
         }
-    int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
-    while (!queue.isEmpty()) {
-        int[] cell = queue.poll();
-        for (int[] d : dirs) {
-            int nr = cell[0]+d[0], nc = cell[1]+d[1];
-            if (nr&gt;=0 &amp;&amp; nr&lt;m &amp;&amp; nc&gt;=0 &amp;&amp; nc&lt;n &amp;&amp; dist[nr][nc] &gt; dist[cell[0]][cell[1]]+1) {
-                dist[nr][nc] = dist[cell[0]][cell[1]] + 1;
-                queue.offer(new int[]{nr, nc});
+    <span class="hljs-type">int</span>[][] dirs = {{<span class="hljs-number">1</span>,<span class="hljs-number">0</span>},{-<span class="hljs-number">1</span>,<span class="hljs-number">0</span>},{<span class="hljs-number">0</span>,<span class="hljs-number">1</span>},{<span class="hljs-number">0</span>,-<span class="hljs-number">1</span>}};
+    <span class="hljs-keyword">while</span> (!queue.isEmpty()) {
+        <span class="hljs-type">int</span>[] cell = queue.poll();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] d : dirs) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">nr</span> <span class="hljs-operator">=</span> cell[<span class="hljs-number">0</span>]+d[<span class="hljs-number">0</span>], nc = cell[<span class="hljs-number">1</span>]+d[<span class="hljs-number">1</span>];
+            <span class="hljs-keyword">if</span> (nr&gt;=<span class="hljs-number">0</span> &amp;&amp; nr&lt;m &amp;&amp; nc&gt;=<span class="hljs-number">0</span> &amp;&amp; nc&lt;n &amp;&amp; dist[nr][nc] &gt; dist[cell[<span class="hljs-number">0</span>]][cell[<span class="hljs-number">1</span>]]+<span class="hljs-number">1</span>) {
+                dist[nr][nc] = dist[cell[<span class="hljs-number">0</span>]][cell[<span class="hljs-number">1</span>]] + <span class="hljs-number">1</span>;
+                queue.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{nr, nc});
             }
         }
     }
-    return dist;
+    <span class="hljs-keyword">return</span> dist;
 }
 </code></pre>
 <h3 id="2-5-open-the-lock-lc-752-bfs-on-state-space" tabindex="-1"><a class="header-anchor" href="#2-5-open-the-lock-lc-752-bfs-on-state-space"><span>2-5) Open the Lock (LC 752) — BFS on State Space</span></a></h3>
 <blockquote>
 <p>Model each lock combination as a node; BFS finds minimum turns to reach target.</p>
 </blockquote>
-<pre><code class="language-java">// LC 752 - Open the Lock
-// IDEA: BFS on 4-digit combinations; each turn = 1 step
-// time = O(10^4 * 4 * 2), space = O(10^4)
-public int openLock(String[] deadends, String target) {
-    Set&lt;String&gt; dead = new HashSet&lt;&gt;(Arrays.asList(deadends));
-    Set&lt;String&gt; visited = new HashSet&lt;&gt;();
-    Queue&lt;String&gt; queue = new LinkedList&lt;&gt;();
-    String start = &quot;0000&quot;;
-    if (dead.contains(start)) return -1;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 752 - Open the Lock</span>
+<span class="hljs-comment">// IDEA: BFS on 4-digit combinations; each turn = 1 step</span>
+<span class="hljs-comment">// time = O(10^4 * 4 * 2), space = O(10^4)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">openLock</span><span class="hljs-params">(String[] deadends, String target)</span> {
+    Set&lt;String&gt; dead = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;(Arrays.asList(deadends));
+    Set&lt;String&gt; visited = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
+    Queue&lt;String&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+    <span class="hljs-type">String</span> <span class="hljs-variable">start</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;0000&quot;</span>;
+    <span class="hljs-keyword">if</span> (dead.contains(start)) <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
     queue.offer(start);
     visited.add(start);
-    int steps = 0;
-    while (!queue.isEmpty()) {
-        int size = queue.size();
-        for (int i = 0; i &lt; size; i++) {
-            String curr = queue.poll();
-            if (curr.equals(target)) return steps;
-            char[] chars = curr.toCharArray();
-            for (int j = 0; j &lt; 4; j++) {
-                char orig = chars[j];
-                for (int delta : new int[]{1, -1}) {
-                    chars[j] = (char)((orig - '0' + delta + 10) % 10 + '0');
-                    String next = new String(chars);
-                    if (!visited.contains(next) &amp;&amp; !dead.contains(next)) {
+    <span class="hljs-type">int</span> <span class="hljs-variable">steps</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">while</span> (!queue.isEmpty()) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> queue.size();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; size; i++) {
+            <span class="hljs-type">String</span> <span class="hljs-variable">curr</span> <span class="hljs-operator">=</span> queue.poll();
+            <span class="hljs-keyword">if</span> (curr.equals(target)) <span class="hljs-keyword">return</span> steps;
+            <span class="hljs-type">char</span>[] chars = curr.toCharArray();
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; <span class="hljs-number">4</span>; j++) {
+                <span class="hljs-type">char</span> <span class="hljs-variable">orig</span> <span class="hljs-operator">=</span> chars[j];
+                <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> delta : <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>}) {
+                    chars[j] = (<span class="hljs-type">char</span>)((orig - <span class="hljs-string">&#x27;0&#x27;</span> + delta + <span class="hljs-number">10</span>) % <span class="hljs-number">10</span> + <span class="hljs-string">&#x27;0&#x27;</span>);
+                    <span class="hljs-type">String</span> <span class="hljs-variable">next</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(chars);
+                    <span class="hljs-keyword">if</span> (!visited.contains(next) &amp;&amp; !dead.contains(next)) {
                         visited.add(next); queue.offer(next);
                     }
                     chars[j] = orig;
@@ -2940,87 +2952,87 @@ public int openLock(String[] deadends, String target) {
         }
         steps++;
     }
-    return -1;
+    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
 }
 </code></pre>
 <h3 id="2-6-surrounded-regions-lc-130-bfs-from-border" tabindex="-1"><a class="header-anchor" href="#2-6-surrounded-regions-lc-130-bfs-from-border"><span>2-6) Surrounded Regions (LC 130) — BFS from Border</span></a></h3>
 <blockquote>
 <p>BFS from all border ‘O’ cells; mark reachable ones safe; flip the rest.</p>
 </blockquote>
-<pre><code class="language-java">// LC 130 - Surrounded Regions
-// IDEA: BFS from border O-cells to find non-surrounded regions
-// time = O(M*N), space = O(M*N)
-public void solve(char[][] board) {
-    int m = board.length, n = board[0].length;
-    Queue&lt;int[]&gt; queue = new LinkedList&lt;&gt;();
-    for (int i = 0; i &lt; m; i++)
-        for (int j = 0; j &lt; n; j++)
-            if ((i==0||i==m-1||j==0||j==n-1) &amp;&amp; board[i][j]=='O') {
-                board[i][j] = 'S'; queue.offer(new int[]{i,j});
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 130 - Surrounded Regions</span>
+<span class="hljs-comment">// IDEA: BFS from border O-cells to find non-surrounded regions</span>
+<span class="hljs-comment">// time = O(M*N), space = O(M*N)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">solve</span><span class="hljs-params">(<span class="hljs-type">char</span>[][] board)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> board.length, n = board[<span class="hljs-number">0</span>].length;
+    Queue&lt;<span class="hljs-type">int</span>[]&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; m; i++)
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; n; j++)
+            <span class="hljs-keyword">if</span> ((i==<span class="hljs-number">0</span>||i==m-<span class="hljs-number">1</span>||j==<span class="hljs-number">0</span>||j==n-<span class="hljs-number">1</span>) &amp;&amp; board[i][j]==<span class="hljs-string">&#x27;O&#x27;</span>) {
+                board[i][j] = <span class="hljs-string">&#x27;S&#x27;</span>; queue.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{i,j});
             }
-    int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
-    while (!queue.isEmpty()) {
-        int[] c = queue.poll();
-        for (int[] d : dirs) {
-            int nr=c[0]+d[0], nc=c[1]+d[1];
-            if (nr&gt;=0&amp;&amp;nr&lt;m&amp;&amp;nc&gt;=0&amp;&amp;nc&lt;n&amp;&amp;board[nr][nc]=='O') {
-                board[nr][nc]='S'; queue.offer(new int[]{nr,nc});
+    <span class="hljs-type">int</span>[][] dirs = {{<span class="hljs-number">1</span>,<span class="hljs-number">0</span>},{-<span class="hljs-number">1</span>,<span class="hljs-number">0</span>},{<span class="hljs-number">0</span>,<span class="hljs-number">1</span>},{<span class="hljs-number">0</span>,-<span class="hljs-number">1</span>}};
+    <span class="hljs-keyword">while</span> (!queue.isEmpty()) {
+        <span class="hljs-type">int</span>[] c = queue.poll();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] d : dirs) {
+            <span class="hljs-type">int</span> nr=c[<span class="hljs-number">0</span>]+d[<span class="hljs-number">0</span>], nc=c[<span class="hljs-number">1</span>]+d[<span class="hljs-number">1</span>];
+            <span class="hljs-keyword">if</span> (nr&gt;=<span class="hljs-number">0</span>&amp;&amp;nr&lt;m&amp;&amp;nc&gt;=<span class="hljs-number">0</span>&amp;&amp;nc&lt;n&amp;&amp;board[nr][nc]==<span class="hljs-string">&#x27;O&#x27;</span>) {
+                board[nr][nc]=<span class="hljs-string">&#x27;S&#x27;</span>; queue.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{nr,nc});
             }
         }
     }
-    for (int i=0;i&lt;m;i++) for (int j=0;j&lt;n;j++)
-        board[i][j] = board[i][j]=='S' ? 'O' : (board[i][j]=='O' ? 'X' : board[i][j]);
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;m;i++) <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j=<span class="hljs-number">0</span>;j&lt;n;j++)
+        board[i][j] = board[i][j]==<span class="hljs-string">&#x27;S&#x27;</span> ? <span class="hljs-string">&#x27;O&#x27;</span> : (board[i][j]==<span class="hljs-string">&#x27;O&#x27;</span> ? <span class="hljs-string">&#x27;X&#x27;</span> : board[i][j]);
 }
 </code></pre>
 <h3 id="2-7-course-schedule-lc-207-bfs-topological-sort-kahn-s" tabindex="-1"><a class="header-anchor" href="#2-7-course-schedule-lc-207-bfs-topological-sort-kahn-s"><span>2-7) Course Schedule (LC 207) — BFS Topological Sort (Kahn’s)</span></a></h3>
 <blockquote>
 <p>Build in-degree array; BFS processes nodes with zero in-degree iteratively.</p>
 </blockquote>
-<pre><code class="language-java">// LC 207 - Course Schedule
-// IDEA: Kahn's BFS topological sort — detect cycle in directed graph
-// time = O(V+E), space = O(V+E)
-public boolean canFinish(int numCourses, int[][] prerequisites) {
-    int[] inDegree = new int[numCourses];
-    List&lt;List&lt;Integer&gt;&gt; adj = new ArrayList&lt;&gt;();
-    for (int i = 0; i &lt; numCourses; i++) adj.add(new ArrayList&lt;&gt;());
-    for (int[] pre : prerequisites) {
-        adj.get(pre[1]).add(pre[0]);
-        inDegree[pre[0]]++;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 207 - Course Schedule</span>
+<span class="hljs-comment">// IDEA: Kahn&#x27;s BFS topological sort — detect cycle in directed graph</span>
+<span class="hljs-comment">// time = O(V+E), space = O(V+E)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">canFinish</span><span class="hljs-params">(<span class="hljs-type">int</span> numCourses, <span class="hljs-type">int</span>[][] prerequisites)</span> {
+    <span class="hljs-type">int</span>[] inDegree = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[numCourses];
+    List&lt;List&lt;Integer&gt;&gt; adj = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; numCourses; i++) adj.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;());
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] pre : prerequisites) {
+        adj.get(pre[<span class="hljs-number">1</span>]).add(pre[<span class="hljs-number">0</span>]);
+        inDegree[pre[<span class="hljs-number">0</span>]]++;
     }
-    Queue&lt;Integer&gt; queue = new LinkedList&lt;&gt;();
-    for (int i = 0; i &lt; numCourses; i++) if (inDegree[i] == 0) queue.offer(i);
-    int processed = 0;
-    while (!queue.isEmpty()) {
-        int course = queue.poll();
+    Queue&lt;Integer&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; numCourses; i++) <span class="hljs-keyword">if</span> (inDegree[i] == <span class="hljs-number">0</span>) queue.offer(i);
+    <span class="hljs-type">int</span> <span class="hljs-variable">processed</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">while</span> (!queue.isEmpty()) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">course</span> <span class="hljs-operator">=</span> queue.poll();
         processed++;
-        for (int next : adj.get(course))
-            if (--inDegree[next] == 0) queue.offer(next);
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> next : adj.get(course))
+            <span class="hljs-keyword">if</span> (--inDegree[next] == <span class="hljs-number">0</span>) queue.offer(next);
     }
-    return processed == numCourses;
+    <span class="hljs-keyword">return</span> processed == numCourses;
 }
 </code></pre>
 <h3 id="2-8-walls-and-gates-lc-286-multi-source-bfs" tabindex="-1"><a class="header-anchor" href="#2-8-walls-and-gates-lc-286-multi-source-bfs"><span>2-8) Walls and Gates (LC 286) — Multi-source BFS</span></a></h3>
 <blockquote>
 <p>Start BFS from all gates (0s) simultaneously; fill rooms with shortest distance.</p>
 </blockquote>
-<pre><code class="language-java">// LC 286 - Walls and Gates
-// IDEA: Multi-source BFS from all gates — propagate distances
-// time = O(M*N), space = O(M*N)
-public void wallsAndGates(int[][] rooms) {
-    int m = rooms.length, n = rooms[0].length;
-    int INF = Integer.MAX_VALUE;
-    Queue&lt;int[]&gt; queue = new LinkedList&lt;&gt;();
-    for (int i = 0; i &lt; m; i++)
-        for (int j = 0; j &lt; n; j++)
-            if (rooms[i][j] == 0) queue.offer(new int[]{i, j});
-    int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
-    while (!queue.isEmpty()) {
-        int[] cell = queue.poll();
-        for (int[] d : dirs) {
-            int nr = cell[0]+d[0], nc = cell[1]+d[1];
-            if (nr&gt;=0&amp;&amp;nr&lt;m&amp;&amp;nc&gt;=0&amp;&amp;nc&lt;n&amp;&amp;rooms[nr][nc]==INF) {
-                rooms[nr][nc] = rooms[cell[0]][cell[1]] + 1;
-                queue.offer(new int[]{nr, nc});
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 286 - Walls and Gates</span>
+<span class="hljs-comment">// IDEA: Multi-source BFS from all gates — propagate distances</span>
+<span class="hljs-comment">// time = O(M*N), space = O(M*N)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">wallsAndGates</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] rooms)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> rooms.length, n = rooms[<span class="hljs-number">0</span>].length;
+    <span class="hljs-type">int</span> <span class="hljs-variable">INF</span> <span class="hljs-operator">=</span> Integer.MAX_VALUE;
+    Queue&lt;<span class="hljs-type">int</span>[]&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; m; i++)
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; n; j++)
+            <span class="hljs-keyword">if</span> (rooms[i][j] == <span class="hljs-number">0</span>) queue.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{i, j});
+    <span class="hljs-type">int</span>[][] dirs = {{<span class="hljs-number">1</span>,<span class="hljs-number">0</span>},{-<span class="hljs-number">1</span>,<span class="hljs-number">0</span>},{<span class="hljs-number">0</span>,<span class="hljs-number">1</span>},{<span class="hljs-number">0</span>,-<span class="hljs-number">1</span>}};
+    <span class="hljs-keyword">while</span> (!queue.isEmpty()) {
+        <span class="hljs-type">int</span>[] cell = queue.poll();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] d : dirs) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">nr</span> <span class="hljs-operator">=</span> cell[<span class="hljs-number">0</span>]+d[<span class="hljs-number">0</span>], nc = cell[<span class="hljs-number">1</span>]+d[<span class="hljs-number">1</span>];
+            <span class="hljs-keyword">if</span> (nr&gt;=<span class="hljs-number">0</span>&amp;&amp;nr&lt;m&amp;&amp;nc&gt;=<span class="hljs-number">0</span>&amp;&amp;nc&lt;n&amp;&amp;rooms[nr][nc]==INF) {
+                rooms[nr][nc] = rooms[cell[<span class="hljs-number">0</span>]][cell[<span class="hljs-number">1</span>]] + <span class="hljs-number">1</span>;
+                queue.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{nr, nc});
             }
         }
     }
@@ -3038,7 +3050,7 @@ public void wallsAndGates(int[][] rooms) {
 <li>Repeat until ≤ 2 nodes remain. These are the <strong>centroids</strong> (MHT roots)</li>
 <li>Why ≤ 2? A tree has at most 2 centroids (diameter even → 2, diameter odd → 1)</li>
 </ul>
-<pre><code>Example: 0 - 1 - 2 - 3 - 4
+<pre><code class="hljs">Example: 0 - 1 - 2 - 3 - 4
 
 Layer 1: remove 0, 4  (leaves)
 Layer 2: remove 1, 3  (new leaves)
@@ -3078,64 +3090,64 @@ Result:  [2] ✅        (centroid)
 </table>
 <p><strong>Two Implementation Styles:</strong></p>
 <p>Style 1 — <code>int[] degree</code> array (simpler, preferred):</p>
-<pre><code class="language-java">// LC 310 - Minimum Height Trees
-// IDEA: BFS leaf trimming with degree array
-// time = O(N), space = O(N)
-public List&lt;Integer&gt; findMinHeightTrees(int n, int[][] edges) {
-    if (n == 1) return Collections.singletonList(0);
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 310 - Minimum Height Trees</span>
+<span class="hljs-comment">// IDEA: BFS leaf trimming with degree array</span>
+<span class="hljs-comment">// time = O(N), space = O(N)</span>
+<span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">findMinHeightTrees</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span>[][] edges)</span> {
+    <span class="hljs-keyword">if</span> (n == <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> Collections.singletonList(<span class="hljs-number">0</span>);
 
-    List&lt;List&lt;Integer&gt;&gt; graph = new ArrayList&lt;&gt;();
-    for (int i = 0; i &lt; n; i++) graph.add(new ArrayList&lt;&gt;());
-    int[] degree = new int[n];
+    List&lt;List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) graph.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;());
+    <span class="hljs-type">int</span>[] degree = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
 
-    for (int[] e : edges) {
-        graph.get(e[0]).add(e[1]);
-        graph.get(e[1]).add(e[0]);
-        degree[e[0]]++;
-        degree[e[1]]++;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] e : edges) {
+        graph.get(e[<span class="hljs-number">0</span>]).add(e[<span class="hljs-number">1</span>]);
+        graph.get(e[<span class="hljs-number">1</span>]).add(e[<span class="hljs-number">0</span>]);
+        degree[e[<span class="hljs-number">0</span>]]++;
+        degree[e[<span class="hljs-number">1</span>]]++;
     }
 
-    Queue&lt;Integer&gt; leaves = new LinkedList&lt;&gt;();
-    for (int i = 0; i &lt; n; i++)
-        if (degree[i] == 1) leaves.offer(i);
+    Queue&lt;Integer&gt; leaves = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++)
+        <span class="hljs-keyword">if</span> (degree[i] == <span class="hljs-number">1</span>) leaves.offer(i);
 
-    int remaining = n;
-    while (remaining &gt; 2) {
-        int size = leaves.size();
+    <span class="hljs-type">int</span> <span class="hljs-variable">remaining</span> <span class="hljs-operator">=</span> n;
+    <span class="hljs-keyword">while</span> (remaining &gt; <span class="hljs-number">2</span>) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> leaves.size();
         remaining -= size;
-        for (int i = 0; i &lt; size; i++) {
-            int leaf = leaves.poll();
-            for (int nei : graph.get(leaf)) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; size; i++) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">leaf</span> <span class="hljs-operator">=</span> leaves.poll();
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> nei : graph.get(leaf)) {
                 degree[nei]--;
-                if (degree[nei] == 1) leaves.offer(nei);
+                <span class="hljs-keyword">if</span> (degree[nei] == <span class="hljs-number">1</span>) leaves.offer(nei);
             }
         }
     }
-    return new ArrayList&lt;&gt;(leaves);
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(leaves);
 }
 </code></pre>
 <p>Style 2 — <code>Set&lt;Integer&gt;</code> adjacency (O(1) removal, tracks actual edges):</p>
-<pre><code class="language-java">// LC 310 - Using Set for adjacency
-// time = O(N), space = O(N)
-public List&lt;Integer&gt; findMinHeightTrees_set(int n, int[][] edges) {
-    if (n == 1) return Collections.singletonList(0);
-    List&lt;Set&lt;Integer&gt;&gt; adj = new ArrayList&lt;&gt;();
-    for (int i = 0; i &lt; n; i++) adj.add(new HashSet&lt;&gt;());
-    for (int[] e : edges) { adj.get(e[0]).add(e[1]); adj.get(e[1]).add(e[0]); }
-    Queue&lt;Integer&gt; leaves = new LinkedList&lt;&gt;();
-    for (int i = 0; i &lt; n; i++) if (adj.get(i).size() == 1) leaves.offer(i);
-    int remaining = n;
-    while (remaining &gt; 2) {
-        int size = leaves.size();
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 310 - Using Set for adjacency</span>
+<span class="hljs-comment">// time = O(N), space = O(N)</span>
+<span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">findMinHeightTrees_set</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span>[][] edges)</span> {
+    <span class="hljs-keyword">if</span> (n == <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> Collections.singletonList(<span class="hljs-number">0</span>);
+    List&lt;Set&lt;Integer&gt;&gt; adj = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) adj.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;());
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] e : edges) { adj.get(e[<span class="hljs-number">0</span>]).add(e[<span class="hljs-number">1</span>]); adj.get(e[<span class="hljs-number">1</span>]).add(e[<span class="hljs-number">0</span>]); }
+    Queue&lt;Integer&gt; leaves = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) <span class="hljs-keyword">if</span> (adj.get(i).size() == <span class="hljs-number">1</span>) leaves.offer(i);
+    <span class="hljs-type">int</span> <span class="hljs-variable">remaining</span> <span class="hljs-operator">=</span> n;
+    <span class="hljs-keyword">while</span> (remaining &gt; <span class="hljs-number">2</span>) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> leaves.size();
         remaining -= size;
-        for (int i = 0; i &lt; size; i++) {
-            int leaf = leaves.poll();
-            int neighbor = adj.get(leaf).iterator().next();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; size; i++) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">leaf</span> <span class="hljs-operator">=</span> leaves.poll();
+            <span class="hljs-type">int</span> <span class="hljs-variable">neighbor</span> <span class="hljs-operator">=</span> adj.get(leaf).iterator().next();
             adj.get(neighbor).remove(leaf);
-            if (adj.get(neighbor).size() == 1) leaves.offer(neighbor);
+            <span class="hljs-keyword">if</span> (adj.get(neighbor).size() == <span class="hljs-number">1</span>) leaves.offer(neighbor);
         }
     }
-    return new ArrayList&lt;&gt;(leaves);
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(leaves);
 }
 </code></pre>
 <p><strong>Classic Similar LCs:</strong></p>
@@ -3199,70 +3211,70 @@ public List&lt;Integer&gt; findMinHeightTrees_set(int n, int[][] edges) {
 <blockquote>
 <p>Model board as graph; BFS finds minimum dice rolls to reach final square.</p>
 </blockquote>
-<pre><code class="language-java">// LC 909 - Snakes and Ladders
-// IDEA: BFS — each square is a node, dice roll = edges
-// time = O(N^2), space = O(N^2)
-public int snakesAndLadders(int[][] board) {
-    int n = board.length;
-    int[] flat = new int[n * n + 1];
-    int idx = 1; boolean leftToRight = true;
-    for (int r = n-1; r &gt;= 0; r--) {
-        if (leftToRight) for (int c = 0; c &lt; n; c++) flat[idx++] = board[r][c];
-        else for (int c = n-1; c &gt;= 0; c--) flat[idx++] = board[r][c];
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 909 - Snakes and Ladders</span>
+<span class="hljs-comment">// IDEA: BFS — each square is a node, dice roll = edges</span>
+<span class="hljs-comment">// time = O(N^2), space = O(N^2)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">snakesAndLadders</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] board)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> board.length;
+    <span class="hljs-type">int</span>[] flat = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n * n + <span class="hljs-number">1</span>];
+    <span class="hljs-type">int</span> <span class="hljs-variable">idx</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; <span class="hljs-type">boolean</span> <span class="hljs-variable">leftToRight</span> <span class="hljs-operator">=</span> <span class="hljs-literal">true</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> n-<span class="hljs-number">1</span>; r &gt;= <span class="hljs-number">0</span>; r--) {
+        <span class="hljs-keyword">if</span> (leftToRight) <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; c &lt; n; c++) flat[idx++] = board[r][c];
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> n-<span class="hljs-number">1</span>; c &gt;= <span class="hljs-number">0</span>; c--) flat[idx++] = board[r][c];
         leftToRight = !leftToRight;
     }
-    boolean[] visited = new boolean[n*n+1];
-    Queue&lt;int[]&gt; queue = new LinkedList&lt;&gt;();
-    queue.offer(new int[]{1, 0});
-    visited[1] = true;
-    while (!queue.isEmpty()) {
-        int[] curr = queue.poll();
-        int pos = curr[0], steps = curr[1];
-        for (int dice = 1; dice &lt;= 6 &amp;&amp; pos+dice &lt;= n*n; dice++) {
-            int next = pos + dice;
-            if (flat[next] != -1) next = flat[next];
-            if (next == n*n) return steps + 1;
-            if (!visited[next]) { visited[next] = true; queue.offer(new int[]{next, steps+1}); }
+    <span class="hljs-type">boolean</span>[] visited = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[n*n+<span class="hljs-number">1</span>];
+    Queue&lt;<span class="hljs-type">int</span>[]&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+    queue.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{<span class="hljs-number">1</span>, <span class="hljs-number">0</span>});
+    visited[<span class="hljs-number">1</span>] = <span class="hljs-literal">true</span>;
+    <span class="hljs-keyword">while</span> (!queue.isEmpty()) {
+        <span class="hljs-type">int</span>[] curr = queue.poll();
+        <span class="hljs-type">int</span> <span class="hljs-variable">pos</span> <span class="hljs-operator">=</span> curr[<span class="hljs-number">0</span>], steps = curr[<span class="hljs-number">1</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">dice</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; dice &lt;= <span class="hljs-number">6</span> &amp;&amp; pos+dice &lt;= n*n; dice++) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">next</span> <span class="hljs-operator">=</span> pos + dice;
+            <span class="hljs-keyword">if</span> (flat[next] != -<span class="hljs-number">1</span>) next = flat[next];
+            <span class="hljs-keyword">if</span> (next == n*n) <span class="hljs-keyword">return</span> steps + <span class="hljs-number">1</span>;
+            <span class="hljs-keyword">if</span> (!visited[next]) { visited[next] = <span class="hljs-literal">true</span>; queue.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{next, steps+<span class="hljs-number">1</span>}); }
         }
     }
-    return -1;
+    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
 }
 </code></pre>
 <h3 id="2-11-bus-routes-lc-815-route-level-bfs" tabindex="-1"><a class="header-anchor" href="#2-11-bus-routes-lc-815-route-level-bfs"><span>2-11) Bus Routes (LC 815) — Route-Level BFS</span></a></h3>
 <blockquote>
 <p>Map stops to routes; BFS on route IDs counts minimum buses to reach target.</p>
 </blockquote>
-<pre><code class="language-java">// LC 815 - Bus Routes
-// IDEA: BFS on bus route IDs — each layer = one bus ride
-// time = O(N*M), space = O(N*M)  N=routes, M=avg stops per route
-public int numBusesToDestination(int[][] routes, int source, int target) {
-    if (source == target) return 0;
-    // stop -&gt; list of route IDs
-    Map&lt;Integer, List&lt;Integer&gt;&gt; stopToRoutes = new HashMap&lt;&gt;();
-    for (int i = 0; i &lt; routes.length; i++)
-        for (int stop : routes[i])
-            stopToRoutes.computeIfAbsent(stop, k -&gt; new ArrayList&lt;&gt;()).add(i);
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 815 - Bus Routes</span>
+<span class="hljs-comment">// IDEA: BFS on bus route IDs — each layer = one bus ride</span>
+<span class="hljs-comment">// time = O(N*M), space = O(N*M)  N=routes, M=avg stops per route</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">numBusesToDestination</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] routes, <span class="hljs-type">int</span> source, <span class="hljs-type">int</span> target)</span> {
+    <span class="hljs-keyword">if</span> (source == target) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    <span class="hljs-comment">// stop -&gt; list of route IDs</span>
+    Map&lt;Integer, List&lt;Integer&gt;&gt; stopToRoutes = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; routes.length; i++)
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> stop : routes[i])
+            stopToRoutes.computeIfAbsent(stop, k -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;()).add(i);
 
-    Queue&lt;Integer&gt; queue = new LinkedList&lt;&gt;();
-    Set&lt;Integer&gt; visitedRoutes = new HashSet&lt;&gt;();
-    Set&lt;Integer&gt; visitedStops = new HashSet&lt;&gt;();
+    Queue&lt;Integer&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+    Set&lt;Integer&gt; visitedRoutes = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
+    Set&lt;Integer&gt; visitedStops = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
 
-    // seed all routes passing through source
-    for (int r : stopToRoutes.getOrDefault(source, new ArrayList&lt;&gt;())) {
+    <span class="hljs-comment">// seed all routes passing through source</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> r : stopToRoutes.getOrDefault(source, <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;())) {
         queue.offer(r);
         visitedRoutes.add(r);
     }
-    int buses = 1;
-    while (!queue.isEmpty()) {
-        int size = queue.size();
-        for (int i = 0; i &lt; size; i++) {
-            int route = queue.poll();
-            for (int stop : routes[route]) {
-                if (stop == target) return buses;
-                if (visitedStops.contains(stop)) continue;
+    <span class="hljs-type">int</span> <span class="hljs-variable">buses</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">while</span> (!queue.isEmpty()) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> queue.size();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; size; i++) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">route</span> <span class="hljs-operator">=</span> queue.poll();
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> stop : routes[route]) {
+                <span class="hljs-keyword">if</span> (stop == target) <span class="hljs-keyword">return</span> buses;
+                <span class="hljs-keyword">if</span> (visitedStops.contains(stop)) <span class="hljs-keyword">continue</span>;
                 visitedStops.add(stop);
-                for (int nextRoute : stopToRoutes.getOrDefault(stop, new ArrayList&lt;&gt;())) {
-                    if (!visitedRoutes.contains(nextRoute)) {
+                <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> nextRoute : stopToRoutes.getOrDefault(stop, <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;())) {
+                    <span class="hljs-keyword">if</span> (!visitedRoutes.contains(nextRoute)) {
                         visitedRoutes.add(nextRoute);
                         queue.offer(nextRoute);
                     }
@@ -3271,43 +3283,43 @@ public int numBusesToDestination(int[][] routes, int source, int target) {
         }
         buses++;
     }
-    return -1;
+    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
 }
 </code></pre>
 <h3 id="2-12-pacific-atlantic-water-flow-lc-417-bfs-from-both-oceans" tabindex="-1"><a class="header-anchor" href="#2-12-pacific-atlantic-water-flow-lc-417-bfs-from-both-oceans"><span>2-12) Pacific Atlantic Water Flow (LC 417) — BFS from Both Oceans</span></a></h3>
 <blockquote>
 <p>BFS backward from Pacific and Atlantic borders; cells in both sets can flow to both.</p>
 </blockquote>
-<pre><code class="language-java">// LC 417 - Pacific Atlantic Water Flow
-// IDEA: BFS from Pacific border + Atlantic border; intersection = answer
-// time = O(M*N), space = O(M*N)
-public List&lt;List&lt;Integer&gt;&gt; pacificAtlantic(int[][] heights) {
-    int m = heights.length, n = heights[0].length;
-    boolean[][] pac = new boolean[m][n], atl = new boolean[m][n];
-    Queue&lt;int[]&gt; pq = new LinkedList&lt;&gt;(), aq = new LinkedList&lt;&gt;();
-    for (int i = 0; i &lt; m; i++) {
-        pq.offer(new int[]{i,0}); pac[i][0]=true;
-        aq.offer(new int[]{i,n-1}); atl[i][n-1]=true;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 417 - Pacific Atlantic Water Flow</span>
+<span class="hljs-comment">// IDEA: BFS from Pacific border + Atlantic border; intersection = answer</span>
+<span class="hljs-comment">// time = O(M*N), space = O(M*N)</span>
+<span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">pacificAtlantic</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] heights)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> heights.length, n = heights[<span class="hljs-number">0</span>].length;
+    <span class="hljs-type">boolean</span>[][] pac = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[m][n], atl = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[m][n];
+    Queue&lt;<span class="hljs-type">int</span>[]&gt; pq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;(), aq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; m; i++) {
+        pq.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{i,<span class="hljs-number">0</span>}); pac[i][<span class="hljs-number">0</span>]=<span class="hljs-literal">true</span>;
+        aq.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{i,n-<span class="hljs-number">1</span>}); atl[i][n-<span class="hljs-number">1</span>]=<span class="hljs-literal">true</span>;
     }
-    for (int j = 0; j &lt; n; j++) {
-        pq.offer(new int[]{0,j}); pac[0][j]=true;
-        aq.offer(new int[]{m-1,j}); atl[m-1][j]=true;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; n; j++) {
+        pq.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{<span class="hljs-number">0</span>,j}); pac[<span class="hljs-number">0</span>][j]=<span class="hljs-literal">true</span>;
+        aq.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{m-<span class="hljs-number">1</span>,j}); atl[m-<span class="hljs-number">1</span>][j]=<span class="hljs-literal">true</span>;
     }
     bfs(heights, pq, pac, m, n);
     bfs(heights, aq, atl, m, n);
-    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;&gt;();
-    for (int i=0;i&lt;m;i++) for (int j=0;j&lt;n;j++)
-        if (pac[i][j]&amp;&amp;atl[i][j]) res.add(Arrays.asList(i,j));
-    return res;
+    List&lt;List&lt;Integer&gt;&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i=<span class="hljs-number">0</span>;i&lt;m;i++) <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> j=<span class="hljs-number">0</span>;j&lt;n;j++)
+        <span class="hljs-keyword">if</span> (pac[i][j]&amp;&amp;atl[i][j]) res.add(Arrays.asList(i,j));
+    <span class="hljs-keyword">return</span> res;
 }
-private void bfs(int[][] h, Queue&lt;int[]&gt; q, boolean[][] visited, int m, int n) {
-    int[][] dirs={{1,0},{-1,0},{0,1},{0,-1}};
-    while (!q.isEmpty()) {
-        int[] c=q.poll();
-        for (int[] d:dirs) {
-            int nr=c[0]+d[0],nc=c[1]+d[1];
-            if (nr&gt;=0&amp;&amp;nr&lt;m&amp;&amp;nc&gt;=0&amp;&amp;nc&lt;n&amp;&amp;!visited[nr][nc]&amp;&amp;h[nr][nc]&gt;=h[c[0]][c[1]]) {
-                visited[nr][nc]=true; q.offer(new int[]{nr,nc});
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">bfs</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] h, Queue&lt;<span class="hljs-type">int</span>[]&gt; q, <span class="hljs-type">boolean</span>[][] visited, <span class="hljs-type">int</span> m, <span class="hljs-type">int</span> n)</span> {
+    <span class="hljs-type">int</span>[][] dirs={{<span class="hljs-number">1</span>,<span class="hljs-number">0</span>},{-<span class="hljs-number">1</span>,<span class="hljs-number">0</span>},{<span class="hljs-number">0</span>,<span class="hljs-number">1</span>},{<span class="hljs-number">0</span>,-<span class="hljs-number">1</span>}};
+    <span class="hljs-keyword">while</span> (!q.isEmpty()) {
+        <span class="hljs-type">int</span>[] c=q.poll();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] d:dirs) {
+            <span class="hljs-type">int</span> nr=c[<span class="hljs-number">0</span>]+d[<span class="hljs-number">0</span>],nc=c[<span class="hljs-number">1</span>]+d[<span class="hljs-number">1</span>];
+            <span class="hljs-keyword">if</span> (nr&gt;=<span class="hljs-number">0</span>&amp;&amp;nr&lt;m&amp;&amp;nc&gt;=<span class="hljs-number">0</span>&amp;&amp;nc&lt;n&amp;&amp;!visited[nr][nc]&amp;&amp;h[nr][nc]&gt;=h[c[<span class="hljs-number">0</span>]][c[<span class="hljs-number">1</span>]]) {
+                visited[nr][nc]=<span class="hljs-literal">true</span>; q.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{nr,nc});
             }
         }
     }
@@ -3317,47 +3329,47 @@ private void bfs(int[][] h, Queue&lt;int[]&gt; q, boolean[][] visited, int m, in
 <blockquote>
 <p>BFS from <code>n</code> toward <code>0</code>; each level subtracts a perfect square. First time we reach 0 = minimum count.</p>
 </blockquote>
-<pre><code class="language-java">// LC 279 - Perfect Squares
-// IDEA: BFS — treat each number as a node, edges = subtracting a perfect square
-// time = O(N * sqrt(N)), space = O(N)
-public int numSquares(int n) {
-    // Pre-calculate perfect squares up to n
-    List&lt;Integer&gt; squares = new ArrayList&lt;&gt;();
-    for (int i = 1; i * i &lt;= n; i++) {
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 279 - Perfect Squares</span>
+<span class="hljs-comment">// IDEA: BFS — treat each number as a node, edges = subtracting a perfect square</span>
+<span class="hljs-comment">// time = O(N * sqrt(N)), space = O(N)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">numSquares</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> {
+    <span class="hljs-comment">// Pre-calculate perfect squares up to n</span>
+    List&lt;Integer&gt; squares = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i * i &lt;= n; i++) {
         squares.add(i * i);
     }
 
-    Queue&lt;Integer&gt; queue = new LinkedList&lt;&gt;();
-    Set&lt;Integer&gt; visited = new HashSet&lt;&gt;();
+    Queue&lt;Integer&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+    Set&lt;Integer&gt; visited = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
 
     queue.offer(n);
     visited.add(n);
 
-    int level = 0;
+    <span class="hljs-type">int</span> <span class="hljs-variable">level</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
 
-    while (!queue.isEmpty()) {
+    <span class="hljs-keyword">while</span> (!queue.isEmpty()) {
         level++;
-        int size = queue.size();
+        <span class="hljs-type">int</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> queue.size();
 
-        for (int i = 0; i &lt; size; i++) {
-            int remaining = queue.poll();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; size; i++) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">remaining</span> <span class="hljs-operator">=</span> queue.poll();
 
-            for (int square : squares) {
-                int nextVal = remaining - square;
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> square : squares) {
+                <span class="hljs-type">int</span> <span class="hljs-variable">nextVal</span> <span class="hljs-operator">=</span> remaining - square;
 
-                if (nextVal == 0)
-                    return level; // Found shortest path
-                if (nextVal &lt; 0)
-                    break; // Squares are sorted, so we can stop
+                <span class="hljs-keyword">if</span> (nextVal == <span class="hljs-number">0</span>)
+                    <span class="hljs-keyword">return</span> level; <span class="hljs-comment">// Found shortest path</span>
+                <span class="hljs-keyword">if</span> (nextVal &lt; <span class="hljs-number">0</span>)
+                    <span class="hljs-keyword">break</span>; <span class="hljs-comment">// Squares are sorted, so we can stop</span>
 
-                if (!visited.contains(nextVal)) {
+                <span class="hljs-keyword">if</span> (!visited.contains(nextVal)) {
                     visited.add(nextVal);
                     queue.offer(nextVal);
                 }
             }
         }
     }
-    return -1;
+    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
 }
 </code></pre>
 

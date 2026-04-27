@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,13 +20,24 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
     document.querySelectorAll('pre code').forEach(function(codeEl) {
       var pre = codeEl.parentElement;
       var lang = '';
       var cls = codeEl.className || '';
       var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
       if (m) lang = m[1];
+
+      // Add line numbers
+      var lines = codeEl.innerHTML.split('
+');
+      if (lines[lines.length - 1] === '') lines.pop();
+      var numbered = lines.map(function(line, i) {
+        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
+      }).join('
+');
+      codeEl.innerHTML = numbered;
+      codeEl.classList.add('hljs-ln');
+
       var wrapper = document.createElement('div');
       wrapper.className = 'code-block-wrapper';
       pre.parentNode.insertBefore(wrapper, pre);
@@ -45,7 +55,9 @@
       btn.className = 'copy-btn';
       btn.textContent = 'Copy';
       btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
+');
+        navigator.clipboard.writeText(text).then(function() {
           btn.textContent = 'Copied!';
           btn.classList.add('copied');
           setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
@@ -127,9 +139,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Queue</span></nav>
       <div class="cheatsheet-header">
         <h1>Queue</h1>
-        <span class="last-updated">Last updated: Sep 2, 2025</span>
+        <span class="last-updated">Last updated: Apr 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#implementation-options">Implementation Options</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#pattern-1-bfs-level-order-traversal">Pattern 1: BFS &amp; Level-Order Traversal</a></li><li class="toc-sub"><a href="#pattern-2-sliding-window-with-queue">Pattern 2: Sliding Window with Queue</a></li><li class="toc-sub"><a href="#pattern-3-design-queue-variants">Pattern 3: Design Queue Variants</a></li><li class="toc-sub"><a href="#pattern-4-monotonic-queue">Pattern 4: Monotonic Queue</a></li><li class="toc-sub"><a href="#pattern-5-stream-processing">Pattern 5: Stream Processing</a></li><li class="toc-sub"><a href="#pattern-6-task-scheduling-simulation">Pattern 6: Task Scheduling &amp; Simulation</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#template-1-basic-queue-operations">Template 1: Basic Queue Operations</a></li><li class="toc-sub"><a href="#template-2-level-order-bfs-pattern">Template 2: Level-Order BFS Pattern</a></li><li class="toc-sub"><a href="#template-3-circular-queue-pattern">Template 3: Circular Queue Pattern</a></li><li class="toc-sub"><a href="#template-4-monotonic-queue-pattern">Template 4: Monotonic Queue Pattern</a></li><li class="toc-sub"><a href="#template-5-queue-using-stacks-pattern">Template 5: Queue Using Stacks Pattern</a></li><li class="toc-sub"><a href="#template-6-stream-processing-pattern">Template 6: Stream Processing Pattern</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-tables">Pattern-Based Problem Tables</a></li><li><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li><a href="#basic-operations-reference">Basic Operations Reference</a></li><li class="toc-sub"><a href="#python-collections-deque">Python collections.deque</a></li><li class="toc-sub"><a href="#java-queue-deque-operations">Java Queue &amp; Deque Operations</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#advanced-techniques">Advanced Techniques</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-sliding-window-maximum">2-1) Sliding Window Maximum</a></li><li class="toc-sub"><a href="#2-2-design-circular-queue">2-2) Design Circular Queue</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#implementation-options">Implementation Options</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#pattern-1-bfs-level-order-traversal">Pattern 1: BFS &amp; Level-Order Traversal</a></li><li class="toc-sub"><a href="#pattern-2-sliding-window-with-queue">Pattern 2: Sliding Window with Queue</a></li><li class="toc-sub"><a href="#pattern-3-design-queue-variants">Pattern 3: Design Queue Variants</a></li><li class="toc-sub"><a href="#pattern-4-monotonic-queue">Pattern 4: Monotonic Queue</a></li><li class="toc-sub"><a href="#pattern-5-stream-processing">Pattern 5: Stream Processing</a></li><li class="toc-sub"><a href="#pattern-6-task-scheduling-simulation">Pattern 6: Task Scheduling &amp; Simulation</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#template-1-basic-queue-operations">Template 1: Basic Queue Operations</a></li><li class="toc-sub"><a href="#template-2-level-order-bfs-pattern">Template 2: Level-Order BFS Pattern</a></li><li class="toc-sub"><a href="#template-3-circular-queue-pattern">Template 3: Circular Queue Pattern</a></li><li class="toc-sub"><a href="#template-4-monotonic-queue-pattern">Template 4: Monotonic Queue Pattern</a></li><li class="toc-sub"><a href="#template-5-queue-using-stacks-pattern">Template 5: Queue Using Stacks Pattern</a></li><li class="toc-sub"><a href="#template-6-stream-processing-pattern">Template 6: Stream Processing Pattern</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-tables">Pattern-Based Problem Tables</a></li><li><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li><a href="#basic-operations-reference">Basic Operations Reference</a></li><li class="toc-sub"><a href="#python-collections-deque">Python collections.deque</a></li><li class="toc-sub"><a href="#java-queue-deque-operations">Java Queue &amp; Deque Operations</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#advanced-techniques">Advanced Techniques</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-sliding-window-maximum-lc-239-monotonic-deque">2-1) Sliding Window Maximum (LC 239) — Monotonic Deque</a></li><li class="toc-sub"><a href="#2-2-design-circular-queue-lc-622-array-with-head-count">2-2) Design Circular Queue (LC 622) — Array with Head/Count</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="queue-data-structure" tabindex="-1"><a class="header-anchor" href="#queue-data-structure"><span>Queue Data Structure</span></a></h1>
 <p><img src="../doc/pic/queue2.png"></p></p>
@@ -258,150 +270,150 @@
 </tbody>
 </table>
 <h3 id="template-1-basic-queue-operations" tabindex="-1"><a class="header-anchor" href="#template-1-basic-queue-operations"><span>Template 1: Basic Queue Operations</span></a></h3>
-<pre><code class="language-python"># Python - Using collections.deque (recommended)
-from collections import deque
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Using collections.deque (recommended)</span>
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
 
-class Queue:
-    def __init__(self):
-        self.queue = deque()
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Queue</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.queue = deque()
     
-    def enqueue(self, item):
-        self.queue.append(item)  # Add to rear
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">enqueue</span>(<span class="hljs-params">self, item</span>):
+        <span class="hljs-variable language_">self</span>.queue.append(item)  <span class="hljs-comment"># Add to rear</span>
     
-    def dequeue(self):
-        if not self.is_empty():
-            return self.queue.popleft()  # Remove from front
-        return None
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dequeue</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-variable language_">self</span>.is_empty():
+            <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.queue.popleft()  <span class="hljs-comment"># Remove from front</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
     
-    def front(self):
-        if not self.is_empty():
-            return self.queue[0]
-        return None
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">front</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-variable language_">self</span>.is_empty():
+            <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.queue[<span class="hljs-number">0</span>]
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
     
-    def is_empty(self):
-        return len(self.queue) == 0
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">is_empty</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.queue) == <span class="hljs-number">0</span>
     
-    def size(self):
-        return len(self.queue)
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">size</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.queue)
 
-# Using list (less efficient for dequeue)
-class SimpleQueue:
-    def __init__(self):
-        self.queue = []
+<span class="hljs-comment"># Using list (less efficient for dequeue)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">SimpleQueue</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.queue = []
     
-    def enqueue(self, item):
-        self.queue.append(item)
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">enqueue</span>(<span class="hljs-params">self, item</span>):
+        <span class="hljs-variable language_">self</span>.queue.append(item)
     
-    def dequeue(self):
-        if self.queue:
-            return self.queue.pop(0)  # O(n) operation
-        return None
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dequeue</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.queue:
+            <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.queue.pop(<span class="hljs-number">0</span>)  <span class="hljs-comment"># O(n) operation</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
 </code></pre>
-<pre><code class="language-java">// Java - Using LinkedList
-import java.util.*;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Using LinkedList</span>
+<span class="hljs-keyword">import</span> java.util.*;
 
-class Queue&lt;T&gt; {
-    private LinkedList&lt;T&gt; queue;
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Queue</span>&lt;T&gt; {
+    <span class="hljs-keyword">private</span> LinkedList&lt;T&gt; queue;
     
-    public Queue() {
-        queue = new LinkedList&lt;&gt;();
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">Queue</span><span class="hljs-params">()</span> {
+        queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
     }
     
-    public void enqueue(T item) {
-        queue.addLast(item);  // Add to rear
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">enqueue</span><span class="hljs-params">(T item)</span> {
+        queue.addLast(item);  <span class="hljs-comment">// Add to rear</span>
     }
     
-    public T dequeue() {
-        if (!isEmpty()) {
-            return queue.removeFirst();  // Remove from front
+    <span class="hljs-keyword">public</span> T <span class="hljs-title function_">dequeue</span><span class="hljs-params">()</span> {
+        <span class="hljs-keyword">if</span> (!isEmpty()) {
+            <span class="hljs-keyword">return</span> queue.removeFirst();  <span class="hljs-comment">// Remove from front</span>
         }
-        return null;
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
     }
     
-    public T front() {
-        if (!isEmpty()) {
-            return queue.getFirst();
+    <span class="hljs-keyword">public</span> T <span class="hljs-title function_">front</span><span class="hljs-params">()</span> {
+        <span class="hljs-keyword">if</span> (!isEmpty()) {
+            <span class="hljs-keyword">return</span> queue.getFirst();
         }
-        return null;
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
     }
     
-    public boolean isEmpty() {
-        return queue.isEmpty();
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isEmpty</span><span class="hljs-params">()</span> {
+        <span class="hljs-keyword">return</span> queue.isEmpty();
     }
     
-    public int size() {
-        return queue.size();
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">size</span><span class="hljs-params">()</span> {
+        <span class="hljs-keyword">return</span> queue.size();
     }
 }
 
-// Using Java Queue interface
-Queue&lt;Integer&gt; queue = new LinkedList&lt;&gt;();
-queue.offer(1);  // enqueue
-queue.poll();    // dequeue
-queue.peek();    // front
+<span class="hljs-comment">// Using Java Queue interface</span>
+Queue&lt;Integer&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+queue.offer(<span class="hljs-number">1</span>);  <span class="hljs-comment">// enqueue</span>
+queue.poll();    <span class="hljs-comment">// dequeue</span>
+queue.peek();    <span class="hljs-comment">// front</span>
 </code></pre>
 <h3 id="template-2-level-order-bfs-pattern" tabindex="-1"><a class="header-anchor" href="#template-2-level-order-bfs-pattern"><span>Template 2: Level-Order BFS Pattern</span></a></h3>
-<pre><code class="language-python"># Python - Tree level-order traversal
-def levelOrder(root):
-    if not root:
-        return []
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Tree level-order traversal</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">levelOrder</span>(<span class="hljs-params">root</span>):
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:
+        <span class="hljs-keyword">return</span> []
     
     result = []
     queue = deque([root])
     
-    while queue:
-        level_size = len(queue)
+    <span class="hljs-keyword">while</span> queue:
+        level_size = <span class="hljs-built_in">len</span>(queue)
         current_level = []
         
-        # Process all nodes at current level
-        for _ in range(level_size):
+        <span class="hljs-comment"># Process all nodes at current level</span>
+        <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(level_size):
             node = queue.popleft()
             current_level.append(node.val)
             
-            if node.left:
+            <span class="hljs-keyword">if</span> node.left:
                 queue.append(node.left)
-            if node.right:
+            <span class="hljs-keyword">if</span> node.right:
                 queue.append(node.right)
         
         result.append(current_level)
     
-    return result
+    <span class="hljs-keyword">return</span> result
 
-# Graph BFS with distance
-def bfs(graph, start):
-    visited = set([start])
-    queue = deque([(start, 0)])  # (node, distance)
+<span class="hljs-comment"># Graph BFS with distance</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">bfs</span>(<span class="hljs-params">graph, start</span>):
+    visited = <span class="hljs-built_in">set</span>([start])
+    queue = deque([(start, <span class="hljs-number">0</span>)])  <span class="hljs-comment"># (node, distance)</span>
     
-    while queue:
+    <span class="hljs-keyword">while</span> queue:
         node, dist = queue.popleft()
         
-        for neighbor in graph[node]:
-            if neighbor not in visited:
+        <span class="hljs-keyword">for</span> neighbor <span class="hljs-keyword">in</span> graph[node]:
+            <span class="hljs-keyword">if</span> neighbor <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> visited:
                 visited.add(neighbor)
-                queue.append((neighbor, dist + 1))
+                queue.append((neighbor, dist + <span class="hljs-number">1</span>))
     
-    return visited
+    <span class="hljs-keyword">return</span> visited
 </code></pre>
-<pre><code class="language-java">// Java - Level-order traversal
-public List&lt;List&lt;Integer&gt;&gt; levelOrder(TreeNode root) {
-    List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
-    if (root == null) return result;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Level-order traversal</span>
+<span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">levelOrder</span><span class="hljs-params">(TreeNode root)</span> {
+    List&lt;List&lt;Integer&gt;&gt; result = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> result;
     
-    Queue&lt;TreeNode&gt; queue = new LinkedList&lt;&gt;();
+    Queue&lt;TreeNode&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
     queue.offer(root);
     
-    while (!queue.isEmpty()) {
-        int levelSize = queue.size();
-        List&lt;Integer&gt; currentLevel = new ArrayList&lt;&gt;();
+    <span class="hljs-keyword">while</span> (!queue.isEmpty()) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">levelSize</span> <span class="hljs-operator">=</span> queue.size();
+        List&lt;Integer&gt; currentLevel = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
         
-        for (int i = 0; i &lt; levelSize; i++) {
-            TreeNode node = queue.poll();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; levelSize; i++) {
+            <span class="hljs-type">TreeNode</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> queue.poll();
             currentLevel.add(node.val);
             
-            if (node.left != null) {
+            <span class="hljs-keyword">if</span> (node.left != <span class="hljs-literal">null</span>) {
                 queue.offer(node.left);
             }
-            if (node.right != null) {
+            <span class="hljs-keyword">if</span> (node.right != <span class="hljs-literal">null</span>) {
                 queue.offer(node.right);
             }
         }
@@ -409,316 +421,316 @@ public List&lt;List&lt;Integer&gt;&gt; levelOrder(TreeNode root) {
         result.add(currentLevel);
     }
     
-    return result;
+    <span class="hljs-keyword">return</span> result;
 }
 </code></pre>
 <h3 id="template-3-circular-queue-pattern" tabindex="-1"><a class="header-anchor" href="#template-3-circular-queue-pattern"><span>Template 3: Circular Queue Pattern</span></a></h3>
-<pre><code class="language-python"># Python - Fixed size circular queue
-class CircularQueue:
-    def __init__(self, k):
-        self.queue = [0] * k
-        self.capacity = k
-        self.head = 0
-        self.count = 0
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Fixed size circular queue</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">CircularQueue</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, k</span>):
+        <span class="hljs-variable language_">self</span>.queue = [<span class="hljs-number">0</span>] * k
+        <span class="hljs-variable language_">self</span>.capacity = k
+        <span class="hljs-variable language_">self</span>.head = <span class="hljs-number">0</span>
+        <span class="hljs-variable language_">self</span>.count = <span class="hljs-number">0</span>
     
-    def enqueue(self, value):
-        if self.is_full():
-            return False
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">enqueue</span>(<span class="hljs-params">self, value</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.is_full():
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
         
-        # Calculate tail position
-        tail = (self.head + self.count) % self.capacity
-        self.queue[tail] = value
-        self.count += 1
-        return True
+        <span class="hljs-comment"># Calculate tail position</span>
+        tail = (<span class="hljs-variable language_">self</span>.head + <span class="hljs-variable language_">self</span>.count) % <span class="hljs-variable language_">self</span>.capacity
+        <span class="hljs-variable language_">self</span>.queue[tail] = value
+        <span class="hljs-variable language_">self</span>.count += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
     
-    def dequeue(self):
-        if self.is_empty():
-            return False
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dequeue</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.is_empty():
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
         
-        self.head = (self.head + 1) % self.capacity
-        self.count -= 1
-        return True
+        <span class="hljs-variable language_">self</span>.head = (<span class="hljs-variable language_">self</span>.head + <span class="hljs-number">1</span>) % <span class="hljs-variable language_">self</span>.capacity
+        <span class="hljs-variable language_">self</span>.count -= <span class="hljs-number">1</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
     
-    def front(self):
-        if self.is_empty():
-            return -1
-        return self.queue[self.head]
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">front</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.is_empty():
+            <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.queue[<span class="hljs-variable language_">self</span>.head]
     
-    def rear(self):
-        if self.is_empty():
-            return -1
-        tail = (self.head + self.count - 1) % self.capacity
-        return self.queue[tail]
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">rear</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.is_empty():
+            <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
+        tail = (<span class="hljs-variable language_">self</span>.head + <span class="hljs-variable language_">self</span>.count - <span class="hljs-number">1</span>) % <span class="hljs-variable language_">self</span>.capacity
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.queue[tail]
     
-    def is_empty(self):
-        return self.count == 0
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">is_empty</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.count == <span class="hljs-number">0</span>
     
-    def is_full(self):
-        return self.count == self.capacity
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">is_full</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.count == <span class="hljs-variable language_">self</span>.capacity
 </code></pre>
-<pre><code class="language-java">// Java - Circular Queue
-class CircularQueue {
-    private int[] queue;
-    private int head;
-    private int count;
-    private int capacity;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Circular Queue</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">CircularQueue</span> {
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span>[] queue;
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> head;
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> count;
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> capacity;
     
-    public CircularQueue(int k) {
-        queue = new int[k];
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">CircularQueue</span><span class="hljs-params">(<span class="hljs-type">int</span> k)</span> {
+        queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[k];
         capacity = k;
-        head = 0;
-        count = 0;
+        head = <span class="hljs-number">0</span>;
+        count = <span class="hljs-number">0</span>;
     }
     
-    public boolean enqueue(int value) {
-        if (isFull()) return false;
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">enqueue</span><span class="hljs-params">(<span class="hljs-type">int</span> value)</span> {
+        <span class="hljs-keyword">if</span> (isFull()) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
         
-        int tail = (head + count) % capacity;
+        <span class="hljs-type">int</span> <span class="hljs-variable">tail</span> <span class="hljs-operator">=</span> (head + count) % capacity;
         queue[tail] = value;
         count++;
-        return true;
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
     }
     
-    public boolean dequeue() {
-        if (isEmpty()) return false;
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">dequeue</span><span class="hljs-params">()</span> {
+        <span class="hljs-keyword">if</span> (isEmpty()) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
         
-        head = (head + 1) % capacity;
+        head = (head + <span class="hljs-number">1</span>) % capacity;
         count--;
-        return true;
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
     }
     
-    public int front() {
-        if (isEmpty()) return -1;
-        return queue[head];
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">front</span><span class="hljs-params">()</span> {
+        <span class="hljs-keyword">if</span> (isEmpty()) <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+        <span class="hljs-keyword">return</span> queue[head];
     }
     
-    public int rear() {
-        if (isEmpty()) return -1;
-        int tail = (head + count - 1) % capacity;
-        return queue[tail];
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">rear</span><span class="hljs-params">()</span> {
+        <span class="hljs-keyword">if</span> (isEmpty()) <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+        <span class="hljs-type">int</span> <span class="hljs-variable">tail</span> <span class="hljs-operator">=</span> (head + count - <span class="hljs-number">1</span>) % capacity;
+        <span class="hljs-keyword">return</span> queue[tail];
     }
     
-    public boolean isEmpty() {
-        return count == 0;
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isEmpty</span><span class="hljs-params">()</span> {
+        <span class="hljs-keyword">return</span> count == <span class="hljs-number">0</span>;
     }
     
-    public boolean isFull() {
-        return count == capacity;
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isFull</span><span class="hljs-params">()</span> {
+        <span class="hljs-keyword">return</span> count == capacity;
     }
 }
 </code></pre>
 <h3 id="template-4-monotonic-queue-pattern" tabindex="-1"><a class="header-anchor" href="#template-4-monotonic-queue-pattern"><span>Template 4: Monotonic Queue Pattern</span></a></h3>
-<pre><code class="language-python"># Python - Monotonic decreasing queue for sliding window maximum
-class MonotonicQueue:
-    def __init__(self):
-        self.queue = deque()
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Monotonic decreasing queue for sliding window maximum</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MonotonicQueue</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.queue = deque()
     
-    def push(self, val):
-        # Remove smaller elements from rear
-        while self.queue and self.queue[-1] &lt; val:
-            self.queue.pop()
-        self.queue.append(val)
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">push</span>(<span class="hljs-params">self, val</span>):
+        <span class="hljs-comment"># Remove smaller elements from rear</span>
+        <span class="hljs-keyword">while</span> <span class="hljs-variable language_">self</span>.queue <span class="hljs-keyword">and</span> <span class="hljs-variable language_">self</span>.queue[-<span class="hljs-number">1</span>] &lt; val:
+            <span class="hljs-variable language_">self</span>.queue.pop()
+        <span class="hljs-variable language_">self</span>.queue.append(val)
     
-    def pop(self, val):
-        # Remove if it's the front element
-        if self.queue and self.queue[0] == val:
-            self.queue.popleft()
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">pop</span>(<span class="hljs-params">self, val</span>):
+        <span class="hljs-comment"># Remove if it&#x27;s the front element</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.queue <span class="hljs-keyword">and</span> <span class="hljs-variable language_">self</span>.queue[<span class="hljs-number">0</span>] == val:
+            <span class="hljs-variable language_">self</span>.queue.popleft()
     
-    def max(self):
-        # Front is always the maximum
-        return self.queue[0] if self.queue else None
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">max</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-comment"># Front is always the maximum</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.queue[<span class="hljs-number">0</span>] <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.queue <span class="hljs-keyword">else</span> <span class="hljs-literal">None</span>
 
-# Sliding window maximum
-def maxSlidingWindow(nums, k):
-    from collections import deque
+<span class="hljs-comment"># Sliding window maximum</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">maxSlidingWindow</span>(<span class="hljs-params">nums, k</span>):
+    <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
     
-    dq = deque()  # Store indices
+    dq = deque()  <span class="hljs-comment"># Store indices</span>
     result = []
     
-    for i in range(len(nums)):
-        # Remove indices outside window
-        while dq and dq[0] &lt;= i - k:
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(nums)):
+        <span class="hljs-comment"># Remove indices outside window</span>
+        <span class="hljs-keyword">while</span> dq <span class="hljs-keyword">and</span> dq[<span class="hljs-number">0</span>] &lt;= i - k:
             dq.popleft()
         
-        # Remove smaller elements
-        while dq and nums[dq[-1]] &lt;= nums[i]:
+        <span class="hljs-comment"># Remove smaller elements</span>
+        <span class="hljs-keyword">while</span> dq <span class="hljs-keyword">and</span> nums[dq[-<span class="hljs-number">1</span>]] &lt;= nums[i]:
             dq.pop()
         
         dq.append(i)
         
-        # Add to result after first window
-        if i &gt;= k - 1:
-            result.append(nums[dq[0]])
+        <span class="hljs-comment"># Add to result after first window</span>
+        <span class="hljs-keyword">if</span> i &gt;= k - <span class="hljs-number">1</span>:
+            result.append(nums[dq[<span class="hljs-number">0</span>]])
     
-    return result
+    <span class="hljs-keyword">return</span> result
 </code></pre>
-<pre><code class="language-java">// Java - Monotonic Queue
-class MonotonicQueue {
-    private LinkedList&lt;Integer&gt; queue;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Monotonic Queue</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MonotonicQueue</span> {
+    <span class="hljs-keyword">private</span> LinkedList&lt;Integer&gt; queue;
     
-    public MonotonicQueue() {
-        queue = new LinkedList&lt;&gt;();
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">MonotonicQueue</span><span class="hljs-params">()</span> {
+        queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
     }
     
-    public void push(int val) {
-        // Remove smaller elements from rear
-        while (!queue.isEmpty() &amp;&amp; queue.getLast() &lt; val) {
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">push</span><span class="hljs-params">(<span class="hljs-type">int</span> val)</span> {
+        <span class="hljs-comment">// Remove smaller elements from rear</span>
+        <span class="hljs-keyword">while</span> (!queue.isEmpty() &amp;&amp; queue.getLast() &lt; val) {
             queue.pollLast();
         }
         queue.addLast(val);
     }
     
-    public void pop(int val) {
-        // Remove if it's the front element
-        if (!queue.isEmpty() &amp;&amp; queue.getFirst() == val) {
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">pop</span><span class="hljs-params">(<span class="hljs-type">int</span> val)</span> {
+        <span class="hljs-comment">// Remove if it&#x27;s the front element</span>
+        <span class="hljs-keyword">if</span> (!queue.isEmpty() &amp;&amp; queue.getFirst() == val) {
             queue.pollFirst();
         }
     }
     
-    public int max() {
-        return queue.isEmpty() ? -1 : queue.getFirst();
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">max</span><span class="hljs-params">()</span> {
+        <span class="hljs-keyword">return</span> queue.isEmpty() ? -<span class="hljs-number">1</span> : queue.getFirst();
     }
 }
 
-// Sliding window maximum
-public int[] maxSlidingWindow(int[] nums, int k) {
-    Deque&lt;Integer&gt; dq = new LinkedList&lt;&gt;();
-    int[] result = new int[nums.length - k + 1];
-    int idx = 0;
+<span class="hljs-comment">// Sliding window maximum</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] maxSlidingWindow(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k) {
+    Deque&lt;Integer&gt; dq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+    <span class="hljs-type">int</span>[] result = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[nums.length - k + <span class="hljs-number">1</span>];
+    <span class="hljs-type">int</span> <span class="hljs-variable">idx</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
     
-    for (int i = 0; i &lt; nums.length; i++) {
-        // Remove indices outside window
-        while (!dq.isEmpty() &amp;&amp; dq.peekFirst() &lt;= i - k) {
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; nums.length; i++) {
+        <span class="hljs-comment">// Remove indices outside window</span>
+        <span class="hljs-keyword">while</span> (!dq.isEmpty() &amp;&amp; dq.peekFirst() &lt;= i - k) {
             dq.pollFirst();
         }
         
-        // Remove smaller elements
-        while (!dq.isEmpty() &amp;&amp; nums[dq.peekLast()] &lt;= nums[i]) {
+        <span class="hljs-comment">// Remove smaller elements</span>
+        <span class="hljs-keyword">while</span> (!dq.isEmpty() &amp;&amp; nums[dq.peekLast()] &lt;= nums[i]) {
             dq.pollLast();
         }
         
         dq.offerLast(i);
         
-        // Add to result after first window
-        if (i &gt;= k - 1) {
+        <span class="hljs-comment">// Add to result after first window</span>
+        <span class="hljs-keyword">if</span> (i &gt;= k - <span class="hljs-number">1</span>) {
             result[idx++] = nums[dq.peekFirst()];
         }
     }
     
-    return result;
+    <span class="hljs-keyword">return</span> result;
 }
 </code></pre>
 <h3 id="template-5-queue-using-stacks-pattern" tabindex="-1"><a class="header-anchor" href="#template-5-queue-using-stacks-pattern"><span>Template 5: Queue Using Stacks Pattern</span></a></h3>
-<pre><code class="language-python"># Python - Implement queue using two stacks
-class MyQueue:
-    def __init__(self):
-        self.in_stack = []   # For enqueue
-        self.out_stack = []  # For dequeue
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Implement queue using two stacks</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MyQueue</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.in_stack = []   <span class="hljs-comment"># For enqueue</span>
+        <span class="hljs-variable language_">self</span>.out_stack = []  <span class="hljs-comment"># For dequeue</span>
     
-    def push(self, x):
-        self.in_stack.append(x)
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">push</span>(<span class="hljs-params">self, x</span>):
+        <span class="hljs-variable language_">self</span>.in_stack.append(x)
     
-    def pop(self):
-        self.peek()  # Ensure out_stack has elements
-        return self.out_stack.pop()
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">pop</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.peek()  <span class="hljs-comment"># Ensure out_stack has elements</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.out_stack.pop()
     
-    def peek(self):
-        if not self.out_stack:
-            # Transfer all from in_stack to out_stack
-            while self.in_stack:
-                self.out_stack.append(self.in_stack.pop())
-        return self.out_stack[-1] if self.out_stack else None
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">peek</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-variable language_">self</span>.out_stack:
+            <span class="hljs-comment"># Transfer all from in_stack to out_stack</span>
+            <span class="hljs-keyword">while</span> <span class="hljs-variable language_">self</span>.in_stack:
+                <span class="hljs-variable language_">self</span>.out_stack.append(<span class="hljs-variable language_">self</span>.in_stack.pop())
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.out_stack[-<span class="hljs-number">1</span>] <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.out_stack <span class="hljs-keyword">else</span> <span class="hljs-literal">None</span>
     
-    def empty(self):
-        return len(self.in_stack) == 0 and len(self.out_stack) == 0
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">empty</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.in_stack) == <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.out_stack) == <span class="hljs-number">0</span>
 </code></pre>
-<pre><code class="language-java">// Java - Queue using stacks
-class MyQueue {
-    private Stack&lt;Integer&gt; inStack;
-    private Stack&lt;Integer&gt; outStack;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Queue using stacks</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MyQueue</span> {
+    <span class="hljs-keyword">private</span> Stack&lt;Integer&gt; inStack;
+    <span class="hljs-keyword">private</span> Stack&lt;Integer&gt; outStack;
     
-    public MyQueue() {
-        inStack = new Stack&lt;&gt;();
-        outStack = new Stack&lt;&gt;();
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">MyQueue</span><span class="hljs-params">()</span> {
+        inStack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;();
+        outStack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;();
     }
     
-    public void push(int x) {
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">push</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> {
         inStack.push(x);
     }
     
-    public int pop() {
-        peek();  // Ensure outStack has elements
-        return outStack.pop();
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">pop</span><span class="hljs-params">()</span> {
+        peek();  <span class="hljs-comment">// Ensure outStack has elements</span>
+        <span class="hljs-keyword">return</span> outStack.pop();
     }
     
-    public int peek() {
-        if (outStack.isEmpty()) {
-            // Transfer all from inStack to outStack
-            while (!inStack.isEmpty()) {
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">peek</span><span class="hljs-params">()</span> {
+        <span class="hljs-keyword">if</span> (outStack.isEmpty()) {
+            <span class="hljs-comment">// Transfer all from inStack to outStack</span>
+            <span class="hljs-keyword">while</span> (!inStack.isEmpty()) {
                 outStack.push(inStack.pop());
             }
         }
-        return outStack.peek();
+        <span class="hljs-keyword">return</span> outStack.peek();
     }
     
-    public boolean empty() {
-        return inStack.isEmpty() &amp;&amp; outStack.isEmpty();
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">empty</span><span class="hljs-params">()</span> {
+        <span class="hljs-keyword">return</span> inStack.isEmpty() &amp;&amp; outStack.isEmpty();
     }
 }
 </code></pre>
 <h3 id="template-6-stream-processing-pattern" tabindex="-1"><a class="header-anchor" href="#template-6-stream-processing-pattern"><span>Template 6: Stream Processing Pattern</span></a></h3>
-<pre><code class="language-python"># Python - Moving average from data stream
-class MovingAverage:
-    def __init__(self, size):
-        self.queue = deque()
-        self.window_sum = 0
-        self.size = size
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python - Moving average from data stream</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MovingAverage</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, size</span>):
+        <span class="hljs-variable language_">self</span>.queue = deque()
+        <span class="hljs-variable language_">self</span>.window_sum = <span class="hljs-number">0</span>
+        <span class="hljs-variable language_">self</span>.size = size
     
-    def next(self, val):
-        self.queue.append(val)
-        self.window_sum += val
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">next</span>(<span class="hljs-params">self, val</span>):
+        <span class="hljs-variable language_">self</span>.queue.append(val)
+        <span class="hljs-variable language_">self</span>.window_sum += val
         
-        if len(self.queue) &gt; self.size:
-            removed = self.queue.popleft()
-            self.window_sum -= removed
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.queue) &gt; <span class="hljs-variable language_">self</span>.size:
+            removed = <span class="hljs-variable language_">self</span>.queue.popleft()
+            <span class="hljs-variable language_">self</span>.window_sum -= removed
         
-        return self.window_sum / len(self.queue)
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.window_sum / <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.queue)
 
-# Hit counter for last 5 minutes
-class HitCounter:
-    def __init__(self):
-        self.queue = deque()
+<span class="hljs-comment"># Hit counter for last 5 minutes</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">HitCounter</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.queue = deque()
     
-    def hit(self, timestamp):
-        self.queue.append(timestamp)
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">hit</span>(<span class="hljs-params">self, timestamp</span>):
+        <span class="hljs-variable language_">self</span>.queue.append(timestamp)
     
-    def getHits(self, timestamp):
-        # Remove hits older than 5 minutes (300 seconds)
-        while self.queue and self.queue[0] &lt;= timestamp - 300:
-            self.queue.popleft()
-        return len(self.queue)
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">getHits</span>(<span class="hljs-params">self, timestamp</span>):
+        <span class="hljs-comment"># Remove hits older than 5 minutes (300 seconds)</span>
+        <span class="hljs-keyword">while</span> <span class="hljs-variable language_">self</span>.queue <span class="hljs-keyword">and</span> <span class="hljs-variable language_">self</span>.queue[<span class="hljs-number">0</span>] &lt;= timestamp - <span class="hljs-number">300</span>:
+            <span class="hljs-variable language_">self</span>.queue.popleft()
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.queue)
 </code></pre>
-<pre><code class="language-java">// Java - Moving average
-class MovingAverage {
-    private Queue&lt;Integer&gt; queue;
-    private int windowSum;
-    private int size;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java - Moving average</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MovingAverage</span> {
+    <span class="hljs-keyword">private</span> Queue&lt;Integer&gt; queue;
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> windowSum;
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> size;
     
-    public MovingAverage(int size) {
-        queue = new LinkedList&lt;&gt;();
-        this.size = size;
-        windowSum = 0;
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">MovingAverage</span><span class="hljs-params">(<span class="hljs-type">int</span> size)</span> {
+        queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+        <span class="hljs-built_in">this</span>.size = size;
+        windowSum = <span class="hljs-number">0</span>;
     }
     
-    public double next(int val) {
+    <span class="hljs-keyword">public</span> <span class="hljs-type">double</span> <span class="hljs-title function_">next</span><span class="hljs-params">(<span class="hljs-type">int</span> val)</span> {
         queue.offer(val);
         windowSum += val;
         
-        if (queue.size() &gt; size) {
+        <span class="hljs-keyword">if</span> (queue.size() &gt; size) {
             windowSum -= queue.poll();
         }
         
-        return (double) windowSum / queue.size();
+        <span class="hljs-keyword">return</span> (<span class="hljs-type">double</span>) windowSum / queue.size();
     }
 }
 </code></pre>
@@ -1043,7 +1055,7 @@ class MovingAverage {
 </tbody>
 </table>
 <h2 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h2>
-<pre><code>Problem Analysis Flowchart:
+<pre><code class="hljs">Problem Analysis Flowchart:
 
 1. Is it a tree/graph traversal problem?
    ├── YES → Use BFS with Queue
@@ -1078,77 +1090,77 @@ class MovingAverage {
 </code></pre>
 <h2 id="basic-operations-reference" tabindex="-1"><a class="header-anchor" href="#basic-operations-reference"><span>Basic Operations Reference</span></a></h2>
 <h3 id="python-collections-deque" tabindex="-1"><a class="header-anchor" href="#python-collections-deque"><span>Python collections.deque</span></a></h3>
-<pre><code class="language-python">from collections import deque
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
 
-# Create deque
+<span class="hljs-comment"># Create deque</span>
 dq = deque()
-dq = deque([1, 2, 3])
-dq = deque(maxlen=10)  # Fixed size
+dq = deque([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>])
+dq = deque(maxlen=<span class="hljs-number">10</span>)  <span class="hljs-comment"># Fixed size</span>
 
-# Add elements
-dq.append(4)       # Add to right: [1,2,3,4]
-dq.appendleft(0)   # Add to left: [0,1,2,3,4]
-dq.extend([5,6])   # Extend right: [0,1,2,3,4,5,6]
-dq.extendleft([-2,-1]) # Extend left: [-1,-2,0,1,2,3,4,5,6]
+<span class="hljs-comment"># Add elements</span>
+dq.append(<span class="hljs-number">4</span>)       <span class="hljs-comment"># Add to right: [1,2,3,4]</span>
+dq.appendleft(<span class="hljs-number">0</span>)   <span class="hljs-comment"># Add to left: [0,1,2,3,4]</span>
+dq.extend([<span class="hljs-number">5</span>,<span class="hljs-number">6</span>])   <span class="hljs-comment"># Extend right: [0,1,2,3,4,5,6]</span>
+dq.extendleft([-<span class="hljs-number">2</span>,-<span class="hljs-number">1</span>]) <span class="hljs-comment"># Extend left: [-1,-2,0,1,2,3,4,5,6]</span>
 
-# Remove elements
-val = dq.pop()     # Remove from right
-val = dq.popleft() # Remove from left
+<span class="hljs-comment"># Remove elements</span>
+val = dq.pop()     <span class="hljs-comment"># Remove from right</span>
+val = dq.popleft() <span class="hljs-comment"># Remove from left</span>
 
-# Access elements
-first = dq[0]      # Access by index
-last = dq[-1]      # Last element
+<span class="hljs-comment"># Access elements</span>
+first = dq[<span class="hljs-number">0</span>]      <span class="hljs-comment"># Access by index</span>
+last = dq[-<span class="hljs-number">1</span>]      <span class="hljs-comment"># Last element</span>
 
-# Other operations
-dq.rotate(2)       # Rotate right by 2
-dq.rotate(-1)      # Rotate left by 1
-dq.reverse()       # Reverse in-place
-dq.clear()         # Remove all elements
+<span class="hljs-comment"># Other operations</span>
+dq.rotate(<span class="hljs-number">2</span>)       <span class="hljs-comment"># Rotate right by 2</span>
+dq.rotate(-<span class="hljs-number">1</span>)      <span class="hljs-comment"># Rotate left by 1</span>
+dq.reverse()       <span class="hljs-comment"># Reverse in-place</span>
+dq.clear()         <span class="hljs-comment"># Remove all elements</span>
 
-# Check state
-size = len(dq)
-is_empty = len(dq) == 0
+<span class="hljs-comment"># Check state</span>
+size = <span class="hljs-built_in">len</span>(dq)
+is_empty = <span class="hljs-built_in">len</span>(dq) == <span class="hljs-number">0</span>
 count = dq.count(value)
 index = dq.index(value)
 </code></pre>
 <h3 id="java-queue-deque-operations" tabindex="-1"><a class="header-anchor" href="#java-queue-deque-operations"><span>Java Queue &amp; Deque Operations</span></a></h3>
-<pre><code class="language-java">import java.util.*;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">import</span> java.util.*;
 
-// Queue interface (FIFO)
-Queue&lt;Integer&gt; queue = new LinkedList&lt;&gt;();
-queue.offer(1);    // Add to rear (returns boolean)
-queue.add(2);      // Add to rear (throws exception)
-Integer val = queue.poll();  // Remove from front (returns null)
-val = queue.remove();        // Remove from front (throws exception)
-val = queue.peek();          // View front (returns null)
-val = queue.element();       // View front (throws exception)
+<span class="hljs-comment">// Queue interface (FIFO)</span>
+Queue&lt;Integer&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+queue.offer(<span class="hljs-number">1</span>);    <span class="hljs-comment">// Add to rear (returns boolean)</span>
+queue.add(<span class="hljs-number">2</span>);      <span class="hljs-comment">// Add to rear (throws exception)</span>
+<span class="hljs-type">Integer</span> <span class="hljs-variable">val</span> <span class="hljs-operator">=</span> queue.poll();  <span class="hljs-comment">// Remove from front (returns null)</span>
+val = queue.remove();        <span class="hljs-comment">// Remove from front (throws exception)</span>
+val = queue.peek();          <span class="hljs-comment">// View front (returns null)</span>
+val = queue.element();       <span class="hljs-comment">// View front (throws exception)</span>
 
-// Deque interface (double-ended)
-Deque&lt;Integer&gt; deque = new LinkedList&lt;&gt;();
-// or ArrayDeque for better performance
-Deque&lt;Integer&gt; deque = new ArrayDeque&lt;&gt;();
+<span class="hljs-comment">// Deque interface (double-ended)</span>
+Deque&lt;Integer&gt; deque = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();
+<span class="hljs-comment">// or ArrayDeque for better performance</span>
+Deque&lt;Integer&gt; deque = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();
 
-// Add operations
-deque.addFirst(1);     // Add to front
-deque.addLast(2);      // Add to rear
-deque.offerFirst(0);   // Add to front (returns boolean)
-deque.offerLast(3);    // Add to rear (returns boolean)
+<span class="hljs-comment">// Add operations</span>
+deque.addFirst(<span class="hljs-number">1</span>);     <span class="hljs-comment">// Add to front</span>
+deque.addLast(<span class="hljs-number">2</span>);      <span class="hljs-comment">// Add to rear</span>
+deque.offerFirst(<span class="hljs-number">0</span>);   <span class="hljs-comment">// Add to front (returns boolean)</span>
+deque.offerLast(<span class="hljs-number">3</span>);    <span class="hljs-comment">// Add to rear (returns boolean)</span>
 
-// Remove operations
-val = deque.removeFirst(); // Remove from front
-val = deque.removeLast();  // Remove from rear
-val = deque.pollFirst();   // Remove from front (returns null)
-val = deque.pollLast();    // Remove from rear (returns null)
+<span class="hljs-comment">// Remove operations</span>
+val = deque.removeFirst(); <span class="hljs-comment">// Remove from front</span>
+val = deque.removeLast();  <span class="hljs-comment">// Remove from rear</span>
+val = deque.pollFirst();   <span class="hljs-comment">// Remove from front (returns null)</span>
+val = deque.pollLast();    <span class="hljs-comment">// Remove from rear (returns null)</span>
 
-// Peek operations
-val = deque.peekFirst();   // View front
-val = deque.peekLast();    // View rear
-val = deque.getFirst();    // View front (throws exception)
-val = deque.getLast();     // View rear (throws exception)
+<span class="hljs-comment">// Peek operations</span>
+val = deque.peekFirst();   <span class="hljs-comment">// View front</span>
+val = deque.peekLast();    <span class="hljs-comment">// View rear</span>
+val = deque.getFirst();    <span class="hljs-comment">// View front (throws exception)</span>
+val = deque.getLast();     <span class="hljs-comment">// View rear (throws exception)</span>
 
-// Stack operations on Deque
-deque.push(5);         // Push to front (stack top)
-val = deque.pop();     // Pop from front (stack top)
+<span class="hljs-comment">// Stack operations on Deque</span>
+deque.push(<span class="hljs-number">5</span>);         <span class="hljs-comment">// Push to front (stack top)</span>
+val = deque.pop();     <span class="hljs-comment">// Pop from front (stack top)</span>
 </code></pre>
 <h2 id="summary-quick-reference" tabindex="-1"><a class="header-anchor" href="#summary-quick-reference"><span>Summary &amp; Quick Reference</span></a></h2>
 <h3 id="complexity-quick-reference" tabindex="-1"><a class="header-anchor" href="#complexity-quick-reference"><span>Complexity Quick Reference</span></a></h3>
@@ -1244,28 +1256,28 @@ val = deque.pop();     // Pop from front (stack top)
 </table>
 <h3 id="common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#common-patterns-tricks"><span>Common Patterns &amp; Tricks</span></a></h3>
 <h4 id="level-order-processing" tabindex="-1"><a class="header-anchor" href="#level-order-processing"><span><strong>Level-Order Processing</strong></span></a></h4>
-<pre><code class="language-python"># Process nodes level by level
-level_size = len(queue)
-for _ in range(level_size):
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Process nodes level by level</span>
+level_size = <span class="hljs-built_in">len</span>(queue)
+<span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(level_size):
     node = queue.popleft()
-    # Process node
-    # Add children
+    <span class="hljs-comment"># Process node</span>
+    <span class="hljs-comment"># Add children</span>
 </code></pre>
 <h4 id="circular-index-calculation" tabindex="-1"><a class="header-anchor" href="#circular-index-calculation"><span><strong>Circular Index Calculation</strong></span></a></h4>
-<pre><code class="language-python"># Wrap around in circular buffer
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Wrap around in circular buffer</span>
 tail_index = (head + count) % capacity
-next_index = (current + 1) % capacity
+next_index = (current + <span class="hljs-number">1</span>) % capacity
 </code></pre>
 <h4 id="monotonic-property-maintenance" tabindex="-1"><a class="header-anchor" href="#monotonic-property-maintenance"><span><strong>Monotonic Property Maintenance</strong></span></a></h4>
-<pre><code class="language-python"># Decreasing monotonic queue
-while queue and queue[-1] &lt; new_val:
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Decreasing monotonic queue</span>
+<span class="hljs-keyword">while</span> queue <span class="hljs-keyword">and</span> queue[-<span class="hljs-number">1</span>] &lt; new_val:
     queue.pop()
 queue.append(new_val)
 </code></pre>
 <h4 id="two-stack-queue-optimization" tabindex="-1"><a class="header-anchor" href="#two-stack-queue-optimization"><span><strong>Two-Stack Queue Optimization</strong></span></a></h4>
-<pre><code class="language-python"># Amortized O(1) operations
-if not out_stack:
-    while in_stack:
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Amortized O(1) operations</span>
+<span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> out_stack:
+    <span class="hljs-keyword">while</span> in_stack:
         out_stack.append(in_stack.pop())
 </code></pre>
 <h3 id="problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#problem-solving-steps"><span>Problem-Solving Steps</span></a></h3>
@@ -1389,227 +1401,54 @@ if not out_stack:
 <li><strong>Producer-Consumer</strong>: Classic queue application</li>
 </ul>
 <h2 id="lc-examples" tabindex="-1"><a class="header-anchor" href="#lc-examples"><span>LC Examples</span></a></h2>
-<h3 id="2-1-sliding-window-maximum" tabindex="-1"><a class="header-anchor" href="#2-1-sliding-window-maximum"><span>2-1) Sliding Window Maximum</span></a></h3>
-<pre><code class="language-python"># LC 239 Sliding Window Maximum (hard)
-# V1
-# http://bookshadow.com/weblog/2015/07/18/leetcode-sliding-window-maximum/
-# IDEA : DEQUE
-class Solution:
-    def maxSlidingWindow(self, nums, k):
-        dq = collections.deque()
-        ans = []
-        for i in range(len(nums)):
-            while dq and nums[dq[-1]] &lt;= nums[i]:
-                dq.pop()
-            dq.append(i)
-            if dq[0] == i - k:
-                dq.popleft()
-            if i &gt;= k - 1:
-                ans.append(nums[dq[0]])
-        return ans
-</code></pre>
-<pre><code class="language-java">// LC 239 Sliding Window Maximum (hard)
-// algorithm book (labu) p. 278, p.281
-// java
-
-// monotonic queue
-class MonotonicQueue{
-
-    // init queue
-    LinkedList&lt;Integer&gt; q = new LinkedList&lt;&gt;();
-    
-    // add element to queue tail
-    public void push(int n){
-        while (!q.isEmpty() &amp;&amp; q.getLast() &lt; n){
-            q.pollLast();
-        }
-        q.addLast(n);
+<h3 id="2-1-sliding-window-maximum-lc-239-monotonic-deque" tabindex="-1"><a class="header-anchor" href="#2-1-sliding-window-maximum-lc-239-monotonic-deque"><span>2-1) Sliding Window Maximum (LC 239) — Monotonic Deque</span></a></h3>
+<blockquote>
+<p>Maintain a decreasing deque of indices; front is always the current window maximum.</p>
+</blockquote>
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 239 - Sliding Window Maximum</span>
+<span class="hljs-comment">// IDEA: Monotonic deque — remove out-of-window front, remove smaller rear, front = max</span>
+<span class="hljs-comment">// time = O(N), space = O(k)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] maxSlidingWindow(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k) {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length;
+    <span class="hljs-type">int</span>[] ans = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n - k + <span class="hljs-number">1</span>];
+    Deque&lt;Integer&gt; dq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;(); <span class="hljs-comment">// indices, decreasing by value</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-keyword">while</span> (!dq.isEmpty() &amp;&amp; dq.peekFirst() &lt; i - k + <span class="hljs-number">1</span>) dq.pollFirst();
+        <span class="hljs-keyword">while</span> (!dq.isEmpty() &amp;&amp; nums[dq.peekLast()] &lt; nums[i]) dq.pollLast();
+        dq.addLast(i);
+        <span class="hljs-keyword">if</span> (i &gt;= k - <span class="hljs-number">1</span>) ans[i - k + <span class="hljs-number">1</span>] = nums[dq.peekFirst()];
     }
-
-    // return current max value in queue
-    public int max(){
-        return q.getFirst();
-    }
-
-    // if head element is n, delete it
-    public void pop(int n){
-        if (n == q.getFirst()){
-            q.pollLast();
-        }
-    }
-}
-
-/* main func */
-int[] maxSlidingWindow([int] nums, int k){
-    MonotonicQueue window = new MonotonicQueue();
-    List&lt;Integer&gt; res = new ArrayList&lt;&gt;();
-
-    for (int i = 0; i &lt; nums.length; i++){
-        if (i &lt; k - 1){
-            // insert k - 1 elements in the window
-            window.push(nums[i]);
-        }else{
-            // window move forward, add new element
-            window.push(nums[i]);
-            // record current max element in the window
-            res.add(window.max());
-            // move out element
-            window.pop(nums[i - k + 1]);
-        }
-    }
-
-    // transform res to int[] array as answer form
-    int[] arr = new int[res.size()];
-    for (int i = 0; i &lt; res.size(); i ++){
-        arr[i] = res.get(i);
-    }
-    return arr;
+    <span class="hljs-keyword">return</span> ans;
 }
 </code></pre>
-<h3 id="2-2-design-circular-queue" tabindex="-1"><a class="header-anchor" href="#2-2-design-circular-queue"><span>2-2) Design Circular Queue</span></a></h3>
-<pre><code class="language-python"># LC 622. Design Circular Queue
-# V0 
-# IDEA : ARRAY
-# https://leetcode.com/problems/design-circular-queue/solution/
-
-# NOTE !!! when `circular`, -&gt; think about `fixed_idx = idx % len`
-
-class MyCircularQueue:
-
-    def __init__(self, k):
-        &quot;&quot;&quot;
-        Initialize your data structure here. Set the size of the queue to be k.
-        &quot;&quot;&quot;
-        self.queue = [0]*k
-        self.headIndex = 0
-        self.count = 0
-        self.capacity = k
-
-    def enQueue(self, value):
-        &quot;&quot;&quot;
-        Insert an element into the circular queue. Return true if the operation is successful.
-        &quot;&quot;&quot;
-        if self.count == self.capacity:
-            return False
-        self.queue[(self.headIndex + self.count) % self.capacity] = value
-        self.count += 1
-        return True
-
-    def deQueue(self):
-        &quot;&quot;&quot;
-        Delete an element from the circular queue. Return true if the operation is successful.
-        &quot;&quot;&quot;
-        if self.count == 0:
-            return False
-        self.headIndex = (self.headIndex + 1) % self.capacity
-        self.count -= 1
-        return True
-
-    def Front(self):
-        &quot;&quot;&quot;
-        Get the front item from the queue.
-        &quot;&quot;&quot;
-        if self.count == 0:
-            return -1
-        return self.queue[self.headIndex]
-
-    def Rear(self):
-        &quot;&quot;&quot;
-        Get the last item from the queue.
-        &quot;&quot;&quot;
-        # empty queue
-        if self.count == 0:
-            return -1
-        return self.queue[(self.headIndex + self.count - 1) % self.capacity]
-
-    def isEmpty(self):
-        &quot;&quot;&quot;
-        Checks whether the circular queue is empty or not.
-        &quot;&quot;&quot;
-        return self.count == 0
-
-    def isFull(self):
-        &quot;&quot;&quot;
-        Checks whether the circular queue is full or not.
-        &quot;&quot;&quot;
-        return self.count == self.capacity
-
-# V0'
-# IDEA : LINKED LIST
-# https://leetcode.com/problems/design-circular-queue/solution/
-class Node:
-    def __init__(self, value, nextNode=None):
-        self.value = value
-        self.next = nextNode
-
-class MyCircularQueue:
-
-    def __init__(self, k):
-        &quot;&quot;&quot;
-        Initialize your data structure here. Set the size of the queue to be k.
-        &quot;&quot;&quot;
-        self.capacity = k
-        self.head = None
-        self.tail = None
-        self.count = 0
-
-    def enQueue(self, value):
-        &quot;&quot;&quot;
-        Insert an element into the circular queue. Return true if the operation is successful.
-        &quot;&quot;&quot;
-        if self.count == self.capacity:
-            return False
-        
-        if self.count == 0:
-            self.head = Node(value)
-            self.tail = self.head
-        else:
-            newNode = Node(value)
-            self.tail.next = newNode
-            self.tail = newNode
-        self.count += 1
-        return True
-
-
-    def deQueue(self):
-        &quot;&quot;&quot;
-        Delete an element from the circular queue. Return true if the operation is successful.
-        &quot;&quot;&quot;
-        if self.count == 0:
-            return False
-        self.head = self.head.next
-        self.count -= 1
-        return True
-
-
-    def Front(self):
-        &quot;&quot;&quot;
-        Get the front item from the queue.
-        &quot;&quot;&quot;
-        if self.count == 0:
-            return -1
-        return self.head.value
-
-    def Rear(self):
-        &quot;&quot;&quot;
-        Get the last item from the queue.
-        &quot;&quot;&quot;
-        # empty queue
-        if self.count == 0:
-            return -1
-        return self.tail.value
-    
-    def isEmpty(self):
-        &quot;&quot;&quot;
-        Checks whether the circular queue is empty or not.
-        &quot;&quot;&quot;
-        return self.count == 0
-
-    def isFull(self):
-        &quot;&quot;&quot;
-        Checks whether the circular queue is full or not.
-        &quot;&quot;&quot;
-        return self.count == self.capacity
+<h3 id="2-2-design-circular-queue-lc-622-array-with-head-count" tabindex="-1"><a class="header-anchor" href="#2-2-design-circular-queue-lc-622-array-with-head-count"><span>2-2) Design Circular Queue (LC 622) — Array with Head/Count</span></a></h3>
+<blockquote>
+<p>Fixed-size array; track head index and count; use modular arithmetic for wrap-around.</p>
+</blockquote>
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 622 - Design Circular Queue</span>
+<span class="hljs-comment">// IDEA: Fixed array + head pointer + count; tail = (head + count - 1) % capacity</span>
+<span class="hljs-comment">// time = O(1) all ops, space = O(k)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MyCircularQueue</span> {
+    <span class="hljs-type">int</span>[] data;
+    <span class="hljs-type">int</span> head, count, capacity;
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">MyCircularQueue</span><span class="hljs-params">(<span class="hljs-type">int</span> k)</span> { data = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[k]; capacity = k; }
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">enQueue</span><span class="hljs-params">(<span class="hljs-type">int</span> value)</span> {
+        <span class="hljs-keyword">if</span> (isFull()) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        data[(head + count) % capacity] = value;
+        count++;
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    }
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">deQueue</span><span class="hljs-params">()</span> {
+        <span class="hljs-keyword">if</span> (isEmpty()) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        head = (head + <span class="hljs-number">1</span>) % capacity;
+        count--;
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    }
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">Front</span><span class="hljs-params">()</span> { <span class="hljs-keyword">return</span> isEmpty() ? -<span class="hljs-number">1</span> : data[head]; }
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">Rear</span><span class="hljs-params">()</span>  { <span class="hljs-keyword">return</span> isEmpty() ? -<span class="hljs-number">1</span> : data[(head + count - <span class="hljs-number">1</span>) % capacity]; }
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isEmpty</span><span class="hljs-params">()</span> { <span class="hljs-keyword">return</span> count == <span class="hljs-number">0</span>; }
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isFull</span><span class="hljs-params">()</span>  { <span class="hljs-keyword">return</span> count == capacity; }
+}
 </code></pre>
 
       </div>

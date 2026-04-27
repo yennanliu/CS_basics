@@ -3,6 +3,7 @@ const path = require('path');
 const { execSync } = require('child_process');
 const MarkdownIt = require('markdown-it');
 const markdownItAnchor = require('markdown-it-anchor');
+const hljs = require('highlight.js');
 
 function getLastModified(filePath) {
   try {
@@ -20,7 +21,16 @@ function slugify(text) {
 const md = new MarkdownIt({
   html: true,
   linkify: true,
-  typographer: true
+  typographer: true,
+  highlight: function(str, lang) {
+    if (lang && hljs.getLanguage(lang)) {
+      try {
+        const highlighted = hljs.highlight(str, { language: lang, ignoreIllegals: true }).value;
+        return `<pre data-lang="${lang}"><code class="hljs language-${lang}">${highlighted}</code></pre>`;
+      } catch (_) {}
+    }
+    return `<pre><code class="hljs">${md.utils.escapeHtml(str)}</code></pre>`;
+  }
 }).use(markdownItAnchor, {
   slugify: slugify,
   permalink: markdownItAnchor.permalink && markdownItAnchor.permalink.headerLink
@@ -338,7 +348,6 @@ const htmlTemplate = (title, bodyContent, currentPage = 'home', basePath = '') =
   <link rel="stylesheet" href="${basePath}style.css">
   <link rel="stylesheet" href="${basePath}vendor/fonts.css">
   <link rel="stylesheet" href="${basePath}vendor/highlight/atom-one-dark.min.css">
-  <script src="${basePath}vendor/highlight/highlight.min.js"></script>
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -349,7 +358,6 @@ const htmlTemplate = (title, bodyContent, currentPage = 'home', basePath = '') =
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
     document.querySelectorAll('pre code').forEach(function(codeEl) {
       var pre = codeEl.parentElement;
       var lang = '';

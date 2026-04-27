@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,13 +20,24 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
     document.querySelectorAll('pre code').forEach(function(codeEl) {
       var pre = codeEl.parentElement;
       var lang = '';
       var cls = codeEl.className || '';
       var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
       if (m) lang = m[1];
+
+      // Add line numbers
+      var lines = codeEl.innerHTML.split('
+');
+      if (lines[lines.length - 1] === '') lines.pop();
+      var numbered = lines.map(function(line, i) {
+        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
+      }).join('
+');
+      codeEl.innerHTML = numbered;
+      codeEl.classList.add('hljs-ln');
+
       var wrapper = document.createElement('div');
       wrapper.className = 'code-block-wrapper';
       pre.parentNode.insertBefore(wrapper, pre);
@@ -45,7 +55,9 @@
       btn.className = 'copy-btn';
       btn.textContent = 'Copy';
       btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
+');
+        navigator.clipboard.writeText(text).then(function() {
           btn.textContent = 'Copied!';
           btn.classList.add('copied');
           setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
@@ -167,7 +179,7 @@
 </tr>
 </tbody>
 </table>
-<pre><code>程式（Program）= 食譜
+<pre><code class="hljs">程式（Program）= 食譜
 進程（Process）= 廚師照著食譜煮菜的過程（獨立的鍋碗瓢盆）
 執行緒（Thread）= 多個廚師同時在同一廚房裡合作
 </code></pre>
@@ -215,7 +227,7 @@
 </tbody>
 </table>
 <h3 id="-2" tabindex="-1"><a class="header-anchor" href="#-2"><span>執行緒的三種狀態</span></a></h3>
-<pre><code>新建（New）→ 就緒（Runnable）→ 執行（Running）
+<pre><code class="hljs">新建（New）→ 就緒（Runnable）→ 執行（Running）
                    ↑                    ↓
                喚醒/解鎖          等待 IO / 鎖 / sleep
                                         ↓
@@ -229,7 +241,7 @@
 <hr>
 <h2 id="2" tabindex="-1"><a class="header-anchor" href="#2"><span>2. 記憶體管理</span></a></h2>
 <h3 id="-3" tabindex="-1"><a class="header-anchor" href="#-3"><span>記憶體區域劃分</span></a></h3>
-<pre><code>高位址
+<pre><code class="hljs">高位址
 ┌───────────────┐
 │  Stack（堆疊） │ ← 自動管理；函數呼叫、區域變數；後進先出；容量有限
 ├───────────────┤
@@ -476,13 +488,13 @@
 </tbody>
 </table>
 <h3 id="tcp" tabindex="-1"><a class="header-anchor" href="#tcp"><span>TCP 三次握手</span></a></h3>
-<pre><code>Client              Server
+<pre><code class="hljs">Client              Server
   |── SYN ──────────→|   (1) Client 說：我想連線
   |← SYN-ACK ────────|   (2) Server 說：好，我準備好了
   |── ACK ──────────→|   (3) Client 說：收到，連線建立
 </code></pre>
 <p><strong>四次揮手（斷線）：</strong></p>
-<pre><code>Client              Server
+<pre><code class="hljs">Client              Server
   |── FIN ──────────→|   (1) Client：我要關閉了
   |← ACK ────────────|   (2) Server：收到，但我還有資料要傳
   |← FIN ────────────|   (3) Server：我也傳完了，我要關閉
@@ -544,7 +556,7 @@
 </tbody>
 </table>
 <h3 id="https-tls" tabindex="-1"><a class="header-anchor" href="#https-tls"><span>HTTPS 與 TLS 握手</span></a></h3>
-<pre><code>Client                          Server
+<pre><code class="hljs">Client                          Server
   |─── ClientHello ────────────→|   支援的 TLS 版本、加密套件
   |←── ServerHello + 憑證 ──────|   選定的加密套件、伺服器公鑰
   |─── 驗證憑證 ────────────────|   確認憑證合法（CA 簽署）
@@ -886,17 +898,17 @@
 <p><strong>負載因子（Load Factor）</strong>：元素數 / bucket 數，超過閾值（Java 預設 0.75）時擴容（rehash）。</p>
 <hr>
 <h3 id="q5-binary-search" tabindex="-1"><a class="header-anchor" href="#q5-binary-search"><span>Q5：Binary Search 的邊界條件如何處理？</span></a></h3>
-<pre><code class="language-python">def binary_search(nums, target):
-    left, right = 0, len(nums) - 1
-    while left &lt;= right:              # ≤ 確保單元素也能處理
-        mid = left + (right - left) // 2  # 防止 overflow
-        if nums[mid] == target:
-            return mid
-        elif nums[mid] &lt; target:
-            left = mid + 1
-        else:
-            right = mid - 1
-    return -1
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">binary_search</span>(<span class="hljs-params">nums, target</span>):
+    left, right = <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(nums) - <span class="hljs-number">1</span>
+    <span class="hljs-keyword">while</span> left &lt;= right:              <span class="hljs-comment"># ≤ 確保單元素也能處理</span>
+        mid = left + (right - left) // <span class="hljs-number">2</span>  <span class="hljs-comment"># 防止 overflow</span>
+        <span class="hljs-keyword">if</span> nums[mid] == target:
+            <span class="hljs-keyword">return</span> mid
+        <span class="hljs-keyword">elif</span> nums[mid] &lt; target:
+            left = mid + <span class="hljs-number">1</span>
+        <span class="hljs-keyword">else</span>:
+            right = mid - <span class="hljs-number">1</span>
+    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
 </code></pre>
 <p><strong>常見變形：</strong></p>
 <ul>

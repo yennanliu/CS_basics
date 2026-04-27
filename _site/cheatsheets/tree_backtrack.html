@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,13 +20,24 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
     document.querySelectorAll('pre code').forEach(function(codeEl) {
       var pre = codeEl.parentElement;
       var lang = '';
       var cls = codeEl.className || '';
       var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
       if (m) lang = m[1];
+
+      // Add line numbers
+      var lines = codeEl.innerHTML.split('
+');
+      if (lines[lines.length - 1] === '') lines.pop();
+      var numbered = lines.map(function(line, i) {
+        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
+      }).join('
+');
+      codeEl.innerHTML = numbered;
+      codeEl.classList.add('hljs-ln');
+
       var wrapper = document.createElement('div');
       wrapper.className = 'code-block-wrapper';
       pre.parentNode.insertBefore(wrapper, pre);
@@ -45,7 +55,9 @@
       btn.className = 'copy-btn';
       btn.textContent = 'Copy';
       btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
+');
+        navigator.clipboard.writeText(text).then(function() {
           btn.textContent = 'Copied!';
           btn.classList.add('copied');
           setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
@@ -142,46 +154,46 @@
 <p>I’ll show the <strong>universal template</strong>, then how each problem plugs into it.</p>
 <hr>
 <h1 id="1-universal-tree-backtracking-template" tabindex="-1"><a class="header-anchor" href="#1-universal-tree-backtracking-template"><span>1️⃣ Universal Tree Backtracking Template</span></a></h1>
-<pre><code class="language-java">void dfs(TreeNode node, ...) {
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">void</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(TreeNode node, ...)</span> {
 
-    if (node == null) return;
+    <span class="hljs-keyword">if</span> (node == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span>;
 
-    // 1. choose (update path / sum / state)
+    <span class="hljs-comment">// 1. choose (update path / sum / state)</span>
     
-    // 2. check goal (usually leaf condition)
+    <span class="hljs-comment">// 2. check goal (usually leaf condition)</span>
     
-    // 3. explore children
+    <span class="hljs-comment">// 3. explore children</span>
     dfs(node.left, ...);
     dfs(node.right, ...);
 
-    // 4. undo choice (backtrack)
+    <span class="hljs-comment">// 4. undo choice (backtrack)</span>
 }
 </code></pre>
 <p>For <strong>path problems</strong>, we typically maintain:</p>
-<pre><code>List&lt;Integer&gt; path
+<pre><code class="hljs">List&lt;Integer&gt; path
 some running state (sum / number / string)
 </code></pre>
 <hr>
 <h1 id="2-full-generic-template" tabindex="-1"><a class="header-anchor" href="#2-full-generic-template"><span>2️⃣ Full Generic Template</span></a></h1>
-<pre><code class="language-java">void dfs(TreeNode node, List&lt;Integer&gt; path, int state) {
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">void</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(TreeNode node, List&lt;Integer&gt; path, <span class="hljs-type">int</span> state)</span> {
 
-    if (node == null) return;
+    <span class="hljs-keyword">if</span> (node == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span>;
 
-    // choose
+    <span class="hljs-comment">// choose</span>
     path.add(node.val);
     state = update(state, node.val);
 
-    // goal check
-    if (isLeaf(node) &amp;&amp; condition(state)) {
+    <span class="hljs-comment">// goal check</span>
+    <span class="hljs-keyword">if</span> (isLeaf(node) &amp;&amp; condition(state)) {
         save(path);
     }
 
-    // explore
+    <span class="hljs-comment">// explore</span>
     dfs(node.left, path, state);
     dfs(node.right, path, state);
 
-    // undo (backtrack)
-    path.remove(path.size() - 1);
+    <span class="hljs-comment">// undo (backtrack)</span>
+    path.remove(path.size() - <span class="hljs-number">1</span>);
 }
 </code></pre>
 <p>Key parts:</p>
@@ -215,38 +227,38 @@ some running state (sum / number / string)
 <h1 id="3-apply-to-lc-113-path-sum-ii" tabindex="-1"><a class="header-anchor" href="#3-apply-to-lc-113-path-sum-ii"><span>3️⃣ Apply to LC 113 (Path Sum II)</span></a></h1>
 <p>For LeetCode 113 Path Sum II:</p>
 <p>State = <strong>remaining sum</strong></p>
-<pre><code class="language-java">void dfs(TreeNode node, int remain, List&lt;Integer&gt; path) {
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">void</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(TreeNode node, <span class="hljs-type">int</span> remain, List&lt;Integer&gt; path)</span> {
 
-    if (node == null) return;
+    <span class="hljs-keyword">if</span> (node == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span>;
 
     path.add(node.val);
 
-    if (node.left == null &amp;&amp; node.right == null &amp;&amp; remain == node.val) {
-        res.add(new ArrayList&lt;&gt;(path));
+    <span class="hljs-keyword">if</span> (node.left == <span class="hljs-literal">null</span> &amp;&amp; node.right == <span class="hljs-literal">null</span> &amp;&amp; remain == node.val) {
+        res.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(path));
     }
 
     dfs(node.left, remain - node.val, path);
     dfs(node.right, remain - node.val, path);
 
-    path.remove(path.size() - 1);
+    path.remove(path.size() - <span class="hljs-number">1</span>);
 }
 </code></pre>
 <hr>
 <h1 id="4-apply-to-lc-257-binary-tree-paths" tabindex="-1"><a class="header-anchor" href="#4-apply-to-lc-257-binary-tree-paths"><span>4️⃣ Apply to LC 257 (Binary Tree Paths)</span></a></h1>
 <p>For LeetCode 257 Binary Tree Paths:</p>
 <p>State = <strong>path string</strong></p>
-<pre><code class="language-java">void dfs(TreeNode node, String path) {
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">void</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(TreeNode node, String path)</span> {
 
-    if (node == null) return;
+    <span class="hljs-keyword">if</span> (node == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span>;
 
     path += node.val;
 
-    if (node.left == null &amp;&amp; node.right == null) {
+    <span class="hljs-keyword">if</span> (node.left == <span class="hljs-literal">null</span> &amp;&amp; node.right == <span class="hljs-literal">null</span>) {
         res.add(path);
-        return;
+        <span class="hljs-keyword">return</span>;
     }
 
-    path += &quot;-&gt;&quot;;
+    path += <span class="hljs-string">&quot;-&gt;&quot;</span>;
 
     dfs(node.left, path);
     dfs(node.right, path);
@@ -256,17 +268,17 @@ some running state (sum / number / string)
 <h1 id="5-apply-to-lc-129-root-leaf-numbers" tabindex="-1"><a class="header-anchor" href="#5-apply-to-lc-129-root-leaf-numbers"><span>5️⃣ Apply to LC 129 (Root → Leaf Numbers)</span></a></h1>
 <p>For LeetCode 129 Sum Root to Leaf Numbers:</p>
 <p>State = <strong>number</strong></p>
-<pre><code>123 means path: 1 → 2 → 3
+<pre><code class="hljs">123 means path: 1 → 2 → 3
 </code></pre>
-<pre><code class="language-java">void dfs(TreeNode node, int num) {
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">void</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(TreeNode node, <span class="hljs-type">int</span> num)</span> {
 
-    if (node == null) return;
+    <span class="hljs-keyword">if</span> (node == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span>;
 
-    num = num * 10 + node.val;
+    num = num * <span class="hljs-number">10</span> + node.val;
 
-    if (node.left == null &amp;&amp; node.right == null) {
+    <span class="hljs-keyword">if</span> (node.left == <span class="hljs-literal">null</span> &amp;&amp; node.right == <span class="hljs-literal">null</span>) {
         total += num;
-        return;
+        <span class="hljs-keyword">return</span>;
     }
 
     dfs(node.left, num);
@@ -281,17 +293,17 @@ some running state (sum / number / string)
 <hr>
 <h1 id="7-mental-model-very-important" tabindex="-1"><a class="header-anchor" href="#7-mental-model-very-important"><span>7️⃣ Mental Model (Very Important)</span></a></h1>
 <p>Whenever you see:</p>
-<pre><code>root → leaf
+<pre><code class="hljs">root → leaf
 path
 all paths
 sum of paths
 string of paths
 </code></pre>
 <p>Think immediately:</p>
-<pre><code>DFS + Backtracking
+<pre><code class="hljs">DFS + Backtracking
 </code></pre>
 <p>Template:</p>
-<pre><code>add node
+<pre><code class="hljs">add node
 check leaf
 dfs children
 remove node
@@ -299,21 +311,21 @@ remove node
 <hr>
 <h1 id="8-interview-cheat-code" tabindex="-1"><a class="header-anchor" href="#8-interview-cheat-code"><span>8️⃣ Interview Cheat Code ⭐</span></a></h1>
 <p>Just memorize this <strong>5-line skeleton</strong>:</p>
-<pre><code class="language-java">path.add(node.val);
+<pre data-lang="java"><code class="hljs language-java">path.add(node.val);
 
-if (leaf condition)
+<span class="hljs-keyword">if</span> (leaf condition)
     save result;
 
 dfs(left)
 dfs(right)
 
-path.remove(path.size()-1);
+path.remove(path.size()-<span class="hljs-number">1</span>);
 </code></pre>
 <p>You can solve <strong>most root-to-leaf problems</strong> with this.</p>
 <hr>
 <p>✅ <strong>Pro tip for interviews</strong></p>
 <p>If a problem contains these words:</p>
-<pre><code>all paths
+<pre><code class="hljs">all paths
 root to leaf
 return list of paths
 </code></pre>

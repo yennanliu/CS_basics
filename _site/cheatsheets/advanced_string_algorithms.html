@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,13 +20,24 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
     document.querySelectorAll('pre code').forEach(function(codeEl) {
       var pre = codeEl.parentElement;
       var lang = '';
       var cls = codeEl.className || '';
       var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
       if (m) lang = m[1];
+
+      // Add line numbers
+      var lines = codeEl.innerHTML.split('
+');
+      if (lines[lines.length - 1] === '') lines.pop();
+      var numbered = lines.map(function(line, i) {
+        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
+      }).join('
+');
+      codeEl.innerHTML = numbered;
+      codeEl.classList.add('hljs-ln');
+
       var wrapper = document.createElement('div');
       wrapper.className = 'code-block-wrapper';
       pre.parentNode.insertBefore(wrapper, pre);
@@ -45,7 +55,9 @@
       btn.className = 'copy-btn';
       btn.textContent = 'Copy';
       btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
+');
+        navigator.clipboard.writeText(text).then(function() {
           btn.textContent = 'Copied!';
           btn.classList.add('copied');
           setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
@@ -127,9 +139,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Advanced String Algorithms</span></nav>
       <div class="cheatsheet-header">
         <h1>Advanced String Algorithms</h1>
-        <span class="last-updated">Last updated: Sep 29, 2025</span>
+        <span class="last-updated">Last updated: Apr 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#core-characteristics">Core Characteristics</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#category-1-pattern-matching">Category 1: Pattern Matching</a></li><li class="toc-sub"><a href="#category-2-palindrome-problems">Category 2: Palindrome Problems</a></li><li class="toc-sub"><a href="#category-3-string-periodicity">Category 3: String Periodicity</a></li><li class="toc-sub"><a href="#category-4-suffix-based-problems">Category 4: Suffix-Based Problems</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#template-1-kmp-knuth-morris-pratt-algorithm">Template 1: KMP (Knuth-Morris-Pratt) Algorithm</a></li><li class="toc-sub"><a href="#template-2-manacher-s-algorithm">Template 2: Manacher’s Algorithm</a></li><li class="toc-sub"><a href="#template-3-z-algorithm">Template 3: Z-Algorithm</a></li><li class="toc-sub"><a href="#template-4-advanced-rolling-hash">Template 4: Advanced Rolling Hash</a></li><li class="toc-sub"><a href="#template-5-suffix-array-construction">Template 5: Suffix Array Construction</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-matching-problems">Pattern Matching Problems</a></li><li class="toc-sub"><a href="#palindrome-problems">Palindrome Problems</a></li><li class="toc-sub"><a href="#advanced-string-problems">Advanced String Problems</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#1-find-index-of-first-occurrence-lc-28">1. Find Index of First Occurrence (LC 28)</a></li><li class="toc-sub"><a href="#2-longest-palindromic-substring-lc-5">2. Longest Palindromic Substring (LC 5)</a></li><li class="toc-sub"><a href="#3-longest-duplicate-substring-lc-1044">3. Longest Duplicate Substring (LC 1044)</a></li><li><a href="#advanced-techniques">Advanced Techniques</a></li><li class="toc-sub"><a href="#multiple-pattern-matching">Multiple Pattern Matching</a></li><li class="toc-sub"><a href="#string-hashing-optimizations">String Hashing Optimizations</a></li><li><a href="#performance-optimization-tips">Performance Optimization Tips</a></li><li class="toc-sub"><a href="#algorithm-selection-guide">Algorithm Selection Guide</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#algorithm-complexity-comparison">Algorithm Complexity Comparison</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#core-characteristics">Core Characteristics</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#category-1-pattern-matching">Category 1: Pattern Matching</a></li><li class="toc-sub"><a href="#category-2-palindrome-problems">Category 2: Palindrome Problems</a></li><li class="toc-sub"><a href="#category-3-string-periodicity">Category 3: String Periodicity</a></li><li class="toc-sub"><a href="#category-4-suffix-based-problems">Category 4: Suffix-Based Problems</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#template-1-kmp-knuth-morris-pratt-algorithm">Template 1: KMP (Knuth-Morris-Pratt) Algorithm</a></li><li class="toc-sub"><a href="#template-2-manacher-s-algorithm">Template 2: Manacher’s Algorithm</a></li><li class="toc-sub"><a href="#template-3-z-algorithm">Template 3: Z-Algorithm</a></li><li class="toc-sub"><a href="#template-4-advanced-rolling-hash">Template 4: Advanced Rolling Hash</a></li><li class="toc-sub"><a href="#template-5-suffix-array-construction">Template 5: Suffix Array Construction</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-matching-problems">Pattern Matching Problems</a></li><li class="toc-sub"><a href="#palindrome-problems">Palindrome Problems</a></li><li class="toc-sub"><a href="#advanced-string-problems">Advanced String Problems</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-find-index-of-first-occurrence-lc-28-kmp">2-1) Find Index of First Occurrence (LC 28) — KMP</a></li><li class="toc-sub"><a href="#2-2-longest-palindromic-substring-lc-5-expand-around-center">2-2) Longest Palindromic Substring (LC 5) — Expand Around Center</a></li><li class="toc-sub"><a href="#2-3-longest-duplicate-substring-lc-1044-binary-search-rolling-hash">2-3) Longest Duplicate Substring (LC 1044) — Binary Search + Rolling Hash</a></li><li><a href="#advanced-techniques">Advanced Techniques</a></li><li class="toc-sub"><a href="#multiple-pattern-matching">Multiple Pattern Matching</a></li><li class="toc-sub"><a href="#string-hashing-optimizations">String Hashing Optimizations</a></li><li><a href="#performance-optimization-tips">Performance Optimization Tips</a></li><li class="toc-sub"><a href="#algorithm-selection-guide">Algorithm Selection Guide</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#algorithm-complexity-comparison">Algorithm Complexity Comparison</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="advanced-string-algorithms" tabindex="-1"><a class="header-anchor" href="#advanced-string-algorithms"><span>Advanced String Algorithms</span></a></h1>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
@@ -219,407 +231,407 @@
 </tbody>
 </table>
 <h3 id="template-1-kmp-knuth-morris-pratt-algorithm" tabindex="-1"><a class="header-anchor" href="#template-1-kmp-knuth-morris-pratt-algorithm"><span>Template 1: KMP (Knuth-Morris-Pratt) Algorithm</span></a></h3>
-<pre><code class="language-python">def kmp_search(text, pattern):
-    &quot;&quot;&quot;KMP algorithm for pattern matching&quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">kmp_search</span>(<span class="hljs-params">text, pattern</span>):
+    <span class="hljs-string">&quot;&quot;&quot;KMP algorithm for pattern matching&quot;&quot;&quot;</span>
 
-    def compute_failure_function(pattern):
-        &quot;&quot;&quot;Compute failure function (partial match table)&quot;&quot;&quot;
-        m = len(pattern)
-        failure = [0] * m
-        j = 0
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">compute_failure_function</span>(<span class="hljs-params">pattern</span>):
+        <span class="hljs-string">&quot;&quot;&quot;Compute failure function (partial match table)&quot;&quot;&quot;</span>
+        m = <span class="hljs-built_in">len</span>(pattern)
+        failure = [<span class="hljs-number">0</span>] * m
+        j = <span class="hljs-number">0</span>
 
-        for i in range(1, m):
-            while j &gt; 0 and pattern[i] != pattern[j]:
-                j = failure[j - 1]
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, m):
+            <span class="hljs-keyword">while</span> j &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> pattern[i] != pattern[j]:
+                j = failure[j - <span class="hljs-number">1</span>]
 
-            if pattern[i] == pattern[j]:
-                j += 1
+            <span class="hljs-keyword">if</span> pattern[i] == pattern[j]:
+                j += <span class="hljs-number">1</span>
 
             failure[i] = j
 
-        return failure
+        <span class="hljs-keyword">return</span> failure
 
-    if not pattern:
-        return 0
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> pattern:
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
 
-    n, m = len(text), len(pattern)
+    n, m = <span class="hljs-built_in">len</span>(text), <span class="hljs-built_in">len</span>(pattern)
     failure = compute_failure_function(pattern)
     matches = []
 
-    j = 0  # Index for pattern
-    for i in range(n):  # Index for text
-        while j &gt; 0 and text[i] != pattern[j]:
-            j = failure[j - 1]
+    j = <span class="hljs-number">0</span>  <span class="hljs-comment"># Index for pattern</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):  <span class="hljs-comment"># Index for text</span>
+        <span class="hljs-keyword">while</span> j &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> text[i] != pattern[j]:
+            j = failure[j - <span class="hljs-number">1</span>]
 
-        if text[i] == pattern[j]:
-            j += 1
+        <span class="hljs-keyword">if</span> text[i] == pattern[j]:
+            j += <span class="hljs-number">1</span>
 
-        if j == m:
-            matches.append(i - m + 1)
-            j = failure[j - 1]
+        <span class="hljs-keyword">if</span> j == m:
+            matches.append(i - m + <span class="hljs-number">1</span>)
+            j = failure[j - <span class="hljs-number">1</span>]
 
-    return matches
+    <span class="hljs-keyword">return</span> matches
 
-def kmp_pattern_matching_template():
-    &quot;&quot;&quot;Template for various KMP applications&quot;&quot;&quot;
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">kmp_pattern_matching_template</span>():
+    <span class="hljs-string">&quot;&quot;&quot;Template for various KMP applications&quot;&quot;&quot;</span>
 
-    def find_first_occurrence(text, pattern):
-        &quot;&quot;&quot;Find first occurrence of pattern in text&quot;&quot;&quot;
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">find_first_occurrence</span>(<span class="hljs-params">text, pattern</span>):
+        <span class="hljs-string">&quot;&quot;&quot;Find first occurrence of pattern in text&quot;&quot;&quot;</span>
         matches = kmp_search(text, pattern)
-        return matches[0] if matches else -1
+        <span class="hljs-keyword">return</span> matches[<span class="hljs-number">0</span>] <span class="hljs-keyword">if</span> matches <span class="hljs-keyword">else</span> -<span class="hljs-number">1</span>
 
-    def count_occurrences(text, pattern):
-        &quot;&quot;&quot;Count all occurrences of pattern&quot;&quot;&quot;
-        return len(kmp_search(text, pattern))
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">count_occurrences</span>(<span class="hljs-params">text, pattern</span>):
+        <span class="hljs-string">&quot;&quot;&quot;Count all occurrences of pattern&quot;&quot;&quot;</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(kmp_search(text, pattern))
 
-    def is_substring_pattern(text, pattern):
-        &quot;&quot;&quot;Check if pattern exists in text&quot;&quot;&quot;
-        return len(kmp_search(text, pattern)) &gt; 0
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">is_substring_pattern</span>(<span class="hljs-params">text, pattern</span>):
+        <span class="hljs-string">&quot;&quot;&quot;Check if pattern exists in text&quot;&quot;&quot;</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(kmp_search(text, pattern)) &gt; <span class="hljs-number">0</span>
 
-    def repeated_string_pattern(s):
-        &quot;&quot;&quot;Check if string is made of repeated pattern (LC 459)&quot;&quot;&quot;
-        n = len(s)
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">repeated_string_pattern</span>(<span class="hljs-params">s</span>):
+        <span class="hljs-string">&quot;&quot;&quot;Check if string is made of repeated pattern (LC 459)&quot;&quot;&quot;</span>
+        n = <span class="hljs-built_in">len</span>(s)
         failure = compute_failure_function(s + s)
 
-        # Check if s is a rotation of itself in s+s
-        return failure[-1] != 0 and n % (n - failure[-1]) == 0
+        <span class="hljs-comment"># Check if s is a rotation of itself in s+s</span>
+        <span class="hljs-keyword">return</span> failure[-<span class="hljs-number">1</span>] != <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> n % (n - failure[-<span class="hljs-number">1</span>]) == <span class="hljs-number">0</span>
 
-    return {
-        'find_first': find_first_occurrence,
-        'count': count_occurrences,
-        'exists': is_substring_pattern,
-        'repeated': repeated_string_pattern
+    <span class="hljs-keyword">return</span> {
+        <span class="hljs-string">&#x27;find_first&#x27;</span>: find_first_occurrence,
+        <span class="hljs-string">&#x27;count&#x27;</span>: count_occurrences,
+        <span class="hljs-string">&#x27;exists&#x27;</span>: is_substring_pattern,
+        <span class="hljs-string">&#x27;repeated&#x27;</span>: repeated_string_pattern
     }
 </code></pre>
 <h3 id="template-2-manacher-s-algorithm" tabindex="-1"><a class="header-anchor" href="#template-2-manacher-s-algorithm"><span>Template 2: Manacher’s Algorithm</span></a></h3>
-<pre><code class="language-python">def manacher_algorithm(s):
-    &quot;&quot;&quot;Manacher's algorithm to find all palindromes in O(n)&quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">manacher_algorithm</span>(<span class="hljs-params">s</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Manacher&#x27;s algorithm to find all palindromes in O(n)&quot;&quot;&quot;</span>
 
-    def preprocess(s):
-        &quot;&quot;&quot;Preprocess string to handle even-length palindromes&quot;&quot;&quot;
-        # Transform &quot;abba&quot; -&gt; &quot;^#a#b#b#a#$&quot;
-        result = &quot;^&quot;
-        for c in s:
-            result += &quot;#&quot; + c
-        result += &quot;#$&quot;
-        return result
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">preprocess</span>(<span class="hljs-params">s</span>):
+        <span class="hljs-string">&quot;&quot;&quot;Preprocess string to handle even-length palindromes&quot;&quot;&quot;</span>
+        <span class="hljs-comment"># Transform &quot;abba&quot; -&gt; &quot;^#a#b#b#a#$&quot;</span>
+        result = <span class="hljs-string">&quot;^&quot;</span>
+        <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> s:
+            result += <span class="hljs-string">&quot;#&quot;</span> + c
+        result += <span class="hljs-string">&quot;#$&quot;</span>
+        <span class="hljs-keyword">return</span> result
 
     processed = preprocess(s)
-    n = len(processed)
-    p = [0] * n  # p[i] = radius of palindrome centered at i
-    center = right = 0
+    n = <span class="hljs-built_in">len</span>(processed)
+    p = [<span class="hljs-number">0</span>] * n  <span class="hljs-comment"># p[i] = radius of palindrome centered at i</span>
+    center = right = <span class="hljs-number">0</span>
 
-    for i in range(1, n - 1):
-        # Mirror of i with respect to center
-        mirror = 2 * center - i
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n - <span class="hljs-number">1</span>):
+        <span class="hljs-comment"># Mirror of i with respect to center</span>
+        mirror = <span class="hljs-number">2</span> * center - i
 
-        # If i is within the right boundary, use previously computed values
-        if i &lt; right:
-            p[i] = min(right - i, p[mirror])
+        <span class="hljs-comment"># If i is within the right boundary, use previously computed values</span>
+        <span class="hljs-keyword">if</span> i &lt; right:
+            p[i] = <span class="hljs-built_in">min</span>(right - i, p[mirror])
 
-        # Try to expand palindrome centered at i
-        while processed[i + p[i] + 1] == processed[i - p[i] - 1]:
-            p[i] += 1
+        <span class="hljs-comment"># Try to expand palindrome centered at i</span>
+        <span class="hljs-keyword">while</span> processed[i + p[i] + <span class="hljs-number">1</span>] == processed[i - p[i] - <span class="hljs-number">1</span>]:
+            p[i] += <span class="hljs-number">1</span>
 
-        # If palindrome centered at i extends past right, adjust center and right
-        if i + p[i] &gt; right:
+        <span class="hljs-comment"># If palindrome centered at i extends past right, adjust center and right</span>
+        <span class="hljs-keyword">if</span> i + p[i] &gt; right:
             center, right = i, i + p[i]
 
-    return p, processed
+    <span class="hljs-keyword">return</span> p, processed
 
-def manacher_applications():
-    &quot;&quot;&quot;Various applications of Manacher's algorithm&quot;&quot;&quot;
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">manacher_applications</span>():
+    <span class="hljs-string">&quot;&quot;&quot;Various applications of Manacher&#x27;s algorithm&quot;&quot;&quot;</span>
 
-    def longest_palindromic_substring(s):
-        &quot;&quot;&quot;Find longest palindromic substring (LC 5)&quot;&quot;&quot;
-        if not s:
-            return &quot;&quot;
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">longest_palindromic_substring</span>(<span class="hljs-params">s</span>):
+        <span class="hljs-string">&quot;&quot;&quot;Find longest palindromic substring (LC 5)&quot;&quot;&quot;</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> s:
+            <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>
 
         p, processed = manacher_algorithm(s)
-        max_len = 0
-        center_index = 0
+        max_len = <span class="hljs-number">0</span>
+        center_index = <span class="hljs-number">0</span>
 
-        for i in range(1, len(p) - 1):
-            if p[i] &gt; max_len:
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(p) - <span class="hljs-number">1</span>):
+            <span class="hljs-keyword">if</span> p[i] &gt; max_len:
                 max_len = p[i]
                 center_index = i
 
-        # Convert back to original string coordinates
-        start = (center_index - max_len) // 2
-        return s[start:start + max_len]
+        <span class="hljs-comment"># Convert back to original string coordinates</span>
+        start = (center_index - max_len) // <span class="hljs-number">2</span>
+        <span class="hljs-keyword">return</span> s[start:start + max_len]
 
-    def count_palindromic_substrings(s):
-        &quot;&quot;&quot;Count all palindromic substrings (LC 647)&quot;&quot;&quot;
-        if not s:
-            return 0
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">count_palindromic_substrings</span>(<span class="hljs-params">s</span>):
+        <span class="hljs-string">&quot;&quot;&quot;Count all palindromic substrings (LC 647)&quot;&quot;&quot;</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> s:
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
 
         p, processed = manacher_algorithm(s)
-        count = 0
+        count = <span class="hljs-number">0</span>
 
-        for i in range(1, len(p) - 1):
-            # Each palindrome of radius r contributes (r+1)/2 palindromes
-            count += (p[i] + 1) // 2
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(p) - <span class="hljs-number">1</span>):
+            <span class="hljs-comment"># Each palindrome of radius r contributes (r+1)/2 palindromes</span>
+            count += (p[i] + <span class="hljs-number">1</span>) // <span class="hljs-number">2</span>
 
-        return count
+        <span class="hljs-keyword">return</span> count
 
-    def is_palindrome_range(s, left, right):
-        &quot;&quot;&quot;Check if substring s[left:right+1] is palindrome&quot;&quot;&quot;
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">is_palindrome_range</span>(<span class="hljs-params">s, left, right</span>):
+        <span class="hljs-string">&quot;&quot;&quot;Check if substring s[left:right+1] is palindrome&quot;&quot;&quot;</span>
         p, processed = manacher_algorithm(s)
 
-        # Convert to processed string coordinates
-        center = left + right + 2
+        <span class="hljs-comment"># Convert to processed string coordinates</span>
+        center = left + right + <span class="hljs-number">2</span>
         radius = right - left
 
-        return p[center] &gt;= radius
+        <span class="hljs-keyword">return</span> p[center] &gt;= radius
 
-    def all_palindromic_substrings(s):
-        &quot;&quot;&quot;Get all palindromic substrings with their positions&quot;&quot;&quot;
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">all_palindromic_substrings</span>(<span class="hljs-params">s</span>):
+        <span class="hljs-string">&quot;&quot;&quot;Get all palindromic substrings with their positions&quot;&quot;&quot;</span>
         p, processed = manacher_algorithm(s)
         palindromes = []
 
-        for i in range(1, len(p) - 1):
-            for r in range(p[i] + 1):
-                # Convert back to original coordinates
-                start = (i - r - 1) // 2
-                end = (i + r - 1) // 2
-                if start &lt;= end:
-                    palindromes.append((start, end, s[start:end + 1]))
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(p) - <span class="hljs-number">1</span>):
+            <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(p[i] + <span class="hljs-number">1</span>):
+                <span class="hljs-comment"># Convert back to original coordinates</span>
+                start = (i - r - <span class="hljs-number">1</span>) // <span class="hljs-number">2</span>
+                end = (i + r - <span class="hljs-number">1</span>) // <span class="hljs-number">2</span>
+                <span class="hljs-keyword">if</span> start &lt;= end:
+                    palindromes.append((start, end, s[start:end + <span class="hljs-number">1</span>]))
 
-        return palindromes
+        <span class="hljs-keyword">return</span> palindromes
 
-    return {
-        'longest': longest_palindromic_substring,
-        'count': count_palindromic_substrings,
-        'is_palindrome': is_palindrome_range,
-        'all_palindromes': all_palindromic_substrings
+    <span class="hljs-keyword">return</span> {
+        <span class="hljs-string">&#x27;longest&#x27;</span>: longest_palindromic_substring,
+        <span class="hljs-string">&#x27;count&#x27;</span>: count_palindromic_substrings,
+        <span class="hljs-string">&#x27;is_palindrome&#x27;</span>: is_palindrome_range,
+        <span class="hljs-string">&#x27;all_palindromes&#x27;</span>: all_palindromic_substrings
     }
 </code></pre>
 <h3 id="template-3-z-algorithm" tabindex="-1"><a class="header-anchor" href="#template-3-z-algorithm"><span>Template 3: Z-Algorithm</span></a></h3>
-<pre><code class="language-python">def z_algorithm(s):
-    &quot;&quot;&quot;Z-algorithm: compute Z array where Z[i] = length of longest substring
-    starting from s[i] which is also a prefix of s&quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">z_algorithm</span>(<span class="hljs-params">s</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Z-algorithm: compute Z array where Z[i] = length of longest substring
+    starting from s[i] which is also a prefix of s&quot;&quot;&quot;</span>
 
-    n = len(s)
-    z = [0] * n
-    left = right = 0
+    n = <span class="hljs-built_in">len</span>(s)
+    z = [<span class="hljs-number">0</span>] * n
+    left = right = <span class="hljs-number">0</span>
 
-    for i in range(1, n):
-        if i &lt;= right:
-            # Use previously computed values
-            z[i] = min(right - i + 1, z[i - left])
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n):
+        <span class="hljs-keyword">if</span> i &lt;= right:
+            <span class="hljs-comment"># Use previously computed values</span>
+            z[i] = <span class="hljs-built_in">min</span>(right - i + <span class="hljs-number">1</span>, z[i - left])
 
-        # Try to extend match
-        while i + z[i] &lt; n and s[z[i]] == s[i + z[i]]:
-            z[i] += 1
+        <span class="hljs-comment"># Try to extend match</span>
+        <span class="hljs-keyword">while</span> i + z[i] &lt; n <span class="hljs-keyword">and</span> s[z[i]] == s[i + z[i]]:
+            z[i] += <span class="hljs-number">1</span>
 
-        # Update window if we extended past right boundary
-        if i + z[i] - 1 &gt; right:
-            left, right = i, i + z[i] - 1
+        <span class="hljs-comment"># Update window if we extended past right boundary</span>
+        <span class="hljs-keyword">if</span> i + z[i] - <span class="hljs-number">1</span> &gt; right:
+            left, right = i, i + z[i] - <span class="hljs-number">1</span>
 
-    return z
+    <span class="hljs-keyword">return</span> z
 
-def z_algorithm_applications():
-    &quot;&quot;&quot;Applications of Z-algorithm&quot;&quot;&quot;
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">z_algorithm_applications</span>():
+    <span class="hljs-string">&quot;&quot;&quot;Applications of Z-algorithm&quot;&quot;&quot;</span>
 
-    def pattern_search_z(text, pattern):
-        &quot;&quot;&quot;Pattern searching using Z-algorithm&quot;&quot;&quot;
-        combined = pattern + &quot;$&quot; + text
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">pattern_search_z</span>(<span class="hljs-params">text, pattern</span>):
+        <span class="hljs-string">&quot;&quot;&quot;Pattern searching using Z-algorithm&quot;&quot;&quot;</span>
+        combined = pattern + <span class="hljs-string">&quot;$&quot;</span> + text
         z = z_algorithm(combined)
-        pattern_len = len(pattern)
+        pattern_len = <span class="hljs-built_in">len</span>(pattern)
         matches = []
 
-        for i in range(pattern_len + 1, len(combined)):
-            if z[i] == pattern_len:
-                matches.append(i - pattern_len - 1)
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(pattern_len + <span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(combined)):
+            <span class="hljs-keyword">if</span> z[i] == pattern_len:
+                matches.append(i - pattern_len - <span class="hljs-number">1</span>)
 
-        return matches
+        <span class="hljs-keyword">return</span> matches
 
-    def find_all_occurrences(s, pattern):
-        &quot;&quot;&quot;Find all occurrences of pattern in string&quot;&quot;&quot;
-        return pattern_search_z(s, pattern)
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">find_all_occurrences</span>(<span class="hljs-params">s, pattern</span>):
+        <span class="hljs-string">&quot;&quot;&quot;Find all occurrences of pattern in string&quot;&quot;&quot;</span>
+        <span class="hljs-keyword">return</span> pattern_search_z(s, pattern)
 
-    def longest_prefix_suffix(s):
-        &quot;&quot;&quot;Find longest prefix which is also suffix&quot;&quot;&quot;
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">longest_prefix_suffix</span>(<span class="hljs-params">s</span>):
+        <span class="hljs-string">&quot;&quot;&quot;Find longest prefix which is also suffix&quot;&quot;&quot;</span>
         z = z_algorithm(s)
-        n = len(s)
+        n = <span class="hljs-built_in">len</span>(s)
 
-        for i in range(n - 1, 0, -1):
-            if z[i] == n - i:
-                return s[:n - i]
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n - <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, -<span class="hljs-number">1</span>):
+            <span class="hljs-keyword">if</span> z[i] == n - i:
+                <span class="hljs-keyword">return</span> s[:n - i]
 
-        return &quot;&quot;
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>
 
-    def period_detection(s):
-        &quot;&quot;&quot;Find the period of string using Z-algorithm&quot;&quot;&quot;
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">period_detection</span>(<span class="hljs-params">s</span>):
+        <span class="hljs-string">&quot;&quot;&quot;Find the period of string using Z-algorithm&quot;&quot;&quot;</span>
         z = z_algorithm(s)
-        n = len(s)
+        n = <span class="hljs-built_in">len</span>(s)
 
-        for period in range(1, n):
-            if period + z[period] == n:
-                return period
+        <span class="hljs-keyword">for</span> period <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n):
+            <span class="hljs-keyword">if</span> period + z[period] == n:
+                <span class="hljs-keyword">return</span> period
 
-        return n  # String has no period shorter than itself
+        <span class="hljs-keyword">return</span> n  <span class="hljs-comment"># String has no period shorter than itself</span>
 
-    return {
-        'search': pattern_search_z,
-        'find_all': find_all_occurrences,
-        'prefix_suffix': longest_prefix_suffix,
-        'period': period_detection
+    <span class="hljs-keyword">return</span> {
+        <span class="hljs-string">&#x27;search&#x27;</span>: pattern_search_z,
+        <span class="hljs-string">&#x27;find_all&#x27;</span>: find_all_occurrences,
+        <span class="hljs-string">&#x27;prefix_suffix&#x27;</span>: longest_prefix_suffix,
+        <span class="hljs-string">&#x27;period&#x27;</span>: period_detection
     }
 </code></pre>
 <h3 id="template-4-advanced-rolling-hash" tabindex="-1"><a class="header-anchor" href="#template-4-advanced-rolling-hash"><span>Template 4: Advanced Rolling Hash</span></a></h3>
-<pre><code class="language-python">class RollingHash:
-    &quot;&quot;&quot;Advanced rolling hash for string problems&quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">RollingHash</span>:
+    <span class="hljs-string">&quot;&quot;&quot;Advanced rolling hash for string problems&quot;&quot;&quot;</span>
 
-    def __init__(self, s, base=256, mod=10**9 + 7):
-        self.s = s
-        self.n = len(s)
-        self.base = base
-        self.mod = mod
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, s, base=<span class="hljs-number">256</span>, mod=<span class="hljs-number">10</span>**<span class="hljs-number">9</span> + <span class="hljs-number">7</span></span>):
+        <span class="hljs-variable language_">self</span>.s = s
+        <span class="hljs-variable language_">self</span>.n = <span class="hljs-built_in">len</span>(s)
+        <span class="hljs-variable language_">self</span>.base = base
+        <span class="hljs-variable language_">self</span>.mod = mod
 
-        # Precompute hash values and powers
-        self.hash_values = [0] * (self.n + 1)
-        self.base_powers = [1] * (self.n + 1)
+        <span class="hljs-comment"># Precompute hash values and powers</span>
+        <span class="hljs-variable language_">self</span>.hash_values = [<span class="hljs-number">0</span>] * (<span class="hljs-variable language_">self</span>.n + <span class="hljs-number">1</span>)
+        <span class="hljs-variable language_">self</span>.base_powers = [<span class="hljs-number">1</span>] * (<span class="hljs-variable language_">self</span>.n + <span class="hljs-number">1</span>)
 
-        for i in range(self.n):
-            self.hash_values[i + 1] = (self.hash_values[i] * base + ord(s[i])) % mod
-            self.base_powers[i + 1] = (self.base_powers[i] * base) % mod
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-variable language_">self</span>.n):
+            <span class="hljs-variable language_">self</span>.hash_values[i + <span class="hljs-number">1</span>] = (<span class="hljs-variable language_">self</span>.hash_values[i] * base + <span class="hljs-built_in">ord</span>(s[i])) % mod
+            <span class="hljs-variable language_">self</span>.base_powers[i + <span class="hljs-number">1</span>] = (<span class="hljs-variable language_">self</span>.base_powers[i] * base) % mod
 
-    def get_hash(self, left, right):
-        &quot;&quot;&quot;Get hash of substring s[left:right+1]&quot;&quot;&quot;
-        length = right - left + 1
-        result = (self.hash_values[right + 1] -
-                 self.hash_values[left] * self.base_powers[length]) % self.mod
-        return result if result &gt;= 0 else result + self.mod
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_hash</span>(<span class="hljs-params">self, left, right</span>):
+        <span class="hljs-string">&quot;&quot;&quot;Get hash of substring s[left:right+1]&quot;&quot;&quot;</span>
+        length = right - left + <span class="hljs-number">1</span>
+        result = (<span class="hljs-variable language_">self</span>.hash_values[right + <span class="hljs-number">1</span>] -
+                 <span class="hljs-variable language_">self</span>.hash_values[left] * <span class="hljs-variable language_">self</span>.base_powers[length]) % <span class="hljs-variable language_">self</span>.mod
+        <span class="hljs-keyword">return</span> result <span class="hljs-keyword">if</span> result &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> result + <span class="hljs-variable language_">self</span>.mod
 
-    def compare_substrings(self, l1, r1, l2, r2):
-        &quot;&quot;&quot;Compare two substrings using hash values&quot;&quot;&quot;
-        return (r1 - l1 == r2 - l2 and
-                self.get_hash(l1, r1) == self.get_hash(l2, r2))
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">compare_substrings</span>(<span class="hljs-params">self, l1, r1, l2, r2</span>):
+        <span class="hljs-string">&quot;&quot;&quot;Compare two substrings using hash values&quot;&quot;&quot;</span>
+        <span class="hljs-keyword">return</span> (r1 - l1 == r2 - l2 <span class="hljs-keyword">and</span>
+                <span class="hljs-variable language_">self</span>.get_hash(l1, r1) == <span class="hljs-variable language_">self</span>.get_hash(l2, r2))
 
-    def longest_duplicate_substring(self):
-        &quot;&quot;&quot;Find longest duplicate substring (LC 1044)&quot;&quot;&quot;
-        def has_duplicate_of_length(length):
-            seen_hashes = set()
-            for i in range(self.n - length + 1):
-                substring_hash = self.get_hash(i, i + length - 1)
-                if substring_hash in seen_hashes:
-                    return i
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">longest_duplicate_substring</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-string">&quot;&quot;&quot;Find longest duplicate substring (LC 1044)&quot;&quot;&quot;</span>
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">has_duplicate_of_length</span>(<span class="hljs-params">length</span>):
+            seen_hashes = <span class="hljs-built_in">set</span>()
+            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-variable language_">self</span>.n - length + <span class="hljs-number">1</span>):
+                substring_hash = <span class="hljs-variable language_">self</span>.get_hash(i, i + length - <span class="hljs-number">1</span>)
+                <span class="hljs-keyword">if</span> substring_hash <span class="hljs-keyword">in</span> seen_hashes:
+                    <span class="hljs-keyword">return</span> i
                 seen_hashes.add(substring_hash)
-            return -1
+            <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
 
-        # Binary search on length
-        left, right = 0, self.n - 1
-        result_start = -1
+        <span class="hljs-comment"># Binary search on length</span>
+        left, right = <span class="hljs-number">0</span>, <span class="hljs-variable language_">self</span>.n - <span class="hljs-number">1</span>
+        result_start = -<span class="hljs-number">1</span>
 
-        while left &lt;= right:
-            mid = (left + right) // 2
+        <span class="hljs-keyword">while</span> left &lt;= right:
+            mid = (left + right) // <span class="hljs-number">2</span>
             start_pos = has_duplicate_of_length(mid)
 
-            if start_pos != -1:
+            <span class="hljs-keyword">if</span> start_pos != -<span class="hljs-number">1</span>:
                 result_start = start_pos
-                left = mid + 1
-            else:
-                right = mid - 1
+                left = mid + <span class="hljs-number">1</span>
+            <span class="hljs-keyword">else</span>:
+                right = mid - <span class="hljs-number">1</span>
 
-        return self.s[result_start:result_start + right] if result_start != -1 else &quot;&quot;
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.s[result_start:result_start + right] <span class="hljs-keyword">if</span> result_start != -<span class="hljs-number">1</span> <span class="hljs-keyword">else</span> <span class="hljs-string">&quot;&quot;</span>
 
-    def distinct_echo_substrings(self):
-        &quot;&quot;&quot;Count distinct echo substrings (LC 1316)&quot;&quot;&quot;
-        seen = set()
-        count = 0
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">distinct_echo_substrings</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-string">&quot;&quot;&quot;Count distinct echo substrings (LC 1316)&quot;&quot;&quot;</span>
+        seen = <span class="hljs-built_in">set</span>()
+        count = <span class="hljs-number">0</span>
 
-        for i in range(self.n):
-            for j in range(i + 1, self.n, 2):  # Only even lengths
-                mid = (i + j) // 2
-                if self.compare_substrings(i, mid, mid + 1, j):
-                    substring_hash = self.get_hash(i, j)
-                    if substring_hash not in seen:
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-variable language_">self</span>.n):
+            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(i + <span class="hljs-number">1</span>, <span class="hljs-variable language_">self</span>.n, <span class="hljs-number">2</span>):  <span class="hljs-comment"># Only even lengths</span>
+                mid = (i + j) // <span class="hljs-number">2</span>
+                <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.compare_substrings(i, mid, mid + <span class="hljs-number">1</span>, j):
+                    substring_hash = <span class="hljs-variable language_">self</span>.get_hash(i, j)
+                    <span class="hljs-keyword">if</span> substring_hash <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> seen:
                         seen.add(substring_hash)
-                        count += 1
+                        count += <span class="hljs-number">1</span>
 
-        return count
+        <span class="hljs-keyword">return</span> count
 </code></pre>
 <h3 id="template-5-suffix-array-construction" tabindex="-1"><a class="header-anchor" href="#template-5-suffix-array-construction"><span>Template 5: Suffix Array Construction</span></a></h3>
-<pre><code class="language-python">def suffix_array_construction(s):
-    &quot;&quot;&quot;Construct suffix array using counting sort (O(n log n))&quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">suffix_array_construction</span>(<span class="hljs-params">s</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Construct suffix array using counting sort (O(n log n))&quot;&quot;&quot;</span>
 
-    def counting_sort(arr, key_func, max_val):
-        &quot;&quot;&quot;Stable counting sort&quot;&quot;&quot;
-        count = [0] * (max_val + 1)
-        for item in arr:
-            count[key_func(item)] += 1
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">counting_sort</span>(<span class="hljs-params">arr, key_func, max_val</span>):
+        <span class="hljs-string">&quot;&quot;&quot;Stable counting sort&quot;&quot;&quot;</span>
+        count = [<span class="hljs-number">0</span>] * (max_val + <span class="hljs-number">1</span>)
+        <span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> arr:
+            count[key_func(item)] += <span class="hljs-number">1</span>
 
-        for i in range(1, len(count)):
-            count[i] += count[i - 1]
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(count)):
+            count[i] += count[i - <span class="hljs-number">1</span>]
 
-        result = [0] * len(arr)
-        for i in range(len(arr) - 1, -1, -1):
+        result = [<span class="hljs-number">0</span>] * <span class="hljs-built_in">len</span>(arr)
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(arr) - <span class="hljs-number">1</span>, -<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>):
             key = key_func(arr[i])
-            count[key] -= 1
+            count[key] -= <span class="hljs-number">1</span>
             result[count[key]] = arr[i]
 
-        return result
+        <span class="hljs-keyword">return</span> result
 
-    n = len(s)
-    if n == 0:
-        return []
+    n = <span class="hljs-built_in">len</span>(s)
+    <span class="hljs-keyword">if</span> n == <span class="hljs-number">0</span>:
+        <span class="hljs-keyword">return</span> []
 
-    # Initial ranking based on first character
-    suffixes = list(range(n))
-    rank = [ord(c) for c in s]
+    <span class="hljs-comment"># Initial ranking based on first character</span>
+    suffixes = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">range</span>(n))
+    rank = [<span class="hljs-built_in">ord</span>(c) <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> s]
 
-    k = 1
-    while k &lt; n:
-        # Sort by (rank[i], rank[i + k])
-        def sort_key(i):
-            return (rank[i], rank[i + k] if i + k &lt; n else -1)
+    k = <span class="hljs-number">1</span>
+    <span class="hljs-keyword">while</span> k &lt; n:
+        <span class="hljs-comment"># Sort by (rank[i], rank[i + k])</span>
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">sort_key</span>(<span class="hljs-params">i</span>):
+            <span class="hljs-keyword">return</span> (rank[i], rank[i + k] <span class="hljs-keyword">if</span> i + k &lt; n <span class="hljs-keyword">else</span> -<span class="hljs-number">1</span>)
 
-        # Find maximum rank for counting sort
-        max_rank = max(rank) + 1
+        <span class="hljs-comment"># Find maximum rank for counting sort</span>
+        max_rank = <span class="hljs-built_in">max</span>(rank) + <span class="hljs-number">1</span>
 
-        # Sort by second key first, then by first key
-        suffixes = counting_sort(suffixes, lambda i: rank[i + k] if i + k &lt; n else -1, max_rank)
-        suffixes = counting_sort(suffixes, lambda i: rank[i], max_rank)
+        <span class="hljs-comment"># Sort by second key first, then by first key</span>
+        suffixes = counting_sort(suffixes, <span class="hljs-keyword">lambda</span> i: rank[i + k] <span class="hljs-keyword">if</span> i + k &lt; n <span class="hljs-keyword">else</span> -<span class="hljs-number">1</span>, max_rank)
+        suffixes = counting_sort(suffixes, <span class="hljs-keyword">lambda</span> i: rank[i], max_rank)
 
-        # Update ranks
-        new_rank = [0] * n
-        for i in range(1, n):
-            if (rank[suffixes[i]], rank[suffixes[i] + k] if suffixes[i] + k &lt; n else -1) == \
-               (rank[suffixes[i - 1]], rank[suffixes[i - 1] + k] if suffixes[i - 1] + k &lt; n else -1):
-                new_rank[suffixes[i]] = new_rank[suffixes[i - 1]]
-            else:
+        <span class="hljs-comment"># Update ranks</span>
+        new_rank = [<span class="hljs-number">0</span>] * n
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n):
+            <span class="hljs-keyword">if</span> (rank[suffixes[i]], rank[suffixes[i] + k] <span class="hljs-keyword">if</span> suffixes[i] + k &lt; n <span class="hljs-keyword">else</span> -<span class="hljs-number">1</span>) == \
+               (rank[suffixes[i - <span class="hljs-number">1</span>]], rank[suffixes[i - <span class="hljs-number">1</span>] + k] <span class="hljs-keyword">if</span> suffixes[i - <span class="hljs-number">1</span>] + k &lt; n <span class="hljs-keyword">else</span> -<span class="hljs-number">1</span>):
+                new_rank[suffixes[i]] = new_rank[suffixes[i - <span class="hljs-number">1</span>]]
+            <span class="hljs-keyword">else</span>:
                 new_rank[suffixes[i]] = i
 
         rank = new_rank
-        k *= 2
+        k *= <span class="hljs-number">2</span>
 
-    return suffixes
+    <span class="hljs-keyword">return</span> suffixes
 
-def lcp_array(s, suffix_array):
-    &quot;&quot;&quot;Compute LCP (Longest Common Prefix) array&quot;&quot;&quot;
-    n = len(s)
-    if n == 0:
-        return []
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">lcp_array</span>(<span class="hljs-params">s, suffix_array</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Compute LCP (Longest Common Prefix) array&quot;&quot;&quot;</span>
+    n = <span class="hljs-built_in">len</span>(s)
+    <span class="hljs-keyword">if</span> n == <span class="hljs-number">0</span>:
+        <span class="hljs-keyword">return</span> []
 
-    # Inverse of suffix array
-    rank = [0] * n
-    for i in range(n):
+    <span class="hljs-comment"># Inverse of suffix array</span>
+    rank = [<span class="hljs-number">0</span>] * n
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
         rank[suffix_array[i]] = i
 
-    lcp = [0] * (n - 1)
-    h = 0
+    lcp = [<span class="hljs-number">0</span>] * (n - <span class="hljs-number">1</span>)
+    h = <span class="hljs-number">0</span>
 
-    for i in range(n):
-        if rank[i] &gt; 0:
-            j = suffix_array[rank[i] - 1]
-            while i + h &lt; n and j + h &lt; n and s[i + h] == s[j + h]:
-                h += 1
-            lcp[rank[i] - 1] = h
-            if h &gt; 0:
-                h -= 1
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+        <span class="hljs-keyword">if</span> rank[i] &gt; <span class="hljs-number">0</span>:
+            j = suffix_array[rank[i] - <span class="hljs-number">1</span>]
+            <span class="hljs-keyword">while</span> i + h &lt; n <span class="hljs-keyword">and</span> j + h &lt; n <span class="hljs-keyword">and</span> s[i + h] == s[j + h]:
+                h += <span class="hljs-number">1</span>
+            lcp[rank[i] - <span class="hljs-number">1</span>] = h
+            <span class="hljs-keyword">if</span> h &gt; <span class="hljs-number">0</span>:
+                h -= <span class="hljs-number">1</span>
 
-    return lcp
+    <span class="hljs-keyword">return</span> lcp
 </code></pre>
 <h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
 <h3 id="pattern-matching-problems" tabindex="-1"><a class="header-anchor" href="#pattern-matching-problems"><span><strong>Pattern Matching Problems</strong></span></a></h3>
@@ -728,264 +740,344 @@ def lcp_array(s, suffix_array):
 </tbody>
 </table>
 <h2 id="lc-examples" tabindex="-1"><a class="header-anchor" href="#lc-examples"><span>LC Examples</span></a></h2>
-<h3 id="1-find-index-of-first-occurrence-lc-28" tabindex="-1"><a class="header-anchor" href="#1-find-index-of-first-occurrence-lc-28"><span>1. Find Index of First Occurrence (LC 28)</span></a></h3>
-<pre><code class="language-python">def strStr(haystack, needle):
-    &quot;&quot;&quot;KMP implementation for string search&quot;&quot;&quot;
-    if not needle:
-        return 0
+<h3 id="2-1-find-index-of-first-occurrence-lc-28-kmp" tabindex="-1"><a class="header-anchor" href="#2-1-find-index-of-first-occurrence-lc-28-kmp"><span>2-1) Find Index of First Occurrence (LC 28) — KMP</span></a></h3>
+<blockquote>
+<p>Build LPS (failure) array for pattern; skip redundant comparisons on mismatch.</p>
+</blockquote>
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 28 - Find the Index of the First Occurrence in a String</span>
+<span class="hljs-comment">// IDEA: KMP — build LPS array; on mismatch jump to lps[j-1] instead of restarting</span>
+<span class="hljs-comment">// time = O(N+M), space = O(M)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">strStr</span><span class="hljs-params">(String haystack, String needle)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> haystack.length(), m = needle.length();
+    <span class="hljs-type">int</span>[] lps = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[m];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>, len = <span class="hljs-number">0</span>; i &lt; m; ) {
+        <span class="hljs-keyword">if</span> (needle.charAt(i) == needle.charAt(len)) lps[i++] = ++len;
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (len &gt; <span class="hljs-number">0</span>) len = lps[len - <span class="hljs-number">1</span>];
+        <span class="hljs-keyword">else</span> lps[i++] = <span class="hljs-number">0</span>;
+    }
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, j = <span class="hljs-number">0</span>; i &lt; n; ) {
+        <span class="hljs-keyword">if</span> (haystack.charAt(i) == needle.charAt(j)) { i++; j++; }
+        <span class="hljs-keyword">if</span> (j == m) <span class="hljs-keyword">return</span> i - j;
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (i &lt; n &amp;&amp; haystack.charAt(i) != needle.charAt(j))
+            j = j &gt; <span class="hljs-number">0</span> ? lps[j - <span class="hljs-number">1</span>] : <span class="hljs-number">0</span>;
+        <span class="hljs-keyword">if</span> (j == <span class="hljs-number">0</span> &amp;&amp; i &lt; n &amp;&amp; haystack.charAt(i) != needle.charAt(j)) i++;
+    }
+    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
+}
+</code></pre>
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">strStr</span>(<span class="hljs-params">haystack, needle</span>):
+    <span class="hljs-string">&quot;&quot;&quot;KMP implementation for string search&quot;&quot;&quot;</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> needle:
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
 
-    def compute_lps(pattern):
-        &quot;&quot;&quot;Compute Longest Prefix Suffix array&quot;&quot;&quot;
-        m = len(pattern)
-        lps = [0] * m
-        length = 0
-        i = 1
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">compute_lps</span>(<span class="hljs-params">pattern</span>):
+        <span class="hljs-string">&quot;&quot;&quot;Compute Longest Prefix Suffix array&quot;&quot;&quot;</span>
+        m = <span class="hljs-built_in">len</span>(pattern)
+        lps = [<span class="hljs-number">0</span>] * m
+        length = <span class="hljs-number">0</span>
+        i = <span class="hljs-number">1</span>
 
-        while i &lt; m:
-            if pattern[i] == pattern[length]:
-                length += 1
+        <span class="hljs-keyword">while</span> i &lt; m:
+            <span class="hljs-keyword">if</span> pattern[i] == pattern[length]:
+                length += <span class="hljs-number">1</span>
                 lps[i] = length
-                i += 1
-            else:
-                if length != 0:
-                    length = lps[length - 1]
-                else:
-                    lps[i] = 0
-                    i += 1
+                i += <span class="hljs-number">1</span>
+            <span class="hljs-keyword">else</span>:
+                <span class="hljs-keyword">if</span> length != <span class="hljs-number">0</span>:
+                    length = lps[length - <span class="hljs-number">1</span>]
+                <span class="hljs-keyword">else</span>:
+                    lps[i] = <span class="hljs-number">0</span>
+                    i += <span class="hljs-number">1</span>
 
-        return lps
+        <span class="hljs-keyword">return</span> lps
 
-    n, m = len(haystack), len(needle)
+    n, m = <span class="hljs-built_in">len</span>(haystack), <span class="hljs-built_in">len</span>(needle)
     lps = compute_lps(needle)
 
-    i = j = 0
-    while i &lt; n:
-        if haystack[i] == needle[j]:
-            i += 1
-            j += 1
+    i = j = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">while</span> i &lt; n:
+        <span class="hljs-keyword">if</span> haystack[i] == needle[j]:
+            i += <span class="hljs-number">1</span>
+            j += <span class="hljs-number">1</span>
 
-        if j == m:
-            return i - j
-        elif i &lt; n and haystack[i] != needle[j]:
-            if j != 0:
-                j = lps[j - 1]
-            else:
-                i += 1
+        <span class="hljs-keyword">if</span> j == m:
+            <span class="hljs-keyword">return</span> i - j
+        <span class="hljs-keyword">elif</span> i &lt; n <span class="hljs-keyword">and</span> haystack[i] != needle[j]:
+            <span class="hljs-keyword">if</span> j != <span class="hljs-number">0</span>:
+                j = lps[j - <span class="hljs-number">1</span>]
+            <span class="hljs-keyword">else</span>:
+                i += <span class="hljs-number">1</span>
 
-    return -1
+    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
 </code></pre>
-<h3 id="2-longest-palindromic-substring-lc-5" tabindex="-1"><a class="header-anchor" href="#2-longest-palindromic-substring-lc-5"><span>2. Longest Palindromic Substring (LC 5)</span></a></h3>
-<pre><code class="language-python">def longestPalindrome(s):
-    &quot;&quot;&quot;Manacher's algorithm for longest palindromic substring&quot;&quot;&quot;
-    if not s:
-        return &quot;&quot;
+<h3 id="2-2-longest-palindromic-substring-lc-5-expand-around-center" tabindex="-1"><a class="header-anchor" href="#2-2-longest-palindromic-substring-lc-5-expand-around-center"><span>2-2) Longest Palindromic Substring (LC 5) — Expand Around Center</span></a></h3>
+<blockquote>
+<p>Try every center (odd and even length); expand while characters match.</p>
+</blockquote>
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 5 - Longest Palindromic Substring</span>
+<span class="hljs-comment">// IDEA: Expand around center for each of 2N-1 centers; track longest</span>
+<span class="hljs-comment">// time = O(N^2), space = O(1)</span>
+<span class="hljs-keyword">public</span> String <span class="hljs-title function_">longestPalindrome</span><span class="hljs-params">(String s)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">start</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, maxLen = <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; s.length(); i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">d</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; d &lt;= <span class="hljs-number">1</span>; d++) {  <span class="hljs-comment">// d=0: odd length, d=1: even length</span>
+            <span class="hljs-type">int</span> <span class="hljs-variable">l</span> <span class="hljs-operator">=</span> i, r = i + d;
+            <span class="hljs-keyword">while</span> (l &gt;= <span class="hljs-number">0</span> &amp;&amp; r &lt; s.length() &amp;&amp; s.charAt(l) == s.charAt(r)) { l--; r++; }
+            <span class="hljs-keyword">if</span> (r - l - <span class="hljs-number">1</span> &gt; maxLen) { maxLen = r - l - <span class="hljs-number">1</span>; start = l + <span class="hljs-number">1</span>; }
+        }
+    }
+    <span class="hljs-keyword">return</span> s.substring(start, start + maxLen);
+}
+</code></pre>
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">longestPalindrome</span>(<span class="hljs-params">s</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Manacher&#x27;s algorithm for longest palindromic substring&quot;&quot;&quot;</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> s:
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>
 
-    # Preprocess string
-    processed = &quot;^#&quot; + &quot;#&quot;.join(s) + &quot;#$&quot;
-    n = len(processed)
-    p = [0] * n
-    center = right = 0
+    <span class="hljs-comment"># Preprocess string</span>
+    processed = <span class="hljs-string">&quot;^#&quot;</span> + <span class="hljs-string">&quot;#&quot;</span>.join(s) + <span class="hljs-string">&quot;#$&quot;</span>
+    n = <span class="hljs-built_in">len</span>(processed)
+    p = [<span class="hljs-number">0</span>] * n
+    center = right = <span class="hljs-number">0</span>
 
-    for i in range(1, n - 1):
-        mirror = 2 * center - i
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n - <span class="hljs-number">1</span>):
+        mirror = <span class="hljs-number">2</span> * center - i
 
-        if i &lt; right:
-            p[i] = min(right - i, p[mirror])
+        <span class="hljs-keyword">if</span> i &lt; right:
+            p[i] = <span class="hljs-built_in">min</span>(right - i, p[mirror])
 
-        # Try to expand
-        while processed[i + p[i] + 1] == processed[i - p[i] - 1]:
-            p[i] += 1
+        <span class="hljs-comment"># Try to expand</span>
+        <span class="hljs-keyword">while</span> processed[i + p[i] + <span class="hljs-number">1</span>] == processed[i - p[i] - <span class="hljs-number">1</span>]:
+            p[i] += <span class="hljs-number">1</span>
 
-        # Update center and right boundary
-        if i + p[i] &gt; right:
+        <span class="hljs-comment"># Update center and right boundary</span>
+        <span class="hljs-keyword">if</span> i + p[i] &gt; right:
             center, right = i, i + p[i]
 
-    # Find longest palindrome
-    max_len = 0
-    center_index = 0
-    for i in range(1, n - 1):
-        if p[i] &gt; max_len:
+    <span class="hljs-comment"># Find longest palindrome</span>
+    max_len = <span class="hljs-number">0</span>
+    center_index = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n - <span class="hljs-number">1</span>):
+        <span class="hljs-keyword">if</span> p[i] &gt; max_len:
             max_len = p[i]
             center_index = i
 
-    start = (center_index - max_len) // 2
-    return s[start:start + max_len]
+    start = (center_index - max_len) // <span class="hljs-number">2</span>
+    <span class="hljs-keyword">return</span> s[start:start + max_len]
 </code></pre>
-<h3 id="3-longest-duplicate-substring-lc-1044" tabindex="-1"><a class="header-anchor" href="#3-longest-duplicate-substring-lc-1044"><span>3. Longest Duplicate Substring (LC 1044)</span></a></h3>
-<pre><code class="language-python">def longestDupSubstring(s):
-    &quot;&quot;&quot;Rolling hash with binary search&quot;&quot;&quot;
+<h3 id="2-3-longest-duplicate-substring-lc-1044-binary-search-rolling-hash" tabindex="-1"><a class="header-anchor" href="#2-3-longest-duplicate-substring-lc-1044-binary-search-rolling-hash"><span>2-3) Longest Duplicate Substring (LC 1044) — Binary Search + Rolling Hash</span></a></h3>
+<blockquote>
+<p>Binary search on length; use Rabin-Karp rolling hash to check if duplicate of that length exists.</p>
+</blockquote>
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1044 - Longest Duplicate Substring</span>
+<span class="hljs-comment">// IDEA: Binary search on length L; Rabin-Karp rolling hash checks duplicate in O(N)</span>
+<span class="hljs-comment">// time = O(N log N), space = O(N)</span>
+<span class="hljs-keyword">public</span> String <span class="hljs-title function_">longestDupSubstring</span><span class="hljs-params">(String s)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">lo</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>, hi = s.length() - <span class="hljs-number">1</span>;
+    <span class="hljs-type">String</span> <span class="hljs-variable">ans</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;&quot;</span>;
+    <span class="hljs-keyword">while</span> (lo &lt;= hi) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> (lo + hi) / <span class="hljs-number">2</span>;
+        <span class="hljs-type">String</span> <span class="hljs-variable">dup</span> <span class="hljs-operator">=</span> findDuplicate(s, mid);
+        <span class="hljs-keyword">if</span> (dup != <span class="hljs-literal">null</span>) { ans = dup; lo = mid + <span class="hljs-number">1</span>; }
+        <span class="hljs-keyword">else</span> hi = mid - <span class="hljs-number">1</span>;
+    }
+    <span class="hljs-keyword">return</span> ans;
+}
+<span class="hljs-keyword">private</span> String <span class="hljs-title function_">findDuplicate</span><span class="hljs-params">(String s, <span class="hljs-type">int</span> len)</span> {
+    <span class="hljs-type">long</span> <span class="hljs-variable">MOD</span> <span class="hljs-operator">=</span> (<span class="hljs-number">1L</span> &lt;&lt; <span class="hljs-number">61</span>) - <span class="hljs-number">1</span>, BASE = <span class="hljs-number">31</span>;
+    <span class="hljs-type">long</span> <span class="hljs-variable">power</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; len; i++) power = power * BASE % MOD;
+    <span class="hljs-type">long</span> <span class="hljs-variable">hash</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; len; i++) hash = (hash * BASE + s.charAt(i)) % MOD;
+    Map&lt;Long, List&lt;Integer&gt;&gt; seen = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+    seen.computeIfAbsent(hash, k -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;()).add(<span class="hljs-number">0</span>);
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> len; i &lt; s.length(); i++) {
+        hash = (hash * BASE - s.charAt(i - len) * power % MOD + s.charAt(i) + MOD) % MOD;
+        <span class="hljs-type">int</span> <span class="hljs-variable">start</span> <span class="hljs-operator">=</span> i - len + <span class="hljs-number">1</span>;
+        <span class="hljs-keyword">if</span> (seen.containsKey(hash)) {
+            <span class="hljs-type">String</span> <span class="hljs-variable">sub</span> <span class="hljs-operator">=</span> s.substring(start, start + len);
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> prev : seen.get(hash))
+                <span class="hljs-keyword">if</span> (s.substring(prev, prev + len).equals(sub)) <span class="hljs-keyword">return</span> sub;
+        }
+        seen.computeIfAbsent(hash, k -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;()).add(start);
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;
+}
+</code></pre>
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">longestDupSubstring</span>(<span class="hljs-params">s</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Rolling hash with binary search&quot;&quot;&quot;</span>
 
-    def has_duplicate(length):
-        base = 256
-        mod = 2**63 - 1
-        base_power = pow(base, length, mod)
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">has_duplicate</span>(<span class="hljs-params">length</span>):
+        base = <span class="hljs-number">256</span>
+        mod = <span class="hljs-number">2</span>**<span class="hljs-number">63</span> - <span class="hljs-number">1</span>
+        base_power = <span class="hljs-built_in">pow</span>(base, length, mod)
 
-        current_hash = 0
-        for i in range(length):
-            current_hash = (current_hash * base + ord(s[i])) % mod
+        current_hash = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(length):
+            current_hash = (current_hash * base + <span class="hljs-built_in">ord</span>(s[i])) % mod
 
         seen = {current_hash}
 
-        for i in range(length, len(s)):
-            # Remove leftmost character and add rightmost
-            current_hash = (current_hash - ord(s[i - length]) * base_power) % mod
-            current_hash = (current_hash * base + ord(s[i])) % mod
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(length, <span class="hljs-built_in">len</span>(s)):
+            <span class="hljs-comment"># Remove leftmost character and add rightmost</span>
+            current_hash = (current_hash - <span class="hljs-built_in">ord</span>(s[i - length]) * base_power) % mod
+            current_hash = (current_hash * base + <span class="hljs-built_in">ord</span>(s[i])) % mod
 
-            if current_hash in seen:
-                return i - length + 1
+            <span class="hljs-keyword">if</span> current_hash <span class="hljs-keyword">in</span> seen:
+                <span class="hljs-keyword">return</span> i - length + <span class="hljs-number">1</span>
             seen.add(current_hash)
 
-        return -1
+        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
 
-    left, right = 0, len(s) - 1
-    result_start = 0
+    left, right = <span class="hljs-number">0</span>, <span class="hljs-built_in">len</span>(s) - <span class="hljs-number">1</span>
+    result_start = <span class="hljs-number">0</span>
 
-    while left &lt;= right:
-        mid = (left + right) // 2
+    <span class="hljs-keyword">while</span> left &lt;= right:
+        mid = (left + right) // <span class="hljs-number">2</span>
         start_pos = has_duplicate(mid)
 
-        if start_pos != -1:
+        <span class="hljs-keyword">if</span> start_pos != -<span class="hljs-number">1</span>:
             result_start = start_pos
-            left = mid + 1
-        else:
-            right = mid - 1
+            left = mid + <span class="hljs-number">1</span>
+        <span class="hljs-keyword">else</span>:
+            right = mid - <span class="hljs-number">1</span>
 
-    return s[result_start:result_start + right] if right &gt; 0 else &quot;&quot;
+    <span class="hljs-keyword">return</span> s[result_start:result_start + right] <span class="hljs-keyword">if</span> right &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> <span class="hljs-string">&quot;&quot;</span>
 </code></pre>
 <h2 id="advanced-techniques" tabindex="-1"><a class="header-anchor" href="#advanced-techniques"><span>Advanced Techniques</span></a></h2>
 <h3 id="multiple-pattern-matching" tabindex="-1"><a class="header-anchor" href="#multiple-pattern-matching"><span>Multiple Pattern Matching</span></a></h3>
-<pre><code class="language-python">class AhoCorasick:
-    &quot;&quot;&quot;Aho-Corasick algorithm for multiple pattern matching&quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">AhoCorasick</span>:
+    <span class="hljs-string">&quot;&quot;&quot;Aho-Corasick algorithm for multiple pattern matching&quot;&quot;&quot;</span>
 
-    def __init__(self):
-        self.trie = {}
-        self.failure = {}
-        self.output = {}
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.trie = {}
+        <span class="hljs-variable language_">self</span>.failure = {}
+        <span class="hljs-variable language_">self</span>.output = {}
 
-    def add_pattern(self, pattern, pattern_id):
-        &quot;&quot;&quot;Add pattern to trie&quot;&quot;&quot;
-        node = self.trie
-        for char in pattern:
-            if char not in node:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">add_pattern</span>(<span class="hljs-params">self, pattern, pattern_id</span>):
+        <span class="hljs-string">&quot;&quot;&quot;Add pattern to trie&quot;&quot;&quot;</span>
+        node = <span class="hljs-variable language_">self</span>.trie
+        <span class="hljs-keyword">for</span> char <span class="hljs-keyword">in</span> pattern:
+            <span class="hljs-keyword">if</span> char <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> node:
                 node[char] = {}
             node = node[char]
-        node['$'] = pattern_id
+        node[<span class="hljs-string">&#x27;$&#x27;</span>] = pattern_id
 
-    def build_failure_function(self):
-        &quot;&quot;&quot;Build failure function for Aho-Corasick&quot;&quot;&quot;
-        from collections import deque
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">build_failure_function</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-string">&quot;&quot;&quot;Build failure function for Aho-Corasick&quot;&quot;&quot;</span>
+        <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
 
         queue = deque()
-        self.failure[id(self.trie)] = self.trie
+        <span class="hljs-variable language_">self</span>.failure[<span class="hljs-built_in">id</span>(<span class="hljs-variable language_">self</span>.trie)] = <span class="hljs-variable language_">self</span>.trie
 
-        # Initialize first level
-        for char, child in self.trie.items():
-            if char != '$':
-                self.failure[id(child)] = self.trie
+        <span class="hljs-comment"># Initialize first level</span>
+        <span class="hljs-keyword">for</span> char, child <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.trie.items():
+            <span class="hljs-keyword">if</span> char != <span class="hljs-string">&#x27;$&#x27;</span>:
+                <span class="hljs-variable language_">self</span>.failure[<span class="hljs-built_in">id</span>(child)] = <span class="hljs-variable language_">self</span>.trie
                 queue.append((child, char))
 
-        # Build failure links using BFS
-        while queue:
+        <span class="hljs-comment"># Build failure links using BFS</span>
+        <span class="hljs-keyword">while</span> queue:
             current, char = queue.popleft()
-            current_id = id(current)
+            current_id = <span class="hljs-built_in">id</span>(current)
 
-            for next_char, next_node in current.items():
-                if next_char == '$':
-                    continue
+            <span class="hljs-keyword">for</span> next_char, next_node <span class="hljs-keyword">in</span> current.items():
+                <span class="hljs-keyword">if</span> next_char == <span class="hljs-string">&#x27;$&#x27;</span>:
+                    <span class="hljs-keyword">continue</span>
 
                 queue.append((next_node, next_char))
 
-                # Find failure link
-                failure_node = self.failure[current_id]
-                while failure_node != self.trie and next_char not in failure_node:
-                    failure_node = self.failure[id(failure_node)]
+                <span class="hljs-comment"># Find failure link</span>
+                failure_node = <span class="hljs-variable language_">self</span>.failure[current_id]
+                <span class="hljs-keyword">while</span> failure_node != <span class="hljs-variable language_">self</span>.trie <span class="hljs-keyword">and</span> next_char <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> failure_node:
+                    failure_node = <span class="hljs-variable language_">self</span>.failure[<span class="hljs-built_in">id</span>(failure_node)]
 
-                if next_char in failure_node:
-                    self.failure[id(next_node)] = failure_node[next_char]
-                else:
-                    self.failure[id(next_node)] = self.trie
+                <span class="hljs-keyword">if</span> next_char <span class="hljs-keyword">in</span> failure_node:
+                    <span class="hljs-variable language_">self</span>.failure[<span class="hljs-built_in">id</span>(next_node)] = failure_node[next_char]
+                <span class="hljs-keyword">else</span>:
+                    <span class="hljs-variable language_">self</span>.failure[<span class="hljs-built_in">id</span>(next_node)] = <span class="hljs-variable language_">self</span>.trie
 
-    def search_all(self, text):
-        &quot;&quot;&quot;Find all pattern occurrences in text&quot;&quot;&quot;
-        current = self.trie
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">search_all</span>(<span class="hljs-params">self, text</span>):
+        <span class="hljs-string">&quot;&quot;&quot;Find all pattern occurrences in text&quot;&quot;&quot;</span>
+        current = <span class="hljs-variable language_">self</span>.trie
         results = []
 
-        for i, char in enumerate(text):
-            # Follow failure links
-            while current != self.trie and char not in current:
-                current = self.failure[id(current)]
+        <span class="hljs-keyword">for</span> i, char <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(text):
+            <span class="hljs-comment"># Follow failure links</span>
+            <span class="hljs-keyword">while</span> current != <span class="hljs-variable language_">self</span>.trie <span class="hljs-keyword">and</span> char <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> current:
+                current = <span class="hljs-variable language_">self</span>.failure[<span class="hljs-built_in">id</span>(current)]
 
-            if char in current:
+            <span class="hljs-keyword">if</span> char <span class="hljs-keyword">in</span> current:
                 current = current[char]
 
-                # Check for matches
+                <span class="hljs-comment"># Check for matches</span>
                 temp = current
-                while temp != self.trie:
-                    if '$' in temp:
-                        pattern_id = temp['$']
+                <span class="hljs-keyword">while</span> temp != <span class="hljs-variable language_">self</span>.trie:
+                    <span class="hljs-keyword">if</span> <span class="hljs-string">&#x27;$&#x27;</span> <span class="hljs-keyword">in</span> temp:
+                        pattern_id = temp[<span class="hljs-string">&#x27;$&#x27;</span>]
                         results.append((i, pattern_id))
-                    temp = self.failure[id(temp)]
+                    temp = <span class="hljs-variable language_">self</span>.failure[<span class="hljs-built_in">id</span>(temp)]
 
-        return results
+        <span class="hljs-keyword">return</span> results
 </code></pre>
 <h3 id="string-hashing-optimizations" tabindex="-1"><a class="header-anchor" href="#string-hashing-optimizations"><span>String Hashing Optimizations</span></a></h3>
-<pre><code class="language-python">class DoubleHash:
-    &quot;&quot;&quot;Double hashing to reduce collision probability&quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">DoubleHash</span>:
+    <span class="hljs-string">&quot;&quot;&quot;Double hashing to reduce collision probability&quot;&quot;&quot;</span>
 
-    def __init__(self, s):
-        self.s = s
-        self.n = len(s)
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, s</span>):
+        <span class="hljs-variable language_">self</span>.s = s
+        <span class="hljs-variable language_">self</span>.n = <span class="hljs-built_in">len</span>(s)
 
-        # Two different bases and moduli
-        self.base1, self.mod1 = 257, 10**9 + 7
-        self.base2, self.mod2 = 263, 10**9 + 9
+        <span class="hljs-comment"># Two different bases and moduli</span>
+        <span class="hljs-variable language_">self</span>.base1, <span class="hljs-variable language_">self</span>.mod1 = <span class="hljs-number">257</span>, <span class="hljs-number">10</span>**<span class="hljs-number">9</span> + <span class="hljs-number">7</span>
+        <span class="hljs-variable language_">self</span>.base2, <span class="hljs-variable language_">self</span>.mod2 = <span class="hljs-number">263</span>, <span class="hljs-number">10</span>**<span class="hljs-number">9</span> + <span class="hljs-number">9</span>
 
-        self.hash1 = [0] * (self.n + 1)
-        self.hash2 = [0] * (self.n + 1)
-        self.pow1 = [1] * (self.n + 1)
-        self.pow2 = [1] * (self.n + 1)
+        <span class="hljs-variable language_">self</span>.hash1 = [<span class="hljs-number">0</span>] * (<span class="hljs-variable language_">self</span>.n + <span class="hljs-number">1</span>)
+        <span class="hljs-variable language_">self</span>.hash2 = [<span class="hljs-number">0</span>] * (<span class="hljs-variable language_">self</span>.n + <span class="hljs-number">1</span>)
+        <span class="hljs-variable language_">self</span>.pow1 = [<span class="hljs-number">1</span>] * (<span class="hljs-variable language_">self</span>.n + <span class="hljs-number">1</span>)
+        <span class="hljs-variable language_">self</span>.pow2 = [<span class="hljs-number">1</span>] * (<span class="hljs-variable language_">self</span>.n + <span class="hljs-number">1</span>)
 
-        for i in range(self.n):
-            self.hash1[i + 1] = (self.hash1[i] * self.base1 + ord(s[i])) % self.mod1
-            self.hash2[i + 1] = (self.hash2[i] * self.base2 + ord(s[i])) % self.mod2
-            self.pow1[i + 1] = (self.pow1[i] * self.base1) % self.mod1
-            self.pow2[i + 1] = (self.pow2[i] * self.base2) % self.mod2
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-variable language_">self</span>.n):
+            <span class="hljs-variable language_">self</span>.hash1[i + <span class="hljs-number">1</span>] = (<span class="hljs-variable language_">self</span>.hash1[i] * <span class="hljs-variable language_">self</span>.base1 + <span class="hljs-built_in">ord</span>(s[i])) % <span class="hljs-variable language_">self</span>.mod1
+            <span class="hljs-variable language_">self</span>.hash2[i + <span class="hljs-number">1</span>] = (<span class="hljs-variable language_">self</span>.hash2[i] * <span class="hljs-variable language_">self</span>.base2 + <span class="hljs-built_in">ord</span>(s[i])) % <span class="hljs-variable language_">self</span>.mod2
+            <span class="hljs-variable language_">self</span>.pow1[i + <span class="hljs-number">1</span>] = (<span class="hljs-variable language_">self</span>.pow1[i] * <span class="hljs-variable language_">self</span>.base1) % <span class="hljs-variable language_">self</span>.mod1
+            <span class="hljs-variable language_">self</span>.pow2[i + <span class="hljs-number">1</span>] = (<span class="hljs-variable language_">self</span>.pow2[i] * <span class="hljs-variable language_">self</span>.base2) % <span class="hljs-variable language_">self</span>.mod2
 
-    def get_hash(self, left, right):
-        &quot;&quot;&quot;Get double hash of substring&quot;&quot;&quot;
-        length = right - left + 1
-        h1 = (self.hash1[right + 1] - self.hash1[left] * self.pow1[length]) % self.mod1
-        h2 = (self.hash2[right + 1] - self.hash2[left] * self.pow2[length]) % self.mod2
-        return (h1, h2)
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_hash</span>(<span class="hljs-params">self, left, right</span>):
+        <span class="hljs-string">&quot;&quot;&quot;Get double hash of substring&quot;&quot;&quot;</span>
+        length = right - left + <span class="hljs-number">1</span>
+        h1 = (<span class="hljs-variable language_">self</span>.hash1[right + <span class="hljs-number">1</span>] - <span class="hljs-variable language_">self</span>.hash1[left] * <span class="hljs-variable language_">self</span>.pow1[length]) % <span class="hljs-variable language_">self</span>.mod1
+        h2 = (<span class="hljs-variable language_">self</span>.hash2[right + <span class="hljs-number">1</span>] - <span class="hljs-variable language_">self</span>.hash2[left] * <span class="hljs-variable language_">self</span>.pow2[length]) % <span class="hljs-variable language_">self</span>.mod2
+        <span class="hljs-keyword">return</span> (h1, h2)
 </code></pre>
 <h2 id="performance-optimization-tips" tabindex="-1"><a class="header-anchor" href="#performance-optimization-tips"><span>Performance Optimization Tips</span></a></h2>
 <h3 id="algorithm-selection-guide" tabindex="-1"><a class="header-anchor" href="#algorithm-selection-guide"><span>Algorithm Selection Guide</span></a></h3>
-<pre><code class="language-python">def choose_string_algorithm(problem_characteristics):
-    &quot;&quot;&quot;Guide for choosing optimal string algorithm&quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">choose_string_algorithm</span>(<span class="hljs-params">problem_characteristics</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Guide for choosing optimal string algorithm&quot;&quot;&quot;</span>
 
-    if problem_characteristics['type'] == 'pattern_matching':
-        if problem_characteristics['single_pattern']:
-            return &quot;KMP or Z-Algorithm&quot;
-        else:
-            return &quot;Aho-Corasick&quot;
+    <span class="hljs-keyword">if</span> problem_characteristics[<span class="hljs-string">&#x27;type&#x27;</span>] == <span class="hljs-string">&#x27;pattern_matching&#x27;</span>:
+        <span class="hljs-keyword">if</span> problem_characteristics[<span class="hljs-string">&#x27;single_pattern&#x27;</span>]:
+            <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;KMP or Z-Algorithm&quot;</span>
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Aho-Corasick&quot;</span>
 
-    elif problem_characteristics['type'] == 'palindromes':
-        if problem_characteristics['all_palindromes']:
-            return &quot;Manacher's Algorithm&quot;
-        else:
-            return &quot;Expand around centers&quot;
+    <span class="hljs-keyword">elif</span> problem_characteristics[<span class="hljs-string">&#x27;type&#x27;</span>] == <span class="hljs-string">&#x27;palindromes&#x27;</span>:
+        <span class="hljs-keyword">if</span> problem_characteristics[<span class="hljs-string">&#x27;all_palindromes&#x27;</span>]:
+            <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Manacher&#x27;s Algorithm&quot;</span>
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Expand around centers&quot;</span>
 
-    elif problem_characteristics['type'] == 'substring_queries':
-        if problem_characteristics['many_queries']:
-            return &quot;Rolling Hash or Suffix Array&quot;
-        else:
-            return &quot;Simple comparison&quot;
+    <span class="hljs-keyword">elif</span> problem_characteristics[<span class="hljs-string">&#x27;type&#x27;</span>] == <span class="hljs-string">&#x27;substring_queries&#x27;</span>:
+        <span class="hljs-keyword">if</span> problem_characteristics[<span class="hljs-string">&#x27;many_queries&#x27;</span>]:
+            <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Rolling Hash or Suffix Array&quot;</span>
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Simple comparison&quot;</span>
 
-    elif problem_characteristics['type'] == 'string_matching':
-        if problem_characteristics['approximate']:
-            return &quot;Edit distance DP&quot;
-        else:
-            return &quot;KMP or Rolling Hash&quot;
+    <span class="hljs-keyword">elif</span> problem_characteristics[<span class="hljs-string">&#x27;type&#x27;</span>] == <span class="hljs-string">&#x27;string_matching&#x27;</span>:
+        <span class="hljs-keyword">if</span> problem_characteristics[<span class="hljs-string">&#x27;approximate&#x27;</span>]:
+            <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Edit distance DP&quot;</span>
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;KMP or Rolling Hash&quot;</span>
 </code></pre>
 <h2 id="summary-quick-reference" tabindex="-1"><a class="header-anchor" href="#summary-quick-reference"><span>Summary &amp; Quick Reference</span></a></h2>
 <h3 id="algorithm-complexity-comparison" tabindex="-1"><a class="header-anchor" href="#algorithm-complexity-comparison"><span>Algorithm Complexity Comparison</span></a></h3>

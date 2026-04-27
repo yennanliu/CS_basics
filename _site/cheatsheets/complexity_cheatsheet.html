@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,13 +20,24 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
     document.querySelectorAll('pre code').forEach(function(codeEl) {
       var pre = codeEl.parentElement;
       var lang = '';
       var cls = codeEl.className || '';
       var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
       if (m) lang = m[1];
+
+      // Add line numbers
+      var lines = codeEl.innerHTML.split('
+');
+      if (lines[lines.length - 1] === '') lines.pop();
+      var numbered = lines.map(function(line, i) {
+        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
+      }).join('
+');
+      codeEl.innerHTML = numbered;
+      codeEl.classList.add('hljs-ln');
+
       var wrapper = document.createElement('div');
       wrapper.className = 'code-block-wrapper';
       pre.parentNode.insertBefore(wrapper, pre);
@@ -45,7 +55,9 @@
       btn.className = 'copy-btn';
       btn.textContent = 'Copy';
       btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
+');
+        navigator.clipboard.writeText(text).then(function() {
           btn.textContent = 'Copied!';
           btn.classList.add('copied');
           setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
@@ -138,7 +150,7 @@ Covers: Time/Space complexity, classic LC problems, and math intuitions</p>
 </blockquote>
 <hr>
 <h2 id="1-big-o-quick-reference" tabindex="-1"><a class="header-anchor" href="#1-big-o-quick-reference"><span>1. Big-O Quick Reference</span></a></h2>
-<pre><code>O(1) &lt; O(log N) &lt; O(√N) &lt; O(N) &lt; O(N log N) &lt; O(N²) &lt; O(N³) &lt; O(2^N) &lt; O(N!)
+<pre><code class="hljs">O(1) &lt; O(log N) &lt; O(√N) &lt; O(N) &lt; O(N log N) &lt; O(N²) &lt; O(N³) &lt; O(2^N) &lt; O(N!)
 </code></pre>
 <table>
 <thead>
@@ -790,7 +802,7 @@ Covers: Time/Space complexity, classic LC problems, and math intuitions</p>
 <hr>
 <h2 id="3-math-tricks-intuitions" tabindex="-1"><a class="header-anchor" href="#3-math-tricks-intuitions"><span>3. Math Tricks &amp; Intuitions</span></a></h2>
 <h3 id="3-1-geometric-series-why-n-n-2-n-4-2n-not-n-log-n" tabindex="-1"><a class="header-anchor" href="#3-1-geometric-series-why-n-n-2-n-4-2n-not-n-log-n"><span>3-1) Geometric Series — Why N + N/2 + N/4 + … = 2N (NOT N log N!)</span></a></h3>
-<pre><code>S = N + N/2 + N/4 + N/8 + ...
+<pre><code class="hljs">S = N + N/2 + N/4 + N/8 + ...
   = N × (1 + 1/2 + 1/4 + 1/8 + ...)
   = N × 1/(1 - 1/2)      ← geometric series formula: 1/(1-r) for |r| &lt; 1
   = N × 2
@@ -798,7 +810,7 @@ Covers: Time/Space complexity, classic LC problems, and math intuitions</p>
 </code></pre>
 <p><strong>→ O(N)</strong>, NOT O(N log N)</p>
 <p><strong>Why this matters in algorithms:</strong></p>
-<pre><code>Example: Heapify (build heap from array)
+<pre><code class="hljs">Example: Heapify (build heap from array)
   - Leaf level (N/2 nodes): 0 swaps each   → N/2 × 0
   - Level above (N/4 nodes): 1 swap each   → N/4 × 1
   - Level above (N/8 nodes): 2 swaps each  → N/8 × 2
@@ -809,20 +821,20 @@ Covers: Time/Space complexity, classic LC problems, and math intuitions</p>
         = N × (1/4 + 2/8 + 3/16 + ...) ≈ N
   → O(N)  ← This is why heapify is O(N), not O(N log N)!
 </code></pre>
-<pre><code>Example: Segment tree build
+<pre><code class="hljs">Example: Segment tree build
   - Leaf nodes: N
   - Internal nodes: N - 1
   - Work at each node: O(1)
   → Total: O(N)
 </code></pre>
-<pre><code>Example: Amortized cost of dynamic array doubling
+<pre><code class="hljs">Example: Amortized cost of dynamic array doubling
   Insert N elements:
   Copies at resizes: 1 + 2 + 4 + 8 + ... + N = 2N
   → Amortized O(1) per insert
 </code></pre>
 <hr>
 <h3 id="3-2-why-merge-sort-is-o-n-log-n-not-the-same-as-above" tabindex="-1"><a class="header-anchor" href="#3-2-why-merge-sort-is-o-n-log-n-not-the-same-as-above"><span>3-2) Why Merge Sort is O(N log N) — NOT the same as above</span></a></h3>
-<pre><code>Level 0:   1 merge of size N     → N work
+<pre><code class="hljs">Level 0:   1 merge of size N     → N work
 Level 1:   2 merges of size N/2  → N work
 Level 2:   4 merges of size N/4  → N work
 ...
@@ -837,7 +849,7 @@ Total work   = N × log₂(N)
 <li>Geometric series: work <strong>halves</strong> each level → sum converges to 2N</li>
 <li>Merge sort: work <strong>stays the same</strong> each level → sum = N × levels = N log N</li>
 </ul>
-<pre><code>Geometric (converging):     Merge Sort (constant per level):
+<pre><code class="hljs">Geometric (converging):     Merge Sort (constant per level):
 Level 0:  N                 Level 0:  N
 Level 1:  N/2               Level 1:  N/2 + N/2 = N
 Level 2:  N/4               Level 2:  N/4+N/4+N/4+N/4 = N
@@ -858,7 +870,7 @@ AND the classic illustration of why recursive space = tree height, NOT number of
 <li>Recursively build left and right subtrees</li>
 </ol>
 <p><strong>The expensive part:</strong> finding the middle node scans from head every call.</p>
-<pre><code>N = 8, getNodeByIdx(head, mid) ≈ O(N) per call
+<pre><code class="hljs">N = 8, getNodeByIdx(head, mid) ≈ O(N) per call
 
 Level 0:  build(0..7)                             → scan ~N    = N
 Level 1:  build(0..2) + build(4..7)               → N/2 + N/2  = N
@@ -866,33 +878,33 @@ Level 2:  build(0..0)+build(2..2)+build(4..5)+... → N/4×4      = N
 Level 3:  8 leaf calls                             → N/8×8      = N
 </code></pre>
 <p>Visual:</p>
-<pre><code>                N
+<pre><code class="hljs">                N
            /         \
         N/2           N/2
        /   \         /   \
      N/4   N/4    N/4   N/4
 </code></pre>
 <p>Each level = <strong>N total work</strong>. Number of levels = <strong>log N</strong> (balanced BST height).</p>
-<pre><code>Total = N + N + N + ... (log N times) = N × log N → O(N log N)
+<pre><code class="hljs">Total = N + N + N + ... (log N times) = N × log N → O(N log N)
 </code></pre>
 <p><strong>Compare to geometric series (heapify):</strong></p>
-<pre><code>Heapify:        N/2 + N/4 + N/8 + ... = N  →  O(N)      (work HALVES per level)
+<pre><code class="hljs">Heapify:        N/2 + N/4 + N/8 + ... = N  →  O(N)      (work HALVES per level)
 BST from list:  N   + N   + N   + ... = N log N → O(N log N) (work CONSTANT per level)
 </code></pre>
 <h4 id="why-space-o-log-n-recursion-stack-depth-not-number-of-nodes" tabindex="-1"><a class="header-anchor" href="#why-space-o-log-n-recursion-stack-depth-not-number-of-nodes"><span>Why Space = O(log N)  ← recursion stack depth, NOT number of nodes</span></a></h4>
 <p><strong>Key Rule:</strong></p>
-<pre><code>Space complexity for DFS recursion = maximum recursion stack depth
+<pre><code class="hljs">Space complexity for DFS recursion = maximum recursion stack depth
                                     = tree height
 </code></pre>
 <p>Recursion does NOT hold both branches on the stack simultaneously.
 It goes <strong>one branch at a time</strong> (depth-first):</p>
-<pre><code>build(root)           ← frame 1 on stack
+<pre><code class="hljs">build(root)           ← frame 1 on stack
   -&gt; build(left)      ← frame 2 on stack
        -&gt; build(left) ← frame 3 on stack
             -&gt; null   ← returns, pops frame 3
 </code></pre>
 <p><strong>Visual for N = 7 (sorted list: 1→2→3→4→5→6→7):</strong></p>
-<pre><code>Balanced BST built:
+<pre><code class="hljs">Balanced BST built:
         4
       /   \
      2     6
@@ -937,7 +949,7 @@ Stack depth ≈ log₂(7) ≈ 3
 </tbody>
 </table>
 <p><strong>Why NOT O(N)?</strong> O(N) stack only occurs with a <strong>skewed</strong> tree:</p>
-<pre><code>1
+<pre><code class="hljs">1
  \
   2
    \
@@ -947,7 +959,7 @@ Stack depth ≈ log₂(7) ≈ 3
 </code></pre>
 <p>LC 109 always picks the <strong>middle</strong> → guaranteed balanced → stack depth = O(log N).</p>
 <h4 id="summary" tabindex="-1"><a class="header-anchor" href="#summary"><span>Summary</span></a></h4>
-<pre><code>Algorithm Variant              | Time        | Space    | How?
+<pre><code class="hljs">Algorithm Variant              | Time        | Space    | How?
 -------------------------------|-------------|----------|--------------------------------------
 V0-1: getNodeByIdx (from head) | O(N log N)  | O(log N) | N scan × log N levels; balanced tree
 V0-2: slow/fast pointer        | O(N log N)  | O(log N) | O(N) per split × log N levels
@@ -957,7 +969,7 @@ V0-3: in-order simulation      | O(N)        | O(log N) | advance pointer once p
 <p><strong>Interview tip:</strong> V0-3 (in-order simulation with a shared pointer) is the <strong>optimal O(N)</strong> approach.
 It avoids re-scanning by advancing the list pointer in sync with BST in-order traversal.</p>
 </blockquote>
-<pre><code>Interview rule of thumb for recursion:
+<pre><code class="hljs">Interview rule of thumb for recursion:
   Space = recursion stack depth
   Balanced tree → O(log N)
   Skewed tree   → O(N)
@@ -965,13 +977,13 @@ It avoids re-scanning by advancing the list pointer in sync with BST in-order tr
 </code></pre>
 <hr>
 <h3 id="3-3-arithmetic-series-why-1-2-3-n-n-n-1-2-n-2" tabindex="-1"><a class="header-anchor" href="#3-3-arithmetic-series-why-1-2-3-n-n-n-1-2-n-2"><span>3-3) Arithmetic Series — Why 1 + 2 + 3 + … + N = N(N+1)/2 ≈ N²/2</span></a></h3>
-<pre><code>S = 1 + 2 + 3 + ... + N
+<pre><code class="hljs">S = 1 + 2 + 3 + ... + N
   = N(N+1)/2
   ≈ N²/2
   → O(N²)
 </code></pre>
 <p><strong>Where this appears:</strong></p>
-<pre><code>Bubble sort comparisons:
+<pre><code class="hljs">Bubble sort comparisons:
   Round 1: N-1 comparisons
   Round 2: N-2 comparisons
   ...
@@ -984,7 +996,7 @@ Counting all pairs in array:
 </code></pre>
 <hr>
 <h3 id="3-4-logarithm-identities-for-complexity-analysis" tabindex="-1"><a class="header-anchor" href="#3-4-logarithm-identities-for-complexity-analysis"><span>3-4) Logarithm Identities (for complexity analysis)</span></a></h3>
-<pre><code>log₂(N) ≈ ln(N) / 0.693           # log base conversion
+<pre><code class="hljs">log₂(N) ≈ ln(N) / 0.693           # log base conversion
 log₂(N²) = 2 log₂(N)              # power rule
 log₂(N·M) = log₂(N) + log₂(M)    # product rule
 log₂(2^N) = N                     # inverse
@@ -1042,7 +1054,7 @@ How many times can you double 1 before reaching N?
 </tbody>
 </table>
 <p><strong>Why this matters for complexity:</strong></p>
-<pre><code>N = 10^9 operations → too slow for 1 second (typical limit: 10^8 ops/sec)
+<pre><code class="hljs">N = 10^9 operations → too slow for 1 second (typical limit: 10^8 ops/sec)
 N = 10^6 → fine for O(N log N)
 N = 10^5 → fine for O(N²)... barely
 N = 20   → OK for O(2^N)
@@ -1050,10 +1062,10 @@ N = 12   → OK for O(N!)
 </code></pre>
 <hr>
 <h3 id="3-6-harmonic-series-why-1-1-2-1-3-1-n-ln-n" tabindex="-1"><a class="header-anchor" href="#3-6-harmonic-series-why-1-1-2-1-3-1-n-ln-n"><span>3-6) Harmonic Series — Why 1 + 1/2 + 1/3 + … + 1/N ≈ ln(N)</span></a></h3>
-<pre><code>H(N) = 1 + 1/2 + 1/3 + ... + 1/N ≈ ln(N) ≈ O(log N)
+<pre><code class="hljs">H(N) = 1 + 1/2 + 1/3 + ... + 1/N ≈ ln(N) ≈ O(log N)
 </code></pre>
 <p><strong>Where this appears:</strong></p>
-<pre><code>Sieve of Eratosthenes: O(N log log N)
+<pre><code class="hljs">Sieve of Eratosthenes: O(N log log N)
   - Cross out multiples of 2: N/2 ops
   - Cross out multiples of 3: N/3 ops
   - Cross out multiples of 5: N/5 ops
@@ -1063,7 +1075,7 @@ Average case of Quick Sort partitioning ≈ O(N log N)
 </code></pre>
 <hr>
 <h3 id="3-7-counting-subsets-and-permutations" tabindex="-1"><a class="header-anchor" href="#3-7-counting-subsets-and-permutations"><span>3-7) Counting Subsets and Permutations</span></a></h3>
-<pre><code>Subsets of N elements:       2^N
+<pre><code class="hljs">Subsets of N elements:       2^N
 Permutations of N elements:  N!
 Combinations C(N, K):        N! / (K! × (N-K)!)
 
@@ -1079,7 +1091,7 @@ Stirling's approximation:    N! ≈ √(2πN) × (N/e)^N
 <hr>
 <h3 id="3-8-recurrence-relations-master-theorem" tabindex="-1"><a class="header-anchor" href="#3-8-recurrence-relations-master-theorem"><span>3-8) Recurrence Relations — Master Theorem</span></a></h3>
 <p>For <code>T(N) = a·T(N/b) + f(N)</code>:</p>
-<pre><code>Compare f(N) vs N^(log_b(a)):
+<pre><code class="hljs">Compare f(N) vs N^(log_b(a)):
 
 Case 1: f(N) = O(N^(log_b(a) - ε))  →  T(N) = O(N^log_b(a))
 Case 2: f(N) = Θ(N^log_b(a))         →  T(N) = O(N^log_b(a) × log N)
@@ -1150,7 +1162,7 @@ Case 3: f(N) = Ω(N^(log_b(a) + ε))  →  T(N) = O(f(N))
 </table>
 <hr>
 <h3 id="3-9-ascii-tricks-for-character-problems" tabindex="-1"><a class="header-anchor" href="#3-9-ascii-tricks-for-character-problems"><span>3-9) ASCII Tricks for Character Problems</span></a></h3>
-<pre><code>'a' - 'A' = 32     (difference between lowercase and uppercase)
+<pre><code class="hljs">'a' - 'A' = 32     (difference between lowercase and uppercase)
 'a' = 97,  'A' = 65
 'z' = 122, 'Z' = 90
 '0' = 48,  '9' = 57
@@ -1417,12 +1429,12 @@ Index in alphabet:
 <hr>
 <h2 id="5-space-complexity-patterns" tabindex="-1"><a class="header-anchor" href="#5-space-complexity-patterns"><span>5. Space Complexity Patterns</span></a></h2>
 <h3 id="stack-space-recursion" tabindex="-1"><a class="header-anchor" href="#stack-space-recursion"><span>Stack Space (Recursion)</span></a></h3>
-<pre><code>Balanced BST / heap:     O(log N)  ← tree height
+<pre><code class="hljs">Balanced BST / heap:     O(log N)  ← tree height
 Skewed BST / linked list: O(N)     ← degenerates to linear
 General graph DFS:        O(V)
 </code></pre>
 <h3 id="when-to-use-in-place-algorithms" tabindex="-1"><a class="header-anchor" href="#when-to-use-in-place-algorithms"><span>When to Use In-Place Algorithms</span></a></h3>
-<pre><code>O(1) extra space tricks:
+<pre><code class="hljs">O(1) extra space tricks:
   - Two pointers (reverse array, palindrome)
   - Floyd's cycle detection
   - Morris tree traversal
@@ -1430,7 +1442,7 @@ General graph DFS:        O(V)
   - Bit manipulation for visited flags (if N ≤ 64)
 </code></pre>
 <h3 id="space-time-tradeoffs" tabindex="-1"><a class="header-anchor" href="#space-time-tradeoffs"><span>Space-Time Tradeoffs</span></a></h3>
-<pre><code>Problem                 | Naive Space | Optimized Space | Time Trade-off
+<pre><code class="hljs">Problem                 | Naive Space | Optimized Space | Time Trade-off
 ------------------------|-------------|-----------------|---------------
 DP (2D → 1D rolling)   | O(M·N)      | O(N)            | Same time
 Memoization → Bottom-up| O(N) stack  | O(1) or O(N)    | Same time
@@ -1439,7 +1451,7 @@ KMP vs Naive search     | O(M)        | —               | O(N+M) vs O(N·M)
 </code></pre>
 <hr>
 <h2 id="6-interview-decision-guide" tabindex="-1"><a class="header-anchor" href="#6-interview-decision-guide"><span>6. Interview Decision Guide</span></a></h2>
-<pre><code>Input Size → Reasonable Complexity:
+<pre><code class="hljs">Input Size → Reasonable Complexity:
 
 N ≤ 10        → O(N!) or O(2^N)     backtracking, all permutations
 N ≤ 20        → O(2^N)              bitmask DP, subsets
@@ -1451,7 +1463,7 @@ N ≤ 10^9      → O(log N) or O(√N)  binary search, math tricks
 </code></pre>
 <hr>
 <h2 id="7-quick-sanity-checks" tabindex="-1"><a class="header-anchor" href="#7-quick-sanity-checks"><span>7. Quick Sanity Checks</span></a></h2>
-<pre><code>1. O(N log N) sort first → enables O(N) or O(log N) operations after
+<pre><code class="hljs">1. O(N log N) sort first → enables O(N) or O(log N) operations after
 2. Two passes O(N) each = still O(N)
 3. Nested loops with early break ≠ necessarily O(N²)
 4. Recursion depth × work per call = space × time relationship

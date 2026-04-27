@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,13 +20,24 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
     document.querySelectorAll('pre code').forEach(function(codeEl) {
       var pre = codeEl.parentElement;
       var lang = '';
       var cls = codeEl.className || '';
       var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
       if (m) lang = m[1];
+
+      // Add line numbers
+      var lines = codeEl.innerHTML.split('
+');
+      if (lines[lines.length - 1] === '') lines.pop();
+      var numbered = lines.map(function(line, i) {
+        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
+      }).join('
+');
+      codeEl.innerHTML = numbered;
+      codeEl.classList.add('hljs-ln');
+
       var wrapper = document.createElement('div');
       wrapper.className = 'code-block-wrapper';
       pre.parentNode.insertBefore(wrapper, pre);
@@ -45,7 +55,9 @@
       btn.className = 'copy-btn';
       btn.textContent = 'Copy';
       btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
+');
+        navigator.clipboard.writeText(text).then(function() {
           btn.textContent = 'Copied!';
           btn.classList.add('copied');
           setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
@@ -127,9 +139,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Greedy</span></nav>
       <div class="cheatsheet-header">
         <h1>Greedy</h1>
-        <span class="last-updated">Last updated: Mar 15, 2026</span>
+        <span class="last-updated">Last updated: Apr 25, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#core-characteristics">Core Characteristics</a></li><li class="toc-sub"><a href="#greedy-vs-other-approaches">Greedy vs Other Approaches</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#category-1-interval-scheduling">Category 1: Interval Scheduling</a></li><li class="toc-sub"><a href="#category-2-activity-selection">Category 2: Activity Selection</a></li><li class="toc-sub"><a href="#category-3-huffman-coding">Category 3: Huffman Coding</a></li><li class="toc-sub"><a href="#category-4-stock-trading">Category 4: Stock Trading</a></li><li class="toc-sub"><a href="#category-5-jump-game">Category 5: Jump Game</a></li><li class="toc-sub"><a href="#category-6-string-reorganization">Category 6: String Reorganization</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#universal-greedy-template">Universal Greedy Template</a></li><li class="toc-sub"><a href="#template-1-interval-scheduling">Template 1: Interval Scheduling</a></li><li class="toc-sub"><a href="#template-2-activity-selection-with-heap">Template 2: Activity Selection with Heap</a></li><li class="toc-sub"><a href="#template-3-greedy-accumulation">Template 3: Greedy Accumulation</a></li><li class="toc-sub"><a href="#template-4-jump-game-pattern">Template 4: Jump Game Pattern</a></li><li class="toc-sub"><a href="#template-5-string-reorganization">Template 5: String Reorganization</a></li><li class="toc-sub"><a href="#template-6-fractional-knapsack">Template 6: Fractional Knapsack</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#interval-problems">Interval Problems</a></li><li class="toc-sub"><a href="#activity-selection-problems">Activity Selection Problems</a></li><li class="toc-sub"><a href="#stock-trading-problems">Stock Trading Problems</a></li><li class="toc-sub"><a href="#jump-game-problems">Jump Game Problems</a></li><li class="toc-sub"><a href="#string-reorganization-problems">String Reorganization Problems</a></li><li class="toc-sub"><a href="#other-greedy-problems">Other Greedy Problems</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-2-jump-game">2-2) Jump Game</a></li><li class="toc-sub"><a href="#2-2-jump-game-ii">2-2’) Jump Game II</a></li><li class="toc-sub"><a href="#2-3-best-time-to-buy-and-sell-stock-ii">2-3) Best Time to Buy and Sell Stock II</a></li><li class="toc-sub"><a href="#2-4-gas-station">2-4) Gas Station</a></li><li class="toc-sub"><a href="#2-6-reorganize-string">2-6) Reorganize String</a></li><li class="toc-sub"><a href="#2-6-string-without-aaa-or-bbb">2-6’) String Without AAA or BBB</a></li><li class="toc-sub"><a href="#2-7-task-scheduler">2-7) Task Scheduler</a></li><li class="toc-sub"><a href="#2-8-maximum-units-on-a-truck">2-8) Maximum Units on a Truck</a></li><li><a href="#decision-framework">Decision Framework</a></li><li class="toc-sub"><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-sub"><a href="#greedy-vs-dynamic-programming">Greedy vs Dynamic Programming</a></li><li><a href="#greedy-vs-bfs-dfs-in-graph-problems">Greedy vs BFS/DFS in Graph Problems</a></li><li class="toc-sub"><a href="#when-to-choose-decision-framework">When to Choose: Decision Framework</a></li><li class="toc-sub"><a href="#complexity-comparison">Complexity Comparison</a></li><li class="toc-sub"><a href="#problem-size-considerations">Problem Size Considerations</a></li><li class="toc-sub"><a href="#decision-checkpoints">Decision Checkpoints</a></li><li class="toc-sub"><a href="#common-graph-problem-patterns">Common Graph Problem Patterns</a></li><li class="toc-sub"><a href="#leetcode-examples-with-size-analysis">LeetCode Examples with Size Analysis</a></li><li class="toc-sub"><a href="#interview-strategy-guide">Interview Strategy Guide</a></li><li class="toc-sub"><a href="#practical-performance-benchmarks">Practical Performance Benchmarks</a></li><li class="toc-sub"><a href="#summary-algorithm-selection-matrix">Summary: Algorithm Selection Matrix</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#sorting-criteria-guide">Sorting Criteria Guide</a></li><li class="toc-sub"><a href="#common-greedy-patterns">Common Greedy Patterns</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#proof-techniques">Proof Techniques</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#classic-greedy-problems">Classic Greedy Problems</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#core-characteristics">Core Characteristics</a></li><li class="toc-sub"><a href="#greedy-vs-other-approaches">Greedy vs Other Approaches</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#category-1-interval-scheduling">Category 1: Interval Scheduling</a></li><li class="toc-sub"><a href="#category-2-activity-selection">Category 2: Activity Selection</a></li><li class="toc-sub"><a href="#category-3-huffman-coding">Category 3: Huffman Coding</a></li><li class="toc-sub"><a href="#category-4-stock-trading">Category 4: Stock Trading</a></li><li class="toc-sub"><a href="#category-5-jump-game">Category 5: Jump Game</a></li><li class="toc-sub"><a href="#category-6-string-reorganization">Category 6: String Reorganization</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#universal-greedy-template">Universal Greedy Template</a></li><li class="toc-sub"><a href="#template-1-interval-scheduling">Template 1: Interval Scheduling</a></li><li class="toc-sub"><a href="#template-2-activity-selection-with-heap">Template 2: Activity Selection with Heap</a></li><li class="toc-sub"><a href="#template-3-greedy-accumulation">Template 3: Greedy Accumulation</a></li><li class="toc-sub"><a href="#template-4-jump-game-pattern">Template 4: Jump Game Pattern</a></li><li class="toc-sub"><a href="#template-5-string-reorganization">Template 5: String Reorganization</a></li><li class="toc-sub"><a href="#template-6-fractional-knapsack">Template 6: Fractional Knapsack</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#interval-problems">Interval Problems</a></li><li class="toc-sub"><a href="#activity-selection-problems">Activity Selection Problems</a></li><li class="toc-sub"><a href="#stock-trading-problems">Stock Trading Problems</a></li><li class="toc-sub"><a href="#jump-game-problems">Jump Game Problems</a></li><li class="toc-sub"><a href="#string-reorganization-problems">String Reorganization Problems</a></li><li class="toc-sub"><a href="#other-greedy-problems">Other Greedy Problems</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-jump-game-lc-55-greedy-max-reach">2-1) Jump Game (LC 55) — Greedy Max Reach</a></li><li class="toc-sub"><a href="#2-2-jump-game-ii-lc-45-greedy-jump-window">2-2) Jump Game II (LC 45) — Greedy Jump Window</a></li><li class="toc-sub"><a href="#2-3-best-time-to-buy-and-sell-stock-ii-lc-122-accumulate-daily-gains">2-3) Best Time to Buy and Sell Stock II (LC 122) — Accumulate Daily Gains</a></li><li class="toc-sub"><a href="#2-4-gas-station-lc-134-greedy-start-reset">2-4) Gas Station (LC 134) — Greedy Start Reset</a></li><li class="toc-sub"><a href="#2-5-reorganize-string-lc-767-greedy-max-heap-interleave">2-5) Reorganize String (LC 767) — Greedy Max-Heap Interleave</a></li><li class="toc-sub"><a href="#2-6-string-without-aaa-or-bbb-lc-984-greedy-consecutive-counter">2-6) String Without AAA or BBB (LC 984) — Greedy Consecutive Counter</a></li><li class="toc-sub"><a href="#2-7-task-scheduler-lc-621-greedy-idle-time-formula">2-7) Task Scheduler (LC 621) — Greedy Idle Time Formula</a></li><li class="toc-sub"><a href="#2-8-maximum-units-on-a-truck-lc-1710-sort-by-unit-value">2-8) Maximum Units on a Truck (LC 1710) — Sort by Unit Value</a></li><li><a href="#decision-framework">Decision Framework</a></li><li class="toc-sub"><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-sub"><a href="#greedy-vs-dynamic-programming">Greedy vs Dynamic Programming</a></li><li><a href="#greedy-vs-bfs-dfs-in-graph-problems">Greedy vs BFS/DFS in Graph Problems</a></li><li class="toc-sub"><a href="#when-to-choose-decision-framework">When to Choose: Decision Framework</a></li><li class="toc-sub"><a href="#complexity-comparison">Complexity Comparison</a></li><li class="toc-sub"><a href="#problem-size-considerations">Problem Size Considerations</a></li><li class="toc-sub"><a href="#decision-checkpoints">Decision Checkpoints</a></li><li class="toc-sub"><a href="#common-graph-problem-patterns">Common Graph Problem Patterns</a></li><li class="toc-sub"><a href="#leetcode-examples-with-size-analysis">LeetCode Examples with Size Analysis</a></li><li class="toc-sub"><a href="#interview-strategy-guide">Interview Strategy Guide</a></li><li class="toc-sub"><a href="#practical-performance-benchmarks">Practical Performance Benchmarks</a></li><li class="toc-sub"><a href="#summary-algorithm-selection-matrix">Summary: Algorithm Selection Matrix</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#sorting-criteria-guide">Sorting Criteria Guide</a></li><li class="toc-sub"><a href="#common-greedy-patterns">Common Greedy Patterns</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#proof-techniques">Proof Techniques</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#classic-greedy-problems">Classic Greedy Problems</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="greedy-algorithms" tabindex="-1"><a class="header-anchor" href="#greedy-algorithms"><span>Greedy Algorithms</span></a></h1>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
@@ -243,166 +255,166 @@
 </tbody>
 </table>
 <h3 id="universal-greedy-template" tabindex="-1"><a class="header-anchor" href="#universal-greedy-template"><span>Universal Greedy Template</span></a></h3>
-<pre><code class="language-python">def greedy_solution(items):
-    # Step 1: Sort or prepare data structure
-    items.sort(key=lambda x: x[criterion])
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">greedy_solution</span>(<span class="hljs-params">items</span>):
+    <span class="hljs-comment"># Step 1: Sort or prepare data structure</span>
+    items.sort(key=<span class="hljs-keyword">lambda</span> x: x[criterion])
     
-    # Step 2: Initialize greedy choice tracking
+    <span class="hljs-comment"># Step 2: Initialize greedy choice tracking</span>
     result = initial_value
     current_state = initial_state
     
-    # Step 3: Make greedy choices
-    for item in items:
-        if can_select(item, current_state):
+    <span class="hljs-comment"># Step 3: Make greedy choices</span>
+    <span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> items:
+        <span class="hljs-keyword">if</span> can_select(item, current_state):
             result = update_result(result, item)
             current_state = update_state(current_state, item)
     
-    return result
+    <span class="hljs-keyword">return</span> result
 </code></pre>
 <h3 id="template-1-interval-scheduling" tabindex="-1"><a class="header-anchor" href="#template-1-interval-scheduling"><span>Template 1: Interval Scheduling</span></a></h3>
-<pre><code class="language-python">def interval_scheduling(intervals):
-    &quot;&quot;&quot;Select maximum non-overlapping intervals&quot;&quot;&quot;
-    if not intervals:
-        return 0
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">interval_scheduling</span>(<span class="hljs-params">intervals</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Select maximum non-overlapping intervals&quot;&quot;&quot;</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> intervals:
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
     
-    # Sort by end time
-    intervals.sort(key=lambda x: x[1])
+    <span class="hljs-comment"># Sort by end time</span>
+    intervals.sort(key=<span class="hljs-keyword">lambda</span> x: x[<span class="hljs-number">1</span>])
     
-    count = 1
-    end = intervals[0][1]
+    count = <span class="hljs-number">1</span>
+    end = intervals[<span class="hljs-number">0</span>][<span class="hljs-number">1</span>]
     
-    for i in range(1, len(intervals)):
-        if intervals[i][0] &gt;= end:
-            count += 1
-            end = intervals[i][1]
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(intervals)):
+        <span class="hljs-keyword">if</span> intervals[i][<span class="hljs-number">0</span>] &gt;= end:
+            count += <span class="hljs-number">1</span>
+            end = intervals[i][<span class="hljs-number">1</span>]
     
-    return count
+    <span class="hljs-keyword">return</span> count
 </code></pre>
 <h3 id="template-2-activity-selection-with-heap" tabindex="-1"><a class="header-anchor" href="#template-2-activity-selection-with-heap"><span>Template 2: Activity Selection with Heap</span></a></h3>
-<pre><code class="language-python">import heapq
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">import</span> heapq
 
-def activity_selection_heap(tasks):
-    &quot;&quot;&quot;Select activities using priority queue&quot;&quot;&quot;
-    # Count frequency or priority
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">activity_selection_heap</span>(<span class="hljs-params">tasks</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Select activities using priority queue&quot;&quot;&quot;</span>
+    <span class="hljs-comment"># Count frequency or priority</span>
     freq = collections.Counter(tasks)
     
-    # Max heap (negate for min heap)
-    heap = [(-count, task) for task, count in freq.items()]
+    <span class="hljs-comment"># Max heap (negate for min heap)</span>
+    heap = [(-count, task) <span class="hljs-keyword">for</span> task, count <span class="hljs-keyword">in</span> freq.items()]
     heapq.heapify(heap)
     
     result = []
-    while heap:
+    <span class="hljs-keyword">while</span> heap:
         count1, task1 = heapq.heappop(heap)
         result.append(task1)
         
-        if heap:
+        <span class="hljs-keyword">if</span> heap:
             count2, task2 = heapq.heappop(heap)
             result.append(task2)
             
-            # Add back if still available
-            if count1 &lt; -1:
-                heapq.heappush(heap, (count1 + 1, task1))
-            if count2 &lt; -1:
-                heapq.heappush(heap, (count2 + 1, task2))
+            <span class="hljs-comment"># Add back if still available</span>
+            <span class="hljs-keyword">if</span> count1 &lt; -<span class="hljs-number">1</span>:
+                heapq.heappush(heap, (count1 + <span class="hljs-number">1</span>, task1))
+            <span class="hljs-keyword">if</span> count2 &lt; -<span class="hljs-number">1</span>:
+                heapq.heappush(heap, (count2 + <span class="hljs-number">1</span>, task2))
     
-    return result
+    <span class="hljs-keyword">return</span> result
 </code></pre>
 <h3 id="template-3-greedy-accumulation" tabindex="-1"><a class="header-anchor" href="#template-3-greedy-accumulation"><span>Template 3: Greedy Accumulation</span></a></h3>
-<pre><code class="language-python">def greedy_accumulation(prices):
-    &quot;&quot;&quot;Accumulate positive differences (stock trading)&quot;&quot;&quot;
-    profit = 0
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">greedy_accumulation</span>(<span class="hljs-params">prices</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Accumulate positive differences (stock trading)&quot;&quot;&quot;</span>
+    profit = <span class="hljs-number">0</span>
     
-    for i in range(1, len(prices)):
-        # Greedy: take profit whenever possible
-        if prices[i] &gt; prices[i-1]:
-            profit += prices[i] - prices[i-1]
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(prices)):
+        <span class="hljs-comment"># Greedy: take profit whenever possible</span>
+        <span class="hljs-keyword">if</span> prices[i] &gt; prices[i-<span class="hljs-number">1</span>]:
+            profit += prices[i] - prices[i-<span class="hljs-number">1</span>]
     
-    return profit
+    <span class="hljs-keyword">return</span> profit
 </code></pre>
 <h3 id="template-4-jump-game-pattern" tabindex="-1"><a class="header-anchor" href="#template-4-jump-game-pattern"><span>Template 4: Jump Game Pattern</span></a></h3>
-<pre><code class="language-python">def jump_game(nums):
-    &quot;&quot;&quot;Check if can reach end&quot;&quot;&quot;
-    max_reach = 0
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">jump_game</span>(<span class="hljs-params">nums</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Check if can reach end&quot;&quot;&quot;</span>
+    max_reach = <span class="hljs-number">0</span>
     
-    for i in range(len(nums)):
-        if i &gt; max_reach:
-            return False
-        max_reach = max(max_reach, i + nums[i])
-        if max_reach &gt;= len(nums) - 1:
-            return True
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(nums)):
+        <span class="hljs-keyword">if</span> i &gt; max_reach:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        max_reach = <span class="hljs-built_in">max</span>(max_reach, i + nums[i])
+        <span class="hljs-keyword">if</span> max_reach &gt;= <span class="hljs-built_in">len</span>(nums) - <span class="hljs-number">1</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
     
-    return True
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 
-def jump_game_min_jumps(nums):
-    &quot;&quot;&quot;Minimum jumps to reach end&quot;&quot;&quot;
-    jumps = 0
-    current_end = 0
-    farthest = 0
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">jump_game_min_jumps</span>(<span class="hljs-params">nums</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Minimum jumps to reach end&quot;&quot;&quot;</span>
+    jumps = <span class="hljs-number">0</span>
+    current_end = <span class="hljs-number">0</span>
+    farthest = <span class="hljs-number">0</span>
     
-    for i in range(len(nums) - 1):
-        farthest = max(farthest, i + nums[i])
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(nums) - <span class="hljs-number">1</span>):
+        farthest = <span class="hljs-built_in">max</span>(farthest, i + nums[i])
         
-        if i == current_end:
-            jumps += 1
+        <span class="hljs-keyword">if</span> i == current_end:
+            jumps += <span class="hljs-number">1</span>
             current_end = farthest
     
-    return jumps
+    <span class="hljs-keyword">return</span> jumps
 </code></pre>
 <h3 id="template-5-string-reorganization" tabindex="-1"><a class="header-anchor" href="#template-5-string-reorganization"><span>Template 5: String Reorganization</span></a></h3>
-<pre><code class="language-python">def reorganize_string(s):
-    &quot;&quot;&quot;Reorganize string so no adjacent chars are same&quot;&quot;&quot;
-    from collections import Counter
-    import heapq
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">reorganize_string</span>(<span class="hljs-params">s</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Reorganize string so no adjacent chars are same&quot;&quot;&quot;</span>
+    <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> Counter
+    <span class="hljs-keyword">import</span> heapq
     
-    # Count frequencies
+    <span class="hljs-comment"># Count frequencies</span>
     count = Counter(s)
     
-    # Check if possible
-    max_count = max(count.values())
-    if max_count &gt; (len(s) + 1) // 2:
-        return &quot;&quot;
+    <span class="hljs-comment"># Check if possible</span>
+    max_count = <span class="hljs-built_in">max</span>(count.values())
+    <span class="hljs-keyword">if</span> max_count &gt; (<span class="hljs-built_in">len</span>(s) + <span class="hljs-number">1</span>) // <span class="hljs-number">2</span>:
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>
     
-    # Max heap of frequencies
-    heap = [(-cnt, char) for char, cnt in count.items()]
+    <span class="hljs-comment"># Max heap of frequencies</span>
+    heap = [(-cnt, char) <span class="hljs-keyword">for</span> char, cnt <span class="hljs-keyword">in</span> count.items()]
     heapq.heapify(heap)
     
     result = []
-    prev_count, prev_char = 0, ''
+    prev_count, prev_char = <span class="hljs-number">0</span>, <span class="hljs-string">&#x27;&#x27;</span>
     
-    while heap:
+    <span class="hljs-keyword">while</span> heap:
         count, char = heapq.heappop(heap)
         result.append(char)
         
-        # Add previous back to heap
-        if prev_count &lt; 0:
+        <span class="hljs-comment"># Add previous back to heap</span>
+        <span class="hljs-keyword">if</span> prev_count &lt; <span class="hljs-number">0</span>:
             heapq.heappush(heap, (prev_count, prev_char))
         
-        # Update previous
-        prev_count = count + 1
+        <span class="hljs-comment"># Update previous</span>
+        prev_count = count + <span class="hljs-number">1</span>
         prev_char = char
     
-    return ''.join(result)
+    <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;&#x27;</span>.join(result)
 </code></pre>
 <h3 id="template-6-fractional-knapsack" tabindex="-1"><a class="header-anchor" href="#template-6-fractional-knapsack"><span>Template 6: Fractional Knapsack</span></a></h3>
-<pre><code class="language-python">def fractional_knapsack(items, capacity):
-    &quot;&quot;&quot;Greedy knapsack allowing fractions&quot;&quot;&quot;
-    # items = [(value, weight), ...]
-    # Sort by value/weight ratio
-    items.sort(key=lambda x: x[0]/x[1], reverse=True)
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">fractional_knapsack</span>(<span class="hljs-params">items, capacity</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Greedy knapsack allowing fractions&quot;&quot;&quot;</span>
+    <span class="hljs-comment"># items = [(value, weight), ...]</span>
+    <span class="hljs-comment"># Sort by value/weight ratio</span>
+    items.sort(key=<span class="hljs-keyword">lambda</span> x: x[<span class="hljs-number">0</span>]/x[<span class="hljs-number">1</span>], reverse=<span class="hljs-literal">True</span>)
     
-    total_value = 0
+    total_value = <span class="hljs-number">0</span>
     remaining = capacity
     
-    for value, weight in items:
-        if weight &lt;= remaining:
+    <span class="hljs-keyword">for</span> value, weight <span class="hljs-keyword">in</span> items:
+        <span class="hljs-keyword">if</span> weight &lt;= remaining:
             total_value += value
             remaining -= weight
-        else:
-            # Take fraction
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-comment"># Take fraction</span>
             total_value += value * (remaining / weight)
-            break
+            <span class="hljs-keyword">break</span>
     
-    return total_value
+    <span class="hljs-keyword">return</span> total_value
 </code></pre>
 <h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
 <h3 id="interval-problems" tabindex="-1"><a class="header-anchor" href="#interval-problems"><span><strong>Interval Problems</strong></span></a></h3>
@@ -652,206 +664,276 @@ def jump_game_min_jumps(nums):
 </tbody>
 </table>
 <h2 id="lc-examples" tabindex="-1"><a class="header-anchor" href="#lc-examples"><span>LC Examples</span></a></h2>
-<h3 id="2-2-jump-game" tabindex="-1"><a class="header-anchor" href="#2-2-jump-game"><span>2-2) Jump Game</span></a></h3>
-<pre><code class="language-python"># 055 Jump Game
-# V0
-class Solution(object):
-    def canJump(self, nums):
-        # edge case
-        if not nums:
-            return True
-        cur = 0
-        for i in range(len(nums)):
-            if cur &lt; i:
-                return False
-            cur = max(cur, i + nums[i])
-        return True
+<h3 id="2-1-jump-game-lc-55-greedy-max-reach" tabindex="-1"><a class="header-anchor" href="#2-1-jump-game-lc-55-greedy-max-reach"><span>2-1) Jump Game (LC 55) — Greedy Max Reach</span></a></h3>
+<blockquote>
+<p>Track farthest reachable index; if current index exceeds it, return false.</p>
+</blockquote>
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 55 - Jump Game</span>
+<span class="hljs-comment">// IDEA: Greedy — track max reachable index; fail if current index exceeds it</span>
+<span class="hljs-comment">// time = O(N), space = O(1)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">canJump</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">maxReach</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; nums.length; i++) {
+        <span class="hljs-keyword">if</span> (i &gt; maxReach) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+        maxReach = Math.max(maxReach, i + nums[i]);
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+}
 </code></pre>
-<h3 id="2-2-jump-game-ii" tabindex="-1"><a class="header-anchor" href="#2-2-jump-game-ii"><span>2-2’) Jump Game II</span></a></h3>
-<pre><code class="language-python"># 045 Jump Game II
-# V0
-# IDEA : GREEDY
-&quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 055 Jump Game</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">canJump</span>(<span class="hljs-params">self, nums</span>):
+        <span class="hljs-comment"># edge case</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> nums:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+        cur = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(nums)):
+            <span class="hljs-keyword">if</span> cur &lt; i:
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+            cur = <span class="hljs-built_in">max</span>(cur, i + nums[i])
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+</code></pre>
+<h3 id="2-2-jump-game-ii-lc-45-greedy-jump-window" tabindex="-1"><a class="header-anchor" href="#2-2-jump-game-ii-lc-45-greedy-jump-window"><span>2-2) Jump Game II (LC 45) — Greedy Jump Window</span></a></h3>
+<blockquote>
+<p>Expand the current jump window; when boundary is reached, take a jump and advance window.</p>
+</blockquote>
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 45 - Jump Game II</span>
+<span class="hljs-comment">// IDEA: Greedy — track current window end and farthest; jump when window end reached</span>
+<span class="hljs-comment">// time = O(N), space = O(1)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">jump</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">jumps</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, curEnd = <span class="hljs-number">0</span>, farthest = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; nums.length - <span class="hljs-number">1</span>; i++) {
+        farthest = Math.max(farthest, i + nums[i]);
+        <span class="hljs-keyword">if</span> (i == curEnd) { jumps++; curEnd = farthest; }
+    }
+    <span class="hljs-keyword">return</span> jumps;
+}
+</code></pre>
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 045 Jump Game II</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : GREEDY</span>
+<span class="hljs-string">&quot;&quot;&quot;
 Steps:
     step 1) Initialize three integer variables: jumps to count the number of jumps, currentJumpEnd to mark the end of the range that we can jump to, and farthest to mark the farthest place that we can reach. Set each variable to zero
     step 2) terate over nums. Note that we exclude the last element from our iteration because as soon as we reach the last element, we do not need to jump anymore.
             - Update farthest to i + nums[i] if the latter is larger.
             - If we reach currentJumpEnd, it means we finished the current jump, and can begin checking the next jump by setting currentJumpEnd = farthest.
     step 3) return jumps
-&quot;&quot;&quot;
-class Solution:
-    def jump(self, nums: List[int]) -&gt; int:
-            jumps = 0
-            current_jump_end = 0
-            farthest = 0
-            for i in range(len(nums) - 1):
-                # we continuously find the how far we can reach in the current jump
-                farthest = max(farthest, i + nums[i])
-                # if we have come to the end of the current jump,
-                # we need to make another jump
-                if i == current_jump_end:
-                    jumps += 1
+&quot;&quot;&quot;</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">jump</span>(<span class="hljs-params">self, nums: <span class="hljs-type">List</span>[<span class="hljs-built_in">int</span>]</span>) -&gt; <span class="hljs-built_in">int</span>:
+            jumps = <span class="hljs-number">0</span>
+            current_jump_end = <span class="hljs-number">0</span>
+            farthest = <span class="hljs-number">0</span>
+            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(nums) - <span class="hljs-number">1</span>):
+                <span class="hljs-comment"># we continuously find the how far we can reach in the current jump</span>
+                farthest = <span class="hljs-built_in">max</span>(farthest, i + nums[i])
+                <span class="hljs-comment"># if we have come to the end of the current jump,</span>
+                <span class="hljs-comment"># we need to make another jump</span>
+                <span class="hljs-keyword">if</span> i == current_jump_end:
+                    jumps += <span class="hljs-number">1</span>
                     current_jump_end = farthest
-            return jumps
+            <span class="hljs-keyword">return</span> jumps
 
-# V1
-# IDEA : GREEDY
-# https://leetcode.com/problems/jump-game-ii/discuss/1672485/Python-Greedy
-class Solution:
-    def jump(self, nums: List[int]) -&gt; int:
-        l = r = res = farthest = 0
-        while r &lt; len(nums) - 1:
-            for idx in range(l, r+1):
-                farthest = max(farthest, idx + nums[idx])
-            l = r+1
+<span class="hljs-comment"># V1</span>
+<span class="hljs-comment"># IDEA : GREEDY</span>
+<span class="hljs-comment"># https://leetcode.com/problems/jump-game-ii/discuss/1672485/Python-Greedy</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">jump</span>(<span class="hljs-params">self, nums: <span class="hljs-type">List</span>[<span class="hljs-built_in">int</span>]</span>) -&gt; <span class="hljs-built_in">int</span>:
+        l = r = res = farthest = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">while</span> r &lt; <span class="hljs-built_in">len</span>(nums) - <span class="hljs-number">1</span>:
+            <span class="hljs-keyword">for</span> idx <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(l, r+<span class="hljs-number">1</span>):
+                farthest = <span class="hljs-built_in">max</span>(farthest, idx + nums[idx])
+            l = r+<span class="hljs-number">1</span>
             r = farthest 
-            res += 1
-        return res
+            res += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">return</span> res
 </code></pre>
-<h3 id="2-3-best-time-to-buy-and-sell-stock-ii" tabindex="-1"><a class="header-anchor" href="#2-3-best-time-to-buy-and-sell-stock-ii"><span>2-3) Best Time to Buy and Sell Stock II</span></a></h3>
-<pre><code class="language-python"># 122 Best Time to Buy and Sell Stock II
-class Solution:
-    def maxProfit(self, prices):
-        profit = 0
-        for i in range(0,len(prices)-1):
-            if prices[i+1] &gt; prices[i]:
-                # have to sale last stock, then buy a new one
-                # and sum up the price difference into profit
-                profit += prices[i+1] - prices[i]
-        return profit
+<h3 id="2-3-best-time-to-buy-and-sell-stock-ii-lc-122-accumulate-daily-gains" tabindex="-1"><a class="header-anchor" href="#2-3-best-time-to-buy-and-sell-stock-ii-lc-122-accumulate-daily-gains"><span>2-3) Best Time to Buy and Sell Stock II (LC 122) — Accumulate Daily Gains</span></a></h3>
+<blockquote>
+<p>Accumulate every positive price difference — buy and sell every rising day.</p>
+</blockquote>
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 122 - Best Time to Buy and Sell Stock II</span>
+<span class="hljs-comment">// IDEA: Greedy — sum all positive consecutive differences</span>
+<span class="hljs-comment">// time = O(N), space = O(1)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxProfit</span><span class="hljs-params">(<span class="hljs-type">int</span>[] prices)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">profit</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; prices.length; i++)
+        <span class="hljs-keyword">if</span> (prices[i] &gt; prices[i-<span class="hljs-number">1</span>]) profit += prices[i] - prices[i-<span class="hljs-number">1</span>];
+    <span class="hljs-keyword">return</span> profit;
+}
+</code></pre>
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 122 Best Time to Buy and Sell Stock II</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">maxProfit</span>(<span class="hljs-params">self, prices</span>):
+        profit = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">0</span>,<span class="hljs-built_in">len</span>(prices)-<span class="hljs-number">1</span>):
+            <span class="hljs-keyword">if</span> prices[i+<span class="hljs-number">1</span>] &gt; prices[i]:
+                <span class="hljs-comment"># have to sale last stock, then buy a new one</span>
+                <span class="hljs-comment"># and sum up the price difference into profit</span>
+                profit += prices[i+<span class="hljs-number">1</span>] - prices[i]
+        <span class="hljs-keyword">return</span> profit
 
 </code></pre>
-<h3 id="2-4-gas-station" tabindex="-1"><a class="header-anchor" href="#2-4-gas-station"><span>2-4) Gas Station</span></a></h3>
-<pre><code class="language-python"># 134 Gas Station
-# V0
-# IDEA : GREEDY
-# IDEA : if sum(gas) - sum(cost) &gt; 0, =&gt; THERE MUST BE A SOLUTION
-# IDEA : since it's circular (symmetry), we can maintain &quot;total&quot; (e.g. total += gas[i] - cost[i]) of (gas[i], cost[i]) for each index as their &quot;current sum&quot;
-class Solution(object):
-    def canCompleteCircuit(self, gas, cost):
-        start = remain = total = 0
-        for i in range(len(gas)):
+<h3 id="2-4-gas-station-lc-134-greedy-start-reset" tabindex="-1"><a class="header-anchor" href="#2-4-gas-station-lc-134-greedy-start-reset"><span>2-4) Gas Station (LC 134) — Greedy Start Reset</span></a></h3>
+<blockquote>
+<p>If tank goes negative, reset start to next station; valid solution exists iff total surplus ≥ 0.</p>
+</blockquote>
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 134 - Gas Station</span>
+<span class="hljs-comment">// IDEA: Greedy — reset start when cumulative surplus goes negative; check total &gt;= 0</span>
+<span class="hljs-comment">// time = O(N), space = O(1)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">canCompleteCircuit</span><span class="hljs-params">(<span class="hljs-type">int</span>[] gas, <span class="hljs-type">int</span>[] cost)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">total</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, remain = <span class="hljs-number">0</span>, start = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; gas.length; i++) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">diff</span> <span class="hljs-operator">=</span> gas[i] - cost[i];
+        total += diff; remain += diff;
+        <span class="hljs-keyword">if</span> (remain &lt; <span class="hljs-number">0</span>) { start = i + <span class="hljs-number">1</span>; remain = <span class="hljs-number">0</span>; }
+    }
+    <span class="hljs-keyword">return</span> total &gt;= <span class="hljs-number">0</span> ? start : -<span class="hljs-number">1</span>;
+}
+</code></pre>
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 134 Gas Station</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : GREEDY</span>
+<span class="hljs-comment"># IDEA : if sum(gas) - sum(cost) &gt; 0, =&gt; THERE MUST BE A SOLUTION</span>
+<span class="hljs-comment"># IDEA : since it&#x27;s circular (symmetry), we can maintain &quot;total&quot; (e.g. total += gas[i] - cost[i]) of (gas[i], cost[i]) for each index as their &quot;current sum&quot;</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">canCompleteCircuit</span>(<span class="hljs-params">self, gas, cost</span>):
+        start = remain = total = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(gas)):
             remain += gas[i] - cost[i]
             total += gas[i] - cost[i]
-            if remain &lt; 0:
-                remain = 0
-                start = i + 1
-        return -1 if total &lt; 0 else start
+            <span class="hljs-keyword">if</span> remain &lt; <span class="hljs-number">0</span>:
+                remain = <span class="hljs-number">0</span>
+                start = i + <span class="hljs-number">1</span>
+        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span> <span class="hljs-keyword">if</span> total &lt; <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> start
 </code></pre>
-<h3 id="2-6-reorganize-string" tabindex="-1"><a class="header-anchor" href="#2-6-reorganize-string"><span>2-6) Reorganize String</span></a></h3>
-<pre><code class="language-python"># LC 767. Reorganize String
+<h3 id="2-5-reorganize-string-lc-767-greedy-max-heap-interleave" tabindex="-1"><a class="header-anchor" href="#2-5-reorganize-string-lc-767-greedy-max-heap-interleave"><span>2-5) Reorganize String (LC 767) — Greedy Max-Heap Interleave</span></a></h3>
+<blockquote>
+<p>Always pick the most frequent character that differs from the last placed character.</p>
+</blockquote>
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 767 - Reorganize String</span>
+<span class="hljs-comment">// IDEA: Max-heap by frequency; always pick top that differs from last placed char</span>
+<span class="hljs-comment">// time = O(N log K), space = O(K)  K = distinct chars</span>
+<span class="hljs-keyword">public</span> String <span class="hljs-title function_">reorganizeString</span><span class="hljs-params">(String s)</span> {
+    <span class="hljs-type">int</span>[] freq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">26</span>];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : s.toCharArray()) freq[c - <span class="hljs-string">&#x27;a&#x27;</span>]++;
+    PriorityQueue&lt;<span class="hljs-type">int</span>[]&gt; pq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;((a, b) -&gt; b[<span class="hljs-number">1</span>] - a[<span class="hljs-number">1</span>]);
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">26</span>; i++) <span class="hljs-keyword">if</span> (freq[i] &gt; <span class="hljs-number">0</span>) pq.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{i, freq[i]});
+    <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">sb</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>();
+    <span class="hljs-type">int</span>[] prev = <span class="hljs-literal">null</span>;
+    <span class="hljs-keyword">while</span> (!pq.isEmpty()) {
+        <span class="hljs-type">int</span>[] curr = pq.poll();
+        sb.append((<span class="hljs-type">char</span>)(<span class="hljs-string">&#x27;a&#x27;</span> + curr[<span class="hljs-number">0</span>]));
+        <span class="hljs-keyword">if</span> (prev != <span class="hljs-literal">null</span>) pq.offer(prev);
+        curr[<span class="hljs-number">1</span>]--;
+        prev = curr[<span class="hljs-number">1</span>] &gt; <span class="hljs-number">0</span> ? curr : <span class="hljs-literal">null</span>;
+    }
+    <span class="hljs-keyword">return</span> sb.length() == s.length() ? sb.toString() : <span class="hljs-string">&quot;&quot;</span>;
+}
+</code></pre>
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 767. Reorganize String</span>
 
-# V0 
-# IDEA : GREEDY + COUNTER
-# IDEA : 
-#  step 1) order exists count (big -&gt; small)
-#  step 2) select the element which is &quot;most remaining&quot; and DIFFERENT from last ans element and append such element to the end of ans
-#  step 3) if can't find such element, return &quot;&quot;
-class Solution(object):
-    def reorganizeString(self, S):
+<span class="hljs-comment"># V0 </span>
+<span class="hljs-comment"># IDEA : GREEDY + COUNTER</span>
+<span class="hljs-comment"># IDEA : </span>
+<span class="hljs-comment">#  step 1) order exists count (big -&gt; small)</span>
+<span class="hljs-comment">#  step 2) select the element which is &quot;most remaining&quot; and DIFFERENT from last ans element and append such element to the end of ans</span>
+<span class="hljs-comment">#  step 3) if can&#x27;t find such element, return &quot;&quot;</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">reorganizeString</span>(<span class="hljs-params">self, S</span>):
         cnt = collections.Counter(S)
-        # Be aware of it : ans = &quot;#&quot; -&gt; not to have error in ans[-1] when first loop
-        ans = '#'
-        while cnt:
-            stop = True
-            for v, c in cnt.most_common():
-                &quot;&quot;&quot;
+        <span class="hljs-comment"># Be aware of it : ans = &quot;#&quot; -&gt; not to have error in ans[-1] when first loop</span>
+        ans = <span class="hljs-string">&#x27;#&#x27;</span>
+        <span class="hljs-keyword">while</span> cnt:
+            stop = <span class="hljs-literal">True</span>
+            <span class="hljs-keyword">for</span> v, c <span class="hljs-keyword">in</span> cnt.most_common():
+                <span class="hljs-string">&quot;&quot;&quot;
                 NOTE !!! trick here
 
                 1) we only compare last element in ans and current key (v), if they are different, then append
                 2) we break at the end of each for loop -&gt; MAKE SURE two adjacent characters are not the same.
                 3) we use a flag &quot;stop&quot;, to decide whether should stop while loop or not
-                &quot;&quot;&quot;
-                if v != ans[-1]:
-                    stop = False
+                &quot;&quot;&quot;</span>
+                <span class="hljs-keyword">if</span> v != ans[-<span class="hljs-number">1</span>]:
+                    stop = <span class="hljs-literal">False</span>
                     ans += v
-                    cnt[v] -= 1
-                    if not cnt[v]:
-                        del cnt[v]
-                    &quot;&quot;&quot;
+                    cnt[v] -= <span class="hljs-number">1</span>
+                    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> cnt[v]:
+                        <span class="hljs-keyword">del</span> cnt[v]
+                    <span class="hljs-string">&quot;&quot;&quot;
                     NOTE !!!
                      -&gt; we BREAK right after each op, since we want to get next NEW most common element from &quot;updated&quot; cnt.most_common()
-                    &quot;&quot;&quot;
-                    break
-            # Be aware of it : if there is no valid &quot;v&quot;, then the while loop will break automatically at this condition (stop = True)
-            if stop:
-                break
-        return ans[1:] if len(ans[1:]) == len(S) else ''
+                    &quot;&quot;&quot;</span>
+                    <span class="hljs-keyword">break</span>
+            <span class="hljs-comment"># Be aware of it : if there is no valid &quot;v&quot;, then the while loop will break automatically at this condition (stop = True)</span>
+            <span class="hljs-keyword">if</span> stop:
+                <span class="hljs-keyword">break</span>
+        <span class="hljs-keyword">return</span> ans[<span class="hljs-number">1</span>:] <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(ans[<span class="hljs-number">1</span>:]) == <span class="hljs-built_in">len</span>(S) <span class="hljs-keyword">else</span> <span class="hljs-string">&#x27;&#x27;</span>
 </code></pre>
-<h3 id="2-6-string-without-aaa-or-bbb" tabindex="-1"><a class="header-anchor" href="#2-6-string-without-aaa-or-bbb"><span>2-6’) String Without AAA or BBB</span></a></h3>
-<pre><code class="language-java">// LC 984. String Without AAA or BBB
-// Pattern: String Reorganization with consecutive constraint
+<h3 id="2-6-string-without-aaa-or-bbb-lc-984-greedy-consecutive-counter" tabindex="-1"><a class="header-anchor" href="#2-6-string-without-aaa-or-bbb-lc-984-greedy-consecutive-counter"><span>2-6) String Without AAA or BBB (LC 984) — Greedy Consecutive Counter</span></a></h3>
+<blockquote>
+<p>Force a switch when 2 consecutive same chars; otherwise always write the higher-count char.</p>
+</blockquote>
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 984 - String Without AAA or BBB</span>
+<span class="hljs-comment">// IDEA: Greedy — write higher-count char unless 2 consecutive, then must switch</span>
+<span class="hljs-comment">// time = O(A+B), space = O(1)</span>
+<span class="hljs-keyword">public</span> String <span class="hljs-title function_">strWithout3a3b</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span> {
+    <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">res</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>();
+    <span class="hljs-type">int</span> <span class="hljs-variable">continueA</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-type">int</span> <span class="hljs-variable">continueB</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
 
-/**
- * IDEA: Greedy with Counter Tracking
- *
- * Key Insight:
- * - Track consecutive count of each character
- * - MUST switch if consecutive count reaches 2
- * - Otherwise, greedily pick the character with higher remaining count
- *
- * Decision Logic:
- * 1. If continueB == 2 → MUST write 'a' (avoid &quot;bbb&quot;)
- * 2. If continueA == 2 → MUST write 'b' (avoid &quot;aaa&quot;)
- * 3. Otherwise → write the one with higher remaining count
- */
+    <span class="hljs-keyword">while</span> (a &gt; <span class="hljs-number">0</span> || b &gt; <span class="hljs-number">0</span>) {
+        <span class="hljs-type">boolean</span> <span class="hljs-variable">writeA</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;
 
-// V0: Greedy with consecutive tracking
-public String strWithout3a3b(int a, int b) {
-    StringBuilder res = new StringBuilder();
-    int continueA = 0;
-    int continueB = 0;
-
-    while (a &gt; 0 || b &gt; 0) {
-        boolean writeA = false;
-
-        // Priority 1: Must switch if 2 consecutive
-        if (continueB == 2) {
-            writeA = true;
-        } else if (continueA == 2) {
-            writeA = false;
-        } else {
-            // Priority 2: Greedy - write the one with more remaining
+        <span class="hljs-comment">// Priority 1: Must switch if 2 consecutive</span>
+        <span class="hljs-keyword">if</span> (continueB == <span class="hljs-number">2</span>) {
+            writeA = <span class="hljs-literal">true</span>;
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (continueA == <span class="hljs-number">2</span>) {
+            writeA = <span class="hljs-literal">false</span>;
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-comment">// Priority 2: Greedy - write the one with more remaining</span>
             writeA = a &gt;= b;
         }
 
-        if (writeA) {
-            res.append(&quot;a&quot;);
+        <span class="hljs-keyword">if</span> (writeA) {
+            res.append(<span class="hljs-string">&quot;a&quot;</span>);
             a--;
             continueA++;
-            continueB = 0; // Reset other counter
-        } else {
-            res.append(&quot;b&quot;);
+            continueB = <span class="hljs-number">0</span>; <span class="hljs-comment">// Reset other counter</span>
+        } <span class="hljs-keyword">else</span> {
+            res.append(<span class="hljs-string">&quot;b&quot;</span>);
             b--;
             continueB++;
-            continueA = 0; // Reset other counter
+            continueA = <span class="hljs-number">0</span>; <span class="hljs-comment">// Reset other counter</span>
         }
     }
-    return res.toString();
+    <span class="hljs-keyword">return</span> res.toString();
 }
 
-// V1: Using last 2 characters check (Editorial)
-public String strWithout3a3b_v1(int A, int B) {
-    StringBuilder ans = new StringBuilder();
-    while (A &gt; 0 || B &gt; 0) {
-        boolean writeA = false;
-        int L = ans.length();
-        // Check last 2 chars
-        if (L &gt;= 2 &amp;&amp; ans.charAt(L-1) == ans.charAt(L-2)) {
-            if (ans.charAt(L-1) == 'b') writeA = true;
-        } else {
-            if (A &gt;= B) writeA = true;
+<span class="hljs-comment">// V1: Using last 2 characters check (Editorial)</span>
+<span class="hljs-keyword">public</span> String <span class="hljs-title function_">strWithout3a3b_v1</span><span class="hljs-params">(<span class="hljs-type">int</span> A, <span class="hljs-type">int</span> B)</span> {
+    <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">ans</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>();
+    <span class="hljs-keyword">while</span> (A &gt; <span class="hljs-number">0</span> || B &gt; <span class="hljs-number">0</span>) {
+        <span class="hljs-type">boolean</span> <span class="hljs-variable">writeA</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;
+        <span class="hljs-type">int</span> <span class="hljs-variable">L</span> <span class="hljs-operator">=</span> ans.length();
+        <span class="hljs-comment">// Check last 2 chars</span>
+        <span class="hljs-keyword">if</span> (L &gt;= <span class="hljs-number">2</span> &amp;&amp; ans.charAt(L-<span class="hljs-number">1</span>) == ans.charAt(L-<span class="hljs-number">2</span>)) {
+            <span class="hljs-keyword">if</span> (ans.charAt(L-<span class="hljs-number">1</span>) == <span class="hljs-string">&#x27;b&#x27;</span>) writeA = <span class="hljs-literal">true</span>;
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">if</span> (A &gt;= B) writeA = <span class="hljs-literal">true</span>;
         }
 
-        if (writeA) { A--; ans.append('a'); }
-        else { B--; ans.append('b'); }
+        <span class="hljs-keyword">if</span> (writeA) { A--; ans.append(<span class="hljs-string">&#x27;a&#x27;</span>); }
+        <span class="hljs-keyword">else</span> { B--; ans.append(<span class="hljs-string">&#x27;b&#x27;</span>); }
     }
-    return ans.toString();
+    <span class="hljs-keyword">return</span> ans.toString();
 }
 
-// V2: PQ approach (similar to Reorganize String)
-// Max heap: always pick char with highest remaining count
-// If blocked by consecutive constraint, pick second highest
+<span class="hljs-comment">// V2: PQ approach (similar to Reorganize String)</span>
+<span class="hljs-comment">// Max heap: always pick char with highest remaining count</span>
+<span class="hljs-comment">// If blocked by consecutive constraint, pick second highest</span>
 </code></pre>
 <p><strong>Similar Problems:</strong></p>
 <ul>
@@ -859,35 +941,51 @@ public String strWithout3a3b_v1(int A, int B) {
 <li>LC 1405: Longest Happy String (max a, b, c with no 3 consecutive)</li>
 <li>LC 358: Rearrange String K Distance Apart (k distance constraint)</li>
 </ul>
-<h3 id="2-7-task-scheduler" tabindex="-1"><a class="header-anchor" href="#2-7-task-scheduler"><span>2-7) Task Scheduler</span></a></h3>
-<pre><code class="language-python"># LC 621. Task Scheduler
-# V0
-# pattern :
-#    =============================================================================
-#    -&gt; task_time = (max_mission_count - 1) * (n + 1) + (number_of_max_mission)
-#    =============================================================================
-#   
-#    -&gt; Example 1) :
-#    -&gt;  AAAABBBBCCD, n=3
-#    =&gt; THE EXPECTED tuned missions is like : ABXXABXXABXXAB
-#    -&gt; (4 - 1) * (3 + 1) + 2 = 14
-#    -&gt; 4 is the &quot;how many missions the max mission has&quot; (AAAA or BBBB)
-#    -&gt; 3 is n
-#    -&gt; 2 is &quot;how many mission have max mission count&quot; -&gt; A and B. so it's 2
-#    -&gt; in sum,
-#    -&gt; (4 - 1) * (3 + 1) is for ABXXABXXABXX
-#    -&gt; and 2 is for AB
-#
-#   -&gt; Example 2) :
-#   -&gt; AAABBB, n = 2
-#   -&gt; THE EXPECTED tuned missions is like : ABXABXAB
-#   -&gt; (3 - 1) * (2 + 1) + (2) = 8
-class Solution(object):
-    def leastInterval(self, tasks, n):
+<h3 id="2-7-task-scheduler-lc-621-greedy-idle-time-formula" tabindex="-1"><a class="header-anchor" href="#2-7-task-scheduler-lc-621-greedy-idle-time-formula"><span>2-7) Task Scheduler (LC 621) — Greedy Idle Time Formula</span></a></h3>
+<blockquote>
+<p>Min time = max((maxFreq−1)*(n+1) + countOfMaxFreq, totalTasks).</p>
+</blockquote>
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 621 - Task Scheduler</span>
+<span class="hljs-comment">// IDEA: Greedy formula — (maxFreq-1)*(n+1) + #tasks_with_maxFreq; also can&#x27;t be less than total</span>
+<span class="hljs-comment">// time = O(N), space = O(1)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">leastInterval</span><span class="hljs-params">(<span class="hljs-type">char</span>[] tasks, <span class="hljs-type">int</span> n)</span> {
+    <span class="hljs-type">int</span>[] freq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">26</span>];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> t : tasks) freq[t - <span class="hljs-string">&#x27;A&#x27;</span>]++;
+    <span class="hljs-type">int</span> <span class="hljs-variable">maxFreq</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> f : freq) maxFreq = Math.max(maxFreq, f);
+    <span class="hljs-type">int</span> <span class="hljs-variable">countMax</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> f : freq) <span class="hljs-keyword">if</span> (f == maxFreq) countMax++;
+    <span class="hljs-keyword">return</span> Math.max(tasks.length, (maxFreq - <span class="hljs-number">1</span>) * (n + <span class="hljs-number">1</span>) + countMax);
+}
+</code></pre>
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 621. Task Scheduler</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># pattern :</span>
+<span class="hljs-comment">#    =============================================================================</span>
+<span class="hljs-comment">#    -&gt; task_time = (max_mission_count - 1) * (n + 1) + (number_of_max_mission)</span>
+<span class="hljs-comment">#    =============================================================================</span>
+<span class="hljs-comment">#   </span>
+<span class="hljs-comment">#    -&gt; Example 1) :</span>
+<span class="hljs-comment">#    -&gt;  AAAABBBBCCD, n=3</span>
+<span class="hljs-comment">#    =&gt; THE EXPECTED tuned missions is like : ABXXABXXABXXAB</span>
+<span class="hljs-comment">#    -&gt; (4 - 1) * (3 + 1) + 2 = 14</span>
+<span class="hljs-comment">#    -&gt; 4 is the &quot;how many missions the max mission has&quot; (AAAA or BBBB)</span>
+<span class="hljs-comment">#    -&gt; 3 is n</span>
+<span class="hljs-comment">#    -&gt; 2 is &quot;how many mission have max mission count&quot; -&gt; A and B. so it&#x27;s 2</span>
+<span class="hljs-comment">#    -&gt; in sum,</span>
+<span class="hljs-comment">#    -&gt; (4 - 1) * (3 + 1) is for ABXXABXXABXX</span>
+<span class="hljs-comment">#    -&gt; and 2 is for AB</span>
+<span class="hljs-comment">#</span>
+<span class="hljs-comment">#   -&gt; Example 2) :</span>
+<span class="hljs-comment">#   -&gt; AAABBB, n = 2</span>
+<span class="hljs-comment">#   -&gt; THE EXPECTED tuned missions is like : ABXABXAB</span>
+<span class="hljs-comment">#   -&gt; (3 - 1) * (2 + 1) + (2) = 8</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">leastInterval</span>(<span class="hljs-params">self, tasks, n</span>):
         count = collections.Counter(tasks)
-        most = count.most_common()[0][1]
-        num_most = len([i for i, v in count.items() if v == most])
-        &quot;&quot;&quot;
+        most = count.most_common()[<span class="hljs-number">0</span>][<span class="hljs-number">1</span>]
+        num_most = <span class="hljs-built_in">len</span>([i <span class="hljs-keyword">for</span> i, v <span class="hljs-keyword">in</span> count.items() <span class="hljs-keyword">if</span> v == most])
+        <span class="hljs-string">&quot;&quot;&quot;
         example 1 : tasks = [&quot;A&quot;,&quot;A&quot;,&quot;A&quot;,&quot;B&quot;,&quot;B&quot;,&quot;B&quot;], n = 2
             -&gt; we can split tasks as : A -&gt; B -&gt; idle -&gt; A -&gt; B -&gt; idle -&gt; A -&gt; B
                -&gt; 1) so there are 3-1 group. e.g. (A -&gt; B -&gt; idle), (A -&gt; B -&gt; idle)
@@ -901,63 +999,81 @@ class Solution(object):
                       and each group has (n+1) elements. e.g. (A,B,C) .... (as above)
                 -&gt; 2) and the remain element is num_most. e.g. (A) 
                 -&gt; 3) so total cnt = (6-1)*(2+1) + 1 =  16
-        &quot;&quot;&quot;
-        time = (most - 1) * (n + 1) + num_most
-        return max(time, len(tasks)) # be aware of it 
+        &quot;&quot;&quot;</span>
+        time = (most - <span class="hljs-number">1</span>) * (n + <span class="hljs-number">1</span>) + num_most
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">max</span>(time, <span class="hljs-built_in">len</span>(tasks)) <span class="hljs-comment"># be aware of it </span>
 </code></pre>
-<h3 id="2-8-maximum-units-on-a-truck" tabindex="-1"><a class="header-anchor" href="#2-8-maximum-units-on-a-truck"><span>2-8) Maximum Units on a Truck</span></a></h3>
-<pre><code class="language-python"># LC 1710. Maximum Units on a Truck
-# V0
-# IDEA : GREEDY + sorting
-class Solution(object):
-    def maximumUnits(self, boxTypes, truckSize):
-        # boxTypes[i] = [numberOfBoxesi, numberOfUnitsPerBoxi]:
-        # edge case
-        if not boxTypes or not truckSize:
-            return 0
-        &quot;&quot;&quot;
+<h3 id="2-8-maximum-units-on-a-truck-lc-1710-sort-by-unit-value" tabindex="-1"><a class="header-anchor" href="#2-8-maximum-units-on-a-truck-lc-1710-sort-by-unit-value"><span>2-8) Maximum Units on a Truck (LC 1710) — Sort by Unit Value</span></a></h3>
+<blockquote>
+<p>Sort box types by units per box descending; greedily fill truck with highest-value boxes first.</p>
+</blockquote>
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1710 - Maximum Units on a Truck</span>
+<span class="hljs-comment">// IDEA: Sort by units descending; greedily load boxes until truck is full</span>
+<span class="hljs-comment">// time = O(N log N), space = O(1)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maximumUnits</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] boxTypes, <span class="hljs-type">int</span> truckSize)</span> {
+    Arrays.sort(boxTypes, (a, b) -&gt; b[<span class="hljs-number">1</span>] - a[<span class="hljs-number">1</span>]);
+    <span class="hljs-type">int</span> <span class="hljs-variable">total</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] box : boxTypes) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">take</span> <span class="hljs-operator">=</span> Math.min(box[<span class="hljs-number">0</span>], truckSize);
+        total += take * box[<span class="hljs-number">1</span>];
+        truckSize -= take;
+        <span class="hljs-keyword">if</span> (truckSize == <span class="hljs-number">0</span>) <span class="hljs-keyword">break</span>;
+    }
+    <span class="hljs-keyword">return</span> total;
+}
+</code></pre>
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1710. Maximum Units on a Truck</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : GREEDY + sorting</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">maximumUnits</span>(<span class="hljs-params">self, boxTypes, truckSize</span>):
+        <span class="hljs-comment"># boxTypes[i] = [numberOfBoxesi, numberOfUnitsPerBoxi]:</span>
+        <span class="hljs-comment"># edge case</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> boxTypes <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> truckSize:
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+        <span class="hljs-string">&quot;&quot;&quot;
         NOTE : we sort on sort(key=lambda x : -x[1])
 
             -&gt; if unit is bigger, we can get bigger aggregated result (n * unit)
-        &quot;&quot;&quot;
-        boxTypes.sort(key=lambda x : -x[1])
-        res = 0
-        for n, unit in boxTypes:
-            # case 1 : truckSize == 0, break for loop and return ans
-            if truckSize == 0:
-                break
-            # case 2 : truckSize &lt; n, we CAN'T add all n to truck, but CAN only add (truckSize * unit) amount to truck
-            elif truckSize &lt; n:
+        &quot;&quot;&quot;</span>
+        boxTypes.sort(key=<span class="hljs-keyword">lambda</span> x : -x[<span class="hljs-number">1</span>])
+        res = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> n, unit <span class="hljs-keyword">in</span> boxTypes:
+            <span class="hljs-comment"># case 1 : truckSize == 0, break for loop and return ans</span>
+            <span class="hljs-keyword">if</span> truckSize == <span class="hljs-number">0</span>:
+                <span class="hljs-keyword">break</span>
+            <span class="hljs-comment"># case 2 : truckSize &lt; n, we CAN&#x27;T add all n to truck, but CAN only add (truckSize * unit) amount to truck</span>
+            <span class="hljs-keyword">elif</span> truckSize &lt; n:
                 res += (truckSize * unit)
-                truckSize = 0
-                break
-            # case 3 : normal case, it's OK to put all (n * unit) to truck once
-            else:      
+                truckSize = <span class="hljs-number">0</span>
+                <span class="hljs-keyword">break</span>
+            <span class="hljs-comment"># case 3 : normal case, it&#x27;s OK to put all (n * unit) to truck once</span>
+            <span class="hljs-keyword">else</span>:      
                 res += (n * unit)
                 truckSize -= n
-        return res
+        <span class="hljs-keyword">return</span> res
 
-# V1
-# IDEA : GREEDY
-# https://leetcode.com/problems/maximum-units-on-a-truck/discuss/1045318/Python-solution
-class Solution(object):
-    def maximumUnits(self, boxTypes, truckSize):
-        boxTypes.sort(key = lambda x: -x[1])
-        n = len(boxTypes)
-        result = 0
-        i = 0
-        while truckSize &gt;= boxTypes[i][0]:
-            result += boxTypes[i][1] * boxTypes[i][0]
-            truckSize -= boxTypes[i][0]
-            i += 1
-            if i == n:
-                return result
-        result += truckSize * boxTypes[i][1]
-        return result
+<span class="hljs-comment"># V1</span>
+<span class="hljs-comment"># IDEA : GREEDY</span>
+<span class="hljs-comment"># https://leetcode.com/problems/maximum-units-on-a-truck/discuss/1045318/Python-solution</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">maximumUnits</span>(<span class="hljs-params">self, boxTypes, truckSize</span>):
+        boxTypes.sort(key = <span class="hljs-keyword">lambda</span> x: -x[<span class="hljs-number">1</span>])
+        n = <span class="hljs-built_in">len</span>(boxTypes)
+        result = <span class="hljs-number">0</span>
+        i = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">while</span> truckSize &gt;= boxTypes[i][<span class="hljs-number">0</span>]:
+            result += boxTypes[i][<span class="hljs-number">1</span>] * boxTypes[i][<span class="hljs-number">0</span>]
+            truckSize -= boxTypes[i][<span class="hljs-number">0</span>]
+            i += <span class="hljs-number">1</span>
+            <span class="hljs-keyword">if</span> i == n:
+                <span class="hljs-keyword">return</span> result
+        result += truckSize * boxTypes[i][<span class="hljs-number">1</span>]
+        <span class="hljs-keyword">return</span> result
 </code></pre>
 <h2 id="decision-framework" tabindex="-1"><a class="header-anchor" href="#decision-framework"><span>Decision Framework</span></a></h2>
 <h3 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h3>
-<pre><code>Greedy Algorithm Selection Flowchart:
+<pre><code class="hljs">Greedy Algorithm Selection Flowchart:
 
 1. Can the problem be solved greedily?
    ├── Does local optimal lead to global optimal? → YES → Use Greedy
@@ -1030,7 +1146,7 @@ class Solution(object):
 </table>
 <h2 id="greedy-vs-bfs-dfs-in-graph-problems" tabindex="-1"><a class="header-anchor" href="#greedy-vs-bfs-dfs-in-graph-problems"><span>Greedy vs BFS/DFS in Graph Problems</span></a></h2>
 <h3 id="when-to-choose-decision-framework" tabindex="-1"><a class="header-anchor" href="#when-to-choose-decision-framework"><span>When to Choose: Decision Framework</span></a></h3>
-<pre><code>Graph Problem Algorithm Selection:
+<pre><code class="hljs">Graph Problem Algorithm Selection:
 
 1. Problem Goal Analysis
    ├── Find shortest path (unweighted) → BFS
@@ -1223,31 +1339,31 @@ class Solution(object):
 <li>📊 Complexity: O(V + E), Space: O(V) call stack</li>
 </ul>
 <h4 id="checkpoint-3-performance-analysis" tabindex="-1"><a class="header-anchor" href="#checkpoint-3-performance-analysis"><span>Checkpoint 3: Performance Analysis</span></a></h4>
-<pre><code class="language-python"># Decision tree based on constraints
-def choose_algorithm(V, E, has_negative_weights, need_all_paths):
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Decision tree based on constraints</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">choose_algorithm</span>(<span class="hljs-params">V, E, has_negative_weights, need_all_paths</span>):
     graph_size = V + E
 
-    if need_all_paths:
-        return &quot;DFS&quot; if V &lt; 10000 else &quot;Not feasible&quot;
+    <span class="hljs-keyword">if</span> need_all_paths:
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;DFS&quot;</span> <span class="hljs-keyword">if</span> V &lt; <span class="hljs-number">10000</span> <span class="hljs-keyword">else</span> <span class="hljs-string">&quot;Not feasible&quot;</span>
 
-    if has_negative_weights:
-        return &quot;Bellman-Ford (DP)&quot; if graph_size &lt; 10^4 else &quot;Not feasible&quot;
+    <span class="hljs-keyword">if</span> has_negative_weights:
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Bellman-Ford (DP)&quot;</span> <span class="hljs-keyword">if</span> graph_size &lt; <span class="hljs-number">10</span>^<span class="hljs-number">4</span> <span class="hljs-keyword">else</span> <span class="hljs-string">&quot;Not feasible&quot;</span>
 
-    # Shortest path problems
-    if is_weighted_graph:
-        if graph_size &gt; 10^5:
-            return &quot;Dijkstra (Greedy) - Required&quot;
-        return &quot;Dijkstra (Greedy) - Preferred&quot;
-    else:  # unweighted
-        if graph_size &gt; 10^6:
-            return &quot;Optimize or Not feasible&quot;
-        return &quot;BFS&quot;
+    <span class="hljs-comment"># Shortest path problems</span>
+    <span class="hljs-keyword">if</span> is_weighted_graph:
+        <span class="hljs-keyword">if</span> graph_size &gt; <span class="hljs-number">10</span>^<span class="hljs-number">5</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Dijkstra (Greedy) - Required&quot;</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Dijkstra (Greedy) - Preferred&quot;</span>
+    <span class="hljs-keyword">else</span>:  <span class="hljs-comment"># unweighted</span>
+        <span class="hljs-keyword">if</span> graph_size &gt; <span class="hljs-number">10</span>^<span class="hljs-number">6</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Optimize or Not feasible&quot;</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;BFS&quot;</span>
 
-    # MST problems
-    if is_mst_problem:
-        if E &gt; 10^5:
-            return &quot;Kruskal (Greedy) - Required&quot;
-        return &quot;Kruskal/Prim (Greedy)&quot;
+    <span class="hljs-comment"># MST problems</span>
+    <span class="hljs-keyword">if</span> is_mst_problem:
+        <span class="hljs-keyword">if</span> E &gt; <span class="hljs-number">10</span>^<span class="hljs-number">5</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Kruskal (Greedy) - Required&quot;</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Kruskal/Prim (Greedy)&quot;</span>
 </code></pre>
 <h3 id="common-graph-problem-patterns" tabindex="-1"><a class="header-anchor" href="#common-graph-problem-patterns"><span>Common Graph Problem Patterns</span></a></h3>
 <h4 id="pattern-1-shortest-path-problems" tabindex="-1"><a class="header-anchor" href="#pattern-1-shortest-path-problems"><span>Pattern 1: Shortest Path Problems</span></a></h4>
@@ -1294,33 +1410,33 @@ def choose_algorithm(V, E, has_negative_weights, need_all_paths):
 </table>
 <p>*For size &gt; 10^5 with negative weights, problem is typically not solvable in reasonable time</p>
 <h4 id="pattern-2-mst-problems" tabindex="-1"><a class="header-anchor" href="#pattern-2-mst-problems"><span>Pattern 2: MST Problems</span></a></h4>
-<pre><code class="language-python"># Kruskal's Algorithm (Greedy) - REQUIRED for large graphs
-def kruskal_mst(edges, n):
-    &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Kruskal&#x27;s Algorithm (Greedy) - REQUIRED for large graphs</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">kruskal_mst</span>(<span class="hljs-params">edges, n</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
     When to use: ANY MST problem, especially when E &gt; 10^4
     Time: O(E log E)
     Space: O(V + E)
-    &quot;&quot;&quot;
-    edges.sort(key=lambda x: x[2])  # Sort by weight - GREEDY CHOICE
-    parent = list(range(n))
+    &quot;&quot;&quot;</span>
+    edges.sort(key=<span class="hljs-keyword">lambda</span> x: x[<span class="hljs-number">2</span>])  <span class="hljs-comment"># Sort by weight - GREEDY CHOICE</span>
+    parent = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">range</span>(n))
 
-    def find(x):
-        if parent[x] != x:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">find</span>(<span class="hljs-params">x</span>):
+        <span class="hljs-keyword">if</span> parent[x] != x:
             parent[x] = find(parent[x])
-        return parent[x]
+        <span class="hljs-keyword">return</span> parent[x]
 
-    mst_cost = 0
-    for u, v, weight in edges:
+    mst_cost = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> u, v, weight <span class="hljs-keyword">in</span> edges:
         pu, pv = find(u), find(v)
-        if pu != pv:  # Greedy: take smallest edge that doesn't form cycle
+        <span class="hljs-keyword">if</span> pu != pv:  <span class="hljs-comment"># Greedy: take smallest edge that doesn&#x27;t form cycle</span>
             parent[pu] = pv
             mst_cost += weight
 
-    return mst_cost
+    <span class="hljs-keyword">return</span> mst_cost
 
-# Why not BFS/DFS for MST?
-# - Would need to explore all possible spanning trees: O(V^V) - INFEASIBLE
-# - Greedy approach proven optimal (cut property, cycle property)
+<span class="hljs-comment"># Why not BFS/DFS for MST?</span>
+<span class="hljs-comment"># - Would need to explore all possible spanning trees: O(V^V) - INFEASIBLE</span>
+<span class="hljs-comment"># - Greedy approach proven optimal (cut property, cycle property)</span>
 </code></pre>
 <h4 id="pattern-3-reachability-connectivity" tabindex="-1"><a class="header-anchor" href="#pattern-3-reachability-connectivity"><span>Pattern 3: Reachability/Connectivity</span></a></h4>
 <table>
@@ -1368,27 +1484,27 @@ def kruskal_mst(edges, n):
 <li><strong>Algorithm</strong>: Dijkstra (Greedy)</li>
 <li><strong>BFS/DFS fails</strong>: Unweighted BFS gives wrong answer, DFS explores all paths (exponential)</li>
 </ul>
-<pre><code class="language-python">def networkDelayTime(times, n, k):
-    # Dijkstra - Greedy choice: always extend shortest known distance
-    graph = defaultdict(list)
-    for u, v, w in times:
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">networkDelayTime</span>(<span class="hljs-params">times, n, k</span>):
+    <span class="hljs-comment"># Dijkstra - Greedy choice: always extend shortest known distance</span>
+    graph = defaultdict(<span class="hljs-built_in">list</span>)
+    <span class="hljs-keyword">for</span> u, v, w <span class="hljs-keyword">in</span> times:
         graph[u].append((v, w))
 
-    dist = {i: float('inf') for i in range(1, n + 1)}
-    dist[k] = 0
-    heap = [(0, k)]  # (distance, node)
+    dist = {i: <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n + <span class="hljs-number">1</span>)}
+    dist[k] = <span class="hljs-number">0</span>
+    heap = [(<span class="hljs-number">0</span>, k)]  <span class="hljs-comment"># (distance, node)</span>
 
-    while heap:
+    <span class="hljs-keyword">while</span> heap:
         d, node = heapq.heappop(heap)
-        if d &gt; dist[node]:
-            continue
-        for nei, weight in graph[node]:
+        <span class="hljs-keyword">if</span> d &gt; dist[node]:
+            <span class="hljs-keyword">continue</span>
+        <span class="hljs-keyword">for</span> nei, weight <span class="hljs-keyword">in</span> graph[node]:
             new_dist = d + weight
-            if new_dist &lt; dist[nei]:  # Greedy choice
+            <span class="hljs-keyword">if</span> new_dist &lt; dist[nei]:  <span class="hljs-comment"># Greedy choice</span>
                 dist[nei] = new_dist
                 heapq.heappush(heap, (new_dist, nei))
 
-    return max(dist.values()) if max(dist.values()) &lt; float('inf') else -1
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">max</span>(dist.values()) <span class="hljs-keyword">if</span> <span class="hljs-built_in">max</span>(dist.values()) &lt; <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>) <span class="hljs-keyword">else</span> -<span class="hljs-number">1</span>
 </code></pre>
 <p><strong>LC 1584: Min Cost to Connect All Points</strong></p>
 <ul>
@@ -1436,7 +1552,7 @@ def kruskal_mst(edges, n):
 </ul>
 <h3 id="interview-strategy-guide" tabindex="-1"><a class="header-anchor" href="#interview-strategy-guide"><span>Interview Strategy Guide</span></a></h3>
 <h4 id="quick-decision-algorithm" tabindex="-1"><a class="header-anchor" href="#quick-decision-algorithm"><span>Quick Decision Algorithm</span></a></h4>
-<pre><code>Given a graph problem in interview:
+<pre><code class="hljs">Given a graph problem in interview:
 
 Step 1: Identify problem type (30 seconds)
 ├── Shortest path? → Check weights
@@ -1655,34 +1771,34 @@ Step 4: Code and optimize (remaining time)
 </tbody>
 </table>
 <h3 id="sorting-criteria-guide" tabindex="-1"><a class="header-anchor" href="#sorting-criteria-guide"><span>Sorting Criteria Guide</span></a></h3>
-<pre><code class="language-python"># Interval problems
-intervals.sort(key=lambda x: x[1])  # By end time
-intervals.sort(key=lambda x: x[0])  # By start time
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Interval problems</span>
+intervals.sort(key=<span class="hljs-keyword">lambda</span> x: x[<span class="hljs-number">1</span>])  <span class="hljs-comment"># By end time</span>
+intervals.sort(key=<span class="hljs-keyword">lambda</span> x: x[<span class="hljs-number">0</span>])  <span class="hljs-comment"># By start time</span>
 
-# Value optimization
-items.sort(key=lambda x: x.value/x.weight, reverse=True)  # By ratio
+<span class="hljs-comment"># Value optimization</span>
+items.sort(key=<span class="hljs-keyword">lambda</span> x: x.value/x.weight, reverse=<span class="hljs-literal">True</span>)  <span class="hljs-comment"># By ratio</span>
 
-# Custom priority
-tasks.sort(key=lambda x: (x.deadline, -x.profit))  # Multi-criteria
+<span class="hljs-comment"># Custom priority</span>
+tasks.sort(key=<span class="hljs-keyword">lambda</span> x: (x.deadline, -x.profit))  <span class="hljs-comment"># Multi-criteria</span>
 </code></pre>
 <h3 id="common-greedy-patterns" tabindex="-1"><a class="header-anchor" href="#common-greedy-patterns"><span>Common Greedy Patterns</span></a></h3>
 <h4 id="exchange-argument" tabindex="-1"><a class="header-anchor" href="#exchange-argument"><span><strong>Exchange Argument</strong></span></a></h4>
-<pre><code class="language-python"># Prove: Swapping any two elements won't improve result
-def exchange_argument_proof(arr):
-    # If swapping arr[i] and arr[j] doesn't improve,
-    # then current order is optimal
-    pass
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Prove: Swapping any two elements won&#x27;t improve result</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">exchange_argument_proof</span>(<span class="hljs-params">arr</span>):
+    <span class="hljs-comment"># If swapping arr[i] and arr[j] doesn&#x27;t improve,</span>
+    <span class="hljs-comment"># then current order is optimal</span>
+    <span class="hljs-keyword">pass</span>
 </code></pre>
 <h4 id="greedy-stays-ahead" tabindex="-1"><a class="header-anchor" href="#greedy-stays-ahead"><span><strong>Greedy Stays Ahead</strong></span></a></h4>
-<pre><code class="language-python"># Prove: Greedy solution is at least as good at each step
-def stays_ahead_proof(greedy, other):
-    # Show: greedy[i] &gt;= other[i] for all i
-    pass
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Prove: Greedy solution is at least as good at each step</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">stays_ahead_proof</span>(<span class="hljs-params">greedy, other</span>):
+    <span class="hljs-comment"># Show: greedy[i] &gt;= other[i] for all i</span>
+    <span class="hljs-keyword">pass</span>
 </code></pre>
 <h4 id="matroid-theory" tabindex="-1"><a class="header-anchor" href="#matroid-theory"><span><strong>Matroid Theory</strong></span></a></h4>
-<pre><code class="language-python"># System has matroid structure if:
-# 1. Hereditary: Subset of feasible is feasible
-# 2. Exchange: Can always extend smaller feasible set
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># System has matroid structure if:</span>
+<span class="hljs-comment"># 1. Hereditary: Subset of feasible is feasible</span>
+<span class="hljs-comment"># 2. Exchange: Can always extend smaller feasible set</span>
 </code></pre>
 <h3 id="problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#problem-solving-steps"><span>Problem-Solving Steps</span></a></h3>
 <ol>
@@ -1712,13 +1828,13 @@ def stays_ahead_proof(greedy, other):
 </ul>
 <h3 id="proof-techniques" tabindex="-1"><a class="header-anchor" href="#proof-techniques"><span>Proof Techniques</span></a></h3>
 <h4 id="exchange-argument-example" tabindex="-1"><a class="header-anchor" href="#exchange-argument-example"><span><strong>Exchange Argument Example</strong></span></a></h4>
-<pre><code class="language-python"># Prove interval scheduling is optimal
-# If we swap any interval in greedy solution with another,
-# we either get same or fewer intervals
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Prove interval scheduling is optimal</span>
+<span class="hljs-comment"># If we swap any interval in greedy solution with another,</span>
+<span class="hljs-comment"># we either get same or fewer intervals</span>
 </code></pre>
 <h4 id="greedy-stays-ahead-example" tabindex="-1"><a class="header-anchor" href="#greedy-stays-ahead-example"><span><strong>Greedy Stays Ahead Example</strong></span></a></h4>
-<pre><code class="language-python"># Prove jump game solution is minimal
-# At each position, greedy reaches at least as far
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Prove jump game solution is minimal</span>
+<span class="hljs-comment"># At each position, greedy reaches at least as far</span>
 </code></pre>
 <h3 id="interview-tips" tabindex="-1"><a class="header-anchor" href="#interview-tips"><span>Interview Tips</span></a></h3>
 <ol>

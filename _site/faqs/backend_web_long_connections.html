@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,13 +20,24 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
     document.querySelectorAll('pre code').forEach(function(codeEl) {
       var pre = codeEl.parentElement;
       var lang = '';
       var cls = codeEl.className || '';
       var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
       if (m) lang = m[1];
+
+      // Add line numbers
+      var lines = codeEl.innerHTML.split('
+');
+      if (lines[lines.length - 1] === '') lines.pop();
+      var numbered = lines.map(function(line, i) {
+        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
+      }).join('
+');
+      codeEl.innerHTML = numbered;
+      codeEl.classList.add('hljs-ln');
+
       var wrapper = document.createElement('div');
       wrapper.className = 'code-block-wrapper';
       pre.parentNode.insertBefore(wrapper, pre);
@@ -45,7 +55,9 @@
       btn.className = 'copy-btn';
       btn.textContent = 'Copy';
       btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
+');
+        navigator.clipboard.writeText(text).then(function() {
           btn.textContent = 'Copied!';
           btn.classList.add('copied');
           setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
@@ -156,10 +168,10 @@
 <li>Reduces latency and overhead from repeatedly opening/closing connections.</li>
 </ul>
 <p><strong>Header example:</strong></p>
-<pre><code>Connection: keep-alive
+<pre><code class="hljs">Connection: keep-alive
 </code></pre>
 <p><strong>Flow:</strong></p>
-<pre><code>Client ──── request 1 ────▶ Server
+<pre><code class="hljs">Client ──── request 1 ────▶ Server
 Client ◀─── response 1 ─── Server
 Client ──── request 2 ────▶ Server   (same TCP connection)
 Client ◀─── response 2 ─── Server
@@ -172,7 +184,7 @@ Client ◀─── response 2 ─── Server
 <li>Rarely used today due to <strong>head-of-line blocking</strong> issues.</li>
 </ul>
 <p><strong>Flow:</strong></p>
-<pre><code>Client ──── request 1 ────▶
+<pre><code class="hljs">Client ──── request 1 ────▶
 Client ──── request 2 ────▶ Server
 Client ──── request 3 ────▶
 Client ◀─── response 1, 2, 3 (in order)
@@ -186,7 +198,7 @@ Client ◀─── response 1, 2, 3 (in order)
 <li>Common for near–real-time updates (older technique).</li>
 </ul>
 <p><strong>Flow:</strong></p>
-<pre><code>Client ──── request ─────────────────────▶ Server
+<pre><code class="hljs">Client ──── request ─────────────────────▶ Server
                                            (server waits for new data)
 Client ◀─── response (when data ready) ── Server
 Client ──── reconnect immediately ───────▶ Server
@@ -199,11 +211,11 @@ Client ──── reconnect immediately ───────▶ Server
 <li>Useful for logs, live feeds, progress updates.</li>
 </ul>
 <p><strong>Header:</strong></p>
-<pre><code>Transfer-Encoding: chunked
+<pre><code class="hljs">Transfer-Encoding: chunked
 </code></pre>
 <p><strong>Example (Node.js):</strong></p>
-<pre><code class="language-javascript">res.writeHead(200, { 'Transfer-Encoding': 'chunked' });
-setInterval(() =&gt; res.write('data chunk\n'), 1000);
+<pre data-lang="javascript"><code class="hljs language-javascript">res.<span class="hljs-title function_">writeHead</span>(<span class="hljs-number">200</span>, { <span class="hljs-string">&#x27;Transfer-Encoding&#x27;</span>: <span class="hljs-string">&#x27;chunked&#x27;</span> });
+<span class="hljs-built_in">setInterval</span>(<span class="hljs-function">() =&gt;</span> res.<span class="hljs-title function_">write</span>(<span class="hljs-string">&#x27;data chunk\n&#x27;</span>), <span class="hljs-number">1000</span>);
 </code></pre>
 <hr>
 <h2 id="5-server-sent-events-sse" tabindex="-1"><a class="header-anchor" href="#5-server-sent-events-sse"><span>5. Server-Sent Events (SSE)</span></a></h2>
@@ -214,16 +226,16 @@ setInterval(() =&gt; res.write('data chunk\n'), 1000);
 <li>Automatically reconnects on disconnect.</li>
 </ul>
 <p><strong>Header:</strong></p>
-<pre><code>Content-Type: text/event-stream
+<pre><code class="hljs">Content-Type: text/event-stream
 </code></pre>
 <p><strong>Server example (Node.js):</strong></p>
-<pre><code class="language-javascript">res.setHeader('Content-Type', 'text/event-stream');
-res.setHeader('Cache-Control', 'no-cache');
-setInterval(() =&gt; res.write(`data: ${JSON.stringify({ time: Date.now() })}\n\n`), 1000);
+<pre data-lang="javascript"><code class="hljs language-javascript">res.<span class="hljs-title function_">setHeader</span>(<span class="hljs-string">&#x27;Content-Type&#x27;</span>, <span class="hljs-string">&#x27;text/event-stream&#x27;</span>);
+res.<span class="hljs-title function_">setHeader</span>(<span class="hljs-string">&#x27;Cache-Control&#x27;</span>, <span class="hljs-string">&#x27;no-cache&#x27;</span>);
+<span class="hljs-built_in">setInterval</span>(<span class="hljs-function">() =&gt;</span> res.<span class="hljs-title function_">write</span>(<span class="hljs-string">`data: <span class="hljs-subst">${<span class="hljs-built_in">JSON</span>.stringify({ time: <span class="hljs-built_in">Date</span>.now() })}</span>\n\n`</span>), <span class="hljs-number">1000</span>);
 </code></pre>
 <p><strong>Client example:</strong></p>
-<pre><code class="language-javascript">const source = new EventSource('/events');
-source.onmessage = (e) =&gt; console.log(e.data);
+<pre data-lang="javascript"><code class="hljs language-javascript"><span class="hljs-keyword">const</span> source = <span class="hljs-keyword">new</span> <span class="hljs-title class_">EventSource</span>(<span class="hljs-string">&#x27;/events&#x27;</span>);
+source.<span class="hljs-property">onmessage</span> = <span class="hljs-function">(<span class="hljs-params">e</span>) =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(e.<span class="hljs-property">data</span>);
 </code></pre>
 <hr>
 <h2 id="6-websocket-upgrade-from-http" tabindex="-1"><a class="header-anchor" href="#6-websocket-upgrade-from-http"><span>6. WebSocket (Upgrade from HTTP)</span></a></h2>
@@ -233,20 +245,20 @@ source.onmessage = (e) =&gt; console.log(e.data);
 <li>Best for chat, gaming, live collaboration.</li>
 </ul>
 <p><strong>Upgrade headers:</strong></p>
-<pre><code>Upgrade: websocket
+<pre><code class="hljs">Upgrade: websocket
 Connection: Upgrade
 </code></pre>
 <p><strong>Server example (Node.js with <code>ws</code>):</strong></p>
-<pre><code class="language-javascript">const WebSocket = require('ws');
-const wss = new WebSocket.Server({ port: 8080 });
-wss.on('connection', (ws) =&gt; {
-  ws.on('message', (msg) =&gt; ws.send(`echo: ${msg}`));
+<pre data-lang="javascript"><code class="hljs language-javascript"><span class="hljs-keyword">const</span> <span class="hljs-title class_">WebSocket</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;ws&#x27;</span>);
+<span class="hljs-keyword">const</span> wss = <span class="hljs-keyword">new</span> <span class="hljs-title class_">WebSocket</span>.<span class="hljs-title class_">Server</span>({ <span class="hljs-attr">port</span>: <span class="hljs-number">8080</span> });
+wss.<span class="hljs-title function_">on</span>(<span class="hljs-string">&#x27;connection&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">ws</span>) =&gt;</span> {
+  ws.<span class="hljs-title function_">on</span>(<span class="hljs-string">&#x27;message&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">msg</span>) =&gt;</span> ws.<span class="hljs-title function_">send</span>(<span class="hljs-string">`echo: <span class="hljs-subst">${msg}</span>`</span>));
 });
 </code></pre>
 <p><strong>Client example:</strong></p>
-<pre><code class="language-javascript">const ws = new WebSocket('ws://localhost:8080');
-ws.onmessage = (e) =&gt; console.log(e.data);
-ws.send('hello');
+<pre data-lang="javascript"><code class="hljs language-javascript"><span class="hljs-keyword">const</span> ws = <span class="hljs-keyword">new</span> <span class="hljs-title class_">WebSocket</span>(<span class="hljs-string">&#x27;ws://localhost:8080&#x27;</span>);
+ws.<span class="hljs-property">onmessage</span> = <span class="hljs-function">(<span class="hljs-params">e</span>) =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(e.<span class="hljs-property">data</span>);
+ws.<span class="hljs-title function_">send</span>(<span class="hljs-string">&#x27;hello&#x27;</span>);
 </code></pre>
 <hr>
 <h2 id="7-http-2-multiplexing" tabindex="-1"><a class="header-anchor" href="#7-http-2-multiplexing"><span>7. HTTP/2 Multiplexing</span></a></h2>

@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,13 +20,24 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
     document.querySelectorAll('pre code').forEach(function(codeEl) {
       var pre = codeEl.parentElement;
       var lang = '';
       var cls = codeEl.className || '';
       var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
       if (m) lang = m[1];
+
+      // Add line numbers
+      var lines = codeEl.innerHTML.split('
+');
+      if (lines[lines.length - 1] === '') lines.pop();
+      var numbered = lines.map(function(line, i) {
+        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
+      }).join('
+');
+      codeEl.innerHTML = numbered;
+      codeEl.classList.add('hljs-ln');
+
       var wrapper = document.createElement('div');
       wrapper.className = 'code-block-wrapper';
       pre.parentNode.insertBefore(wrapper, pre);
@@ -45,7 +55,9 @@
       btn.className = 'copy-btn';
       btn.textContent = 'Copy';
       btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
+');
+        navigator.clipboard.writeText(text).then(function() {
           btn.textContent = 'Copied!';
           btn.classList.add('copied');
           setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
@@ -238,159 +250,159 @@
 </tbody>
 </table>
 <h3 id="universal-graph-template" tabindex="-1"><a class="header-anchor" href="#universal-graph-template"><span>Universal Graph Template</span></a></h3>
-<pre><code class="language-python">def graph_algorithm(n, edges):
-    # Build adjacency list
-    graph = collections.defaultdict(list)
-    for u, v in edges:
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">graph_algorithm</span>(<span class="hljs-params">n, edges</span>):
+    <span class="hljs-comment"># Build adjacency list</span>
+    graph = collections.defaultdict(<span class="hljs-built_in">list</span>)
+    <span class="hljs-keyword">for</span> u, v <span class="hljs-keyword">in</span> edges:
         graph[u].append(v)
-        graph[v].append(u)  # For undirected
+        graph[v].append(u)  <span class="hljs-comment"># For undirected</span>
     
-    # Track visited nodes
-    visited = set()
+    <span class="hljs-comment"># Track visited nodes</span>
+    visited = <span class="hljs-built_in">set</span>()
     
-    # Process each component
-    result = 0
-    for node in range(n):
-        if node not in visited:
-            # Process component
+    <span class="hljs-comment"># Process each component</span>
+    result = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> node <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+        <span class="hljs-keyword">if</span> node <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> visited:
+            <span class="hljs-comment"># Process component</span>
             process_component(node, graph, visited)
-            result += 1
+            result += <span class="hljs-number">1</span>
     
-    return result
+    <span class="hljs-keyword">return</span> result
 </code></pre>
 <h3 id="template-1-bfs-traversal" tabindex="-1"><a class="header-anchor" href="#template-1-bfs-traversal"><span>Template 1: BFS Traversal</span></a></h3>
-<pre><code class="language-python">def bfs_template(graph, start):
-    &quot;&quot;&quot;Breadth-first search template&quot;&quot;&quot;
-    from collections import deque
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bfs_template</span>(<span class="hljs-params">graph, start</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Breadth-first search template&quot;&quot;&quot;</span>
+    <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
     
-    visited = set([start])
+    visited = <span class="hljs-built_in">set</span>([start])
     queue = deque([start])
-    level = 0
+    level = <span class="hljs-number">0</span>
     
-    while queue:
-        # Process level by level
-        size = len(queue)
-        for _ in range(size):
+    <span class="hljs-keyword">while</span> queue:
+        <span class="hljs-comment"># Process level by level</span>
+        size = <span class="hljs-built_in">len</span>(queue)
+        <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(size):
             node = queue.popleft()
             
-            # Process node
-            for neighbor in graph[node]:
-                if neighbor not in visited:
+            <span class="hljs-comment"># Process node</span>
+            <span class="hljs-keyword">for</span> neighbor <span class="hljs-keyword">in</span> graph[node]:
+                <span class="hljs-keyword">if</span> neighbor <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> visited:
                     visited.add(neighbor)
                     queue.append(neighbor)
-        level += 1
+        level += <span class="hljs-number">1</span>
     
-    return level
+    <span class="hljs-keyword">return</span> level
 </code></pre>
 <h3 id="template-2-dfs-traversal" tabindex="-1"><a class="header-anchor" href="#template-2-dfs-traversal"><span>Template 2: DFS Traversal</span></a></h3>
-<pre><code class="language-python">def dfs_template(graph, start):
-    &quot;&quot;&quot;Depth-first search template&quot;&quot;&quot;
-    visited = set()
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs_template</span>(<span class="hljs-params">graph, start</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Depth-first search template&quot;&quot;&quot;</span>
+    visited = <span class="hljs-built_in">set</span>()
     path = []
     
-    def dfs(node):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">node</span>):
         visited.add(node)
         path.append(node)
         
-        for neighbor in graph[node]:
-            if neighbor not in visited:
+        <span class="hljs-keyword">for</span> neighbor <span class="hljs-keyword">in</span> graph[node]:
+            <span class="hljs-keyword">if</span> neighbor <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> visited:
                 dfs(neighbor)
         
-        # Backtrack if needed
-        # path.pop()
+        <span class="hljs-comment"># Backtrack if needed</span>
+        <span class="hljs-comment"># path.pop()</span>
     
     dfs(start)
-    return visited
+    <span class="hljs-keyword">return</span> visited
 </code></pre>
 <h3 id="template-3-union-find-dsu" tabindex="-1"><a class="header-anchor" href="#template-3-union-find-dsu"><span>Template 3: Union-Find (DSU)</span></a></h3>
-<pre><code class="language-python">class UnionFind:
-    def __init__(self, n):
-        self.parent = list(range(n))
-        self.rank = [0] * n
-        self.count = n
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">UnionFind</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, n</span>):
+        <span class="hljs-variable language_">self</span>.parent = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">range</span>(n))
+        <span class="hljs-variable language_">self</span>.rank = [<span class="hljs-number">0</span>] * n
+        <span class="hljs-variable language_">self</span>.count = n
     
-    def find(self, x):
-        &quot;&quot;&quot;Find with path compression&quot;&quot;&quot;
-        if self.parent[x] != x:
-            self.parent[x] = self.find(self.parent[x])
-        return self.parent[x]
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">find</span>(<span class="hljs-params">self, x</span>):
+        <span class="hljs-string">&quot;&quot;&quot;Find with path compression&quot;&quot;&quot;</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.parent[x] != x:
+            <span class="hljs-variable language_">self</span>.parent[x] = <span class="hljs-variable language_">self</span>.find(<span class="hljs-variable language_">self</span>.parent[x])
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.parent[x]
     
-    def union(self, x, y):
-        &quot;&quot;&quot;Union by rank&quot;&quot;&quot;
-        px, py = self.find(x), self.find(y)
-        if px == py:
-            return False
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">union</span>(<span class="hljs-params">self, x, y</span>):
+        <span class="hljs-string">&quot;&quot;&quot;Union by rank&quot;&quot;&quot;</span>
+        px, py = <span class="hljs-variable language_">self</span>.find(x), <span class="hljs-variable language_">self</span>.find(y)
+        <span class="hljs-keyword">if</span> px == py:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
         
-        if self.rank[px] &lt; self.rank[py]:
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.rank[px] &lt; <span class="hljs-variable language_">self</span>.rank[py]:
             px, py = py, px
-        self.parent[py] = px
-        if self.rank[px] == self.rank[py]:
-            self.rank[px] += 1
+        <span class="hljs-variable language_">self</span>.parent[py] = px
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.rank[px] == <span class="hljs-variable language_">self</span>.rank[py]:
+            <span class="hljs-variable language_">self</span>.rank[px] += <span class="hljs-number">1</span>
         
-        self.count -= 1
-        return True
+        <span class="hljs-variable language_">self</span>.count -= <span class="hljs-number">1</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
     
-    def connected(self, x, y):
-        return self.find(x) == self.find(y)
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">connected</span>(<span class="hljs-params">self, x, y</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.find(x) == <span class="hljs-variable language_">self</span>.find(y)
 </code></pre>
 <h3 id="template-4-topological-sort-dfs" tabindex="-1"><a class="header-anchor" href="#template-4-topological-sort-dfs"><span>Template 4: Topological Sort (DFS)</span></a></h3>
-<pre><code class="language-python">def topological_sort_dfs(n, edges):
-    &quot;&quot;&quot;Topological sort using DFS&quot;&quot;&quot;
-    graph = collections.defaultdict(list)
-    for u, v in edges:
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">topological_sort_dfs</span>(<span class="hljs-params">n, edges</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Topological sort using DFS&quot;&quot;&quot;</span>
+    graph = collections.defaultdict(<span class="hljs-built_in">list</span>)
+    <span class="hljs-keyword">for</span> u, v <span class="hljs-keyword">in</span> edges:
         graph[u].append(v)
     
-    # 0: unvisited, 1: visiting, 2: visited
-    state = [0] * n
+    <span class="hljs-comment"># 0: unvisited, 1: visiting, 2: visited</span>
+    state = [<span class="hljs-number">0</span>] * n
     result = []
     
-    def dfs(node):
-        if state[node] == 1:  # Cycle detected
-            return False
-        if state[node] == 2:  # Already processed
-            return True
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">node</span>):
+        <span class="hljs-keyword">if</span> state[node] == <span class="hljs-number">1</span>:  <span class="hljs-comment"># Cycle detected</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        <span class="hljs-keyword">if</span> state[node] == <span class="hljs-number">2</span>:  <span class="hljs-comment"># Already processed</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
         
-        state[node] = 1  # Mark as visiting
-        for neighbor in graph[node]:
-            if not dfs(neighbor):
-                return False
+        state[node] = <span class="hljs-number">1</span>  <span class="hljs-comment"># Mark as visiting</span>
+        <span class="hljs-keyword">for</span> neighbor <span class="hljs-keyword">in</span> graph[node]:
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> dfs(neighbor):
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
         
-        state[node] = 2  # Mark as visited
+        state[node] = <span class="hljs-number">2</span>  <span class="hljs-comment"># Mark as visited</span>
         result.append(node)
-        return True
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
     
-    for i in range(n):
-        if state[i] == 0:
-            if not dfs(i):
-                return []  # Cycle exists
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+        <span class="hljs-keyword">if</span> state[i] == <span class="hljs-number">0</span>:
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> dfs(i):
+                <span class="hljs-keyword">return</span> []  <span class="hljs-comment"># Cycle exists</span>
     
-    return result[::-1]
+    <span class="hljs-keyword">return</span> result[::-<span class="hljs-number">1</span>]
 </code></pre>
 <h3 id="template-5-topological-sort-bfs-kahn-s" tabindex="-1"><a class="header-anchor" href="#template-5-topological-sort-bfs-kahn-s"><span>Template 5: Topological Sort (BFS/Kahn’s)</span></a></h3>
-<pre><code class="language-python">def topological_sort_bfs(n, edges):
-    &quot;&quot;&quot;Kahn's algorithm for topological sort&quot;&quot;&quot;
-    from collections import deque
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">topological_sort_bfs</span>(<span class="hljs-params">n, edges</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Kahn&#x27;s algorithm for topological sort&quot;&quot;&quot;</span>
+    <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
     
-    graph = collections.defaultdict(list)
-    indegree = [0] * n
+    graph = collections.defaultdict(<span class="hljs-built_in">list</span>)
+    indegree = [<span class="hljs-number">0</span>] * n
     
-    for u, v in edges:
+    <span class="hljs-keyword">for</span> u, v <span class="hljs-keyword">in</span> edges:
         graph[u].append(v)
-        indegree[v] += 1
+        indegree[v] += <span class="hljs-number">1</span>
     
-    queue = deque([i for i in range(n) if indegree[i] == 0])
+    queue = deque([i <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n) <span class="hljs-keyword">if</span> indegree[i] == <span class="hljs-number">0</span>])
     result = []
     
-    while queue:
+    <span class="hljs-keyword">while</span> queue:
         node = queue.popleft()
         result.append(node)
         
-        for neighbor in graph[node]:
-            indegree[neighbor] -= 1
-            if indegree[neighbor] == 0:
+        <span class="hljs-keyword">for</span> neighbor <span class="hljs-keyword">in</span> graph[node]:
+            indegree[neighbor] -= <span class="hljs-number">1</span>
+            <span class="hljs-keyword">if</span> indegree[neighbor] == <span class="hljs-number">0</span>:
                 queue.append(neighbor)
     
-    return result if len(result) == n else []
+    <span class="hljs-keyword">return</span> result <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(result) == n <span class="hljs-keyword">else</span> []
 </code></pre>
 <h3 id="template-6-bipartite-graph-checking" tabindex="-1"><a class="header-anchor" href="#template-6-bipartite-graph-checking"><span>Template 6: Bipartite Graph Checking</span></a></h3>
 <p><strong>Definition</strong>: A graph is bipartite if its vertices can be colored using only two colors such that no two adjacent vertices have the same color. Equivalent to checking if the graph has no odd-length cycles.</p>
@@ -412,278 +424,278 @@
 <li>Can be solved using BFS or DFS with 2-coloring</li>
 </ul>
 <h4 id="approach-1-bfs-with-coloring" tabindex="-1"><a class="header-anchor" href="#approach-1-bfs-with-coloring"><span><strong>Approach 1: BFS with Coloring</strong></span></a></h4>
-<pre><code class="language-python">def is_bipartite_bfs(graph):
-    &quot;&quot;&quot;Check if graph is bipartite using BFS&quot;&quot;&quot;
-    from collections import deque
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">is_bipartite_bfs</span>(<span class="hljs-params">graph</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Check if graph is bipartite using BFS&quot;&quot;&quot;</span>
+    <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
 
-    n = len(graph)
-    colors = [-1] * n  # -1: uncolored, 0: color A, 1: color B
+    n = <span class="hljs-built_in">len</span>(graph)
+    colors = [-<span class="hljs-number">1</span>] * n  <span class="hljs-comment"># -1: uncolored, 0: color A, 1: color B</span>
 
-    # Handle disconnected components
-    for start in range(n):
-        if colors[start] != -1:
-            continue
+    <span class="hljs-comment"># Handle disconnected components</span>
+    <span class="hljs-keyword">for</span> start <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+        <span class="hljs-keyword">if</span> colors[start] != -<span class="hljs-number">1</span>:
+            <span class="hljs-keyword">continue</span>
 
-        # BFS coloring
+        <span class="hljs-comment"># BFS coloring</span>
         queue = deque([start])
-        colors[start] = 0
+        colors[start] = <span class="hljs-number">0</span>
 
-        while queue:
+        <span class="hljs-keyword">while</span> queue:
             node = queue.popleft()
 
-            for neighbor in graph[node]:
-                if colors[neighbor] == -1:
-                    # Color with opposite color
-                    colors[neighbor] = 1 - colors[node]
+            <span class="hljs-keyword">for</span> neighbor <span class="hljs-keyword">in</span> graph[node]:
+                <span class="hljs-keyword">if</span> colors[neighbor] == -<span class="hljs-number">1</span>:
+                    <span class="hljs-comment"># Color with opposite color</span>
+                    colors[neighbor] = <span class="hljs-number">1</span> - colors[node]
                     queue.append(neighbor)
-                elif colors[neighbor] == colors[node]:
-                    # Same color conflict - not bipartite
-                    return False
+                <span class="hljs-keyword">elif</span> colors[neighbor] == colors[node]:
+                    <span class="hljs-comment"># Same color conflict - not bipartite</span>
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 
-    return True
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 </code></pre>
 <h4 id="approach-2-dfs-with-coloring" tabindex="-1"><a class="header-anchor" href="#approach-2-dfs-with-coloring"><span><strong>Approach 2: DFS with Coloring</strong></span></a></h4>
-<pre><code class="language-python">def is_bipartite_dfs(graph):
-    &quot;&quot;&quot;Check if graph is bipartite using DFS&quot;&quot;&quot;
-    n = len(graph)
-    colors = [-1] * n
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">is_bipartite_dfs</span>(<span class="hljs-params">graph</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Check if graph is bipartite using DFS&quot;&quot;&quot;</span>
+    n = <span class="hljs-built_in">len</span>(graph)
+    colors = [-<span class="hljs-number">1</span>] * n
 
-    def dfs(node, color):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">node, color</span>):
         colors[node] = color
 
-        for neighbor in graph[node]:
-            if colors[neighbor] == -1:
-                # Recursively color with opposite color
-                if not dfs(neighbor, 1 - color):
-                    return False
-            elif colors[neighbor] == colors[node]:
-                # Same color conflict
-                return False
+        <span class="hljs-keyword">for</span> neighbor <span class="hljs-keyword">in</span> graph[node]:
+            <span class="hljs-keyword">if</span> colors[neighbor] == -<span class="hljs-number">1</span>:
+                <span class="hljs-comment"># Recursively color with opposite color</span>
+                <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> dfs(neighbor, <span class="hljs-number">1</span> - color):
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+            <span class="hljs-keyword">elif</span> colors[neighbor] == colors[node]:
+                <span class="hljs-comment"># Same color conflict</span>
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 
-        return True
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 
-    # Check each component
-    for i in range(n):
-        if colors[i] == -1:
-            if not dfs(i, 0):
-                return False
+    <span class="hljs-comment"># Check each component</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+        <span class="hljs-keyword">if</span> colors[i] == -<span class="hljs-number">1</span>:
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> dfs(i, <span class="hljs-number">0</span>):
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 
-    return True
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 </code></pre>
 <h4 id="approach-3-union-find-advanced" tabindex="-1"><a class="header-anchor" href="#approach-3-union-find-advanced"><span><strong>Approach 3: Union-Find (Advanced)</strong></span></a></h4>
-<pre><code class="language-python">def is_bipartite_union_find(n, edges):
-    &quot;&quot;&quot;Check bipartite using Union-Find for conflict detection&quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">is_bipartite_union_find</span>(<span class="hljs-params">n, edges</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Check bipartite using Union-Find for conflict detection&quot;&quot;&quot;</span>
 
-    class UnionFind:
-        def __init__(self, n):
-            self.parent = list(range(2 * n))  # 2n for opposite groups
+    <span class="hljs-keyword">class</span> <span class="hljs-title class_">UnionFind</span>:
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, n</span>):
+            <span class="hljs-variable language_">self</span>.parent = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">range</span>(<span class="hljs-number">2</span> * n))  <span class="hljs-comment"># 2n for opposite groups</span>
 
-        def find(self, x):
-            if self.parent[x] != x:
-                self.parent[x] = self.find(self.parent[x])
-            return self.parent[x]
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">find</span>(<span class="hljs-params">self, x</span>):
+            <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.parent[x] != x:
+                <span class="hljs-variable language_">self</span>.parent[x] = <span class="hljs-variable language_">self</span>.find(<span class="hljs-variable language_">self</span>.parent[x])
+            <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.parent[x]
 
-        def union(self, x, y):
-            px, py = self.find(x), self.find(y)
-            if px != py:
-                self.parent[px] = py
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">union</span>(<span class="hljs-params">self, x, y</span>):
+            px, py = <span class="hljs-variable language_">self</span>.find(x), <span class="hljs-variable language_">self</span>.find(y)
+            <span class="hljs-keyword">if</span> px != py:
+                <span class="hljs-variable language_">self</span>.parent[px] = py
 
-        def connected(self, x, y):
-            return self.find(x) == self.find(y)
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">connected</span>(<span class="hljs-params">self, x, y</span>):
+            <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.find(x) == <span class="hljs-variable language_">self</span>.find(y)
 
     uf = UnionFind(n)
 
-    # For each edge (u,v), union u with opposite of v, and v with opposite of u
-    for u, v in edges:
-        if uf.connected(u, v):  # Same group conflict
-            return False
+    <span class="hljs-comment"># For each edge (u,v), union u with opposite of v, and v with opposite of u</span>
+    <span class="hljs-keyword">for</span> u, v <span class="hljs-keyword">in</span> edges:
+        <span class="hljs-keyword">if</span> uf.connected(u, v):  <span class="hljs-comment"># Same group conflict</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 
-        # u should be in opposite group of v
-        uf.union(u, v + n)  # u with opposite of v
-        uf.union(v, u + n)  # v with opposite of u
+        <span class="hljs-comment"># u should be in opposite group of v</span>
+        uf.union(u, v + n)  <span class="hljs-comment"># u with opposite of v</span>
+        uf.union(v, u + n)  <span class="hljs-comment"># v with opposite of u</span>
 
-    return True
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 </code></pre>
 <h4 id="grid-based-bipartite-check" tabindex="-1"><a class="header-anchor" href="#grid-based-bipartite-check"><span><strong>Grid-based Bipartite Check</strong></span></a></h4>
-<pre><code class="language-python">def is_bipartite_grid(grid):
-    &quot;&quot;&quot;Check if grid graph is bipartite (checkerboard pattern)&quot;&quot;&quot;
-    rows, cols = len(grid), len(grid[0])
-    colors = [[-1] * cols for _ in range(rows)]
-    directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">is_bipartite_grid</span>(<span class="hljs-params">grid</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Check if grid graph is bipartite (checkerboard pattern)&quot;&quot;&quot;</span>
+    rows, cols = <span class="hljs-built_in">len</span>(grid), <span class="hljs-built_in">len</span>(grid[<span class="hljs-number">0</span>])
+    colors = [[-<span class="hljs-number">1</span>] * cols <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(rows)]
+    directions = [(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>), (<span class="hljs-number">1</span>, <span class="hljs-number">0</span>), (<span class="hljs-number">0</span>, -<span class="hljs-number">1</span>), (-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>)]
 
-    def bfs(start_r, start_c):
-        from collections import deque
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">bfs</span>(<span class="hljs-params">start_r, start_c</span>):
+        <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque
         queue = deque([(start_r, start_c)])
-        colors[start_r][start_c] = 0
+        colors[start_r][start_c] = <span class="hljs-number">0</span>
 
-        while queue:
+        <span class="hljs-keyword">while</span> queue:
             r, c = queue.popleft()
 
-            for dr, dc in directions:
+            <span class="hljs-keyword">for</span> dr, dc <span class="hljs-keyword">in</span> directions:
                 nr, nc = r + dr, c + dc
 
-                if 0 &lt;= nr &lt; rows and 0 &lt;= nc &lt; cols and grid[nr][nc] == 1:
-                    if colors[nr][nc] == -1:
-                        colors[nr][nc] = 1 - colors[r][c]
+                <span class="hljs-keyword">if</span> <span class="hljs-number">0</span> &lt;= nr &lt; rows <span class="hljs-keyword">and</span> <span class="hljs-number">0</span> &lt;= nc &lt; cols <span class="hljs-keyword">and</span> grid[nr][nc] == <span class="hljs-number">1</span>:
+                    <span class="hljs-keyword">if</span> colors[nr][nc] == -<span class="hljs-number">1</span>:
+                        colors[nr][nc] = <span class="hljs-number">1</span> - colors[r][c]
                         queue.append((nr, nc))
-                    elif colors[nr][nc] == colors[r][c]:
-                        return False
-        return True
+                    <span class="hljs-keyword">elif</span> colors[nr][nc] == colors[r][c]:
+                        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 
-    # Check each component
-    for i in range(rows):
-        for j in range(cols):
-            if grid[i][j] == 1 and colors[i][j] == -1:
-                if not bfs(i, j):
-                    return False
+    <span class="hljs-comment"># Check each component</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(rows):
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(cols):
+            <span class="hljs-keyword">if</span> grid[i][j] == <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> colors[i][j] == -<span class="hljs-number">1</span>:
+                <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> bfs(i, j):
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 
-    return True
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 </code></pre>
 <h4 id="enhanced-template-with-partition-information" tabindex="-1"><a class="header-anchor" href="#enhanced-template-with-partition-information"><span><strong>Enhanced Template with Partition Information</strong></span></a></h4>
-<pre><code class="language-python">def bipartite_partition(graph):
-    &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bipartite_partition</span>(<span class="hljs-params">graph</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
     Returns bipartite partition if exists, None otherwise
     Returns: (setA, setB) or None
-    &quot;&quot;&quot;
-    n = len(graph)
-    colors = [-1] * n
+    &quot;&quot;&quot;</span>
+    n = <span class="hljs-built_in">len</span>(graph)
+    colors = [-<span class="hljs-number">1</span>] * n
 
-    def dfs(node, color):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">node, color</span>):
         colors[node] = color
 
-        for neighbor in graph[node]:
-            if colors[neighbor] == -1:
-                if not dfs(neighbor, 1 - color):
-                    return False
-            elif colors[neighbor] == colors[node]:
-                return False
-        return True
+        <span class="hljs-keyword">for</span> neighbor <span class="hljs-keyword">in</span> graph[node]:
+            <span class="hljs-keyword">if</span> colors[neighbor] == -<span class="hljs-number">1</span>:
+                <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> dfs(neighbor, <span class="hljs-number">1</span> - color):
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+            <span class="hljs-keyword">elif</span> colors[neighbor] == colors[node]:
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 
-    # Check bipartite property
-    for i in range(n):
-        if colors[i] == -1:
-            if not dfs(i, 0):
-                return None
+    <span class="hljs-comment"># Check bipartite property</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+        <span class="hljs-keyword">if</span> colors[i] == -<span class="hljs-number">1</span>:
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> dfs(i, <span class="hljs-number">0</span>):
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
 
-    # Create partition sets
-    setA = [i for i in range(n) if colors[i] == 0]
-    setB = [i for i in range(n) if colors[i] == 1]
+    <span class="hljs-comment"># Create partition sets</span>
+    setA = [i <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n) <span class="hljs-keyword">if</span> colors[i] == <span class="hljs-number">0</span>]
+    setB = [i <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n) <span class="hljs-keyword">if</span> colors[i] == <span class="hljs-number">1</span>]
 
-    return setA, setB
+    <span class="hljs-keyword">return</span> setA, setB
 </code></pre>
 <h4 id="related-problems-examples" tabindex="-1"><a class="header-anchor" href="#related-problems-examples"><span><strong>Related Problems &amp; Examples</strong></span></a></h4>
 <p><strong>LC 785: Is Graph Bipartite</strong></p>
-<pre><code class="language-python">def isBipartite(self, graph):
-    &quot;&quot;&quot;LC 785 - Standard bipartite check&quot;&quot;&quot;
-    n = len(graph)
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">isBipartite</span>(<span class="hljs-params">self, graph</span>):
+    <span class="hljs-string">&quot;&quot;&quot;LC 785 - Standard bipartite check&quot;&quot;&quot;</span>
+    n = <span class="hljs-built_in">len</span>(graph)
     colors = {}
 
-    def dfs(node, color):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">node, color</span>):
         colors[node] = color
-        for neighbor in graph[node]:
-            if neighbor in colors:
-                if colors[neighbor] == colors[node]:
-                    return False
-            else:
-                if not dfs(neighbor, 1 - color):
-                    return False
-        return True
+        <span class="hljs-keyword">for</span> neighbor <span class="hljs-keyword">in</span> graph[node]:
+            <span class="hljs-keyword">if</span> neighbor <span class="hljs-keyword">in</span> colors:
+                <span class="hljs-keyword">if</span> colors[neighbor] == colors[node]:
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+            <span class="hljs-keyword">else</span>:
+                <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> dfs(neighbor, <span class="hljs-number">1</span> - color):
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 
-    for i in range(n):
-        if i not in colors:
-            if not dfs(i, 0):
-                return False
-    return True
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+        <span class="hljs-keyword">if</span> i <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> colors:
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> dfs(i, <span class="hljs-number">0</span>):
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 </code></pre>
 <p><strong>LC 886: Possible Bipartition</strong></p>
-<pre><code class="language-python">def possibleBipartition(self, n, dislikes):
-    &quot;&quot;&quot;LC 886 - Build graph from dislike relationships&quot;&quot;&quot;
-    from collections import defaultdict
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">possibleBipartition</span>(<span class="hljs-params">self, n, dislikes</span>):
+    <span class="hljs-string">&quot;&quot;&quot;LC 886 - Build graph from dislike relationships&quot;&quot;&quot;</span>
+    <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
 
-    # Build adjacency list from dislikes
-    graph = defaultdict(list)
-    for u, v in dislikes:
+    <span class="hljs-comment"># Build adjacency list from dislikes</span>
+    graph = defaultdict(<span class="hljs-built_in">list</span>)
+    <span class="hljs-keyword">for</span> u, v <span class="hljs-keyword">in</span> dislikes:
         graph[u].append(v)
         graph[v].append(u)
 
     colors = {}
 
-    def dfs(node, color):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">node, color</span>):
         colors[node] = color
-        for neighbor in graph[node]:
-            if neighbor in colors:
-                if colors[neighbor] == colors[node]:
-                    return False
-            else:
-                if not dfs(neighbor, 1 - color):
-                    return False
-        return True
+        <span class="hljs-keyword">for</span> neighbor <span class="hljs-keyword">in</span> graph[node]:
+            <span class="hljs-keyword">if</span> neighbor <span class="hljs-keyword">in</span> colors:
+                <span class="hljs-keyword">if</span> colors[neighbor] == colors[node]:
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+            <span class="hljs-keyword">else</span>:
+                <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> dfs(neighbor, <span class="hljs-number">1</span> - color):
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 
-    for i in range(1, n + 1):
-        if i not in colors:
-            if not dfs(i, 0):
-                return False
-    return True
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n + <span class="hljs-number">1</span>):
+        <span class="hljs-keyword">if</span> i <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> colors:
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> dfs(i, <span class="hljs-number">0</span>):
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 </code></pre>
 <h4 id="applications-variations" tabindex="-1"><a class="header-anchor" href="#applications-variations"><span><strong>Applications &amp; Variations</strong></span></a></h4>
 <p><strong>1. Maximum Bipartite Matching</strong></p>
-<pre><code class="language-python">def max_bipartite_matching(graph, n, m):
-    &quot;&quot;&quot;Find maximum matching in bipartite graph&quot;&quot;&quot;
-    match = [-1] * m
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">max_bipartite_matching</span>(<span class="hljs-params">graph, n, m</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Find maximum matching in bipartite graph&quot;&quot;&quot;</span>
+    <span class="hljs-keyword">match</span> = [-<span class="hljs-number">1</span>] * m
 
-    def dfs(u, visited):
-        for v in graph[u]:
-            if not visited[v]:
-                visited[v] = True
-                if match[v] == -1 or dfs(match[v], visited):
-                    match[v] = u
-                    return True
-        return False
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">u, visited</span>):
+        <span class="hljs-keyword">for</span> v <span class="hljs-keyword">in</span> graph[u]:
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> visited[v]:
+                visited[v] = <span class="hljs-literal">True</span>
+                <span class="hljs-keyword">if</span> <span class="hljs-keyword">match</span>[v] == -<span class="hljs-number">1</span> <span class="hljs-keyword">or</span> dfs(<span class="hljs-keyword">match</span>[v], visited):
+                    <span class="hljs-keyword">match</span>[v] = u
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 
-    result = 0
-    for u in range(n):
-        visited = [False] * m
-        if dfs(u, visited):
-            result += 1
+    result = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> u <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+        visited = [<span class="hljs-literal">False</span>] * m
+        <span class="hljs-keyword">if</span> dfs(u, visited):
+            result += <span class="hljs-number">1</span>
 
-    return result
+    <span class="hljs-keyword">return</span> result
 </code></pre>
 <p><strong>2. Bipartite Graph Validation with Custom Logic</strong></p>
-<pre><code class="language-python">def validate_bipartite_assignment(assignments, conflicts):
-    &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">validate_bipartite_assignment</span>(<span class="hljs-params">assignments, conflicts</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
     Validate if assignment is bipartite given conflict pairs
     assignments: list of items to assign
     conflicts: list of (item1, item2) that cannot be in same group
-    &quot;&quot;&quot;
-    from collections import defaultdict
+    &quot;&quot;&quot;</span>
+    <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
 
-    graph = defaultdict(list)
-    for u, v in conflicts:
+    graph = defaultdict(<span class="hljs-built_in">list</span>)
+    <span class="hljs-keyword">for</span> u, v <span class="hljs-keyword">in</span> conflicts:
         graph[u].append(v)
         graph[v].append(u)
 
     colors = {}
 
-    def can_color(item, color):
-        if item in colors:
-            return colors[item] == color
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">can_color</span>(<span class="hljs-params">item, color</span>):
+        <span class="hljs-keyword">if</span> item <span class="hljs-keyword">in</span> colors:
+            <span class="hljs-keyword">return</span> colors[item] == color
 
         colors[item] = color
-        for conflict_item in graph[item]:
-            if not can_color(conflict_item, 1 - color):
-                return False
-        return True
+        <span class="hljs-keyword">for</span> conflict_item <span class="hljs-keyword">in</span> graph[item]:
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> can_color(conflict_item, <span class="hljs-number">1</span> - color):
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 
-    for item in assignments:
-        if item not in colors:
-            if not can_color(item, 0):
-                return False, {}
+    <span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> assignments:
+        <span class="hljs-keyword">if</span> item <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> colors:
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> can_color(item, <span class="hljs-number">0</span>):
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>, {}
 
-    # Return partition
-    group_a = [item for item, color in colors.items() if color == 0]
-    group_b = [item for item, color in colors.items() if color == 1]
+    <span class="hljs-comment"># Return partition</span>
+    group_a = [item <span class="hljs-keyword">for</span> item, color <span class="hljs-keyword">in</span> colors.items() <span class="hljs-keyword">if</span> color == <span class="hljs-number">0</span>]
+    group_b = [item <span class="hljs-keyword">for</span> item, color <span class="hljs-keyword">in</span> colors.items() <span class="hljs-keyword">if</span> color == <span class="hljs-number">1</span>]
 
-    return True, {&quot;Group A&quot;: group_a, &quot;Group B&quot;: group_b}
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>, {<span class="hljs-string">&quot;Group A&quot;</span>: group_a, <span class="hljs-string">&quot;Group B&quot;</span>: group_b}
 </code></pre>
 <h4 id="performance-comparison" tabindex="-1"><a class="header-anchor" href="#performance-comparison"><span><strong>Performance Comparison</strong></span></a></h4>
 <table>
@@ -841,16 +853,16 @@ Bellman-Ford finds shortest paths from a single source to all vertices, even wit
 </li>
 </ol>
 <p><strong>Why V-1 Iterations?</strong></p>
-<pre><code>In a graph with V vertices, the shortest path between any two vertices
+<pre><code class="hljs">In a graph with V vertices, the shortest path between any two vertices
 contains at most V-1 edges (no cycles).
 
 After k iterations, we have the shortest path using at most k edges.
 After V-1 iterations, we have the shortest paths for all pairs.
 </code></pre>
 <h5 id="python-implementation" tabindex="-1"><a class="header-anchor" href="#python-implementation"><span>Python Implementation</span></a></h5>
-<pre><code class="language-python"># Bellman-Ford Algorithm
-def bellman_ford(n, edges, source):
-    &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Bellman-Ford Algorithm</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">bellman_ford</span>(<span class="hljs-params">n, edges, source</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
     Find shortest paths from source to all vertices.
     Can handle negative weights and detect negative cycles.
 
@@ -864,86 +876,86 @@ def bellman_ford(n, edges, source):
 
     Time: O(V⋅E)
     Space: O(V)
-    &quot;&quot;&quot;
-    # Initialize distances
-    dist = [float('inf')] * n
-    dist[source] = 0
+    &quot;&quot;&quot;</span>
+    <span class="hljs-comment"># Initialize distances</span>
+    dist = [<span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)] * n
+    dist[source] = <span class="hljs-number">0</span>
 
-    # Relax all edges V-1 times
-    for _ in range(n - 1):
-        updated = False
-        for u, v, weight in edges:
-            if dist[u] != float('inf') and dist[u] + weight &lt; dist[v]:
+    <span class="hljs-comment"># Relax all edges V-1 times</span>
+    <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n - <span class="hljs-number">1</span>):
+        updated = <span class="hljs-literal">False</span>
+        <span class="hljs-keyword">for</span> u, v, weight <span class="hljs-keyword">in</span> edges:
+            <span class="hljs-keyword">if</span> dist[u] != <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>) <span class="hljs-keyword">and</span> dist[u] + weight &lt; dist[v]:
                 dist[v] = dist[u] + weight
-                updated = True
+                updated = <span class="hljs-literal">True</span>
 
-        # Early termination if no updates
-        if not updated:
-            break
+        <span class="hljs-comment"># Early termination if no updates</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> updated:
+            <span class="hljs-keyword">break</span>
 
-    # Check for negative cycles
-    for u, v, weight in edges:
-        if dist[u] != float('inf') and dist[u] + weight &lt; dist[v]:
-            return None  # Negative cycle detected
+    <span class="hljs-comment"># Check for negative cycles</span>
+    <span class="hljs-keyword">for</span> u, v, weight <span class="hljs-keyword">in</span> edges:
+        <span class="hljs-keyword">if</span> dist[u] != <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>) <span class="hljs-keyword">and</span> dist[u] + weight &lt; dist[v]:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>  <span class="hljs-comment"># Negative cycle detected</span>
 
-    return dist
+    <span class="hljs-keyword">return</span> dist
 
-# Example usage:
-# edges = [(0, 1, 4), (0, 2, 5), (1, 2, -3), (2, 3, 4)]
-# result = bellman_ford(4, edges, 0)
-# Output: [0, 4, 1, 5] (shortest distances from vertex 0)
+<span class="hljs-comment"># Example usage:</span>
+<span class="hljs-comment"># edges = [(0, 1, 4), (0, 2, 5), (1, 2, -3), (2, 3, 4)]</span>
+<span class="hljs-comment"># result = bellman_ford(4, edges, 0)</span>
+<span class="hljs-comment"># Output: [0, 4, 1, 5] (shortest distances from vertex 0)</span>
 </code></pre>
 <h5 id="java-implementation" tabindex="-1"><a class="header-anchor" href="#java-implementation"><span>Java Implementation</span></a></h5>
-<pre><code class="language-java">// Bellman-Ford Algorithm
-/**
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Bellman-Ford Algorithm</span>
+<span class="hljs-comment">/**
  * LC 787 - Cheapest Flights Within K Stops (Bellman-Ford variant)
  *
  * time = O(V⋅E) or O(K⋅E) for K iterations
  * space = O(V)
- */
-class Solution {
-    public int[] bellmanFord(int n, int[][] edges, int src) {
-        // Initialize distances
-        int[] dist = new int[n];
+ */</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] bellmanFord(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span>[][] edges, <span class="hljs-type">int</span> src) {
+        <span class="hljs-comment">// Initialize distances</span>
+        <span class="hljs-type">int</span>[] dist = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
         Arrays.fill(dist, Integer.MAX_VALUE);
-        dist[src] = 0;
+        dist[src] = <span class="hljs-number">0</span>;
 
-        // Relax edges V-1 times
-        for (int i = 0; i &lt; n - 1; i++) {
-            boolean updated = false;
+        <span class="hljs-comment">// Relax edges V-1 times</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n - <span class="hljs-number">1</span>; i++) {
+            <span class="hljs-type">boolean</span> <span class="hljs-variable">updated</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;
 
-            for (int[] edge : edges) {
-                int u = edge[0];
-                int v = edge[1];
-                int weight = edge[2];
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] edge : edges) {
+                <span class="hljs-type">int</span> <span class="hljs-variable">u</span> <span class="hljs-operator">=</span> edge[<span class="hljs-number">0</span>];
+                <span class="hljs-type">int</span> <span class="hljs-variable">v</span> <span class="hljs-operator">=</span> edge[<span class="hljs-number">1</span>];
+                <span class="hljs-type">int</span> <span class="hljs-variable">weight</span> <span class="hljs-operator">=</span> edge[<span class="hljs-number">2</span>];
 
-                if (dist[u] != Integer.MAX_VALUE &amp;&amp; dist[u] + weight &lt; dist[v]) {
+                <span class="hljs-keyword">if</span> (dist[u] != Integer.MAX_VALUE &amp;&amp; dist[u] + weight &lt; dist[v]) {
                     dist[v] = dist[u] + weight;
-                    updated = true;
+                    updated = <span class="hljs-literal">true</span>;
                 }
             }
 
-            // Early termination
-            if (!updated) break;
+            <span class="hljs-comment">// Early termination</span>
+            <span class="hljs-keyword">if</span> (!updated) <span class="hljs-keyword">break</span>;
         }
 
-        // Check for negative cycle
-        for (int[] edge : edges) {
-            int u = edge[0];
-            int v = edge[1];
-            int weight = edge[2];
+        <span class="hljs-comment">// Check for negative cycle</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] edge : edges) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">u</span> <span class="hljs-operator">=</span> edge[<span class="hljs-number">0</span>];
+            <span class="hljs-type">int</span> <span class="hljs-variable">v</span> <span class="hljs-operator">=</span> edge[<span class="hljs-number">1</span>];
+            <span class="hljs-type">int</span> <span class="hljs-variable">weight</span> <span class="hljs-operator">=</span> edge[<span class="hljs-number">2</span>];
 
-            if (dist[u] != Integer.MAX_VALUE &amp;&amp; dist[u] + weight &lt; dist[v]) {
-                return null;  // Negative cycle detected
+            <span class="hljs-keyword">if</span> (dist[u] != Integer.MAX_VALUE &amp;&amp; dist[u] + weight &lt; dist[v]) {
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;  <span class="hljs-comment">// Negative cycle detected</span>
             }
         }
 
-        return dist;
+        <span class="hljs-keyword">return</span> dist;
     }
 }
 </code></pre>
 <h5 id="visual-example" tabindex="-1"><a class="header-anchor" href="#visual-example"><span>Visual Example</span></a></h5>
-<pre><code>Graph with negative edge:
+<pre><code class="hljs">Graph with negative edge:
     0 --4--&gt; 1
     |       / |
     5     -3  |
@@ -971,35 +983,35 @@ No updates → Early termination
 Final: dist = [0, 4, 1, 5] ✓
 </code></pre>
 <h5 id="negative-cycle-detection" tabindex="-1"><a class="header-anchor" href="#negative-cycle-detection"><span>Negative Cycle Detection</span></a></h5>
-<pre><code class="language-python"># Example with negative cycle
-def detect_negative_cycle(n, edges):
-    &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Example with negative cycle</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">detect_negative_cycle</span>(<span class="hljs-params">n, edges</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
     Detect if graph contains a negative cycle.
 
     Time: O(V⋅E)
     Space: O(V)
-    &quot;&quot;&quot;
-    # Pick arbitrary source (negative cycle affects all paths)
-    source = 0
-    dist = [float('inf')] * n
-    dist[source] = 0
+    &quot;&quot;&quot;</span>
+    <span class="hljs-comment"># Pick arbitrary source (negative cycle affects all paths)</span>
+    source = <span class="hljs-number">0</span>
+    dist = [<span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)] * n
+    dist[source] = <span class="hljs-number">0</span>
 
-    # Relax V-1 times
-    for _ in range(n - 1):
-        for u, v, weight in edges:
-            if dist[u] != float('inf') and dist[u] + weight &lt; dist[v]:
+    <span class="hljs-comment"># Relax V-1 times</span>
+    <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n - <span class="hljs-number">1</span>):
+        <span class="hljs-keyword">for</span> u, v, weight <span class="hljs-keyword">in</span> edges:
+            <span class="hljs-keyword">if</span> dist[u] != <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>) <span class="hljs-keyword">and</span> dist[u] + weight &lt; dist[v]:
                 dist[v] = dist[u] + weight
 
-    # Check if can still relax
-    for u, v, weight in edges:
-        if dist[u] != float('inf') and dist[u] + weight &lt; dist[v]:
-            return True  # Negative cycle exists
+    <span class="hljs-comment"># Check if can still relax</span>
+    <span class="hljs-keyword">for</span> u, v, weight <span class="hljs-keyword">in</span> edges:
+        <span class="hljs-keyword">if</span> dist[u] != <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>) <span class="hljs-keyword">and</span> dist[u] + weight &lt; dist[v]:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>  <span class="hljs-comment"># Negative cycle exists</span>
 
-    return False
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 
-# Example: edges = [(0,1,1), (1,2,-3), (2,0,1)]
-# Forms cycle: 0→1→2→0 with total weight 1-3+1 = -1
-# Returns: True
+<span class="hljs-comment"># Example: edges = [(0,1,1), (1,2,-3), (2,0,1)]</span>
+<span class="hljs-comment"># Forms cycle: 0→1→2→0 with total weight 1-3+1 = -1</span>
+<span class="hljs-comment"># Returns: True</span>
 </code></pre>
 <hr>
 <h4 id="7-2-floyd-warshall-algorithm" tabindex="-1"><a class="header-anchor" href="#7-2-floyd-warshall-algorithm"><span>7.2) Floyd-Warshall Algorithm</span></a></h4>
@@ -1031,16 +1043,16 @@ Floyd-Warshall finds <strong>all-pairs shortest paths</strong> in a weighted gra
 </li>
 </ol>
 <p><strong>Why It Works:</strong></p>
-<pre><code>After considering vertices {0, 1, ..., k} as intermediate:
+<pre><code class="hljs">After considering vertices {0, 1, ..., k} as intermediate:
 dist[i][j] = shortest path from i to j using only vertices {0...k}
 
 When k = n-1, we've considered all possible intermediates
 → dist[i][j] = shortest path from i to j
 </code></pre>
 <h5 id="python-implementation-1" tabindex="-1"><a class="header-anchor" href="#python-implementation-1"><span>Python Implementation</span></a></h5>
-<pre><code class="language-python"># Floyd-Warshall Algorithm
-def floyd_warshall(n, edges):
-    &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Floyd-Warshall Algorithm</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">floyd_warshall</span>(<span class="hljs-params">n, edges</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
     Find all-pairs shortest paths.
 
     Args:
@@ -1052,84 +1064,84 @@ def floyd_warshall(n, edges):
 
     Time: O(V³)
     Space: O(V²)
-    &quot;&quot;&quot;
-    # Initialize distance matrix
-    dist = [[float('inf')] * n for _ in range(n)]
+    &quot;&quot;&quot;</span>
+    <span class="hljs-comment"># Initialize distance matrix</span>
+    dist = [[<span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)] * n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)]
 
-    # Distance from vertex to itself is 0
-    for i in range(n):
-        dist[i][i] = 0
+    <span class="hljs-comment"># Distance from vertex to itself is 0</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+        dist[i][i] = <span class="hljs-number">0</span>
 
-    # Fill in edge weights
-    for u, v, weight in edges:
+    <span class="hljs-comment"># Fill in edge weights</span>
+    <span class="hljs-keyword">for</span> u, v, weight <span class="hljs-keyword">in</span> edges:
         dist[u][v] = weight
-        # For undirected graphs, uncomment:
-        # dist[v][u] = weight
+        <span class="hljs-comment"># For undirected graphs, uncomment:</span>
+        <span class="hljs-comment"># dist[v][u] = weight</span>
 
-    # Dynamic programming: try all intermediate vertices
-    for k in range(n):
-        for i in range(n):
-            for j in range(n):
-                # Can we improve path i→j by going through k?
-                if dist[i][k] != float('inf') and dist[k][j] != float('inf'):
-                    dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
+    <span class="hljs-comment"># Dynamic programming: try all intermediate vertices</span>
+    <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+                <span class="hljs-comment"># Can we improve path i→j by going through k?</span>
+                <span class="hljs-keyword">if</span> dist[i][k] != <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>) <span class="hljs-keyword">and</span> dist[k][j] != <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>):
+                    dist[i][j] = <span class="hljs-built_in">min</span>(dist[i][j], dist[i][k] + dist[k][j])
 
-    # Check for negative cycles
-    for i in range(n):
-        if dist[i][i] &lt; 0:
-            return None  # Negative cycle detected
+    <span class="hljs-comment"># Check for negative cycles</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+        <span class="hljs-keyword">if</span> dist[i][i] &lt; <span class="hljs-number">0</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>  <span class="hljs-comment"># Negative cycle detected</span>
 
-    return dist
+    <span class="hljs-keyword">return</span> dist
 
-# Example usage:
-# edges = [(0,1,3), (1,2,1), (0,2,7), (2,3,2)]
-# result = floyd_warshall(4, edges)
-# result[i][j] = shortest distance from i to j
+<span class="hljs-comment"># Example usage:</span>
+<span class="hljs-comment"># edges = [(0,1,3), (1,2,1), (0,2,7), (2,3,2)]</span>
+<span class="hljs-comment"># result = floyd_warshall(4, edges)</span>
+<span class="hljs-comment"># result[i][j] = shortest distance from i to j</span>
 </code></pre>
 <h5 id="java-implementation-1" tabindex="-1"><a class="header-anchor" href="#java-implementation-1"><span>Java Implementation</span></a></h5>
-<pre><code class="language-java">// Floyd-Warshall Algorithm
-/**
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Floyd-Warshall Algorithm</span>
+<span class="hljs-comment">/**
  * LC 1334 - Find the City With the Smallest Number of Neighbors
  *
  * time = O(V³)
  * space = O(V²)
- */
-class Solution {
-    public int[][] floydWarshall(int n, int[][] edges) {
-        // Initialize distance matrix
-        int[][] dist = new int[n][n];
+ */</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[][] floydWarshall(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span>[][] edges) {
+        <span class="hljs-comment">// Initialize distance matrix</span>
+        <span class="hljs-type">int</span>[][] dist = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n][n];
 
-        // Fill with infinity
-        for (int i = 0; i &lt; n; i++) {
-            Arrays.fill(dist[i], Integer.MAX_VALUE / 2);  // Avoid overflow
-            dist[i][i] = 0;  // Distance to self is 0
+        <span class="hljs-comment">// Fill with infinity</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+            Arrays.fill(dist[i], Integer.MAX_VALUE / <span class="hljs-number">2</span>);  <span class="hljs-comment">// Avoid overflow</span>
+            dist[i][i] = <span class="hljs-number">0</span>;  <span class="hljs-comment">// Distance to self is 0</span>
         }
 
-        // Add edge weights
-        for (int[] edge : edges) {
-            int u = edge[0];
-            int v = edge[1];
-            int weight = edge[2];
+        <span class="hljs-comment">// Add edge weights</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] edge : edges) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">u</span> <span class="hljs-operator">=</span> edge[<span class="hljs-number">0</span>];
+            <span class="hljs-type">int</span> <span class="hljs-variable">v</span> <span class="hljs-operator">=</span> edge[<span class="hljs-number">1</span>];
+            <span class="hljs-type">int</span> <span class="hljs-variable">weight</span> <span class="hljs-operator">=</span> edge[<span class="hljs-number">2</span>];
             dist[u][v] = weight;
-            dist[v][u] = weight;  // For undirected graph
+            dist[v][u] = weight;  <span class="hljs-comment">// For undirected graph</span>
         }
 
-        // Floyd-Warshall: try all intermediate vertices
-        for (int k = 0; k &lt; n; k++) {
-            for (int i = 0; i &lt; n; i++) {
-                for (int j = 0; j &lt; n; j++) {
-                    // Relax through vertex k
+        <span class="hljs-comment">// Floyd-Warshall: try all intermediate vertices</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">k</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; k &lt; n; k++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+                <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; n; j++) {
+                    <span class="hljs-comment">// Relax through vertex k</span>
                     dist[i][j] = Math.min(dist[i][j], dist[i][k] + dist[k][j]);
                 }
             }
         }
 
-        return dist;
+        <span class="hljs-keyword">return</span> dist;
     }
 }
 </code></pre>
 <h5 id="visual-example-1" tabindex="-1"><a class="header-anchor" href="#visual-example-1"><span>Visual Example</span></a></h5>
-<pre><code>Graph:
+<pre><code class="hljs">Graph:
   0 --3--&gt; 1
   |        |
   7        1
@@ -1170,54 +1182,54 @@ Final:
 3 [  ∞   ∞   2   0 ]
 </code></pre>
 <h5 id="path-reconstruction" tabindex="-1"><a class="header-anchor" href="#path-reconstruction"><span>Path Reconstruction</span></a></h5>
-<pre><code class="language-python"># Floyd-Warshall with path reconstruction
-def floyd_warshall_with_path(n, edges):
-    &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Floyd-Warshall with path reconstruction</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">floyd_warshall_with_path</span>(<span class="hljs-params">n, edges</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
     Find all-pairs shortest paths and reconstruct paths.
 
     Returns:
         dist: shortest distances
         next_vertex: for path reconstruction
-    &quot;&quot;&quot;
-    dist = [[float('inf')] * n for _ in range(n)]
-    next_vertex = [[None] * n for _ in range(n)]
+    &quot;&quot;&quot;</span>
+    dist = [[<span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)] * n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)]
+    next_vertex = [[<span class="hljs-literal">None</span>] * n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)]
 
-    # Initialize
-    for i in range(n):
-        dist[i][i] = 0
+    <span class="hljs-comment"># Initialize</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+        dist[i][i] = <span class="hljs-number">0</span>
 
-    for u, v, weight in edges:
+    <span class="hljs-keyword">for</span> u, v, weight <span class="hljs-keyword">in</span> edges:
         dist[u][v] = weight
         next_vertex[u][v] = v
 
-    # Floyd-Warshall
-    for k in range(n):
-        for i in range(n):
-            for j in range(n):
-                if dist[i][k] + dist[k][j] &lt; dist[i][j]:
+    <span class="hljs-comment"># Floyd-Warshall</span>
+    <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+                <span class="hljs-keyword">if</span> dist[i][k] + dist[k][j] &lt; dist[i][j]:
                     dist[i][j] = dist[i][k] + dist[k][j]
                     next_vertex[i][j] = next_vertex[i][k]
 
-    return dist, next_vertex
+    <span class="hljs-keyword">return</span> dist, next_vertex
 
-def reconstruct_path(next_vertex, start, end):
-    &quot;&quot;&quot;Reconstruct shortest path from start to end.&quot;&quot;&quot;
-    if next_vertex[start][end] is None:
-        return []
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">reconstruct_path</span>(<span class="hljs-params">next_vertex, start, end</span>):
+    <span class="hljs-string">&quot;&quot;&quot;Reconstruct shortest path from start to end.&quot;&quot;&quot;</span>
+    <span class="hljs-keyword">if</span> next_vertex[start][end] <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+        <span class="hljs-keyword">return</span> []
 
     path = [start]
     current = start
 
-    while current != end:
+    <span class="hljs-keyword">while</span> current != end:
         current = next_vertex[current][end]
         path.append(current)
 
-    return path
+    <span class="hljs-keyword">return</span> path
 
-# Example:
-# dist, next_v = floyd_warshall_with_path(4, edges)
-# path = reconstruct_path(next_v, 0, 3)
-# Output: [0, 1, 3] (path from 0 to 3)
+<span class="hljs-comment"># Example:</span>
+<span class="hljs-comment"># dist, next_v = floyd_warshall_with_path(4, edges)</span>
+<span class="hljs-comment"># path = reconstruct_path(next_v, 0, 3)</span>
+<span class="hljs-comment"># Output: [0, 1, 3] (path from 0 to 3)</span>
 </code></pre>
 <hr>
 <h4 id="7-3-classic-leetcode-problems" tabindex="-1"><a class="header-anchor" href="#7-3-classic-leetcode-problems"><span>7.3) Classic LeetCode Problems</span></a></h4>
@@ -1348,7 +1360,7 @@ def reconstruct_path(next_vertex, start, end):
 </tbody>
 </table>
 <p><strong>Decision Tree:</strong></p>
-<pre><code>Need shortest paths?
+<pre><code class="hljs">Need shortest paths?
 ├─ Single source
 │  ├─ Negative weights? → Bellman-Ford
 │  └─ Non-negative? → Dijkstra (faster)
@@ -1360,7 +1372,7 @@ def reconstruct_path(next_vertex, start, end):
 <hr>
 <h4 id="7-5-interview-tips" tabindex="-1"><a class="header-anchor" href="#7-5-interview-tips"><span>7.5) Interview Tips</span></a></h4>
 <p><strong>1. Algorithm Selection:</strong></p>
-<pre><code>Q: &quot;Find shortest path from A to B&quot;
+<pre><code class="hljs">Q: &quot;Find shortest path from A to B&quot;
 → Clarify: Negative weights? → Bellman-Ford : Dijkstra
 
 Q: &quot;Find shortest paths between all pairs&quot;
@@ -1377,17 +1389,17 @@ Q: &quot;Detect if negative cycle exists&quot;
 <li><strong>Negative cycles</strong>: Not checking after main algorithm</li>
 </ul>
 <p><strong>3. Optimization Tips:</strong></p>
-<pre><code class="language-python"># Bellman-Ford: Early termination
-for iteration in range(n - 1):
-    updated = False
-    for edge in edges:
-        if relax(edge):
-            updated = True
-    if not updated:
-        break  # No more improvements possible
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Bellman-Ford: Early termination</span>
+<span class="hljs-keyword">for</span> iteration <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n - <span class="hljs-number">1</span>):
+    updated = <span class="hljs-literal">False</span>
+    <span class="hljs-keyword">for</span> edge <span class="hljs-keyword">in</span> edges:
+        <span class="hljs-keyword">if</span> relax(edge):
+            updated = <span class="hljs-literal">True</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> updated:
+        <span class="hljs-keyword">break</span>  <span class="hljs-comment"># No more improvements possible</span>
 
-# Floyd-Warshall: Only update if improves
-if dist[i][k] + dist[k][j] &lt; dist[i][j]:
+<span class="hljs-comment"># Floyd-Warshall: Only update if improves</span>
+<span class="hljs-keyword">if</span> dist[i][k] + dist[k][j] &lt; dist[i][j]:
     dist[i][j] = dist[i][k] + dist[k][j]
 </code></pre>
 <p><strong>4. Edge Cases:</strong></p>
@@ -1449,10 +1461,10 @@ Uses DFS with two key arrays:</p>
 </li>
 </ol>
 <h5 id="python-implementation-2" tabindex="-1"><a class="header-anchor" href="#python-implementation-2"><span>Python Implementation</span></a></h5>
-<pre><code class="language-python"># Tarjan's Algorithm for SCC
-def tarjan_scc(n, graph):
-    &quot;&quot;&quot;
-    Find all strongly connected components using Tarjan's algorithm.
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Tarjan&#x27;s Algorithm for SCC</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">tarjan_scc</span>(<span class="hljs-params">n, graph</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
+    Find all strongly connected components using Tarjan&#x27;s algorithm.
 
     Args:
         n: number of vertices (0 to n-1)
@@ -1463,120 +1475,120 @@ def tarjan_scc(n, graph):
 
     Time: O(V + E)
     Space: O(V)
-    &quot;&quot;&quot;
-    disc = [-1] * n  # Discovery times
-    low = [-1] * n   # Lowest reachable
-    on_stack = [False] * n
+    &quot;&quot;&quot;</span>
+    disc = [-<span class="hljs-number">1</span>] * n  <span class="hljs-comment"># Discovery times</span>
+    low = [-<span class="hljs-number">1</span>] * n   <span class="hljs-comment"># Lowest reachable</span>
+    on_stack = [<span class="hljs-literal">False</span>] * n
     stack = []
     sccs = []
-    timer = [0]  # Use list for mutability
+    timer = [<span class="hljs-number">0</span>]  <span class="hljs-comment"># Use list for mutability</span>
 
-    def dfs(v):
-        # Initialize discovery time and low value
-        disc[v] = low[v] = timer[0]
-        timer[0] += 1
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">v</span>):
+        <span class="hljs-comment"># Initialize discovery time and low value</span>
+        disc[v] = low[v] = timer[<span class="hljs-number">0</span>]
+        timer[<span class="hljs-number">0</span>] += <span class="hljs-number">1</span>
         stack.append(v)
-        on_stack[v] = True
+        on_stack[v] = <span class="hljs-literal">True</span>
 
-        # Explore neighbors
-        for u in graph[v]:
-            if disc[u] == -1:
-                # Unvisited neighbor
+        <span class="hljs-comment"># Explore neighbors</span>
+        <span class="hljs-keyword">for</span> u <span class="hljs-keyword">in</span> graph[v]:
+            <span class="hljs-keyword">if</span> disc[u] == -<span class="hljs-number">1</span>:
+                <span class="hljs-comment"># Unvisited neighbor</span>
                 dfs(u)
-                low[v] = min(low[v], low[u])
-            elif on_stack[u]:
-                # Back edge to vertex on stack
-                low[v] = min(low[v], disc[u])
+                low[v] = <span class="hljs-built_in">min</span>(low[v], low[u])
+            <span class="hljs-keyword">elif</span> on_stack[u]:
+                <span class="hljs-comment"># Back edge to vertex on stack</span>
+                low[v] = <span class="hljs-built_in">min</span>(low[v], disc[u])
 
-        # If v is a root of SCC, pop the SCC
-        if low[v] == disc[v]:
+        <span class="hljs-comment"># If v is a root of SCC, pop the SCC</span>
+        <span class="hljs-keyword">if</span> low[v] == disc[v]:
             scc = []
-            while True:
+            <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:
                 u = stack.pop()
-                on_stack[u] = False
+                on_stack[u] = <span class="hljs-literal">False</span>
                 scc.append(u)
-                if u == v:
-                    break
+                <span class="hljs-keyword">if</span> u == v:
+                    <span class="hljs-keyword">break</span>
             sccs.append(scc)
 
-    # Run DFS from each unvisited vertex
-    for i in range(n):
-        if disc[i] == -1:
+    <span class="hljs-comment"># Run DFS from each unvisited vertex</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+        <span class="hljs-keyword">if</span> disc[i] == -<span class="hljs-number">1</span>:
             dfs(i)
 
-    return sccs
+    <span class="hljs-keyword">return</span> sccs
 
-# Example:
-# graph = {0: [1], 1: [2], 2: [0, 3], 3: [4], 4: [5], 5: [3]}
-#    0 → 1 → 2
-#    ↑       ↓
-#    └───────┘    3 ⇄ 4 → 5
-#                     ↑   ↓
-#                     └───┘
-# SCCs: [[0, 2, 1], [3, 5, 4]]
+<span class="hljs-comment"># Example:</span>
+<span class="hljs-comment"># graph = {0: [1], 1: [2], 2: [0, 3], 3: [4], 4: [5], 5: [3]}</span>
+<span class="hljs-comment">#    0 → 1 → 2</span>
+<span class="hljs-comment">#    ↑       ↓</span>
+<span class="hljs-comment">#    └───────┘    3 ⇄ 4 → 5</span>
+<span class="hljs-comment">#                     ↑   ↓</span>
+<span class="hljs-comment">#                     └───┘</span>
+<span class="hljs-comment"># SCCs: [[0, 2, 1], [3, 5, 4]]</span>
 </code></pre>
 <h5 id="java-implementation-2" tabindex="-1"><a class="header-anchor" href="#java-implementation-2"><span>Java Implementation</span></a></h5>
-<pre><code class="language-java">// Tarjan's SCC Algorithm
-/**
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Tarjan&#x27;s SCC Algorithm</span>
+<span class="hljs-comment">/**
  * LC 1192 - Critical Connections in a Network (related)
  *
  * time = O(V + E)
  * space = O(V)
- */
-class TarjanSCC {
-    private int timer = 0;
-    private int[] disc;
-    private int[] low;
-    private boolean[] onStack;
-    private Stack&lt;Integer&gt; stack;
-    private List&lt;List&lt;Integer&gt;&gt; sccs;
+ */</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">TarjanSCC</span> {
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-variable">timer</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span>[] disc;
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span>[] low;
+    <span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span>[] onStack;
+    <span class="hljs-keyword">private</span> Stack&lt;Integer&gt; stack;
+    <span class="hljs-keyword">private</span> List&lt;List&lt;Integer&gt;&gt; sccs;
 
-    public List&lt;List&lt;Integer&gt;&gt; findSCCs(int n, List&lt;List&lt;Integer&gt;&gt; graph) {
-        disc = new int[n];
-        low = new int[n];
-        onStack = new boolean[n];
-        stack = new Stack&lt;&gt;();
-        sccs = new ArrayList&lt;&gt;();
+    <span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">findSCCs</span><span class="hljs-params">(<span class="hljs-type">int</span> n, List&lt;List&lt;Integer&gt;&gt; graph)</span> {
+        disc = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
+        low = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
+        onStack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[n];
+        stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;();
+        sccs = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
 
-        Arrays.fill(disc, -1);
-        Arrays.fill(low, -1);
+        Arrays.fill(disc, -<span class="hljs-number">1</span>);
+        Arrays.fill(low, -<span class="hljs-number">1</span>);
 
-        // DFS from each unvisited vertex
-        for (int i = 0; i &lt; n; i++) {
-            if (disc[i] == -1) {
+        <span class="hljs-comment">// DFS from each unvisited vertex</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+            <span class="hljs-keyword">if</span> (disc[i] == -<span class="hljs-number">1</span>) {
                 dfs(i, graph);
             }
         }
 
-        return sccs;
+        <span class="hljs-keyword">return</span> sccs;
     }
 
-    private void dfs(int v, List&lt;List&lt;Integer&gt;&gt; graph) {
-        // Initialize
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> v, List&lt;List&lt;Integer&gt;&gt; graph)</span> {
+        <span class="hljs-comment">// Initialize</span>
         disc[v] = low[v] = timer++;
         stack.push(v);
-        onStack[v] = true;
+        onStack[v] = <span class="hljs-literal">true</span>;
 
-        // Explore neighbors
-        for (int u : graph.get(v)) {
-            if (disc[u] == -1) {
-                // Unvisited
+        <span class="hljs-comment">// Explore neighbors</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> u : graph.get(v)) {
+            <span class="hljs-keyword">if</span> (disc[u] == -<span class="hljs-number">1</span>) {
+                <span class="hljs-comment">// Unvisited</span>
                 dfs(u, graph);
                 low[v] = Math.min(low[v], low[u]);
-            } else if (onStack[u]) {
-                // Back edge
+            } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (onStack[u]) {
+                <span class="hljs-comment">// Back edge</span>
                 low[v] = Math.min(low[v], disc[u]);
             }
         }
 
-        // Root of SCC found
-        if (low[v] == disc[v]) {
-            List&lt;Integer&gt; scc = new ArrayList&lt;&gt;();
-            while (true) {
-                int u = stack.pop();
-                onStack[u] = false;
+        <span class="hljs-comment">// Root of SCC found</span>
+        <span class="hljs-keyword">if</span> (low[v] == disc[v]) {
+            List&lt;Integer&gt; scc = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+            <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) {
+                <span class="hljs-type">int</span> <span class="hljs-variable">u</span> <span class="hljs-operator">=</span> stack.pop();
+                onStack[u] = <span class="hljs-literal">false</span>;
                 scc.add(u);
-                if (u == v) break;
+                <span class="hljs-keyword">if</span> (u == v) <span class="hljs-keyword">break</span>;
             }
             sccs.add(scc);
         }
@@ -1601,9 +1613,9 @@ class TarjanSCC {
 </li>
 </ol>
 <h5 id="python-implementation-3" tabindex="-1"><a class="header-anchor" href="#python-implementation-3"><span>Python Implementation</span></a></h5>
-<pre><code class="language-python"># Tarjan's Algorithm for Bridges
-def find_bridges(n, edges):
-    &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Tarjan&#x27;s Algorithm for Bridges</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">find_bridges</span>(<span class="hljs-params">n, edges</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
     Find all bridges (critical connections) in an undirected graph.
 
     Args:
@@ -1615,109 +1627,109 @@ def find_bridges(n, edges):
 
     Time: O(V + E)
     Space: O(V + E)
-    &quot;&quot;&quot;
-    # Build adjacency list
-    graph = [[] for _ in range(n)]
-    for u, v in edges:
+    &quot;&quot;&quot;</span>
+    <span class="hljs-comment"># Build adjacency list</span>
+    graph = [[] <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)]
+    <span class="hljs-keyword">for</span> u, v <span class="hljs-keyword">in</span> edges:
         graph[u].append(v)
         graph[v].append(u)
 
-    disc = [-1] * n
-    low = [-1] * n
+    disc = [-<span class="hljs-number">1</span>] * n
+    low = [-<span class="hljs-number">1</span>] * n
     bridges = []
-    timer = [0]
+    timer = [<span class="hljs-number">0</span>]
 
-    def dfs(v, parent):
-        disc[v] = low[v] = timer[0]
-        timer[0] += 1
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">v, parent</span>):
+        disc[v] = low[v] = timer[<span class="hljs-number">0</span>]
+        timer[<span class="hljs-number">0</span>] += <span class="hljs-number">1</span>
 
-        for u in graph[v]:
-            if u == parent:
-                # Skip edge to parent (undirected graph)
-                continue
+        <span class="hljs-keyword">for</span> u <span class="hljs-keyword">in</span> graph[v]:
+            <span class="hljs-keyword">if</span> u == parent:
+                <span class="hljs-comment"># Skip edge to parent (undirected graph)</span>
+                <span class="hljs-keyword">continue</span>
 
-            if disc[u] == -1:
-                # Unvisited neighbor
+            <span class="hljs-keyword">if</span> disc[u] == -<span class="hljs-number">1</span>:
+                <span class="hljs-comment"># Unvisited neighbor</span>
                 dfs(u, v)
-                low[v] = min(low[v], low[u])
+                low[v] = <span class="hljs-built_in">min</span>(low[v], low[u])
 
-                # Check if (v, u) is a bridge
-                if low[u] &gt; disc[v]:
+                <span class="hljs-comment"># Check if (v, u) is a bridge</span>
+                <span class="hljs-keyword">if</span> low[u] &gt; disc[v]:
                     bridges.append([v, u])
-            else:
-                # Back edge
-                low[v] = min(low[v], disc[u])
+            <span class="hljs-keyword">else</span>:
+                <span class="hljs-comment"># Back edge</span>
+                low[v] = <span class="hljs-built_in">min</span>(low[v], disc[u])
 
-    # Run DFS from each component
-    for i in range(n):
-        if disc[i] == -1:
-            dfs(i, -1)
+    <span class="hljs-comment"># Run DFS from each component</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+        <span class="hljs-keyword">if</span> disc[i] == -<span class="hljs-number">1</span>:
+            dfs(i, -<span class="hljs-number">1</span>)
 
-    return bridges
+    <span class="hljs-keyword">return</span> bridges
 
-# Example:
-# n = 4, edges = [[0,1],[1,2],[2,0],[1,3]]
-#
-#    0 --- 1 --- 3
-#     \   /
-#      \ /
-#       2
-#
-# Bridge: [1, 3] (removing this disconnects 3 from rest)
+<span class="hljs-comment"># Example:</span>
+<span class="hljs-comment"># n = 4, edges = [[0,1],[1,2],[2,0],[1,3]]</span>
+<span class="hljs-comment">#</span>
+<span class="hljs-comment">#    0 --- 1 --- 3</span>
+<span class="hljs-comment">#     \   /</span>
+<span class="hljs-comment">#      \ /</span>
+<span class="hljs-comment">#       2</span>
+<span class="hljs-comment">#</span>
+<span class="hljs-comment"># Bridge: [1, 3] (removing this disconnects 3 from rest)</span>
 </code></pre>
 <h5 id="java-implementation-3" tabindex="-1"><a class="header-anchor" href="#java-implementation-3"><span>Java Implementation</span></a></h5>
-<pre><code class="language-java">// LC 1192 - Critical Connections in a Network
-/**
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1192 - Critical Connections in a Network</span>
+<span class="hljs-comment">/**
  * time = O(V + E)
  * space = O(V + E)
- */
-class Solution {
-    private int timer = 0;
-    private int[] disc;
-    private int[] low;
-    private List&lt;List&lt;Integer&gt;&gt; bridges;
+ */</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-variable">timer</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span>[] disc;
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span>[] low;
+    <span class="hljs-keyword">private</span> List&lt;List&lt;Integer&gt;&gt; bridges;
 
-    public List&lt;List&lt;Integer&gt;&gt; criticalConnections(int n, List&lt;List&lt;Integer&gt;&gt; connections) {
-        // Build adjacency list
-        List&lt;List&lt;Integer&gt;&gt; graph = new ArrayList&lt;&gt;();
-        for (int i = 0; i &lt; n; i++) {
-            graph.add(new ArrayList&lt;&gt;());
+    <span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">criticalConnections</span><span class="hljs-params">(<span class="hljs-type">int</span> n, List&lt;List&lt;Integer&gt;&gt; connections)</span> {
+        <span class="hljs-comment">// Build adjacency list</span>
+        List&lt;List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+            graph.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;());
         }
-        for (List&lt;Integer&gt; conn : connections) {
-            int u = conn.get(0);
-            int v = conn.get(1);
+        <span class="hljs-keyword">for</span> (List&lt;Integer&gt; conn : connections) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">u</span> <span class="hljs-operator">=</span> conn.get(<span class="hljs-number">0</span>);
+            <span class="hljs-type">int</span> <span class="hljs-variable">v</span> <span class="hljs-operator">=</span> conn.get(<span class="hljs-number">1</span>);
             graph.get(u).add(v);
             graph.get(v).add(u);
         }
 
-        disc = new int[n];
-        low = new int[n];
-        bridges = new ArrayList&lt;&gt;();
-        Arrays.fill(disc, -1);
+        disc = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
+        low = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
+        bridges = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+        Arrays.fill(disc, -<span class="hljs-number">1</span>);
 
-        // DFS from vertex 0 (graph is connected in this problem)
-        dfs(0, -1, graph);
+        <span class="hljs-comment">// DFS from vertex 0 (graph is connected in this problem)</span>
+        dfs(<span class="hljs-number">0</span>, -<span class="hljs-number">1</span>, graph);
 
-        return bridges;
+        <span class="hljs-keyword">return</span> bridges;
     }
 
-    private void dfs(int v, int parent, List&lt;List&lt;Integer&gt;&gt; graph) {
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> v, <span class="hljs-type">int</span> parent, List&lt;List&lt;Integer&gt;&gt; graph)</span> {
         disc[v] = low[v] = timer++;
 
-        for (int u : graph.get(v)) {
-            if (u == parent) continue;  // Skip parent edge
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> u : graph.get(v)) {
+            <span class="hljs-keyword">if</span> (u == parent) <span class="hljs-keyword">continue</span>;  <span class="hljs-comment">// Skip parent edge</span>
 
-            if (disc[u] == -1) {
-                // Unvisited
+            <span class="hljs-keyword">if</span> (disc[u] == -<span class="hljs-number">1</span>) {
+                <span class="hljs-comment">// Unvisited</span>
                 dfs(u, v, graph);
                 low[v] = Math.min(low[v], low[u]);
 
-                // Check for bridge
-                if (low[u] &gt; disc[v]) {
+                <span class="hljs-comment">// Check for bridge</span>
+                <span class="hljs-keyword">if</span> (low[u] &gt; disc[v]) {
                     bridges.add(Arrays.asList(v, u));
                 }
-            } else {
-                // Back edge
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-comment">// Back edge</span>
                 low[v] = Math.min(low[v], disc[u]);
             }
         }
@@ -1747,9 +1759,9 @@ class Solution {
 </li>
 </ol>
 <h5 id="python-implementation-4" tabindex="-1"><a class="header-anchor" href="#python-implementation-4"><span>Python Implementation</span></a></h5>
-<pre><code class="language-python"># Tarjan's Algorithm for Articulation Points
-def find_articulation_points(n, edges):
-    &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Tarjan&#x27;s Algorithm for Articulation Points</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">find_articulation_points</span>(<span class="hljs-params">n, edges</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
     Find all articulation points (cut vertices).
 
     Args:
@@ -1761,127 +1773,127 @@ def find_articulation_points(n, edges):
 
     Time: O(V + E)
     Space: O(V + E)
-    &quot;&quot;&quot;
-    # Build adjacency list
-    graph = [[] for _ in range(n)]
-    for u, v in edges:
+    &quot;&quot;&quot;</span>
+    <span class="hljs-comment"># Build adjacency list</span>
+    graph = [[] <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)]
+    <span class="hljs-keyword">for</span> u, v <span class="hljs-keyword">in</span> edges:
         graph[u].append(v)
         graph[v].append(u)
 
-    disc = [-1] * n
-    low = [-1] * n
-    ap = set()  # Articulation points
-    timer = [0]
+    disc = [-<span class="hljs-number">1</span>] * n
+    low = [-<span class="hljs-number">1</span>] * n
+    ap = <span class="hljs-built_in">set</span>()  <span class="hljs-comment"># Articulation points</span>
+    timer = [<span class="hljs-number">0</span>]
 
-    def dfs(v, parent):
-        children = 0
-        disc[v] = low[v] = timer[0]
-        timer[0] += 1
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">v, parent</span>):
+        children = <span class="hljs-number">0</span>
+        disc[v] = low[v] = timer[<span class="hljs-number">0</span>]
+        timer[<span class="hljs-number">0</span>] += <span class="hljs-number">1</span>
 
-        for u in graph[v]:
-            if u == parent:
-                continue
+        <span class="hljs-keyword">for</span> u <span class="hljs-keyword">in</span> graph[v]:
+            <span class="hljs-keyword">if</span> u == parent:
+                <span class="hljs-keyword">continue</span>
 
-            if disc[u] == -1:
-                # Unvisited child
-                children += 1
+            <span class="hljs-keyword">if</span> disc[u] == -<span class="hljs-number">1</span>:
+                <span class="hljs-comment"># Unvisited child</span>
+                children += <span class="hljs-number">1</span>
                 dfs(u, v)
-                low[v] = min(low[v], low[u])
+                low[v] = <span class="hljs-built_in">min</span>(low[v], low[u])
 
-                # Check if v is articulation point
-                # Case 1: Root with 2+ children
-                if parent == -1 and children &gt; 1:
+                <span class="hljs-comment"># Check if v is articulation point</span>
+                <span class="hljs-comment"># Case 1: Root with 2+ children</span>
+                <span class="hljs-keyword">if</span> parent == -<span class="hljs-number">1</span> <span class="hljs-keyword">and</span> children &gt; <span class="hljs-number">1</span>:
                     ap.add(v)
 
-                # Case 2: Non-root with child that can't reach ancestor
-                if parent != -1 and low[u] &gt;= disc[v]:
+                <span class="hljs-comment"># Case 2: Non-root with child that can&#x27;t reach ancestor</span>
+                <span class="hljs-keyword">if</span> parent != -<span class="hljs-number">1</span> <span class="hljs-keyword">and</span> low[u] &gt;= disc[v]:
                     ap.add(v)
-            else:
-                # Back edge
-                low[v] = min(low[v], disc[u])
+            <span class="hljs-keyword">else</span>:
+                <span class="hljs-comment"># Back edge</span>
+                low[v] = <span class="hljs-built_in">min</span>(low[v], disc[u])
 
-    # Run DFS from each component
-    for i in range(n):
-        if disc[i] == -1:
-            dfs(i, -1)
+    <span class="hljs-comment"># Run DFS from each component</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+        <span class="hljs-keyword">if</span> disc[i] == -<span class="hljs-number">1</span>:
+            dfs(i, -<span class="hljs-number">1</span>)
 
-    return list(ap)
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">list</span>(ap)
 
-# Example:
-# n = 5, edges = [[0,1],[1,2],[2,0],[1,3],[3,4]]
-#
-#    0 --- 1 --- 3 --- 4
-#     \   /
-#      \ /
-#       2
-#
-# Articulation points: [1, 3]
-# (Removing 1 disconnects {0,2} from {3,4})
-# (Removing 3 disconnects 4 from rest)
+<span class="hljs-comment"># Example:</span>
+<span class="hljs-comment"># n = 5, edges = [[0,1],[1,2],[2,0],[1,3],[3,4]]</span>
+<span class="hljs-comment">#</span>
+<span class="hljs-comment">#    0 --- 1 --- 3 --- 4</span>
+<span class="hljs-comment">#     \   /</span>
+<span class="hljs-comment">#      \ /</span>
+<span class="hljs-comment">#       2</span>
+<span class="hljs-comment">#</span>
+<span class="hljs-comment"># Articulation points: [1, 3]</span>
+<span class="hljs-comment"># (Removing 1 disconnects {0,2} from {3,4})</span>
+<span class="hljs-comment"># (Removing 3 disconnects 4 from rest)</span>
 </code></pre>
 <h5 id="java-implementation-4" tabindex="-1"><a class="header-anchor" href="#java-implementation-4"><span>Java Implementation</span></a></h5>
-<pre><code class="language-java">// Articulation Points Algorithm
-/**
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Articulation Points Algorithm</span>
+<span class="hljs-comment">/**
  * time = O(V + E)
  * space = O(V + E)
- */
-class ArticulationPoints {
-    private int timer = 0;
-    private int[] disc;
-    private int[] low;
-    private Set&lt;Integer&gt; ap;
+ */</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">ArticulationPoints</span> {
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-variable">timer</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span>[] disc;
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span>[] low;
+    <span class="hljs-keyword">private</span> Set&lt;Integer&gt; ap;
 
-    public List&lt;Integer&gt; findArticulationPoints(int n, int[][] edges) {
-        // Build adjacency list
-        List&lt;List&lt;Integer&gt;&gt; graph = new ArrayList&lt;&gt;();
-        for (int i = 0; i &lt; n; i++) {
-            graph.add(new ArrayList&lt;&gt;());
+    <span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">findArticulationPoints</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span>[][] edges)</span> {
+        <span class="hljs-comment">// Build adjacency list</span>
+        List&lt;List&lt;Integer&gt;&gt; graph = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+            graph.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;());
         }
-        for (int[] edge : edges) {
-            int u = edge[0];
-            int v = edge[1];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] edge : edges) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">u</span> <span class="hljs-operator">=</span> edge[<span class="hljs-number">0</span>];
+            <span class="hljs-type">int</span> <span class="hljs-variable">v</span> <span class="hljs-operator">=</span> edge[<span class="hljs-number">1</span>];
             graph.get(u).add(v);
             graph.get(v).add(u);
         }
 
-        disc = new int[n];
-        low = new int[n];
-        ap = new HashSet&lt;&gt;();
-        Arrays.fill(disc, -1);
+        disc = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
+        low = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
+        ap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
+        Arrays.fill(disc, -<span class="hljs-number">1</span>);
 
-        // DFS from each component
-        for (int i = 0; i &lt; n; i++) {
-            if (disc[i] == -1) {
-                dfs(i, -1, graph);
+        <span class="hljs-comment">// DFS from each component</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+            <span class="hljs-keyword">if</span> (disc[i] == -<span class="hljs-number">1</span>) {
+                dfs(i, -<span class="hljs-number">1</span>, graph);
             }
         }
 
-        return new ArrayList&lt;&gt;(ap);
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(ap);
     }
 
-    private void dfs(int v, int parent, List&lt;List&lt;Integer&gt;&gt; graph) {
-        int children = 0;
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> v, <span class="hljs-type">int</span> parent, List&lt;List&lt;Integer&gt;&gt; graph)</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">children</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
         disc[v] = low[v] = timer++;
 
-        for (int u : graph.get(v)) {
-            if (u == parent) continue;
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> u : graph.get(v)) {
+            <span class="hljs-keyword">if</span> (u == parent) <span class="hljs-keyword">continue</span>;
 
-            if (disc[u] == -1) {
+            <span class="hljs-keyword">if</span> (disc[u] == -<span class="hljs-number">1</span>) {
                 children++;
                 dfs(u, v, graph);
                 low[v] = Math.min(low[v], low[u]);
 
-                // Root with 2+ children
-                if (parent == -1 &amp;&amp; children &gt; 1) {
+                <span class="hljs-comment">// Root with 2+ children</span>
+                <span class="hljs-keyword">if</span> (parent == -<span class="hljs-number">1</span> &amp;&amp; children &gt; <span class="hljs-number">1</span>) {
                     ap.add(v);
                 }
 
-                // Non-root with blocking child
-                if (parent != -1 &amp;&amp; low[u] &gt;= disc[v]) {
+                <span class="hljs-comment">// Non-root with blocking child</span>
+                <span class="hljs-keyword">if</span> (parent != -<span class="hljs-number">1</span> &amp;&amp; low[u] &gt;= disc[v]) {
                     ap.add(v);
                 }
-            } else {
-                // Back edge
+            } <span class="hljs-keyword">else</span> {
+                <span class="hljs-comment">// Back edge</span>
                 low[v] = Math.min(low[v], disc[u]);
             }
         }
@@ -1890,7 +1902,7 @@ class ArticulationPoints {
 </code></pre>
 <hr>
 <h4 id="8-4-visual-example-tarjan-s-algorithm-walkthrough" tabindex="-1"><a class="header-anchor" href="#8-4-visual-example-tarjan-s-algorithm-walkthrough"><span>8.4) Visual Example: Tarjan’s Algorithm Walkthrough</span></a></h4>
-<pre><code>Graph (Directed):
+<pre><code class="hljs">Graph (Directed):
     0 → 1 → 2
     ↑       ↓
     └───────┘     3 ⇄ 4
@@ -2039,13 +2051,13 @@ Final SCCs: [{0,1,2}, {3,4,5}]
 <hr>
 <h4 id="8-7-interview-tips" tabindex="-1"><a class="header-anchor" href="#8-7-interview-tips"><span>8.7) Interview Tips</span></a></h4>
 <p><strong>1. Recognition Patterns:</strong></p>
-<pre><code>&quot;critical connections&quot; → Bridges (Tarjan)
+<pre><code class="hljs">&quot;critical connections&quot; → Bridges (Tarjan)
 &quot;strongly connected&quot; → SCC (Tarjan or Kosaraju)
 &quot;cut vertices&quot; → Articulation points (Tarjan)
 &quot;remove vertex/edge disconnects graph&quot; → Articulation/Bridge
 </code></pre>
 <p><strong>2. Key Differences:</strong></p>
-<pre><code>SCC: Directed graph, maximal mutually reachable sets
+<pre><code class="hljs">SCC: Directed graph, maximal mutually reachable sets
 Bridges: Undirected graph, critical edges
 Articulation Points: Undirected graph, critical vertices
 
@@ -2061,22 +2073,22 @@ low[v] &gt;= disc[u] → u is articulation point (undirected)
 <li>Confusing <code>disc[u]</code> vs <code>low[u]</code> in back edge updates</li>
 </ul>
 <p><strong>4. Template to Memorize:</strong></p>
-<pre><code class="language-python">def tarjan_template(v, parent=-1):
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">tarjan_template</span>(<span class="hljs-params">v, parent=-<span class="hljs-number">1</span></span>):
     disc[v] = low[v] = timer
-    timer += 1
+    timer += <span class="hljs-number">1</span>
 
-    for u in graph[v]:
-        if u == parent:  # Undirected graphs only
-            continue
+    <span class="hljs-keyword">for</span> u <span class="hljs-keyword">in</span> graph[v]:
+        <span class="hljs-keyword">if</span> u == parent:  <span class="hljs-comment"># Undirected graphs only</span>
+            <span class="hljs-keyword">continue</span>
 
-        if disc[u] == -1:
-            # Tree edge
+        <span class="hljs-keyword">if</span> disc[u] == -<span class="hljs-number">1</span>:
+            <span class="hljs-comment"># Tree edge</span>
             dfs(u, v)
-            low[v] = min(low[v], low[u])
-            # Check condition here (bridge, AP, etc.)
-        else:
-            # Back edge
-            low[v] = min(low[v], disc[u])  # Or check on_stack for SCC
+            low[v] = <span class="hljs-built_in">min</span>(low[v], low[u])
+            <span class="hljs-comment"># Check condition here (bridge, AP, etc.)</span>
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-comment"># Back edge</span>
+            low[v] = <span class="hljs-built_in">min</span>(low[v], disc[u])  <span class="hljs-comment"># Or check on_stack for SCC</span>
 </code></pre>
 <p><strong>5. Talking Points:</strong></p>
 <ul>
@@ -2331,43 +2343,43 @@ low[v] &gt;= disc[u] → u is articulation point (undirected)
 <ul>
 <li>LC 200</li>
 </ul>
-<pre><code class="language-java">// java
-void dfs(char[][] grid, int r, int c){
-    int nr = grid.length;
-    int nc = grid[0].length;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-keyword">void</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(<span class="hljs-type">char</span>[][] grid, <span class="hljs-type">int</span> r, <span class="hljs-type">int</span> c)</span>{
+    <span class="hljs-type">int</span> <span class="hljs-variable">nr</span> <span class="hljs-operator">=</span> grid.length;
+    <span class="hljs-type">int</span> <span class="hljs-variable">nc</span> <span class="hljs-operator">=</span> grid[<span class="hljs-number">0</span>].length;
 
-    if (r &lt; 0 || c &lt; 0 || r &gt;= nr || c &gt;= nc || grid[r][c] == '0') {
-        return;
+    <span class="hljs-keyword">if</span> (r &lt; <span class="hljs-number">0</span> || c &lt; <span class="hljs-number">0</span> || r &gt;= nr || c &gt;= nc || grid[r][c] == <span class="hljs-string">&#x27;0&#x27;</span>) {
+        <span class="hljs-keyword">return</span>;
     }
 
-    grid[r][c] = '0';
+    grid[r][c] = <span class="hljs-string">&#x27;0&#x27;</span>;
 
-    /** NOTE here !!!*/
-    dfs_1(grid, r - 1, c);
-    dfs_1(grid, r + 1, c);
-    dfs_1(grid, r, c - 1);
-    dfs_1(grid, r, c + 1);
+    <span class="hljs-comment">/** NOTE here !!!*/</span>
+    dfs_1(grid, r - <span class="hljs-number">1</span>, c);
+    dfs_1(grid, r + <span class="hljs-number">1</span>, c);
+    dfs_1(grid, r, c - <span class="hljs-number">1</span>);
+    dfs_1(grid, r, c + <span class="hljs-number">1</span>);
 }
 
-public int numIslands_1(char[][] grid) {
-    if (grid == null || grid.length == 0) {
-        return 0;
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">numIslands_1</span><span class="hljs-params">(<span class="hljs-type">char</span>[][] grid)</span> {
+    <span class="hljs-keyword">if</span> (grid == <span class="hljs-literal">null</span> || grid.length == <span class="hljs-number">0</span>) {
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
     }
 
-    int nr = grid.length;
-    int nc = grid[0].length;
-    int num_islands = 0;
+    <span class="hljs-type">int</span> <span class="hljs-variable">nr</span> <span class="hljs-operator">=</span> grid.length;
+    <span class="hljs-type">int</span> <span class="hljs-variable">nc</span> <span class="hljs-operator">=</span> grid[<span class="hljs-number">0</span>].length;
+    <span class="hljs-type">int</span> <span class="hljs-variable">num_islands</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
 
-    for (int r = 0; r &lt; nr; ++r) {
-        for (int c = 0; c &lt; nc; ++c) {
-            if (grid[r][c] == '1') {
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; r &lt; nr; ++r) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; c &lt; nc; ++c) {
+            <span class="hljs-keyword">if</span> (grid[r][c] == <span class="hljs-string">&#x27;1&#x27;</span>) {
                 ++num_islands;
                 dfs_1(grid, r, c);
             }
         }
     }
 
-    return num_islands;
+    <span class="hljs-keyword">return</span> num_islands;
 }
 
 </code></pre>
@@ -2375,114 +2387,114 @@ public int numIslands_1(char[][] grid) {
 <ul>
 <li>LC 695</li>
 </ul>
-<pre><code class="language-java">// java
-int[][] grid;
-boolean[][] seen;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-type">int</span>[][] grid;
+<span class="hljs-type">boolean</span>[][] seen;
 
-public int area(int r, int c) {
-    if (r &lt; 0 || r &gt;= grid.length || c &lt; 0 || c &gt;= grid[0].length ||
-            seen[r][c] || grid[r][c] == 0)
-        return 0;
-    seen[r][c] = true;
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">area</span><span class="hljs-params">(<span class="hljs-type">int</span> r, <span class="hljs-type">int</span> c)</span> {
+    <span class="hljs-keyword">if</span> (r &lt; <span class="hljs-number">0</span> || r &gt;= grid.length || c &lt; <span class="hljs-number">0</span> || c &gt;= grid[<span class="hljs-number">0</span>].length ||
+            seen[r][c] || grid[r][c] == <span class="hljs-number">0</span>)
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+    seen[r][c] = <span class="hljs-literal">true</span>;
 
-    /** NOTE !!!*/
-    return (1 + area(r+1, c) + area(r-1, c)
-            + area(r, c-1) + area(r, c+1));
+    <span class="hljs-comment">/** NOTE !!!*/</span>
+    <span class="hljs-keyword">return</span> (<span class="hljs-number">1</span> + area(r+<span class="hljs-number">1</span>, c) + area(r-<span class="hljs-number">1</span>, c)
+            + area(r, c-<span class="hljs-number">1</span>) + area(r, c+<span class="hljs-number">1</span>));
 }
 
-public int maxAreaOfIsland_1(int[][] grid) {
-    this.grid = grid;
-    seen = new boolean[grid.length][grid[0].length];
-    int ans = 0;
-    for (int r = 0; r &lt; grid.length; r++) {
-        for (int c = 0; c &lt; grid[0].length; c++) {
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxAreaOfIsland_1</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] grid)</span> {
+    <span class="hljs-built_in">this</span>.grid = grid;
+    seen = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[grid.length][grid[<span class="hljs-number">0</span>].length];
+    <span class="hljs-type">int</span> <span class="hljs-variable">ans</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; r &lt; grid.length; r++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; c &lt; grid[<span class="hljs-number">0</span>].length; c++) {
             ans = Math.max(ans, area(r, c));
         }
     }
-    return ans;
+    <span class="hljs-keyword">return</span> ans;
 }
 </code></pre>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
 <h3 id="2-1-closest-leaf-in-a-binary-tree" tabindex="-1"><a class="header-anchor" href="#2-1-closest-leaf-in-a-binary-tree"><span>2-1) Closest Leaf in a Binary Tree</span></a></h3>
-<pre><code class="language-python"># 742 Closest Leaf in a Binary Tree
-import collections
-class Solution:
-    # search via DFS
-    def findClosestLeaf(self, root, k):
-        self.start = None
-        self.buildGraph(root, None, k)
-        q, visited = [root], set()
-        #q, visited = [self.start], set() # need to validate this
-        self.graph = collections.defaultdict(list)
-        while q:
-            for i in range(len(q)):
-                cur = q.pop(0) # this is dfs
-                # add cur to visited, NOT to visit this node again
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 742 Closest Leaf in a Binary Tree</span>
+<span class="hljs-keyword">import</span> collections
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-comment"># search via DFS</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">findClosestLeaf</span>(<span class="hljs-params">self, root, k</span>):
+        <span class="hljs-variable language_">self</span>.start = <span class="hljs-literal">None</span>
+        <span class="hljs-variable language_">self</span>.buildGraph(root, <span class="hljs-literal">None</span>, k)
+        q, visited = [root], <span class="hljs-built_in">set</span>()
+        <span class="hljs-comment">#q, visited = [self.start], set() # need to validate this</span>
+        <span class="hljs-variable language_">self</span>.graph = collections.defaultdict(<span class="hljs-built_in">list</span>)
+        <span class="hljs-keyword">while</span> q:
+            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(q)):
+                cur = q.pop(<span class="hljs-number">0</span>) <span class="hljs-comment"># this is dfs</span>
+                <span class="hljs-comment"># add cur to visited, NOT to visit this node again</span>
                 visited.add(cur)
-                ### NOTICE HERE 
-                # if not cur.left and not cur.right: means this is the leaf (HAS NO ANY left/right node) of the tree
-                # so the first value of this is what we want, just return cur.val as answer directly
-                if not cur.left and not cur.right:
-                    # return the answer
-                    return cur.val
-                # if not find the leaf, then go through all neighbors of current node, and search again
-                for node in self.graph:
-                    if node not in visited: # need to check if &quot;if node not in visited&quot; or &quot;if node in visited&quot;
+                <span class="hljs-comment">### NOTICE HERE </span>
+                <span class="hljs-comment"># if not cur.left and not cur.right: means this is the leaf (HAS NO ANY left/right node) of the tree</span>
+                <span class="hljs-comment"># so the first value of this is what we want, just return cur.val as answer directly</span>
+                <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> cur.left <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> cur.right:
+                    <span class="hljs-comment"># return the answer</span>
+                    <span class="hljs-keyword">return</span> cur.val
+                <span class="hljs-comment"># if not find the leaf, then go through all neighbors of current node, and search again</span>
+                <span class="hljs-keyword">for</span> node <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.graph:
+                    <span class="hljs-keyword">if</span> node <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> visited: <span class="hljs-comment"># need to check if &quot;if node not in visited&quot; or &quot;if node in visited&quot;</span>
                         q.append(node)
 
-    # build graph via DFS
-    # node : current node
-    # parent : parent of current node
-    def buildGraph(self, node, parent, k):
-        if not node:
-            return
-        # if node.val == k, THEN GET THE start point FROM current &quot;node&quot;,
-        # then build graph based on above
-        if node.val == k:
-            self.start = node
-        if parent:
-            self.graph[node].append(parent)
-            self.graph[parent].append(node)
-        self.buildGraph(node.left, node, k)
-        self.buildGraph(node.right, node, k)
+    <span class="hljs-comment"># build graph via DFS</span>
+    <span class="hljs-comment"># node : current node</span>
+    <span class="hljs-comment"># parent : parent of current node</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">buildGraph</span>(<span class="hljs-params">self, node, parent, k</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node:
+            <span class="hljs-keyword">return</span>
+        <span class="hljs-comment"># if node.val == k, THEN GET THE start point FROM current &quot;node&quot;,</span>
+        <span class="hljs-comment"># then build graph based on above</span>
+        <span class="hljs-keyword">if</span> node.val == k:
+            <span class="hljs-variable language_">self</span>.start = node
+        <span class="hljs-keyword">if</span> parent:
+            <span class="hljs-variable language_">self</span>.graph[node].append(parent)
+            <span class="hljs-variable language_">self</span>.graph[parent].append(node)
+        <span class="hljs-variable language_">self</span>.buildGraph(node.left, node, k)
+        <span class="hljs-variable language_">self</span>.buildGraph(node.right, node, k)
 
 </code></pre>
 <h3 id="2-2-number-of-connected-components-in-an-undirected-graph" tabindex="-1"><a class="header-anchor" href="#2-2-number-of-connected-components-in-an-undirected-graph"><span>2-2) Number of Connected Components in an Undirected Graph</span></a></h3>
-<pre><code class="language-python"># LC 323 Number of Connected Components in an Undirected Graph
-# V0
-# IDEA : DFS
-class Solution:
-    def countComponents(self, n, edges):
-        def helper(u):
-            if u in pair:
-                for v in pair[u]:
-                    if v not in visited:
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 323 Number of Connected Components in an Undirected Graph</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : DFS</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">countComponents</span>(<span class="hljs-params">self, n, edges</span>):
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">helper</span>(<span class="hljs-params">u</span>):
+            <span class="hljs-keyword">if</span> u <span class="hljs-keyword">in</span> pair:
+                <span class="hljs-keyword">for</span> v <span class="hljs-keyword">in</span> pair[u]:
+                    <span class="hljs-keyword">if</span> v <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> visited:
                         visited.add(v)
                         helper(v)
             
-        pair = collections.defaultdict(set)
-        for u,v in edges:
+        pair = collections.defaultdict(<span class="hljs-built_in">set</span>)
+        <span class="hljs-keyword">for</span> u,v <span class="hljs-keyword">in</span> edges:
             pair[u].add(v)
             pair[v].add(u)
-        count = 0
-        visited = set()
-        for i in range(n):
-            if i not in visited:
+        count = <span class="hljs-number">0</span>
+        visited = <span class="hljs-built_in">set</span>()
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+            <span class="hljs-keyword">if</span> i <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> visited:
                 helper(i)
-                count+=1
-        return count
+                count+=<span class="hljs-number">1</span>
+        <span class="hljs-keyword">return</span> count
 </code></pre>
 <h3 id="2-3-clone-graph" tabindex="-1"><a class="header-anchor" href="#2-3-clone-graph"><span>2-3) Clone Graph</span></a></h3>
-<pre><code class="language-python"># LC 133. Clone Graph
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 133. Clone Graph</span>
 
-# V0
-# IDEA : BFS
-class Solution(object):
-    def cloneGraph(self, node):
-        if not node:
-            return
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : BFS</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">cloneGraph</span>(<span class="hljs-params">self, node</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node:
+            <span class="hljs-keyword">return</span>
         q = [node]
-        &quot;&quot;&quot;
+        <span class="hljs-string">&quot;&quot;&quot;
         NOTE !!! : we init res as Node(node.val, [])
           -&gt; since Node has structure as below :
 
@@ -2490,187 +2502,187 @@ class Solution(object):
             def __init__(self, val = 0, neighbors = None):
                 self.val = val
                 self.neighbors = neighbors if neighbors is not None else []
-        &quot;&quot;&quot;
+        &quot;&quot;&quot;</span>
         res = Node(node.val, [])
-        &quot;&quot;&quot;
+        <span class="hljs-string">&quot;&quot;&quot;
         NOTE !!! : we use dict as visited,
                    and we use node as visited dict key 
-        &quot;&quot;&quot;
-        visited = dict()
+        &quot;&quot;&quot;</span>
+        visited = <span class="hljs-built_in">dict</span>()
         visited[node] = res
-        while q:
-            #t = q.pop(0) # this works as well
-            t = q.pop(-1)
-            if not t:
-                continue
-            for n in t.neighbors:
-                if n not in visited:
-                    &quot;&quot;&quot;
+        <span class="hljs-keyword">while</span> q:
+            <span class="hljs-comment">#t = q.pop(0) # this works as well</span>
+            t = q.pop(-<span class="hljs-number">1</span>)
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> t:
+                <span class="hljs-keyword">continue</span>
+            <span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> t.neighbors:
+                <span class="hljs-keyword">if</span> n <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> visited:
+                    <span class="hljs-string">&quot;&quot;&quot;
                     NOTE !!! : we need to 
                          -&gt; use n as visited key
                          -&gt; use Node(n.val, []) as visited value
-                    &quot;&quot;&quot;
+                    &quot;&quot;&quot;</span>
                     visited[n] = Node(n.val, [])
                     q.append(n)
-                &quot;&quot;&quot;
+                <span class="hljs-string">&quot;&quot;&quot;
                 NOTE !!! 
                     -&gt; we need to append visited[n] to visited[t].neighbors
-                &quot;&quot;&quot;
+                &quot;&quot;&quot;</span>
                 visited[t].neighbors.append(visited[n])
-        return res
+        <span class="hljs-keyword">return</span> res
 
-# V0
-# IDEA : DFS
-# NOTE :
-#  -&gt; 1) we init node via : node_copy = Node(node.val, [])
-#  -&gt; 2) we copy graph via dict
-class Solution(object):
-    def cloneGraph(self, node):
-        &quot;&quot;&quot;
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : DFS</span>
+<span class="hljs-comment"># NOTE :</span>
+<span class="hljs-comment">#  -&gt; 1) we init node via : node_copy = Node(node.val, [])</span>
+<span class="hljs-comment">#  -&gt; 2) we copy graph via dict</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">cloneGraph</span>(<span class="hljs-params">self, node</span>):
+        <span class="hljs-string">&quot;&quot;&quot;
         :type node: Node
         :rtype: Node
-        &quot;&quot;&quot;
-        node_copy = self.dfs(node, dict())
-        return node_copy
+        &quot;&quot;&quot;</span>
+        node_copy = <span class="hljs-variable language_">self</span>.dfs(node, <span class="hljs-built_in">dict</span>())
+        <span class="hljs-keyword">return</span> node_copy
     
-    def dfs(self, node, hashd):
-        if not node: return None
-        if node in hashd: return hashd[node]
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">self, node, hashd</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node: <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
+        <span class="hljs-keyword">if</span> node <span class="hljs-keyword">in</span> hashd: <span class="hljs-keyword">return</span> hashd[node]
         node_copy = Node(node.val, [])
         hashd[node] = node_copy
-        for n in node.neighbors:
-            n_copy = self.dfs(n, hashd)
-            if n_copy:
+        <span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> node.neighbors:
+            n_copy = <span class="hljs-variable language_">self</span>.dfs(n, hashd)
+            <span class="hljs-keyword">if</span> n_copy:
                 node_copy.neighbors.append(n_copy)
-        return node_copy
+        <span class="hljs-keyword">return</span> node_copy
 </code></pre>
 <h3 id="2-4-bus-routes" tabindex="-1"><a class="header-anchor" href="#2-4-bus-routes"><span>2-4) Bus Routes</span></a></h3>
-<pre><code class="language-python"># LC 815. Bus Routes
-# V0
-# IDEA : BFS + GRAPH
-class Solution(object):
-    def numBusesToDestination(self, routes, S, T):
-        # edge case:
-        if S == T:
-            return 0
-        to_routes = collections.defaultdict(set)
-        for i, route in enumerate(routes):
-            for j in route:
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 815. Bus Routes</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : BFS + GRAPH</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">numBusesToDestination</span>(<span class="hljs-params">self, routes, S, T</span>):
+        <span class="hljs-comment"># edge case:</span>
+        <span class="hljs-keyword">if</span> S == T:
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+        to_routes = collections.defaultdict(<span class="hljs-built_in">set</span>)
+        <span class="hljs-keyword">for</span> i, route <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(routes):
+            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> route:
                 to_routes[j].add(i)
-        bfs = [(S, 0)]
-        seen = set([S])
-        for stop, bus in bfs:
-            if stop == T:
-                return bus
-            for i in to_routes[stop]:
-                for j in routes[i]:
-                    if j not in seen:
-                        bfs.append((j, bus + 1))
+        bfs = [(S, <span class="hljs-number">0</span>)]
+        seen = <span class="hljs-built_in">set</span>([S])
+        <span class="hljs-keyword">for</span> stop, bus <span class="hljs-keyword">in</span> bfs:
+            <span class="hljs-keyword">if</span> stop == T:
+                <span class="hljs-keyword">return</span> bus
+            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> to_routes[stop]:
+                <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> routes[i]:
+                    <span class="hljs-keyword">if</span> j <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> seen:
+                        bfs.append((j, bus + <span class="hljs-number">1</span>))
                         seen.add(j)
-                routes[i] = []  # seen route
-        return -1
+                routes[i] = []  <span class="hljs-comment"># seen route</span>
+        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>
 </code></pre>
 <h3 id="2-5-course-schedule" tabindex="-1"><a class="header-anchor" href="#2-5-course-schedule"><span>2-5) Course Schedule</span></a></h3>
-<pre><code class="language-java">// java
-// V0
-// IDEA : DFS (fix by gpt) (NOTE : there is also TOPOLOGICAL SORT solution)
-// NOTE !!! instead of maintain status (0,1,2), below video offers a simpler approach
-//      -&gt; e.g. use a set, recording the current visiting course, if ANY duplicated (already in set) course being met,
-//      -&gt; means &quot;cyclic&quot;, so return false directly
-// https://www.youtube.com/watch?v=EgI5nU9etnU
-public boolean canFinish(int numCourses, int[][] prerequisites) {
-    // Initialize adjacency list for storing prerequisites
-    /**
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// V0</span>
+<span class="hljs-comment">// IDEA : DFS (fix by gpt) (NOTE : there is also TOPOLOGICAL SORT solution)</span>
+<span class="hljs-comment">// NOTE !!! instead of maintain status (0,1,2), below video offers a simpler approach</span>
+<span class="hljs-comment">//      -&gt; e.g. use a set, recording the current visiting course, if ANY duplicated (already in set) course being met,</span>
+<span class="hljs-comment">//      -&gt; means &quot;cyclic&quot;, so return false directly</span>
+<span class="hljs-comment">// https://www.youtube.com/watch?v=EgI5nU9etnU</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">canFinish</span><span class="hljs-params">(<span class="hljs-type">int</span> numCourses, <span class="hljs-type">int</span>[][] prerequisites)</span> {
+    <span class="hljs-comment">// Initialize adjacency list for storing prerequisites</span>
+    <span class="hljs-comment">/**
      *  NOTE !!!
      *
      *  init prerequisites map
      *  {course : [prerequisites_array]}
      *  below init map with null array as first step
-     */
-    Map&lt;Integer, List&lt;Integer&gt;&gt; preMap = new HashMap&lt;&gt;();
-    for (int i = 0; i &lt; numCourses; i++) {
-        preMap.put(i, new ArrayList&lt;&gt;());
+     */</span>
+    Map&lt;Integer, List&lt;Integer&gt;&gt; preMap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; numCourses; i++) {
+        preMap.put(i, <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;());
     }
 
-    // Populate the adjacency list with prerequisites
-    /**
+    <span class="hljs-comment">// Populate the adjacency list with prerequisites</span>
+    <span class="hljs-comment">/**
      *  NOTE !!!
      *
      *  update prerequisites map
      *  {course : [prerequisites_array]}
      *  so we go through prerequisites,
-     *  then append each course's prerequisites to preMap
-     */
-    for (int[] pair : prerequisites) {
-        int crs = pair[0];
-        int pre = pair[1];
+     *  then append each course&#x27;s prerequisites to preMap
+     */</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] pair : prerequisites) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">crs</span> <span class="hljs-operator">=</span> pair[<span class="hljs-number">0</span>];
+        <span class="hljs-type">int</span> <span class="hljs-variable">pre</span> <span class="hljs-operator">=</span> pair[<span class="hljs-number">1</span>];
         preMap.get(crs).add(pre);
     }
 
-    /** NOTE !!!
+    <span class="hljs-comment">/** NOTE !!!
      *
      *  init below set for checking if there is &quot;cyclic&quot; case
-     */
-    // Set for tracking courses during the current DFS path
-    Set&lt;Integer&gt; visiting = new HashSet&lt;&gt;();
+     */</span>
+    <span class="hljs-comment">// Set for tracking courses during the current DFS path</span>
+    Set&lt;Integer&gt; visiting = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
 
-    // Recursive DFS function
-    for (int c = 0; c &lt; numCourses; c++) {
-        if (!dfs(c, preMap, visiting)) {
-            return false;
+    <span class="hljs-comment">// Recursive DFS function</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; c &lt; numCourses; c++) {
+        <span class="hljs-keyword">if</span> (!dfs(c, preMap, visiting)) {
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
         }
     }
-    return true;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 }
 
-private boolean dfs(int crs, Map&lt;Integer, List&lt;Integer&gt;&gt; preMap, Set&lt;Integer&gt; visiting) {
-    /** NOTE !!!
+<span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> crs, Map&lt;Integer, List&lt;Integer&gt;&gt; preMap, Set&lt;Integer&gt; visiting)</span> {
+    <span class="hljs-comment">/** NOTE !!!
      *
      *  if visiting contains current course,
      *  means there is a &quot;cyclic&quot;,
      *  (e.g. : needs to take course a, then can take course b, and needs to take course b, then can take course a)
      *  so return false directly
-     */
-    if (visiting.contains(crs)) {
-        return false;
+     */</span>
+    <span class="hljs-keyword">if</span> (visiting.contains(crs)) {
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
     }
-    /**
+    <span class="hljs-comment">/**
      *  NOTE !!!
      *
      *  if such course has NO preRequisite,
      *  return true directly
-     */
-    if (preMap.get(crs).isEmpty()) {
-        return true;
+     */</span>
+    <span class="hljs-keyword">if</span> (preMap.get(crs).isEmpty()) {
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
     }
 
-    /**
+    <span class="hljs-comment">/**
      *  NOTE !!!
      *
      *  add current course to set (Set&lt;Integer&gt; visiting)
-     */
+     */</span>
     visiting.add(crs);
-    for (int pre : preMap.get(crs)) {
-        if (!dfs(pre, preMap, visiting)) {
-            return false;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> pre : preMap.get(crs)) {
+        <span class="hljs-keyword">if</span> (!dfs(pre, preMap, visiting)) {
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
         }
     }
-    /**
+    <span class="hljs-comment">/**
      *  NOTE !!!
      *
      *  remove current course from set,
      *  since already finish visiting
      *
      *  e.g. undo changes
-     */
+     */</span>
     visiting.remove(crs);
-    preMap.get(crs).clear(); // Clear prerequisites as the course is confirmed to be processed
-    return true;
+    preMap.get(crs).clear(); <span class="hljs-comment">// Clear prerequisites as the course is confirmed to be processed</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
 }
 </code></pre>
 <h2 id="decision-framework" tabindex="-1"><a class="header-anchor" href="#decision-framework"><span>Decision Framework</span></a></h2>
 <h3 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h3>
-<pre><code>Graph Algorithm Selection Flowchart:
+<pre><code class="hljs">Graph Algorithm Selection Flowchart:
 
 1. What is the problem asking for?
    ├── Find shortest path → Continue to 2
@@ -2808,79 +2820,79 @@ private boolean dfs(int crs, Map&lt;Integer, List&lt;Integer&gt;&gt; preMap, Set
 </table>
 <h3 id="graph-building-patterns" tabindex="-1"><a class="header-anchor" href="#graph-building-patterns"><span>Graph Building Patterns</span></a></h3>
 <h4 id="adjacency-list" tabindex="-1"><a class="header-anchor" href="#adjacency-list"><span><strong>Adjacency List</strong></span></a></h4>
-<pre><code class="language-python"># For edges list
-graph = defaultdict(list)
-for u, v in edges:
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># For edges list</span>
+graph = defaultdict(<span class="hljs-built_in">list</span>)
+<span class="hljs-keyword">for</span> u, v <span class="hljs-keyword">in</span> edges:
     graph[u].append(v)
-    graph[v].append(u)  # Undirected
+    graph[v].append(u)  <span class="hljs-comment"># Undirected</span>
 
-# For weighted edges
-graph = defaultdict(list)
-for u, v, w in edges:
+<span class="hljs-comment"># For weighted edges</span>
+graph = defaultdict(<span class="hljs-built_in">list</span>)
+<span class="hljs-keyword">for</span> u, v, w <span class="hljs-keyword">in</span> edges:
     graph[u].append((v, w))
 </code></pre>
 <h4 id="adjacency-matrix" tabindex="-1"><a class="header-anchor" href="#adjacency-matrix"><span><strong>Adjacency Matrix</strong></span></a></h4>
-<pre><code class="language-python"># For unweighted
-graph = [[0] * n for _ in range(n)]
-for u, v in edges:
-    graph[u][v] = 1
-    graph[v][u] = 1  # Undirected
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># For unweighted</span>
+graph = [[<span class="hljs-number">0</span>] * n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)]
+<span class="hljs-keyword">for</span> u, v <span class="hljs-keyword">in</span> edges:
+    graph[u][v] = <span class="hljs-number">1</span>
+    graph[v][u] = <span class="hljs-number">1</span>  <span class="hljs-comment"># Undirected</span>
 
-# For weighted
-graph = [[float('inf')] * n for _ in range(n)]
-for u, v, w in edges:
+<span class="hljs-comment"># For weighted</span>
+graph = [[<span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)] * n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)]
+<span class="hljs-keyword">for</span> u, v, w <span class="hljs-keyword">in</span> edges:
     graph[u][v] = w
 </code></pre>
 <h3 id="common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#common-patterns-tricks"><span>Common Patterns &amp; Tricks</span></a></h3>
 <h4 id="visited-tracking" tabindex="-1"><a class="header-anchor" href="#visited-tracking"><span><strong>Visited Tracking</strong></span></a></h4>
-<pre><code class="language-python"># Set for simple visited
-visited = set()
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Set for simple visited</span>
+visited = <span class="hljs-built_in">set</span>()
 
-# Array for state tracking
-# 0: unvisited, 1: visiting, 2: visited
-state = [0] * n
+<span class="hljs-comment"># Array for state tracking</span>
+<span class="hljs-comment"># 0: unvisited, 1: visiting, 2: visited</span>
+state = [<span class="hljs-number">0</span>] * n
 
-# Dictionary for path reconstruction
+<span class="hljs-comment"># Dictionary for path reconstruction</span>
 parent = {}
 </code></pre>
 <h4 id="grid-as-graph" tabindex="-1"><a class="header-anchor" href="#grid-as-graph"><span><strong>Grid as Graph</strong></span></a></h4>
-<pre><code class="language-python"># 4-directional movement
-directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 4-directional movement</span>
+directions = [(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>), (<span class="hljs-number">1</span>, <span class="hljs-number">0</span>), (<span class="hljs-number">0</span>, -<span class="hljs-number">1</span>), (-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>)]
 
-# 8-directional movement
-directions = [(0, 1), (1, 0), (0, -1), (-1, 0),
-              (1, 1), (1, -1), (-1, 1), (-1, -1)]
+<span class="hljs-comment"># 8-directional movement</span>
+directions = [(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>), (<span class="hljs-number">1</span>, <span class="hljs-number">0</span>), (<span class="hljs-number">0</span>, -<span class="hljs-number">1</span>), (-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>),
+              (<span class="hljs-number">1</span>, <span class="hljs-number">1</span>), (<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>), (-<span class="hljs-number">1</span>, <span class="hljs-number">1</span>), (-<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>)]
 
-# Check bounds
-def is_valid(r, c, rows, cols):
-    return 0 &lt;= r &lt; rows and 0 &lt;= c &lt; cols
+<span class="hljs-comment"># Check bounds</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">is_valid</span>(<span class="hljs-params">r, c, rows, cols</span>):
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span> &lt;= r &lt; rows <span class="hljs-keyword">and</span> <span class="hljs-number">0</span> &lt;= c &lt; cols
 </code></pre>
 <h4 id="cycle-detection-patterns" tabindex="-1"><a class="header-anchor" href="#cycle-detection-patterns"><span><strong>Cycle Detection Patterns</strong></span></a></h4>
-<pre><code class="language-python"># Directed graph - DFS with states
-def has_cycle_directed(graph):
-    # 0: unvisited, 1: visiting, 2: visited
-    state = [0] * n
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Directed graph - DFS with states</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">has_cycle_directed</span>(<span class="hljs-params">graph</span>):
+    <span class="hljs-comment"># 0: unvisited, 1: visiting, 2: visited</span>
+    state = [<span class="hljs-number">0</span>] * n
     
-    def dfs(node):
-        if state[node] == 1:  # Back edge
-            return True
-        if state[node] == 2:
-            return False
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">node</span>):
+        <span class="hljs-keyword">if</span> state[node] == <span class="hljs-number">1</span>:  <span class="hljs-comment"># Back edge</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+        <span class="hljs-keyword">if</span> state[node] == <span class="hljs-number">2</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
         
-        state[node] = 1
-        for neighbor in graph[node]:
-            if dfs(neighbor):
-                return True
-        state[node] = 2
-        return False
+        state[node] = <span class="hljs-number">1</span>
+        <span class="hljs-keyword">for</span> neighbor <span class="hljs-keyword">in</span> graph[node]:
+            <span class="hljs-keyword">if</span> dfs(neighbor):
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
+        state[node] = <span class="hljs-number">2</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 
-# Undirected graph - Union-Find
-def has_cycle_undirected(edges):
+<span class="hljs-comment"># Undirected graph - Union-Find</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">has_cycle_undirected</span>(<span class="hljs-params">edges</span>):
     uf = UnionFind(n)
-    for u, v in edges:
-        if not uf.union(u, v):
-            return True  # Already connected
-    return False
+    <span class="hljs-keyword">for</span> u, v <span class="hljs-keyword">in</span> edges:
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> uf.union(u, v):
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>  <span class="hljs-comment"># Already connected</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 </code></pre>
 <h3 id="problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#problem-solving-steps"><span>Problem-Solving Steps</span></a></h3>
 <ol>
@@ -2926,79 +2938,79 @@ def has_cycle_undirected(edges):
 <li><strong>Recursion/Backtracking</strong>: DFS implementation</li>
 </ul>
 <h3 id="2-6-find-eventual-safe-states" tabindex="-1"><a class="header-anchor" href="#2-6-find-eventual-safe-states"><span>2-6) Find Eventual Safe States</span></a></h3>
-<pre><code class="language-java">// java
-// LC 802
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 802</span>
 
-// V1-0
-// IDEA : DFS
-// KEY : check if there is a &quot;cycle&quot; on a node
-// https://www.youtube.com/watch?v=v5Ni_3bHjzk
-// https://zxi.mytechroad.com/blog/graph/leetcode-802-find-eventual-safe-states/
-public List&lt;Integer&gt; eventualSafeNodes(int[][] graph) {
-    // init
-    int n = graph.length;
-    State[] states = new State[n];
-    for (int i = 0; i &lt; n; i++) {
+<span class="hljs-comment">// V1-0</span>
+<span class="hljs-comment">// IDEA : DFS</span>
+<span class="hljs-comment">// KEY : check if there is a &quot;cycle&quot; on a node</span>
+<span class="hljs-comment">// https://www.youtube.com/watch?v=v5Ni_3bHjzk</span>
+<span class="hljs-comment">// https://zxi.mytechroad.com/blog/graph/leetcode-802-find-eventual-safe-states/</span>
+<span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">eventualSafeNodes</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] graph)</span> {
+    <span class="hljs-comment">// init</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> graph.length;
+    State[] states = <span class="hljs-keyword">new</span> <span class="hljs-title class_">State</span>[n];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
         states[i] = State.UNKNOWN;
     }
 
-    List&lt;Integer&gt; result = new ArrayList&lt;&gt;();
-    for (int i = 0; i &lt; n; i++) {
-        // if node is with SAFE state, add to result
-        if (dfs(graph, i, states) == State.SAFE) {
+    List&lt;Integer&gt; result = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-comment">// if node is with SAFE state, add to result</span>
+        <span class="hljs-keyword">if</span> (dfs(graph, i, states) == State.SAFE) {
             result.add(i);
         }
     }
-    return result;
+    <span class="hljs-keyword">return</span> result;
 }
 
-private enum State {
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">enum</span> <span class="hljs-title class_">State</span> {
     UNKNOWN, VISITING, SAFE, UNSAFE
 }
 
-private State dfs(int[][] graph, int node, State[] states) {
-    /**
+<span class="hljs-keyword">private</span> State <span class="hljs-title function_">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] graph, <span class="hljs-type">int</span> node, State[] states)</span> {
+    <span class="hljs-comment">/**
      * NOTE !!!
      *  if a node with &quot;VISITING&quot; state,
      *  but is visited again (within the other iteration)
      *  -&gt; there must be a cycle
      *  -&gt; this node is UNSAFE
-     */
-    if (states[node] == State.VISITING) {
-        return states[node] = State.UNSAFE;
+     */</span>
+    <span class="hljs-keyword">if</span> (states[node] == State.VISITING) {
+        <span class="hljs-keyword">return</span> states[node] = State.UNSAFE;
     }
-    /**
+    <span class="hljs-comment">/**
      * NOTE !!!
      *  if a node is not with &quot;UNKNOWN&quot; state,
      *  -&gt; update its state
-     */
-    if (states[node] != State.UNKNOWN) {
-        return states[node];
+     */</span>
+    <span class="hljs-keyword">if</span> (states[node] != State.UNKNOWN) {
+        <span class="hljs-keyword">return</span> states[node];
     }
 
-    /**
+    <span class="hljs-comment">/**
      * NOTE !!!
      *  update node state as VISITING
-     */
+     */</span>
     states[node] = State.VISITING;
-    for (int next : graph[node]) {
-        /**
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> next : graph[node]) {
+        <span class="hljs-comment">/**
          * NOTE !!!
          *   for every sub node, if any one them
          *   has UNSAFE state,
          *   -&gt; set and return node state as UNSAFE directly
-         */
-        if (dfs(graph, next, states) == State.UNSAFE) {
-            return states[node] = State.UNSAFE;
+         */</span>
+        <span class="hljs-keyword">if</span> (dfs(graph, next, states) == State.UNSAFE) {
+            <span class="hljs-keyword">return</span> states[node] = State.UNSAFE;
         }
     }
 
-    /**
+    <span class="hljs-comment">/**
      * NOTE !!!
      *   if can pass all above checks
      *   -&gt; this is node has SAFE state
-     */
-    return states[node] = State.SAFE;
+     */</span>
+    <span class="hljs-keyword">return</span> states[node] = State.SAFE;
 }
 </code></pre>
 

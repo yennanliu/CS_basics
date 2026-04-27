@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,13 +20,24 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
     document.querySelectorAll('pre code').forEach(function(codeEl) {
       var pre = codeEl.parentElement;
       var lang = '';
       var cls = codeEl.className || '';
       var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
       if (m) lang = m[1];
+
+      // Add line numbers
+      var lines = codeEl.innerHTML.split('
+');
+      if (lines[lines.length - 1] === '') lines.pop();
+      var numbered = lines.map(function(line, i) {
+        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
+      }).join('
+');
+      codeEl.innerHTML = numbered;
+      codeEl.classList.add('hljs-ln');
+
       var wrapper = document.createElement('div');
       wrapper.className = 'code-block-wrapper';
       pre.parentNode.insertBefore(wrapper, pre);
@@ -45,7 +55,9 @@
       btn.className = 'copy-btn';
       btn.textContent = 'Copy';
       btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
+');
+        navigator.clipboard.writeText(text).then(function() {
           btn.textContent = 'Copied!';
           btn.classList.add('copied');
           setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
@@ -188,23 +200,23 @@
 </tbody>
 </table>
 <h3 id="dockerfile" tabindex="-1"><a class="header-anchor" href="#dockerfile"><span>Dockerfile 重要概念</span></a></h3>
-<pre><code class="language-dockerfile"># 使用輕量基底映像
-FROM node:18-alpine
+<pre data-lang="dockerfile"><code class="hljs language-dockerfile"><span class="hljs-comment"># 使用輕量基底映像</span>
+<span class="hljs-keyword">FROM</span> node:<span class="hljs-number">18</span>-alpine
 
-WORKDIR /app
+<span class="hljs-keyword">WORKDIR</span><span class="language-bash"> /app</span>
 
-# 先複製 package.json（利用 Layer Cache 加速 build）
-COPY package*.json ./
-RUN npm ci --only=production
+<span class="hljs-comment"># 先複製 package.json（利用 Layer Cache 加速 build）</span>
+<span class="hljs-keyword">COPY</span><span class="language-bash"> package*.json ./</span>
+<span class="hljs-keyword">RUN</span><span class="language-bash"> npm ci --only=production</span>
 
-# 再複製程式碼（變動頻繁，放最後）
-COPY . .
+<span class="hljs-comment"># 再複製程式碼（變動頻繁，放最後）</span>
+<span class="hljs-keyword">COPY</span><span class="language-bash"> . .</span>
 
-# 非 root 用戶執行（安全性）
-USER node
+<span class="hljs-comment"># 非 root 用戶執行（安全性）</span>
+<span class="hljs-keyword">USER</span> node
 
-EXPOSE 3000
-CMD [&quot;node&quot;, &quot;server.js&quot;]
+<span class="hljs-keyword">EXPOSE</span> <span class="hljs-number">3000</span>
+<span class="hljs-keyword">CMD</span><span class="language-bash"> [<span class="hljs-string">&quot;node&quot;</span>, <span class="hljs-string">&quot;server.js&quot;</span>]</span>
 </code></pre>
 <p><strong>最佳實踐：</strong></p>
 <ul>
@@ -213,58 +225,58 @@ CMD [&quot;node&quot;, &quot;server.js&quot;]
 <li>使用 Multi-stage build 縮減最終映像大小</li>
 </ul>
 <p><strong>Multi-stage build 範例（Go）：</strong></p>
-<pre><code class="language-dockerfile"># Stage 1：編譯
-FROM golang:1.21 AS builder
-WORKDIR /app
-COPY . .
-RUN CGO_ENABLED=0 go build -o server .
+<pre data-lang="dockerfile"><code class="hljs language-dockerfile"><span class="hljs-comment"># Stage 1：編譯</span>
+<span class="hljs-keyword">FROM</span> golang:<span class="hljs-number">1.21</span> AS builder
+<span class="hljs-keyword">WORKDIR</span><span class="language-bash"> /app</span>
+<span class="hljs-keyword">COPY</span><span class="language-bash"> . .</span>
+<span class="hljs-keyword">RUN</span><span class="language-bash"> CGO_ENABLED=0 go build -o server .</span>
 
-# Stage 2：只保留執行檔
-FROM scratch
-COPY --from=builder /app/server /server
-ENTRYPOINT [&quot;/server&quot;]
+<span class="hljs-comment"># Stage 2：只保留執行檔</span>
+<span class="hljs-keyword">FROM</span> scratch
+<span class="hljs-keyword">COPY</span><span class="language-bash"> --from=builder /app/server /server</span>
+<span class="hljs-keyword">ENTRYPOINT</span><span class="language-bash"> [<span class="hljs-string">&quot;/server&quot;</span>]</span>
 </code></pre>
 <h3 id="docker" tabindex="-1"><a class="header-anchor" href="#docker"><span>常用 Docker 指令</span></a></h3>
-<pre><code class="language-bash">docker build -t my-app:v1 .          # 建立映像
-docker run -d -p 8080:3000 my-app:v1  # 後台執行
-docker logs -f my-container           # 追蹤日誌
-docker exec -it my-container sh        # 進入容器
-docker ps                              # 列出運行中容器
-docker images                          # 列出本地映像
-docker system prune -af               # 清理未使用資源
+<pre data-lang="bash"><code class="hljs language-bash">docker build -t my-app:v1 .          <span class="hljs-comment"># 建立映像</span>
+docker run -d -p 8080:3000 my-app:v1  <span class="hljs-comment"># 後台執行</span>
+docker logs -f my-container           <span class="hljs-comment"># 追蹤日誌</span>
+docker <span class="hljs-built_in">exec</span> -it my-container sh        <span class="hljs-comment"># 進入容器</span>
+docker ps                              <span class="hljs-comment"># 列出運行中容器</span>
+docker images                          <span class="hljs-comment"># 列出本地映像</span>
+docker system prune -af               <span class="hljs-comment"># 清理未使用資源</span>
 </code></pre>
 <h3 id="docker-compose" tabindex="-1"><a class="header-anchor" href="#docker-compose"><span>Docker Compose（本地多容器開發）</span></a></h3>
-<pre><code class="language-yaml">version: '3.8'
-services:
-  app:
-    build: .
-    ports:
-      - &quot;8080:3000&quot;
-    environment:
-      - DB_HOST=db
-      - REDIS_HOST=redis
-    depends_on:
-      - db
-      - redis
+<pre data-lang="yaml"><code class="hljs language-yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">&#x27;3.8&#x27;</span>
+<span class="hljs-attr">services:</span>
+  <span class="hljs-attr">app:</span>
+    <span class="hljs-attr">build:</span> <span class="hljs-string">.</span>
+    <span class="hljs-attr">ports:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;8080:3000&quot;</span>
+    <span class="hljs-attr">environment:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">DB_HOST=db</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">REDIS_HOST=redis</span>
+    <span class="hljs-attr">depends_on:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">db</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">redis</span>
 
-  db:
-    image: postgres:15-alpine
-    environment:
-      POSTGRES_PASSWORD: secret
-    volumes:
-      - db_data:/var/lib/postgresql/data
+  <span class="hljs-attr">db:</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">postgres:15-alpine</span>
+    <span class="hljs-attr">environment:</span>
+      <span class="hljs-attr">POSTGRES_PASSWORD:</span> <span class="hljs-string">secret</span>
+    <span class="hljs-attr">volumes:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">db_data:/var/lib/postgresql/data</span>
 
-  redis:
-    image: redis:7-alpine
-    command: redis-server --requirepass secret
+  <span class="hljs-attr">redis:</span>
+    <span class="hljs-attr">image:</span> <span class="hljs-string">redis:7-alpine</span>
+    <span class="hljs-attr">command:</span> <span class="hljs-string">redis-server</span> <span class="hljs-string">--requirepass</span> <span class="hljs-string">secret</span>
 
-volumes:
-  db_data:
+<span class="hljs-attr">volumes:</span>
+  <span class="hljs-attr">db_data:</span>
 </code></pre>
 <hr>
 <h2 id="2-kubernetes" tabindex="-1"><a class="header-anchor" href="#2-kubernetes"><span>2. Kubernetes 基礎</span></a></h2>
 <h3 id="-1" tabindex="-1"><a class="header-anchor" href="#-1"><span>架構概覽</span></a></h3>
-<pre><code>Cluster
+<pre><code class="hljs">Cluster
 ├── Control Plane（主節點）
 │   ├── API Server      ← 所有操作的入口
 │   ├── etcd            ← 儲存叢集狀態（key-value）
@@ -327,50 +339,50 @@ volumes:
 </tbody>
 </table>
 <h3 id="deployment" tabindex="-1"><a class="header-anchor" href="#deployment"><span>Deployment 範例</span></a></h3>
-<pre><code class="language-yaml">apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: my-app
-  namespace: production
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: my-app
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 1   # 更新時最多 1 個 Pod 不可用
-      maxSurge: 1         # 更新時最多多建 1 個 Pod
-  template:
-    metadata:
-      labels:
-        app: my-app
-    spec:
-      containers:
-      - name: my-app
-        image: my-app:v2
-        ports:
-        - containerPort: 3000
-        resources:
-          requests:
-            cpu: &quot;250m&quot;
-            memory: &quot;128Mi&quot;
-          limits:
-            cpu: &quot;500m&quot;
-            memory: &quot;256Mi&quot;
-        readinessProbe:        # 就緒探針：Pod 準備好接流量了嗎？
-          httpGet:
-            path: /health
-            port: 3000
-          initialDelaySeconds: 5
-          periodSeconds: 10
-        livenessProbe:         # 存活探針：Pod 還活著嗎？不健康就重啟
-          httpGet:
-            path: /health
-            port: 3000
-          initialDelaySeconds: 15
-          periodSeconds: 20
+<pre data-lang="yaml"><code class="hljs language-yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">apps/v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Deployment</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-app</span>
+  <span class="hljs-attr">namespace:</span> <span class="hljs-string">production</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">replicas:</span> <span class="hljs-number">3</span>
+  <span class="hljs-attr">selector:</span>
+    <span class="hljs-attr">matchLabels:</span>
+      <span class="hljs-attr">app:</span> <span class="hljs-string">my-app</span>
+  <span class="hljs-attr">strategy:</span>
+    <span class="hljs-attr">type:</span> <span class="hljs-string">RollingUpdate</span>
+    <span class="hljs-attr">rollingUpdate:</span>
+      <span class="hljs-attr">maxUnavailable:</span> <span class="hljs-number">1</span>   <span class="hljs-comment"># 更新時最多 1 個 Pod 不可用</span>
+      <span class="hljs-attr">maxSurge:</span> <span class="hljs-number">1</span>         <span class="hljs-comment"># 更新時最多多建 1 個 Pod</span>
+  <span class="hljs-attr">template:</span>
+    <span class="hljs-attr">metadata:</span>
+      <span class="hljs-attr">labels:</span>
+        <span class="hljs-attr">app:</span> <span class="hljs-string">my-app</span>
+    <span class="hljs-attr">spec:</span>
+      <span class="hljs-attr">containers:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">my-app</span>
+        <span class="hljs-attr">image:</span> <span class="hljs-string">my-app:v2</span>
+        <span class="hljs-attr">ports:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">containerPort:</span> <span class="hljs-number">3000</span>
+        <span class="hljs-attr">resources:</span>
+          <span class="hljs-attr">requests:</span>
+            <span class="hljs-attr">cpu:</span> <span class="hljs-string">&quot;250m&quot;</span>
+            <span class="hljs-attr">memory:</span> <span class="hljs-string">&quot;128Mi&quot;</span>
+          <span class="hljs-attr">limits:</span>
+            <span class="hljs-attr">cpu:</span> <span class="hljs-string">&quot;500m&quot;</span>
+            <span class="hljs-attr">memory:</span> <span class="hljs-string">&quot;256Mi&quot;</span>
+        <span class="hljs-attr">readinessProbe:</span>        <span class="hljs-comment"># 就緒探針：Pod 準備好接流量了嗎？</span>
+          <span class="hljs-attr">httpGet:</span>
+            <span class="hljs-attr">path:</span> <span class="hljs-string">/health</span>
+            <span class="hljs-attr">port:</span> <span class="hljs-number">3000</span>
+          <span class="hljs-attr">initialDelaySeconds:</span> <span class="hljs-number">5</span>
+          <span class="hljs-attr">periodSeconds:</span> <span class="hljs-number">10</span>
+        <span class="hljs-attr">livenessProbe:</span>         <span class="hljs-comment"># 存活探針：Pod 還活著嗎？不健康就重啟</span>
+          <span class="hljs-attr">httpGet:</span>
+            <span class="hljs-attr">path:</span> <span class="hljs-string">/health</span>
+            <span class="hljs-attr">port:</span> <span class="hljs-number">3000</span>
+          <span class="hljs-attr">initialDelaySeconds:</span> <span class="hljs-number">15</span>
+          <span class="hljs-attr">periodSeconds:</span> <span class="hljs-number">20</span>
 </code></pre>
 <h3 id="service" tabindex="-1"><a class="header-anchor" href="#service"><span>Service 類型</span></a></h3>
 <table>
@@ -442,74 +454,74 @@ spec:
 </tbody>
 </table>
 <h3 id="hpa" tabindex="-1"><a class="header-anchor" href="#hpa"><span>HPA（水平自動擴縮）</span></a></h3>
-<pre><code class="language-yaml">apiVersion: autoscaling/v2
-kind: HorizontalPodAutoscaler
-metadata:
-  name: my-app-hpa
-spec:
-  scaleTargetRef:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: my-app
-  minReplicas: 2
-  maxReplicas: 20
-  metrics:
-  - type: Resource
-    resource:
-      name: cpu
-      target:
-        type: Utilization
-        averageUtilization: 65
-  - type: Resource
-    resource:
-      name: memory
-      target:
-        type: Utilization
-        averageUtilization: 75
+<pre data-lang="yaml"><code class="hljs language-yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">autoscaling/v2</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">HorizontalPodAutoscaler</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-app-hpa</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">scaleTargetRef:</span>
+    <span class="hljs-attr">apiVersion:</span> <span class="hljs-string">apps/v1</span>
+    <span class="hljs-attr">kind:</span> <span class="hljs-string">Deployment</span>
+    <span class="hljs-attr">name:</span> <span class="hljs-string">my-app</span>
+  <span class="hljs-attr">minReplicas:</span> <span class="hljs-number">2</span>
+  <span class="hljs-attr">maxReplicas:</span> <span class="hljs-number">20</span>
+  <span class="hljs-attr">metrics:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">type:</span> <span class="hljs-string">Resource</span>
+    <span class="hljs-attr">resource:</span>
+      <span class="hljs-attr">name:</span> <span class="hljs-string">cpu</span>
+      <span class="hljs-attr">target:</span>
+        <span class="hljs-attr">type:</span> <span class="hljs-string">Utilization</span>
+        <span class="hljs-attr">averageUtilization:</span> <span class="hljs-number">65</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">type:</span> <span class="hljs-string">Resource</span>
+    <span class="hljs-attr">resource:</span>
+      <span class="hljs-attr">name:</span> <span class="hljs-string">memory</span>
+      <span class="hljs-attr">target:</span>
+        <span class="hljs-attr">type:</span> <span class="hljs-string">Utilization</span>
+        <span class="hljs-attr">averageUtilization:</span> <span class="hljs-number">75</span>
 </code></pre>
 <h3 id="kubectl" tabindex="-1"><a class="header-anchor" href="#kubectl"><span>常用 kubectl 指令</span></a></h3>
-<pre><code class="language-bash"># 查看資源
+<pre data-lang="bash"><code class="hljs language-bash"><span class="hljs-comment"># 查看資源</span>
 kubectl get pods -n production
 kubectl get deployments,services -n production
 kubectl get all -n production
 
-# 除錯
-kubectl logs -f my-pod -n production --previous  # 上一次崩潰的日誌
-kubectl describe pod my-pod -n production         # 詳細資訊與 Events
-kubectl exec -it my-pod -n production -- sh       # 進入 Pod
+<span class="hljs-comment"># 除錯</span>
+kubectl logs -f my-pod -n production --previous  <span class="hljs-comment"># 上一次崩潰的日誌</span>
+kubectl describe pod my-pod -n production         <span class="hljs-comment"># 詳細資訊與 Events</span>
+kubectl <span class="hljs-built_in">exec</span> -it my-pod -n production -- sh       <span class="hljs-comment"># 進入 Pod</span>
 
-# 部署操作
-kubectl set image deployment/my-app my-app=my-app:v3 -n production
+<span class="hljs-comment"># 部署操作</span>
+kubectl <span class="hljs-built_in">set</span> image deployment/my-app my-app=my-app:v3 -n production
 kubectl rollout status deployment/my-app -n production
-kubectl rollout undo deployment/my-app -n production            # 回滾到上一版
-kubectl rollout undo deployment/my-app --to-revision=2          # 回滾到指定版本
-kubectl rollout history deployment/my-app -n production
+kubectl rollout undo deployment/my-app -n production            <span class="hljs-comment"># 回滾到上一版</span>
+kubectl rollout undo deployment/my-app --to-revision=2          <span class="hljs-comment"># 回滾到指定版本</span>
+kubectl rollout <span class="hljs-built_in">history</span> deployment/my-app -n production
 
-# 擴縮
+<span class="hljs-comment"># 擴縮</span>
 kubectl scale deployment/my-app --replicas=5 -n production
 
-# 強制刪除卡住的 Pod
+<span class="hljs-comment"># 強制刪除卡住的 Pod</span>
 kubectl delete pod my-pod -n production --grace-period=0 --force
 </code></pre>
 <hr>
 <h2 id="3-k8s-qps-requests-limits" tabindex="-1"><a class="header-anchor" href="#3-k8s-qps-requests-limits"><span>3. K8s 資源估算（QPS → Requests/Limits）</span></a></h2>
 <h3 id="-4" tabindex="-1"><a class="header-anchor" href="#-4"><span>核心公式</span></a></h3>
-<pre><code>總 CPU    ≈ QPS × 每次請求的 CPU 消耗
+<pre><code class="hljs">總 CPU    ≈ QPS × 每次請求的 CPU 消耗
 總 Memory ≈ 基礎記憶體 + (並發數 × 每次請求的記憶體)
 </code></pre>
 <h3 id="little-s-law" tabindex="-1"><a class="header-anchor" href="#little-s-law"><span>步驟一：估算並發數（Little’s Law）</span></a></h3>
-<pre><code>並發數 = QPS × 平均回應時間（秒）
+<pre><code class="hljs">並發數 = QPS × 平均回應時間（秒）
 </code></pre>
 <p>範例：QPS = 500，平均延遲 = 200ms</p>
-<pre><code>並發數 = 500 × 0.2 = 100 個同時進行的請求
+<pre><code class="hljs">並發數 = 500 × 0.2 = 100 個同時進行的請求
 </code></pre>
 <h3 id="-5" tabindex="-1"><a class="header-anchor" href="#-5"><span>步驟二：量測每次請求消耗</span></a></h3>
 <p>用 k6 / Locust / JMeter 進行負載測試，再推算：</p>
-<pre><code>CPU per request    = 負載測試時總 CPU 使用量 / QPS
+<pre><code class="hljs">CPU per request    = 負載測試時總 CPU 使用量 / QPS
 Memory per request ≈ (峰值記憶體 - 基礎記憶體) / 並發數
 </code></pre>
 <h3 id="-6" tabindex="-1"><a class="header-anchor" href="#-6"><span>步驟三：計算總資源需求</span></a></h3>
-<pre><code>總 CPU    = QPS × CPU per request  × 安全係數（1.5～2）
+<pre><code class="hljs">總 CPU    = QPS × CPU per request  × 安全係數（1.5～2）
 總 Memory = (基礎記憶體 + 並發數 × Memory per request) × 安全係數（1.3～1.5）
 </code></pre>
 <h3 id="-7" tabindex="-1"><a class="header-anchor" href="#-7"><span>端對端範例</span></a></h3>
@@ -541,13 +553,13 @@ Memory per request ≈ (峰值記憶體 - 基礎記憶體) / 並發數
 </tbody>
 </table>
 <p>切分 10 個 Pod，每 Pod：</p>
-<pre><code class="language-yaml">resources:
-  requests:
-    cpu: &quot;500m&quot;
-    memory: &quot;64Mi&quot;
-  limits:
-    cpu: &quot;1000m&quot;
-    memory: &quot;128Mi&quot;
+<pre data-lang="yaml"><code class="hljs language-yaml"><span class="hljs-attr">resources:</span>
+  <span class="hljs-attr">requests:</span>
+    <span class="hljs-attr">cpu:</span> <span class="hljs-string">&quot;500m&quot;</span>
+    <span class="hljs-attr">memory:</span> <span class="hljs-string">&quot;64Mi&quot;</span>
+  <span class="hljs-attr">limits:</span>
+    <span class="hljs-attr">cpu:</span> <span class="hljs-string">&quot;1000m&quot;</span>
+    <span class="hljs-attr">memory:</span> <span class="hljs-string">&quot;128Mi&quot;</span>
 </code></pre>
 <h3 id="requests-vs-limits" tabindex="-1"><a class="header-anchor" href="#requests-vs-limits"><span>Requests vs Limits 設定原則</span></a></h3>
 <table>
@@ -611,7 +623,7 @@ Memory per request ≈ (峰值記憶體 - 基礎記憶體) / 並發數
 <hr>
 <h2 id="4-ci-cd" tabindex="-1"><a class="header-anchor" href="#4-ci-cd"><span>4. CI/CD 流程設計</span></a></h2>
 <h3 id="pipeline" tabindex="-1"><a class="header-anchor" href="#pipeline"><span>標準 Pipeline 階段</span></a></h3>
-<pre><code>程式碼提交（PR）
+<pre><code class="hljs">程式碼提交（PR）
   → Lint / Static Analysis（程式碼品質）
   → Unit Test（單元測試）
   → Build &amp; Package（Docker Image）
@@ -624,61 +636,61 @@ Memory per request ≈ (峰值記憶體 - 基礎記憶體) / 並發數
   → 監控觀察（告警、回滾機制）
 </code></pre>
 <h3 id="github-actions" tabindex="-1"><a class="header-anchor" href="#github-actions"><span>GitHub Actions 範例</span></a></h3>
-<pre><code class="language-yaml">name: CI/CD Pipeline
+<pre data-lang="yaml"><code class="hljs language-yaml"><span class="hljs-attr">name:</span> <span class="hljs-string">CI/CD</span> <span class="hljs-string">Pipeline</span>
 
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+<span class="hljs-attr">on:</span>
+  <span class="hljs-attr">push:</span>
+    <span class="hljs-attr">branches:</span> [<span class="hljs-string">main</span>]
+  <span class="hljs-attr">pull_request:</span>
+    <span class="hljs-attr">branches:</span> [<span class="hljs-string">main</span>]
 
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-          cache: 'npm'
-      - run: npm ci
-      - run: npm run lint
-      - run: npm test -- --coverage
+<span class="hljs-attr">jobs:</span>
+  <span class="hljs-attr">test:</span>
+    <span class="hljs-attr">runs-on:</span> <span class="hljs-string">ubuntu-latest</span>
+    <span class="hljs-attr">steps:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/checkout@v4</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/setup-node@v4</span>
+        <span class="hljs-attr">with:</span>
+          <span class="hljs-attr">node-version:</span> <span class="hljs-string">&#x27;18&#x27;</span>
+          <span class="hljs-attr">cache:</span> <span class="hljs-string">&#x27;npm&#x27;</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">run:</span> <span class="hljs-string">npm</span> <span class="hljs-string">ci</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">run:</span> <span class="hljs-string">npm</span> <span class="hljs-string">run</span> <span class="hljs-string">lint</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">run:</span> <span class="hljs-string">npm</span> <span class="hljs-string">test</span> <span class="hljs-string">--</span> <span class="hljs-string">--coverage</span>
 
-  build:
-    needs: test
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    steps:
-      - uses: actions/checkout@v4
-      - name: Build and push Docker image
-        env:
-          IMAGE_TAG: ${{ github.sha }}
-        run: |
+  <span class="hljs-attr">build:</span>
+    <span class="hljs-attr">needs:</span> <span class="hljs-string">test</span>
+    <span class="hljs-attr">runs-on:</span> <span class="hljs-string">ubuntu-latest</span>
+    <span class="hljs-attr">if:</span> <span class="hljs-string">github.ref</span> <span class="hljs-string">==</span> <span class="hljs-string">&#x27;refs/heads/main&#x27;</span>
+    <span class="hljs-attr">steps:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/checkout@v4</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Build</span> <span class="hljs-string">and</span> <span class="hljs-string">push</span> <span class="hljs-string">Docker</span> <span class="hljs-string">image</span>
+        <span class="hljs-attr">env:</span>
+          <span class="hljs-attr">IMAGE_TAG:</span> <span class="hljs-string">${{</span> <span class="hljs-string">github.sha</span> <span class="hljs-string">}}</span>
+        <span class="hljs-attr">run:</span> <span class="hljs-string">|
           docker build -t my-app:$IMAGE_TAG .
           docker push my-app:$IMAGE_TAG
-
-  deploy-staging:
-    needs: build
-    runs-on: ubuntu-latest
-    environment: staging
-    steps:
-      - name: Deploy to Staging
-        run: |
+</span>
+  <span class="hljs-attr">deploy-staging:</span>
+    <span class="hljs-attr">needs:</span> <span class="hljs-string">build</span>
+    <span class="hljs-attr">runs-on:</span> <span class="hljs-string">ubuntu-latest</span>
+    <span class="hljs-attr">environment:</span> <span class="hljs-string">staging</span>
+    <span class="hljs-attr">steps:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Deploy</span> <span class="hljs-string">to</span> <span class="hljs-string">Staging</span>
+        <span class="hljs-attr">run:</span> <span class="hljs-string">|
           kubectl set image deployment/my-app \
             my-app=my-app:${{ github.sha }} -n staging
           kubectl rollout status deployment/my-app -n staging
-
-  deploy-prod:
-    needs: deploy-staging
-    runs-on: ubuntu-latest
-    environment: production      # 需要手動審核
-    steps:
-      - name: Deploy to Production
-        run: |
+</span>
+  <span class="hljs-attr">deploy-prod:</span>
+    <span class="hljs-attr">needs:</span> <span class="hljs-string">deploy-staging</span>
+    <span class="hljs-attr">runs-on:</span> <span class="hljs-string">ubuntu-latest</span>
+    <span class="hljs-attr">environment:</span> <span class="hljs-string">production</span>      <span class="hljs-comment"># 需要手動審核</span>
+    <span class="hljs-attr">steps:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Deploy</span> <span class="hljs-string">to</span> <span class="hljs-string">Production</span>
+        <span class="hljs-attr">run:</span> <span class="hljs-string">|
           kubectl set image deployment/my-app \
             my-app=my-app:${{ github.sha }} -n production
-</code></pre>
+</span></code></pre>
 <h3 id="-9" tabindex="-1"><a class="header-anchor" href="#-9"><span>部署策略選擇</span></a></h3>
 <table>
 <thead>
@@ -768,37 +780,37 @@ jobs:
 </tbody>
 </table>
 <h3 id="prometheus" tabindex="-1"><a class="header-anchor" href="#prometheus"><span>Prometheus 告警規則範例</span></a></h3>
-<pre><code class="language-yaml">groups:
-- name: app-alerts
-  rules:
-  - alert: HighErrorRate
-    expr: |
+<pre data-lang="yaml"><code class="hljs language-yaml"><span class="hljs-attr">groups:</span>
+<span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">app-alerts</span>
+  <span class="hljs-attr">rules:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">alert:</span> <span class="hljs-string">HighErrorRate</span>
+    <span class="hljs-attr">expr:</span> <span class="hljs-string">|
       rate(http_requests_total{status=~&quot;5..&quot;}[5m])
       / rate(http_requests_total[5m]) &gt; 0.05
-    for: 2m
-    labels:
-      severity: critical
-    annotations:
-      summary: &quot;HTTP 5xx 錯誤率超過 5%&quot;
-      runbook: &quot;https://wiki.internal/runbooks/high-error-rate&quot;
+</span>    <span class="hljs-attr">for:</span> <span class="hljs-string">2m</span>
+    <span class="hljs-attr">labels:</span>
+      <span class="hljs-attr">severity:</span> <span class="hljs-string">critical</span>
+    <span class="hljs-attr">annotations:</span>
+      <span class="hljs-attr">summary:</span> <span class="hljs-string">&quot;HTTP 5xx 錯誤率超過 5%&quot;</span>
+      <span class="hljs-attr">runbook:</span> <span class="hljs-string">&quot;https://wiki.internal/runbooks/high-error-rate&quot;</span>
 
-  - alert: HighP99Latency
-    expr: |
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">alert:</span> <span class="hljs-string">HighP99Latency</span>
+    <span class="hljs-attr">expr:</span> <span class="hljs-string">|
       histogram_quantile(0.99,
         rate(http_request_duration_seconds_bucket[5m])) &gt; 2
-    for: 5m
-    labels:
-      severity: warning
-    annotations:
-      summary: &quot;P99 延遲超過 2 秒&quot;
+</span>    <span class="hljs-attr">for:</span> <span class="hljs-string">5m</span>
+    <span class="hljs-attr">labels:</span>
+      <span class="hljs-attr">severity:</span> <span class="hljs-string">warning</span>
+    <span class="hljs-attr">annotations:</span>
+      <span class="hljs-attr">summary:</span> <span class="hljs-string">&quot;P99 延遲超過 2 秒&quot;</span>
 
-  - alert: PodCrashLooping
-    expr: rate(kube_pod_container_status_restarts_total[15m]) &gt; 0
-    for: 5m
-    labels:
-      severity: critical
-    annotations:
-      summary: &quot;Pod {{ $labels.pod }} 持續重啟&quot;
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">alert:</span> <span class="hljs-string">PodCrashLooping</span>
+    <span class="hljs-attr">expr:</span> <span class="hljs-string">rate(kube_pod_container_status_restarts_total[15m])</span> <span class="hljs-string">&gt;</span> <span class="hljs-number">0</span>
+    <span class="hljs-attr">for:</span> <span class="hljs-string">5m</span>
+    <span class="hljs-attr">labels:</span>
+      <span class="hljs-attr">severity:</span> <span class="hljs-string">critical</span>
+    <span class="hljs-attr">annotations:</span>
+      <span class="hljs-attr">summary:</span> <span class="hljs-string">&quot;Pod <span class="hljs-template-variable">{{ $labels.pod }}</span> 持續重啟&quot;</span>
 </code></pre>
 <h3 id="-11" tabindex="-1"><a class="header-anchor" href="#-11"><span>告警設計原則</span></a></h3>
 <ul>
@@ -844,7 +856,7 @@ jobs:
 <p>原則：<code>SLA ≤ SLO</code>（內部目標要比對外承諾更嚴格）</p>
 </blockquote>
 <h3 id="error-budget" tabindex="-1"><a class="header-anchor" href="#error-budget"><span>錯誤預算（Error Budget）</span></a></h3>
-<pre><code>錯誤預算 = 100% - SLO
+<pre><code class="hljs">錯誤預算 = 100% - SLO
 
 SLO = 99.9% 可用性
 → 每月允許停機時間 = 30天 × 24h × 60m × 0.1% ≈ 43 分鐘
@@ -888,7 +900,7 @@ SLO = 99.9% 可用性
 </tbody>
 </table>
 <h3 id="incident-response" tabindex="-1"><a class="header-anchor" href="#incident-response"><span>事故應對流程（Incident Response）</span></a></h3>
-<pre><code>偵測（Detection）
+<pre><code class="hljs">偵測（Detection）
   → 告警觸發 or 用戶回報
   
 分類（Triage）
@@ -962,7 +974,7 @@ SLO = 99.9% 可用性
 </tbody>
 </table>
 <h3 id="dns" tabindex="-1"><a class="header-anchor" href="#dns"><span>DNS 解析流程</span></a></h3>
-<pre><code>瀏覽器輸入 www.example.com
+<pre><code class="hljs">瀏覽器輸入 www.example.com
   → 查本地 Cache（/etc/hosts、瀏覽器）
   → 查本地 DNS Resolver（通常是路由器或 ISP）
   → 查 Root Name Server（.）
@@ -1000,41 +1012,41 @@ SLO = 99.9% 可用性
 <li><strong>Weighted Round Robin</strong>：依伺服器權重分配</li>
 </ul>
 <h3 id="kubernetes" tabindex="-1"><a class="header-anchor" href="#kubernetes"><span>Kubernetes 網路模型</span></a></h3>
-<pre><code>外部流量
+<pre><code class="hljs">外部流量
   → LoadBalancer Service / Ingress Controller
   → Service（ClusterIP，kube-proxy 做 DNAT）
   → Pod（每個 Pod 有獨立 IP）
 </code></pre>
 <p><strong>Ingress 路由範例：</strong></p>
-<pre><code class="language-yaml">apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: my-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
-spec:
-  tls:
-  - hosts:
-    - api.example.com
-    secretName: tls-secret
-  rules:
-  - host: api.example.com
-    http:
-      paths:
-      - path: /users
-        pathType: Prefix
-        backend:
-          service:
-            name: user-service
-            port:
-              number: 80
-      - path: /orders
-        pathType: Prefix
-        backend:
-          service:
-            name: order-service
-            port:
-              number: 80
+<pre data-lang="yaml"><code class="hljs language-yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">networking.k8s.io/v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Ingress</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-ingress</span>
+  <span class="hljs-attr">annotations:</span>
+    <span class="hljs-attr">nginx.ingress.kubernetes.io/rewrite-target:</span> <span class="hljs-string">/</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">tls:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">hosts:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-string">api.example.com</span>
+    <span class="hljs-attr">secretName:</span> <span class="hljs-string">tls-secret</span>
+  <span class="hljs-attr">rules:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">host:</span> <span class="hljs-string">api.example.com</span>
+    <span class="hljs-attr">http:</span>
+      <span class="hljs-attr">paths:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">path:</span> <span class="hljs-string">/users</span>
+        <span class="hljs-attr">pathType:</span> <span class="hljs-string">Prefix</span>
+        <span class="hljs-attr">backend:</span>
+          <span class="hljs-attr">service:</span>
+            <span class="hljs-attr">name:</span> <span class="hljs-string">user-service</span>
+            <span class="hljs-attr">port:</span>
+              <span class="hljs-attr">number:</span> <span class="hljs-number">80</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">path:</span> <span class="hljs-string">/orders</span>
+        <span class="hljs-attr">pathType:</span> <span class="hljs-string">Prefix</span>
+        <span class="hljs-attr">backend:</span>
+          <span class="hljs-attr">service:</span>
+            <span class="hljs-attr">name:</span> <span class="hljs-string">order-service</span>
+            <span class="hljs-attr">port:</span>
+              <span class="hljs-attr">number:</span> <span class="hljs-number">80</span>
 </code></pre>
 <h3 id="service-mesh" tabindex="-1"><a class="header-anchor" href="#service-mesh"><span>Service Mesh（服務網格）</span></a></h3>
 <p>用於微服務架構，在不修改應用程式碼的情況下提供：</p>
@@ -1064,56 +1076,56 @@ spec:
 <hr>
 <h2 id="8-linux" tabindex="-1"><a class="header-anchor" href="#8-linux"><span>8. Linux 常用指令與概念</span></a></h2>
 <h3 id="-13" tabindex="-1"><a class="header-anchor" href="#-13"><span>進程與系統管理</span></a></h3>
-<pre><code class="language-bash"># 查看進程
-ps aux | grep my-app          # 列出所有進程
-top / htop                    # 動態查看系統資源使用
-kill -9 &lt;PID&gt;                 # 強制終止進程
-lsof -i :8080                 # 查看佔用 8080 端口的進程
+<pre data-lang="bash"><code class="hljs language-bash"><span class="hljs-comment"># 查看進程</span>
+ps aux | grep my-app          <span class="hljs-comment"># 列出所有進程</span>
+top / htop                    <span class="hljs-comment"># 動態查看系統資源使用</span>
+<span class="hljs-built_in">kill</span> -9 &lt;PID&gt;                 <span class="hljs-comment"># 強制終止進程</span>
+lsof -i :8080                 <span class="hljs-comment"># 查看佔用 8080 端口的進程</span>
 
-# 系統資源
-free -h                       # 記憶體使用
-df -h                         # 磁碟使用
-du -sh /var/log/*             # 目錄大小
-vmstat 1                      # 系統虛擬記憶體統計
+<span class="hljs-comment"># 系統資源</span>
+free -h                       <span class="hljs-comment"># 記憶體使用</span>
+<span class="hljs-built_in">df</span> -h                         <span class="hljs-comment"># 磁碟使用</span>
+<span class="hljs-built_in">du</span> -sh /var/log/*             <span class="hljs-comment"># 目錄大小</span>
+vmstat 1                      <span class="hljs-comment"># 系統虛擬記憶體統計</span>
 
-# CPU 和負載
-uptime                        # 系統負載（load average）
-nproc                         # CPU 核心數
+<span class="hljs-comment"># CPU 和負載</span>
+<span class="hljs-built_in">uptime</span>                        <span class="hljs-comment"># 系統負載（load average）</span>
+<span class="hljs-built_in">nproc</span>                         <span class="hljs-comment"># CPU 核心數</span>
 </code></pre>
 <h3 id="-14" tabindex="-1"><a class="header-anchor" href="#-14"><span>網路診斷</span></a></h3>
-<pre><code class="language-bash"># 連線測試
+<pre data-lang="bash"><code class="hljs language-bash"><span class="hljs-comment"># 連線測試</span>
 ping -c 4 google.com
-curl -v https://api.example.com/health    # 測試 HTTP 請求
-curl -o /dev/null -s -w &quot;%{http_code}\n&quot; https://example.com
+curl -v https://api.example.com/health    <span class="hljs-comment"># 測試 HTTP 請求</span>
+curl -o /dev/null -s -w <span class="hljs-string">&quot;%{http_code}\n&quot;</span> https://example.com
 
-# 網路資訊
-netstat -tlnp                 # 查看監聽中的端口
-ss -tlnp                      # 更快的 netstat 替代
-ip addr                       # 查看網路介面和 IP
-traceroute google.com         # 追蹤路由路徑
-nslookup / dig example.com    # DNS 查詢
+<span class="hljs-comment"># 網路資訊</span>
+netstat -tlnp                 <span class="hljs-comment"># 查看監聽中的端口</span>
+ss -tlnp                      <span class="hljs-comment"># 更快的 netstat 替代</span>
+ip addr                       <span class="hljs-comment"># 查看網路介面和 IP</span>
+traceroute google.com         <span class="hljs-comment"># 追蹤路由路徑</span>
+nslookup / dig example.com    <span class="hljs-comment"># DNS 查詢</span>
 
-# 防火牆
-iptables -L                   # 列出防火牆規則
+<span class="hljs-comment"># 防火牆</span>
+iptables -L                   <span class="hljs-comment"># 列出防火牆規則</span>
 </code></pre>
 <h3 id="-15" tabindex="-1"><a class="header-anchor" href="#-15"><span>日誌與文件</span></a></h3>
-<pre><code class="language-bash"># 查看日誌
-tail -f /var/log/nginx/access.log      # 追蹤日誌
-journalctl -u nginx -f                 # systemd 服務日誌
-journalctl --since &quot;2024-01-01 00:00&quot;  # 指定時間範圍
+<pre data-lang="bash"><code class="hljs language-bash"><span class="hljs-comment"># 查看日誌</span>
+<span class="hljs-built_in">tail</span> -f /var/log/nginx/access.log      <span class="hljs-comment"># 追蹤日誌</span>
+journalctl -u nginx -f                 <span class="hljs-comment"># systemd 服務日誌</span>
+journalctl --since <span class="hljs-string">&quot;2024-01-01 00:00&quot;</span>  <span class="hljs-comment"># 指定時間範圍</span>
 
-# 搜尋
-grep -r &quot;ERROR&quot; /var/log/ --include=&quot;*.log&quot;
-grep -c &quot;500&quot; access.log               # 計算出現次數
-awk '{print $1}' access.log | sort | uniq -c | sort -rn  # 統計最多的 IP
+<span class="hljs-comment"># 搜尋</span>
+grep -r <span class="hljs-string">&quot;ERROR&quot;</span> /var/log/ --include=<span class="hljs-string">&quot;*.log&quot;</span>
+grep -c <span class="hljs-string">&quot;500&quot;</span> access.log               <span class="hljs-comment"># 計算出現次數</span>
+awk <span class="hljs-string">&#x27;{print $1}&#x27;</span> access.log | <span class="hljs-built_in">sort</span> | <span class="hljs-built_in">uniq</span> -c | <span class="hljs-built_in">sort</span> -rn  <span class="hljs-comment"># 統計最多的 IP</span>
 
-# 文件操作
-find / -name &quot;*.log&quot; -mtime +30 -delete    # 刪除 30 天前的日誌
-tar -czf backup.tar.gz /etc/nginx/         # 壓縮備份
+<span class="hljs-comment"># 文件操作</span>
+find / -name <span class="hljs-string">&quot;*.log&quot;</span> -mtime +30 -delete    <span class="hljs-comment"># 刪除 30 天前的日誌</span>
+tar -czf backup.tar.gz /etc/nginx/         <span class="hljs-comment"># 壓縮備份</span>
 </code></pre>
 <h3 id="linux" tabindex="-1"><a class="header-anchor" href="#linux"><span>常見 Linux 概念</span></a></h3>
 <p><strong>Load Average（系統負載）：</strong></p>
-<pre><code>uptime 輸出：load average: 1.23, 0.95, 0.88
+<pre><code class="hljs">uptime 輸出：load average: 1.23, 0.95, 0.88
               最近1分鐘  最近5分鐘  最近15分鐘
 
 規則：值 ≈ CPU 核心數 表示滿載；&gt; 核心數 表示過載
@@ -1181,17 +1193,17 @@ tar -czf backup.tar.gz /etc/nginx/         # 壓縮備份
 </tbody>
 </table>
 <h3 id="pvc" tabindex="-1"><a class="header-anchor" href="#pvc"><span>PVC 範例</span></a></h3>
-<pre><code class="language-yaml">apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: mysql-pvc
-spec:
-  accessModes:
-    - ReadWriteOnce          # 只能被一個 Node 掛載
-  storageClassName: standard
-  resources:
-    requests:
-      storage: 10Gi
+<pre data-lang="yaml"><code class="hljs language-yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">PersistentVolumeClaim</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">mysql-pvc</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">accessModes:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-string">ReadWriteOnce</span>          <span class="hljs-comment"># 只能被一個 Node 掛載</span>
+  <span class="hljs-attr">storageClassName:</span> <span class="hljs-string">standard</span>
+  <span class="hljs-attr">resources:</span>
+    <span class="hljs-attr">requests:</span>
+      <span class="hljs-attr">storage:</span> <span class="hljs-string">10Gi</span>
 </code></pre>
 <p><strong>Access Mode 類型：</strong></p>
 <ul>
@@ -1232,41 +1244,41 @@ spec:
 </tr>
 </tbody>
 </table>
-<pre><code class="language-yaml">apiVersion: apps/v1
-kind: StatefulSet
-metadata:
-  name: mysql
-spec:
-  serviceName: mysql
-  replicas: 3
-  selector:
-    matchLabels:
-      app: mysql
-  template:
-    metadata:
-      labels:
-        app: mysql
-    spec:
-      containers:
-      - name: mysql
-        image: mysql:8.0
-        env:
-        - name: MYSQL_ROOT_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: mysql-secret
-              key: password
-        volumeMounts:
-        - name: data
-          mountPath: /var/lib/mysql
-  volumeClaimTemplates:         # 為每個 Pod 自動建立 PVC
-  - metadata:
-      name: data
-    spec:
-      accessModes: [&quot;ReadWriteOnce&quot;]
-      resources:
-        requests:
-          storage: 20Gi
+<pre data-lang="yaml"><code class="hljs language-yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">apps/v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">StatefulSet</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">mysql</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">serviceName:</span> <span class="hljs-string">mysql</span>
+  <span class="hljs-attr">replicas:</span> <span class="hljs-number">3</span>
+  <span class="hljs-attr">selector:</span>
+    <span class="hljs-attr">matchLabels:</span>
+      <span class="hljs-attr">app:</span> <span class="hljs-string">mysql</span>
+  <span class="hljs-attr">template:</span>
+    <span class="hljs-attr">metadata:</span>
+      <span class="hljs-attr">labels:</span>
+        <span class="hljs-attr">app:</span> <span class="hljs-string">mysql</span>
+    <span class="hljs-attr">spec:</span>
+      <span class="hljs-attr">containers:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">mysql</span>
+        <span class="hljs-attr">image:</span> <span class="hljs-string">mysql:8.0</span>
+        <span class="hljs-attr">env:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">MYSQL_ROOT_PASSWORD</span>
+          <span class="hljs-attr">valueFrom:</span>
+            <span class="hljs-attr">secretKeyRef:</span>
+              <span class="hljs-attr">name:</span> <span class="hljs-string">mysql-secret</span>
+              <span class="hljs-attr">key:</span> <span class="hljs-string">password</span>
+        <span class="hljs-attr">volumeMounts:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">data</span>
+          <span class="hljs-attr">mountPath:</span> <span class="hljs-string">/var/lib/mysql</span>
+  <span class="hljs-attr">volumeClaimTemplates:</span>         <span class="hljs-comment"># 為每個 Pod 自動建立 PVC</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">metadata:</span>
+      <span class="hljs-attr">name:</span> <span class="hljs-string">data</span>
+    <span class="hljs-attr">spec:</span>
+      <span class="hljs-attr">accessModes:</span> [<span class="hljs-string">&quot;ReadWriteOnce&quot;</span>]
+      <span class="hljs-attr">resources:</span>
+        <span class="hljs-attr">requests:</span>
+          <span class="hljs-attr">storage:</span> <span class="hljs-string">20Gi</span>
 </code></pre>
 <hr>
 <h2 id="10-gitops" tabindex="-1"><a class="header-anchor" href="#10-gitops"><span>10. GitOps 工作流程</span></a></h2>
@@ -1279,7 +1291,7 @@ spec:
 <li>回滾 = <code>git revert</code>，操作直覺且有審計記錄</li>
 </ul>
 <h3 id="gitops-vs-ci-cd" tabindex="-1"><a class="header-anchor" href="#gitops-vs-ci-cd"><span>GitOps vs 傳統 CI/CD</span></a></h3>
-<pre><code>傳統 CI/CD（Push 模式）：
+<pre><code class="hljs">傳統 CI/CD（Push 模式）：
 CI Pipeline → kubectl apply → Cluster
 （CI 有 K8s 憑證，安全風險較高）
 
@@ -1290,30 +1302,30 @@ GitOps（Pull 模式）：
 </code></pre>
 <h3 id="argocd" tabindex="-1"><a class="header-anchor" href="#argocd"><span>ArgoCD 基本概念</span></a></h3>
 <p>ArgoCD 是最常見的 GitOps 工具，在叢集內持續監控 Git 與叢集狀態的差異：</p>
-<pre><code class="language-yaml"># ArgoCD Application 定義
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: my-app
-  namespace: argocd
-spec:
-  project: default
-  source:
-    repoURL: https://github.com/my-org/my-app-config
-    targetRevision: main
-    path: k8s/production           # Git repo 中 YAML 檔案的路徑
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: production
-  syncPolicy:
-    automated:
-      prune: true                  # 自動刪除 Git 中已移除的資源
-      selfHeal: true               # 有人手動修改叢集時自動還原
-    syncOptions:
-    - CreateNamespace=true
+<pre data-lang="yaml"><code class="hljs language-yaml"><span class="hljs-comment"># ArgoCD Application 定義</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">argoproj.io/v1alpha1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Application</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-app</span>
+  <span class="hljs-attr">namespace:</span> <span class="hljs-string">argocd</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">project:</span> <span class="hljs-string">default</span>
+  <span class="hljs-attr">source:</span>
+    <span class="hljs-attr">repoURL:</span> <span class="hljs-string">https://github.com/my-org/my-app-config</span>
+    <span class="hljs-attr">targetRevision:</span> <span class="hljs-string">main</span>
+    <span class="hljs-attr">path:</span> <span class="hljs-string">k8s/production</span>           <span class="hljs-comment"># Git repo 中 YAML 檔案的路徑</span>
+  <span class="hljs-attr">destination:</span>
+    <span class="hljs-attr">server:</span> <span class="hljs-string">https://kubernetes.default.svc</span>
+    <span class="hljs-attr">namespace:</span> <span class="hljs-string">production</span>
+  <span class="hljs-attr">syncPolicy:</span>
+    <span class="hljs-attr">automated:</span>
+      <span class="hljs-attr">prune:</span> <span class="hljs-literal">true</span>                  <span class="hljs-comment"># 自動刪除 Git 中已移除的資源</span>
+      <span class="hljs-attr">selfHeal:</span> <span class="hljs-literal">true</span>               <span class="hljs-comment"># 有人手動修改叢集時自動還原</span>
+    <span class="hljs-attr">syncOptions:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-string">CreateNamespace=true</span>
 </code></pre>
 <h3 id="gitops-1" tabindex="-1"><a class="header-anchor" href="#gitops-1"><span>GitOps 實踐流程</span></a></h3>
-<pre><code>1. 開發者修改應用程式碼
+<pre><code class="hljs">1. 開發者修改應用程式碼
    → 觸發 CI Pipeline（測試、建立 Docker Image、推送到 Registry）
    → CI 自動更新 Config Repo 中的 image tag
 
@@ -1329,32 +1341,32 @@ spec:
 <h2 id="11-security" tabindex="-1"><a class="header-anchor" href="#11-security"><span>11. 安全性（Security）</span></a></h2>
 <h3 id="k8s-rbac" tabindex="-1"><a class="header-anchor" href="#k8s-rbac"><span>K8s RBAC（角色存取控制）</span></a></h3>
 <p><strong>最小權限原則（Principle of Least Privilege）</strong></p>
-<pre><code class="language-yaml"># 定義 Role（限定在特定 Namespace）
-apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
-metadata:
-  name: pod-reader
-  namespace: production
-rules:
-- apiGroups: [&quot;&quot;]
-  resources: [&quot;pods&quot;, &quot;pods/log&quot;]
-  verbs: [&quot;get&quot;, &quot;list&quot;, &quot;watch&quot;]   # 只能讀，不能修改
+<pre data-lang="yaml"><code class="hljs language-yaml"><span class="hljs-comment"># 定義 Role（限定在特定 Namespace）</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">rbac.authorization.k8s.io/v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">Role</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">pod-reader</span>
+  <span class="hljs-attr">namespace:</span> <span class="hljs-string">production</span>
+<span class="hljs-attr">rules:</span>
+<span class="hljs-bullet">-</span> <span class="hljs-attr">apiGroups:</span> [<span class="hljs-string">&quot;&quot;</span>]
+  <span class="hljs-attr">resources:</span> [<span class="hljs-string">&quot;pods&quot;</span>, <span class="hljs-string">&quot;pods/log&quot;</span>]
+  <span class="hljs-attr">verbs:</span> [<span class="hljs-string">&quot;get&quot;</span>, <span class="hljs-string">&quot;list&quot;</span>, <span class="hljs-string">&quot;watch&quot;</span>]   <span class="hljs-comment"># 只能讀，不能修改</span>
 
----
-# 將 Role 綁定給 ServiceAccount
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  name: read-pods-binding
-  namespace: production
-subjects:
-- kind: ServiceAccount
-  name: my-app-sa
-  namespace: production
-roleRef:
-  kind: Role
-  apiGroup: rbac.authorization.k8s.io
-  name: pod-reader
+<span class="hljs-meta">---</span>
+<span class="hljs-comment"># 將 Role 綁定給 ServiceAccount</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">rbac.authorization.k8s.io/v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">RoleBinding</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">read-pods-binding</span>
+  <span class="hljs-attr">namespace:</span> <span class="hljs-string">production</span>
+<span class="hljs-attr">subjects:</span>
+<span class="hljs-bullet">-</span> <span class="hljs-attr">kind:</span> <span class="hljs-string">ServiceAccount</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-app-sa</span>
+  <span class="hljs-attr">namespace:</span> <span class="hljs-string">production</span>
+<span class="hljs-attr">roleRef:</span>
+  <span class="hljs-attr">kind:</span> <span class="hljs-string">Role</span>
+  <span class="hljs-attr">apiGroup:</span> <span class="hljs-string">rbac.authorization.k8s.io</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">pod-reader</span>
 </code></pre>
 <h3 id="secret" tabindex="-1"><a class="header-anchor" href="#secret"><span>Secret 安全管理</span></a></h3>
 <p>K8s Secret 預設只是 Base64 編碼，<strong>並非加密</strong>。生產環境建議：</p>
@@ -1385,41 +1397,41 @@ roleRef:
 </tbody>
 </table>
 <h3 id="network-policy" tabindex="-1"><a class="header-anchor" href="#network-policy"><span>Network Policy（網路隔離）</span></a></h3>
-<pre><code class="language-yaml"># 只允許來自 frontend namespace 的流量進入 backend
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: allow-frontend-only
-  namespace: backend
-spec:
-  podSelector:
-    matchLabels:
-      app: backend-api
-  policyTypes:
-  - Ingress
-  ingress:
-  - from:
-    - namespaceSelector:
-        matchLabels:
-          name: frontend
-    ports:
-    - protocol: TCP
-      port: 8080
+<pre data-lang="yaml"><code class="hljs language-yaml"><span class="hljs-comment"># 只允許來自 frontend namespace 的流量進入 backend</span>
+<span class="hljs-attr">apiVersion:</span> <span class="hljs-string">networking.k8s.io/v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">NetworkPolicy</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">allow-frontend-only</span>
+  <span class="hljs-attr">namespace:</span> <span class="hljs-string">backend</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">podSelector:</span>
+    <span class="hljs-attr">matchLabels:</span>
+      <span class="hljs-attr">app:</span> <span class="hljs-string">backend-api</span>
+  <span class="hljs-attr">policyTypes:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">Ingress</span>
+  <span class="hljs-attr">ingress:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">from:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">namespaceSelector:</span>
+        <span class="hljs-attr">matchLabels:</span>
+          <span class="hljs-attr">name:</span> <span class="hljs-string">frontend</span>
+    <span class="hljs-attr">ports:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">protocol:</span> <span class="hljs-string">TCP</span>
+      <span class="hljs-attr">port:</span> <span class="hljs-number">8080</span>
 </code></pre>
 <h3 id="-17" tabindex="-1"><a class="header-anchor" href="#-17"><span>容器安全最佳實踐</span></a></h3>
-<pre><code class="language-yaml">spec:
-  securityContext:
-    runAsNonRoot: true           # 禁止以 root 執行
-    runAsUser: 1000
-    fsGroup: 2000
-  containers:
-  - name: my-app
-    securityContext:
-      allowPrivilegeEscalation: false  # 禁止提權
-      readOnlyRootFilesystem: true     # 根目錄唯讀
-      capabilities:
-        drop:
-        - ALL                          # 移除所有 Linux capabilities
+<pre data-lang="yaml"><code class="hljs language-yaml"><span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">securityContext:</span>
+    <span class="hljs-attr">runAsNonRoot:</span> <span class="hljs-literal">true</span>           <span class="hljs-comment"># 禁止以 root 執行</span>
+    <span class="hljs-attr">runAsUser:</span> <span class="hljs-number">1000</span>
+    <span class="hljs-attr">fsGroup:</span> <span class="hljs-number">2000</span>
+  <span class="hljs-attr">containers:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">my-app</span>
+    <span class="hljs-attr">securityContext:</span>
+      <span class="hljs-attr">allowPrivilegeEscalation:</span> <span class="hljs-literal">false</span>  <span class="hljs-comment"># 禁止提權</span>
+      <span class="hljs-attr">readOnlyRootFilesystem:</span> <span class="hljs-literal">true</span>     <span class="hljs-comment"># 根目錄唯讀</span>
+      <span class="hljs-attr">capabilities:</span>
+        <span class="hljs-attr">drop:</span>
+        <span class="hljs-bullet">-</span> <span class="hljs-string">ALL</span>                          <span class="hljs-comment"># 移除所有 Linux capabilities</span>
 </code></pre>
 <hr>
 <h2 id="12-iac" tabindex="-1"><a class="header-anchor" href="#12-iac"><span>12. 基礎設施即代碼（IaC）</span></a></h2>
@@ -1431,7 +1443,7 @@ spec:
 <li><strong>災難恢復</strong>：可快速重建整個環境</li>
 </ul>
 <h3 id="terraform" tabindex="-1"><a class="header-anchor" href="#terraform"><span>Terraform 核心概念</span></a></h3>
-<pre><code class="language-hcl"># 宣告 Provider
+<pre><code class="hljs"># 宣告 Provider
 terraform {
   required_providers {
     aws = {
@@ -1461,28 +1473,28 @@ output &quot;vpc_id&quot; {
   value = aws_vpc.main.id
 }
 </code></pre>
-<pre><code class="language-bash">terraform init      # 初始化，下載 providers
-terraform plan      # 預覽變更（不實際執行）
-terraform apply     # 執行變更
-terraform destroy   # 銷毀所有資源（謹慎使用）
-terraform import    # 將既有資源納入 Terraform 管理
-terraform state list  # 查看目前管理的資源
+<pre data-lang="bash"><code class="hljs language-bash">terraform init      <span class="hljs-comment"># 初始化，下載 providers</span>
+terraform plan      <span class="hljs-comment"># 預覽變更（不實際執行）</span>
+terraform apply     <span class="hljs-comment"># 執行變更</span>
+terraform destroy   <span class="hljs-comment"># 銷毀所有資源（謹慎使用）</span>
+terraform import    <span class="hljs-comment"># 將既有資源納入 Terraform 管理</span>
+terraform state list  <span class="hljs-comment"># 查看目前管理的資源</span>
 </code></pre>
 <h3 id="helm-kubernetes" tabindex="-1"><a class="header-anchor" href="#helm-kubernetes"><span>Helm（Kubernetes 套件管理）</span></a></h3>
-<pre><code class="language-bash">helm repo add bitnami https://charts.bitnami.com/bitnami
+<pre data-lang="bash"><code class="hljs language-bash">helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
 
-# 安裝，並覆寫預設值
+<span class="hljs-comment"># 安裝，並覆寫預設值</span>
 helm install my-redis bitnami/redis \
   --namespace production \
   --create-namespace \
-  --set auth.password=secret \
-  --set replica.replicaCount=2
+  --<span class="hljs-built_in">set</span> auth.password=secret \
+  --<span class="hljs-built_in">set</span> replica.replicaCount=2
 
-helm upgrade my-redis bitnami/redis --set image.tag=7.2  # 升級
-helm rollback my-redis 1                                   # 回滾到版本 1
-helm list -n production                                    # 查看安裝的 release
-helm uninstall my-redis -n production                     # 卸載
+helm upgrade my-redis bitnami/redis --<span class="hljs-built_in">set</span> image.tag=7.2  <span class="hljs-comment"># 升級</span>
+helm rollback my-redis 1                                   <span class="hljs-comment"># 回滾到版本 1</span>
+helm list -n production                                    <span class="hljs-comment"># 查看安裝的 release</span>
+helm uninstall my-redis -n production                     <span class="hljs-comment"># 卸載</span>
 </code></pre>
 <hr>
 <h2 id="13" tabindex="-1"><a class="header-anchor" href="#13"><span>13. 常見面試題</span></a></h2>
@@ -1494,7 +1506,7 @@ helm uninstall my-redis -n production                     # 卸載
 </ul>
 <hr>
 <h3 id="q2-k8s-deployment-pod-replicaset" tabindex="-1"><a class="header-anchor" href="#q2-k8s-deployment-pod-replicaset"><span>Q2：K8s 中 Deployment、Pod、ReplicaSet 的關係？</span></a></h3>
-<pre><code>Deployment（管理更新策略與版本）
+<pre><code class="hljs">Deployment（管理更新策略與版本）
   └── ReplicaSet（確保指定數量的 Pod 在運行）
        └── Pod（實際執行的容器，最小部署單位）
 </code></pre>
@@ -1535,15 +1547,15 @@ helm uninstall my-redis -n production                     # 卸載
 <li>設定 <code>terminationGracePeriodSeconds</code>，讓舊 Pod 優雅關閉（處理完進行中的請求）</li>
 <li>使用 <strong>PodDisruptionBudget</strong> 確保最少可用 Pod 數</li>
 </ol>
-<pre><code class="language-yaml">apiVersion: policy/v1
-kind: PodDisruptionBudget
-metadata:
-  name: my-app-pdb
-spec:
-  minAvailable: 2    # 或 maxUnavailable: 1
-  selector:
-    matchLabels:
-      app: my-app
+<pre data-lang="yaml"><code class="hljs language-yaml"><span class="hljs-attr">apiVersion:</span> <span class="hljs-string">policy/v1</span>
+<span class="hljs-attr">kind:</span> <span class="hljs-string">PodDisruptionBudget</span>
+<span class="hljs-attr">metadata:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">my-app-pdb</span>
+<span class="hljs-attr">spec:</span>
+  <span class="hljs-attr">minAvailable:</span> <span class="hljs-number">2</span>    <span class="hljs-comment"># 或 maxUnavailable: 1</span>
+  <span class="hljs-attr">selector:</span>
+    <span class="hljs-attr">matchLabels:</span>
+      <span class="hljs-attr">app:</span> <span class="hljs-string">my-app</span>
 </code></pre>
 <hr>
 <h3 id="q5-slo-sla" tabindex="-1"><a class="header-anchor" href="#q5-slo-sla"><span>Q5：SLO 和 SLA 的差別，以及錯誤預算的用途？</span></a></h3>

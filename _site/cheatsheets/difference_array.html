@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,13 +20,24 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
     document.querySelectorAll('pre code').forEach(function(codeEl) {
       var pre = codeEl.parentElement;
       var lang = '';
       var cls = codeEl.className || '';
       var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
       if (m) lang = m[1];
+
+      // Add line numbers
+      var lines = codeEl.innerHTML.split('
+');
+      if (lines[lines.length - 1] === '') lines.pop();
+      var numbered = lines.map(function(line, i) {
+        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
+      }).join('
+');
+      codeEl.innerHTML = numbered;
+      codeEl.classList.add('hljs-ln');
+
       var wrapper = document.createElement('div');
       wrapper.className = 'code-block-wrapper';
       pre.parentNode.insertBefore(wrapper, pre);
@@ -45,7 +55,9 @@
       btn.className = 'copy-btn';
       btn.textContent = 'Copy';
       btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
+');
+        navigator.clipboard.writeText(text).then(function() {
           btn.textContent = 'Copied!';
           btn.classList.add('copied');
           setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
@@ -232,273 +244,273 @@
 </tbody>
 </table>
 <h3 id="universal-difference-array-template" tabindex="-1"><a class="header-anchor" href="#universal-difference-array-template"><span>Universal Difference Array Template</span></a></h3>
-<pre><code class="language-python">def difference_array_template(nums, updates):
-    &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">difference_array_template</span>(<span class="hljs-params">nums, updates</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
     Universal template for difference array problems
     nums: original array
     updates: list of [start, end, value] operations
-    &quot;&quot;&quot;
-    n = len(nums)
-    # Build difference array
-    diff = [0] * n
-    diff[0] = nums[0]
-    for i in range(1, n):
-        diff[i] = nums[i] - nums[i-1]
+    &quot;&quot;&quot;</span>
+    n = <span class="hljs-built_in">len</span>(nums)
+    <span class="hljs-comment"># Build difference array</span>
+    diff = [<span class="hljs-number">0</span>] * n
+    diff[<span class="hljs-number">0</span>] = nums[<span class="hljs-number">0</span>]
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n):
+        diff[i] = nums[i] - nums[i-<span class="hljs-number">1</span>]
     
-    # Apply range updates in O(1) each
-    for start, end, val in updates:
+    <span class="hljs-comment"># Apply range updates in O(1) each</span>
+    <span class="hljs-keyword">for</span> start, end, val <span class="hljs-keyword">in</span> updates:
         diff[start] += val
-        if end + 1 &lt; n:
-            diff[end + 1] -= val
+        <span class="hljs-keyword">if</span> end + <span class="hljs-number">1</span> &lt; n:
+            diff[end + <span class="hljs-number">1</span>] -= val
     
-    # Reconstruct final array
-    result = [0] * n
-    result[0] = diff[0]
-    for i in range(1, n):
-        result[i] = result[i-1] + diff[i]
+    <span class="hljs-comment"># Reconstruct final array</span>
+    result = [<span class="hljs-number">0</span>] * n
+    result[<span class="hljs-number">0</span>] = diff[<span class="hljs-number">0</span>]
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n):
+        result[i] = result[i-<span class="hljs-number">1</span>] + diff[i]
     
-    return result
+    <span class="hljs-keyword">return</span> result
 </code></pre>
 <h3 id="template-1-basic-difference-array" tabindex="-1"><a class="header-anchor" href="#template-1-basic-difference-array"><span>Template 1: Basic Difference Array</span></a></h3>
-<pre><code class="language-python">class DifferenceArray:
-    def __init__(self, nums):
-        &quot;&quot;&quot;Initialize difference array from original array&quot;&quot;&quot;
-        self.n = len(nums)
-        self.diff = [0] * self.n
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">DifferenceArray</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, nums</span>):
+        <span class="hljs-string">&quot;&quot;&quot;Initialize difference array from original array&quot;&quot;&quot;</span>
+        <span class="hljs-variable language_">self</span>.n = <span class="hljs-built_in">len</span>(nums)
+        <span class="hljs-variable language_">self</span>.diff = [<span class="hljs-number">0</span>] * <span class="hljs-variable language_">self</span>.n
         
-        # Build difference array
-        self.diff[0] = nums[0]
-        for i in range(1, self.n):
-            self.diff[i] = nums[i] - nums[i-1]
+        <span class="hljs-comment"># Build difference array</span>
+        <span class="hljs-variable language_">self</span>.diff[<span class="hljs-number">0</span>] = nums[<span class="hljs-number">0</span>]
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-variable language_">self</span>.n):
+            <span class="hljs-variable language_">self</span>.diff[i] = nums[i] - nums[i-<span class="hljs-number">1</span>]
     
-    def update(self, start, end, val):
-        &quot;&quot;&quot;Add val to all elements in range [start, end] in O(1)&quot;&quot;&quot;
-        self.diff[start] += val
-        if end + 1 &lt; self.n:
-            self.diff[end + 1] -= val
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">update</span>(<span class="hljs-params">self, start, end, val</span>):
+        <span class="hljs-string">&quot;&quot;&quot;Add val to all elements in range [start, end] in O(1)&quot;&quot;&quot;</span>
+        <span class="hljs-variable language_">self</span>.diff[start] += val
+        <span class="hljs-keyword">if</span> end + <span class="hljs-number">1</span> &lt; <span class="hljs-variable language_">self</span>.n:
+            <span class="hljs-variable language_">self</span>.diff[end + <span class="hljs-number">1</span>] -= val
     
-    def get_result(self):
-        &quot;&quot;&quot;Reconstruct the final array in O(n)&quot;&quot;&quot;
-        result = [0] * self.n
-        result[0] = self.diff[0]
-        for i in range(1, self.n):
-            result[i] = result[i-1] + self.diff[i]
-        return result
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_result</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-string">&quot;&quot;&quot;Reconstruct the final array in O(n)&quot;&quot;&quot;</span>
+        result = [<span class="hljs-number">0</span>] * <span class="hljs-variable language_">self</span>.n
+        result[<span class="hljs-number">0</span>] = <span class="hljs-variable language_">self</span>.diff[<span class="hljs-number">0</span>]
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-variable language_">self</span>.n):
+            result[i] = result[i-<span class="hljs-number">1</span>] + <span class="hljs-variable language_">self</span>.diff[i]
+        <span class="hljs-keyword">return</span> result
 </code></pre>
 <h3 id="template-2-resource-allocation" tabindex="-1"><a class="header-anchor" href="#template-2-resource-allocation"><span>Template 2: Resource Allocation</span></a></h3>
-<pre><code class="language-python">def check_resource_allocation(intervals, capacity, resource_field=2):
-    &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">check_resource_allocation</span>(<span class="hljs-params">intervals, capacity, resource_field=<span class="hljs-number">2</span></span>):
+    <span class="hljs-string">&quot;&quot;&quot;
     Check if resource allocation is valid
     intervals: [[start, end, resource_needed], ...]
     capacity: maximum available resource
-    &quot;&quot;&quot;
-    # Find the range of positions
-    max_pos = max(interval[1] for interval in intervals) + 1
-    diff = [0] * max_pos
+    &quot;&quot;&quot;</span>
+    <span class="hljs-comment"># Find the range of positions</span>
+    max_pos = <span class="hljs-built_in">max</span>(interval[<span class="hljs-number">1</span>] <span class="hljs-keyword">for</span> interval <span class="hljs-keyword">in</span> intervals) + <span class="hljs-number">1</span>
+    diff = [<span class="hljs-number">0</span>] * max_pos
     
-    # Apply all resource allocations
-    for interval in intervals:
-        start, end, resource = interval[0], interval[1], interval[resource_field]
+    <span class="hljs-comment"># Apply all resource allocations</span>
+    <span class="hljs-keyword">for</span> interval <span class="hljs-keyword">in</span> intervals:
+        start, end, resource = interval[<span class="hljs-number">0</span>], interval[<span class="hljs-number">1</span>], interval[resource_field]
         diff[start] += resource
-        if end + 1 &lt; max_pos:
-            diff[end + 1] -= resource
+        <span class="hljs-keyword">if</span> end + <span class="hljs-number">1</span> &lt; max_pos:
+            diff[end + <span class="hljs-number">1</span>] -= resource
     
-    # Check if any position exceeds capacity
-    current = 0
-    for i in range(max_pos):
+    <span class="hljs-comment"># Check if any position exceeds capacity</span>
+    current = <span class="hljs-number">0</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(max_pos):
         current += diff[i]
-        if current &gt; capacity:
-            return False
+        <span class="hljs-keyword">if</span> current &gt; capacity:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
     
-    return True
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 </code></pre>
 <h3 id="template-3-event-timeline" tabindex="-1"><a class="header-anchor" href="#template-3-event-timeline"><span>Template 3: Event Timeline</span></a></h3>
-<pre><code class="language-python">def process_events(events):
-    &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">process_events</span>(<span class="hljs-params">events</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
     Process events on a timeline
     events: [[start_time, end_time, value], ...]
     Returns: timeline with accumulated values
-    &quot;&quot;&quot;
-    if not events:
-        return []
+    &quot;&quot;&quot;</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> events:
+        <span class="hljs-keyword">return</span> []
     
-    # Create timeline
-    max_time = max(e[1] for e in events) + 1
-    timeline = [0] * max_time
+    <span class="hljs-comment"># Create timeline</span>
+    max_time = <span class="hljs-built_in">max</span>(e[<span class="hljs-number">1</span>] <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> events) + <span class="hljs-number">1</span>
+    timeline = [<span class="hljs-number">0</span>] * max_time
     
-    # Process each event
-    for start, end, value in events:
+    <span class="hljs-comment"># Process each event</span>
+    <span class="hljs-keyword">for</span> start, end, value <span class="hljs-keyword">in</span> events:
         timeline[start] += value
-        if end + 1 &lt; max_time:
-            timeline[end + 1] -= value
+        <span class="hljs-keyword">if</span> end + <span class="hljs-number">1</span> &lt; max_time:
+            timeline[end + <span class="hljs-number">1</span>] -= value
     
-    # Calculate prefix sum to get actual values
-    for i in range(1, max_time):
-        timeline[i] += timeline[i-1]
+    <span class="hljs-comment"># Calculate prefix sum to get actual values</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, max_time):
+        timeline[i] += timeline[i-<span class="hljs-number">1</span>]
     
-    return timeline
+    <span class="hljs-keyword">return</span> timeline
 </code></pre>
 <h3 id="template-4-2d-difference-array" tabindex="-1"><a class="header-anchor" href="#template-4-2d-difference-array"><span>Template 4: 2D Difference Array</span></a></h3>
-<pre><code class="language-python">class DifferenceArray2D:
-    def __init__(self, matrix):
-        &quot;&quot;&quot;Initialize 2D difference array&quot;&quot;&quot;
-        self.m, self.n = len(matrix), len(matrix[0])
-        self.diff = [[0] * self.n for _ in range(self.m)]
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">DifferenceArray2D</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, matrix</span>):
+        <span class="hljs-string">&quot;&quot;&quot;Initialize 2D difference array&quot;&quot;&quot;</span>
+        <span class="hljs-variable language_">self</span>.m, <span class="hljs-variable language_">self</span>.n = <span class="hljs-built_in">len</span>(matrix), <span class="hljs-built_in">len</span>(matrix[<span class="hljs-number">0</span>])
+        <span class="hljs-variable language_">self</span>.diff = [[<span class="hljs-number">0</span>] * <span class="hljs-variable language_">self</span>.n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-variable language_">self</span>.m)]
         
-        # Build 2D difference array
-        for i in range(self.m):
-            for j in range(self.n):
-                self.diff[i][j] = matrix[i][j]
-                if i &gt; 0:
-                    self.diff[i][j] -= matrix[i-1][j]
-                if j &gt; 0:
-                    self.diff[i][j] -= matrix[i][j-1]
-                if i &gt; 0 and j &gt; 0:
-                    self.diff[i][j] += matrix[i-1][j-1]
+        <span class="hljs-comment"># Build 2D difference array</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-variable language_">self</span>.m):
+            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-variable language_">self</span>.n):
+                <span class="hljs-variable language_">self</span>.diff[i][j] = matrix[i][j]
+                <span class="hljs-keyword">if</span> i &gt; <span class="hljs-number">0</span>:
+                    <span class="hljs-variable language_">self</span>.diff[i][j] -= matrix[i-<span class="hljs-number">1</span>][j]
+                <span class="hljs-keyword">if</span> j &gt; <span class="hljs-number">0</span>:
+                    <span class="hljs-variable language_">self</span>.diff[i][j] -= matrix[i][j-<span class="hljs-number">1</span>]
+                <span class="hljs-keyword">if</span> i &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> j &gt; <span class="hljs-number">0</span>:
+                    <span class="hljs-variable language_">self</span>.diff[i][j] += matrix[i-<span class="hljs-number">1</span>][j-<span class="hljs-number">1</span>]
     
-    def update(self, r1, c1, r2, c2, val):
-        &quot;&quot;&quot;Add val to all elements in rectangle [r1,c1] to [r2,c2]&quot;&quot;&quot;
-        self.diff[r1][c1] += val
-        if r2 + 1 &lt; self.m:
-            self.diff[r2 + 1][c1] -= val
-        if c2 + 1 &lt; self.n:
-            self.diff[r1][c2 + 1] -= val
-        if r2 + 1 &lt; self.m and c2 + 1 &lt; self.n:
-            self.diff[r2 + 1][c2 + 1] += val
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">update</span>(<span class="hljs-params">self, r1, c1, r2, c2, val</span>):
+        <span class="hljs-string">&quot;&quot;&quot;Add val to all elements in rectangle [r1,c1] to [r2,c2]&quot;&quot;&quot;</span>
+        <span class="hljs-variable language_">self</span>.diff[r1][c1] += val
+        <span class="hljs-keyword">if</span> r2 + <span class="hljs-number">1</span> &lt; <span class="hljs-variable language_">self</span>.m:
+            <span class="hljs-variable language_">self</span>.diff[r2 + <span class="hljs-number">1</span>][c1] -= val
+        <span class="hljs-keyword">if</span> c2 + <span class="hljs-number">1</span> &lt; <span class="hljs-variable language_">self</span>.n:
+            <span class="hljs-variable language_">self</span>.diff[r1][c2 + <span class="hljs-number">1</span>] -= val
+        <span class="hljs-keyword">if</span> r2 + <span class="hljs-number">1</span> &lt; <span class="hljs-variable language_">self</span>.m <span class="hljs-keyword">and</span> c2 + <span class="hljs-number">1</span> &lt; <span class="hljs-variable language_">self</span>.n:
+            <span class="hljs-variable language_">self</span>.diff[r2 + <span class="hljs-number">1</span>][c2 + <span class="hljs-number">1</span>] += val
     
-    def get_result(self):
-        &quot;&quot;&quot;Reconstruct the final 2D array&quot;&quot;&quot;
-        result = [[0] * self.n for _ in range(self.m)]
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_result</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-string">&quot;&quot;&quot;Reconstruct the final 2D array&quot;&quot;&quot;</span>
+        result = [[<span class="hljs-number">0</span>] * <span class="hljs-variable language_">self</span>.n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-variable language_">self</span>.m)]
         
-        for i in range(self.m):
-            for j in range(self.n):
-                result[i][j] = self.diff[i][j]
-                if i &gt; 0:
-                    result[i][j] += result[i-1][j]
-                if j &gt; 0:
-                    result[i][j] += result[i][j-1]
-                if i &gt; 0 and j &gt; 0:
-                    result[i][j] -= result[i-1][j-1]
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-variable language_">self</span>.m):
+            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-variable language_">self</span>.n):
+                result[i][j] = <span class="hljs-variable language_">self</span>.diff[i][j]
+                <span class="hljs-keyword">if</span> i &gt; <span class="hljs-number">0</span>:
+                    result[i][j] += result[i-<span class="hljs-number">1</span>][j]
+                <span class="hljs-keyword">if</span> j &gt; <span class="hljs-number">0</span>:
+                    result[i][j] += result[i][j-<span class="hljs-number">1</span>]
+                <span class="hljs-keyword">if</span> i &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> j &gt; <span class="hljs-number">0</span>:
+                    result[i][j] -= result[i-<span class="hljs-number">1</span>][j-<span class="hljs-number">1</span>]
         
-        return result
+        <span class="hljs-keyword">return</span> result
 </code></pre>
 <h3 id="template-5-optimized-with-coordinates-compression" tabindex="-1"><a class="header-anchor" href="#template-5-optimized-with-coordinates-compression"><span>Template 5: Optimized with Coordinates Compression</span></a></h3>
-<pre><code class="language-python">def difference_array_compressed(updates):
-    &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">difference_array_compressed</span>(<span class="hljs-params">updates</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
     Handle large coordinate space with compression
     updates: [[start, end, value], ...]
-    &quot;&quot;&quot;
-    # Collect all unique points
-    points = set()
-    for start, end, _ in updates:
+    &quot;&quot;&quot;</span>
+    <span class="hljs-comment"># Collect all unique points</span>
+    points = <span class="hljs-built_in">set</span>()
+    <span class="hljs-keyword">for</span> start, end, _ <span class="hljs-keyword">in</span> updates:
         points.add(start)
-        points.add(end + 1)
+        points.add(end + <span class="hljs-number">1</span>)
     
-    # Sort and create mapping
-    sorted_points = sorted(points)
-    point_to_idx = {p: i for i, p in enumerate(sorted_points)}
+    <span class="hljs-comment"># Sort and create mapping</span>
+    sorted_points = <span class="hljs-built_in">sorted</span>(points)
+    point_to_idx = {p: i <span class="hljs-keyword">for</span> i, p <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(sorted_points)}
     
-    # Apply updates on compressed coordinates
-    n = len(sorted_points)
-    diff = [0] * n
+    <span class="hljs-comment"># Apply updates on compressed coordinates</span>
+    n = <span class="hljs-built_in">len</span>(sorted_points)
+    diff = [<span class="hljs-number">0</span>] * n
     
-    for start, end, val in updates:
+    <span class="hljs-keyword">for</span> start, end, val <span class="hljs-keyword">in</span> updates:
         start_idx = point_to_idx[start]
-        end_idx = point_to_idx.get(end + 1, n)
+        end_idx = point_to_idx.get(end + <span class="hljs-number">1</span>, n)
         diff[start_idx] += val
-        if end_idx &lt; n:
+        <span class="hljs-keyword">if</span> end_idx &lt; n:
             diff[end_idx] -= val
     
-    # Calculate values at each point
-    for i in range(1, n):
-        diff[i] += diff[i-1]
+    <span class="hljs-comment"># Calculate values at each point</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n):
+        diff[i] += diff[i-<span class="hljs-number">1</span>]
     
-    # Return results with original coordinates
+    <span class="hljs-comment"># Return results with original coordinates</span>
     result = {}
-    for i, point in enumerate(sorted_points[:-1]):  # Exclude the last dummy point
-        if diff[i] != 0:
+    <span class="hljs-keyword">for</span> i, point <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(sorted_points[:-<span class="hljs-number">1</span>]):  <span class="hljs-comment"># Exclude the last dummy point</span>
+        <span class="hljs-keyword">if</span> diff[i] != <span class="hljs-number">0</span>:
             result[point] = diff[i]
     
-    return result
+    <span class="hljs-keyword">return</span> result
 </code></pre>
 <h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
-<pre><code class="language-java">
-// java
-// https://labuladong.online/algo/data-structure/diff-array/
+<pre data-lang="java"><code class="hljs language-java">
+<span class="hljs-comment">// java</span>
+<span class="hljs-comment">// https://labuladong.online/algo/data-structure/diff-array/</span>
 
-// 差分数组工具类
-// V1
-class Difference {
-    // 差分数组
-    private int[] diff;
+<span class="hljs-comment">// 差分数组工具类</span>
+<span class="hljs-comment">// V1</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Difference</span> {
+    <span class="hljs-comment">// 差分数组</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span>[] diff;
     
-    // 输入一个初始数组，区间操作将在这个数组上进行
-    public Difference(int[] nums) {
-        assert nums.length &gt; 0;
-        diff = new int[nums.length];
-        // 根据初始数组构造差分数组
-        diff[0] = nums[0];
-        for (int i = 1; i &lt; nums.length; i++) {
-            diff[i] = nums[i] - nums[i - 1];
+    <span class="hljs-comment">// 输入一个初始数组，区间操作将在这个数组上进行</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">Difference</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+        <span class="hljs-keyword">assert</span> nums.length &gt; <span class="hljs-number">0</span>;
+        diff = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[nums.length];
+        <span class="hljs-comment">// 根据初始数组构造差分数组</span>
+        diff[<span class="hljs-number">0</span>] = nums[<span class="hljs-number">0</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; nums.length; i++) {
+            diff[i] = nums[i] - nums[i - <span class="hljs-number">1</span>];
         }
     }
 
-    // 给闭区间 [i, j] 增加 val（可以是负数）
-    public void increment(int i, int j, int val) {
+    <span class="hljs-comment">// 给闭区间 [i, j] 增加 val（可以是负数）</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">increment</span><span class="hljs-params">(<span class="hljs-type">int</span> i, <span class="hljs-type">int</span> j, <span class="hljs-type">int</span> val)</span> {
         diff[i] += val;
-        if (j + 1 &lt; diff.length) {
-            diff[j + 1] -= val;
+        <span class="hljs-keyword">if</span> (j + <span class="hljs-number">1</span> &lt; diff.length) {
+            diff[j + <span class="hljs-number">1</span>] -= val;
         }
     }
 
-    // 返回结果数组
-    public int[] result() {
-        int[] res = new int[diff.length];
-        // 根据差分数组构造结果数组
-        res[0] = diff[0];
-        for (int i = 1; i &lt; diff.length; i++) {
-            res[i] = res[i - 1] + diff[i];
+    <span class="hljs-comment">// 返回结果数组</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] result() {
+        <span class="hljs-type">int</span>[] res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[diff.length];
+        <span class="hljs-comment">// 根据差分数组构造结果数组</span>
+        res[<span class="hljs-number">0</span>] = diff[<span class="hljs-number">0</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; diff.length; i++) {
+            res[i] = res[i - <span class="hljs-number">1</span>] + diff[i];
         }
-        return res;
+        <span class="hljs-keyword">return</span> res;
     }
 }
 </code></pre>
-<pre><code class="language-java">// V2
-// https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/AlgorithmJava/DifferenceArray.java
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// V2</span>
+<span class="hljs-comment">// https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/AlgorithmJava/DifferenceArray.java</span>
 
 
-// method
-public int[] getDifferenceArray(int[][] input, int n) {
+<span class="hljs-comment">// method</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] getDifferenceArray(<span class="hljs-type">int</span>[][] input, <span class="hljs-type">int</span> n) {
 
-/** LC 1109. Corporate Flight Bookings input : [start, end, seats]
+<span class="hljs-comment">/** LC 1109. Corporate Flight Bookings input : [start, end, seats]
  *
  *  NOTE !!!
  *
  *   in java, index start from 0;
  *   but in LC 1109, index start from 1
  *
- */
-int[] tmp = new int[n + 1];
-for (int[] x : input) {
-  int start = x[0];
-  int end = x[1];
-  int seats = x[2];
+ */</span>
+<span class="hljs-type">int</span>[] tmp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n + <span class="hljs-number">1</span>];
+<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] x : input) {
+  <span class="hljs-type">int</span> <span class="hljs-variable">start</span> <span class="hljs-operator">=</span> x[<span class="hljs-number">0</span>];
+  <span class="hljs-type">int</span> <span class="hljs-variable">end</span> <span class="hljs-operator">=</span> x[<span class="hljs-number">1</span>];
+  <span class="hljs-type">int</span> <span class="hljs-variable">seats</span> <span class="hljs-operator">=</span> x[<span class="hljs-number">2</span>];
 
-  // add
+  <span class="hljs-comment">// add</span>
   tmp[start] += seats;
 
-  // subtract
-  if (end + 1 &lt;= n) {
-    tmp[end + 1] -= seats;
+  <span class="hljs-comment">// subtract</span>
+  <span class="hljs-keyword">if</span> (end + <span class="hljs-number">1</span> &lt;= n) {
+    tmp[end + <span class="hljs-number">1</span>] -= seats;
   }
 }
 
-for (int i = 1; i &lt; tmp.length; i++) {
-  //tmp[i] = tmp[i - 1] + tmp[i];
-    tmp[i] += tmp[i - 1];
+<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; tmp.length; i++) {
+  <span class="hljs-comment">//tmp[i] = tmp[i - 1] + tmp[i];</span>
+    tmp[i] += tmp[i - <span class="hljs-number">1</span>];
 }
 
-return Arrays.copyOfRange(tmp, 1, n+1);
+<span class="hljs-keyword">return</span> Arrays.copyOfRange(tmp, <span class="hljs-number">1</span>, n+<span class="hljs-number">1</span>);
 }
 </code></pre>
 <h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
@@ -693,128 +705,128 @@ return Arrays.copyOfRange(tmp, 1, n+1);
 <h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
 <h3 id="2-1-range-addition" tabindex="-1"><a class="header-anchor" href="#2-1-range-addition"><span>2-1) Range Addition</span></a></h3>
-<pre><code class="language-java">// java
-// LC 370
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 370</span>
 
 
-// V0
-// IDEA : DIFFERENCE ARRAY
-public static int[] getModifiedArray(int length, int[][] updates) {
+<span class="hljs-comment">// V0</span>
+<span class="hljs-comment">// IDEA : DIFFERENCE ARRAY</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-type">int</span>[] getModifiedArray(<span class="hljs-type">int</span> length, <span class="hljs-type">int</span>[][] updates) {
 
-int[] tmp = new int[length + 1]; // or new int[length]; both works
-for (int[] x : updates) {
-  int start = x[0];
-  int end = x[1];
-  int amount = x[2];
+<span class="hljs-type">int</span>[] tmp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[length + <span class="hljs-number">1</span>]; <span class="hljs-comment">// or new int[length]; both works</span>
+<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] x : updates) {
+  <span class="hljs-type">int</span> <span class="hljs-variable">start</span> <span class="hljs-operator">=</span> x[<span class="hljs-number">0</span>];
+  <span class="hljs-type">int</span> <span class="hljs-variable">end</span> <span class="hljs-operator">=</span> x[<span class="hljs-number">1</span>];
+  <span class="hljs-type">int</span> <span class="hljs-variable">amount</span> <span class="hljs-operator">=</span> x[<span class="hljs-number">2</span>];
 
-  // add
+  <span class="hljs-comment">// add</span>
   tmp[start] += amount;
 
-  // subtract (remove the &quot;adding affect&quot; on &quot;NEXT&quot; element)
-  /**
+  <span class="hljs-comment">// subtract (remove the &quot;adding affect&quot; on &quot;NEXT&quot; element)</span>
+  <span class="hljs-comment">/**
    * NOTE !!!
    *
    * &lt;p&gt;we remove the &quot;adding affect&quot; on NEXT element (e.g. end + 1)
-   */
-  if (end + 1 &lt; length) { // NOTE !!! use `end + 1`
-    tmp[end + 1] -= amount;
+   */</span>
+  <span class="hljs-keyword">if</span> (end + <span class="hljs-number">1</span> &lt; length) { <span class="hljs-comment">// NOTE !!! use `end + 1`</span>
+    tmp[end + <span class="hljs-number">1</span>] -= amount;
   }
 }
 
-// prepare final result
-for (int i = 1; i &lt; tmp.length; i++) {
-  tmp[i] += tmp[i - 1];
+<span class="hljs-comment">// prepare final result</span>
+<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; tmp.length; i++) {
+  tmp[i] += tmp[i - <span class="hljs-number">1</span>];
 }
 
-return Arrays.copyOfRange(tmp, 0, length); // return the sub array between 0, lengh index
+<span class="hljs-keyword">return</span> Arrays.copyOfRange(tmp, <span class="hljs-number">0</span>, length); <span class="hljs-comment">// return the sub array between 0, lengh index</span>
 }
 
-// V1
-class Solution {
-    public int[] getModifiedArray(int length, int[][] updates) {
-        // nums 初始化为全 0
-        int[] nums = new int[length];
-        // 构造差分解法
-        Difference df = new Difference(nums);
+<span class="hljs-comment">// V1</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] getModifiedArray(<span class="hljs-type">int</span> length, <span class="hljs-type">int</span>[][] updates) {
+        <span class="hljs-comment">// nums 初始化为全 0</span>
+        <span class="hljs-type">int</span>[] nums = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[length];
+        <span class="hljs-comment">// 构造差分解法</span>
+        <span class="hljs-type">Difference</span> <span class="hljs-variable">df</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Difference</span>(nums);
         
-        for (int[] update : updates) {
-            int i = update[0];
-            int j = update[1];
-            int val = update[2];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] update : updates) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> update[<span class="hljs-number">0</span>];
+            <span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> update[<span class="hljs-number">1</span>];
+            <span class="hljs-type">int</span> <span class="hljs-variable">val</span> <span class="hljs-operator">=</span> update[<span class="hljs-number">2</span>];
             df.increment(i, j, val);
         }
         
-        return df.result();
+        <span class="hljs-keyword">return</span> df.result();
     }
 }
 </code></pre>
 <h3 id="2-2-corporate-flight-bookings" tabindex="-1"><a class="header-anchor" href="#2-2-corporate-flight-bookings"><span>2-2) Corporate Flight Bookings</span></a></h3>
-<pre><code class="language-java">// java
-// LC 1109
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 1109</span>
 
-// V1
-class Solution {
-    public int[] corpFlightBookings(int[][] bookings, int n) {
-        // nums 初始化为全 0
-        int[] nums = new int[n];
-        // 构造差分解法
-        Difference df = new Difference(nums);
+<span class="hljs-comment">// V1</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] corpFlightBookings(<span class="hljs-type">int</span>[][] bookings, <span class="hljs-type">int</span> n) {
+        <span class="hljs-comment">// nums 初始化为全 0</span>
+        <span class="hljs-type">int</span>[] nums = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
+        <span class="hljs-comment">// 构造差分解法</span>
+        <span class="hljs-type">Difference</span> <span class="hljs-variable">df</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Difference</span>(nums);
 
-        for (int[] booking : bookings) {
-            // 注意转成数组索引要减一哦
-            int i = booking[0] - 1;
-            int j = booking[1] - 1;
-            int val = booking[2];
-            // 对区间 nums[i..j] 增加 val
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] booking : bookings) {
+            <span class="hljs-comment">// 注意转成数组索引要减一哦</span>
+            <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> booking[<span class="hljs-number">0</span>] - <span class="hljs-number">1</span>;
+            <span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> booking[<span class="hljs-number">1</span>] - <span class="hljs-number">1</span>;
+            <span class="hljs-type">int</span> <span class="hljs-variable">val</span> <span class="hljs-operator">=</span> booking[<span class="hljs-number">2</span>];
+            <span class="hljs-comment">// 对区间 nums[i..j] 增加 val</span>
             df.increment(i, j, val);
         }
-        // 返回最终的结果数组
-        return df.result();
+        <span class="hljs-comment">// 返回最终的结果数组</span>
+        <span class="hljs-keyword">return</span> df.result();
     }
 }
 </code></pre>
 <h3 id="2-3-car-pooling" tabindex="-1"><a class="header-anchor" href="#2-3-car-pooling"><span>2-3) Car Pooling</span></a></h3>
-<pre><code class="language-java">// java
-// LC 1094
-// https://leetcode.com/problems/car-pooling/description/
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 1094</span>
+<span class="hljs-comment">// https://leetcode.com/problems/car-pooling/description/</span>
 
-class Solution {
-    public boolean carPooling(int[][] trips, int capacity) {
-        // 最多有 1001 个车站
-        int[] nums = new int[1001];
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">carPooling</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] trips, <span class="hljs-type">int</span> capacity)</span> {
+        <span class="hljs-comment">// 最多有 1001 个车站</span>
+        <span class="hljs-type">int</span>[] nums = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">1001</span>];
 
-        // 构造差分解法
-        Difference df = new Difference(nums);
+        <span class="hljs-comment">// 构造差分解法</span>
+        <span class="hljs-type">Difference</span> <span class="hljs-variable">df</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Difference</span>(nums);
 
-        for (int[] trip : trips) {
-            // 乘客数量
-            int val = trip[0];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] trip : trips) {
+            <span class="hljs-comment">// 乘客数量</span>
+            <span class="hljs-type">int</span> <span class="hljs-variable">val</span> <span class="hljs-operator">=</span> trip[<span class="hljs-number">0</span>];
 
-            // 第 trip[1] 站乘客上车
-            int i = trip[1];
+            <span class="hljs-comment">// 第 trip[1] 站乘客上车</span>
+            <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> trip[<span class="hljs-number">1</span>];
 
-            // 第 trip[2] 站乘客已经下车，
-            // 即乘客在车上的区间是 [trip[1], trip[2] - 1]
-            int j = trip[2] - 1;
+            <span class="hljs-comment">// 第 trip[2] 站乘客已经下车，</span>
+            <span class="hljs-comment">// 即乘客在车上的区间是 [trip[1], trip[2] - 1]</span>
+            <span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> trip[<span class="hljs-number">2</span>] - <span class="hljs-number">1</span>;
 
-            // 进行区间操作
+            <span class="hljs-comment">// 进行区间操作</span>
             df.increment(i, j, val);
         }
 
-        int[] res = df.result();
+        <span class="hljs-type">int</span>[] res = df.result();
 
-        // 客车自始至终都不应该超载
-        for (int i = 0; i &lt; res.length; i++) {
-            if (capacity &lt; res[i]) {
-                return false;
+        <span class="hljs-comment">// 客车自始至终都不应该超载</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; res.length; i++) {
+            <span class="hljs-keyword">if</span> (capacity &lt; res[i]) {
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
             }
         }
-        return true;
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
     }
 }
 </code></pre>
 <h2 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h2>
-<pre><code>Difference Array Problem Analysis Flowchart:
+<pre><code class="hljs">Difference Array Problem Analysis Flowchart:
 
 1. Does the problem involve range updates?
    ├── YES → Check update pattern
@@ -941,36 +953,36 @@ class Solution {
 </table>
 <h3 id="common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#common-patterns-tricks"><span>Common Patterns &amp; Tricks</span></a></h3>
 <h4 id="pattern-range-update-formula" tabindex="-1"><a class="header-anchor" href="#pattern-range-update-formula"><span><strong>Pattern: Range Update Formula</strong></span></a></h4>
-<pre><code class="language-python"># To add val to range [start, end]:
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># To add val to range [start, end]:</span>
 diff[start] += val
-if end + 1 &lt; n:
-    diff[end + 1] -= val
+<span class="hljs-keyword">if</span> end + <span class="hljs-number">1</span> &lt; n:
+    diff[end + <span class="hljs-number">1</span>] -= val
 </code></pre>
 <h4 id="pattern-off-by-one-for-intervals" tabindex="-1"><a class="header-anchor" href="#pattern-off-by-one-for-intervals"><span><strong>Pattern: Off-by-One for Intervals</strong></span></a></h4>
-<pre><code class="language-python"># If passengers get off at station x, they're on board [start, x-1]
-# If event ends at time t, it's active [start, t]
-# Be careful with inclusive/exclusive boundaries!
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># If passengers get off at station x, they&#x27;re on board [start, x-1]</span>
+<span class="hljs-comment"># If event ends at time t, it&#x27;s active [start, t]</span>
+<span class="hljs-comment"># Be careful with inclusive/exclusive boundaries!</span>
 
-# Car pooling example:
-for passengers, pickup, dropoff in trips:
+<span class="hljs-comment"># Car pooling example:</span>
+<span class="hljs-keyword">for</span> passengers, pickup, dropoff <span class="hljs-keyword">in</span> trips:
     diff[pickup] += passengers
-    diff[dropoff] -= passengers  # Not dropoff-1!
+    diff[dropoff] -= passengers  <span class="hljs-comment"># Not dropoff-1!</span>
 </code></pre>
 <h4 id="pattern-maximum-concurrent-events" tabindex="-1"><a class="header-anchor" href="#pattern-maximum-concurrent-events"><span><strong>Pattern: Maximum Concurrent Events</strong></span></a></h4>
-<pre><code class="language-python">def max_concurrent(intervals):
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">max_concurrent</span>(<span class="hljs-params">intervals</span>):
     events = []
-    for start, end in intervals:
-        events.append((start, 1))   # Start event
-        events.append((end + 1, -1)) # End event
+    <span class="hljs-keyword">for</span> start, end <span class="hljs-keyword">in</span> intervals:
+        events.append((start, <span class="hljs-number">1</span>))   <span class="hljs-comment"># Start event</span>
+        events.append((end + <span class="hljs-number">1</span>, -<span class="hljs-number">1</span>)) <span class="hljs-comment"># End event</span>
     
     events.sort()
-    max_concurrent = current = 0
+    max_concurrent = current = <span class="hljs-number">0</span>
     
-    for time, delta in events:
+    <span class="hljs-keyword">for</span> time, delta <span class="hljs-keyword">in</span> events:
         current += delta
-        max_concurrent = max(max_concurrent, current)
+        max_concurrent = <span class="hljs-built_in">max</span>(max_concurrent, current)
     
-    return max_concurrent
+    <span class="hljs-keyword">return</span> max_concurrent
 </code></pre>
 <h3 id="problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#problem-solving-steps"><span>Problem-Solving Steps</span></a></h3>
 <ol>
@@ -1014,56 +1026,56 @@ for passengers, pickup, dropoff in trips:
 <li><strong>Coordinate Compression</strong>: Handling large sparse ranges</li>
 </ul>
 <h3 id="java-implementation-notes" tabindex="-1"><a class="header-anchor" href="#java-implementation-notes"><span>Java Implementation Notes</span></a></h3>
-<pre><code class="language-java">// Java Difference Array Class
-class Difference {
-    private int[] diff;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java Difference Array Class</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Difference</span> {
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span>[] diff;
     
-    public Difference(int[] nums) {
-        diff = new int[nums.length];
-        diff[0] = nums[0];
-        for (int i = 1; i &lt; nums.length; i++) {
-            diff[i] = nums[i] - nums[i-1];
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">Difference</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+        diff = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[nums.length];
+        diff[<span class="hljs-number">0</span>] = nums[<span class="hljs-number">0</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; nums.length; i++) {
+            diff[i] = nums[i] - nums[i-<span class="hljs-number">1</span>];
         }
     }
     
-    public void increment(int i, int j, int val) {
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">increment</span><span class="hljs-params">(<span class="hljs-type">int</span> i, <span class="hljs-type">int</span> j, <span class="hljs-type">int</span> val)</span> {
         diff[i] += val;
-        if (j + 1 &lt; diff.length) {
-            diff[j + 1] -= val;
+        <span class="hljs-keyword">if</span> (j + <span class="hljs-number">1</span> &lt; diff.length) {
+            diff[j + <span class="hljs-number">1</span>] -= val;
         }
     }
     
-    public int[] result() {
-        int[] res = new int[diff.length];
-        res[0] = diff[0];
-        for (int i = 1; i &lt; diff.length; i++) {
-            res[i] = res[i-1] + diff[i];
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] result() {
+        <span class="hljs-type">int</span>[] res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[diff.length];
+        res[<span class="hljs-number">0</span>] = diff[<span class="hljs-number">0</span>];
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; diff.length; i++) {
+            res[i] = res[i-<span class="hljs-number">1</span>] + diff[i];
         }
-        return res;
+        <span class="hljs-keyword">return</span> res;
     }
 }
 </code></pre>
 <h3 id="python-implementation-notes" tabindex="-1"><a class="header-anchor" href="#python-implementation-notes"><span>Python Implementation Notes</span></a></h3>
-<pre><code class="language-python"># Python class implementation
-class DifferenceArray:
-    def __init__(self, nums):
-        self.n = len(nums)
-        self.diff = [0] * self.n
-        if nums:
-            self.diff[0] = nums[0]
-            for i in range(1, self.n):
-                self.diff[i] = nums[i] - nums[i-1]
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python class implementation</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">DifferenceArray</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, nums</span>):
+        <span class="hljs-variable language_">self</span>.n = <span class="hljs-built_in">len</span>(nums)
+        <span class="hljs-variable language_">self</span>.diff = [<span class="hljs-number">0</span>] * <span class="hljs-variable language_">self</span>.n
+        <span class="hljs-keyword">if</span> nums:
+            <span class="hljs-variable language_">self</span>.diff[<span class="hljs-number">0</span>] = nums[<span class="hljs-number">0</span>]
+            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-variable language_">self</span>.n):
+                <span class="hljs-variable language_">self</span>.diff[i] = nums[i] - nums[i-<span class="hljs-number">1</span>]
     
-    def update(self, start, end, val):
-        self.diff[start] += val
-        if end + 1 &lt; self.n:
-            self.diff[end + 1] -= val
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">update</span>(<span class="hljs-params">self, start, end, val</span>):
+        <span class="hljs-variable language_">self</span>.diff[start] += val
+        <span class="hljs-keyword">if</span> end + <span class="hljs-number">1</span> &lt; <span class="hljs-variable language_">self</span>.n:
+            <span class="hljs-variable language_">self</span>.diff[end + <span class="hljs-number">1</span>] -= val
     
-    def get_result(self):
-        result = [self.diff[0]]
-        for i in range(1, self.n):
-            result.append(result[-1] + self.diff[i])
-        return result
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_result</span>(<span class="hljs-params">self</span>):
+        result = [<span class="hljs-variable language_">self</span>.diff[<span class="hljs-number">0</span>]]
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-variable language_">self</span>.n):
+            result.append(result[-<span class="hljs-number">1</span>] + <span class="hljs-variable language_">self</span>.diff[i])
+        <span class="hljs-keyword">return</span> result
 </code></pre>
 <hr>
 <p><strong>Must-Know Problems for Interviews</strong>: LC 370, 1109, 1094, 253, 732

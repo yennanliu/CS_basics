@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,13 +20,24 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
     document.querySelectorAll('pre code').forEach(function(codeEl) {
       var pre = codeEl.parentElement;
       var lang = '';
       var cls = codeEl.className || '';
       var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
       if (m) lang = m[1];
+
+      // Add line numbers
+      var lines = codeEl.innerHTML.split('
+');
+      if (lines[lines.length - 1] === '') lines.pop();
+      var numbered = lines.map(function(line, i) {
+        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
+      }).join('
+');
+      codeEl.innerHTML = numbered;
+      codeEl.classList.add('hljs-ln');
+
       var wrapper = document.createElement('div');
       wrapper.className = 'code-block-wrapper';
       pre.parentNode.insertBefore(wrapper, pre);
@@ -45,7 +55,9 @@
       btn.className = 'copy-btn';
       btn.textContent = 'Copy';
       btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
+');
+        navigator.clipboard.writeText(text).then(function() {
           btn.textContent = 'Copied!';
           btn.classList.add('copied');
           setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
@@ -172,297 +184,297 @@
 <h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
 <h3 id="2-1-add-binary" tabindex="-1"><a class="header-anchor" href="#2-1-add-binary"><span>2-1) Add Binary</span></a></h3>
-<pre><code class="language-python"># LC 067 Add Binary: sum two binary strings.
-# V0
-# IDEA : STRING + BINARY
-class Solution(object):
-    def addBinary(self, a, b):
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 067 Add Binary: sum two binary strings.</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : STRING + BINARY</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">addBinary</span>(<span class="hljs-params">self, a, b</span>):
 
-        _len = max(len(a), len(b))
-        if len(a) &lt; _len:
-            a = (_len - len(a)) * '0' + a
-        if len(b) &lt; _len:
-            b = (_len - len(b)) * '0' + b
+        _<span class="hljs-built_in">len</span> = <span class="hljs-built_in">max</span>(<span class="hljs-built_in">len</span>(a), <span class="hljs-built_in">len</span>(b))
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(a) &lt; _<span class="hljs-built_in">len</span>:
+            a = (_<span class="hljs-built_in">len</span> - <span class="hljs-built_in">len</span>(a)) * <span class="hljs-string">&#x27;0&#x27;</span> + a
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(b) &lt; _<span class="hljs-built_in">len</span>:
+            b = (_<span class="hljs-built_in">len</span> - <span class="hljs-built_in">len</span>(b)) * <span class="hljs-string">&#x27;0&#x27;</span> + b
 
-        plus = 0
-        result = &quot;&quot;
+        plus = <span class="hljs-number">0</span>
+        result = <span class="hljs-string">&quot;&quot;</span>
 
-        # INVERSE LOOPING THE a, b
-        for i in range(len(a))[::-1]:
-            tmp = int(a[i]) + int(b[i]) + plus
-            if tmp &gt; 1:
-                tmp -= 2
-                plus = 1
-            else:
-                plus = 0
+        <span class="hljs-comment"># INVERSE LOOPING THE a, b</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(a))[::-<span class="hljs-number">1</span>]:
+            tmp = <span class="hljs-built_in">int</span>(a[i]) + <span class="hljs-built_in">int</span>(b[i]) + plus
+            <span class="hljs-keyword">if</span> tmp &gt; <span class="hljs-number">1</span>:
+                tmp -= <span class="hljs-number">2</span>
+                plus = <span class="hljs-number">1</span>
+            <span class="hljs-keyword">else</span>:
+                plus = <span class="hljs-number">0</span>
 
-            result += str(tmp)
+            result += <span class="hljs-built_in">str</span>(tmp)
 
-        if plus == 1:
-            return '1' + result[::-1]  ### NOTE WE NEED TO REVERSE IT!
-        else: 
-            return result[::-1] ### NOTE WE NEED TO REVERSE IT!
+        <span class="hljs-keyword">if</span> plus == <span class="hljs-number">1</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;1&#x27;</span> + result[::-<span class="hljs-number">1</span>]  <span class="hljs-comment">### NOTE WE NEED TO REVERSE IT!</span>
+        <span class="hljs-keyword">else</span>: 
+            <span class="hljs-keyword">return</span> result[::-<span class="hljs-number">1</span>] <span class="hljs-comment">### NOTE WE NEED TO REVERSE IT!</span>
 
-# V0
-class Solution(object):
-    def addBinary(self, a, b):
-        &quot;&quot;&quot;
+<span class="hljs-comment"># V0</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">addBinary</span>(<span class="hljs-params">self, a, b</span>):
+        <span class="hljs-string">&quot;&quot;&quot;
         :type a: str
         :type b: str
         :rtype: str
-        &quot;&quot;&quot;
-        res = ''
-        i, j, plus = len(a)-1, len(b)-1, 0
-        while i&gt;=0 or j&gt;=0 or plus==1:
-            plus += int(a[i]) if i&gt;= 0 else 0
-            plus += int(b[j]) if j&gt;= 0 else 0
-            res = str(plus % 2) + res
-            i, j, plus = i-1, j-1, plus//2  # since max of &quot;plus&quot; is 3 in bimary case, so &quot;plus//2&quot; works here
-        return res
+        &quot;&quot;&quot;</span>
+        res = <span class="hljs-string">&#x27;&#x27;</span>
+        i, j, plus = <span class="hljs-built_in">len</span>(a)-<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(b)-<span class="hljs-number">1</span>, <span class="hljs-number">0</span>
+        <span class="hljs-keyword">while</span> i&gt;=<span class="hljs-number">0</span> <span class="hljs-keyword">or</span> j&gt;=<span class="hljs-number">0</span> <span class="hljs-keyword">or</span> plus==<span class="hljs-number">1</span>:
+            plus += <span class="hljs-built_in">int</span>(a[i]) <span class="hljs-keyword">if</span> i&gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> <span class="hljs-number">0</span>
+            plus += <span class="hljs-built_in">int</span>(b[j]) <span class="hljs-keyword">if</span> j&gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> <span class="hljs-number">0</span>
+            res = <span class="hljs-built_in">str</span>(plus % <span class="hljs-number">2</span>) + res
+            i, j, plus = i-<span class="hljs-number">1</span>, j-<span class="hljs-number">1</span>, plus//<span class="hljs-number">2</span>  <span class="hljs-comment"># since max of &quot;plus&quot; is 3 in bimary case, so &quot;plus//2&quot; works here</span>
+        <span class="hljs-keyword">return</span> res
 </code></pre>
 <h3 id="2-2-add-strings" tabindex="-1"><a class="header-anchor" href="#2-2-add-strings"><span>2-2) Add Strings</span></a></h3>
-<pre><code class="language-java">// java
-// LC 415
-// V0
-// IDEA: string op (fixed by gpt)
-public String addStrings(String num1, String num2) {
-    if (num1 == null || num2 == null) {
-        if (num1 == null) {
-            return num2;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 415</span>
+<span class="hljs-comment">// V0</span>
+<span class="hljs-comment">// IDEA: string op (fixed by gpt)</span>
+<span class="hljs-keyword">public</span> String <span class="hljs-title function_">addStrings</span><span class="hljs-params">(String num1, String num2)</span> {
+    <span class="hljs-keyword">if</span> (num1 == <span class="hljs-literal">null</span> || num2 == <span class="hljs-literal">null</span>) {
+        <span class="hljs-keyword">if</span> (num1 == <span class="hljs-literal">null</span>) {
+            <span class="hljs-keyword">return</span> num2;
         }
-        return num1;
+        <span class="hljs-keyword">return</span> num1;
     }
-    if (num1.equals(&quot;0&quot;) &amp;&amp; num2.equals(&quot;0&quot;)) {
-        return &quot;0&quot;;
+    <span class="hljs-keyword">if</span> (num1.equals(<span class="hljs-string">&quot;0&quot;</span>) &amp;&amp; num2.equals(<span class="hljs-string">&quot;0&quot;</span>)) {
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;0&quot;</span>;
     }
 
-    StringBuilder sb = new StringBuilder();
+    <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">sb</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>();
 
-    int plus = 0;
-    int idx_1 = num1.length() - 1;
-    int idx_2 = num2.length() - 1;
+    <span class="hljs-type">int</span> <span class="hljs-variable">plus</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-type">int</span> <span class="hljs-variable">idx_1</span> <span class="hljs-operator">=</span> num1.length() - <span class="hljs-number">1</span>;
+    <span class="hljs-type">int</span> <span class="hljs-variable">idx_2</span> <span class="hljs-operator">=</span> num2.length() - <span class="hljs-number">1</span>;
 
-    /** NOTE !!!
+    <span class="hljs-comment">/** NOTE !!!
      *
      *  1. while loop
      *  2. idx_1 &gt;= 0 or idx_2 &gt;= 0
-     */
-    while (idx_1 &gt;= 0 || idx_2 &gt;= 0) {
+     */</span>
+    <span class="hljs-keyword">while</span> (idx_1 &gt;= <span class="hljs-number">0</span> || idx_2 &gt;= <span class="hljs-number">0</span>) {
 
-        int v1 = 0;
-        int v2 = 0;
+        <span class="hljs-type">int</span> <span class="hljs-variable">v1</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+        <span class="hljs-type">int</span> <span class="hljs-variable">v2</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
 
-        int new_val = 0;
+        <span class="hljs-type">int</span> <span class="hljs-variable">new_val</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
 
-        /** NOTE !!!
+        <span class="hljs-comment">/** NOTE !!!
          *
          *  if idx_1 &gt;= 0, then get val from it
-         */
-        if (idx_1 &gt;= 0) {
+         */</span>
+        <span class="hljs-keyword">if</span> (idx_1 &gt;= <span class="hljs-number">0</span>) {
             v1 = Integer.parseInt(String.valueOf(num1.charAt(idx_1)));
-            idx_1 -= 1;
+            idx_1 -= <span class="hljs-number">1</span>;
         }
 
-        /** NOTE !!!
+        <span class="hljs-comment">/** NOTE !!!
          *
          *  if idx_1 &gt;= 0, then get val from it
-         */
-        if (idx_2 &gt;= 0) {
+         */</span>
+        <span class="hljs-keyword">if</span> (idx_2 &gt;= <span class="hljs-number">0</span>) {
             v2 = Integer.parseInt(String.valueOf(num2.charAt(idx_2)));
-            idx_2 -= 1;
+            idx_2 -= <span class="hljs-number">1</span>;
         }
 
         new_val = (new_val + v1 + v2 + plus);
 
-        /** NOTE !!!
+        <span class="hljs-comment">/** NOTE !!!
          *
          *  if new_vla &gt; 9,
          *  we should `subtract 10` (instead of 9)
-         */
-        if (new_val &gt; 9) {
-            plus = 1;
-            new_val -= 10;
-        } else {
-            plus = 0;
+         */</span>
+        <span class="hljs-keyword">if</span> (new_val &gt; <span class="hljs-number">9</span>) {
+            plus = <span class="hljs-number">1</span>;
+            new_val -= <span class="hljs-number">10</span>;
+        } <span class="hljs-keyword">else</span> {
+            plus = <span class="hljs-number">0</span>;
         }
 
         sb.append(new_val);
     }
 
-    /** NOTE !!!
+    <span class="hljs-comment">/** NOTE !!!
      *
      *  need to add the `remaining plus` to res
      *  if there is it
-     */
-    if (plus &gt; 0) {
+     */</span>
+    <span class="hljs-keyword">if</span> (plus &gt; <span class="hljs-number">0</span>) {
         sb.append(plus);
     }
 
-    // reverse
-    return sb.reverse().toString();
+    <span class="hljs-comment">// reverse</span>
+    <span class="hljs-keyword">return</span> sb.reverse().toString();
 }
 </code></pre>
-<pre><code class="language-python"># LC 415. Add Strings
-# V0
-# IDEA : string + math
-class Solution(object):
-    def addStrings(self, num1, num2):
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 415. Add Strings</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : string + math</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">addStrings</span>(<span class="hljs-params">self, num1, num2</span>):
         result = []
-        # note : we init carry as 0
-        carry = 0
-        num1 = list(num1)
-        num2 = list(num2)
-        # while there is still non-add digit in num1, and num2; or there is non-zero carry 
-        while num1 or num2 or carry:
+        <span class="hljs-comment"># note : we init carry as 0</span>
+        carry = <span class="hljs-number">0</span>
+        num1 = <span class="hljs-built_in">list</span>(num1)
+        num2 = <span class="hljs-built_in">list</span>(num2)
+        <span class="hljs-comment"># while there is still non-add digit in num1, and num2; or there is non-zero carry </span>
+        <span class="hljs-keyword">while</span> num1 <span class="hljs-keyword">or</span> num2 <span class="hljs-keyword">or</span> carry:
             digit = carry
-            if num1:
-                tmp1 = num1.pop(-1)
-                digit += int(tmp1)
-            if num2:
-                tmp2 = num2.pop(-1)
-                digit += int(tmp2)
-            &quot;&quot;&quot;
+            <span class="hljs-keyword">if</span> num1:
+                tmp1 = num1.pop(-<span class="hljs-number">1</span>)
+                digit += <span class="hljs-built_in">int</span>(tmp1)
+            <span class="hljs-keyword">if</span> num2:
+                tmp2 = num2.pop(-<span class="hljs-number">1</span>)
+                digit += <span class="hljs-built_in">int</span>(tmp2)
+            <span class="hljs-string">&quot;&quot;&quot;
             if digit &gt; 9 -&gt; we need to &quot;carry&quot; 1 to next digit -&gt; carry = 1
             else -&gt; carry = 0
-            &quot;&quot;&quot;
-            if digit &gt; 9:
-                carry = 1
-            else:
-                carry = 0
-            # NOTE !!! we get &quot;remain&quot; by 10 via below code
-            result.append(str(digit % 10))
-        return ''.join(result[::-1]) 
+            &quot;&quot;&quot;</span>
+            <span class="hljs-keyword">if</span> digit &gt; <span class="hljs-number">9</span>:
+                carry = <span class="hljs-number">1</span>
+            <span class="hljs-keyword">else</span>:
+                carry = <span class="hljs-number">0</span>
+            <span class="hljs-comment"># NOTE !!! we get &quot;remain&quot; by 10 via below code</span>
+            result.append(<span class="hljs-built_in">str</span>(digit % <span class="hljs-number">10</span>))
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;&#x27;</span>.join(result[::-<span class="hljs-number">1</span>]) 
 </code></pre>
 <h3 id="2-3-sum-of-two-integers" tabindex="-1"><a class="header-anchor" href="#2-3-sum-of-two-integers"><span>2-3) Sum of Two Integers</span></a></h3>
-<pre><code class="language-python"># LC 371 : Sum of Two Integers
-# V0
-# https://leetcode.com/problems/sum-of-two-integers/discuss/1214257/Python-1-line%3A-91-faster
-class Souluton:
-    def getSum(self, a, b):
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 371 : Sum of Two Integers</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># https://leetcode.com/problems/sum-of-two-integers/discuss/1214257/Python-1-line%3A-91-faster</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Souluton</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">getSum</span>(<span class="hljs-params">self, a, b</span>):
         tmp = math.exp(a) * math.exp(b)
-        r = int(math.log(tmp))
-        return r
+        r = <span class="hljs-built_in">int</span>(math.log(tmp))
+        <span class="hljs-keyword">return</span> r
 </code></pre>
 <h3 id="2-4-add-to-array-form-of-integer" tabindex="-1"><a class="header-anchor" href="#2-4-add-to-array-form-of-integer"><span>2-4) Add to Array Form of Integer</span></a></h3>
-<pre><code class="language-python"># LC 989 Add to Array Form of Integer
-# V0
-# IDEA : array op
-class Solution:
-    def addToArrayForm(self, num, k):
-        s = &quot;&quot;
-        for i in num:
-            s += str(i)       
-        answer = int(s) + k
-        return  list(&quot;&quot;.join(str(answer)))
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 989 Add to Array Form of Integer</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : array op</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">addToArrayForm</span>(<span class="hljs-params">self, num, k</span>):
+        s = <span class="hljs-string">&quot;&quot;</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> num:
+            s += <span class="hljs-built_in">str</span>(i)       
+        answer = <span class="hljs-built_in">int</span>(s) + k
+        <span class="hljs-keyword">return</span>  <span class="hljs-built_in">list</span>(<span class="hljs-string">&quot;&quot;</span>.join(<span class="hljs-built_in">str</span>(answer)))
 </code></pre>
 <h3 id="2-5-plus-one" tabindex="-1"><a class="header-anchor" href="#2-5-plus-one"><span>2-5) Plus One</span></a></h3>
-<pre><code class="language-python"># LC 66 Plus One
-# V0
-# NOTE : Notice the index of inverse loop  : range(len(a)-1, -1, -1)
-# a = ['a', 'b', 'c']
-# for i in range(len(a)-1, -1, -1):
-#     print (a[i])
-# c
-# b
-# a
-class Solution(object):
-    def plusOne(self, digits):
-        &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 66 Plus One</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># NOTE : Notice the index of inverse loop  : range(len(a)-1, -1, -1)</span>
+<span class="hljs-comment"># a = [&#x27;a&#x27;, &#x27;b&#x27;, &#x27;c&#x27;]</span>
+<span class="hljs-comment"># for i in range(len(a)-1, -1, -1):</span>
+<span class="hljs-comment">#     print (a[i])</span>
+<span class="hljs-comment"># c</span>
+<span class="hljs-comment"># b</span>
+<span class="hljs-comment"># a</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">plusOne</span>(<span class="hljs-params">self, digits</span>):
+        <span class="hljs-string">&quot;&quot;&quot;
         :type digits: List[int]
         :rtype: List[int]
-        &quot;&quot;&quot;
-        plus = 1
-        for i in range(len(digits)-1, -1, -1):
-            if digits[i] + plus &gt; 9:
-                digits[i] = 0
-                plus = 1
-            else:
+        &quot;&quot;&quot;</span>
+        plus = <span class="hljs-number">1</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(digits)-<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>):
+            <span class="hljs-keyword">if</span> digits[i] + plus &gt; <span class="hljs-number">9</span>:
+                digits[i] = <span class="hljs-number">0</span>
+                plus = <span class="hljs-number">1</span>
+            <span class="hljs-keyword">else</span>:
                 digits[i] = digits[i] + plus
-                plus = 0
-        if plus == 1:
-            digits.insert(0, 1)
-        return digits
+                plus = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">if</span> plus == <span class="hljs-number">1</span>:
+            digits.insert(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>)
+        <span class="hljs-keyword">return</span> digits
 </code></pre>
 <h3 id="2-6-add-two-numbers" tabindex="-1"><a class="header-anchor" href="#2-6-add-two-numbers"><span>2-6) Add Two Numbers</span></a></h3>
-<pre><code class="language-python"># LC 002 Add Two Numbers
-# V0
-class Solution(object):
-    def addTwoNumbers(self, l1, l2):
-        &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 002 Add Two Numbers</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">addTwoNumbers</span>(<span class="hljs-params">self, l1, l2</span>):
+        <span class="hljs-string">&quot;&quot;&quot;
         NOTE :
          1. we init linkedlist via ListNode()
          2. we NEED make extra head refer same linkedlist, since we need to return beginning of linkedlust of this func, while res will meet &quot;tail&quot; at the end of while loop
-        &quot;&quot;&quot;
+        &quot;&quot;&quot;</span>
         head = res = ListNode()
-        plus = 0
-        tmp = 0
-        while l1 or l2:
+        plus = <span class="hljs-number">0</span>
+        tmp = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">while</span> l1 <span class="hljs-keyword">or</span> l2:
             tmp += plus
-            plus = 0
-            if l1:
+            plus = <span class="hljs-number">0</span>
+            <span class="hljs-keyword">if</span> l1:
                 tmp += l1.val
-                l1 = l1.next
-            if l2:
+                l1 = l1.<span class="hljs-built_in">next</span>
+            <span class="hljs-keyword">if</span> l2:
                 tmp += l2.val
-                l2 = l2.next
-            if tmp &gt; 9:
-                tmp -= 10
-                plus = 1
+                l2 = l2.<span class="hljs-built_in">next</span>
+            <span class="hljs-keyword">if</span> tmp &gt; <span class="hljs-number">9</span>:
+                tmp -= <span class="hljs-number">10</span>
+                plus = <span class="hljs-number">1</span>
 
-            res.next = ListNode(tmp)
-            res = res.next
-            tmp = 0
-        ### NOTE : need to deal with case : l1, l2 are completed, but still &quot;remaining&quot; plus
-        if plus != 0:
-            res.next = ListNode(plus)
-            res = res.next
-        #print (&quot;res = &quot; + str(res))
-        #print (&quot;head = &quot; + str(head))
-        return head.next
+            res.<span class="hljs-built_in">next</span> = ListNode(tmp)
+            res = res.<span class="hljs-built_in">next</span>
+            tmp = <span class="hljs-number">0</span>
+        <span class="hljs-comment">### NOTE : need to deal with case : l1, l2 are completed, but still &quot;remaining&quot; plus</span>
+        <span class="hljs-keyword">if</span> plus != <span class="hljs-number">0</span>:
+            res.<span class="hljs-built_in">next</span> = ListNode(plus)
+            res = res.<span class="hljs-built_in">next</span>
+        <span class="hljs-comment">#print (&quot;res = &quot; + str(res))</span>
+        <span class="hljs-comment">#print (&quot;head = &quot; + str(head))</span>
+        <span class="hljs-keyword">return</span> head.<span class="hljs-built_in">next</span>
 </code></pre>
 <h3 id="2-7-add-two-numbers-ii" tabindex="-1"><a class="header-anchor" href="#2-7-add-two-numbers-ii"><span>2-7) Add Two Numbers II</span></a></h3>
-<pre><code class="language-python"># LC 445 Add Two Numbers II
-# V0
-# IDEA : string + linked list
-# DEMO
-# input :
-# [7,2,4,3]
-# [5,6,4]
-# intermedia output : 
-# l1_num = 7243
-# l2_num = 564
-class Solution:
-    def addTwoNumbers(self, l1, l2):
-        if not l1 and not l2:
-            return None
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 445 Add Two Numbers II</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : string + linked list</span>
+<span class="hljs-comment"># DEMO</span>
+<span class="hljs-comment"># input :</span>
+<span class="hljs-comment"># [7,2,4,3]</span>
+<span class="hljs-comment"># [5,6,4]</span>
+<span class="hljs-comment"># intermedia output : </span>
+<span class="hljs-comment"># l1_num = 7243</span>
+<span class="hljs-comment"># l2_num = 564</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">addTwoNumbers</span>(<span class="hljs-params">self, l1, l2</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> l1 <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> l2:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
 
-        l1_num = 0
-        while l1:
-            l1_num = l1_num * 10 + l1.val
-            l1 = l1.next
+        l1_num = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">while</span> l1:
+            l1_num = l1_num * <span class="hljs-number">10</span> + l1.val
+            l1 = l1.<span class="hljs-built_in">next</span>
 
-        l2_num = 0
-        while l2:
-            l2_num = l2_num * 10 + l2.val
-            l2 = l2.next
+        l2_num = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">while</span> l2:
+            l2_num = l2_num * <span class="hljs-number">10</span> + l2.val
+            l2 = l2.<span class="hljs-built_in">next</span>
 
-        print (&quot;l1_num = &quot; + str(l1_num))
-        print (&quot;l2_num = &quot; + str(l2_num))
+        <span class="hljs-built_in">print</span> (<span class="hljs-string">&quot;l1_num = &quot;</span> + <span class="hljs-built_in">str</span>(l1_num))
+        <span class="hljs-built_in">print</span> (<span class="hljs-string">&quot;l2_num = &quot;</span> + <span class="hljs-built_in">str</span>(l2_num))
 
 
-        ### NOTE : trick here :
-        #    -&gt; get int format of 2 linked list first (l1, l2)
-        #    -&gt; then sum them (l1_num + l2_num)
+        <span class="hljs-comment">### NOTE : trick here :</span>
+        <span class="hljs-comment">#    -&gt; get int format of 2 linked list first (l1, l2)</span>
+        <span class="hljs-comment">#    -&gt; then sum them (l1_num + l2_num)</span>
         lsum = l1_num + l2_num
 
-        head = ListNode(None)
+        head = ListNode(<span class="hljs-literal">None</span>)
         cur = head
-        ### NOTE : go thrpigh the linked list int sum, append each digit to ListNode and return it
-        for istr in str(lsum):
-            cur.next = ListNode(int(istr))
-            cur = cur.next
-        # NOTE : need to return head (but not cur, since cur already meet the end of ListNode)
-        return head.next
+        <span class="hljs-comment">### NOTE : go thrpigh the linked list int sum, append each digit to ListNode and return it</span>
+        <span class="hljs-keyword">for</span> istr <span class="hljs-keyword">in</span> <span class="hljs-built_in">str</span>(lsum):
+            cur.<span class="hljs-built_in">next</span> = ListNode(<span class="hljs-built_in">int</span>(istr))
+            cur = cur.<span class="hljs-built_in">next</span>
+        <span class="hljs-comment"># NOTE : need to return head (but not cur, since cur already meet the end of ListNode)</span>
+        <span class="hljs-keyword">return</span> head.<span class="hljs-built_in">next</span>
 </code></pre>
 
       </div>

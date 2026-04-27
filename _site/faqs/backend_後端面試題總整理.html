@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,13 +20,24 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
     document.querySelectorAll('pre code').forEach(function(codeEl) {
       var pre = codeEl.parentElement;
       var lang = '';
       var cls = codeEl.className || '';
       var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
       if (m) lang = m[1];
+
+      // Add line numbers
+      var lines = codeEl.innerHTML.split('
+');
+      if (lines[lines.length - 1] === '') lines.pop();
+      var numbered = lines.map(function(line, i) {
+        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
+      }).join('
+');
+      codeEl.innerHTML = numbered;
+      codeEl.classList.add('hljs-ln');
+
       var wrapper = document.createElement('div');
       wrapper.className = 'code-block-wrapper';
       pre.parentNode.insertBefore(wrapper, pre);
@@ -45,7 +55,9 @@
       btn.className = 'copy-btn';
       btn.textContent = 'Copy';
       btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
+');
+        navigator.clipboard.writeText(text).then(function() {
           btn.textContent = 'Copied!';
           btn.classList.add('copied');
           setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
@@ -236,18 +248,18 @@
 <li><strong>PostgreSQL</strong>: <code>Read Committed</code></li>
 </ul>
 <h4 id="mysql" tabindex="-1"><a class="header-anchor" href="#mysql"><span>設定隔離級別 (MySQL)</span></a></h4>
-<pre><code class="language-sql">-- 設定 Session 級別
-SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
-START TRANSACTION;
--- 執行查詢
-COMMIT;
+<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- 設定 Session 級別</span>
+<span class="hljs-keyword">SET</span> SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+<span class="hljs-keyword">START</span> TRANSACTION;
+<span class="hljs-comment">-- 執行查詢</span>
+<span class="hljs-keyword">COMMIT</span>;
 
--- 設定全域級別
-SET GLOBAL TRANSACTION ISOLATION LEVEL READ COMMITTED;
+<span class="hljs-comment">-- 設定全域級別</span>
+<span class="hljs-keyword">SET</span> <span class="hljs-keyword">GLOBAL</span> TRANSACTION ISOLATION LEVEL READ COMMITTED;
 
--- 查看當前隔離級別
-SELECT @@session.transaction_isolation;  -- Session 級別
-SELECT @@global.transaction_isolation;   -- 全域級別
+<span class="hljs-comment">-- 查看當前隔離級別</span>
+<span class="hljs-keyword">SELECT</span> @<span class="hljs-variable">@session</span>.transaction_isolation;  <span class="hljs-comment">-- Session 級別</span>
+<span class="hljs-keyword">SELECT</span> @<span class="hljs-variable">@global</span>.transaction_isolation;   <span class="hljs-comment">-- 全域級別</span>
 </code></pre>
 <h4 id="-5" tabindex="-1"><a class="header-anchor" href="#-5"><span>使用場景建議</span></a></h4>
 <table>
@@ -290,10 +302,10 @@ SELECT @@global.transaction_isolation;   -- 全域級別
 <li><strong>使用場景</strong>：資料庫備份</li>
 <li><strong>效果</strong>：資料庫中所有表變為唯讀狀態</li>
 </ul>
-<pre><code class="language-sql">-- 加全域鎖
-FLUSH TABLES WITH READ LOCK;
+<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- 加全域鎖</span>
+FLUSH TABLES <span class="hljs-keyword">WITH</span> READ LOCK;
 
--- 解鎖
+<span class="hljs-comment">-- 解鎖</span>
 UNLOCK TABLES;
 </code></pre>
 <h4 id="1-2-2" tabindex="-1"><a class="header-anchor" href="#1-2-2"><span>1.2.2 表級鎖</span></a></h4>
@@ -329,13 +341,13 @@ UNLOCK TABLES;
 </tr>
 </tbody>
 </table>
-<pre><code class="language-sql">-- 加讀鎖
+<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- 加讀鎖</span>
 LOCK TABLES authors READ;
 
--- 加寫鎖
+<span class="hljs-comment">-- 加寫鎖</span>
 LOCK TABLES comment WRITE;
 
--- 解鎖當前 Session 所有表鎖
+<span class="hljs-comment">-- 解鎖當前 Session 所有表鎖</span>
 UNLOCK TABLES;
 </code></pre>
 <p><strong>意向鎖</strong>：</p>
@@ -359,11 +371,11 @@ UNLOCK TABLES;
 <li>併發性能好</li>
 </ul>
 <p><strong>Record Lock (記錄鎖)</strong>：</p>
-<pre><code class="language-sql">-- 對讀取的記錄加共享鎖 (S鎖)
-SELECT * FROM authors WHERE id = 1 LOCK IN SHARE MODE;
+<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- 對讀取的記錄加共享鎖 (S鎖)</span>
+<span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> authors <span class="hljs-keyword">WHERE</span> id <span class="hljs-operator">=</span> <span class="hljs-number">1</span> LOCK <span class="hljs-keyword">IN</span> SHARE MODE;
 
--- 對讀取的記錄加獨佔鎖 (X鎖)
-SELECT * FROM authors WHERE id = 1 FOR UPDATE;
+<span class="hljs-comment">-- 對讀取的記錄加獨佔鎖 (X鎖)</span>
+<span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> authors <span class="hljs-keyword">WHERE</span> id <span class="hljs-operator">=</span> <span class="hljs-number">1</span> <span class="hljs-keyword">FOR</span> <span class="hljs-keyword">UPDATE</span>;
 </code></pre>
 <p><strong>Gap Lock (間隙鎖)</strong>：</p>
 <ul>
@@ -441,14 +453,14 @@ SELECT * FROM authors WHERE id = 1 FOR UPDATE;
 <li>預估成本</li>
 </ul>
 <h4 id="-8" tabindex="-1"><a class="header-anchor" href="#-8"><span>取得執行計畫</span></a></h4>
-<pre><code class="language-sql">-- MySQL / PostgreSQL
-EXPLAIN SELECT * FROM orders WHERE status = 'shipped';
+<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- MySQL / PostgreSQL</span>
+EXPLAIN <span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> orders <span class="hljs-keyword">WHERE</span> status <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;shipped&#x27;</span>;
 
--- PostgreSQL - 包含實際執行時間
-EXPLAIN ANALYZE SELECT * FROM orders WHERE status = 'shipped';
+<span class="hljs-comment">-- PostgreSQL - 包含實際執行時間</span>
+EXPLAIN ANALYZE <span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> orders <span class="hljs-keyword">WHERE</span> status <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;shipped&#x27;</span>;
 
--- MySQL - JSON 格式，更詳細
-EXPLAIN FORMAT=JSON SELECT * FROM orders WHERE status = 'shipped';
+<span class="hljs-comment">-- MySQL - JSON 格式，更詳細</span>
+EXPLAIN FORMAT<span class="hljs-operator">=</span>JSON <span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> orders <span class="hljs-keyword">WHERE</span> status <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;shipped&#x27;</span>;
 </code></pre>
 <h4 id="-9" tabindex="-1"><a class="header-anchor" href="#-9"><span>執行計畫關鍵指標</span></a></h4>
 <table>
@@ -524,12 +536,12 @@ EXPLAIN FORMAT=JSON SELECT * FROM orders WHERE status = 'shipped';
 </ul>
 <h4 id="-11" tabindex="-1"><a class="header-anchor" href="#-11"><span>優化範例</span></a></h4>
 <p><strong>問題查詢</strong>：</p>
-<pre><code class="language-sql">SELECT o.id, o.order_date, c.name
-FROM orders o
-JOIN customers c ON o.customer_id = c.id
-WHERE o.status = 'shipped' AND c.region = 'US'
-ORDER BY o.order_date DESC
-LIMIT 100;
+<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-keyword">SELECT</span> o.id, o.order_date, c.name
+<span class="hljs-keyword">FROM</span> orders o
+<span class="hljs-keyword">JOIN</span> customers c <span class="hljs-keyword">ON</span> o.customer_id <span class="hljs-operator">=</span> c.id
+<span class="hljs-keyword">WHERE</span> o.status <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;shipped&#x27;</span> <span class="hljs-keyword">AND</span> c.region <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;US&#x27;</span>
+<span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> o.order_date <span class="hljs-keyword">DESC</span>
+LIMIT <span class="hljs-number">100</span>;
 </code></pre>
 <p><strong>執行 EXPLAIN 發現問題</strong>：</p>
 <ul>
@@ -537,12 +549,12 @@ LIMIT 100;
 <li><code>orders</code> 表使用 filesort</li>
 </ul>
 <p><strong>優化方案</strong>：</p>
-<pre><code class="language-sql">-- 添加索引
-CREATE INDEX idx_customers_region ON customers(region);
-CREATE INDEX idx_orders_status_date ON orders(status, order_date DESC);
+<pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-comment">-- 添加索引</span>
+<span class="hljs-keyword">CREATE</span> INDEX idx_customers_region <span class="hljs-keyword">ON</span> customers(region);
+<span class="hljs-keyword">CREATE</span> INDEX idx_orders_status_date <span class="hljs-keyword">ON</span> orders(status, order_date <span class="hljs-keyword">DESC</span>);
 
--- 可選：覆蓋索引
-CREATE INDEX idx_orders_covering ON orders(status, order_date DESC, customer_id, id);
+<span class="hljs-comment">-- 可選：覆蓋索引</span>
+<span class="hljs-keyword">CREATE</span> INDEX idx_orders_covering <span class="hljs-keyword">ON</span> orders(status, order_date <span class="hljs-keyword">DESC</span>, customer_id, id);
 </code></pre>
 <h4 id="-12" tabindex="-1"><a class="header-anchor" href="#-12"><span>常見問題與修復</span></a></h4>
 <table>
@@ -643,65 +655,65 @@ CREATE INDEX idx_orders_covering ON orders(status, order_date DESC, customer_id,
 </ol>
 <h4 id="2-2-1-setnx-set-if-not-exists" tabindex="-1"><a class="header-anchor" href="#2-2-1-setnx-set-if-not-exists"><span>2.2.1 SETNX (Set if Not Exists)</span></a></h4>
 <p>最簡單的鎖實現方式：</p>
-<pre><code class="language-python">import redis
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">import</span> redis
 r = redis.Redis()
 
-lock_key = &quot;lock:my_resource&quot;
+lock_key = <span class="hljs-string">&quot;lock:my_resource&quot;</span>
 
-# 嘗試獲取鎖
-if r.setnx(lock_key, 1):
-    try:
-        # 取得鎖，執行臨界區程式碼
-        pass
-    finally:
-        # 釋放鎖
+<span class="hljs-comment"># 嘗試獲取鎖</span>
+<span class="hljs-keyword">if</span> r.setnx(lock_key, <span class="hljs-number">1</span>):
+    <span class="hljs-keyword">try</span>:
+        <span class="hljs-comment"># 取得鎖，執行臨界區程式碼</span>
+        <span class="hljs-keyword">pass</span>
+    <span class="hljs-keyword">finally</span>:
+        <span class="hljs-comment"># 釋放鎖</span>
         r.delete(lock_key)
-else:
-    # 未取得鎖，稍後重試
-    pass
+<span class="hljs-keyword">else</span>:
+    <span class="hljs-comment"># 未取得鎖，稍後重試</span>
+    <span class="hljs-keyword">pass</span>
 </code></pre>
 <p><strong>問題</strong>：如果程式在釋放鎖之前崩潰，會造成死鎖</p>
 <h4 id="2-2-2-set-with-expiration" tabindex="-1"><a class="header-anchor" href="#2-2-2-set-with-expiration"><span>2.2.2 SET with Expiration (推薦)</span></a></h4>
 <p>使用 <code>SET</code> 命令搭配 <code>NX</code> 和 <code>EX</code> 選項，原子地設定鎖和過期時間：</p>
-<pre><code class="language-python">import redis
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">import</span> redis
 r = redis.Redis()
 
-lock_key = &quot;lock:my_resource&quot;
-lock_timeout = 10  # 鎖在 10 秒後自動過期
+lock_key = <span class="hljs-string">&quot;lock:my_resource&quot;</span>
+lock_timeout = <span class="hljs-number">10</span>  <span class="hljs-comment"># 鎖在 10 秒後自動過期</span>
 
-# 嘗試獲取鎖
-if r.set(lock_key, 1, nx=True, ex=lock_timeout):
-    try:
-        # 取得鎖，執行臨界區程式碼
-        pass
-    finally:
-        # 釋放鎖
+<span class="hljs-comment"># 嘗試獲取鎖</span>
+<span class="hljs-keyword">if</span> r.<span class="hljs-built_in">set</span>(lock_key, <span class="hljs-number">1</span>, nx=<span class="hljs-literal">True</span>, ex=lock_timeout):
+    <span class="hljs-keyword">try</span>:
+        <span class="hljs-comment"># 取得鎖，執行臨界區程式碼</span>
+        <span class="hljs-keyword">pass</span>
+    <span class="hljs-keyword">finally</span>:
+        <span class="hljs-comment"># 釋放鎖</span>
         r.delete(lock_key)
-else:
-    # 未取得鎖，稍後重試
-    pass
+<span class="hljs-keyword">else</span>:
+    <span class="hljs-comment"># 未取得鎖，稍後重試</span>
+    <span class="hljs-keyword">pass</span>
 </code></pre>
 <h4 id="2-2-3-redlock" tabindex="-1"><a class="header-anchor" href="#2-2-3-redlock"><span>2.2.3 Redlock 演算法</span></a></h4>
 <p>用於多個 Redis 實例的分散式鎖，提供容錯能力：</p>
-<pre><code class="language-python">from redis import Redis
-from redlock import Redlock
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">from</span> redis <span class="hljs-keyword">import</span> Redis
+<span class="hljs-keyword">from</span> redlock <span class="hljs-keyword">import</span> Redlock
 
-# 連接多個 Redis 實例
-redis_instances = [Redis(host='localhost', port=6379) for _ in range(5)]
+<span class="hljs-comment"># 連接多個 Redis 實例</span>
+redis_instances = [Redis(host=<span class="hljs-string">&#x27;localhost&#x27;</span>, port=<span class="hljs-number">6379</span>) <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">5</span>)]
 dlock = Redlock(redis_instances)
 
-lock_key = &quot;lock:my_resource&quot;
-lock = dlock.lock(lock_key, 10000)  # 鎖在 10 秒後過期
+lock_key = <span class="hljs-string">&quot;lock:my_resource&quot;</span>
+lock = dlock.lock(lock_key, <span class="hljs-number">10000</span>)  <span class="hljs-comment"># 鎖在 10 秒後過期</span>
 
-if lock:
-    try:
-        # 執行任務
-        pass
-    finally:
+<span class="hljs-keyword">if</span> lock:
+    <span class="hljs-keyword">try</span>:
+        <span class="hljs-comment"># 執行任務</span>
+        <span class="hljs-keyword">pass</span>
+    <span class="hljs-keyword">finally</span>:
         dlock.unlock(lock)
-else:
-    # 未取得鎖
-    pass
+<span class="hljs-keyword">else</span>:
+    <span class="hljs-comment"># 未取得鎖</span>
+    <span class="hljs-keyword">pass</span>
 </code></pre>
 <p><strong>工作原理</strong>：</p>
 <ul>
@@ -747,28 +759,28 @@ else:
 </tbody>
 </table>
 <h4 id="spring-boot-cache-aside" tabindex="-1"><a class="header-anchor" href="#spring-boot-cache-aside"><span>Spring Boot 快取實現 (Cache-Aside)</span></a></h4>
-<pre><code class="language-java">@Service
-public class UserService {
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-meta">@Service</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserService</span> {
 
-    @Autowired
-    private UserRepository userRepository;
+    <span class="hljs-meta">@Autowired</span>
+    <span class="hljs-keyword">private</span> UserRepository userRepository;
 
-    // 查詢時先查快取，未命中則查資料庫並快取結果
-    @Cacheable(value = &quot;user&quot;, key = &quot;#userId&quot;)
-    public User getUserById(Long userId) {
-        return userRepository.findById(userId).orElseThrow();
+    <span class="hljs-comment">// 查詢時先查快取，未命中則查資料庫並快取結果</span>
+    <span class="hljs-meta">@Cacheable(value = &quot;user&quot;, key = &quot;#userId&quot;)</span>
+    <span class="hljs-keyword">public</span> User <span class="hljs-title function_">getUserById</span><span class="hljs-params">(Long userId)</span> {
+        <span class="hljs-keyword">return</span> userRepository.findById(userId).orElseThrow();
     }
 
-    // 更新資料後清除快取
-    @CacheEvict(value = &quot;user&quot;, key = &quot;#user.id&quot;)
-    public void updateUser(User user) {
+    <span class="hljs-comment">// 更新資料後清除快取</span>
+    <span class="hljs-meta">@CacheEvict(value = &quot;user&quot;, key = &quot;#user.id&quot;)</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">updateUser</span><span class="hljs-params">(User user)</span> {
         userRepository.save(user);
     }
 
-    // 更新資料並同時更新快取
-    @CachePut(value = &quot;user&quot;, key = &quot;#user.id&quot;)
-    public User saveUser(User user) {
-        return userRepository.save(user);
+    <span class="hljs-comment">// 更新資料並同時更新快取</span>
+    <span class="hljs-meta">@CachePut(value = &quot;user&quot;, key = &quot;#user.id&quot;)</span>
+    <span class="hljs-keyword">public</span> User <span class="hljs-title function_">saveUser</span><span class="hljs-params">(User user)</span> {
+        <span class="hljs-keyword">return</span> userRepository.save(user);
     }
 }
 </code></pre>
@@ -833,12 +845,12 @@ public class UserService {
 </ul>
 <p><strong>4. 序列化格式</strong></p>
 <p>Redis 需要快速的序列化，建議使用 <strong>JSON</strong> 或 <strong>String</strong> 而非 Java 原生序列化：</p>
-<pre><code class="language-java">@Bean
-public RedisTemplate&lt;String, Object&gt; redisTemplate(RedisConnectionFactory factory) {
-    RedisTemplate&lt;String, Object&gt; template = new RedisTemplate&lt;&gt;();
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-meta">@Bean</span>
+<span class="hljs-keyword">public</span> RedisTemplate&lt;String, Object&gt; <span class="hljs-title function_">redisTemplate</span><span class="hljs-params">(RedisConnectionFactory factory)</span> {
+    RedisTemplate&lt;String, Object&gt; template = <span class="hljs-keyword">new</span> <span class="hljs-title class_">RedisTemplate</span>&lt;&gt;();
     template.setConnectionFactory(factory);
-    template.setValueSerializer(new Jackson2JsonRedisSerializer&lt;&gt;(Object.class));
-    return template;
+    template.setValueSerializer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Jackson2JsonRedisSerializer</span>&lt;&gt;(Object.class));
+    <span class="hljs-keyword">return</span> template;
 }
 </code></pre>
 <hr>
@@ -1215,7 +1227,7 @@ public RedisTemplate&lt;String, Object&gt; redisTemplate(RedisConnectionFactory 
 <li><strong>Signature</strong>：使用 Header 中指定的演算法 (HMAC、RSA、ECDSA) 對 Header 和 Payload 進行簽名</li>
 </ul>
 <p><strong>範例</strong>：</p>
-<pre><code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+<pre><code class="hljs">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
 </code></pre>
 <h4 id="jwt-1" tabindex="-1"><a class="header-anchor" href="#jwt-1"><span>JWT 的優點</span></a></h4>
 <ul>
@@ -1249,7 +1261,7 @@ public RedisTemplate&lt;String, Object&gt; redisTemplate(RedisConnectionFactory 
 <h4 id="middleware" tabindex="-1"><a class="header-anchor" href="#middleware"><span>什麼是 Middleware？</span></a></h4>
 <p>Middleware 是位於<strong>傳入請求和核心應用邏輯之間的程式碼層</strong>，用於攔截、修改或處理請求和回應，而不改變主要業務邏輯。</p>
 <p><strong>流程</strong>：</p>
-<pre><code>Client → Middleware → App → Middleware → Response → Client
+<pre><code class="hljs">Client → Middleware → App → Middleware → Response → Client
 </code></pre>
 <h4 id="middleware-1" tabindex="-1"><a class="header-anchor" href="#middleware-1"><span>為什麼使用 Middleware？</span></a></h4>
 <p>Middleware 讓你可以將常見關注點從核心應用邏輯中解耦：</p>
@@ -1288,87 +1300,87 @@ public RedisTemplate&lt;String, Object&gt; redisTemplate(RedisConnectionFactory 
 </tbody>
 </table>
 <h4 id="flask" tabindex="-1"><a class="header-anchor" href="#flask"><span>Flask 範例</span></a></h4>
-<pre><code class="language-python">from flask import Flask, request
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">from</span> flask <span class="hljs-keyword">import</span> Flask, request
 
 app = Flask(__name__)
 
-# 請求前的日誌記錄
-@app.before_request
-def log_request():
-    print(f&quot;[{request.method}] {request.path}&quot;)
+<span class="hljs-comment"># 請求前的日誌記錄</span>
+<span class="hljs-meta">@app.before_request</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">log_request</span>():
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">f&quot;[<span class="hljs-subst">{request.method}</span>] <span class="hljs-subst">{request.path}</span>&quot;</span>)
 
-# 請求後添加自訂 header
-@app.after_request
-def add_custom_header(response):
-    response.headers['X-App-Version'] = '1.0.0'
-    return response
+<span class="hljs-comment"># 請求後添加自訂 header</span>
+<span class="hljs-meta">@app.after_request</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">add_custom_header</span>(<span class="hljs-params">response</span>):
+    response.headers[<span class="hljs-string">&#x27;X-App-Version&#x27;</span>] = <span class="hljs-string">&#x27;1.0.0&#x27;</span>
+    <span class="hljs-keyword">return</span> response
 
-@app.route(&quot;/hello&quot;)
-def hello():
-    return &quot;Hello, World!&quot;
+<span class="hljs-meta">@app.route(<span class="hljs-params"><span class="hljs-string">&quot;/hello&quot;</span></span>)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">hello</span>():
+    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Hello, World!&quot;</span>
 </code></pre>
 <h4 id="flask-middleware" tabindex="-1"><a class="header-anchor" href="#flask-middleware"><span>Flask 認證 Middleware 範例</span></a></h4>
-<pre><code class="language-python">from flask import Flask, request, jsonify, abort
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">from</span> flask <span class="hljs-keyword">import</span> Flask, request, jsonify, abort
 
 app = Flask(__name__)
 
-# 模擬的 token 儲存（生產環境應使用資料庫或外部認證服務）
+<span class="hljs-comment"># 模擬的 token 儲存（生產環境應使用資料庫或外部認證服務）</span>
 VALID_API_TOKENS = {
-    &quot;token123&quot;: &quot;user_a&quot;,
-    &quot;token456&quot;: &quot;user_b&quot;
+    <span class="hljs-string">&quot;token123&quot;</span>: <span class="hljs-string">&quot;user_a&quot;</span>,
+    <span class="hljs-string">&quot;token456&quot;</span>: <span class="hljs-string">&quot;user_b&quot;</span>
 }
 
-@app.before_request
-def authenticate():
-    # 定義不需要認證的公開路徑
-    public_paths = ['/health', '/login']
+<span class="hljs-meta">@app.before_request</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">authenticate</span>():
+    <span class="hljs-comment"># 定義不需要認證的公開路徑</span>
+    public_paths = [<span class="hljs-string">&#x27;/health&#x27;</span>, <span class="hljs-string">&#x27;/login&#x27;</span>]
 
-    if request.path in public_paths:
-        return  # 跳過認證檢查
+    <span class="hljs-keyword">if</span> request.path <span class="hljs-keyword">in</span> public_paths:
+        <span class="hljs-keyword">return</span>  <span class="hljs-comment"># 跳過認證檢查</span>
 
-    auth_header = request.headers.get(&quot;Authorization&quot;)
-    if not auth_header or not auth_header.startswith(&quot;Bearer &quot;):
-        abort(401, description=&quot;Missing or malformed Authorization header&quot;)
+    auth_header = request.headers.get(<span class="hljs-string">&quot;Authorization&quot;</span>)
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> auth_header <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> auth_header.startswith(<span class="hljs-string">&quot;Bearer &quot;</span>):
+        abort(<span class="hljs-number">401</span>, description=<span class="hljs-string">&quot;Missing or malformed Authorization header&quot;</span>)
 
-    token = auth_header.split(&quot;Bearer &quot;)[1]
+    token = auth_header.split(<span class="hljs-string">&quot;Bearer &quot;</span>)[<span class="hljs-number">1</span>]
     user = VALID_API_TOKENS.get(token)
-    if not user:
-        abort(401, description=&quot;Invalid or expired token&quot;)
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> user:
+        abort(<span class="hljs-number">401</span>, description=<span class="hljs-string">&quot;Invalid or expired token&quot;</span>)
 
-    # 將用戶資訊附加到全域 request context
+    <span class="hljs-comment"># 將用戶資訊附加到全域 request context</span>
     request.user = user
 
-@app.route(&quot;/health&quot;)
-def health_check():
-    return {&quot;status&quot;: &quot;ok&quot;}
+<span class="hljs-meta">@app.route(<span class="hljs-params"><span class="hljs-string">&quot;/health&quot;</span></span>)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">health_check</span>():
+    <span class="hljs-keyword">return</span> {<span class="hljs-string">&quot;status&quot;</span>: <span class="hljs-string">&quot;ok&quot;</span>}
 
-@app.route(&quot;/protected&quot;)
-def protected_resource():
-    return {&quot;message&quot;: f&quot;Hello, {request.user}. You accessed a protected route.&quot;}
+<span class="hljs-meta">@app.route(<span class="hljs-params"><span class="hljs-string">&quot;/protected&quot;</span></span>)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">protected_resource</span>():
+    <span class="hljs-keyword">return</span> {<span class="hljs-string">&quot;message&quot;</span>: <span class="hljs-string">f&quot;Hello, <span class="hljs-subst">{request.user}</span>. You accessed a protected route.&quot;</span>}
 
-if __name__ == &quot;__main__&quot;:
-    app.run(debug=True)
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:
+    app.run(debug=<span class="hljs-literal">True</span>)
 </code></pre>
 <h4 id="express-node-js" tabindex="-1"><a class="header-anchor" href="#express-node-js"><span>Express (Node.js) 範例</span></a></h4>
-<pre><code class="language-javascript">const express = require('express');
-const app = express();
+<pre data-lang="javascript"><code class="hljs language-javascript"><span class="hljs-keyword">const</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;express&#x27;</span>);
+<span class="hljs-keyword">const</span> app = <span class="hljs-title function_">express</span>();
 
-// 日誌 middleware
-app.use((req, res, next) =&gt; {
-  console.log(`${req.method} ${req.url}`);
-  next(); // 傳遞控制權給下一個 middleware 或路由
+<span class="hljs-comment">// 日誌 middleware</span>
+app.<span class="hljs-title function_">use</span>(<span class="hljs-function">(<span class="hljs-params">req, res, next</span>) =&gt;</span> {
+  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`<span class="hljs-subst">${req.method}</span> <span class="hljs-subst">${req.url}</span>`</span>);
+  <span class="hljs-title function_">next</span>(); <span class="hljs-comment">// 傳遞控制權給下一個 middleware 或路由</span>
 });
 
-// 認證 middleware
-app.use((req, res, next) =&gt; {
-  if (!req.headers['authorization']) {
-    return res.status(401).send('Unauthorized');
+<span class="hljs-comment">// 認證 middleware</span>
+app.<span class="hljs-title function_">use</span>(<span class="hljs-function">(<span class="hljs-params">req, res, next</span>) =&gt;</span> {
+  <span class="hljs-keyword">if</span> (!req.<span class="hljs-property">headers</span>[<span class="hljs-string">&#x27;authorization&#x27;</span>]) {
+    <span class="hljs-keyword">return</span> res.<span class="hljs-title function_">status</span>(<span class="hljs-number">401</span>).<span class="hljs-title function_">send</span>(<span class="hljs-string">&#x27;Unauthorized&#x27;</span>);
   }
-  next();
+  <span class="hljs-title function_">next</span>();
 });
 
-app.get('/api/data', (req, res) =&gt; {
-  res.send({ message: 'Protected data' });
+app.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;/api/data&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">req, res</span>) =&gt;</span> {
+  res.<span class="hljs-title function_">send</span>({ <span class="hljs-attr">message</span>: <span class="hljs-string">&#x27;Protected data&#x27;</span> });
 });
 </code></pre>
 <h4 id="-22" tabindex="-1"><a class="header-anchor" href="#-22"><span>核心概念</span></a></h4>
@@ -1449,7 +1461,7 @@ app.get('/api/data', (req, res) =&gt; {
 <li><strong>Controller</strong>：處理用戶輸入，協調 Model 和 View</li>
 </ul>
 <p><strong>流程</strong>：</p>
-<pre><code>User → Controller → Model → Controller → View → User
+<pre><code class="hljs">User → Controller → Model → Controller → View → User
 </code></pre>
 <p><strong>優點</strong>：</p>
 <ul>
@@ -1470,7 +1482,7 @@ app.get('/api/data', (req, res) =&gt; {
 <li><strong>ViewModel</strong>：View 的抽象，處理 View 的展示邏輯和狀態</li>
 </ul>
 <p><strong>流程</strong>：</p>
-<pre><code>User → View ↔ ViewModel ↔ Model
+<pre><code class="hljs">User → View ↔ ViewModel ↔ Model
 </code></pre>
 <p><strong>特點</strong>：</p>
 <ul>

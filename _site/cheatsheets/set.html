@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,13 +20,24 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
     document.querySelectorAll('pre code').forEach(function(codeEl) {
       var pre = codeEl.parentElement;
       var lang = '';
       var cls = codeEl.className || '';
       var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
       if (m) lang = m[1];
+
+      // Add line numbers
+      var lines = codeEl.innerHTML.split('
+');
+      if (lines[lines.length - 1] === '') lines.pop();
+      var numbered = lines.map(function(line, i) {
+        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
+      }).join('
+');
+      codeEl.innerHTML = numbered;
+      codeEl.classList.add('hljs-ln');
+
       var wrapper = document.createElement('div');
       wrapper.className = 'code-block-wrapper';
       pre.parentNode.insertBefore(wrapper, pre);
@@ -45,7 +55,9 @@
       btn.className = 'copy-btn';
       btn.textContent = 'Copy';
       btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
+');
+        navigator.clipboard.writeText(text).then(function() {
           btn.textContent = 'Copied!';
           btn.classList.add('copied');
           setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
@@ -209,365 +221,365 @@
 </table>
 <h3 id="0-2-pattern" tabindex="-1"><a class="header-anchor" href="#0-2-pattern"><span>0-2) Pattern</span></a></h3>
 <h4 id="pattern-1-set-operations" tabindex="-1"><a class="header-anchor" href="#pattern-1-set-operations"><span>Pattern 1: Set Operations</span></a></h4>
-<pre><code class="language-python"># Union, Intersection, Difference
-s1 = {1, 2, 3}
-s2 = {2, 3, 4}
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Union, Intersection, Difference</span>
+s1 = {<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>}
+s2 = {<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>}
 
-union = s1 | s2          # {1, 2, 3, 4}
-intersection = s1 &amp; s2   # {2, 3}
-difference = s1 - s2     # {1}
-symmetric_diff = s1 ^ s2 # {1, 4}
+union = s1 | s2          <span class="hljs-comment"># {1, 2, 3, 4}</span>
+intersection = s1 &amp; s2   <span class="hljs-comment"># {2, 3}</span>
+difference = s1 - s2     <span class="hljs-comment"># {1}</span>
+symmetric_diff = s1 ^ s2 <span class="hljs-comment"># {1, 4}</span>
 </code></pre>
 <h4 id="pattern-2-duplicate-detection" tabindex="-1"><a class="header-anchor" href="#pattern-2-duplicate-detection"><span>Pattern 2: Duplicate Detection</span></a></h4>
-<pre><code class="language-python"># Check for duplicates in array
-def has_duplicate(nums):
-    return len(nums) != len(set(nums))
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Check for duplicates in array</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">has_duplicate</span>(<span class="hljs-params">nums</span>):
+    <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(nums) != <span class="hljs-built_in">len</span>(<span class="hljs-built_in">set</span>(nums))
 
-# Find duplicates
-def find_duplicates(nums):
-    seen = set()
-    duplicates = set()
-    for num in nums:
-        if num in seen:
+<span class="hljs-comment"># Find duplicates</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">find_duplicates</span>(<span class="hljs-params">nums</span>):
+    seen = <span class="hljs-built_in">set</span>()
+    duplicates = <span class="hljs-built_in">set</span>()
+    <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> nums:
+        <span class="hljs-keyword">if</span> num <span class="hljs-keyword">in</span> seen:
             duplicates.add(num)
         seen.add(num)
-    return duplicates
+    <span class="hljs-keyword">return</span> duplicates
 </code></pre>
 <h4 id="pattern-3-two-set-tracking" tabindex="-1"><a class="header-anchor" href="#pattern-3-two-set-tracking"><span>Pattern 3: Two-Set Tracking</span></a></h4>
-<pre><code class="language-python"># Track visited and current path (for cycle detection)
-def has_cycle(graph, start):
-    visited = set()
-    current_path = set()
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Track visited and current path (for cycle detection)</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">has_cycle</span>(<span class="hljs-params">graph, start</span>):
+    visited = <span class="hljs-built_in">set</span>()
+    current_path = <span class="hljs-built_in">set</span>()
 
-    def dfs(node):
-        if node in current_path:
-            return True  # Cycle detected
-        if node in visited:
-            return False
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">node</span>):
+        <span class="hljs-keyword">if</span> node <span class="hljs-keyword">in</span> current_path:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>  <span class="hljs-comment"># Cycle detected</span>
+        <span class="hljs-keyword">if</span> node <span class="hljs-keyword">in</span> visited:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 
         visited.add(node)
         current_path.add(node)
 
-        for neighbor in graph[node]:
-            if dfs(neighbor):
-                return True
+        <span class="hljs-keyword">for</span> neighbor <span class="hljs-keyword">in</span> graph[node]:
+            <span class="hljs-keyword">if</span> dfs(neighbor):
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 
         current_path.remove(node)
-        return False
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 
-    return dfs(start)
+    <span class="hljs-keyword">return</span> dfs(start)
 </code></pre>
 <h4 id="pattern-4-set-for-path-ancestry-tracking" tabindex="-1"><a class="header-anchor" href="#pattern-4-set-for-path-ancestry-tracking"><span>Pattern 4: Set for Path/Ancestry Tracking</span></a></h4>
-<pre><code class="language-python"># LC 1650 - Find LCA using set to track ancestors
-def lowestCommonAncestor(p, q):
-    # Track all ancestors of p
-    ancestors = set()
-    while p:
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1650 - Find LCA using set to track ancestors</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">lowestCommonAncestor</span>(<span class="hljs-params">p, q</span>):
+    <span class="hljs-comment"># Track all ancestors of p</span>
+    ancestors = <span class="hljs-built_in">set</span>()
+    <span class="hljs-keyword">while</span> p:
         ancestors.add(p)
         p = p.parent
 
-    # Find first common ancestor
-    while q:
-        if q in ancestors:
-            return q
+    <span class="hljs-comment"># Find first common ancestor</span>
+    <span class="hljs-keyword">while</span> q:
+        <span class="hljs-keyword">if</span> q <span class="hljs-keyword">in</span> ancestors:
+            <span class="hljs-keyword">return</span> q
         q = q.parent
-    return None
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
 </code></pre>
 <h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
 <h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
 <h4 id="1-1-1-set-creation-and-basic-operations" tabindex="-1"><a class="header-anchor" href="#1-1-1-set-creation-and-basic-operations"><span>1-1-1) Set Creation and Basic Operations</span></a></h4>
-<pre><code class="language-python"># Python
-# Create empty set
-s = set()
-s = {}  # Wrong! This creates a dict
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python</span>
+<span class="hljs-comment"># Create empty set</span>
+s = <span class="hljs-built_in">set</span>()
+s = {}  <span class="hljs-comment"># Wrong! This creates a dict</span>
 
-# Create with elements
-s = {1, 2, 3}
-s = set([1, 2, 3])
-s = set(&quot;abc&quot;)  # {'a', 'b', 'c'}
+<span class="hljs-comment"># Create with elements</span>
+s = {<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>}
+s = <span class="hljs-built_in">set</span>([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>])
+s = <span class="hljs-built_in">set</span>(<span class="hljs-string">&quot;abc&quot;</span>)  <span class="hljs-comment"># {&#x27;a&#x27;, &#x27;b&#x27;, &#x27;c&#x27;}</span>
 
-# Add element
-s.add(4)
+<span class="hljs-comment"># Add element</span>
+s.add(<span class="hljs-number">4</span>)
 
-# Remove element
-s.remove(3)     # Raises KeyError if not exists
-s.discard(3)    # No error if not exists
-s.pop()         # Remove and return arbitrary element
+<span class="hljs-comment"># Remove element</span>
+s.remove(<span class="hljs-number">3</span>)     <span class="hljs-comment"># Raises KeyError if not exists</span>
+s.discard(<span class="hljs-number">3</span>)    <span class="hljs-comment"># No error if not exists</span>
+s.pop()         <span class="hljs-comment"># Remove and return arbitrary element</span>
 
-# Check membership
-if 2 in s:
-    print(&quot;Found&quot;)
+<span class="hljs-comment"># Check membership</span>
+<span class="hljs-keyword">if</span> <span class="hljs-number">2</span> <span class="hljs-keyword">in</span> s:
+    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Found&quot;</span>)
 
-# Size
-len(s)
+<span class="hljs-comment"># Size</span>
+<span class="hljs-built_in">len</span>(s)
 
-# Clear all
+<span class="hljs-comment"># Clear all</span>
 s.clear()
 </code></pre>
-<pre><code class="language-java">// Java
-// Create HashSet
-Set&lt;Integer&gt; set = new HashSet&lt;&gt;();
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
+<span class="hljs-comment">// Create HashSet</span>
+Set&lt;Integer&gt; set = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
 
-// Add element
-set.add(1);
-set.add(2);
-set.add(3);
+<span class="hljs-comment">// Add element</span>
+set.add(<span class="hljs-number">1</span>);
+set.add(<span class="hljs-number">2</span>);
+set.add(<span class="hljs-number">3</span>);
 
-// Remove element
-set.remove(2);
+<span class="hljs-comment">// Remove element</span>
+set.remove(<span class="hljs-number">2</span>);
 
-// Check membership
-if (set.contains(1)) {
-    System.out.println(&quot;Found&quot;);
+<span class="hljs-comment">// Check membership</span>
+<span class="hljs-keyword">if</span> (set.contains(<span class="hljs-number">1</span>)) {
+    System.out.println(<span class="hljs-string">&quot;Found&quot;</span>);
 }
 
-// Size
-int size = set.size();
+<span class="hljs-comment">// Size</span>
+<span class="hljs-type">int</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> set.size();
 
-// Clear
+<span class="hljs-comment">// Clear</span>
 set.clear();
 
-// Iterate
-for (int num : set) {
+<span class="hljs-comment">// Iterate</span>
+<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : set) {
     System.out.println(num);
 }
 </code></pre>
 <h4 id="1-1-2-set-operations" tabindex="-1"><a class="header-anchor" href="#1-1-2-set-operations"><span>1-1-2) Set Operations</span></a></h4>
-<pre><code class="language-python"># Python set operations
-s1 = {1, 2, 3, 4}
-s2 = {3, 4, 5, 6}
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python set operations</span>
+s1 = {<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>}
+s2 = {<span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>}
 
-# Union (elements in either set)
+<span class="hljs-comment"># Union (elements in either set)</span>
 union1 = s1 | s2
-union2 = s1.union(s2)           # {1, 2, 3, 4, 5, 6}
+union2 = s1.union(s2)           <span class="hljs-comment"># {1, 2, 3, 4, 5, 6}</span>
 
-# Intersection (elements in both sets)
+<span class="hljs-comment"># Intersection (elements in both sets)</span>
 inter1 = s1 &amp; s2
-inter2 = s1.intersection(s2)    # {3, 4}
+inter2 = s1.intersection(s2)    <span class="hljs-comment"># {3, 4}</span>
 
-# Difference (elements in s1 but not s2)
+<span class="hljs-comment"># Difference (elements in s1 but not s2)</span>
 diff1 = s1 - s2
-diff2 = s1.difference(s2)       # {1, 2}
+diff2 = s1.difference(s2)       <span class="hljs-comment"># {1, 2}</span>
 
-# Symmetric difference (elements in either but not both)
+<span class="hljs-comment"># Symmetric difference (elements in either but not both)</span>
 sym1 = s1 ^ s2
-sym2 = s1.symmetric_difference(s2)  # {1, 2, 5, 6}
+sym2 = s1.symmetric_difference(s2)  <span class="hljs-comment"># {1, 2, 5, 6}</span>
 
-# Subset check
-is_subset = s1.issubset(s2)     # False
-is_superset = s1.issuperset(s2) # False
+<span class="hljs-comment"># Subset check</span>
+is_subset = s1.issubset(s2)     <span class="hljs-comment"># False</span>
+is_superset = s1.issuperset(s2) <span class="hljs-comment"># False</span>
 
-# Disjoint check (no common elements)
-is_disjoint = s1.isdisjoint(s2) # False
+<span class="hljs-comment"># Disjoint check (no common elements)</span>
+is_disjoint = s1.isdisjoint(s2) <span class="hljs-comment"># False</span>
 </code></pre>
-<pre><code class="language-java">// Java set operations
-Set&lt;Integer&gt; s1 = new HashSet&lt;&gt;(Arrays.asList(1, 2, 3, 4));
-Set&lt;Integer&gt; s2 = new HashSet&lt;&gt;(Arrays.asList(3, 4, 5, 6));
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java set operations</span>
+Set&lt;Integer&gt; s1 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;(Arrays.asList(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>));
+Set&lt;Integer&gt; s2 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;(Arrays.asList(<span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>));
 
-// Union
-Set&lt;Integer&gt; union = new HashSet&lt;&gt;(s1);
-union.addAll(s2);  // {1, 2, 3, 4, 5, 6}
+<span class="hljs-comment">// Union</span>
+Set&lt;Integer&gt; union = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;(s1);
+union.addAll(s2);  <span class="hljs-comment">// {1, 2, 3, 4, 5, 6}</span>
 
-// Intersection
-Set&lt;Integer&gt; intersection = new HashSet&lt;&gt;(s1);
-intersection.retainAll(s2);  // {3, 4}
+<span class="hljs-comment">// Intersection</span>
+Set&lt;Integer&gt; intersection = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;(s1);
+intersection.retainAll(s2);  <span class="hljs-comment">// {3, 4}</span>
 
-// Difference
-Set&lt;Integer&gt; difference = new HashSet&lt;&gt;(s1);
-difference.removeAll(s2);  // {1, 2}
+<span class="hljs-comment">// Difference</span>
+Set&lt;Integer&gt; difference = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;(s1);
+difference.removeAll(s2);  <span class="hljs-comment">// {1, 2}</span>
 
-// Subset check
-boolean isSubset = s2.containsAll(s1);  // false
+<span class="hljs-comment">// Subset check</span>
+<span class="hljs-type">boolean</span> <span class="hljs-variable">isSubset</span> <span class="hljs-operator">=</span> s2.containsAll(s1);  <span class="hljs-comment">// false</span>
 </code></pre>
 <h4 id="1-1-3-converting-between-collections" tabindex="-1"><a class="header-anchor" href="#1-1-3-converting-between-collections"><span>1-1-3) Converting Between Collections</span></a></h4>
-<pre><code class="language-python"># Python conversions
-arr = [1, 2, 2, 3, 3, 4]
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python conversions</span>
+arr = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>]
 
-# Array to set (remove duplicates)
-s = set(arr)  # {1, 2, 3, 4}
+<span class="hljs-comment"># Array to set (remove duplicates)</span>
+s = <span class="hljs-built_in">set</span>(arr)  <span class="hljs-comment"># {1, 2, 3, 4}</span>
 
-# Set to array
-arr_unique = list(s)
+<span class="hljs-comment"># Set to array</span>
+arr_unique = <span class="hljs-built_in">list</span>(s)
 
-# Set to sorted array
-arr_sorted = sorted(s)
+<span class="hljs-comment"># Set to sorted array</span>
+arr_sorted = <span class="hljs-built_in">sorted</span>(s)
 
-# String to set
-char_set = set(&quot;hello&quot;)  # {'h', 'e', 'l', 'o'}
+<span class="hljs-comment"># String to set</span>
+char_set = <span class="hljs-built_in">set</span>(<span class="hljs-string">&quot;hello&quot;</span>)  <span class="hljs-comment"># {&#x27;h&#x27;, &#x27;e&#x27;, &#x27;l&#x27;, &#x27;o&#x27;}</span>
 
-# Set to string
-s = {'a', 'b', 'c'}
-string = ''.join(sorted(s))  # 'abc'
+<span class="hljs-comment"># Set to string</span>
+s = {<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>}
+string = <span class="hljs-string">&#x27;&#x27;</span>.join(<span class="hljs-built_in">sorted</span>(s))  <span class="hljs-comment"># &#x27;abc&#x27;</span>
 </code></pre>
-<pre><code class="language-java">// Java conversions
-Integer[] arr = {1, 2, 2, 3, 3, 4};
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java conversions</span>
+Integer[] arr = {<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>};
 
-// Array to set
-Set&lt;Integer&gt; set = new HashSet&lt;&gt;(Arrays.asList(arr));
+<span class="hljs-comment">// Array to set</span>
+Set&lt;Integer&gt; set = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;(Arrays.asList(arr));
 
-// Set to array
-Integer[] arrUnique = set.toArray(new Integer[0]);
+<span class="hljs-comment">// Set to array</span>
+Integer[] arrUnique = set.toArray(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Integer</span>[<span class="hljs-number">0</span>]);
 
-// Set to list
-List&lt;Integer&gt; list = new ArrayList&lt;&gt;(set);
+<span class="hljs-comment">// Set to list</span>
+List&lt;Integer&gt; list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(set);
 
-// List to set
-Set&lt;Integer&gt; set2 = new HashSet&lt;&gt;(list);
+<span class="hljs-comment">// List to set</span>
+Set&lt;Integer&gt; set2 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;(list);
 </code></pre>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
 <h3 id="2-1-lowest-common-ancestor-of-a-binary-tree-iii" tabindex="-1"><a class="header-anchor" href="#2-1-lowest-common-ancestor-of-a-binary-tree-iii"><span>2-1) Lowest Common Ancestor of a Binary Tree III</span></a></h3>
-<pre><code class="language-python"># LC 1650. Lowest Common Ancestor of a Binary Tree III
-# NOTE : there are also dict, recursive.. approaches
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1650. Lowest Common Ancestor of a Binary Tree III</span>
+<span class="hljs-comment"># NOTE : there are also dict, recursive.. approaches</span>
 
-# V0''
-# IDEA : set - track ancestry path
-# Time: O(h) where h is tree height
-# Space: O(h) for storing ancestors
-class Solution:
-    def lowestCommonAncestor(self, p, q):
-        # Store all ancestors of p
-        visited = set()
-        while p:
+<span class="hljs-comment"># V0&#x27;&#x27;</span>
+<span class="hljs-comment"># IDEA : set - track ancestry path</span>
+<span class="hljs-comment"># Time: O(h) where h is tree height</span>
+<span class="hljs-comment"># Space: O(h) for storing ancestors</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">lowestCommonAncestor</span>(<span class="hljs-params">self, p, q</span>):
+        <span class="hljs-comment"># Store all ancestors of p</span>
+        visited = <span class="hljs-built_in">set</span>()
+        <span class="hljs-keyword">while</span> p:
             visited.add(p)
             p = p.parent
 
-        # Find first common ancestor with q
-        while q:
-            if q in visited:
-                return q
+        <span class="hljs-comment"># Find first common ancestor with q</span>
+        <span class="hljs-keyword">while</span> q:
+            <span class="hljs-keyword">if</span> q <span class="hljs-keyword">in</span> visited:
+                <span class="hljs-keyword">return</span> q
             q = q.parent
 </code></pre>
 <h3 id="2-2-contains-duplicate" tabindex="-1"><a class="header-anchor" href="#2-2-contains-duplicate"><span>2-2) Contains Duplicate</span></a></h3>
-<pre><code class="language-python"># LC 217. Contains Duplicate
-# V0
-# IDEA: Set to detect duplicates
-class Solution:
-    def containsDuplicate(self, nums):
-        return len(nums) != len(set(nums))
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 217. Contains Duplicate</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA: Set to detect duplicates</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">containsDuplicate</span>(<span class="hljs-params">self, nums</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(nums) != <span class="hljs-built_in">len</span>(<span class="hljs-built_in">set</span>(nums))
 
-# V0'
-# IDEA: Build set while checking
-class Solution:
-    def containsDuplicate(self, nums):
-        seen = set()
-        for num in nums:
-            if num in seen:
-                return True
+<span class="hljs-comment"># V0&#x27;</span>
+<span class="hljs-comment"># IDEA: Build set while checking</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">containsDuplicate</span>(<span class="hljs-params">self, nums</span>):
+        seen = <span class="hljs-built_in">set</span>()
+        <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> nums:
+            <span class="hljs-keyword">if</span> num <span class="hljs-keyword">in</span> seen:
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
             seen.add(num)
-        return False
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 </code></pre>
-<pre><code class="language-java">// Java
-// LC 217
-public boolean containsDuplicate(int[] nums) {
-    Set&lt;Integer&gt; seen = new HashSet&lt;&gt;();
-    for (int num : nums) {
-        if (seen.contains(num)) {
-            return true;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
+<span class="hljs-comment">// LC 217</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">containsDuplicate</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+    Set&lt;Integer&gt; seen = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : nums) {
+        <span class="hljs-keyword">if</span> (seen.contains(num)) {
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
         }
         seen.add(num);
     }
-    return false;
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
 }
 </code></pre>
 <h3 id="2-3-intersection-of-two-arrays" tabindex="-1"><a class="header-anchor" href="#2-3-intersection-of-two-arrays"><span>2-3) Intersection of Two Arrays</span></a></h3>
-<pre><code class="language-python"># LC 349. Intersection of Two Arrays
-# V0
-# IDEA: Set intersection
-class Solution:
-    def intersection(self, nums1, nums2):
-        return list(set(nums1) &amp; set(nums2))
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 349. Intersection of Two Arrays</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA: Set intersection</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">intersection</span>(<span class="hljs-params">self, nums1, nums2</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">list</span>(<span class="hljs-built_in">set</span>(nums1) &amp; <span class="hljs-built_in">set</span>(nums2))
 
-# V0'
-# IDEA: Convert to sets and use intersection
-class Solution:
-    def intersection(self, nums1, nums2):
-        set1 = set(nums1)
-        set2 = set(nums2)
-        return list(set1.intersection(set2))
+<span class="hljs-comment"># V0&#x27;</span>
+<span class="hljs-comment"># IDEA: Convert to sets and use intersection</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">intersection</span>(<span class="hljs-params">self, nums1, nums2</span>):
+        set1 = <span class="hljs-built_in">set</span>(nums1)
+        set2 = <span class="hljs-built_in">set</span>(nums2)
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">list</span>(set1.intersection(set2))
 </code></pre>
-<pre><code class="language-java">// Java
-// LC 349
-public int[] intersection(int[] nums1, int[] nums2) {
-    Set&lt;Integer&gt; set1 = new HashSet&lt;&gt;();
-    for (int num : nums1) {
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
+<span class="hljs-comment">// LC 349</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] intersection(<span class="hljs-type">int</span>[] nums1, <span class="hljs-type">int</span>[] nums2) {
+    Set&lt;Integer&gt; set1 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : nums1) {
         set1.add(num);
     }
 
-    Set&lt;Integer&gt; result = new HashSet&lt;&gt;();
-    for (int num : nums2) {
-        if (set1.contains(num)) {
+    Set&lt;Integer&gt; result = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : nums2) {
+        <span class="hljs-keyword">if</span> (set1.contains(num)) {
             result.add(num);
         }
     }
 
-    return result.stream().mapToInt(i -&gt; i).toArray();
+    <span class="hljs-keyword">return</span> result.stream().mapToInt(i -&gt; i).toArray();
 }
 </code></pre>
 <h3 id="2-4-happy-number" tabindex="-1"><a class="header-anchor" href="#2-4-happy-number"><span>2-4) Happy Number</span></a></h3>
-<pre><code class="language-python"># LC 202. Happy Number
-# V0
-# IDEA: Use set to detect cycles
-class Solution:
-    def isHappy(self, n):
-        def get_next(num):
-            total = 0
-            while num &gt; 0:
-                digit = num % 10
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 202. Happy Number</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA: Use set to detect cycles</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">isHappy</span>(<span class="hljs-params">self, n</span>):
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_next</span>(<span class="hljs-params">num</span>):
+            total = <span class="hljs-number">0</span>
+            <span class="hljs-keyword">while</span> num &gt; <span class="hljs-number">0</span>:
+                digit = num % <span class="hljs-number">10</span>
                 total += digit * digit
-                num //= 10
-            return total
+                num //= <span class="hljs-number">10</span>
+            <span class="hljs-keyword">return</span> total
 
-        seen = set()
-        while n != 1 and n not in seen:
+        seen = <span class="hljs-built_in">set</span>()
+        <span class="hljs-keyword">while</span> n != <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> n <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> seen:
             seen.add(n)
             n = get_next(n)
 
-        return n == 1
+        <span class="hljs-keyword">return</span> n == <span class="hljs-number">1</span>
 </code></pre>
 <h3 id="2-5-longest-consecutive-sequence" tabindex="-1"><a class="header-anchor" href="#2-5-longest-consecutive-sequence"><span>2-5) Longest Consecutive Sequence</span></a></h3>
-<pre><code class="language-python"># LC 128. Longest Consecutive Sequence
-# V0
-# IDEA: Set for O(1) lookups
-# Time: O(n), Space: O(n)
-class Solution:
-    def longestConsecutive(self, nums):
-        if not nums:
-            return 0
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 128. Longest Consecutive Sequence</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA: Set for O(1) lookups</span>
+<span class="hljs-comment"># Time: O(n), Space: O(n)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">longestConsecutive</span>(<span class="hljs-params">self, nums</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> nums:
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
 
-        num_set = set(nums)
-        max_length = 0
+        num_set = <span class="hljs-built_in">set</span>(nums)
+        max_length = <span class="hljs-number">0</span>
 
-        for num in num_set:
-            # Only start counting from sequence start
-            if num - 1 not in num_set:
+        <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> num_set:
+            <span class="hljs-comment"># Only start counting from sequence start</span>
+            <span class="hljs-keyword">if</span> num - <span class="hljs-number">1</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> num_set:
                 current = num
-                length = 1
+                length = <span class="hljs-number">1</span>
 
-                while current + 1 in num_set:
-                    current += 1
-                    length += 1
+                <span class="hljs-keyword">while</span> current + <span class="hljs-number">1</span> <span class="hljs-keyword">in</span> num_set:
+                    current += <span class="hljs-number">1</span>
+                    length += <span class="hljs-number">1</span>
 
-                max_length = max(max_length, length)
+                max_length = <span class="hljs-built_in">max</span>(max_length, length)
 
-        return max_length
+        <span class="hljs-keyword">return</span> max_length
 </code></pre>
-<pre><code class="language-java">// Java
-// LC 128
-public int longestConsecutive(int[] nums) {
-    Set&lt;Integer&gt; numSet = new HashSet&lt;&gt;();
-    for (int num : nums) {
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
+<span class="hljs-comment">// LC 128</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">longestConsecutive</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+    Set&lt;Integer&gt; numSet = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : nums) {
         numSet.add(num);
     }
 
-    int maxLength = 0;
+    <span class="hljs-type">int</span> <span class="hljs-variable">maxLength</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
 
-    for (int num : numSet) {
-        // Only start from sequence beginning
-        if (!numSet.contains(num - 1)) {
-            int current = num;
-            int length = 1;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : numSet) {
+        <span class="hljs-comment">// Only start from sequence beginning</span>
+        <span class="hljs-keyword">if</span> (!numSet.contains(num - <span class="hljs-number">1</span>)) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">current</span> <span class="hljs-operator">=</span> num;
+            <span class="hljs-type">int</span> <span class="hljs-variable">length</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;
 
-            while (numSet.contains(current + 1)) {
+            <span class="hljs-keyword">while</span> (numSet.contains(current + <span class="hljs-number">1</span>)) {
                 current++;
                 length++;
             }
@@ -576,149 +588,149 @@ public int longestConsecutive(int[] nums) {
         }
     }
 
-    return maxLength;
+    <span class="hljs-keyword">return</span> maxLength;
 }
 </code></pre>
 <h3 id="2-6-single-number" tabindex="-1"><a class="header-anchor" href="#2-6-single-number"><span>2-6) Single Number</span></a></h3>
-<pre><code class="language-python"># LC 136. Single Number
-# V0
-# IDEA: XOR all numbers (duplicates cancel out)
-class Solution:
-    def singleNumber(self, nums):
-        result = 0
-        for num in nums:
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 136. Single Number</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA: XOR all numbers (duplicates cancel out)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">singleNumber</span>(<span class="hljs-params">self, nums</span>):
+        result = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> nums:
             result ^= num
-        return result
+        <span class="hljs-keyword">return</span> result
 
-# V0'
-# IDEA: Set addition/removal
-class Solution:
-    def singleNumber(self, nums):
-        return 2 * sum(set(nums)) - sum(nums)
+<span class="hljs-comment"># V0&#x27;</span>
+<span class="hljs-comment"># IDEA: Set addition/removal</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">singleNumber</span>(<span class="hljs-params">self, nums</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-number">2</span> * <span class="hljs-built_in">sum</span>(<span class="hljs-built_in">set</span>(nums)) - <span class="hljs-built_in">sum</span>(nums)
 </code></pre>
 <h3 id="2-7-valid-sudoku" tabindex="-1"><a class="header-anchor" href="#2-7-valid-sudoku"><span>2-7) Valid Sudoku</span></a></h3>
-<pre><code class="language-python"># LC 36. Valid Sudoku
-# V0
-# IDEA: Use sets to track seen values
-class Solution:
-    def isValidSudoku(self, board):
-        # Track seen elements in rows, cols, boxes
-        seen = set()
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 36. Valid Sudoku</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA: Use sets to track seen values</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">isValidSudoku</span>(<span class="hljs-params">self, board</span>):
+        <span class="hljs-comment"># Track seen elements in rows, cols, boxes</span>
+        seen = <span class="hljs-built_in">set</span>()
 
-        for i in range(9):
-            for j in range(9):
-                if board[i][j] != '.':
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">9</span>):
+            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">9</span>):
+                <span class="hljs-keyword">if</span> board[i][j] != <span class="hljs-string">&#x27;.&#x27;</span>:
                     val = board[i][j]
-                    box_idx = (i // 3) * 3 + j // 3
+                    box_idx = (i // <span class="hljs-number">3</span>) * <span class="hljs-number">3</span> + j // <span class="hljs-number">3</span>
 
-                    # Create unique keys for row, col, box
-                    row_key = f&quot;row_{i}_{val}&quot;
-                    col_key = f&quot;col_{j}_{val}&quot;
-                    box_key = f&quot;box_{box_idx}_{val}&quot;
+                    <span class="hljs-comment"># Create unique keys for row, col, box</span>
+                    row_key = <span class="hljs-string">f&quot;row_<span class="hljs-subst">{i}</span>_<span class="hljs-subst">{val}</span>&quot;</span>
+                    col_key = <span class="hljs-string">f&quot;col_<span class="hljs-subst">{j}</span>_<span class="hljs-subst">{val}</span>&quot;</span>
+                    box_key = <span class="hljs-string">f&quot;box_<span class="hljs-subst">{box_idx}</span>_<span class="hljs-subst">{val}</span>&quot;</span>
 
-                    if row_key in seen or col_key in seen or box_key in seen:
-                        return False
+                    <span class="hljs-keyword">if</span> row_key <span class="hljs-keyword">in</span> seen <span class="hljs-keyword">or</span> col_key <span class="hljs-keyword">in</span> seen <span class="hljs-keyword">or</span> box_key <span class="hljs-keyword">in</span> seen:
+                        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 
                     seen.add(row_key)
                     seen.add(col_key)
                     seen.add(box_key)
 
-        return True
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 </code></pre>
 <h3 id="2-8-number-of-distinct-islands" tabindex="-1"><a class="header-anchor" href="#2-8-number-of-distinct-islands"><span>2-8) Number of Distinct Islands</span></a></h3>
-<pre><code class="language-python"># LC 694. Number of Distinct Islands
-# V0
-# IDEA: Use set to store unique island shapes
-class Solution:
-    def numDistinctIslands(self, grid):
-        if not grid:
-            return 0
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 694. Number of Distinct Islands</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA: Use set to store unique island shapes</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">numDistinctIslands</span>(<span class="hljs-params">self, grid</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> grid:
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
 
-        def dfs(i, j, i0, j0):
-            # Record relative position from starting point
-            if (0 &lt;= i &lt; len(grid) and 0 &lt;= j &lt; len(grid[0]) and
-                grid[i][j] == 1):
-                grid[i][j] = 0
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">i, j, i0, j0</span>):
+            <span class="hljs-comment"># Record relative position from starting point</span>
+            <span class="hljs-keyword">if</span> (<span class="hljs-number">0</span> &lt;= i &lt; <span class="hljs-built_in">len</span>(grid) <span class="hljs-keyword">and</span> <span class="hljs-number">0</span> &lt;= j &lt; <span class="hljs-built_in">len</span>(grid[<span class="hljs-number">0</span>]) <span class="hljs-keyword">and</span>
+                grid[i][j] == <span class="hljs-number">1</span>):
+                grid[i][j] = <span class="hljs-number">0</span>
                 path.append((i - i0, j - j0))
-                dfs(i+1, j, i0, j0)
-                dfs(i-1, j, i0, j0)
-                dfs(i, j+1, i0, j0)
-                dfs(i, j-1, i0, j0)
+                dfs(i+<span class="hljs-number">1</span>, j, i0, j0)
+                dfs(i-<span class="hljs-number">1</span>, j, i0, j0)
+                dfs(i, j+<span class="hljs-number">1</span>, i0, j0)
+                dfs(i, j-<span class="hljs-number">1</span>, i0, j0)
 
-        shapes = set()
-        for i in range(len(grid)):
-            for j in range(len(grid[0])):
-                if grid[i][j] == 1:
+        shapes = <span class="hljs-built_in">set</span>()
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(grid)):
+            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(grid[<span class="hljs-number">0</span>])):
+                <span class="hljs-keyword">if</span> grid[i][j] == <span class="hljs-number">1</span>:
                     path = []
                     dfs(i, j, i, j)
-                    # Convert list to tuple for hashing
-                    shapes.add(tuple(path))
+                    <span class="hljs-comment"># Convert list to tuple for hashing</span>
+                    shapes.add(<span class="hljs-built_in">tuple</span>(path))
 
-        return len(shapes)
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(shapes)
 </code></pre>
 <h3 id="2-9-linked-list-cycle-detection" tabindex="-1"><a class="header-anchor" href="#2-9-linked-list-cycle-detection"><span>2-9) Linked List Cycle Detection</span></a></h3>
-<pre><code class="language-python"># LC 141. Linked List Cycle
-# V0
-# IDEA: Use set to track visited nodes
-class Solution:
-    def hasCycle(self, head):
-        visited = set()
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 141. Linked List Cycle</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA: Use set to track visited nodes</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">hasCycle</span>(<span class="hljs-params">self, head</span>):
+        visited = <span class="hljs-built_in">set</span>()
         current = head
 
-        while current:
-            if current in visited:
-                return True
+        <span class="hljs-keyword">while</span> current:
+            <span class="hljs-keyword">if</span> current <span class="hljs-keyword">in</span> visited:
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
             visited.add(current)
-            current = current.next
+            current = current.<span class="hljs-built_in">next</span>
 
-        return False
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 
-# V0'
-# IDEA: Two pointers (Floyd's algorithm) - O(1) space
-class Solution:
-    def hasCycle(self, head):
-        if not head:
-            return False
+<span class="hljs-comment"># V0&#x27;</span>
+<span class="hljs-comment"># IDEA: Two pointers (Floyd&#x27;s algorithm) - O(1) space</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">hasCycle</span>(<span class="hljs-params">self, head</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> head:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 
         slow = head
-        fast = head.next
+        fast = head.<span class="hljs-built_in">next</span>
 
-        while slow != fast:
-            if not fast or not fast.next:
-                return False
-            slow = slow.next
-            fast = fast.next.next
+        <span class="hljs-keyword">while</span> slow != fast:
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> fast <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> fast.<span class="hljs-built_in">next</span>:
+                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+            slow = slow.<span class="hljs-built_in">next</span>
+            fast = fast.<span class="hljs-built_in">next</span>.<span class="hljs-built_in">next</span>
 
-        return True
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 </code></pre>
 <h3 id="2-10-word-pattern" tabindex="-1"><a class="header-anchor" href="#2-10-word-pattern"><span>2-10) Word Pattern</span></a></h3>
-<pre><code class="language-python"># LC 290. Word Pattern
-# V0
-# IDEA: Use 2 sets to track bijection
-class Solution:
-    def wordPattern(self, pattern, s):
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 290. Word Pattern</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA: Use 2 sets to track bijection</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">wordPattern</span>(<span class="hljs-params">self, pattern, s</span>):
         words = s.split()
 
-        if len(pattern) != len(words):
-            return False
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(pattern) != <span class="hljs-built_in">len</span>(words):
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
 
         char_to_word = {}
         word_to_char = {}
 
-        for c, word in zip(pattern, words):
-            if c in char_to_word:
-                if char_to_word[c] != word:
-                    return False
-            else:
+        <span class="hljs-keyword">for</span> c, word <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(pattern, words):
+            <span class="hljs-keyword">if</span> c <span class="hljs-keyword">in</span> char_to_word:
+                <span class="hljs-keyword">if</span> char_to_word[c] != word:
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+            <span class="hljs-keyword">else</span>:
                 char_to_word[c] = word
 
-            if word in word_to_char:
-                if word_to_char[word] != c:
-                    return False
-            else:
+            <span class="hljs-keyword">if</span> word <span class="hljs-keyword">in</span> word_to_char:
+                <span class="hljs-keyword">if</span> word_to_char[word] != c:
+                    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>
+            <span class="hljs-keyword">else</span>:
                 word_to_char[word] = c
 
-        return True
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>
 </code></pre>
 <h2 id="problem-categories" tabindex="-1"><a class="header-anchor" href="#problem-categories"><span>Problem Categories</span></a></h2>
 <h3 id="category-1-duplicate-detection-10-problems" tabindex="-1"><a class="header-anchor" href="#category-1-duplicate-detection-10-problems"><span>Category 1: Duplicate Detection (10 problems)</span></a></h3>
@@ -1101,7 +1113,7 @@ class Solution:
 </table>
 <h2 id="decision-framework" tabindex="-1"><a class="header-anchor" href="#decision-framework"><span>Decision Framework</span></a></h2>
 <h3 id="when-to-use-set-vs-other-data-structures" tabindex="-1"><a class="header-anchor" href="#when-to-use-set-vs-other-data-structures"><span>When to Use Set vs Other Data Structures</span></a></h3>
-<pre><code>Problem Analysis:
+<pre><code class="hljs">Problem Analysis:
 
 1. Need to track unique elements?
    ├── YES → Consider Set

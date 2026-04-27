@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,13 +20,24 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
     document.querySelectorAll('pre code').forEach(function(codeEl) {
       var pre = codeEl.parentElement;
       var lang = '';
       var cls = codeEl.className || '';
       var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
       if (m) lang = m[1];
+
+      // Add line numbers
+      var lines = codeEl.innerHTML.split('
+');
+      if (lines[lines.length - 1] === '') lines.pop();
+      var numbered = lines.map(function(line, i) {
+        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
+      }).join('
+');
+      codeEl.innerHTML = numbered;
+      codeEl.classList.add('hljs-ln');
+
       var wrapper = document.createElement('div');
       wrapper.className = 'code-block-wrapper';
       pre.parentNode.insertBefore(wrapper, pre);
@@ -45,7 +55,9 @@
       btn.className = 'copy-btn';
       btn.textContent = 'Copy';
       btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
+');
+        navigator.clipboard.writeText(text).then(function() {
           btn.textContent = 'Copied!';
           btn.classList.add('copied');
           setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
@@ -280,48 +292,48 @@
 </tbody>
 </table>
 <h3 id="universal-heap-template" tabindex="-1"><a class="header-anchor" href="#universal-heap-template"><span>Universal Heap Template</span></a></h3>
-<pre><code class="language-python">def solve_with_heap(nums, k=None):
-    import heapq
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">solve_with_heap</span>(<span class="hljs-params">nums, k=<span class="hljs-literal">None</span></span>):
+    <span class="hljs-keyword">import</span> heapq
     
-    # Create heap (min heap by default in Python)
+    <span class="hljs-comment"># Create heap (min heap by default in Python)</span>
     heap = []
     
-    # Build heap approach 1: Insert elements one by one
-    for num in nums:
+    <span class="hljs-comment"># Build heap approach 1: Insert elements one by one</span>
+    <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> nums:
         heapq.heappush(heap, num)
     
-    # Build heap approach 2: Heapify existing array
-    # heapq.heapify(nums)  # O(N) time
+    <span class="hljs-comment"># Build heap approach 2: Heapify existing array</span>
+    <span class="hljs-comment"># heapq.heapify(nums)  # O(N) time</span>
     
-    # Access min element (don't remove): heap[0]
-    # Remove min element: heapq.heappop(heap)
-    # Insert element: heapq.heappush(heap, value)
+    <span class="hljs-comment"># Access min element (don&#x27;t remove): heap[0]</span>
+    <span class="hljs-comment"># Remove min element: heapq.heappop(heap)</span>
+    <span class="hljs-comment"># Insert element: heapq.heappush(heap, value)</span>
     
-    # For max heap, use negative values
-    # max_heap = [-x for x in nums]
-    # heapq.heapify(max_heap)
-    # max_val = -max_heap[0]  # Get max without removing
-    # max_val = -heapq.heappop(max_heap)  # Remove and get max
+    <span class="hljs-comment"># For max heap, use negative values</span>
+    <span class="hljs-comment"># max_heap = [-x for x in nums]</span>
+    <span class="hljs-comment"># heapq.heapify(max_heap)</span>
+    <span class="hljs-comment"># max_val = -max_heap[0]  # Get max without removing</span>
+    <span class="hljs-comment"># max_val = -heapq.heappop(max_heap)  # Remove and get max</span>
     
-    return heap
+    <span class="hljs-keyword">return</span> heap
 </code></pre>
-<pre><code class="language-java">// Java Universal Template
-public class HeapSolution {
-    public void solveWithHeap(int[] nums, int k) {
-        // Min Heap
-        PriorityQueue&lt;Integer&gt; minHeap = new PriorityQueue&lt;&gt;();
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java Universal Template</span>
+<span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">HeapSolution</span> {
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">solveWithHeap</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k)</span> {
+        <span class="hljs-comment">// Min Heap</span>
+        PriorityQueue&lt;Integer&gt; minHeap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;();
         
-        // Max Heap
-        PriorityQueue&lt;Integer&gt; maxHeap = new PriorityQueue&lt;&gt;((a, b) -&gt; b - a);
+        <span class="hljs-comment">// Max Heap</span>
+        PriorityQueue&lt;Integer&gt; maxHeap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;((a, b) -&gt; b - a);
         
-        // Add elements
-        for (int num : nums) {
+        <span class="hljs-comment">// Add elements</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : nums) {
             minHeap.offer(num);
         }
         
-        // Access min: minHeap.peek()
-        // Remove min: minHeap.poll()
-        // Add element: minHeap.offer(value)
+        <span class="hljs-comment">// Access min: minHeap.peek()</span>
+        <span class="hljs-comment">// Remove min: minHeap.poll()</span>
+        <span class="hljs-comment">// Add element: minHeap.offer(value)</span>
     }
 }
 </code></pre>
@@ -346,115 +358,115 @@ public class HeapSolution {
 </ul>
 </li>
 </ul>
-<pre><code class="language-python">def find_kth_largest(nums, k):
-    import heapq
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_kth_largest</span>(<span class="hljs-params">nums, k</span>):
+    <span class="hljs-keyword">import</span> heapq
 
-    # Method 1: Min heap of size k
+    <span class="hljs-comment"># Method 1: Min heap of size k</span>
     heap = []
-    for num in nums:
-        if len(heap) &lt; k:
+    <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> nums:
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(heap) &lt; k:
             heapq.heappush(heap, num)
-        elif num &gt; heap[0]:
+        <span class="hljs-keyword">elif</span> num &gt; heap[<span class="hljs-number">0</span>]:
             heapq.heapreplace(heap, num)
 
-    return heap[0]  # kth largest
+    <span class="hljs-keyword">return</span> heap[<span class="hljs-number">0</span>]  <span class="hljs-comment"># kth largest</span>
 
-def find_kth_smallest(nums, k):
-    import heapq
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">find_kth_smallest</span>(<span class="hljs-params">nums, k</span>):
+    <span class="hljs-keyword">import</span> heapq
 
-    # Method 1: Max heap of size k (use negative values)
+    <span class="hljs-comment"># Method 1: Max heap of size k (use negative values)</span>
     heap = []
-    for num in nums:
-        if len(heap) &lt; k:
+    <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> nums:
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(heap) &lt; k:
             heapq.heappush(heap, -num)
-        elif num &lt; -heap[0]:
+        <span class="hljs-keyword">elif</span> num &lt; -heap[<span class="hljs-number">0</span>]:
             heapq.heapreplace(heap, -num)
 
-    return -heap[0]  # kth smallest
+    <span class="hljs-keyword">return</span> -heap[<span class="hljs-number">0</span>]  <span class="hljs-comment"># kth smallest</span>
 </code></pre>
 <h4 id="2-top-k-frequency-template" tabindex="-1"><a class="header-anchor" href="#2-top-k-frequency-template"><span><strong>2. Top K Frequency Template</strong></span></a></h4>
-<pre><code class="language-python">def top_k_frequent(nums, k):
-    from collections import Counter
-    import heapq
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">top_k_frequent</span>(<span class="hljs-params">nums, k</span>):
+    <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> Counter
+    <span class="hljs-keyword">import</span> heapq
     
-    # Count frequencies
+    <span class="hljs-comment"># Count frequencies</span>
     count = Counter(nums)
     
-    # Method 1: Min heap approach
+    <span class="hljs-comment"># Method 1: Min heap approach</span>
     heap = []
-    for num, freq in count.items():
+    <span class="hljs-keyword">for</span> num, freq <span class="hljs-keyword">in</span> count.items():
         heapq.heappush(heap, (freq, num))
-        if len(heap) &gt; k:
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(heap) &gt; k:
             heapq.heappop(heap)
     
-    return [item[1] for item in heap]
+    <span class="hljs-keyword">return</span> [item[<span class="hljs-number">1</span>] <span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> heap]
     
-    # Method 2: Max heap approach
-    # heap = [(-freq, num) for num, freq in count.items()]
-    # heapq.heapify(heap)
-    # return [heapq.heappop(heap)[1] for _ in range(k)]
+    <span class="hljs-comment"># Method 2: Max heap approach</span>
+    <span class="hljs-comment"># heap = [(-freq, num) for num, freq in count.items()]</span>
+    <span class="hljs-comment"># heapq.heapify(heap)</span>
+    <span class="hljs-comment"># return [heapq.heappop(heap)[1] for _ in range(k)]</span>
 </code></pre>
 <h4 id="3-merge-k-sources-template" tabindex="-1"><a class="header-anchor" href="#3-merge-k-sources-template"><span><strong>3. Merge K Sources Template</strong></span></a></h4>
-<pre><code class="language-python">def merge_k_sorted_arrays(arrays):
-    import heapq
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">merge_k_sorted_arrays</span>(<span class="hljs-params">arrays</span>):
+    <span class="hljs-keyword">import</span> heapq
     
     heap = []
     result = []
     
-    # Initialize heap with first element from each array
-    for i, arr in enumerate(arrays):
-        if arr:  # Check if array is not empty
-            heapq.heappush(heap, (arr[0], i, 0))
+    <span class="hljs-comment"># Initialize heap with first element from each array</span>
+    <span class="hljs-keyword">for</span> i, arr <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(arrays):
+        <span class="hljs-keyword">if</span> arr:  <span class="hljs-comment"># Check if array is not empty</span>
+            heapq.heappush(heap, (arr[<span class="hljs-number">0</span>], i, <span class="hljs-number">0</span>))
     
-    while heap:
+    <span class="hljs-keyword">while</span> heap:
         val, array_idx, element_idx = heapq.heappop(heap)
         result.append(val)
         
-        # Add next element from same array
-        if element_idx + 1 &lt; len(arrays[array_idx]):
-            next_val = arrays[array_idx][element_idx + 1]
-            heapq.heappush(heap, (next_val, array_idx, element_idx + 1))
+        <span class="hljs-comment"># Add next element from same array</span>
+        <span class="hljs-keyword">if</span> element_idx + <span class="hljs-number">1</span> &lt; <span class="hljs-built_in">len</span>(arrays[array_idx]):
+            next_val = arrays[array_idx][element_idx + <span class="hljs-number">1</span>]
+            heapq.heappush(heap, (next_val, array_idx, element_idx + <span class="hljs-number">1</span>))
     
-    return result
+    <span class="hljs-keyword">return</span> result
 </code></pre>
 <h4 id="4-two-heap-system-template-median" tabindex="-1"><a class="header-anchor" href="#4-two-heap-system-template-median"><span><strong>4. Two Heap System Template (Median)</strong></span></a></h4>
-<pre><code class="language-python">class MedianFinder:
-    def __init__(self):
-        import heapq
-        self.small = []  # max heap (use negative values)
-        self.large = []  # min heap
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MedianFinder</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">import</span> heapq
+        <span class="hljs-variable language_">self</span>.small = []  <span class="hljs-comment"># max heap (use negative values)</span>
+        <span class="hljs-variable language_">self</span>.large = []  <span class="hljs-comment"># min heap</span>
     
-    def addNum(self, num):
-        import heapq
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">addNum</span>(<span class="hljs-params">self, num</span>):
+        <span class="hljs-keyword">import</span> heapq
         
-        # Add to appropriate heap
-        if len(self.small) == len(self.large):
-            heapq.heappush(self.large, -heapq.heappushpop(self.small, -num))
-        else:
-            heapq.heappush(self.small, -heapq.heappushpop(self.large, num))
+        <span class="hljs-comment"># Add to appropriate heap</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.small) == <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.large):
+            heapq.heappush(<span class="hljs-variable language_">self</span>.large, -heapq.heappushpop(<span class="hljs-variable language_">self</span>.small, -num))
+        <span class="hljs-keyword">else</span>:
+            heapq.heappush(<span class="hljs-variable language_">self</span>.small, -heapq.heappushpop(<span class="hljs-variable language_">self</span>.large, num))
     
-    def findMedian(self):
-        if len(self.small) == len(self.large):
-            return (self.large[0] - self.small[0]) / 2.0
-        else:
-            return float(self.large[0])
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">findMedian</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.small) == <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.large):
+            <span class="hljs-keyword">return</span> (<span class="hljs-variable language_">self</span>.large[<span class="hljs-number">0</span>] - <span class="hljs-variable language_">self</span>.small[<span class="hljs-number">0</span>]) / <span class="hljs-number">2.0</span>
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-built_in">float</span>(<span class="hljs-variable language_">self</span>.large[<span class="hljs-number">0</span>])
 </code></pre>
 <h4 id="5-heap-with-deduplication-template" tabindex="-1"><a class="header-anchor" href="#5-heap-with-deduplication-template"><span><strong>5. Heap with Deduplication Template</strong></span></a></h4>
-<pre><code class="language-python">def solve_with_unique_heap(nums):
-    import heapq
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">solve_with_unique_heap</span>(<span class="hljs-params">nums</span>):
+    <span class="hljs-keyword">import</span> heapq
 
     heap = []
-    seen = set()
+    seen = <span class="hljs-built_in">set</span>()
 
-    for num in nums:
-        if num not in seen:
+    <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> nums:
+        <span class="hljs-keyword">if</span> num <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> seen:
             heapq.heappush(heap, num)
             seen.add(num)
 
-    return heap
+    <span class="hljs-keyword">return</span> heap
 </code></pre>
 <h4 id="6-grid-shortest-path-with-range-jumps-template" tabindex="-1"><a class="header-anchor" href="#6-grid-shortest-path-with-range-jumps-template"><span><strong>6. Grid Shortest Path with Range Jumps Template</strong></span></a></h4>
-<pre><code class="language-java">/**
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
  * Template for Grid Shortest Path with Variable Jump Ranges
  *
  * Pattern: DP + Per-row/column Priority Queues with Lazy Deletion
@@ -468,203 +480,203 @@ def find_kth_smallest(nums, k):
  *
  * Time: O(M*N*log(M+N))
  * Space: O(M*N)
- */
-public int gridShortestPathTemplate(int[][] grid) {
-    int m = grid.length, n = grid[0].length;
-    int[][] dist = new int[m][n];
-    for (int[] row : dist) Arrays.fill(row, -1);
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">gridShortestPathTemplate</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] grid)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> grid.length, n = grid[<span class="hljs-number">0</span>].length;
+    <span class="hljs-type">int</span>[][] dist = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[m][n];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] row : dist) Arrays.fill(row, -<span class="hljs-number">1</span>);
 
-    // Create one PQ per row and one PQ per column
-    // Each PQ stores {distance, index} sorted by distance
-    PriorityQueue&lt;int[]&gt;[] rowPQs = new PriorityQueue[m];
-    PriorityQueue&lt;int[]&gt;[] colPQs = new PriorityQueue[n];
+    <span class="hljs-comment">// Create one PQ per row and one PQ per column</span>
+    <span class="hljs-comment">// Each PQ stores {distance, index} sorted by distance</span>
+    PriorityQueue&lt;<span class="hljs-type">int</span>[]&gt;[] rowPQs = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>[m];
+    PriorityQueue&lt;<span class="hljs-type">int</span>[]&gt;[] colPQs = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>[n];
 
-    for (int i = 0; i &lt; m; i++)
-        rowPQs[i] = new PriorityQueue&lt;&gt;((a, b) -&gt; a[0] - b[0]);
-    for (int j = 0; j &lt; n; j++)
-        colPQs[j] = new PriorityQueue&lt;&gt;((a, b) -&gt; a[0] - b[0]);
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; m; i++)
+        rowPQs[i] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;((a, b) -&gt; a[<span class="hljs-number">0</span>] - b[<span class="hljs-number">0</span>]);
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; n; j++)
+        colPQs[j] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;((a, b) -&gt; a[<span class="hljs-number">0</span>] - b[<span class="hljs-number">0</span>]);
 
-    dist[0][0] = 1;  // Starting cell counts as 1
+    dist[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>;  <span class="hljs-comment">// Starting cell counts as 1</span>
 
-    for (int i = 0; i &lt; m; i++) {
-        for (int j = 0; j &lt; n; j++) {
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; m; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; n; j++) {
 
-            // 1. Check cells from same row that can reach (i,j)
-            while (!rowPQs[i].isEmpty()) {
-                int[] top = rowPQs[i].peek();
-                int prevCol = top[1];
-                // Can previous cell jump far enough to reach column j?
-                if (prevCol + grid[i][prevCol] &gt;= j) {
-                    int d = top[0] + 1;
-                    if (dist[i][j] == -1 || d &lt; dist[i][j])
+            <span class="hljs-comment">// 1. Check cells from same row that can reach (i,j)</span>
+            <span class="hljs-keyword">while</span> (!rowPQs[i].isEmpty()) {
+                <span class="hljs-type">int</span>[] top = rowPQs[i].peek();
+                <span class="hljs-type">int</span> <span class="hljs-variable">prevCol</span> <span class="hljs-operator">=</span> top[<span class="hljs-number">1</span>];
+                <span class="hljs-comment">// Can previous cell jump far enough to reach column j?</span>
+                <span class="hljs-keyword">if</span> (prevCol + grid[i][prevCol] &gt;= j) {
+                    <span class="hljs-type">int</span> <span class="hljs-variable">d</span> <span class="hljs-operator">=</span> top[<span class="hljs-number">0</span>] + <span class="hljs-number">1</span>;
+                    <span class="hljs-keyword">if</span> (dist[i][j] == -<span class="hljs-number">1</span> || d &lt; dist[i][j])
                         dist[i][j] = d;
-                    break;  // First valid = best (PQ sorted by distance)
+                    <span class="hljs-keyword">break</span>;  <span class="hljs-comment">// First valid = best (PQ sorted by distance)</span>
                 }
-                // Lazy deletion: cell can never reach future columns
+                <span class="hljs-comment">// Lazy deletion: cell can never reach future columns</span>
                 rowPQs[i].poll();
             }
 
-            // 2. Check cells from same column that can reach (i,j)
-            while (!colPQs[j].isEmpty()) {
-                int[] top = colPQs[j].peek();
-                int prevRow = top[1];
-                if (prevRow + grid[prevRow][j] &gt;= i) {
-                    int d = top[0] + 1;
-                    if (dist[i][j] == -1 || d &lt; dist[i][j])
+            <span class="hljs-comment">// 2. Check cells from same column that can reach (i,j)</span>
+            <span class="hljs-keyword">while</span> (!colPQs[j].isEmpty()) {
+                <span class="hljs-type">int</span>[] top = colPQs[j].peek();
+                <span class="hljs-type">int</span> <span class="hljs-variable">prevRow</span> <span class="hljs-operator">=</span> top[<span class="hljs-number">1</span>];
+                <span class="hljs-keyword">if</span> (prevRow + grid[prevRow][j] &gt;= i) {
+                    <span class="hljs-type">int</span> <span class="hljs-variable">d</span> <span class="hljs-operator">=</span> top[<span class="hljs-number">0</span>] + <span class="hljs-number">1</span>;
+                    <span class="hljs-keyword">if</span> (dist[i][j] == -<span class="hljs-number">1</span> || d &lt; dist[i][j])
                         dist[i][j] = d;
-                    break;
+                    <span class="hljs-keyword">break</span>;
                 }
                 colPQs[j].poll();
             }
 
-            // 3. Add current cell to PQs for future cells
-            if (dist[i][j] != -1 &amp;&amp; grid[i][j] &gt; 0) {
-                rowPQs[i].offer(new int[]{dist[i][j], j});
-                colPQs[j].offer(new int[]{dist[i][j], i});
+            <span class="hljs-comment">// 3. Add current cell to PQs for future cells</span>
+            <span class="hljs-keyword">if</span> (dist[i][j] != -<span class="hljs-number">1</span> &amp;&amp; grid[i][j] &gt; <span class="hljs-number">0</span>) {
+                rowPQs[i].offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{dist[i][j], j});
+                colPQs[j].offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{dist[i][j], i});
             }
         }
     }
 
-    return dist[m - 1][n - 1];
+    <span class="hljs-keyword">return</span> dist[m - <span class="hljs-number">1</span>][n - <span class="hljs-number">1</span>];
 }
 </code></pre>
-<pre><code class="language-python"># Python Template: Grid Shortest Path with Range Jumps
-import heapq
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python Template: Grid Shortest Path with Range Jumps</span>
+<span class="hljs-keyword">import</span> heapq
 
-def grid_shortest_path(grid):
-    &quot;&quot;&quot;
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">grid_shortest_path</span>(<span class="hljs-params">grid</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
     Pattern: DP + Per-row/column heaps with lazy deletion
 
     Key insight: Each cell can be processed once per row/column heap,
     and expired cells are removed lazily when encountered.
-    &quot;&quot;&quot;
-    m, n = len(grid), len(grid[0])
-    dist = [[-1] * n for _ in range(m)]
+    &quot;&quot;&quot;</span>
+    m, n = <span class="hljs-built_in">len</span>(grid), <span class="hljs-built_in">len</span>(grid[<span class="hljs-number">0</span>])
+    dist = [[-<span class="hljs-number">1</span>] * n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m)]
 
-    # One min-heap per row and per column
-    # Each heap stores (distance, index)
-    row_pqs = [[] for _ in range(m)]
-    col_pqs = [[] for _ in range(n)]
+    <span class="hljs-comment"># One min-heap per row and per column</span>
+    <span class="hljs-comment"># Each heap stores (distance, index)</span>
+    row_pqs = [[] <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m)]
+    col_pqs = [[] <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)]
 
-    dist[0][0] = 1
+    dist[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>
 
-    for i in range(m):
-        for j in range(n):
-            # Check row heap for cells that can reach (i, j)
-            while row_pqs[i]:
-                d, prev_col = row_pqs[i][0]
-                if prev_col + grid[i][prev_col] &gt;= j:
-                    if dist[i][j] == -1 or d + 1 &lt; dist[i][j]:
-                        dist[i][j] = d + 1
-                    break
-                heapq.heappop(row_pqs[i])  # Lazy deletion
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m):
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+            <span class="hljs-comment"># Check row heap for cells that can reach (i, j)</span>
+            <span class="hljs-keyword">while</span> row_pqs[i]:
+                d, prev_col = row_pqs[i][<span class="hljs-number">0</span>]
+                <span class="hljs-keyword">if</span> prev_col + grid[i][prev_col] &gt;= j:
+                    <span class="hljs-keyword">if</span> dist[i][j] == -<span class="hljs-number">1</span> <span class="hljs-keyword">or</span> d + <span class="hljs-number">1</span> &lt; dist[i][j]:
+                        dist[i][j] = d + <span class="hljs-number">1</span>
+                    <span class="hljs-keyword">break</span>
+                heapq.heappop(row_pqs[i])  <span class="hljs-comment"># Lazy deletion</span>
 
-            # Check column heap for cells that can reach (i, j)
-            while col_pqs[j]:
-                d, prev_row = col_pqs[j][0]
-                if prev_row + grid[prev_row][j] &gt;= i:
-                    if dist[i][j] == -1 or d + 1 &lt; dist[i][j]:
-                        dist[i][j] = d + 1
-                    break
+            <span class="hljs-comment"># Check column heap for cells that can reach (i, j)</span>
+            <span class="hljs-keyword">while</span> col_pqs[j]:
+                d, prev_row = col_pqs[j][<span class="hljs-number">0</span>]
+                <span class="hljs-keyword">if</span> prev_row + grid[prev_row][j] &gt;= i:
+                    <span class="hljs-keyword">if</span> dist[i][j] == -<span class="hljs-number">1</span> <span class="hljs-keyword">or</span> d + <span class="hljs-number">1</span> &lt; dist[i][j]:
+                        dist[i][j] = d + <span class="hljs-number">1</span>
+                    <span class="hljs-keyword">break</span>
                 heapq.heappop(col_pqs[j])
 
-            # Add current cell to heaps if reachable and can jump
-            if dist[i][j] != -1 and grid[i][j] &gt; 0:
+            <span class="hljs-comment"># Add current cell to heaps if reachable and can jump</span>
+            <span class="hljs-keyword">if</span> dist[i][j] != -<span class="hljs-number">1</span> <span class="hljs-keyword">and</span> grid[i][j] &gt; <span class="hljs-number">0</span>:
                 heapq.heappush(row_pqs[i], (dist[i][j], j))
                 heapq.heappush(col_pqs[j], (dist[i][j], i))
 
-    return dist[m - 1][n - 1]
+    <span class="hljs-keyword">return</span> dist[m - <span class="hljs-number">1</span>][n - <span class="hljs-number">1</span>]
 </code></pre>
 <h4 id="7-frequency-uniqueness-template-greedy-heap-hashset" tabindex="-1"><a class="header-anchor" href="#7-frequency-uniqueness-template-greedy-heap-hashset"><span><strong>7. Frequency Uniqueness Template (Greedy + Heap/HashSet)</strong></span></a></h4>
-<pre><code class="language-python">def make_frequencies_unique(s):
-    &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">make_frequencies_unique</span>(<span class="hljs-params">s</span>):
+    <span class="hljs-string">&quot;&quot;&quot;
     Pattern: Make all character frequencies unique with minimum deletions
     Used in: LC 1647, LC 1481
-    &quot;&quot;&quot;
-    from collections import Counter
-    import heapq
+    &quot;&quot;&quot;</span>
+    <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> Counter
+    <span class="hljs-keyword">import</span> heapq
 
-    # Approach 1: Max Heap (process high to low)
-    def heap_approach():
+    <span class="hljs-comment"># Approach 1: Max Heap (process high to low)</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">heap_approach</span>():
         freq_count = Counter(s)
-        max_heap = [-f for f in freq_count.values()]
+        max_heap = [-f <span class="hljs-keyword">for</span> f <span class="hljs-keyword">in</span> freq_count.values()]
         heapq.heapify(max_heap)
 
-        deletions = 0
-        while len(max_heap) &gt; 1:
+        deletions = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">while</span> <span class="hljs-built_in">len</span>(max_heap) &gt; <span class="hljs-number">1</span>:
             top = -heapq.heappop(max_heap)
-            next_val = -max_heap[0]
+            next_val = -max_heap[<span class="hljs-number">0</span>]
 
-            if top == next_val:
-                top -= 1
-                deletions += 1
-                if top &gt; 0:
+            <span class="hljs-keyword">if</span> top == next_val:
+                top -= <span class="hljs-number">1</span>
+                deletions += <span class="hljs-number">1</span>
+                <span class="hljs-keyword">if</span> top &gt; <span class="hljs-number">0</span>:
                     heapq.heappush(max_heap, -top)
 
-        return deletions
+        <span class="hljs-keyword">return</span> deletions
 
-    # Approach 2: HashSet (track used frequencies)
-    def hashset_approach():
+    <span class="hljs-comment"># Approach 2: HashSet (track used frequencies)</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">hashset_approach</span>():
         freq_count = Counter(s)
-        used_freq = set()
-        deletions = 0
+        used_freq = <span class="hljs-built_in">set</span>()
+        deletions = <span class="hljs-number">0</span>
 
-        for freq in freq_count.values():
-            # Decrement until finding unused frequency
-            while freq &gt; 0 and freq in used_freq:
-                freq -= 1
-                deletions += 1
+        <span class="hljs-keyword">for</span> freq <span class="hljs-keyword">in</span> freq_count.values():
+            <span class="hljs-comment"># Decrement until finding unused frequency</span>
+            <span class="hljs-keyword">while</span> freq &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> freq <span class="hljs-keyword">in</span> used_freq:
+                freq -= <span class="hljs-number">1</span>
+                deletions += <span class="hljs-number">1</span>
             used_freq.add(freq)
 
-        return deletions
+        <span class="hljs-keyword">return</span> deletions
 
-    # Approach 3: Sorting (ensure strictly decreasing)
-    def sort_approach():
-        freq = [0] * 26
-        for c in s:
-            freq[ord(c) - ord('a')] += 1
+    <span class="hljs-comment"># Approach 3: Sorting (ensure strictly decreasing)</span>
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">sort_approach</span>():
+        freq = [<span class="hljs-number">0</span>] * <span class="hljs-number">26</span>
+        <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> s:
+            freq[<span class="hljs-built_in">ord</span>(c) - <span class="hljs-built_in">ord</span>(<span class="hljs-string">&#x27;a&#x27;</span>)] += <span class="hljs-number">1</span>
 
-        freq.sort(reverse=True)
-        deletions = 0
+        freq.sort(reverse=<span class="hljs-literal">True</span>)
+        deletions = <span class="hljs-number">0</span>
 
-        for i in range(len(freq) - 1):
-            if freq[i] == 0:
-                break
-            if freq[i] &lt;= freq[i + 1]:
-                prev = freq[i + 1]
-                freq[i + 1] = max(0, freq[i] - 1)
-                deletions += prev - freq[i + 1]
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(freq) - <span class="hljs-number">1</span>):
+            <span class="hljs-keyword">if</span> freq[i] == <span class="hljs-number">0</span>:
+                <span class="hljs-keyword">break</span>
+            <span class="hljs-keyword">if</span> freq[i] &lt;= freq[i + <span class="hljs-number">1</span>]:
+                prev = freq[i + <span class="hljs-number">1</span>]
+                freq[i + <span class="hljs-number">1</span>] = <span class="hljs-built_in">max</span>(<span class="hljs-number">0</span>, freq[i] - <span class="hljs-number">1</span>)
+                deletions += prev - freq[i + <span class="hljs-number">1</span>]
 
-        return deletions
+        <span class="hljs-keyword">return</span> deletions
 
-    # Best approach depends on constraints
-    return hashset_approach()  # Generally most intuitive
+    <span class="hljs-comment"># Best approach depends on constraints</span>
+    <span class="hljs-keyword">return</span> hashset_approach()  <span class="hljs-comment"># Generally most intuitive</span>
 </code></pre>
-<pre><code class="language-java">// Java Version - Frequency Uniqueness
-public int makeFrequenciesUnique(String s) {
-    // Count frequencies
-    int[] freq = new int[26];
-    for (char c : s.toCharArray()) {
-        freq[c - 'a']++;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java Version - Frequency Uniqueness</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">makeFrequenciesUnique</span><span class="hljs-params">(String s)</span> {
+    <span class="hljs-comment">// Count frequencies</span>
+    <span class="hljs-type">int</span>[] freq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">26</span>];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : s.toCharArray()) {
+        freq[c - <span class="hljs-string">&#x27;a&#x27;</span>]++;
     }
 
-    // Max heap approach
-    PriorityQueue&lt;Integer&gt; pq = new PriorityQueue&lt;&gt;(Collections.reverseOrder());
-    for (int f : freq) {
-        if (f &gt; 0) pq.add(f);
+    <span class="hljs-comment">// Max heap approach</span>
+    PriorityQueue&lt;Integer&gt; pq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;(Collections.reverseOrder());
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> f : freq) {
+        <span class="hljs-keyword">if</span> (f &gt; <span class="hljs-number">0</span>) pq.add(f);
     }
 
-    int deletions = 0;
-    while (pq.size() &gt; 1) {
-        int top = pq.poll();
-        if (top == pq.peek()) {
+    <span class="hljs-type">int</span> <span class="hljs-variable">deletions</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">while</span> (pq.size() &gt; <span class="hljs-number">1</span>) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">top</span> <span class="hljs-operator">=</span> pq.poll();
+        <span class="hljs-keyword">if</span> (top == pq.peek()) {
             top--;
             deletions++;
-            if (top &gt; 0) pq.add(top);
+            <span class="hljs-keyword">if</span> (top &gt; <span class="hljs-number">0</span>) pq.add(top);
         }
     }
 
-    return deletions;
+    <span class="hljs-keyword">return</span> deletions;
 }
 </code></pre>
 <h3 id="python-heapq-api-reference" tabindex="-1"><a class="header-anchor" href="#python-heapq-api-reference"><span>Python heapq API Reference</span></a></h3>
@@ -732,252 +744,252 @@ public int makeFrequenciesUnique(String s) {
 </ul>
 </li>
 </ul>
-<pre><code class="language-python">#------------------------
-# PY API examples
-#------------------------
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment">#------------------------</span>
+<span class="hljs-comment"># PY API examples</span>
+<span class="hljs-comment">#------------------------</span>
 
-#----------------------
-# 1) build heapq
-#----------------------
-In [43]: import heapq
+<span class="hljs-comment">#----------------------</span>
+<span class="hljs-comment"># 1) build heapq</span>
+<span class="hljs-comment">#----------------------</span>
+In [<span class="hljs-number">43</span>]: <span class="hljs-keyword">import</span> heapq
     ...:
     ...:
-    ...: array = [10, 17, 50, 7, 30, 24, 27, 45, 15, 5, 36, 21]
+    ...: array = [<span class="hljs-number">10</span>, <span class="hljs-number">17</span>, <span class="hljs-number">50</span>, <span class="hljs-number">7</span>, <span class="hljs-number">30</span>, <span class="hljs-number">24</span>, <span class="hljs-number">27</span>, <span class="hljs-number">45</span>, <span class="hljs-number">15</span>, <span class="hljs-number">5</span>, <span class="hljs-number">36</span>, <span class="hljs-number">21</span>]
     ...: heap = []
-    ...: for num in array:
+    ...: <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> array:
     ...:     heapq.heappush(heap, num)
-    ...: print(&quot;array:&quot;, array)
-    ...: print(&quot;heap: &quot;, heap)
+    ...: <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;array:&quot;</span>, array)
+    ...: <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;heap: &quot;</span>, heap)
     ...:
     ...: heapq.heapify(array)
-    ...: print(&quot;array:&quot;, array)
-array: [10, 17, 50, 7, 30, 24, 27, 45, 15, 5, 36, 21]
-heap:  [5, 7, 21, 15, 10, 24, 27, 45, 17, 30, 36, 50]
-array: [5, 7, 21, 10, 17, 24, 27, 45, 15, 30, 36, 50]
+    ...: <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;array:&quot;</span>, array)
+array: [<span class="hljs-number">10</span>, <span class="hljs-number">17</span>, <span class="hljs-number">50</span>, <span class="hljs-number">7</span>, <span class="hljs-number">30</span>, <span class="hljs-number">24</span>, <span class="hljs-number">27</span>, <span class="hljs-number">45</span>, <span class="hljs-number">15</span>, <span class="hljs-number">5</span>, <span class="hljs-number">36</span>, <span class="hljs-number">21</span>]
+heap:  [<span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">21</span>, <span class="hljs-number">15</span>, <span class="hljs-number">10</span>, <span class="hljs-number">24</span>, <span class="hljs-number">27</span>, <span class="hljs-number">45</span>, <span class="hljs-number">17</span>, <span class="hljs-number">30</span>, <span class="hljs-number">36</span>, <span class="hljs-number">50</span>]
+array: [<span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">21</span>, <span class="hljs-number">10</span>, <span class="hljs-number">17</span>, <span class="hljs-number">24</span>, <span class="hljs-number">27</span>, <span class="hljs-number">45</span>, <span class="hljs-number">15</span>, <span class="hljs-number">30</span>, <span class="hljs-number">36</span>, <span class="hljs-number">50</span>]
 
-# NOTE : there are 2 ways create heap (in py)
-#  1) heappush(heap, num)
-#  2) heapify(array)
-#
-# -&gt; we can see above results are a bit different. However this not affect the &quot;min heap&quot; property in py. We can still get min element, and heap will get updated accordingly.
+<span class="hljs-comment"># NOTE : there are 2 ways create heap (in py)</span>
+<span class="hljs-comment">#  1) heappush(heap, num)</span>
+<span class="hljs-comment">#  2) heapify(array)</span>
+<span class="hljs-comment">#</span>
+<span class="hljs-comment"># -&gt; we can see above results are a bit different. However this not affect the &quot;min heap&quot; property in py. We can still get min element, and heap will get updated accordingly.</span>
 
-#----------------------
-# 1') build heapq V2
-#----------------------
+<span class="hljs-comment">#----------------------</span>
+<span class="hljs-comment"># 1&#x27;) build heapq V2</span>
+<span class="hljs-comment">#----------------------</span>
 
-# https://leetcode.com/explore/learn/card/heap/644/common-applications-of-heap/4022/
+<span class="hljs-comment"># https://leetcode.com/explore/learn/card/heap/644/common-applications-of-heap/4022/</span>
 
-import heapq
+<span class="hljs-keyword">import</span> heapq
 
-# Construct an empty Min Heap
+<span class="hljs-comment"># Construct an empty Min Heap</span>
 minHeap = []
 heapq.heapify(minHeap)
 
-# Construct an empty Max Heap
-# As there are no internal functions to construct a Max Heap in Python,
-# So, we will not construct a Max Heap.
+<span class="hljs-comment"># Construct an empty Max Heap</span>
+<span class="hljs-comment"># As there are no internal functions to construct a Max Heap in Python,</span>
+<span class="hljs-comment"># So, we will not construct a Max Heap.</span>
 
-# Construct a Heap with Initial values
-# this process is called &quot;Heapify&quot;
-# The Heap is a Min Heap
-heapWithValues = [3,1,2]
+<span class="hljs-comment"># Construct a Heap with Initial values</span>
+<span class="hljs-comment"># this process is called &quot;Heapify&quot;</span>
+<span class="hljs-comment"># The Heap is a Min Heap</span>
+heapWithValues = [<span class="hljs-number">3</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>]
 heapq.heapify(heapWithValues)
 
-# Trick in constructing a Max Heap
-# As there are no internal functions to construct a Max Heap
-# We can multiply each element by -1, then heapify with these modified elements.
-# The top element will be the smallest element in the modified set,
-# It can also be converted to the maximum value in the original dataset.
-# Example
-maxHeap = [1,2,3]
-maxHeap = [-x for x in maxHeap]
+<span class="hljs-comment"># Trick in constructing a Max Heap</span>
+<span class="hljs-comment"># As there are no internal functions to construct a Max Heap</span>
+<span class="hljs-comment"># We can multiply each element by -1, then heapify with these modified elements.</span>
+<span class="hljs-comment"># The top element will be the smallest element in the modified set,</span>
+<span class="hljs-comment"># It can also be converted to the maximum value in the original dataset.</span>
+<span class="hljs-comment"># Example</span>
+maxHeap = [<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>]
+maxHeap = [-x <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> maxHeap]
 heapq.heapify(maxHeap)
-# The top element of maxHeap is -3
-# Convert -3 to 3, which is the maximum value in the original maxHeap
+<span class="hljs-comment"># The top element of maxHeap is -3</span>
+<span class="hljs-comment"># Convert -3 to 3, which is the maximum value in the original maxHeap</span>
 
-#----------------------
-# 2) insert into element
-#----------------------
+<span class="hljs-comment">#----------------------</span>
+<span class="hljs-comment"># 2) insert into element</span>
+<span class="hljs-comment">#----------------------</span>
 
-# https://leetcode.com/explore/learn/card/heap/644/common-applications-of-heap/4023/
+<span class="hljs-comment"># https://leetcode.com/explore/learn/card/heap/644/common-applications-of-heap/4023/</span>
 
-# Insert an element to the Min Heap
-heapq.heappush(minHeap, 5)
+<span class="hljs-comment"># Insert an element to the Min Heap</span>
+heapq.heappush(minHeap, <span class="hljs-number">5</span>)
 
-# Insert an element to the Max Heap
-# Multiply the element by -1
-# As we are converting the Min Heap to a Max Heap
-heapq.heappush(maxHeap, -1 * 5)
+<span class="hljs-comment"># Insert an element to the Max Heap</span>
+<span class="hljs-comment"># Multiply the element by -1</span>
+<span class="hljs-comment"># As we are converting the Min Heap to a Max Heap</span>
+heapq.heappush(maxHeap, -<span class="hljs-number">1</span> * <span class="hljs-number">5</span>)
 
 
-#----------------------
-# 3) delete the top element
-#----------------------
+<span class="hljs-comment">#----------------------</span>
+<span class="hljs-comment"># 3) delete the top element</span>
+<span class="hljs-comment">#----------------------</span>
 
-# https://leetcode.com/explore/learn/card/heap/644/common-applications-of-heap/4025/
+<span class="hljs-comment"># https://leetcode.com/explore/learn/card/heap/644/common-applications-of-heap/4025/</span>
 
-# Delete top element from the Min Heap
+<span class="hljs-comment"># Delete top element from the Min Heap</span>
 heapq.heappop(minHeap)
 
-# Delete top element from the Max Heap
+<span class="hljs-comment"># Delete top element from the Max Heap</span>
 heapq.heappop(maxHeap)
 
 
-#----------------------
-# 3) get top element
-#----------------------
+<span class="hljs-comment">#----------------------</span>
+<span class="hljs-comment"># 3) get top element</span>
+<span class="hljs-comment">#----------------------</span>
 
-# https://leetcode.com/explore/learn/card/heap/644/common-applications-of-heap/4024/
+<span class="hljs-comment"># https://leetcode.com/explore/learn/card/heap/644/common-applications-of-heap/4024/</span>
 
-# Get top element from the Min Heap
-# i.e. the smallest element
-minHeap[0]
-# Get top element from the Max Heap
-# i.e. the largest element
-# When inserting an element, we multiplied it by -1
-# Therefore, we need to multiply the element by -1 to revert it back
--1 * maxHeap[0]
+<span class="hljs-comment"># Get top element from the Min Heap</span>
+<span class="hljs-comment"># i.e. the smallest element</span>
+minHeap[<span class="hljs-number">0</span>]
+<span class="hljs-comment"># Get top element from the Max Heap</span>
+<span class="hljs-comment"># i.e. the largest element</span>
+<span class="hljs-comment"># When inserting an element, we multiplied it by -1</span>
+<span class="hljs-comment"># Therefore, we need to multiply the element by -1 to revert it back</span>
+-<span class="hljs-number">1</span> * maxHeap[<span class="hljs-number">0</span>]
 
-#----------------------
-# 2) sorting via heapq
-#----------------------
-In [44]: array = [10, 17, 50, 7, 30, 24, 27, 45, 15, 5, 36, 21]
+<span class="hljs-comment">#----------------------</span>
+<span class="hljs-comment"># 2) sorting via heapq</span>
+<span class="hljs-comment">#----------------------</span>
+In [<span class="hljs-number">44</span>]: array = [<span class="hljs-number">10</span>, <span class="hljs-number">17</span>, <span class="hljs-number">50</span>, <span class="hljs-number">7</span>, <span class="hljs-number">30</span>, <span class="hljs-number">24</span>, <span class="hljs-number">27</span>, <span class="hljs-number">45</span>, <span class="hljs-number">15</span>, <span class="hljs-number">5</span>, <span class="hljs-number">36</span>, <span class="hljs-number">21</span>]
     ...: heap = []
-    ...: for num in array:
+    ...: <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> array:
     ...:     heapq.heappush(heap, num)
-    ...: print(heap[0])
-5
+    ...: <span class="hljs-built_in">print</span>(heap[<span class="hljs-number">0</span>])
+<span class="hljs-number">5</span>
 
-In [45]: heap_sort = [heapq.heappop(heap) for _ in range(len(heap))]
-    ...: print(&quot;heap sort result: &quot;, heap_sort)
-heap sort result:  [5, 7, 10, 15, 17, 21, 24, 27, 30, 36, 45, 50]
+In [<span class="hljs-number">45</span>]: heap_sort = [heapq.heappop(heap) <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(heap))]
+    ...: <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;heap sort result: &quot;</span>, heap_sort)
+heap sort result:  [<span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">10</span>, <span class="hljs-number">15</span>, <span class="hljs-number">17</span>, <span class="hljs-number">21</span>, <span class="hljs-number">24</span>, <span class="hljs-number">27</span>, <span class="hljs-number">30</span>, <span class="hljs-number">36</span>, <span class="hljs-number">45</span>, <span class="hljs-number">50</span>]
 
-#----------------------
-# 3) get Min or Max from heap
-#----------------------
+<span class="hljs-comment">#----------------------</span>
+<span class="hljs-comment"># 3) get Min or Max from heap</span>
+<span class="hljs-comment">#----------------------</span>
 
-In [48]: array = [10, 17, 50, 7, 30, 24, 27, 45, 15, 5, 36, 21]
+In [<span class="hljs-number">48</span>]: array = [<span class="hljs-number">10</span>, <span class="hljs-number">17</span>, <span class="hljs-number">50</span>, <span class="hljs-number">7</span>, <span class="hljs-number">30</span>, <span class="hljs-number">24</span>, <span class="hljs-number">27</span>, <span class="hljs-number">45</span>, <span class="hljs-number">15</span>, <span class="hljs-number">5</span>, <span class="hljs-number">36</span>, <span class="hljs-number">21</span>]
     ...: heapq.heapify(array)
-    ...: print(heapq.nlargest(2, array))
-    ...: print(heapq.nsmallest(3, array))
-[50, 45]
-[5, 7, 10]
+    ...: <span class="hljs-built_in">print</span>(heapq.nlargest(<span class="hljs-number">2</span>, array))
+    ...: <span class="hljs-built_in">print</span>(heapq.nsmallest(<span class="hljs-number">3</span>, array))
+[<span class="hljs-number">50</span>, <span class="hljs-number">45</span>]
+[<span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">10</span>]
 
-#----------------------
-# 4) merge 2 sorted list via heap
-#----------------------
-In [49]: array_a = [10, 7, 15, 8]
-    ...: array_b = [17, 3, 8, 20, 13]
-    ...: array_merge = heapq.merge(sorted(array_a), sorted(array_b))
-    ...: print(&quot;merge result:&quot;, list(array_merge))
-merge result: [3, 7, 8, 8, 10, 13, 15, 17, 20]
+<span class="hljs-comment">#----------------------</span>
+<span class="hljs-comment"># 4) merge 2 sorted list via heap</span>
+<span class="hljs-comment">#----------------------</span>
+In [<span class="hljs-number">49</span>]: array_a = [<span class="hljs-number">10</span>, <span class="hljs-number">7</span>, <span class="hljs-number">15</span>, <span class="hljs-number">8</span>]
+    ...: array_b = [<span class="hljs-number">17</span>, <span class="hljs-number">3</span>, <span class="hljs-number">8</span>, <span class="hljs-number">20</span>, <span class="hljs-number">13</span>]
+    ...: array_merge = heapq.merge(<span class="hljs-built_in">sorted</span>(array_a), <span class="hljs-built_in">sorted</span>(array_b))
+    ...: <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;merge result:&quot;</span>, <span class="hljs-built_in">list</span>(array_merge))
+merge result: [<span class="hljs-number">3</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">8</span>, <span class="hljs-number">10</span>, <span class="hljs-number">13</span>, <span class="hljs-number">15</span>, <span class="hljs-number">17</span>, <span class="hljs-number">20</span>]
 
 
-#----------------------
-# 5) heap replace element
-#----------------------
+<span class="hljs-comment">#----------------------</span>
+<span class="hljs-comment"># 5) heap replace element</span>
+<span class="hljs-comment">#----------------------</span>
 
-In [50]: array_c = [10, 7, 15, 8]
+In [<span class="hljs-number">50</span>]: array_c = [<span class="hljs-number">10</span>, <span class="hljs-number">7</span>, <span class="hljs-number">15</span>, <span class="hljs-number">8</span>]
     ...: heapq.heapify(array_c)
-    ...: print(&quot;before:&quot;, array_c)
-    ...: # heappushpop : push first, then pop
-    ...: item = heapq.heappushpop(array_c, 5)
-    ...: print(&quot;after: &quot;, array_c)
-    ...: print(item)
+    ...: <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;before:&quot;</span>, array_c)
+    ...: <span class="hljs-comment"># heappushpop : push first, then pop</span>
+    ...: item = heapq.heappushpop(array_c, <span class="hljs-number">5</span>)
+    ...: <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;after: &quot;</span>, array_c)
+    ...: <span class="hljs-built_in">print</span>(item)
     ...:
-before: [7, 8, 15, 10]
-after:  [7, 8, 15, 10]
-5
+before: [<span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">15</span>, <span class="hljs-number">10</span>]
+after:  [<span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">15</span>, <span class="hljs-number">10</span>]
+<span class="hljs-number">5</span>
 
 
-In [51]: array_d = [10, 7, 15, 8]
+In [<span class="hljs-number">51</span>]: array_d = [<span class="hljs-number">10</span>, <span class="hljs-number">7</span>, <span class="hljs-number">15</span>, <span class="hljs-number">8</span>]
     ...: heapq.heapify(array_d)
-    ...: print(&quot;before:&quot;, array_d)
-    ...: # pop first, then push
-    ...: item = heapq.heapreplace(array_d, 5)
-    ...: print(&quot;after: &quot;, array_d)
-    ...: print(item)
-before: [7, 8, 15, 10]
-after:  [5, 8, 15, 10]
-7
+    ...: <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;before:&quot;</span>, array_d)
+    ...: <span class="hljs-comment"># pop first, then push</span>
+    ...: item = heapq.heapreplace(array_d, <span class="hljs-number">5</span>)
+    ...: <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;after: &quot;</span>, array_d)
+    ...: <span class="hljs-built_in">print</span>(item)
+before: [<span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">15</span>, <span class="hljs-number">10</span>]
+after:  [<span class="hljs-number">5</span>, <span class="hljs-number">8</span>, <span class="hljs-number">15</span>, <span class="hljs-number">10</span>]
+<span class="hljs-number">7</span>
 
-#----------------------
-# 5) make a MAX heapq
-#----------------------
-In [54]: numbers = [4,1,24,2,1]
+<span class="hljs-comment">#----------------------</span>
+<span class="hljs-comment"># 5) make a MAX heapq</span>
+<span class="hljs-comment">#----------------------</span>
+In [<span class="hljs-number">54</span>]: numbers = [<span class="hljs-number">4</span>,<span class="hljs-number">1</span>,<span class="hljs-number">24</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>]
     ...:
-    ...: # invert numbers so that the largest values are now the smalles
+    ...: <span class="hljs-comment"># invert numbers so that the largest values are now the smalles</span>
     ...:
-    ...: numbers = [-1 * n for n in numbers]
+    ...: numbers = [-<span class="hljs-number">1</span> * n <span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> numbers]
     ...:
-    ...: # turn numbers into min heap
+    ...: <span class="hljs-comment"># turn numbers into min heap</span>
     ...: heapq.heapify(numbers)
     ...:
-    ...: # pop out 5 times
+    ...: <span class="hljs-comment"># pop out 5 times</span>
     ...: klargest = []
-    ...: for i in range(len(numbers)):
-    ...:     # multiply by -1 to get our inital number back
-    ...:     klargest.append(-1 * heapq.heappop(numbers))
+    ...: <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(numbers)):
+    ...:     <span class="hljs-comment"># multiply by -1 to get our inital number back</span>
+    ...:     klargest.append(-<span class="hljs-number">1</span> * heapq.heappop(numbers))
     ...:
 
-In [55]: klargest
-Out[55]: [24, 4, 2, 1, 1]
+In [<span class="hljs-number">55</span>]: klargest
+Out[<span class="hljs-number">55</span>]: [<span class="hljs-number">24</span>, <span class="hljs-number">4</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>]
 
 </code></pre>
 <h3 id="1-2-heap-vs-stack-vs-queue" tabindex="-1"><a class="header-anchor" href="#1-2-heap-vs-stack-vs-queue"><span>1-2) Heap VS Stack VS Queue</span></a></h3>
 <h3 id="1-3-heap-sort" tabindex="-1"><a class="header-anchor" href="#1-3-heap-sort"><span>1-3) Heap sort</span></a></h3>
-<pre><code class="language-python"># https://docs.python.org/zh-tw/3/library/heapq.html
-def heapsort(iterable):
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># https://docs.python.org/zh-tw/3/library/heapq.html</span>
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">heapsort</span>(<span class="hljs-params">iterable</span>):
 
     h = []
-    for value in iterable:
+    <span class="hljs-keyword">for</span> value <span class="hljs-keyword">in</span> iterable:
         heappush(h, value)
-    return [heappop(h) for i in range(len(h))]
+    <span class="hljs-keyword">return</span> [heappop(h) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(h))]
 
-# heapsort([1, 3, 5, 7, 9, 2, 4, 6, 8, 0])
-# &gt;&gt;&gt; [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+<span class="hljs-comment"># heapsort([1, 3, 5, 7, 9, 2, 4, 6, 8, 0])</span>
+<span class="hljs-comment"># &gt;&gt;&gt; [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]</span>
 </code></pre>
 <h3 id="1-4-priority-queue" tabindex="-1"><a class="header-anchor" href="#1-4-priority-queue"><span>1-4) Priority Queue</span></a></h3>
-<pre><code class="language-java">// java
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 PriorityQueue pq
-// random insert
-for i in {2,4,1,9,6}:
+<span class="hljs-comment">// random insert</span>
+<span class="hljs-keyword">for</span> i in {<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">1</span>,<span class="hljs-number">9</span>,<span class="hljs-number">6</span>}:
     pq.add(i)
 
-while pq not empty:
-    // every time get the one minimum element
+<span class="hljs-keyword">while</span> pq not empty:
+    <span class="hljs-comment">// every time get the one minimum element</span>
     print(pq.pop())
 
-// the output should be in order (small -&gt; big)
-// 1,2,4,6,9
+<span class="hljs-comment">// the output should be in order (small -&gt; big)</span>
+<span class="hljs-comment">// 1,2,4,6,9</span>
 </code></pre>
-<pre><code class="language-python"># 355 Design Twitter
-# V0
-# https://github.com/labuladong/fucking-algorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E8%AE%BE%E8%AE%A1Twitter.md
-from collections import defaultdict
-from heapq import merge
-class Twitter(object):
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 355 Design Twitter</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># https://github.com/labuladong/fucking-algorithm/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%B3%BB%E5%88%97/%E8%AE%BE%E8%AE%A1Twitter.md</span>
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict
+<span class="hljs-keyword">from</span> heapq <span class="hljs-keyword">import</span> merge
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Twitter</span>(<span class="hljs-title class_ inherited__">object</span>):
     
-    def __init__(self):
-        self.follower_followees_map = defaultdict(set)
-        self.user_tweets_map = defaultdict(list)
-        self.time_stamp = 0
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.follower_followees_map = defaultdict(<span class="hljs-built_in">set</span>)
+        <span class="hljs-variable language_">self</span>.user_tweets_map = defaultdict(<span class="hljs-built_in">list</span>)
+        <span class="hljs-variable language_">self</span>.time_stamp = <span class="hljs-number">0</span>
 
-    def postTweet(self, userId, tweetId):
-        self.user_tweets_map[userId].append((self.time_stamp, tweetId))
-        self.time_stamp -= 1
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">postTweet</span>(<span class="hljs-params">self, userId, tweetId</span>):
+        <span class="hljs-variable language_">self</span>.user_tweets_map[userId].append((<span class="hljs-variable language_">self</span>.time_stamp, tweetId))
+        <span class="hljs-variable language_">self</span>.time_stamp -= <span class="hljs-number">1</span>
 
-    def getNewsFeed(self, userId):
-        # get the followees list
-        followees = self.follower_followees_map[userId]
-        # add userId as well, since he/she can also see his/her post in the timeline
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">getNewsFeed</span>(<span class="hljs-params">self, userId</span>):
+        <span class="hljs-comment"># get the followees list</span>
+        followees = <span class="hljs-variable language_">self</span>.follower_followees_map[userId]
+        <span class="hljs-comment"># add userId as well, since he/she can also see his/her post in the timeline</span>
         followees.add(userId)
         
-        # reversed(.) returns a listreverseiterator, so the complexity is O(1) not O(n)
-        candidate_tweets = [reversed(self.user_tweets_map[u]) for u in followees]
+        <span class="hljs-comment"># reversed(.) returns a listreverseiterator, so the complexity is O(1) not O(n)</span>
+        candidate_tweets = [<span class="hljs-built_in">reversed</span>(<span class="hljs-variable language_">self</span>.user_tweets_map[u]) <span class="hljs-keyword">for</span> u <span class="hljs-keyword">in</span> followees]
 
         tweets = []
-        &quot;&quot;&quot;
+        <span class="hljs-string">&quot;&quot;&quot;
         python starred expression :
         -&gt; will extend Iterable Unpacking
         example 1 : *candidate_tweets
@@ -987,187 +999,187 @@ class Twitter(object):
         https://blog.csdn.net/weixin_41521681/article/details/103528136
         http://swaywang.blogspot.com/2012/01/pythonstarred-expression.html
         python_trick.html
-        &quot;&quot;&quot;
-        # complexity is 10*log(n), n is twitter's user number in worst case
-        for t in merge(*candidate_tweets):
-            tweets.append(t[1])
-            if len(tweets) == 10:
-                break
-        return tweets
+        &quot;&quot;&quot;</span>
+        <span class="hljs-comment"># complexity is 10*log(n), n is twitter&#x27;s user number in worst case</span>
+        <span class="hljs-keyword">for</span> t <span class="hljs-keyword">in</span> merge(*candidate_tweets):
+            tweets.append(t[<span class="hljs-number">1</span>])
+            <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(tweets) == <span class="hljs-number">10</span>:
+                <span class="hljs-keyword">break</span>
+        <span class="hljs-keyword">return</span> tweets
 
-    def follow(self, followerId, followeeId):
-        self.follower_followees_map[followerId].add(followeeId)
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">follow</span>(<span class="hljs-params">self, followerId, followeeId</span>):
+        <span class="hljs-variable language_">self</span>.follower_followees_map[followerId].add(followeeId)
 
-    def unfollow(self, followerId, followeeId):
-        self.follower_followees_map[followerId].discard(followeeId)
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">unfollow</span>(<span class="hljs-params">self, followerId, followeeId</span>):
+        <span class="hljs-variable language_">self</span>.follower_followees_map[followerId].discard(followeeId)
 </code></pre>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
 <h3 id="2-0-top-k-frequent-elements" tabindex="-1"><a class="header-anchor" href="#2-0-top-k-frequent-elements"><span>2-0) Top K Frequent Elements</span></a></h3>
-<pre><code class="language-java">// java
-// LC 347
-// V1
-// IDEA : HEAP
-// https://leetcode.com/problems/top-k-frequent-elements/editorial/
-public int[] topKFrequent_2(int[] nums, int k) {
-    // O(1) time
-    if (k == nums.length) {
-        return nums;
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 347</span>
+<span class="hljs-comment">// V1</span>
+<span class="hljs-comment">// IDEA : HEAP</span>
+<span class="hljs-comment">// https://leetcode.com/problems/top-k-frequent-elements/editorial/</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] topKFrequent_2(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k) {
+    <span class="hljs-comment">// O(1) time</span>
+    <span class="hljs-keyword">if</span> (k == nums.length) {
+        <span class="hljs-keyword">return</span> nums;
     }
 
-    // 1. build hash map : character and how often it appears
-    // O(N) time
-    Map&lt;Integer, Integer&gt; count = new HashMap();
-    for (int n: nums) {
-        count.put(n, count.getOrDefault(n, 0) + 1);
+    <span class="hljs-comment">// 1. build hash map : character and how often it appears</span>
+    <span class="hljs-comment">// O(N) time</span>
+    Map&lt;Integer, Integer&gt; count = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> n: nums) {
+        count.put(n, count.getOrDefault(n, <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>);
     }
 
-    // init heap 'the less frequent element first'
-    Queue&lt;Integer&gt; heap = new PriorityQueue&lt;&gt;(
+    <span class="hljs-comment">// init heap &#x27;the less frequent element first&#x27;</span>
+    Queue&lt;Integer&gt; heap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;(
             (n1, n2) -&gt; count.get(n1) - count.get(n2));
 
-    // 2. keep k top frequent elements in the heap
-    // O(N log k) &lt; O(N log N) time
-    for (int n: count.keySet()) {
+    <span class="hljs-comment">// 2. keep k top frequent elements in the heap</span>
+    <span class="hljs-comment">// O(N log k) &lt; O(N log N) time</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> n: count.keySet()) {
         heap.add(n);
-        if (heap.size() &gt; k) heap.poll();
+        <span class="hljs-keyword">if</span> (heap.size() &gt; k) heap.poll();
     }
 
-    // 3. build an output array
-    // O(k log k) time
-    int[] top = new int[k];
-    for(int i = k - 1; i &gt;= 0; --i) {
+    <span class="hljs-comment">// 3. build an output array</span>
+    <span class="hljs-comment">// O(k log k) time</span>
+    <span class="hljs-type">int</span>[] top = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[k];
+    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> k - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; --i) {
         top[i] = heap.poll();
     }
-    return top;
+    <span class="hljs-keyword">return</span> top;
 }
 </code></pre>
 <h3 id="2-1-kth-largest-element-in-a-stream" tabindex="-1"><a class="header-anchor" href="#2-1-kth-largest-element-in-a-stream"><span>2-1) Kth Largest Element in a Stream</span></a></h3>
-<pre><code class="language-python"># 703 Kth Largest Element in a Stream
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 703 Kth Largest Element in a Stream</span>
 
-# V0
-# IDEA : HEAP
-# NOTE !!! : we ONLY need to return k biggest element
-#           -&gt; we ONLY need to keep at most k element
-#               -&gt; if element more than k, then pop element out
-#                   -&gt; then return 0 element directly
-import heapq
-class KthLargest:
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : HEAP</span>
+<span class="hljs-comment"># NOTE !!! : we ONLY need to return k biggest element</span>
+<span class="hljs-comment">#           -&gt; we ONLY need to keep at most k element</span>
+<span class="hljs-comment">#               -&gt; if element more than k, then pop element out</span>
+<span class="hljs-comment">#                   -&gt; then return 0 element directly</span>
+<span class="hljs-keyword">import</span> heapq
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">KthLargest</span>:
 
-    def __init__(self, k, nums):
-        self.k = k
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, k, nums</span>):
+        <span class="hljs-variable language_">self</span>.k = k
         heapq.heapify(nums)
-        self.heap = nums
-        while len(self.heap) &gt; k:
-            heapq.heappop(self.heap)
+        <span class="hljs-variable language_">self</span>.heap = nums
+        <span class="hljs-keyword">while</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.heap) &gt; k:
+            heapq.heappop(<span class="hljs-variable language_">self</span>.heap)
 
-    def add(self, val):
-        if len(self.heap) &lt; self.k:
-            heapq.heappush(self.heap, val)
-        else:
-            heapq.heappushpop(self.heap, val)
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">add</span>(<span class="hljs-params">self, val</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.heap) &lt; <span class="hljs-variable language_">self</span>.k:
+            heapq.heappush(<span class="hljs-variable language_">self</span>.heap, val)
+        <span class="hljs-keyword">else</span>:
+            heapq.heappushpop(<span class="hljs-variable language_">self</span>.heap, val)
             
-        return self.heap[0]
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.heap[<span class="hljs-number">0</span>]
 
-# V0'
-# IDEA : heap op
-class KthLargest(object):
+<span class="hljs-comment"># V0&#x27;</span>
+<span class="hljs-comment"># IDEA : heap op</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">KthLargest</span>(<span class="hljs-title class_ inherited__">object</span>):
 
-    def __init__(self, k, nums):
-        self.pool = nums
-        self.size = len(self.pool)
-        self.k = k
-        heapq.heapify(self.pool)
-        while self.size &gt; k:
-            # heappop : get minimum element out from heap and return it 
-            heapq.heappop(self.pool)
-            self.size -= 1
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, k, nums</span>):
+        <span class="hljs-variable language_">self</span>.pool = nums
+        <span class="hljs-variable language_">self</span>.size = <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.pool)
+        <span class="hljs-variable language_">self</span>.k = k
+        heapq.heapify(<span class="hljs-variable language_">self</span>.pool)
+        <span class="hljs-keyword">while</span> <span class="hljs-variable language_">self</span>.size &gt; k:
+            <span class="hljs-comment"># heappop : get minimum element out from heap and return it </span>
+            heapq.heappop(<span class="hljs-variable language_">self</span>.pool)
+            <span class="hljs-variable language_">self</span>.size -= <span class="hljs-number">1</span>
 
-    def add(self, val):
-        if self.size &lt; self.k:
-            # heappush : put item input heap, and make heap unchanged
-            heapq.heappush(self.pool, val)
-            self.size += 1
-        elif val &gt; self.pool[0]:
-            # get minimum value from heap and return it, and put new item into heap
-            # heapreplace : pop first, then push
-            heapq.heapreplace(self.pool, val)
-        return self.pool[0]
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">add</span>(<span class="hljs-params">self, val</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.size &lt; <span class="hljs-variable language_">self</span>.k:
+            <span class="hljs-comment"># heappush : put item input heap, and make heap unchanged</span>
+            heapq.heappush(<span class="hljs-variable language_">self</span>.pool, val)
+            <span class="hljs-variable language_">self</span>.size += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">elif</span> val &gt; <span class="hljs-variable language_">self</span>.pool[<span class="hljs-number">0</span>]:
+            <span class="hljs-comment"># get minimum value from heap and return it, and put new item into heap</span>
+            <span class="hljs-comment"># heapreplace : pop first, then push</span>
+            heapq.heapreplace(<span class="hljs-variable language_">self</span>.pool, val)
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.pool[<span class="hljs-number">0</span>]
 </code></pre>
 <h3 id="2-2-ugly-number-ii" tabindex="-1"><a class="header-anchor" href="#2-2-ugly-number-ii"><span>2-2) Ugly Number II</span></a></h3>
-<pre><code class="language-python"># 264 Ugly Number II
-# V0 
-# IDEA : HEAP
-# using brute force is too slow -&gt; time out error
-# -&gt; so here we generate &quot;ugly number&quot; by ourself, and order them via heap (heappush)
-# -&gt; and return the i-th element as request
-class Solution(object):
-    def nthUglyNumber(self, n):
-        heap = [1]
-        visited = set([1])      
-        for i in range(n):
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 264 Ugly Number II</span>
+<span class="hljs-comment"># V0 </span>
+<span class="hljs-comment"># IDEA : HEAP</span>
+<span class="hljs-comment"># using brute force is too slow -&gt; time out error</span>
+<span class="hljs-comment"># -&gt; so here we generate &quot;ugly number&quot; by ourself, and order them via heap (heappush)</span>
+<span class="hljs-comment"># -&gt; and return the i-th element as request</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">nthUglyNumber</span>(<span class="hljs-params">self, n</span>):
+        heap = [<span class="hljs-number">1</span>]
+        visited = <span class="hljs-built_in">set</span>([<span class="hljs-number">1</span>])      
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
             val = heapq.heappop(heap)
-            for factor in [2,3,5]:
-                if val*factor not in visited:
+            <span class="hljs-keyword">for</span> factor <span class="hljs-keyword">in</span> [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">5</span>]:
+                <span class="hljs-keyword">if</span> val*factor <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> visited:
                     heapq.heappush(heap, val*factor)
                     visited.add(val*factor)    
-        return val
+        <span class="hljs-keyword">return</span> val
 
-# V1
-import heapq
-class Solution(object):
-    def nthUglyNumber(self, n):
-        ugly_number = 0
+<span class="hljs-comment"># V1</span>
+<span class="hljs-keyword">import</span> heapq
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">nthUglyNumber</span>(<span class="hljs-params">self, n</span>):
+        ugly_number = <span class="hljs-number">0</span>
 
         heap = []
-        heapq.heappush(heap, 1)
-        for _ in range(n):
+        heapq.heappush(heap, <span class="hljs-number">1</span>)
+        <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
             ugly_number = heapq.heappop(heap)
-            if ugly_number % 2 == 0:
-                heapq.heappush(heap, ugly_number * 2)
-            elif ugly_number % 3 == 0:
-                heapq.heappush(heap, ugly_number * 2)
-                heapq.heappush(heap, ugly_number * 3)
-            else:
-                heapq.heappush(heap, ugly_number * 2)
-                heapq.heappush(heap, ugly_number * 3)
-                heapq.heappush(heap, ugly_number * 5)
+            <span class="hljs-keyword">if</span> ugly_number % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>:
+                heapq.heappush(heap, ugly_number * <span class="hljs-number">2</span>)
+            <span class="hljs-keyword">elif</span> ugly_number % <span class="hljs-number">3</span> == <span class="hljs-number">0</span>:
+                heapq.heappush(heap, ugly_number * <span class="hljs-number">2</span>)
+                heapq.heappush(heap, ugly_number * <span class="hljs-number">3</span>)
+            <span class="hljs-keyword">else</span>:
+                heapq.heappush(heap, ugly_number * <span class="hljs-number">2</span>)
+                heapq.heappush(heap, ugly_number * <span class="hljs-number">3</span>)
+                heapq.heappush(heap, ugly_number * <span class="hljs-number">5</span>)
 
-        return ugly_number
+        <span class="hljs-keyword">return</span> ugly_number
 </code></pre>
 <h3 id="2-3-find-median-from-data-stream" tabindex="-1"><a class="header-anchor" href="#2-3-find-median-from-data-stream"><span>2-3) Find Median from Data Stream</span></a></h3>
-<pre><code class="language-python"># 295 Find Median from Data Stream
-# V0
-# https://docs.python.org/zh-tw/3/library/heapq.html
-# https://github.com/python/cpython/blob/3.10/Lib/heapq.py
-# Note !!! 
-#  -&gt; that the heapq in python is a min heap, thus we need to invert the values in the smaller half to mimic a &quot;max heap&quot;.
-# IDEA : python heapq (heap queue AKA priority queue)
-#  -&gt; Step 1) init 2 heap : small, large
-#              -&gt; small : stack storage &quot;smaller than half value&quot; elements
-#              -&gt; large : stack storage &quot;bigger than half value&quot; elements
-#  -&gt; Step 2) check if len(self.small) == len(self.large)
-#  -&gt; Step 3-1) add num:  (if len(self.small) == len(self.large))
-#              -&gt; since heapq in python is &quot;min&quot; heap, so we need to add minus to smaller stack for &quot;max&quot; heap simulation
-#              -&gt; e.g. : 
-#                        &quot;-num&quot; in -heappushpop(self.small, -num)
-#                        &quot;-heappushpop&quot; is for balacing the &quot;-&quot; back (e.g. -(-value) == value)
-#             and pop &quot;biggest&quot; elment in small stack to big stack
-#  -&gt; Step 3-2) add num:  (if len(self.small) != len(self.large))
-#             -&gt; pop smallest element from large heap to small heap
-#             -&gt; e.g. heappush(self.small, -heappushpop(self.large, num))
-#  -&gt; Step 4) return median
-#             -&gt; if even length (len(self.small) == len(self.large))
-#                 -&gt; return float(self.large[0] - self.small[0]) / 2.0
-#             -&gt; if odd length ((len(self.small) != len(self.large)))
-#                 -&gt; return float(self.large[0])
-from heapq import *
-class MedianFinder:
-    def __init__(self):
-        self.small = []  # the smaller half of the list, max heap (invert min-heap)
-        self.large = []  # the larger half of the list, min heap
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 295 Find Median from Data Stream</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># https://docs.python.org/zh-tw/3/library/heapq.html</span>
+<span class="hljs-comment"># https://github.com/python/cpython/blob/3.10/Lib/heapq.py</span>
+<span class="hljs-comment"># Note !!! </span>
+<span class="hljs-comment">#  -&gt; that the heapq in python is a min heap, thus we need to invert the values in the smaller half to mimic a &quot;max heap&quot;.</span>
+<span class="hljs-comment"># IDEA : python heapq (heap queue AKA priority queue)</span>
+<span class="hljs-comment">#  -&gt; Step 1) init 2 heap : small, large</span>
+<span class="hljs-comment">#              -&gt; small : stack storage &quot;smaller than half value&quot; elements</span>
+<span class="hljs-comment">#              -&gt; large : stack storage &quot;bigger than half value&quot; elements</span>
+<span class="hljs-comment">#  -&gt; Step 2) check if len(self.small) == len(self.large)</span>
+<span class="hljs-comment">#  -&gt; Step 3-1) add num:  (if len(self.small) == len(self.large))</span>
+<span class="hljs-comment">#              -&gt; since heapq in python is &quot;min&quot; heap, so we need to add minus to smaller stack for &quot;max&quot; heap simulation</span>
+<span class="hljs-comment">#              -&gt; e.g. : </span>
+<span class="hljs-comment">#                        &quot;-num&quot; in -heappushpop(self.small, -num)</span>
+<span class="hljs-comment">#                        &quot;-heappushpop&quot; is for balacing the &quot;-&quot; back (e.g. -(-value) == value)</span>
+<span class="hljs-comment">#             and pop &quot;biggest&quot; elment in small stack to big stack</span>
+<span class="hljs-comment">#  -&gt; Step 3-2) add num:  (if len(self.small) != len(self.large))</span>
+<span class="hljs-comment">#             -&gt; pop smallest element from large heap to small heap</span>
+<span class="hljs-comment">#             -&gt; e.g. heappush(self.small, -heappushpop(self.large, num))</span>
+<span class="hljs-comment">#  -&gt; Step 4) return median</span>
+<span class="hljs-comment">#             -&gt; if even length (len(self.small) == len(self.large))</span>
+<span class="hljs-comment">#                 -&gt; return float(self.large[0] - self.small[0]) / 2.0</span>
+<span class="hljs-comment">#             -&gt; if odd length ((len(self.small) != len(self.large)))</span>
+<span class="hljs-comment">#                 -&gt; return float(self.large[0])</span>
+<span class="hljs-keyword">from</span> heapq <span class="hljs-keyword">import</span> *
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MedianFinder</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.small = []  <span class="hljs-comment"># the smaller half of the list, max heap (invert min-heap)</span>
+        <span class="hljs-variable language_">self</span>.large = []  <span class="hljs-comment"># the larger half of the list, min heap</span>
 
-    def addNum(self, num):
-        &quot;&quot;&quot;
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">addNum</span>(<span class="hljs-params">self, num</span>):
+        <span class="hljs-string">&quot;&quot;&quot;
 
         doc : https://docs.python.org/3/library/heapq.html
         src code : https://github.com/python/cpython/blob/3.10/Lib/heapq.py
@@ -1180,255 +1192,255 @@ class MedianFinder:
 
         * heappushpop(heap, item)
             -&gt; Push item on the heap, then pop and return the smallest item from the heap. The combined action runs more efficiently than heappush() followed by a separate call to heappop().
-        &quot;&quot;&quot;
-        if len(self.small) == len(self.large):
-            heappush(self.large, -heappushpop(self.small, -num))
-        else:
-            heappush(self.small, -heappushpop(self.large, num))
+        &quot;&quot;&quot;</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.small) == <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.large):
+            heappush(<span class="hljs-variable language_">self</span>.large, -heappushpop(<span class="hljs-variable language_">self</span>.small, -num))
+        <span class="hljs-keyword">else</span>:
+            heappush(<span class="hljs-variable language_">self</span>.small, -heappushpop(<span class="hljs-variable language_">self</span>.large, num))
 
-    def findMedian(self):
-        # even length
-        if len(self.small) == len(self.large):
-            return float(self.large[0] - self.small[0]) / 2.0
-        # odd length
-        else:
-            return float(self.large[0])
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">findMedian</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-comment"># even length</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.small) == <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.large):
+            <span class="hljs-keyword">return</span> <span class="hljs-built_in">float</span>(<span class="hljs-variable language_">self</span>.large[<span class="hljs-number">0</span>] - <span class="hljs-variable language_">self</span>.small[<span class="hljs-number">0</span>]) / <span class="hljs-number">2.0</span>
+        <span class="hljs-comment"># odd length</span>
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-keyword">return</span> <span class="hljs-built_in">float</span>(<span class="hljs-variable language_">self</span>.large[<span class="hljs-number">0</span>])
 </code></pre>
 <h3 id="2-4-minimum-cost-to-connect-sticks" tabindex="-1"><a class="header-anchor" href="#2-4-minimum-cost-to-connect-sticks"><span>2-4) Minimum Cost to Connect Sticks</span></a></h3>
-<pre><code class="language-python"># LC 1167 Minimum Cost to Connect Sticks
-# V0
-# IDEA : heapq
-class Solution(object):
-    def connectSticks(self, sticks):
-        from heapq import * 
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1167 Minimum Cost to Connect Sticks</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : heapq</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">connectSticks</span>(<span class="hljs-params">self, sticks</span>):
+        <span class="hljs-keyword">from</span> heapq <span class="hljs-keyword">import</span> * 
         heapify(sticks)
-        res = 0
-        while len(sticks) &gt; 1:
+        res = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">while</span> <span class="hljs-built_in">len</span>(sticks) &gt; <span class="hljs-number">1</span>:
             s1 = heappop(sticks)
             s2 = heappop(sticks)
-            res += s1 + s2 # merge 2 shortest sticks
+            res += s1 + s2 <span class="hljs-comment"># merge 2 shortest sticks</span>
             heappush(sticks, s1 + s2)
-        return res 
+        <span class="hljs-keyword">return</span> res 
 </code></pre>
 <h3 id="2-5-the-kth-factor-of-n" tabindex="-1"><a class="header-anchor" href="#2-5-the-kth-factor-of-n"><span>2-5) The kth Factor of n</span></a></h3>
-<pre><code class="language-python"># LC 1492  The kth Factor of n
-# note : there is also brute force, math approaches
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1492  The kth Factor of n</span>
+<span class="hljs-comment"># note : there is also brute force, math approaches</span>
 
-# V1
-# IDEA : HEAP
-# Initialize max heap. Use PriorityQueue in Java and heap in Python. heap is a min-heap. Hence, to implement max heap, change the sign of divisor before pushing it into the heap.
-# https://leetcode.com/problems/the-kth-factor-of-n/solution/
-class Solution:
-    def kthFactor(self, n, k):
-        # push into heap
-        # by limiting size of heap to k
-        def heappush_k(num):
+<span class="hljs-comment"># V1</span>
+<span class="hljs-comment"># IDEA : HEAP</span>
+<span class="hljs-comment"># Initialize max heap. Use PriorityQueue in Java and heap in Python. heap is a min-heap. Hence, to implement max heap, change the sign of divisor before pushing it into the heap.</span>
+<span class="hljs-comment"># https://leetcode.com/problems/the-kth-factor-of-n/solution/</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">kthFactor</span>(<span class="hljs-params">self, n, k</span>):
+        <span class="hljs-comment"># push into heap</span>
+        <span class="hljs-comment"># by limiting size of heap to k</span>
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">heappush_k</span>(<span class="hljs-params">num</span>):
             heappush(heap, - num)
-            if len(heap) &gt; k:
+            <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(heap) &gt; k:
                 heappop(heap)
             
-        # Python heap is min heap 
-        # -&gt; to keep max element always on top,
-        # one has to push negative values
+        <span class="hljs-comment"># Python heap is min heap </span>
+        <span class="hljs-comment"># -&gt; to keep max element always on top,</span>
+        <span class="hljs-comment"># one has to push negative values</span>
         heap = []
-        for x in range(1, int(n**0.5) + 1):
-            if n % x == 0:
+        <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-built_in">int</span>(n**<span class="hljs-number">0.5</span>) + <span class="hljs-number">1</span>):
+            <span class="hljs-keyword">if</span> n % x == <span class="hljs-number">0</span>:
                 heappush_k(x)
-                if x != n // x:
+                <span class="hljs-keyword">if</span> x != n // x:
                     heappush_k(n // x)
                 
-        return -heappop(heap) if k == len(heap) else -1
+        <span class="hljs-keyword">return</span> -heappop(heap) <span class="hljs-keyword">if</span> k == <span class="hljs-built_in">len</span>(heap) <span class="hljs-keyword">else</span> -<span class="hljs-number">1</span>
 </code></pre>
 <h3 id="2-6-least-number-of-unique-integers-after-k-removals" tabindex="-1"><a class="header-anchor" href="#2-6-least-number-of-unique-integers-after-k-removals"><span>2-6) Least Number of Unique Integers after K Removals</span></a></h3>
-<pre><code class="language-python"># LC 1481. Least Number of Unique Integers after K Removals
-# NOTE : there's also Counter approaches
-# V0
-# IDEA : Counter
-from collections import Counter
-class Solution:
-    def findLeastNumOfUniqueInts(self, arr, k):
-        # edge case
-        if not arr:
-            return 0
-        cnt = dict(Counter(arr))
-        cnt_sorted = sorted(cnt.items(), key = lambda x : x[1])
-        #print (&quot;cnt_sorted = &quot; + str(cnt_sorted))
-        removed = 0
-        for key, freq in cnt_sorted:
-            &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1481. Least Number of Unique Integers after K Removals</span>
+<span class="hljs-comment"># NOTE : there&#x27;s also Counter approaches</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : Counter</span>
+<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> Counter
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">findLeastNumOfUniqueInts</span>(<span class="hljs-params">self, arr, k</span>):
+        <span class="hljs-comment"># edge case</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> arr:
+            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>
+        cnt = <span class="hljs-built_in">dict</span>(Counter(arr))
+        cnt_sorted = <span class="hljs-built_in">sorted</span>(cnt.items(), key = <span class="hljs-keyword">lambda</span> x : x[<span class="hljs-number">1</span>])
+        <span class="hljs-comment">#print (&quot;cnt_sorted = &quot; + str(cnt_sorted))</span>
+        removed = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> key, freq <span class="hljs-keyword">in</span> cnt_sorted:
+            <span class="hljs-string">&quot;&quot;&quot;
             NOTE !!!
                 -&gt; we need to remove exactly k elements and make remain unique integers as less as possible
                 -&gt; since we ALREADY sort num_counter,
                 -&gt; so the elements NOW are ordering with their count
                     -&gt; so we need to remove ALL element while k still &gt; 0
                     -&gt; so k -= freq, since for element key, there are freq count for it in arr
-            &quot;&quot;&quot;
-            if freq &lt;= k:
+            &quot;&quot;&quot;</span>
+            <span class="hljs-keyword">if</span> freq &lt;= k:
                 k -= freq
-                removed += 1
+                removed += <span class="hljs-number">1</span>
 
-        return len(cnt.keys()) - removed
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(cnt.keys()) - removed
 
-# V1'''''
-# IDEA : Counter + heapq
-# https://leetcode.com/problems/least-number-of-unique-integers-after-k-removals/discuss/704179/python-solution%3A-Counter-and-Priority-Queue
-# IDEA
-# -&gt; Count the occurence of each number.
-# -&gt; We want to delete the number with lowest occurence thus we can use minimum steps to reduce the total unique numbers in the list. For example,[4,3,1,1,3,3,2]. The Counter of this array will be: {3:3, 1:2, 4:1, 2:1}. Given k = 3, the greedy approach is to delete 2 and 4 first because both of them are appearing once. We need an ordering data structure to give us the lowest occurence of number each time. As you may know, Priority Queue comes to play
-# -&gt; Use heap to build PQ for the counter. We store each member as a tuple: (count, number) Python heap module will sort it based on the first member of the tuple.
-# -&gt; loop through k times to pop member out of heap and check if we need to push it back
-class Solution(object):
-    def findLeastNumOfUniqueInts(self, arr, k):
-            # use counter, and heap (priority queue)
-            from collections import Counter
-            import heapq
+<span class="hljs-comment"># V1&#x27;&#x27;&#x27;&#x27;&#x27;</span>
+<span class="hljs-comment"># IDEA : Counter + heapq</span>
+<span class="hljs-comment"># https://leetcode.com/problems/least-number-of-unique-integers-after-k-removals/discuss/704179/python-solution%3A-Counter-and-Priority-Queue</span>
+<span class="hljs-comment"># IDEA</span>
+<span class="hljs-comment"># -&gt; Count the occurence of each number.</span>
+<span class="hljs-comment"># -&gt; We want to delete the number with lowest occurence thus we can use minimum steps to reduce the total unique numbers in the list. For example,[4,3,1,1,3,3,2]. The Counter of this array will be: {3:3, 1:2, 4:1, 2:1}. Given k = 3, the greedy approach is to delete 2 and 4 first because both of them are appearing once. We need an ordering data structure to give us the lowest occurence of number each time. As you may know, Priority Queue comes to play</span>
+<span class="hljs-comment"># -&gt; Use heap to build PQ for the counter. We store each member as a tuple: (count, number) Python heap module will sort it based on the first member of the tuple.</span>
+<span class="hljs-comment"># -&gt; loop through k times to pop member out of heap and check if we need to push it back</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">findLeastNumOfUniqueInts</span>(<span class="hljs-params">self, arr, k</span>):
+            <span class="hljs-comment"># use counter, and heap (priority queue)</span>
+            <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> Counter
+            <span class="hljs-keyword">import</span> heapq
             h = []
-            for key, val in Counter(arr).items():
+            <span class="hljs-keyword">for</span> key, val <span class="hljs-keyword">in</span> Counter(arr).items():
                 heapq.heappush(h,(val,key))
 
-            while k &gt; 0:
+            <span class="hljs-keyword">while</span> k &gt; <span class="hljs-number">0</span>:
                 item = heapq.heappop(h)    
-                if item[0] != 1:
-                    heapq.heappush(h, (item[0]-1, item[1]))      
-                k -=1
+                <span class="hljs-keyword">if</span> item[<span class="hljs-number">0</span>] != <span class="hljs-number">1</span>:
+                    heapq.heappush(h, (item[<span class="hljs-number">0</span>]-<span class="hljs-number">1</span>, item[<span class="hljs-number">1</span>]))      
+                k -=<span class="hljs-number">1</span>
 
-            return len(h)
+            <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(h)
 
-# V1'''''''
-# IDEA : Counter + heapq
-# https://leetcode.com/problems/least-number-of-unique-integers-after-k-removals/discuss/1542356/Python-MinHeap-Solution
-class Solution:
-    def findLeastNumOfUniqueInts(self, arr, k):
+<span class="hljs-comment"># V1&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;</span>
+<span class="hljs-comment"># IDEA : Counter + heapq</span>
+<span class="hljs-comment"># https://leetcode.com/problems/least-number-of-unique-integers-after-k-removals/discuss/1542356/Python-MinHeap-Solution</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">findLeastNumOfUniqueInts</span>(<span class="hljs-params">self, arr, k</span>):
         counter = collections.Counter(arr)
         minHeap = []
-        for key, val in counter.items():
+        <span class="hljs-keyword">for</span> key, val <span class="hljs-keyword">in</span> counter.items():
             heapq.heappush(minHeap, val)
         
-        while k:
-            minHeap[0] -= 1
-            if minHeap[0] == 0:
+        <span class="hljs-keyword">while</span> k:
+            minHeap[<span class="hljs-number">0</span>] -= <span class="hljs-number">1</span>
+            <span class="hljs-keyword">if</span> minHeap[<span class="hljs-number">0</span>] == <span class="hljs-number">0</span>:
                 heapq.heappop(minHeap)
-            k -= 1
+            k -= <span class="hljs-number">1</span>
         
-        return len(minHeap)
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(minHeap)
 </code></pre>
 <h3 id="2-7-maximum-number-of-events-that-can-be-attended" tabindex="-1"><a class="header-anchor" href="#2-7-maximum-number-of-events-that-can-be-attended"><span>2-7) Maximum Number of Events That Can Be Attended</span></a></h3>
-<pre><code class="language-python"># LC 1353. Maximum Number of Events That Can Be Attended
-# V0
-# IDEA : PRIORITY QUEUE
-# NOTE !!!
-# We just need to attend d where startTimei &lt;= d &lt;= endTimei, then we CAN attend the meeting
-# startTimei &lt;= d &lt;= endTimei. You can only attend one event at any time d.
-class Solution:
-    def maxEvents(self, events: List[List[int]]) -&gt; int:
-        # algorithm: greedy+heap
-        # step1: loop from min to max day
-        # step2: each iteration put the candidates in the heap
-        # step3: each iteration eliminate the ineligibility ones from the heap
-        # step4: each iteration choose one event attend if it is possible
-        # time complexity: O(max(n1logn1, n2))
-        # space complexity: O(n1)
-        events.sort(key = lambda x: -x[0])
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1353. Maximum Number of Events That Can Be Attended</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : PRIORITY QUEUE</span>
+<span class="hljs-comment"># NOTE !!!</span>
+<span class="hljs-comment"># We just need to attend d where startTimei &lt;= d &lt;= endTimei, then we CAN attend the meeting</span>
+<span class="hljs-comment"># startTimei &lt;= d &lt;= endTimei. You can only attend one event at any time d.</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">maxEvents</span>(<span class="hljs-params">self, events: <span class="hljs-type">List</span>[<span class="hljs-type">List</span>[<span class="hljs-built_in">int</span>]]</span>) -&gt; <span class="hljs-built_in">int</span>:
+        <span class="hljs-comment"># algorithm: greedy+heap</span>
+        <span class="hljs-comment"># step1: loop from min to max day</span>
+        <span class="hljs-comment"># step2: each iteration put the candidates in the heap</span>
+        <span class="hljs-comment"># step3: each iteration eliminate the ineligibility ones from the heap</span>
+        <span class="hljs-comment"># step4: each iteration choose one event attend if it is possible</span>
+        <span class="hljs-comment"># time complexity: O(max(n1logn1, n2))</span>
+        <span class="hljs-comment"># space complexity: O(n1)</span>
+        events.sort(key = <span class="hljs-keyword">lambda</span> x: -x[<span class="hljs-number">0</span>])
         h = []
-        ans = 0
-        minDay = 1 #events[-1][0]
-        maxDay = 100001 #max(x[1] for x in events) + 1
-        for day in range(minDay, maxDay):
-            # add all days that can start today
-            while events and events[-1][0] &lt;= day:
-                heapq.heappush(h, events.pop()[1])
+        ans = <span class="hljs-number">0</span>
+        minDay = <span class="hljs-number">1</span> <span class="hljs-comment">#events[-1][0]</span>
+        maxDay = <span class="hljs-number">100001</span> <span class="hljs-comment">#max(x[1] for x in events) + 1</span>
+        <span class="hljs-keyword">for</span> day <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(minDay, maxDay):
+            <span class="hljs-comment"># add all days that can start today</span>
+            <span class="hljs-keyword">while</span> events <span class="hljs-keyword">and</span> events[-<span class="hljs-number">1</span>][<span class="hljs-number">0</span>] &lt;= day:
+                heapq.heappush(h, events.pop()[<span class="hljs-number">1</span>])
             
-            # remove all days that cannot start
-            while h and h[0]&lt;day:
+            <span class="hljs-comment"># remove all days that cannot start</span>
+            <span class="hljs-keyword">while</span> h <span class="hljs-keyword">and</span> h[<span class="hljs-number">0</span>]&lt;day:
                 heapq.heappop(h)
             
-            # if can attend meeting
-            if h:
+            <span class="hljs-comment"># if can attend meeting</span>
+            <span class="hljs-keyword">if</span> h:
                 heapq.heappop(h)
-                ans += 1            
-        return ans
+                ans += <span class="hljs-number">1</span>            
+        <span class="hljs-keyword">return</span> ans
 
-# V0'
-# IDEA : PRIORITY QUEUE
-# NOTE !!!
-# We just need to attend d where startTimei &lt;= d &lt;= endTimei, then we CAN attend the meeting
-# startTimei &lt;= d &lt;= endTimei. You can only attend one event at any time d.
-class Solution:
-    def maxEvents(self, events):
-        events.sort(key = lambda x: (-x[0], -x[1]))
+<span class="hljs-comment"># V0&#x27;</span>
+<span class="hljs-comment"># IDEA : PRIORITY QUEUE</span>
+<span class="hljs-comment"># NOTE !!!</span>
+<span class="hljs-comment"># We just need to attend d where startTimei &lt;= d &lt;= endTimei, then we CAN attend the meeting</span>
+<span class="hljs-comment"># startTimei &lt;= d &lt;= endTimei. You can only attend one event at any time d.</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">maxEvents</span>(<span class="hljs-params">self, events</span>):
+        events.sort(key = <span class="hljs-keyword">lambda</span> x: (-x[<span class="hljs-number">0</span>], -x[<span class="hljs-number">1</span>]))
         endday = []
-        ans = 0
-        for day in range(1, 100001, 1):
-            # check if events is not null and  events start day = day (events[-1][0] == day)
-            # if above conditions are True, we insert &quot;events.pop()[1]&quot; to endday 
-            while events and events[-1][0] == day:
-                heapq.heappush(endday, events.pop()[1])
-            # check if endday is not null, if first day in endday &lt; day, then we pop its element
-            while endday and endday[0] &lt; day:
+        ans = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> day <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-number">100001</span>, <span class="hljs-number">1</span>):
+            <span class="hljs-comment"># check if events is not null and  events start day = day (events[-1][0] == day)</span>
+            <span class="hljs-comment"># if above conditions are True, we insert &quot;events.pop()[1]&quot; to endday </span>
+            <span class="hljs-keyword">while</span> events <span class="hljs-keyword">and</span> events[-<span class="hljs-number">1</span>][<span class="hljs-number">0</span>] == day:
+                heapq.heappush(endday, events.pop()[<span class="hljs-number">1</span>])
+            <span class="hljs-comment"># check if endday is not null, if first day in endday &lt; day, then we pop its element</span>
+            <span class="hljs-keyword">while</span> endday <span class="hljs-keyword">and</span> endday[<span class="hljs-number">0</span>] &lt; day:
                 heapq.heappop(endday)
-            # if there is still remaining elements in endday -&gt; means we CAN atten the meeting, so ans += 1 
-            if endday:
-                ans += 1
+            <span class="hljs-comment"># if there is still remaining elements in endday -&gt; means we CAN atten the meeting, so ans += 1 </span>
+            <span class="hljs-keyword">if</span> endday:
+                ans += <span class="hljs-number">1</span>
                 heapq.heappop(endday)
-        return  ans
+        <span class="hljs-keyword">return</span>  ans
 </code></pre>
 <h3 id="2-8-maximum-frequency-stack" tabindex="-1"><a class="header-anchor" href="#2-8-maximum-frequency-stack"><span>2-8) Maximum Frequency Stack</span></a></h3>
-<pre><code class="language-python"># LC 895. Maximum Frequency Stack
-# V1'
-# IDEA : STACK
-# https://leetcode.com/problems/maximum-frequency-stack/solution/
-class FreqStack(object):
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 895. Maximum Frequency Stack</span>
+<span class="hljs-comment"># V1&#x27;</span>
+<span class="hljs-comment"># IDEA : STACK</span>
+<span class="hljs-comment"># https://leetcode.com/problems/maximum-frequency-stack/solution/</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">FreqStack</span>(<span class="hljs-title class_ inherited__">object</span>):
 
-    def __init__(self):
-        self.freq = collections.Counter()
-        self.group = collections.defaultdict(list)
-        self.maxfreq = 0
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.freq = collections.Counter()
+        <span class="hljs-variable language_">self</span>.group = collections.defaultdict(<span class="hljs-built_in">list</span>)
+        <span class="hljs-variable language_">self</span>.maxfreq = <span class="hljs-number">0</span>
 
-    def push(self, x):
-        f = self.freq[x] + 1
-        self.freq[x] = f
-        if f &gt; self.maxfreq:
-            self.maxfreq = f
-        self.group[f].append(x)
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">push</span>(<span class="hljs-params">self, x</span>):
+        f = <span class="hljs-variable language_">self</span>.freq[x] + <span class="hljs-number">1</span>
+        <span class="hljs-variable language_">self</span>.freq[x] = f
+        <span class="hljs-keyword">if</span> f &gt; <span class="hljs-variable language_">self</span>.maxfreq:
+            <span class="hljs-variable language_">self</span>.maxfreq = f
+        <span class="hljs-variable language_">self</span>.group[f].append(x)
 
-    def pop(self):
-        x = self.group[self.maxfreq].pop()
-        self.freq[x] -= 1
-        if not self.group[self.maxfreq]:
-            self.maxfreq -= 1
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">pop</span>(<span class="hljs-params">self</span>):
+        x = <span class="hljs-variable language_">self</span>.group[<span class="hljs-variable language_">self</span>.maxfreq].pop()
+        <span class="hljs-variable language_">self</span>.freq[x] -= <span class="hljs-number">1</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-variable language_">self</span>.group[<span class="hljs-variable language_">self</span>.maxfreq]:
+            <span class="hljs-variable language_">self</span>.maxfreq -= <span class="hljs-number">1</span>
 
-        return x
+        <span class="hljs-keyword">return</span> x
 </code></pre>
 <h3 id="2-9-ugly-number-ii" tabindex="-1"><a class="header-anchor" href="#2-9-ugly-number-ii"><span>2-9) Ugly Number II</span></a></h3>
-<pre><code class="language-python"># LC 264 Ugly Number II
-# V0 
-# IDEA : HEAP
-# using brute force is too slow -&gt; time out error
-# -&gt; so here we generate &quot;ugly number&quot; by ourself, and order them via heap (heappush)
-# -&gt; and return the i-th element as request
-import heapq
-class Solution(object):
-    def nthUglyNumber(self, n):
-        # NOTE : we init heap as [1], visited = set([1])
-        heap = [1]
-        visited = set([1])      
-        for i in range(n):
-            # NOTE !!! trick here, we use last element via heappop
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 264 Ugly Number II</span>
+<span class="hljs-comment"># V0 </span>
+<span class="hljs-comment"># IDEA : HEAP</span>
+<span class="hljs-comment"># using brute force is too slow -&gt; time out error</span>
+<span class="hljs-comment"># -&gt; so here we generate &quot;ugly number&quot; by ourself, and order them via heap (heappush)</span>
+<span class="hljs-comment"># -&gt; and return the i-th element as request</span>
+<span class="hljs-keyword">import</span> heapq
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">nthUglyNumber</span>(<span class="hljs-params">self, n</span>):
+        <span class="hljs-comment"># NOTE : we init heap as [1], visited = set([1])</span>
+        heap = [<span class="hljs-number">1</span>]
+        visited = <span class="hljs-built_in">set</span>([<span class="hljs-number">1</span>])      
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+            <span class="hljs-comment"># NOTE !!! trick here, we use last element via heappop</span>
             val = heapq.heappop(heap)
-            # and we genrate ugly by ourself
-            for factor in [2,3,5]:
-                if val*factor not in visited:
+            <span class="hljs-comment"># and we genrate ugly by ourself</span>
+            <span class="hljs-keyword">for</span> factor <span class="hljs-keyword">in</span> [<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">5</span>]:
+                <span class="hljs-keyword">if</span> val*factor <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> visited:
                     heapq.heappush(heap, val*factor)
                     visited.add(val*factor)    
-        return val
+        <span class="hljs-keyword">return</span> val
 </code></pre>
 <h3 id="2-10-find-k-pairs-with-smallest-sums" tabindex="-1"><a class="header-anchor" href="#2-10-find-k-pairs-with-smallest-sums"><span>2-10) Find K Pairs with Smallest Sums</span></a></h3>
-<pre><code class="language-java">// java
-// LC 373
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 373</span>
 
-// V0-1
-// IDEA: PQ (fixed by gpt)
-/**
+<span class="hljs-comment">// V0-1</span>
+<span class="hljs-comment">// IDEA: PQ (fixed by gpt)</span>
+<span class="hljs-comment">/**
  *  IDEA:
  *
  *  ✅ Use a min-heap (priority queue) to:
@@ -1437,16 +1449,16 @@ class Solution(object):
  *
  *  - Efficiently keep track of candidates
  *
- */
-public List&lt;List&lt;Integer&gt;&gt; kSmallestPairs_0_1(int[] nums1, int[] nums2, int k) {
-    List&lt;List&lt;Integer&gt;&gt; res = new ArrayList&lt;&gt;();
+ */</span>
+<span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">kSmallestPairs_0_1</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums1, <span class="hljs-type">int</span>[] nums2, <span class="hljs-type">int</span> k)</span> {
+    List&lt;List&lt;Integer&gt;&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
 
-    if (nums1 == null || nums2 == null || nums1.length == 0 || nums2.length == 0 || k &lt;= 0) {
-        return res;
+    <span class="hljs-keyword">if</span> (nums1 == <span class="hljs-literal">null</span> || nums2 == <span class="hljs-literal">null</span> || nums1.length == <span class="hljs-number">0</span> || nums2.length == <span class="hljs-number">0</span> || k &lt;= <span class="hljs-number">0</span>) {
+        <span class="hljs-keyword">return</span> res;
     }
 
-    // Min-heap to store [sum, index in nums1, index in nums2]
-    /**
+    <span class="hljs-comment">// Min-heap to store [sum, index in nums1, index in nums2]</span>
+    <span class="hljs-comment">/**
      *  NOTE !!!
      *
      *  min PQ structure:
@@ -1456,13 +1468,13 @@ public List&lt;List&lt;Integer&gt;&gt; kSmallestPairs_0_1(int[] nums1, int[] num
      *
      *   - Heap stores: int[] {sum, index in nums1, index in nums2}
      *
-     *   - It's sorted by sum = nums1[i] + nums2[j]
+     *   - It&#x27;s sorted by sum = nums1[i] + nums2[j]
      *
-     */
-    PriorityQueue&lt;int[]&gt; minHeap = new PriorityQueue&lt;&gt;((a, b) -&gt; Integer.compare(a[0], b[0]));
+     */</span>
+    PriorityQueue&lt;<span class="hljs-type">int</span>[]&gt; minHeap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;((a, b) -&gt; Integer.compare(a[<span class="hljs-number">0</span>], b[<span class="hljs-number">0</span>]));
 
-    // Add the first k pairs (nums1[0] + nums2[0...k])
-    /**  NOTE !!!
+    <span class="hljs-comment">// Add the first k pairs (nums1[0] + nums2[0...k])</span>
+    <span class="hljs-comment">/**  NOTE !!!
      *
      *  we init PQ as below:
      *
@@ -1476,56 +1488,56 @@ public List&lt;List&lt;Integer&gt;&gt; kSmallestPairs_0_1(int[] nums1, int[] num
      *   -&gt; so, we insert `nums_1[i] + nums_2[0]`  to PQ for now
      *
      *
-     */
-    for (int i = 0; i &lt; nums1.length &amp;&amp; i &lt; k; i++) {
-        minHeap.offer(new int[] { nums1[i] + nums2[0], i, 0 });
+     */</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; nums1.length &amp;&amp; i &lt; k; i++) {
+        minHeap.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[] { nums1[i] + nums2[<span class="hljs-number">0</span>], i, <span class="hljs-number">0</span> });
     }
 
-    /** NOTE !!!   Pop from Heap and Expand
+    <span class="hljs-comment">/** NOTE !!!   Pop from Heap and Expand
      *
      * - Poll the `smallest` sum pair (i, j) and add it to result.
      *
      * - You now consider the next element in that row, which is (i, j + 1).
      *
-     */
-    while (k &gt; 0 &amp;&amp; !minHeap.isEmpty()) {
+     */</span>
+    <span class="hljs-keyword">while</span> (k &gt; <span class="hljs-number">0</span> &amp;&amp; !minHeap.isEmpty()) {
 
-        // current smallest val from PQ
-        int[] current = minHeap.poll();
-        int i = current[1]; // index in nums1
-        int j = current[2]; // index in nums2
+        <span class="hljs-comment">// current smallest val from PQ</span>
+        <span class="hljs-type">int</span>[] current = minHeap.poll();
+        <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> current[<span class="hljs-number">1</span>]; <span class="hljs-comment">// index in nums1</span>
+        <span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> current[<span class="hljs-number">2</span>]; <span class="hljs-comment">// index in nums2</span>
 
         res.add(Arrays.asList(nums1[i], nums2[j]));
 
-        /**
+        <span class="hljs-comment">/**
          *  NOTE !!! Push the Next Pair in the Same Row
          *
-         *  - This ensures you're exploring pairs in increasing sum order:
+         *  - This ensures you&#x27;re exploring pairs in increasing sum order:
          *
          *      - From (i, 0) → (i, 1) → (i, 2) ...
          *
          * - Since the arrays are sorted, this gives increasing sums
          *
          *
-         */
-        if (j + 1 &lt; nums2.length) {
-            minHeap.offer(new int[] { nums1[i] + nums2[j + 1], i, j + 1 });
+         */</span>
+        <span class="hljs-keyword">if</span> (j + <span class="hljs-number">1</span> &lt; nums2.length) {
+            minHeap.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[] { nums1[i] + nums2[j + <span class="hljs-number">1</span>], i, j + <span class="hljs-number">1</span> });
         }
 
         k--;
     }
 
-    return res;
+    <span class="hljs-keyword">return</span> res;
 }
 </code></pre>
 <h3 id="2-11-kth-smallest-element-in-a-sorted-matrix" tabindex="-1"><a class="header-anchor" href="#2-11-kth-smallest-element-in-a-sorted-matrix"><span>2-11) Kth Smallest Element in a Sorted Matrix</span></a></h3>
-<pre><code class="language-java">// java
-// LC 378
-// Reference: leetcode_java/src/main/java/LeetCodeJava/Heap/KthSmallestElementInASortedMatrix.java
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 378</span>
+<span class="hljs-comment">// Reference: leetcode_java/src/main/java/LeetCodeJava/Heap/KthSmallestElementInASortedMatrix.java</span>
 
-// V0-1
-// IDEA: MAX PQ (Priority Queue)
-/**
+<span class="hljs-comment">// V0-1</span>
+<span class="hljs-comment">// IDEA: MAX PQ (Priority Queue)</span>
+<span class="hljs-comment">/**
  *  KEY INSIGHT !!!
  *
  *  `kth smallest element` ~= biggest element from a Max PQ
@@ -1539,154 +1551,154 @@ public List&lt;List&lt;Integer&gt;&gt; kSmallestPairs_0_1(int[] nums1, int[] num
  *  - This heap contains the k smallest elements seen so far
  *  - The largest among these k elements is at the root
  *  - This root element is exactly the kth smallest element
- */
-public int kthSmallest_0_1(int[][] matrix, int k) {
-    if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
-        return 0;
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">kthSmallest_0_1</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] matrix, <span class="hljs-type">int</span> k)</span> {
+    <span class="hljs-keyword">if</span> (matrix == <span class="hljs-literal">null</span> || matrix.length == <span class="hljs-number">0</span> || matrix[<span class="hljs-number">0</span>].length == <span class="hljs-number">0</span>) {
+        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
     }
 
-    int n = matrix.length;
-    int m = matrix[0].length;
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> matrix.length;
+    <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> matrix[<span class="hljs-number">0</span>].length;
 
-    /** NOTE !!!
+    <span class="hljs-comment">/** NOTE !!!
      *
      *  Use MAX PQ (max heap)
      *
      *  Since the problem asks for `kth smallest element`
      *  = biggest element from a Max PQ of size k
-     */
-    // Max-heap: largest value at top
-    PriorityQueue&lt;Integer&gt; pq = new PriorityQueue&lt;&gt;((a, b) -&gt; b - a);
+     */</span>
+    <span class="hljs-comment">// Max-heap: largest value at top</span>
+    PriorityQueue&lt;Integer&gt; pq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;((a, b) -&gt; b - a);
 
-    for (int i = 0; i &lt; n; i++) {
-        for (int j = 0; j &lt; m; j++) {
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; m; j++) {
             pq.offer(matrix[i][j]);
-            /** NOTE !!!
+            <span class="hljs-comment">/** NOTE !!!
              *
-             *  Use `pq.size()` to check if we've reached k elements
+             *  Use `pq.size()` to check if we&#x27;ve reached k elements
              *
              *  NO NEED for separate counter variables like size or cnt
-             */
-            if (pq.size() &gt; k) {
-                pq.poll(); // remove largest, keep only k smallest
+             */</span>
+            <span class="hljs-keyword">if</span> (pq.size() &gt; k) {
+                pq.poll(); <span class="hljs-comment">// remove largest, keep only k smallest</span>
             }
         }
     }
 
-    // Top of max-heap = kth smallest element
-    return pq.peek();
+    <span class="hljs-comment">// Top of max-heap = kth smallest element</span>
+    <span class="hljs-keyword">return</span> pq.peek();
 }
 </code></pre>
 <h3 id="2-12-minimum-deletions-to-make-character-frequencies-unique" tabindex="-1"><a class="header-anchor" href="#2-12-minimum-deletions-to-make-character-frequencies-unique"><span>2-12) Minimum Deletions to Make Character Frequencies Unique</span></a></h3>
-<pre><code class="language-java">// java
-// LC 1647
-// Reference: leetcode_java/src/main/java/LeetCodeJava/Heap/MinimumDeletionsToMakeCharacterFrequenciesUnique.java
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 1647</span>
+<span class="hljs-comment">// Reference: leetcode_java/src/main/java/LeetCodeJava/Heap/MinimumDeletionsToMakeCharacterFrequenciesUnique.java</span>
 
-/**
+<span class="hljs-comment">/**
  * Problem: Return minimum number of character deletions to make all frequencies unique
  *
  * Example 1:
  * Input: s = &quot;aab&quot;
- * Output: 0 (already unique: 'a':2, 'b':1)
+ * Output: 0 (already unique: &#x27;a&#x27;:2, &#x27;b&#x27;:1)
  *
  * Example 2:
  * Input: s = &quot;aaabbbcc&quot;
- * Output: 2 (can delete 2 'b's to get 'a':3, 'b':1, 'c':2)
- */
+ * Output: 2 (can delete 2 &#x27;b&#x27;s to get &#x27;a&#x27;:3, &#x27;b&#x27;:1, &#x27;c&#x27;:2)
+ */</span>
 
-// APPROACH 1: GREEDY + MAX HEAP
-// IDEA: Process frequencies from high to low, decrement duplicates
-public int minDeletions_heap(String s) {
-    // Step 1: Count character frequencies
-    int[] freq = new int[26];
-    for (char c : s.toCharArray()) {
-        freq[c - 'a']++;
+<span class="hljs-comment">// APPROACH 1: GREEDY + MAX HEAP</span>
+<span class="hljs-comment">// IDEA: Process frequencies from high to low, decrement duplicates</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minDeletions_heap</span><span class="hljs-params">(String s)</span> {
+    <span class="hljs-comment">// Step 1: Count character frequencies</span>
+    <span class="hljs-type">int</span>[] freq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">26</span>];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : s.toCharArray()) {
+        freq[c - <span class="hljs-string">&#x27;a&#x27;</span>]++;
     }
 
-    // Step 2: Build max heap with all frequencies
-    PriorityQueue&lt;Integer&gt; pq = new PriorityQueue&lt;&gt;(Collections.reverseOrder());
-    for (int f : freq) {
-        if (f &gt; 0) {
+    <span class="hljs-comment">// Step 2: Build max heap with all frequencies</span>
+    PriorityQueue&lt;Integer&gt; pq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;(Collections.reverseOrder());
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> f : freq) {
+        <span class="hljs-keyword">if</span> (f &gt; <span class="hljs-number">0</span>) {
             pq.add(f);
         }
     }
 
-    // Step 3: Process frequencies, decrement duplicates
-    int deletions = 0;
-    while (pq.size() &gt; 1) {
-        int top = pq.poll();
-        int next = pq.peek();
+    <span class="hljs-comment">// Step 3: Process frequencies, decrement duplicates</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">deletions</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">while</span> (pq.size() &gt; <span class="hljs-number">1</span>) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">top</span> <span class="hljs-operator">=</span> pq.poll();
+        <span class="hljs-type">int</span> <span class="hljs-variable">next</span> <span class="hljs-operator">=</span> pq.peek();
 
-        // If duplicate frequency found
-        if (top == next) {
-            top--;      // Decrement to make unique
+        <span class="hljs-comment">// If duplicate frequency found</span>
+        <span class="hljs-keyword">if</span> (top == next) {
+            top--;      <span class="hljs-comment">// Decrement to make unique</span>
             deletions++;
-            if (top &gt; 0) {
-                pq.add(top);  // Re-add if still positive
+            <span class="hljs-keyword">if</span> (top &gt; <span class="hljs-number">0</span>) {
+                pq.add(top);  <span class="hljs-comment">// Re-add if still positive</span>
             }
         }
     }
 
-    return deletions;
+    <span class="hljs-keyword">return</span> deletions;
 }
 
-// APPROACH 2: GREEDY + SORTING
-// IDEA: Sort frequencies, ensure strictly decreasing sequence
-public int minDeletions_sort(String s) {
-    // Step 1: Count frequencies
-    int[] freq = new int[26];
-    for (char c : s.toCharArray()) {
-        freq[c - 'a']++;
+<span class="hljs-comment">// APPROACH 2: GREEDY + SORTING</span>
+<span class="hljs-comment">// IDEA: Sort frequencies, ensure strictly decreasing sequence</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minDeletions_sort</span><span class="hljs-params">(String s)</span> {
+    <span class="hljs-comment">// Step 1: Count frequencies</span>
+    <span class="hljs-type">int</span>[] freq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">26</span>];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : s.toCharArray()) {
+        freq[c - <span class="hljs-string">&#x27;a&#x27;</span>]++;
     }
 
-    // Step 2: Sort frequencies in ascending order
+    <span class="hljs-comment">// Step 2: Sort frequencies in ascending order</span>
     Arrays.sort(freq);
 
-    int deletions = 0;
+    <span class="hljs-type">int</span> <span class="hljs-variable">deletions</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
 
-    // Step 3: Process from high to low (right to left)
-    for (int i = 24; i &gt;= 0; i--) {
-        if (freq[i] == 0) {
-            break;  // No more characters
+    <span class="hljs-comment">// Step 3: Process from high to low (right to left)</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">24</span>; i &gt;= <span class="hljs-number">0</span>; i--) {
+        <span class="hljs-keyword">if</span> (freq[i] == <span class="hljs-number">0</span>) {
+            <span class="hljs-keyword">break</span>;  <span class="hljs-comment">// No more characters</span>
         }
 
-        // If current freq &gt;= next freq, adjust it
-        if (freq[i] &gt;= freq[i + 1]) {
-            int prev = freq[i];
-            freq[i] = Math.max(0, freq[i + 1] - 1);  // Make it strictly less
+        <span class="hljs-comment">// If current freq &gt;= next freq, adjust it</span>
+        <span class="hljs-keyword">if</span> (freq[i] &gt;= freq[i + <span class="hljs-number">1</span>]) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">prev</span> <span class="hljs-operator">=</span> freq[i];
+            freq[i] = Math.max(<span class="hljs-number">0</span>, freq[i + <span class="hljs-number">1</span>] - <span class="hljs-number">1</span>);  <span class="hljs-comment">// Make it strictly less</span>
             deletions += prev - freq[i];
         }
     }
 
-    return deletions;
+    <span class="hljs-keyword">return</span> deletions;
 }
 
-// APPROACH 3: GREEDY + HASHSET
-// IDEA: Track used frequencies, decrement until unique
-public int minDeletions_hashset(String s) {
-    // Step 1: Count frequencies
-    HashMap&lt;Character, Integer&gt; cnt = new HashMap&lt;&gt;();
-    for (char c : s.toCharArray()) {
-        cnt.put(c, cnt.getOrDefault(c, 0) + 1);
+<span class="hljs-comment">// APPROACH 3: GREEDY + HASHSET</span>
+<span class="hljs-comment">// IDEA: Track used frequencies, decrement until unique</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minDeletions_hashset</span><span class="hljs-params">(String s)</span> {
+    <span class="hljs-comment">// Step 1: Count frequencies</span>
+    HashMap&lt;Character, Integer&gt; cnt = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : s.toCharArray()) {
+        cnt.put(c, cnt.getOrDefault(c, <span class="hljs-number">0</span>) + <span class="hljs-number">1</span>);
     }
 
-    // Step 2: Track used frequencies and process
-    HashSet&lt;Integer&gt; usedFreq = new HashSet&lt;&gt;();
-    int deletions = 0;
+    <span class="hljs-comment">// Step 2: Track used frequencies and process</span>
+    HashSet&lt;Integer&gt; usedFreq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();
+    <span class="hljs-type">int</span> <span class="hljs-variable">deletions</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
 
-    for (int freq : cnt.values()) {
-        // Decrement until we find an unused frequency
-        while (freq &gt; 0 &amp;&amp; usedFreq.contains(freq)) {
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> freq : cnt.values()) {
+        <span class="hljs-comment">// Decrement until we find an unused frequency</span>
+        <span class="hljs-keyword">while</span> (freq &gt; <span class="hljs-number">0</span> &amp;&amp; usedFreq.contains(freq)) {
             freq--;
             deletions++;
         }
-        usedFreq.add(freq);  // Mark this frequency as used
+        usedFreq.add(freq);  <span class="hljs-comment">// Mark this frequency as used</span>
     }
 
-    return deletions;
+    <span class="hljs-keyword">return</span> deletions;
 }
 
-/**
+<span class="hljs-comment">/**
  * KEY INSIGHTS:
  *
  * 1. Max Heap Approach:
@@ -1710,14 +1722,14 @@ public int minDeletions_hashset(String s) {
  * Best Choice: Sorting approach for best time complexity O(N)
  *
  * Pattern: Frequency Uniqueness with Greedy + Heap/Sort
- */
+ */</span>
 </code></pre>
 <h3 id="2-13-maximum-performance-of-a-team" tabindex="-1"><a class="header-anchor" href="#2-13-maximum-performance-of-a-team"><span>2-13) Maximum Performance of a Team</span></a></h3>
-<pre><code class="language-java">// java
-// LC 1383
-// Reference: leetcode_java/src/main/java/LeetCodeJava/Heap/MaximumPerformanceOfAeam.java
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 1383</span>
+<span class="hljs-comment">// Reference: leetcode_java/src/main/java/LeetCodeJava/Heap/MaximumPerformanceOfAeam.java</span>
 
-/**
+<span class="hljs-comment">/**
  * Problem: Choose at most k engineers to maximize team performance
  * Performance = (sum of speeds) * (minimum efficiency among chosen engineers)
  *
@@ -1737,16 +1749,16 @@ public int minDeletions_hashset(String s) {
  * - speed.length == efficiency.length == n
  * - 1 &lt;= speed[i] &lt;= 10^5
  * - 1 &lt;= efficiency[i] &lt;= 10^8
- */
+ */</span>
 
-// APPROACH: GREEDY + SORTING + MIN HEAP
-/**
+<span class="hljs-comment">// APPROACH: GREEDY + SORTING + MIN HEAP</span>
+<span class="hljs-comment">/**
  * KEY INSIGHT:
  *
  * 1. Sort engineers by efficiency in DESCENDING order
  *    - This way, when we process engineer i, all previously considered engineers
- *      have efficiency &gt;= current engineer's efficiency
- *    - So current engineer's efficiency becomes the bottleneck (minimum)
+ *      have efficiency &gt;= current engineer&#x27;s efficiency
+ *    - So current engineer&#x27;s efficiency becomes the bottleneck (minimum)
  *
  * 2. Use MIN HEAP to track the k largest speeds
  *    - As we iterate, maintain at most k engineers
@@ -1754,57 +1766,57 @@ public int minDeletions_hashset(String s) {
  *    - This maximizes the speed sum while respecting the constraint
  *
  * 3. Calculate performance at each step
- *    - performance = (sum of speeds in heap) * (current engineer's efficiency)
+ *    - performance = (sum of speeds in heap) * (current engineer&#x27;s efficiency)
  *    - Current efficiency is guaranteed to be the minimum (due to sorting)
  *
  * Time Complexity: O(N log N) for sorting + O(N log k) for heap operations = O(N log N)
  * Space Complexity: O(N) for storing engineers + O(k) for heap = O(N)
- */
-public int maxPerformance(int n, int[] speed, int[] efficiency, int k) {
-    final int MOD = 1_000_000_007;
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxPerformance</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span>[] speed, <span class="hljs-type">int</span>[] efficiency, <span class="hljs-type">int</span> k)</span> {
+    <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">MOD</span> <span class="hljs-operator">=</span> <span class="hljs-number">1_000_000_007</span>;
 
-    // Step 1: Pair engineers with [efficiency, speed]
-    int[][] engineers = new int[n][2];
-    for (int i = 0; i &lt; n; i++) {
-        engineers[i] = new int[] { efficiency[i], speed[i] };
+    <span class="hljs-comment">// Step 1: Pair engineers with [efficiency, speed]</span>
+    <span class="hljs-type">int</span>[][] engineers = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n][<span class="hljs-number">2</span>];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+        engineers[i] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[] { efficiency[i], speed[i] };
     }
 
-    // Step 2: Sort by efficiency in DESCENDING order
-    // This ensures current engineer has minimum efficiency among all considered
-    Arrays.sort(engineers, (a, b) -&gt; b[0] - a[0]);
+    <span class="hljs-comment">// Step 2: Sort by efficiency in DESCENDING order</span>
+    <span class="hljs-comment">// This ensures current engineer has minimum efficiency among all considered</span>
+    Arrays.sort(engineers, (a, b) -&gt; b[<span class="hljs-number">0</span>] - a[<span class="hljs-number">0</span>]);
 
-    // Step 3: Min heap to maintain k largest speeds
-    // We use min heap so we can easily remove the smallest speed when size &gt; k
-    PriorityQueue&lt;Integer&gt; minHeap = new PriorityQueue&lt;&gt;();
+    <span class="hljs-comment">// Step 3: Min heap to maintain k largest speeds</span>
+    <span class="hljs-comment">// We use min heap so we can easily remove the smallest speed when size &gt; k</span>
+    PriorityQueue&lt;Integer&gt; minHeap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;();
 
-    long speedSum = 0;      // Sum of speeds in current team
-    long maxPerf = 0;       // Maximum performance found so far
+    <span class="hljs-type">long</span> <span class="hljs-variable">speedSum</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;      <span class="hljs-comment">// Sum of speeds in current team</span>
+    <span class="hljs-type">long</span> <span class="hljs-variable">maxPerf</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;       <span class="hljs-comment">// Maximum performance found so far</span>
 
-    // Step 4: Process each engineer in order of decreasing efficiency
-    for (int[] eng : engineers) {
-        int eff = eng[0];   // Current engineer's efficiency (minimum so far)
-        int spd = eng[1];   // Current engineer's speed
+    <span class="hljs-comment">// Step 4: Process each engineer in order of decreasing efficiency</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] eng : engineers) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">eff</span> <span class="hljs-operator">=</span> eng[<span class="hljs-number">0</span>];   <span class="hljs-comment">// Current engineer&#x27;s efficiency (minimum so far)</span>
+        <span class="hljs-type">int</span> <span class="hljs-variable">spd</span> <span class="hljs-operator">=</span> eng[<span class="hljs-number">1</span>];   <span class="hljs-comment">// Current engineer&#x27;s speed</span>
 
-        // Add current engineer to the team
+        <span class="hljs-comment">// Add current engineer to the team</span>
         minHeap.offer(spd);
         speedSum += spd;
 
-        // If team exceeds k engineers, remove the one with lowest speed
-        if (minHeap.size() &gt; k) {
+        <span class="hljs-comment">// If team exceeds k engineers, remove the one with lowest speed</span>
+        <span class="hljs-keyword">if</span> (minHeap.size() &gt; k) {
             speedSum -= minHeap.poll();
         }
 
-        // Calculate performance with current engineer as efficiency bottleneck
-        // Since engineers are sorted by efficiency DESC, current eff is the minimum
-        long performance = speedSum * eff;
+        <span class="hljs-comment">// Calculate performance with current engineer as efficiency bottleneck</span>
+        <span class="hljs-comment">// Since engineers are sorted by efficiency DESC, current eff is the minimum</span>
+        <span class="hljs-type">long</span> <span class="hljs-variable">performance</span> <span class="hljs-operator">=</span> speedSum * eff;
         maxPerf = Math.max(maxPerf, performance);
     }
 
-    // Return result modulo 10^9 + 7
-    return (int) (maxPerf % MOD);
+    <span class="hljs-comment">// Return result modulo 10^9 + 7</span>
+    <span class="hljs-keyword">return</span> (<span class="hljs-type">int</span>) (maxPerf % MOD);
 }
 
-/**
+<span class="hljs-comment">/**
  * STEP-BY-STEP EXAMPLE:
  *
  * Input: speed = [2,10,3,1,5,8], efficiency = [5,4,3,9,7,2], k = 2
@@ -1832,14 +1844,14 @@ public int maxPerformance(int n, int[] speed, int[] efficiency, int k) {
  *
  * Continue for remaining engineers...
  * Final answer: 60
- */
+ */</span>
 
-/**
+<span class="hljs-comment">/**
  * WHY THIS WORKS:
  *
  * 1. Greedy Choice: By sorting by efficiency descending, we ensure that
  *    when considering engineer i, all previous engineers have &gt;= efficiency.
- *    So engineer i's efficiency is the bottleneck (minimum).
+ *    So engineer i&#x27;s efficiency is the bottleneck (minimum).
  *
  * 2. Optimal Substructure: To maximize performance with current efficiency,
  *    we want to maximize the speed sum. The min heap ensures we keep only
@@ -1854,14 +1866,14 @@ public int maxPerformance(int n, int[] speed, int[] efficiency, int k) {
  *
  * Pattern: Greedy + Sorting + Top K with Heap
  * Similar to: LC 857 (Minimum Cost to Hire K Workers)
- */
+ */</span>
 </code></pre>
 <h3 id="2-14-minimum-number-of-refueling-stops" tabindex="-1"><a class="header-anchor" href="#2-14-minimum-number-of-refueling-stops"><span>2-14) Minimum Number of Refueling Stops</span></a></h3>
-<pre><code class="language-java">// java
-// LC 871
-// Reference: leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/MinimumNumberOfRefuelingStops.java
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 871</span>
+<span class="hljs-comment">// Reference: leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/MinimumNumberOfRefuelingStops.java</span>
 
-/**
+<span class="hljs-comment">/**
  * Problem: Find minimum refueling stops to reach target
  *
  * A car starts with startFuel and drives toward a target.
@@ -1875,17 +1887,17 @@ public int maxPerformance(int n, int[] speed, int[] efficiency, int k) {
  * Constraints:
  * - 1 &lt;= target, startFuel &lt;= 10^9
  * - 0 &lt;= stations.length &lt;= 500
- */
+ */</span>
 
-// APPROACH 1: GREEDY + MAX HEAP
-/**
+<span class="hljs-comment">// APPROACH 1: GREEDY + MAX HEAP</span>
+<span class="hljs-comment">/**
  * KEY INSIGHT:
  *
- * &quot;Drive as far as possible. When stuck, pick the best gas station you've already passed.&quot;
+ * &quot;Drive as far as possible. When stuck, pick the best gas station you&#x27;ve already passed.&quot;
  *
  * 1. Traverse stations in order
- * 2. Keep a MAX HEAP of fuels from stations you've passed
- * 3. When you CAN'T move forward, refuel using the largest fuel seen so far
+ * 2. Keep a MAX HEAP of fuels from stations you&#x27;ve passed
+ * 3. When you CAN&#x27;T move forward, refuel using the largest fuel seen so far
  *
  * Why this works:
  * - You DELAY refueling until necessary
@@ -1894,98 +1906,98 @@ public int maxPerformance(int n, int[] speed, int[] efficiency, int k) {
  *
  * Time: O(N log N) - each station enters/exits heap once
  * Space: O(N) - for the heap
- */
-public int minRefuelStops_heap(int target, int startFuel, int[][] stations) {
-    // Max heap (store fuels from passed stations)
-    PriorityQueue&lt;Integer&gt; pq = new PriorityQueue&lt;&gt;((a, b) -&gt; b - a);
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minRefuelStops_heap</span><span class="hljs-params">(<span class="hljs-type">int</span> target, <span class="hljs-type">int</span> startFuel, <span class="hljs-type">int</span>[][] stations)</span> {
+    <span class="hljs-comment">// Max heap (store fuels from passed stations)</span>
+    PriorityQueue&lt;Integer&gt; pq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;((a, b) -&gt; b - a);
 
-    int fuel = startFuel;
-    int i = 0;
-    int stops = 0;
+    <span class="hljs-type">int</span> <span class="hljs-variable">fuel</span> <span class="hljs-operator">=</span> startFuel;
+    <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-type">int</span> <span class="hljs-variable">stops</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
 
-    while (fuel &lt; target) {
-        // Add all reachable stations' fuel to heap
-        while (i &lt; stations.length &amp;&amp; stations[i][0] &lt;= fuel) {
-            pq.add(stations[i][1]);
+    <span class="hljs-keyword">while</span> (fuel &lt; target) {
+        <span class="hljs-comment">// Add all reachable stations&#x27; fuel to heap</span>
+        <span class="hljs-keyword">while</span> (i &lt; stations.length &amp;&amp; stations[i][<span class="hljs-number">0</span>] &lt;= fuel) {
+            pq.add(stations[i][<span class="hljs-number">1</span>]);
             i++;
         }
 
-        // No fuel available -&gt; cannot proceed
-        if (pq.isEmpty())
-            return -1;
+        <span class="hljs-comment">// No fuel available -&gt; cannot proceed</span>
+        <span class="hljs-keyword">if</span> (pq.isEmpty())
+            <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
 
-        // Greedy: refuel with the largest fuel available
+        <span class="hljs-comment">// Greedy: refuel with the largest fuel available</span>
         fuel += pq.poll();
         stops++;
     }
 
-    return stops;
+    <span class="hljs-keyword">return</span> stops;
 }
 
-// APPROACH 2: GREEDY + MAX HEAP (Iteration style)
-/**
+<span class="hljs-comment">// APPROACH 2: GREEDY + MAX HEAP (Iteration style)</span>
+<span class="hljs-comment">/**
  * Alternative iteration: loop through stations, refuel when tank &lt; 0
  *
  * Time: O(N log N)
  * Space: O(N)
- */
-public int minRefuelStops_heap_v2(int target, int tank, int[][] stations) {
-    PriorityQueue&lt;Integer&gt; pq = new PriorityQueue&lt;&gt;(Collections.reverseOrder());
-    int ans = 0, prev = 0;
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minRefuelStops_heap_v2</span><span class="hljs-params">(<span class="hljs-type">int</span> target, <span class="hljs-type">int</span> tank, <span class="hljs-type">int</span>[][] stations)</span> {
+    PriorityQueue&lt;Integer&gt; pq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;(Collections.reverseOrder());
+    <span class="hljs-type">int</span> <span class="hljs-variable">ans</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, prev = <span class="hljs-number">0</span>;
 
-    for (int[] station : stations) {
-        int location = station[0];
-        int capacity = station[1];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] station : stations) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">location</span> <span class="hljs-operator">=</span> station[<span class="hljs-number">0</span>];
+        <span class="hljs-type">int</span> <span class="hljs-variable">capacity</span> <span class="hljs-operator">=</span> station[<span class="hljs-number">1</span>];
         tank -= location - prev;
 
-        // Must refuel from past stations when tank &lt; 0
-        while (!pq.isEmpty() &amp;&amp; tank &lt; 0) {
+        <span class="hljs-comment">// Must refuel from past stations when tank &lt; 0</span>
+        <span class="hljs-keyword">while</span> (!pq.isEmpty() &amp;&amp; tank &lt; <span class="hljs-number">0</span>) {
             tank += pq.poll();
             ans++;
         }
 
-        if (tank &lt; 0) return -1;
+        <span class="hljs-keyword">if</span> (tank &lt; <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
         pq.offer(capacity);
         prev = location;
     }
 
-    // Handle final stretch to target
+    <span class="hljs-comment">// Handle final stretch to target</span>
     tank -= target - prev;
-    while (!pq.isEmpty() &amp;&amp; tank &lt; 0) {
+    <span class="hljs-keyword">while</span> (!pq.isEmpty() &amp;&amp; tank &lt; <span class="hljs-number">0</span>) {
         tank += pq.poll();
         ans++;
     }
 
-    return tank &lt; 0 ? -1 : ans;
+    <span class="hljs-keyword">return</span> tank &lt; <span class="hljs-number">0</span> ? -<span class="hljs-number">1</span> : ans;
 }
 
-// APPROACH 3: DP
-/**
+<span class="hljs-comment">// APPROACH 3: DP</span>
+<span class="hljs-comment">/**
  * dp[t] = max distance reachable with exactly t refueling stops
  *
  * For each station i, update dp[t+1] if dp[t] &gt;= station position
  *
  * Time: O(N²)
  * Space: O(N)
- */
-public int minRefuelStops_dp(int target, int startFuel, int[][] stations) {
-    int N = stations.length;
-    long[] dp = new long[N + 1];
-    dp[0] = startFuel;
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minRefuelStops_dp</span><span class="hljs-params">(<span class="hljs-type">int</span> target, <span class="hljs-type">int</span> startFuel, <span class="hljs-type">int</span>[][] stations)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">N</span> <span class="hljs-operator">=</span> stations.length;
+    <span class="hljs-type">long</span>[] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">long</span>[N + <span class="hljs-number">1</span>];
+    dp[<span class="hljs-number">0</span>] = startFuel;
 
-    for (int i = 0; i &lt; N; ++i)
-        for (int t = i; t &gt;= 0; --t)
-            if (dp[t] &gt;= stations[i][0])
-                dp[t + 1] = Math.max(dp[t + 1], dp[t] + (long) stations[i][1]);
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; N; ++i)
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">t</span> <span class="hljs-operator">=</span> i; t &gt;= <span class="hljs-number">0</span>; --t)
+            <span class="hljs-keyword">if</span> (dp[t] &gt;= stations[i][<span class="hljs-number">0</span>])
+                dp[t + <span class="hljs-number">1</span>] = Math.max(dp[t + <span class="hljs-number">1</span>], dp[t] + (<span class="hljs-type">long</span>) stations[i][<span class="hljs-number">1</span>]);
 
-    for (int i = 0; i &lt;= N; ++i)
-        if (dp[i] &gt;= target)
-            return i;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt;= N; ++i)
+        <span class="hljs-keyword">if</span> (dp[i] &gt;= target)
+            <span class="hljs-keyword">return</span> i;
 
-    return -1;
+    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;
 }
 
-/**
+<span class="hljs-comment">/**
  * WHY GREEDY + MAX HEAP IS OPTIMAL:
  *
  * - DP approach is O(N²) which is slower
@@ -2000,14 +2012,14 @@ public int minRefuelStops_dp(int target, int startFuel, int[][] stations) {
  *
  * Pattern: Greedy + Max Heap (delayed decision-making)
  * Similar to: LC 1353 (Max Events), LC 630 (Course Schedule III)
- */
+ */</span>
 </code></pre>
 <h3 id="2-15-minimum-number-of-visited-cells-in-a-grid" tabindex="-1"><a class="header-anchor" href="#2-15-minimum-number-of-visited-cells-in-a-grid"><span>2-15) Minimum Number of Visited Cells in a Grid</span></a></h3>
-<pre><code class="language-java">// java
-// LC 2617
-// Reference: leetcode_java/src/main/java/LeetCodeJava/Graph/MinimumNumberOfVisitedCellsInAGrid.java
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 2617</span>
+<span class="hljs-comment">// Reference: leetcode_java/src/main/java/LeetCodeJava/Graph/MinimumNumberOfVisitedCellsInAGrid.java</span>
 
-/**
+<span class="hljs-comment">/**
  * Problem: Find minimum cells to visit from (0,0) to (m-1, n-1)
  *
  * Movement Rules:
@@ -2027,10 +2039,10 @@ public int minRefuelStops_dp(int target, int startFuel, int[][] stations) {
  * - 1 &lt;= m, n &lt;= 10^5
  * - 1 &lt;= m * n &lt;= 10^5
  * - 0 &lt;= grid[i][j] &lt; m * n
- */
+ */</span>
 
-// APPROACH: DP + Per-Row/Column Priority Queues with Lazy Deletion
-/**
+<span class="hljs-comment">// APPROACH: DP + Per-Row/Column Priority Queues with Lazy Deletion</span>
+<span class="hljs-comment">/**
  * KEY INSIGHTS:
  *
  * 1. Why not BFS directly?
@@ -2052,69 +2064,69 @@ public int minRefuelStops_dp(int target, int startFuel, int[][] stations) {
  *
  * Time: O(M*N*log(M+N)) - each cell enters/exits heaps once
  * Space: O(M*N) - for dist array and heap entries
- */
-public int minimumVisitedCells(int[][] grid) {
-    int m = grid.length, n = grid[0].length;
-    int[][] dist = new int[m][n];
-    for (int[] row : dist) Arrays.fill(row, -1);
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minimumVisitedCells</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] grid)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> grid.length, n = grid[<span class="hljs-number">0</span>].length;
+    <span class="hljs-type">int</span>[][] dist = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[m][n];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] row : dist) Arrays.fill(row, -<span class="hljs-number">1</span>);
 
-    // One PQ per row, one PQ per column
-    // Each stores {distance, index} sorted by distance (min-heap)
-    PriorityQueue&lt;int[]&gt;[] rowPQs = new PriorityQueue[m];
-    PriorityQueue&lt;int[]&gt;[] colPQs = new PriorityQueue[n];
+    <span class="hljs-comment">// One PQ per row, one PQ per column</span>
+    <span class="hljs-comment">// Each stores {distance, index} sorted by distance (min-heap)</span>
+    PriorityQueue&lt;<span class="hljs-type">int</span>[]&gt;[] rowPQs = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>[m];
+    PriorityQueue&lt;<span class="hljs-type">int</span>[]&gt;[] colPQs = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>[n];
 
-    for (int i = 0; i &lt; m; i++)
-        rowPQs[i] = new PriorityQueue&lt;&gt;((a, b) -&gt; a[0] - b[0]);
-    for (int j = 0; j &lt; n; j++)
-        colPQs[j] = new PriorityQueue&lt;&gt;((a, b) -&gt; a[0] - b[0]);
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; m; i++)
+        rowPQs[i] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;((a, b) -&gt; a[<span class="hljs-number">0</span>] - b[<span class="hljs-number">0</span>]);
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; n; j++)
+        colPQs[j] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;((a, b) -&gt; a[<span class="hljs-number">0</span>] - b[<span class="hljs-number">0</span>]);
 
-    dist[0][0] = 1;  // Starting cell counts as 1 visited
+    dist[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>;  <span class="hljs-comment">// Starting cell counts as 1 visited</span>
 
-    for (int i = 0; i &lt; m; i++) {
-        for (int j = 0; j &lt; n; j++) {
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; m; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; n; j++) {
 
-            // Step 1: Check row PQ - find best cell in same row that can reach j
-            while (!rowPQs[i].isEmpty()) {
-                int[] top = rowPQs[i].peek();
-                int prevCol = top[1];
+            <span class="hljs-comment">// Step 1: Check row PQ - find best cell in same row that can reach j</span>
+            <span class="hljs-keyword">while</span> (!rowPQs[i].isEmpty()) {
+                <span class="hljs-type">int</span>[] top = rowPQs[i].peek();
+                <span class="hljs-type">int</span> <span class="hljs-variable">prevCol</span> <span class="hljs-operator">=</span> top[<span class="hljs-number">1</span>];
 
-                // Check if previous cell can jump to current column
-                if (prevCol + grid[i][prevCol] &gt;= j) {
-                    int d = top[0] + 1;
-                    if (dist[i][j] == -1 || d &lt; dist[i][j])
+                <span class="hljs-comment">// Check if previous cell can jump to current column</span>
+                <span class="hljs-keyword">if</span> (prevCol + grid[i][prevCol] &gt;= j) {
+                    <span class="hljs-type">int</span> <span class="hljs-variable">d</span> <span class="hljs-operator">=</span> top[<span class="hljs-number">0</span>] + <span class="hljs-number">1</span>;
+                    <span class="hljs-keyword">if</span> (dist[i][j] == -<span class="hljs-number">1</span> || d &lt; dist[i][j])
                         dist[i][j] = d;
-                    break;  // First valid cell has minimum distance (PQ property)
+                    <span class="hljs-keyword">break</span>;  <span class="hljs-comment">// First valid cell has minimum distance (PQ property)</span>
                 }
-                // Lazy deletion: cell can't reach j or any future column
+                <span class="hljs-comment">// Lazy deletion: cell can&#x27;t reach j or any future column</span>
                 rowPQs[i].poll();
             }
 
-            // Step 2: Check column PQ - find best cell in same column that can reach i
-            while (!colPQs[j].isEmpty()) {
-                int[] top = colPQs[j].peek();
-                int prevRow = top[1];
+            <span class="hljs-comment">// Step 2: Check column PQ - find best cell in same column that can reach i</span>
+            <span class="hljs-keyword">while</span> (!colPQs[j].isEmpty()) {
+                <span class="hljs-type">int</span>[] top = colPQs[j].peek();
+                <span class="hljs-type">int</span> <span class="hljs-variable">prevRow</span> <span class="hljs-operator">=</span> top[<span class="hljs-number">1</span>];
 
-                if (prevRow + grid[prevRow][j] &gt;= i) {
-                    int d = top[0] + 1;
-                    if (dist[i][j] == -1 || d &lt; dist[i][j])
+                <span class="hljs-keyword">if</span> (prevRow + grid[prevRow][j] &gt;= i) {
+                    <span class="hljs-type">int</span> <span class="hljs-variable">d</span> <span class="hljs-operator">=</span> top[<span class="hljs-number">0</span>] + <span class="hljs-number">1</span>;
+                    <span class="hljs-keyword">if</span> (dist[i][j] == -<span class="hljs-number">1</span> || d &lt; dist[i][j])
                         dist[i][j] = d;
-                    break;
+                    <span class="hljs-keyword">break</span>;
                 }
                 colPQs[j].poll();
             }
 
-            // Step 3: Add current cell to PQs for future cells to use
-            if (dist[i][j] != -1 &amp;&amp; grid[i][j] &gt; 0) {
-                rowPQs[i].offer(new int[]{dist[i][j], j});
-                colPQs[j].offer(new int[]{dist[i][j], i});
+            <span class="hljs-comment">// Step 3: Add current cell to PQs for future cells to use</span>
+            <span class="hljs-keyword">if</span> (dist[i][j] != -<span class="hljs-number">1</span> &amp;&amp; grid[i][j] &gt; <span class="hljs-number">0</span>) {
+                rowPQs[i].offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{dist[i][j], j});
+                colPQs[j].offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{dist[i][j], i});
             }
         }
     }
 
-    return dist[m - 1][n - 1];
+    <span class="hljs-keyword">return</span> dist[m - <span class="hljs-number">1</span>][n - <span class="hljs-number">1</span>];
 }
 
-/**
+<span class="hljs-comment">/**
  * STEP-BY-STEP EXAMPLE:
  *
  * Grid = [[3,4,2,1],
@@ -2142,21 +2154,21 @@ public int minimumVisitedCells(int[][] grid) {
  * Consider row i, processing columns left to right (j = 0,1,2,...):
  * - If cell at (i, prevCol) cannot reach column j
  * - Then prevCol + grid[i][prevCol] &lt; j
- * - For any future column j' &gt; j: prevCol + grid[i][prevCol] &lt; j &lt; j'
+ * - For any future column j&#x27; &gt; j: prevCol + grid[i][prevCol] &lt; j &lt; j&#x27;
  * - So cell can NEVER reach any future column → safe to remove
  *
  * RELATED PROBLEMS:
  * - LC 778: Swim in Rising Water (Dijkstra on grid)
  * - LC 1631: Path With Minimum Effort (Dijkstra on grid)
  * - LC 1293: Shortest Path with Obstacles (BFS + state)
- */
+ */</span>
 </code></pre>
 <h3 id="2-16-divide-intervals-into-minimum-number-of-groups" tabindex="-1"><a class="header-anchor" href="#2-16-divide-intervals-into-minimum-number-of-groups"><span>2-16) Divide Intervals Into Minimum Number of Groups</span></a></h3>
-<pre><code class="language-java">// java
-// LC 2406
-// Reference: leetcode_java/src/main/java/LeetCodeJava/Heap/DivideIntervalsIntoMinimumNumberOfGroups.java
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 2406</span>
+<span class="hljs-comment">// Reference: leetcode_java/src/main/java/LeetCodeJava/Heap/DivideIntervalsIntoMinimumNumberOfGroups.java</span>
 
-/**
+<span class="hljs-comment">/**
  * Problem: Given intervals, divide them into minimum groups so no two intervals
  *          in the same group overlap (two intervals overlap if they share any point).
  *
@@ -2169,10 +2181,10 @@ public int minimumVisitedCells(int[][] grid) {
  * This is equivalent to the &quot;Meeting Rooms II&quot; insight.
  *
  * Pattern: Sort by start + Min Heap tracking group end times
- */
+ */</span>
 
-// APPROACH 1: SORT + MIN HEAP
-/**
+<span class="hljs-comment">// APPROACH 1: SORT + MIN HEAP</span>
+<span class="hljs-comment">/**
  * Core Idea:
  * 1. Sort intervals by start time.
  * 2. Min-heap stores the END time of each active group.
@@ -2181,60 +2193,60 @@ public int minimumVisitedCells(int[][] grid) {
  *    - Otherwise → open a new group (just offer).
  * 4. Heap size at the end = number of groups needed.
  *
- * NOTE: [1,5] and [5,10] OVERLAP (inclusive endpoints), so reuse only when end &lt; start.
+ * <span class="hljs-doctag">NOTE:</span> [1,5] and [5,10] OVERLAP (inclusive endpoints), so reuse only when end &lt; start.
  *
  * Time:  O(N log N) — sort + heap operations
  * Space: O(N)       — heap stores at most N end times
- */
-public int minGroups(int[][] intervals) {
-    Arrays.sort(intervals, (a, b) -&gt; a[0] - b[0]);  // sort by start
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minGroups</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] intervals)</span> {
+    Arrays.sort(intervals, (a, b) -&gt; a[<span class="hljs-number">0</span>] - b[<span class="hljs-number">0</span>]);  <span class="hljs-comment">// sort by start</span>
 
-    PriorityQueue&lt;Integer&gt; pq = new PriorityQueue&lt;&gt;();  // min-heap of end times
+    PriorityQueue&lt;Integer&gt; pq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;();  <span class="hljs-comment">// min-heap of end times</span>
 
-    for (int[] interval : intervals) {
-        if (!pq.isEmpty() &amp;&amp; pq.peek() &lt; interval[0]) {
-            pq.poll();  // reuse earliest-ending group
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] interval : intervals) {
+        <span class="hljs-keyword">if</span> (!pq.isEmpty() &amp;&amp; pq.peek() &lt; interval[<span class="hljs-number">0</span>]) {
+            pq.poll();  <span class="hljs-comment">// reuse earliest-ending group</span>
         }
-        pq.offer(interval[1]);  // assign current interval to a group
+        pq.offer(interval[<span class="hljs-number">1</span>]);  <span class="hljs-comment">// assign current interval to a group</span>
     }
 
-    return pq.size();  // number of concurrent groups = answer
+    <span class="hljs-keyword">return</span> pq.size();  <span class="hljs-comment">// number of concurrent groups = answer</span>
 }
 
-// APPROACH 2: SEPARATE SORT (Two-Pointer / Line Sweep)
-/**
+<span class="hljs-comment">// APPROACH 2: SEPARATE SORT (Two-Pointer / Line Sweep)</span>
+<span class="hljs-comment">/**
  * Core Idea:
  * 1. Separate starts[] and ends[] arrays and sort them independently.
  * 2. Sweep through starts; for each start, check if the smallest end has passed.
- *    - start &gt; ends[endPointer] → a group freed up, advance endPointer (don't add group).
+ *    - start &gt; ends[endPointer] → a group freed up, advance endPointer (don&#x27;t add group).
  *    - Otherwise → overlap, need a new group.
  * 3. groupCount = number of new groups opened.
  *
  * Time:  O(N log N)
  * Space: O(N)
- */
-public int minGroups_v2(int[][] intervals) {
-    int n = intervals.length;
-    int[] starts = new int[n], ends = new int[n];
-    for (int i = 0; i &lt; n; i++) {
-        starts[i] = intervals[i][0];
-        ends[i]   = intervals[i][1];
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minGroups_v2</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] intervals)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> intervals.length;
+    <span class="hljs-type">int</span>[] starts = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n], ends = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+        starts[i] = intervals[i][<span class="hljs-number">0</span>];
+        ends[i]   = intervals[i][<span class="hljs-number">1</span>];
     }
     Arrays.sort(starts);
     Arrays.sort(ends);
 
-    int groupCount = 0, endPointer = 0;
-    for (int start : starts) {
-        if (start &gt; ends[endPointer]) {
-            endPointer++;   // reuse a group
-        } else {
-            groupCount++;   // need a new group
+    <span class="hljs-type">int</span> <span class="hljs-variable">groupCount</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, endPointer = <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> start : starts) {
+        <span class="hljs-keyword">if</span> (start &gt; ends[endPointer]) {
+            endPointer++;   <span class="hljs-comment">// reuse a group</span>
+        } <span class="hljs-keyword">else</span> {
+            groupCount++;   <span class="hljs-comment">// need a new group</span>
         }
     }
-    return groupCount;
+    <span class="hljs-keyword">return</span> groupCount;
 }
 
-/**
+<span class="hljs-comment">/**
  * SIMILAR PROBLEMS:
  *
  * - LC 253  Meeting Rooms II          — same algorithm, identical logic
@@ -2248,14 +2260,14 @@ public int minGroups_v2(int[][] intervals) {
  * KEY PATTERN RULE:
  *   min groups = max concurrent overlaps
  *   → always equals heap size when using Sort + Min Heap approach
- */
+ */</span>
 </code></pre>
 <h3 id="2-17-minimize-deviation-in-array" tabindex="-1"><a class="header-anchor" href="#2-17-minimize-deviation-in-array"><span>2-17) Minimize Deviation in Array</span></a></h3>
-<pre><code class="language-java">// java
-// LC 1675
-// Reference: leetcode_java/src/main/java/LeetCodeJava/Heap/MinimizeDeviationInArray.java
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 1675</span>
+<span class="hljs-comment">// Reference: leetcode_java/src/main/java/LeetCodeJava/Heap/MinimizeDeviationInArray.java</span>
 
-/**
+<span class="hljs-comment">/**
  * Problem: Given nums[], you can:
  *   - Divide any EVEN element by 2  (any number of times)
  *   - Multiply any ODD element by 2 (any number of times)
@@ -2273,10 +2285,10 @@ public int minGroups_v2(int[][] intervals) {
  * 4. Stop when max is odd (can no longer be divided).
  *
  * Pattern: Greedy + Max Heap
- */
+ */</span>
 
-// APPROACH: GREEDY + MAX HEAP
-/**
+<span class="hljs-comment">// APPROACH: GREEDY + MAX HEAP</span>
+<span class="hljs-comment">/**
  * Steps:
  * 1. Normalize: multiply all odd numbers by 2 → everything is now even.
  *    Track the global minimum during this step.
@@ -2284,7 +2296,7 @@ public int minGroups_v2(int[][] intervals) {
  * 3. Loop:
  *    a. Poll the max from the heap.
  *    b. Record deviation = max - min (update answer).
- *    c. If max is ODD → can't divide further → break (best we can do).
+ *    c. If max is ODD → can&#x27;t divide further → break (best we can do).
  *    d. If max is EVEN → divide by 2, update min, push back to heap.
  *
  * Why max heap?
@@ -2293,36 +2305,36 @@ public int minGroups_v2(int[][] intervals) {
  *
  * Time:  O(N log N * log(maxVal)) — each element divided at most log(maxVal) times
  * Space: O(N)
- */
-public int minimumDeviation(int[] nums) {
-    PriorityQueue&lt;Integer&gt; maxHeap = new PriorityQueue&lt;&gt;(Collections.reverseOrder());
-    int min = Integer.MAX_VALUE;
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">minimumDeviation</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+    PriorityQueue&lt;Integer&gt; maxHeap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PriorityQueue</span>&lt;&gt;(Collections.reverseOrder());
+    <span class="hljs-type">int</span> <span class="hljs-variable">min</span> <span class="hljs-operator">=</span> Integer.MAX_VALUE;
 
-    // Step 1: normalize — make all values even (multiply odds by 2)
-    for (int x : nums) {
-        if (x % 2 == 1) x *= 2;
+    <span class="hljs-comment">// Step 1: normalize — make all values even (multiply odds by 2)</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> x : nums) {
+        <span class="hljs-keyword">if</span> (x % <span class="hljs-number">2</span> == <span class="hljs-number">1</span>) x *= <span class="hljs-number">2</span>;
         maxHeap.offer(x);
         min = Math.min(min, x);
     }
 
-    int deviation = Integer.MAX_VALUE;
+    <span class="hljs-type">int</span> <span class="hljs-variable">deviation</span> <span class="hljs-operator">=</span> Integer.MAX_VALUE;
 
-    // Step 2: repeatedly reduce the max until it is odd
-    while (true) {
-        int max = maxHeap.poll();
+    <span class="hljs-comment">// Step 2: repeatedly reduce the max until it is odd</span>
+    <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">max</span> <span class="hljs-operator">=</span> maxHeap.poll();
         deviation = Math.min(deviation, max - min);
 
-        if (max % 2 == 1) break;  // odd → can't divide further → done
+        <span class="hljs-keyword">if</span> (max % <span class="hljs-number">2</span> == <span class="hljs-number">1</span>) <span class="hljs-keyword">break</span>;  <span class="hljs-comment">// odd → can&#x27;t divide further → done</span>
 
-        max /= 2;
-        min = Math.min(min, max);  // new value may be the new minimum
+        max /= <span class="hljs-number">2</span>;
+        min = Math.min(min, max);  <span class="hljs-comment">// new value may be the new minimum</span>
         maxHeap.offer(max);
     }
 
-    return deviation;
+    <span class="hljs-keyword">return</span> deviation;
 }
 
-/**
+<span class="hljs-comment">/**
  * WHY THIS WORKS:
  *
  * - After normalization, all numbers are even; we can only divide (move values down).
@@ -2344,7 +2356,7 @@ public int minimumDeviation(int[] nums) {
  * - Trying to increase small values by multiplying: after normalization,
  *   multiplying any even number makes it larger → increases max → worse.
  *   Only dividing the max is ever beneficial.
- */
+ */</span>
 </code></pre>
 <h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
 <h3 id="pattern-based-problem-classification" tabindex="-1"><a class="header-anchor" href="#pattern-based-problem-classification"><span>Pattern-Based Problem Classification</span></a></h3>
@@ -2812,7 +2824,7 @@ public int minimumDeviation(int[] nums) {
 </table>
 <h2 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h2>
 <h3 id="decision-framework-flowchart" tabindex="-1"><a class="header-anchor" href="#decision-framework-flowchart"><span>Decision Framework Flowchart</span></a></h3>
-<pre><code>Problem Analysis for Heap Usage:
+<pre><code class="hljs">Problem Analysis for Heap Usage:
 
 1. Do you need the kth largest/smallest element?
    ├── YES → Use Kth Element Template
@@ -2852,20 +2864,20 @@ public int minimumDeviation(int[] nums) {
 </code></pre>
 <h3 id="template-selection-guide" tabindex="-1"><a class="header-anchor" href="#template-selection-guide"><span>Template Selection Guide</span></a></h3>
 <h4 id="when-to-use-min-heap-vs-max-heap" tabindex="-1"><a class="header-anchor" href="#when-to-use-min-heap-vs-max-heap"><span><strong>When to Use Min Heap vs Max Heap</strong></span></a></h4>
-<pre><code class="language-python"># Min Heap Usage (Python default)
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Min Heap Usage (Python default)</span>
 situations = [
-    &quot;Finding kth largest → Use min heap of size k&quot;,
-    &quot;Merge k sorted arrays → Track smallest current elements&quot;, 
-    &quot;Dijkstra's algorithm → Process smallest distances first&quot;,
-    &quot;Event scheduling → Process earliest end times&quot;
+    <span class="hljs-string">&quot;Finding kth largest → Use min heap of size k&quot;</span>,
+    <span class="hljs-string">&quot;Merge k sorted arrays → Track smallest current elements&quot;</span>, 
+    <span class="hljs-string">&quot;Dijkstra&#x27;s algorithm → Process smallest distances first&quot;</span>,
+    <span class="hljs-string">&quot;Event scheduling → Process earliest end times&quot;</span>
 ]
 
-# Max Heap Usage (negate values in Python)
+<span class="hljs-comment"># Max Heap Usage (negate values in Python)</span>
 situations = [
-    &quot;Finding kth smallest → Use max heap of size k (negated)&quot;,
-    &quot;Task scheduling → Process highest priority first&quot;,
-    &quot;Median tracking → Left half uses max heap&quot;,
-    &quot;Frequency problems → Process most frequent first&quot;
+    <span class="hljs-string">&quot;Finding kth smallest → Use max heap of size k (negated)&quot;</span>,
+    <span class="hljs-string">&quot;Task scheduling → Process highest priority first&quot;</span>,
+    <span class="hljs-string">&quot;Median tracking → Left half uses max heap&quot;</span>,
+    <span class="hljs-string">&quot;Frequency problems → Process most frequent first&quot;</span>
 ]
 </code></pre>
 <h4 id="heap-size-considerations" tabindex="-1"><a class="header-anchor" href="#heap-size-considerations"><span><strong>Heap Size Considerations</strong></span></a></h4>
@@ -2876,26 +2888,26 @@ situations = [
 </ul>
 <h3 id="common-decision-points" tabindex="-1"><a class="header-anchor" href="#common-decision-points"><span>Common Decision Points</span></a></h3>
 <h4 id="heap-vs-other-data-structures" tabindex="-1"><a class="header-anchor" href="#heap-vs-other-data-structures"><span><strong>Heap vs Other Data Structures</strong></span></a></h4>
-<pre><code class="language-python"># Use Heap When:
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Use Heap When:</span>
 conditions = [
-    &quot;Need frequent min/max access: O(1)&quot;,
-    &quot;Dynamic insertion with ordering: O(log N)&quot;,
-    &quot;Kth element queries: O(N log k)&quot;,
-    &quot;Priority-based processing needed&quot;
+    <span class="hljs-string">&quot;Need frequent min/max access: O(1)&quot;</span>,
+    <span class="hljs-string">&quot;Dynamic insertion with ordering: O(log N)&quot;</span>,
+    <span class="hljs-string">&quot;Kth element queries: O(N log k)&quot;</span>,
+    <span class="hljs-string">&quot;Priority-based processing needed&quot;</span>
 ]
 
-# Use Array/Sort When:
+<span class="hljs-comment"># Use Array/Sort When:</span>
 conditions = [
-    &quot;One-time kth element: O(N) with quickselect&quot;,
-    &quot;All elements needed sorted: O(N log N)&quot;,
-    &quot;Static dataset, no updates&quot;
+    <span class="hljs-string">&quot;One-time kth element: O(N) with quickselect&quot;</span>,
+    <span class="hljs-string">&quot;All elements needed sorted: O(N log N)&quot;</span>,
+    <span class="hljs-string">&quot;Static dataset, no updates&quot;</span>
 ]
 
-# Use Deque When:
+<span class="hljs-comment"># Use Deque When:</span>
 conditions = [
-    &quot;Sliding window min/max: O(1) amortized&quot;,
-    &quot;Simple monotonic requirements&quot;,
-    &quot;No priority-based insertion needed&quot;
+    <span class="hljs-string">&quot;Sliding window min/max: O(1) amortized&quot;</span>,
+    <span class="hljs-string">&quot;Simple monotonic requirements&quot;</span>,
+    <span class="hljs-string">&quot;No priority-based insertion needed&quot;</span>
 ]
 </code></pre>
 <h2 id="summary-quick-reference" tabindex="-1"><a class="header-anchor" href="#summary-quick-reference"><span>Summary &amp; Quick Reference</span></a></h2>
@@ -3002,53 +3014,53 @@ conditions = [
 </table>
 <h3 id="common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#common-patterns-tricks"><span>Common Patterns &amp; Tricks</span></a></h3>
 <h4 id="max-heap-in-python-using-negation" tabindex="-1"><a class="header-anchor" href="#max-heap-in-python-using-negation"><span><strong>Max Heap in Python (Using Negation)</strong></span></a></h4>
-<pre><code class="language-python">import heapq
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-keyword">import</span> heapq
 
-# Create max heap by negating values
-max_heap = [-x for x in nums]
+<span class="hljs-comment"># Create max heap by negating values</span>
+max_heap = [-x <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> nums]
 heapq.heapify(max_heap)
 
-# Insert into max heap
+<span class="hljs-comment"># Insert into max heap</span>
 heapq.heappush(max_heap, -val)
 
-# Get max value (remember to negate back)
-max_val = -max_heap[0]  # peek
-max_val = -heapq.heappop(max_heap)  # pop
+<span class="hljs-comment"># Get max value (remember to negate back)</span>
+max_val = -max_heap[<span class="hljs-number">0</span>]  <span class="hljs-comment"># peek</span>
+max_val = -heapq.heappop(max_heap)  <span class="hljs-comment"># pop</span>
 </code></pre>
 <h4 id="heap-with-custom-objects" tabindex="-1"><a class="header-anchor" href="#heap-with-custom-objects"><span><strong>Heap with Custom Objects</strong></span></a></h4>
-<pre><code class="language-python"># Method 1: Using tuples (automatic comparison)
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Method 1: Using tuples (automatic comparison)</span>
 heap = []
 heapq.heappush(heap, (priority, data))
 
-# Method 2: Using custom class with __lt__
-class Task:
-    def __init__(self, priority, data):
-        self.priority = priority
-        self.data = data
+<span class="hljs-comment"># Method 2: Using custom class with __lt__</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Task</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, priority, data</span>):
+        <span class="hljs-variable language_">self</span>.priority = priority
+        <span class="hljs-variable language_">self</span>.data = data
     
-    def __lt__(self, other):
-        return self.priority &lt; other.priority
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__lt__</span>(<span class="hljs-params">self, other</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.priority &lt; other.priority
 
 heap = []
-heapq.heappush(heap, Task(1, &quot;high priority&quot;))
+heapq.heappush(heap, Task(<span class="hljs-number">1</span>, <span class="hljs-string">&quot;high priority&quot;</span>))
 </code></pre>
 <h4 id="lazy-deletion-pattern" tabindex="-1"><a class="header-anchor" href="#lazy-deletion-pattern"><span><strong>Lazy Deletion Pattern</strong></span></a></h4>
-<pre><code class="language-python"># For sliding window problems where direct deletion is needed
-class LazyHeap:
-    def __init__(self):
-        self.heap = []
-        self.deleted = set()
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># For sliding window problems where direct deletion is needed</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">LazyHeap</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.heap = []
+        <span class="hljs-variable language_">self</span>.deleted = <span class="hljs-built_in">set</span>()
     
-    def push(self, val):
-        heapq.heappush(self.heap, val)
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">push</span>(<span class="hljs-params">self, val</span>):
+        heapq.heappush(<span class="hljs-variable language_">self</span>.heap, val)
     
-    def top(self):
-        while self.heap and self.heap[0] in self.deleted:
-            heapq.heappop(self.heap)
-        return self.heap[0] if self.heap else None
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">top</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">while</span> <span class="hljs-variable language_">self</span>.heap <span class="hljs-keyword">and</span> <span class="hljs-variable language_">self</span>.heap[<span class="hljs-number">0</span>] <span class="hljs-keyword">in</span> <span class="hljs-variable language_">self</span>.deleted:
+            heapq.heappop(<span class="hljs-variable language_">self</span>.heap)
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.heap[<span class="hljs-number">0</span>] <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.heap <span class="hljs-keyword">else</span> <span class="hljs-literal">None</span>
     
-    def delete(self, val):
-        self.deleted.add(val)
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">delete</span>(<span class="hljs-params">self, val</span>):
+        <span class="hljs-variable language_">self</span>.deleted.add(val)
 </code></pre>
 <h3 id="problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#problem-solving-steps"><span>Problem-Solving Steps</span></a></h3>
 <ol>

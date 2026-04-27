@@ -9,8 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
-  <script src="../vendor/highlight/highlight.min.js"></script>
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -21,13 +20,24 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    hljs.highlightAll();
     document.querySelectorAll('pre code').forEach(function(codeEl) {
       var pre = codeEl.parentElement;
       var lang = '';
       var cls = codeEl.className || '';
       var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
       if (m) lang = m[1];
+
+      // Add line numbers
+      var lines = codeEl.innerHTML.split('
+');
+      if (lines[lines.length - 1] === '') lines.pop();
+      var numbered = lines.map(function(line, i) {
+        return '<span class="hljs-ln-line"><span class="hljs-ln-n" data-line-number="' + (i + 1) + '"></span><span class="hljs-ln-code">' + line + '</span></span>';
+      }).join('
+');
+      codeEl.innerHTML = numbered;
+      codeEl.classList.add('hljs-ln');
+
       var wrapper = document.createElement('div');
       wrapper.className = 'code-block-wrapper';
       pre.parentNode.insertBefore(wrapper, pre);
@@ -45,7 +55,9 @@
       btn.className = 'copy-btn';
       btn.textContent = 'Copy';
       btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+        var text = Array.from(codeEl.querySelectorAll('.hljs-ln-code')).map(function(el) { return el.textContent; }).join('
+');
+        navigator.clipboard.writeText(text).then(function() {
           btn.textContent = 'Copied!';
           btn.classList.add('copied');
           setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
@@ -251,69 +263,69 @@
 </li>
 </ul>
 <h3 id="0-2-pattern" tabindex="-1"><a class="header-anchor" href="#0-2-pattern"><span>0-2) Pattern</span></a></h3>
-<pre><code class="language-python"># python
-# LC 739, LC 503 - Find next `big number`
-# ...
-stack = [] # [[idx, val]]
-for i, val in enumerate(len(tmp)):
-    while stack and stack[-1][1] &lt; val:
-        _idx, _val = stack.pop(-1)
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 739, LC 503 - Find next `big number`</span>
+<span class="hljs-comment"># ...</span>
+stack = [] <span class="hljs-comment"># [[idx, val]]</span>
+<span class="hljs-keyword">for</span> i, val <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(<span class="hljs-built_in">len</span>(tmp)):
+    <span class="hljs-keyword">while</span> stack <span class="hljs-keyword">and</span> stack[-<span class="hljs-number">1</span>][<span class="hljs-number">1</span>] &lt; val:
+        _idx, _val = stack.pop(-<span class="hljs-number">1</span>)
         res[tmp[_idx]] = i - _idx
     stack.append([i, val]) 
-# ...
+<span class="hljs-comment"># ...</span>
 </code></pre>
-<pre><code class="language-java">// java
-// LC 739
-for (int j = 0; j &lt; temperatures.length; j++){
-    int x = temperatures[j];
-    /**
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 739</span>
+<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; temperatures.length; j++){
+    <span class="hljs-type">int</span> <span class="hljs-variable">x</span> <span class="hljs-operator">=</span> temperatures[j];
+    <span class="hljs-comment">/**
      *  NOTE !!!
      *   1) while loop
      *   2) stack is NOT empty
      *   3) cache temperature smaller than current temperature
      *
      *   st.peek().get(0) is cached temperature
-     */
-    while (!st.isEmpty() &amp;&amp; st.peek().get(0) &lt; x){
-        /**
+     */</span>
+    <span class="hljs-keyword">while</span> (!st.isEmpty() &amp;&amp; st.peek().get(<span class="hljs-number">0</span>) &lt; x){
+        <span class="hljs-comment">/**
          *  st.peek().get(1) is idx
          *
-         */
-        nextGreater[st.peek().get(1)] = j - st.peek().get(1);
+         */</span>
+        nextGreater[st.peek().get(<span class="hljs-number">1</span>)] = j - st.peek().get(<span class="hljs-number">1</span>);
         st.pop();
     }
 </code></pre>
 <ul>
 <li>monotonic stack (<code>increasing</code>)</li>
 </ul>
-<pre><code class="language-java">// java
-// LC 239
-// LC 496
-// ...
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 239</span>
+<span class="hljs-comment">// LC 496</span>
+<span class="hljs-comment">// ...</span>
 
-// Traverse the array from right to left
-for (int i = 0; i &lt; n; i++) {
-    // Maintain a decreasing monotonic stack
-    /** NOTE !!! below */
-    while (!stack.isEmpty() &amp;&amp; nums[stack.peek()] &lt;= nums[i]) {
-        stack.pop();  // Pop elements from the stack that are smaller or equal to the current element
+<span class="hljs-comment">// Traverse the array from right to left</span>
+<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+    <span class="hljs-comment">// Maintain a decreasing monotonic stack</span>
+    <span class="hljs-comment">/** NOTE !!! below */</span>
+    <span class="hljs-keyword">while</span> (!stack.isEmpty() &amp;&amp; nums[stack.peek()] &lt;= nums[i]) {
+        stack.pop();  <span class="hljs-comment">// Pop elements from the stack that are smaller or equal to the current element</span>
     }
     
-    // If stack is not empty, the next greater element is at the top of the stack
-    if (!stack.isEmpty()) {
+    <span class="hljs-comment">// If stack is not empty, the next greater element is at the top of the stack</span>
+    <span class="hljs-keyword">if</span> (!stack.isEmpty()) {
         result[i] = nums[stack.peek()];
     }
     
-    // Push the current element's index onto the stack
+    <span class="hljs-comment">// Push the current element&#x27;s index onto the stack</span>
     stack.push(i);
 }
 
-// ...
+<span class="hljs-comment">// ...</span>
 </code></pre>
 <ul>
 <li><strong>Stack with Pair <code>[element, count]</code></strong> (adjacent duplicate removal with k)</li>
 </ul>
-<pre><code>Core Idea:
+<pre><code class="hljs">Core Idea:
   - Instead of pushing raw elements, push [element, count] pairs
   - When current element == stack top element: increment count
   - When count reaches k: pop (remove k consecutive duplicates)
@@ -332,144 +344,144 @@ Similar LC:
   - LC 394   Decode String (stack with count for repetition)
   - LC 726   Number of Atoms (nested count tracking)
 </code></pre>
-<pre><code class="language-python"># python - Stack Pair pattern
-# LC 1209
-stack = [['#', 0]]  # sentinel to avoid empty-check
-for c in s:
-    if stack[-1][0] == c:
-        stack[-1][1] += 1
-        if stack[-1][1] == k:
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python - Stack Pair pattern</span>
+<span class="hljs-comment"># LC 1209</span>
+stack = [[<span class="hljs-string">&#x27;#&#x27;</span>, <span class="hljs-number">0</span>]]  <span class="hljs-comment"># sentinel to avoid empty-check</span>
+<span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> s:
+    <span class="hljs-keyword">if</span> stack[-<span class="hljs-number">1</span>][<span class="hljs-number">0</span>] == c:
+        stack[-<span class="hljs-number">1</span>][<span class="hljs-number">1</span>] += <span class="hljs-number">1</span>
+        <span class="hljs-keyword">if</span> stack[-<span class="hljs-number">1</span>][<span class="hljs-number">1</span>] == k:
             stack.pop()
-    else:
-        stack.append([c, 1])
-return ''.join(c * cnt for c, cnt in stack)
+    <span class="hljs-keyword">else</span>:
+        stack.append([c, <span class="hljs-number">1</span>])
+<span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;&#x27;</span>.join(c * cnt <span class="hljs-keyword">for</span> c, cnt <span class="hljs-keyword">in</span> stack)
 </code></pre>
-<pre><code class="language-java">// java - Stack Pair pattern
-// LC 1209
-Stack&lt;int[]&gt; stack = new Stack&lt;&gt;(); // {char_as_int, count}
-for (char c : s.toCharArray()) {
-    if (!stack.isEmpty() &amp;&amp; stack.peek()[0] == c) {
-        stack.peek()[1]++;
-        if (stack.peek()[1] == k) {
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java - Stack Pair pattern</span>
+<span class="hljs-comment">// LC 1209</span>
+Stack&lt;<span class="hljs-type">int</span>[]&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;(); <span class="hljs-comment">// {char_as_int, count}</span>
+<span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : s.toCharArray()) {
+    <span class="hljs-keyword">if</span> (!stack.isEmpty() &amp;&amp; stack.peek()[<span class="hljs-number">0</span>] == c) {
+        stack.peek()[<span class="hljs-number">1</span>]++;
+        <span class="hljs-keyword">if</span> (stack.peek()[<span class="hljs-number">1</span>] == k) {
             stack.pop();
         }
-    } else {
-        stack.push(new int[]{c, 1});
+    } <span class="hljs-keyword">else</span> {
+        stack.push(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{c, <span class="hljs-number">1</span>});
     }
 }
-StringBuilder sb = new StringBuilder();
-for (int[] pair : stack) {
-    for (int i = 0; i &lt; pair[1]; i++) {
-        sb.append((char) pair[0]);
+<span class="hljs-type">StringBuilder</span> <span class="hljs-variable">sb</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>();
+<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] pair : stack) {
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; pair[<span class="hljs-number">1</span>]; i++) {
+        sb.append((<span class="hljs-type">char</span>) pair[<span class="hljs-number">0</span>]);
     }
 }
-return sb.toString();
+<span class="hljs-keyword">return</span> sb.toString();
 </code></pre>
 <ul>
 <li>monotonic stack (<code>decreasing</code>)</li>
 </ul>
-<pre><code class="language-java">
-// java
-for (int j = 0; j &lt; temperatures.length; j++) {
-    int x = temperatures[j];
-    /**
+<pre data-lang="java"><code class="hljs language-java">
+<span class="hljs-comment">// java</span>
+<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; temperatures.length; j++) {
+    <span class="hljs-type">int</span> <span class="hljs-variable">x</span> <span class="hljs-operator">=</span> temperatures[j];
+    <span class="hljs-comment">/**
      *  NOTE !!!
      *   1) while loop
      *   2) stack is NOT empty
      *   3) cache temperature greater than current temperature
      *
      *   st.peek().get(0) is cached temperature
-     */
-     /** NOTE !!! below */
-    while (!st.isEmpty() &amp;&amp; st.peek().get(0) &gt; x) {
-        /**
+     */</span>
+     <span class="hljs-comment">/** NOTE !!! below */</span>
+    <span class="hljs-keyword">while</span> (!st.isEmpty() &amp;&amp; st.peek().get(<span class="hljs-number">0</span>) &gt; x) {
+        <span class="hljs-comment">/**
          *  st.peek().get(1) is idx
          *
-         */
-        nextGreater[st.peek().get(1)] = j - st.peek().get(1);
+         */</span>
+        nextGreater[st.peek().get(<span class="hljs-number">1</span>)] = j - st.peek().get(<span class="hljs-number">1</span>);
         st.pop();
     }
     
-    // Push the current temperature and its index to the stack
-    st.push(new Pair&lt;&gt;(x, j));
+    <span class="hljs-comment">// Push the current temperature and its index to the stack</span>
+    st.push(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Pair</span>&lt;&gt;(x, j));
 }
 </code></pre>
 <ul>
 <li>monotonic stack (greedy removal pattern - Remove K Digits)</li>
 </ul>
-<pre><code class="language-java">// java
-// LC 402 Remove K Digits
-// Pattern: Maintain monotonic increasing stack by greedily removing larger digits
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 402 Remove K Digits</span>
+<span class="hljs-comment">// Pattern: Maintain monotonic increasing stack by greedily removing larger digits</span>
 
-Deque&lt;Character&gt; stack = new ArrayDeque&lt;&gt;();
+Deque&lt;Character&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();
 
-for (int i = 0; i &lt; num.length(); i++) {
-    char digit = num.charAt(i);
+<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; num.length(); i++) {
+    <span class="hljs-type">char</span> <span class="hljs-variable">digit</span> <span class="hljs-operator">=</span> num.charAt(i);
 
-    /**
+    <span class="hljs-comment">/**
      * NOTE !!!
      * Greedy removal: while we can still remove digits (k &gt; 0)
      * and current digit is smaller than stack top,
      * pop the larger digit to make the number smaller
-     */
-    while (k &gt; 0 &amp;&amp; !stack.isEmpty() &amp;&amp; stack.peekLast() &gt; digit) {
+     */</span>
+    <span class="hljs-keyword">while</span> (k &gt; <span class="hljs-number">0</span> &amp;&amp; !stack.isEmpty() &amp;&amp; stack.peekLast() &gt; digit) {
         stack.removeLast();
         k--;
     }
     stack.addLast(digit);
 }
 
-// If k &gt; 0, remove remaining digits from the end
-while (k &gt; 0) {
+<span class="hljs-comment">// If k &gt; 0, remove remaining digits from the end</span>
+<span class="hljs-keyword">while</span> (k &gt; <span class="hljs-number">0</span>) {
     stack.removeLast();
     k--;
 }
 
-// Remove leading zeros
-StringBuilder sb = new StringBuilder();
-boolean leadingZero = true;
-while (!stack.isEmpty()) {
-    char c = stack.removeFirst();
-    if (leadingZero &amp;&amp; c == '0')
-        continue;
-    leadingZero = false;
+<span class="hljs-comment">// Remove leading zeros</span>
+<span class="hljs-type">StringBuilder</span> <span class="hljs-variable">sb</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>();
+<span class="hljs-type">boolean</span> <span class="hljs-variable">leadingZero</span> <span class="hljs-operator">=</span> <span class="hljs-literal">true</span>;
+<span class="hljs-keyword">while</span> (!stack.isEmpty()) {
+    <span class="hljs-type">char</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> stack.removeFirst();
+    <span class="hljs-keyword">if</span> (leadingZero &amp;&amp; c == <span class="hljs-string">&#x27;0&#x27;</span>)
+        <span class="hljs-keyword">continue</span>;
+    leadingZero = <span class="hljs-literal">false</span>;
     sb.append(c);
 }
 
-return sb.length() == 0 ? &quot;0&quot; : sb.toString();
+<span class="hljs-keyword">return</span> sb.length() == <span class="hljs-number">0</span> ? <span class="hljs-string">&quot;0&quot;</span> : sb.toString();
 </code></pre>
 <ul>
 <li>monotonic stack (lexicographical order with deduplication - Remove Duplicate Letters)</li>
 </ul>
-<pre><code class="language-java">// java
-// LC 316 Remove Duplicate Letters (same as LC 1081)
-// Pattern: Monotonic increasing stack with &quot;will appear later&quot; check for lexicographical smallest result
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 316 Remove Duplicate Letters (same as LC 1081)</span>
+<span class="hljs-comment">// Pattern: Monotonic increasing stack with &quot;will appear later&quot; check for lexicographical smallest result</span>
 
-/**
+<span class="hljs-comment">/**
  * Key differences from basic greedy removal:
  * 1. Track which characters are already in result (inStack/seen)
  * 2. Only remove if character will appear again later (lastOccurrence)
  * 3. Each character must appear exactly once
- */
+ */</span>
 
-// Step 1: Store the LAST index where each character appears
-int[] lastOccurrence = new int[26];
-for (int i = 0; i &lt; s.length(); i++) {
-    lastOccurrence[s.charAt(i) - 'a'] = i;
+<span class="hljs-comment">// Step 1: Store the LAST index where each character appears</span>
+<span class="hljs-type">int</span>[] lastOccurrence = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">26</span>];
+<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; s.length(); i++) {
+    lastOccurrence[s.charAt(i) - <span class="hljs-string">&#x27;a&#x27;</span>] = i;
 }
 
-Stack&lt;Character&gt; stack = new Stack&lt;&gt;();
-// Use boolean array for O(1) &quot;contains&quot; check
-boolean[] inStack = new boolean[26];
+Stack&lt;Character&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;();
+<span class="hljs-comment">// Use boolean array for O(1) &quot;contains&quot; check</span>
+<span class="hljs-type">boolean</span>[] inStack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[<span class="hljs-number">26</span>];
 
-for (int i = 0; i &lt; s.length(); i++) {
-    char c = s.charAt(i);
+<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; s.length(); i++) {
+    <span class="hljs-type">char</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> s.charAt(i);
 
-    // If character already in stack, skip it (each char appears once)
-    if (inStack[c - 'a'])
-        continue;
+    <span class="hljs-comment">// If character already in stack, skip it (each char appears once)</span>
+    <span class="hljs-keyword">if</span> (inStack[c - <span class="hljs-string">&#x27;a&#x27;</span>])
+        <span class="hljs-keyword">continue</span>;
 
-    /**
+    <span class="hljs-comment">/**
      * NOTE !!! MONO STACK LOGIC with &quot;will appear later&quot; check
      *
      * We can safely remove stack top if ALL conditions met:
@@ -478,106 +490,106 @@ for (int i = 0; i &lt; s.length(); i++) {
      * 2. Stack top will appear AGAIN LATER (lastOccurrence[stack.peek()] &gt; i)
      *
      * This ensures we get the lexicographically smallest result
-     */
-    while (!stack.isEmpty() &amp;&amp; stack.peek() &gt; c &amp;&amp; lastOccurrence[stack.peek() - 'a'] &gt; i) {
-        char removed = stack.pop();
-        inStack[removed - 'a'] = false;  // Mark as not in stack
+     */</span>
+    <span class="hljs-keyword">while</span> (!stack.isEmpty() &amp;&amp; stack.peek() &gt; c &amp;&amp; lastOccurrence[stack.peek() - <span class="hljs-string">&#x27;a&#x27;</span>] &gt; i) {
+        <span class="hljs-type">char</span> <span class="hljs-variable">removed</span> <span class="hljs-operator">=</span> stack.pop();
+        inStack[removed - <span class="hljs-string">&#x27;a&#x27;</span>] = <span class="hljs-literal">false</span>;  <span class="hljs-comment">// Mark as not in stack</span>
     }
 
     stack.push(c);
-    inStack[c - 'a'] = true;  // Mark as in stack
+    inStack[c - <span class="hljs-string">&#x27;a&#x27;</span>] = <span class="hljs-literal">true</span>;  <span class="hljs-comment">// Mark as in stack</span>
 }
 
-// Build result from stack
-StringBuilder sb = new StringBuilder();
-for (char c : stack) {
+<span class="hljs-comment">// Build result from stack</span>
+<span class="hljs-type">StringBuilder</span> <span class="hljs-variable">sb</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>();
+<span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : stack) {
     sb.append(c);
 }
-return sb.toString();
+<span class="hljs-keyword">return</span> sb.toString();
 </code></pre>
 <p><strong>Explanation of “will appear later” logic:</strong></p>
-<pre><code class="language-java">/**
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">/**
  * lastOccurrence array tracks the LAST index of each character
  *
  * Example: s = &quot;cbacdcbc&quot;
  *
- * lastOccurrence['c' - 'a'] = 7  (last 'c' at index 7)
- * lastOccurrence['b' - 'a'] = 6  (last 'b' at index 6)
- * lastOccurrence['a' - 'a'] = 2  (last 'a' at index 2)
- * lastOccurrence['d' - 'a'] = 4  (last 'd' at index 4)
+ * lastOccurrence[&#x27;c&#x27; - &#x27;a&#x27;] = 7  (last &#x27;c&#x27; at index 7)
+ * lastOccurrence[&#x27;b&#x27; - &#x27;a&#x27;] = 6  (last &#x27;b&#x27; at index 6)
+ * lastOccurrence[&#x27;a&#x27; - &#x27;a&#x27;] = 2  (last &#x27;a&#x27; at index 2)
+ * lastOccurrence[&#x27;d&#x27; - &#x27;a&#x27;] = 4  (last &#x27;d&#x27; at index 4)
  *
- * When at index i = 1 (char 'b'):
- * - Stack has 'c', current char is 'b'
- * - 'c' &gt; 'b' (can potentially remove 'c')
- * - lastOccurrence['c'] = 7 &gt; 1 (YES, 'c' appears later)
- * - Safe to remove 'c' and add 'b' first
+ * When at index i = 1 (char &#x27;b&#x27;):
+ * - Stack has &#x27;c&#x27;, current char is &#x27;b&#x27;
+ * - &#x27;c&#x27; &gt; &#x27;b&#x27; (can potentially remove &#x27;c&#x27;)
+ * - lastOccurrence[&#x27;c&#x27;] = 7 &gt; 1 (YES, &#x27;c&#x27; appears later)
+ * - Safe to remove &#x27;c&#x27; and add &#x27;b&#x27; first
  *
- * When at index i = 2 (char 'a'):
- * - Stack has 'b', current char is 'a'
- * - 'b' &gt; 'a' (can potentially remove 'b')
- * - lastOccurrence['b'] = 6 &gt; 2 (YES, 'b' appears later)
- * - Safe to remove 'b' and add 'a' first
+ * When at index i = 2 (char &#x27;a&#x27;):
+ * - Stack has &#x27;b&#x27;, current char is &#x27;a&#x27;
+ * - &#x27;b&#x27; &gt; &#x27;a&#x27; (can potentially remove &#x27;b&#x27;)
+ * - lastOccurrence[&#x27;b&#x27;] = 6 &gt; 2 (YES, &#x27;b&#x27; appears later)
+ * - Safe to remove &#x27;b&#x27; and add &#x27;a&#x27; first
  *
  * Result: &quot;acdb&quot; (lexicographically smallest)
- */
+ */</span>
 </code></pre>
 <ul>
 <li>monotonic stack (span accumulation pattern - Online Stock Span)</li>
 </ul>
-<pre><code class="language-java">// java
-// LC 901 Online Stock Span
-// Pattern: Monotonic decreasing stack with span accumulation for streaming data
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 901 Online Stock Span</span>
+<span class="hljs-comment">// Pattern: Monotonic decreasing stack with span accumulation for streaming data</span>
 
-Deque&lt;int[]&gt; stack = new ArrayDeque&lt;&gt;(); // {price, span}
+Deque&lt;<span class="hljs-type">int</span>[]&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;(); <span class="hljs-comment">// {price, span}</span>
 
-public int next(int price) {
-    int span = 1; // Today always counts
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">next</span><span class="hljs-params">(<span class="hljs-type">int</span> price)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">span</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; <span class="hljs-comment">// Today always counts</span>
 
-    /**
+    <span class="hljs-comment">/**
      * NOTE !!!
      * Pop all smaller/equal prices and accumulate their spans
      * This gives us the count of consecutive days with price &lt;= current
-     */
-    while (!stack.isEmpty() &amp;&amp; stack.peek()[0] &lt;= price) {
-        span += stack.pop()[1]; // Absorb previous span
+     */</span>
+    <span class="hljs-keyword">while</span> (!stack.isEmpty() &amp;&amp; stack.peek()[<span class="hljs-number">0</span>] &lt;= price) {
+        span += stack.pop()[<span class="hljs-number">1</span>]; <span class="hljs-comment">// Absorb previous span</span>
     }
 
-    stack.push(new int[] { price, span });
-    return span;
+    stack.push(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[] { price, span });
+    <span class="hljs-keyword">return</span> span;
 }
 
-/**
+<span class="hljs-comment">/**
  * Key differences from other monotonic stack patterns:
  * 1. Streaming/online: processes data one at a time (not batch)
  * 2. Span accumulation: accumulates counts rather than finding next element
  * 3. Stateful: maintains stack across multiple calls
  * 4. Stack stores pairs: [value, accumulated_count]
- */
+ */</span>
 </code></pre>
 <ul>
 <li>Implement Queue using Stacks</li>
 </ul>
-<pre><code class="language-java">// java
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
 
-// LC 232
-// V3
-// https://leetcode.com/problems/implement-queue-using-stacks/solutions/6579732/video-simple-solution-by-niits-sqaw/
-// IDEA: 2 stack
-class MyQueue_3{
-    private Stack&lt;Integer&gt; input;
-    private Stack&lt;Integer&gt; output;
+<span class="hljs-comment">// LC 232</span>
+<span class="hljs-comment">// V3</span>
+<span class="hljs-comment">// https://leetcode.com/problems/implement-queue-using-stacks/solutions/6579732/video-simple-solution-by-niits-sqaw/</span>
+<span class="hljs-comment">// IDEA: 2 stack</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MyQueue_3</span>{
+    <span class="hljs-keyword">private</span> Stack&lt;Integer&gt; input;
+    <span class="hljs-keyword">private</span> Stack&lt;Integer&gt; output;
 
-    public MyQueue_3() {
-        input = new Stack&lt;&gt;();
-        output = new Stack&lt;&gt;();
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">MyQueue_3</span><span class="hljs-params">()</span> {
+        input = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;();
+        output = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;();
     }
 
-    public void push(int x) {
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">push</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> {
         input.push(x);
     }
 
-    public int pop() {
-        /**
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">pop</span><span class="hljs-params">()</span> {
+        <span class="hljs-comment">/**
          *  NOTE !!!
          *
          *  1)  before calling pop() directly,
@@ -589,71 +601,71 @@ class MyQueue_3{
          *  2) peak() return an integer, but it DOES NOT terminate the pop() execution
          *     since the `peek()` method is called and NOT assign its result to any object,
          *     then the `output.pop();` code is executed and return as result
-         */
+         */</span>
         peek();
-        return output.pop();
+        <span class="hljs-keyword">return</span> output.pop();
     }
 
-    public int peek() {
-        if (output.isEmpty()) {
-            while (!input.isEmpty()) {
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">peek</span><span class="hljs-params">()</span> {
+        <span class="hljs-keyword">if</span> (output.isEmpty()) {
+            <span class="hljs-keyword">while</span> (!input.isEmpty()) {
                 output.push(input.pop());
             }
         }
-        return output.peek();
+        <span class="hljs-keyword">return</span> output.peek();
     }
 
-    public boolean empty() {
-        return input.isEmpty() &amp;&amp; output.isEmpty();
+    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">empty</span><span class="hljs-params">()</span> {
+        <span class="hljs-keyword">return</span> input.isEmpty() &amp;&amp; output.isEmpty();
     }
 }
 </code></pre>
 <h2 id="1-core-patterns" tabindex="-1"><a class="header-anchor" href="#1-core-patterns"><span>1) Core Patterns</span></a></h2>
 <h3 id="1-1-basic-stack-operations" tabindex="-1"><a class="header-anchor" href="#1-1-basic-stack-operations"><span>1-1) Basic Stack Operations</span></a></h3>
 <p><strong>Stack push (insert):</strong></p>
-<pre><code class="language-java">// Java
-Stack&lt;Integer&gt; stack = new Stack&lt;&gt;();
-stack.push(element);  // O(1)
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
+Stack&lt;Integer&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;();
+stack.push(element);  <span class="hljs-comment">// O(1)</span>
 </code></pre>
-<pre><code class="language-python"># Python
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python</span>
 stack = []
-stack.append(element)  # O(1)
+stack.append(element)  <span class="hljs-comment"># O(1)</span>
 </code></pre>
 <p><strong>Stack pop (remove top):</strong></p>
-<pre><code class="language-java">// Java
-int top = stack.pop();  // O(1), throws if empty
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
+<span class="hljs-type">int</span> <span class="hljs-variable">top</span> <span class="hljs-operator">=</span> stack.pop();  <span class="hljs-comment">// O(1), throws if empty</span>
 </code></pre>
-<pre><code class="language-python"># Python
-top = stack.pop()  # O(1), raises if empty
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python</span>
+top = stack.pop()  <span class="hljs-comment"># O(1), raises if empty</span>
 </code></pre>
 <p><strong>Stack peek (view top):</strong></p>
-<pre><code class="language-java">// Java
-int top = stack.peek();  // O(1), throws if empty
-if (!stack.isEmpty()) {
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Java</span>
+<span class="hljs-type">int</span> <span class="hljs-variable">top</span> <span class="hljs-operator">=</span> stack.peek();  <span class="hljs-comment">// O(1), throws if empty</span>
+<span class="hljs-keyword">if</span> (!stack.isEmpty()) {
     top = stack.peek();
 }
 </code></pre>
-<pre><code class="language-python"># Python
-top = stack[-1]  # O(1), raises if empty
-if stack:
-    top = stack[-1]
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># Python</span>
+top = stack[-<span class="hljs-number">1</span>]  <span class="hljs-comment"># O(1), raises if empty</span>
+<span class="hljs-keyword">if</span> stack:
+    top = stack[-<span class="hljs-number">1</span>]
 </code></pre>
 <hr>
 <h3 id="1-2-monotonic-stack-next-greater-element" tabindex="-1"><a class="header-anchor" href="#1-2-monotonic-stack-next-greater-element"><span>1-2) Monotonic Stack: Next Greater Element</span></a></h3>
-<pre><code class="language-java">// java
-// LC 496
-  // V0
-    // IDEA : STACK
-    // https://www.youtube.com/watch?v=68a1Dc_qVq4
-    /** NOTE !!!
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 496</span>
+  <span class="hljs-comment">// V0</span>
+    <span class="hljs-comment">// IDEA : STACK</span>
+    <span class="hljs-comment">// https://www.youtube.com/watch?v=68a1Dc_qVq4</span>
+    <span class="hljs-comment">/** NOTE !!!
      *
      *  nums1 is &quot;sub set&quot; of nums2,
      *  so all elements in nums1 are in nums2 as well
      *  and in order to find next greater element in nums1 reference nums2
      *  -&gt; ACTUALLY we only need to check nums2
      *  -&gt; then append result per element in nums1
-     */
-    /**
+     */</span>
+    <span class="hljs-comment">/**
      *
      *  Example 1)
      *
@@ -691,131 +703,131 @@ if stack:
      *  st = [6,5,4,3,2,1], map = {}
      *  st = [], map = {6:7, 5:7,4:7,3:7,2:7,1:7}
      *
-     */
-    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] nextGreaterElement(<span class="hljs-type">int</span>[] nums1, <span class="hljs-type">int</span>[] nums2) {
 
-        if (nums1.length == 1 &amp;&amp; nums2.length == 1){
-            return new int[]{-1};
+        <span class="hljs-keyword">if</span> (nums1.length == <span class="hljs-number">1</span> &amp;&amp; nums2.length == <span class="hljs-number">1</span>){
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{-<span class="hljs-number">1</span>};
         }
 
-        /**
+        <span class="hljs-comment">/**
          *  NOTE !!!
          *  we use map &quot; collect next greater element&quot;
          *  map definition :  {element, next-greater-element}
-         */
-        Map&lt;Integer, Integer&gt; map = new HashMap&lt;&gt;();
-        Stack&lt;Integer&gt; st = new Stack&lt;&gt;();
+         */</span>
+        Map&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+        Stack&lt;Integer&gt; st = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;();
 
-        for (int x : nums2){
-            /**
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> x : nums2){
+            <span class="hljs-comment">/**
              *  NOTE !!!
              *   1) use while loop
              *   2) while stack is NOT null and stack &quot;top&quot; element is smaller than current element (x) is nums2
              *
              *   -&gt; found &quot;next greater element&quot;, so update map
-             */
-            while(!st.isEmpty() &amp;&amp; st.peek() &lt; x){
-                int cur = st.pop();
+             */</span>
+            <span class="hljs-keyword">while</span>(!st.isEmpty() &amp;&amp; st.peek() &lt; x){
+                <span class="hljs-type">int</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> st.pop();
                 map.put(cur, x);
             }
-            /** NOTE !!! if not feat above condition, we put element to stack */
+            <span class="hljs-comment">/** NOTE !!! if not feat above condition, we put element to stack */</span>
             st.add(x);
         }
 
-        //System.out.println(&quot;map = &quot; + map);
-        int[] res = new int[nums1.length];
-        // fill with -1 for element without next greater element
-        Arrays.fill(res, -1);
-        for (int j = 0; j &lt; nums1.length; j++){
-            if(map.containsKey(nums1[j])){
+        <span class="hljs-comment">//System.out.println(&quot;map = &quot; + map);</span>
+        <span class="hljs-type">int</span>[] res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[nums1.length];
+        <span class="hljs-comment">// fill with -1 for element without next greater element</span>
+        Arrays.fill(res, -<span class="hljs-number">1</span>);
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; nums1.length; j++){
+            <span class="hljs-keyword">if</span>(map.containsKey(nums1[j])){
                 res[j] = map.get(nums1[j]);
             }
         }
 
-        //System.out.println(&quot;res = &quot; + res);
-        return res;
+        <span class="hljs-comment">//System.out.println(&quot;res = &quot; + res);</span>
+        <span class="hljs-keyword">return</span> res;
     }
 </code></pre>
 <h3 id="1-1-2-2-next-greater-element-2" tabindex="-1"><a class="header-anchor" href="#1-1-2-2-next-greater-element-2"><span>1-1-2-2) next greater element 2</span></a></h3>
-<pre><code class="language-python"># V0
-# IDEA : LC 739, LC 503
-class Solution(object):
-    def nextGreaterElements(self, nums):
-        # edge case
-        if not nums:
-            return
-        _len = len(nums)
-        # note : we init res as [-1] * _len
-        res = [-1] * _len
-        # note : we use &quot;nums = 2 * nums&quot; to simuldate &quot;circular array&quot;
-        nums = 2 * nums
-        stack = [] # [[idx, val]]
-        for idx, val in enumerate(nums):
-            while stack and stack[-1][1] &lt; val:
-                _idx, _val = stack.pop(-1)
-                &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : LC 739, LC 503</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">nextGreaterElements</span>(<span class="hljs-params">self, nums</span>):
+        <span class="hljs-comment"># edge case</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> nums:
+            <span class="hljs-keyword">return</span>
+        _<span class="hljs-built_in">len</span> = <span class="hljs-built_in">len</span>(nums)
+        <span class="hljs-comment"># note : we init res as [-1] * _len</span>
+        res = [-<span class="hljs-number">1</span>] * _<span class="hljs-built_in">len</span>
+        <span class="hljs-comment"># note : we use &quot;nums = 2 * nums&quot; to simuldate &quot;circular array&quot;</span>
+        nums = <span class="hljs-number">2</span> * nums
+        stack = [] <span class="hljs-comment"># [[idx, val]]</span>
+        <span class="hljs-keyword">for</span> idx, val <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(nums):
+            <span class="hljs-keyword">while</span> stack <span class="hljs-keyword">and</span> stack[-<span class="hljs-number">1</span>][<span class="hljs-number">1</span>] &lt; val:
+                _idx, _val = stack.pop(-<span class="hljs-number">1</span>)
+                <span class="hljs-string">&quot;&quot;&quot;
                 NOTE !!!
                     -&gt; we get remainder via &quot;_idx % _len&quot; for handling idx issue
                       (since we made nums = 2 * nums earlier)
-                &quot;&quot;&quot;
-                res[_idx % _len] = val
+                &quot;&quot;&quot;</span>
+                res[_idx % _<span class="hljs-built_in">len</span>] = val
             stack.append([idx, val])
-        return res
+        <span class="hljs-keyword">return</span> res
 </code></pre>
 <h3 id="1-1-3-get-non-balanced-string" tabindex="-1"><a class="header-anchor" href="#1-1-3-get-non-balanced-string"><span>1-1-3) get <code>non balanced</code> String</span></a></h3>
-<pre><code class="language-python"># LC 1963. Minimum Number of Swaps to Make the String Balanced
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1963. Minimum Number of Swaps to Make the String Balanced</span>
 
-# NOTE !!! below trick will ONLY collect not Balanced ], [
-#          -&gt; e.g. &quot;]][[&quot; or &quot;]]][[[&quot;
+<span class="hljs-comment"># NOTE !!! below trick will ONLY collect not Balanced ], [</span>
+<span class="hljs-comment">#          -&gt; e.g. &quot;]][[&quot; or &quot;]]][[[&quot;</span>
  
-s = &quot;]]][[[&quot;
+s = <span class="hljs-string">&quot;]]][[[&quot;</span>
 stack = []
-for i in range(len(s)):
-    # NOTE HERE !!!
-    if stack and s[i] == &quot;]&quot;:
-        stack.pop(-1)
-    else:
+<span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(s)):
+    <span class="hljs-comment"># NOTE HERE !!!</span>
+    <span class="hljs-keyword">if</span> stack <span class="hljs-keyword">and</span> s[i] == <span class="hljs-string">&quot;]&quot;</span>:
+        stack.pop(-<span class="hljs-number">1</span>)
+    <span class="hljs-keyword">else</span>:
         stack.append()
-print (stack)
+<span class="hljs-built_in">print</span> (stack)
 </code></pre>
 <h3 id="1-1-4-deal-with-pre-num-pre-string" tabindex="-1"><a class="header-anchor" href="#1-1-4-deal-with-pre-num-pre-string"><span>1-1-4) deal with <code>pre num, pre string</code></span></a></h3>
-<pre><code class="language-python"># LC 227, 394
-# ...
-for i, each in enumerate(s):
-    # ...
-    if i == len(s) - 1 or each in &quot;+-*/&quot;:
-        if pre_op == &quot;+&quot;:
-            # ...
-        elif pre_op == &quot;-&quot;:
-            # ...
-        elif pre_op == &quot;*&quot;:
-            # ...
-        elif pre_op == &quot;/&quot;:
-            # ...
-        &quot;&quot;&quot;
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 227, 394</span>
+<span class="hljs-comment"># ...</span>
+<span class="hljs-keyword">for</span> i, each <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(s):
+    <span class="hljs-comment"># ...</span>
+    <span class="hljs-keyword">if</span> i == <span class="hljs-built_in">len</span>(s) - <span class="hljs-number">1</span> <span class="hljs-keyword">or</span> each <span class="hljs-keyword">in</span> <span class="hljs-string">&quot;+-*/&quot;</span>:
+        <span class="hljs-keyword">if</span> pre_op == <span class="hljs-string">&quot;+&quot;</span>:
+            <span class="hljs-comment"># ...</span>
+        <span class="hljs-keyword">elif</span> pre_op == <span class="hljs-string">&quot;-&quot;</span>:
+            <span class="hljs-comment"># ...</span>
+        <span class="hljs-keyword">elif</span> pre_op == <span class="hljs-string">&quot;*&quot;</span>:
+            <span class="hljs-comment"># ...</span>
+        <span class="hljs-keyword">elif</span> pre_op == <span class="hljs-string">&quot;/&quot;</span>:
+            <span class="hljs-comment"># ...</span>
+        <span class="hljs-string">&quot;&quot;&quot;
         NOTE this !!!
-        &quot;&quot;&quot;
+        &quot;&quot;&quot;</span>
         pre_op = each
-        num = 0
-# ...
+        num = <span class="hljs-number">0</span>
+<span class="hljs-comment"># ...</span>
 </code></pre>
 <h2 id="2-leetcode-examples" tabindex="-1"><a class="header-anchor" href="#2-leetcode-examples"><span>2) LeetCode Examples</span></a></h2>
 <h3 id="2-1-decode-string" tabindex="-1"><a class="header-anchor" href="#2-1-decode-string"><span>2-1) Decode String</span></a></h3>
-<pre><code class="language-python"># LC 394 Decode String
-# V0
-# IDEA : STACK
-# NOTE : treat before cases separately
-#        1) isdigit
-#        2) isalpha
-#        3) &quot;[&quot;
-#        4) &quot;]&quot;
-# and define num = 0 for dealing with &quot;100a[b]&quot;, &quot;10abc&quot; cases
-class Solution:
-    def decodeString(self, s):
-        num = 0
-        string = ''
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 394 Decode String</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : STACK</span>
+<span class="hljs-comment"># NOTE : treat before cases separately</span>
+<span class="hljs-comment">#        1) isdigit</span>
+<span class="hljs-comment">#        2) isalpha</span>
+<span class="hljs-comment">#        3) &quot;[&quot;</span>
+<span class="hljs-comment">#        4) &quot;]&quot;</span>
+<span class="hljs-comment"># and define num = 0 for dealing with &quot;100a[b]&quot;, &quot;10abc&quot; cases</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">decodeString</span>(<span class="hljs-params">self, s</span>):
+        num = <span class="hljs-number">0</span>
+        string = <span class="hljs-string">&#x27;&#x27;</span>
         stack = []
-        &quot;&quot;&quot;
+        <span class="hljs-string">&quot;&quot;&quot;
         NOTE : we deal with 4 cases
             1) digit
             2) &quot;[&quot;
@@ -824,31 +836,31 @@ class Solution:
 
         NOTE :
             we use pre_num, pre_string for dealing with previous result
-        &quot;&quot;&quot;
-        for c in s:
-            # case 1) : digit
-            if c.isdigit():
-                num = num*10 + int(c)
-            # case 2) : &quot;[&quot;
-            elif c == &quot;[&quot;:
+        &quot;&quot;&quot;</span>
+        <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> s:
+            <span class="hljs-comment"># case 1) : digit</span>
+            <span class="hljs-keyword">if</span> c.isdigit():
+                num = num*<span class="hljs-number">10</span> + <span class="hljs-built_in">int</span>(c)
+            <span class="hljs-comment"># case 2) : &quot;[&quot;</span>
+            <span class="hljs-keyword">elif</span> c == <span class="hljs-string">&quot;[&quot;</span>:
                 stack.append(string)
                 stack.append(num)
-                string = ''
-                num = 0
-            # case 3) : alphabet
-            elif c.isalpha():
+                string = <span class="hljs-string">&#x27;&#x27;</span>
+                num = <span class="hljs-number">0</span>
+            <span class="hljs-comment"># case 3) : alphabet</span>
+            <span class="hljs-keyword">elif</span> c.isalpha():
                 string += c
-            # case 4) &quot;]&quot;
-            elif c == ']':
+            <span class="hljs-comment"># case 4) &quot;]&quot;</span>
+            <span class="hljs-keyword">elif</span> c == <span class="hljs-string">&#x27;]&#x27;</span>:
                 pre_num = stack.pop()
                 pre_string = stack.pop()
                 string = pre_string + pre_num * string
-        return string
+        <span class="hljs-keyword">return</span> string
 </code></pre>
-<pre><code class="language-java">// java
-// LC 394 Decode String
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 394 Decode String</span>
 
-/**
+<span class="hljs-comment">/**
  * Problem: Given an encoded string, return its decoded string.
  *
  * Encoding rule: k[encoded_string] means repeat encoded_string k times
@@ -860,22 +872,22 @@ class Solution:
  *
  * Key Insight:
  * - Use stack to handle nested brackets
- * - Process 4 cases: digit, '[', letter, ']'
+ * - Process 4 cases: digit, &#x27;[&#x27;, letter, &#x27;]&#x27;
  * - Build number incrementally (e.g., &quot;100&quot; = 1*10 + 0*10 + 0)
- * - On ']': pop count and previous string, build result
+ * - On &#x27;]&#x27;: pop count and previous string, build result
  *
  * Time: O(maxK * N) where maxK is max k value and N is length of decoded string
  * Space: O(N) for the stack
- */
+ */</span>
 
-// V0
-// IDEA: STACK + 4 CASES (digit, '[', letter, ']')
-public String decodeString(String s) {
-    if (s == null || s.length() == 0) {
-        return &quot;&quot;;
+<span class="hljs-comment">// V0</span>
+<span class="hljs-comment">// IDEA: STACK + 4 CASES (digit, &#x27;[&#x27;, letter, &#x27;]&#x27;)</span>
+<span class="hljs-keyword">public</span> String <span class="hljs-title function_">decodeString</span><span class="hljs-params">(String s)</span> {
+    <span class="hljs-keyword">if</span> (s == <span class="hljs-literal">null</span> || s.length() == <span class="hljs-number">0</span>) {
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>;
     }
 
-    /**
+    <span class="hljs-comment">/**
      * NOTE !!!
      * Stack stores alternating pattern:
      * - String (previous accumulated string)
@@ -885,64 +897,64 @@ public String decodeString(String s) {
      * ...
      *
      * Example for &quot;3[a2[c]]&quot;:
-     * When processing '2[c]':
+     * When processing &#x27;2[c]&#x27;:
      *   Stack bottom: [&quot;&quot;, 3, &quot;a&quot;, 2] Stack top
-     */
-    Stack&lt;Object&gt; stack = new Stack&lt;&gt;();
+     */</span>
+    Stack&lt;Object&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;();
 
-    int num = 0;              // Current number being built
-    String currentString = &quot;&quot;; // Current string being built
+    <span class="hljs-type">int</span> <span class="hljs-variable">num</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;              <span class="hljs-comment">// Current number being built</span>
+    <span class="hljs-type">String</span> <span class="hljs-variable">currentString</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;&quot;</span>; <span class="hljs-comment">// Current string being built</span>
 
-    for (char c : s.toCharArray()) {
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : s.toCharArray()) {
 
-        /**
+        <span class="hljs-comment">/**
          * Case 1: Digit
          * Build multi-digit numbers (e.g., &quot;100&quot;)
-         */
-        if (Character.isDigit(c)) {
-            num = num * 10 + (c - '0');
+         */</span>
+        <span class="hljs-keyword">if</span> (Character.isDigit(c)) {
+            num = num * <span class="hljs-number">10</span> + (c - <span class="hljs-string">&#x27;0&#x27;</span>);
         }
 
-        /**
-         * Case 2: '['
+        <span class="hljs-comment">/**
+         * Case 2: &#x27;[&#x27;
          * Push current string and number to stack
          * Reset for new nested level
-         */
-        else if (c == '[') {
-            // Push current string first, then number
+         */</span>
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (c == <span class="hljs-string">&#x27;[&#x27;</span>) {
+            <span class="hljs-comment">// Push current string first, then number</span>
             stack.push(currentString);
             stack.push(num);
 
-            // Reset for new level
-            currentString = &quot;&quot;;
-            num = 0;
+            <span class="hljs-comment">// Reset for new level</span>
+            currentString = <span class="hljs-string">&quot;&quot;</span>;
+            num = <span class="hljs-number">0</span>;
         }
 
-        /**
+        <span class="hljs-comment">/**
          * Case 3: Letter
          * Append to current string
-         */
-        else if (Character.isLetter(c)) {
+         */</span>
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (Character.isLetter(c)) {
             currentString += c;
         }
 
-        /**
-         * Case 4: ']'
+        <span class="hljs-comment">/**
+         * Case 4: &#x27;]&#x27;
          * Pop count and previous string
          * Build repeated string and concatenate
-         */
-        else if (c == ']') {
-            // Pop in reverse order of push
-            int repeatCount = (int) stack.pop();
-            String prevString = (String) stack.pop();
+         */</span>
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (c == <span class="hljs-string">&#x27;]&#x27;</span>) {
+            <span class="hljs-comment">// Pop in reverse order of push</span>
+            <span class="hljs-type">int</span> <span class="hljs-variable">repeatCount</span> <span class="hljs-operator">=</span> (<span class="hljs-type">int</span>) stack.pop();
+            <span class="hljs-type">String</span> <span class="hljs-variable">prevString</span> <span class="hljs-operator">=</span> (String) stack.pop();
 
-            /**
+            <span class="hljs-comment">/**
              * NOTE !!!
              * Repeat current string repeatCount times
              * Then prepend previous string
-             */
-            StringBuilder temp = new StringBuilder(prevString);
-            for (int i = 0; i &lt; repeatCount; i++) {
+             */</span>
+            <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">temp</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>(prevString);
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; repeatCount; i++) {
                 temp.append(currentString);
             }
 
@@ -950,42 +962,42 @@ public String decodeString(String s) {
         }
     }
 
-    return currentString;
+    <span class="hljs-keyword">return</span> currentString;
 }
 
-/**
+<span class="hljs-comment">/**
  * Example Walkthrough: s = &quot;3[a2[c]]&quot;
  *
- * Step 1: c='3' (digit)
+ * Step 1: c=&#x27;3&#x27; (digit)
  *   num = 3
  *
- * Step 2: c='[' (open bracket)
+ * Step 2: c=&#x27;[&#x27; (open bracket)
  *   stack.push(&quot;&quot;) → stack: [&quot;&quot;]
  *   stack.push(3)  → stack: [&quot;&quot;, 3]
  *   currentString = &quot;&quot;, num = 0
  *
- * Step 3: c='a' (letter)
+ * Step 3: c=&#x27;a&#x27; (letter)
  *   currentString = &quot;a&quot;
  *
- * Step 4: c='2' (digit)
+ * Step 4: c=&#x27;2&#x27; (digit)
  *   num = 2
  *
- * Step 5: c='[' (open bracket)
+ * Step 5: c=&#x27;[&#x27; (open bracket)
  *   stack.push(&quot;a&quot;) → stack: [&quot;&quot;, 3, &quot;a&quot;]
  *   stack.push(2)   → stack: [&quot;&quot;, 3, &quot;a&quot;, 2]
  *   currentString = &quot;&quot;, num = 0
  *
- * Step 6: c='c' (letter)
+ * Step 6: c=&#x27;c&#x27; (letter)
  *   currentString = &quot;c&quot;
  *
- * Step 7: c=']' (close bracket)
+ * Step 7: c=&#x27;]&#x27; (close bracket)
  *   repeatCount = stack.pop() = 2
  *   prevString = stack.pop() = &quot;a&quot;
  *   temp = &quot;a&quot; + &quot;c&quot; * 2 = &quot;acc&quot;
  *   currentString = &quot;acc&quot;
  *   stack: [&quot;&quot;, 3]
  *
- * Step 8: c=']' (close bracket)
+ * Step 8: c=&#x27;]&#x27; (close bracket)
  *   repeatCount = stack.pop() = 3
  *   prevString = stack.pop() = &quot;&quot;
  *   temp = &quot;&quot; + &quot;acc&quot; * 3 = &quot;accaccacc&quot;
@@ -993,62 +1005,62 @@ public String decodeString(String s) {
  *   stack: []
  *
  * Result: &quot;accaccacc&quot;
- */
+ */</span>
 
-// V1
-// IDEA: STACK with separate stacks for counts and strings (cleaner approach)
-public String decodeString_v1(String s) {
-    Stack&lt;Integer&gt; countStack = new Stack&lt;&gt;();
-    Stack&lt;String&gt; stringStack = new Stack&lt;&gt;();
+<span class="hljs-comment">// V1</span>
+<span class="hljs-comment">// IDEA: STACK with separate stacks for counts and strings (cleaner approach)</span>
+<span class="hljs-keyword">public</span> String <span class="hljs-title function_">decodeString_v1</span><span class="hljs-params">(String s)</span> {
+    Stack&lt;Integer&gt; countStack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;();
+    Stack&lt;String&gt; stringStack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;();
 
-    String currentString = &quot;&quot;;
-    int num = 0;
+    <span class="hljs-type">String</span> <span class="hljs-variable">currentString</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;&quot;</span>;
+    <span class="hljs-type">int</span> <span class="hljs-variable">num</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
 
-    for (char c : s.toCharArray()) {
-        if (Character.isDigit(c)) {
-            num = num * 10 + (c - '0');
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : s.toCharArray()) {
+        <span class="hljs-keyword">if</span> (Character.isDigit(c)) {
+            num = num * <span class="hljs-number">10</span> + (c - <span class="hljs-string">&#x27;0&#x27;</span>);
         }
-        else if (c == '[') {
-            // Push current state to stacks
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (c == <span class="hljs-string">&#x27;[&#x27;</span>) {
+            <span class="hljs-comment">// Push current state to stacks</span>
             countStack.push(num);
             stringStack.push(currentString);
 
-            // Reset for nested level
-            currentString = &quot;&quot;;
-            num = 0;
+            <span class="hljs-comment">// Reset for nested level</span>
+            currentString = <span class="hljs-string">&quot;&quot;</span>;
+            num = <span class="hljs-number">0</span>;
         }
-        else if (c == ']') {
-            // Build decoded string for this level
-            int repeatCount = countStack.pop();
-            StringBuilder temp = new StringBuilder(stringStack.pop());
+        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (c == <span class="hljs-string">&#x27;]&#x27;</span>) {
+            <span class="hljs-comment">// Build decoded string for this level</span>
+            <span class="hljs-type">int</span> <span class="hljs-variable">repeatCount</span> <span class="hljs-operator">=</span> countStack.pop();
+            <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">temp</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>(stringStack.pop());
 
-            for (int i = 0; i &lt; repeatCount; i++) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; repeatCount; i++) {
                 temp.append(currentString);
             }
 
             currentString = temp.toString();
         }
-        else {
-            // Letter
+        <span class="hljs-keyword">else</span> {
+            <span class="hljs-comment">// Letter</span>
             currentString += c;
         }
     }
 
-    return currentString;
+    <span class="hljs-keyword">return</span> currentString;
 }
 
-/**
+<span class="hljs-comment">/**
  * Common Mistakes:
  *
  * 1. Not handling multi-digit numbers (e.g., &quot;100[a]&quot;)
- *    ✗ num = c - '0'
- *    ✓ num = num * 10 + (c - '0')
+ *    ✗ num = c - &#x27;0&#x27;
+ *    ✓ num = num * 10 + (c - &#x27;0&#x27;)
  *
  * 2. Wrong stack push/pop order
  *    ✗ push(num, string) → pop(string, num)  // Wrong!
  *    ✓ push(string, num) → pop(num, string)  // Correct LIFO
  *
- * 3. Forgetting to reset num and currentString after '['
+ * 3. Forgetting to reset num and currentString after &#x27;[&#x27;
  *    ✗ Only reset one of them
  *    ✓ Reset both: num = 0; currentString = &quot;&quot;;
  *
@@ -1057,9 +1069,9 @@ public String decodeString_v1(String s) {
  *
  * 5. Using Stack&lt;Object&gt; without proper casting
  *    ✓ Use separate stacks (countStack, stringStack) for type safety
- */
+ */</span>
 
-/**
+<span class="hljs-comment">/**
  * Interview Tips:
  *
  * 1. Clarify constraints:
@@ -1076,530 +1088,530 @@ public String decodeString_v1(String s) {
  *    - What if string is invalid? (add validation)
  *    - Can we decode in-place? (no, need stack for nesting)
  *    - How to handle very large k values? (streaming approach)
- */
+ */</span>
 </code></pre>
 <h3 id="2-2-next-greater-element-i" tabindex="-1"><a class="header-anchor" href="#2-2-next-greater-element-i"><span>2-2) Next Greater Element I</span></a></h3>
-<pre><code class="language-python"># 496. Next Greater Element I
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># 496. Next Greater Element I</span>
 
-# V0
-# IDEA : STACK (for + while loop)
-class Solution(object):
-    def nextGreaterElement(self, nums1, nums2):
-        # edge case
-        if not nums2 or (not nums1 and not nums2):
-            return nums1
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : STACK (for + while loop)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">nextGreaterElement</span>(<span class="hljs-params">self, nums1, nums2</span>):
+        <span class="hljs-comment"># edge case</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> nums2 <span class="hljs-keyword">or</span> (<span class="hljs-keyword">not</span> nums1 <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> nums2):
+            <span class="hljs-keyword">return</span> nums1
         res = []
-        # NOTE : the trick here (found as a flag)
-        found = False
-        for i in nums1:
-            #print (&quot;i = &quot; + str(i) + &quot; res = &quot; + str(res))
+        <span class="hljs-comment"># NOTE : the trick here (found as a flag)</span>
+        found = <span class="hljs-literal">False</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> nums1:
+            <span class="hljs-comment">#print (&quot;i = &quot; + str(i) + &quot; res = &quot; + str(res))</span>
             idx = nums2.index(i)
-            # start from &quot;next&quot; element in nums2
-            # here we init tmp _nums2
-            _nums2 = nums2[idx+1:]
-            # while loop keep pop _nums2 for finding the next bigger element
-            while _nums2:
-                tmp = _nums2.pop(0)
-                # if found, then append to res, and break the while loop directly
-                if tmp &gt; i:
-                    found = True
+            <span class="hljs-comment"># start from &quot;next&quot; element in nums2</span>
+            <span class="hljs-comment"># here we init tmp _nums2</span>
+            _nums2 = nums2[idx+<span class="hljs-number">1</span>:]
+            <span class="hljs-comment"># while loop keep pop _nums2 for finding the next bigger element</span>
+            <span class="hljs-keyword">while</span> _nums2:
+                tmp = _nums2.pop(<span class="hljs-number">0</span>)
+                <span class="hljs-comment"># if found, then append to res, and break the while loop directly</span>
+                <span class="hljs-keyword">if</span> tmp &gt; i:
+                    found = <span class="hljs-literal">True</span>
                     res.append(tmp)
-                    break
-            # if not found, we need to append -1 to res
-            if not found:
-                res.append(-1)
-            found = False
-        return res
+                    <span class="hljs-keyword">break</span>
+            <span class="hljs-comment"># if not found, we need to append -1 to res</span>
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> found:
+                res.append(-<span class="hljs-number">1</span>)
+            found = <span class="hljs-literal">False</span>
+        <span class="hljs-keyword">return</span> res
 
-# V0
-# IDEA : double for loop (one of loops is INVERSE ORDERING) + case conditions op
-class Solution(object):
-    def nextGreaterElement(self, nums1, nums2):
-        res = [None for _ in range(len(nums1))]
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : double for loop (one of loops is INVERSE ORDERING) + case conditions op</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">nextGreaterElement</span>(<span class="hljs-params">self, nums1, nums2</span>):
+        res = [<span class="hljs-literal">None</span> <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(nums1))]
         tmp = []
-        for i in range(len(nums1)):
-            ### NOTE : from last idx to 0 idx. (Note the start and end idx)
-            for j in range(len(nums2)-1, -1, -1):
-                #print (&quot;i = &quot; + str(i) + &quot; j = &quot; + str(j) + &quot; tmp = &quot; + str(tmp))
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(nums1)):
+            <span class="hljs-comment">### NOTE : from last idx to 0 idx. (Note the start and end idx)</span>
+            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(nums2)-<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>):
+                <span class="hljs-comment">#print (&quot;i = &quot; + str(i) + &quot; j = &quot; + str(j) + &quot; tmp = &quot; + str(tmp))</span>
 
-                # case 1) No &quot;next greater element&quot; found in nums2
-                if not tmp and nums2[j] == nums1[i]:
-                    res[i] = -1
-                    break
-                # case 2) found &quot;next greater element&quot; in nums2, keep inverse looping
-                elif nums2[j] &gt; nums1[i]:
+                <span class="hljs-comment"># case 1) No &quot;next greater element&quot; found in nums2</span>
+                <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> tmp <span class="hljs-keyword">and</span> nums2[j] == nums1[i]:
+                    res[i] = -<span class="hljs-number">1</span>
+                    <span class="hljs-keyword">break</span>
+                <span class="hljs-comment"># case 2) found &quot;next greater element&quot; in nums2, keep inverse looping</span>
+                <span class="hljs-keyword">elif</span> nums2[j] &gt; nums1[i]:
                     tmp.append(nums2[j])
-                # case 3) already reach same element in nums2 (as nums1), pop &quot;last&quot; &quot;next greater element&quot;, paste to res, break the loop
-                elif tmp and nums2[j] == nums1[i]:
-                    _tmp = tmp.pop(-1)
+                <span class="hljs-comment"># case 3) already reach same element in nums2 (as nums1), pop &quot;last&quot; &quot;next greater element&quot;, paste to res, break the loop</span>
+                <span class="hljs-keyword">elif</span> tmp <span class="hljs-keyword">and</span> nums2[j] == nums1[i]:
+                    _tmp = tmp.pop(-<span class="hljs-number">1</span>)
                     res[i] = _tmp
                     tmp = []
-                    break
-        return res
+                    <span class="hljs-keyword">break</span>
+        <span class="hljs-keyword">return</span> res
 </code></pre>
-<pre><code class="language-java">// java
-// LC 496
-// V0
-// IDEA : STACK
-// https://www.youtube.com/watch?v=68a1Dc_qVq4
-/** NOTE !!!
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 496</span>
+<span class="hljs-comment">// V0</span>
+<span class="hljs-comment">// IDEA : STACK</span>
+<span class="hljs-comment">// https://www.youtube.com/watch?v=68a1Dc_qVq4</span>
+<span class="hljs-comment">/** NOTE !!!
  *
  *  nums1 is &quot;sub set&quot; of nums2,
  *  so all elements in nums1 are in nums2 as well
  *  and in order to find next greater element in nums1 reference nums2
  *  -&gt; ACTUALLY we only need to check nums2
  *  -&gt; then append result per element in nums1
- */
-public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+ */</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] nextGreaterElement(<span class="hljs-type">int</span>[] nums1, <span class="hljs-type">int</span>[] nums2) {
 
-    if (nums1.length == 1 &amp;&amp; nums2.length == 1){
-        return new int[]{-1};
+    <span class="hljs-keyword">if</span> (nums1.length == <span class="hljs-number">1</span> &amp;&amp; nums2.length == <span class="hljs-number">1</span>){
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{-<span class="hljs-number">1</span>};
     }
 
-    /**
+    <span class="hljs-comment">/**
      *  NOTE !!!
      *  we use map &quot; collect next greater element&quot;
      *  map definition :  {element, next-greater-element}
-     */
-    Map&lt;Integer, Integer&gt; map = new HashMap&lt;&gt;();
-    Stack&lt;Integer&gt; st = new Stack&lt;&gt;();
+     */</span>
+    Map&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();
+    Stack&lt;Integer&gt; st = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;();
 
-    for (int x : nums2){
-        /**
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> x : nums2){
+        <span class="hljs-comment">/**
          *  NOTE !!!
          *   1) use while loop
          *   2) while stack is NOT null and stack &quot;top&quot; element is smaller than current element (x) is nums2
          *
          *   -&gt; found &quot;next greater element&quot;, so update map
-         */
-        while(!st.isEmpty() &amp;&amp; st.peek() &lt; x){
-            int cur = st.pop();
+         */</span>
+        <span class="hljs-keyword">while</span>(!st.isEmpty() &amp;&amp; st.peek() &lt; x){
+            <span class="hljs-type">int</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> st.pop();
             map.put(cur, x);
         }
-        /** NOTE !!! if not feat above condition, we put element to stack */
+        <span class="hljs-comment">/** NOTE !!! if not feat above condition, we put element to stack */</span>
         st.add(x);
     }
 
-    //System.out.println(&quot;map = &quot; + map);
-    int[] res = new int[nums1.length];
-    // fill with -1 for element without next greater element
-    Arrays.fill(res, -1);
-    for (int j = 0; j &lt; nums1.length; j++){
-        if(map.containsKey(nums1[j])){
+    <span class="hljs-comment">//System.out.println(&quot;map = &quot; + map);</span>
+    <span class="hljs-type">int</span>[] res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[nums1.length];
+    <span class="hljs-comment">// fill with -1 for element without next greater element</span>
+    Arrays.fill(res, -<span class="hljs-number">1</span>);
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; nums1.length; j++){
+        <span class="hljs-keyword">if</span>(map.containsKey(nums1[j])){
             res[j] = map.get(nums1[j]);
         }
     }
 
-    //System.out.println(&quot;res = &quot; + res);
-    return res;
+    <span class="hljs-comment">//System.out.println(&quot;res = &quot; + res);</span>
+    <span class="hljs-keyword">return</span> res;
 }
 </code></pre>
 <h3 id="2-3-next-greater-element-ii" tabindex="-1"><a class="header-anchor" href="#2-3-next-greater-element-ii"><span>2-3) Next Greater Element II</span></a></h3>
-<pre><code class="language-python"># LC 503. Next Greater Element II
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 503. Next Greater Element II</span>
 
-# V0'
-# IDEA : LC 739
-class Solution(object):
-    def nextGreaterElements(self, nums):
-        # edge case
-        if not nums:
-            return
-        _len = len(nums)
-        # note : we init res as [-1] * _len
-        res = [-1] * _len
-        # note : we use &quot;nums = 2 * nums&quot; to simuldate &quot;circular array&quot;
-        nums = 2 * nums
-        stack = [] # [[idx, val]]
-        for idx, val in enumerate(nums):
-            while stack and stack[-1][1] &lt; val:
-                _idx, _val = stack.pop(-1)
-                &quot;&quot;&quot;
+<span class="hljs-comment"># V0&#x27;</span>
+<span class="hljs-comment"># IDEA : LC 739</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">nextGreaterElements</span>(<span class="hljs-params">self, nums</span>):
+        <span class="hljs-comment"># edge case</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> nums:
+            <span class="hljs-keyword">return</span>
+        _<span class="hljs-built_in">len</span> = <span class="hljs-built_in">len</span>(nums)
+        <span class="hljs-comment"># note : we init res as [-1] * _len</span>
+        res = [-<span class="hljs-number">1</span>] * _<span class="hljs-built_in">len</span>
+        <span class="hljs-comment"># note : we use &quot;nums = 2 * nums&quot; to simuldate &quot;circular array&quot;</span>
+        nums = <span class="hljs-number">2</span> * nums
+        stack = [] <span class="hljs-comment"># [[idx, val]]</span>
+        <span class="hljs-keyword">for</span> idx, val <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(nums):
+            <span class="hljs-keyword">while</span> stack <span class="hljs-keyword">and</span> stack[-<span class="hljs-number">1</span>][<span class="hljs-number">1</span>] &lt; val:
+                _idx, _val = stack.pop(-<span class="hljs-number">1</span>)
+                <span class="hljs-string">&quot;&quot;&quot;
                 NOTE !!!
                     -&gt; we get remainder via &quot;_idx % _len&quot; for handling idx issue
                       (since we made nums = 2 * nums earlier)
-                &quot;&quot;&quot;
-                res[_idx % _len] = val
+                &quot;&quot;&quot;</span>
+                res[_idx % _<span class="hljs-built_in">len</span>] = val
             stack.append([idx, val])
-        return res
+        <span class="hljs-keyword">return</span> res
 
-# V0'
-# IDEA : STACK + circular loop handling
-class Solution:
-    def nextGreaterElements(self, nums):
-        ### NOTE : since we can search nums circurly, 
-        #  -&gt; so here we make a new array (augLst = nums + nums) for that     
+<span class="hljs-comment"># V0&#x27;</span>
+<span class="hljs-comment"># IDEA : STACK + circular loop handling</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">nextGreaterElements</span>(<span class="hljs-params">self, nums</span>):
+        <span class="hljs-comment">### NOTE : since we can search nums circurly, </span>
+        <span class="hljs-comment">#  -&gt; so here we make a new array (augLst = nums + nums) for that     </span>
         augLst = nums + nums
         stack = []
-        # init ans
-        res = [-1] * len(nums)
-        ### NOTE : we looping augLst with inverse order
-        for i in range(len(augLst)-1, -1, -1):
-            ### NOTE : if stack and last value in stack smaller than augLst[i], we pop last value from stack
-            while stack and stack[-1] &lt;= augLst[i]:
+        <span class="hljs-comment"># init ans</span>
+        res = [-<span class="hljs-number">1</span>] * <span class="hljs-built_in">len</span>(nums)
+        <span class="hljs-comment">### NOTE : we looping augLst with inverse order</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(augLst)-<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>):
+            <span class="hljs-comment">### NOTE : if stack and last value in stack smaller than augLst[i], we pop last value from stack</span>
+            <span class="hljs-keyword">while</span> stack <span class="hljs-keyword">and</span> stack[-<span class="hljs-number">1</span>] &lt;= augLst[i]:
                 stack.pop()
-            ### NOTE : the remaining element in stack must fit the condition, so we append it to res
-            #   -&gt; note : append to `i % len(nums)` idx in res
-            if stack:
-                res[i % len(nums)] = stack[-1]
-            ### NOTE : we also need to append augLst[i] to stack
+            <span class="hljs-comment">### NOTE : the remaining element in stack must fit the condition, so we append it to res</span>
+            <span class="hljs-comment">#   -&gt; note : append to `i % len(nums)` idx in res</span>
+            <span class="hljs-keyword">if</span> stack:
+                res[i % <span class="hljs-built_in">len</span>(nums)] = stack[-<span class="hljs-number">1</span>]
+            <span class="hljs-comment">### NOTE : we also need to append augLst[i] to stack</span>
             stack.append(augLst[i])
-        return res
+        <span class="hljs-keyword">return</span> res
 </code></pre>
 <h3 id="2-4-daily-temperatures" tabindex="-1"><a class="header-anchor" href="#2-4-daily-temperatures"><span>2-4) Daily Temperatures</span></a></h3>
-<pre><code class="language-python"># LC 739. Daily Temperatures
-# V0
-# IDEA : STACK
-# DEMO 
-#     ...: T=[73, 74, 75, 71, 69, 72, 76, 73]
-#     ...: s=Solution()
-#     ...: r= s.dailyTemperatures(T)
-#     ...: print(r)
-#     ...: 
-# i : 1, stack : [(73, 0)], res : [0, 0, 0, 0, 0, 0, 0, 0]
-# i : 2, stack : [(74, 1)], res : [1, 0, 0, 0, 0, 0, 0, 0]
-# i : 5, stack : [(75, 2), (71, 3), (69, 4)], res : [1, 1, 0, 0, 0, 0, 0, 0]
-# i : 5, stack : [(75, 2), (71, 3)], res : [1, 1, 0, 0, 1, 0, 0, 0]
-# i : 6, stack : [(75, 2), (72, 5)], res : [1, 1, 0, 2, 1, 0, 0, 0]
-# i : 6, stack : [(75, 2)], res : [1, 1, 0, 2, 1, 1, 0, 0]
-# [1, 1, 4, 2, 1, 1, 0, 0]
-class Solution(object):
-    def dailyTemperatures(self, T):
-        N = len(T)
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 739. Daily Temperatures</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : STACK</span>
+<span class="hljs-comment"># DEMO </span>
+<span class="hljs-comment">#     ...: T=[73, 74, 75, 71, 69, 72, 76, 73]</span>
+<span class="hljs-comment">#     ...: s=Solution()</span>
+<span class="hljs-comment">#     ...: r= s.dailyTemperatures(T)</span>
+<span class="hljs-comment">#     ...: print(r)</span>
+<span class="hljs-comment">#     ...: </span>
+<span class="hljs-comment"># i : 1, stack : [(73, 0)], res : [0, 0, 0, 0, 0, 0, 0, 0]</span>
+<span class="hljs-comment"># i : 2, stack : [(74, 1)], res : [1, 0, 0, 0, 0, 0, 0, 0]</span>
+<span class="hljs-comment"># i : 5, stack : [(75, 2), (71, 3), (69, 4)], res : [1, 1, 0, 0, 0, 0, 0, 0]</span>
+<span class="hljs-comment"># i : 5, stack : [(75, 2), (71, 3)], res : [1, 1, 0, 0, 1, 0, 0, 0]</span>
+<span class="hljs-comment"># i : 6, stack : [(75, 2), (72, 5)], res : [1, 1, 0, 2, 1, 0, 0, 0]</span>
+<span class="hljs-comment"># i : 6, stack : [(75, 2)], res : [1, 1, 0, 2, 1, 1, 0, 0]</span>
+<span class="hljs-comment"># [1, 1, 4, 2, 1, 1, 0, 0]</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dailyTemperatures</span>(<span class="hljs-params">self, T</span>):
+        N = <span class="hljs-built_in">len</span>(T)
         stack = []
-        res = [0] * N
-        ### NOTE : we only use 1 for loop in this problem
-        for i, t in enumerate(T):
-            # if stack is not bland and last temp &lt; current tmpe
-            # -&gt; pop the stack (get its temp)
-            # -&gt; and calculate the difference 
-            ### BEWARE &quot;while&quot; op 
-            while stack and stack[-1][0] &lt; t:
-                oi = stack.pop()[1]
+        res = [<span class="hljs-number">0</span>] * N
+        <span class="hljs-comment">### NOTE : we only use 1 for loop in this problem</span>
+        <span class="hljs-keyword">for</span> i, t <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(T):
+            <span class="hljs-comment"># if stack is not bland and last temp &lt; current tmpe</span>
+            <span class="hljs-comment"># -&gt; pop the stack (get its temp)</span>
+            <span class="hljs-comment"># -&gt; and calculate the difference </span>
+            <span class="hljs-comment">### BEWARE &quot;while&quot; op </span>
+            <span class="hljs-keyword">while</span> stack <span class="hljs-keyword">and</span> stack[-<span class="hljs-number">1</span>][<span class="hljs-number">0</span>] &lt; t:
+                oi = stack.pop()[<span class="hljs-number">1</span>]
                 res[oi] = i - oi
-            # no matter any case, we have to insert current temp into stack anyway
-            # since the result (next higher temp) is decided by the coming temp, rather than current temp 
+            <span class="hljs-comment"># no matter any case, we have to insert current temp into stack anyway</span>
+            <span class="hljs-comment"># since the result (next higher temp) is decided by the coming temp, rather than current temp </span>
             stack.append((t, i))
-        return res
+        <span class="hljs-keyword">return</span> res
 </code></pre>
-<pre><code class="language-java">// java
-// LC 739
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 739</span>
 
-// V0
-// IDEA : STACK (MONOTONIC STACK)
-// LC 496
-public int[] dailyTemperatures(int[] temperatures) {
+<span class="hljs-comment">// V0</span>
+<span class="hljs-comment">// IDEA : STACK (MONOTONIC STACK)</span>
+<span class="hljs-comment">// LC 496</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] dailyTemperatures(<span class="hljs-type">int</span>[] temperatures) {
 
-    if (temperatures.length == 1){
-        return temperatures;
+    <span class="hljs-keyword">if</span> (temperatures.length == <span class="hljs-number">1</span>){
+        <span class="hljs-keyword">return</span> temperatures;
     }
 
-    /**
+    <span class="hljs-comment">/**
      *  Stack :
      *
-     *   -&gt; cache elements (temperature) that DOESN'T have (NOT found) next warmer temperature yet
+     *   -&gt; cache elements (temperature) that DOESN&#x27;T have (NOT found) next warmer temperature yet
      *   -&gt; structure : stack ([temperature, idx])
-     */
-    Stack&lt;List&lt;Integer&gt;&gt; st = new Stack&lt;&gt;(); // element, idx
-    /** NOTE !!!
+     */</span>
+    Stack&lt;List&lt;Integer&gt;&gt; st = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;(); <span class="hljs-comment">// element, idx</span>
+    <span class="hljs-comment">/** NOTE !!!
      *
-     *    can't use map, since there will be &quot;duplicated&quot; temperature
+     *    can&#x27;t use map, since there will be &quot;duplicated&quot; temperature
      *   -&gt; which will cause different val has same key (hashMap key)
-     */
-    //Map&lt;Integer, Integer&gt; map = new HashMap&lt;&gt;(); // {temperature : idx-of-next-warmer-temperature}
-    /**
+     */</span>
+    <span class="hljs-comment">//Map&lt;Integer, Integer&gt; map = new HashMap&lt;&gt;(); // {temperature : idx-of-next-warmer-temperature}</span>
+    <span class="hljs-comment">/**
      *  NOTE !!!
      *
      *   we use nextGreater collect answer,
      *   -&gt; idx : temperature, val : idx-of-next-warmer-temperature
-     */
-    int[] nextGreater = new int[temperatures.length];
-    Arrays.fill(nextGreater, 0); // idx : temperature, val : idx-of-next-warmer-temperature
-    for (int j = 0; j &lt; temperatures.length; j++){
-        int x = temperatures[j];
-        /**
+     */</span>
+    <span class="hljs-type">int</span>[] nextGreater = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[temperatures.length];
+    Arrays.fill(nextGreater, <span class="hljs-number">0</span>); <span class="hljs-comment">// idx : temperature, val : idx-of-next-warmer-temperature</span>
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; temperatures.length; j++){
+        <span class="hljs-type">int</span> <span class="hljs-variable">x</span> <span class="hljs-operator">=</span> temperatures[j];
+        <span class="hljs-comment">/**
          *  NOTE !!!
          *   1) while loop
          *   2) stack is NOT empty
          *   3) cache temperature smaller than current temperature
          *
          *   st.peek().get(0) is cached temperature
-         */
-        while (!st.isEmpty() &amp;&amp; st.peek().get(0) &lt; x){
-            /**
+         */</span>
+        <span class="hljs-keyword">while</span> (!st.isEmpty() &amp;&amp; st.peek().get(<span class="hljs-number">0</span>) &lt; x){
+            <span class="hljs-comment">/**
              *  st.peek().get(1) is idx
              *
-             */
-            nextGreater[st.peek().get(1)] = j - st.peek().get(1);
+             */</span>
+            nextGreater[st.peek().get(<span class="hljs-number">1</span>)] = j - st.peek().get(<span class="hljs-number">1</span>);
             st.pop();
         }
-        List&lt;Integer&gt; cur = new ArrayList&lt;&gt;();
-        cur.add(x); // element
-        cur.add(j); // idx
+        List&lt;Integer&gt; cur = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+        cur.add(x); <span class="hljs-comment">// element</span>
+        cur.add(j); <span class="hljs-comment">// idx</span>
         st.add(cur);
     }
 
-    //System.out.println(&quot;nextGreater = &quot; + nextGreater);
-    return nextGreater;
+    <span class="hljs-comment">//System.out.println(&quot;nextGreater = &quot; + nextGreater);</span>
+    <span class="hljs-keyword">return</span> nextGreater;
 }
 </code></pre>
 <h3 id="2-5-basic-calculator-i" tabindex="-1"><a class="header-anchor" href="#2-5-basic-calculator-i"><span>2-5) Basic Calculator I</span></a></h3>
-<pre><code class="language-python"># LC 224 Basic Calculator
-# V0'
-# IDEA : STACK
-# https://leetcode.com/problems/basic-calculator/solution/
-class Solution:
-    def calculate(self, s):
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 224 Basic Calculator</span>
+<span class="hljs-comment"># V0&#x27;</span>
+<span class="hljs-comment"># IDEA : STACK</span>
+<span class="hljs-comment"># https://leetcode.com/problems/basic-calculator/solution/</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">calculate</span>(<span class="hljs-params">self, s</span>):
 
         stack = []
-        operand = 0
-        res = 0 # For the on-going result
-        sign = 1 # 1 means positive, -1 means negative  
+        operand = <span class="hljs-number">0</span>
+        res = <span class="hljs-number">0</span> <span class="hljs-comment"># For the on-going result</span>
+        sign = <span class="hljs-number">1</span> <span class="hljs-comment"># 1 means positive, -1 means negative  </span>
 
-        for ch in s:
-            if ch.isdigit():
+        <span class="hljs-keyword">for</span> ch <span class="hljs-keyword">in</span> s:
+            <span class="hljs-keyword">if</span> ch.isdigit():
 
-                # Forming operand, since it could be more than one digit
-                operand = (operand * 10) + int(ch)
+                <span class="hljs-comment"># Forming operand, since it could be more than one digit</span>
+                operand = (operand * <span class="hljs-number">10</span>) + <span class="hljs-built_in">int</span>(ch)
 
-            elif ch == '+':
+            <span class="hljs-keyword">elif</span> ch == <span class="hljs-string">&#x27;+&#x27;</span>:
 
-                # Evaluate the expression to the left,
-                # with result, sign, operand
+                <span class="hljs-comment"># Evaluate the expression to the left,</span>
+                <span class="hljs-comment"># with result, sign, operand</span>
                 res += sign * operand
 
-                # Save the recently encountered '+' sign
-                sign = 1
+                <span class="hljs-comment"># Save the recently encountered &#x27;+&#x27; sign</span>
+                sign = <span class="hljs-number">1</span>
 
-                # Reset operand
-                operand = 0
+                <span class="hljs-comment"># Reset operand</span>
+                operand = <span class="hljs-number">0</span>
 
-            elif ch == '-':
+            <span class="hljs-keyword">elif</span> ch == <span class="hljs-string">&#x27;-&#x27;</span>:
 
                 res += sign * operand
-                sign = -1
-                operand = 0
+                sign = -<span class="hljs-number">1</span>
+                operand = <span class="hljs-number">0</span>
 
-            elif ch == '(':
+            <span class="hljs-keyword">elif</span> ch == <span class="hljs-string">&#x27;(&#x27;</span>:
 
-                # Push the result and sign on to the stack, for later
-                # We push the result first, then sign
+                <span class="hljs-comment"># Push the result and sign on to the stack, for later</span>
+                <span class="hljs-comment"># We push the result first, then sign</span>
                 stack.append(res)
                 stack.append(sign)
 
-                # Reset operand and result, as if new evaluation begins for the new sub-expression
-                sign = 1
-                res = 0
+                <span class="hljs-comment"># Reset operand and result, as if new evaluation begins for the new sub-expression</span>
+                sign = <span class="hljs-number">1</span>
+                res = <span class="hljs-number">0</span>
 
-            elif ch == ')':
+            <span class="hljs-keyword">elif</span> ch == <span class="hljs-string">&#x27;)&#x27;</span>:
 
-                # Evaluate the expression to the left
-                # with result, sign and operand
+                <span class="hljs-comment"># Evaluate the expression to the left</span>
+                <span class="hljs-comment"># with result, sign and operand</span>
                 res += sign * operand
 
-                # ')' marks end of expression within a set of parenthesis
-                # Its result is multiplied with sign on top of stack
-                # as stack.pop() is the sign before the parenthesis
-                res *= stack.pop() # stack pop 1, sign
+                <span class="hljs-comment"># &#x27;)&#x27; marks end of expression within a set of parenthesis</span>
+                <span class="hljs-comment"># Its result is multiplied with sign on top of stack</span>
+                <span class="hljs-comment"># as stack.pop() is the sign before the parenthesis</span>
+                res *= stack.pop() <span class="hljs-comment"># stack pop 1, sign</span>
 
-                # Then add to the next operand on the top.
-                # as stack.pop() is the result calculated before this parenthesis
-                # (operand on stack) + (sign on stack * (result from parenthesis))
-                res += stack.pop() # stack pop 2, operand
+                <span class="hljs-comment"># Then add to the next operand on the top.</span>
+                <span class="hljs-comment"># as stack.pop() is the result calculated before this parenthesis</span>
+                <span class="hljs-comment"># (operand on stack) + (sign on stack * (result from parenthesis))</span>
+                res += stack.pop() <span class="hljs-comment"># stack pop 2, operand</span>
 
-                # Reset the operand
-                operand = 0
+                <span class="hljs-comment"># Reset the operand</span>
+                operand = <span class="hljs-number">0</span>
 
-        return res + sign * operand
+        <span class="hljs-keyword">return</span> res + sign * operand
 </code></pre>
 <h3 id="2-5-basic-calculator-ii" tabindex="-1"><a class="header-anchor" href="#2-5-basic-calculator-ii"><span>2-5’) Basic Calculator II</span></a></h3>
-<pre><code class="language-python"># python
-# LC 227. Basic Calculator II, LC 224. Basic Calculator
-# V0
-# IDEA : STACK
-class Solution:
-    def calculate(self, s):
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># python</span>
+<span class="hljs-comment"># LC 227. Basic Calculator II, LC 224. Basic Calculator</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : STACK</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">calculate</span>(<span class="hljs-params">self, s</span>):
         stack = []
-        # NOTE THIS !!
-        pre_op = '+'
-        num = 0
-        for i, each in enumerate(s):
-            # case 1) : digit
-            if each.isdigit():
-                num = 10 * num + int(each)  # the way to deal with number like &quot;100&quot;, &quot;10&quot;... 
-            if i == len(s) - 1 or each in '+-*/':
-                &quot;&quot;&quot;
+        <span class="hljs-comment"># NOTE THIS !!</span>
+        pre_op = <span class="hljs-string">&#x27;+&#x27;</span>
+        num = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> i, each <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(s):
+            <span class="hljs-comment"># case 1) : digit</span>
+            <span class="hljs-keyword">if</span> each.isdigit():
+                num = <span class="hljs-number">10</span> * num + <span class="hljs-built_in">int</span>(each)  <span class="hljs-comment"># the way to deal with number like &quot;100&quot;, &quot;10&quot;... </span>
+            <span class="hljs-keyword">if</span> i == <span class="hljs-built_in">len</span>(s) - <span class="hljs-number">1</span> <span class="hljs-keyword">or</span> each <span class="hljs-keyword">in</span> <span class="hljs-string">&#x27;+-*/&#x27;</span>:
+                <span class="hljs-string">&quot;&quot;&quot;
                 NOTE !!! : we deal with &quot;pre_op&quot; (rather than current op)
-                &quot;&quot;&quot;
-                # case 2) : &quot;+&quot;
-                if pre_op == '+':
+                &quot;&quot;&quot;</span>
+                <span class="hljs-comment"># case 2) : &quot;+&quot;</span>
+                <span class="hljs-keyword">if</span> pre_op == <span class="hljs-string">&#x27;+&#x27;</span>:
                     stack.append(num)
-                # case 3) : &quot;-&quot;    
-                elif pre_op == '-':
+                <span class="hljs-comment"># case 3) : &quot;-&quot;    </span>
+                <span class="hljs-keyword">elif</span> pre_op == <span class="hljs-string">&#x27;-&#x27;</span>:
                     stack.append(-num)
-                # case 3) : &quot;*&quot; 
-                elif pre_op == '*':
+                <span class="hljs-comment"># case 3) : &quot;*&quot; </span>
+                <span class="hljs-keyword">elif</span> pre_op == <span class="hljs-string">&#x27;*&#x27;</span>:
                     stack.append(stack.pop() * num)
-                # case 3) : &quot;/&quot; 
-                elif pre_op == '/':
+                <span class="hljs-comment"># case 3) : &quot;/&quot; </span>
+                <span class="hljs-keyword">elif</span> pre_op == <span class="hljs-string">&#x27;/&#x27;</span>:
                     top = stack.pop()
-                    if top &lt; 0:
-                        stack.append(int(top / num))
-                    else:
+                    <span class="hljs-keyword">if</span> top &lt; <span class="hljs-number">0</span>:
+                        stack.append(<span class="hljs-built_in">int</span>(top / num))
+                    <span class="hljs-keyword">else</span>:
                         stack.append(top // num)
-                # NOTE this!
+                <span class="hljs-comment"># NOTE this!</span>
                 pre_op = each
-                num = 0
-        return sum(stack)
+                num = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">sum</span>(stack)
 
-# Algorithm book (labu) p. 342
-# IDEA : STACK + RECURSIVE
-# TODO : fix output format
-class Solution(object):
-    def calculate(self, s):
+<span class="hljs-comment"># Algorithm book (labu) p. 342</span>
+<span class="hljs-comment"># IDEA : STACK + RECURSIVE</span>
+<span class="hljs-comment"># TODO : fix output format</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">calculate</span>(<span class="hljs-params">self, s</span>):
 
-        def helper(s):
+        <span class="hljs-keyword">def</span> <span class="hljs-title function_">helper</span>(<span class="hljs-params">s</span>):
             stack = []
-            sign = '+'
-            num = 0
+            sign = <span class="hljs-string">&#x27;+&#x27;</span>
+            num = <span class="hljs-number">0</span>
 
-            while len(s) &gt; 0:
-                c = s.pop(0)
-                if c.isdigit():
-                    num = 10 * num + int(c)
-                    &quot;&quot;&quot;
+            <span class="hljs-keyword">while</span> <span class="hljs-built_in">len</span>(s) &gt; <span class="hljs-number">0</span>:
+                c = s.pop(<span class="hljs-number">0</span>)
+                <span class="hljs-keyword">if</span> c.isdigit():
+                    num = <span class="hljs-number">10</span> * num + <span class="hljs-built_in">int</span>(c)
+                    <span class="hljs-string">&quot;&quot;&quot;
                     do recursive when meet &quot;(&quot;
-                    &quot;&quot;&quot;
-                    if c == '(':
+                    &quot;&quot;&quot;</span>
+                    <span class="hljs-keyword">if</span> c == <span class="hljs-string">&#x27;(&#x27;</span>:
                         num = helper(s)
-                    if (not c.isdigit() and c != ' ') or len(s) == 0:
-                        if sign == '+':
+                    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">not</span> c.isdigit() <span class="hljs-keyword">and</span> c != <span class="hljs-string">&#x27; &#x27;</span>) <span class="hljs-keyword">or</span> <span class="hljs-built_in">len</span>(s) == <span class="hljs-number">0</span>:
+                        <span class="hljs-keyword">if</span> sign == <span class="hljs-string">&#x27;+&#x27;</span>:
                             stack.append(num)
-                        elif sign == '-':
+                        <span class="hljs-keyword">elif</span> sign == <span class="hljs-string">&#x27;-&#x27;</span>:
                             stack.append(-num)
-                        elif sign == '*':
-                            stack[-1] = stack[-1] * num
-                        elif sign == '/':
-                            stack[-1] = int(stack[-1] / float(num))
-                        num = 0
+                        <span class="hljs-keyword">elif</span> sign == <span class="hljs-string">&#x27;*&#x27;</span>:
+                            stack[-<span class="hljs-number">1</span>] = stack[-<span class="hljs-number">1</span>] * num
+                        <span class="hljs-keyword">elif</span> sign == <span class="hljs-string">&#x27;/&#x27;</span>:
+                            stack[-<span class="hljs-number">1</span>] = <span class="hljs-built_in">int</span>(stack[-<span class="hljs-number">1</span>] / <span class="hljs-built_in">float</span>(num))
+                        num = <span class="hljs-number">0</span>
                         sign = c
-                    &quot;&quot;&quot;
+                    <span class="hljs-string">&quot;&quot;&quot;
                     end recursive when meet &quot;)&quot;
-                    &quot;&quot;&quot;
-                    if c == ')':
-                        break
-            return sum(stack)
+                    &quot;&quot;&quot;</span>
+                    <span class="hljs-keyword">if</span> c == <span class="hljs-string">&#x27;)&#x27;</span>:
+                        <span class="hljs-keyword">break</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-built_in">sum</span>(stack)
 
-        # run the helper func    
-        return helper(list(s))
+        <span class="hljs-comment"># run the helper func    </span>
+        <span class="hljs-keyword">return</span> helper(<span class="hljs-built_in">list</span>(s))
 
-# V1
-# python 3
-class Solution:
-    def calculate(self, s):
+<span class="hljs-comment"># V1</span>
+<span class="hljs-comment"># python 3</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">calculate</span>(<span class="hljs-params">self, s</span>):
         stack = []
-        pre_op = '+'
-        num = 0
-        for i, each in enumerate(s):
-            if each.isdigit():
-                num = 10 * num + int(each)  # the way to deal with number like &quot;100&quot;, &quot;10&quot;... 
-            if i == len(s) - 1 or each in '+-*/':
-                if pre_op == '+':
+        pre_op = <span class="hljs-string">&#x27;+&#x27;</span>
+        num = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> i, each <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(s):
+            <span class="hljs-keyword">if</span> each.isdigit():
+                num = <span class="hljs-number">10</span> * num + <span class="hljs-built_in">int</span>(each)  <span class="hljs-comment"># the way to deal with number like &quot;100&quot;, &quot;10&quot;... </span>
+            <span class="hljs-keyword">if</span> i == <span class="hljs-built_in">len</span>(s) - <span class="hljs-number">1</span> <span class="hljs-keyword">or</span> each <span class="hljs-keyword">in</span> <span class="hljs-string">&#x27;+-*/&#x27;</span>:
+                <span class="hljs-keyword">if</span> pre_op == <span class="hljs-string">&#x27;+&#x27;</span>:
                     stack.append(num)
-                elif pre_op == '-':
+                <span class="hljs-keyword">elif</span> pre_op == <span class="hljs-string">&#x27;-&#x27;</span>:
                     stack.append(-num)
-                elif pre_op == '*':
+                <span class="hljs-keyword">elif</span> pre_op == <span class="hljs-string">&#x27;*&#x27;</span>:
                     stack.append(stack.pop() * num)
-                elif pre_op == '/':
+                <span class="hljs-keyword">elif</span> pre_op == <span class="hljs-string">&#x27;/&#x27;</span>:
                     top = stack.pop()
-                    if top &lt; 0:
-                        stack.append(int(top / num))
-                    else:
+                    <span class="hljs-keyword">if</span> top &lt; <span class="hljs-number">0</span>:
+                        stack.append(<span class="hljs-built_in">int</span>(top / num))
+                    <span class="hljs-keyword">else</span>:
                         stack.append(top // num)
                 pre_op = each
-                num = 0
-        return sum(stack)
+                num = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">sum</span>(stack)
 </code></pre>
 <h3 id="2-5-sum-of-subarray-minimums" tabindex="-1"><a class="header-anchor" href="#2-5-sum-of-subarray-minimums"><span>2-5) Sum of Subarray Minimums</span></a></h3>
-<pre><code class="language-python"># LC 907. Sum of Subarray Minimums
-# V0
-# IDEA :  increasing stacks
-class Solution:
-    def sumSubarrayMins(self, A):
-        n, mod = len(A), 10**9 + 7
-        left, right, s1, s2 = [0] * n, [0] * n, [], []
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 907. Sum of Subarray Minimums</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA :  increasing stacks</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">sumSubarrayMins</span>(<span class="hljs-params">self, A</span>):
+        n, mod = <span class="hljs-built_in">len</span>(A), <span class="hljs-number">10</span>**<span class="hljs-number">9</span> + <span class="hljs-number">7</span>
+        left, right, s1, s2 = [<span class="hljs-number">0</span>] * n, [<span class="hljs-number">0</span>] * n, [], []
 
-        for i in range(n):
-            count = 1
-            while s1 and s1[-1][0] &gt; A[i]:
-                count += s1.pop()[1]
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):
+            count = <span class="hljs-number">1</span>
+            <span class="hljs-keyword">while</span> s1 <span class="hljs-keyword">and</span> s1[-<span class="hljs-number">1</span>][<span class="hljs-number">0</span>] &gt; A[i]:
+                count += s1.pop()[<span class="hljs-number">1</span>]
             left[i] = count
             s1.append([A[i], count])
 
-        for i in range(n)[::-1]:
-            count = 1
-            while s2 and s2[-1][0] &gt;= A[i]:
-                count += s2.pop()[1]
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)[::-<span class="hljs-number">1</span>]:
+            count = <span class="hljs-number">1</span>
+            <span class="hljs-keyword">while</span> s2 <span class="hljs-keyword">and</span> s2[-<span class="hljs-number">1</span>][<span class="hljs-number">0</span>] &gt;= A[i]:
+                count += s2.pop()[<span class="hljs-number">1</span>]
             right[i] = count
             s2.append([A[i], count])
-        return sum(a * l * r for a, l, r in zip(A, left, right)) % mod
+        <span class="hljs-keyword">return</span> <span class="hljs-built_in">sum</span>(a * l * r <span class="hljs-keyword">for</span> a, l, r <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(A, left, right)) % mod
 </code></pre>
 <h3 id="2-6-asteroid-collision" tabindex="-1"><a class="header-anchor" href="#2-6-asteroid-collision"><span>2-6) Asteroid Collision</span></a></h3>
-<pre><code class="language-python"># LC 735. Asteroid Collision
-# V0
-class Solution(object):
-    def asteroidCollision(self, asteroids):
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 735. Asteroid Collision</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">asteroidCollision</span>(<span class="hljs-params">self, asteroids</span>):
         ans = []
-        for new in asteroids:
-            while ans and new &lt; 0 &lt; ans[-1]:
-                if ans[-1] &lt; -new:
+        <span class="hljs-keyword">for</span> new <span class="hljs-keyword">in</span> asteroids:
+            <span class="hljs-keyword">while</span> ans <span class="hljs-keyword">and</span> new &lt; <span class="hljs-number">0</span> &lt; ans[-<span class="hljs-number">1</span>]:
+                <span class="hljs-keyword">if</span> ans[-<span class="hljs-number">1</span>] &lt; -new:
                     ans.pop()
-                    continue
-                elif ans[-1] == -new:
+                    <span class="hljs-keyword">continue</span>
+                <span class="hljs-keyword">elif</span> ans[-<span class="hljs-number">1</span>] == -new:
                     ans.pop()
-                break
-            else:
+                <span class="hljs-keyword">break</span>
+            <span class="hljs-keyword">else</span>:
                 ans.append(new)
-        return ans
+        <span class="hljs-keyword">return</span> ans
 </code></pre>
 <h3 id="2-7-remove-all-adjacent-duplicates-in-string" tabindex="-1"><a class="header-anchor" href="#2-7-remove-all-adjacent-duplicates-in-string"><span>2-7) Remove All Adjacent Duplicates in String</span></a></h3>
-<pre><code class="language-python"># LC 1047. Remove All Adjacent Duplicates In String
-# V0
-# IDEA : STACK
-class Solution:
-     def removeDuplicates(self, x):
-          # edge
-          if not x:
-            return
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1047. Remove All Adjacent Duplicates In String</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : STACK</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+     <span class="hljs-keyword">def</span> <span class="hljs-title function_">removeDuplicates</span>(<span class="hljs-params">self, x</span>):
+          <span class="hljs-comment"># edge</span>
+          <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> x:
+            <span class="hljs-keyword">return</span>
           stack = []
-          &quot;&quot;&quot;
+          <span class="hljs-string">&quot;&quot;&quot;
           NOTE !!! below op
-          &quot;&quot;&quot;
-          for i in range(len(x)):
-               # NOTE !!! : trick here : if stack last element == current x's element
-               #       -&gt; we pop last stack element
-               #       -&gt; and NOT add current element
-               if stack and stack[-1] == x[i]:
-                    stack.pop(-1)
-               # if stack last element != current x's element
-               #      -&gt; we append x[i]
-               else:
+          &quot;&quot;&quot;</span>
+          <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(x)):
+               <span class="hljs-comment"># NOTE !!! : trick here : if stack last element == current x&#x27;s element</span>
+               <span class="hljs-comment">#       -&gt; we pop last stack element</span>
+               <span class="hljs-comment">#       -&gt; and NOT add current element</span>
+               <span class="hljs-keyword">if</span> stack <span class="hljs-keyword">and</span> stack[-<span class="hljs-number">1</span>] == x[i]:
+                    stack.pop(-<span class="hljs-number">1</span>)
+               <span class="hljs-comment"># if stack last element != current x&#x27;s element</span>
+               <span class="hljs-comment">#      -&gt; we append x[i]</span>
+               <span class="hljs-keyword">else</span>:
                     stack.append(x[i])
-          return &quot;&quot;.join(stack)
+          <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>.join(stack)
 
-# V0'
-# IDEA : TWO POINTERS
-#      -&gt; pointers : end, c
-class Solution:
-     def removeDuplicates(self, S):
-            end =  -1
-            a = list(S)
-            for c in a:
-                if end &gt;= 0 and a[end] == c:
-                    end -= 1
-                else:
-                    end += 1
+<span class="hljs-comment"># V0&#x27;</span>
+<span class="hljs-comment"># IDEA : TWO POINTERS</span>
+<span class="hljs-comment">#      -&gt; pointers : end, c</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+     <span class="hljs-keyword">def</span> <span class="hljs-title function_">removeDuplicates</span>(<span class="hljs-params">self, S</span>):
+            end =  -<span class="hljs-number">1</span>
+            a = <span class="hljs-built_in">list</span>(S)
+            <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> a:
+                <span class="hljs-keyword">if</span> end &gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> a[end] == c:
+                    end -= <span class="hljs-number">1</span>
+                <span class="hljs-keyword">else</span>:
+                    end += <span class="hljs-number">1</span>
                     a[end] = c
-            return ''.join(a[: end + 1])
+            <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;&#x27;</span>.join(a[: end + <span class="hljs-number">1</span>])
 </code></pre>
 <h3 id="2-8-remove-all-adjacent-duplicates-in-string-ii" tabindex="-1"><a class="header-anchor" href="#2-8-remove-all-adjacent-duplicates-in-string-ii"><span>2-8) Remove All Adjacent Duplicates in String II</span></a></h3>
 <p><strong>Pattern: Stack with Character-Count Pairs</strong></p>
@@ -1643,12 +1655,12 @@ class Solution:
 <li>✓ Input constraint: k &gt;= 2 (if k=1, different approach needed)</li>
 </ul>
 <p><strong>Structure:</strong></p>
-<pre><code class="language-java">// Core data structure
-Stack&lt;int[]&gt; stack = new Stack&lt;&gt;();
-// Each element: {character_as_int, count}
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Core data structure</span>
+Stack&lt;<span class="hljs-type">int</span>[]&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;();
+<span class="hljs-comment">// Each element: {character_as_int, count}</span>
 
-// Or for clarity
-Stack&lt;Pair&lt;Character, Integer&gt;&gt; stack = new Stack&lt;&gt;();
+<span class="hljs-comment">// Or for clarity</span>
+Stack&lt;Pair&lt;Character, Integer&gt;&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;();
 </code></pre>
 <p><strong>Similar Problems:</strong></p>
 <ul>
@@ -1657,16 +1669,16 @@ Stack&lt;Pair&lt;Character, Integer&gt;&gt; stack = new Stack&lt;&gt;();
 <li>LC 316: Remove Duplicate Letters (lexicographical order with stack)</li>
 <li>LC 394: Decode String (stack with count, but for repetition)</li>
 </ul>
-<pre><code class="language-python"># LC 1209. Remove All Adjacent Duplicates in String II
-# V0
-# IDEA : STACK
-class Solution:
-     def removeDuplicates(self, x, k):
-          # edge case
-          if not x:
-            return None
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 1209. Remove All Adjacent Duplicates in String II</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : STACK</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+     <span class="hljs-keyword">def</span> <span class="hljs-title function_">removeDuplicates</span>(<span class="hljs-params">self, x, k</span>):
+          <span class="hljs-comment"># edge case</span>
+          <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> x:
+            <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>
           stack = []
-          &quot;&quot;&quot;
+          <span class="hljs-string">&quot;&quot;&quot;
           NOTE !!!
             1) we use [[element, _count]] format for below op
             2) note the case when deal with duplicated elements
@@ -1676,40 +1688,40 @@ class Solution:
                          stack[-1][1] += 1
                     else:
                          stack.pop(-1)
-          &quot;&quot;&quot;
-          for i in range(len(x)):
-               if stack and stack[-1][0] == x[i]:
-                    if stack[-1][1] &lt; k-1:
-                         stack[-1][1] += 1
-                    else:
-                         stack.pop(-1)
-               else:
-                    stack.append([x[i], 1])
-          #print (&quot;&gt;&gt; stack = &quot; + str(stack))
-          tmp = [x[0]*x[1] for x in stack]
-          #print (&quot;&gt;&gt; tmp = &quot; + str(tmp))
-          return &quot;&quot;.join(tmp)
+          &quot;&quot;&quot;</span>
+          <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(x)):
+               <span class="hljs-keyword">if</span> stack <span class="hljs-keyword">and</span> stack[-<span class="hljs-number">1</span>][<span class="hljs-number">0</span>] == x[i]:
+                    <span class="hljs-keyword">if</span> stack[-<span class="hljs-number">1</span>][<span class="hljs-number">1</span>] &lt; k-<span class="hljs-number">1</span>:
+                         stack[-<span class="hljs-number">1</span>][<span class="hljs-number">1</span>] += <span class="hljs-number">1</span>
+                    <span class="hljs-keyword">else</span>:
+                         stack.pop(-<span class="hljs-number">1</span>)
+               <span class="hljs-keyword">else</span>:
+                    stack.append([x[i], <span class="hljs-number">1</span>])
+          <span class="hljs-comment">#print (&quot;&gt;&gt; stack = &quot; + str(stack))</span>
+          tmp = [x[<span class="hljs-number">0</span>]*x[<span class="hljs-number">1</span>] <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> stack]
+          <span class="hljs-comment">#print (&quot;&gt;&gt; tmp = &quot; + str(tmp))</span>
+          <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>.join(tmp)
 
-# V0'
-# IDEA : STACK
-# NOTE !!! we DON'T need to modify original s, (but maintain an extra stack for duplicated checks)
-class Solution:
-     def removeDuplicates(self, s, k):
-            stack = [['#', 0]]
-            for c in s:
-                #print (&quot;c = &quot; + str(c) + &quot; stack = &quot; + str(stack))
-                if stack[-1][0] == c:
-                    stack[-1][1] += 1
-                    if stack[-1][1] == k:
+<span class="hljs-comment"># V0&#x27;</span>
+<span class="hljs-comment"># IDEA : STACK</span>
+<span class="hljs-comment"># NOTE !!! we DON&#x27;T need to modify original s, (but maintain an extra stack for duplicated checks)</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+     <span class="hljs-keyword">def</span> <span class="hljs-title function_">removeDuplicates</span>(<span class="hljs-params">self, s, k</span>):
+            stack = [[<span class="hljs-string">&#x27;#&#x27;</span>, <span class="hljs-number">0</span>]]
+            <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> s:
+                <span class="hljs-comment">#print (&quot;c = &quot; + str(c) + &quot; stack = &quot; + str(stack))</span>
+                <span class="hljs-keyword">if</span> stack[-<span class="hljs-number">1</span>][<span class="hljs-number">0</span>] == c:
+                    stack[-<span class="hljs-number">1</span>][<span class="hljs-number">1</span>] += <span class="hljs-number">1</span>
+                    <span class="hljs-keyword">if</span> stack[-<span class="hljs-number">1</span>][<span class="hljs-number">1</span>] == k:
                         stack.pop()
-                else:
-                    stack.append([c, 1])
-            return ''.join(c * k for c, k in stack)
+                <span class="hljs-keyword">else</span>:
+                    stack.append([c, <span class="hljs-number">1</span>])
+            <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;&#x27;</span>.join(c * k <span class="hljs-keyword">for</span> c, k <span class="hljs-keyword">in</span> stack)
 </code></pre>
-<pre><code class="language-java">// java
-// LC 1209. Remove All Adjacent Duplicates in String II
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 1209. Remove All Adjacent Duplicates in String II</span>
 
-/**
+<span class="hljs-comment">/**
  * Problem: Remove k consecutive equal characters repeatedly until no more removals possible.
  *
  * Examples:
@@ -1729,134 +1741,134 @@ class Solution:
  *
  * Time: O(N) - single pass through string
  * Space: O(N) - worst case all different characters
- */
+ */</span>
 
-// V0
-// IDEA: STACK with {char, count} pairs
-/**
+<span class="hljs-comment">// V0</span>
+<span class="hljs-comment">// IDEA: STACK with {char, count} pairs</span>
+<span class="hljs-comment">/**
  * time = O(N)
  * space = O(N)
- */
-public String removeDuplicates(String s, int k) {
-    if (s == null || s.length() == 0 || k &lt;= 0) {
-        return s;
+ */</span>
+<span class="hljs-keyword">public</span> String <span class="hljs-title function_">removeDuplicates</span><span class="hljs-params">(String s, <span class="hljs-type">int</span> k)</span> {
+    <span class="hljs-keyword">if</span> (s == <span class="hljs-literal">null</span> || s.length() == <span class="hljs-number">0</span> || k &lt;= <span class="hljs-number">0</span>) {
+        <span class="hljs-keyword">return</span> s;
     }
 
-    /**
+    <span class="hljs-comment">/**
      * NOTE !!!
      * Stack stores int array: {character_as_int, count}
      *
      * Why int[] instead of Pair&lt;Character, Integer&gt;?
      * - More memory efficient (no object wrapper overhead)
      * - Direct access: pair[0] = char, pair[1] = count
-     * - Java doesn't have built-in Pair in older versions
-     */
-    Stack&lt;int[]&gt; st = new Stack&lt;&gt;();
+     * - Java doesn&#x27;t have built-in Pair in older versions
+     */</span>
+    Stack&lt;<span class="hljs-type">int</span>[]&gt; st = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;();
 
-    for (char ch : s.toCharArray()) {
-        /**
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> ch : s.toCharArray()) {
+        <span class="hljs-comment">/**
          * Case 1: Character matches stack top
          * Increment the count of consecutive occurrences
-         */
-        if (!st.isEmpty() &amp;&amp; st.peek()[0] == ch) {
-            st.peek()[1]++;
+         */</span>
+        <span class="hljs-keyword">if</span> (!st.isEmpty() &amp;&amp; st.peek()[<span class="hljs-number">0</span>] == ch) {
+            st.peek()[<span class="hljs-number">1</span>]++;
 
-            /**
+            <span class="hljs-comment">/**
              * NOTE !!!
              * When count reaches k, remove the entire block
              * This triggers potential cascading removals
-             */
-            if (st.peek()[1] == k) {
+             */</span>
+            <span class="hljs-keyword">if</span> (st.peek()[<span class="hljs-number">1</span>] == k) {
                 st.pop();
             }
         }
-        /**
+        <span class="hljs-comment">/**
          * Case 2: New character (different from stack top)
          * Start a new block with count = 1
-         */
-        else {
-            st.push(new int[] { ch, 1 });
+         */</span>
+        <span class="hljs-keyword">else</span> {
+            st.push(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[] { ch, <span class="hljs-number">1</span> });
         }
     }
 
-    /**
+    <span class="hljs-comment">/**
      * Build final string from remaining characters in stack
      * Each stack element may have count &gt; 1
-     */
-    StringBuilder sb = new StringBuilder();
-    for (int[] pair : st) {
-        char c = (char) pair[0];
-        int count = pair[1];
+     */</span>
+    <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">sb</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>();
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] pair : st) {
+        <span class="hljs-type">char</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> (<span class="hljs-type">char</span>) pair[<span class="hljs-number">0</span>];
+        <span class="hljs-type">int</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> pair[<span class="hljs-number">1</span>];
 
-        // Append character 'count' times
-        for (int i = 0; i &lt; count; i++) {
+        <span class="hljs-comment">// Append character &#x27;count&#x27; times</span>
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; count; i++) {
             sb.append(c);
         }
     }
 
-    return sb.toString();
+    <span class="hljs-keyword">return</span> sb.toString();
 }
 
-/**
+<span class="hljs-comment">/**
  * Example Walkthrough: s = &quot;deeedbbcccbdaa&quot;, k = 3
  *
  * Iteration:
- * ch='d': st = [{d,1}]
- * ch='e': st = [{d,1}, {e,1}]
- * ch='e': st = [{d,1}, {e,2}]
- * ch='e': st = [{d,1}, {e,3}] → count==k, pop → st = [{d,1}]
- * ch='d': st = [{d,2}]
- * ch='b': st = [{d,2}, {b,1}]
- * ch='b': st = [{d,2}, {b,2}]
- * ch='c': st = [{d,2}, {b,2}, {c,1}]
- * ch='c': st = [{d,2}, {b,2}, {c,2}]
- * ch='c': st = [{d,2}, {b,2}, {c,3}] → pop → st = [{d,2}, {b,2}]
- * ch='b': st = [{d,2}, {b,3}] → pop → st = [{d,2}]
- * ch='d': st = [{d,3}] → pop → st = []
- * ch='a': st = [{a,1}]
- * ch='a': st = [{a,2}]
+ * ch=&#x27;d&#x27;: st = [{d,1}]
+ * ch=&#x27;e&#x27;: st = [{d,1}, {e,1}]
+ * ch=&#x27;e&#x27;: st = [{d,1}, {e,2}]
+ * ch=&#x27;e&#x27;: st = [{d,1}, {e,3}] → count==k, pop → st = [{d,1}]
+ * ch=&#x27;d&#x27;: st = [{d,2}]
+ * ch=&#x27;b&#x27;: st = [{d,2}, {b,1}]
+ * ch=&#x27;b&#x27;: st = [{d,2}, {b,2}]
+ * ch=&#x27;c&#x27;: st = [{d,2}, {b,2}, {c,1}]
+ * ch=&#x27;c&#x27;: st = [{d,2}, {b,2}, {c,2}]
+ * ch=&#x27;c&#x27;: st = [{d,2}, {b,2}, {c,3}] → pop → st = [{d,2}, {b,2}]
+ * ch=&#x27;b&#x27;: st = [{d,2}, {b,3}] → pop → st = [{d,2}]
+ * ch=&#x27;d&#x27;: st = [{d,3}] → pop → st = []
+ * ch=&#x27;a&#x27;: st = [{a,1}]
+ * ch=&#x27;a&#x27;: st = [{a,2}]
  *
  * Result: &quot;aa&quot;
- */
+ */</span>
 
-// V1
-// IDEA: Two separate stacks (cleaner type safety)
-/**
+<span class="hljs-comment">// V1</span>
+<span class="hljs-comment">// IDEA: Two separate stacks (cleaner type safety)</span>
+<span class="hljs-comment">/**
  * time = O(N)
  * space = O(N)
- */
-public String removeDuplicates_v1(String s, int k) {
-    Stack&lt;Character&gt; charStack = new Stack&lt;&gt;();
-    Stack&lt;Integer&gt; countStack = new Stack&lt;&gt;();
+ */</span>
+<span class="hljs-keyword">public</span> String <span class="hljs-title function_">removeDuplicates_v1</span><span class="hljs-params">(String s, <span class="hljs-type">int</span> k)</span> {
+    Stack&lt;Character&gt; charStack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;();
+    Stack&lt;Integer&gt; countStack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;();
 
-    for (char ch : s.toCharArray()) {
-        if (!charStack.isEmpty() &amp;&amp; charStack.peek() == ch) {
-            countStack.push(countStack.peek() + 1);
-        } else {
-            countStack.push(1);
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> ch : s.toCharArray()) {
+        <span class="hljs-keyword">if</span> (!charStack.isEmpty() &amp;&amp; charStack.peek() == ch) {
+            countStack.push(countStack.peek() + <span class="hljs-number">1</span>);
+        } <span class="hljs-keyword">else</span> {
+            countStack.push(<span class="hljs-number">1</span>);
         }
 
         charStack.push(ch);
 
-        // Remove k characters when count reaches k
-        if (countStack.peek() == k) {
-            for (int i = 0; i &lt; k; i++) {
+        <span class="hljs-comment">// Remove k characters when count reaches k</span>
+        <span class="hljs-keyword">if</span> (countStack.peek() == k) {
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; k; i++) {
                 charStack.pop();
                 countStack.pop();
             }
         }
     }
 
-    // Build result
-    StringBuilder sb = new StringBuilder();
-    while (!charStack.isEmpty()) {
+    <span class="hljs-comment">// Build result</span>
+    <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">sb</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>();
+    <span class="hljs-keyword">while</span> (!charStack.isEmpty()) {
         sb.append(charStack.pop());
     }
 
-    return sb.reverse().toString();
+    <span class="hljs-keyword">return</span> sb.reverse().toString();
 }
 
-/**
+<span class="hljs-comment">/**
  * Common Mistakes:
  *
  * 1. Forgetting to check !st.isEmpty() before peek()
@@ -1872,11 +1884,11 @@ public String removeDuplicates_v1(String s, int k) {
  *    ✓ for (int i = 0; i &lt; count; i++) sb.append(c);
  *
  * 4. Using wrong data structure (List instead of Stack)
- *    ✗ List doesn't support peek() efficiently
+ *    ✗ List doesn&#x27;t support peek() efficiently
  *    ✓ Stack or Deque for O(1) peek/pop
- */
+ */</span>
 
-/**
+<span class="hljs-comment">/**
  * Interview Tips:
  *
  * 1. Clarify edge cases:
@@ -1898,117 +1910,117 @@ public String removeDuplicates_v1(String s, int k) {
  *    - LC 1047 (k=2): simpler, can use single stack
  *    - LC 394 (Decode String): similar stack with count pattern
  *    - LC 316 (Remove Duplicate Letters): stack with different removal criteria
- */
+ */</span>
 </code></pre>
 <h3 id="2-9-simplify-path" tabindex="-1"><a class="header-anchor" href="#2-9-simplify-path"><span>2-9) Simplify Path</span></a></h3>
-<pre><code class="language-python"># LC 71. Simplify Path
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 71. Simplify Path</span>
 
-# V0
-# IDEA : STACK
-class Solution:
-    def simplifyPath(self, path: str) -&gt; str:
-        s = path.split('/')
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : STACK</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">simplifyPath</span>(<span class="hljs-params">self, path: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">str</span>:
+        s = path.split(<span class="hljs-string">&#x27;/&#x27;</span>)
         result = []
-        for i in range(len(s)):
-            if s[i] and s[i] != '.' and s[i]!='/' and s[i]!='..':
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(s)):
+            <span class="hljs-keyword">if</span> s[i] <span class="hljs-keyword">and</span> s[i] != <span class="hljs-string">&#x27;.&#x27;</span> <span class="hljs-keyword">and</span> s[i]!=<span class="hljs-string">&#x27;/&#x27;</span> <span class="hljs-keyword">and</span> s[i]!=<span class="hljs-string">&#x27;..&#x27;</span>:
                 result.append(s[i])
-            elif s[i] == '..':
-                if result:
+            <span class="hljs-keyword">elif</span> s[i] == <span class="hljs-string">&#x27;..&#x27;</span>:
+                <span class="hljs-keyword">if</span> result:
                     result.pop()
         
-        return &quot;/&quot;+&quot;/&quot;.join(result)
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;/&quot;</span>+<span class="hljs-string">&quot;/&quot;</span>.join(result)
 </code></pre>
 <h3 id="2-10-min-stack" tabindex="-1"><a class="header-anchor" href="#2-10-min-stack"><span>2-10) Min Stack</span></a></h3>
-<pre><code class="language-python"># LC 155. Min Stack
-# V0
-# IDEA : STACK
-# IDEA : 
-# -&gt; USE A STACK TO STORAGE MIN VALUE IN THE STACK WHEN EVERY PUSH
-# -&gt; SO WE CAN RETURN getMin IN CONSTANT TIEM VIA STACK ABOVE
-class MinStack(object):
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 155. Min Stack</span>
+<span class="hljs-comment"># V0</span>
+<span class="hljs-comment"># IDEA : STACK</span>
+<span class="hljs-comment"># IDEA : </span>
+<span class="hljs-comment"># -&gt; USE A STACK TO STORAGE MIN VALUE IN THE STACK WHEN EVERY PUSH</span>
+<span class="hljs-comment"># -&gt; SO WE CAN RETURN getMin IN CONSTANT TIEM VIA STACK ABOVE</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">MinStack</span>(<span class="hljs-title class_ inherited__">object</span>):
 
-    def __init__(self):
-        &quot;&quot;&quot;
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-string">&quot;&quot;&quot;
         initialize your data structure here.
-        &quot;&quot;&quot;
-        self.stack = []
+        &quot;&quot;&quot;</span>
+        <span class="hljs-variable language_">self</span>.stack = []
         
-    def push(self, x):
-        if not self.stack:
-            &quot;&quot;&quot;
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">push</span>(<span class="hljs-params">self, x</span>):
+        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-variable language_">self</span>.stack:
+            <span class="hljs-string">&quot;&quot;&quot;
             NOTE : we use stack = [(x, y)]
                     x is the current element
                     y in current MIN value in current stack
-            &quot;&quot;&quot;
-            ### note here
-            self.stack.append((x, x))
-        ### NOTICE HERE 
-        # stack[i][1] save to min value when every push
-        # so the latest min in stack is at stack[-1][1]
-        else:
-            ### note here
-            self.stack.append((x, min(x, self.stack[-1][1])))
+            &quot;&quot;&quot;</span>
+            <span class="hljs-comment">### note here</span>
+            <span class="hljs-variable language_">self</span>.stack.append((x, x))
+        <span class="hljs-comment">### NOTICE HERE </span>
+        <span class="hljs-comment"># stack[i][1] save to min value when every push</span>
+        <span class="hljs-comment"># so the latest min in stack is at stack[-1][1]</span>
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-comment">### note here</span>
+            <span class="hljs-variable language_">self</span>.stack.append((x, <span class="hljs-built_in">min</span>(x, <span class="hljs-variable language_">self</span>.stack[-<span class="hljs-number">1</span>][<span class="hljs-number">1</span>])))
         
-    def pop(self):
-        self.stack.pop()
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">pop</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-variable language_">self</span>.stack.pop()
         
-    def top(self):
-        return self.stack[-1][0]
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">top</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.stack[-<span class="hljs-number">1</span>][<span class="hljs-number">0</span>]
         
-    def getMin(self):
-        # the latest min in stack is at stack[-1][1]
-        return self.stack[-1][1]
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">getMin</span>(<span class="hljs-params">self</span>):
+        <span class="hljs-comment"># the latest min in stack is at stack[-1][1]</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.stack[-<span class="hljs-number">1</span>][<span class="hljs-number">1</span>]
 </code></pre>
 <h3 id="2-11-sum-of-subarray-ranges" tabindex="-1"><a class="header-anchor" href="#2-11-sum-of-subarray-ranges"><span>2-11) Sum of Subarray Ranges</span></a></h3>
-<pre><code class="language-python"># LC 2104. Sum of Subarray Ranges
-# NOTE : there are also brute force, 2 pointers ... approaches
-# V0'
-# IDEA : monotonic stack
-# https://zhuanlan.zhihu.com/p/444725220
-class Solution:
-    def subArrayRanges(self, nums):
-        A, s, res = [-float('inf')] + nums + [-float('inf')], [], 0
-        for i, num in enumerate(A):
-            while s and num &lt; A[s[-1]]:
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 2104. Sum of Subarray Ranges</span>
+<span class="hljs-comment"># NOTE : there are also brute force, 2 pointers ... approaches</span>
+<span class="hljs-comment"># V0&#x27;</span>
+<span class="hljs-comment"># IDEA : monotonic stack</span>
+<span class="hljs-comment"># https://zhuanlan.zhihu.com/p/444725220</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">subArrayRanges</span>(<span class="hljs-params">self, nums</span>):
+        A, s, res = [-<span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)] + nums + [-<span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)], [], <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> i, num <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(A):
+            <span class="hljs-keyword">while</span> s <span class="hljs-keyword">and</span> num &lt; A[s[-<span class="hljs-number">1</span>]]:
                 j = s.pop()
-                res -= (i - j) * (j - s[-1]) * A[j]
+                res -= (i - j) * (j - s[-<span class="hljs-number">1</span>]) * A[j]
             s.append(i)
-        A, s = [float('inf')] + nums + [float('inf')], []
-        for i, num in enumerate(A):
-            while s and num &gt; A[s[-1]]:
+        A, s = [<span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)] + nums + [<span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)], []
+        <span class="hljs-keyword">for</span> i, num <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(A):
+            <span class="hljs-keyword">while</span> s <span class="hljs-keyword">and</span> num &gt; A[s[-<span class="hljs-number">1</span>]]:
                 j = s.pop()
-                res += (i - j) * (j - s[-1]) * A[j]
+                res += (i - j) * (j - s[-<span class="hljs-number">1</span>]) * A[j]
             s.append(i)
-        return res 
+        <span class="hljs-keyword">return</span> res 
 </code></pre>
 <h3 id="2-11-largest-rectangle-in-histogram" tabindex="-1"><a class="header-anchor" href="#2-11-largest-rectangle-in-histogram"><span>2-11) Largest Rectangle in Histogram</span></a></h3>
-<pre><code class="language-python"># LC 84. Largest Rectangle in Histogram
-# python
-# V1'''
-# IDEA : STACK
-# https://leetcode.com/problems/largest-rectangle-in-histogram/solution/
-class Solution:
-    def largestRectangleArea(self, heights: List[int]) -&gt; int:
-        stack = [-1]
-        max_area = 0
-        for i in range(len(heights)):
-            while stack[-1] != -1 and heights[stack[-1]] &gt;= heights[i]:
+<pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 84. Largest Rectangle in Histogram</span>
+<span class="hljs-comment"># python</span>
+<span class="hljs-comment"># V1&#x27;&#x27;&#x27;</span>
+<span class="hljs-comment"># IDEA : STACK</span>
+<span class="hljs-comment"># https://leetcode.com/problems/largest-rectangle-in-histogram/solution/</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:
+    <span class="hljs-keyword">def</span> <span class="hljs-title function_">largestRectangleArea</span>(<span class="hljs-params">self, heights: <span class="hljs-type">List</span>[<span class="hljs-built_in">int</span>]</span>) -&gt; <span class="hljs-built_in">int</span>:
+        stack = [-<span class="hljs-number">1</span>]
+        max_area = <span class="hljs-number">0</span>
+        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(heights)):
+            <span class="hljs-keyword">while</span> stack[-<span class="hljs-number">1</span>] != -<span class="hljs-number">1</span> <span class="hljs-keyword">and</span> heights[stack[-<span class="hljs-number">1</span>]] &gt;= heights[i]:
                 current_height = heights[stack.pop()]
-                current_width = i - stack[-1] - 1
-                max_area = max(max_area, current_height * current_width)
+                current_width = i - stack[-<span class="hljs-number">1</span>] - <span class="hljs-number">1</span>
+                max_area = <span class="hljs-built_in">max</span>(max_area, current_height * current_width)
             stack.append(i)
 
-        while stack[-1] != -1:
+        <span class="hljs-keyword">while</span> stack[-<span class="hljs-number">1</span>] != -<span class="hljs-number">1</span>:
             current_height = heights[stack.pop()]
-            current_width = len(heights) - stack[-1] - 1
-            max_area = max(max_area, current_height * current_width)
-        return max_area
+            current_width = <span class="hljs-built_in">len</span>(heights) - stack[-<span class="hljs-number">1</span>] - <span class="hljs-number">1</span>
+            max_area = <span class="hljs-built_in">max</span>(max_area, current_height * current_width)
+        <span class="hljs-keyword">return</span> max_area
 </code></pre>
 <h3 id="2-12-remove-duplicate-letters" tabindex="-1"><a class="header-anchor" href="#2-12-remove-duplicate-letters"><span>2-12) Remove Duplicate Letters</span></a></h3>
-<pre><code class="language-java">// java
-// LC 316
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 316</span>
 
-/**
+<span class="hljs-comment">/**
 *  NOTE
 *
 *  Lexicographically Smaller
@@ -2020,54 +2032,54 @@ class Solution:
 * If the first min(a.length, b.length) characters do not differ,
 * then the shorter string is the lexicographically smaller one.
 *
-*/
+*/</span>
 
-// V0-1
-// IDEA: STACK (fixed by gpt)
-// Time: O(n) — one pass over the string and each character is pushed/popped at most once.
-// Space: O(1) — constant space for 26 characters (seen, freq, stack)
-/**
+<span class="hljs-comment">// V0-1</span>
+<span class="hljs-comment">// IDEA: STACK (fixed by gpt)</span>
+<span class="hljs-comment">// Time: O(n) — one pass over the string and each character is pushed/popped at most once.</span>
+<span class="hljs-comment">// Space: O(1) — constant space for 26 characters (seen, freq, stack)</span>
+<span class="hljs-comment">/**
 * 📌 Example Walkthrough
 *
 * Input: &quot;cbacdcbc&quot;
-*    1.  'c' → Stack: [&quot;c&quot;]
-*    2.  'b' &lt; 'c' and 'c' still appears → pop 'c', push 'b'
-*    3.  'a' &lt; 'b' → pop 'b', push 'a'
-*    4.  'c' &gt; 'a' → push 'c'
-*    5.  'd' &gt; 'c' → push 'd'
-*    6.  'c' already seen → skip
-*    7.  'b' &gt; 'd' → push 'b'
-*    8.  'c' &gt; 'b' → push 'c'
+*    1.  &#x27;c&#x27; → Stack: [&quot;c&quot;]
+*    2.  &#x27;b&#x27; &lt; &#x27;c&#x27; and &#x27;c&#x27; still appears → pop &#x27;c&#x27;, push &#x27;b&#x27;
+*    3.  &#x27;a&#x27; &lt; &#x27;b&#x27; → pop &#x27;b&#x27;, push &#x27;a&#x27;
+*    4.  &#x27;c&#x27; &gt; &#x27;a&#x27; → push &#x27;c&#x27;
+*    5.  &#x27;d&#x27; &gt; &#x27;c&#x27; → push &#x27;d&#x27;
+*    6.  &#x27;c&#x27; already seen → skip
+*    7.  &#x27;b&#x27; &gt; &#x27;d&#x27; → push &#x27;b&#x27;
+*    8.  &#x27;c&#x27; &gt; &#x27;b&#x27; → push &#x27;c&#x27;
 *
-* Final stack: ['a', 'c', 'd', 'b']
+* Final stack: [&#x27;a&#x27;, &#x27;c&#x27;, &#x27;d&#x27;, &#x27;b&#x27;]
 * Lexicographically smallest valid string: &quot;acdb&quot;
 *
-*/
-public String removeDuplicateLetters_0_1(String s) {
-  if (s == null || s.length() == 0) {
-      return &quot;&quot;;
+*/</span>
+<span class="hljs-keyword">public</span> String <span class="hljs-title function_">removeDuplicateLetters_0_1</span><span class="hljs-params">(String s)</span> {
+  <span class="hljs-keyword">if</span> (s == <span class="hljs-literal">null</span> || s.length() == <span class="hljs-number">0</span>) {
+      <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>;
   }
 
-/**
+<span class="hljs-comment">/**
  *  •   freq: array to count how many times each letter appears in s.
- *  •   We use c - 'a' to map each character to index 0–25 ('a' to 'z').
+ *  •   We use c - &#x27;a&#x27; to map each character to index 0–25 (&#x27;a&#x27; to &#x27;z&#x27;).
  *  •   This helps us later determine if we can remove a character and see it again later.
- */
-int[] freq = new int[26]; // frequency of each character
-  for (char c : s.toCharArray()) {
-      freq[c - 'a']++;
+ */</span>
+<span class="hljs-type">int</span>[] freq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">26</span>]; <span class="hljs-comment">// frequency of each character</span>
+  <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : s.toCharArray()) {
+      freq[c - <span class="hljs-string">&#x27;a&#x27;</span>]++;
   }
 
-/**
+<span class="hljs-comment">/**
  *  •   Tracks which characters have already been added to the result.
  *  •   This ensures we only include each character once.
  *
  *
  *  NOTE !!! sean is a `boolean` array
- */
-boolean[] seen = new boolean[26]; // whether character is in stack/result
+ */</span>
+<span class="hljs-type">boolean</span>[] seen = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[<span class="hljs-number">26</span>]; <span class="hljs-comment">// whether character is in stack/result</span>
 
-/** NOTE !!!
+<span class="hljs-comment">/** NOTE !!!
  *
  *  we init stack here
  *
@@ -2075,31 +2087,31 @@ boolean[] seen = new boolean[26]; // whether character is in stack/result
  *  •   This stack is used to build the final result.
  *  •   We’ll maintain characters in order and manipulate
  *      the top to maintain lexicographical order.
- */
-/**
+ */</span>
+<span class="hljs-comment">/**
  *  NOTE !!!
  *
  *   use `STACK`, but NOT use `PQ`
  *
- */
-Stack&lt;Character&gt; stack = new Stack&lt;&gt;();
+ */</span>
+Stack&lt;Character&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;();
 
-/**
+<span class="hljs-comment">/**
  *  •   Iterate through the string one character at a time.
  *  •   Since we’ve now processed c, decrement its frequency count.
- */
-for (char c : s.toCharArray()) {
-      freq[c - 'a']--; // reduce frequency, since we're processing this char
+ */</span>
+<span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : s.toCharArray()) {
+      freq[c - <span class="hljs-string">&#x27;a&#x27;</span>]--; <span class="hljs-comment">// reduce frequency, since we&#x27;re processing this char</span>
 
-    /**
+    <span class="hljs-comment">/**
      *  •   If we’ve already added this character to the result,
      *      skip it — we only want one occurrence of each letter.
-     */
-      if (seen[c - 'a']) {
-          continue; // already added, skip
+     */</span>
+      <span class="hljs-keyword">if</span> (seen[c - <span class="hljs-string">&#x27;a&#x27;</span>]) {
+          <span class="hljs-keyword">continue</span>; <span class="hljs-comment">// already added, skip</span>
       }
 
-  /** NOTE !!!
+  <span class="hljs-comment">/** NOTE !!!
    *
    * Now we’re checking:
    *
@@ -2117,40 +2129,40 @@ for (char c : s.toCharArray()) {
    *
    *    •   and add it later again in a better
    *        position (lexicographically smaller order).
-   */
-  // remove characters that are bigger than current AND appear later again
-  while (!stack.isEmpty() &amp;&amp; c &lt; stack.peek() &amp;&amp; freq[stack.peek() - 'a'] &gt; 0) {
-          /**
+   */</span>
+  <span class="hljs-comment">// remove characters that are bigger than current AND appear later again</span>
+  <span class="hljs-keyword">while</span> (!stack.isEmpty() &amp;&amp; c &lt; stack.peek() &amp;&amp; freq[stack.peek() - <span class="hljs-string">&#x27;a&#x27;</span>] &gt; <span class="hljs-number">0</span>) {
+          <span class="hljs-comment">/**
            *
            *    Remove the character from the stack,
            *    and mark it as not seen so it can be added again later.
-           */
-          char removed = stack.pop();
-          seen[removed - 'a'] = false;
+           */</span>
+          <span class="hljs-type">char</span> <span class="hljs-variable">removed</span> <span class="hljs-operator">=</span> stack.pop();
+          seen[removed - <span class="hljs-string">&#x27;a&#x27;</span>] = <span class="hljs-literal">false</span>;
       }
 
-  /**
+  <span class="hljs-comment">/**
    *    •   Push the current character c to the stack,
    *    •   And mark it as seen (i.e., already in the result).
-   */
+   */</span>
   stack.push(c);
-  seen[c - 'a'] = true;
+  seen[c - <span class="hljs-string">&#x27;a&#x27;</span>] = <span class="hljs-literal">true</span>;
   }
 
-  // build result from stack
-  StringBuilder sb = new StringBuilder();
-  for (char c : stack) {
+  <span class="hljs-comment">// build result from stack</span>
+  <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">sb</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>();
+  <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : stack) {
       sb.append(c);
   }
 
-  return sb.toString();
+  <span class="hljs-keyword">return</span> sb.toString();
 }
 </code></pre>
 <h3 id="2-13-remove-k-digits" tabindex="-1"><a class="header-anchor" href="#2-13-remove-k-digits"><span>2-13) Remove K Digits</span></a></h3>
-<pre><code class="language-java">// java
-// LC 402. Remove K Digits
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 402. Remove K Digits</span>
 
-/**
+<span class="hljs-comment">/**
  * Problem: Given a non-negative integer num and an integer k,
  * return the smallest possible integer after removing k digits from num.
  *
@@ -2166,85 +2178,85 @@ for (char c : s.toCharArray()) {
  *
  * Time: O(N) - each digit pushed/popped at most once
  * Space: O(N) - stack size
- */
+ */</span>
 
-// V0-1
-// IDEA: MONOTONIC STACK (increasing)
-public String removeKdigits(String num, int k) {
-    int n = num.length();
-    if (k == n)
-        return &quot;0&quot;;
+<span class="hljs-comment">// V0-1</span>
+<span class="hljs-comment">// IDEA: MONOTONIC STACK (increasing)</span>
+<span class="hljs-keyword">public</span> String <span class="hljs-title function_">removeKdigits</span><span class="hljs-params">(String num, <span class="hljs-type">int</span> k)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> num.length();
+    <span class="hljs-keyword">if</span> (k == n)
+        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;0&quot;</span>;
 
-    // Use Deque as stack for efficient operations
-    Deque&lt;Character&gt; stack = new ArrayDeque&lt;&gt;();
+    <span class="hljs-comment">// Use Deque as stack for efficient operations</span>
+    Deque&lt;Character&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();
 
-    for (int i = 0; i &lt; n; i++) {
-        char digit = num.charAt(i);
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {
+        <span class="hljs-type">char</span> <span class="hljs-variable">digit</span> <span class="hljs-operator">=</span> num.charAt(i);
 
-        /**
+        <span class="hljs-comment">/**
          * NOTE !!!
          * While we can still remove digits (k &gt; 0)
          * and current digit is smaller than stack top,
          * pop the stack (greedy removal of larger digits)
-         */
-        while (k &gt; 0 &amp;&amp; !stack.isEmpty() &amp;&amp; stack.peekLast() &gt; digit) {
+         */</span>
+        <span class="hljs-keyword">while</span> (k &gt; <span class="hljs-number">0</span> &amp;&amp; !stack.isEmpty() &amp;&amp; stack.peekLast() &gt; digit) {
             stack.removeLast();
             k--;
         }
         stack.addLast(digit);
     }
 
-    // Edge case: if k &gt; 0, remove digits from end (e.g., &quot;1111&quot;)
-    while (k &gt; 0) {
+    <span class="hljs-comment">// Edge case: if k &gt; 0, remove digits from end (e.g., &quot;1111&quot;)</span>
+    <span class="hljs-keyword">while</span> (k &gt; <span class="hljs-number">0</span>) {
         stack.removeLast();
         k--;
     }
 
-    // Build result and remove leading zeros
-    StringBuilder sb = new StringBuilder();
-    boolean leadingZero = true;
-    while (!stack.isEmpty()) {
-        char c = stack.removeFirst();
-        if (leadingZero &amp;&amp; c == '0')
-            continue;
-        leadingZero = false;
+    <span class="hljs-comment">// Build result and remove leading zeros</span>
+    <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">sb</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>();
+    <span class="hljs-type">boolean</span> <span class="hljs-variable">leadingZero</span> <span class="hljs-operator">=</span> <span class="hljs-literal">true</span>;
+    <span class="hljs-keyword">while</span> (!stack.isEmpty()) {
+        <span class="hljs-type">char</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> stack.removeFirst();
+        <span class="hljs-keyword">if</span> (leadingZero &amp;&amp; c == <span class="hljs-string">&#x27;0&#x27;</span>)
+            <span class="hljs-keyword">continue</span>;
+        leadingZero = <span class="hljs-literal">false</span>;
         sb.append(c);
     }
 
-    return sb.length() == 0 ? &quot;0&quot; : sb.toString();
+    <span class="hljs-keyword">return</span> sb.length() == <span class="hljs-number">0</span> ? <span class="hljs-string">&quot;0&quot;</span> : sb.toString();
 }
 
-/**
+<span class="hljs-comment">/**
  * Example Walkthrough:
  *
  * Input: num = &quot;1432219&quot;, k = 3
  *
  * Step-by-step:
- * 1. Push '1': [1]
- * 2. Push '4': [1, 4]
- * 3. '3' &lt; '4': Pop '4', push '3', k=2. Stack: [1, 3]
- * 4. '2' &lt; '3': Pop '3', push '2', k=1. Stack: [1, 2]
- * 5. Push '2': [1, 2, 2]
- * 6. '1' &lt; '2': Pop '2', push '1', k=0. Stack: [1, 2, 1]
- * 7. k=0, push '9': [1, 2, 1, 9]
+ * 1. Push &#x27;1&#x27;: [1]
+ * 2. Push &#x27;4&#x27;: [1, 4]
+ * 3. &#x27;3&#x27; &lt; &#x27;4&#x27;: Pop &#x27;4&#x27;, push &#x27;3&#x27;, k=2. Stack: [1, 3]
+ * 4. &#x27;2&#x27; &lt; &#x27;3&#x27;: Pop &#x27;3&#x27;, push &#x27;2&#x27;, k=1. Stack: [1, 2]
+ * 5. Push &#x27;2&#x27;: [1, 2, 2]
+ * 6. &#x27;1&#x27; &lt; &#x27;2&#x27;: Pop &#x27;2&#x27;, push &#x27;1&#x27;, k=0. Stack: [1, 2, 1]
+ * 7. k=0, push &#x27;9&#x27;: [1, 2, 1, 9]
  *
  * Result: &quot;1219&quot;
  *
  * Why ArrayDeque?
  * - Stack&lt;Character&gt; is synchronized and slow
  * - ArrayDeque is faster and modern alternative for stack operations
- */
+ */</span>
 </code></pre>
 <h3 id="2-14-online-stock-span" tabindex="-1"><a class="header-anchor" href="#2-14-online-stock-span"><span>2-14) Online Stock Span</span></a></h3>
-<pre><code class="language-java">// java
-// LC 901. Online Stock Span
+<pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// java</span>
+<span class="hljs-comment">// LC 901. Online Stock Span</span>
 
-/**
+<span class="hljs-comment">/**
  * Problem: Design an algorithm that collects daily price quotes for some stock
- * and returns the span of that stock's price for the current day.
+ * and returns the span of that stock&#x27;s price for the current day.
  *
  * The span is the maximum number of consecutive days (starting from today and going backward)
- * for which the stock price was less than or equal to today's price.
+ * for which the stock price was less than or equal to today&#x27;s price.
  *
  * Example:
  * Prices: [100, 80, 60, 70, 60, 75, 85]
@@ -2258,25 +2270,25 @@ public String removeKdigits(String num, int k) {
  *
  * Time: O(1) amortized per next() call (each element pushed/popped once)
  * Space: O(N) for the stack
- */
+ */</span>
 
-// V0
-// IDEA: MONOTONIC STACK (decreasing) + SPAN ACCUMULATION
-class StockSpanner {
+<span class="hljs-comment">// V0</span>
+<span class="hljs-comment">// IDEA: MONOTONIC STACK (decreasing) + SPAN ACCUMULATION</span>
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">StockSpanner</span> {
 
-    /**
+    <span class="hljs-comment">/**
      * NOTE !!!
      * Stack stores [price, span] pairs
      * - price: the stock price
      * - span: how many consecutive days (including itself) had price &lt;= this price
-     */
-    private Deque&lt;int[]&gt; stack; // {price, span}
+     */</span>
+    <span class="hljs-keyword">private</span> Deque&lt;<span class="hljs-type">int</span>[]&gt; stack; <span class="hljs-comment">// {price, span}</span>
 
-    public StockSpanner() {
-        stack = new ArrayDeque&lt;&gt;();
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">StockSpanner</span><span class="hljs-params">()</span> {
+        stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();
     }
 
-    /**
+    <span class="hljs-comment">/**
      * NOTE !!!
      * Monotonic decreasing stack pattern:
      * 1. Start with span = 1 (today counts)
@@ -2284,27 +2296,27 @@ class StockSpanner {
      *    - Pop it and add its span to current span
      * 3. Push [current price, accumulated span]
      * 4. Return span
-     */
-    public int next(int price) {
-        int span = 1; // Today always counts as 1
+     */</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">next</span><span class="hljs-params">(<span class="hljs-type">int</span> price)</span> {
+        <span class="hljs-type">int</span> <span class="hljs-variable">span</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; <span class="hljs-comment">// Today always counts as 1</span>
 
-        /**
+        <span class="hljs-comment">/**
          * Pop all prices that are less than or equal to current price
          * and accumulate their spans
-         */
-        while (!stack.isEmpty() &amp;&amp; stack.peek()[0] &lt;= price) {
-            // &quot;Absorb&quot; the previous span into current span
-            span += stack.pop()[1];
+         */</span>
+        <span class="hljs-keyword">while</span> (!stack.isEmpty() &amp;&amp; stack.peek()[<span class="hljs-number">0</span>] &lt;= price) {
+            <span class="hljs-comment">// &quot;Absorb&quot; the previous span into current span</span>
+            span += stack.pop()[<span class="hljs-number">1</span>];
         }
 
-        // Push current price with its accumulated span
-        stack.push(new int[] { price, span });
+        <span class="hljs-comment">// Push current price with its accumulated span</span>
+        stack.push(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[] { price, span });
 
-        return span;
+        <span class="hljs-keyword">return</span> span;
     }
 }
 
-/**
+<span class="hljs-comment">/**
  * Example Walkthrough:
  *
  * Input: [100, 80, 60, 70, 60, 75, 85]
@@ -2316,13 +2328,13 @@ class StockSpanner {
  *   Stack: [[100, 1]]
  *
  * next(80):
- *   - span = 1, stack top is [100, 1], 100 &gt; 80, don't pop
+ *   - span = 1, stack top is [100, 1], 100 &gt; 80, don&#x27;t pop
  *   - Push [80, 1]
  *   - Return 1
  *   Stack: [[80, 1], [100, 1]]
  *
  * next(60):
- *   - span = 1, stack top is [80, 1], 80 &gt; 60, don't pop
+ *   - span = 1, stack top is [80, 1], 80 &gt; 60, don&#x27;t pop
  *   - Push [60, 1]
  *   - Return 1
  *   Stack: [[60, 1], [80, 1], [100, 1]]
@@ -2337,7 +2349,7 @@ class StockSpanner {
  *
  * next(60):
  *   - span = 1
- *   - stack top is [70, 2], 70 &gt; 60, don't pop
+ *   - stack top is [70, 2], 70 &gt; 60, don&#x27;t pop
  *   - Push [60, 1]
  *   - Return 1
  *   Stack: [[60, 1], [70, 2], [80, 1], [100, 1]]
@@ -2361,18 +2373,18 @@ class StockSpanner {
  *   Stack: [[85, 6], [100, 1]]
  *
  * Why this works:
- * - When we pop [60, 1] and [70, 2], we're saying:
+ * - When we pop [60, 1] and [70, 2], we&#x27;re saying:
  *   &quot;60 had 1 consecutive day &lt;= 60 (itself)&quot;
  *   &quot;70 had 2 consecutive days &lt;= 70 (60, 70)&quot;
  * - By accumulating: span = 1 + 1 + 2 = 4
  *   We get: &quot;75 has 4 consecutive days &lt;= 75 (60, 70, 60, 75)&quot;
- */
+ */</span>
 
-/**
+<span class="hljs-comment">/**
  * Usage:
  * StockSpanner obj = new StockSpanner();
  * int span = obj.next(price);
- */
+ */</span>
 </code></pre>
 
       </div>
