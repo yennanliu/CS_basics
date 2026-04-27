@@ -53,9 +53,11 @@ if __name__ == "__main__":
     
     modified_count = 0
     for file_path in files_to_process:
-        if os.path.exists(file_path):
+        try:
             if add_javadoc_complexity(file_path):
                 print(f"Modified: {os.path.basename(file_path)}")
                 modified_count += 1
+        except FileNotFoundError:
+            print(f"Not found: {file_path}")
     
     print(f"\nTotal files modified: {modified_count}")

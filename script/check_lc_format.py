@@ -31,7 +31,6 @@ SECTION_HEADER = re.compile(r'^### (.+)')
 
 
 def parse_lc_examples(content: str):
-    """Extract entries from ## LC Examples section."""
     lc_start = content.find("## LC Examples")
     if lc_start == -1:
         return []
@@ -44,12 +43,10 @@ def parse_lc_examples(content: str):
     in_code = False
     code_lang = None
 
-    first_line = True
-    for line in lines:
-        # Stop at next ## section (but not the opening ## LC Examples itself)
-        if not first_line and line.startswith("## "):
+    for line in lines[1:]:
+        # Stop at next ## section
+        if line.startswith("## "):
             break
-        first_line = False
 
         # Track code fences
         if line.startswith("```"):
@@ -94,7 +91,6 @@ def parse_lc_examples(content: str):
 
 
 def classify_entry(entry):
-    """Return list of issues with an entry."""
     issues = []
     header = entry["header"]
 
@@ -103,15 +99,11 @@ def classify_entry(entry):
     if any(kw in header_lower for kw in TEMPLATE_KEYWORDS):
         return issues  # template/comparison entries are fine without LC number
     if not GOOD_HEADER.match(header):
-        has_lc = bool(re.search(r'\(LC \d+\)', header))
-        has_num = bool(re.match(r'### \d+-\d+\)', header))
-        has_desc = bool(re.search(r' — .+', header))
-
-        if not has_num:
+        if not re.match(r'### \d+-\d+\)', header):
             issues.append("bad-numbering")
-        if not has_lc:
+        if not re.search(r'\(LC \d+\)', header):
             issues.append("missing-lc-number")
-        if not has_desc:
+        if not re.search(r' — .+', header):
             issues.append("missing-description")
 
     # 2. Check blockquote
@@ -130,7 +122,6 @@ def classify_entry(entry):
 
 
 def extract_idea_from_java(code_lines):
-    """Try to extract IDEA from java code comments."""
     for line in code_lines:
         m = re.match(r'\s*// IDEA:\s*(.+)', line)
         if m:

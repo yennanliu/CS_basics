@@ -21,8 +21,25 @@ Output:
 import re
 import os
 import sys
+from datetime import date
 from pathlib import Path
 from collections import defaultdict
+
+_CATEGORY_MAPPING = {
+    'BackTrack': 'Backtracking',
+    'BFS': 'Breadth-First-Search',
+    'DFS': 'Depth-First-Search',
+    'BinarySearch': 'Binary_Search',
+    'BinarySearchTree': 'Binary_Search_Tree',
+    'BitManipulation': 'Bit_Manipulation',
+    'DynamicProgramming': 'Dynamic_Programming',
+    'HashTable': 'Hash_table',
+    'LinkedList': 'Linked_list',
+    'SlideWindow': 'Sliding_Window',
+    'Sliding_Window': 'Sliding_Window',
+    'DataStructure': 'Design',
+    'TwoPointer': 'Two_Pointers',
+}
 
 
 def extract_lc_problems(file_path, year_start=2025, year_end=2026):
@@ -35,37 +52,24 @@ def extract_lc_problems(file_path, year_start=2025, year_end=2026):
     year_pattern = '|'.join(str(y) for y in range(year_start, year_end + 1))
 
     for line in lines:
-        # Check if we're in the specified year range
-        if re.match(rf'^# ({year_pattern})', line):
-            in_range = True
-            continue
-        # Stop when we reach years outside the range
-        if re.match(r'^# (19|20)\d{2}', line):
-            year_match = re.match(r'^# (\d{4})', line)
-            if year_match:
-                year = int(year_match.group(1))
-                if year < year_start or year > year_end:
-                    in_range = False
+        year_header = re.match(r'^# (\d{4})', line)
+        if year_header:
+            year = int(year_header.group(1))
+            in_range = year_start <= year <= year_end
             continue
 
-        if in_range:
-            # Match LC problem format: "LC 123" or "LC 003"
-            lc_match = re.search(r'LC\s+(\d+)', line)
-            if lc_match:
-                lc_problems.add(int(lc_match.group(1)))
-                continue
+        if not in_range:
+            continue
 
-            # Extract standalone numbers (with indentation)
-            num_line = re.search(r'^\s*[-\t]+\s*(\d+(?:\s*,\s*\d+)*)', line)
-            if num_line:
-                nums_str = num_line.group(1)
-                for num_str in re.findall(r'\d+', nums_str):
-                    num = int(num_str)
-                    if 1 <= num <= 3500:
-                        lc_problems.add(num)
-                continue
-
-            # Match numbers with just tabs/spaces (no dash)
+        lc_match = re.search(r'LC\s+(\d+)', line)
+        if lc_match:
+            lc_problems.add(int(lc_match.group(1)))
+        elif re.search(r'^\s*[-\t]+\s*\d', line):
+            for num_str in re.findall(r'\d+', line.split(None, 1)[-1]):
+                num = int(num_str)
+                if 1 <= num <= 3500:
+                    lc_problems.add(num)
+        else:
             num_only = re.match(r'^\s+(\d+)', line)
             if num_only:
                 num = int(num_only.group(1))
@@ -88,9 +92,6 @@ def scan_directory_for_problems(base_dir, problem_set, file_ext):
 
     for category in categories:
         category_path = os.path.join(base_dir, category)
-        if not os.path.exists(category_path):
-            continue
-
         for filename in os.listdir(category_path):
             if filename.endswith(file_ext):
                 filepath = os.path.join(category_path, filename)
@@ -120,25 +121,7 @@ def scan_directory_for_problems(base_dir, problem_set, file_ext):
 
 
 def normalize_category_name(category):
-    """Normalize category names from different sources"""
-    # Mapping Java category names to Python equivalents
-    category_mapping = {
-        'BackTrack': 'Backtracking',
-        'BFS': 'Breadth-First-Search',
-        'DFS': 'Depth-First-Search',
-        'BinarySearch': 'Binary_Search',
-        'BinarySearchTree': 'Binary_Search_Tree',
-        'BitManipulation': 'Bit_Manipulation',
-        'DynamicProgramming': 'Dynamic_Programming',
-        'HashTable': 'Hash_table',
-        'LinkedList': 'Linked_list',
-        'SlideWindow': 'Sliding_Window',
-        'Sliding_Window': 'Sliding_Window',
-        'DataStructure': 'Design',
-        'TwoPointer': 'Two_Pointers',
-    }
-
-    return category_mapping.get(category, category)
+    return _CATEGORY_MAPPING.get(category, category)
 
 
 def categorize_problems(problems, python_dir, java_dir):
@@ -180,10 +163,14 @@ def format_category_name(cat):
     return cat.replace('_', ' ').title()
 
 
-def generate_markdown(category_map, uncategorized, total_count, year_start, year_end):
-    """Generate the markdown document"""
-    from datetime import date
+def _format_rows(problems, row_size=10):
+    return "\n".join(
+        ", ".join(str(p) for p in problems[i:i + row_size])
+        for i in range(0, len(problems), row_size)
+    )
 
+
+def generate_markdown(category_map, uncategorized, total_count, year_start, year_end):
     md = []
     md.append(f"# LeetCode Practice List ({year_start}-{year_end}) - By Category")
     md.append("")
@@ -209,21 +196,16 @@ def generate_markdown(category_map, uncategorized, total_count, year_start, year
     md.append("---")
     md.append("")
 
-    # Generate sections for each category
     for category, problems in sorted_categories:
         md.append(f"## {format_category_name(category)}")
         md.append("")
         md.append(f"**Count: {len(problems)}**")
         md.append("")
-        # Format problems in rows of 10
-        for i in range(0, len(problems), 10):
-            row = problems[i:i+10]
-            md.append(", ".join(str(p) for p in row))
+        md.append(_format_rows(problems))
         md.append("")
         md.append("---")
         md.append("")
 
-    # Uncategorized section
     if uncategorized:
         md.append("## Uncategorized")
         md.append("")
@@ -231,19 +213,16 @@ def generate_markdown(category_map, uncategorized, total_count, year_start, year
         md.append("")
         md.append("These problems were not found in the leetcode_python or leetcode_java directory structure.")
         md.append("")
-        for i in range(0, len(uncategorized), 10):
-            row = uncategorized[i:i+10]
-            md.append(", ".join(str(p) for p in row))
+        md.append(_format_rows(uncategorized))
         md.append("")
         md.append("---")
         md.append("")
 
-    # Summary statistics
     md.append("## Summary by Category")
     md.append("")
     md.append("| Category | Count | Percentage |")
     md.append("|----------|-------|------------|")
-    for category, problems in sorted(sorted_categories, key=lambda x: len(x[1]), reverse=True):
+    for category, problems in sorted(category_map.items(), key=lambda x: len(x[1]), reverse=True):
         percentage = (len(problems) / total_count) * 100
         md.append(f"| {format_category_name(category)} | {len(problems)} | {percentage:.1f}% |")
     if uncategorized:
