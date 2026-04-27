@@ -139,6 +139,48 @@ public class CarFleet {
     }
 
 
+    // V0-0-x
+    // IDEA: pair position and speed, sorting + prev, cur travel time (gpt)
+    public int carFleet_0_0_x(int target, int[] position, int[] speed) {
+        // edge
+
+        List<Integer[]> list = new ArrayList<>();
+        for (int i = 0; i < position.length; i++) {
+            list.add(new Integer[] { position[i], speed[i] });
+        }
+
+        // sort on position
+        // big -> small
+        Collections.sort(list, new Comparator<Integer[]>() {
+            @Override
+            public int compare(Integer[] o1, Integer[] o2) {
+                int diff = o2[0] - o1[0];
+                return diff;
+            }
+        });
+
+        Stack<Double> st = new Stack<>();
+        for (Integer[] x : list) {
+
+            // travel time
+            double time = (double) (target - x[0]) / x[1];
+
+            /** NOTE !!!
+             *
+             *
+             *   1. we ONLY `create a new group`
+             *      when cur car travel time < its forward car.
+             *      -> e.g. st.peek() < time
+             */
+            if (st.isEmpty() || (!st.isEmpty() && st.peek() < time)) {
+                st.add(time);
+            }
+        }
+
+        return st.size();
+    }
+
+
     // V0-0-0-1
     // IDEA: pair position and speed, sorting (gpt)
     /**

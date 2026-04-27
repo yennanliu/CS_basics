@@ -2828,8 +2828,57 @@ public class Workspace25 {
      *
      *
      */
-    // IDEA: PAIR SORT ???
+    // 10.14 - 24 am
+    // IDEA SORT ON PAIR, stack + `travel time`
     public int carFleet(int target, int[] position, int[] speed) {
+        // edge
+
+        List<Integer[]> list = new ArrayList<>();
+        for(int i = 0; i < position.length; i++){
+            list.add(new Integer[]{position[i], speed[i]});
+        }
+
+        // ??? sort on position ???
+        // big -> small
+        Collections.sort(list, new Comparator<Integer[]>() {
+            @Override
+            public int compare(Integer[] o1, Integer[] o2) {
+                int diff = o2[0] - o1[0];
+                return diff;
+            }
+        });
+
+        // travel time ?????
+        //
+        Stack<Double> st = new Stack<>(); // ???
+        for(Integer[] x: list){
+
+            // ?????
+            double time = (double) (target - x[0]) / x[1];
+
+//            while (!st.isEmpty() && st.peek() < time){
+//                st.add(time);
+//            }
+            //st.add(time);
+
+            if(st.peek() < time){
+                st.add(time);
+            }
+        }
+
+
+        return st.size(); // ???
+    }
+
+
+
+
+
+
+
+
+    // IDEA: PAIR SORT ???
+    public int carFleet_999(int target, int[] position, int[] speed) {
         // edge
 
         List<Integer[]> list = new ArrayList<>();
@@ -2974,7 +3023,7 @@ public class Workspace25 {
 
         int firstNonZeroIdx = 0;
         int idx = 0;
-        
+
         StringBuilder sb = new StringBuilder();
 
         // /? find 1st non zero idx
