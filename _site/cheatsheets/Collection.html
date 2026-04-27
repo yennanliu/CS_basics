@@ -11,7 +11,6 @@
   <link rel="stylesheet" href="../vendor/fonts.css">
   <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
-  // Apply theme before render to prevent flash
   (function() {
     var saved = localStorage.getItem('theme');
     if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -39,7 +38,6 @@
         wrapper.appendChild(table);
       }
     });
-    // Reading progress bar
     var progressBar = document.getElementById('reading-progress');
     if (progressBar) {
       window.addEventListener('scroll', function() {
@@ -48,7 +46,6 @@
         progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
       });
     }
-    // Dark mode toggle
     var toggle = document.getElementById('theme-toggle');
     if (toggle) {
       var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
@@ -364,9 +361,7 @@ Out[<span class="hljs-number">33</span>]: <span class="hljs-string">&#x27;bacde&
       </div>
       <div class="cheatsheet-footer">
         <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/Collection.md" class="github-edit" target="_blank">
-          Edit on GitHub →
-        </a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/Collection.md" class="github-edit" target="_blank">Edit on GitHub →</a>
       </div>
     <nav class="prev-next"><a href="Bellman-Ford.html" class="prev-link">← Bellman-Ford</a><a href="Dijkstra.html" class="next-link">Dijkstra →</a></nav>
     </div>

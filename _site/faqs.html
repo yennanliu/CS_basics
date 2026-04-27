@@ -11,7 +11,6 @@
   <link rel="stylesheet" href="vendor/fonts.css">
   <link rel="stylesheet" href="vendor/highlight/atom-one-dark.min.css">
   <script>
-  // Apply theme before render to prevent flash
   (function() {
     var saved = localStorage.getItem('theme');
     if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -39,7 +38,6 @@
         wrapper.appendChild(table);
       }
     });
-    // Reading progress bar
     var progressBar = document.getElementById('reading-progress');
     if (progressBar) {
       window.addEventListener('scroll', function() {
@@ -48,7 +46,6 @@
         progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
       });
     }
-    // Dark mode toggle
     var toggle = document.getElementById('theme-toggle');
     if (toggle) {
       var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
@@ -100,170 +97,47 @@
   <main class="container">
     <div class="content">
       <h1>FAQ - Frequently Asked Questions</h1><p class="intro">Interview preparation FAQs covering Java, Backend, Database, Streaming, and more.</p><h2>General</h2><div class="cheatsheet-grid">
-        <div class="cheatsheet-card">
-          <h3><a href="faqs/cs_basic.html">Cs Basic</a></h3>
-          <p><a href="faqs/cs_basic.html" class="read-more">Read more →</a></p>
-        </div>
-        <div class="cheatsheet-card">
-          <h3><a href="faqs/faq_Airflow.html">Faq Airflow</a></h3>
-          <p><a href="faqs/faq_Airflow.html" class="read-more">Read more →</a></p>
-        </div>
-        <div class="cheatsheet-card">
-          <h3><a href="faqs/faq_DE.html">Faq DE</a></h3>
-          <p><a href="faqs/faq_DE.html" class="read-more">Read more →</a></p>
-        </div>
-        <div class="cheatsheet-card">
-          <h3><a href="faqs/faq_ML.html">Faq ML</a></h3>
-          <p><a href="faqs/faq_ML.html" class="read-more">Read more →</a></p>
-        </div>
-        <div class="cheatsheet-card">
-          <h3><a href="faqs/faq_data_model.html">Faq Data Model</a></h3>
-          <p><a href="faqs/faq_data_model.html" class="read-more">Read more →</a></p>
-        </div>
-        <div class="cheatsheet-card">
-          <h3><a href="faqs/faq_dev_interview.html">Faq Dev Interview</a></h3>
-          <p><a href="faqs/faq_dev_interview.html" class="read-more">Read more →</a></p>
-        </div>
-        <div class="cheatsheet-card">
-          <h3><a href="faqs/faq_devops.html">Faq Devops</a></h3>
-          <p><a href="faqs/faq_devops.html" class="read-more">Read more →</a></p>
-        </div>
-        <div class="cheatsheet-card">
-          <h3><a href="faqs/faq_performance_tune.html">Faq Performance Tune</a></h3>
-          <p><a href="faqs/faq_performance_tune.html" class="read-more">Read more →</a></p>
-        </div>
-        <div class="cheatsheet-card">
-          <h3><a href="faqs/faq_python.html">Faq Python</a></h3>
-          <p><a href="faqs/faq_python.html" class="read-more">Read more →</a></p>
-        </div>
-        <div class="cheatsheet-card">
-          <h3><a href="faqs/faq_software_runtime.html">Faq Software Runtime</a></h3>
-          <p><a href="faqs/faq_software_runtime.html" class="read-more">Read more →</a></p>
-        </div></div><h2>Java</h2><div class="cheatsheet-grid">
-        <div class="cheatsheet-card">
-          <h3><a href="faqs/java_cqrs.html">Cqrs</a></h3>
-          <p><a href="faqs/java_cqrs.html" class="read-more">Read more →</a></p>
-        </div>
-        <div class="cheatsheet-card">
-          <h3><a href="faqs/java_faq_OOP.html">Faq OOP</a></h3>
-          <p><a href="faqs/java_faq_OOP.html" class="read-more">Read more →</a></p>
-        </div>
-        <div class="cheatsheet-card">
-          <h3><a href="faqs/java_java_basic.html">Java Basic</a></h3>
-          <p><a href="faqs/java_java_basic.html" class="read-more">Read more →</a></p>
-        </div>
-        <div class="cheatsheet-card">
-          <h3><a href="faqs/java_java_collection.html">Java Collection</a></h3>
-          <p><a href="faqs/java_java_collection.html" class="read-more">Read more →</a></p>
-        </div>
-        <div class="cheatsheet-card">
-          <h3><a href="faqs/java_java_design_pattern.html">Java Design Pattern</a></h3>
-          <p><a href="faqs/java_java_design_pattern.html" class="read-more">Read more →</a></p>
-        </div>
-        <div class="cheatsheet-card">
-          <h3><a href="faqs/java_java_multi_thread.html">Java Multi Thread</a></h3>
-          <p><a href="faqs/java_java_multi_thread.html" class="read-more">Read more →</a></p>
-        </div>
-        <div class="cheatsheet-card">
-          <h3><a href="faqs/java_java_spring.html">Java Spring</a></h3>
-          <p><a href="faqs/java_java_spring.html" class="read-more">Read more →</a></p>
-        </div>
-        <div class="cheatsheet-card">
-          <h3><a href="faqs/java_java_tdd.html">Java Tdd</a></h3>
-          <p><a href="faqs/java_java_tdd.html" class="read-more">Read more →</a></p>
-        </div>
-        <div class="cheatsheet-card">
-          <h3><a href="faqs/java_jmm.html">Jmm</a></h3>
-          <p><a href="faqs/java_jmm.html" class="read-more">Read more →</a></p>
-        </div>
-        <div class="cheatsheet-card">
-          <h3><a href="faqs/java_jvm.html">Jvm</a></h3>
-          <p><a href="faqs/java_jvm.html" class="read-more">Read more →</a></p>
-        </div></div><h2>Backend</h2><div class="cheatsheet-grid">
-        <div class="cheatsheet-card">
-          <h3><a href="faqs/backend_authentication.html">Authentication</a></h3>
-          <p><a href="faqs/backend_authentication.html" class="read-more">Read more →</a></p>
-        </div>
-        <div class="cheatsheet-card">
-          <h3><a href="faqs/backend_be_programming_notes.html">Be Programming Notes</a></h3>
-          <p><a href="faqs/backend_be_programming_notes.html" class="read-more">Read more →</a></p>
-        </div>
-        <div class="cheatsheet-card">
-          <h3><a href="faqs/backend_be_programming_notes_pt2.html">Be Programming Notes Pt2</a></h3>
-          <p><a href="faqs/backend_be_programming_notes_pt2.html" class="read-more">Read more →</a></p>
-        </div>
-        <div class="cheatsheet-card">
-          <h3><a href="faqs/backend_be_programming_notes_pt3.html">Be Programming Notes Pt3</a></h3>
-          <p><a href="faqs/backend_be_programming_notes_pt3.html" class="read-more">Read more →</a></p>
-        </div>
-        <div class="cheatsheet-card">
-          <h3><a href="faqs/backend_db_isolation_demo_mysql.html">Db Isolation Demo Mysql</a></h3>
-          <p><a href="faqs/backend_db_isolation_demo_mysql.html" class="read-more">Read more →</a></p>
-        </div>
-        <div class="cheatsheet-card">
-          <h3><a href="faqs/backend_web_long_connections.html">Web Long Connections</a></h3>
-          <p><a href="faqs/backend_web_long_connections.html" class="read-more">Read more →</a></p>
-        </div>
-        <div class="cheatsheet-card">
-          <h3><a href="faqs/backend_後端面試題總整理.html">後端面試題總整理</a></h3>
-          <p><a href="faqs/backend_後端面試題總整理.html" class="read-more">Read more →</a></p>
-        </div></div><h2>Database</h2><div class="cheatsheet-grid">
-        <div class="cheatsheet-card">
-          <h3><a href="faqs/db_faq_DB_DW.html">Faq DB DW</a></h3>
-          <p><a href="faqs/db_faq_DB_DW.html" class="read-more">Read more →</a></p>
-        </div>
-        <div class="cheatsheet-card">
-          <h3><a href="faqs/db_faq_redshift.html">Faq Redshift</a></h3>
-          <p><a href="faqs/db_faq_redshift.html" class="read-more">Read more →</a></p>
-        </div>
-        <div class="cheatsheet-card">
-          <h3><a href="faqs/db_postgre.html">Postgre</a></h3>
-          <p><a href="faqs/db_postgre.html" class="read-more">Read more →</a></p>
-        </div></div><h2>SQL</h2><div class="cheatsheet-grid">
-        <div class="cheatsheet-card">
-          <h3><a href="faqs/sql_faq_mysql.html">Faq Mysql</a></h3>
-          <p><a href="faqs/sql_faq_mysql.html" class="read-more">Read more →</a></p>
-        </div>
-        <div class="cheatsheet-card">
-          <h3><a href="faqs/sql_faq_sql.html">Faq Sql</a></h3>
-          <p><a href="faqs/sql_faq_sql.html" class="read-more">Read more →</a></p>
-        </div></div><h2>Redis</h2><div class="cheatsheet-grid">
-        <div class="cheatsheet-card">
-          <h3><a href="faqs/redis_redis_backend.html">Redis Backend</a></h3>
-          <p><a href="faqs/redis_redis_backend.html" class="read-more">Read more →</a></p>
-        </div>
-        <div class="cheatsheet-card">
-          <h3><a href="faqs/redis_redis_info.html">Redis Info</a></h3>
-          <p><a href="faqs/redis_redis_info.html" class="read-more">Read more →</a></p>
-        </div>
-        <div class="cheatsheet-card">
-          <h3><a href="faqs/redis_redis_leaderboard.html">Redis Leaderboard</a></h3>
-          <p><a href="faqs/redis_redis_leaderboard.html" class="read-more">Read more →</a></p>
-        </div></div><h2>Kafka</h2><div class="cheatsheet-grid">
-        <div class="cheatsheet-card">
-          <h3><a href="faqs/kafka_faq_kafka.html">Faq Kafka</a></h3>
-          <p><a href="faqs/kafka_faq_kafka.html" class="read-more">Read more →</a></p>
-        </div></div><h2>Spark & Hadoop</h2><div class="cheatsheet-grid">
-        <div class="cheatsheet-card">
-          <h3><a href="faqs/spark_faq_hadoop.html">Faq Hadoop</a></h3>
-          <p><a href="faqs/spark_faq_hadoop.html" class="read-more">Read more →</a></p>
-        </div>
-        <div class="cheatsheet-card">
-          <h3><a href="faqs/spark_faq_mapreduce.html">Faq Mapreduce</a></h3>
-          <p><a href="faqs/spark_faq_mapreduce.html" class="read-more">Read more →</a></p>
-        </div>
-        <div class="cheatsheet-card">
-          <h3><a href="faqs/spark_faq_spark_hadoop.html">Faq Spark Hadoop</a></h3>
-          <p><a href="faqs/spark_faq_spark_hadoop.html" class="read-more">Read more →</a></p>
-        </div></div><h2>Flink</h2><div class="cheatsheet-grid">
-        <div class="cheatsheet-card">
-          <h3><a href="faqs/flink_faq_flink.html">Faq Flink</a></h3>
-          <p><a href="faqs/flink_faq_flink.html" class="read-more">Read more →</a></p>
-        </div></div><h2>Streaming</h2><div class="cheatsheet-grid">
-        <div class="cheatsheet-card">
-          <h3><a href="faqs/stream_faq_stream.html">Faq Stream</a></h3>
-          <p><a href="faqs/stream_faq_stream.html" class="read-more">Read more →</a></p>
-        </div></div>
+        <div class="cheatsheet-card"><h3><a href="faqs/cs_basic.html">Cs Basic</a></h3><p><a href="faqs/cs_basic.html" class="read-more">Read more →</a></p></div>
+        <div class="cheatsheet-card"><h3><a href="faqs/faq_Airflow.html">Faq Airflow</a></h3><p><a href="faqs/faq_Airflow.html" class="read-more">Read more →</a></p></div>
+        <div class="cheatsheet-card"><h3><a href="faqs/faq_DE.html">Faq DE</a></h3><p><a href="faqs/faq_DE.html" class="read-more">Read more →</a></p></div>
+        <div class="cheatsheet-card"><h3><a href="faqs/faq_ML.html">Faq ML</a></h3><p><a href="faqs/faq_ML.html" class="read-more">Read more →</a></p></div>
+        <div class="cheatsheet-card"><h3><a href="faqs/faq_data_model.html">Faq Data Model</a></h3><p><a href="faqs/faq_data_model.html" class="read-more">Read more →</a></p></div>
+        <div class="cheatsheet-card"><h3><a href="faqs/faq_dev_interview.html">Faq Dev Interview</a></h3><p><a href="faqs/faq_dev_interview.html" class="read-more">Read more →</a></p></div>
+        <div class="cheatsheet-card"><h3><a href="faqs/faq_devops.html">Faq Devops</a></h3><p><a href="faqs/faq_devops.html" class="read-more">Read more →</a></p></div>
+        <div class="cheatsheet-card"><h3><a href="faqs/faq_performance_tune.html">Faq Performance Tune</a></h3><p><a href="faqs/faq_performance_tune.html" class="read-more">Read more →</a></p></div>
+        <div class="cheatsheet-card"><h3><a href="faqs/faq_python.html">Faq Python</a></h3><p><a href="faqs/faq_python.html" class="read-more">Read more →</a></p></div>
+        <div class="cheatsheet-card"><h3><a href="faqs/faq_software_runtime.html">Faq Software Runtime</a></h3><p><a href="faqs/faq_software_runtime.html" class="read-more">Read more →</a></p></div></div><h2>Java</h2><div class="cheatsheet-grid">
+        <div class="cheatsheet-card"><h3><a href="faqs/java_cqrs.html">Cqrs</a></h3><p><a href="faqs/java_cqrs.html" class="read-more">Read more →</a></p></div>
+        <div class="cheatsheet-card"><h3><a href="faqs/java_faq_OOP.html">Faq OOP</a></h3><p><a href="faqs/java_faq_OOP.html" class="read-more">Read more →</a></p></div>
+        <div class="cheatsheet-card"><h3><a href="faqs/java_java_basic.html">Java Basic</a></h3><p><a href="faqs/java_java_basic.html" class="read-more">Read more →</a></p></div>
+        <div class="cheatsheet-card"><h3><a href="faqs/java_java_collection.html">Java Collection</a></h3><p><a href="faqs/java_java_collection.html" class="read-more">Read more →</a></p></div>
+        <div class="cheatsheet-card"><h3><a href="faqs/java_java_design_pattern.html">Java Design Pattern</a></h3><p><a href="faqs/java_java_design_pattern.html" class="read-more">Read more →</a></p></div>
+        <div class="cheatsheet-card"><h3><a href="faqs/java_java_multi_thread.html">Java Multi Thread</a></h3><p><a href="faqs/java_java_multi_thread.html" class="read-more">Read more →</a></p></div>
+        <div class="cheatsheet-card"><h3><a href="faqs/java_java_spring.html">Java Spring</a></h3><p><a href="faqs/java_java_spring.html" class="read-more">Read more →</a></p></div>
+        <div class="cheatsheet-card"><h3><a href="faqs/java_java_tdd.html">Java Tdd</a></h3><p><a href="faqs/java_java_tdd.html" class="read-more">Read more →</a></p></div>
+        <div class="cheatsheet-card"><h3><a href="faqs/java_jmm.html">Jmm</a></h3><p><a href="faqs/java_jmm.html" class="read-more">Read more →</a></p></div>
+        <div class="cheatsheet-card"><h3><a href="faqs/java_jvm.html">Jvm</a></h3><p><a href="faqs/java_jvm.html" class="read-more">Read more →</a></p></div></div><h2>Backend</h2><div class="cheatsheet-grid">
+        <div class="cheatsheet-card"><h3><a href="faqs/backend_authentication.html">Authentication</a></h3><p><a href="faqs/backend_authentication.html" class="read-more">Read more →</a></p></div>
+        <div class="cheatsheet-card"><h3><a href="faqs/backend_be_programming_notes.html">Be Programming Notes</a></h3><p><a href="faqs/backend_be_programming_notes.html" class="read-more">Read more →</a></p></div>
+        <div class="cheatsheet-card"><h3><a href="faqs/backend_be_programming_notes_pt2.html">Be Programming Notes Pt2</a></h3><p><a href="faqs/backend_be_programming_notes_pt2.html" class="read-more">Read more →</a></p></div>
+        <div class="cheatsheet-card"><h3><a href="faqs/backend_be_programming_notes_pt3.html">Be Programming Notes Pt3</a></h3><p><a href="faqs/backend_be_programming_notes_pt3.html" class="read-more">Read more →</a></p></div>
+        <div class="cheatsheet-card"><h3><a href="faqs/backend_db_isolation_demo_mysql.html">Db Isolation Demo Mysql</a></h3><p><a href="faqs/backend_db_isolation_demo_mysql.html" class="read-more">Read more →</a></p></div>
+        <div class="cheatsheet-card"><h3><a href="faqs/backend_web_long_connections.html">Web Long Connections</a></h3><p><a href="faqs/backend_web_long_connections.html" class="read-more">Read more →</a></p></div>
+        <div class="cheatsheet-card"><h3><a href="faqs/backend_後端面試題總整理.html">後端面試題總整理</a></h3><p><a href="faqs/backend_後端面試題總整理.html" class="read-more">Read more →</a></p></div></div><h2>Database</h2><div class="cheatsheet-grid">
+        <div class="cheatsheet-card"><h3><a href="faqs/db_faq_DB_DW.html">Faq DB DW</a></h3><p><a href="faqs/db_faq_DB_DW.html" class="read-more">Read more →</a></p></div>
+        <div class="cheatsheet-card"><h3><a href="faqs/db_faq_redshift.html">Faq Redshift</a></h3><p><a href="faqs/db_faq_redshift.html" class="read-more">Read more →</a></p></div>
+        <div class="cheatsheet-card"><h3><a href="faqs/db_postgre.html">Postgre</a></h3><p><a href="faqs/db_postgre.html" class="read-more">Read more →</a></p></div></div><h2>SQL</h2><div class="cheatsheet-grid">
+        <div class="cheatsheet-card"><h3><a href="faqs/sql_faq_mysql.html">Faq Mysql</a></h3><p><a href="faqs/sql_faq_mysql.html" class="read-more">Read more →</a></p></div>
+        <div class="cheatsheet-card"><h3><a href="faqs/sql_faq_sql.html">Faq Sql</a></h3><p><a href="faqs/sql_faq_sql.html" class="read-more">Read more →</a></p></div></div><h2>Redis</h2><div class="cheatsheet-grid">
+        <div class="cheatsheet-card"><h3><a href="faqs/redis_redis_backend.html">Redis Backend</a></h3><p><a href="faqs/redis_redis_backend.html" class="read-more">Read more →</a></p></div>
+        <div class="cheatsheet-card"><h3><a href="faqs/redis_redis_info.html">Redis Info</a></h3><p><a href="faqs/redis_redis_info.html" class="read-more">Read more →</a></p></div>
+        <div class="cheatsheet-card"><h3><a href="faqs/redis_redis_leaderboard.html">Redis Leaderboard</a></h3><p><a href="faqs/redis_redis_leaderboard.html" class="read-more">Read more →</a></p></div></div><h2>Kafka</h2><div class="cheatsheet-grid">
+        <div class="cheatsheet-card"><h3><a href="faqs/kafka_faq_kafka.html">Faq Kafka</a></h3><p><a href="faqs/kafka_faq_kafka.html" class="read-more">Read more →</a></p></div></div><h2>Spark & Hadoop</h2><div class="cheatsheet-grid">
+        <div class="cheatsheet-card"><h3><a href="faqs/spark_faq_hadoop.html">Faq Hadoop</a></h3><p><a href="faqs/spark_faq_hadoop.html" class="read-more">Read more →</a></p></div>
+        <div class="cheatsheet-card"><h3><a href="faqs/spark_faq_mapreduce.html">Faq Mapreduce</a></h3><p><a href="faqs/spark_faq_mapreduce.html" class="read-more">Read more →</a></p></div>
+        <div class="cheatsheet-card"><h3><a href="faqs/spark_faq_spark_hadoop.html">Faq Spark Hadoop</a></h3><p><a href="faqs/spark_faq_spark_hadoop.html" class="read-more">Read more →</a></p></div></div><h2>Flink</h2><div class="cheatsheet-grid">
+        <div class="cheatsheet-card"><h3><a href="faqs/flink_faq_flink.html">Faq Flink</a></h3><p><a href="faqs/flink_faq_flink.html" class="read-more">Read more →</a></p></div></div><h2>Streaming</h2><div class="cheatsheet-grid">
+        <div class="cheatsheet-card"><h3><a href="faqs/stream_faq_stream.html">Faq Stream</a></h3><p><a href="faqs/stream_faq_stream.html" class="read-more">Read more →</a></p></div></div>
 <div style="margin-top: 3rem; padding: 1.5rem; background: var(--bg-secondary); border-radius: 8px;">
   <p><strong>💡 Tip:</strong> These FAQs are designed for quick reference during technical interview preparation.</p>
   <p>View all FAQs on <a href="https://github.com/yennanliu/CS_basics/tree/master/doc/faq">GitHub</a>.</p>

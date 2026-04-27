@@ -5,15 +5,27 @@ const MarkdownIt = require('markdown-it');
 const markdownItAnchor = require('markdown-it-anchor');
 const hljs = require('highlight.js');
 
-function getLastModified(filePath) {
+// Build a map of filePath → last-modified date string in one git log call
+function buildLastModifiedMap(filePaths) {
+  const map = new Map();
   try {
-    const date = execSync(`git log -1 --format="%ai" -- "${filePath}"`, { encoding: 'utf8' }).trim();
-    if (!date) return null;
-    return new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-  } catch (e) { return null; }
+    const raw = execSync(
+      `git log --name-only --format="COMMIT %ai" -- ${filePaths.map(f => `"${f}"`).join(' ')}`,
+      { encoding: 'utf8' }
+    );
+    let currentDate = null;
+    for (const line of raw.split('\n')) {
+      if (line.startsWith('COMMIT ')) {
+        currentDate = new Date(line.slice(7).trim())
+          .toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+      } else if (line.trim() && currentDate && !map.has(line.trim())) {
+        map.set(line.trim(), currentDate);
+      }
+    }
+  } catch (_) {}
+  return map;
 }
 
-// Custom slug function shared by markdown-it-anchor and TOC generation
 function slugify(text) {
   return text.toLowerCase().replace(/<[^>]*>/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 }
@@ -23,139 +35,161 @@ const md = new MarkdownIt({
   linkify: true,
   typographer: true,
   highlight: function(str, lang) {
-    const escapedStr = md.utils.escapeHtml(str);
     if (lang && hljs.getLanguage(lang)) {
       try {
         const highlighted = hljs.highlight(str, { language: lang, ignoreIllegals: true }).value;
         return `<pre data-lang="${lang}"><code class="hljs language-${lang}">${highlighted}</code></pre>`;
       } catch (_) {}
     }
-    return `<pre><code class="hljs">${escapedStr}</code></pre>`;
+    return `<pre><code class="hljs">${md.utils.escapeHtml(str)}</code></pre>`;
   }
 }).use(markdownItAnchor, {
   slugify: slugify,
   permalink: markdownItAnchor.permalink && markdownItAnchor.permalink.headerLink
     ? markdownItAnchor.permalink.headerLink({ safariReaderFix: true })
     : true,
-  // Fallback options for older API (before v9 permalink object)
+  // Fallback for older markdown-it-anchor API (before v9)
   permalinkBefore: true,
   permalinkSymbol: '#'
 });
 
-// Wrap highlighted code blocks with a header (language label + copy button)
 function wrapCodeBlocks(html) {
-  // Blocks with a known language: <pre data-lang="X"><code ...>...</code></pre>
-  html = html.replace(
-    /<pre data-lang="([^"]+)">(<code[\s\S]*?<\/code>)<\/pre>/g,
-    (_, lang, inner) =>
-      `<div class="code-block-wrapper">` +
-      `<div class="code-block-header"><span class="code-lang-label">${lang}</span>` +
-      `<button class="copy-btn" onclick="copyCode(this)">Copy</button></div>` +
-      `<pre data-lang="${lang}">${inner}</pre></div>`
-  );
-  // Blocks without a language: plain <pre><code ...>...</code></pre>
-  html = html.replace(
-    /<pre>(<code[\s\S]*?<\/code>)<\/pre>/g,
-    (_, inner) =>
-      `<div class="code-block-wrapper">` +
-      `<div class="code-block-header"><span></span>` +
-      `<button class="copy-btn" onclick="copyCode(this)">Copy</button></div>` +
-      `<pre>${inner}</pre></div>`
-  );
-  return html;
-}
-
-// Function to process links - convert cheatsheet links to internal, keep GitHub code links as external
-function processLinks(html) {
-  // Convert cheatsheet GitHub links to internal links
-  html = html.replace(
-    /https:\/\/github\.com\/yennanliu\/CS_basics\/blob\/master\/doc\/cheatsheet\/([^")\s]+\.md)/g,
-    (match, filename) => {
-      const baseName = filename.replace('.md', '');
-      return `${baseName}.html`;
+  return html.replace(
+    /<pre( data-lang="([^"]+)")?>((<code[\s\S]*?<\/code>))<\/pre>/g,
+    (_, dataLangAttr, lang, inner) => {
+      const labelSpan = lang
+        ? `<span class="code-lang-label">${lang}</span>`
+        : '<span></span>';
+      const preAttr = lang ? ` data-lang="${lang}"` : '';
+      return `<div class="code-block-wrapper">` +
+        `<div class="code-block-header">${labelSpan}` +
+        `<button class="copy-btn" onclick="copyCode(this)">Copy</button></div>` +
+        `<pre${preAttr}>${inner}</pre></div>`;
     }
   );
+}
 
-  // Convert GitHub blob image URLs to local paths
-  // e.g. https://github.com/yennanliu/CS_basics/blob/master/doc/pic/heap.png → doc/pic/heap.png
-  // Handles both src="..." and src ="..." (with optional space)
+function processLinks(html) {
+  html = html.replace(
+    /https:\/\/github\.com\/yennanliu\/CS_basics\/blob\/master\/doc\/cheatsheet\/([^")\s]+\.md)/g,
+    (_, filename) => filename.replace('.md', '') + '.html'
+  );
+  // GitHub blob image URLs → local paths (handles optional space before =)
   html = html.replace(
     /src\s*=\s*"https:\/\/github\.com\/yennanliu\/CS_basics\/blob\/master\/doc\/pic\/([^"]+)"/g,
     'src="doc/pic/$1"'
   );
-
-  // Convert relative ../pic/ paths (used by some cheatsheet files) to doc/pic/
-  // e.g. ../pic/binary_search_pattern.png → doc/pic/binary_search_pattern.png
+  // ../pic/ relative image paths → doc/pic/
   html = html.replace(
     /src\s*=\s*"\.\.\/pic\/([^"]+)"/g,
     'src="doc/pic/$1"'
   );
-
-  // Convert relative code links (./leetcode_python/..., ./data_structure/..., etc.)
-  // to absolute GitHub URLs so they don't resolve to the deployed site
+  // Relative code links → absolute GitHub URLs, except internal cheatsheet .md links
   html = html.replace(
     /href="\.\/([^"]+)"/g,
-    (match, relativePath) => {
-      // Check if it's a cheatsheet .md link that should stay internal
+    (_, relativePath) => {
       if (relativePath.startsWith('doc/cheatsheet/') && relativePath.endsWith('.md')) {
-        const baseName = relativePath.replace('doc/cheatsheet/', '').replace('.md', '');
-        return `href="${baseName}.html"`;
+        return `href="${relativePath.replace('doc/cheatsheet/', '').replace('.md', '.html')}"`;
       }
-      // All other relative paths → GitHub
       return `href="https://github.com/yennanliu/CS_basics/blob/master/${relativePath}"`;
     }
   );
-
   return html;
 }
 
-// Read README
-const readme = fs.readFileSync('README.md', 'utf8');
-const content = wrapCodeBlocks(processLinks(md.render(readme)));
-
-// Read Resource.md if exists
-let resourceContent = '';
-if (fs.existsSync('doc/Resource.md')) {
-  const resource = fs.readFileSync('doc/Resource.md', 'utf8');
-  resourceContent = wrapCodeBlocks(processLinks(md.render(resource)));
+function renderContent(rawContent) {
+  return wrapCodeBlocks(processLinks(md.render(rawContent)));
 }
 
-// Function to generate table of contents
-// Extracts the id already placed on headings by markdown-it-anchor
 function generateTOC(htmlContent) {
   const headingRegex = /<h([23])\s[^>]*?id="([^"]*)"[^>]*>(.*?)<\/h\1>/g;
   const headings = [];
   let match;
-
   while ((match = headingRegex.exec(htmlContent)) !== null) {
-    const level = match[1];
-    const id = match[2];  // use the actual id from the rendered heading
-    const text = match[3].replace(/<[^>]*>/g, '').replace(/^[\s#]+/, ''); // Remove HTML tags and leading #/spaces from permalink
-    headings.push({ level, text, id });
+    headings.push({
+      level: match[1],
+      id: match[2],
+      text: match[3].replace(/<[^>]*>/g, '').replace(/^[\s#]+/, '')
+    });
   }
-
-  if (headings.length < 3) return ''; // Don't show TOC for short documents
-
+  if (headings.length < 3) return '';
   let toc = '<div class="toc"><h2>Table of Contents</h2><ul>';
-  headings.forEach(({ level, text, id }) => {
-    const indent = level === '3' ? ' class="toc-sub"' : '';
-    toc += `<li${indent}><a href="#${id}">${text}</a></li>`;
-  });
-  toc += '</ul></div>';
-
-  return toc;
+  for (const { level, text, id } of headings) {
+    toc += `<li${level === '3' ? ' class="toc-sub"' : ''}><a href="#${id}">${text}</a></li>`;
+  }
+  return toc + '</ul></div>';
 }
 
-// Ensure all h2/h3/h4 headings have an id attribute
-// (markdown-it-anchor handles most, this catches any from raw HTML blocks)
 function ensureHeadingIds(htmlContent) {
-  return htmlContent.replace(/<h([2-4])(?![^>]*\bid=)([^>]*)>(.*?)<\/h\1>/g, (match, level, attrs, text) => {
-    const id = slugify(text);
-    return `<h${level}${attrs} id="${id}">${text}</h${level}>`;
-  });
+  return htmlContent.replace(/<h([2-4])(?![^>]*\bid=)([^>]*)>(.*?)<\/h\1>/g, (_, level, attrs, text) =>
+    `<h${level}${attrs} id="${slugify(text)}">${text}</h${level}>`
+  );
 }
 
-// Process all cheatsheet files
+function groupByCategory(items) {
+  const grouped = {};
+  for (const item of items) {
+    if (!grouped[item.category]) grouped[item.category] = [];
+    grouped[item.category].push(item);
+  }
+  return grouped;
+}
+
+function buildPrevNext(items, idx) {
+  const prev = idx > 0 ? items[idx - 1] : null;
+  const next = idx < items.length - 1 ? items[idx + 1] : null;
+  return '<nav class="prev-next">' +
+    (prev ? `<a href="${prev.file}.html" class="prev-link">← ${prev.title}</a>` : '<span></span>') +
+    (next ? `<a href="${next.file}.html" class="next-link">${next.title} →</a>` : '<span></span>') +
+    '</nav>';
+}
+
+function buildIndexGrid(grouped, categoryOrder, subFolder) {
+  let html = '';
+  for (const category of categoryOrder) {
+    if (!grouped[category] || grouped[category].length === 0) continue;
+    html += `<h2>${category}</h2><div class="cheatsheet-grid">`;
+    for (const item of grouped[category]) {
+      html += `\n        <div class="cheatsheet-card">` +
+        `<h3><a href="${subFolder}/${item.file}.html">${item.title}</a></h3>` +
+        `<p><a href="${subFolder}/${item.file}.html" class="read-more">Read more →</a></p>` +
+        `</div>`;
+    }
+    html += '</div>';
+  }
+  return html;
+}
+
+function buildPageContent(title, htmlContent, toc, lastMod, indexHref, indexLabel, githubHref) {
+  return `
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../${indexHref}">${indexLabel}</a> <span class="sep">›</span> <span class="current">${title}</span></nav>
+      <div class="cheatsheet-header">
+        <h1>${title}</h1>
+        ${lastMod ? `<span class="last-updated">Last updated: ${lastMod}</span>` : ''}
+      </div>
+      ${toc}
+      <div class="cheatsheet-content">
+        ${htmlContent}
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../${indexHref}" class="back-link">← Back to ${indexLabel}</a>
+        <a href="${githubHref}" class="github-edit" target="_blank">Edit on GitHub →</a>
+      </div>
+    `;
+}
+
+// ── Data collection ─────────────────────────────────────────────────────────
+
+const readme = fs.readFileSync('README.md', 'utf8');
+const content = renderContent(readme);
+
+let resourceContent = '';
+if (fs.existsSync('doc/Resource.md')) {
+  resourceContent = renderContent(fs.readFileSync('doc/Resource.md', 'utf8'));
+}
+
+// ── Cheatsheets ──────────────────────────────────────────────────────────────
+
 const cheatsheetDir = 'doc/cheatsheet';
 const cheatsheets = [];
 
@@ -164,7 +198,9 @@ if (fs.existsSync(cheatsheetDir)) {
     .filter(f => f.endsWith('.md') && f !== 'README.md' && f !== '00_template.md')
     .sort();
 
-  // Group cheatsheets by category
+  const filePaths = files.map(f => path.join(cheatsheetDir, f));
+  const lastModMap = buildLastModifiedMap(filePaths);
+
   const categories = {
     'Core Data Structures': ['array', 'linked_list', 'tree', 'binary_tree', 'bst', 'graph', 'stack', 'queue', 'heap', 'hash_map', 'hashing', 'set', 'trie', 'Collection'],
     'Search & Sort': ['binary_search', 'dfs', 'bfs', 'sort', 'topology_sorting'],
@@ -174,69 +210,39 @@ if (fs.existsSync(cheatsheetDir)) {
     'Complexity & Math': ['complexity_cheatsheet', 'math', 'bit_manipulation'],
     'Strings & Patterns': ['string', 'kmp', 'rolling_hash'],
     'Specialized': ['matrix', 'intervals', 'design', 'iterator', 'stock_trading'],
-    'Interview Prep': ['java_trick', 'python_trick', 'lc_pattern', 'lc_category', 'code_interview', 'diff_toposort_quickunion', 'Collection']
+    'Interview Prep': ['java_trick', 'python_trick', 'lc_pattern', 'lc_category', 'code_interview', 'diff_toposort_quickunion']
   };
 
-  files.forEach(file => {
+  for (const file of files) {
     const filePath = path.join(cheatsheetDir, file);
-    const rawContent = fs.readFileSync(filePath, 'utf8');
     const baseName = path.basename(file, '.md');
-    const title = baseName.replace(/_/g, ' ')
-      .split(' ')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
+    const title = baseName.replace(/_/g, ' ').split(' ')
+      .map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 
-    // Render and process links
-    let htmlContent = md.render(rawContent);
-    htmlContent = wrapCodeBlocks(processLinks(htmlContent));
+    let htmlContent = renderContent(fs.readFileSync(filePath, 'utf8'));
     htmlContent = ensureHeadingIds(htmlContent);
 
-    // Generate table of contents
-    const toc = generateTOC(htmlContent);
-
-    // Wrap content with navigation and better structure
-    const lastMod = getLastModified(filePath);
-    const wrappedContent = `
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">${title}</span></nav>
-      <div class="cheatsheet-header">
-        <h1>${title}</h1>
-        ${lastMod ? `<span class="last-updated">Last updated: ${lastMod}</span>` : ''}
-      </div>
-      ${toc}
-      <div class="cheatsheet-content">
-        ${htmlContent}
-      </div>
-      <div class="cheatsheet-footer">
-        <a href="../cheatsheets.html" class="back-link">← Back to Cheat Sheets</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/${file}" class="github-edit" target="_blank">
-          Edit on GitHub →
-        </a>
-      </div>
-    `;
+    let category = 'Other';
+    for (const [cat, keywords] of Object.entries(categories)) {
+      if (keywords.some(kw => baseName.includes(kw) || baseName === kw)) { category = cat; break; }
+    }
 
     cheatsheets.push({
       file: baseName,
-      title: title,
-      content: wrappedContent,
-      category: null
+      title,
+      category,
+      content: buildPageContent(
+        title, htmlContent, generateTOC(htmlContent),
+        lastModMap.get(filePath) || null,
+        'cheatsheets.html', 'Cheat Sheets',
+        `https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/${file}`
+      )
     });
-  });
-
-  // Assign categories
-  cheatsheets.forEach(sheet => {
-    for (const [category, keywords] of Object.entries(categories)) {
-      if (keywords.some(kw => sheet.file.includes(kw) || sheet.file === kw)) {
-        sheet.category = category;
-        break;
-      }
-    }
-    if (!sheet.category) {
-      sheet.category = 'Other';
-    }
-  });
+  }
 }
 
-// Process all FAQ files
+// ── FAQs ─────────────────────────────────────────────────────────────────────
+
 const faqDir = 'doc/faq';
 const faqs = [];
 
@@ -245,121 +251,55 @@ function walkDir(dir) {
   const files = [];
   for (const entry of entries) {
     const fullPath = path.join(dir, entry.name);
-    if (entry.isDirectory()) {
-      files.push(...walkDir(fullPath));
-    } else if (entry.name.endsWith('.md')) {
-      files.push(fullPath);
-    }
+    if (entry.isDirectory()) files.push(...walkDir(fullPath));
+    else if (entry.name.endsWith('.md')) files.push(fullPath);
   }
   return files;
 }
 
 if (fs.existsSync(faqDir)) {
   const faqFiles = walkDir(faqDir).sort();
+  const lastModMap = buildLastModifiedMap(faqFiles);
 
-  // Category mapping based on subdirectory
   const faqCategoryMap = {
-    'java': 'Java',
-    'backend': 'Backend',
-    'db': 'Database',
-    'redis': 'Redis',
-    'kafka': 'Kafka',
-    'spark': 'Spark & Hadoop',
-    'flink': 'Flink',
-    'stream': 'Streaming',
-    'sql': 'SQL'
+    'java': 'Java', 'backend': 'Backend', 'db': 'Database',
+    'redis': 'Redis', 'kafka': 'Kafka', 'spark': 'Spark & Hadoop',
+    'flink': 'Flink', 'stream': 'Streaming', 'sql': 'SQL'
   };
 
-  faqFiles.forEach(filePath => {
-    const rawContent = fs.readFileSync(filePath, 'utf8');
+  for (const filePath of faqFiles) {
     const relativePath = path.relative(faqDir, filePath);
     const baseName = path.basename(filePath, '.md');
     const subDir = path.dirname(relativePath);
     const uniqueName = subDir === '.' ? baseName : `${subDir}_${baseName}`.replace(/\//g, '_');
-    const title = baseName.replace(/_/g, ' ')
-      .split(' ')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
+    const title = baseName.replace(/_/g, ' ').split(' ')
+      .map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 
-    // Determine category
     let category = 'General';
     if (subDir !== '.') {
       const topDir = subDir.split('/')[0];
       category = faqCategoryMap[topDir] || topDir.charAt(0).toUpperCase() + topDir.slice(1);
     }
 
-    // Render and process links
-    let htmlContent = md.render(rawContent);
-    htmlContent = wrapCodeBlocks(processLinks(htmlContent));
+    let htmlContent = renderContent(fs.readFileSync(filePath, 'utf8'));
     htmlContent = ensureHeadingIds(htmlContent);
-
-    const toc = generateTOC(htmlContent);
-
-    const lastMod = getLastModified(filePath);
-    const wrappedContent = `
-      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">${title}</span></nav>
-      <div class="cheatsheet-header">
-        <h1>${title}</h1>
-        ${lastMod ? `<span class="last-updated">Last updated: ${lastMod}</span>` : ''}
-      </div>
-      ${toc}
-      <div class="cheatsheet-content">
-        ${htmlContent}
-      </div>
-      <div class="cheatsheet-footer">
-        <a href="../faqs.html" class="back-link">← Back to FAQs</a>
-        <a href="https://github.com/yennanliu/CS_basics/blob/master/${filePath}" class="github-edit" target="_blank">
-          Edit on GitHub →
-        </a>
-      </div>
-    `;
 
     faqs.push({
       file: uniqueName,
-      title: title,
-      content: wrappedContent,
-      category: category
+      title,
+      category,
+      content: buildPageContent(
+        title, htmlContent, generateTOC(htmlContent),
+        lastModMap.get(filePath) || null,
+        'faqs.html', 'FAQs',
+        `https://github.com/yennanliu/CS_basics/blob/master/${filePath}`
+      )
     });
-  });
+  }
 }
 
-// Create cheatsheet index
-let cheatsheetIndexContent = '<h1>Algorithm & Data Structure Cheat Sheets</h1>';
-cheatsheetIndexContent += '<p class="intro">Comprehensive collection of algorithm patterns, data structures, and problem-solving techniques.</p>';
+// ── HTML template ─────────────────────────────────────────────────────────────
 
-// Group by category
-const grouped = {};
-cheatsheets.forEach(sheet => {
-  if (!grouped[sheet.category]) {
-    grouped[sheet.category] = [];
-  }
-  grouped[sheet.category].push(sheet);
-});
-
-// Generate index with categories
-const categoryOrder = ['Core Data Structures', 'Search & Sort', 'Algorithm Patterns', 'Advanced Topics', 'Graph Algorithms', 'Complexity & Math', 'Strings & Patterns', 'Specialized', 'Interview Prep', 'Other'];
-
-categoryOrder.forEach(category => {
-  if (grouped[category] && grouped[category].length > 0) {
-    cheatsheetIndexContent += `<h2>${category}</h2><div class="cheatsheet-grid">`;
-    grouped[category].forEach(sheet => {
-      cheatsheetIndexContent += `
-        <div class="cheatsheet-card">
-          <h3><a href="cheatsheets/${sheet.file}.html">${sheet.title}</a></h3>
-          <p><a href="cheatsheets/${sheet.file}.html" class="read-more">Read more →</a></p>
-        </div>`;
-    });
-    cheatsheetIndexContent += '</div>';
-  }
-});
-
-cheatsheetIndexContent += `
-<div style="margin-top: 3rem; padding: 1.5rem; background: var(--bg-secondary); border-radius: 8px;">
-  <p><strong>💡 Tip:</strong> These cheatsheets are designed for quick reference during coding interviews and problem-solving.</p>
-  <p>View all cheatsheets on <a href="https://github.com/yennanliu/CS_basics/tree/master/doc/cheatsheet">GitHub</a>.</p>
-</div>`;
-
-// Create HTML template
 const htmlTemplate = (title, bodyContent, currentPage = 'home', basePath = '') => `
 <!DOCTYPE html>
 <html lang="en">
@@ -373,7 +313,6 @@ const htmlTemplate = (title, bodyContent, currentPage = 'home', basePath = '') =
   <link rel="stylesheet" href="${basePath}vendor/fonts.css">
   <link rel="stylesheet" href="${basePath}vendor/highlight/atom-one-dark.min.css">
   <script>
-  // Apply theme before render to prevent flash
   (function() {
     var saved = localStorage.getItem('theme');
     if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -401,7 +340,6 @@ const htmlTemplate = (title, bodyContent, currentPage = 'home', basePath = '') =
         wrapper.appendChild(table);
       }
     });
-    // Reading progress bar
     var progressBar = document.getElementById('reading-progress');
     if (progressBar) {
       window.addEventListener('scroll', function() {
@@ -410,7 +348,6 @@ const htmlTemplate = (title, bodyContent, currentPage = 'home', basePath = '') =
         progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
       });
     }
-    // Dark mode toggle
     var toggle = document.getElementById('theme-toggle');
     if (toggle) {
       var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
@@ -479,128 +416,77 @@ const htmlTemplate = (title, bodyContent, currentPage = 'home', basePath = '') =
 </html>
 `;
 
-// Write index.html
+// ── Write output ─────────────────────────────────────────────────────────────
+
 fs.writeFileSync('_site/index.html', htmlTemplate('Home', content, 'home'));
 console.log('✓ Created index.html');
 
-// Write resources.html
 if (resourceContent) {
   fs.writeFileSync('_site/resources.html', htmlTemplate('Resources', resourceContent, 'resources'));
   console.log('✓ Created resources.html');
 }
 
-// Write cheatsheets index
+const cheatsheetCategoryOrder = ['Core Data Structures', 'Search & Sort', 'Algorithm Patterns', 'Advanced Topics', 'Graph Algorithms', 'Complexity & Math', 'Strings & Patterns', 'Specialized', 'Interview Prep', 'Other'];
+const cheatsheetGrouped = groupByCategory(cheatsheets);
+
+let cheatsheetIndexContent = '<h1>Algorithm & Data Structure Cheat Sheets</h1>' +
+  '<p class="intro">Comprehensive collection of algorithm patterns, data structures, and problem-solving techniques.</p>' +
+  buildIndexGrid(cheatsheetGrouped, cheatsheetCategoryOrder, 'cheatsheets') +
+  `\n<div style="margin-top: 3rem; padding: 1.5rem; background: var(--bg-secondary); border-radius: 8px;">
+  <p><strong>💡 Tip:</strong> These cheatsheets are designed for quick reference during coding interviews and problem-solving.</p>
+  <p>View all cheatsheets on <a href="https://github.com/yennanliu/CS_basics/tree/master/doc/cheatsheet">GitHub</a>.</p>
+</div>`;
+
 fs.writeFileSync('_site/cheatsheets.html', htmlTemplate('Cheat Sheets', cheatsheetIndexContent, 'cheatsheets'));
 console.log('✓ Created cheatsheets.html index');
 
-// Create cheatsheets directory and write individual pages
 if (cheatsheets.length > 0) {
   fs.mkdirSync('_site/cheatsheets', { recursive: true });
-
   cheatsheets.forEach((sheet, idx) => {
-    // Fix image paths for sub-pages (doc/pic -> ../doc/pic)
-    // Handles both src="doc/" and src ="doc/" (with optional space before =)
     let fixedContent = sheet.content.replace(/src\s*=\s*"doc\//g, 'src="../doc/');
-    // Add prev/next navigation
-    const prev = idx > 0 ? cheatsheets[idx - 1] : null;
-    const next = idx < cheatsheets.length - 1 ? cheatsheets[idx + 1] : null;
-    let prevNext = '<nav class="prev-next">';
-    prevNext += prev ? `<a href="${prev.file}.html" class="prev-link">← ${prev.title}</a>` : '<span></span>';
-    prevNext += next ? `<a href="${next.file}.html" class="next-link">${next.title} →</a>` : '<span></span>';
-    prevNext += '</nav>';
-    fixedContent += prevNext;
-    const cheatsheetHtml = htmlTemplate(sheet.title, fixedContent, 'cheatsheets', '../');
-    fs.writeFileSync(`_site/cheatsheets/${sheet.file}.html`, cheatsheetHtml);
+    fixedContent += buildPrevNext(cheatsheets, idx);
+    fs.writeFileSync(`_site/cheatsheets/${sheet.file}.html`, htmlTemplate(sheet.title, fixedContent, 'cheatsheets', '../'));
   });
-
   console.log(`✓ Created ${cheatsheets.length} individual cheatsheet pages`);
 }
 
-// Build FAQ index page
-let faqIndexContent = '<h1>FAQ - Frequently Asked Questions</h1>';
-faqIndexContent += '<p class="intro">Interview preparation FAQs covering Java, Backend, Database, Streaming, and more.</p>';
+const knownFaqCategoryOrder = ['General', 'Java', 'Backend', 'Database', 'SQL', 'Redis', 'Kafka', 'Spark & Hadoop', 'Flink', 'Streaming'];
+const faqGrouped = groupByCategory(faqs);
+const faqCategoryOrder = [
+  ...knownFaqCategoryOrder,
+  ...Object.keys(faqGrouped).filter(cat => !knownFaqCategoryOrder.includes(cat))
+];
 
-const faqGrouped = {};
-faqs.forEach(faq => {
-  if (!faqGrouped[faq.category]) {
-    faqGrouped[faq.category] = [];
-  }
-  faqGrouped[faq.category].push(faq);
-});
-
-const faqCategoryOrder = ['General', 'Java', 'Backend', 'Database', 'SQL', 'Redis', 'Kafka', 'Spark & Hadoop', 'Flink', 'Streaming'];
-
-// Add any categories not in the predefined order
-Object.keys(faqGrouped).forEach(cat => {
-  if (!faqCategoryOrder.includes(cat)) {
-    faqCategoryOrder.push(cat);
-  }
-});
-
-faqCategoryOrder.forEach(category => {
-  if (faqGrouped[category] && faqGrouped[category].length > 0) {
-    faqIndexContent += `<h2>${category}</h2><div class="cheatsheet-grid">`;
-    faqGrouped[category].forEach(faq => {
-      faqIndexContent += `
-        <div class="cheatsheet-card">
-          <h3><a href="faqs/${faq.file}.html">${faq.title}</a></h3>
-          <p><a href="faqs/${faq.file}.html" class="read-more">Read more →</a></p>
-        </div>`;
-    });
-    faqIndexContent += '</div>';
-  }
-});
-
-faqIndexContent += `
-<div style="margin-top: 3rem; padding: 1.5rem; background: var(--bg-secondary); border-radius: 8px;">
+let faqIndexContent = '<h1>FAQ - Frequently Asked Questions</h1>' +
+  '<p class="intro">Interview preparation FAQs covering Java, Backend, Database, Streaming, and more.</p>' +
+  buildIndexGrid(faqGrouped, faqCategoryOrder, 'faqs') +
+  `\n<div style="margin-top: 3rem; padding: 1.5rem; background: var(--bg-secondary); border-radius: 8px;">
   <p><strong>💡 Tip:</strong> These FAQs are designed for quick reference during technical interview preparation.</p>
   <p>View all FAQs on <a href="https://github.com/yennanliu/CS_basics/tree/master/doc/faq">GitHub</a>.</p>
 </div>`;
 
-// Write FAQ index
 fs.writeFileSync('_site/faqs.html', htmlTemplate('FAQs', faqIndexContent, 'faqs'));
 console.log('✓ Created faqs.html index');
 
-// Write individual FAQ pages
 if (faqs.length > 0) {
   fs.mkdirSync('_site/faqs', { recursive: true });
-
   faqs.forEach((faq, idx) => {
-    // Fix image paths for sub-pages (doc/pic -> ../doc/pic)
-    // Handles both src="doc/" and src ="doc/" (with optional space before =)
     let fixedContent = faq.content.replace(/src\s*=\s*"doc\//g, 'src="../doc/');
-    // Add prev/next navigation
-    const prev = idx > 0 ? faqs[idx - 1] : null;
-    const next = idx < faqs.length - 1 ? faqs[idx + 1] : null;
-    let prevNext = '<nav class="prev-next">';
-    prevNext += prev ? `<a href="${prev.file}.html" class="prev-link">← ${prev.title}</a>` : '<span></span>';
-    prevNext += next ? `<a href="${next.file}.html" class="next-link">${next.title} →</a>` : '<span></span>';
-    prevNext += '</nav>';
-    fixedContent += prevNext;
-    const faqHtml = htmlTemplate(faq.title, fixedContent, 'faqs', '../');
-    fs.writeFileSync(`_site/faqs/${faq.file}.html`, faqHtml);
+    fixedContent += buildPrevNext(faqs, idx);
+    fs.writeFileSync(`_site/faqs/${faq.file}.html`, htmlTemplate(faq.title, fixedContent, 'faqs', '../'));
   });
-
   console.log(`✓ Created ${faqs.length} individual FAQ pages`);
 }
 
-// Build Pattern Recognition page
 if (fs.existsSync('doc/pattern_recognition.md')) {
-  const patternRaw = fs.readFileSync('doc/pattern_recognition.md', 'utf8');
-  let patternHtml = md.render(patternRaw);
-  patternHtml = wrapCodeBlocks(processLinks(patternHtml));
+  let patternHtml = renderContent(fs.readFileSync('doc/pattern_recognition.md', 'utf8'));
   patternHtml = ensureHeadingIds(patternHtml);
-  const patternToc = generateTOC(patternHtml);
-
-  // Fix cheatsheet links to be relative to root
-  patternHtml = patternHtml.replace(/href="cheatsheets\//g, 'href="cheatsheets/');
-
   const patternContent = `
     <div class="cheatsheet-header">
       <h1>Pattern Recognition Guide</h1>
       <p>Map problem keywords to algorithm patterns — the fastest way to crack coding interviews.</p>
     </div>
-    ${patternToc}
+    ${generateTOC(patternHtml)}
     <div class="cheatsheet-content">${patternHtml}</div>
   `;
   fs.writeFileSync('_site/patterns.html', htmlTemplate('Pattern Recognition', patternContent, 'patterns'));
