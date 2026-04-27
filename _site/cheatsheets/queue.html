@@ -9,7 +9,8 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -20,42 +21,40 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    // Code block wrappers + copy buttons (highlighting done at build time)
-    try {
-      document.querySelectorAll('pre').forEach(function(pre) {
-        var codeEl = pre.querySelector('code');
-        var lang = pre.getAttribute('data-lang') || '';
-        var wrapper = document.createElement('div');
-        wrapper.className = 'code-block-wrapper';
-        pre.parentNode.insertBefore(wrapper, pre);
-        var header = document.createElement('div');
-        header.className = 'code-block-header';
-        if (lang) {
-          var label = document.createElement('span');
-          label.className = 'code-lang-label';
-          label.textContent = lang;
-          header.appendChild(label);
-        } else {
-          header.appendChild(document.createElement('span'));
-        }
-        var btn = document.createElement('button');
-        btn.className = 'copy-btn';
-        btn.textContent = 'Copy';
-        btn.addEventListener('click', function() {
-          var text = codeEl
-            ? Array.from(codeEl.querySelectorAll('.ln-code')).map(function(el) { return el.textContent; }).join('\n')
-            : pre.textContent;
-          navigator.clipboard.writeText(text).then(function() {
-            btn.textContent = 'Copied!';
-            btn.classList.add('copied');
-            setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-          });
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
         });
-        header.appendChild(btn);
-        wrapper.appendChild(header);
-        wrapper.appendChild(pre);
       });
-    } catch(e) { console.error('Code block setup error:', e); }
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -65,36 +64,32 @@
       }
     });
     // Reading progress bar
-    try {
-      var progressBar = document.getElementById('reading-progress');
-      if (progressBar) {
-        window.addEventListener('scroll', function() {
-          var winScroll = document.documentElement.scrollTop;
-          var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-          progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
-        });
-      }
-    } catch(e) {}
-    // Dark mode toggle — isolated so errors elsewhere never prevent this from working
-    try {
-      var toggle = document.getElementById('theme-toggle');
-      if (toggle) {
-        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-        toggle.textContent = isDark ? '☀️' : '🌙';
-        toggle.addEventListener('click', function() {
-          var dark = document.documentElement.getAttribute('data-theme') === 'dark';
-          if (dark) {
-            document.documentElement.removeAttribute('data-theme');
-            localStorage.setItem('theme', 'light');
-            toggle.textContent = '🌙';
-          } else {
-            document.documentElement.setAttribute('data-theme', 'dark');
-            localStorage.setItem('theme', 'dark');
-            toggle.textContent = '☀️';
-          }
-        });
-      }
-    } catch(e) { console.error('Theme toggle error:', e); }
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
   });</script>
 </head>
 <body>
@@ -132,9 +127,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Queue</span></nav>
       <div class="cheatsheet-header">
         <h1>Queue</h1>
-        <span class="last-updated">Last updated: Apr 25, 2026</span>
+        <span class="last-updated">Last updated: Sep 2, 2025</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#implementation-options">Implementation Options</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#pattern-1-bfs-level-order-traversal">Pattern 1: BFS &amp; Level-Order Traversal</a></li><li class="toc-sub"><a href="#pattern-2-sliding-window-with-queue">Pattern 2: Sliding Window with Queue</a></li><li class="toc-sub"><a href="#pattern-3-design-queue-variants">Pattern 3: Design Queue Variants</a></li><li class="toc-sub"><a href="#pattern-4-monotonic-queue">Pattern 4: Monotonic Queue</a></li><li class="toc-sub"><a href="#pattern-5-stream-processing">Pattern 5: Stream Processing</a></li><li class="toc-sub"><a href="#pattern-6-task-scheduling-simulation">Pattern 6: Task Scheduling &amp; Simulation</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#template-1-basic-queue-operations">Template 1: Basic Queue Operations</a></li><li class="toc-sub"><a href="#template-2-level-order-bfs-pattern">Template 2: Level-Order BFS Pattern</a></li><li class="toc-sub"><a href="#template-3-circular-queue-pattern">Template 3: Circular Queue Pattern</a></li><li class="toc-sub"><a href="#template-4-monotonic-queue-pattern">Template 4: Monotonic Queue Pattern</a></li><li class="toc-sub"><a href="#template-5-queue-using-stacks-pattern">Template 5: Queue Using Stacks Pattern</a></li><li class="toc-sub"><a href="#template-6-stream-processing-pattern">Template 6: Stream Processing Pattern</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-tables">Pattern-Based Problem Tables</a></li><li><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li><a href="#basic-operations-reference">Basic Operations Reference</a></li><li class="toc-sub"><a href="#python-collections-deque">Python collections.deque</a></li><li class="toc-sub"><a href="#java-queue-deque-operations">Java Queue &amp; Deque Operations</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#advanced-techniques">Advanced Techniques</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-sliding-window-maximum-lc-239-monotonic-deque">2-1) Sliding Window Maximum (LC 239) — Monotonic Deque</a></li><li class="toc-sub"><a href="#2-2-design-circular-queue-lc-622-array-with-head-count">2-2) Design Circular Queue (LC 622) — Array with Head/Count</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#implementation-options">Implementation Options</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#pattern-1-bfs-level-order-traversal">Pattern 1: BFS &amp; Level-Order Traversal</a></li><li class="toc-sub"><a href="#pattern-2-sliding-window-with-queue">Pattern 2: Sliding Window with Queue</a></li><li class="toc-sub"><a href="#pattern-3-design-queue-variants">Pattern 3: Design Queue Variants</a></li><li class="toc-sub"><a href="#pattern-4-monotonic-queue">Pattern 4: Monotonic Queue</a></li><li class="toc-sub"><a href="#pattern-5-stream-processing">Pattern 5: Stream Processing</a></li><li class="toc-sub"><a href="#pattern-6-task-scheduling-simulation">Pattern 6: Task Scheduling &amp; Simulation</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#template-1-basic-queue-operations">Template 1: Basic Queue Operations</a></li><li class="toc-sub"><a href="#template-2-level-order-bfs-pattern">Template 2: Level-Order BFS Pattern</a></li><li class="toc-sub"><a href="#template-3-circular-queue-pattern">Template 3: Circular Queue Pattern</a></li><li class="toc-sub"><a href="#template-4-monotonic-queue-pattern">Template 4: Monotonic Queue Pattern</a></li><li class="toc-sub"><a href="#template-5-queue-using-stacks-pattern">Template 5: Queue Using Stacks Pattern</a></li><li class="toc-sub"><a href="#template-6-stream-processing-pattern">Template 6: Stream Processing Pattern</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#pattern-based-problem-tables">Pattern-Based Problem Tables</a></li><li><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li><a href="#basic-operations-reference">Basic Operations Reference</a></li><li class="toc-sub"><a href="#python-collections-deque">Python collections.deque</a></li><li class="toc-sub"><a href="#java-queue-deque-operations">Java Queue &amp; Deque Operations</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#template-quick-reference">Template Quick Reference</a></li><li class="toc-sub"><a href="#common-patterns-tricks">Common Patterns &amp; Tricks</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#advanced-techniques">Advanced Techniques</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-sliding-window-maximum">2-1) Sliding Window Maximum</a></li><li class="toc-sub"><a href="#2-2-design-circular-queue">2-2) Design Circular Queue</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="queue-data-structure" tabindex="-1"><a class="header-anchor" href="#queue-data-structure"><span>Queue Data Structure</span></a></h1>
 <p><img src="../doc/pic/queue2.png"></p></p>
@@ -263,469 +258,469 @@
 </tbody>
 </table>
 <h3 id="template-1-basic-queue-operations" tabindex="-1"><a class="header-anchor" href="#template-1-basic-queue-operations"><span>Template 1: Basic Queue Operations</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Python - Using collections.deque (recommended)</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Queue</span>:</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.queue = deque()</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">enqueue</span>(<span class="hljs-params">self, item</span>):</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.queue.append(item)  <span class="hljs-comment"># Add to rear</span></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dequeue</span>(<span class="hljs-params">self</span>):</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-variable language_">self</span>.is_empty():</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.queue.popleft()  <span class="hljs-comment"># Remove from front</span></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span></span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">front</span>(<span class="hljs-params">self</span>):</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-variable language_">self</span>.is_empty():</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.queue[<span class="hljs-number">0</span>]</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span></span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">is_empty</span>(<span class="hljs-params">self</span>):</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.queue) == <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">size</span>(<span class="hljs-params">self</span>):</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.queue)</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code"><span class="hljs-comment"># Using list (less efficient for dequeue)</span></span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">SimpleQueue</span>:</span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):</span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.queue = []</span></span>
-<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">enqueue</span>(<span class="hljs-params">self, item</span>):</span></span>
-<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.queue.append(item)</span></span>
-<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dequeue</span>(<span class="hljs-params">self</span>):</span></span>
-<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.queue:</span></span>
-<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.queue.pop(<span class="hljs-number">0</span>)  <span class="hljs-comment"># O(n) operation</span></span></span>
-<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span></span></span>
+<pre><code class="language-python"># Python - Using collections.deque (recommended)
+from collections import deque
+
+class Queue:
+    def __init__(self):
+        self.queue = deque()
+    
+    def enqueue(self, item):
+        self.queue.append(item)  # Add to rear
+    
+    def dequeue(self):
+        if not self.is_empty():
+            return self.queue.popleft()  # Remove from front
+        return None
+    
+    def front(self):
+        if not self.is_empty():
+            return self.queue[0]
+        return None
+    
+    def is_empty(self):
+        return len(self.queue) == 0
+    
+    def size(self):
+        return len(self.queue)
+
+# Using list (less efficient for dequeue)
+class SimpleQueue:
+    def __init__(self):
+        self.queue = []
+    
+    def enqueue(self, item):
+        self.queue.append(item)
+    
+    def dequeue(self):
+        if self.queue:
+            return self.queue.pop(0)  # O(n) operation
+        return None
 </code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// Java - Using LinkedList</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">import</span> java.util.*;</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Queue</span>&lt;T&gt; {</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">private</span> LinkedList&lt;T&gt; queue;</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-title function_">Queue</span><span class="hljs-params">()</span> {</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">enqueue</span><span class="hljs-params">(T item)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        queue.addLast(item);  <span class="hljs-comment">// Add to rear</span></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-keyword">public</span> T <span class="hljs-title function_">dequeue</span><span class="hljs-params">()</span> {</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        <span class="hljs-keyword">if</span> (!isEmpty()) {</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">            <span class="hljs-keyword">return</span> queue.removeFirst();  <span class="hljs-comment">// Remove from front</span></span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    <span class="hljs-keyword">public</span> T <span class="hljs-title function_">front</span><span class="hljs-params">()</span> {</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        <span class="hljs-keyword">if</span> (!isEmpty()) {</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">            <span class="hljs-keyword">return</span> queue.getFirst();</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;</span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isEmpty</span><span class="hljs-params">()</span> {</span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">        <span class="hljs-keyword">return</span> queue.isEmpty();</span></span>
-<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">size</span><span class="hljs-params">()</span> {</span></span>
-<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">        <span class="hljs-keyword">return</span> queue.size();</span></span>
-<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">}</span></span>
-<span class="ln-row"><span class="ln-num">37</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">38</span><span class="ln-code"><span class="hljs-comment">// Using Java Queue interface</span></span></span>
-<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">Queue&lt;Integer&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">queue.offer(<span class="hljs-number">1</span>);  <span class="hljs-comment">// enqueue</span></span></span>
-<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">queue.poll();    <span class="hljs-comment">// dequeue</span></span></span>
-<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">queue.peek();    <span class="hljs-comment">// front</span></span></span>
+<pre><code class="language-java">// Java - Using LinkedList
+import java.util.*;
+
+class Queue&lt;T&gt; {
+    private LinkedList&lt;T&gt; queue;
+    
+    public Queue() {
+        queue = new LinkedList&lt;&gt;();
+    }
+    
+    public void enqueue(T item) {
+        queue.addLast(item);  // Add to rear
+    }
+    
+    public T dequeue() {
+        if (!isEmpty()) {
+            return queue.removeFirst();  // Remove from front
+        }
+        return null;
+    }
+    
+    public T front() {
+        if (!isEmpty()) {
+            return queue.getFirst();
+        }
+        return null;
+    }
+    
+    public boolean isEmpty() {
+        return queue.isEmpty();
+    }
+    
+    public int size() {
+        return queue.size();
+    }
+}
+
+// Using Java Queue interface
+Queue&lt;Integer&gt; queue = new LinkedList&lt;&gt;();
+queue.offer(1);  // enqueue
+queue.poll();    // dequeue
+queue.peek();    // front
 </code></pre>
 <h3 id="template-2-level-order-bfs-pattern" tabindex="-1"><a class="header-anchor" href="#template-2-level-order-bfs-pattern"><span>Template 2: Level-Order BFS Pattern</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Python - Tree level-order traversal</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">levelOrder</span>(<span class="hljs-params">root</span>):</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        <span class="hljs-keyword">return</span> []</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    result = []</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    queue = deque([root])</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-keyword">while</span> queue:</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        level_size = <span class="hljs-built_in">len</span>(queue)</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        current_level = []</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-comment"># Process all nodes at current level</span></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(level_size):</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">            node = queue.popleft()</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">            current_level.append(node.val)</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">            </span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">            <span class="hljs-keyword">if</span> node.left:</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">                queue.append(node.left)</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">            <span class="hljs-keyword">if</span> node.right:</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">                queue.append(node.right)</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        result.append(current_level)</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">    <span class="hljs-keyword">return</span> result</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code"><span class="hljs-comment"># Graph BFS with distance</span></span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bfs</span>(<span class="hljs-params">graph, start</span>):</span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">    visited = <span class="hljs-built_in">set</span>([start])</span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">    queue = deque([(start, <span class="hljs-number">0</span>)])  <span class="hljs-comment"># (node, distance)</span></span></span>
-<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">    <span class="hljs-keyword">while</span> queue:</span></span>
-<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">        node, dist = queue.popleft()</span></span>
-<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">        <span class="hljs-keyword">for</span> neighbor <span class="hljs-keyword">in</span> graph[node]:</span></span>
-<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">            <span class="hljs-keyword">if</span> neighbor <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> visited:</span></span>
-<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">                visited.add(neighbor)</span></span>
-<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">                queue.append((neighbor, dist + <span class="hljs-number">1</span>))</span></span>
-<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">    <span class="hljs-keyword">return</span> visited</span></span>
+<pre><code class="language-python"># Python - Tree level-order traversal
+def levelOrder(root):
+    if not root:
+        return []
+    
+    result = []
+    queue = deque([root])
+    
+    while queue:
+        level_size = len(queue)
+        current_level = []
+        
+        # Process all nodes at current level
+        for _ in range(level_size):
+            node = queue.popleft()
+            current_level.append(node.val)
+            
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
+        
+        result.append(current_level)
+    
+    return result
+
+# Graph BFS with distance
+def bfs(graph, start):
+    visited = set([start])
+    queue = deque([(start, 0)])  # (node, distance)
+    
+    while queue:
+        node, dist = queue.popleft()
+        
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append((neighbor, dist + 1))
+    
+    return visited
 </code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// Java - Level-order traversal</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">public</span> List&lt;List&lt;Integer&gt;&gt; <span class="hljs-title function_">levelOrder</span><span class="hljs-params">(TreeNode root)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    List&lt;List&lt;Integer&gt;&gt; result = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) <span class="hljs-keyword">return</span> result;</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    Queue&lt;TreeNode&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    queue.offer(root);</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-keyword">while</span> (!queue.isEmpty()) {</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">levelSize</span> <span class="hljs-operator">=</span> queue.size();</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        List&lt;Integer&gt; currentLevel = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; levelSize; i++) {</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            <span class="hljs-type">TreeNode</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> queue.poll();</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">            currentLevel.add(node.val);</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">            </span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">            <span class="hljs-keyword">if</span> (node.left != <span class="hljs-literal">null</span>) {</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">                queue.offer(node.left);</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">            }</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">            <span class="hljs-keyword">if</span> (node.right != <span class="hljs-literal">null</span>) {</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">                queue.offer(node.right);</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">            }</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">        result.add(currentLevel);</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">    <span class="hljs-keyword">return</span> result;</span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// Java - Level-order traversal
+public List&lt;List&lt;Integer&gt;&gt; levelOrder(TreeNode root) {
+    List&lt;List&lt;Integer&gt;&gt; result = new ArrayList&lt;&gt;();
+    if (root == null) return result;
+    
+    Queue&lt;TreeNode&gt; queue = new LinkedList&lt;&gt;();
+    queue.offer(root);
+    
+    while (!queue.isEmpty()) {
+        int levelSize = queue.size();
+        List&lt;Integer&gt; currentLevel = new ArrayList&lt;&gt;();
+        
+        for (int i = 0; i &lt; levelSize; i++) {
+            TreeNode node = queue.poll();
+            currentLevel.add(node.val);
+            
+            if (node.left != null) {
+                queue.offer(node.left);
+            }
+            if (node.right != null) {
+                queue.offer(node.right);
+            }
+        }
+        
+        result.add(currentLevel);
+    }
+    
+    return result;
+}
 </code></pre>
 <h3 id="template-3-circular-queue-pattern" tabindex="-1"><a class="header-anchor" href="#template-3-circular-queue-pattern"><span>Template 3: Circular Queue Pattern</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Python - Fixed size circular queue</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">CircularQueue</span>:</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, k</span>):</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.queue = [<span class="hljs-number">0</span>] * k</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.capacity = k</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.head = <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.count = <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">enqueue</span>(<span class="hljs-params">self, value</span>):</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.is_full():</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-comment"># Calculate tail position</span></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        tail = (<span class="hljs-variable language_">self</span>.head + <span class="hljs-variable language_">self</span>.count) % <span class="hljs-variable language_">self</span>.capacity</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.queue[tail] = value</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.count += <span class="hljs-number">1</span></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span></span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dequeue</span>(<span class="hljs-params">self</span>):</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.is_empty():</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span></span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.head = (<span class="hljs-variable language_">self</span>.head + <span class="hljs-number">1</span>) % <span class="hljs-variable language_">self</span>.capacity</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.count -= <span class="hljs-number">1</span></span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span></span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">front</span>(<span class="hljs-params">self</span>):</span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.is_empty():</span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">            <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span></span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.queue[<span class="hljs-variable language_">self</span>.head]</span></span>
-<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">rear</span>(<span class="hljs-params">self</span>):</span></span>
-<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.is_empty():</span></span>
-<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">            <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span></span></span>
-<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">        tail = (<span class="hljs-variable language_">self</span>.head + <span class="hljs-variable language_">self</span>.count - <span class="hljs-number">1</span>) % <span class="hljs-variable language_">self</span>.capacity</span></span>
-<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.queue[tail]</span></span>
-<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">is_empty</span>(<span class="hljs-params">self</span>):</span></span>
-<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.count == <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">is_full</span>(<span class="hljs-params">self</span>):</span></span>
-<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.count == <span class="hljs-variable language_">self</span>.capacity</span></span>
+<pre><code class="language-python"># Python - Fixed size circular queue
+class CircularQueue:
+    def __init__(self, k):
+        self.queue = [0] * k
+        self.capacity = k
+        self.head = 0
+        self.count = 0
+    
+    def enqueue(self, value):
+        if self.is_full():
+            return False
+        
+        # Calculate tail position
+        tail = (self.head + self.count) % self.capacity
+        self.queue[tail] = value
+        self.count += 1
+        return True
+    
+    def dequeue(self):
+        if self.is_empty():
+            return False
+        
+        self.head = (self.head + 1) % self.capacity
+        self.count -= 1
+        return True
+    
+    def front(self):
+        if self.is_empty():
+            return -1
+        return self.queue[self.head]
+    
+    def rear(self):
+        if self.is_empty():
+            return -1
+        tail = (self.head + self.count - 1) % self.capacity
+        return self.queue[tail]
+    
+    def is_empty(self):
+        return self.count == 0
+    
+    def is_full(self):
+        return self.count == self.capacity
 </code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// Java - Circular Queue</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">CircularQueue</span> {</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span>[] queue;</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> head;</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> count;</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> capacity;</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-title function_">CircularQueue</span><span class="hljs-params">(<span class="hljs-type">int</span> k)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[k];</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        capacity = k;</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        head = <span class="hljs-number">0</span>;</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        count = <span class="hljs-number">0</span>;</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">enqueue</span><span class="hljs-params">(<span class="hljs-type">int</span> value)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        <span class="hljs-keyword">if</span> (isFull()) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">tail</span> <span class="hljs-operator">=</span> (head + count) % capacity;</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        queue[tail] = value;</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        count++;</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">dequeue</span><span class="hljs-params">()</span> {</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">        <span class="hljs-keyword">if</span> (isEmpty()) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">        head = (head + <span class="hljs-number">1</span>) % capacity;</span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">        count--;</span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;</span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">front</span><span class="hljs-params">()</span> {</span></span>
-<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">        <span class="hljs-keyword">if</span> (isEmpty()) <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;</span></span>
-<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">        <span class="hljs-keyword">return</span> queue[head];</span></span>
-<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">rear</span><span class="hljs-params">()</span> {</span></span>
-<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">        <span class="hljs-keyword">if</span> (isEmpty()) <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;</span></span>
-<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">tail</span> <span class="hljs-operator">=</span> (head + count - <span class="hljs-number">1</span>) % capacity;</span></span>
-<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">        <span class="hljs-keyword">return</span> queue[tail];</span></span>
-<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isEmpty</span><span class="hljs-params">()</span> {</span></span>
-<span class="ln-row"><span class="ln-num">44</span><span class="ln-code">        <span class="hljs-keyword">return</span> count == <span class="hljs-number">0</span>;</span></span>
-<span class="ln-row"><span class="ln-num">45</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">46</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">47</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isFull</span><span class="hljs-params">()</span> {</span></span>
-<span class="ln-row"><span class="ln-num">48</span><span class="ln-code">        <span class="hljs-keyword">return</span> count == capacity;</span></span>
-<span class="ln-row"><span class="ln-num">49</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">50</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// Java - Circular Queue
+class CircularQueue {
+    private int[] queue;
+    private int head;
+    private int count;
+    private int capacity;
+    
+    public CircularQueue(int k) {
+        queue = new int[k];
+        capacity = k;
+        head = 0;
+        count = 0;
+    }
+    
+    public boolean enqueue(int value) {
+        if (isFull()) return false;
+        
+        int tail = (head + count) % capacity;
+        queue[tail] = value;
+        count++;
+        return true;
+    }
+    
+    public boolean dequeue() {
+        if (isEmpty()) return false;
+        
+        head = (head + 1) % capacity;
+        count--;
+        return true;
+    }
+    
+    public int front() {
+        if (isEmpty()) return -1;
+        return queue[head];
+    }
+    
+    public int rear() {
+        if (isEmpty()) return -1;
+        int tail = (head + count - 1) % capacity;
+        return queue[tail];
+    }
+    
+    public boolean isEmpty() {
+        return count == 0;
+    }
+    
+    public boolean isFull() {
+        return count == capacity;
+    }
+}
 </code></pre>
 <h3 id="template-4-monotonic-queue-pattern" tabindex="-1"><a class="header-anchor" href="#template-4-monotonic-queue-pattern"><span>Template 4: Monotonic Queue Pattern</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Python - Monotonic decreasing queue for sliding window maximum</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MonotonicQueue</span>:</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.queue = deque()</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">push</span>(<span class="hljs-params">self, val</span>):</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-comment"># Remove smaller elements from rear</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">while</span> <span class="hljs-variable language_">self</span>.queue <span class="hljs-keyword">and</span> <span class="hljs-variable language_">self</span>.queue[-<span class="hljs-number">1</span>] &lt; val:</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">            <span class="hljs-variable language_">self</span>.queue.pop()</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.queue.append(val)</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">pop</span>(<span class="hljs-params">self, val</span>):</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-comment"># Remove if it&#x27;s the front element</span></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.queue <span class="hljs-keyword">and</span> <span class="hljs-variable language_">self</span>.queue[<span class="hljs-number">0</span>] == val:</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">            <span class="hljs-variable language_">self</span>.queue.popleft()</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">max</span>(<span class="hljs-params">self</span>):</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        <span class="hljs-comment"># Front is always the maximum</span></span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.queue[<span class="hljs-number">0</span>] <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.queue <span class="hljs-keyword">else</span> <span class="hljs-literal">None</span></span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code"><span class="hljs-comment"># Sliding window maximum</span></span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">maxSlidingWindow</span>(<span class="hljs-params">nums, k</span>):</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">    dq = deque()  <span class="hljs-comment"># Store indices</span></span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">    result = []</span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(nums)):</span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">        <span class="hljs-comment"># Remove indices outside window</span></span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">        <span class="hljs-keyword">while</span> dq <span class="hljs-keyword">and</span> dq[<span class="hljs-number">0</span>] &lt;= i - k:</span></span>
-<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">            dq.popleft()</span></span>
-<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">        <span class="hljs-comment"># Remove smaller elements</span></span></span>
-<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">        <span class="hljs-keyword">while</span> dq <span class="hljs-keyword">and</span> nums[dq[-<span class="hljs-number">1</span>]] &lt;= nums[i]:</span></span>
-<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">            dq.pop()</span></span>
-<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">        dq.append(i)</span></span>
-<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">        <span class="hljs-comment"># Add to result after first window</span></span></span>
-<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">        <span class="hljs-keyword">if</span> i &gt;= k - <span class="hljs-number">1</span>:</span></span>
-<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">            result.append(nums[dq[<span class="hljs-number">0</span>]])</span></span>
-<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">    <span class="hljs-keyword">return</span> result</span></span>
+<pre><code class="language-python"># Python - Monotonic decreasing queue for sliding window maximum
+class MonotonicQueue:
+    def __init__(self):
+        self.queue = deque()
+    
+    def push(self, val):
+        # Remove smaller elements from rear
+        while self.queue and self.queue[-1] &lt; val:
+            self.queue.pop()
+        self.queue.append(val)
+    
+    def pop(self, val):
+        # Remove if it's the front element
+        if self.queue and self.queue[0] == val:
+            self.queue.popleft()
+    
+    def max(self):
+        # Front is always the maximum
+        return self.queue[0] if self.queue else None
+
+# Sliding window maximum
+def maxSlidingWindow(nums, k):
+    from collections import deque
+    
+    dq = deque()  # Store indices
+    result = []
+    
+    for i in range(len(nums)):
+        # Remove indices outside window
+        while dq and dq[0] &lt;= i - k:
+            dq.popleft()
+        
+        # Remove smaller elements
+        while dq and nums[dq[-1]] &lt;= nums[i]:
+            dq.pop()
+        
+        dq.append(i)
+        
+        # Add to result after first window
+        if i &gt;= k - 1:
+            result.append(nums[dq[0]])
+    
+    return result
 </code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// Java - Monotonic Queue</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MonotonicQueue</span> {</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">private</span> LinkedList&lt;Integer&gt; queue;</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-title function_">MonotonicQueue</span><span class="hljs-params">()</span> {</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">push</span><span class="hljs-params">(<span class="hljs-type">int</span> val)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-comment">// Remove smaller elements from rear</span></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-keyword">while</span> (!queue.isEmpty() &amp;&amp; queue.getLast() &lt; val) {</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">            queue.pollLast();</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        queue.addLast(val);</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">pop</span><span class="hljs-params">(<span class="hljs-type">int</span> val)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        <span class="hljs-comment">// Remove if it&#x27;s the front element</span></span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        <span class="hljs-keyword">if</span> (!queue.isEmpty() &amp;&amp; queue.getFirst() == val) {</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">            queue.pollFirst();</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">max</span><span class="hljs-params">()</span> {</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">        <span class="hljs-keyword">return</span> queue.isEmpty() ? -<span class="hljs-number">1</span> : queue.getFirst();</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">}</span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code"><span class="hljs-comment">// Sliding window maximum</span></span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] maxSlidingWindow(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k) {</span></span>
-<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">    Deque&lt;Integer&gt; dq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">    <span class="hljs-type">int</span>[] result = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[nums.length - k + <span class="hljs-number">1</span>];</span></span>
-<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">idx</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
-<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; nums.length; i++) {</span></span>
-<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">        <span class="hljs-comment">// Remove indices outside window</span></span></span>
-<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">        <span class="hljs-keyword">while</span> (!dq.isEmpty() &amp;&amp; dq.peekFirst() &lt;= i - k) {</span></span>
-<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">            dq.pollFirst();</span></span>
-<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">        <span class="hljs-comment">// Remove smaller elements</span></span></span>
-<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">        <span class="hljs-keyword">while</span> (!dq.isEmpty() &amp;&amp; nums[dq.peekLast()] &lt;= nums[i]) {</span></span>
-<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">            dq.pollLast();</span></span>
-<span class="ln-row"><span class="ln-num">44</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">45</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">46</span><span class="ln-code">        dq.offerLast(i);</span></span>
-<span class="ln-row"><span class="ln-num">47</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">48</span><span class="ln-code">        <span class="hljs-comment">// Add to result after first window</span></span></span>
-<span class="ln-row"><span class="ln-num">49</span><span class="ln-code">        <span class="hljs-keyword">if</span> (i &gt;= k - <span class="hljs-number">1</span>) {</span></span>
-<span class="ln-row"><span class="ln-num">50</span><span class="ln-code">            result[idx++] = nums[dq.peekFirst()];</span></span>
-<span class="ln-row"><span class="ln-num">51</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">52</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">53</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">54</span><span class="ln-code">    <span class="hljs-keyword">return</span> result;</span></span>
-<span class="ln-row"><span class="ln-num">55</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// Java - Monotonic Queue
+class MonotonicQueue {
+    private LinkedList&lt;Integer&gt; queue;
+    
+    public MonotonicQueue() {
+        queue = new LinkedList&lt;&gt;();
+    }
+    
+    public void push(int val) {
+        // Remove smaller elements from rear
+        while (!queue.isEmpty() &amp;&amp; queue.getLast() &lt; val) {
+            queue.pollLast();
+        }
+        queue.addLast(val);
+    }
+    
+    public void pop(int val) {
+        // Remove if it's the front element
+        if (!queue.isEmpty() &amp;&amp; queue.getFirst() == val) {
+            queue.pollFirst();
+        }
+    }
+    
+    public int max() {
+        return queue.isEmpty() ? -1 : queue.getFirst();
+    }
+}
+
+// Sliding window maximum
+public int[] maxSlidingWindow(int[] nums, int k) {
+    Deque&lt;Integer&gt; dq = new LinkedList&lt;&gt;();
+    int[] result = new int[nums.length - k + 1];
+    int idx = 0;
+    
+    for (int i = 0; i &lt; nums.length; i++) {
+        // Remove indices outside window
+        while (!dq.isEmpty() &amp;&amp; dq.peekFirst() &lt;= i - k) {
+            dq.pollFirst();
+        }
+        
+        // Remove smaller elements
+        while (!dq.isEmpty() &amp;&amp; nums[dq.peekLast()] &lt;= nums[i]) {
+            dq.pollLast();
+        }
+        
+        dq.offerLast(i);
+        
+        // Add to result after first window
+        if (i &gt;= k - 1) {
+            result[idx++] = nums[dq.peekFirst()];
+        }
+    }
+    
+    return result;
+}
 </code></pre>
 <h3 id="template-5-queue-using-stacks-pattern" tabindex="-1"><a class="header-anchor" href="#template-5-queue-using-stacks-pattern"><span>Template 5: Queue Using Stacks Pattern</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Python - Implement queue using two stacks</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyQueue</span>:</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.in_stack = []   <span class="hljs-comment"># For enqueue</span></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.out_stack = []  <span class="hljs-comment"># For dequeue</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">push</span>(<span class="hljs-params">self, x</span>):</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.in_stack.append(x)</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">pop</span>(<span class="hljs-params">self</span>):</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.peek()  <span class="hljs-comment"># Ensure out_stack has elements</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.out_stack.pop()</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">peek</span>(<span class="hljs-params">self</span>):</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-variable language_">self</span>.out_stack:</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">            <span class="hljs-comment"># Transfer all from in_stack to out_stack</span></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">            <span class="hljs-keyword">while</span> <span class="hljs-variable language_">self</span>.in_stack:</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">                <span class="hljs-variable language_">self</span>.out_stack.append(<span class="hljs-variable language_">self</span>.in_stack.pop())</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.out_stack[-<span class="hljs-number">1</span>] <span class="hljs-keyword">if</span> <span class="hljs-variable language_">self</span>.out_stack <span class="hljs-keyword">else</span> <span class="hljs-literal">None</span></span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">empty</span>(<span class="hljs-params">self</span>):</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.in_stack) == <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.out_stack) == <span class="hljs-number">0</span></span></span>
+<pre><code class="language-python"># Python - Implement queue using two stacks
+class MyQueue:
+    def __init__(self):
+        self.in_stack = []   # For enqueue
+        self.out_stack = []  # For dequeue
+    
+    def push(self, x):
+        self.in_stack.append(x)
+    
+    def pop(self):
+        self.peek()  # Ensure out_stack has elements
+        return self.out_stack.pop()
+    
+    def peek(self):
+        if not self.out_stack:
+            # Transfer all from in_stack to out_stack
+            while self.in_stack:
+                self.out_stack.append(self.in_stack.pop())
+        return self.out_stack[-1] if self.out_stack else None
+    
+    def empty(self):
+        return len(self.in_stack) == 0 and len(self.out_stack) == 0
 </code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// Java - Queue using stacks</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyQueue</span> {</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">private</span> Stack&lt;Integer&gt; inStack;</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-keyword">private</span> Stack&lt;Integer&gt; outStack;</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-title function_">MyQueue</span><span class="hljs-params">()</span> {</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        inStack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        outStack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">push</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        inStack.push(x);</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">pop</span><span class="hljs-params">()</span> {</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        peek();  <span class="hljs-comment">// Ensure outStack has elements</span></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        <span class="hljs-keyword">return</span> outStack.pop();</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">peek</span><span class="hljs-params">()</span> {</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        <span class="hljs-keyword">if</span> (outStack.isEmpty()) {</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">            <span class="hljs-comment">// Transfer all from inStack to outStack</span></span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">            <span class="hljs-keyword">while</span> (!inStack.isEmpty()) {</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">                outStack.push(inStack.pop());</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">            }</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">        <span class="hljs-keyword">return</span> outStack.peek();</span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">empty</span><span class="hljs-params">()</span> {</span></span>
-<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">        <span class="hljs-keyword">return</span> inStack.isEmpty() &amp;&amp; outStack.isEmpty();</span></span>
-<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// Java - Queue using stacks
+class MyQueue {
+    private Stack&lt;Integer&gt; inStack;
+    private Stack&lt;Integer&gt; outStack;
+    
+    public MyQueue() {
+        inStack = new Stack&lt;&gt;();
+        outStack = new Stack&lt;&gt;();
+    }
+    
+    public void push(int x) {
+        inStack.push(x);
+    }
+    
+    public int pop() {
+        peek();  // Ensure outStack has elements
+        return outStack.pop();
+    }
+    
+    public int peek() {
+        if (outStack.isEmpty()) {
+            // Transfer all from inStack to outStack
+            while (!inStack.isEmpty()) {
+                outStack.push(inStack.pop());
+            }
+        }
+        return outStack.peek();
+    }
+    
+    public boolean empty() {
+        return inStack.isEmpty() &amp;&amp; outStack.isEmpty();
+    }
+}
 </code></pre>
 <h3 id="template-6-stream-processing-pattern" tabindex="-1"><a class="header-anchor" href="#template-6-stream-processing-pattern"><span>Template 6: Stream Processing Pattern</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Python - Moving average from data stream</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MovingAverage</span>:</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, size</span>):</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.queue = deque()</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.window_sum = <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.size = size</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">next</span>(<span class="hljs-params">self, val</span>):</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.queue.append(val)</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.window_sum += val</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.queue) &gt; <span class="hljs-variable language_">self</span>.size:</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">            removed = <span class="hljs-variable language_">self</span>.queue.popleft()</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            <span class="hljs-variable language_">self</span>.window_sum -= removed</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.window_sum / <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.queue)</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code"><span class="hljs-comment"># Hit counter for last 5 minutes</span></span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">HitCounter</span>:</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.queue = deque()</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">hit</span>(<span class="hljs-params">self, timestamp</span>):</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.queue.append(timestamp)</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">getHits</span>(<span class="hljs-params">self, timestamp</span>):</span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">        <span class="hljs-comment"># Remove hits older than 5 minutes (300 seconds)</span></span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">        <span class="hljs-keyword">while</span> <span class="hljs-variable language_">self</span>.queue <span class="hljs-keyword">and</span> <span class="hljs-variable language_">self</span>.queue[<span class="hljs-number">0</span>] &lt;= timestamp - <span class="hljs-number">300</span>:</span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">            <span class="hljs-variable language_">self</span>.queue.popleft()</span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.queue)</span></span>
+<pre><code class="language-python"># Python - Moving average from data stream
+class MovingAverage:
+    def __init__(self, size):
+        self.queue = deque()
+        self.window_sum = 0
+        self.size = size
+    
+    def next(self, val):
+        self.queue.append(val)
+        self.window_sum += val
+        
+        if len(self.queue) &gt; self.size:
+            removed = self.queue.popleft()
+            self.window_sum -= removed
+        
+        return self.window_sum / len(self.queue)
+
+# Hit counter for last 5 minutes
+class HitCounter:
+    def __init__(self):
+        self.queue = deque()
+    
+    def hit(self, timestamp):
+        self.queue.append(timestamp)
+    
+    def getHits(self, timestamp):
+        # Remove hits older than 5 minutes (300 seconds)
+        while self.queue and self.queue[0] &lt;= timestamp - 300:
+            self.queue.popleft()
+        return len(self.queue)
 </code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// Java - Moving average</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MovingAverage</span> {</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">private</span> Queue&lt;Integer&gt; queue;</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> windowSum;</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> size;</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-title function_">MovingAverage</span><span class="hljs-params">(<span class="hljs-type">int</span> size)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-built_in">this</span>.size = size;</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        windowSum = <span class="hljs-number">0</span>;</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-type">double</span> <span class="hljs-title function_">next</span><span class="hljs-params">(<span class="hljs-type">int</span> val)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        queue.offer(val);</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        windowSum += val;</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        <span class="hljs-keyword">if</span> (queue.size() &gt; size) {</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">            windowSum -= queue.poll();</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        <span class="hljs-keyword">return</span> (<span class="hljs-type">double</span>) windowSum / queue.size();</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// Java - Moving average
+class MovingAverage {
+    private Queue&lt;Integer&gt; queue;
+    private int windowSum;
+    private int size;
+    
+    public MovingAverage(int size) {
+        queue = new LinkedList&lt;&gt;();
+        this.size = size;
+        windowSum = 0;
+    }
+    
+    public double next(int val) {
+        queue.offer(val);
+        windowSum += val;
+        
+        if (queue.size() &gt; size) {
+            windowSum -= queue.poll();
+        }
+        
+        return (double) windowSum / queue.size();
+    }
+}
 </code></pre>
 <h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
 <h3 id="pattern-based-problem-tables" tabindex="-1"><a class="header-anchor" href="#pattern-based-problem-tables"><span>Pattern-Based Problem Tables</span></a></h3>
@@ -1048,112 +1043,112 @@
 </tbody>
 </table>
 <h2 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h2>
-<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">Problem Analysis Flowchart:</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">1. Is it a tree/graph traversal problem?</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">   ├── YES → Use BFS with Queue</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">   │         ├── Level-order → Track level size</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">   │         └── Shortest path → Track distance</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">   └── NO → Continue to 2</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">2. Do you need to maintain window order?</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">   ├── YES → Use Sliding Window Queue</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">   │         ├── Max/Min → Monotonic queue</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">   │         └── Fixed size → Regular queue</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">   └── NO → Continue to 3</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">3. Is it a design problem?</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">   ├── YES → Choose appropriate structure</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">   │         ├── Fixed size → Circular queue</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">   │         ├── Both ends → Deque</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">   │         └── Stack behavior → Queue with rotation</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">   └── NO → Continue to 4</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">4. Need monotonic property?</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">   ├── YES → Use Monotonic Queue</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">   │         ├── Increasing → Remove larger from rear</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">   │         └── Decreasing → Remove smaller from rear</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">   └── NO → Continue to 5</span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">5. Processing data stream?</span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">   ├── YES → Use Stream Processing</span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">   │         ├── Time window → Remove old entries</span></span>
-<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">   │         └── Count window → Fixed size queue</span></span>
-<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">   └── NO → Use basic queue operations</span></span>
+<pre><code>Problem Analysis Flowchart:
+
+1. Is it a tree/graph traversal problem?
+   ├── YES → Use BFS with Queue
+   │         ├── Level-order → Track level size
+   │         └── Shortest path → Track distance
+   └── NO → Continue to 2
+
+2. Do you need to maintain window order?
+   ├── YES → Use Sliding Window Queue
+   │         ├── Max/Min → Monotonic queue
+   │         └── Fixed size → Regular queue
+   └── NO → Continue to 3
+
+3. Is it a design problem?
+   ├── YES → Choose appropriate structure
+   │         ├── Fixed size → Circular queue
+   │         ├── Both ends → Deque
+   │         └── Stack behavior → Queue with rotation
+   └── NO → Continue to 4
+
+4. Need monotonic property?
+   ├── YES → Use Monotonic Queue
+   │         ├── Increasing → Remove larger from rear
+   │         └── Decreasing → Remove smaller from rear
+   └── NO → Continue to 5
+
+5. Processing data stream?
+   ├── YES → Use Stream Processing
+   │         ├── Time window → Remove old entries
+   │         └── Count window → Fixed size queue
+   └── NO → Use basic queue operations
 </code></pre>
 <h2 id="basic-operations-reference" tabindex="-1"><a class="header-anchor" href="#basic-operations-reference"><span>Basic Operations Reference</span></a></h2>
 <h3 id="python-collections-deque" tabindex="-1"><a class="header-anchor" href="#python-collections-deque"><span>Python collections.deque</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment"># Create deque</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">dq = deque()</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">dq = deque([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>])</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">dq = deque(maxlen=<span class="hljs-number">10</span>)  <span class="hljs-comment"># Fixed size</span></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"><span class="hljs-comment"># Add elements</span></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">dq.append(<span class="hljs-number">4</span>)       <span class="hljs-comment"># Add to right: [1,2,3,4]</span></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">dq.appendleft(<span class="hljs-number">0</span>)   <span class="hljs-comment"># Add to left: [0,1,2,3,4]</span></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">dq.extend([<span class="hljs-number">5</span>,<span class="hljs-number">6</span>])   <span class="hljs-comment"># Extend right: [0,1,2,3,4,5,6]</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">dq.extendleft([-<span class="hljs-number">2</span>,-<span class="hljs-number">1</span>]) <span class="hljs-comment"># Extend left: [-1,-2,0,1,2,3,4,5,6]</span></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code"><span class="hljs-comment"># Remove elements</span></span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">val = dq.pop()     <span class="hljs-comment"># Remove from right</span></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">val = dq.popleft() <span class="hljs-comment"># Remove from left</span></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code"><span class="hljs-comment"># Access elements</span></span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">first = dq[<span class="hljs-number">0</span>]      <span class="hljs-comment"># Access by index</span></span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">last = dq[-<span class="hljs-number">1</span>]      <span class="hljs-comment"># Last element</span></span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code"><span class="hljs-comment"># Other operations</span></span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">dq.rotate(<span class="hljs-number">2</span>)       <span class="hljs-comment"># Rotate right by 2</span></span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">dq.rotate(-<span class="hljs-number">1</span>)      <span class="hljs-comment"># Rotate left by 1</span></span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">dq.reverse()       <span class="hljs-comment"># Reverse in-place</span></span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">dq.clear()         <span class="hljs-comment"># Remove all elements</span></span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code"><span class="hljs-comment"># Check state</span></span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">size = <span class="hljs-built_in">len</span>(dq)</span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">is_empty = <span class="hljs-built_in">len</span>(dq) == <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">count = dq.count(value)</span></span>
-<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">index = dq.index(value)</span></span>
+<pre><code class="language-python">from collections import deque
+
+# Create deque
+dq = deque()
+dq = deque([1, 2, 3])
+dq = deque(maxlen=10)  # Fixed size
+
+# Add elements
+dq.append(4)       # Add to right: [1,2,3,4]
+dq.appendleft(0)   # Add to left: [0,1,2,3,4]
+dq.extend([5,6])   # Extend right: [0,1,2,3,4,5,6]
+dq.extendleft([-2,-1]) # Extend left: [-1,-2,0,1,2,3,4,5,6]
+
+# Remove elements
+val = dq.pop()     # Remove from right
+val = dq.popleft() # Remove from left
+
+# Access elements
+first = dq[0]      # Access by index
+last = dq[-1]      # Last element
+
+# Other operations
+dq.rotate(2)       # Rotate right by 2
+dq.rotate(-1)      # Rotate left by 1
+dq.reverse()       # Reverse in-place
+dq.clear()         # Remove all elements
+
+# Check state
+size = len(dq)
+is_empty = len(dq) == 0
+count = dq.count(value)
+index = dq.index(value)
 </code></pre>
 <h3 id="java-queue-deque-operations" tabindex="-1"><a class="header-anchor" href="#java-queue-deque-operations"><span>Java Queue &amp; Deque Operations</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">import</span> java.util.*;</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// Queue interface (FIFO)</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">Queue&lt;Integer&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">queue.offer(<span class="hljs-number">1</span>);    <span class="hljs-comment">// Add to rear (returns boolean)</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">queue.add(<span class="hljs-number">2</span>);      <span class="hljs-comment">// Add to rear (throws exception)</span></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"><span class="hljs-type">Integer</span> <span class="hljs-variable">val</span> <span class="hljs-operator">=</span> queue.poll();  <span class="hljs-comment">// Remove from front (returns null)</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">val = queue.remove();        <span class="hljs-comment">// Remove from front (throws exception)</span></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">val = queue.peek();          <span class="hljs-comment">// View front (returns null)</span></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">val = queue.element();       <span class="hljs-comment">// View front (throws exception)</span></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"><span class="hljs-comment">// Deque interface (double-ended)</span></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">Deque&lt;Integer&gt; deque = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code"><span class="hljs-comment">// or ArrayDeque for better performance</span></span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">Deque&lt;Integer&gt; deque = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code"><span class="hljs-comment">// Add operations</span></span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">deque.addFirst(<span class="hljs-number">1</span>);     <span class="hljs-comment">// Add to front</span></span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">deque.addLast(<span class="hljs-number">2</span>);      <span class="hljs-comment">// Add to rear</span></span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">deque.offerFirst(<span class="hljs-number">0</span>);   <span class="hljs-comment">// Add to front (returns boolean)</span></span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">deque.offerLast(<span class="hljs-number">3</span>);    <span class="hljs-comment">// Add to rear (returns boolean)</span></span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code"><span class="hljs-comment">// Remove operations</span></span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">val = deque.removeFirst(); <span class="hljs-comment">// Remove from front</span></span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">val = deque.removeLast();  <span class="hljs-comment">// Remove from rear</span></span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">val = deque.pollFirst();   <span class="hljs-comment">// Remove from front (returns null)</span></span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">val = deque.pollLast();    <span class="hljs-comment">// Remove from rear (returns null)</span></span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code"><span class="hljs-comment">// Peek operations</span></span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">val = deque.peekFirst();   <span class="hljs-comment">// View front</span></span></span>
-<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">val = deque.peekLast();    <span class="hljs-comment">// View rear</span></span></span>
-<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">val = deque.getFirst();    <span class="hljs-comment">// View front (throws exception)</span></span></span>
-<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">val = deque.getLast();     <span class="hljs-comment">// View rear (throws exception)</span></span></span>
-<span class="ln-row"><span class="ln-num">34</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">35</span><span class="ln-code"><span class="hljs-comment">// Stack operations on Deque</span></span></span>
-<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">deque.push(<span class="hljs-number">5</span>);         <span class="hljs-comment">// Push to front (stack top)</span></span></span>
-<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">val = deque.pop();     <span class="hljs-comment">// Pop from front (stack top)</span></span></span>
+<pre><code class="language-java">import java.util.*;
+
+// Queue interface (FIFO)
+Queue&lt;Integer&gt; queue = new LinkedList&lt;&gt;();
+queue.offer(1);    // Add to rear (returns boolean)
+queue.add(2);      // Add to rear (throws exception)
+Integer val = queue.poll();  // Remove from front (returns null)
+val = queue.remove();        // Remove from front (throws exception)
+val = queue.peek();          // View front (returns null)
+val = queue.element();       // View front (throws exception)
+
+// Deque interface (double-ended)
+Deque&lt;Integer&gt; deque = new LinkedList&lt;&gt;();
+// or ArrayDeque for better performance
+Deque&lt;Integer&gt; deque = new ArrayDeque&lt;&gt;();
+
+// Add operations
+deque.addFirst(1);     // Add to front
+deque.addLast(2);      // Add to rear
+deque.offerFirst(0);   // Add to front (returns boolean)
+deque.offerLast(3);    // Add to rear (returns boolean)
+
+// Remove operations
+val = deque.removeFirst(); // Remove from front
+val = deque.removeLast();  // Remove from rear
+val = deque.pollFirst();   // Remove from front (returns null)
+val = deque.pollLast();    // Remove from rear (returns null)
+
+// Peek operations
+val = deque.peekFirst();   // View front
+val = deque.peekLast();    // View rear
+val = deque.getFirst();    // View front (throws exception)
+val = deque.getLast();     // View rear (throws exception)
+
+// Stack operations on Deque
+deque.push(5);         // Push to front (stack top)
+val = deque.pop();     // Pop from front (stack top)
 </code></pre>
 <h2 id="summary-quick-reference" tabindex="-1"><a class="header-anchor" href="#summary-quick-reference"><span>Summary &amp; Quick Reference</span></a></h2>
 <h3 id="complexity-quick-reference" tabindex="-1"><a class="header-anchor" href="#complexity-quick-reference"><span>Complexity Quick Reference</span></a></h3>
@@ -1249,29 +1244,29 @@
 </table>
 <h3 id="common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#common-patterns-tricks"><span>Common Patterns &amp; Tricks</span></a></h3>
 <h4 id="level-order-processing" tabindex="-1"><a class="header-anchor" href="#level-order-processing"><span><strong>Level-Order Processing</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Process nodes level by level</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">level_size = <span class="hljs-built_in">len</span>(queue)</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(level_size):</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    node = queue.popleft()</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-comment"># Process node</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-comment"># Add children</span></span></span>
+<pre><code class="language-python"># Process nodes level by level
+level_size = len(queue)
+for _ in range(level_size):
+    node = queue.popleft()
+    # Process node
+    # Add children
 </code></pre>
 <h4 id="circular-index-calculation" tabindex="-1"><a class="header-anchor" href="#circular-index-calculation"><span><strong>Circular Index Calculation</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Wrap around in circular buffer</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">tail_index = (head + count) % capacity</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">next_index = (current + <span class="hljs-number">1</span>) % capacity</span></span>
+<pre><code class="language-python"># Wrap around in circular buffer
+tail_index = (head + count) % capacity
+next_index = (current + 1) % capacity
 </code></pre>
 <h4 id="monotonic-property-maintenance" tabindex="-1"><a class="header-anchor" href="#monotonic-property-maintenance"><span><strong>Monotonic Property Maintenance</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Decreasing monotonic queue</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">while</span> queue <span class="hljs-keyword">and</span> queue[-<span class="hljs-number">1</span>] &lt; new_val:</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    queue.pop()</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">queue.append(new_val)</span></span>
+<pre><code class="language-python"># Decreasing monotonic queue
+while queue and queue[-1] &lt; new_val:
+    queue.pop()
+queue.append(new_val)
 </code></pre>
 <h4 id="two-stack-queue-optimization" tabindex="-1"><a class="header-anchor" href="#two-stack-queue-optimization"><span><strong>Two-Stack Queue Optimization</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Amortized O(1) operations</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> out_stack:</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">while</span> in_stack:</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        out_stack.append(in_stack.pop())</span></span>
+<pre><code class="language-python"># Amortized O(1) operations
+if not out_stack:
+    while in_stack:
+        out_stack.append(in_stack.pop())
 </code></pre>
 <h3 id="problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#problem-solving-steps"><span>Problem-Solving Steps</span></a></h3>
 <ol>
@@ -1394,54 +1389,227 @@
 <li><strong>Producer-Consumer</strong>: Classic queue application</li>
 </ul>
 <h2 id="lc-examples" tabindex="-1"><a class="header-anchor" href="#lc-examples"><span>LC Examples</span></a></h2>
-<h3 id="2-1-sliding-window-maximum-lc-239-monotonic-deque" tabindex="-1"><a class="header-anchor" href="#2-1-sliding-window-maximum-lc-239-monotonic-deque"><span>2-1) Sliding Window Maximum (LC 239) — Monotonic Deque</span></a></h3>
-<blockquote>
-<p>Maintain a decreasing deque of indices; front is always the current window maximum.</p>
-</blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 239 - Sliding Window Maximum</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Monotonic deque — remove out-of-window front, remove smaller rear, front = max</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N), space = O(k)</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] maxSlidingWindow(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k) {</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length;</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-type">int</span>[] ans = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n - k + <span class="hljs-number">1</span>];</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    Deque&lt;Integer&gt; dq = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;(); <span class="hljs-comment">// indices, decreasing by value</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-keyword">while</span> (!dq.isEmpty() &amp;&amp; dq.peekFirst() &lt; i - k + <span class="hljs-number">1</span>) dq.pollFirst();</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-keyword">while</span> (!dq.isEmpty() &amp;&amp; nums[dq.peekLast()] &lt; nums[i]) dq.pollLast();</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        dq.addLast(i);</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-keyword">if</span> (i &gt;= k - <span class="hljs-number">1</span>) ans[i - k + <span class="hljs-number">1</span>] = nums[dq.peekFirst()];</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-keyword">return</span> ans;</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">}</span></span>
+<h3 id="2-1-sliding-window-maximum" tabindex="-1"><a class="header-anchor" href="#2-1-sliding-window-maximum"><span>2-1) Sliding Window Maximum</span></a></h3>
+<pre><code class="language-python"># LC 239 Sliding Window Maximum (hard)
+# V1
+# http://bookshadow.com/weblog/2015/07/18/leetcode-sliding-window-maximum/
+# IDEA : DEQUE
+class Solution:
+    def maxSlidingWindow(self, nums, k):
+        dq = collections.deque()
+        ans = []
+        for i in range(len(nums)):
+            while dq and nums[dq[-1]] &lt;= nums[i]:
+                dq.pop()
+            dq.append(i)
+            if dq[0] == i - k:
+                dq.popleft()
+            if i &gt;= k - 1:
+                ans.append(nums[dq[0]])
+        return ans
 </code></pre>
-<h3 id="2-2-design-circular-queue-lc-622-array-with-head-count" tabindex="-1"><a class="header-anchor" href="#2-2-design-circular-queue-lc-622-array-with-head-count"><span>2-2) Design Circular Queue (LC 622) — Array with Head/Count</span></a></h3>
-<blockquote>
-<p>Fixed-size array; track head index and count; use modular arithmetic for wrap-around.</p>
-</blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 622 - Design Circular Queue</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Fixed array + head pointer + count; tail = (head + count - 1) % capacity</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(1) all ops, space = O(k)</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyCircularQueue</span> {</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-type">int</span>[] data;</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-type">int</span> head, count, capacity;</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-title function_">MyCircularQueue</span><span class="hljs-params">(<span class="hljs-type">int</span> k)</span> { data = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[k]; capacity = k; }</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">enQueue</span><span class="hljs-params">(<span class="hljs-type">int</span> value)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-keyword">if</span> (isFull()) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        data[(head + count) % capacity] = value;</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        count++;</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">deQueue</span><span class="hljs-params">()</span> {</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-keyword">if</span> (isEmpty()) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        head = (head + <span class="hljs-number">1</span>) % capacity;</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        count--;</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">Front</span><span class="hljs-params">()</span> { <span class="hljs-keyword">return</span> isEmpty() ? -<span class="hljs-number">1</span> : data[head]; }</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">Rear</span><span class="hljs-params">()</span>  { <span class="hljs-keyword">return</span> isEmpty() ? -<span class="hljs-number">1</span> : data[(head + count - <span class="hljs-number">1</span>) % capacity]; }</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isEmpty</span><span class="hljs-params">()</span> { <span class="hljs-keyword">return</span> count == <span class="hljs-number">0</span>; }</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isFull</span><span class="hljs-params">()</span>  { <span class="hljs-keyword">return</span> count == capacity; }</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// LC 239 Sliding Window Maximum (hard)
+// algorithm book (labu) p. 278, p.281
+// java
+
+// monotonic queue
+class MonotonicQueue{
+
+    // init queue
+    LinkedList&lt;Integer&gt; q = new LinkedList&lt;&gt;();
+    
+    // add element to queue tail
+    public void push(int n){
+        while (!q.isEmpty() &amp;&amp; q.getLast() &lt; n){
+            q.pollLast();
+        }
+        q.addLast(n);
+    }
+
+    // return current max value in queue
+    public int max(){
+        return q.getFirst();
+    }
+
+    // if head element is n, delete it
+    public void pop(int n){
+        if (n == q.getFirst()){
+            q.pollLast();
+        }
+    }
+}
+
+/* main func */
+int[] maxSlidingWindow([int] nums, int k){
+    MonotonicQueue window = new MonotonicQueue();
+    List&lt;Integer&gt; res = new ArrayList&lt;&gt;();
+
+    for (int i = 0; i &lt; nums.length; i++){
+        if (i &lt; k - 1){
+            // insert k - 1 elements in the window
+            window.push(nums[i]);
+        }else{
+            // window move forward, add new element
+            window.push(nums[i]);
+            // record current max element in the window
+            res.add(window.max());
+            // move out element
+            window.pop(nums[i - k + 1]);
+        }
+    }
+
+    // transform res to int[] array as answer form
+    int[] arr = new int[res.size()];
+    for (int i = 0; i &lt; res.size(); i ++){
+        arr[i] = res.get(i);
+    }
+    return arr;
+}
+</code></pre>
+<h3 id="2-2-design-circular-queue" tabindex="-1"><a class="header-anchor" href="#2-2-design-circular-queue"><span>2-2) Design Circular Queue</span></a></h3>
+<pre><code class="language-python"># LC 622. Design Circular Queue
+# V0 
+# IDEA : ARRAY
+# https://leetcode.com/problems/design-circular-queue/solution/
+
+# NOTE !!! when `circular`, -&gt; think about `fixed_idx = idx % len`
+
+class MyCircularQueue:
+
+    def __init__(self, k):
+        &quot;&quot;&quot;
+        Initialize your data structure here. Set the size of the queue to be k.
+        &quot;&quot;&quot;
+        self.queue = [0]*k
+        self.headIndex = 0
+        self.count = 0
+        self.capacity = k
+
+    def enQueue(self, value):
+        &quot;&quot;&quot;
+        Insert an element into the circular queue. Return true if the operation is successful.
+        &quot;&quot;&quot;
+        if self.count == self.capacity:
+            return False
+        self.queue[(self.headIndex + self.count) % self.capacity] = value
+        self.count += 1
+        return True
+
+    def deQueue(self):
+        &quot;&quot;&quot;
+        Delete an element from the circular queue. Return true if the operation is successful.
+        &quot;&quot;&quot;
+        if self.count == 0:
+            return False
+        self.headIndex = (self.headIndex + 1) % self.capacity
+        self.count -= 1
+        return True
+
+    def Front(self):
+        &quot;&quot;&quot;
+        Get the front item from the queue.
+        &quot;&quot;&quot;
+        if self.count == 0:
+            return -1
+        return self.queue[self.headIndex]
+
+    def Rear(self):
+        &quot;&quot;&quot;
+        Get the last item from the queue.
+        &quot;&quot;&quot;
+        # empty queue
+        if self.count == 0:
+            return -1
+        return self.queue[(self.headIndex + self.count - 1) % self.capacity]
+
+    def isEmpty(self):
+        &quot;&quot;&quot;
+        Checks whether the circular queue is empty or not.
+        &quot;&quot;&quot;
+        return self.count == 0
+
+    def isFull(self):
+        &quot;&quot;&quot;
+        Checks whether the circular queue is full or not.
+        &quot;&quot;&quot;
+        return self.count == self.capacity
+
+# V0'
+# IDEA : LINKED LIST
+# https://leetcode.com/problems/design-circular-queue/solution/
+class Node:
+    def __init__(self, value, nextNode=None):
+        self.value = value
+        self.next = nextNode
+
+class MyCircularQueue:
+
+    def __init__(self, k):
+        &quot;&quot;&quot;
+        Initialize your data structure here. Set the size of the queue to be k.
+        &quot;&quot;&quot;
+        self.capacity = k
+        self.head = None
+        self.tail = None
+        self.count = 0
+
+    def enQueue(self, value):
+        &quot;&quot;&quot;
+        Insert an element into the circular queue. Return true if the operation is successful.
+        &quot;&quot;&quot;
+        if self.count == self.capacity:
+            return False
+        
+        if self.count == 0:
+            self.head = Node(value)
+            self.tail = self.head
+        else:
+            newNode = Node(value)
+            self.tail.next = newNode
+            self.tail = newNode
+        self.count += 1
+        return True
+
+
+    def deQueue(self):
+        &quot;&quot;&quot;
+        Delete an element from the circular queue. Return true if the operation is successful.
+        &quot;&quot;&quot;
+        if self.count == 0:
+            return False
+        self.head = self.head.next
+        self.count -= 1
+        return True
+
+
+    def Front(self):
+        &quot;&quot;&quot;
+        Get the front item from the queue.
+        &quot;&quot;&quot;
+        if self.count == 0:
+            return -1
+        return self.head.value
+
+    def Rear(self):
+        &quot;&quot;&quot;
+        Get the last item from the queue.
+        &quot;&quot;&quot;
+        # empty queue
+        if self.count == 0:
+            return -1
+        return self.tail.value
+    
+    def isEmpty(self):
+        &quot;&quot;&quot;
+        Checks whether the circular queue is empty or not.
+        &quot;&quot;&quot;
+        return self.count == 0
+
+    def isFull(self):
+        &quot;&quot;&quot;
+        Checks whether the circular queue is full or not.
+        &quot;&quot;&quot;
+        return self.count == self.capacity
 </code></pre>
 
       </div>

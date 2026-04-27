@@ -9,7 +9,8 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -20,42 +21,40 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    // Code block wrappers + copy buttons (highlighting done at build time)
-    try {
-      document.querySelectorAll('pre').forEach(function(pre) {
-        var codeEl = pre.querySelector('code');
-        var lang = pre.getAttribute('data-lang') || '';
-        var wrapper = document.createElement('div');
-        wrapper.className = 'code-block-wrapper';
-        pre.parentNode.insertBefore(wrapper, pre);
-        var header = document.createElement('div');
-        header.className = 'code-block-header';
-        if (lang) {
-          var label = document.createElement('span');
-          label.className = 'code-lang-label';
-          label.textContent = lang;
-          header.appendChild(label);
-        } else {
-          header.appendChild(document.createElement('span'));
-        }
-        var btn = document.createElement('button');
-        btn.className = 'copy-btn';
-        btn.textContent = 'Copy';
-        btn.addEventListener('click', function() {
-          var text = codeEl
-            ? Array.from(codeEl.querySelectorAll('.ln-code')).map(function(el) { return el.textContent; }).join('\n')
-            : pre.textContent;
-          navigator.clipboard.writeText(text).then(function() {
-            btn.textContent = 'Copied!';
-            btn.classList.add('copied');
-            setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-          });
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
         });
-        header.appendChild(btn);
-        wrapper.appendChild(header);
-        wrapper.appendChild(pre);
       });
-    } catch(e) { console.error('Code block setup error:', e); }
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -65,36 +64,32 @@
       }
     });
     // Reading progress bar
-    try {
-      var progressBar = document.getElementById('reading-progress');
-      if (progressBar) {
-        window.addEventListener('scroll', function() {
-          var winScroll = document.documentElement.scrollTop;
-          var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-          progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
-        });
-      }
-    } catch(e) {}
-    // Dark mode toggle — isolated so errors elsewhere never prevent this from working
-    try {
-      var toggle = document.getElementById('theme-toggle');
-      if (toggle) {
-        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-        toggle.textContent = isDark ? '☀️' : '🌙';
-        toggle.addEventListener('click', function() {
-          var dark = document.documentElement.getAttribute('data-theme') === 'dark';
-          if (dark) {
-            document.documentElement.removeAttribute('data-theme');
-            localStorage.setItem('theme', 'light');
-            toggle.textContent = '🌙';
-          } else {
-            document.documentElement.setAttribute('data-theme', 'dark');
-            localStorage.setItem('theme', 'dark');
-            toggle.textContent = '☀️';
-          }
-        });
-      }
-    } catch(e) { console.error('Theme toggle error:', e); }
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
   });</script>
 </head>
 <body>
@@ -177,297 +172,297 @@
 <h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
 <h3 id="2-1-add-binary" tabindex="-1"><a class="header-anchor" href="#2-1-add-binary"><span>2-1) Add Binary</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># LC 067 Add Binary: sum two binary strings.</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># V0</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment"># IDEA : STRING + BINARY</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">addBinary</span>(<span class="hljs-params">self, a, b</span>):</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        _<span class="hljs-built_in">len</span> = <span class="hljs-built_in">max</span>(<span class="hljs-built_in">len</span>(a), <span class="hljs-built_in">len</span>(b))</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(a) &lt; _<span class="hljs-built_in">len</span>:</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">            a = (_<span class="hljs-built_in">len</span> - <span class="hljs-built_in">len</span>(a)) * <span class="hljs-string">&#x27;0&#x27;</span> + a</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(b) &lt; _<span class="hljs-built_in">len</span>:</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">            b = (_<span class="hljs-built_in">len</span> - <span class="hljs-built_in">len</span>(b)) * <span class="hljs-string">&#x27;0&#x27;</span> + b</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        plus = <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        result = <span class="hljs-string">&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        <span class="hljs-comment"># INVERSE LOOPING THE a, b</span></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(a))[::-<span class="hljs-number">1</span>]:</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">            tmp = <span class="hljs-built_in">int</span>(a[i]) + <span class="hljs-built_in">int</span>(b[i]) + plus</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">            <span class="hljs-keyword">if</span> tmp &gt; <span class="hljs-number">1</span>:</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">                tmp -= <span class="hljs-number">2</span></span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">                plus = <span class="hljs-number">1</span></span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">            <span class="hljs-keyword">else</span>:</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">                plus = <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">            result += <span class="hljs-built_in">str</span>(tmp)</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">        <span class="hljs-keyword">if</span> plus == <span class="hljs-number">1</span>:</span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;1&#x27;</span> + result[::-<span class="hljs-number">1</span>]  <span class="hljs-comment">### NOTE WE NEED TO REVERSE IT!</span></span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">        <span class="hljs-keyword">else</span>: </span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">            <span class="hljs-keyword">return</span> result[::-<span class="hljs-number">1</span>] <span class="hljs-comment">### NOTE WE NEED TO REVERSE IT!</span></span></span>
-<span class="ln-row"><span class="ln-num">31</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">32</span><span class="ln-code"><span class="hljs-comment"># V0</span></span></span>
-<span class="ln-row"><span class="ln-num">33</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):</span></span>
-<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">addBinary</span>(<span class="hljs-params">self, a, b</span>):</span></span>
-<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;</span></span>
-<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">        :type a: str</span></span>
-<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">        :type b: str</span></span>
-<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">        :rtype: str</span></span>
-<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">        &quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">        res = <span class="hljs-string">&#x27;&#x27;</span></span></span>
-<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">        i, j, plus = <span class="hljs-built_in">len</span>(a)-<span class="hljs-number">1</span>, <span class="hljs-built_in">len</span>(b)-<span class="hljs-number">1</span>, <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">        <span class="hljs-keyword">while</span> i&gt;=<span class="hljs-number">0</span> <span class="hljs-keyword">or</span> j&gt;=<span class="hljs-number">0</span> <span class="hljs-keyword">or</span> plus==<span class="hljs-number">1</span>:</span></span>
-<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">            plus += <span class="hljs-built_in">int</span>(a[i]) <span class="hljs-keyword">if</span> i&gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">44</span><span class="ln-code">            plus += <span class="hljs-built_in">int</span>(b[j]) <span class="hljs-keyword">if</span> j&gt;= <span class="hljs-number">0</span> <span class="hljs-keyword">else</span> <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">45</span><span class="ln-code">            res = <span class="hljs-built_in">str</span>(plus % <span class="hljs-number">2</span>) + res</span></span>
-<span class="ln-row"><span class="ln-num">46</span><span class="ln-code">            i, j, plus = i-<span class="hljs-number">1</span>, j-<span class="hljs-number">1</span>, plus//<span class="hljs-number">2</span>  <span class="hljs-comment"># since max of &quot;plus&quot; is 3 in bimary case, so &quot;plus//2&quot; works here</span></span></span>
-<span class="ln-row"><span class="ln-num">47</span><span class="ln-code">        <span class="hljs-keyword">return</span> res</span></span>
+<pre><code class="language-python"># LC 067 Add Binary: sum two binary strings.
+# V0
+# IDEA : STRING + BINARY
+class Solution(object):
+    def addBinary(self, a, b):
+
+        _len = max(len(a), len(b))
+        if len(a) &lt; _len:
+            a = (_len - len(a)) * '0' + a
+        if len(b) &lt; _len:
+            b = (_len - len(b)) * '0' + b
+
+        plus = 0
+        result = &quot;&quot;
+
+        # INVERSE LOOPING THE a, b
+        for i in range(len(a))[::-1]:
+            tmp = int(a[i]) + int(b[i]) + plus
+            if tmp &gt; 1:
+                tmp -= 2
+                plus = 1
+            else:
+                plus = 0
+
+            result += str(tmp)
+
+        if plus == 1:
+            return '1' + result[::-1]  ### NOTE WE NEED TO REVERSE IT!
+        else: 
+            return result[::-1] ### NOTE WE NEED TO REVERSE IT!
+
+# V0
+class Solution(object):
+    def addBinary(self, a, b):
+        &quot;&quot;&quot;
+        :type a: str
+        :type b: str
+        :rtype: str
+        &quot;&quot;&quot;
+        res = ''
+        i, j, plus = len(a)-1, len(b)-1, 0
+        while i&gt;=0 or j&gt;=0 or plus==1:
+            plus += int(a[i]) if i&gt;= 0 else 0
+            plus += int(b[j]) if j&gt;= 0 else 0
+            res = str(plus % 2) + res
+            i, j, plus = i-1, j-1, plus//2  # since max of &quot;plus&quot; is 3 in bimary case, so &quot;plus//2&quot; works here
+        return res
 </code></pre>
 <h3 id="2-2-add-strings" tabindex="-1"><a class="header-anchor" href="#2-2-add-strings"><span>2-2) Add Strings</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// java</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// LC 415</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// V0</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-comment">// IDEA: string op (fixed by gpt)</span></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-keyword">public</span> String <span class="hljs-title function_">addStrings</span><span class="hljs-params">(String num1, String num2)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">if</span> (num1 == <span class="hljs-literal">null</span> || num2 == <span class="hljs-literal">null</span>) {</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-keyword">if</span> (num1 == <span class="hljs-literal">null</span>) {</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">            <span class="hljs-keyword">return</span> num2;</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-keyword">return</span> num1;</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-keyword">if</span> (num1.equals(<span class="hljs-string">&quot;0&quot;</span>) &amp;&amp; num2.equals(<span class="hljs-string">&quot;0&quot;</span>)) {</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;0&quot;</span>;</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">sb</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>();</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">plus</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">idx_1</span> <span class="hljs-operator">=</span> num1.length() - <span class="hljs-number">1</span>;</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">idx_2</span> <span class="hljs-operator">=</span> num2.length() - <span class="hljs-number">1</span>;</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    <span class="hljs-comment">/** NOTE !!!</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">     *</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">     *  1. while loop</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">     *  2. idx_1 &gt;= 0 or idx_2 &gt;= 0</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">     */</span></span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">    <span class="hljs-keyword">while</span> (idx_1 &gt;= <span class="hljs-number">0</span> || idx_2 &gt;= <span class="hljs-number">0</span>) {</span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">v1</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">v2</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
-<span class="ln-row"><span class="ln-num">31</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">new_val</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
-<span class="ln-row"><span class="ln-num">33</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">        <span class="hljs-comment">/** NOTE !!!</span></span>
-<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">         *</span></span>
-<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">         *  if idx_1 &gt;= 0, then get val from it</span></span>
-<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">         */</span></span></span>
-<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">        <span class="hljs-keyword">if</span> (idx_1 &gt;= <span class="hljs-number">0</span>) {</span></span>
-<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">            v1 = Integer.parseInt(String.valueOf(num1.charAt(idx_1)));</span></span>
-<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">            idx_1 -= <span class="hljs-number">1</span>;</span></span>
-<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">42</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">        <span class="hljs-comment">/** NOTE !!!</span></span>
-<span class="ln-row"><span class="ln-num">44</span><span class="ln-code">         *</span></span>
-<span class="ln-row"><span class="ln-num">45</span><span class="ln-code">         *  if idx_1 &gt;= 0, then get val from it</span></span>
-<span class="ln-row"><span class="ln-num">46</span><span class="ln-code">         */</span></span></span>
-<span class="ln-row"><span class="ln-num">47</span><span class="ln-code">        <span class="hljs-keyword">if</span> (idx_2 &gt;= <span class="hljs-number">0</span>) {</span></span>
-<span class="ln-row"><span class="ln-num">48</span><span class="ln-code">            v2 = Integer.parseInt(String.valueOf(num2.charAt(idx_2)));</span></span>
-<span class="ln-row"><span class="ln-num">49</span><span class="ln-code">            idx_2 -= <span class="hljs-number">1</span>;</span></span>
-<span class="ln-row"><span class="ln-num">50</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">51</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">52</span><span class="ln-code">        new_val = (new_val + v1 + v2 + plus);</span></span>
-<span class="ln-row"><span class="ln-num">53</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">54</span><span class="ln-code">        <span class="hljs-comment">/** NOTE !!!</span></span>
-<span class="ln-row"><span class="ln-num">55</span><span class="ln-code">         *</span></span>
-<span class="ln-row"><span class="ln-num">56</span><span class="ln-code">         *  if new_vla &gt; 9,</span></span>
-<span class="ln-row"><span class="ln-num">57</span><span class="ln-code">         *  we should `subtract 10` (instead of 9)</span></span>
-<span class="ln-row"><span class="ln-num">58</span><span class="ln-code">         */</span></span></span>
-<span class="ln-row"><span class="ln-num">59</span><span class="ln-code">        <span class="hljs-keyword">if</span> (new_val &gt; <span class="hljs-number">9</span>) {</span></span>
-<span class="ln-row"><span class="ln-num">60</span><span class="ln-code">            plus = <span class="hljs-number">1</span>;</span></span>
-<span class="ln-row"><span class="ln-num">61</span><span class="ln-code">            new_val -= <span class="hljs-number">10</span>;</span></span>
-<span class="ln-row"><span class="ln-num">62</span><span class="ln-code">        } <span class="hljs-keyword">else</span> {</span></span>
-<span class="ln-row"><span class="ln-num">63</span><span class="ln-code">            plus = <span class="hljs-number">0</span>;</span></span>
-<span class="ln-row"><span class="ln-num">64</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">65</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">66</span><span class="ln-code">        sb.append(new_val);</span></span>
-<span class="ln-row"><span class="ln-num">67</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">68</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">69</span><span class="ln-code">    <span class="hljs-comment">/** NOTE !!!</span></span>
-<span class="ln-row"><span class="ln-num">70</span><span class="ln-code">     *</span></span>
-<span class="ln-row"><span class="ln-num">71</span><span class="ln-code">     *  need to add the `remaining plus` to res</span></span>
-<span class="ln-row"><span class="ln-num">72</span><span class="ln-code">     *  if there is it</span></span>
-<span class="ln-row"><span class="ln-num">73</span><span class="ln-code">     */</span></span></span>
-<span class="ln-row"><span class="ln-num">74</span><span class="ln-code">    <span class="hljs-keyword">if</span> (plus &gt; <span class="hljs-number">0</span>) {</span></span>
-<span class="ln-row"><span class="ln-num">75</span><span class="ln-code">        sb.append(plus);</span></span>
-<span class="ln-row"><span class="ln-num">76</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">77</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">78</span><span class="ln-code">    <span class="hljs-comment">// reverse</span></span></span>
-<span class="ln-row"><span class="ln-num">79</span><span class="ln-code">    <span class="hljs-keyword">return</span> sb.reverse().toString();</span></span>
-<span class="ln-row"><span class="ln-num">80</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// java
+// LC 415
+// V0
+// IDEA: string op (fixed by gpt)
+public String addStrings(String num1, String num2) {
+    if (num1 == null || num2 == null) {
+        if (num1 == null) {
+            return num2;
+        }
+        return num1;
+    }
+    if (num1.equals(&quot;0&quot;) &amp;&amp; num2.equals(&quot;0&quot;)) {
+        return &quot;0&quot;;
+    }
+
+    StringBuilder sb = new StringBuilder();
+
+    int plus = 0;
+    int idx_1 = num1.length() - 1;
+    int idx_2 = num2.length() - 1;
+
+    /** NOTE !!!
+     *
+     *  1. while loop
+     *  2. idx_1 &gt;= 0 or idx_2 &gt;= 0
+     */
+    while (idx_1 &gt;= 0 || idx_2 &gt;= 0) {
+
+        int v1 = 0;
+        int v2 = 0;
+
+        int new_val = 0;
+
+        /** NOTE !!!
+         *
+         *  if idx_1 &gt;= 0, then get val from it
+         */
+        if (idx_1 &gt;= 0) {
+            v1 = Integer.parseInt(String.valueOf(num1.charAt(idx_1)));
+            idx_1 -= 1;
+        }
+
+        /** NOTE !!!
+         *
+         *  if idx_1 &gt;= 0, then get val from it
+         */
+        if (idx_2 &gt;= 0) {
+            v2 = Integer.parseInt(String.valueOf(num2.charAt(idx_2)));
+            idx_2 -= 1;
+        }
+
+        new_val = (new_val + v1 + v2 + plus);
+
+        /** NOTE !!!
+         *
+         *  if new_vla &gt; 9,
+         *  we should `subtract 10` (instead of 9)
+         */
+        if (new_val &gt; 9) {
+            plus = 1;
+            new_val -= 10;
+        } else {
+            plus = 0;
+        }
+
+        sb.append(new_val);
+    }
+
+    /** NOTE !!!
+     *
+     *  need to add the `remaining plus` to res
+     *  if there is it
+     */
+    if (plus &gt; 0) {
+        sb.append(plus);
+    }
+
+    // reverse
+    return sb.reverse().toString();
+}
 </code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># LC 415. Add Strings</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># V0</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment"># IDEA : string + math</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">addStrings</span>(<span class="hljs-params">self, num1, num2</span>):</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        result = []</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-comment"># note : we init carry as 0</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        carry = <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        num1 = <span class="hljs-built_in">list</span>(num1)</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        num2 = <span class="hljs-built_in">list</span>(num2)</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-comment"># while there is still non-add digit in num1, and num2; or there is non-zero carry </span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-keyword">while</span> num1 <span class="hljs-keyword">or</span> num2 <span class="hljs-keyword">or</span> carry:</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">            digit = carry</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            <span class="hljs-keyword">if</span> num1:</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">                tmp1 = num1.pop(-<span class="hljs-number">1</span>)</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">                digit += <span class="hljs-built_in">int</span>(tmp1)</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">            <span class="hljs-keyword">if</span> num2:</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">                tmp2 = num2.pop(-<span class="hljs-number">1</span>)</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">                digit += <span class="hljs-built_in">int</span>(tmp2)</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">            <span class="hljs-string">&quot;&quot;&quot;</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">            if digit &gt; 9 -&gt; we need to &quot;carry&quot; 1 to next digit -&gt; carry = 1</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">            else -&gt; carry = 0</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">            &quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">            <span class="hljs-keyword">if</span> digit &gt; <span class="hljs-number">9</span>:</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">                carry = <span class="hljs-number">1</span></span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">            <span class="hljs-keyword">else</span>:</span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">                carry = <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">            <span class="hljs-comment"># NOTE !!! we get &quot;remain&quot; by 10 via below code</span></span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">            result.append(<span class="hljs-built_in">str</span>(digit % <span class="hljs-number">10</span>))</span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;&#x27;</span>.join(result[::-<span class="hljs-number">1</span>]) </span></span>
+<pre><code class="language-python"># LC 415. Add Strings
+# V0
+# IDEA : string + math
+class Solution(object):
+    def addStrings(self, num1, num2):
+        result = []
+        # note : we init carry as 0
+        carry = 0
+        num1 = list(num1)
+        num2 = list(num2)
+        # while there is still non-add digit in num1, and num2; or there is non-zero carry 
+        while num1 or num2 or carry:
+            digit = carry
+            if num1:
+                tmp1 = num1.pop(-1)
+                digit += int(tmp1)
+            if num2:
+                tmp2 = num2.pop(-1)
+                digit += int(tmp2)
+            &quot;&quot;&quot;
+            if digit &gt; 9 -&gt; we need to &quot;carry&quot; 1 to next digit -&gt; carry = 1
+            else -&gt; carry = 0
+            &quot;&quot;&quot;
+            if digit &gt; 9:
+                carry = 1
+            else:
+                carry = 0
+            # NOTE !!! we get &quot;remain&quot; by 10 via below code
+            result.append(str(digit % 10))
+        return ''.join(result[::-1]) 
 </code></pre>
 <h3 id="2-3-sum-of-two-integers" tabindex="-1"><a class="header-anchor" href="#2-3-sum-of-two-integers"><span>2-3) Sum of Two Integers</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># LC 371 : Sum of Two Integers</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># V0</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment"># https://leetcode.com/problems/sum-of-two-integers/discuss/1214257/Python-1-line%3A-91-faster</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Souluton</span>:</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">getSum</span>(<span class="hljs-params">self, a, b</span>):</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        tmp = math.exp(a) * math.exp(b)</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        r = <span class="hljs-built_in">int</span>(math.log(tmp))</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">return</span> r</span></span>
+<pre><code class="language-python"># LC 371 : Sum of Two Integers
+# V0
+# https://leetcode.com/problems/sum-of-two-integers/discuss/1214257/Python-1-line%3A-91-faster
+class Souluton:
+    def getSum(self, a, b):
+        tmp = math.exp(a) * math.exp(b)
+        r = int(math.log(tmp))
+        return r
 </code></pre>
 <h3 id="2-4-add-to-array-form-of-integer" tabindex="-1"><a class="header-anchor" href="#2-4-add-to-array-form-of-integer"><span>2-4) Add to Array Form of Integer</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># LC 989 Add to Array Form of Integer</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># V0</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment"># IDEA : array op</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">addToArrayForm</span>(<span class="hljs-params">self, num, k</span>):</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        s = <span class="hljs-string">&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> num:</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">            s += <span class="hljs-built_in">str</span>(i)       </span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        answer = <span class="hljs-built_in">int</span>(s) + k</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-keyword">return</span>  <span class="hljs-built_in">list</span>(<span class="hljs-string">&quot;&quot;</span>.join(<span class="hljs-built_in">str</span>(answer)))</span></span>
+<pre><code class="language-python"># LC 989 Add to Array Form of Integer
+# V0
+# IDEA : array op
+class Solution:
+    def addToArrayForm(self, num, k):
+        s = &quot;&quot;
+        for i in num:
+            s += str(i)       
+        answer = int(s) + k
+        return  list(&quot;&quot;.join(str(answer)))
 </code></pre>
 <h3 id="2-5-plus-one" tabindex="-1"><a class="header-anchor" href="#2-5-plus-one"><span>2-5) Plus One</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># LC 66 Plus One</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># V0</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment"># NOTE : Notice the index of inverse loop  : range(len(a)-1, -1, -1)</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-comment"># a = [&#x27;a&#x27;, &#x27;b&#x27;, &#x27;c&#x27;]</span></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-comment"># for i in range(len(a)-1, -1, -1):</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"><span class="hljs-comment">#     print (a[i])</span></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"><span class="hljs-comment"># c</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"><span class="hljs-comment"># b</span></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"><span class="hljs-comment"># a</span></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">plusOne</span>(<span class="hljs-params">self, digits</span>):</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        :type digits: List[int]</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        :rtype: List[int]</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        &quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        plus = <span class="hljs-number">1</span></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(digits)-<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>):</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">            <span class="hljs-keyword">if</span> digits[i] + plus &gt; <span class="hljs-number">9</span>:</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">                digits[i] = <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">                plus = <span class="hljs-number">1</span></span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">            <span class="hljs-keyword">else</span>:</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">                digits[i] = digits[i] + plus</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">                plus = <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">        <span class="hljs-keyword">if</span> plus == <span class="hljs-number">1</span>:</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">            digits.insert(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>)</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">        <span class="hljs-keyword">return</span> digits</span></span>
+<pre><code class="language-python"># LC 66 Plus One
+# V0
+# NOTE : Notice the index of inverse loop  : range(len(a)-1, -1, -1)
+# a = ['a', 'b', 'c']
+# for i in range(len(a)-1, -1, -1):
+#     print (a[i])
+# c
+# b
+# a
+class Solution(object):
+    def plusOne(self, digits):
+        &quot;&quot;&quot;
+        :type digits: List[int]
+        :rtype: List[int]
+        &quot;&quot;&quot;
+        plus = 1
+        for i in range(len(digits)-1, -1, -1):
+            if digits[i] + plus &gt; 9:
+                digits[i] = 0
+                plus = 1
+            else:
+                digits[i] = digits[i] + plus
+                plus = 0
+        if plus == 1:
+            digits.insert(0, 1)
+        return digits
 </code></pre>
 <h3 id="2-6-add-two-numbers" tabindex="-1"><a class="header-anchor" href="#2-6-add-two-numbers"><span>2-6) Add Two Numbers</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># LC 002 Add Two Numbers</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># V0</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">addTwoNumbers</span>(<span class="hljs-params">self, l1, l2</span>):</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        NOTE :</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">         1. we init linkedlist via ListNode()</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">         2. we NEED make extra head refer same linkedlist, since we need to return beginning of linkedlust of this func, while res will meet &quot;tail&quot; at the end of while loop</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        &quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        head = res = ListNode()</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        plus = <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        tmp = <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-keyword">while</span> l1 <span class="hljs-keyword">or</span> l2:</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            tmp += plus</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">            plus = <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">            <span class="hljs-keyword">if</span> l1:</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">                tmp += l1.val</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">                l1 = l1.<span class="hljs-built_in">next</span></span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">            <span class="hljs-keyword">if</span> l2:</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">                tmp += l2.val</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">                l2 = l2.<span class="hljs-built_in">next</span></span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">            <span class="hljs-keyword">if</span> tmp &gt; <span class="hljs-number">9</span>:</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">                tmp -= <span class="hljs-number">10</span></span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">                plus = <span class="hljs-number">1</span></span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">            res.<span class="hljs-built_in">next</span> = ListNode(tmp)</span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">            res = res.<span class="hljs-built_in">next</span></span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">            tmp = <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">        <span class="hljs-comment">### NOTE : need to deal with case : l1, l2 are completed, but still &quot;remaining&quot; plus</span></span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">        <span class="hljs-keyword">if</span> plus != <span class="hljs-number">0</span>:</span></span>
-<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">            res.<span class="hljs-built_in">next</span> = ListNode(plus)</span></span>
-<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">            res = res.<span class="hljs-built_in">next</span></span></span>
-<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">        <span class="hljs-comment">#print (&quot;res = &quot; + str(res))</span></span></span>
-<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">        <span class="hljs-comment">#print (&quot;head = &quot; + str(head))</span></span></span>
-<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">        <span class="hljs-keyword">return</span> head.<span class="hljs-built_in">next</span></span></span>
+<pre><code class="language-python"># LC 002 Add Two Numbers
+# V0
+class Solution(object):
+    def addTwoNumbers(self, l1, l2):
+        &quot;&quot;&quot;
+        NOTE :
+         1. we init linkedlist via ListNode()
+         2. we NEED make extra head refer same linkedlist, since we need to return beginning of linkedlust of this func, while res will meet &quot;tail&quot; at the end of while loop
+        &quot;&quot;&quot;
+        head = res = ListNode()
+        plus = 0
+        tmp = 0
+        while l1 or l2:
+            tmp += plus
+            plus = 0
+            if l1:
+                tmp += l1.val
+                l1 = l1.next
+            if l2:
+                tmp += l2.val
+                l2 = l2.next
+            if tmp &gt; 9:
+                tmp -= 10
+                plus = 1
+
+            res.next = ListNode(tmp)
+            res = res.next
+            tmp = 0
+        ### NOTE : need to deal with case : l1, l2 are completed, but still &quot;remaining&quot; plus
+        if plus != 0:
+            res.next = ListNode(plus)
+            res = res.next
+        #print (&quot;res = &quot; + str(res))
+        #print (&quot;head = &quot; + str(head))
+        return head.next
 </code></pre>
 <h3 id="2-7-add-two-numbers-ii" tabindex="-1"><a class="header-anchor" href="#2-7-add-two-numbers-ii"><span>2-7) Add Two Numbers II</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># LC 445 Add Two Numbers II</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># V0</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment"># IDEA : string + linked list</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-comment"># DEMO</span></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-comment"># input :</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"><span class="hljs-comment"># [7,2,4,3]</span></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"><span class="hljs-comment"># [5,6,4]</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"><span class="hljs-comment"># intermedia output : </span></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"><span class="hljs-comment"># l1_num = 7243</span></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"><span class="hljs-comment"># l2_num = 564</span></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">addTwoNumbers</span>(<span class="hljs-params">self, l1, l2</span>):</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> l1 <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> l2:</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span></span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        l1_num = <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        <span class="hljs-keyword">while</span> l1:</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">            l1_num = l1_num * <span class="hljs-number">10</span> + l1.val</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">            l1 = l1.<span class="hljs-built_in">next</span></span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        l2_num = <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        <span class="hljs-keyword">while</span> l2:</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">            l2_num = l2_num * <span class="hljs-number">10</span> + l2.val</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">            l2 = l2.<span class="hljs-built_in">next</span></span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">        <span class="hljs-built_in">print</span> (<span class="hljs-string">&quot;l1_num = &quot;</span> + <span class="hljs-built_in">str</span>(l1_num))</span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">        <span class="hljs-built_in">print</span> (<span class="hljs-string">&quot;l2_num = &quot;</span> + <span class="hljs-built_in">str</span>(l2_num))</span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">        <span class="hljs-comment">### NOTE : trick here :</span></span></span>
-<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">        <span class="hljs-comment">#    -&gt; get int format of 2 linked list first (l1, l2)</span></span></span>
-<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">        <span class="hljs-comment">#    -&gt; then sum them (l1_num + l2_num)</span></span></span>
-<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">        lsum = l1_num + l2_num</span></span>
-<span class="ln-row"><span class="ln-num">34</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">        head = ListNode(<span class="hljs-literal">None</span>)</span></span>
-<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">        cur = head</span></span>
-<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">        <span class="hljs-comment">### NOTE : go thrpigh the linked list int sum, append each digit to ListNode and return it</span></span></span>
-<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">        <span class="hljs-keyword">for</span> istr <span class="hljs-keyword">in</span> <span class="hljs-built_in">str</span>(lsum):</span></span>
-<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">            cur.<span class="hljs-built_in">next</span> = ListNode(<span class="hljs-built_in">int</span>(istr))</span></span>
-<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">            cur = cur.<span class="hljs-built_in">next</span></span></span>
-<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">        <span class="hljs-comment"># NOTE : need to return head (but not cur, since cur already meet the end of ListNode)</span></span></span>
-<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">        <span class="hljs-keyword">return</span> head.<span class="hljs-built_in">next</span></span></span>
+<pre><code class="language-python"># LC 445 Add Two Numbers II
+# V0
+# IDEA : string + linked list
+# DEMO
+# input :
+# [7,2,4,3]
+# [5,6,4]
+# intermedia output : 
+# l1_num = 7243
+# l2_num = 564
+class Solution:
+    def addTwoNumbers(self, l1, l2):
+        if not l1 and not l2:
+            return None
+
+        l1_num = 0
+        while l1:
+            l1_num = l1_num * 10 + l1.val
+            l1 = l1.next
+
+        l2_num = 0
+        while l2:
+            l2_num = l2_num * 10 + l2.val
+            l2 = l2.next
+
+        print (&quot;l1_num = &quot; + str(l1_num))
+        print (&quot;l2_num = &quot; + str(l2_num))
+
+
+        ### NOTE : trick here :
+        #    -&gt; get int format of 2 linked list first (l1, l2)
+        #    -&gt; then sum them (l1_num + l2_num)
+        lsum = l1_num + l2_num
+
+        head = ListNode(None)
+        cur = head
+        ### NOTE : go thrpigh the linked list int sum, append each digit to ListNode and return it
+        for istr in str(lsum):
+            cur.next = ListNode(int(istr))
+            cur = cur.next
+        # NOTE : need to return head (but not cur, since cur already meet the end of ListNode)
+        return head.next
 </code></pre>
 
       </div>

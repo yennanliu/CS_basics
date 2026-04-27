@@ -9,7 +9,8 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -20,42 +21,40 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    // Code block wrappers + copy buttons (highlighting done at build time)
-    try {
-      document.querySelectorAll('pre').forEach(function(pre) {
-        var codeEl = pre.querySelector('code');
-        var lang = pre.getAttribute('data-lang') || '';
-        var wrapper = document.createElement('div');
-        wrapper.className = 'code-block-wrapper';
-        pre.parentNode.insertBefore(wrapper, pre);
-        var header = document.createElement('div');
-        header.className = 'code-block-header';
-        if (lang) {
-          var label = document.createElement('span');
-          label.className = 'code-lang-label';
-          label.textContent = lang;
-          header.appendChild(label);
-        } else {
-          header.appendChild(document.createElement('span'));
-        }
-        var btn = document.createElement('button');
-        btn.className = 'copy-btn';
-        btn.textContent = 'Copy';
-        btn.addEventListener('click', function() {
-          var text = codeEl
-            ? Array.from(codeEl.querySelectorAll('.ln-code')).map(function(el) { return el.textContent; }).join('\n')
-            : pre.textContent;
-          navigator.clipboard.writeText(text).then(function() {
-            btn.textContent = 'Copied!';
-            btn.classList.add('copied');
-            setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-          });
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
         });
-        header.appendChild(btn);
-        wrapper.appendChild(header);
-        wrapper.appendChild(pre);
       });
-    } catch(e) { console.error('Code block setup error:', e); }
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -65,36 +64,32 @@
       }
     });
     // Reading progress bar
-    try {
-      var progressBar = document.getElementById('reading-progress');
-      if (progressBar) {
-        window.addEventListener('scroll', function() {
-          var winScroll = document.documentElement.scrollTop;
-          var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-          progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
-        });
-      }
-    } catch(e) {}
-    // Dark mode toggle — isolated so errors elsewhere never prevent this from working
-    try {
-      var toggle = document.getElementById('theme-toggle');
-      if (toggle) {
-        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-        toggle.textContent = isDark ? '☀️' : '🌙';
-        toggle.addEventListener('click', function() {
-          var dark = document.documentElement.getAttribute('data-theme') === 'dark';
-          if (dark) {
-            document.documentElement.removeAttribute('data-theme');
-            localStorage.setItem('theme', 'light');
-            toggle.textContent = '🌙';
-          } else {
-            document.documentElement.setAttribute('data-theme', 'dark');
-            localStorage.setItem('theme', 'dark');
-            toggle.textContent = '☀️';
-          }
-        });
-      }
-    } catch(e) { console.error('Theme toggle error:', e); }
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
   });</script>
 </head>
 <body>
@@ -132,9 +127,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Floyd-Warshall</span></nav>
       <div class="cheatsheet-header">
         <h1>Floyd-Warshall</h1>
-        <span class="last-updated">Last updated: Apr 25, 2026</span>
+        <span class="last-updated">Last updated: Nov 8, 2025</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#core-characteristics">Core Characteristics</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#category-1-classic-all-pairs-shortest-path">Category 1: Classic All-Pairs Shortest Path</a></li><li class="toc-sub"><a href="#category-2-transitive-closure">Category 2: Transitive Closure</a></li><li class="toc-sub"><a href="#category-3-negative-cycle-detection">Category 3: Negative Cycle Detection</a></li><li class="toc-sub"><a href="#category-4-minimax-maximin-path">Category 4: Minimax/Maximin Path</a></li><li class="toc-sub"><a href="#category-5-graph-diameter-and-metrics">Category 5: Graph Diameter and Metrics</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#template-1-basic-floyd-warshall">Template 1: Basic Floyd-Warshall</a></li><li class="toc-sub"><a href="#template-2-floyd-warshall-with-path-reconstruction">Template 2: Floyd-Warshall with Path Reconstruction</a></li><li class="toc-sub"><a href="#template-3-transitive-closure-reachability">Template 3: Transitive Closure (Reachability)</a></li><li class="toc-sub"><a href="#template-4-negative-cycle-detection">Template 4: Negative Cycle Detection</a></li><li class="toc-sub"><a href="#template-5-minimax-path-bottleneck">Template 5: Minimax Path (Bottleneck)</a></li><li class="toc-sub"><a href="#template-6-space-optimized-version">Template 6: Space-Optimized Version</a></li><li><a href="#algorithm-comparison">Algorithm Comparison</a></li><li class="toc-sub"><a href="#floyd-warshall-vs-dijkstra-vs-bellman-ford">Floyd-Warshall vs Dijkstra vs Bellman-Ford</a></li><li class="toc-sub"><a href="#when-to-use-which-algorithm">When to Use Which Algorithm</a></li><li class="toc-sub"><a href="#practical-comparison-table">Practical Comparison Table</a></li><li class="toc-sub"><a href="#complexity-comparison-examples">Complexity Comparison Examples</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-find-the-city-with-the-smallest-number-of-neighbors-lc-1334-floyd-warshall-all-pairs">2-1) Find the City With the Smallest Number of Neighbors (LC 1334) — Floyd-Warshall All-Pairs</a></li><li class="toc-sub"><a href="#2-2-course-schedule-iv-lc-1462-floyd-warshall-transitive-closure">2-2) Course Schedule IV (LC 1462) — Floyd-Warshall Transitive Closure</a></li><li class="toc-sub"><a href="#2-3-network-delay-time-alternative-solution-lc-743-floyd-warshall-all-pairs">2-3) Network Delay Time Alternative Solution (LC 743) — Floyd-Warshall All-Pairs</a></li><li class="toc-sub"><a href="#2-4-graph-connectivity-with-threshold-lc-1627-floyd-warshall-connectivity">2-4) Graph Connectivity With Threshold (LC 1627) — Floyd-Warshall Connectivity</a></li><li class="toc-sub"><a href="#2-5-shortest-path-visiting-all-nodes-lc-847-bfs-bitmask-floyd-warshall-preprocessing">2-5) Shortest Path Visiting All Nodes (LC 847) — BFS + Bitmask (Floyd-Warshall Preprocessing)</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#all-pairs-shortest-path-problems">All-Pairs Shortest Path Problems</a></li><li class="toc-sub"><a href="#transitive-closure-problems">Transitive Closure Problems</a></li><li class="toc-sub"><a href="#minimax-maximin-problems">Minimax/Maximin Problems</a></li><li class="toc-sub"><a href="#graph-metrics-problems">Graph Metrics Problems</a></li><li><a href="#decision-framework">Decision Framework</a></li><li class="toc-sub"><a href="#when-to-use-floyd-warshall">When to Use Floyd-Warshall</a></li><li class="toc-sub"><a href="#implementation-checklist">Implementation Checklist</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#time-space-complexity">Time/Space Complexity</a></li><li class="toc-sub"><a href="#key-code-patterns">Key Code Patterns</a></li><li class="toc-sub"><a href="#common-variations">Common Variations</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#when-to-mention-floyd-warshall-in-interview">When to Mention Floyd-Warshall in Interview</a></li><li class="toc-sub"><a href="#related-algorithms">Related Algorithms</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#core-characteristics">Core Characteristics</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#category-1-classic-all-pairs-shortest-path">Category 1: Classic All-Pairs Shortest Path</a></li><li class="toc-sub"><a href="#category-2-transitive-closure">Category 2: Transitive Closure</a></li><li class="toc-sub"><a href="#category-3-negative-cycle-detection">Category 3: Negative Cycle Detection</a></li><li class="toc-sub"><a href="#category-4-minimax-maximin-path">Category 4: Minimax/Maximin Path</a></li><li class="toc-sub"><a href="#category-5-graph-diameter-and-metrics">Category 5: Graph Diameter and Metrics</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#template-1-basic-floyd-warshall">Template 1: Basic Floyd-Warshall</a></li><li class="toc-sub"><a href="#template-2-floyd-warshall-with-path-reconstruction">Template 2: Floyd-Warshall with Path Reconstruction</a></li><li class="toc-sub"><a href="#template-3-transitive-closure-reachability">Template 3: Transitive Closure (Reachability)</a></li><li class="toc-sub"><a href="#template-4-negative-cycle-detection">Template 4: Negative Cycle Detection</a></li><li class="toc-sub"><a href="#template-5-minimax-path-bottleneck">Template 5: Minimax Path (Bottleneck)</a></li><li class="toc-sub"><a href="#template-6-space-optimized-version">Template 6: Space-Optimized Version</a></li><li><a href="#algorithm-comparison">Algorithm Comparison</a></li><li class="toc-sub"><a href="#floyd-warshall-vs-dijkstra-vs-bellman-ford">Floyd-Warshall vs Dijkstra vs Bellman-Ford</a></li><li class="toc-sub"><a href="#when-to-use-which-algorithm">When to Use Which Algorithm</a></li><li class="toc-sub"><a href="#practical-comparison-table">Practical Comparison Table</a></li><li class="toc-sub"><a href="#complexity-comparison-examples">Complexity Comparison Examples</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#example-1-find-the-city-with-the-smallest-number-of-neighbors-lc-1334">Example 1: Find the City With the Smallest Number of Neighbors (LC 1334)</a></li><li class="toc-sub"><a href="#example-2-course-schedule-iv-lc-1462">Example 2: Course Schedule IV (LC 1462)</a></li><li class="toc-sub"><a href="#example-3-network-delay-time-alternative-solution-lc-743">Example 3: Network Delay Time Alternative Solution (LC 743)</a></li><li class="toc-sub"><a href="#example-4-graph-connectivity-with-threshold-lc-1627">Example 4: Graph Connectivity With Threshold (LC 1627)</a></li><li class="toc-sub"><a href="#example-5-shortest-path-visiting-all-nodes-lc-847">Example 5: Shortest Path Visiting All Nodes (LC 847)</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#all-pairs-shortest-path-problems">All-Pairs Shortest Path Problems</a></li><li class="toc-sub"><a href="#transitive-closure-problems">Transitive Closure Problems</a></li><li class="toc-sub"><a href="#minimax-maximin-problems">Minimax/Maximin Problems</a></li><li class="toc-sub"><a href="#graph-metrics-problems">Graph Metrics Problems</a></li><li><a href="#decision-framework">Decision Framework</a></li><li class="toc-sub"><a href="#when-to-use-floyd-warshall">When to Use Floyd-Warshall</a></li><li class="toc-sub"><a href="#implementation-checklist">Implementation Checklist</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#time-space-complexity">Time/Space Complexity</a></li><li class="toc-sub"><a href="#key-code-patterns">Key Code Patterns</a></li><li class="toc-sub"><a href="#common-variations">Common Variations</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li><li class="toc-sub"><a href="#when-to-mention-floyd-warshall-in-interview">When to Mention Floyd-Warshall in Interview</a></li><li class="toc-sub"><a href="#related-algorithms">Related Algorithms</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="floyd-warshall-algorithm" tabindex="-1"><a class="header-anchor" href="#floyd-warshall-algorithm"><span>Floyd-Warshall Algorithm</span></a></h1>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
@@ -238,168 +233,168 @@
 </tbody>
 </table>
 <h3 id="template-1-basic-floyd-warshall" tabindex="-1"><a class="header-anchor" href="#template-1-basic-floyd-warshall"><span>Template 1: Basic Floyd-Warshall</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">floyd_warshall</span>(<span class="hljs-params">n, edges</span>):</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    Find shortest paths between all pairs of vertices</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    n: number of vertices (0-indexed)</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    edges: list of (u, v, weight)</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    Returns: distance matrix</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    &quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-comment"># Initialize distance matrix</span></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    dist = [[<span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)] * n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)]</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-comment"># Distance from vertex to itself is 0</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        dist[i][i] = <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-comment"># Add edges</span></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    <span class="hljs-keyword">for</span> u, v, w <span class="hljs-keyword">in</span> edges:</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        dist[u][v] = w</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        <span class="hljs-comment"># For undirected graph, add reverse edge:</span></span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        <span class="hljs-comment"># dist[v][u] = w</span></span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">    <span class="hljs-comment"># Floyd-Warshall: try all intermediate vertices</span></span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">                <span class="hljs-keyword">if</span> dist[i][k] + dist[k][j] &lt; dist[i][j]:</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">                    dist[i][j] = dist[i][k] + dist[k][j]</span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">    <span class="hljs-keyword">return</span> dist</span></span>
+<pre><code class="language-python">def floyd_warshall(n, edges):
+    &quot;&quot;&quot;
+    Find shortest paths between all pairs of vertices
+    n: number of vertices (0-indexed)
+    edges: list of (u, v, weight)
+    Returns: distance matrix
+    &quot;&quot;&quot;
+    # Initialize distance matrix
+    dist = [[float('inf')] * n for _ in range(n)]
+
+    # Distance from vertex to itself is 0
+    for i in range(n):
+        dist[i][i] = 0
+
+    # Add edges
+    for u, v, w in edges:
+        dist[u][v] = w
+        # For undirected graph, add reverse edge:
+        # dist[v][u] = w
+
+    # Floyd-Warshall: try all intermediate vertices
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                if dist[i][k] + dist[k][j] &lt; dist[i][j]:
+                    dist[i][j] = dist[i][k] + dist[k][j]
+
+    return dist
 </code></pre>
 <h3 id="template-2-floyd-warshall-with-path-reconstruction" tabindex="-1"><a class="header-anchor" href="#template-2-floyd-warshall-with-path-reconstruction"><span>Template 2: Floyd-Warshall with Path Reconstruction</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">floyd_warshall_with_path</span>(<span class="hljs-params">n, edges</span>):</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    Find shortest paths and reconstruct actual paths</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    Returns: (distance matrix, next vertex matrix)</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    &quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    dist = [[<span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)] * n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)]</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    next_vertex = [[<span class="hljs-literal">None</span>] * n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)]</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-comment"># Initialize</span></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        dist[i][i] = <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        next_vertex[i][i] = i</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-keyword">for</span> u, v, w <span class="hljs-keyword">in</span> edges:</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        dist[u][v] = w</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        next_vertex[u][v] = v</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    <span class="hljs-comment"># Floyd-Warshall</span></span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">                <span class="hljs-keyword">if</span> dist[i][k] + dist[k][j] &lt; dist[i][j]:</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">                    dist[i][j] = dist[i][k] + dist[k][j]</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">                    next_vertex[i][j] = next_vertex[i][k]</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">    <span class="hljs-keyword">return</span> dist, next_vertex</span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">reconstruct_path</span>(<span class="hljs-params">next_vertex, u, v</span>):</span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Reconstruct path from u to v&quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">    <span class="hljs-keyword">if</span> next_vertex[u][v] <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:</span></span>
-<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">        <span class="hljs-keyword">return</span> []</span></span>
-<span class="ln-row"><span class="ln-num">32</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">    path = [u]</span></span>
-<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">    <span class="hljs-keyword">while</span> u != v:</span></span>
-<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">        u = next_vertex[u][v]</span></span>
-<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">        path.append(u)</span></span>
-<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">    <span class="hljs-keyword">return</span> path</span></span>
+<pre><code class="language-python">def floyd_warshall_with_path(n, edges):
+    &quot;&quot;&quot;
+    Find shortest paths and reconstruct actual paths
+    Returns: (distance matrix, next vertex matrix)
+    &quot;&quot;&quot;
+    dist = [[float('inf')] * n for _ in range(n)]
+    next_vertex = [[None] * n for _ in range(n)]
+
+    # Initialize
+    for i in range(n):
+        dist[i][i] = 0
+        next_vertex[i][i] = i
+
+    for u, v, w in edges:
+        dist[u][v] = w
+        next_vertex[u][v] = v
+
+    # Floyd-Warshall
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                if dist[i][k] + dist[k][j] &lt; dist[i][j]:
+                    dist[i][j] = dist[i][k] + dist[k][j]
+                    next_vertex[i][j] = next_vertex[i][k]
+
+    return dist, next_vertex
+
+def reconstruct_path(next_vertex, u, v):
+    &quot;&quot;&quot;Reconstruct path from u to v&quot;&quot;&quot;
+    if next_vertex[u][v] is None:
+        return []
+
+    path = [u]
+    while u != v:
+        u = next_vertex[u][v]
+        path.append(u)
+    return path
 </code></pre>
 <h3 id="template-3-transitive-closure-reachability" tabindex="-1"><a class="header-anchor" href="#template-3-transitive-closure-reachability"><span>Template 3: Transitive Closure (Reachability)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">transitive_closure</span>(<span class="hljs-params">n, edges</span>):</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    Determine if there&#x27;s a path between every pair of vertices</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    Returns: boolean reachability matrix</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    &quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    reach = [[<span class="hljs-literal">False</span>] * n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)]</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-comment"># Initialize: vertex can reach itself</span></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        reach[i][i] = <span class="hljs-literal">True</span></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-comment"># Mark direct edges</span></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-keyword">for</span> u, v <span class="hljs-keyword">in</span> edges:</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        reach[u][v] = <span class="hljs-literal">True</span></span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    <span class="hljs-comment"># Floyd-Warshall for reachability</span></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">                reach[i][j] = reach[i][j] <span class="hljs-keyword">or</span> (reach[i][k] <span class="hljs-keyword">and</span> reach[k][j])</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    <span class="hljs-keyword">return</span> reach</span></span>
+<pre><code class="language-python">def transitive_closure(n, edges):
+    &quot;&quot;&quot;
+    Determine if there's a path between every pair of vertices
+    Returns: boolean reachability matrix
+    &quot;&quot;&quot;
+    reach = [[False] * n for _ in range(n)]
+
+    # Initialize: vertex can reach itself
+    for i in range(n):
+        reach[i][i] = True
+
+    # Mark direct edges
+    for u, v in edges:
+        reach[u][v] = True
+
+    # Floyd-Warshall for reachability
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                reach[i][j] = reach[i][j] or (reach[i][k] and reach[k][j])
+
+    return reach
 </code></pre>
 <h3 id="template-4-negative-cycle-detection" tabindex="-1"><a class="header-anchor" href="#template-4-negative-cycle-detection"><span>Template 4: Negative Cycle Detection</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">detect_negative_cycle</span>(<span class="hljs-params">n, edges</span>):</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    Detect if graph contains negative cycle</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    Returns: (has_negative_cycle, distance_matrix)</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    &quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    dist = [[<span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)] * n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)]</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        dist[i][i] = <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-keyword">for</span> u, v, w <span class="hljs-keyword">in</span> edges:</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        dist[u][v] = w</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-comment"># Floyd-Warshall</span></span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">                <span class="hljs-keyword">if</span> dist[i][k] + dist[k][j] &lt; dist[i][j]:</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">                    dist[i][j] = dist[i][k] + dist[k][j]</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">    <span class="hljs-comment"># Check diagonal for negative values</span></span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    has_negative_cycle = <span class="hljs-built_in">any</span>(dist[i][i] &lt; <span class="hljs-number">0</span> <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n))</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">    <span class="hljs-keyword">return</span> has_negative_cycle, dist</span></span>
+<pre><code class="language-python">def detect_negative_cycle(n, edges):
+    &quot;&quot;&quot;
+    Detect if graph contains negative cycle
+    Returns: (has_negative_cycle, distance_matrix)
+    &quot;&quot;&quot;
+    dist = [[float('inf')] * n for _ in range(n)]
+
+    for i in range(n):
+        dist[i][i] = 0
+
+    for u, v, w in edges:
+        dist[u][v] = w
+
+    # Floyd-Warshall
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                if dist[i][k] + dist[k][j] &lt; dist[i][j]:
+                    dist[i][j] = dist[i][k] + dist[k][j]
+
+    # Check diagonal for negative values
+    has_negative_cycle = any(dist[i][i] &lt; 0 for i in range(n))
+
+    return has_negative_cycle, dist
 </code></pre>
 <h3 id="template-5-minimax-path-bottleneck" tabindex="-1"><a class="header-anchor" href="#template-5-minimax-path-bottleneck"><span>Template 5: Minimax Path (Bottleneck)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">floyd_warshall_minimax</span>(<span class="hljs-params">n, edges</span>):</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    Find path that minimizes the maximum edge weight</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    Useful for capacity/bandwidth problems</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    &quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-comment"># Initialize with infinity (no path)</span></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    dist = [[<span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)] * n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)]</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        dist[i][i] = <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-keyword">for</span> u, v, w <span class="hljs-keyword">in</span> edges:</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        dist[u][v] = w</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-comment"># Floyd-Warshall with minimax operation</span></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">                <span class="hljs-comment"># Minimize the maximum edge on path</span></span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">                dist[i][j] = <span class="hljs-built_in">min</span>(dist[i][j], <span class="hljs-built_in">max</span>(dist[i][k], dist[k][j]))</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    <span class="hljs-keyword">return</span> dist</span></span>
+<pre><code class="language-python">def floyd_warshall_minimax(n, edges):
+    &quot;&quot;&quot;
+    Find path that minimizes the maximum edge weight
+    Useful for capacity/bandwidth problems
+    &quot;&quot;&quot;
+    # Initialize with infinity (no path)
+    dist = [[float('inf')] * n for _ in range(n)]
+
+    for i in range(n):
+        dist[i][i] = 0
+
+    for u, v, w in edges:
+        dist[u][v] = w
+
+    # Floyd-Warshall with minimax operation
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                # Minimize the maximum edge on path
+                dist[i][j] = min(dist[i][j], max(dist[i][k], dist[k][j]))
+
+    return dist
 </code></pre>
 <h3 id="template-6-space-optimized-version" tabindex="-1"><a class="header-anchor" href="#template-6-space-optimized-version"><span>Template 6: Space-Optimized Version</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">floyd_warshall_optimized</span>(<span class="hljs-params">n, edges</span>):</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    Space-optimized: use single matrix (in-place update)</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    &quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    dist = [[<span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)] * n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)]</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        dist[i][i] = <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-keyword">for</span> u, v, w <span class="hljs-keyword">in</span> edges:</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        dist[u][v] = <span class="hljs-built_in">min</span>(dist[u][v], w)  <span class="hljs-comment"># Handle multiple edges</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-comment"># In-place updates are safe due to intermediate vertex property</span></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">                dist[i][j] = <span class="hljs-built_in">min</span>(dist[i][j], dist[i][k] + dist[k][j])</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    <span class="hljs-keyword">return</span> dist</span></span>
+<pre><code class="language-python">def floyd_warshall_optimized(n, edges):
+    &quot;&quot;&quot;
+    Space-optimized: use single matrix (in-place update)
+    &quot;&quot;&quot;
+    dist = [[float('inf')] * n for _ in range(n)]
+
+    for i in range(n):
+        dist[i][i] = 0
+
+    for u, v, w in edges:
+        dist[u][v] = min(dist[u][v], w)  # Handle multiple edges
+
+    # In-place updates are safe due to intermediate vertex property
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
+
+    return dist
 </code></pre>
 <h2 id="algorithm-comparison" tabindex="-1"><a class="header-anchor" href="#algorithm-comparison"><span>Algorithm Comparison</span></a></h2>
 <h3 id="floyd-warshall-vs-dijkstra-vs-bellman-ford" tabindex="-1"><a class="header-anchor" href="#floyd-warshall-vs-dijkstra-vs-bellman-ford"><span>Floyd-Warshall vs Dijkstra vs Bellman-Ford</span></a></h3>
@@ -470,21 +465,21 @@
 </tbody>
 </table>
 <h3 id="when-to-use-which-algorithm" tabindex="-1"><a class="header-anchor" href="#when-to-use-which-algorithm"><span>When to Use Which Algorithm</span></a></h3>
-<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">Algorithm Selection Flowchart:</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">1. Need all-pairs shortest paths?</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">   ├── YES → Consider Floyd-Warshall</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">   │   ├── Small graph (V ≤ 400)? → Use Floyd-Warshall</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">   │   └── Large graph? → Run Dijkstra/Bellman-Ford V times</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">   └── NO → Single-source problem → Continue to 2</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">2. Are there negative edge weights?</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">   ├── YES → Use Bellman-Ford (or SPFA)</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">   └── NO → Use Dijkstra</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">3. Is graph dense (E ≈ V²)?</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">   ├── YES → Consider Floyd-Warshall for all-pairs</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">   └── NO → Dijkstra is more efficient</span></span>
+<pre><code>Algorithm Selection Flowchart:
+
+1. Need all-pairs shortest paths?
+   ├── YES → Consider Floyd-Warshall
+   │   ├── Small graph (V ≤ 400)? → Use Floyd-Warshall
+   │   └── Large graph? → Run Dijkstra/Bellman-Ford V times
+   └── NO → Single-source problem → Continue to 2
+
+2. Are there negative edge weights?
+   ├── YES → Use Bellman-Ford (or SPFA)
+   └── NO → Use Dijkstra
+
+3. Is graph dense (E ≈ V²)?
+   ├── YES → Consider Floyd-Warshall for all-pairs
+   └── NO → Dijkstra is more efficient
 </code></pre>
 <h3 id="practical-comparison-table" tabindex="-1"><a class="header-anchor" href="#practical-comparison-table"><span>Practical Comparison Table</span></a></h3>
 <table>
@@ -572,266 +567,157 @@
 </tbody>
 </table>
 <h2 id="lc-examples" tabindex="-1"><a class="header-anchor" href="#lc-examples"><span>LC Examples</span></a></h2>
-<h3 id="2-1-find-the-city-with-the-smallest-number-of-neighbors-lc-1334-floyd-warshall-all-pairs" tabindex="-1"><a class="header-anchor" href="#2-1-find-the-city-with-the-smallest-number-of-neighbors-lc-1334-floyd-warshall-all-pairs"><span>2-1) Find the City With the Smallest Number of Neighbors (LC 1334) — Floyd-Warshall All-Pairs</span></a></h3>
-<blockquote>
-<p>Run Floyd-Warshall; for each city count reachable cities within threshold; return city with fewest (largest index on tie).</p>
-</blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 1334 - Find the City With the Smallest Number of Neighbors at a Threshold Distance</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Floyd-Warshall all-pairs shortest path; count reachable per city within threshold</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N^3), space = O(N^2)</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">findTheCity</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span>[][] edges, <span class="hljs-type">int</span> distanceThreshold)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-type">int</span>[][] dist = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n][n];</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] row : dist) Arrays.fill(row, Integer.MAX_VALUE / <span class="hljs-number">2</span>);</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) dist[i][i] = <span class="hljs-number">0</span>;</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] e : edges) { dist[e[<span class="hljs-number">0</span>]][e[<span class="hljs-number">1</span>]] = e[<span class="hljs-number">2</span>]; dist[e[<span class="hljs-number">1</span>]][e[<span class="hljs-number">0</span>]] = e[<span class="hljs-number">2</span>]; }</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">k</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; k &lt; n; k++)</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++)</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; n; j++)</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">                dist[i][j] = Math.min(dist[i][j], dist[i][k] + dist[k][j]);</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">ans</span> <span class="hljs-operator">=</span> -<span class="hljs-number">1</span>, minCount = n;</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; n; j++) <span class="hljs-keyword">if</span> (i != j &amp;&amp; dist[i][j] &lt;= distanceThreshold) count++;</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        <span class="hljs-keyword">if</span> (count &lt;= minCount) { minCount = count; ans = i; }</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    <span class="hljs-keyword">return</span> ans;</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">}</span></span>
+<h3 id="example-1-find-the-city-with-the-smallest-number-of-neighbors-lc-1334" tabindex="-1"><a class="header-anchor" href="#example-1-find-the-city-with-the-smallest-number-of-neighbors-lc-1334"><span>Example 1: Find the City With the Smallest Number of Neighbors (LC 1334)</span></a></h3>
+<pre><code class="language-python"># LC 1334 - Find the City With the Smallest Number of Neighbors at a Threshold Distance
+# Classic Floyd-Warshall application
+
+def findTheCity(n, edges, distanceThreshold):
+    &quot;&quot;&quot;
+    Find city with smallest number of reachable cities within threshold
+    &quot;&quot;&quot;
+    # Initialize distance matrix
+    dist = [[float('inf')] * n for _ in range(n)]
+
+    for i in range(n):
+        dist[i][i] = 0
+
+    for u, v, w in edges:
+        dist[u][v] = w
+        dist[v][u] = w  # Undirected graph
+
+    # Floyd-Warshall
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
+
+    # Count reachable cities for each city
+    min_reachable = float('inf')
+    result_city = -1
+
+    for i in range(n):
+        reachable = sum(1 for j in range(n) if i != j and dist[i][j] &lt;= distanceThreshold)
+        if reachable &lt;= min_reachable:
+            min_reachable = reachable
+            result_city = i
+
+    return result_city
 </code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># LC 1334 - Find the City With the Smallest Number of Neighbors at a Threshold Distance</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># Classic Floyd-Warshall application</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">findTheCity</span>(<span class="hljs-params">n, edges, distanceThreshold</span>):</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    Find city with smallest number of reachable cities within threshold</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    &quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-comment"># Initialize distance matrix</span></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    dist = [[<span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)] * n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)]</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        dist[i][i] = <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-keyword">for</span> u, v, w <span class="hljs-keyword">in</span> edges:</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        dist[u][v] = w</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        dist[v][u] = w  <span class="hljs-comment"># Undirected graph</span></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    <span class="hljs-comment"># Floyd-Warshall</span></span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">                dist[i][j] = <span class="hljs-built_in">min</span>(dist[i][j], dist[i][k] + dist[k][j])</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">    <span class="hljs-comment"># Count reachable cities for each city</span></span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">    min_reachable = <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">    result_city = -<span class="hljs-number">1</span></span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):</span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">        reachable = <span class="hljs-built_in">sum</span>(<span class="hljs-number">1</span> <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n) <span class="hljs-keyword">if</span> i != j <span class="hljs-keyword">and</span> dist[i][j] &lt;= distanceThreshold)</span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">        <span class="hljs-keyword">if</span> reachable &lt;= min_reachable:</span></span>
-<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">            min_reachable = reachable</span></span>
-<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">            result_city = i</span></span>
-<span class="ln-row"><span class="ln-num">33</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">    <span class="hljs-keyword">return</span> result_city</span></span>
+<h3 id="example-2-course-schedule-iv-lc-1462" tabindex="-1"><a class="header-anchor" href="#example-2-course-schedule-iv-lc-1462"><span>Example 2: Course Schedule IV (LC 1462)</span></a></h3>
+<pre><code class="language-python"># LC 1462 - Course Schedule IV
+# Transitive closure problem
+
+def checkIfPrerequisite(numCourses, prerequisites, queries):
+    &quot;&quot;&quot;
+    Determine if course A is a prerequisite of course B (direct or indirect)
+    &quot;&quot;&quot;
+    n = numCourses
+    # is_prereq[i][j] = True if i is prerequisite of j
+    is_prereq = [[False] * n for _ in range(n)]
+
+    # Mark direct prerequisites
+    for pre, course in prerequisites:
+        is_prereq[pre][course] = True
+
+    # Floyd-Warshall for transitive closure
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                if is_prereq[i][k] and is_prereq[k][j]:
+                    is_prereq[i][j] = True
+
+    # Answer queries
+    return [is_prereq[u][v] for u, v in queries]
 </code></pre>
-<h3 id="2-2-course-schedule-iv-lc-1462-floyd-warshall-transitive-closure" tabindex="-1"><a class="header-anchor" href="#2-2-course-schedule-iv-lc-1462-floyd-warshall-transitive-closure"><span>2-2) Course Schedule IV (LC 1462) — Floyd-Warshall Transitive Closure</span></a></h3>
-<blockquote>
-<p>Use boolean reachability matrix; reachable[i][j] = true if i is prerequisite of j (direct or indirect).</p>
-</blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 1462 - Course Schedule IV</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Floyd-Warshall transitive closure; reachable[i][j] = i is prerequisite of j</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N^3), space = O(N^2)</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> List&lt;Boolean&gt; <span class="hljs-title function_">checkIfPrerequisite</span><span class="hljs-params">(<span class="hljs-type">int</span> numCourses, <span class="hljs-type">int</span>[][] prerequisites, <span class="hljs-type">int</span>[][] queries)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-type">boolean</span>[][] reach = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[numCourses][numCourses];</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] p : prerequisites) reach[p[<span class="hljs-number">0</span>]][p[<span class="hljs-number">1</span>]] = <span class="hljs-literal">true</span>;</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">k</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; k &lt; numCourses; k++)</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; numCourses; i++)</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; numCourses; j++)</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">                <span class="hljs-keyword">if</span> (reach[i][k] &amp;&amp; reach[k][j]) reach[i][j] = <span class="hljs-literal">true</span>;</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    List&lt;Boolean&gt; ans = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] q : queries) ans.add(reach[q[<span class="hljs-number">0</span>]][q[<span class="hljs-number">1</span>]]);</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-keyword">return</span> ans;</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">}</span></span>
+<h3 id="example-3-network-delay-time-alternative-solution-lc-743" tabindex="-1"><a class="header-anchor" href="#example-3-network-delay-time-alternative-solution-lc-743"><span>Example 3: Network Delay Time Alternative Solution (LC 743)</span></a></h3>
+<pre><code class="language-python"># LC 743 - Network Delay Time
+# Can use Floyd-Warshall but Dijkstra is more efficient
+
+def networkDelayTime(times, n, k):
+    &quot;&quot;&quot;
+    Floyd-Warshall approach (overkill for single-source)
+    &quot;&quot;&quot;
+    dist = [[float('inf')] * n for _ in range(n)]
+
+    for i in range(n):
+        dist[i][i] = 0
+
+    for u, v, w in times:
+        dist[u-1][v-1] = w  # Convert to 0-indexed
+
+    # Floyd-Warshall
+    for mid in range(n):
+        for i in range(n):
+            for j in range(n):
+                dist[i][j] = min(dist[i][j], dist[i][mid] + dist[mid][j])
+
+    # Find max distance from source k-1
+    k_idx = k - 1
+    max_dist = max(dist[k_idx])
+
+    return max_dist if max_dist != float('inf') else -1
 </code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># LC 1462 - Course Schedule IV</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># Transitive closure problem</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">checkIfPrerequisite</span>(<span class="hljs-params">numCourses, prerequisites, queries</span>):</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    Determine if course A is a prerequisite of course B (direct or indirect)</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    &quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    n = numCourses</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-comment"># is_prereq[i][j] = True if i is prerequisite of j</span></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    is_prereq = [[<span class="hljs-literal">False</span>] * n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)]</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-comment"># Mark direct prerequisites</span></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-keyword">for</span> pre, course <span class="hljs-keyword">in</span> prerequisites:</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        is_prereq[pre][course] = <span class="hljs-literal">True</span></span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    <span class="hljs-comment"># Floyd-Warshall for transitive closure</span></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">                <span class="hljs-keyword">if</span> is_prereq[i][k] <span class="hljs-keyword">and</span> is_prereq[k][j]:</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">                    is_prereq[i][j] = <span class="hljs-literal">True</span></span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    <span class="hljs-comment"># Answer queries</span></span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">    <span class="hljs-keyword">return</span> [is_prereq[u][v] <span class="hljs-keyword">for</span> u, v <span class="hljs-keyword">in</span> queries]</span></span>
+<h3 id="example-4-graph-connectivity-with-threshold-lc-1627" tabindex="-1"><a class="header-anchor" href="#example-4-graph-connectivity-with-threshold-lc-1627"><span>Example 4: Graph Connectivity With Threshold (LC 1627)</span></a></h3>
+<pre><code class="language-python"># LC 1627 - Graph Connectivity With Threshold
+# Union-Find is better, but Floyd-Warshall works
+
+def areConnected(n, threshold, queries):
+    &quot;&quot;&quot;
+    Determine if cities are connected via intermediate cities &gt; threshold
+    &quot;&quot;&quot;
+    # Build graph: cities connected if gcd &gt; threshold
+    edges = []
+    for gcd_val in range(threshold + 1, n + 1):
+        # All multiples of gcd_val are connected
+        multiples = list(range(gcd_val, n + 1, gcd_val))
+        for i in range(len(multiples) - 1):
+            edges.append((multiples[i], multiples[i + 1]))
+
+    # Floyd-Warshall for connectivity
+    connected = [[False] * (n + 1) for _ in range(n + 1)]
+
+    for i in range(n + 1):
+        connected[i][i] = True
+
+    for u, v in edges:
+        connected[u][v] = connected[v][u] = True
+
+    for k in range(1, n + 1):
+        for i in range(1, n + 1):
+            for j in range(1, n + 1):
+                if connected[i][k] and connected[k][j]:
+                    connected[i][j] = True
+
+    return [connected[u][v] for u, v in queries]
 </code></pre>
-<h3 id="2-3-network-delay-time-alternative-solution-lc-743-floyd-warshall-all-pairs" tabindex="-1"><a class="header-anchor" href="#2-3-network-delay-time-alternative-solution-lc-743-floyd-warshall-all-pairs"><span>2-3) Network Delay Time Alternative Solution (LC 743) — Floyd-Warshall All-Pairs</span></a></h3>
-<blockquote>
-<p>Compute all-pairs distances; answer is max dist from source k (overkill vs Dijkstra but correct).</p>
-</blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 743 - Network Delay Time (Floyd-Warshall approach)</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: All-pairs Floyd-Warshall; answer = max dist[k-1][i] for all i</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N^3), space = O(N^2)</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">networkDelayTime</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] times, <span class="hljs-type">int</span> n, <span class="hljs-type">int</span> k)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-type">int</span>[][] dist = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n][n];</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] row : dist) Arrays.fill(row, Integer.MAX_VALUE / <span class="hljs-number">2</span>);</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) dist[i][i] = <span class="hljs-number">0</span>;</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] t : times) dist[t[<span class="hljs-number">0</span>]-<span class="hljs-number">1</span>][t[<span class="hljs-number">1</span>]-<span class="hljs-number">1</span>] = t[<span class="hljs-number">2</span>];</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; mid &lt; n; mid++)</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++)</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; n; j++)</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">                dist[i][j] = Math.min(dist[i][j], dist[i][mid] + dist[mid][j]);</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">max</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-keyword">if</span> (dist[k-<span class="hljs-number">1</span>][i] == Integer.MAX_VALUE / <span class="hljs-number">2</span>) <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        max = Math.max(max, dist[k-<span class="hljs-number">1</span>][i]);</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    <span class="hljs-keyword">return</span> max;</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">}</span></span>
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># LC 743 - Network Delay Time</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># Can use Floyd-Warshall but Dijkstra is more efficient</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">networkDelayTime</span>(<span class="hljs-params">times, n, k</span>):</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    Floyd-Warshall approach (overkill for single-source)</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    &quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    dist = [[<span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)] * n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)]</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        dist[i][i] = <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-keyword">for</span> u, v, w <span class="hljs-keyword">in</span> times:</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        dist[u-<span class="hljs-number">1</span>][v-<span class="hljs-number">1</span>] = w  <span class="hljs-comment"># Convert to 0-indexed</span></span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    <span class="hljs-comment"># Floyd-Warshall</span></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-keyword">for</span> mid <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">                dist[i][j] = <span class="hljs-built_in">min</span>(dist[i][j], dist[i][mid] + dist[mid][j])</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    <span class="hljs-comment"># Find max distance from source k-1</span></span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    k_idx = k - <span class="hljs-number">1</span></span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">    max_dist = <span class="hljs-built_in">max</span>(dist[k_idx])</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">    <span class="hljs-keyword">return</span> max_dist <span class="hljs-keyword">if</span> max_dist != <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>) <span class="hljs-keyword">else</span> -<span class="hljs-number">1</span></span></span>
-</code></pre>
-<h3 id="2-4-graph-connectivity-with-threshold-lc-1627-floyd-warshall-connectivity" tabindex="-1"><a class="header-anchor" href="#2-4-graph-connectivity-with-threshold-lc-1627-floyd-warshall-connectivity"><span>2-4) Graph Connectivity With Threshold (LC 1627) — Floyd-Warshall Connectivity</span></a></h3>
-<blockquote>
-<p>Build edges for all GCD &gt; threshold; use Floyd-Warshall transitive closure to answer queries.</p>
-</blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 1627 - Graph Connectivity With Threshold</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Connect multiples of each gcd &gt; threshold; Floyd-Warshall for connectivity queries</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N^2 log N + N^3 + Q), space = O(N^2)</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> List&lt;Boolean&gt; <span class="hljs-title function_">areConnected</span><span class="hljs-params">(<span class="hljs-type">int</span> n, <span class="hljs-type">int</span> threshold, <span class="hljs-type">int</span>[][] queries)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-type">boolean</span>[][] conn = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[n + <span class="hljs-number">1</span>][n + <span class="hljs-number">1</span>];</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt;= n; i++) conn[i][i] = <span class="hljs-literal">true</span>;</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">g</span> <span class="hljs-operator">=</span> threshold + <span class="hljs-number">1</span>; g &lt;= n; g++)</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">mul</span> <span class="hljs-operator">=</span> <span class="hljs-number">2</span> * g; mul &lt;= n; mul += g)</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">            conn[g][mul] = conn[mul][g] = <span class="hljs-literal">true</span>;</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">k</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; k &lt;= n; k++)</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt;= n; i++)</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; j &lt;= n; j++)</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">                <span class="hljs-keyword">if</span> (conn[i][k] &amp;&amp; conn[k][j]) conn[i][j] = <span class="hljs-literal">true</span>;</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    List&lt;Boolean&gt; ans = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] q : queries) ans.add(conn[q[<span class="hljs-number">0</span>]][q[<span class="hljs-number">1</span>]]);</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    <span class="hljs-keyword">return</span> ans;</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">}</span></span>
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># LC 1627 - Graph Connectivity With Threshold</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># Union-Find is better, but Floyd-Warshall works</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">areConnected</span>(<span class="hljs-params">n, threshold, queries</span>):</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    Determine if cities are connected via intermediate cities &gt; threshold</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    &quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-comment"># Build graph: cities connected if gcd &gt; threshold</span></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    edges = []</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-keyword">for</span> gcd_val <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(threshold + <span class="hljs-number">1</span>, n + <span class="hljs-number">1</span>):</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-comment"># All multiples of gcd_val are connected</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        multiples = <span class="hljs-built_in">list</span>(<span class="hljs-built_in">range</span>(gcd_val, n + <span class="hljs-number">1</span>, gcd_val))</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(multiples) - <span class="hljs-number">1</span>):</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            edges.append((multiples[i], multiples[i + <span class="hljs-number">1</span>]))</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    <span class="hljs-comment"># Floyd-Warshall for connectivity</span></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    connected = [[<span class="hljs-literal">False</span>] * (n + <span class="hljs-number">1</span>) <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n + <span class="hljs-number">1</span>)]</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n + <span class="hljs-number">1</span>):</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        connected[i][i] = <span class="hljs-literal">True</span></span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    <span class="hljs-keyword">for</span> u, v <span class="hljs-keyword">in</span> edges:</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        connected[u][v] = connected[v][u] = <span class="hljs-literal">True</span></span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">    <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n + <span class="hljs-number">1</span>):</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n + <span class="hljs-number">1</span>):</span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n + <span class="hljs-number">1</span>):</span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">                <span class="hljs-keyword">if</span> connected[i][k] <span class="hljs-keyword">and</span> connected[k][j]:</span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">                    connected[i][j] = <span class="hljs-literal">True</span></span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">    <span class="hljs-keyword">return</span> [connected[u][v] <span class="hljs-keyword">for</span> u, v <span class="hljs-keyword">in</span> queries]</span></span>
-</code></pre>
-<h3 id="2-5-shortest-path-visiting-all-nodes-lc-847-bfs-bitmask-floyd-warshall-preprocessing" tabindex="-1"><a class="header-anchor" href="#2-5-shortest-path-visiting-all-nodes-lc-847-bfs-bitmask-floyd-warshall-preprocessing"><span>2-5) Shortest Path Visiting All Nodes (LC 847) — BFS + Bitmask (Floyd-Warshall Preprocessing)</span></a></h3>
-<blockquote>
-<p>BFS with state (node, visitedMask); precompute pairwise distances with Floyd-Warshall if needed.</p>
-</blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 847 - Shortest Path Visiting All Nodes</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: BFS with bitmask state (node, visited); all nodes are valid starts</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(2^N * N), space = O(2^N * N)</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">shortestPathLength</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] graph)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> graph.length, full = (<span class="hljs-number">1</span> &lt;&lt; n) - <span class="hljs-number">1</span>;</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    Queue&lt;<span class="hljs-type">int</span>[]&gt; q = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-type">boolean</span>[][] visited = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[n][<span class="hljs-number">1</span> &lt;&lt; n];</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) { q.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{i, <span class="hljs-number">1</span> &lt;&lt; i, <span class="hljs-number">0</span>}); visited[i][<span class="hljs-number">1</span> &lt;&lt; i] = <span class="hljs-literal">true</span>; }</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-keyword">while</span> (!q.isEmpty()) {</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-type">int</span>[] cur = q.poll();</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> cur[<span class="hljs-number">0</span>], mask = cur[<span class="hljs-number">1</span>], dist = cur[<span class="hljs-number">2</span>];</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-keyword">if</span> (mask == full) <span class="hljs-keyword">return</span> dist;</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> next : graph[node]) {</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            <span class="hljs-type">int</span> <span class="hljs-variable">nextMask</span> <span class="hljs-operator">=</span> mask | (<span class="hljs-number">1</span> &lt;&lt; next);</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">            <span class="hljs-keyword">if</span> (!visited[next][nextMask]) { visited[next][nextMask] = <span class="hljs-literal">true</span>; q.offer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{next, nextMask, dist + <span class="hljs-number">1</span>}); }</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">}</span></span>
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># LC 847 - Shortest Path Visiting All Nodes</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># Use BFS with bitmask, but Floyd-Warshall for preprocessing</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">shortestPathLength</span>(<span class="hljs-params">graph</span>):</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    Floyd-Warshall to precompute all-pairs distances,</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    then use DP/BFS to find shortest path visiting all nodes</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    &quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    n = <span class="hljs-built_in">len</span>(graph)</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-comment"># Build distance matrix using Floyd-Warshall</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    dist = [[<span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)] * n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)]</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        dist[i][i] = <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> graph[i]:</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">            dist[i][j] = <span class="hljs-number">1</span></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">                dist[i][j] = <span class="hljs-built_in">min</span>(dist[i][j], dist[i][k] + dist[k][j])</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    <span class="hljs-comment"># Now use BFS with bitmask (actual solution)</span></span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">    <span class="hljs-comment"># ... (rest of solution uses dist matrix)</span></span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">    <span class="hljs-comment"># Simplified return for template</span></span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span></span></span>
+<h3 id="example-5-shortest-path-visiting-all-nodes-lc-847" tabindex="-1"><a class="header-anchor" href="#example-5-shortest-path-visiting-all-nodes-lc-847"><span>Example 5: Shortest Path Visiting All Nodes (LC 847)</span></a></h3>
+<pre><code class="language-python"># LC 847 - Shortest Path Visiting All Nodes
+# Use BFS with bitmask, but Floyd-Warshall for preprocessing
+
+def shortestPathLength(graph):
+    &quot;&quot;&quot;
+    Floyd-Warshall to precompute all-pairs distances,
+    then use DP/BFS to find shortest path visiting all nodes
+    &quot;&quot;&quot;
+    n = len(graph)
+
+    # Build distance matrix using Floyd-Warshall
+    dist = [[float('inf')] * n for _ in range(n)]
+    for i in range(n):
+        dist[i][i] = 0
+        for j in graph[i]:
+            dist[i][j] = 1
+
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
+
+    # Now use BFS with bitmask (actual solution)
+    # ... (rest of solution uses dist matrix)
+
+    # Simplified return for template
+    return 0
 </code></pre>
 <h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
 <h3 id="all-pairs-shortest-path-problems" tabindex="-1"><a class="header-anchor" href="#all-pairs-shortest-path-problems"><span><strong>All-Pairs Shortest Path Problems</strong></span></a></h3>
@@ -985,26 +871,26 @@
 <li>Need fastest path finding (Dijkstra is faster for single-source)</li>
 </ul>
 <h3 id="implementation-checklist" tabindex="-1"><a class="header-anchor" href="#implementation-checklist"><span>Implementation Checklist</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Floyd-Warshall Implementation Checklist:</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment"># 1. Initialize distance matrix</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">dist = [[<span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)] * n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n)]</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n): dist[i][i] = <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"><span class="hljs-comment"># 2. Add edges</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"><span class="hljs-keyword">for</span> u, v, w <span class="hljs-keyword">in</span> edges: dist[u][v] = w</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"><span class="hljs-comment"># 3. Three nested loops (ORDER MATTERS: k must be outer)</span></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"><span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):           <span class="hljs-comment"># Intermediate vertex</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):       <span class="hljs-comment"># Source</span></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):   <span class="hljs-comment"># Destination</span></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            dist[i][j] = <span class="hljs-built_in">min</span>(dist[i][j], dist[i][k] + dist[k][j])</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code"><span class="hljs-comment"># 4. Check for negative cycles (optional)</span></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">has_neg_cycle = <span class="hljs-built_in">any</span>(dist[i][i] &lt; <span class="hljs-number">0</span> <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n))</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code"><span class="hljs-comment"># 5. Handle disconnected components</span></span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code"><span class="hljs-comment"># dist[i][j] == float(&#x27;inf&#x27;) means no path</span></span></span>
+<pre><code class="language-python"># Floyd-Warshall Implementation Checklist:
+
+# 1. Initialize distance matrix
+dist = [[float('inf')] * n for _ in range(n)]
+for i in range(n): dist[i][i] = 0
+
+# 2. Add edges
+for u, v, w in edges: dist[u][v] = w
+
+# 3. Three nested loops (ORDER MATTERS: k must be outer)
+for k in range(n):           # Intermediate vertex
+    for i in range(n):       # Source
+        for j in range(n):   # Destination
+            dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
+
+# 4. Check for negative cycles (optional)
+has_neg_cycle = any(dist[i][i] &lt; 0 for i in range(n))
+
+# 5. Handle disconnected components
+# dist[i][j] == float('inf') means no path
 </code></pre>
 <h2 id="summary-quick-reference" tabindex="-1"><a class="header-anchor" href="#summary-quick-reference"><span>Summary &amp; Quick Reference</span></a></h2>
 <h3 id="time-space-complexity" tabindex="-1"><a class="header-anchor" href="#time-space-complexity"><span>Time/Space Complexity</span></a></h3>
@@ -1040,20 +926,20 @@
 </tbody>
 </table>
 <h3 id="key-code-patterns" tabindex="-1"><a class="header-anchor" href="#key-code-patterns"><span>Key Code Patterns</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Pattern 1: Basic shortest path</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">dist[i][j] = <span class="hljs-built_in">min</span>(dist[i][j], dist[i][k] + dist[k][j])</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-comment"># Pattern 2: Transitive closure (reachability)</span></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">reach[i][j] = reach[i][j] <span class="hljs-keyword">or</span> (reach[i][k] <span class="hljs-keyword">and</span> reach[k][j])</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"><span class="hljs-comment"># Pattern 3: Minimax (bottleneck)</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">dist[i][j] = <span class="hljs-built_in">min</span>(dist[i][j], <span class="hljs-built_in">max</span>(dist[i][k], dist[k][j]))</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"><span class="hljs-comment"># Pattern 4: Maximum capacity</span></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">capacity[i][j] = <span class="hljs-built_in">max</span>(capacity[i][j], <span class="hljs-built_in">min</span>(capacity[i][k], capacity[k][j]))</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"><span class="hljs-comment"># Pattern 5: Negative cycle detection</span></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">has_neg_cycle = <span class="hljs-built_in">any</span>(dist[i][i] &lt; <span class="hljs-number">0</span> <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n))</span></span>
+<pre><code class="language-python"># Pattern 1: Basic shortest path
+dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
+
+# Pattern 2: Transitive closure (reachability)
+reach[i][j] = reach[i][j] or (reach[i][k] and reach[k][j])
+
+# Pattern 3: Minimax (bottleneck)
+dist[i][j] = min(dist[i][j], max(dist[i][k], dist[k][j]))
+
+# Pattern 4: Maximum capacity
+capacity[i][j] = max(capacity[i][j], min(capacity[i][k], capacity[k][j]))
+
+# Pattern 5: Negative cycle detection
+has_neg_cycle = any(dist[i][i] &lt; 0 for i in range(n))
 </code></pre>
 <h3 id="common-variations" tabindex="-1"><a class="header-anchor" href="#common-variations"><span>Common Variations</span></a></h3>
 <table>

@@ -9,7 +9,8 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -20,42 +21,40 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    // Code block wrappers + copy buttons (highlighting done at build time)
-    try {
-      document.querySelectorAll('pre').forEach(function(pre) {
-        var codeEl = pre.querySelector('code');
-        var lang = pre.getAttribute('data-lang') || '';
-        var wrapper = document.createElement('div');
-        wrapper.className = 'code-block-wrapper';
-        pre.parentNode.insertBefore(wrapper, pre);
-        var header = document.createElement('div');
-        header.className = 'code-block-header';
-        if (lang) {
-          var label = document.createElement('span');
-          label.className = 'code-lang-label';
-          label.textContent = lang;
-          header.appendChild(label);
-        } else {
-          header.appendChild(document.createElement('span'));
-        }
-        var btn = document.createElement('button');
-        btn.className = 'copy-btn';
-        btn.textContent = 'Copy';
-        btn.addEventListener('click', function() {
-          var text = codeEl
-            ? Array.from(codeEl.querySelectorAll('.ln-code')).map(function(el) { return el.textContent; }).join('\n')
-            : pre.textContent;
-          navigator.clipboard.writeText(text).then(function() {
-            btn.textContent = 'Copied!';
-            btn.classList.add('copied');
-            setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-          });
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
         });
-        header.appendChild(btn);
-        wrapper.appendChild(header);
-        wrapper.appendChild(pre);
       });
-    } catch(e) { console.error('Code block setup error:', e); }
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -65,36 +64,32 @@
       }
     });
     // Reading progress bar
-    try {
-      var progressBar = document.getElementById('reading-progress');
-      if (progressBar) {
-        window.addEventListener('scroll', function() {
-          var winScroll = document.documentElement.scrollTop;
-          var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-          progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
-        });
-      }
-    } catch(e) {}
-    // Dark mode toggle — isolated so errors elsewhere never prevent this from working
-    try {
-      var toggle = document.getElementById('theme-toggle');
-      if (toggle) {
-        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-        toggle.textContent = isDark ? '☀️' : '🌙';
-        toggle.addEventListener('click', function() {
-          var dark = document.documentElement.getAttribute('data-theme') === 'dark';
-          if (dark) {
-            document.documentElement.removeAttribute('data-theme');
-            localStorage.setItem('theme', 'light');
-            toggle.textContent = '🌙';
-          } else {
-            document.documentElement.setAttribute('data-theme', 'dark');
-            localStorage.setItem('theme', 'dark');
-            toggle.textContent = '☀️';
-          }
-        });
-      }
-    } catch(e) { console.error('Theme toggle error:', e); }
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
   });</script>
 </head>
 <body>
@@ -132,9 +127,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Hashing</span></nav>
       <div class="cheatsheet-header">
         <h1>Hashing</h1>
-        <span class="last-updated">Last updated: Apr 25, 2026</span>
+        <span class="last-updated">Last updated: Sep 29, 2025</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#core-characteristics">Core Characteristics</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#category-1-frequency-maps">Category 1: Frequency Maps</a></li><li class="toc-sub"><a href="#category-2-prefix-hash-rolling-hash">Category 2: Prefix Hash / Rolling Hash</a></li><li class="toc-sub"><a href="#category-3-hashset-for-seen-states">Category 3: HashSet for Seen States</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#template-1-frequency-counter">Template 1: Frequency Counter</a></li><li class="toc-sub"><a href="#template-2-rolling-hash-rabin-karp">Template 2: Rolling Hash (Rabin-Karp)</a></li><li class="toc-sub"><a href="#template-3-hashset-for-cycle-detection">Template 3: HashSet for Cycle Detection</a></li><li class="toc-sub"><a href="#template-4-group-by-hash-key">Template 4: Group by Hash Key</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#frequency-maps-problems">Frequency Maps Problems</a></li><li class="toc-sub"><a href="#rolling-hash-problems">Rolling Hash Problems</a></li><li class="toc-sub"><a href="#hashset-for-seen-states-problems">HashSet for Seen States Problems</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-valid-anagram-lc-242-frequency-count">2-1) Valid Anagram (LC 242) — Frequency Count</a></li><li class="toc-sub"><a href="#2-2-group-anagrams-lc-49-sort-key-hashmap">2-2) Group Anagrams (LC 49) — Sort-Key HashMap</a></li><li class="toc-sub"><a href="#2-3-happy-number-lc-202-hashset-cycle-detection">2-3) Happy Number (LC 202) — HashSet Cycle Detection</a></li><li class="toc-sub"><a href="#2-4-longest-consecutive-sequence-lc-128-hashset-start-detection">2-4) Longest Consecutive Sequence (LC 128) — HashSet Start Detection</a></li><li class="toc-sub"><a href="#2-5-repeated-dna-sequences-lc-187-sliding-window-hashset">2-5) Repeated DNA Sequences (LC 187) — Sliding Window HashSet</a></li><li class="toc-sub"><a href="#2-6-top-k-frequent-elements-lc-347-bucket-sort-by-frequency">2-6) Top K Frequent Elements (LC 347) — Bucket Sort by Frequency</a></li><li><a href="#advanced-techniques">Advanced Techniques</a></li><li class="toc-sub"><a href="#custom-hash-functions">Custom Hash Functions</a></li><li class="toc-sub"><a href="#hash-based-data-structures">Hash-based Data Structures</a></li><li><a href="#performance-optimization-tips">Performance Optimization Tips</a></li><li class="toc-sub"><a href="#hash-table-best-practices">Hash Table Best Practices</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#common-hash-patterns">Common Hash Patterns</a></li><li class="toc-sub"><a href="#time-complexity-guide">Time Complexity Guide</a></li><li class="toc-sub"><a href="#space-complexity-considerations">Space Complexity Considerations</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#core-characteristics">Core Characteristics</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#category-1-frequency-maps">Category 1: Frequency Maps</a></li><li class="toc-sub"><a href="#category-2-prefix-hash-rolling-hash">Category 2: Prefix Hash / Rolling Hash</a></li><li class="toc-sub"><a href="#category-3-hashset-for-seen-states">Category 3: HashSet for Seen States</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#template-1-frequency-counter">Template 1: Frequency Counter</a></li><li class="toc-sub"><a href="#template-2-rolling-hash-rabin-karp">Template 2: Rolling Hash (Rabin-Karp)</a></li><li class="toc-sub"><a href="#template-3-hashset-for-cycle-detection">Template 3: HashSet for Cycle Detection</a></li><li class="toc-sub"><a href="#template-4-group-by-hash-key">Template 4: Group by Hash Key</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#frequency-maps-problems">Frequency Maps Problems</a></li><li class="toc-sub"><a href="#rolling-hash-problems">Rolling Hash Problems</a></li><li class="toc-sub"><a href="#hashset-for-seen-states-problems">HashSet for Seen States Problems</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#1-valid-anagram-lc-242">1. Valid Anagram (LC 242)</a></li><li class="toc-sub"><a href="#2-group-anagrams-lc-49">2. Group Anagrams (LC 49)</a></li><li class="toc-sub"><a href="#3-happy-number-lc-202">3. Happy Number (LC 202)</a></li><li class="toc-sub"><a href="#4-longest-consecutive-sequence-lc-128">4. Longest Consecutive Sequence (LC 128)</a></li><li class="toc-sub"><a href="#5-repeated-dna-sequences-lc-187">5. Repeated DNA Sequences (LC 187)</a></li><li class="toc-sub"><a href="#6-top-k-frequent-elements-lc-347">6. Top K Frequent Elements (LC 347)</a></li><li><a href="#advanced-techniques">Advanced Techniques</a></li><li class="toc-sub"><a href="#custom-hash-functions">Custom Hash Functions</a></li><li class="toc-sub"><a href="#hash-based-data-structures">Hash-based Data Structures</a></li><li><a href="#performance-optimization-tips">Performance Optimization Tips</a></li><li class="toc-sub"><a href="#hash-table-best-practices">Hash Table Best Practices</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#common-hash-patterns">Common Hash Patterns</a></li><li class="toc-sub"><a href="#time-complexity-guide">Time Complexity Guide</a></li><li class="toc-sub"><a href="#space-complexity-considerations">Space Complexity Considerations</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#interview-tips">Interview Tips</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="hashing-counting" tabindex="-1"><a class="header-anchor" href="#hashing-counting"><span>Hashing &amp; Counting</span></a></h1>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
@@ -213,130 +208,130 @@
 </tbody>
 </table>
 <h3 id="template-1-frequency-counter" tabindex="-1"><a class="header-anchor" href="#template-1-frequency-counter"><span>Template 1: Frequency Counter</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">frequency_counter_template</span>(<span class="hljs-params">arr</span>):</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Basic frequency counting template&quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> Counter, defaultdict</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-comment"># Method 1: Using Counter</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    count = Counter(arr)</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-comment"># Method 2: Using defaultdict</span></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    freq = defaultdict(<span class="hljs-built_in">int</span>)</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> arr:</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        freq[item] += <span class="hljs-number">1</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-comment"># Method 3: Manual counting</span></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    manual_count = {}</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> arr:</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        manual_count[item] = manual_count.get(item, <span class="hljs-number">0</span>) + <span class="hljs-number">1</span></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    <span class="hljs-keyword">return</span> count, freq, manual_count</span></span>
+<pre><code class="language-python">def frequency_counter_template(arr):
+    &quot;&quot;&quot;Basic frequency counting template&quot;&quot;&quot;
+    from collections import Counter, defaultdict
+
+    # Method 1: Using Counter
+    count = Counter(arr)
+
+    # Method 2: Using defaultdict
+    freq = defaultdict(int)
+    for item in arr:
+        freq[item] += 1
+
+    # Method 3: Manual counting
+    manual_count = {}
+    for item in arr:
+        manual_count[item] = manual_count.get(item, 0) + 1
+
+    return count, freq, manual_count
 </code></pre>
 <h3 id="template-2-rolling-hash-rabin-karp" tabindex="-1"><a class="header-anchor" href="#template-2-rolling-hash-rabin-karp"><span>Template 2: Rolling Hash (Rabin-Karp)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">rolling_hash_template</span>(<span class="hljs-params">text, pattern</span>):</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Rolling hash for pattern matching&quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(pattern) &gt; <span class="hljs-built_in">len</span>(text):</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-comment"># Hash function parameters</span></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    base = <span class="hljs-number">256</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    mod = <span class="hljs-number">10</span>**<span class="hljs-number">9</span> + <span class="hljs-number">7</span></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">compute_hash</span>(<span class="hljs-params">s, length</span>):</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;Compute hash for first &#x27;length&#x27; characters&quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        hash_val = <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(length):</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            hash_val = (hash_val * base + <span class="hljs-built_in">ord</span>(s[i])) % mod</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-keyword">return</span> hash_val</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">rolling_hash</span>(<span class="hljs-params">s, old_hash, old_char, new_char, base_power, mod</span>):</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;Update hash by removing old_char and adding new_char&quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        new_hash = (old_hash - <span class="hljs-built_in">ord</span>(old_char) * base_power) % mod</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        new_hash = (new_hash * base + <span class="hljs-built_in">ord</span>(new_char)) % mod</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        <span class="hljs-keyword">return</span> new_hash</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    pattern_len = <span class="hljs-built_in">len</span>(pattern)</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">    pattern_hash = compute_hash(pattern, pattern_len)</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">    text_hash = compute_hash(text, pattern_len)</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">    <span class="hljs-comment"># Precompute base^(pattern_len-1) % mod</span></span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">    base_power = <span class="hljs-built_in">pow</span>(base, pattern_len - <span class="hljs-number">1</span>, mod)</span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">    <span class="hljs-comment"># Check first window</span></span></span>
-<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">    <span class="hljs-keyword">if</span> pattern_hash == text_hash <span class="hljs-keyword">and</span> text[:pattern_len] == pattern:</span></span>
-<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">33</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">    <span class="hljs-comment"># Rolling hash for remaining windows</span></span></span>
-<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(text) - pattern_len):</span></span>
-<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">        text_hash = rolling_hash(</span></span>
-<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">            text, text_hash, text[i], text[i + pattern_len], base_power, mod</span></span>
-<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">        )</span></span>
-<span class="ln-row"><span class="ln-num">39</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">        <span class="hljs-keyword">if</span> pattern_hash == text_hash <span class="hljs-keyword">and</span> text[i+<span class="hljs-number">1</span>:i+<span class="hljs-number">1</span>+pattern_len] == pattern:</span></span>
-<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">            <span class="hljs-keyword">return</span> i + <span class="hljs-number">1</span></span></span>
-<span class="ln-row"><span class="ln-num">42</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">    <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span></span></span>
+<pre><code class="language-python">def rolling_hash_template(text, pattern):
+    &quot;&quot;&quot;Rolling hash for pattern matching&quot;&quot;&quot;
+    if len(pattern) &gt; len(text):
+        return -1
+
+    # Hash function parameters
+    base = 256
+    mod = 10**9 + 7
+
+    def compute_hash(s, length):
+        &quot;&quot;&quot;Compute hash for first 'length' characters&quot;&quot;&quot;
+        hash_val = 0
+        for i in range(length):
+            hash_val = (hash_val * base + ord(s[i])) % mod
+        return hash_val
+
+    def rolling_hash(s, old_hash, old_char, new_char, base_power, mod):
+        &quot;&quot;&quot;Update hash by removing old_char and adding new_char&quot;&quot;&quot;
+        new_hash = (old_hash - ord(old_char) * base_power) % mod
+        new_hash = (new_hash * base + ord(new_char)) % mod
+        return new_hash
+
+    pattern_len = len(pattern)
+    pattern_hash = compute_hash(pattern, pattern_len)
+    text_hash = compute_hash(text, pattern_len)
+
+    # Precompute base^(pattern_len-1) % mod
+    base_power = pow(base, pattern_len - 1, mod)
+
+    # Check first window
+    if pattern_hash == text_hash and text[:pattern_len] == pattern:
+        return 0
+
+    # Rolling hash for remaining windows
+    for i in range(len(text) - pattern_len):
+        text_hash = rolling_hash(
+            text, text_hash, text[i], text[i + pattern_len], base_power, mod
+        )
+
+        if pattern_hash == text_hash and text[i+1:i+1+pattern_len] == pattern:
+            return i + 1
+
+    return -1
 </code></pre>
 <h3 id="template-3-hashset-for-cycle-detection" tabindex="-1"><a class="header-anchor" href="#template-3-hashset-for-cycle-detection"><span>Template 3: HashSet for Cycle Detection</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">cycle_detection_template</span>(<span class="hljs-params">start_value, next_function</span>):</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Detect cycles using HashSet&quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    seen = <span class="hljs-built_in">set</span>()</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    current = start_value</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">while</span> current <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> seen:</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        seen.add(current)</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        current = next_function(current)</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-comment"># Optional: check for termination condition</span></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-keyword">if</span> is_terminal(current):</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>  <span class="hljs-comment"># Cycle detected</span></span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">floyd_cycle_detection</span>(<span class="hljs-params">start_value, next_function</span>):</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Floyd&#x27;s cycle detection (tortoise and hare)&quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    slow = fast = start_value</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    <span class="hljs-comment"># Phase 1: Detect if cycle exists</span></span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        slow = next_function(slow)</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        fast = next_function(next_function(fast))</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">        <span class="hljs-keyword">if</span> slow == fast:</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">            <span class="hljs-keyword">break</span></span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">        <span class="hljs-keyword">if</span> is_terminal(fast):</span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>  <span class="hljs-comment"># No cycle</span></span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">    <span class="hljs-comment"># Phase 2: Find cycle start</span></span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">    slow = start_value</span></span>
-<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">    <span class="hljs-keyword">while</span> slow != fast:</span></span>
-<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">        slow = next_function(slow)</span></span>
-<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">        fast = next_function(fast)</span></span>
-<span class="ln-row"><span class="ln-num">34</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">    <span class="hljs-keyword">return</span> slow  <span class="hljs-comment"># Start of cycle</span></span></span>
+<pre><code class="language-python">def cycle_detection_template(start_value, next_function):
+    &quot;&quot;&quot;Detect cycles using HashSet&quot;&quot;&quot;
+    seen = set()
+    current = start_value
+
+    while current not in seen:
+        seen.add(current)
+        current = next_function(current)
+
+        # Optional: check for termination condition
+        if is_terminal(current):
+            return False
+
+    return True  # Cycle detected
+
+def floyd_cycle_detection(start_value, next_function):
+    &quot;&quot;&quot;Floyd's cycle detection (tortoise and hare)&quot;&quot;&quot;
+    slow = fast = start_value
+
+    # Phase 1: Detect if cycle exists
+    while True:
+        slow = next_function(slow)
+        fast = next_function(next_function(fast))
+        if slow == fast:
+            break
+        if is_terminal(fast):
+            return None  # No cycle
+
+    # Phase 2: Find cycle start
+    slow = start_value
+    while slow != fast:
+        slow = next_function(slow)
+        fast = next_function(fast)
+
+    return slow  # Start of cycle
 </code></pre>
 <h3 id="template-4-group-by-hash-key" tabindex="-1"><a class="header-anchor" href="#template-4-group-by-hash-key"><span>Template 4: Group by Hash Key</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">group_by_hash_template</span>(<span class="hljs-params">items, key_function</span>):</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Group items by hash key&quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    groups = defaultdict(<span class="hljs-built_in">list</span>)</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> items:</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        key = key_function(item)</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        groups[key].append(item)</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-keyword">return</span> <span class="hljs-built_in">dict</span>(groups)</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">group_anagrams_template</span>(<span class="hljs-params">strs</span>):</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Group anagrams using sorted string as key&quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    groups = defaultdict(<span class="hljs-built_in">list</span>)</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-keyword">for</span> s <span class="hljs-keyword">in</span> strs:</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        <span class="hljs-comment"># Use sorted string as key</span></span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        key = <span class="hljs-string">&#x27;&#x27;</span>.join(<span class="hljs-built_in">sorted</span>(s))</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        groups[key].append(s)</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    <span class="hljs-keyword">return</span> <span class="hljs-built_in">list</span>(groups.values())</span></span>
+<pre><code class="language-python">def group_by_hash_template(items, key_function):
+    &quot;&quot;&quot;Group items by hash key&quot;&quot;&quot;
+    from collections import defaultdict
+
+    groups = defaultdict(list)
+    for item in items:
+        key = key_function(item)
+        groups[key].append(item)
+
+    return dict(groups)
+
+def group_anagrams_template(strs):
+    &quot;&quot;&quot;Group anagrams using sorted string as key&quot;&quot;&quot;
+    from collections import defaultdict
+
+    groups = defaultdict(list)
+    for s in strs:
+        # Use sorted string as key
+        key = ''.join(sorted(s))
+        groups[key].append(s)
+
+    return list(groups.values())
 </code></pre>
 <h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
 <h3 id="frequency-maps-problems" tabindex="-1"><a class="header-anchor" href="#frequency-maps-problems"><span><strong>Frequency Maps Problems</strong></span></a></h3>
@@ -469,388 +464,284 @@
 </tbody>
 </table>
 <h2 id="lc-examples" tabindex="-1"><a class="header-anchor" href="#lc-examples"><span>LC Examples</span></a></h2>
-<h3 id="2-1-valid-anagram-lc-242-frequency-count" tabindex="-1"><a class="header-anchor" href="#2-1-valid-anagram-lc-242-frequency-count"><span>2-1) Valid Anagram (LC 242) — Frequency Count</span></a></h3>
-<blockquote>
-<p>Count character frequencies in both strings; maps must be equal.</p>
-</blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 242 - Valid Anagram</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Count char frequencies; both strings must have same counts</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N), space = O(1) (fixed 26-char alphabet)</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isAnagram</span><span class="hljs-params">(String s, String t)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">if</span> (s.length() != t.length()) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-type">int</span>[] count = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">26</span>];</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : s.toCharArray()) count[c - <span class="hljs-string">&#x27;a&#x27;</span>]++;</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : t.toCharArray()) count[c - <span class="hljs-string">&#x27;a&#x27;</span>]--;</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> v : count) <span class="hljs-keyword">if</span> (v != <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">}</span></span>
+<h3 id="1-valid-anagram-lc-242" tabindex="-1"><a class="header-anchor" href="#1-valid-anagram-lc-242"><span>1. Valid Anagram (LC 242)</span></a></h3>
+<pre><code class="language-python">def isAnagram(s, t):
+    &quot;&quot;&quot;Check if two strings are anagrams&quot;&quot;&quot;
+    if len(s) != len(t):
+        return False
+
+    # Method 1: Frequency counter
+    from collections import Counter
+    return Counter(s) == Counter(t)
+
+    # Method 2: Manual counting
+    count = {}
+    for char in s:
+        count[char] = count.get(char, 0) + 1
+
+    for char in t:
+        if char not in count:
+            return False
+        count[char] -= 1
+        if count[char] == 0:
+            del count[char]
+
+    return len(count) == 0
+
+    # Method 3: Sorting (not using hash)
+    return sorted(s) == sorted(t)
 </code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">isAnagram</span>(<span class="hljs-params">s, t</span>):</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Check if two strings are anagrams&quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(s) != <span class="hljs-built_in">len</span>(t):</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-comment"># Method 1: Frequency counter</span></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> Counter</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">return</span> Counter(s) == Counter(t)</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-comment"># Method 2: Manual counting</span></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    count = {}</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-keyword">for</span> char <span class="hljs-keyword">in</span> s:</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        count[char] = count.get(char, <span class="hljs-number">0</span>) + <span class="hljs-number">1</span></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-keyword">for</span> char <span class="hljs-keyword">in</span> t:</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        <span class="hljs-keyword">if</span> char <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> count:</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span></span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        count[char] -= <span class="hljs-number">1</span></span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        <span class="hljs-keyword">if</span> count[char] == <span class="hljs-number">0</span>:</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">            <span class="hljs-keyword">del</span> count[char]</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(count) == <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">    <span class="hljs-comment"># Method 3: Sorting (not using hash)</span></span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">    <span class="hljs-keyword">return</span> <span class="hljs-built_in">sorted</span>(s) == <span class="hljs-built_in">sorted</span>(t)</span></span>
+<h3 id="2-group-anagrams-lc-49" tabindex="-1"><a class="header-anchor" href="#2-group-anagrams-lc-49"><span>2. Group Anagrams (LC 49)</span></a></h3>
+<pre><code class="language-python">def groupAnagrams(strs):
+    &quot;&quot;&quot;Group strings that are anagrams&quot;&quot;&quot;
+    from collections import defaultdict
+
+    # Method 1: Use sorted string as key
+    groups = defaultdict(list)
+    for s in strs:
+        key = ''.join(sorted(s))
+        groups[key].append(s)
+
+    return list(groups.values())
+
+    # Method 2: Use frequency tuple as key
+    def get_frequency_key(s):
+        freq = [0] * 26
+        for char in s:
+            freq[ord(char) - ord('a')] += 1
+        return tuple(freq)
+
+    groups = defaultdict(list)
+    for s in strs:
+        key = get_frequency_key(s)
+        groups[key].append(s)
+
+    return list(groups.values())
 </code></pre>
-<h3 id="2-2-group-anagrams-lc-49-sort-key-hashmap" tabindex="-1"><a class="header-anchor" href="#2-2-group-anagrams-lc-49-sort-key-hashmap"><span>2-2) Group Anagrams (LC 49) — Sort-Key HashMap</span></a></h3>
-<blockquote>
-<p>Use sorted string as key; all anagrams share the same key.</p>
-</blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 49 - Group Anagrams</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Sort each string to get canonical key; group by key in HashMap</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N * K log K), space = O(NK)  K = max string length</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> List&lt;List&lt;String&gt;&gt; <span class="hljs-title function_">groupAnagrams</span><span class="hljs-params">(String[] strs)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    Map&lt;String, List&lt;String&gt;&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">for</span> (String s : strs) {</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-type">char</span>[] arr = s.toCharArray();</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        Arrays.sort(arr);</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-type">String</span> <span class="hljs-variable">key</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(arr);</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        map.computeIfAbsent(key, k -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;()).add(s);</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(map.values());</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">}</span></span>
+<h3 id="3-happy-number-lc-202" tabindex="-1"><a class="header-anchor" href="#3-happy-number-lc-202"><span>3. Happy Number (LC 202)</span></a></h3>
+<pre><code class="language-python">def isHappy(n):
+    &quot;&quot;&quot;Detect if number leads to 1 or cycles&quot;&quot;&quot;
+
+    def get_sum_of_squares(num):
+        total = 0
+        while num &gt; 0:
+            digit = num % 10
+            total += digit * digit
+            num //= 10
+        return total
+
+    # Method 1: HashSet to detect cycle
+    seen = set()
+    while n != 1 and n not in seen:
+        seen.add(n)
+        n = get_sum_of_squares(n)
+
+    return n == 1
+
+    # Method 2: Floyd's cycle detection
+    def next_number(num):
+        return get_sum_of_squares(num)
+
+    slow = fast = n
+    while True:
+        slow = next_number(slow)
+        fast = next_number(next_number(fast))
+        if slow == fast:
+            break
+
+    return slow == 1
 </code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">groupAnagrams</span>(<span class="hljs-params">strs</span>):</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Group strings that are anagrams&quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-comment"># Method 1: Use sorted string as key</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    groups = defaultdict(<span class="hljs-built_in">list</span>)</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">for</span> s <span class="hljs-keyword">in</span> strs:</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        key = <span class="hljs-string">&#x27;&#x27;</span>.join(<span class="hljs-built_in">sorted</span>(s))</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        groups[key].append(s)</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-keyword">return</span> <span class="hljs-built_in">list</span>(groups.values())</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-comment"># Method 2: Use frequency tuple as key</span></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_frequency_key</span>(<span class="hljs-params">s</span>):</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        freq = [<span class="hljs-number">0</span>] * <span class="hljs-number">26</span></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        <span class="hljs-keyword">for</span> char <span class="hljs-keyword">in</span> s:</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">            freq[<span class="hljs-built_in">ord</span>(char) - <span class="hljs-built_in">ord</span>(<span class="hljs-string">&#x27;a&#x27;</span>)] += <span class="hljs-number">1</span></span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-built_in">tuple</span>(freq)</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    groups = defaultdict(<span class="hljs-built_in">list</span>)</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">    <span class="hljs-keyword">for</span> s <span class="hljs-keyword">in</span> strs:</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        key = get_frequency_key(s)</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        groups[key].append(s)</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">    <span class="hljs-keyword">return</span> <span class="hljs-built_in">list</span>(groups.values())</span></span>
+<h3 id="4-longest-consecutive-sequence-lc-128" tabindex="-1"><a class="header-anchor" href="#4-longest-consecutive-sequence-lc-128"><span>4. Longest Consecutive Sequence (LC 128)</span></a></h3>
+<pre><code class="language-python">def longestConsecutive(nums):
+    &quot;&quot;&quot;Find longest consecutive sequence&quot;&quot;&quot;
+    if not nums:
+        return 0
+
+    num_set = set(nums)
+    longest = 0
+
+    for num in num_set:
+        # Only start counting if num-1 is not in set
+        # This ensures we start from the beginning of a sequence
+        if num - 1 not in num_set:
+            current_num = num
+            current_length = 1
+
+            # Count consecutive numbers
+            while current_num + 1 in num_set:
+                current_num += 1
+                current_length += 1
+
+            longest = max(longest, current_length)
+
+    return longest
 </code></pre>
-<h3 id="2-3-happy-number-lc-202-hashset-cycle-detection" tabindex="-1"><a class="header-anchor" href="#2-3-happy-number-lc-202-hashset-cycle-detection"><span>2-3) Happy Number (LC 202) — HashSet Cycle Detection</span></a></h3>
-<blockquote>
-<p>Sum digit squares repeatedly; use a set to detect if we revisit a number before reaching 1.</p>
-</blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 202 - Happy Number</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: HashSet to detect cycle in digit-square sum sequence</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(log N), space = O(log N)</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isHappy</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    Set&lt;Integer&gt; seen = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">while</span> (n != <span class="hljs-number">1</span> &amp;&amp; seen.add(n)) {</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">sum</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">while</span> (n &gt; <span class="hljs-number">0</span>) { <span class="hljs-type">int</span> <span class="hljs-variable">d</span> <span class="hljs-operator">=</span> n % <span class="hljs-number">10</span>; sum += d * d; n /= <span class="hljs-number">10</span>; }</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        n = sum;</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-keyword">return</span> n == <span class="hljs-number">1</span>;</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">}</span></span>
+<h3 id="5-repeated-dna-sequences-lc-187" tabindex="-1"><a class="header-anchor" href="#5-repeated-dna-sequences-lc-187"><span>5. Repeated DNA Sequences (LC 187)</span></a></h3>
+<pre><code class="language-python">def findRepeatedDnaSequences(s):
+    &quot;&quot;&quot;Find repeated 10-character DNA sequences using rolling hash&quot;&quot;&quot;
+    if len(s) &lt; 10:
+        return []
+
+    # Method 1: Simple approach with substring
+    seen = set()
+    repeated = set()
+
+    for i in range(len(s) - 9):
+        substring = s[i:i+10]
+        if substring in seen:
+            repeated.add(substring)
+        else:
+            seen.add(substring)
+
+    return list(repeated)
+
+    # Method 2: Rolling hash approach
+    def char_to_num(c):
+        return {'A': 0, 'C': 1, 'G': 2, 'T': 3}[c]
+
+    def rolling_hash_dna(s):
+        if len(s) &lt; 10:
+            return []
+
+        seen = set()
+        repeated = set()
+
+        # Compute hash for first window
+        hash_val = 0
+        base = 4
+        mod = 10**9 + 7
+
+        for i in range(10):
+            hash_val = hash_val * base + char_to_num(s[i])
+
+        seen.add(hash_val)
+        base_power = base ** 9
+
+        # Rolling hash for remaining windows
+        for i in range(10, len(s)):
+            # Remove first character and add new character
+            hash_val = hash_val - char_to_num(s[i-10]) * base_power
+            hash_val = hash_val * base + char_to_num(s[i])
+
+            if hash_val in seen:
+                repeated.add(s[i-9:i+1])
+            else:
+                seen.add(hash_val)
+
+        return list(repeated)
+
+    return rolling_hash_dna(s)
 </code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">isHappy</span>(<span class="hljs-params">n</span>):</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Detect if number leads to 1 or cycles&quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_sum_of_squares</span>(<span class="hljs-params">num</span>):</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        total = <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-keyword">while</span> num &gt; <span class="hljs-number">0</span>:</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">            digit = num % <span class="hljs-number">10</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">            total += digit * digit</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">            num //= <span class="hljs-number">10</span></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-keyword">return</span> total</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-comment"># Method 1: HashSet to detect cycle</span></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    seen = <span class="hljs-built_in">set</span>()</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-keyword">while</span> n != <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> n <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> seen:</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        seen.add(n)</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        n = get_sum_of_squares(n)</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    <span class="hljs-keyword">return</span> n == <span class="hljs-number">1</span></span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    <span class="hljs-comment"># Method 2: Floyd&#x27;s cycle detection</span></span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">next_number</span>(<span class="hljs-params">num</span>):</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        <span class="hljs-keyword">return</span> get_sum_of_squares(num)</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">    slow = fast = n</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">        slow = next_number(slow)</span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">        fast = next_number(next_number(fast))</span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">        <span class="hljs-keyword">if</span> slow == fast:</span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">            <span class="hljs-keyword">break</span></span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">    <span class="hljs-keyword">return</span> slow == <span class="hljs-number">1</span></span></span>
-</code></pre>
-<h3 id="2-4-longest-consecutive-sequence-lc-128-hashset-start-detection" tabindex="-1"><a class="header-anchor" href="#2-4-longest-consecutive-sequence-lc-128-hashset-start-detection"><span>2-4) Longest Consecutive Sequence (LC 128) — HashSet Start Detection</span></a></h3>
-<blockquote>
-<p>Only expand from sequence starts (num−1 not in set) to avoid redundant counting.</p>
-</blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 128 - Longest Consecutive Sequence</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: HashSet; for each sequence start (num-1 absent), count forward</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N), space = O(N)</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">longestConsecutive</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    Set&lt;Integer&gt; set = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> n : nums) set.add(n);</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">best</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> n : set) {</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-keyword">if</span> (!set.contains(n - <span class="hljs-number">1</span>)) {</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">            <span class="hljs-type">int</span> <span class="hljs-variable">len</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">            <span class="hljs-keyword">while</span> (set.contains(n + len)) len++;</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">            best = Math.max(best, len);</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-keyword">return</span> best;</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">}</span></span>
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">longestConsecutive</span>(<span class="hljs-params">nums</span>):</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Find longest consecutive sequence&quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> nums:</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    num_set = <span class="hljs-built_in">set</span>(nums)</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    longest = <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> num_set:</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-comment"># Only start counting if num-1 is not in set</span></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-comment"># This ensures we start from the beginning of a sequence</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-keyword">if</span> num - <span class="hljs-number">1</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> num_set:</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">            current_num = num</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            current_length = <span class="hljs-number">1</span></span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">            <span class="hljs-comment"># Count consecutive numbers</span></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">            <span class="hljs-keyword">while</span> current_num + <span class="hljs-number">1</span> <span class="hljs-keyword">in</span> num_set:</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">                current_num += <span class="hljs-number">1</span></span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">                current_length += <span class="hljs-number">1</span></span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">            longest = <span class="hljs-built_in">max</span>(longest, current_length)</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    <span class="hljs-keyword">return</span> longest</span></span>
-</code></pre>
-<h3 id="2-5-repeated-dna-sequences-lc-187-sliding-window-hashset" tabindex="-1"><a class="header-anchor" href="#2-5-repeated-dna-sequences-lc-187-sliding-window-hashset"><span>2-5) Repeated DNA Sequences (LC 187) — Sliding Window HashSet</span></a></h3>
-<blockquote>
-<p>Slide a 10-char window; add to seen set; collect duplicates in result set.</p>
-</blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 187 - Repeated DNA Sequences</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Slide 10-char window with HashSet; add to result if already seen</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N), space = O(N)</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> List&lt;String&gt; <span class="hljs-title function_">findRepeatedDnaSequences</span><span class="hljs-params">(String s)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    Set&lt;String&gt; seen = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;(), result = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i + <span class="hljs-number">10</span> &lt;= s.length(); i++) {</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-type">String</span> <span class="hljs-variable">sub</span> <span class="hljs-operator">=</span> s.substring(i, i + <span class="hljs-number">10</span>);</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">if</span> (!seen.add(sub)) result.add(sub);</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(result);</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">}</span></span>
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">findRepeatedDnaSequences</span>(<span class="hljs-params">s</span>):</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Find repeated 10-character DNA sequences using rolling hash&quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(s) &lt; <span class="hljs-number">10</span>:</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        <span class="hljs-keyword">return</span> []</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-comment"># Method 1: Simple approach with substring</span></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    seen = <span class="hljs-built_in">set</span>()</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    repeated = <span class="hljs-built_in">set</span>()</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(s) - <span class="hljs-number">9</span>):</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        substring = s[i:i+<span class="hljs-number">10</span>]</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-keyword">if</span> substring <span class="hljs-keyword">in</span> seen:</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">            repeated.add(substring)</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        <span class="hljs-keyword">else</span>:</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">            seen.add(substring)</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-keyword">return</span> <span class="hljs-built_in">list</span>(repeated)</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    <span class="hljs-comment"># Method 2: Rolling hash approach</span></span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">char_to_num</span>(<span class="hljs-params">c</span>):</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        <span class="hljs-keyword">return</span> {<span class="hljs-string">&#x27;A&#x27;</span>: <span class="hljs-number">0</span>, <span class="hljs-string">&#x27;C&#x27;</span>: <span class="hljs-number">1</span>, <span class="hljs-string">&#x27;G&#x27;</span>: <span class="hljs-number">2</span>, <span class="hljs-string">&#x27;T&#x27;</span>: <span class="hljs-number">3</span>}[c]</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">rolling_hash_dna</span>(<span class="hljs-params">s</span>):</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(s) &lt; <span class="hljs-number">10</span>:</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">            <span class="hljs-keyword">return</span> []</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">        seen = <span class="hljs-built_in">set</span>()</span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">        repeated = <span class="hljs-built_in">set</span>()</span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">        <span class="hljs-comment"># Compute hash for first window</span></span></span>
-<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">        hash_val = <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">        base = <span class="hljs-number">4</span></span></span>
-<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">        mod = <span class="hljs-number">10</span>**<span class="hljs-number">9</span> + <span class="hljs-number">7</span></span></span>
-<span class="ln-row"><span class="ln-num">34</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">10</span>):</span></span>
-<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">            hash_val = hash_val * base + char_to_num(s[i])</span></span>
-<span class="ln-row"><span class="ln-num">37</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">        seen.add(hash_val)</span></span>
-<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">        base_power = base ** <span class="hljs-number">9</span></span></span>
-<span class="ln-row"><span class="ln-num">40</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">        <span class="hljs-comment"># Rolling hash for remaining windows</span></span></span>
-<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">10</span>, <span class="hljs-built_in">len</span>(s)):</span></span>
-<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">            <span class="hljs-comment"># Remove first character and add new character</span></span></span>
-<span class="ln-row"><span class="ln-num">44</span><span class="ln-code">            hash_val = hash_val - char_to_num(s[i-<span class="hljs-number">10</span>]) * base_power</span></span>
-<span class="ln-row"><span class="ln-num">45</span><span class="ln-code">            hash_val = hash_val * base + char_to_num(s[i])</span></span>
-<span class="ln-row"><span class="ln-num">46</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">47</span><span class="ln-code">            <span class="hljs-keyword">if</span> hash_val <span class="hljs-keyword">in</span> seen:</span></span>
-<span class="ln-row"><span class="ln-num">48</span><span class="ln-code">                repeated.add(s[i-<span class="hljs-number">9</span>:i+<span class="hljs-number">1</span>])</span></span>
-<span class="ln-row"><span class="ln-num">49</span><span class="ln-code">            <span class="hljs-keyword">else</span>:</span></span>
-<span class="ln-row"><span class="ln-num">50</span><span class="ln-code">                seen.add(hash_val)</span></span>
-<span class="ln-row"><span class="ln-num">51</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">52</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-built_in">list</span>(repeated)</span></span>
-<span class="ln-row"><span class="ln-num">53</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">54</span><span class="ln-code">    <span class="hljs-keyword">return</span> rolling_hash_dna(s)</span></span>
-</code></pre>
-<h3 id="2-6-top-k-frequent-elements-lc-347-bucket-sort-by-frequency" tabindex="-1"><a class="header-anchor" href="#2-6-top-k-frequent-elements-lc-347-bucket-sort-by-frequency"><span>2-6) Top K Frequent Elements (LC 347) — Bucket Sort by Frequency</span></a></h3>
-<blockquote>
-<p>Place elements in buckets indexed by frequency; collect top k from highest buckets.</p>
-</blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 347 - Top K Frequent Elements</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Count frequencies, then bucket sort by frequency; collect from high buckets</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N), space = O(N)</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] topKFrequent(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k) {</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    Map&lt;Integer, Integer&gt; count = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> n : nums) count.merge(n, <span class="hljs-number">1</span>, Integer::sum);</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    List&lt;Integer&gt;[] buckets = <span class="hljs-keyword">new</span> <span class="hljs-title class_">List</span>[nums.length + <span class="hljs-number">1</span>];</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    count.forEach((val, freq) -&gt; {</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-keyword">if</span> (buckets[freq] == <span class="hljs-literal">null</span>) buckets[freq] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        buckets[freq].add(val);</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    });</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-type">int</span>[] res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[k];</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">idx</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> buckets.length - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span> &amp;&amp; idx &lt; k; i--)</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-keyword">if</span> (buckets[i] != <span class="hljs-literal">null</span>) <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> v : buckets[i]) <span class="hljs-keyword">if</span> (idx &lt; k) res[idx++] = v;</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    <span class="hljs-keyword">return</span> res;</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">}</span></span>
-</code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">topKFrequent</span>(<span class="hljs-params">nums, k</span>):</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Find k most frequent elements&quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> Counter</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-keyword">import</span> heapq</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-comment"># Method 1: Counter + heap</span></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    count = Counter(nums)</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">return</span> heapq.nlargest(k, count.keys(), key=count.get)</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-comment"># Method 2: Counter + sorting</span></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    count = Counter(nums)</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-keyword">return</span> [item <span class="hljs-keyword">for</span> item, freq <span class="hljs-keyword">in</span> count.most_common(k)]</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-comment"># Method 3: Bucket sort approach</span></span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    count = Counter(nums)</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    buckets = [[] <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(nums) + <span class="hljs-number">1</span>)]</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    <span class="hljs-comment"># Place elements in buckets by frequency</span></span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    <span class="hljs-keyword">for</span> num, freq <span class="hljs-keyword">in</span> count.items():</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        buckets[freq].append(num)</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    <span class="hljs-comment"># Collect top k elements</span></span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    result = []</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(buckets) - <span class="hljs-number">1</span>, <span class="hljs-number">0</span>, -<span class="hljs-number">1</span>):</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">        <span class="hljs-keyword">if</span> buckets[i]:</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">            result.extend(buckets[i])</span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">            <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(result) &gt;= k:</span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">                <span class="hljs-keyword">return</span> result[:k]</span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">    <span class="hljs-keyword">return</span> result</span></span>
+<h3 id="6-top-k-frequent-elements-lc-347" tabindex="-1"><a class="header-anchor" href="#6-top-k-frequent-elements-lc-347"><span>6. Top K Frequent Elements (LC 347)</span></a></h3>
+<pre><code class="language-python">def topKFrequent(nums, k):
+    &quot;&quot;&quot;Find k most frequent elements&quot;&quot;&quot;
+    from collections import Counter
+    import heapq
+
+    # Method 1: Counter + heap
+    count = Counter(nums)
+    return heapq.nlargest(k, count.keys(), key=count.get)
+
+    # Method 2: Counter + sorting
+    count = Counter(nums)
+    return [item for item, freq in count.most_common(k)]
+
+    # Method 3: Bucket sort approach
+    count = Counter(nums)
+    buckets = [[] for _ in range(len(nums) + 1)]
+
+    # Place elements in buckets by frequency
+    for num, freq in count.items():
+        buckets[freq].append(num)
+
+    # Collect top k elements
+    result = []
+    for i in range(len(buckets) - 1, 0, -1):
+        if buckets[i]:
+            result.extend(buckets[i])
+            if len(result) &gt;= k:
+                return result[:k]
+
+    return result
 </code></pre>
 <h2 id="advanced-techniques" tabindex="-1"><a class="header-anchor" href="#advanced-techniques"><span>Advanced Techniques</span></a></h2>
 <h3 id="custom-hash-functions" tabindex="-1"><a class="header-anchor" href="#custom-hash-functions"><span>Custom Hash Functions</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">custom_hash_techniques</span>():</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Various custom hashing approaches&quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-comment"># 1. Polynomial rolling hash</span></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">polynomial_hash</span>(<span class="hljs-params">s, base=<span class="hljs-number">31</span>, mod=<span class="hljs-number">10</span>**<span class="hljs-number">9</span>+<span class="hljs-number">7</span></span>):</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        hash_val = <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        base_power = <span class="hljs-number">1</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">for</span> char <span class="hljs-keyword">in</span> s:</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">            hash_val = (hash_val + <span class="hljs-built_in">ord</span>(char) * base_power) % mod</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">            base_power = (base_power * base) % mod</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-keyword">return</span> hash_val</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-comment"># 2. XOR hash for pairs</span></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">xor_hash</span>(<span class="hljs-params">a, b</span>):</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-built_in">hash</span>(a) ^ <span class="hljs-built_in">hash</span>(b)</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-comment"># 3. Tuple hash for coordinates</span></span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">coordinate_hash</span>(<span class="hljs-params">x, y</span>):</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-built_in">hash</span>((x, y))</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">    <span class="hljs-comment"># 4. String hash ignoring order</span></span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">unordered_hash</span>(<span class="hljs-params">s</span>):</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-built_in">sum</span>(<span class="hljs-built_in">hash</span>(c) <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> s)</span></span>
+<pre><code class="language-python">def custom_hash_techniques():
+    &quot;&quot;&quot;Various custom hashing approaches&quot;&quot;&quot;
+
+    # 1. Polynomial rolling hash
+    def polynomial_hash(s, base=31, mod=10**9+7):
+        hash_val = 0
+        base_power = 1
+        for char in s:
+            hash_val = (hash_val + ord(char) * base_power) % mod
+            base_power = (base_power * base) % mod
+        return hash_val
+
+    # 2. XOR hash for pairs
+    def xor_hash(a, b):
+        return hash(a) ^ hash(b)
+
+    # 3. Tuple hash for coordinates
+    def coordinate_hash(x, y):
+        return hash((x, y))
+
+    # 4. String hash ignoring order
+    def unordered_hash(s):
+        return sum(hash(c) for c in s)
 </code></pre>
 <h3 id="hash-based-data-structures" tabindex="-1"><a class="header-anchor" href="#hash-based-data-structures"><span>Hash-based Data Structures</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">HashBasedStructures</span>:</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Examples of hash-based data structures&quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self</span>):</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        <span class="hljs-comment"># Frequency counter</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict, Counter</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.freq_counter = Counter()</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.default_dict = defaultdict(<span class="hljs-built_in">int</span>)</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-comment"># Seen states</span></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.visited = <span class="hljs-built_in">set</span>()</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-comment"># Grouped data</span></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.groups = defaultdict(<span class="hljs-built_in">list</span>)</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">add_element</span>(<span class="hljs-params">self, element</span>):</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;Add element and track frequency&quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.freq_counter[element] += <span class="hljs-number">1</span></span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.visited.add(element)</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">group_by_property</span>(<span class="hljs-params">self, items, key_func</span>):</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;Group items by a property&quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        <span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> items:</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">            key = key_func(item)</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">            <span class="hljs-variable language_">self</span>.groups[key].append(item)</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-built_in">dict</span>(<span class="hljs-variable language_">self</span>.groups)</span></span>
+<pre><code class="language-python">class HashBasedStructures:
+    &quot;&quot;&quot;Examples of hash-based data structures&quot;&quot;&quot;
+
+    def __init__(self):
+        # Frequency counter
+        from collections import defaultdict, Counter
+        self.freq_counter = Counter()
+        self.default_dict = defaultdict(int)
+
+        # Seen states
+        self.visited = set()
+
+        # Grouped data
+        self.groups = defaultdict(list)
+
+    def add_element(self, element):
+        &quot;&quot;&quot;Add element and track frequency&quot;&quot;&quot;
+        self.freq_counter[element] += 1
+        self.visited.add(element)
+
+    def group_by_property(self, items, key_func):
+        &quot;&quot;&quot;Group items by a property&quot;&quot;&quot;
+        for item in items:
+            key = key_func(item)
+            self.groups[key].append(item)
+        return dict(self.groups)
 </code></pre>
 <h2 id="performance-optimization-tips" tabindex="-1"><a class="header-anchor" href="#performance-optimization-tips"><span>Performance Optimization Tips</span></a></h2>
 <h3 id="hash-table-best-practices" tabindex="-1"><a class="header-anchor" href="#hash-table-best-practices"><span>Hash Table Best Practices</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">optimization_tips</span>():</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Performance optimization techniques&quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-comment"># 1. Pre-size hash tables when possible</span></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    large_dict = <span class="hljs-built_in">dict</span>()  <span class="hljs-comment"># Will resize multiple times</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    presized_dict = {}</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-comment"># 2. Use appropriate hash functions</span></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">good_hash_function</span>(<span class="hljs-params">obj</span>):</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-comment"># Combine multiple attributes</span></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-built_in">hash</span>((obj.attr1, obj.attr2, obj.attr3))</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-comment"># 3. Minimize hash collisions</span></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> defaultdict</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    <span class="hljs-comment"># Use frozenset for set hashing</span></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    set_as_key = <span class="hljs-built_in">frozenset</span>([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>])</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    <span class="hljs-built_in">hash</span>(set_as_key)  <span class="hljs-comment"># Works because frozenset is hashable</span></span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    <span class="hljs-comment"># 4. Consider memory vs speed tradeoffs</span></span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">    memory_efficient = <span class="hljs-built_in">set</span>()  <span class="hljs-comment"># Only stores keys</span></span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    feature_rich = defaultdict(<span class="hljs-built_in">list</span>)  <span class="hljs-comment"># Stores key-value pairs</span></span></span>
+<pre><code class="language-python">def optimization_tips():
+    &quot;&quot;&quot;Performance optimization techniques&quot;&quot;&quot;
+
+    # 1. Pre-size hash tables when possible
+    large_dict = dict()  # Will resize multiple times
+    presized_dict = {}
+
+    # 2. Use appropriate hash functions
+    def good_hash_function(obj):
+        # Combine multiple attributes
+        return hash((obj.attr1, obj.attr2, obj.attr3))
+
+    # 3. Minimize hash collisions
+    from collections import defaultdict
+
+    # Use frozenset for set hashing
+    set_as_key = frozenset([1, 2, 3])
+    hash(set_as_key)  # Works because frozenset is hashable
+
+    # 4. Consider memory vs speed tradeoffs
+    memory_efficient = set()  # Only stores keys
+    feature_rich = defaultdict(list)  # Stores key-value pairs
 </code></pre>
 <h2 id="summary-quick-reference" tabindex="-1"><a class="header-anchor" href="#summary-quick-reference"><span>Summary &amp; Quick Reference</span></a></h2>
 <h3 id="common-hash-patterns" tabindex="-1"><a class="header-anchor" href="#common-hash-patterns"><span>Common Hash Patterns</span></a></h3>

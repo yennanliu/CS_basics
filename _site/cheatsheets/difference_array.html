@@ -9,7 +9,8 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -20,42 +21,40 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    // Code block wrappers + copy buttons (highlighting done at build time)
-    try {
-      document.querySelectorAll('pre').forEach(function(pre) {
-        var codeEl = pre.querySelector('code');
-        var lang = pre.getAttribute('data-lang') || '';
-        var wrapper = document.createElement('div');
-        wrapper.className = 'code-block-wrapper';
-        pre.parentNode.insertBefore(wrapper, pre);
-        var header = document.createElement('div');
-        header.className = 'code-block-header';
-        if (lang) {
-          var label = document.createElement('span');
-          label.className = 'code-lang-label';
-          label.textContent = lang;
-          header.appendChild(label);
-        } else {
-          header.appendChild(document.createElement('span'));
-        }
-        var btn = document.createElement('button');
-        btn.className = 'copy-btn';
-        btn.textContent = 'Copy';
-        btn.addEventListener('click', function() {
-          var text = codeEl
-            ? Array.from(codeEl.querySelectorAll('.ln-code')).map(function(el) { return el.textContent; }).join('\n')
-            : pre.textContent;
-          navigator.clipboard.writeText(text).then(function() {
-            btn.textContent = 'Copied!';
-            btn.classList.add('copied');
-            setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-          });
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
         });
-        header.appendChild(btn);
-        wrapper.appendChild(header);
-        wrapper.appendChild(pre);
       });
-    } catch(e) { console.error('Code block setup error:', e); }
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -65,36 +64,32 @@
       }
     });
     // Reading progress bar
-    try {
-      var progressBar = document.getElementById('reading-progress');
-      if (progressBar) {
-        window.addEventListener('scroll', function() {
-          var winScroll = document.documentElement.scrollTop;
-          var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-          progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
-        });
-      }
-    } catch(e) {}
-    // Dark mode toggle — isolated so errors elsewhere never prevent this from working
-    try {
-      var toggle = document.getElementById('theme-toggle');
-      if (toggle) {
-        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-        toggle.textContent = isDark ? '☀️' : '🌙';
-        toggle.addEventListener('click', function() {
-          var dark = document.documentElement.getAttribute('data-theme') === 'dark';
-          if (dark) {
-            document.documentElement.removeAttribute('data-theme');
-            localStorage.setItem('theme', 'light');
-            toggle.textContent = '🌙';
-          } else {
-            document.documentElement.setAttribute('data-theme', 'dark');
-            localStorage.setItem('theme', 'dark');
-            toggle.textContent = '☀️';
-          }
-        });
-      }
-    } catch(e) { console.error('Theme toggle error:', e); }
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
   });</script>
 </head>
 <body>
@@ -237,274 +232,274 @@
 </tbody>
 </table>
 <h3 id="universal-difference-array-template" tabindex="-1"><a class="header-anchor" href="#universal-difference-array-template"><span>Universal Difference Array Template</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">difference_array_template</span>(<span class="hljs-params">nums, updates</span>):</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    Universal template for difference array problems</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    nums: original array</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    updates: list of [start, end, value] operations</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    &quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    n = <span class="hljs-built_in">len</span>(nums)</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-comment"># Build difference array</span></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    diff = [<span class="hljs-number">0</span>] * n</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    diff[<span class="hljs-number">0</span>] = nums[<span class="hljs-number">0</span>]</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n):</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        diff[i] = nums[i] - nums[i-<span class="hljs-number">1</span>]</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-comment"># Apply range updates in O(1) each</span></span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-keyword">for</span> start, end, val <span class="hljs-keyword">in</span> updates:</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        diff[start] += val</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        <span class="hljs-keyword">if</span> end + <span class="hljs-number">1</span> &lt; n:</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">            diff[end + <span class="hljs-number">1</span>] -= val</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    <span class="hljs-comment"># Reconstruct final array</span></span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">    result = [<span class="hljs-number">0</span>] * n</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    result[<span class="hljs-number">0</span>] = diff[<span class="hljs-number">0</span>]</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n):</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">        result[i] = result[i-<span class="hljs-number">1</span>] + diff[i]</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">    <span class="hljs-keyword">return</span> result</span></span>
+<pre><code class="language-python">def difference_array_template(nums, updates):
+    &quot;&quot;&quot;
+    Universal template for difference array problems
+    nums: original array
+    updates: list of [start, end, value] operations
+    &quot;&quot;&quot;
+    n = len(nums)
+    # Build difference array
+    diff = [0] * n
+    diff[0] = nums[0]
+    for i in range(1, n):
+        diff[i] = nums[i] - nums[i-1]
+    
+    # Apply range updates in O(1) each
+    for start, end, val in updates:
+        diff[start] += val
+        if end + 1 &lt; n:
+            diff[end + 1] -= val
+    
+    # Reconstruct final array
+    result = [0] * n
+    result[0] = diff[0]
+    for i in range(1, n):
+        result[i] = result[i-1] + diff[i]
+    
+    return result
 </code></pre>
 <h3 id="template-1-basic-difference-array" tabindex="-1"><a class="header-anchor" href="#template-1-basic-difference-array"><span>Template 1: Basic Difference Array</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">DifferenceArray</span>:</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, nums</span>):</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;Initialize difference array from original array&quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.n = <span class="hljs-built_in">len</span>(nums)</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.diff = [<span class="hljs-number">0</span>] * <span class="hljs-variable language_">self</span>.n</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-comment"># Build difference array</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.diff[<span class="hljs-number">0</span>] = nums[<span class="hljs-number">0</span>]</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-variable language_">self</span>.n):</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">            <span class="hljs-variable language_">self</span>.diff[i] = nums[i] - nums[i-<span class="hljs-number">1</span>]</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">update</span>(<span class="hljs-params">self, start, end, val</span>):</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;Add val to all elements in range [start, end] in O(1)&quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.diff[start] += val</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-keyword">if</span> end + <span class="hljs-number">1</span> &lt; <span class="hljs-variable language_">self</span>.n:</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">            <span class="hljs-variable language_">self</span>.diff[end + <span class="hljs-number">1</span>] -= val</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_result</span>(<span class="hljs-params">self</span>):</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;Reconstruct the final array in O(n)&quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        result = [<span class="hljs-number">0</span>] * <span class="hljs-variable language_">self</span>.n</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        result[<span class="hljs-number">0</span>] = <span class="hljs-variable language_">self</span>.diff[<span class="hljs-number">0</span>]</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-variable language_">self</span>.n):</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">            result[i] = result[i-<span class="hljs-number">1</span>] + <span class="hljs-variable language_">self</span>.diff[i]</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">        <span class="hljs-keyword">return</span> result</span></span>
+<pre><code class="language-python">class DifferenceArray:
+    def __init__(self, nums):
+        &quot;&quot;&quot;Initialize difference array from original array&quot;&quot;&quot;
+        self.n = len(nums)
+        self.diff = [0] * self.n
+        
+        # Build difference array
+        self.diff[0] = nums[0]
+        for i in range(1, self.n):
+            self.diff[i] = nums[i] - nums[i-1]
+    
+    def update(self, start, end, val):
+        &quot;&quot;&quot;Add val to all elements in range [start, end] in O(1)&quot;&quot;&quot;
+        self.diff[start] += val
+        if end + 1 &lt; self.n:
+            self.diff[end + 1] -= val
+    
+    def get_result(self):
+        &quot;&quot;&quot;Reconstruct the final array in O(n)&quot;&quot;&quot;
+        result = [0] * self.n
+        result[0] = self.diff[0]
+        for i in range(1, self.n):
+            result[i] = result[i-1] + self.diff[i]
+        return result
 </code></pre>
 <h3 id="template-2-resource-allocation" tabindex="-1"><a class="header-anchor" href="#template-2-resource-allocation"><span>Template 2: Resource Allocation</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">check_resource_allocation</span>(<span class="hljs-params">intervals, capacity, resource_field=<span class="hljs-number">2</span></span>):</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    Check if resource allocation is valid</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    intervals: [[start, end, resource_needed], ...]</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    capacity: maximum available resource</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    &quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-comment"># Find the range of positions</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    max_pos = <span class="hljs-built_in">max</span>(interval[<span class="hljs-number">1</span>] <span class="hljs-keyword">for</span> interval <span class="hljs-keyword">in</span> intervals) + <span class="hljs-number">1</span></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    diff = [<span class="hljs-number">0</span>] * max_pos</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-comment"># Apply all resource allocations</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-keyword">for</span> interval <span class="hljs-keyword">in</span> intervals:</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        start, end, resource = interval[<span class="hljs-number">0</span>], interval[<span class="hljs-number">1</span>], interval[resource_field]</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        diff[start] += resource</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-keyword">if</span> end + <span class="hljs-number">1</span> &lt; max_pos:</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">            diff[end + <span class="hljs-number">1</span>] -= resource</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    <span class="hljs-comment"># Check if any position exceeds capacity</span></span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    current = <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(max_pos):</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        current += diff[i]</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        <span class="hljs-keyword">if</span> current &gt; capacity:</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span></span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span></span></span>
+<pre><code class="language-python">def check_resource_allocation(intervals, capacity, resource_field=2):
+    &quot;&quot;&quot;
+    Check if resource allocation is valid
+    intervals: [[start, end, resource_needed], ...]
+    capacity: maximum available resource
+    &quot;&quot;&quot;
+    # Find the range of positions
+    max_pos = max(interval[1] for interval in intervals) + 1
+    diff = [0] * max_pos
+    
+    # Apply all resource allocations
+    for interval in intervals:
+        start, end, resource = interval[0], interval[1], interval[resource_field]
+        diff[start] += resource
+        if end + 1 &lt; max_pos:
+            diff[end + 1] -= resource
+    
+    # Check if any position exceeds capacity
+    current = 0
+    for i in range(max_pos):
+        current += diff[i]
+        if current &gt; capacity:
+            return False
+    
+    return True
 </code></pre>
 <h3 id="template-3-event-timeline" tabindex="-1"><a class="header-anchor" href="#template-3-event-timeline"><span>Template 3: Event Timeline</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">process_events</span>(<span class="hljs-params">events</span>):</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    Process events on a timeline</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    events: [[start_time, end_time, value], ...]</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    Returns: timeline with accumulated values</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    &quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> events:</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">return</span> []</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-comment"># Create timeline</span></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    max_time = <span class="hljs-built_in">max</span>(e[<span class="hljs-number">1</span>] <span class="hljs-keyword">for</span> e <span class="hljs-keyword">in</span> events) + <span class="hljs-number">1</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    timeline = [<span class="hljs-number">0</span>] * max_time</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-comment"># Process each event</span></span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-keyword">for</span> start, end, value <span class="hljs-keyword">in</span> events:</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        timeline[start] += value</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        <span class="hljs-keyword">if</span> end + <span class="hljs-number">1</span> &lt; max_time:</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">            timeline[end + <span class="hljs-number">1</span>] -= value</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    <span class="hljs-comment"># Calculate prefix sum to get actual values</span></span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, max_time):</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        timeline[i] += timeline[i-<span class="hljs-number">1</span>]</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">    <span class="hljs-keyword">return</span> timeline</span></span>
+<pre><code class="language-python">def process_events(events):
+    &quot;&quot;&quot;
+    Process events on a timeline
+    events: [[start_time, end_time, value], ...]
+    Returns: timeline with accumulated values
+    &quot;&quot;&quot;
+    if not events:
+        return []
+    
+    # Create timeline
+    max_time = max(e[1] for e in events) + 1
+    timeline = [0] * max_time
+    
+    # Process each event
+    for start, end, value in events:
+        timeline[start] += value
+        if end + 1 &lt; max_time:
+            timeline[end + 1] -= value
+    
+    # Calculate prefix sum to get actual values
+    for i in range(1, max_time):
+        timeline[i] += timeline[i-1]
+    
+    return timeline
 </code></pre>
 <h3 id="template-4-2d-difference-array" tabindex="-1"><a class="header-anchor" href="#template-4-2d-difference-array"><span>Template 4: 2D Difference Array</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">DifferenceArray2D</span>:</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, matrix</span>):</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;Initialize 2D difference array&quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.m, <span class="hljs-variable language_">self</span>.n = <span class="hljs-built_in">len</span>(matrix), <span class="hljs-built_in">len</span>(matrix[<span class="hljs-number">0</span>])</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.diff = [[<span class="hljs-number">0</span>] * <span class="hljs-variable language_">self</span>.n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-variable language_">self</span>.m)]</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-comment"># Build 2D difference array</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-variable language_">self</span>.m):</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-variable language_">self</span>.n):</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">                <span class="hljs-variable language_">self</span>.diff[i][j] = matrix[i][j]</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">                <span class="hljs-keyword">if</span> i &gt; <span class="hljs-number">0</span>:</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">                    <span class="hljs-variable language_">self</span>.diff[i][j] -= matrix[i-<span class="hljs-number">1</span>][j]</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">                <span class="hljs-keyword">if</span> j &gt; <span class="hljs-number">0</span>:</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">                    <span class="hljs-variable language_">self</span>.diff[i][j] -= matrix[i][j-<span class="hljs-number">1</span>]</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">                <span class="hljs-keyword">if</span> i &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> j &gt; <span class="hljs-number">0</span>:</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">                    <span class="hljs-variable language_">self</span>.diff[i][j] += matrix[i-<span class="hljs-number">1</span>][j-<span class="hljs-number">1</span>]</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">update</span>(<span class="hljs-params">self, r1, c1, r2, c2, val</span>):</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;Add val to all elements in rectangle [r1,c1] to [r2,c2]&quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.diff[r1][c1] += val</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        <span class="hljs-keyword">if</span> r2 + <span class="hljs-number">1</span> &lt; <span class="hljs-variable language_">self</span>.m:</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">            <span class="hljs-variable language_">self</span>.diff[r2 + <span class="hljs-number">1</span>][c1] -= val</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        <span class="hljs-keyword">if</span> c2 + <span class="hljs-number">1</span> &lt; <span class="hljs-variable language_">self</span>.n:</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">            <span class="hljs-variable language_">self</span>.diff[r1][c2 + <span class="hljs-number">1</span>] -= val</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">        <span class="hljs-keyword">if</span> r2 + <span class="hljs-number">1</span> &lt; <span class="hljs-variable language_">self</span>.m <span class="hljs-keyword">and</span> c2 + <span class="hljs-number">1</span> &lt; <span class="hljs-variable language_">self</span>.n:</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">            <span class="hljs-variable language_">self</span>.diff[r2 + <span class="hljs-number">1</span>][c2 + <span class="hljs-number">1</span>] += val</span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_result</span>(<span class="hljs-params">self</span>):</span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;Reconstruct the final 2D array&quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">        result = [[<span class="hljs-number">0</span>] * <span class="hljs-variable language_">self</span>.n <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-variable language_">self</span>.m)]</span></span>
-<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-variable language_">self</span>.m):</span></span>
-<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-variable language_">self</span>.n):</span></span>
-<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">                result[i][j] = <span class="hljs-variable language_">self</span>.diff[i][j]</span></span>
-<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">                <span class="hljs-keyword">if</span> i &gt; <span class="hljs-number">0</span>:</span></span>
-<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">                    result[i][j] += result[i-<span class="hljs-number">1</span>][j]</span></span>
-<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">                <span class="hljs-keyword">if</span> j &gt; <span class="hljs-number">0</span>:</span></span>
-<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">                    result[i][j] += result[i][j-<span class="hljs-number">1</span>]</span></span>
-<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">                <span class="hljs-keyword">if</span> i &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> j &gt; <span class="hljs-number">0</span>:</span></span>
-<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">                    result[i][j] -= result[i-<span class="hljs-number">1</span>][j-<span class="hljs-number">1</span>]</span></span>
-<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">        <span class="hljs-keyword">return</span> result</span></span>
+<pre><code class="language-python">class DifferenceArray2D:
+    def __init__(self, matrix):
+        &quot;&quot;&quot;Initialize 2D difference array&quot;&quot;&quot;
+        self.m, self.n = len(matrix), len(matrix[0])
+        self.diff = [[0] * self.n for _ in range(self.m)]
+        
+        # Build 2D difference array
+        for i in range(self.m):
+            for j in range(self.n):
+                self.diff[i][j] = matrix[i][j]
+                if i &gt; 0:
+                    self.diff[i][j] -= matrix[i-1][j]
+                if j &gt; 0:
+                    self.diff[i][j] -= matrix[i][j-1]
+                if i &gt; 0 and j &gt; 0:
+                    self.diff[i][j] += matrix[i-1][j-1]
+    
+    def update(self, r1, c1, r2, c2, val):
+        &quot;&quot;&quot;Add val to all elements in rectangle [r1,c1] to [r2,c2]&quot;&quot;&quot;
+        self.diff[r1][c1] += val
+        if r2 + 1 &lt; self.m:
+            self.diff[r2 + 1][c1] -= val
+        if c2 + 1 &lt; self.n:
+            self.diff[r1][c2 + 1] -= val
+        if r2 + 1 &lt; self.m and c2 + 1 &lt; self.n:
+            self.diff[r2 + 1][c2 + 1] += val
+    
+    def get_result(self):
+        &quot;&quot;&quot;Reconstruct the final 2D array&quot;&quot;&quot;
+        result = [[0] * self.n for _ in range(self.m)]
+        
+        for i in range(self.m):
+            for j in range(self.n):
+                result[i][j] = self.diff[i][j]
+                if i &gt; 0:
+                    result[i][j] += result[i-1][j]
+                if j &gt; 0:
+                    result[i][j] += result[i][j-1]
+                if i &gt; 0 and j &gt; 0:
+                    result[i][j] -= result[i-1][j-1]
+        
+        return result
 </code></pre>
 <h3 id="template-5-optimized-with-coordinates-compression" tabindex="-1"><a class="header-anchor" href="#template-5-optimized-with-coordinates-compression"><span>Template 5: Optimized with Coordinates Compression</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">difference_array_compressed</span>(<span class="hljs-params">updates</span>):</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    Handle large coordinate space with compression</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    updates: [[start, end, value], ...]</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    &quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-comment"># Collect all unique points</span></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    points = <span class="hljs-built_in">set</span>()</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">for</span> start, end, _ <span class="hljs-keyword">in</span> updates:</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        points.add(start)</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        points.add(end + <span class="hljs-number">1</span>)</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-comment"># Sort and create mapping</span></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    sorted_points = <span class="hljs-built_in">sorted</span>(points)</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    point_to_idx = {p: i <span class="hljs-keyword">for</span> i, p <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(sorted_points)}</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    <span class="hljs-comment"># Apply updates on compressed coordinates</span></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    n = <span class="hljs-built_in">len</span>(sorted_points)</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    diff = [<span class="hljs-number">0</span>] * n</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    <span class="hljs-keyword">for</span> start, end, val <span class="hljs-keyword">in</span> updates:</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        start_idx = point_to_idx[start]</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        end_idx = point_to_idx.get(end + <span class="hljs-number">1</span>, n)</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        diff[start_idx] += val</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">        <span class="hljs-keyword">if</span> end_idx &lt; n:</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">            diff[end_idx] -= val</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">    <span class="hljs-comment"># Calculate values at each point</span></span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n):</span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">        diff[i] += diff[i-<span class="hljs-number">1</span>]</span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">    <span class="hljs-comment"># Return results with original coordinates</span></span></span>
-<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">    result = {}</span></span>
-<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">    <span class="hljs-keyword">for</span> i, point <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(sorted_points[:-<span class="hljs-number">1</span>]):  <span class="hljs-comment"># Exclude the last dummy point</span></span></span>
-<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">        <span class="hljs-keyword">if</span> diff[i] != <span class="hljs-number">0</span>:</span></span>
-<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">            result[point] = diff[i]</span></span>
-<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">    <span class="hljs-keyword">return</span> result</span></span>
+<pre><code class="language-python">def difference_array_compressed(updates):
+    &quot;&quot;&quot;
+    Handle large coordinate space with compression
+    updates: [[start, end, value], ...]
+    &quot;&quot;&quot;
+    # Collect all unique points
+    points = set()
+    for start, end, _ in updates:
+        points.add(start)
+        points.add(end + 1)
+    
+    # Sort and create mapping
+    sorted_points = sorted(points)
+    point_to_idx = {p: i for i, p in enumerate(sorted_points)}
+    
+    # Apply updates on compressed coordinates
+    n = len(sorted_points)
+    diff = [0] * n
+    
+    for start, end, val in updates:
+        start_idx = point_to_idx[start]
+        end_idx = point_to_idx.get(end + 1, n)
+        diff[start_idx] += val
+        if end_idx &lt; n:
+            diff[end_idx] -= val
+    
+    # Calculate values at each point
+    for i in range(1, n):
+        diff[i] += diff[i-1]
+    
+    # Return results with original coordinates
+    result = {}
+    for i, point in enumerate(sorted_points[:-1]):  # Exclude the last dummy point
+        if diff[i] != 0:
+            result[point] = diff[i]
+    
+    return result
 </code></pre>
 <h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// java</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// https://labuladong.online/algo/data-structure/diff-array/</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-comment">// 差分数组工具类</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"><span class="hljs-comment">// V1</span></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Difference</span> {</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-comment">// 差分数组</span></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span>[] diff;</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-comment">// 输入一个初始数组，区间操作将在这个数组上进行</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-title function_">Difference</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-keyword">assert</span> nums.length &gt; <span class="hljs-number">0</span>;</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        diff = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[nums.length];</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-comment">// 根据初始数组构造差分数组</span></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        diff[<span class="hljs-number">0</span>] = nums[<span class="hljs-number">0</span>];</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; nums.length; i++) {</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">            diff[i] = nums[i] - nums[i - <span class="hljs-number">1</span>];</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    <span class="hljs-comment">// 给闭区间 [i, j] 增加 val（可以是负数）</span></span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">increment</span><span class="hljs-params">(<span class="hljs-type">int</span> i, <span class="hljs-type">int</span> j, <span class="hljs-type">int</span> val)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">        diff[i] += val;</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">        <span class="hljs-keyword">if</span> (j + <span class="hljs-number">1</span> &lt; diff.length) {</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">            diff[j + <span class="hljs-number">1</span>] -= val;</span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">    <span class="hljs-comment">// 返回结果数组</span></span></span>
-<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] result() {</span></span>
-<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">        <span class="hljs-type">int</span>[] res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[diff.length];</span></span>
-<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">        <span class="hljs-comment">// 根据差分数组构造结果数组</span></span></span>
-<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">        res[<span class="hljs-number">0</span>] = diff[<span class="hljs-number">0</span>];</span></span>
-<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; diff.length; i++) {</span></span>
-<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">            res[i] = res[i - <span class="hljs-number">1</span>] + diff[i];</span></span>
-<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">        <span class="hljs-keyword">return</span> res;</span></span>
-<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">
+// java
+// https://labuladong.online/algo/data-structure/diff-array/
+
+// 差分数组工具类
+// V1
+class Difference {
+    // 差分数组
+    private int[] diff;
+    
+    // 输入一个初始数组，区间操作将在这个数组上进行
+    public Difference(int[] nums) {
+        assert nums.length &gt; 0;
+        diff = new int[nums.length];
+        // 根据初始数组构造差分数组
+        diff[0] = nums[0];
+        for (int i = 1; i &lt; nums.length; i++) {
+            diff[i] = nums[i] - nums[i - 1];
+        }
+    }
+
+    // 给闭区间 [i, j] 增加 val（可以是负数）
+    public void increment(int i, int j, int val) {
+        diff[i] += val;
+        if (j + 1 &lt; diff.length) {
+            diff[j + 1] -= val;
+        }
+    }
+
+    // 返回结果数组
+    public int[] result() {
+        int[] res = new int[diff.length];
+        // 根据差分数组构造结果数组
+        res[0] = diff[0];
+        for (int i = 1; i &lt; diff.length; i++) {
+            res[i] = res[i - 1] + diff[i];
+        }
+        return res;
+    }
+}
 </code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// V2</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/AlgorithmJava/DifferenceArray.java</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-comment">// method</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] getDifferenceArray(<span class="hljs-type">int</span>[][] input, <span class="hljs-type">int</span> n) {</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"><span class="hljs-comment">/** LC 1109. Corporate Flight Bookings input : [start, end, seats]</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"> *</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"> *  NOTE !!!</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"> *</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"> *   in java, index start from 0;</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"> *   but in LC 1109, index start from 1</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code"> *</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"> */</span></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code"><span class="hljs-type">int</span>[] tmp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n + <span class="hljs-number">1</span>];</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code"><span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] x : input) {</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">  <span class="hljs-type">int</span> <span class="hljs-variable">start</span> <span class="hljs-operator">=</span> x[<span class="hljs-number">0</span>];</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">  <span class="hljs-type">int</span> <span class="hljs-variable">end</span> <span class="hljs-operator">=</span> x[<span class="hljs-number">1</span>];</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">  <span class="hljs-type">int</span> <span class="hljs-variable">seats</span> <span class="hljs-operator">=</span> x[<span class="hljs-number">2</span>];</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">  <span class="hljs-comment">// add</span></span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">  tmp[start] += seats;</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">  <span class="hljs-comment">// subtract</span></span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">  <span class="hljs-keyword">if</span> (end + <span class="hljs-number">1</span> &lt;= n) {</span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">    tmp[end + <span class="hljs-number">1</span>] -= seats;</span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">  }</span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">}</span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">31</span><span class="ln-code"><span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; tmp.length; i++) {</span></span>
-<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">  <span class="hljs-comment">//tmp[i] = tmp[i - 1] + tmp[i];</span></span></span>
-<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">    tmp[i] += tmp[i - <span class="hljs-number">1</span>];</span></span>
-<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">}</span></span>
-<span class="ln-row"><span class="ln-num">35</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">36</span><span class="ln-code"><span class="hljs-keyword">return</span> Arrays.copyOfRange(tmp, <span class="hljs-number">1</span>, n+<span class="hljs-number">1</span>);</span></span>
-<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// V2
+// https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/AlgorithmJava/DifferenceArray.java
+
+
+// method
+public int[] getDifferenceArray(int[][] input, int n) {
+
+/** LC 1109. Corporate Flight Bookings input : [start, end, seats]
+ *
+ *  NOTE !!!
+ *
+ *   in java, index start from 0;
+ *   but in LC 1109, index start from 1
+ *
+ */
+int[] tmp = new int[n + 1];
+for (int[] x : input) {
+  int start = x[0];
+  int end = x[1];
+  int seats = x[2];
+
+  // add
+  tmp[start] += seats;
+
+  // subtract
+  if (end + 1 &lt;= n) {
+    tmp[end + 1] -= seats;
+  }
+}
+
+for (int i = 1; i &lt; tmp.length; i++) {
+  //tmp[i] = tmp[i - 1] + tmp[i];
+    tmp[i] += tmp[i - 1];
+}
+
+return Arrays.copyOfRange(tmp, 1, n+1);
+}
 </code></pre>
 <h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
 <h3 id="pattern-based-problem-classification" tabindex="-1"><a class="header-anchor" href="#pattern-based-problem-classification"><span>Pattern-Based Problem Classification</span></a></h3>
@@ -698,151 +693,151 @@
 <h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
 <h3 id="2-1-range-addition" tabindex="-1"><a class="header-anchor" href="#2-1-range-addition"><span>2-1) Range Addition</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// java</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// LC 370</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-comment">// V0</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"><span class="hljs-comment">// IDEA : DIFFERENCE ARRAY</span></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-type">int</span>[] getModifiedArray(<span class="hljs-type">int</span> length, <span class="hljs-type">int</span>[][] updates) {</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"><span class="hljs-type">int</span>[] tmp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[length + <span class="hljs-number">1</span>]; <span class="hljs-comment">// or new int[length]; both works</span></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"><span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] x : updates) {</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">  <span class="hljs-type">int</span> <span class="hljs-variable">start</span> <span class="hljs-operator">=</span> x[<span class="hljs-number">0</span>];</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">  <span class="hljs-type">int</span> <span class="hljs-variable">end</span> <span class="hljs-operator">=</span> x[<span class="hljs-number">1</span>];</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">  <span class="hljs-type">int</span> <span class="hljs-variable">amount</span> <span class="hljs-operator">=</span> x[<span class="hljs-number">2</span>];</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">  <span class="hljs-comment">// add</span></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">  tmp[start] += amount;</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">  <span class="hljs-comment">// subtract (remove the &quot;adding affect&quot; on &quot;NEXT&quot; element)</span></span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">  <span class="hljs-comment">/**</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">   * NOTE !!!</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">   *</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">   * &lt;p&gt;we remove the &quot;adding affect&quot; on NEXT element (e.g. end + 1)</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">   */</span></span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">  <span class="hljs-keyword">if</span> (end + <span class="hljs-number">1</span> &lt; length) { <span class="hljs-comment">// NOTE !!! use `end + 1`</span></span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">    tmp[end + <span class="hljs-number">1</span>] -= amount;</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">  }</span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">}</span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code"><span class="hljs-comment">// prepare final result</span></span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code"><span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; tmp.length; i++) {</span></span>
-<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">  tmp[i] += tmp[i - <span class="hljs-number">1</span>];</span></span>
-<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">}</span></span>
-<span class="ln-row"><span class="ln-num">33</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">34</span><span class="ln-code"><span class="hljs-keyword">return</span> Arrays.copyOfRange(tmp, <span class="hljs-number">0</span>, length); <span class="hljs-comment">// return the sub array between 0, lengh index</span></span></span>
-<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">}</span></span>
-<span class="ln-row"><span class="ln-num">36</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">37</span><span class="ln-code"><span class="hljs-comment">// V1</span></span></span>
-<span class="ln-row"><span class="ln-num">38</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {</span></span>
-<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] getModifiedArray(<span class="hljs-type">int</span> length, <span class="hljs-type">int</span>[][] updates) {</span></span>
-<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">        <span class="hljs-comment">// nums 初始化为全 0</span></span></span>
-<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">        <span class="hljs-type">int</span>[] nums = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[length];</span></span>
-<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">        <span class="hljs-comment">// 构造差分解法</span></span></span>
-<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">        <span class="hljs-type">Difference</span> <span class="hljs-variable">df</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Difference</span>(nums);</span></span>
-<span class="ln-row"><span class="ln-num">44</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">45</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] update : updates) {</span></span>
-<span class="ln-row"><span class="ln-num">46</span><span class="ln-code">            <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> update[<span class="hljs-number">0</span>];</span></span>
-<span class="ln-row"><span class="ln-num">47</span><span class="ln-code">            <span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> update[<span class="hljs-number">1</span>];</span></span>
-<span class="ln-row"><span class="ln-num">48</span><span class="ln-code">            <span class="hljs-type">int</span> <span class="hljs-variable">val</span> <span class="hljs-operator">=</span> update[<span class="hljs-number">2</span>];</span></span>
-<span class="ln-row"><span class="ln-num">49</span><span class="ln-code">            df.increment(i, j, val);</span></span>
-<span class="ln-row"><span class="ln-num">50</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">51</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">52</span><span class="ln-code">        <span class="hljs-keyword">return</span> df.result();</span></span>
-<span class="ln-row"><span class="ln-num">53</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">54</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// java
+// LC 370
+
+
+// V0
+// IDEA : DIFFERENCE ARRAY
+public static int[] getModifiedArray(int length, int[][] updates) {
+
+int[] tmp = new int[length + 1]; // or new int[length]; both works
+for (int[] x : updates) {
+  int start = x[0];
+  int end = x[1];
+  int amount = x[2];
+
+  // add
+  tmp[start] += amount;
+
+  // subtract (remove the &quot;adding affect&quot; on &quot;NEXT&quot; element)
+  /**
+   * NOTE !!!
+   *
+   * &lt;p&gt;we remove the &quot;adding affect&quot; on NEXT element (e.g. end + 1)
+   */
+  if (end + 1 &lt; length) { // NOTE !!! use `end + 1`
+    tmp[end + 1] -= amount;
+  }
+}
+
+// prepare final result
+for (int i = 1; i &lt; tmp.length; i++) {
+  tmp[i] += tmp[i - 1];
+}
+
+return Arrays.copyOfRange(tmp, 0, length); // return the sub array between 0, lengh index
+}
+
+// V1
+class Solution {
+    public int[] getModifiedArray(int length, int[][] updates) {
+        // nums 初始化为全 0
+        int[] nums = new int[length];
+        // 构造差分解法
+        Difference df = new Difference(nums);
+        
+        for (int[] update : updates) {
+            int i = update[0];
+            int j = update[1];
+            int val = update[2];
+            df.increment(i, j, val);
+        }
+        
+        return df.result();
+    }
+}
 </code></pre>
 <h3 id="2-2-corporate-flight-bookings" tabindex="-1"><a class="header-anchor" href="#2-2-corporate-flight-bookings"><span>2-2) Corporate Flight Bookings</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// java</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// LC 1109</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-comment">// V1</span></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] corpFlightBookings(<span class="hljs-type">int</span>[][] bookings, <span class="hljs-type">int</span> n) {</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-comment">// nums 初始化为全 0</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-type">int</span>[] nums = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-comment">// 构造差分解法</span></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-type">Difference</span> <span class="hljs-variable">df</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Difference</span>(nums);</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] booking : bookings) {</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">            <span class="hljs-comment">// 注意转成数组索引要减一哦</span></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> booking[<span class="hljs-number">0</span>] - <span class="hljs-number">1</span>;</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">            <span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> booking[<span class="hljs-number">1</span>] - <span class="hljs-number">1</span>;</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">            <span class="hljs-type">int</span> <span class="hljs-variable">val</span> <span class="hljs-operator">=</span> booking[<span class="hljs-number">2</span>];</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">            <span class="hljs-comment">// 对区间 nums[i..j] 增加 val</span></span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">            df.increment(i, j, val);</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        <span class="hljs-comment">// 返回最终的结果数组</span></span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        <span class="hljs-keyword">return</span> df.result();</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// java
+// LC 1109
+
+// V1
+class Solution {
+    public int[] corpFlightBookings(int[][] bookings, int n) {
+        // nums 初始化为全 0
+        int[] nums = new int[n];
+        // 构造差分解法
+        Difference df = new Difference(nums);
+
+        for (int[] booking : bookings) {
+            // 注意转成数组索引要减一哦
+            int i = booking[0] - 1;
+            int j = booking[1] - 1;
+            int val = booking[2];
+            // 对区间 nums[i..j] 增加 val
+            df.increment(i, j, val);
+        }
+        // 返回最终的结果数组
+        return df.result();
+    }
+}
 </code></pre>
 <h3 id="2-3-car-pooling" tabindex="-1"><a class="header-anchor" href="#2-3-car-pooling"><span>2-3) Car Pooling</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// java</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// LC 1094</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// https://leetcode.com/problems/car-pooling/description/</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">carPooling</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] trips, <span class="hljs-type">int</span> capacity)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-comment">// 最多有 1001 个车站</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-type">int</span>[] nums = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">1001</span>];</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-comment">// 构造差分解法</span></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-type">Difference</span> <span class="hljs-variable">df</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Difference</span>(nums);</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] trip : trips) {</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            <span class="hljs-comment">// 乘客数量</span></span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">            <span class="hljs-type">int</span> <span class="hljs-variable">val</span> <span class="hljs-operator">=</span> trip[<span class="hljs-number">0</span>];</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">            <span class="hljs-comment">// 第 trip[1] 站乘客上车</span></span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">            <span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> trip[<span class="hljs-number">1</span>];</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">            <span class="hljs-comment">// 第 trip[2] 站乘客已经下车，</span></span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">            <span class="hljs-comment">// 即乘客在车上的区间是 [trip[1], trip[2] - 1]</span></span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">            <span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> trip[<span class="hljs-number">2</span>] - <span class="hljs-number">1</span>;</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">            <span class="hljs-comment">// 进行区间操作</span></span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">            df.increment(i, j, val);</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">        <span class="hljs-type">int</span>[] res = df.result();</span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">        <span class="hljs-comment">// 客车自始至终都不应该超载</span></span></span>
-<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; res.length; i++) {</span></span>
-<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">            <span class="hljs-keyword">if</span> (capacity &lt; res[i]) {</span></span>
-<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">                <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;</span></span>
-<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">            }</span></span>
-<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;</span></span>
-<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// java
+// LC 1094
+// https://leetcode.com/problems/car-pooling/description/
+
+class Solution {
+    public boolean carPooling(int[][] trips, int capacity) {
+        // 最多有 1001 个车站
+        int[] nums = new int[1001];
+
+        // 构造差分解法
+        Difference df = new Difference(nums);
+
+        for (int[] trip : trips) {
+            // 乘客数量
+            int val = trip[0];
+
+            // 第 trip[1] 站乘客上车
+            int i = trip[1];
+
+            // 第 trip[2] 站乘客已经下车，
+            // 即乘客在车上的区间是 [trip[1], trip[2] - 1]
+            int j = trip[2] - 1;
+
+            // 进行区间操作
+            df.increment(i, j, val);
+        }
+
+        int[] res = df.result();
+
+        // 客车自始至终都不应该超载
+        for (int i = 0; i &lt; res.length; i++) {
+            if (capacity &lt; res[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
 </code></pre>
 <h2 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h2>
-<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">Difference Array Problem Analysis Flowchart:</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">1. Does the problem involve range updates?</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">   ├── YES → Check update pattern</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">   │   ├── Multiple ranges need same update? → Use Difference Array</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">   │   ├── Single element updates? → Use direct array</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">   │   └── Need immediate query results? → Consider Segment Tree</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">   └── NO → Not a difference array problem</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">2. What type of range operation?</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">   ├── Add/Subtract constant to range → Basic Difference Array (Template 1)</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">   ├── Track resource usage → Resource Allocation (Template 2)</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">   ├── Timeline/Event processing → Event Timeline (Template 3)</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">   └── 2D matrix updates → 2D Difference Array (Template 4)</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">3. Space/Time Trade-offs:</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">   ├── Large coordinate space? → Use Coordinate Compression (Template 5)</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">   ├── Many queries between updates? → Consider Lazy Propagation</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">   └── Only final result needed? → Basic Difference Array</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">4. Special Considerations:</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">   ├── Online vs Offline → Difference array is offline</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">   ├── Need range queries? → Combine with Prefix Sum</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">   └── Overlapping intervals? → Check maximum overlap</span></span>
+<pre><code>Difference Array Problem Analysis Flowchart:
+
+1. Does the problem involve range updates?
+   ├── YES → Check update pattern
+   │   ├── Multiple ranges need same update? → Use Difference Array
+   │   ├── Single element updates? → Use direct array
+   │   └── Need immediate query results? → Consider Segment Tree
+   └── NO → Not a difference array problem
+
+2. What type of range operation?
+   ├── Add/Subtract constant to range → Basic Difference Array (Template 1)
+   ├── Track resource usage → Resource Allocation (Template 2)
+   ├── Timeline/Event processing → Event Timeline (Template 3)
+   └── 2D matrix updates → 2D Difference Array (Template 4)
+
+3. Space/Time Trade-offs:
+   ├── Large coordinate space? → Use Coordinate Compression (Template 5)
+   ├── Many queries between updates? → Consider Lazy Propagation
+   └── Only final result needed? → Basic Difference Array
+
+4. Special Considerations:
+   ├── Online vs Offline → Difference array is offline
+   ├── Need range queries? → Combine with Prefix Sum
+   └── Overlapping intervals? → Check maximum overlap
 </code></pre>
 <h3 id="decision-framework" tabindex="-1"><a class="header-anchor" href="#decision-framework"><span>Decision Framework</span></a></h3>
 <ol>
@@ -946,36 +941,36 @@
 </table>
 <h3 id="common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#common-patterns-tricks"><span>Common Patterns &amp; Tricks</span></a></h3>
 <h4 id="pattern-range-update-formula" tabindex="-1"><a class="header-anchor" href="#pattern-range-update-formula"><span><strong>Pattern: Range Update Formula</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># To add val to range [start, end]:</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">diff[start] += val</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-keyword">if</span> end + <span class="hljs-number">1</span> &lt; n:</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    diff[end + <span class="hljs-number">1</span>] -= val</span></span>
+<pre><code class="language-python"># To add val to range [start, end]:
+diff[start] += val
+if end + 1 &lt; n:
+    diff[end + 1] -= val
 </code></pre>
 <h4 id="pattern-off-by-one-for-intervals" tabindex="-1"><a class="header-anchor" href="#pattern-off-by-one-for-intervals"><span><strong>Pattern: Off-by-One for Intervals</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># If passengers get off at station x, they&#x27;re on board [start, x-1]</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># If event ends at time t, it&#x27;s active [start, t]</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment"># Be careful with inclusive/exclusive boundaries!</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-comment"># Car pooling example:</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"><span class="hljs-keyword">for</span> passengers, pickup, dropoff <span class="hljs-keyword">in</span> trips:</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    diff[pickup] += passengers</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    diff[dropoff] -= passengers  <span class="hljs-comment"># Not dropoff-1!</span></span></span>
+<pre><code class="language-python"># If passengers get off at station x, they're on board [start, x-1]
+# If event ends at time t, it's active [start, t]
+# Be careful with inclusive/exclusive boundaries!
+
+# Car pooling example:
+for passengers, pickup, dropoff in trips:
+    diff[pickup] += passengers
+    diff[dropoff] -= passengers  # Not dropoff-1!
 </code></pre>
 <h4 id="pattern-maximum-concurrent-events" tabindex="-1"><a class="header-anchor" href="#pattern-maximum-concurrent-events"><span><strong>Pattern: Maximum Concurrent Events</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">max_concurrent</span>(<span class="hljs-params">intervals</span>):</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    events = []</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">for</span> start, end <span class="hljs-keyword">in</span> intervals:</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        events.append((start, <span class="hljs-number">1</span>))   <span class="hljs-comment"># Start event</span></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        events.append((end + <span class="hljs-number">1</span>, -<span class="hljs-number">1</span>)) <span class="hljs-comment"># End event</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    events.sort()</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    max_concurrent = current = <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-keyword">for</span> time, delta <span class="hljs-keyword">in</span> events:</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        current += delta</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        max_concurrent = <span class="hljs-built_in">max</span>(max_concurrent, current)</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-keyword">return</span> max_concurrent</span></span>
+<pre><code class="language-python">def max_concurrent(intervals):
+    events = []
+    for start, end in intervals:
+        events.append((start, 1))   # Start event
+        events.append((end + 1, -1)) # End event
+    
+    events.sort()
+    max_concurrent = current = 0
+    
+    for time, delta in events:
+        current += delta
+        max_concurrent = max(max_concurrent, current)
+    
+    return max_concurrent
 </code></pre>
 <h3 id="problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#problem-solving-steps"><span>Problem-Solving Steps</span></a></h3>
 <ol>
@@ -1019,56 +1014,56 @@
 <li><strong>Coordinate Compression</strong>: Handling large sparse ranges</li>
 </ul>
 <h3 id="java-implementation-notes" tabindex="-1"><a class="header-anchor" href="#java-implementation-notes"><span>Java Implementation Notes</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// Java Difference Array Class</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Difference</span> {</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span>[] diff;</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-title function_">Difference</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        diff = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[nums.length];</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        diff[<span class="hljs-number">0</span>] = nums[<span class="hljs-number">0</span>];</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; nums.length; i++) {</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">            diff[i] = nums[i] - nums[i-<span class="hljs-number">1</span>];</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">increment</span><span class="hljs-params">(<span class="hljs-type">int</span> i, <span class="hljs-type">int</span> j, <span class="hljs-type">int</span> val)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        diff[i] += val;</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-keyword">if</span> (j + <span class="hljs-number">1</span> &lt; diff.length) {</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">            diff[j + <span class="hljs-number">1</span>] -= val;</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] result() {</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        <span class="hljs-type">int</span>[] res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[diff.length];</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        res[<span class="hljs-number">0</span>] = diff[<span class="hljs-number">0</span>];</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; diff.length; i++) {</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">            res[i] = res[i-<span class="hljs-number">1</span>] + diff[i];</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">        <span class="hljs-keyword">return</span> res;</span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// Java Difference Array Class
+class Difference {
+    private int[] diff;
+    
+    public Difference(int[] nums) {
+        diff = new int[nums.length];
+        diff[0] = nums[0];
+        for (int i = 1; i &lt; nums.length; i++) {
+            diff[i] = nums[i] - nums[i-1];
+        }
+    }
+    
+    public void increment(int i, int j, int val) {
+        diff[i] += val;
+        if (j + 1 &lt; diff.length) {
+            diff[j + 1] -= val;
+        }
+    }
+    
+    public int[] result() {
+        int[] res = new int[diff.length];
+        res[0] = diff[0];
+        for (int i = 1; i &lt; diff.length; i++) {
+            res[i] = res[i-1] + diff[i];
+        }
+        return res;
+    }
+}
 </code></pre>
 <h3 id="python-implementation-notes" tabindex="-1"><a class="header-anchor" href="#python-implementation-notes"><span>Python Implementation Notes</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Python class implementation</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">DifferenceArray</span>:</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, nums</span>):</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.n = <span class="hljs-built_in">len</span>(nums)</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.diff = [<span class="hljs-number">0</span>] * <span class="hljs-variable language_">self</span>.n</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-keyword">if</span> nums:</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">            <span class="hljs-variable language_">self</span>.diff[<span class="hljs-number">0</span>] = nums[<span class="hljs-number">0</span>]</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-variable language_">self</span>.n):</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">                <span class="hljs-variable language_">self</span>.diff[i] = nums[i] - nums[i-<span class="hljs-number">1</span>]</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">update</span>(<span class="hljs-params">self, start, end, val</span>):</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.diff[start] += val</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-keyword">if</span> end + <span class="hljs-number">1</span> &lt; <span class="hljs-variable language_">self</span>.n:</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            <span class="hljs-variable language_">self</span>.diff[end + <span class="hljs-number">1</span>] -= val</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_result</span>(<span class="hljs-params">self</span>):</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        result = [<span class="hljs-variable language_">self</span>.diff[<span class="hljs-number">0</span>]]</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, <span class="hljs-variable language_">self</span>.n):</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">            result.append(result[-<span class="hljs-number">1</span>] + <span class="hljs-variable language_">self</span>.diff[i])</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        <span class="hljs-keyword">return</span> result</span></span>
+<pre><code class="language-python"># Python class implementation
+class DifferenceArray:
+    def __init__(self, nums):
+        self.n = len(nums)
+        self.diff = [0] * self.n
+        if nums:
+            self.diff[0] = nums[0]
+            for i in range(1, self.n):
+                self.diff[i] = nums[i] - nums[i-1]
+    
+    def update(self, start, end, val):
+        self.diff[start] += val
+        if end + 1 &lt; self.n:
+            self.diff[end + 1] -= val
+    
+    def get_result(self):
+        result = [self.diff[0]]
+        for i in range(1, self.n):
+            result.append(result[-1] + self.diff[i])
+        return result
 </code></pre>
 <hr>
 <p><strong>Must-Know Problems for Interviews</strong>: LC 370, 1109, 1094, 253, 732

@@ -9,7 +9,8 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -20,42 +21,40 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    // Code block wrappers + copy buttons (highlighting done at build time)
-    try {
-      document.querySelectorAll('pre').forEach(function(pre) {
-        var codeEl = pre.querySelector('code');
-        var lang = pre.getAttribute('data-lang') || '';
-        var wrapper = document.createElement('div');
-        wrapper.className = 'code-block-wrapper';
-        pre.parentNode.insertBefore(wrapper, pre);
-        var header = document.createElement('div');
-        header.className = 'code-block-header';
-        if (lang) {
-          var label = document.createElement('span');
-          label.className = 'code-lang-label';
-          label.textContent = lang;
-          header.appendChild(label);
-        } else {
-          header.appendChild(document.createElement('span'));
-        }
-        var btn = document.createElement('button');
-        btn.className = 'copy-btn';
-        btn.textContent = 'Copy';
-        btn.addEventListener('click', function() {
-          var text = codeEl
-            ? Array.from(codeEl.querySelectorAll('.ln-code')).map(function(el) { return el.textContent; }).join('\n')
-            : pre.textContent;
-          navigator.clipboard.writeText(text).then(function() {
-            btn.textContent = 'Copied!';
-            btn.classList.add('copied');
-            setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-          });
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
         });
-        header.appendChild(btn);
-        wrapper.appendChild(header);
-        wrapper.appendChild(pre);
       });
-    } catch(e) { console.error('Code block setup error:', e); }
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -65,36 +64,32 @@
       }
     });
     // Reading progress bar
-    try {
-      var progressBar = document.getElementById('reading-progress');
-      if (progressBar) {
-        window.addEventListener('scroll', function() {
-          var winScroll = document.documentElement.scrollTop;
-          var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-          progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
-        });
-      }
-    } catch(e) {}
-    // Dark mode toggle — isolated so errors elsewhere never prevent this from working
-    try {
-      var toggle = document.getElementById('theme-toggle');
-      if (toggle) {
-        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-        toggle.textContent = isDark ? '☀️' : '🌙';
-        toggle.addEventListener('click', function() {
-          var dark = document.documentElement.getAttribute('data-theme') === 'dark';
-          if (dark) {
-            document.documentElement.removeAttribute('data-theme');
-            localStorage.setItem('theme', 'light');
-            toggle.textContent = '🌙';
-          } else {
-            document.documentElement.setAttribute('data-theme', 'dark');
-            localStorage.setItem('theme', 'dark');
-            toggle.textContent = '☀️';
-          }
-        });
-      }
-    } catch(e) { console.error('Theme toggle error:', e); }
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
   });</script>
 </head>
 <body>
@@ -184,9 +179,9 @@
 </table>
 <h3 id="core-principle" tabindex="-1"><a class="header-anchor" href="#core-principle"><span>Core Principle</span></a></h3>
 <p>For a problem F(X) where X is the input:</p>
-<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">1. Break down into smaller scopes: x₀, x₁, ..., xₙ ∈ X</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">2. Recursively solve: F(x₀), F(x₁), ..., F(xₙ)</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">3. Combine results to solve F(X)</span></span>
+<pre><code>1. Break down into smaller scopes: x₀, x₁, ..., xₙ ∈ X
+2. Recursively solve: F(x₀), F(x₁), ..., F(xₙ)
+3. Combine results to solve F(X)
 </code></pre>
 <h3 id="quick-tips" tabindex="-1"><a class="header-anchor" href="#quick-tips"><span>Quick Tips</span></a></h3>
 <ul>
@@ -200,15 +195,15 @@
 <h3 id="1-2-complexity-analysis" tabindex="-1"><a class="header-anchor" href="#1-2-complexity-analysis"><span>1-2) Complexity Analysis</span></a></h3>
 <p><strong>Time Complexity</strong>:
 Think of recursion as a <strong>tree structure</strong>:</p>
-<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">        fib(5)</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">       /      \</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    fib(4)    fib(3)</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    /    \     /    \</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">fib(3)  fib(2) fib(2) fib(1)</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"> /   \    /  \   /  \</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">fib(2) fib(1) fib(1) fib(0)</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"> /   \</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">fib(1) fib(0)</span></span>
+<pre><code>        fib(5)
+       /      \
+    fib(4)    fib(3)
+    /    \     /    \
+fib(3)  fib(2) fib(2) fib(1)
+ /   \    /  \   /  \
+fib(2) fib(1) fib(1) fib(0)
+ /   \
+fib(1) fib(0)
 </code></pre>
 <p>Given a recursion algorithm: <strong>O(T) = R × O(S)</strong></p>
 <ul>
@@ -242,11 +237,11 @@ Think of recursion as a <strong>tree structure</strong>:</p>
 <h2 id="2-patterns" tabindex="-1"><a class="header-anchor" href="#2-patterns"><span>2) Patterns</span></a></h2>
 <h3 id="2-1-basic-operation" tabindex="-1"><a class="header-anchor" href="#2-1-basic-operation"><span>2-1) Basic Operation</span></a></h3>
 <p>Endless loop through elements in list (common in backtracking/generation):</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Example: LC 22 (Generate Parentheses)</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">_<span class="hljs-built_in">list</span> = [<span class="hljs-string">&quot;(&quot;</span>, <span class="hljs-string">&quot;)&quot;</span>]</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> _<span class="hljs-built_in">list</span>:</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    _tmp = tmp + x</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-built_in">help</span>(_tmp)</span></span>
+<pre><code class="language-python"># Example: LC 22 (Generate Parentheses)
+_list = [&quot;(&quot;, &quot;)&quot;]
+for x in _list:
+    _tmp = tmp + x
+    help(_tmp)
 </code></pre>
 <hr>
 <h3 id="2-2-top-down-recursion" tabindex="-1"><a class="header-anchor" href="#2-2-top-down-recursion"><span>2-2) Top-Down Recursion</span></a></h3>
@@ -280,21 +275,21 @@ Think of recursion as a <strong>tree structure</strong>:</p>
 <li>Can have higher space complexity due to call stack</li>
 </ul>
 <p><strong>Pattern</strong>:</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">topDown</span>(<span class="hljs-params">node, parentInfo</span>):</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-comment"># Base case</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node:</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        <span class="hljs-keyword">return</span> baseResult</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-comment"># Use parentInfo to make decision</span></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    currentResult = processWithParentInfo(node, parentInfo)</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-comment"># Pass updated info to children</span></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    newParentInfo = updateParentInfo(parentInfo, node)</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    leftResult = topDown(node.left, newParentInfo)</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    rightResult = topDown(node.right, newParentInfo)</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-comment"># Combine results</span></span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-keyword">return</span> combineResults(currentResult, leftResult, rightResult)</span></span>
+<pre><code class="language-python">def topDown(node, parentInfo):
+    # Base case
+    if not node:
+        return baseResult
+
+    # Use parentInfo to make decision
+    currentResult = processWithParentInfo(node, parentInfo)
+
+    # Pass updated info to children
+    newParentInfo = updateParentInfo(parentInfo, node)
+    leftResult = topDown(node.left, newParentInfo)
+    rightResult = topDown(node.right, newParentInfo)
+
+    # Combine results
+    return combineResults(currentResult, leftResult, rightResult)
 </code></pre>
 <p><strong>Common LeetCode Problems</strong>:</p>
 <ul>
@@ -309,22 +304,22 @@ Think of recursion as a <strong>tree structure</strong>:</p>
 <li>LC 437: Path Sum III</li>
 </ul>
 <p><strong>Example - Path Sum (LC 112)</strong>:</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">hasPathSum</span>(<span class="hljs-params">self, root, targetSum</span>):</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">topDown</span>(<span class="hljs-params">node, currentSum</span>):</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node:</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        currentSum += node.val</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-comment"># Leaf node check</span></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node.left <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> node.right:</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">            <span class="hljs-keyword">return</span> currentSum == targetSum</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-comment"># Continue to children with updated sum</span></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-keyword">return</span> (topDown(node.left, currentSum) <span class="hljs-keyword">or</span></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">                topDown(node.right, currentSum))</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    <span class="hljs-keyword">return</span> topDown(root, <span class="hljs-number">0</span>)</span></span>
+<pre><code class="language-python">def hasPathSum(self, root, targetSum):
+    def topDown(node, currentSum):
+        if not node:
+            return False
+
+        currentSum += node.val
+
+        # Leaf node check
+        if not node.left and not node.right:
+            return currentSum == targetSum
+
+        # Continue to children with updated sum
+        return (topDown(node.left, currentSum) or
+                topDown(node.right, currentSum))
+
+    return topDown(root, 0)
 </code></pre>
 <h3 id="2-3-bottom-up-recursion" tabindex="-1"><a class="header-anchor" href="#2-3-bottom-up-recursion"><span>2-3) Bottom-Up Recursion</span></a></h3>
 <p><strong>Definition</strong>: Start from leaf nodes and build up the solution by combining results from child nodes. Also known as “postorder” approach.</p>
@@ -358,19 +353,19 @@ Think of recursion as a <strong>tree structure</strong>:</p>
 <li>May need to return multiple values from recursive calls</li>
 </ul>
 <p><strong>Pattern</strong>:</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bottomUp</span>(<span class="hljs-params">node</span>):</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-comment"># Base case</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node:</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        <span class="hljs-keyword">return</span> baseResult</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-comment"># Get results from children first</span></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    leftResult = bottomUp(node.left)</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    rightResult = bottomUp(node.right)</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-comment"># Process current node using children results</span></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    currentResult = processNode(node, leftResult, rightResult)</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-keyword">return</span> currentResult</span></span>
+<pre><code class="language-python">def bottomUp(node):
+    # Base case
+    if not node:
+        return baseResult
+
+    # Get results from children first
+    leftResult = bottomUp(node.left)
+    rightResult = bottomUp(node.right)
+
+    # Process current node using children results
+    currentResult = processNode(node, leftResult, rightResult)
+
+    return currentResult
 </code></pre>
 <p><strong>Common LeetCode Problems</strong>:</p>
 <ul>
@@ -385,44 +380,44 @@ Think of recursion as a <strong>tree structure</strong>:</p>
 <li>LC 1372: Longest ZigZag Path in a Binary Tree</li>
 </ul>
 <p><strong>Example - Maximum Depth (LC 104)</strong>:</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">maxDepth</span>(<span class="hljs-params">self, root</span>):</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">bottomUp</span>(<span class="hljs-params">node</span>):</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node:</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-comment"># Get depths from children</span></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        leftDepth = bottomUp(node.left)</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        rightDepth = bottomUp(node.right)</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-comment"># Current depth is max of children + 1</span></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-built_in">max</span>(leftDepth, rightDepth) + <span class="hljs-number">1</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-keyword">return</span> bottomUp(root)</span></span>
+<pre><code class="language-python">def maxDepth(self, root):
+    def bottomUp(node):
+        if not node:
+            return 0
+
+        # Get depths from children
+        leftDepth = bottomUp(node.left)
+        rightDepth = bottomUp(node.right)
+
+        # Current depth is max of children + 1
+        return max(leftDepth, rightDepth) + 1
+
+    return bottomUp(root)
 </code></pre>
 <p><strong>Example - Balanced Binary Tree (LC 110)</strong>:</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">isBalanced</span>(<span class="hljs-params">self, root</span>):</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">bottomUp</span>(<span class="hljs-params">node</span>):</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node:</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>, <span class="hljs-number">0</span>  <span class="hljs-comment"># (isBalanced, height)</span></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-comment"># Check left subtree</span></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        leftBalanced, leftHeight = bottomUp(node.left)</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> leftBalanced:</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>, <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-comment"># Check right subtree</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        rightBalanced, rightHeight = bottomUp(node.right)</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> rightBalanced:</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span>, <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        <span class="hljs-comment"># Check current node balance</span></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        isCurrentBalanced = <span class="hljs-built_in">abs</span>(leftHeight - rightHeight) &lt;= <span class="hljs-number">1</span></span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        currentHeight = <span class="hljs-built_in">max</span>(leftHeight, rightHeight) + <span class="hljs-number">1</span></span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        <span class="hljs-keyword">return</span> isCurrentBalanced, currentHeight</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    balanced, _ = bottomUp(root)</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    <span class="hljs-keyword">return</span> balanced</span></span>
+<pre><code class="language-python">def isBalanced(self, root):
+    def bottomUp(node):
+        if not node:
+            return True, 0  # (isBalanced, height)
+
+        # Check left subtree
+        leftBalanced, leftHeight = bottomUp(node.left)
+        if not leftBalanced:
+            return False, 0
+
+        # Check right subtree
+        rightBalanced, rightHeight = bottomUp(node.right)
+        if not rightBalanced:
+            return False, 0
+
+        # Check current node balance
+        isCurrentBalanced = abs(leftHeight - rightHeight) &lt;= 1
+        currentHeight = max(leftHeight, rightHeight) + 1
+
+        return isCurrentBalanced, currentHeight
+
+    balanced, _ = bottomUp(root)
+    return balanced
 </code></pre>
 <p><strong>Comparison Table</strong>:</p>
 <table>
@@ -470,45 +465,45 @@ Think of recursion as a <strong>tree structure</strong>:</p>
 <h3 id="2-4-pass-state-to-next-recursion" tabindex="-1"><a class="header-anchor" href="#2-4-pass-state-to-next-recursion"><span>2-4) Pass State to Next Recursion</span></a></h3>
 <p>Pass accumulated state/context as parameters to child recursive calls. Useful when you need to track information from parent nodes.</p>
 <p><strong>Example: LC 404 (Sum of Left Leaves)</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 404 - Sum of Left Leaves</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Pre-order traversal, pass isLeft flag to track if node is left child</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">processSubtree</span><span class="hljs-params">(TreeNode subtree, <span class="hljs-type">boolean</span> isLeft)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-comment">// Base case: empty subtree</span></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">if</span> (subtree == <span class="hljs-literal">null</span>) {</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-comment">// Base case: leaf node</span></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-keyword">if</span> (subtree.left == <span class="hljs-literal">null</span> &amp;&amp; subtree.right == <span class="hljs-literal">null</span>) {</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-keyword">return</span> isLeft ? subtree.val : <span class="hljs-number">0</span>;</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-comment">// Recursive case: process left and right subtrees</span></span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-keyword">return</span> processSubtree(subtree.left, <span class="hljs-literal">true</span>) + processSubtree(subtree.right, <span class="hljs-literal">false</span>);</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// LC 404 - Sum of Left Leaves
+// IDEA: Pre-order traversal, pass isLeft flag to track if node is left child
+private int processSubtree(TreeNode subtree, boolean isLeft) {
+    // Base case: empty subtree
+    if (subtree == null) {
+        return 0;
+    }
+
+    // Base case: leaf node
+    if (subtree.left == null &amp;&amp; subtree.right == null) {
+        return isLeft ? subtree.val : 0;
+    }
+
+    // Recursive case: process left and right subtrees
+    return processSubtree(subtree.left, true) + processSubtree(subtree.right, false);
+}
 </code></pre>
 <p><strong>Key Insight</strong>: By passing <code>isLeft</code> as a parameter, we track parent context without needing global state.</p>
 <hr>
 <h3 id="2-5-any-true-status-in-recursion" tabindex="-1"><a class="header-anchor" href="#2-5-any-true-status-in-recursion"><span>2-5) Any-True Status in Recursion</span></a></h3>
 <p>When you need to find ANY true result among recursive calls, use OR logic. Stop early if any recursive call returns true.</p>
 <p><strong>Example: LC 572 (Subtree of Another Tree)</strong></p>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 572 - Subtree of Another Tree</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isSubtree</span><span class="hljs-params">(TreeNode root, TreeNode subRoot)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-comment">// Check if subtree rooted at &#x27;root&#x27; matches &#x27;subRoot&#x27;</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-comment">// Use OR: if ANY recursive call returns true, short-circuit and return true</span></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">return</span> isSameTree(root, subRoot) </span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        || isSubtree(root.left, subRoot) </span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        || isSubtree(root.right, subRoot);</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">}</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"><span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isSameTree</span><span class="hljs-params">(TreeNode node1, TreeNode node2)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-keyword">if</span> (node1 == <span class="hljs-literal">null</span> || node2 == <span class="hljs-literal">null</span>) {</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-keyword">return</span> node1 == <span class="hljs-literal">null</span> &amp;&amp; node2 == <span class="hljs-literal">null</span>;</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-keyword">return</span> node1.val == node2.val </span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        &amp;&amp; isSameTree(node1.left, node2.left) </span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        &amp;&amp; isSameTree(node1.right, node2.right);</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// LC 572 - Subtree of Another Tree
+public boolean isSubtree(TreeNode root, TreeNode subRoot) {
+    // Check if subtree rooted at 'root' matches 'subRoot'
+    // Use OR: if ANY recursive call returns true, short-circuit and return true
+    return isSameTree(root, subRoot) 
+        || isSubtree(root.left, subRoot) 
+        || isSubtree(root.right, subRoot);
+}
+
+private boolean isSameTree(TreeNode node1, TreeNode node2) {
+    if (node1 == null || node2 == null) {
+        return node1 == null &amp;&amp; node2 == null;
+    }
+    return node1.val == node2.val 
+        &amp;&amp; isSameTree(node1.left, node2.left) 
+        &amp;&amp; isSameTree(node1.right, node2.right);
+}
 </code></pre>
 <p><strong>Key Insight</strong>: Using OR (<code>||</code>) allows early exit when a true result is found, avoiding unnecessary recursive calls.</p>
 <hr>
@@ -523,28 +518,28 @@ Think of recursion as a <strong>tree structure</strong>:</p>
 <li>Any problem where you partition a range and combine all sub-results</li>
 </ul>
 <p><strong>Pattern</strong>:</p>
-<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">1. Pick each element i in [start, end] as the &quot;root&quot; / split point</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">2. Recursively build all left results from [start, i-1]</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">3. Recursively build all right results from [i+1, end]</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">4. Cartesian product: for each left × right, construct and collect result</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">5. Base case: empty range → return [null/None] (one empty result, NOT empty list)</span></span>
+<pre><code>1. Pick each element i in [start, end] as the &quot;root&quot; / split point
+2. Recursively build all left results from [start, i-1]
+3. Recursively build all right results from [i+1, end]
+4. Cartesian product: for each left × right, construct and collect result
+5. Base case: empty range → return [null/None] (one empty result, NOT empty list)
 </code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// Template: Recursive Construction via Cartesian Product</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">private</span> List&lt;TreeNode&gt; <span class="hljs-title function_">build</span><span class="hljs-params">(<span class="hljs-type">int</span> start, <span class="hljs-type">int</span> end)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    List&lt;TreeNode&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-keyword">if</span> (start &gt; end) {</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        res.add(<span class="hljs-literal">null</span>);  <span class="hljs-comment">// CRITICAL: null = valid empty subtree</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-keyword">return</span> res;</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> start; i &lt;= end; i++) {</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        List&lt;TreeNode&gt; lefts = build(start, i - <span class="hljs-number">1</span>);</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        List&lt;TreeNode&gt; rights = build(i + <span class="hljs-number">1</span>, end);</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-keyword">for</span> (TreeNode l : lefts)</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">            <span class="hljs-keyword">for</span> (TreeNode r : rights)</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">                res.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">TreeNode</span>(i, l, r));</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-keyword">return</span> res;</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// Template: Recursive Construction via Cartesian Product
+private List&lt;TreeNode&gt; build(int start, int end) {
+    List&lt;TreeNode&gt; res = new ArrayList&lt;&gt;();
+    if (start &gt; end) {
+        res.add(null);  // CRITICAL: null = valid empty subtree
+        return res;
+    }
+    for (int i = start; i &lt;= end; i++) {
+        List&lt;TreeNode&gt; lefts = build(start, i - 1);
+        List&lt;TreeNode&gt; rights = build(i + 1, end);
+        for (TreeNode l : lefts)
+            for (TreeNode r : rights)
+                res.add(new TreeNode(i, l, r));
+    }
+    return res;
+}
 </code></pre>
 <p><strong>Key Insight</strong>: Base case must return <code>[null]</code> (list containing null), NOT empty list. Otherwise Cartesian product loses all trees with empty left/right subtrees.</p>
 <p><strong>Optimization</strong>: Add memoization with <code>Map&lt;Pair&lt;Integer,Integer&gt;, List&lt;TreeNode&gt;&gt;</code> to avoid recomputing overlapping subproblems.</p>
@@ -557,21 +552,21 @@ Think of recursion as a <strong>tree structure</strong>:</p>
 <li>LC 1382: Balance a Binary Search Tree</li>
 </ul>
 <p><strong>Example — LC 95: Unique Binary Search Trees II</strong>:</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">generateTrees</span>(<span class="hljs-params">n</span>):</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-keyword">if</span> n == <span class="hljs-number">0</span>: <span class="hljs-keyword">return</span> []</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">generate</span>(<span class="hljs-params">start, end</span>):</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        <span class="hljs-keyword">if</span> start &gt; end:</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">            <span class="hljs-keyword">return</span> [<span class="hljs-literal">None</span>]</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        all_trees = []</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(start, end + <span class="hljs-number">1</span>):</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">            <span class="hljs-keyword">for</span> left <span class="hljs-keyword">in</span> generate(start, i - <span class="hljs-number">1</span>):</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">                <span class="hljs-keyword">for</span> right <span class="hljs-keyword">in</span> generate(i + <span class="hljs-number">1</span>, end):</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">                    root = TreeNode(i)</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">                    root.left = left</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">                    root.right = right</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">                    all_trees.append(root)</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        <span class="hljs-keyword">return</span> all_trees</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-keyword">return</span> generate(<span class="hljs-number">1</span>, n)</span></span>
+<pre><code class="language-python">def generateTrees(n):
+    if n == 0: return []
+    def generate(start, end):
+        if start &gt; end:
+            return [None]
+        all_trees = []
+        for i in range(start, end + 1):
+            for left in generate(start, i - 1):
+                for right in generate(i + 1, end):
+                    root = TreeNode(i)
+                    root.left = left
+                    root.right = right
+                    all_trees.append(root)
+        return all_trees
+    return generate(1, n)
 </code></pre>
 <hr>
 <h2 id="3-advanced-techniques" tabindex="-1"><a class="header-anchor" href="#3-advanced-techniques"><span>3) Advanced Techniques</span></a></h2>
@@ -584,69 +579,69 @@ Think of recursion as a <strong>tree structure</strong>:</p>
 <li>Trade space for time (use a hash map for cache)</li>
 </ul>
 <p><strong>Example 1: Fibonacci</strong></p>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Without memoization: O(2^n) — exponential</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">fibonacci</span>(<span class="hljs-params">n</span>):</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">if</span> n &lt; <span class="hljs-number">2</span>:</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        <span class="hljs-keyword">return</span> n</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">return</span> fibonacci(n - <span class="hljs-number">1</span>) + fibonacci(n - <span class="hljs-number">2</span>)</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"><span class="hljs-comment"># With memoization: O(n) — linear</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">fibonacci</span>(<span class="hljs-params">n</span>):</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    cache = {}</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">helper</span>(<span class="hljs-params">n</span>):</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-keyword">if</span> n <span class="hljs-keyword">in</span> cache:</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">            <span class="hljs-keyword">return</span> cache[n]</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-keyword">if</span> n &lt; <span class="hljs-number">2</span>:</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            res = n</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-keyword">else</span>:</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">            res = helper(n - <span class="hljs-number">1</span>) + helper(n - <span class="hljs-number">2</span>)</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        cache[n] = res</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        <span class="hljs-keyword">return</span> res</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    <span class="hljs-keyword">return</span> helper(n)</span></span>
+<pre><code class="language-python"># Without memoization: O(2^n) — exponential
+def fibonacci(n):
+    if n &lt; 2:
+        return n
+    return fibonacci(n - 1) + fibonacci(n - 2)
+
+# With memoization: O(n) — linear
+def fibonacci(n):
+    cache = {}
+    def helper(n):
+        if n in cache:
+            return cache[n]
+        if n &lt; 2:
+            res = n
+        else:
+            res = helper(n - 1) + helper(n - 2)
+        cache[n] = res
+        return res
+    return helper(n)
 </code></pre>
 <p><strong>Example 2: Climbing Stairs (LC 70)</strong></p>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Without memoization: O(2^n)</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">climbStairs</span>(<span class="hljs-params">self, n</span>):</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        <span class="hljs-keyword">if</span> n == <span class="hljs-number">1</span>:</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-number">1</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-keyword">if</span> n == <span class="hljs-number">2</span>:</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-number">2</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.climbStairs(n - <span class="hljs-number">1</span>) + <span class="hljs-variable language_">self</span>.climbStairs(n - <span class="hljs-number">2</span>)</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"><span class="hljs-comment"># With memoization: O(n)</span></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">climbStairs</span>(<span class="hljs-params">self, n</span>):</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        cache = {}</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        <span class="hljs-keyword">def</span> <span class="hljs-title function_">helper</span>(<span class="hljs-params">n</span>):</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">            <span class="hljs-keyword">if</span> n <span class="hljs-keyword">in</span> cache:</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">                <span class="hljs-keyword">return</span> cache[n]</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">            <span class="hljs-keyword">if</span> n &lt;= <span class="hljs-number">2</span>:</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">                res = n</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">            <span class="hljs-keyword">else</span>:</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">                res = helper(n - <span class="hljs-number">2</span>) + helper(n - <span class="hljs-number">1</span>)</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">            cache[n] = res</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">            <span class="hljs-keyword">return</span> res</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        <span class="hljs-keyword">return</span> helper(n)</span></span>
+<pre><code class="language-python"># Without memoization: O(2^n)
+class Solution:
+    def climbStairs(self, n):
+        if n == 1:
+            return 1
+        if n == 2:
+            return 2
+        return self.climbStairs(n - 1) + self.climbStairs(n - 2)
+
+# With memoization: O(n)
+class Solution:
+    def climbStairs(self, n):
+        cache = {}
+        def helper(n):
+            if n in cache:
+                return cache[n]
+            if n &lt;= 2:
+                res = n
+            else:
+                res = helper(n - 2) + helper(n - 1)
+            cache[n] = res
+            return res
+        return helper(n)
 </code></pre>
 <p><strong>Reference</strong>: <a href="https://leetcode.com/explore/learn/card/recursion-i/255/recursion-memoization/1495/">https://leetcode.com/explore/learn/card/recursion-i/255/recursion-memoization/1495/</a></p>
 <hr>
 <h3 id="3-2-divide-conquer" tabindex="-1"><a class="header-anchor" href="#3-2-divide-conquer"><span>3-2) Divide &amp; Conquer</span></a></h3>
 <p><strong>Template</strong>:</p>
-<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">1. Divide: Split problem into subproblems</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">2. Conquer: Solve each subproblem recursively</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">3. Combine: Merge subproblem results</span></span>
+<pre><code>1. Divide: Split problem into subproblems
+2. Conquer: Solve each subproblem recursively
+3. Combine: Merge subproblem results
 </code></pre>
 <p><strong>Pseudo-code</strong>:</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">divide_and_conquer</span>(<span class="hljs-params">problem</span>):</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-comment"># (1) Divide</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    subproblems = divide(problem)</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-comment"># (2) Conquer</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    results = [divide_and_conquer(sub) <span class="hljs-keyword">for</span> sub <span class="hljs-keyword">in</span> subproblems]</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-comment"># (3) Combine</span></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-keyword">return</span> combine(results)</span></span>
+<pre><code class="language-python">def divide_and_conquer(problem):
+    # (1) Divide
+    subproblems = divide(problem)
+    
+    # (2) Conquer
+    results = [divide_and_conquer(sub) for sub in subproblems]
+    
+    # (3) Combine
+    return combine(results)
 </code></pre>
 <p><strong>Common Examples</strong>:</p>
 <ul>
@@ -672,101 +667,101 @@ Think of recursion as a <strong>tree structure</strong>:</p>
 <li>Reduce function call overhead</li>
 </ul>
 <p><strong>How to Convert</strong>:</p>
-<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">1. Use a stack or queue to replace the system call stack</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">2. At each recursion point, push parameters onto data structure</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">3. Replace recursive chain with loop over the data structure</span></span>
+<pre><code>1. Use a stack or queue to replace the system call stack
+2. At each recursion point, push parameters onto data structure
+3. Replace recursive chain with loop over the data structure
 </code></pre>
 <p><strong>Example</strong>: <a href="https://leetcode.com/explore/learn/card/recursion-ii/503/recursion-to-iteration/2693/">https://leetcode.com/explore/learn/card/recursion-ii/503/recursion-to-iteration/2693/</a></p>
 <hr>
 <h2 id="4-complete-leetcode-examples" tabindex="-1"><a class="header-anchor" href="#4-complete-leetcode-examples"><span>4) Complete LeetCode Examples</span></a></h2>
 <h3 id="4-1-symmetric-tree-lc-101" tabindex="-1"><a class="header-anchor" href="#4-1-symmetric-tree-lc-101"><span>4-1) Symmetric Tree (LC 101)</span></a></h3>
 <p><strong>Pattern</strong>: Bottom-up recursion, comparing two subtrees in parallel.</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">isSymmetric</span>(<span class="hljs-params">self, root</span>):</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.mirror(root.left, root.right)</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">mirror</span>(<span class="hljs-params">self, left, right</span>):</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> left <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> right:</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">            <span class="hljs-keyword">return</span> left == right</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-keyword">if</span> left.val != right.val:</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.mirror(left.left, right.right) <span class="hljs-keyword">and</span> <span class="hljs-variable language_">self</span>.mirror(left.right, right.left)</span></span>
+<pre><code class="language-python">class Solution:
+    def isSymmetric(self, root):
+        if not root:
+            return True
+        return self.mirror(root.left, root.right)
+
+    def mirror(self, left, right):
+        if not left or not right:
+            return left == right
+        if left.val != right.val:
+            return False
+        return self.mirror(left.left, right.right) and self.mirror(left.right, right.left)
 </code></pre>
 <hr>
 <h3 id="4-2-one-edit-distance-lc-161" tabindex="-1"><a class="header-anchor" href="#4-2-one-edit-distance-lc-161"><span>4-2) One Edit Distance (LC 161)</span></a></h3>
 <p><strong>Pattern</strong>: Pruning branches early (abs difference &gt; 1), then checking each position.</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">isOneEditDistance</span>(<span class="hljs-params">self, s, t</span>):</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">        m, n = <span class="hljs-built_in">len</span>(s), <span class="hljs-built_in">len</span>(t)</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-built_in">abs</span>(m - n) &gt; <span class="hljs-number">1</span>:</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-keyword">if</span> m &gt; n:</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.isOneEditDistance(t, s)</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(m):</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">            <span class="hljs-keyword">if</span> s[i] != t[i]:</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">                <span class="hljs-keyword">if</span> m == n:</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">                    <span class="hljs-keyword">return</span> s[i + <span class="hljs-number">1</span>:] == t[i + <span class="hljs-number">1</span>:]</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">                <span class="hljs-keyword">return</span> s[i:] == t[i + <span class="hljs-number">1</span>:]</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-keyword">return</span> m != n</span></span>
+<pre><code class="language-python">class Solution:
+    def isOneEditDistance(self, s, t):
+        m, n = len(s), len(t)
+        if abs(m - n) &gt; 1:
+            return False
+        if m &gt; n:
+            return self.isOneEditDistance(t, s)
+        for i in range(m):
+            if s[i] != t[i]:
+                if m == n:
+                    return s[i + 1:] == t[i + 1:]
+                return s[i:] == t[i + 1:]
+        return m != n
 </code></pre>
 <hr>
 <h3 id="4-3-merge-two-sorted-lists-lc-21" tabindex="-1"><a class="header-anchor" href="#4-3-merge-two-sorted-lists-lc-21"><span>4-3) Merge Two Sorted Lists (LC 21)</span></a></h3>
 <p><strong>Pattern</strong>: Simple recursion with local state update.</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">mergeTwoLists</span>(<span class="hljs-params">self, l1, l2</span>):</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> l1 <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> l2:</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">            <span class="hljs-keyword">return</span> l1 <span class="hljs-keyword">or</span> l2</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        <span class="hljs-keyword">if</span> l1.val &lt; l2.val:</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">            l1.<span class="hljs-built_in">next</span> = <span class="hljs-variable language_">self</span>.mergeTwoLists(l1.<span class="hljs-built_in">next</span>, l2)</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">            <span class="hljs-keyword">return</span> l1</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">else</span>:</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">            l2.<span class="hljs-built_in">next</span> = <span class="hljs-variable language_">self</span>.mergeTwoLists(l1, l2.<span class="hljs-built_in">next</span>)</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">            <span class="hljs-keyword">return</span> l2</span></span>
+<pre><code class="language-python">class Solution:
+    def mergeTwoLists(self, l1, l2):
+        if not l1 or not l2:
+            return l1 or l2
+        if l1.val &lt; l2.val:
+            l1.next = self.mergeTwoLists(l1.next, l2)
+            return l1
+        else:
+            l2.next = self.mergeTwoLists(l1, l2.next)
+            return l2
 </code></pre>
 <hr>
 <h3 id="4-4-subtree-of-another-tree-lc-572" tabindex="-1"><a class="header-anchor" href="#4-4-subtree-of-another-tree-lc-572"><span>4-4) Subtree of Another Tree (LC 572)</span></a></h3>
 <p><strong>Pattern</strong>: Any-true status with recursive helper.</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">isSubtree</span>(<span class="hljs-params">self, root, subRoot</span>):</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">        <span class="hljs-keyword">def</span> <span class="hljs-title function_">isSameTree</span>(<span class="hljs-params">p, q</span>):</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> p <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> q:</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">                <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> p <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> q:</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">            <span class="hljs-keyword">return</span> (p.val == q.val <span class="hljs-keyword">and</span> </span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">                    isSameTree(p.left, q.left) <span class="hljs-keyword">and</span> </span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">                    isSameTree(p.right, q.right))</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> subRoot:</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> subRoot:</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        <span class="hljs-comment"># Use OR: if any recursive call returns True, stop early</span></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        <span class="hljs-keyword">return</span> (isSameTree(root, subRoot) <span class="hljs-keyword">or</span> </span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">                <span class="hljs-variable language_">self</span>.isSubtree(root.left, subRoot) <span class="hljs-keyword">or</span> </span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">                <span class="hljs-variable language_">self</span>.isSubtree(root.right, subRoot))</span></span>
+<pre><code class="language-python">class Solution:
+    def isSubtree(self, root, subRoot):
+        def isSameTree(p, q):
+            if not p and not q:
+                return True
+            if not p or not q:
+                return False
+            return (p.val == q.val and 
+                    isSameTree(p.left, q.left) and 
+                    isSameTree(p.right, q.right))
+        
+        if not root and not subRoot:
+            return True
+        if not root or not subRoot:
+            return False
+        # Use OR: if any recursive call returns True, stop early
+        return (isSameTree(root, subRoot) or 
+                self.isSubtree(root.left, subRoot) or 
+                self.isSubtree(root.right, subRoot))
 </code></pre>
 <p><strong>Java Version</strong>:</p>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isSubtree</span><span class="hljs-params">(TreeNode root, TreeNode subRoot)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) {</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">if</span> (isIdentical(root, subRoot)) {</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">return</span> isSubtree(root.left, subRoot) || isSubtree(root.right, subRoot);</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">}</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"><span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isIdentical</span><span class="hljs-params">(TreeNode node1, TreeNode node2)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-keyword">if</span> (node1 == <span class="hljs-literal">null</span> || node2 == <span class="hljs-literal">null</span>) {</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-keyword">return</span> node1 == <span class="hljs-literal">null</span> &amp;&amp; node2 == <span class="hljs-literal">null</span>;</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-keyword">return</span> node1.val == node2.val &amp;&amp; </span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">           isIdentical(node1.left, node2.left) &amp;&amp; </span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">           isIdentical(node1.right, node2.right);</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">public boolean isSubtree(TreeNode root, TreeNode subRoot) {
+    if (root == null) {
+        return false;
+    }
+    if (isIdentical(root, subRoot)) {
+        return true;
+    }
+    return isSubtree(root.left, subRoot) || isSubtree(root.right, subRoot);
+}
+
+private boolean isIdentical(TreeNode node1, TreeNode node2) {
+    if (node1 == null || node2 == null) {
+        return node1 == null &amp;&amp; node2 == null;
+    }
+    return node1.val == node2.val &amp;&amp; 
+           isIdentical(node1.left, node2.left) &amp;&amp; 
+           isIdentical(node1.right, node2.right);
+}
 </code></pre>
 
       </div>

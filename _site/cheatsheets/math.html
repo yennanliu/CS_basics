@@ -9,7 +9,8 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -20,42 +21,40 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    // Code block wrappers + copy buttons (highlighting done at build time)
-    try {
-      document.querySelectorAll('pre').forEach(function(pre) {
-        var codeEl = pre.querySelector('code');
-        var lang = pre.getAttribute('data-lang') || '';
-        var wrapper = document.createElement('div');
-        wrapper.className = 'code-block-wrapper';
-        pre.parentNode.insertBefore(wrapper, pre);
-        var header = document.createElement('div');
-        header.className = 'code-block-header';
-        if (lang) {
-          var label = document.createElement('span');
-          label.className = 'code-lang-label';
-          label.textContent = lang;
-          header.appendChild(label);
-        } else {
-          header.appendChild(document.createElement('span'));
-        }
-        var btn = document.createElement('button');
-        btn.className = 'copy-btn';
-        btn.textContent = 'Copy';
-        btn.addEventListener('click', function() {
-          var text = codeEl
-            ? Array.from(codeEl.querySelectorAll('.ln-code')).map(function(el) { return el.textContent; }).join('\n')
-            : pre.textContent;
-          navigator.clipboard.writeText(text).then(function() {
-            btn.textContent = 'Copied!';
-            btn.classList.add('copied');
-            setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-          });
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
         });
-        header.appendChild(btn);
-        wrapper.appendChild(header);
-        wrapper.appendChild(pre);
       });
-    } catch(e) { console.error('Code block setup error:', e); }
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -65,36 +64,32 @@
       }
     });
     // Reading progress bar
-    try {
-      var progressBar = document.getElementById('reading-progress');
-      if (progressBar) {
-        window.addEventListener('scroll', function() {
-          var winScroll = document.documentElement.scrollTop;
-          var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-          progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
-        });
-      }
-    } catch(e) {}
-    // Dark mode toggle — isolated so errors elsewhere never prevent this from working
-    try {
-      var toggle = document.getElementById('theme-toggle');
-      if (toggle) {
-        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-        toggle.textContent = isDark ? '☀️' : '🌙';
-        toggle.addEventListener('click', function() {
-          var dark = document.documentElement.getAttribute('data-theme') === 'dark';
-          if (dark) {
-            document.documentElement.removeAttribute('data-theme');
-            localStorage.setItem('theme', 'light');
-            toggle.textContent = '🌙';
-          } else {
-            document.documentElement.setAttribute('data-theme', 'dark');
-            localStorage.setItem('theme', 'dark');
-            toggle.textContent = '☀️';
-          }
-        });
-      }
-    } catch(e) { console.error('Theme toggle error:', e); }
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
   });</script>
 </head>
 <body>
@@ -148,296 +143,296 @@
 <li>to 7 base …</li>
 <li><a href="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/convert_int_n_base.png">https://github.com/yennanliu/CS_basics/blob/master/doc/pic/convert_int_n_base.png</a></li>
 </ul>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># python</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># 504. Base 7</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-comment"># V0</span></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-comment"># IDEA : MATH : 10 based -&gt; 7 based</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"><span class="hljs-string">&quot;&quot;&quot;</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">### NOTE :</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    1) for negative num : transform to positive int first, do 10 based -&gt; 7 based op</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">                          then add &quot;-&quot; at beginning</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    2) for positive num : do 10 based -&gt; 7 based op</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">                        -&gt; keep checking if num % N == 0</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">                        -&gt; if not == 0, keep do  num = num % N, and append cur result to res</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">                        -&gt; reverse res</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">                        -&gt; make array to string</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">                        -&gt; return result</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    3) example:</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        100 (10 based) -&gt; &quot;202&quot; (7 based)</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        tmp = 100</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        a, b = divmod(tmp, 7)  -&gt; a = 14, b = 2,  tmp  = 14</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        a, b = divmod(tmp, 7)  -&gt; a= 2, b = 0, tmp = 2</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        a, b = divmod(tmp, 7)  -&gt; a = 0, b = 2</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">        -&gt; so res = [2,0,2]</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">&quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code"><span class="hljs-comment"># V1</span></span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):</span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">convertToBase7</span>(<span class="hljs-params">self, num</span>):</span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">        <span class="hljs-comment"># edge case</span></span></span>
-<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">        <span class="hljs-keyword">if</span> num == <span class="hljs-number">0</span>:</span></span>
-<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;0&#x27;</span></span></span>
-<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">        tmp = <span class="hljs-built_in">abs</span>(num)</span></span>
-<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">        res = []</span></span>
-<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">        <span class="hljs-keyword">while</span> tmp &gt; <span class="hljs-number">0</span>:</span></span>
-<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">            a, b = <span class="hljs-built_in">divmod</span>(tmp, <span class="hljs-number">7</span>)</span></span>
-<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">            res.append(<span class="hljs-built_in">str</span>(b))</span></span>
-<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">            tmp = a</span></span>
-<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">        res = res[::-<span class="hljs-number">1</span>]</span></span>
-<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">        _res = <span class="hljs-string">&quot;&quot;</span>.join(res)</span></span>
-<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">        <span class="hljs-keyword">if</span> num &gt; <span class="hljs-number">0</span>:</span></span>
-<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">            <span class="hljs-keyword">return</span> _res</span></span>
-<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">        <span class="hljs-keyword">else</span>:</span></span>
-<span class="ln-row"><span class="ln-num">44</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;-&quot;</span> + _res</span></span>
-<span class="ln-row"><span class="ln-num">45</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">46</span><span class="ln-code"><span class="hljs-comment"># test</span></span></span>
-<span class="ln-row"><span class="ln-num">47</span><span class="ln-code"><span class="hljs-comment">#----------------</span></span></span>
-<span class="ln-row"><span class="ln-num">48</span><span class="ln-code"><span class="hljs-comment"># exmaple :</span></span></span>
-<span class="ln-row"><span class="ln-num">49</span><span class="ln-code"><span class="hljs-comment"># 7 base</span></span></span>
-<span class="ln-row"><span class="ln-num">50</span><span class="ln-code"><span class="hljs-comment"># 20 -&gt; 26</span></span></span>
-<span class="ln-row"><span class="ln-num">51</span><span class="ln-code"><span class="hljs-comment"># -100 -&gt; -202</span></span></span>
-<span class="ln-row"><span class="ln-num">52</span><span class="ln-code"><span class="hljs-comment">#----------------</span></span></span>
-<span class="ln-row"><span class="ln-num">53</span><span class="ln-code">num = <span class="hljs-number">20</span>   <span class="hljs-comment"># 26</span></span></span>
-<span class="ln-row"><span class="ln-num">54</span><span class="ln-code">num = -<span class="hljs-number">100</span> <span class="hljs-comment"># -202</span></span></span>
-<span class="ln-row"><span class="ln-num">55</span><span class="ln-code">s = Solution()</span></span>
-<span class="ln-row"><span class="ln-num">56</span><span class="ln-code">r = s.convertToBase7(num)</span></span>
-<span class="ln-row"><span class="ln-num">57</span><span class="ln-code"><span class="hljs-built_in">print</span> (r)</span></span>
-<span class="ln-row"><span class="ln-num">58</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">59</span><span class="ln-code"><span class="hljs-comment"># V1</span></span></span>
-<span class="ln-row"><span class="ln-num">60</span><span class="ln-code"><span class="hljs-comment"># https://www.itread01.com/content/1544603062.html</span></span></span>
-<span class="ln-row"><span class="ln-num">61</span><span class="ln-code"><span class="hljs-comment"># https://kknews.cc/code/jlv38qp.html</span></span></span>
-<span class="ln-row"><span class="ln-num">62</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):</span></span>
-<span class="ln-row"><span class="ln-num">63</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">convertToBase7</span>(<span class="hljs-params">self, num</span>):</span></span>
-<span class="ln-row"><span class="ln-num">64</span><span class="ln-code">        <span class="hljs-comment"># edge case</span></span></span>
-<span class="ln-row"><span class="ln-num">65</span><span class="ln-code">        <span class="hljs-keyword">if</span> num == <span class="hljs-number">0</span>:</span></span>
-<span class="ln-row"><span class="ln-num">66</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;0&#x27;</span></span></span>
-<span class="ln-row"><span class="ln-num">67</span><span class="ln-code">        tmp = <span class="hljs-built_in">abs</span>(num)</span></span>
-<span class="ln-row"><span class="ln-num">68</span><span class="ln-code">        res = []</span></span>
-<span class="ln-row"><span class="ln-num">69</span><span class="ln-code">        <span class="hljs-keyword">while</span> tmp:</span></span>
-<span class="ln-row"><span class="ln-num">70</span><span class="ln-code">            i = tmp % <span class="hljs-number">7</span></span></span>
-<span class="ln-row"><span class="ln-num">71</span><span class="ln-code">            res.append(<span class="hljs-built_in">str</span>(i))</span></span>
-<span class="ln-row"><span class="ln-num">72</span><span class="ln-code">            tmp = tmp // <span class="hljs-number">7</span></span></span>
-<span class="ln-row"><span class="ln-num">73</span><span class="ln-code">        res = res[::-<span class="hljs-number">1</span>]</span></span>
-<span class="ln-row"><span class="ln-num">74</span><span class="ln-code">        _res = <span class="hljs-string">&quot;&quot;</span>.join(res)</span></span>
-<span class="ln-row"><span class="ln-num">75</span><span class="ln-code">        <span class="hljs-keyword">if</span> num &gt; <span class="hljs-number">0</span>:</span></span>
-<span class="ln-row"><span class="ln-num">76</span><span class="ln-code">            <span class="hljs-keyword">return</span> _res</span></span>
-<span class="ln-row"><span class="ln-num">77</span><span class="ln-code">        <span class="hljs-keyword">else</span>:</span></span>
-<span class="ln-row"><span class="ln-num">78</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;-&quot;</span> + _res </span></span>
+<pre><code class="language-python"># python
+# 504. Base 7
+
+# V0
+# IDEA : MATH : 10 based -&gt; 7 based
+&quot;&quot;&quot;
+### NOTE :
+    1) for negative num : transform to positive int first, do 10 based -&gt; 7 based op
+                          then add &quot;-&quot; at beginning
+    2) for positive num : do 10 based -&gt; 7 based op
+                        -&gt; keep checking if num % N == 0
+                        -&gt; if not == 0, keep do  num = num % N, and append cur result to res
+                        -&gt; reverse res
+                        -&gt; make array to string
+                        -&gt; return result
+    3) example:
+        100 (10 based) -&gt; &quot;202&quot; (7 based)
+
+        tmp = 100
+        a, b = divmod(tmp, 7)  -&gt; a = 14, b = 2,  tmp  = 14
+        a, b = divmod(tmp, 7)  -&gt; a= 2, b = 0, tmp = 2
+        a, b = divmod(tmp, 7)  -&gt; a = 0, b = 2
+
+        -&gt; so res = [2,0,2]
+&quot;&quot;&quot;
+
+# V1
+class Solution(object):
+    def convertToBase7(self, num):
+        # edge case
+        if num == 0:
+            return '0'
+        tmp = abs(num)
+        res = []
+        while tmp &gt; 0:
+            a, b = divmod(tmp, 7)
+            res.append(str(b))
+            tmp = a
+        res = res[::-1]
+        _res = &quot;&quot;.join(res)
+        if num &gt; 0:
+            return _res
+        else:
+            return &quot;-&quot; + _res
+
+# test
+#----------------
+# exmaple :
+# 7 base
+# 20 -&gt; 26
+# -100 -&gt; -202
+#----------------
+num = 20   # 26
+num = -100 # -202
+s = Solution()
+r = s.convertToBase7(num)
+print (r)
+
+# V1
+# https://www.itread01.com/content/1544603062.html
+# https://kknews.cc/code/jlv38qp.html
+class Solution(object):
+    def convertToBase7(self, num):
+        # edge case
+        if num == 0:
+            return '0'
+        tmp = abs(num)
+        res = []
+        while tmp:
+            i = tmp % 7
+            res.append(str(i))
+            tmp = tmp // 7
+        res = res[::-1]
+        _res = &quot;&quot;.join(res)
+        if num &gt; 0:
+            return _res
+        else:
+            return &quot;-&quot; + _res 
 </code></pre>
 <h4 id="1-1-0-transform-n-based-integer-to-10-based" tabindex="-1"><a class="header-anchor" href="#1-1-0-transform-n-based-integer-to-10-based"><span>1-1-0’) transform <code>N based integer to 10 based</code></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># V1</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># LC 1022. Sum of Root To Leaf Binary Numbers</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">convertToBaseN</span>(<span class="hljs-params">num, n</span>):</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-keyword">return</span> <span class="hljs-built_in">int</span>(<span class="hljs-built_in">str</span>(num), n)</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">In [<span class="hljs-number">34</span>]: <span class="hljs-built_in">int</span>(<span class="hljs-string">&quot;100&quot;</span>,<span class="hljs-number">7</span>)</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">Out[<span class="hljs-number">34</span>]: <span class="hljs-number">49</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">In [<span class="hljs-number">35</span>]: <span class="hljs-built_in">int</span>(<span class="hljs-string">&quot;14&quot;</span>,<span class="hljs-number">7</span>)</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">Out[<span class="hljs-number">35</span>]: <span class="hljs-number">11</span></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">In [<span class="hljs-number">36</span>]: <span class="hljs-built_in">int</span>(<span class="hljs-string">&quot;66&quot;</span>,<span class="hljs-number">7</span>)</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">Out[<span class="hljs-number">36</span>]: <span class="hljs-number">48</span></span></span>
+<pre><code class="language-python"># V1
+# LC 1022. Sum of Root To Leaf Binary Numbers
+def convertToBaseN(num, n):
+    return int(str(num), n)
+
+In [34]: int(&quot;100&quot;,7)
+Out[34]: 49
+
+In [35]: int(&quot;14&quot;,7)
+Out[35]: 11
+
+In [36]: int(&quot;66&quot;,7)
+Out[36]: 48
 </code></pre>
 <h4 id="1-1-1-check-prime-number" tabindex="-1"><a class="header-anchor" href="#1-1-1-check-prime-number"><span>1-1-1) check prime number</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># LC 762 Prime Number of Set Bits in Binary Representation</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">check_prime</span>(<span class="hljs-params">x</span>):</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">if</span> x &lt;= <span class="hljs-number">1</span>:</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">2</span>, <span class="hljs-built_in">int</span>(x**(<span class="hljs-number">0.5</span>)+<span class="hljs-number">1</span>)):</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-keyword">if</span> x % i == <span class="hljs-number">0</span>:</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span></span></span>
+<pre><code class="language-python"># LC 762 Prime Number of Set Bits in Binary Representation
+def check_prime(x):
+    if x &lt;= 1:
+        return False
+    for i in range(2, int(x**(0.5)+1)):
+        if x % i == 0:
+            return False
+    return True
 </code></pre>
 <h4 id="1-1-2-count-prime-number" tabindex="-1"><a class="header-anchor" href="#1-1-2-count-prime-number"><span>1-1-2) count prime number</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># LC 204 Count Primes</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># V0</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment"># IDEA : set</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-comment"># https://leetcode.com/problems/count-primes/discuss/1343795/python%3A-sieve-of-eretosthenes</span></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-comment"># prime(x) : number of prime in [0, x]</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"><span class="hljs-comment"># prime(0) = 0</span></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"><span class="hljs-comment"># prime(1) = 0</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"><span class="hljs-comment"># prime(2) = 0</span></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"><span class="hljs-comment"># prime(3) = 1</span></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"><span class="hljs-comment"># prime(4) = 2</span></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"><span class="hljs-comment"># prime(5) = 3</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">countPrimes</span>(<span class="hljs-params">self, n</span>):</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        <span class="hljs-comment"># using sieve of eretosthenes algorithm</span></span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-keyword">if</span> n &lt; <span class="hljs-number">2</span>: <span class="hljs-keyword">return</span> <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        nonprimes = <span class="hljs-built_in">set</span>()</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">2</span>, <span class="hljs-built_in">round</span>(n**(<span class="hljs-number">1</span>/<span class="hljs-number">2</span>))+<span class="hljs-number">1</span>):</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">            <span class="hljs-keyword">if</span> i <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> nonprimes:</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">                <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(i*i, n, i):</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">                    nonprimes.add(j)</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        <span class="hljs-keyword">return</span> n - <span class="hljs-built_in">len</span>(nonprimes) - <span class="hljs-number">2</span>  <span class="hljs-comment"># remove prime(1), prime(2)</span></span></span>
+<pre><code class="language-python"># LC 204 Count Primes
+# V0
+# IDEA : set
+# https://leetcode.com/problems/count-primes/discuss/1343795/python%3A-sieve-of-eretosthenes
+# prime(x) : number of prime in [0, x]
+# prime(0) = 0
+# prime(1) = 0
+# prime(2) = 0
+# prime(3) = 1
+# prime(4) = 2
+# prime(5) = 3
+class Solution:
+    def countPrimes(self, n):
+        # using sieve of eretosthenes algorithm
+        if n &lt; 2: return 0
+        nonprimes = set()
+        for i in range(2, round(n**(1/2))+1):
+            if i not in nonprimes:
+                for j in range(i*i, n, i):
+                    nonprimes.add(j)
+        return n - len(nonprimes) - 2  # remove prime(1), prime(2)
 </code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// java</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// algorithm book (labu) p.362</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// V1</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-type">int</span> <span class="hljs-title function_">countPrimes</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span>{</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-type">boolean</span>[] isPrime = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[n];</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-comment">// init array to true</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    Arrays.fill(isPrime, <span class="hljs-literal">true</span>);</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-comment">// prime number start from 2</span></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">2</span>; i &lt; n; i++){</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-keyword">if</span> (isPrime[i]){</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">            <span class="hljs-comment">// if i is prime, then i&#x27;s multiple is NOT prime</span></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">2</span>; j = <span class="hljs-number">2</span> * i; j += i){</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">                isPrime[j] = <span class="hljs-literal">false</span>;</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">            }</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">2</span>; i &lt; n; i++){</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        <span class="hljs-keyword">if</span> (isPrime[i]){</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">            count ++;</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">    <span class="hljs-keyword">return</span> count;</span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// java
+// algorithm book (labu) p.362
+// V1
+int countPrimes(int n){
+    boolean[] isPrime = new boolean[n];
+
+    // init array to true
+    Arrays.fill(isPrime, true);
+
+    // prime number start from 2
+    for (int i = 2; i &lt; n; i++){
+        if (isPrime[i]){
+            // if i is prime, then i's multiple is NOT prime
+            for (int j = 2; j = 2 * i; j += i){
+                isPrime[j] = false;
+            }
+        }
+    }
+
+    int count = 0;
+    for (int i = 2; i &lt; n; i++){
+        if (isPrime[i]){
+            count ++;
+        }
+    }
+    return count;
+}
 </code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// java</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// algorithm book (labu) p.363</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// V1&#x27; (optimization)</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-type">int</span> <span class="hljs-title function_">countPrimes</span><span class="hljs-params">(<span class="hljs-type">int</span> n)</span>{</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-type">boolean</span>[] isPrime = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[n];</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-comment">// init array to true</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    Arrays.fill(isPrime, <span class="hljs-literal">true</span>);</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-comment">// prime number start from 2</span></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">2</span>; i * i  &lt; n; i++){</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-keyword">if</span> (isPrime[i]){</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">            <span class="hljs-comment">// if i is prime, then i&#x27;s multiple is NOT prime</span></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            <span class="hljs-comment">/** optimize here :  make j start from i * i, instead of 2 * i */</span></span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">            <span class="hljs-comment">// (the only difference between V1 and V1&#x27;)</span></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> i * i; j &lt; n; j += i){</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">                isPrime[j] = <span class="hljs-literal">false</span>;</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">            }</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">2</span>; i &lt; n; i++){</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">        <span class="hljs-keyword">if</span> (isPrime[i]){</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">            count ++;</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">    <span class="hljs-keyword">return</span> count;</span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// java
+// algorithm book (labu) p.363
+// V1' (optimization)
+int countPrimes(int n){
+    boolean[] isPrime = new boolean[n];
+
+    // init array to true
+    Arrays.fill(isPrime, true);
+
+    // prime number start from 2
+    for (int i = 2; i * i  &lt; n; i++){
+        if (isPrime[i]){
+            // if i is prime, then i's multiple is NOT prime
+            /** optimize here :  make j start from i * i, instead of 2 * i */
+            // (the only difference between V1 and V1')
+            for (int j = i * i; j &lt; n; j += i){
+                isPrime[j] = false;
+            }
+        }
+    }
+
+    int count = 0;
+    for (int i = 2; i &lt; n; i++){
+        if (isPrime[i]){
+            count ++;
+        }
+    }
+    return count;
+}
 </code></pre>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
 <h3 id="2-1-excel-sheet-column-title" tabindex="-1"><a class="header-anchor" href="#2-1-excel-sheet-column-title"><span>2-1) Excel Sheet Column Title</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># 168 Excel Sheet Column Title</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># https://leetcode.com/problems/excel-sheet-column-title/discuss/205987/Python-Solution-with-explanation</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-comment"># V0</span></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-comment"># https://www.jianshu.com/p/591d3a2ab45d</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">convertToTitle</span>(<span class="hljs-params">self, n</span>):</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        tar = <span class="hljs-string">&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        res = <span class="hljs-string">&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-keyword">while</span> n &gt; <span class="hljs-number">0</span>:</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">            <span class="hljs-comment"># why (n-1) ? : idx start from 0</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">            m = (n-<span class="hljs-number">1</span>) % <span class="hljs-number">26</span></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">            <span class="hljs-comment">#result += tar[m]</span></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            res = (tar[m] + res)</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">            <span class="hljs-keyword">if</span> m == <span class="hljs-number">0</span>:</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">                <span class="hljs-comment"># why n=n+1 ? : since there is no 0 residual (m = (n-1) % 26), so we need to &quot;pass&quot; this case</span></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">                n = n + <span class="hljs-number">1</span></span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">            n = (n-<span class="hljs-number">1</span>) // <span class="hljs-number">26</span></span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        <span class="hljs-keyword">return</span> res</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code"><span class="hljs-comment"># V0&#x27;</span></span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">convertToTitle</span>(<span class="hljs-params">self, n</span>):</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">        :type n: int</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">        :rtype: str</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">        &quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">        d=<span class="hljs-string">&#x27;0ABCDEFGHIJKLMNOPQRSTUVWXYZ&#x27;</span></span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">        res=<span class="hljs-string">&#x27;&#x27;</span></span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">        <span class="hljs-keyword">if</span> n&lt;=<span class="hljs-number">26</span>:</span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">            <span class="hljs-keyword">return</span> d[n]</span></span>
-<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">        <span class="hljs-keyword">else</span>:</span></span>
-<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">            <span class="hljs-keyword">while</span> n &gt; <span class="hljs-number">0</span>:</span></span>
-<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">                n,r=<span class="hljs-built_in">divmod</span>(n,<span class="hljs-number">26</span>)</span></span>
-<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">                <span class="hljs-comment"># This is the catcha on this problem where when r==0 as a result of n%26. eg, n=52//26=2, r=52%26=0. </span></span></span>
-<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">                <span class="hljs-comment">#To get &#x27;AZ&#x27; as known for 52, n-=1 and r+=26. Same goes to 702.</span></span></span>
-<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">                <span class="hljs-keyword">if</span> r == <span class="hljs-number">0</span>:</span></span>
-<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">                    n-=<span class="hljs-number">1</span></span></span>
-<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">                    r+=<span class="hljs-number">26</span></span></span>
-<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">                res = d[r] + res</span></span>
-<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">        <span class="hljs-keyword">return</span> res</span></span>
+<pre><code class="language-python"># 168 Excel Sheet Column Title
+# https://leetcode.com/problems/excel-sheet-column-title/discuss/205987/Python-Solution-with-explanation
+
+# V0
+# https://www.jianshu.com/p/591d3a2ab45d
+class Solution(object):
+    def convertToTitle(self, n):
+        tar = &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;
+        res = &quot;&quot;
+        while n &gt; 0:
+            # why (n-1) ? : idx start from 0
+            m = (n-1) % 26
+            #result += tar[m]
+            res = (tar[m] + res)
+            if m == 0:
+                # why n=n+1 ? : since there is no 0 residual (m = (n-1) % 26), so we need to &quot;pass&quot; this case
+                n = n + 1
+            n = (n-1) // 26
+        return res
+# V0'
+class Solution:
+    def convertToTitle(self, n):
+        &quot;&quot;&quot;
+        :type n: int
+        :rtype: str
+        &quot;&quot;&quot;
+        d='0ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+        res=''
+        if n&lt;=26:
+            return d[n]
+        else:
+            while n &gt; 0:
+                n,r=divmod(n,26)
+                # This is the catcha on this problem where when r==0 as a result of n%26. eg, n=52//26=2, r=52%26=0. 
+                #To get 'AZ' as known for 52, n-=1 and r+=26. Same goes to 702.
+                if r == 0:
+                    n-=1
+                    r+=26
+                res = d[r] + res
+        return res
 </code></pre>
 <h3 id="2-2-solve-the-equation" tabindex="-1"><a class="header-anchor" href="#2-2-solve-the-equation"><span>2-2) Solve the Equation</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># LC 640. Solve the Equation</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># V0</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment"># IDEA : replace + eval + math</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-comment"># https://leetcode.com/problems/solve-the-equation/discuss/105362/Simple-2-liner-(and-more)</span></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-comment"># eval : The eval() method parses the expression passed to this method and runs python expression (code) within the program.</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"><span class="hljs-comment"># -&gt; https://www.runoob.com/python/python-func-eval.html</span></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">solveEquation</span>(<span class="hljs-params">self, equation</span>):</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        tmp = equation.replace(<span class="hljs-string">&#x27;x&#x27;</span>, <span class="hljs-string">&#x27;j&#x27;</span>).replace(<span class="hljs-string">&#x27;=&#x27;</span>, <span class="hljs-string">&#x27;-(&#x27;</span>)</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        z = <span class="hljs-built_in">eval</span>(tmp + <span class="hljs-string">&quot;)&quot;</span> , {<span class="hljs-string">&#x27;j&#x27;</span>:<span class="hljs-number">1j</span>})</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-comment"># print (&quot;equation = &quot; + str(equation))</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-comment"># print (&quot;tmp = &quot; + str(tmp))</span></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-comment"># print (&quot;z = &quot; + str(z))</span></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        a, x = z.real, -z.imag</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;x=%d&#x27;</span> % (a / x) <span class="hljs-keyword">if</span> x <span class="hljs-keyword">else</span> <span class="hljs-string">&#x27;No solution&#x27;</span> <span class="hljs-keyword">if</span> a <span class="hljs-keyword">else</span> <span class="hljs-string">&#x27;Infinite solutions&#x27;</span></span></span>
+<pre><code class="language-python"># LC 640. Solve the Equation
+# V0
+# IDEA : replace + eval + math
+# https://leetcode.com/problems/solve-the-equation/discuss/105362/Simple-2-liner-(and-more)
+# eval : The eval() method parses the expression passed to this method and runs python expression (code) within the program.
+# -&gt; https://www.runoob.com/python/python-func-eval.html
+class Solution(object):
+    def solveEquation(self, equation):
+        tmp = equation.replace('x', 'j').replace('=', '-(')
+        z = eval(tmp + &quot;)&quot; , {'j':1j})
+        # print (&quot;equation = &quot; + str(equation))
+        # print (&quot;tmp = &quot; + str(tmp))
+        # print (&quot;z = &quot; + str(z))
+        a, x = z.real, -z.imag
+        return 'x=%d' % (a / x) if x else 'No solution' if a else 'Infinite solutions'
 </code></pre>
 <h3 id="2-3-roman-to-integer" tabindex="-1"><a class="header-anchor" href="#2-3-roman-to-integer"><span>2-3) Roman to Integer</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// java</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// LC 13</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-comment">// V0-1</span></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-comment">// IDEA: MAP + STR OP (fixed by gpt)</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">romanToInt_0_1</span><span class="hljs-params">(String s)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">if</span> (s == <span class="hljs-literal">null</span> || s.isEmpty()) {</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    Map&lt;Character, Integer&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    map.put(<span class="hljs-string">&#x27;I&#x27;</span>, <span class="hljs-number">1</span>);</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    map.put(<span class="hljs-string">&#x27;V&#x27;</span>, <span class="hljs-number">5</span>);</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    map.put(<span class="hljs-string">&#x27;X&#x27;</span>, <span class="hljs-number">10</span>);</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    map.put(<span class="hljs-string">&#x27;L&#x27;</span>, <span class="hljs-number">50</span>);</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    map.put(<span class="hljs-string">&#x27;C&#x27;</span>, <span class="hljs-number">100</span>);</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    map.put(<span class="hljs-string">&#x27;D&#x27;</span>, <span class="hljs-number">500</span>);</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    map.put(<span class="hljs-string">&#x27;M&#x27;</span>, <span class="hljs-number">1000</span>);</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">total</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">prev</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    <span class="hljs-comment">/**</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">     * NOTE !!!</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">     *</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">     * loop reversely (from  idx = s.len() - 1)</span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">     */</span></span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> s.length() - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {</span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">curr</span> <span class="hljs-operator">=</span> map.get(s.charAt(i));</span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">        <span class="hljs-keyword">if</span> (curr &lt; prev) {</span></span>
-<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">            total -= curr;</span></span>
-<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">        } <span class="hljs-keyword">else</span> {</span></span>
-<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">            total += curr;</span></span>
-<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">        <span class="hljs-comment">/**</span></span>
-<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">         * NOTE !!!</span></span>
-<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">         *</span></span>
-<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">         *  set `prev` as curr</span></span>
-<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">         */</span></span></span>
-<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">        prev = curr;</span></span>
-<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">42</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">    <span class="hljs-keyword">return</span> total;</span></span>
-<span class="ln-row"><span class="ln-num">44</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// java
+// LC 13
+
+// V0-1
+// IDEA: MAP + STR OP (fixed by gpt)
+public int romanToInt_0_1(String s) {
+    if (s == null || s.isEmpty()) {
+        return 0;
+    }
+
+    Map&lt;Character, Integer&gt; map = new HashMap&lt;&gt;();
+    map.put('I', 1);
+    map.put('V', 5);
+    map.put('X', 10);
+    map.put('L', 50);
+    map.put('C', 100);
+    map.put('D', 500);
+    map.put('M', 1000);
+
+    int total = 0;
+    int prev = 0;
+
+    /**
+     * NOTE !!!
+     *
+     * loop reversely (from  idx = s.len() - 1)
+     */
+    for (int i = s.length() - 1; i &gt;= 0; i--) {
+        int curr = map.get(s.charAt(i));
+        if (curr &lt; prev) {
+            total -= curr;
+        } else {
+            total += curr;
+        }
+        /**
+         * NOTE !!!
+         *
+         *  set `prev` as curr
+         */
+        prev = curr;
+    }
+
+    return total;
+}
 </code></pre>
 
       </div>

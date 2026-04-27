@@ -9,7 +9,8 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -20,42 +21,40 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    // Code block wrappers + copy buttons (highlighting done at build time)
-    try {
-      document.querySelectorAll('pre').forEach(function(pre) {
-        var codeEl = pre.querySelector('code');
-        var lang = pre.getAttribute('data-lang') || '';
-        var wrapper = document.createElement('div');
-        wrapper.className = 'code-block-wrapper';
-        pre.parentNode.insertBefore(wrapper, pre);
-        var header = document.createElement('div');
-        header.className = 'code-block-header';
-        if (lang) {
-          var label = document.createElement('span');
-          label.className = 'code-lang-label';
-          label.textContent = lang;
-          header.appendChild(label);
-        } else {
-          header.appendChild(document.createElement('span'));
-        }
-        var btn = document.createElement('button');
-        btn.className = 'copy-btn';
-        btn.textContent = 'Copy';
-        btn.addEventListener('click', function() {
-          var text = codeEl
-            ? Array.from(codeEl.querySelectorAll('.ln-code')).map(function(el) { return el.textContent; }).join('\n')
-            : pre.textContent;
-          navigator.clipboard.writeText(text).then(function() {
-            btn.textContent = 'Copied!';
-            btn.classList.add('copied');
-            setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-          });
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
         });
-        header.appendChild(btn);
-        wrapper.appendChild(header);
-        wrapper.appendChild(pre);
       });
-    } catch(e) { console.error('Code block setup error:', e); }
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -65,36 +64,32 @@
       }
     });
     // Reading progress bar
-    try {
-      var progressBar = document.getElementById('reading-progress');
-      if (progressBar) {
-        window.addEventListener('scroll', function() {
-          var winScroll = document.documentElement.scrollTop;
-          var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-          progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
-        });
-      }
-    } catch(e) {}
-    // Dark mode toggle — isolated so errors elsewhere never prevent this from working
-    try {
-      var toggle = document.getElementById('theme-toggle');
-      if (toggle) {
-        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-        toggle.textContent = isDark ? '☀️' : '🌙';
-        toggle.addEventListener('click', function() {
-          var dark = document.documentElement.getAttribute('data-theme') === 'dark';
-          if (dark) {
-            document.documentElement.removeAttribute('data-theme');
-            localStorage.setItem('theme', 'light');
-            toggle.textContent = '🌙';
-          } else {
-            document.documentElement.setAttribute('data-theme', 'dark');
-            localStorage.setItem('theme', 'dark');
-            toggle.textContent = '☀️';
-          }
-        });
-      }
-    } catch(e) { console.error('Theme toggle error:', e); }
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
   });</script>
 </head>
 <body>
@@ -162,55 +157,55 @@
 <p>In short, Decorator is the way pass 1 function as an argument into another function then to another brand new function. (below example)</p>
 </li>
 </ul>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">decorator</span>(<span class="hljs-params">fn</span>):</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">inner</span>(<span class="hljs-params">n</span>):</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        <span class="hljs-keyword">return</span> fn(n) + <span class="hljs-number">1</span></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">return</span> inner</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"><span class="hljs-comment"># Decorator style 1)</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"><span class="hljs-comment"># this is what decorator readlly does </span></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">f</span>(<span class="hljs-params">n</span>):</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-keyword">return</span> n + <span class="hljs-number">1</span></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">f = decorator(f) <span class="hljs-comment"># pass f as arg into decorator as brand new function</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"><span class="hljs-comment"># Decorator style 2)</span></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code"><span class="hljs-comment"># or we can write it formally</span></span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"><span class="hljs-meta">@decorator</span></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">f</span>(<span class="hljs-params">n</span>):</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-keyword">return</span> n + <span class="hljs-number">1</span></span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code"></span></span>
+<pre><code class="language-python">
+def decorator(fn):
+    def inner(n):
+        return fn(n) + 1
+    return inner
+
+# Decorator style 1)
+# this is what decorator readlly does 
+def f(n):
+    return n + 1
+f = decorator(f) # pass f as arg into decorator as brand new function
+
+# Decorator style 2)
+# or we can write it formally
+@decorator
+def f(n):
+    return n + 1
+
 </code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># more detailed example</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">wrap_with_prints</span>(<span class="hljs-params">fn</span>):</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-comment"># This will only happen when a function decorated</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-comment"># with @wrap_with_prints is defined</span></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;wrap_with_prints runs only once&#x27;</span>)</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"> </span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">wrapped</span>():</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-comment"># This will happen each time just before</span></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-comment"># the decorated function is called</span></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;About to run %s&#x27;</span> % fn.__name__)</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-comment"># Here is where the wrapper calls the decorated function</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        fn()</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-comment"># This will happen each time just after</span></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        <span class="hljs-comment"># the decorated function is called</span></span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Done running %s&#x27;</span> % fn.__name__)</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code"> </span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-keyword">return</span> wrapped</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code"> </span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code"><span class="hljs-meta">@wrap_with_prints</span></span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">func_to_decorate</span>():</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Running the function that was decorated.&#x27;</span>)</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code"> </span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">func_to_decorate()</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code"><span class="hljs-comment"># output </span></span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code"><span class="hljs-comment"># wrap_with_prints runs only once</span></span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code"><span class="hljs-comment"># About to run func_to_decorate</span></span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code"><span class="hljs-comment"># Running the function that was decorated.</span></span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code"><span class="hljs-comment"># Done running func_to_decorate</span></span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code"></span></span>
+<pre><code class="language-python"># more detailed example
+def wrap_with_prints(fn):
+    # This will only happen when a function decorated
+    # with @wrap_with_prints is defined
+    print('wrap_with_prints runs only once')
+ 
+    def wrapped():
+        # This will happen each time just before
+        # the decorated function is called
+        print('About to run %s' % fn.__name__)
+        # Here is where the wrapper calls the decorated function
+        fn()
+        # This will happen each time just after
+        # the decorated function is called
+        print('Done running %s' % fn.__name__)
+ 
+    return wrapped
+ 
+@wrap_with_prints
+def func_to_decorate():
+    print('Running the function that was decorated.')
+ 
+func_to_decorate()
+
+# output 
+# wrap_with_prints runs only once
+# About to run func_to_decorate
+# Running the function that was decorated.
+# Done running func_to_decorate
+
 </code></pre>
 <ul>
 <li><a href="https://www.pythoncentral.io/python-decorators-overview/">https://www.pythoncentral.io/python-decorators-overview/</a></li>
@@ -219,50 +214,50 @@
 <ul>
 <li>The idea of generators is to calculate a series of results one-by-one on demand (on the fly). In the simplest case, a generator can be used as a list, where each element is calculated lazily. Lets compare a list and a generator that do the same thing - return powers of two:</li>
 </ul>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-comment"># First, we define a list</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-meta">&gt;&gt;&gt; </span>the_list = [<span class="hljs-number">2</span>**x <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">5</span>)]</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">&gt;&gt;&gt;</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-comment"># Type check: yes, it&#x27;s a list</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">type</span>(the_list)</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">&lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;list&#x27;</span>&gt;</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">&gt;&gt;&gt;</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-comment"># Iterate over items and print them</span></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">for</span> element <span class="hljs-keyword">in</span> the_list:</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"><span class="hljs-meta">... </span>    <span class="hljs-built_in">print</span>(element)</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">...</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"><span class="hljs-number">1</span></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code"><span class="hljs-number">2</span></span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"><span class="hljs-number">4</span></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code"><span class="hljs-number">8</span></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code"><span class="hljs-number">16</span></span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">&gt;&gt;&gt;</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-comment"># How about the length?</span></span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">len</span>(the_list)</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code"><span class="hljs-number">5</span></span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">&gt;&gt;&gt;</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-comment"># Ok, now a generator.</span></span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-comment"># As easy as list comprehensions, but with &#x27;()&#x27; instead of &#x27;[]&#x27;:</span></span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code"><span class="hljs-meta">&gt;&gt;&gt; </span>the_generator = (x+x <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">3</span>))</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">&gt;&gt;&gt;</span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-comment"># Type check: yes, it&#x27;s a generator</span></span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">type</span>(the_generator)</span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">&lt;<span class="hljs-keyword">class</span> <span class="hljs-string">&#x27;generator&#x27;</span>&gt;</span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">&gt;&gt;&gt;</span></span>
-<span class="ln-row"><span class="ln-num">31</span><span class="ln-code"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-comment"># Iterate over items and print them</span></span></span>
-<span class="ln-row"><span class="ln-num">32</span><span class="ln-code"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-keyword">for</span> element <span class="hljs-keyword">in</span> the_generator:</span></span>
-<span class="ln-row"><span class="ln-num">33</span><span class="ln-code"><span class="hljs-meta">... </span>    <span class="hljs-built_in">print</span>(element)</span></span>
-<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">...</span></span>
-<span class="ln-row"><span class="ln-num">35</span><span class="ln-code"><span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">36</span><span class="ln-code"><span class="hljs-number">2</span></span></span>
-<span class="ln-row"><span class="ln-num">37</span><span class="ln-code"><span class="hljs-number">4</span></span></span>
-<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">&gt;&gt;&gt;</span></span>
-<span class="ln-row"><span class="ln-num">39</span><span class="ln-code"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-comment"># Everything looks the same, but the length...</span></span></span>
-<span class="ln-row"><span class="ln-num">40</span><span class="ln-code"><span class="hljs-meta">&gt;&gt;&gt; </span><span class="hljs-built_in">len</span>(the_generator)</span></span>
-<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">Traceback (most recent call last):</span></span>
-<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">  File <span class="hljs-string">&quot;&quot;</span>, line <span class="hljs-number">1</span>, <span class="hljs-keyword">in</span></span></span>
-<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">TypeError: <span class="hljs-built_in">object</span> of <span class="hljs-built_in">type</span> <span class="hljs-string">&#x27;generator&#x27;</span> has no <span class="hljs-built_in">len</span>()</span></span>
-<span class="ln-row"><span class="ln-num">44</span><span class="ln-code"></span></span>
+<pre><code class="language-python">
+&gt;&gt;&gt; # First, we define a list
+&gt;&gt;&gt; the_list = [2**x for x in range(5)]
+&gt;&gt;&gt;
+&gt;&gt;&gt; # Type check: yes, it's a list
+&gt;&gt;&gt; type(the_list)
+&lt;class 'list'&gt;
+&gt;&gt;&gt;
+&gt;&gt;&gt; # Iterate over items and print them
+&gt;&gt;&gt; for element in the_list:
+...     print(element)
+...
+1
+2
+4
+8
+16
+&gt;&gt;&gt;
+&gt;&gt;&gt; # How about the length?
+&gt;&gt;&gt; len(the_list)
+5
+&gt;&gt;&gt;
+&gt;&gt;&gt; # Ok, now a generator.
+&gt;&gt;&gt; # As easy as list comprehensions, but with '()' instead of '[]':
+&gt;&gt;&gt; the_generator = (x+x for x in range(3))
+&gt;&gt;&gt;
+&gt;&gt;&gt; # Type check: yes, it's a generator
+&gt;&gt;&gt; type(the_generator)
+&lt;class 'generator'&gt;
+&gt;&gt;&gt;
+&gt;&gt;&gt; # Iterate over items and print them
+&gt;&gt;&gt; for element in the_generator:
+...     print(element)
+...
+0
+2
+4
+&gt;&gt;&gt;
+&gt;&gt;&gt; # Everything looks the same, but the length...
+&gt;&gt;&gt; len(the_generator)
+Traceback (most recent call last):
+  File &quot;&quot;, line 1, in
+TypeError: object of type 'generator' has no len()
+
 </code></pre>
 <ul>
 <li>
@@ -286,16 +281,16 @@ put in all kinds of objects in lists.  The result will be a new list resulting f
 <p>The list comprehension always returns a result list.</p>
 </li>
 </ul>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># for loop append to a list </span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">new_list = []</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> old_list:</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">if</span> <span class="hljs-built_in">filter</span>(i):</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        new_list.append(expressions(i))</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"><span class="hljs-comment"># via list comprehensions  (for loop append to a list )</span></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">new_list = [expression(i) <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> old_list <span class="hljs-keyword">if</span> <span class="hljs-built_in">filter</span>(i)]</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"></span></span>
+<pre><code class="language-python">
+# for loop append to a list 
+new_list = []
+for i in old_list:
+    if filter(i):
+        new_list.append(expressions(i))
+
+# via list comprehensions  (for loop append to a list )
+new_list = [expression(i) for i in old_list if filter(i)]
+
 </code></pre>
 <ul>
 <li><a href="https://www.pythonforbeginners.com/basics/list-comprehensions-in-python">https://www.pythonforbeginners.com/basics/list-comprehensions-in-python</a></li>
@@ -311,73 +306,73 @@ put in all kinds of objects in lists.  The result will be a new list resulting f
 <ul>
 <li>i.e. <code>x = '99023430990999', y = '99'. The func should return [0, 8, 11, 12]</code></li>
 </ul>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">findall</span>(<span class="hljs-params">x, y</span>):</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-string">&#x27;&#x27;&#x27;Yields all the positions of</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    the pattern p in the string s.&#x27;&#x27;&#x27;</span></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-comment"># python find module </span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-comment"># https://www.w3schools.com/python/ref_string_find.asp</span></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-comment"># string.find(value, start, end)</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-comment"># start : Optional. Where to start the search. Default is 0</span></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-comment"># end: Optional. Where to end the search. Default is to the end of the string</span></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-comment"># so s.find(p, i+1) means to find the next elment </span></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    i = x.find(y)</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-keyword">while</span> i != -<span class="hljs-number">1</span>:</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-keyword">yield</span> i</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        i = x.find(y, i+<span class="hljs-number">1</span>)</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">findall_2</span>(<span class="hljs-params">x, y</span>):</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    res = []</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    i = x.find(y)</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    <span class="hljs-keyword">while</span> i != -<span class="hljs-number">1</span>:</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">         res.append(i)</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">         i = x.find(y, i+<span class="hljs-number">1</span>)</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    <span class="hljs-keyword">return</span> res </span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code"><span class="hljs-comment"># demo 1 </span></span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code"><span class="hljs-comment"># x = &#x27;99023430990999&#x27;</span></span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code"><span class="hljs-comment"># y = &#x27;99&#x27;</span></span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code"><span class="hljs-comment"># [i for i in findall(x, y)]</span></span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code"><span class="hljs-comment"># demo 2 </span></span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code"><span class="hljs-comment"># x = &#x27;195378678&#x27;</span></span></span>
-<span class="ln-row"><span class="ln-num">31</span><span class="ln-code"><span class="hljs-comment"># y = &#x27;78&#x27;</span></span></span>
-<span class="ln-row"><span class="ln-num">32</span><span class="ln-code"><span class="hljs-comment"># [i for i in findall(x, y)]</span></span></span>
-<span class="ln-row"><span class="ln-num">33</span><span class="ln-code"></span></span>
+<pre><code class="language-python">
+def findall(x, y):
+    '''Yields all the positions of
+    the pattern p in the string s.'''
+    # python find module 
+    # https://www.w3schools.com/python/ref_string_find.asp
+    # string.find(value, start, end)
+    # start : Optional. Where to start the search. Default is 0
+    # end: Optional. Where to end the search. Default is to the end of the string
+    # so s.find(p, i+1) means to find the next elment 
+    i = x.find(y)
+    while i != -1:
+        yield i
+        i = x.find(y, i+1)
+
+
+def findall_2(x, y):
+    res = []
+    i = x.find(y)
+    while i != -1:
+         res.append(i)
+         i = x.find(y, i+1)
+    return res 
+
+# demo 1 
+# x = '99023430990999'
+# y = '99'
+# [i for i in findall(x, y)]
+# demo 2 
+# x = '195378678'
+# y = '78'
+# [i for i in findall(x, y)]
+
 </code></pre>
 <h2 id="defaultdict" tabindex="-1"><a class="header-anchor" href="#defaultdict"><span>Defaultdict</span></a></h2>
 <h4 id="1-given-an-array-richer-1-0-2-1-3-1-3-7-4-3-5-3-6-3-with-the-form-ppl-richer-ppl" tabindex="-1"><a class="header-anchor" href="#1-given-an-array-richer-1-0-2-1-3-1-3-7-4-3-5-3-6-3-with-the-form-ppl-richer-ppl"><span>1) Given an array : richer = [[1,0],[2,1],[3,1],[3,7],[4,3],[5,3],[6,3]] with the form :[ppl, richer ppl]</span></a></h4>
 <p><code>(i.e.:</code>0&gt;1<code>,</code>1&gt;2<code>,</code>1&gt;3<code>...) </code>Find the list
 of ppl with ppl that richer than them?</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">richer = [[<span class="hljs-number">1</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">2</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">1</span>],[<span class="hljs-number">3</span>,<span class="hljs-number">7</span>],[<span class="hljs-number">4</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">5</span>,<span class="hljs-number">3</span>],[<span class="hljs-number">6</span>,<span class="hljs-number">3</span>]]</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">import</span> collections </span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">ppl_richer = collections.defaultdict(<span class="hljs-built_in">list</span>)</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">for</span> i, j <span class="hljs-keyword">in</span> richer:</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-comment">#ppl_richer[j].append(i)</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    ppl_richer[i].append(j)</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"><span class="hljs-built_in">print</span> (ppl_richer)</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"><span class="hljs-comment">#&gt;&gt;&gt; defaultdict(&lt;class &#x27;list&#x27;&gt;, {1: [0], 2: [1], 3: [1, 7], 4: [3], 5: [3], 6: [3]})</span></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"></span></span>
+<pre><code class="language-python">richer = [[1,0],[2,1],[3,1],[3,7],[4,3],[5,3],[6,3]]
+import collections 
+ppl_richer = collections.defaultdict(list)
+for i, j in richer:
+    #ppl_richer[j].append(i)
+    ppl_richer[i].append(j)
+
+print (ppl_richer)
+#&gt;&gt;&gt; defaultdict(&lt;class 'list'&gt;, {1: [0], 2: [1], 3: [1, 7], 4: [3], 5: [3], 6: [3]})
+
+
 </code></pre>
 <h2 id="subarray" tabindex="-1"><a class="header-anchor" href="#subarray"><span>Subarray</span></a></h2>
 <h4 id="1-find-the-sub-array-as-list-by-multiple" tabindex="-1"><a class="header-anchor" href="#1-find-the-sub-array-as-list-by-multiple"><span>1) Find the sub-array as list by multiple?</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">array = [ i <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">31</span>) ]</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">multiple_2 = array[<span class="hljs-number">2</span>::<span class="hljs-number">2</span>]</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">multiple_3 = array[<span class="hljs-number">3</span>::<span class="hljs-number">3</span>]</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">multiple_5 = array[<span class="hljs-number">5</span>::<span class="hljs-number">5</span>]</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"><span class="hljs-comment"># In [42]: multiple_2</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"><span class="hljs-comment"># Out[42]: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30]</span></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"><span class="hljs-comment"># In [43]: multiple_3</span></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"><span class="hljs-comment"># Out[43]: [3, 6, 9, 12, 15, 18, 21, 24, 27, 30]</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"><span class="hljs-comment"># In [44]: multiple_5</span></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code"><span class="hljs-comment"># Out[44]: [5, 10, 15, 20, 25, 30]</span></span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"></span></span>
+<pre><code class="language-python">
+array = [ i for i in range(31) ]
+multiple_2 = array[2::2]
+multiple_3 = array[3::3]
+multiple_5 = array[5::5]
+
+# In [42]: multiple_2
+# Out[42]: [2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30]
+
+# In [43]: multiple_3
+# Out[43]: [3, 6, 9, 12, 15, 18, 21, 24, 27, 30]
+
+# In [44]: multiple_5
+# Out[44]: [5, 10, 15, 20, 25, 30]
+
 </code></pre>
 
       </div>

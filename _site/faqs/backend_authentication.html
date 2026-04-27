@@ -9,7 +9,8 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -20,42 +21,40 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    // Code block wrappers + copy buttons (highlighting done at build time)
-    try {
-      document.querySelectorAll('pre').forEach(function(pre) {
-        var codeEl = pre.querySelector('code');
-        var lang = pre.getAttribute('data-lang') || '';
-        var wrapper = document.createElement('div');
-        wrapper.className = 'code-block-wrapper';
-        pre.parentNode.insertBefore(wrapper, pre);
-        var header = document.createElement('div');
-        header.className = 'code-block-header';
-        if (lang) {
-          var label = document.createElement('span');
-          label.className = 'code-lang-label';
-          label.textContent = lang;
-          header.appendChild(label);
-        } else {
-          header.appendChild(document.createElement('span'));
-        }
-        var btn = document.createElement('button');
-        btn.className = 'copy-btn';
-        btn.textContent = 'Copy';
-        btn.addEventListener('click', function() {
-          var text = codeEl
-            ? Array.from(codeEl.querySelectorAll('.ln-code')).map(function(el) { return el.textContent; }).join('\n')
-            : pre.textContent;
-          navigator.clipboard.writeText(text).then(function() {
-            btn.textContent = 'Copied!';
-            btn.classList.add('copied');
-            setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-          });
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
         });
-        header.appendChild(btn);
-        wrapper.appendChild(header);
-        wrapper.appendChild(pre);
       });
-    } catch(e) { console.error('Code block setup error:', e); }
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -65,36 +64,32 @@
       }
     });
     // Reading progress bar
-    try {
-      var progressBar = document.getElementById('reading-progress');
-      if (progressBar) {
-        window.addEventListener('scroll', function() {
-          var winScroll = document.documentElement.scrollTop;
-          var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-          progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
-        });
-      }
-    } catch(e) {}
-    // Dark mode toggle — isolated so errors elsewhere never prevent this from working
-    try {
-      var toggle = document.getElementById('theme-toggle');
-      if (toggle) {
-        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-        toggle.textContent = isDark ? '☀️' : '🌙';
-        toggle.addEventListener('click', function() {
-          var dark = document.documentElement.getAttribute('data-theme') === 'dark';
-          if (dark) {
-            document.documentElement.removeAttribute('data-theme');
-            localStorage.setItem('theme', 'light');
-            toggle.textContent = '🌙';
-          } else {
-            document.documentElement.setAttribute('data-theme', 'dark');
-            localStorage.setItem('theme', 'dark');
-            toggle.textContent = '☀️';
-          }
-        });
-      }
-    } catch(e) { console.error('Theme toggle error:', e); }
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
   });</script>
 </head>
 <body>
@@ -214,30 +209,30 @@
 </tbody>
 </table>
 <h3 id="node-js-express-redis" tabindex="-1"><a class="header-anchor" href="#node-js-express-redis"><span>程式碼範例（Node.js + Express + Redis）</span></a></h3>
-<pre data-lang="javascript"><code class="hljs language-javascript"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">const</span> session = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;express-session&#x27;</span>);</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">const</span> <span class="hljs-title class_">RedisStore</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;connect-redis&#x27;</span>)(session);</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-keyword">const</span> { createClient } = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;redis&#x27;</span>);</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-keyword">let</span> redisClient = <span class="hljs-title function_">createClient</span>({ <span class="hljs-attr">legacyMode</span>: <span class="hljs-literal">true</span> });</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">redisClient.<span class="hljs-title function_">connect</span>();</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">app.<span class="hljs-title function_">use</span>(<span class="hljs-title function_">session</span>({</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">  <span class="hljs-attr">store</span>: <span class="hljs-keyword">new</span> <span class="hljs-title class_">RedisStore</span>({ <span class="hljs-attr">client</span>: redisClient }),</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">  <span class="hljs-attr">secret</span>: <span class="hljs-string">&#x27;your_super_secret_key&#x27;</span>,</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">  <span class="hljs-attr">resave</span>: <span class="hljs-literal">false</span>,</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">  <span class="hljs-attr">saveUninitialized</span>: <span class="hljs-literal">false</span>,</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">  <span class="hljs-attr">cookie</span>: {</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-attr">httpOnly</span>: <span class="hljs-literal">true</span>,</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-attr">secure</span>: <span class="hljs-literal">true</span>,         <span class="hljs-comment">// 正式環境啟用</span></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    <span class="hljs-attr">sameSite</span>: <span class="hljs-string">&#x27;lax&#x27;</span>,</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-attr">maxAge</span>: <span class="hljs-number">1000</span> * <span class="hljs-number">60</span> * <span class="hljs-number">30</span>  <span class="hljs-comment">// 30 分鐘</span></span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">  }</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">}));</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">app.<span class="hljs-title function_">post</span>(<span class="hljs-string">&#x27;/login&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">req, res</span>) =&gt;</span> {</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">  req.<span class="hljs-property">session</span>.<span class="hljs-property">userId</span> = <span class="hljs-string">&#x27;user_123&#x27;</span>;</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">  res.<span class="hljs-title function_">send</span>(<span class="hljs-string">&#x27;Logged in!&#x27;</span>);</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">});</span></span>
+<pre><code class="language-javascript">const session = require('express-session');
+const RedisStore = require('connect-redis')(session);
+const { createClient } = require('redis');
+
+let redisClient = createClient({ legacyMode: true });
+redisClient.connect();
+
+app.use(session({
+  store: new RedisStore({ client: redisClient }),
+  secret: 'your_super_secret_key',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: true,
+    secure: true,         // 正式環境啟用
+    sameSite: 'lax',
+    maxAge: 1000 * 60 * 30  // 30 分鐘
+  }
+}));
+
+app.post('/login', (req, res) =&gt; {
+  req.session.userId = 'user_123';
+  res.send('Logged in!');
+});
 </code></pre>
 <h3 id="session-1" tabindex="-1"><a class="header-anchor" href="#session-1"><span>Session 的優缺點</span></a></h3>
 <p><strong>優點：</strong></p>
@@ -259,7 +254,7 @@
 <li><strong>Payload（負載）</strong>：存放非敏感使用者資料（如 <code>userId</code>、<code>role</code>、<code>exp</code> 過期時間）</li>
 <li><strong>Signature（簽章）</strong>：伺服器用私鑰對前兩部分進行雜湊運算</li>
 </ol>
-<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">Signature = HMACSHA256(base64(Header) + &quot;.&quot; + base64(Payload), SecretKey)</span></span>
+<pre><code>Signature = HMACSHA256(base64(Header) + &quot;.&quot; + base64(Payload), SecretKey)
 </code></pre>
 <blockquote>
 <p>Payload 只是 Base64 編碼，<strong>任何人都能解碼</strong>。絕對不要存密碼等敏感資料！</p>
@@ -281,31 +276,31 @@
 <li><strong>優點</strong>：想登出時只需從資料庫刪除 Refresh Token，帳號在 15 分鐘後徹底失效</li>
 </ul>
 <h3 id="node-js" tabindex="-1"><a class="header-anchor" href="#node-js"><span>程式碼範例（Node.js）</span></a></h3>
-<pre data-lang="javascript"><code class="hljs language-javascript"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">const</span> jwt = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;jsonwebtoken&#x27;</span>);</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">const</span> <span class="hljs-variable constant_">SECRET_KEY</span> = <span class="hljs-string">&#x27;your_super_safe_secret_key&#x27;</span>;</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-comment">// 簽發 Token（Login 時執行）</span></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-keyword">function</span> <span class="hljs-title function_">generateToken</span>(<span class="hljs-params">user</span>) {</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">  <span class="hljs-keyword">return</span> jwt.<span class="hljs-title function_">sign</span>(</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    { <span class="hljs-attr">id</span>: user.<span class="hljs-property">id</span>, <span class="hljs-attr">role</span>: user.<span class="hljs-property">role</span> },   <span class="hljs-comment">// Payload</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-variable constant_">SECRET_KEY</span>,                          <span class="hljs-comment">// 私鑰</span></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    { <span class="hljs-attr">expiresIn</span>: <span class="hljs-string">&#x27;1h&#x27;</span> }                  <span class="hljs-comment">// 1 小時過期</span></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">  );</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">}</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"><span class="hljs-comment">// 驗證 Token（Middleware）</span></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code"><span class="hljs-keyword">function</span> <span class="hljs-title function_">verifyToken</span>(<span class="hljs-params">req, res, next</span>) {</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">  <span class="hljs-keyword">const</span> authHeader = req.<span class="hljs-property">headers</span>[<span class="hljs-string">&#x27;authorization&#x27;</span>];</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">  <span class="hljs-keyword">const</span> token = authHeader &amp;&amp; authHeader.<span class="hljs-title function_">split</span>(<span class="hljs-string">&#x27; &#x27;</span>)[<span class="hljs-number">1</span>];</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">  <span class="hljs-keyword">if</span> (!token) <span class="hljs-keyword">return</span> res.<span class="hljs-title function_">sendStatus</span>(<span class="hljs-number">401</span>);</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">  jwt.<span class="hljs-title function_">verify</span>(token, <span class="hljs-variable constant_">SECRET_KEY</span>, <span class="hljs-function">(<span class="hljs-params">err, decodedUser</span>) =&gt;</span> {</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">    <span class="hljs-keyword">if</span> (err) <span class="hljs-keyword">return</span> res.<span class="hljs-title function_">sendStatus</span>(<span class="hljs-number">403</span>);</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    req.<span class="hljs-property">user</span> = decodedUser;</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    <span class="hljs-title function_">next</span>();</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">  });</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">}</span></span>
+<pre><code class="language-javascript">const jwt = require('jsonwebtoken');
+const SECRET_KEY = 'your_super_safe_secret_key';
+
+// 簽發 Token（Login 時執行）
+function generateToken(user) {
+  return jwt.sign(
+    { id: user.id, role: user.role },   // Payload
+    SECRET_KEY,                          // 私鑰
+    { expiresIn: '1h' }                  // 1 小時過期
+  );
+}
+
+// 驗證 Token（Middleware）
+function verifyToken(req, res, next) {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader &amp;&amp; authHeader.split(' ')[1];
+
+  if (!token) return res.sendStatus(401);
+
+  jwt.verify(token, SECRET_KEY, (err, decodedUser) =&gt; {
+    if (err) return res.sendStatus(403);
+    req.user = decodedUser;
+    next();
+  });
+}
 </code></pre>
 <h3 id="jwt" tabindex="-1"><a class="header-anchor" href="#jwt"><span>JWT 的優缺點</span></a></h3>
 <p><strong>優點：</strong></p>

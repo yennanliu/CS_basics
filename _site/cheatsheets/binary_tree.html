@@ -9,7 +9,8 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -20,42 +21,40 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    // Code block wrappers + copy buttons (highlighting done at build time)
-    try {
-      document.querySelectorAll('pre').forEach(function(pre) {
-        var codeEl = pre.querySelector('code');
-        var lang = pre.getAttribute('data-lang') || '';
-        var wrapper = document.createElement('div');
-        wrapper.className = 'code-block-wrapper';
-        pre.parentNode.insertBefore(wrapper, pre);
-        var header = document.createElement('div');
-        header.className = 'code-block-header';
-        if (lang) {
-          var label = document.createElement('span');
-          label.className = 'code-lang-label';
-          label.textContent = lang;
-          header.appendChild(label);
-        } else {
-          header.appendChild(document.createElement('span'));
-        }
-        var btn = document.createElement('button');
-        btn.className = 'copy-btn';
-        btn.textContent = 'Copy';
-        btn.addEventListener('click', function() {
-          var text = codeEl
-            ? Array.from(codeEl.querySelectorAll('.ln-code')).map(function(el) { return el.textContent; }).join('\n')
-            : pre.textContent;
-          navigator.clipboard.writeText(text).then(function() {
-            btn.textContent = 'Copied!';
-            btn.classList.add('copied');
-            setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-          });
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
         });
-        header.appendChild(btn);
-        wrapper.appendChild(header);
-        wrapper.appendChild(pre);
       });
-    } catch(e) { console.error('Code block setup error:', e); }
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -65,36 +64,32 @@
       }
     });
     // Reading progress bar
-    try {
-      var progressBar = document.getElementById('reading-progress');
-      if (progressBar) {
-        window.addEventListener('scroll', function() {
-          var winScroll = document.documentElement.scrollTop;
-          var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-          progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
-        });
-      }
-    } catch(e) {}
-    // Dark mode toggle — isolated so errors elsewhere never prevent this from working
-    try {
-      var toggle = document.getElementById('theme-toggle');
-      if (toggle) {
-        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-        toggle.textContent = isDark ? '☀️' : '🌙';
-        toggle.addEventListener('click', function() {
-          var dark = document.documentElement.getAttribute('data-theme') === 'dark';
-          if (dark) {
-            document.documentElement.removeAttribute('data-theme');
-            localStorage.setItem('theme', 'light');
-            toggle.textContent = '🌙';
-          } else {
-            document.documentElement.setAttribute('data-theme', 'dark');
-            localStorage.setItem('theme', 'dark');
-            toggle.textContent = '☀️';
-          }
-        });
-      }
-    } catch(e) { console.error('Theme toggle error:', e); }
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
   });</script>
 </head>
 <body>
@@ -250,17 +245,17 @@
 </ul>
 <h4 id="example" tabindex="-1"><a class="header-anchor" href="#example"><span>Example:</span></a></h4>
 <p>Let’s say you have a complete binary tree like this:</p>
-<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">        10</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">       /  \</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">     15    20</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    / \    /</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">   30 40  50</span></span>
+<pre><code>        10
+       /  \
+     15    20
+    / \    /
+   30 40  50
 </code></pre>
 <p>This tree as an <strong>array (1-based)</strong> would be:</p>
-<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"># `n is an &quot;index&quot;` in array</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">Index:   1   2   3   4   5   6</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">Value: [10, 15, 20, 30, 40, 50]</span></span>
+<pre><code># `n is an &quot;index&quot;` in array
+
+Index:   1   2   3   4   5   6
+Value: [10, 15, 20, 30, 40, 50]
 </code></pre>
 <p>Relationships:</p>
 <ul>
@@ -354,255 +349,255 @@
 </tbody>
 </table>
 <h3 id="universal-tree-template" tabindex="-1"><a class="header-anchor" href="#universal-tree-template"><span>Universal Tree Template</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">tree_problem</span>(<span class="hljs-params">root</span>):</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    Universal template for most binary tree problems</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    Can be adapted for traversal, calculation, or modification</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    &quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-comment"># Base case</span></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span>  <span class="hljs-comment"># or 0, [], depending on problem</span></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-comment"># Pre-order processing (before recursion)</span></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-comment"># process_current_node()</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-comment"># Recursive calls</span></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    left_result = tree_problem(root.left)</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    right_result = tree_problem(root.right)</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-comment"># Post-order processing (after recursion)</span></span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    <span class="hljs-comment"># combine_results()</span></span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    <span class="hljs-keyword">return</span> result</span></span>
+<pre><code class="language-python">def tree_problem(root):
+    &quot;&quot;&quot;
+    Universal template for most binary tree problems
+    Can be adapted for traversal, calculation, or modification
+    &quot;&quot;&quot;
+    # Base case
+    if not root:
+        return None  # or 0, [], depending on problem
+    
+    # Pre-order processing (before recursion)
+    # process_current_node()
+    
+    # Recursive calls
+    left_result = tree_problem(root.left)
+    right_result = tree_problem(root.right)
+    
+    # Post-order processing (after recursion)
+    # combine_results()
+    
+    return result
 </code></pre>
 <h3 id="template-1-tree-traversal-recursive" tabindex="-1"><a class="header-anchor" href="#template-1-tree-traversal-recursive"><span>Template 1: Tree Traversal (Recursive)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Preorder Traversal</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">preorder</span>(<span class="hljs-params">root</span>):</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        <span class="hljs-keyword">return</span> []</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">return</span> [root.val] + preorder(root.left) + preorder(root.right)</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"><span class="hljs-comment"># Inorder Traversal  </span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">inorder</span>(<span class="hljs-params">root</span>):</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-keyword">return</span> []</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-keyword">return</span> inorder(root.left) + [root.val] + inorder(root.right)</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"><span class="hljs-comment"># Postorder Traversal</span></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">postorder</span>(<span class="hljs-params">root</span>):</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        <span class="hljs-keyword">return</span> []</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-keyword">return</span> postorder(root.left) + postorder(root.right) + [root.val]</span></span>
+<pre><code class="language-python"># Preorder Traversal
+def preorder(root):
+    if not root:
+        return []
+    return [root.val] + preorder(root.left) + preorder(root.right)
+
+# Inorder Traversal  
+def inorder(root):
+    if not root:
+        return []
+    return inorder(root.left) + [root.val] + inorder(root.right)
+
+# Postorder Traversal
+def postorder(root):
+    if not root:
+        return []
+    return postorder(root.left) + postorder(root.right) + [root.val]
 </code></pre>
 <h3 id="template-2-tree-traversal-iterative" tabindex="-1"><a class="header-anchor" href="#template-2-tree-traversal-iterative"><span>Template 2: Tree Traversal (Iterative)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Iterative Inorder with Stack</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">inorder_iterative</span>(<span class="hljs-params">root</span>):</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    result, stack = [], []</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    current = root</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">while</span> current <span class="hljs-keyword">or</span> stack:</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-comment"># Go to leftmost node</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">while</span> current:</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">            stack.append(current)</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">            current = current.left</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-comment"># Current must be None, so pop from stack</span></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        current = stack.pop()</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        result.append(current.val)</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        <span class="hljs-comment"># Visit right subtree</span></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        current = current.right</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    <span class="hljs-keyword">return</span> result</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code"><span class="hljs-comment"># Level Order with Queue</span></span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">level_order</span>(<span class="hljs-params">root</span>):</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">        <span class="hljs-keyword">return</span> []</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">    result = []</span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">    queue = collections.deque([root])</span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">    <span class="hljs-keyword">while</span> queue:</span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">        level_size = <span class="hljs-built_in">len</span>(queue)</span></span>
-<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">        current_level = []</span></span>
-<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">        <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(level_size):</span></span>
-<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">            node = queue.popleft()</span></span>
-<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">            current_level.append(node.val)</span></span>
-<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">            </span></span>
-<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">            <span class="hljs-keyword">if</span> node.left:</span></span>
-<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">                queue.append(node.left)</span></span>
-<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">            <span class="hljs-keyword">if</span> node.right:</span></span>
-<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">                queue.append(node.right)</span></span>
-<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">        result.append(current_level)</span></span>
-<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">44</span><span class="ln-code">    <span class="hljs-keyword">return</span> result</span></span>
+<pre><code class="language-python"># Iterative Inorder with Stack
+def inorder_iterative(root):
+    result, stack = [], []
+    current = root
+    
+    while current or stack:
+        # Go to leftmost node
+        while current:
+            stack.append(current)
+            current = current.left
+        
+        # Current must be None, so pop from stack
+        current = stack.pop()
+        result.append(current.val)
+        
+        # Visit right subtree
+        current = current.right
+    
+    return result
+
+# Level Order with Queue
+def level_order(root):
+    if not root:
+        return []
+    
+    result = []
+    queue = collections.deque([root])
+    
+    while queue:
+        level_size = len(queue)
+        current_level = []
+        
+        for _ in range(level_size):
+            node = queue.popleft()
+            current_level.append(node.val)
+            
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
+        
+        result.append(current_level)
+    
+    return result
 </code></pre>
 <h3 id="template-3-tree-construction" tabindex="-1"><a class="header-anchor" href="#template-3-tree-construction"><span>Template 3: Tree Construction</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">build_tree_from_traversals</span>(<span class="hljs-params">preorder, inorder</span>):</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    Construct tree from preorder and inorder traversals</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    Key insight: First element in preorder is always root</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    &quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> preorder <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> inorder:</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-comment"># Root is first element in preorder</span></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    root = TreeNode(preorder[<span class="hljs-number">0</span>])</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-comment"># Find root position in inorder to split left/right</span></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    root_idx = inorder.index(root.val)</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-comment"># Recursively build subtrees</span></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    <span class="hljs-comment"># Left subtree: elements before root in inorder</span></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    root.left = build_tree_from_traversals(</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        preorder[<span class="hljs-number">1</span>:root_idx+<span class="hljs-number">1</span>],  <span class="hljs-comment"># Skip root, take left elements</span></span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        inorder[:root_idx]       <span class="hljs-comment"># Everything before root</span></span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    )</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    <span class="hljs-comment"># Right subtree: elements after root in inorder</span></span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    root.right = build_tree_from_traversals(</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">        preorder[root_idx+<span class="hljs-number">1</span>:],   <span class="hljs-comment"># Everything after left subtree</span></span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">        inorder[root_idx+<span class="hljs-number">1</span>:]     <span class="hljs-comment"># Everything after root</span></span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">    )</span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">    <span class="hljs-keyword">return</span> root</span></span>
+<pre><code class="language-python">def build_tree_from_traversals(preorder, inorder):
+    &quot;&quot;&quot;
+    Construct tree from preorder and inorder traversals
+    Key insight: First element in preorder is always root
+    &quot;&quot;&quot;
+    if not preorder or not inorder:
+        return None
+    
+    # Root is first element in preorder
+    root = TreeNode(preorder[0])
+    
+    # Find root position in inorder to split left/right
+    root_idx = inorder.index(root.val)
+    
+    # Recursively build subtrees
+    # Left subtree: elements before root in inorder
+    root.left = build_tree_from_traversals(
+        preorder[1:root_idx+1],  # Skip root, take left elements
+        inorder[:root_idx]       # Everything before root
+    )
+    
+    # Right subtree: elements after root in inorder
+    root.right = build_tree_from_traversals(
+        preorder[root_idx+1:],   # Everything after left subtree
+        inorder[root_idx+1:]     # Everything after root
+    )
+    
+    return root
 </code></pre>
 <h3 id="template-4-path-problems" tabindex="-1"><a class="header-anchor" href="#template-4-path-problems"><span>Template 4: Path Problems</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">path_sum_template</span>(<span class="hljs-params">root, target</span>):</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    Template for path sum problems</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    Can track paths, sums, or other properties</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    &quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">node, current_sum, path</span>):</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node:</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">            <span class="hljs-keyword">return</span></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-comment"># Update current state</span></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        current_sum += node.val</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        path.append(node.val)</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        <span class="hljs-comment"># Check if leaf node and condition met</span></span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node.left <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> node.right:</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">            <span class="hljs-keyword">if</span> current_sum == target:</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">                result.append(path[:])  <span class="hljs-comment"># Copy current path</span></span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        <span class="hljs-comment"># Explore subtrees</span></span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        dfs(node.left, current_sum, path)</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        dfs(node.right, current_sum, path)</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        <span class="hljs-comment"># Backtrack</span></span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">        NOTE !!! why do we need backtrack here ? (gemini)</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">        In simple terms, **backtracking** is the &quot;undo&quot; button for your recursion.</span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">        ### 3. A Visual Example</span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">        Imagine this tree:</span></span>
-<span class="ln-row"><span class="ln-num">32</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">        ```text</span></span>
-<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">            1</span></span>
-<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">           / \</span></span>
-<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">           2   3</span></span>
-<span class="ln-row"><span class="ln-num">37</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">        ```</span></span>
-<span class="ln-row"><span class="ln-num">39</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">        **Without `path.pop()`:**</span></span>
-<span class="ln-row"><span class="ln-num">41</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">        1. Go to `1`: `path = [1]`</span></span>
-<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">        2. Go to `2`: `path = [1, 2]`</span></span>
-<span class="ln-row"><span class="ln-num">44</span><span class="ln-code">        3. Finish `2`, go back to `1`.</span></span>
-<span class="ln-row"><span class="ln-num">45</span><span class="ln-code">        4. Go to `3`: `path = [1, 2, 3]`  &lt;-- **ERROR!** (2 shouldn&#x27;t be here)</span></span>
-<span class="ln-row"><span class="ln-num">46</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">47</span><span class="ln-code">        **With `path.pop()`:**</span></span>
-<span class="ln-row"><span class="ln-num">48</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">49</span><span class="ln-code">        1. Go to `1`: `path = [1]`</span></span>
-<span class="ln-row"><span class="ln-num">50</span><span class="ln-code">        2. Go to `2`: `path = [1, 2]`</span></span>
-<span class="ln-row"><span class="ln-num">51</span><span class="ln-code">        3. Finish `2`, **`pop()`**: `path = [1]`</span></span>
-<span class="ln-row"><span class="ln-num">52</span><span class="ln-code">        4. Go to `3`: `path = [1, 3]` &lt;-- **CORRECT!**</span></span>
-<span class="ln-row"><span class="ln-num">53</span><span class="ln-code">        &quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">54</span><span class="ln-code">        path.pop()</span></span>
-<span class="ln-row"><span class="ln-num">55</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">56</span><span class="ln-code">    result = []</span></span>
-<span class="ln-row"><span class="ln-num">57</span><span class="ln-code">    dfs(root, <span class="hljs-number">0</span>, [])</span></span>
-<span class="ln-row"><span class="ln-num">58</span><span class="ln-code">    <span class="hljs-keyword">return</span> result</span></span>
+<pre><code class="language-python">def path_sum_template(root, target):
+    &quot;&quot;&quot;
+    Template for path sum problems
+    Can track paths, sums, or other properties
+    &quot;&quot;&quot;
+    def dfs(node, current_sum, path):
+        if not node:
+            return
+        
+        # Update current state
+        current_sum += node.val
+        path.append(node.val)
+        
+        # Check if leaf node and condition met
+        if not node.left and not node.right:
+            if current_sum == target:
+                result.append(path[:])  # Copy current path
+        
+        # Explore subtrees
+        dfs(node.left, current_sum, path)
+        dfs(node.right, current_sum, path)
+        
+        # Backtrack
+        &quot;&quot;&quot;
+        NOTE !!! why do we need backtrack here ? (gemini)
+        In simple terms, **backtracking** is the &quot;undo&quot; button for your recursion.
+
+
+        ### 3. A Visual Example
+
+        Imagine this tree:
+
+        ```text
+            1
+           / \
+           2   3
+
+        ```
+
+        **Without `path.pop()`:**
+
+        1. Go to `1`: `path = [1]`
+        2. Go to `2`: `path = [1, 2]`
+        3. Finish `2`, go back to `1`.
+        4. Go to `3`: `path = [1, 2, 3]`  &lt;-- **ERROR!** (2 shouldn't be here)
+
+        **With `path.pop()`:**
+
+        1. Go to `1`: `path = [1]`
+        2. Go to `2`: `path = [1, 2]`
+        3. Finish `2`, **`pop()`**: `path = [1]`
+        4. Go to `3`: `path = [1, 3]` &lt;-- **CORRECT!**
+        &quot;&quot;&quot;
+        path.pop()
+    
+    result = []
+    dfs(root, 0, [])
+    return result
 </code></pre>
 <h3 id="template-5-tree-properties" tabindex="-1"><a class="header-anchor" href="#template-5-tree-properties"><span>Template 5: Tree Properties</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">tree_property_template</span>(<span class="hljs-params">root</span>):</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    Calculate tree properties (height, diameter, balance)</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    &quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">helper</span>(<span class="hljs-params">node</span>):</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node:</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>  <span class="hljs-comment"># or (0, True) for multiple values</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-comment"># Get info from subtrees</span></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        left_info = helper(node.left)</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        right_info = helper(node.right)</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-comment"># Calculate current node&#x27;s property</span></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        current_property = calculate(left_info, right_info)</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        <span class="hljs-comment"># Update global result if needed</span></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.result = <span class="hljs-built_in">max</span>(<span class="hljs-variable language_">self</span>.result, current_property)</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        <span class="hljs-keyword">return</span> current_property</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">    <span class="hljs-variable language_">self</span>.result = <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    helper(root)</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.result</span></span>
+<pre><code class="language-python">def tree_property_template(root):
+    &quot;&quot;&quot;
+    Calculate tree properties (height, diameter, balance)
+    &quot;&quot;&quot;
+    def helper(node):
+        if not node:
+            return 0  # or (0, True) for multiple values
+        
+        # Get info from subtrees
+        left_info = helper(node.left)
+        right_info = helper(node.right)
+        
+        # Calculate current node's property
+        current_property = calculate(left_info, right_info)
+        
+        # Update global result if needed
+        self.result = max(self.result, current_property)
+        
+        return current_property
+    
+    self.result = 0
+    helper(root)
+    return self.result
 </code></pre>
 <h3 id="template-6-lca-lowest-common-ancestor" tabindex="-1"><a class="header-anchor" href="#template-6-lca-lowest-common-ancestor"><span>Template 6: LCA (Lowest Common Ancestor)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_lca</span>(<span class="hljs-params">root, p, q</span>):</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    Find lowest common ancestor of nodes p and q</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    &quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root <span class="hljs-keyword">or</span> root == p <span class="hljs-keyword">or</span> root == q:</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-keyword">return</span> root</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    left = find_lca(root.left, p, q)</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    right = find_lca(root.right, p, q)</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-comment"># Both found in different subtrees -&gt; current is LCA</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-keyword">if</span> left <span class="hljs-keyword">and</span> right:</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-keyword">return</span> root</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-comment"># One or both found in same subtree</span></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    <span class="hljs-keyword">return</span> left <span class="hljs-keyword">if</span> left <span class="hljs-keyword">else</span> right</span></span>
+<pre><code class="language-python">def find_lca(root, p, q):
+    &quot;&quot;&quot;
+    Find lowest common ancestor of nodes p and q
+    &quot;&quot;&quot;
+    if not root or root == p or root == q:
+        return root
+
+    left = find_lca(root.left, p, q)
+    right = find_lca(root.right, p, q)
+
+    # Both found in different subtrees -&gt; current is LCA
+    if left and right:
+        return root
+
+    # One or both found in same subtree
+    return left if left else right
 </code></pre>
 <h3 id="template-7-binary-search-on-trees" tabindex="-1"><a class="header-anchor" href="#template-7-binary-search-on-trees"><span>Template 7: Binary Search on Trees</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">count_complete_tree_nodes</span>(<span class="hljs-params">root</span>):</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    Count nodes in complete binary tree in O(log²n) time</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    Key: Use binary search on tree structure</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    &quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_height</span>(<span class="hljs-params">node</span>):</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;Get height by going left&quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        height = <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-keyword">while</span> node:</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">            height += <span class="hljs-number">1</span></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            node = node.left</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-keyword">return</span> height</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    left_height = get_height(root.left)</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    right_height = get_height(root.right)</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    <span class="hljs-keyword">if</span> left_height == right_height:</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        <span class="hljs-comment"># Left subtree is perfect binary tree</span></span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        <span class="hljs-comment"># Nodes in left = 2^left_height - 1</span></span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        <span class="hljs-comment"># Plus root = 2^left_height</span></span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">        <span class="hljs-keyword">return</span> (<span class="hljs-number">1</span> &lt;&lt; left_height) + count_complete_tree_nodes(root.right)</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">    <span class="hljs-keyword">else</span>:</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">        <span class="hljs-comment"># Right subtree is perfect binary tree</span></span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">        <span class="hljs-comment"># Height = right_height, nodes = 2^right_height - 1</span></span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">        <span class="hljs-comment"># Plus root = 2^right_height</span></span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">        <span class="hljs-keyword">return</span> (<span class="hljs-number">1</span> &lt;&lt; right_height) + count_complete_tree_nodes(root.left)</span></span>
+<pre><code class="language-python">def count_complete_tree_nodes(root):
+    &quot;&quot;&quot;
+    Count nodes in complete binary tree in O(log²n) time
+    Key: Use binary search on tree structure
+    &quot;&quot;&quot;
+    if not root:
+        return 0
+
+    def get_height(node):
+        &quot;&quot;&quot;Get height by going left&quot;&quot;&quot;
+        height = 0
+        while node:
+            height += 1
+            node = node.left
+        return height
+
+    left_height = get_height(root.left)
+    right_height = get_height(root.right)
+
+    if left_height == right_height:
+        # Left subtree is perfect binary tree
+        # Nodes in left = 2^left_height - 1
+        # Plus root = 2^left_height
+        return (1 &lt;&lt; left_height) + count_complete_tree_nodes(root.right)
+    else:
+        # Right subtree is perfect binary tree
+        # Height = right_height, nodes = 2^right_height - 1
+        # Plus root = 2^right_height
+        return (1 &lt;&lt; right_height) + count_complete_tree_nodes(root.left)
 </code></pre>
 <h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
 <h3 id="pattern-based-problem-classification" tabindex="-1"><a class="header-anchor" href="#pattern-based-problem-classification"><span>Pattern-Based Problem Classification</span></a></h3>
@@ -986,328 +981,328 @@
 </ul>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
 <h3 id="2-1-construct-binary-tree-from-preorder-and-inorder-traversal" tabindex="-1"><a class="header-anchor" href="#2-1-construct-binary-tree-from-preorder-and-inorder-traversal"><span>2-1) Construct Binary Tree from Preorder and Inorder Traversal</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># python</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># LC 105. Construct Binary Tree from Preorder and Inorder Traversal</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment"># V0</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-comment"># IDEA : BST property</span></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">buildTree</span>(<span class="hljs-params">self, preorder, inorder</span>):</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(preorder) == <span class="hljs-number">0</span>:</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(preorder) == <span class="hljs-number">1</span>:</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">            <span class="hljs-keyword">return</span> TreeNode(preorder[<span class="hljs-number">0</span>])</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-comment">### NOTE : init root like below (via TreeNode and root value (preorder[0]))</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        root = TreeNode(preorder[<span class="hljs-number">0</span>])</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        NOTE !!!</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        -&gt; # we get index of root.val from &quot;INORDER&quot; to SPLIT TREE</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        &quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        index = inorder.index(root.val)  <span class="hljs-comment"># the index of root at inorder, and we can also get the length of left-sub-tree, right-sub-tree ( preorder[1:index+1]) for following using</span></span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        <span class="hljs-comment"># recursion for root.left</span></span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        <span class="hljs-comment">#### NOTE : the idx is from &quot;INORDER&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        <span class="hljs-comment">#### NOTE : WE idx from inorder in preorder as well </span></span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        <span class="hljs-comment">#### NOTE : preorder[1 : index + 1] (for left sub tree)</span></span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        root.left = <span class="hljs-variable language_">self</span>.buildTree(preorder[<span class="hljs-number">1</span> : index + <span class="hljs-number">1</span>], inorder[ : index]) <span class="hljs-comment">### since the BST is symmery so the length of left-sub-tree is same in both Preorder and Inorder, so we can use the index to get the left-sub-tree of Preorder as well</span></span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        <span class="hljs-comment"># recursion for root.right </span></span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">        root.right = <span class="hljs-variable language_">self</span>.buildTree(preorder[index + <span class="hljs-number">1</span> : ], inorder[index + <span class="hljs-number">1</span> :]) <span class="hljs-comment">### since the BST is symmery so the length of left-sub-tree is same in both Preorder and Inorder, so we can use the index to get the right-sub-tree of Preorder as well</span></span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">        <span class="hljs-keyword">return</span> root</span></span>
+<pre><code class="language-python"># python
+# LC 105. Construct Binary Tree from Preorder and Inorder Traversal
+# V0
+# IDEA : BST property
+class Solution(object):
+    def buildTree(self, preorder, inorder):
+        if len(preorder) == 0:
+            return None
+        if len(preorder) == 1:
+            return TreeNode(preorder[0])
+        ### NOTE : init root like below (via TreeNode and root value (preorder[0]))
+        root = TreeNode(preorder[0])
+        &quot;&quot;&quot;
+        NOTE !!!
+        -&gt; # we get index of root.val from &quot;INORDER&quot; to SPLIT TREE
+        &quot;&quot;&quot;
+        index = inorder.index(root.val)  # the index of root at inorder, and we can also get the length of left-sub-tree, right-sub-tree ( preorder[1:index+1]) for following using
+        # recursion for root.left
+        #### NOTE : the idx is from &quot;INORDER&quot;
+        #### NOTE : WE idx from inorder in preorder as well 
+        #### NOTE : preorder[1 : index + 1] (for left sub tree)
+        root.left = self.buildTree(preorder[1 : index + 1], inorder[ : index]) ### since the BST is symmery so the length of left-sub-tree is same in both Preorder and Inorder, so we can use the index to get the left-sub-tree of Preorder as well
+        # recursion for root.right 
+        root.right = self.buildTree(preorder[index + 1 : ], inorder[index + 1 :]) ### since the BST is symmery so the length of left-sub-tree is same in both Preorder and Inorder, so we can use the index to get the right-sub-tree of Preorder as well
+        return root
 </code></pre>
 <h3 id="2-2-construct-binary-tree-from-inorder-and-postorder-traversal" tabindex="-1"><a class="header-anchor" href="#2-2-construct-binary-tree-from-inorder-and-postorder-traversal"><span>2-2) Construct Binary Tree from Inorder and Postorder Traversal</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># python</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># LC 106 Construct Binary Tree from Inorder and Postorder Traversal</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment"># V0</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-comment"># IDEA : Binary Tree property, same as LC 105 </span></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">buildTree</span>(<span class="hljs-params">self, inorder, postorder</span>):</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> inorder:</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(inorder) == <span class="hljs-number">1</span>:</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">            <span class="hljs-keyword">return</span> TreeNode(inorder[<span class="hljs-number">0</span>])</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-comment">### NOTE : we get root from postorder</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        root = TreeNode(postorder[-<span class="hljs-number">1</span>])</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        ### NOTE : the index is from inorder</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        ### NOTE : we get index of root in inorder</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        #    -&gt; and this idx CAN BE USED IN BOTH inorder, postorder (Binary Tree property)</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        &quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        idx = inorder.index(root.val)</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        <span class="hljs-comment">### NOTE : inorder[:idx], postorder[:idx]</span></span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        root.left = <span class="hljs-variable language_">self</span>.buildTree(inorder[:idx], postorder[:idx])</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        <span class="hljs-comment">### NOTE : postorder[idx:-1]</span></span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        root.right =  <span class="hljs-variable language_">self</span>.buildTree(inorder[idx+<span class="hljs-number">1</span>:], postorder[idx:-<span class="hljs-number">1</span>])</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        <span class="hljs-keyword">return</span> root</span></span>
+<pre><code class="language-python"># python
+# LC 106 Construct Binary Tree from Inorder and Postorder Traversal
+# V0
+# IDEA : Binary Tree property, same as LC 105 
+class Solution(object):
+    def buildTree(self, inorder, postorder):
+        if not inorder:
+            return None
+        if len(inorder) == 1:
+            return TreeNode(inorder[0])
+        ### NOTE : we get root from postorder
+        root = TreeNode(postorder[-1])
+        &quot;&quot;&quot;
+        ### NOTE : the index is from inorder
+        ### NOTE : we get index of root in inorder
+        #    -&gt; and this idx CAN BE USED IN BOTH inorder, postorder (Binary Tree property)
+        &quot;&quot;&quot;
+        idx = inorder.index(root.val)
+        ### NOTE : inorder[:idx], postorder[:idx]
+        root.left = self.buildTree(inorder[:idx], postorder[:idx])
+        ### NOTE : postorder[idx:-1]
+        root.right =  self.buildTree(inorder[idx+1:], postorder[idx:-1])
+        return root
 </code></pre>
 <h3 id="2-3-binary-tree-paths" tabindex="-1"><a class="header-anchor" href="#2-3-binary-tree-paths"><span>2-3) Binary Tree Paths</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># LC 257 Binary Tree Paths</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment"># V0</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-comment"># IDEA : BFS</span></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">binaryTreePaths</span>(<span class="hljs-params">self, root</span>):</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        res = []</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-comment">### NOTE : we set q like this : [[root, cur]]</span></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        cur = <span class="hljs-string">&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        q = [[root, cur]]</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-keyword">while</span> q:</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">            <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(q)):</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">                node, cur = q.pop(<span class="hljs-number">0</span>)</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">                <span class="hljs-comment">### NOTE : if node exist, but no sub tree (i.e. not root.left and not root.right)</span></span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">                <span class="hljs-comment">#         -&gt; append cur to result</span></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">                <span class="hljs-keyword">if</span> node:</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">                    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node.left <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> node.right:</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">                        res.append(cur + <span class="hljs-built_in">str</span>(node.val))</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">                <span class="hljs-comment">### NOTE : we keep cur to left sub tree</span></span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">                <span class="hljs-keyword">if</span> node.left:</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">                    q.append((node.left, cur + <span class="hljs-built_in">str</span>(node.val) + <span class="hljs-string">&#x27;-&gt;&#x27;</span>))</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">                <span class="hljs-comment">### NOTE : we keep cur to left sub tree</span></span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">                <span class="hljs-keyword">if</span> node.right:</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">                    q.append((node.right, cur + <span class="hljs-built_in">str</span>(node.val) + <span class="hljs-string">&#x27;-&gt;&#x27;</span>))</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">        <span class="hljs-keyword">return</span> res</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code"><span class="hljs-comment"># V0&#x27;</span></span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code"><span class="hljs-comment"># IDEA : DFS </span></span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:</span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">binaryTreePaths</span>(<span class="hljs-params">self, root</span>):</span></span>
-<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">        ans = []</span></span>
-<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">        <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">r, tmp</span>):</span></span>
-<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">            <span class="hljs-keyword">if</span> r.left:</span></span>
-<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">                dfs(r.left, tmp + [<span class="hljs-built_in">str</span>(r.left.val)])</span></span>
-<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">            <span class="hljs-keyword">if</span> r.right:</span></span>
-<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">                dfs(r.right, tmp + [<span class="hljs-built_in">str</span>(r.right.val)])</span></span>
-<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> r.left <span class="hljs-keyword">and</span> <span class="hljs-keyword">not</span> r.right:</span></span>
-<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">                ans.append(<span class="hljs-string">&#x27;-&gt;&#x27;</span>.join(tmp))</span></span>
-<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:</span></span>
-<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">            <span class="hljs-keyword">return</span> []</span></span>
-<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">        dfs(root, [<span class="hljs-built_in">str</span>(root.val)])</span></span>
-<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">        <span class="hljs-keyword">return</span> ans</span></span>
+<pre><code class="language-python"># LC 257 Binary Tree Paths
+
+# V0
+# IDEA : BFS
+class Solution:
+    def binaryTreePaths(self, root):
+        res = []
+        ### NOTE : we set q like this : [[root, cur]]
+        cur = &quot;&quot;
+        q = [[root, cur]]
+        while q:
+            for i in range(len(q)):
+                node, cur = q.pop(0)
+                ### NOTE : if node exist, but no sub tree (i.e. not root.left and not root.right)
+                #         -&gt; append cur to result
+                if node:
+                    if not node.left and not node.right:
+                        res.append(cur + str(node.val))
+                ### NOTE : we keep cur to left sub tree
+                if node.left:
+                    q.append((node.left, cur + str(node.val) + '-&gt;'))
+                ### NOTE : we keep cur to left sub tree
+                if node.right:
+                    q.append((node.right, cur + str(node.val) + '-&gt;'))
+        return res
+
+# V0'
+# IDEA : DFS 
+class Solution:
+    def binaryTreePaths(self, root):
+        ans = []
+        def dfs(r, tmp):
+            if r.left:
+                dfs(r.left, tmp + [str(r.left.val)])
+            if r.right:
+                dfs(r.right, tmp + [str(r.right.val)])
+            if not r.left and not r.right:
+                ans.append('-&gt;'.join(tmp))
+        if not root:
+            return []
+        dfs(root, [str(root.val)])
+        return ans
 </code></pre>
 <h3 id="2-4-binary-tree-longest-consecutive-sequence" tabindex="-1"><a class="header-anchor" href="#2-4-binary-tree-longest-consecutive-sequence"><span>2-4) Binary Tree Longest Consecutive Sequence</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># LC 298 Binary Tree Longest Consecutive Sequence</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># V0</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment"># IDEA : DFS</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">longestConsecutive</span>(<span class="hljs-params">self, root</span>):</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.result = <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.helper(root, <span class="hljs-number">1</span>)</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.result</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">helper</span>(<span class="hljs-params">self, root, curLen</span>):</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.result = curLen <span class="hljs-keyword">if</span> curLen &gt; <span class="hljs-variable language_">self</span>.result <span class="hljs-keyword">else</span> <span class="hljs-variable language_">self</span>.result</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        <span class="hljs-keyword">if</span> root.left:</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">            <span class="hljs-keyword">if</span> root.left.val == root.val + <span class="hljs-number">1</span>:</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">                <span class="hljs-variable language_">self</span>.helper(root.left, curLen + <span class="hljs-number">1</span>)</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">            <span class="hljs-keyword">else</span>:</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">                <span class="hljs-variable language_">self</span>.helper(root.left, <span class="hljs-number">1</span>)</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        <span class="hljs-keyword">if</span> root.right:</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">            <span class="hljs-keyword">if</span> root.right.val == root.val + <span class="hljs-number">1</span>:</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">                <span class="hljs-variable language_">self</span>.helper(root.right, curLen + <span class="hljs-number">1</span>)</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">            <span class="hljs-keyword">else</span>:</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">                <span class="hljs-variable language_">self</span>.helper(root.right, <span class="hljs-number">1</span>)</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code"><span class="hljs-comment"># V0&#x27;</span></span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code"><span class="hljs-comment"># IDEA : BFS</span></span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>(<span class="hljs-title class_ inherited__">object</span>):</span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">longestConsecutive</span>(<span class="hljs-params">self, root</span>):</span></span>
-<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">        <span class="hljs-keyword">if</span> root <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:</span></span>
-<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">33</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">        stack = <span class="hljs-built_in">list</span>()</span></span>
-<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">        stack.append((root, <span class="hljs-number">1</span>))</span></span>
-<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">        maxLen = <span class="hljs-number">1</span></span></span>
-<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">        <span class="hljs-keyword">while</span> <span class="hljs-built_in">len</span>(stack) &gt; <span class="hljs-number">0</span>:</span></span>
-<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">            node, pathLen = stack.pop()</span></span>
-<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">            <span class="hljs-keyword">if</span> node.left <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:</span></span>
-<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">                <span class="hljs-keyword">if</span> node.val + <span class="hljs-number">1</span> == node.left.val:</span></span>
-<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">                    stack.append((node.left, pathLen + <span class="hljs-number">1</span>))</span></span>
-<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">                    maxLen = <span class="hljs-built_in">max</span>(maxLen, pathLen + <span class="hljs-number">1</span>)</span></span>
-<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">                <span class="hljs-keyword">else</span>:</span></span>
-<span class="ln-row"><span class="ln-num">44</span><span class="ln-code">                    stack.append((node.left, <span class="hljs-number">1</span>))</span></span>
-<span class="ln-row"><span class="ln-num">45</span><span class="ln-code">            <span class="hljs-keyword">if</span> node.right <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:</span></span>
-<span class="ln-row"><span class="ln-num">46</span><span class="ln-code">                <span class="hljs-keyword">if</span> node.val + <span class="hljs-number">1</span> == node.right.val:</span></span>
-<span class="ln-row"><span class="ln-num">47</span><span class="ln-code">                    stack.append((node.right, pathLen + <span class="hljs-number">1</span>))</span></span>
-<span class="ln-row"><span class="ln-num">48</span><span class="ln-code">                    maxLen = <span class="hljs-built_in">max</span>(maxLen, pathLen + <span class="hljs-number">1</span>)</span></span>
-<span class="ln-row"><span class="ln-num">49</span><span class="ln-code">                <span class="hljs-keyword">else</span>:</span></span>
-<span class="ln-row"><span class="ln-num">50</span><span class="ln-code">                    stack.append((node.right, <span class="hljs-number">1</span>))</span></span>
-<span class="ln-row"><span class="ln-num">51</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">52</span><span class="ln-code">        <span class="hljs-keyword">return</span> maxLen</span></span>
+<pre><code class="language-python"># LC 298 Binary Tree Longest Consecutive Sequence
+# V0
+# IDEA : DFS
+class Solution(object):
+    def longestConsecutive(self, root):
+        if not root:
+            return 0
+
+        self.result = 0
+        self.helper(root, 1)
+
+        return self.result
+
+    def helper(self, root, curLen):
+        self.result = curLen if curLen &gt; self.result else self.result
+        if root.left:
+            if root.left.val == root.val + 1:
+                self.helper(root.left, curLen + 1)
+            else:
+                self.helper(root.left, 1)
+        if root.right:
+            if root.right.val == root.val + 1:
+                self.helper(root.right, curLen + 1)
+            else:
+                self.helper(root.right, 1)
+
+# V0'
+# IDEA : BFS
+class Solution(object):
+    def longestConsecutive(self, root):
+        if root is None:
+            return 0
+
+        stack = list()
+        stack.append((root, 1))
+        maxLen = 1
+        while len(stack) &gt; 0:
+            node, pathLen = stack.pop()
+            if node.left is not None:
+                if node.val + 1 == node.left.val:
+                    stack.append((node.left, pathLen + 1))
+                    maxLen = max(maxLen, pathLen + 1)
+                else:
+                    stack.append((node.left, 1))
+            if node.right is not None:
+                if node.val + 1 == node.right.val:
+                    stack.append((node.right, pathLen + 1))
+                    maxLen = max(maxLen, pathLen + 1)
+                else:
+                    stack.append((node.right, 1))
+
+        return maxLen
 </code></pre>
 <h3 id="2-5-binary-search-tree-iterator" tabindex="-1"><a class="header-anchor" href="#2-5-binary-search-tree-iterator"><span>2-5) Binary Search Tree Iterator</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># LC 173. Binary Search Tree Iterator</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment"># V0</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-comment"># IDEA : STACK + tree</span></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">BSTIterator</span>(<span class="hljs-title class_ inherited__">object</span>):</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, root</span>):</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        :type root: TreeNode</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        &quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.stack = []</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.inOrder(root)</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">inOrder</span>(<span class="hljs-params">self, root</span>):</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">            <span class="hljs-keyword">return</span></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.inOrder(root.right)</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.stack.append(root.val)</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.inOrder(root.left)</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">hasNext</span>(<span class="hljs-params">self</span>):</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        :rtype: bool</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        &quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(<span class="hljs-variable language_">self</span>.stack) &gt; <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">next</span>(<span class="hljs-params">self</span>):</span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">        <span class="hljs-string">&quot;&quot;&quot;</span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">        :rtype: int</span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">        &quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.stack.pop()</span></span>
+<pre><code class="language-python"># LC 173. Binary Search Tree Iterator
+
+# V0
+# IDEA : STACK + tree
+class BSTIterator(object):
+    def __init__(self, root):
+        &quot;&quot;&quot;
+        :type root: TreeNode
+        &quot;&quot;&quot;
+        self.stack = []
+        self.inOrder(root)
+
+    def inOrder(self, root):
+        if not root:
+            return
+        self.inOrder(root.right)
+        self.stack.append(root.val)
+        self.inOrder(root.left)
+
+    def hasNext(self):
+        &quot;&quot;&quot;
+        :rtype: bool
+        &quot;&quot;&quot;
+        return len(self.stack) &gt; 0
+
+    def next(self):
+        &quot;&quot;&quot;
+        :rtype: int
+        &quot;&quot;&quot;
+        return self.stack.pop()
 </code></pre>
 <h3 id="2-6-count-complete-tree-nodes-binary-search-on-trees" tabindex="-1"><a class="header-anchor" href="#2-6-count-complete-tree-nodes-binary-search-on-trees"><span>2-6) Count Complete Tree Nodes (Binary Search on Trees)</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 222. Count Complete Tree Nodes</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// Java Implementation</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-comment">// V0 - BFS Approach</span></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-comment">// IDEA: Level-order traversal to count all nodes</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"><span class="hljs-comment">/**</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"> * time = O(N)</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"> * space = O(N)</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"> */</span></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">countNodes_BFS</span><span class="hljs-params">(TreeNode root)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) {</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    List&lt;TreeNode&gt; collected = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    Queue&lt;TreeNode&gt; q = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    q.add(root);</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    <span class="hljs-keyword">while</span> (!q.isEmpty()) {</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        <span class="hljs-type">TreeNode</span> <span class="hljs-variable">cur</span> <span class="hljs-operator">=</span> q.poll();</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        collected.add(cur);</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        <span class="hljs-keyword">if</span> (cur.left != <span class="hljs-literal">null</span>) {</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">            q.add(cur.left);</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">        <span class="hljs-keyword">if</span> (cur.right != <span class="hljs-literal">null</span>) {</span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">            q.add(cur.right);</span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">    <span class="hljs-keyword">return</span> collected.size();</span></span>
-<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">}</span></span>
-<span class="ln-row"><span class="ln-num">33</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">34</span><span class="ln-code"><span class="hljs-comment">// V1 - DFS Approach</span></span></span>
-<span class="ln-row"><span class="ln-num">35</span><span class="ln-code"><span class="hljs-comment">// IDEA: Recursively count nodes in left and right subtrees</span></span></span>
-<span class="ln-row"><span class="ln-num">36</span><span class="ln-code"><span class="hljs-comment">/**</span></span>
-<span class="ln-row"><span class="ln-num">37</span><span class="ln-code"> * time = O(N)</span></span>
-<span class="ln-row"><span class="ln-num">38</span><span class="ln-code"> * space = O(log N)</span></span>
-<span class="ln-row"><span class="ln-num">39</span><span class="ln-code"> */</span></span></span>
-<span class="ln-row"><span class="ln-num">40</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">countNodes_DFS</span><span class="hljs-params">(TreeNode root)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">    <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) {</span></span>
-<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;</span></span>
-<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">44</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">45</span><span class="ln-code">    <span class="hljs-comment">// Recursively count the nodes in the left subtree</span></span></span>
-<span class="ln-row"><span class="ln-num">46</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">leftCount</span> <span class="hljs-operator">=</span> countNodes_DFS(root.left);</span></span>
-<span class="ln-row"><span class="ln-num">47</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">48</span><span class="ln-code">    <span class="hljs-comment">// Recursively count the nodes in the right subtree</span></span></span>
-<span class="ln-row"><span class="ln-num">49</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">rightCount</span> <span class="hljs-operator">=</span> countNodes_DFS(root.right);</span></span>
-<span class="ln-row"><span class="ln-num">50</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">51</span><span class="ln-code">    <span class="hljs-comment">// Return the total count (current node + left subtree + right subtree)</span></span></span>
-<span class="ln-row"><span class="ln-num">52</span><span class="ln-code">    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> + leftCount + rightCount;</span></span>
-<span class="ln-row"><span class="ln-num">53</span><span class="ln-code">}</span></span>
-<span class="ln-row"><span class="ln-num">54</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">55</span><span class="ln-code"><span class="hljs-comment">// V2 - Optimized Binary Search Approach for Complete Binary Tree</span></span></span>
-<span class="ln-row"><span class="ln-num">56</span><span class="ln-code"><span class="hljs-comment">// IDEA: Use complete tree property + binary search on height</span></span></span>
-<span class="ln-row"><span class="ln-num">57</span><span class="ln-code"><span class="hljs-comment">/**</span></span>
-<span class="ln-row"><span class="ln-num">58</span><span class="ln-code"> * time = O(log²N)</span></span>
-<span class="ln-row"><span class="ln-num">59</span><span class="ln-code"> * space = O(log N)</span></span>
-<span class="ln-row"><span class="ln-num">60</span><span class="ln-code"> *</span></span>
-<span class="ln-row"><span class="ln-num">61</span><span class="ln-code"> * Key Insight:</span></span>
-<span class="ln-row"><span class="ln-num">62</span><span class="ln-code"> * - In a complete binary tree, at least one subtree is a perfect binary tree</span></span>
-<span class="ln-row"><span class="ln-num">63</span><span class="ln-code"> * - For perfect binary tree with height h: nodes = 2^h - 1</span></span>
-<span class="ln-row"><span class="ln-num">64</span><span class="ln-code"> * - Check left and right subtree heights to determine which is perfect</span></span>
-<span class="ln-row"><span class="ln-num">65</span><span class="ln-code"> */</span></span></span>
-<span class="ln-row"><span class="ln-num">66</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">countNodes_Optimized</span><span class="hljs-params">(TreeNode root)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">67</span><span class="ln-code">    <span class="hljs-keyword">if</span> (root == <span class="hljs-literal">null</span>) {</span></span>
-<span class="ln-row"><span class="ln-num">68</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;</span></span>
-<span class="ln-row"><span class="ln-num">69</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">70</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">71</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">leftHeight</span> <span class="hljs-operator">=</span> getHeight(root.left);</span></span>
-<span class="ln-row"><span class="ln-num">72</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">rightHeight</span> <span class="hljs-operator">=</span> getHeight(root.right);</span></span>
-<span class="ln-row"><span class="ln-num">73</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">74</span><span class="ln-code">    <span class="hljs-keyword">if</span> (leftHeight == rightHeight) {</span></span>
-<span class="ln-row"><span class="ln-num">75</span><span class="ln-code">        <span class="hljs-comment">// Left subtree is perfect binary tree</span></span></span>
-<span class="ln-row"><span class="ln-num">76</span><span class="ln-code">        <span class="hljs-comment">// Nodes in left = 2^leftHeight - 1, plus root = 2^leftHeight</span></span></span>
-<span class="ln-row"><span class="ln-num">77</span><span class="ln-code">        <span class="hljs-keyword">return</span> (<span class="hljs-number">1</span> &lt;&lt; leftHeight) + countNodes_Optimized(root.right);</span></span>
-<span class="ln-row"><span class="ln-num">78</span><span class="ln-code">    } <span class="hljs-keyword">else</span> {</span></span>
-<span class="ln-row"><span class="ln-num">79</span><span class="ln-code">        <span class="hljs-comment">// Right subtree is perfect binary tree</span></span></span>
-<span class="ln-row"><span class="ln-num">80</span><span class="ln-code">        <span class="hljs-comment">// Height = rightHeight, nodes = 2^rightHeight - 1, plus root = 2^rightHeight</span></span></span>
-<span class="ln-row"><span class="ln-num">81</span><span class="ln-code">        <span class="hljs-keyword">return</span> (<span class="hljs-number">1</span> &lt;&lt; rightHeight) + countNodes_Optimized(root.left);</span></span>
-<span class="ln-row"><span class="ln-num">82</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">83</span><span class="ln-code">}</span></span>
-<span class="ln-row"><span class="ln-num">84</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">85</span><span class="ln-code"><span class="hljs-comment">/**</span></span>
-<span class="ln-row"><span class="ln-num">86</span><span class="ln-code"> * Helper: Get height by traversing left path only</span></span>
-<span class="ln-row"><span class="ln-num">87</span><span class="ln-code"> * Works because in complete tree, leftmost path gives height</span></span>
-<span class="ln-row"><span class="ln-num">88</span><span class="ln-code"> */</span></span></span>
-<span class="ln-row"><span class="ln-num">89</span><span class="ln-code"><span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">getHeight</span><span class="hljs-params">(TreeNode node)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">90</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">height</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
-<span class="ln-row"><span class="ln-num">91</span><span class="ln-code">    <span class="hljs-keyword">while</span> (node != <span class="hljs-literal">null</span>) {</span></span>
-<span class="ln-row"><span class="ln-num">92</span><span class="ln-code">        height++;</span></span>
-<span class="ln-row"><span class="ln-num">93</span><span class="ln-code">        node = node.left;</span></span>
-<span class="ln-row"><span class="ln-num">94</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">95</span><span class="ln-code">    <span class="hljs-keyword">return</span> height;</span></span>
-<span class="ln-row"><span class="ln-num">96</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// LC 222. Count Complete Tree Nodes
+// Java Implementation
+
+// V0 - BFS Approach
+// IDEA: Level-order traversal to count all nodes
+/**
+ * time = O(N)
+ * space = O(N)
+ */
+public int countNodes_BFS(TreeNode root) {
+    if (root == null) {
+        return 0;
+    }
+
+    List&lt;TreeNode&gt; collected = new ArrayList&lt;&gt;();
+    Queue&lt;TreeNode&gt; q = new LinkedList&lt;&gt;();
+    q.add(root);
+
+    while (!q.isEmpty()) {
+        TreeNode cur = q.poll();
+        collected.add(cur);
+
+        if (cur.left != null) {
+            q.add(cur.left);
+        }
+        if (cur.right != null) {
+            q.add(cur.right);
+        }
+    }
+
+    return collected.size();
+}
+
+// V1 - DFS Approach
+// IDEA: Recursively count nodes in left and right subtrees
+/**
+ * time = O(N)
+ * space = O(log N)
+ */
+public int countNodes_DFS(TreeNode root) {
+    if (root == null) {
+        return 0;
+    }
+
+    // Recursively count the nodes in the left subtree
+    int leftCount = countNodes_DFS(root.left);
+
+    // Recursively count the nodes in the right subtree
+    int rightCount = countNodes_DFS(root.right);
+
+    // Return the total count (current node + left subtree + right subtree)
+    return 1 + leftCount + rightCount;
+}
+
+// V2 - Optimized Binary Search Approach for Complete Binary Tree
+// IDEA: Use complete tree property + binary search on height
+/**
+ * time = O(log²N)
+ * space = O(log N)
+ *
+ * Key Insight:
+ * - In a complete binary tree, at least one subtree is a perfect binary tree
+ * - For perfect binary tree with height h: nodes = 2^h - 1
+ * - Check left and right subtree heights to determine which is perfect
+ */
+public int countNodes_Optimized(TreeNode root) {
+    if (root == null) {
+        return 0;
+    }
+
+    int leftHeight = getHeight(root.left);
+    int rightHeight = getHeight(root.right);
+
+    if (leftHeight == rightHeight) {
+        // Left subtree is perfect binary tree
+        // Nodes in left = 2^leftHeight - 1, plus root = 2^leftHeight
+        return (1 &lt;&lt; leftHeight) + countNodes_Optimized(root.right);
+    } else {
+        // Right subtree is perfect binary tree
+        // Height = rightHeight, nodes = 2^rightHeight - 1, plus root = 2^rightHeight
+        return (1 &lt;&lt; rightHeight) + countNodes_Optimized(root.left);
+    }
+}
+
+/**
+ * Helper: Get height by traversing left path only
+ * Works because in complete tree, leftmost path gives height
+ */
+private int getHeight(TreeNode node) {
+    int height = 0;
+    while (node != null) {
+        height++;
+        node = node.left;
+    }
+    return height;
+}
 </code></pre>
 <h2 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h2>
-<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">Problem Analysis Flowchart:</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">1. Does the problem require visiting nodes in specific order?</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">   ├── YES → Use Traversal Templates (1 or 2)</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">   │   ├── Need all nodes level by level? → Level Order (Template 2)</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">   │   ├── Need specific order (pre/in/post)? → Template 1</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">   │   └── Need iterative approach? → Template 2</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">   └── NO → Continue to 2</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">2. Does the problem involve building/modifying tree structure?</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">   ├── YES → Use Construction Template (3)</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">   │   ├── From traversal sequences? → Template 3</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">   │   ├── From array/string? → Template 3 variant</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">   │   └── Serialize/Deserialize? → Custom Template 3</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">   └── NO → Continue to 3</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">3. Does the problem involve paths from root to leaves?</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">   ├── YES → Use Path Template (4)</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">   │   ├── Need all paths? → Template 4 with result collection</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">   │   ├── Need path sum? → Template 4 with sum tracking</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">   │   └── Need max/min path? → Template 4 with optimization</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">   └── NO → Continue to 4</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">4. Does the problem ask for tree properties?</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">   ├── YES → Use Property Template (5)</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">   │   ├── Height/Depth? → Template 5 basic</span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">   │   ├── Balance/Symmetry? → Template 5 with comparison</span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">   │   └── Diameter/Width? → Template 5 with global max</span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">   └── NO → Continue to 5</span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">5. Does the problem involve finding ancestors or distances?</span></span>
-<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">   ├── YES → Use LCA Template (6)</span></span>
-<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">   │   ├── Common ancestor? → Template 6</span></span>
-<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">   │   └── Distance between nodes? → Template 6 + path tracking</span></span>
-<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">   └── NO → Continue to 6</span></span>
-<span class="ln-row"><span class="ln-num">36</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">6. Does the problem require O(log n) time or involve complete/balanced tree optimization?</span></span>
-<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">   ├── YES → Use Binary Search on Trees Template (7)</span></span>
-<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">   │   ├── Complete binary tree? → Template 7 with height optimization</span></span>
-<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">   │   ├── BST with kth element? → Template 7 with inorder traversal</span></span>
-<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">   │   └── Need log time complexity? → Template 7 with binary search</span></span>
-<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">   └── NO → Use Universal Template or reconsider problem type</span></span>
+<pre><code>Problem Analysis Flowchart:
+
+1. Does the problem require visiting nodes in specific order?
+   ├── YES → Use Traversal Templates (1 or 2)
+   │   ├── Need all nodes level by level? → Level Order (Template 2)
+   │   ├── Need specific order (pre/in/post)? → Template 1
+   │   └── Need iterative approach? → Template 2
+   └── NO → Continue to 2
+
+2. Does the problem involve building/modifying tree structure?
+   ├── YES → Use Construction Template (3)
+   │   ├── From traversal sequences? → Template 3
+   │   ├── From array/string? → Template 3 variant
+   │   └── Serialize/Deserialize? → Custom Template 3
+   └── NO → Continue to 3
+
+3. Does the problem involve paths from root to leaves?
+   ├── YES → Use Path Template (4)
+   │   ├── Need all paths? → Template 4 with result collection
+   │   ├── Need path sum? → Template 4 with sum tracking
+   │   └── Need max/min path? → Template 4 with optimization
+   └── NO → Continue to 4
+
+4. Does the problem ask for tree properties?
+   ├── YES → Use Property Template (5)
+   │   ├── Height/Depth? → Template 5 basic
+   │   ├── Balance/Symmetry? → Template 5 with comparison
+   │   └── Diameter/Width? → Template 5 with global max
+   └── NO → Continue to 5
+
+5. Does the problem involve finding ancestors or distances?
+   ├── YES → Use LCA Template (6)
+   │   ├── Common ancestor? → Template 6
+   │   └── Distance between nodes? → Template 6 + path tracking
+   └── NO → Continue to 6
+
+6. Does the problem require O(log n) time or involve complete/balanced tree optimization?
+   ├── YES → Use Binary Search on Trees Template (7)
+   │   ├── Complete binary tree? → Template 7 with height optimization
+   │   ├── BST with kth element? → Template 7 with inorder traversal
+   │   └── Need log time complexity? → Template 7 with binary search
+   └── NO → Use Universal Template or reconsider problem type
 </code></pre>
 <h3 id="decision-framework" tabindex="-1"><a class="header-anchor" href="#decision-framework"><span>Decision Framework</span></a></h3>
 <ol>
@@ -1441,40 +1436,40 @@
 </table>
 <h3 id="common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#common-patterns-tricks"><span>Common Patterns &amp; Tricks</span></a></h3>
 <h4 id="pattern-global-variable-for-optimization" tabindex="-1"><a class="header-anchor" href="#pattern-global-variable-for-optimization"><span><strong>Pattern: Global Variable for Optimization</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">maxPathSum</span>(<span class="hljs-params">self, root</span>):</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.max_sum = <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;-inf&#x27;</span>)</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        <span class="hljs-keyword">def</span> <span class="hljs-title function_">helper</span>(<span class="hljs-params">node</span>):</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> node:</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">                <span class="hljs-keyword">return</span> <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">            left = <span class="hljs-built_in">max</span>(<span class="hljs-number">0</span>, helper(node.left))</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">            right = <span class="hljs-built_in">max</span>(<span class="hljs-number">0</span>, helper(node.right))</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">            <span class="hljs-variable language_">self</span>.max_sum = <span class="hljs-built_in">max</span>(<span class="hljs-variable language_">self</span>.max_sum, left + right + node.val)</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-built_in">max</span>(left, right) + node.val</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        helper(root)</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-variable language_">self</span>.max_sum</span></span>
+<pre><code class="language-python">class Solution:
+    def maxPathSum(self, root):
+        self.max_sum = float('-inf')
+        
+        def helper(node):
+            if not node:
+                return 0
+            left = max(0, helper(node.left))
+            right = max(0, helper(node.right))
+            self.max_sum = max(self.max_sum, left + right + node.val)
+            return max(left, right) + node.val
+        
+        helper(root)
+        return self.max_sum
 </code></pre>
 <h4 id="pattern-level-processing-with-delimiter" tabindex="-1"><a class="header-anchor" href="#pattern-level-processing-with-delimiter"><span><strong>Pattern: Level Processing with Delimiter</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">rightSideView</span>(<span class="hljs-params">root</span>):</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> root:</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">        <span class="hljs-keyword">return</span> []</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    result, queue = [], [root, <span class="hljs-literal">None</span>]</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">while</span> queue:</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        node = queue.pop(<span class="hljs-number">0</span>)</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">if</span> node:</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">            <span class="hljs-keyword">if</span> queue[<span class="hljs-number">0</span>] <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:  <span class="hljs-comment"># Last node in level</span></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">                result.append(node.val)</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">            <span class="hljs-keyword">if</span> node.left:</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">                queue.append(node.left)</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">            <span class="hljs-keyword">if</span> node.right:</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">                queue.append(node.right)</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-keyword">elif</span> queue:  <span class="hljs-comment"># Level delimiter</span></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">            queue.append(<span class="hljs-literal">None</span>)</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    <span class="hljs-keyword">return</span> result</span></span>
+<pre><code class="language-python">def rightSideView(root):
+    if not root:
+        return []
+    result, queue = [], [root, None]
+    
+    while queue:
+        node = queue.pop(0)
+        if node:
+            if queue[0] is None:  # Last node in level
+                result.append(node.val)
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
+        elif queue:  # Level delimiter
+            queue.append(None)
+    
+    return result
 </code></pre>
 <h3 id="problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#problem-solving-steps"><span>Problem-Solving Steps</span></a></h3>
 <ol>
@@ -1518,33 +1513,33 @@
 <li><strong>B-Tree</strong>: Self-balancing tree for databases</li>
 </ul>
 <h3 id="java-implementation-notes" tabindex="-1"><a class="header-anchor" href="#java-implementation-notes"><span>Java Implementation Notes</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// Java TreeNode definition</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">TreeNode</span> {</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-type">int</span> val;</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    TreeNode left, right;</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    TreeNode(<span class="hljs-type">int</span> x) { val = x; }</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">}</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"><span class="hljs-comment">// Use Queue interface with LinkedList</span></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">Queue&lt;TreeNode&gt; queue = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedList</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"><span class="hljs-comment">// Stack for iterative traversal</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">Stack&lt;TreeNode&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;();</span></span>
+<pre><code class="language-java">// Java TreeNode definition
+class TreeNode {
+    int val;
+    TreeNode left, right;
+    TreeNode(int x) { val = x; }
+}
+
+// Use Queue interface with LinkedList
+Queue&lt;TreeNode&gt; queue = new LinkedList&lt;&gt;();
+
+// Stack for iterative traversal
+Stack&lt;TreeNode&gt; stack = new Stack&lt;&gt;();
 </code></pre>
 <h3 id="python-implementation-notes" tabindex="-1"><a class="header-anchor" href="#python-implementation-notes"><span>Python Implementation Notes</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># TreeNode definition</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">TreeNode</span>:</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, val=<span class="hljs-number">0</span>, left=<span class="hljs-literal">None</span>, right=<span class="hljs-literal">None</span></span>):</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.val = val</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.left = left</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-variable language_">self</span>.right = right</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"><span class="hljs-comment"># Use collections.deque for O(1) operations</span></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"><span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">queue = deque([root])</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"><span class="hljs-comment"># List as stack (append/pop)</span></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">stack = []</span></span>
+<pre><code class="language-python"># TreeNode definition
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+# Use collections.deque for O(1) operations
+from collections import deque
+queue = deque([root])
+
+# List as stack (append/pop)
+stack = []
 </code></pre>
 <hr>
 <p><strong>Must-Know Problems for Interviews</strong>: LC 94, 102, 104, 105, 110, 124, 222, 226, 236, 297, 543

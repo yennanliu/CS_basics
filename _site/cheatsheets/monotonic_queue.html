@@ -9,7 +9,8 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -20,42 +21,40 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    // Code block wrappers + copy buttons (highlighting done at build time)
-    try {
-      document.querySelectorAll('pre').forEach(function(pre) {
-        var codeEl = pre.querySelector('code');
-        var lang = pre.getAttribute('data-lang') || '';
-        var wrapper = document.createElement('div');
-        wrapper.className = 'code-block-wrapper';
-        pre.parentNode.insertBefore(wrapper, pre);
-        var header = document.createElement('div');
-        header.className = 'code-block-header';
-        if (lang) {
-          var label = document.createElement('span');
-          label.className = 'code-lang-label';
-          label.textContent = lang;
-          header.appendChild(label);
-        } else {
-          header.appendChild(document.createElement('span'));
-        }
-        var btn = document.createElement('button');
-        btn.className = 'copy-btn';
-        btn.textContent = 'Copy';
-        btn.addEventListener('click', function() {
-          var text = codeEl
-            ? Array.from(codeEl.querySelectorAll('.ln-code')).map(function(el) { return el.textContent; }).join('\n')
-            : pre.textContent;
-          navigator.clipboard.writeText(text).then(function() {
-            btn.textContent = 'Copied!';
-            btn.classList.add('copied');
-            setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-          });
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
         });
-        header.appendChild(btn);
-        wrapper.appendChild(header);
-        wrapper.appendChild(pre);
       });
-    } catch(e) { console.error('Code block setup error:', e); }
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -65,36 +64,32 @@
       }
     });
     // Reading progress bar
-    try {
-      var progressBar = document.getElementById('reading-progress');
-      if (progressBar) {
-        window.addEventListener('scroll', function() {
-          var winScroll = document.documentElement.scrollTop;
-          var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-          progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
-        });
-      }
-    } catch(e) {}
-    // Dark mode toggle — isolated so errors elsewhere never prevent this from working
-    try {
-      var toggle = document.getElementById('theme-toggle');
-      if (toggle) {
-        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-        toggle.textContent = isDark ? '☀️' : '🌙';
-        toggle.addEventListener('click', function() {
-          var dark = document.documentElement.getAttribute('data-theme') === 'dark';
-          if (dark) {
-            document.documentElement.removeAttribute('data-theme');
-            localStorage.setItem('theme', 'light');
-            toggle.textContent = '🌙';
-          } else {
-            document.documentElement.setAttribute('data-theme', 'dark');
-            localStorage.setItem('theme', 'dark');
-            toggle.textContent = '☀️';
-          }
-        });
-      }
-    } catch(e) { console.error('Theme toggle error:', e); }
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
   });</script>
 </head>
 <body>
@@ -210,132 +205,132 @@
 </ul>
 <h2 id="templates-algorithms" tabindex="-1"><a class="header-anchor" href="#templates-algorithms"><span>Templates &amp; Algorithms</span></a></h2>
 <h3 id="template-1-sliding-window-maximum-decreasing-deque" tabindex="-1"><a class="header-anchor" href="#template-1-sliding-window-maximum-decreasing-deque"><span>Template 1: Sliding Window Maximum (Decreasing Deque)</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// Java — LC 239 Sliding Window Maximum</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// Time: O(N), Space: O(K)</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] maxSlidingWindow(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k) {</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length;</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-type">int</span>[] result = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n - k + <span class="hljs-number">1</span>];</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    Deque&lt;Integer&gt; deque = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;(); <span class="hljs-comment">// stores indices</span></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-comment">// Remove elements outside the window</span></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-keyword">while</span> (!deque.isEmpty() &amp;&amp; deque.peekFirst() &lt; i - k + <span class="hljs-number">1</span>) {</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">            deque.pollFirst();</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-comment">// Remove smaller elements from back (they&#x27;ll never be the max)</span></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        <span class="hljs-keyword">while</span> (!deque.isEmpty() &amp;&amp; nums[deque.peekLast()] &lt; nums[i]) {</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">            deque.pollLast();</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        deque.offerLast(i);</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        <span class="hljs-comment">// Window is fully formed</span></span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        <span class="hljs-keyword">if</span> (i &gt;= k - <span class="hljs-number">1</span>) {</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">            result[i - k + <span class="hljs-number">1</span>] = nums[deque.peekFirst()];</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    <span class="hljs-keyword">return</span> result;</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// Java — LC 239 Sliding Window Maximum
+// Time: O(N), Space: O(K)
+public int[] maxSlidingWindow(int[] nums, int k) {
+    int n = nums.length;
+    int[] result = new int[n - k + 1];
+    Deque&lt;Integer&gt; deque = new ArrayDeque&lt;&gt;(); // stores indices
+
+    for (int i = 0; i &lt; n; i++) {
+        // Remove elements outside the window
+        while (!deque.isEmpty() &amp;&amp; deque.peekFirst() &lt; i - k + 1) {
+            deque.pollFirst();
+        }
+        // Remove smaller elements from back (they'll never be the max)
+        while (!deque.isEmpty() &amp;&amp; nums[deque.peekLast()] &lt; nums[i]) {
+            deque.pollLast();
+        }
+        deque.offerLast(i);
+        // Window is fully formed
+        if (i &gt;= k - 1) {
+            result[i - k + 1] = nums[deque.peekFirst()];
+        }
+    }
+    return result;
+}
 </code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Python — LC 239 Sliding Window Maximum</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># Time: O(N), Space: O(K)</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">maxSlidingWindow</span>(<span class="hljs-params">nums, k</span>):</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    dq = deque()  <span class="hljs-comment"># stores indices, front = max</span></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    result = []</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">for</span> i, num <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(nums):</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-comment"># Remove out-of-window</span></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-keyword">while</span> dq <span class="hljs-keyword">and</span> dq[<span class="hljs-number">0</span>] &lt; i - k + <span class="hljs-number">1</span>:</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">            dq.popleft()</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-comment"># Remove smaller from back</span></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-keyword">while</span> dq <span class="hljs-keyword">and</span> nums[dq[-<span class="hljs-number">1</span>]] &lt; num:</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            dq.pop()</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        dq.append(i)</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        <span class="hljs-keyword">if</span> i &gt;= k - <span class="hljs-number">1</span>:</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">            result.append(nums[dq[<span class="hljs-number">0</span>]])</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    <span class="hljs-keyword">return</span> result</span></span>
+<pre><code class="language-python"># Python — LC 239 Sliding Window Maximum
+# Time: O(N), Space: O(K)
+from collections import deque
+
+def maxSlidingWindow(nums, k):
+    dq = deque()  # stores indices, front = max
+    result = []
+    for i, num in enumerate(nums):
+        # Remove out-of-window
+        while dq and dq[0] &lt; i - k + 1:
+            dq.popleft()
+        # Remove smaller from back
+        while dq and nums[dq[-1]] &lt; num:
+            dq.pop()
+        dq.append(i)
+        if i &gt;= k - 1:
+            result.append(nums[dq[0]])
+    return result
 </code></pre>
 <h3 id="template-2-dp-optimization-jump-game-vi-lc-1696" tabindex="-1"><a class="header-anchor" href="#template-2-dp-optimization-jump-game-vi-lc-1696"><span>Template 2: DP Optimization — Jump Game VI (LC 1696)</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// Java — LC 1696 Jump Game VI</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// dp[i] = max(dp[j] for j in [i-k, i-1]) + nums[i]</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// Time: O(N), Space: O(N)</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maxResult</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> k)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length;</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-type">int</span>[] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    dp[<span class="hljs-number">0</span>] = nums[<span class="hljs-number">0</span>];</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    Deque&lt;Integer&gt; deque = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    deque.offerLast(<span class="hljs-number">0</span>);</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt; n; i++) {</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-comment">// Remove out-of-range</span></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-keyword">while</span> (!deque.isEmpty() &amp;&amp; deque.peekFirst() &lt; i - k) {</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            deque.pollFirst();</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        dp[i] = dp[deque.peekFirst()] + nums[i];</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        <span class="hljs-comment">// Maintain decreasing order of dp values</span></span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        <span class="hljs-keyword">while</span> (!deque.isEmpty() &amp;&amp; dp[deque.peekLast()] &lt;= dp[i]) {</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">            deque.pollLast();</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        deque.offerLast(i);</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    <span class="hljs-keyword">return</span> dp[n - <span class="hljs-number">1</span>];</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// Java — LC 1696 Jump Game VI
+// dp[i] = max(dp[j] for j in [i-k, i-1]) + nums[i]
+// Time: O(N), Space: O(N)
+public int maxResult(int[] nums, int k) {
+    int n = nums.length;
+    int[] dp = new int[n];
+    dp[0] = nums[0];
+    Deque&lt;Integer&gt; deque = new ArrayDeque&lt;&gt;();
+    deque.offerLast(0);
+
+    for (int i = 1; i &lt; n; i++) {
+        // Remove out-of-range
+        while (!deque.isEmpty() &amp;&amp; deque.peekFirst() &lt; i - k) {
+            deque.pollFirst();
+        }
+        dp[i] = dp[deque.peekFirst()] + nums[i];
+        // Maintain decreasing order of dp values
+        while (!deque.isEmpty() &amp;&amp; dp[deque.peekLast()] &lt;= dp[i]) {
+            deque.pollLast();
+        }
+        deque.offerLast(i);
+    }
+    return dp[n - 1];
+}
 </code></pre>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Python — LC 1696 Jump Game VI</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">maxResult</span>(<span class="hljs-params">nums, k</span>):</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    n = <span class="hljs-built_in">len</span>(nums)</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    dp = [<span class="hljs-number">0</span>] * n</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    dp[<span class="hljs-number">0</span>] = nums[<span class="hljs-number">0</span>]</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    dq = deque([<span class="hljs-number">0</span>])</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>, n):</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-keyword">while</span> dq <span class="hljs-keyword">and</span> dq[<span class="hljs-number">0</span>] &lt; i - k:</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">            dq.popleft()</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        dp[i] = dp[dq[<span class="hljs-number">0</span>]] + nums[i]</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        <span class="hljs-keyword">while</span> dq <span class="hljs-keyword">and</span> dp[dq[-<span class="hljs-number">1</span>]] &lt;= dp[i]:</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">            dq.pop()</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        dq.append(i)</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-keyword">return</span> dp[-<span class="hljs-number">1</span>]</span></span>
+<pre><code class="language-python"># Python — LC 1696 Jump Game VI
+from collections import deque
+
+def maxResult(nums, k):
+    n = len(nums)
+    dp = [0] * n
+    dp[0] = nums[0]
+    dq = deque([0])
+
+    for i in range(1, n):
+        while dq and dq[0] &lt; i - k:
+            dq.popleft()
+        dp[i] = dp[dq[0]] + nums[i]
+        while dq and dp[dq[-1]] &lt;= dp[i]:
+            dq.pop()
+        dq.append(i)
+    return dp[-1]
 </code></pre>
 <h3 id="template-3-shortest-subarray-with-sum-k-lc-862" tabindex="-1"><a class="header-anchor" href="#template-3-shortest-subarray-with-sum-k-lc-862"><span>Template 3: Shortest Subarray with Sum ≥ K (LC 862)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Python — LC 862 (handles negative numbers via prefix sum + monotonic deque)</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># Time: O(N), Space: O(N)</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">shortestSubarray</span>(<span class="hljs-params">nums, k</span>):</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    n = <span class="hljs-built_in">len</span>(nums)</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    prefix = [<span class="hljs-number">0</span>] * (n + <span class="hljs-number">1</span>)</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        prefix[i + <span class="hljs-number">1</span>] = prefix[i] + nums[i]</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    dq = deque()  <span class="hljs-comment"># increasing deque of indices into prefix</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    ans = n + <span class="hljs-number">1</span></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n + <span class="hljs-number">1</span>):</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-comment"># If prefix[i] - prefix[dq.front] &gt;= k, we found a valid subarray</span></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        <span class="hljs-keyword">while</span> dq <span class="hljs-keyword">and</span> prefix[i] - prefix[dq[<span class="hljs-number">0</span>]] &gt;= k:</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">            ans = <span class="hljs-built_in">min</span>(ans, i - dq.popleft())</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        <span class="hljs-comment"># Maintain increasing order of prefix values</span></span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        <span class="hljs-keyword">while</span> dq <span class="hljs-keyword">and</span> prefix[dq[-<span class="hljs-number">1</span>]] &gt;= prefix[i]:</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">            dq.pop()</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        dq.append(i)</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    <span class="hljs-keyword">return</span> ans <span class="hljs-keyword">if</span> ans &lt;= n <span class="hljs-keyword">else</span> -<span class="hljs-number">1</span></span></span>
+<pre><code class="language-python"># Python — LC 862 (handles negative numbers via prefix sum + monotonic deque)
+# Time: O(N), Space: O(N)
+from collections import deque
+
+def shortestSubarray(nums, k):
+    n = len(nums)
+    prefix = [0] * (n + 1)
+    for i in range(n):
+        prefix[i + 1] = prefix[i] + nums[i]
+
+    dq = deque()  # increasing deque of indices into prefix
+    ans = n + 1
+
+    for i in range(n + 1):
+        # If prefix[i] - prefix[dq.front] &gt;= k, we found a valid subarray
+        while dq and prefix[i] - prefix[dq[0]] &gt;= k:
+            ans = min(ans, i - dq.popleft())
+        # Maintain increasing order of prefix values
+        while dq and prefix[dq[-1]] &gt;= prefix[i]:
+            dq.pop()
+        dq.append(i)
+
+    return ans if ans &lt;= n else -1
 </code></pre>
 <h2 id="key-decision-guide" tabindex="-1"><a class="header-anchor" href="#key-decision-guide"><span>Key Decision Guide</span></a></h2>
-<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">Need sliding window max/min?</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">  → Monotonic Deque: O(N) time, O(K) space</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">  → Alternative: Heap O(N log N) — slower but simpler</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">DP transition = max/min over a range of size K?</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">  → Monotonic Deque optimization: O(N) instead of O(N·K)</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">Subarray sum with negative numbers?</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">  → Prefix sum + monotonic deque (LC 862 pattern)</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">Need BOTH min and max in window?</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">  → Two deques: one increasing, one decreasing</span></span>
+<pre><code>Need sliding window max/min?
+  → Monotonic Deque: O(N) time, O(K) space
+  → Alternative: Heap O(N log N) — slower but simpler
+
+DP transition = max/min over a range of size K?
+  → Monotonic Deque optimization: O(N) instead of O(N·K)
+
+Subarray sum with negative numbers?
+  → Prefix sum + monotonic deque (LC 862 pattern)
+
+Need BOTH min and max in window?
+  → Two deques: one increasing, one decreasing
 </code></pre>
 <h2 id="lc-example" tabindex="-1"><a class="header-anchor" href="#lc-example"><span>LC Example</span></a></h2>
 <table>

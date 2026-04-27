@@ -9,7 +9,8 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -20,42 +21,40 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    // Code block wrappers + copy buttons (highlighting done at build time)
-    try {
-      document.querySelectorAll('pre').forEach(function(pre) {
-        var codeEl = pre.querySelector('code');
-        var lang = pre.getAttribute('data-lang') || '';
-        var wrapper = document.createElement('div');
-        wrapper.className = 'code-block-wrapper';
-        pre.parentNode.insertBefore(wrapper, pre);
-        var header = document.createElement('div');
-        header.className = 'code-block-header';
-        if (lang) {
-          var label = document.createElement('span');
-          label.className = 'code-lang-label';
-          label.textContent = lang;
-          header.appendChild(label);
-        } else {
-          header.appendChild(document.createElement('span'));
-        }
-        var btn = document.createElement('button');
-        btn.className = 'copy-btn';
-        btn.textContent = 'Copy';
-        btn.addEventListener('click', function() {
-          var text = codeEl
-            ? Array.from(codeEl.querySelectorAll('.ln-code')).map(function(el) { return el.textContent; }).join('\n')
-            : pre.textContent;
-          navigator.clipboard.writeText(text).then(function() {
-            btn.textContent = 'Copied!';
-            btn.classList.add('copied');
-            setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-          });
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
         });
-        header.appendChild(btn);
-        wrapper.appendChild(header);
-        wrapper.appendChild(pre);
       });
-    } catch(e) { console.error('Code block setup error:', e); }
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -65,36 +64,32 @@
       }
     });
     // Reading progress bar
-    try {
-      var progressBar = document.getElementById('reading-progress');
-      if (progressBar) {
-        window.addEventListener('scroll', function() {
-          var winScroll = document.documentElement.scrollTop;
-          var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-          progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
-        });
-      }
-    } catch(e) {}
-    // Dark mode toggle — isolated so errors elsewhere never prevent this from working
-    try {
-      var toggle = document.getElementById('theme-toggle');
-      if (toggle) {
-        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-        toggle.textContent = isDark ? '☀️' : '🌙';
-        toggle.addEventListener('click', function() {
-          var dark = document.documentElement.getAttribute('data-theme') === 'dark';
-          if (dark) {
-            document.documentElement.removeAttribute('data-theme');
-            localStorage.setItem('theme', 'light');
-            toggle.textContent = '🌙';
-          } else {
-            document.documentElement.setAttribute('data-theme', 'dark');
-            localStorage.setItem('theme', 'dark');
-            toggle.textContent = '☀️';
-          }
-        });
-      }
-    } catch(e) { console.error('Theme toggle error:', e); }
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
   });</script>
 </head>
 <body>
@@ -263,80 +258,80 @@
 </tbody>
 </table>
 <h2 id="decision-flowchart" tabindex="-1"><a class="header-anchor" href="#decision-flowchart"><span>Decision Flowchart</span></a></h2>
-<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">Start: What's the shortest path problem?</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">│</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">├── Unweighted graph?</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">│   └── YES → BFS  O(V+E)</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">│</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">├── Single source or all pairs?</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">│   ├── ALL PAIRS</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">│   │   ├── V ≤ 400? → Floyd-Warshall  O(V³)</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">│   │   └── V &gt; 400?  → Run Dijkstra from each vertex  O(V·(V+E) log V)</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">│   │</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">│   └── SINGLE SOURCE</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">│       ├── DAG? → Topo sort + relax  O(V+E)</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">│       ├── Negative weights?</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">│       │   ├── NO  → Dijkstra  O((V+E) log V)</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">│       │   └── YES → Bellman-Ford  O(V·E)</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">│       └── At most K edges?</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">│           └── Bellman-Ford with K iterations</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">│</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">└── Need negative cycle detection?</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    ├── Single check → Bellman-Ford (V-th iteration)</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">    └── All pairs → Floyd-Warshall (check diagonal)</span></span>
+<pre><code>Start: What's the shortest path problem?
+│
+├── Unweighted graph?
+│   └── YES → BFS  O(V+E)
+│
+├── Single source or all pairs?
+│   ├── ALL PAIRS
+│   │   ├── V ≤ 400? → Floyd-Warshall  O(V³)
+│   │   └── V &gt; 400?  → Run Dijkstra from each vertex  O(V·(V+E) log V)
+│   │
+│   └── SINGLE SOURCE
+│       ├── DAG? → Topo sort + relax  O(V+E)
+│       ├── Negative weights?
+│       │   ├── NO  → Dijkstra  O((V+E) log V)
+│       │   └── YES → Bellman-Ford  O(V·E)
+│       └── At most K edges?
+│           └── Bellman-Ford with K iterations
+│
+└── Need negative cycle detection?
+    ├── Single check → Bellman-Ford (V-th iteration)
+    └── All pairs → Floyd-Warshall (check diagonal)
 </code></pre>
 <h2 id="common-mistakes-gotchas" tabindex="-1"><a class="header-anchor" href="#common-mistakes-gotchas"><span>Common Mistakes &amp; Gotchas</span></a></h2>
 <h3 id="1-using-dijkstra-with-negative-weights" tabindex="-1"><a class="header-anchor" href="#1-using-dijkstra-with-negative-weights"><span>1. Using Dijkstra with negative weights</span></a></h3>
-<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">Graph:  A --1--&gt; B --(-5)--&gt; C</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">        A --3--&gt; C</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">Dijkstra visits C via A→C (cost 3), marks C as done.</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">Misses A→B→C (cost 1+(-5) = -4).  ← WRONG ANSWER</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">Fix: Use Bellman-Ford.</span></span>
+<pre><code>Graph:  A --1--&gt; B --(-5)--&gt; C
+        A --3--&gt; C
+
+Dijkstra visits C via A→C (cost 3), marks C as done.
+Misses A→B→C (cost 1+(-5) = -4).  ← WRONG ANSWER
+
+Fix: Use Bellman-Ford.
 </code></pre>
 <h3 id="2-bellman-ford-vs-dijkstra-for-lc-787-cheapest-flights-k-stops" tabindex="-1"><a class="header-anchor" href="#2-bellman-ford-vs-dijkstra-for-lc-787-cheapest-flights-k-stops"><span>2. Bellman-Ford vs Dijkstra for LC 787 (Cheapest Flights K Stops)</span></a></h3>
-<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">Dijkstra alone doesn't work — K stop constraint means a longer</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">path might be cheaper. Need modified Bellman-Ford with K iterations,</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">or modified Dijkstra with state (node, stops_remaining).</span></span>
+<pre><code>Dijkstra alone doesn't work — K stop constraint means a longer
+path might be cheaper. Need modified Bellman-Ford with K iterations,
+or modified Dijkstra with state (node, stops_remaining).
 </code></pre>
 <h3 id="3-floyd-warshall-loop-order-matters" tabindex="-1"><a class="header-anchor" href="#3-floyd-warshall-loop-order-matters"><span>3. Floyd-Warshall loop order matters</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// CORRECT: k (intermediate) must be outermost loop</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">k</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; k &lt; V; k++)        <span class="hljs-comment">// intermediate vertex</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; V; i++)     <span class="hljs-comment">// source</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; V; j++) <span class="hljs-comment">// destination</span></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">            dist[i][j] = Math.min(dist[i][j], dist[i][k] + dist[k][j]);</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"><span class="hljs-comment">// WRONG: i or j as outermost loop gives incorrect results</span></span></span>
+<pre><code class="language-java">// CORRECT: k (intermediate) must be outermost loop
+for (int k = 0; k &lt; V; k++)        // intermediate vertex
+    for (int i = 0; i &lt; V; i++)     // source
+        for (int j = 0; j &lt; V; j++) // destination
+            dist[i][j] = Math.min(dist[i][j], dist[i][k] + dist[k][j]);
+
+// WRONG: i or j as outermost loop gives incorrect results
 </code></pre>
 <h3 id="4-when-to-use-dijkstra-vs-dp-on-grids" tabindex="-1"><a class="header-anchor" href="#4-when-to-use-dijkstra-vs-dp-on-grids"><span>4. When to use Dijkstra vs DP on grids</span></a></h3>
-<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">LC 64 (Min Path Sum): only move right/down → DAG → use DP (simpler)</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">LC 1631 (Min Effort):  move 4 directions → cycles possible → use Dijkstra</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">LC 778 (Swim in Rising Water): 4 directions → Dijkstra or binary search + BFS</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">Rule: If movement is restricted to one direction (no cycles) → DP.</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">      If movement allows backtracking/cycles → Dijkstra.</span></span>
+<pre><code>LC 64 (Min Path Sum): only move right/down → DAG → use DP (simpler)
+LC 1631 (Min Effort):  move 4 directions → cycles possible → use Dijkstra
+LC 778 (Swim in Rising Water): 4 directions → Dijkstra or binary search + BFS
+
+Rule: If movement is restricted to one direction (no cycles) → DP.
+      If movement allows backtracking/cycles → Dijkstra.
 </code></pre>
 <h2 id="variant-0-1-bfs" tabindex="-1"><a class="header-anchor" href="#variant-0-1-bfs"><span>Variant: 0-1 BFS</span></a></h2>
 <p>For graphs where edge weights are only 0 or 1:</p>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Time: O(V+E), Space: O(V)</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> deque</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">bfs01</span>(<span class="hljs-params">graph, src, n</span>):</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    dist = [<span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>)] * n</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    dist[src] = <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    dq = deque([src])</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-keyword">while</span> dq:</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        u = dq.popleft()</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-keyword">for</span> v, w <span class="hljs-keyword">in</span> graph[u]:  <span class="hljs-comment"># w is 0 or 1</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">            <span class="hljs-keyword">if</span> dist[u] + w &lt; dist[v]:</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">                dist[v] = dist[u] + w</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">                <span class="hljs-keyword">if</span> w == <span class="hljs-number">0</span>:</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">                    dq.appendleft(v)  <span class="hljs-comment"># 0-weight → front</span></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">                <span class="hljs-keyword">else</span>:</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">                    dq.append(v)      <span class="hljs-comment"># 1-weight → back</span></span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    <span class="hljs-keyword">return</span> dist</span></span>
+<pre><code class="language-python"># Time: O(V+E), Space: O(V)
+from collections import deque
+
+def bfs01(graph, src, n):
+    dist = [float('inf')] * n
+    dist[src] = 0
+    dq = deque([src])
+
+    while dq:
+        u = dq.popleft()
+        for v, w in graph[u]:  # w is 0 or 1
+            if dist[u] + w &lt; dist[v]:
+                dist[v] = dist[u] + w
+                if w == 0:
+                    dq.appendleft(v)  # 0-weight → front
+                else:
+                    dq.append(v)      # 1-weight → back
+    return dist
 </code></pre>
 <p><strong>Classic LC:</strong> LC 1368 (Min Cost to Make at Least One Valid Path) — 0-1 BFS on grid</p>
 <h2 id="lc-example" tabindex="-1"><a class="header-anchor" href="#lc-example"><span>LC Example</span></a></h2>

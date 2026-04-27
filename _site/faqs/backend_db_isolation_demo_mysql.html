@@ -9,7 +9,8 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -20,42 +21,40 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    // Code block wrappers + copy buttons (highlighting done at build time)
-    try {
-      document.querySelectorAll('pre').forEach(function(pre) {
-        var codeEl = pre.querySelector('code');
-        var lang = pre.getAttribute('data-lang') || '';
-        var wrapper = document.createElement('div');
-        wrapper.className = 'code-block-wrapper';
-        pre.parentNode.insertBefore(wrapper, pre);
-        var header = document.createElement('div');
-        header.className = 'code-block-header';
-        if (lang) {
-          var label = document.createElement('span');
-          label.className = 'code-lang-label';
-          label.textContent = lang;
-          header.appendChild(label);
-        } else {
-          header.appendChild(document.createElement('span'));
-        }
-        var btn = document.createElement('button');
-        btn.className = 'copy-btn';
-        btn.textContent = 'Copy';
-        btn.addEventListener('click', function() {
-          var text = codeEl
-            ? Array.from(codeEl.querySelectorAll('.ln-code')).map(function(el) { return el.textContent; }).join('\n')
-            : pre.textContent;
-          navigator.clipboard.writeText(text).then(function() {
-            btn.textContent = 'Copied!';
-            btn.classList.add('copied');
-            setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-          });
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
         });
-        header.appendChild(btn);
-        wrapper.appendChild(header);
-        wrapper.appendChild(pre);
       });
-    } catch(e) { console.error('Code block setup error:', e); }
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -65,36 +64,32 @@
       }
     });
     // Reading progress bar
-    try {
-      var progressBar = document.getElementById('reading-progress');
-      if (progressBar) {
-        window.addEventListener('scroll', function() {
-          var winScroll = document.documentElement.scrollTop;
-          var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-          progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
-        });
-      }
-    } catch(e) {}
-    // Dark mode toggle — isolated so errors elsewhere never prevent this from working
-    try {
-      var toggle = document.getElementById('theme-toggle');
-      if (toggle) {
-        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-        toggle.textContent = isDark ? '☀️' : '🌙';
-        toggle.addEventListener('click', function() {
-          var dark = document.documentElement.getAttribute('data-theme') === 'dark';
-          if (dark) {
-            document.documentElement.removeAttribute('data-theme');
-            localStorage.setItem('theme', 'light');
-            toggle.textContent = '🌙';
-          } else {
-            document.documentElement.setAttribute('data-theme', 'dark');
-            localStorage.setItem('theme', 'dark');
-            toggle.textContent = '☀️';
-          }
-        });
-      }
-    } catch(e) { console.error('Theme toggle error:', e); }
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
   });</script>
 </head>
 <body>
@@ -139,30 +134,30 @@
         <h1 id="mysql" tabindex="-1"><a class="header-anchor" href="#mysql"><span>MySQL 隔離級別設定與實際演示</span></a></h1>
 <h2 id="" tabindex="-1"><a class="header-anchor" href="#"><span>設定隔離級別</span></a></h2>
 <h3 id="session" tabindex="-1"><a class="header-anchor" href="#session"><span>Session 級別（當前連線）</span></a></h3>
-<pre data-lang="sql"><code class="hljs language-sql"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">SET</span> SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">START</span> TRANSACTION;</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">-- 執行查詢</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">COMMIT</span>;</span></span>
+<pre><code class="language-sql">SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+START TRANSACTION;
+-- 執行查詢
+COMMIT;
 </code></pre>
 <h3 id="-1" tabindex="-1"><a class="header-anchor" href="#-1"><span>全域級別（影響所有新連線）</span></a></h3>
-<pre data-lang="sql"><code class="hljs language-sql"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">SET</span> <span class="hljs-keyword">GLOBAL</span> TRANSACTION ISOLATION LEVEL READ COMMITTED;</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">-- 需要 SUPER 或 SYSTEM_VARIABLES_ADMIN 權限</span></span></span>
+<pre><code class="language-sql">SET GLOBAL TRANSACTION ISOLATION LEVEL READ COMMITTED;
+-- 需要 SUPER 或 SYSTEM_VARIABLES_ADMIN 權限
 </code></pre>
 <h3 id="my-cnf" tabindex="-1"><a class="header-anchor" href="#my-cnf"><span>持久化設定（<code>my.cnf</code>）</span></a></h3>
-<pre data-lang="ini"><code class="hljs language-ini"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-section">[mysqld]</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-attr">transaction-isolation</span> = READ-COMMITTED</span></span>
+<pre><code class="language-ini">[mysqld]
+transaction-isolation = READ-COMMITTED
 </code></pre>
-<pre data-lang="bash"><code class="hljs language-bash"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-built_in">sudo</span> systemctl restart mysql</span></span>
+<pre><code class="language-bash">sudo systemctl restart mysql
 </code></pre>
 <h3 id="-2" tabindex="-1"><a class="header-anchor" href="#-2"><span>查看當前隔離級別</span></a></h3>
-<pre data-lang="sql"><code class="hljs language-sql"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">SELECT</span> @<span class="hljs-variable">@session</span>.transaction_isolation;  <span class="hljs-comment">-- Session 級別</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">SELECT</span> @<span class="hljs-variable">@global</span>.transaction_isolation;   <span class="hljs-comment">-- 全域級別</span></span></span>
+<pre><code class="language-sql">SELECT @@session.transaction_isolation;  -- Session 級別
+SELECT @@global.transaction_isolation;   -- 全域級別
 </code></pre>
 <h3 id="java-jdbc" tabindex="-1"><a class="header-anchor" href="#java-jdbc"><span>Java JDBC 設定</span></a></h3>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-type">Connection</span> <span class="hljs-variable">conn</span> <span class="hljs-operator">=</span> dataSource.getConnection();</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">conn.setAutoCommit(<span class="hljs-literal">false</span>);</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">conn.commit();</span></span>
+<pre><code class="language-java">Connection conn = dataSource.getConnection();
+conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+conn.setAutoCommit(false);
+conn.commit();
 </code></pre>
 <hr>
 <h2 id="-3" tabindex="-1"><a class="header-anchor" href="#-3"><span>隔離級別演示</span></a></h2>
@@ -170,30 +165,30 @@
 <p>使用 <code>accounts</code> 表，示範各隔離級別下不同異常的發生與防止。</p>
 </blockquote>
 <h2 id="accounts" tabindex="-1"><a class="header-anchor" href="#accounts"><span>準備：建立 Accounts 表</span></a></h2>
-<pre data-lang="sql"><code class="hljs language-sql"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">DROP</span> <span class="hljs-keyword">TABLE</span> IF <span class="hljs-keyword">EXISTS</span> accounts;</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">CREATE TABLE</span> accounts (</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    id <span class="hljs-type">INT</span> <span class="hljs-keyword">PRIMARY KEY</span>,</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    name <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">50</span>),</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    balance <span class="hljs-type">INT</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">);</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"><span class="hljs-keyword">INSERT INTO</span> accounts <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">1</span>, <span class="hljs-string">&#x27;Alice&#x27;</span>, <span class="hljs-number">100</span>), (<span class="hljs-number">2</span>, <span class="hljs-string">&#x27;Bob&#x27;</span>, <span class="hljs-number">200</span>);</span></span>
+<pre><code class="language-sql">DROP TABLE IF EXISTS accounts;
+CREATE TABLE accounts (
+    id INT PRIMARY KEY,
+    name VARCHAR(50),
+    balance INT
+);
+
+INSERT INTO accounts VALUES (1, 'Alice', 100), (2, 'Bob', 200);
 </code></pre>
 <hr>
 <h2 id="demo-1-dirty-read-read-uncommitted" tabindex="-1"><a class="header-anchor" href="#demo-1-dirty-read-read-uncommitted"><span>✅ Demo 1: Dirty Read (READ UNCOMMITTED)</span></a></h2>
 <p>Open <strong>Session A</strong>:</p>
-<pre data-lang="sql"><code class="hljs language-sql"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">SET</span> SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">START</span> TRANSACTION;</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">UPDATE</span> accounts <span class="hljs-keyword">SET</span> balance <span class="hljs-operator">=</span> balance <span class="hljs-operator">-</span> <span class="hljs-number">50</span> <span class="hljs-keyword">WHERE</span> id <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-comment">-- Don&#x27;t commit yet</span></span></span>
+<pre><code class="language-sql">SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+START TRANSACTION;
+
+UPDATE accounts SET balance = balance - 50 WHERE id = 1;
+-- Don't commit yet
 </code></pre>
 <p>Then, in <strong>Session B</strong>:</p>
-<pre data-lang="sql"><code class="hljs language-sql"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">SET</span> SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">START</span> TRANSACTION;</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> accounts <span class="hljs-keyword">WHERE</span> id <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-comment">-- Sees Alice’s balance as 50 (even though it&#x27;s uncommitted)</span></span></span>
+<pre><code class="language-sql">SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+START TRANSACTION;
+
+SELECT * FROM accounts WHERE id = 1;
+-- Sees Alice’s balance as 50 (even though it's uncommitted)
 </code></pre>
 <blockquote>
 <p>🔴 <strong>Dirty read occurred</strong>. If Session A rolls back, Session B saw incorrect data.</p>
@@ -201,18 +196,18 @@
 <hr>
 <h2 id="demo-2-prevent-dirty-read-read-committed" tabindex="-1"><a class="header-anchor" href="#demo-2-prevent-dirty-read-read-committed"><span>✅ Demo 2: Prevent Dirty Read (READ COMMITTED)</span></a></h2>
 <p>In <strong>Session A</strong>:</p>
-<pre data-lang="sql"><code class="hljs language-sql"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">SET</span> SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">START</span> TRANSACTION;</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">UPDATE</span> accounts <span class="hljs-keyword">SET</span> balance <span class="hljs-operator">=</span> balance <span class="hljs-operator">-</span> <span class="hljs-number">50</span> <span class="hljs-keyword">WHERE</span> id <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-comment">-- Don&#x27;t commit yet</span></span></span>
+<pre><code class="language-sql">SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
+START TRANSACTION;
+
+UPDATE accounts SET balance = balance - 50 WHERE id = 1;
+-- Don't commit yet
 </code></pre>
 <p>In <strong>Session B</strong>:</p>
-<pre data-lang="sql"><code class="hljs language-sql"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">SET</span> SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">START</span> TRANSACTION;</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> accounts <span class="hljs-keyword">WHERE</span> id <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-comment">-- Sees balance still 100 (no dirty read)</span></span></span>
+<pre><code class="language-sql">SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED;
+START TRANSACTION;
+
+SELECT * FROM accounts WHERE id = 1;
+-- Sees balance still 100 (no dirty read)
 </code></pre>
 <blockquote>
 <p>✅ Safer — only committed data is visible.</p>
@@ -220,21 +215,21 @@
 <hr>
 <h2 id="demo-3-non-repeatable-read-fixed-by-repeatable-read" tabindex="-1"><a class="header-anchor" href="#demo-3-non-repeatable-read-fixed-by-repeatable-read"><span>✅ Demo 3: Non-Repeatable Read (Fixed by REPEATABLE READ)</span></a></h2>
 <p>In <strong>Session A</strong>:</p>
-<pre data-lang="sql"><code class="hljs language-sql"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">SET</span> SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">START</span> TRANSACTION;</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">SELECT</span> balance <span class="hljs-keyword">FROM</span> accounts <span class="hljs-keyword">WHERE</span> id <span class="hljs-operator">=</span> <span class="hljs-number">2</span>;</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-comment">-- returns 200</span></span></span>
+<pre><code class="language-sql">SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+START TRANSACTION;
+
+SELECT balance FROM accounts WHERE id = 2;
+-- returns 200
 </code></pre>
 <p>Then in <strong>Session B</strong>:</p>
-<pre data-lang="sql"><code class="hljs language-sql"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">START</span> TRANSACTION;</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">UPDATE</span> accounts <span class="hljs-keyword">SET</span> balance <span class="hljs-operator">=</span> <span class="hljs-number">250</span> <span class="hljs-keyword">WHERE</span> id <span class="hljs-operator">=</span> <span class="hljs-number">2</span>;</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-keyword">COMMIT</span>;</span></span>
+<pre><code class="language-sql">START TRANSACTION;
+UPDATE accounts SET balance = 250 WHERE id = 2;
+COMMIT;
 </code></pre>
 <p>Back in <strong>Session A</strong>:</p>
-<pre data-lang="sql"><code class="hljs language-sql"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">SELECT</span> balance <span class="hljs-keyword">FROM</span> accounts <span class="hljs-keyword">WHERE</span> id <span class="hljs-operator">=</span> <span class="hljs-number">2</span>;</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">-- Still sees 200 (repeatable read)</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-keyword">COMMIT</span>;</span></span>
+<pre><code class="language-sql">SELECT balance FROM accounts WHERE id = 2;
+-- Still sees 200 (repeatable read)
+COMMIT;
 </code></pre>
 <blockquote>
 <p>✅ Prevents <strong>non-repeatable reads</strong> — same query returns the same result.</p>
@@ -242,16 +237,16 @@
 <hr>
 <h2 id="demo-4-phantom-read-fixed-by-serializable" tabindex="-1"><a class="header-anchor" href="#demo-4-phantom-read-fixed-by-serializable"><span>✅ Demo 4: Phantom Read (Fixed by SERIALIZABLE)</span></a></h2>
 <p>In <strong>Session A</strong>:</p>
-<pre data-lang="sql"><code class="hljs language-sql"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">SET</span> SESSION TRANSACTION ISOLATION LEVEL SERIALIZABLE;</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">START</span> TRANSACTION;</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> accounts <span class="hljs-keyword">WHERE</span> balance <span class="hljs-operator">&gt;</span> <span class="hljs-number">100</span>;</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-comment">-- Returns Bob only</span></span></span>
+<pre><code class="language-sql">SET SESSION TRANSACTION ISOLATION LEVEL SERIALIZABLE;
+START TRANSACTION;
+
+SELECT * FROM accounts WHERE balance &gt; 100;
+-- Returns Bob only
 </code></pre>
 <p>In <strong>Session B</strong>:</p>
-<pre data-lang="sql"><code class="hljs language-sql"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">START</span> TRANSACTION;</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">INSERT INTO</span> accounts <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">3</span>, <span class="hljs-string">&#x27;Charlie&#x27;</span>, <span class="hljs-number">150</span>);</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">-- This will block until Session A commits or rolls back</span></span></span>
+<pre><code class="language-sql">START TRANSACTION;
+INSERT INTO accounts VALUES (3, 'Charlie', 150);
+-- This will block until Session A commits or rolls back
 </code></pre>
 <blockquote>
 <p>✅ Prevents <strong>phantom reads</strong> by locking ranges.</p>

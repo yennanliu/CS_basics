@@ -9,7 +9,8 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="vendor/fonts.css">
-  <link rel="stylesheet" href="vendor/highlight/atom-one-dark.min.css">
+  <link rel="stylesheet" href="vendor/highlight/github-dark.min.css">
+  <script src="vendor/highlight/highlight.min.js"></script>
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -20,42 +21,40 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    // Code block wrappers + copy buttons (highlighting done at build time)
-    try {
-      document.querySelectorAll('pre').forEach(function(pre) {
-        var codeEl = pre.querySelector('code');
-        var lang = pre.getAttribute('data-lang') || '';
-        var wrapper = document.createElement('div');
-        wrapper.className = 'code-block-wrapper';
-        pre.parentNode.insertBefore(wrapper, pre);
-        var header = document.createElement('div');
-        header.className = 'code-block-header';
-        if (lang) {
-          var label = document.createElement('span');
-          label.className = 'code-lang-label';
-          label.textContent = lang;
-          header.appendChild(label);
-        } else {
-          header.appendChild(document.createElement('span'));
-        }
-        var btn = document.createElement('button');
-        btn.className = 'copy-btn';
-        btn.textContent = 'Copy';
-        btn.addEventListener('click', function() {
-          var text = codeEl
-            ? Array.from(codeEl.querySelectorAll('.ln-code')).map(function(el) { return el.textContent; }).join('\n')
-            : pre.textContent;
-          navigator.clipboard.writeText(text).then(function() {
-            btn.textContent = 'Copied!';
-            btn.classList.add('copied');
-            setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-          });
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
         });
-        header.appendChild(btn);
-        wrapper.appendChild(header);
-        wrapper.appendChild(pre);
       });
-    } catch(e) { console.error('Code block setup error:', e); }
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -65,36 +64,32 @@
       }
     });
     // Reading progress bar
-    try {
-      var progressBar = document.getElementById('reading-progress');
-      if (progressBar) {
-        window.addEventListener('scroll', function() {
-          var winScroll = document.documentElement.scrollTop;
-          var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-          progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
-        });
-      }
-    } catch(e) {}
-    // Dark mode toggle — isolated so errors elsewhere never prevent this from working
-    try {
-      var toggle = document.getElementById('theme-toggle');
-      if (toggle) {
-        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-        toggle.textContent = isDark ? '☀️' : '🌙';
-        toggle.addEventListener('click', function() {
-          var dark = document.documentElement.getAttribute('data-theme') === 'dark';
-          if (dark) {
-            document.documentElement.removeAttribute('data-theme');
-            localStorage.setItem('theme', 'light');
-            toggle.textContent = '🌙';
-          } else {
-            document.documentElement.setAttribute('data-theme', 'dark');
-            localStorage.setItem('theme', 'dark');
-            toggle.textContent = '☀️';
-          }
-        });
-      }
-    } catch(e) { console.error('Theme toggle error:', e); }
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
   });</script>
 </head>
 <body>
@@ -565,36 +560,36 @@ This page maps <strong>problem signals</strong> to <strong>algorithm patterns</s
 </table>
 <hr>
 <h2 id="decision-flowchart" tabindex="-1"><a class="header-anchor" href="#decision-flowchart"><span>Decision Flowchart</span></a></h2>
-<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">Is input SORTED or can you sort it?</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">├── YES → Is it &quot;find target&quot;? → Binary Search</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">│         Is it &quot;find pair&quot;? → Two Pointers</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">│         Is it &quot;merge intervals&quot;? → Sort + Scan</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">│         Is it &quot;find min/max possible&quot;? → Binary Search on Answer</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">│</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">├── NO → Is it a GRAPH/GRID?</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">│        ├── Unweighted shortest path → BFS</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">│        ├── Weighted shortest path → Dijkstra</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">│        ├── Dependencies/ordering → Topological Sort</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">│        ├── Connected components → Union-Find / DFS</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">│        └── All paths / combinations → DFS + Backtracking</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">│</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">├── Is it asking for OPTIMIZATION (min/max)?</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">│   ├── Overlapping subproblems → DP</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">│   ├── Local choice = global optimal → Greedy</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">│   └── Not sure → Try Greedy first, verify with DP</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">│</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">├── Is it asking for ALL combinations/permutations?</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">│   └── Backtracking</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">│</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">├── Is it a SUBARRAY/SUBSTRING problem?</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">│   ├── Sum related → Prefix Sum or Sliding Window</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">│   ├── Longest/shortest with condition → Sliding Window</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">│   └── Next greater/smaller → Monotonic Stack</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">│</span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">└── Is it a DESIGN problem?</span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">    ├── Cache → HashMap + LinkedList</span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">    ├── Prefix operations → Trie</span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">    └── Stream/online → Heap or Queue</span></span>
+<pre><code>Is input SORTED or can you sort it?
+├── YES → Is it &quot;find target&quot;? → Binary Search
+│         Is it &quot;find pair&quot;? → Two Pointers
+│         Is it &quot;merge intervals&quot;? → Sort + Scan
+│         Is it &quot;find min/max possible&quot;? → Binary Search on Answer
+│
+├── NO → Is it a GRAPH/GRID?
+│        ├── Unweighted shortest path → BFS
+│        ├── Weighted shortest path → Dijkstra
+│        ├── Dependencies/ordering → Topological Sort
+│        ├── Connected components → Union-Find / DFS
+│        └── All paths / combinations → DFS + Backtracking
+│
+├── Is it asking for OPTIMIZATION (min/max)?
+│   ├── Overlapping subproblems → DP
+│   ├── Local choice = global optimal → Greedy
+│   └── Not sure → Try Greedy first, verify with DP
+│
+├── Is it asking for ALL combinations/permutations?
+│   └── Backtracking
+│
+├── Is it a SUBARRAY/SUBSTRING problem?
+│   ├── Sum related → Prefix Sum or Sliding Window
+│   ├── Longest/shortest with condition → Sliding Window
+│   └── Next greater/smaller → Monotonic Stack
+│
+└── Is it a DESIGN problem?
+    ├── Cache → HashMap + LinkedList
+    ├── Prefix operations → Trie
+    └── Stream/online → Heap or Queue
 </code></pre>
 <hr>
 <h2 id="quick-pattern-comparison" tabindex="-1"><a class="header-anchor" href="#quick-pattern-comparison"><span>Quick Pattern Comparison</span></a></h2>

@@ -9,7 +9,8 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -20,42 +21,40 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    // Code block wrappers + copy buttons (highlighting done at build time)
-    try {
-      document.querySelectorAll('pre').forEach(function(pre) {
-        var codeEl = pre.querySelector('code');
-        var lang = pre.getAttribute('data-lang') || '';
-        var wrapper = document.createElement('div');
-        wrapper.className = 'code-block-wrapper';
-        pre.parentNode.insertBefore(wrapper, pre);
-        var header = document.createElement('div');
-        header.className = 'code-block-header';
-        if (lang) {
-          var label = document.createElement('span');
-          label.className = 'code-lang-label';
-          label.textContent = lang;
-          header.appendChild(label);
-        } else {
-          header.appendChild(document.createElement('span'));
-        }
-        var btn = document.createElement('button');
-        btn.className = 'copy-btn';
-        btn.textContent = 'Copy';
-        btn.addEventListener('click', function() {
-          var text = codeEl
-            ? Array.from(codeEl.querySelectorAll('.ln-code')).map(function(el) { return el.textContent; }).join('\n')
-            : pre.textContent;
-          navigator.clipboard.writeText(text).then(function() {
-            btn.textContent = 'Copied!';
-            btn.classList.add('copied');
-            setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-          });
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
         });
-        header.appendChild(btn);
-        wrapper.appendChild(header);
-        wrapper.appendChild(pre);
       });
-    } catch(e) { console.error('Code block setup error:', e); }
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -65,36 +64,32 @@
       }
     });
     // Reading progress bar
-    try {
-      var progressBar = document.getElementById('reading-progress');
-      if (progressBar) {
-        window.addEventListener('scroll', function() {
-          var winScroll = document.documentElement.scrollTop;
-          var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-          progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
-        });
-      }
-    } catch(e) {}
-    // Dark mode toggle — isolated so errors elsewhere never prevent this from working
-    try {
-      var toggle = document.getElementById('theme-toggle');
-      if (toggle) {
-        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-        toggle.textContent = isDark ? '☀️' : '🌙';
-        toggle.addEventListener('click', function() {
-          var dark = document.documentElement.getAttribute('data-theme') === 'dark';
-          if (dark) {
-            document.documentElement.removeAttribute('data-theme');
-            localStorage.setItem('theme', 'light');
-            toggle.textContent = '🌙';
-          } else {
-            document.documentElement.setAttribute('data-theme', 'dark');
-            localStorage.setItem('theme', 'dark');
-            toggle.textContent = '☀️';
-          }
-        });
-      }
-    } catch(e) { console.error('Theme toggle error:', e); }
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
   });</script>
 </head>
 <body>
@@ -214,516 +209,516 @@
 </table>
 <h3 id="0-2-pattern" tabindex="-1"><a class="header-anchor" href="#0-2-pattern"><span>0-2) Pattern</span></a></h3>
 <h4 id="pattern-1-set-operations" tabindex="-1"><a class="header-anchor" href="#pattern-1-set-operations"><span>Pattern 1: Set Operations</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Union, Intersection, Difference</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">s1 = {<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>}</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">s2 = {<span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>}</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">union = s1 | s2          <span class="hljs-comment"># {1, 2, 3, 4}</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">intersection = s1 &amp; s2   <span class="hljs-comment"># {2, 3}</span></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">difference = s1 - s2     <span class="hljs-comment"># {1}</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">symmetric_diff = s1 ^ s2 <span class="hljs-comment"># {1, 4}</span></span></span>
+<pre><code class="language-python"># Union, Intersection, Difference
+s1 = {1, 2, 3}
+s2 = {2, 3, 4}
+
+union = s1 | s2          # {1, 2, 3, 4}
+intersection = s1 &amp; s2   # {2, 3}
+difference = s1 - s2     # {1}
+symmetric_diff = s1 ^ s2 # {1, 4}
 </code></pre>
 <h4 id="pattern-2-duplicate-detection" tabindex="-1"><a class="header-anchor" href="#pattern-2-duplicate-detection"><span>Pattern 2: Duplicate Detection</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Check for duplicates in array</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">has_duplicate</span>(<span class="hljs-params">nums</span>):</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(nums) != <span class="hljs-built_in">len</span>(<span class="hljs-built_in">set</span>(nums))</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-comment"># Find duplicates</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_duplicates</span>(<span class="hljs-params">nums</span>):</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    seen = <span class="hljs-built_in">set</span>()</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    duplicates = <span class="hljs-built_in">set</span>()</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> nums:</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-keyword">if</span> num <span class="hljs-keyword">in</span> seen:</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">            duplicates.add(num)</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        seen.add(num)</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-keyword">return</span> duplicates</span></span>
+<pre><code class="language-python"># Check for duplicates in array
+def has_duplicate(nums):
+    return len(nums) != len(set(nums))
+
+# Find duplicates
+def find_duplicates(nums):
+    seen = set()
+    duplicates = set()
+    for num in nums:
+        if num in seen:
+            duplicates.add(num)
+        seen.add(num)
+    return duplicates
 </code></pre>
 <h4 id="pattern-3-two-set-tracking" tabindex="-1"><a class="header-anchor" href="#pattern-3-two-set-tracking"><span>Pattern 3: Two-Set Tracking</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Track visited and current path (for cycle detection)</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">has_cycle</span>(<span class="hljs-params">graph, start</span>):</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    visited = <span class="hljs-built_in">set</span>()</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    current_path = <span class="hljs-built_in">set</span>()</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">node</span>):</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-keyword">if</span> node <span class="hljs-keyword">in</span> current_path:</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span>  <span class="hljs-comment"># Cycle detected</span></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-keyword">if</span> node <span class="hljs-keyword">in</span> visited:</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        visited.add(node)</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        current_path.add(node)</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-keyword">for</span> neighbor <span class="hljs-keyword">in</span> graph[node]:</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">            <span class="hljs-keyword">if</span> dfs(neighbor):</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">                <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span></span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        current_path.remove(node)</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span></span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    <span class="hljs-keyword">return</span> dfs(start)</span></span>
+<pre><code class="language-python"># Track visited and current path (for cycle detection)
+def has_cycle(graph, start):
+    visited = set()
+    current_path = set()
+
+    def dfs(node):
+        if node in current_path:
+            return True  # Cycle detected
+        if node in visited:
+            return False
+
+        visited.add(node)
+        current_path.add(node)
+
+        for neighbor in graph[node]:
+            if dfs(neighbor):
+                return True
+
+        current_path.remove(node)
+        return False
+
+    return dfs(start)
 </code></pre>
 <h4 id="pattern-4-set-for-path-ancestry-tracking" tabindex="-1"><a class="header-anchor" href="#pattern-4-set-for-path-ancestry-tracking"><span>Pattern 4: Set for Path/Ancestry Tracking</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># LC 1650 - Find LCA using set to track ancestors</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">lowestCommonAncestor</span>(<span class="hljs-params">p, q</span>):</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-comment"># Track all ancestors of p</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    ancestors = <span class="hljs-built_in">set</span>()</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">while</span> p:</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        ancestors.add(p)</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        p = p.parent</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-comment"># Find first common ancestor</span></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-keyword">while</span> q:</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-keyword">if</span> q <span class="hljs-keyword">in</span> ancestors:</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">            <span class="hljs-keyword">return</span> q</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        q = q.parent</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-keyword">return</span> <span class="hljs-literal">None</span></span></span>
+<pre><code class="language-python"># LC 1650 - Find LCA using set to track ancestors
+def lowestCommonAncestor(p, q):
+    # Track all ancestors of p
+    ancestors = set()
+    while p:
+        ancestors.add(p)
+        p = p.parent
+
+    # Find first common ancestor
+    while q:
+        if q in ancestors:
+            return q
+        q = q.parent
+    return None
 </code></pre>
 <h2 id="1-general-form" tabindex="-1"><a class="header-anchor" href="#1-general-form"><span>1) General form</span></a></h2>
 <h3 id="1-1-basic-op" tabindex="-1"><a class="header-anchor" href="#1-1-basic-op"><span>1-1) Basic OP</span></a></h3>
 <h4 id="1-1-1-set-creation-and-basic-operations" tabindex="-1"><a class="header-anchor" href="#1-1-1-set-creation-and-basic-operations"><span>1-1-1) Set Creation and Basic Operations</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Python</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># Create empty set</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">s = <span class="hljs-built_in">set</span>()</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">s = {}  <span class="hljs-comment"># Wrong! This creates a dict</span></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"><span class="hljs-comment"># Create with elements</span></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">s = {<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>}</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">s = <span class="hljs-built_in">set</span>([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>])</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">s = <span class="hljs-built_in">set</span>(<span class="hljs-string">&quot;abc&quot;</span>)  <span class="hljs-comment"># {&#x27;a&#x27;, &#x27;b&#x27;, &#x27;c&#x27;}</span></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"><span class="hljs-comment"># Add element</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">s.add(<span class="hljs-number">4</span>)</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code"><span class="hljs-comment"># Remove element</span></span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">s.remove(<span class="hljs-number">3</span>)     <span class="hljs-comment"># Raises KeyError if not exists</span></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">s.discard(<span class="hljs-number">3</span>)    <span class="hljs-comment"># No error if not exists</span></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">s.pop()         <span class="hljs-comment"># Remove and return arbitrary element</span></span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code"><span class="hljs-comment"># Check membership</span></span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code"><span class="hljs-keyword">if</span> <span class="hljs-number">2</span> <span class="hljs-keyword">in</span> s:</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Found&quot;</span>)</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code"><span class="hljs-comment"># Size</span></span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code"><span class="hljs-built_in">len</span>(s)</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code"><span class="hljs-comment"># Clear all</span></span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">s.clear()</span></span>
+<pre><code class="language-python"># Python
+# Create empty set
+s = set()
+s = {}  # Wrong! This creates a dict
+
+# Create with elements
+s = {1, 2, 3}
+s = set([1, 2, 3])
+s = set(&quot;abc&quot;)  # {'a', 'b', 'c'}
+
+# Add element
+s.add(4)
+
+# Remove element
+s.remove(3)     # Raises KeyError if not exists
+s.discard(3)    # No error if not exists
+s.pop()         # Remove and return arbitrary element
+
+# Check membership
+if 2 in s:
+    print(&quot;Found&quot;)
+
+# Size
+len(s)
+
+# Clear all
+s.clear()
 </code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// Java</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// Create HashSet</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">Set&lt;Integer&gt; set = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-comment">// Add element</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">set.add(<span class="hljs-number">1</span>);</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">set.add(<span class="hljs-number">2</span>);</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">set.add(<span class="hljs-number">3</span>);</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"><span class="hljs-comment">// Remove element</span></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">set.remove(<span class="hljs-number">2</span>);</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"><span class="hljs-comment">// Check membership</span></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code"><span class="hljs-keyword">if</span> (set.contains(<span class="hljs-number">1</span>)) {</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    System.out.println(<span class="hljs-string">&quot;Found&quot;</span>);</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">}</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code"><span class="hljs-comment">// Size</span></span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code"><span class="hljs-type">int</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> set.size();</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code"><span class="hljs-comment">// Clear</span></span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">set.clear();</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code"><span class="hljs-comment">// Iterate</span></span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code"><span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : set) {</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">    System.out.println(num);</span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// Java
+// Create HashSet
+Set&lt;Integer&gt; set = new HashSet&lt;&gt;();
+
+// Add element
+set.add(1);
+set.add(2);
+set.add(3);
+
+// Remove element
+set.remove(2);
+
+// Check membership
+if (set.contains(1)) {
+    System.out.println(&quot;Found&quot;);
+}
+
+// Size
+int size = set.size();
+
+// Clear
+set.clear();
+
+// Iterate
+for (int num : set) {
+    System.out.println(num);
+}
 </code></pre>
 <h4 id="1-1-2-set-operations" tabindex="-1"><a class="header-anchor" href="#1-1-2-set-operations"><span>1-1-2) Set Operations</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Python set operations</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">s1 = {<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>}</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">s2 = {<span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>}</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-comment"># Union (elements in either set)</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">union1 = s1 | s2</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">union2 = s1.union(s2)           <span class="hljs-comment"># {1, 2, 3, 4, 5, 6}</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"><span class="hljs-comment"># Intersection (elements in both sets)</span></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">inter1 = s1 &amp; s2</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">inter2 = s1.intersection(s2)    <span class="hljs-comment"># {3, 4}</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"><span class="hljs-comment"># Difference (elements in s1 but not s2)</span></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">diff1 = s1 - s2</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">diff2 = s1.difference(s2)       <span class="hljs-comment"># {1, 2}</span></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code"><span class="hljs-comment"># Symmetric difference (elements in either but not both)</span></span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">sym1 = s1 ^ s2</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">sym2 = s1.symmetric_difference(s2)  <span class="hljs-comment"># {1, 2, 5, 6}</span></span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code"><span class="hljs-comment"># Subset check</span></span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">is_subset = s1.issubset(s2)     <span class="hljs-comment"># False</span></span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">is_superset = s1.issuperset(s2) <span class="hljs-comment"># False</span></span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code"><span class="hljs-comment"># Disjoint check (no common elements)</span></span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">is_disjoint = s1.isdisjoint(s2) <span class="hljs-comment"># False</span></span></span>
+<pre><code class="language-python"># Python set operations
+s1 = {1, 2, 3, 4}
+s2 = {3, 4, 5, 6}
+
+# Union (elements in either set)
+union1 = s1 | s2
+union2 = s1.union(s2)           # {1, 2, 3, 4, 5, 6}
+
+# Intersection (elements in both sets)
+inter1 = s1 &amp; s2
+inter2 = s1.intersection(s2)    # {3, 4}
+
+# Difference (elements in s1 but not s2)
+diff1 = s1 - s2
+diff2 = s1.difference(s2)       # {1, 2}
+
+# Symmetric difference (elements in either but not both)
+sym1 = s1 ^ s2
+sym2 = s1.symmetric_difference(s2)  # {1, 2, 5, 6}
+
+# Subset check
+is_subset = s1.issubset(s2)     # False
+is_superset = s1.issuperset(s2) # False
+
+# Disjoint check (no common elements)
+is_disjoint = s1.isdisjoint(s2) # False
 </code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// Java set operations</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">Set&lt;Integer&gt; s1 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;(Arrays.asList(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>));</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">Set&lt;Integer&gt; s2 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;(Arrays.asList(<span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>));</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-comment">// Union</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">Set&lt;Integer&gt; union = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;(s1);</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">union.addAll(s2);  <span class="hljs-comment">// {1, 2, 3, 4, 5, 6}</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"><span class="hljs-comment">// Intersection</span></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">Set&lt;Integer&gt; intersection = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;(s1);</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">intersection.retainAll(s2);  <span class="hljs-comment">// {3, 4}</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"><span class="hljs-comment">// Difference</span></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">Set&lt;Integer&gt; difference = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;(s1);</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">difference.removeAll(s2);  <span class="hljs-comment">// {1, 2}</span></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code"><span class="hljs-comment">// Subset check</span></span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code"><span class="hljs-type">boolean</span> <span class="hljs-variable">isSubset</span> <span class="hljs-operator">=</span> s2.containsAll(s1);  <span class="hljs-comment">// false</span></span></span>
+<pre><code class="language-java">// Java set operations
+Set&lt;Integer&gt; s1 = new HashSet&lt;&gt;(Arrays.asList(1, 2, 3, 4));
+Set&lt;Integer&gt; s2 = new HashSet&lt;&gt;(Arrays.asList(3, 4, 5, 6));
+
+// Union
+Set&lt;Integer&gt; union = new HashSet&lt;&gt;(s1);
+union.addAll(s2);  // {1, 2, 3, 4, 5, 6}
+
+// Intersection
+Set&lt;Integer&gt; intersection = new HashSet&lt;&gt;(s1);
+intersection.retainAll(s2);  // {3, 4}
+
+// Difference
+Set&lt;Integer&gt; difference = new HashSet&lt;&gt;(s1);
+difference.removeAll(s2);  // {1, 2}
+
+// Subset check
+boolean isSubset = s2.containsAll(s1);  // false
 </code></pre>
 <h4 id="1-1-3-converting-between-collections" tabindex="-1"><a class="header-anchor" href="#1-1-3-converting-between-collections"><span>1-1-3) Converting Between Collections</span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Python conversions</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">arr = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>]</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-comment"># Array to set (remove duplicates)</span></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">s = <span class="hljs-built_in">set</span>(arr)  <span class="hljs-comment"># {1, 2, 3, 4}</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"><span class="hljs-comment"># Set to array</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">arr_unique = <span class="hljs-built_in">list</span>(s)</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"><span class="hljs-comment"># Set to sorted array</span></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">arr_sorted = <span class="hljs-built_in">sorted</span>(s)</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"><span class="hljs-comment"># String to set</span></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">char_set = <span class="hljs-built_in">set</span>(<span class="hljs-string">&quot;hello&quot;</span>)  <span class="hljs-comment"># {&#x27;h&#x27;, &#x27;e&#x27;, &#x27;l&#x27;, &#x27;o&#x27;}</span></span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code"><span class="hljs-comment"># Set to string</span></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">s = {<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>}</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">string = <span class="hljs-string">&#x27;&#x27;</span>.join(<span class="hljs-built_in">sorted</span>(s))  <span class="hljs-comment"># &#x27;abc&#x27;</span></span></span>
+<pre><code class="language-python"># Python conversions
+arr = [1, 2, 2, 3, 3, 4]
+
+# Array to set (remove duplicates)
+s = set(arr)  # {1, 2, 3, 4}
+
+# Set to array
+arr_unique = list(s)
+
+# Set to sorted array
+arr_sorted = sorted(s)
+
+# String to set
+char_set = set(&quot;hello&quot;)  # {'h', 'e', 'l', 'o'}
+
+# Set to string
+s = {'a', 'b', 'c'}
+string = ''.join(sorted(s))  # 'abc'
 </code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// Java conversions</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">Integer[] arr = {<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>};</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-comment">// Array to set</span></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">Set&lt;Integer&gt; set = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;(Arrays.asList(arr));</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"><span class="hljs-comment">// Set to array</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">Integer[] arrUnique = set.toArray(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Integer</span>[<span class="hljs-number">0</span>]);</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"><span class="hljs-comment">// Set to list</span></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">List&lt;Integer&gt; list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(set);</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"><span class="hljs-comment">// List to set</span></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">Set&lt;Integer&gt; set2 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;(list);</span></span>
+<pre><code class="language-java">// Java conversions
+Integer[] arr = {1, 2, 2, 3, 3, 4};
+
+// Array to set
+Set&lt;Integer&gt; set = new HashSet&lt;&gt;(Arrays.asList(arr));
+
+// Set to array
+Integer[] arrUnique = set.toArray(new Integer[0]);
+
+// Set to list
+List&lt;Integer&gt; list = new ArrayList&lt;&gt;(set);
+
+// List to set
+Set&lt;Integer&gt; set2 = new HashSet&lt;&gt;(list);
 </code></pre>
 <h2 id="2-lc-example" tabindex="-1"><a class="header-anchor" href="#2-lc-example"><span>2) LC Example</span></a></h2>
 <h3 id="2-1-lowest-common-ancestor-of-a-binary-tree-iii" tabindex="-1"><a class="header-anchor" href="#2-1-lowest-common-ancestor-of-a-binary-tree-iii"><span>2-1) Lowest Common Ancestor of a Binary Tree III</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># LC 1650. Lowest Common Ancestor of a Binary Tree III</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># NOTE : there are also dict, recursive.. approaches</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-comment"># V0&#x27;&#x27;</span></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-comment"># IDEA : set - track ancestry path</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"><span class="hljs-comment"># Time: O(h) where h is tree height</span></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"><span class="hljs-comment"># Space: O(h) for storing ancestors</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">lowestCommonAncestor</span>(<span class="hljs-params">self, p, q</span>):</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-comment"># Store all ancestors of p</span></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        visited = <span class="hljs-built_in">set</span>()</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-keyword">while</span> p:</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">            visited.add(p)</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            p = p.parent</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        <span class="hljs-comment"># Find first common ancestor with q</span></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        <span class="hljs-keyword">while</span> q:</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">            <span class="hljs-keyword">if</span> q <span class="hljs-keyword">in</span> visited:</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">                <span class="hljs-keyword">return</span> q</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">            q = q.parent</span></span>
+<pre><code class="language-python"># LC 1650. Lowest Common Ancestor of a Binary Tree III
+# NOTE : there are also dict, recursive.. approaches
+
+# V0''
+# IDEA : set - track ancestry path
+# Time: O(h) where h is tree height
+# Space: O(h) for storing ancestors
+class Solution:
+    def lowestCommonAncestor(self, p, q):
+        # Store all ancestors of p
+        visited = set()
+        while p:
+            visited.add(p)
+            p = p.parent
+
+        # Find first common ancestor with q
+        while q:
+            if q in visited:
+                return q
+            q = q.parent
 </code></pre>
 <h3 id="2-2-contains-duplicate" tabindex="-1"><a class="header-anchor" href="#2-2-contains-duplicate"><span>2-2) Contains Duplicate</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># LC 217. Contains Duplicate</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># V0</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment"># IDEA: Set to detect duplicates</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">containsDuplicate</span>(<span class="hljs-params">self, nums</span>):</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(nums) != <span class="hljs-built_in">len</span>(<span class="hljs-built_in">set</span>(nums))</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"><span class="hljs-comment"># V0&#x27;</span></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"><span class="hljs-comment"># IDEA: Build set while checking</span></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">containsDuplicate</span>(<span class="hljs-params">self, nums</span>):</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        seen = <span class="hljs-built_in">set</span>()</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> nums:</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            <span class="hljs-keyword">if</span> num <span class="hljs-keyword">in</span> seen:</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">                <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">            seen.add(num)</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span></span></span>
+<pre><code class="language-python"># LC 217. Contains Duplicate
+# V0
+# IDEA: Set to detect duplicates
+class Solution:
+    def containsDuplicate(self, nums):
+        return len(nums) != len(set(nums))
+
+# V0'
+# IDEA: Build set while checking
+class Solution:
+    def containsDuplicate(self, nums):
+        seen = set()
+        for num in nums:
+            if num in seen:
+                return True
+            seen.add(num)
+        return False
 </code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// Java</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// LC 217</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">containsDuplicate</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    Set&lt;Integer&gt; seen = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : nums) {</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-keyword">if</span> (seen.contains(num)) {</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        seen.add(num);</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// Java
+// LC 217
+public boolean containsDuplicate(int[] nums) {
+    Set&lt;Integer&gt; seen = new HashSet&lt;&gt;();
+    for (int num : nums) {
+        if (seen.contains(num)) {
+            return true;
+        }
+        seen.add(num);
+    }
+    return false;
+}
 </code></pre>
 <h3 id="2-3-intersection-of-two-arrays" tabindex="-1"><a class="header-anchor" href="#2-3-intersection-of-two-arrays"><span>2-3) Intersection of Two Arrays</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># LC 349. Intersection of Two Arrays</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># V0</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment"># IDEA: Set intersection</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">intersection</span>(<span class="hljs-params">self, nums1, nums2</span>):</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-built_in">list</span>(<span class="hljs-built_in">set</span>(nums1) &amp; <span class="hljs-built_in">set</span>(nums2))</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"><span class="hljs-comment"># V0&#x27;</span></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"><span class="hljs-comment"># IDEA: Convert to sets and use intersection</span></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">intersection</span>(<span class="hljs-params">self, nums1, nums2</span>):</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        set1 = <span class="hljs-built_in">set</span>(nums1)</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        set2 = <span class="hljs-built_in">set</span>(nums2)</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-built_in">list</span>(set1.intersection(set2))</span></span>
+<pre><code class="language-python"># LC 349. Intersection of Two Arrays
+# V0
+# IDEA: Set intersection
+class Solution:
+    def intersection(self, nums1, nums2):
+        return list(set(nums1) &amp; set(nums2))
+
+# V0'
+# IDEA: Convert to sets and use intersection
+class Solution:
+    def intersection(self, nums1, nums2):
+        set1 = set(nums1)
+        set2 = set(nums2)
+        return list(set1.intersection(set2))
 </code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// Java</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// LC 349</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] intersection(<span class="hljs-type">int</span>[] nums1, <span class="hljs-type">int</span>[] nums2) {</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    Set&lt;Integer&gt; set1 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : nums1) {</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        set1.add(num);</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    Set&lt;Integer&gt; result = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : nums2) {</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-keyword">if</span> (set1.contains(num)) {</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">            result.add(num);</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    <span class="hljs-keyword">return</span> result.stream().mapToInt(i -&gt; i).toArray();</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// Java
+// LC 349
+public int[] intersection(int[] nums1, int[] nums2) {
+    Set&lt;Integer&gt; set1 = new HashSet&lt;&gt;();
+    for (int num : nums1) {
+        set1.add(num);
+    }
+
+    Set&lt;Integer&gt; result = new HashSet&lt;&gt;();
+    for (int num : nums2) {
+        if (set1.contains(num)) {
+            result.add(num);
+        }
+    }
+
+    return result.stream().mapToInt(i -&gt; i).toArray();
+}
 </code></pre>
 <h3 id="2-4-happy-number" tabindex="-1"><a class="header-anchor" href="#2-4-happy-number"><span>2-4) Happy Number</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># LC 202. Happy Number</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># V0</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment"># IDEA: Use set to detect cycles</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">isHappy</span>(<span class="hljs-params">self, n</span>):</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-keyword">def</span> <span class="hljs-title function_">get_next</span>(<span class="hljs-params">num</span>):</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">            total = <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">            <span class="hljs-keyword">while</span> num &gt; <span class="hljs-number">0</span>:</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">                digit = num % <span class="hljs-number">10</span></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">                total += digit * digit</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">                num //= <span class="hljs-number">10</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">            <span class="hljs-keyword">return</span> total</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        seen = <span class="hljs-built_in">set</span>()</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-keyword">while</span> n != <span class="hljs-number">1</span> <span class="hljs-keyword">and</span> n <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> seen:</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">            seen.add(n)</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">            n = get_next(n)</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        <span class="hljs-keyword">return</span> n == <span class="hljs-number">1</span></span></span>
+<pre><code class="language-python"># LC 202. Happy Number
+# V0
+# IDEA: Use set to detect cycles
+class Solution:
+    def isHappy(self, n):
+        def get_next(num):
+            total = 0
+            while num &gt; 0:
+                digit = num % 10
+                total += digit * digit
+                num //= 10
+            return total
+
+        seen = set()
+        while n != 1 and n not in seen:
+            seen.add(n)
+            n = get_next(n)
+
+        return n == 1
 </code></pre>
 <h3 id="2-5-longest-consecutive-sequence" tabindex="-1"><a class="header-anchor" href="#2-5-longest-consecutive-sequence"><span>2-5) Longest Consecutive Sequence</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># LC 128. Longest Consecutive Sequence</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># V0</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment"># IDEA: Set for O(1) lookups</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-comment"># Time: O(n), Space: O(n)</span></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">longestConsecutive</span>(<span class="hljs-params">self, nums</span>):</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> nums:</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        num_set = <span class="hljs-built_in">set</span>(nums)</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        max_length = <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> num_set:</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            <span class="hljs-comment"># Only start counting from sequence start</span></span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">            <span class="hljs-keyword">if</span> num - <span class="hljs-number">1</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> num_set:</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">                current = num</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">                length = <span class="hljs-number">1</span></span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">                <span class="hljs-keyword">while</span> current + <span class="hljs-number">1</span> <span class="hljs-keyword">in</span> num_set:</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">                    current += <span class="hljs-number">1</span></span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">                    length += <span class="hljs-number">1</span></span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">                max_length = <span class="hljs-built_in">max</span>(max_length, length)</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">        <span class="hljs-keyword">return</span> max_length</span></span>
+<pre><code class="language-python"># LC 128. Longest Consecutive Sequence
+# V0
+# IDEA: Set for O(1) lookups
+# Time: O(n), Space: O(n)
+class Solution:
+    def longestConsecutive(self, nums):
+        if not nums:
+            return 0
+
+        num_set = set(nums)
+        max_length = 0
+
+        for num in num_set:
+            # Only start counting from sequence start
+            if num - 1 not in num_set:
+                current = num
+                length = 1
+
+                while current + 1 in num_set:
+                    current += 1
+                    length += 1
+
+                max_length = max(max_length, length)
+
+        return max_length
 </code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// Java</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// LC 128</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">longestConsecutive</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    Set&lt;Integer&gt; numSet = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : nums) {</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        numSet.add(num);</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">maxLength</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : numSet) {</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-comment">// Only start from sequence beginning</span></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-keyword">if</span> (!numSet.contains(num - <span class="hljs-number">1</span>)) {</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            <span class="hljs-type">int</span> <span class="hljs-variable">current</span> <span class="hljs-operator">=</span> num;</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">            <span class="hljs-type">int</span> <span class="hljs-variable">length</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">            <span class="hljs-keyword">while</span> (numSet.contains(current + <span class="hljs-number">1</span>)) {</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">                current++;</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">                length++;</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">            }</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">            maxLength = Math.max(maxLength, length);</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">    <span class="hljs-keyword">return</span> maxLength;</span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// Java
+// LC 128
+public int longestConsecutive(int[] nums) {
+    Set&lt;Integer&gt; numSet = new HashSet&lt;&gt;();
+    for (int num : nums) {
+        numSet.add(num);
+    }
+
+    int maxLength = 0;
+
+    for (int num : numSet) {
+        // Only start from sequence beginning
+        if (!numSet.contains(num - 1)) {
+            int current = num;
+            int length = 1;
+
+            while (numSet.contains(current + 1)) {
+                current++;
+                length++;
+            }
+
+            maxLength = Math.max(maxLength, length);
+        }
+    }
+
+    return maxLength;
+}
 </code></pre>
 <h3 id="2-6-single-number" tabindex="-1"><a class="header-anchor" href="#2-6-single-number"><span>2-6) Single Number</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># LC 136. Single Number</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># V0</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment"># IDEA: XOR all numbers (duplicates cancel out)</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">singleNumber</span>(<span class="hljs-params">self, nums</span>):</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        result = <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-keyword">for</span> num <span class="hljs-keyword">in</span> nums:</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">            result ^= num</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-keyword">return</span> result</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"><span class="hljs-comment"># V0&#x27;</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"><span class="hljs-comment"># IDEA: Set addition/removal</span></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">singleNumber</span>(<span class="hljs-params">self, nums</span>):</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-number">2</span> * <span class="hljs-built_in">sum</span>(<span class="hljs-built_in">set</span>(nums)) - <span class="hljs-built_in">sum</span>(nums)</span></span>
+<pre><code class="language-python"># LC 136. Single Number
+# V0
+# IDEA: XOR all numbers (duplicates cancel out)
+class Solution:
+    def singleNumber(self, nums):
+        result = 0
+        for num in nums:
+            result ^= num
+        return result
+
+# V0'
+# IDEA: Set addition/removal
+class Solution:
+    def singleNumber(self, nums):
+        return 2 * sum(set(nums)) - sum(nums)
 </code></pre>
 <h3 id="2-7-valid-sudoku" tabindex="-1"><a class="header-anchor" href="#2-7-valid-sudoku"><span>2-7) Valid Sudoku</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># LC 36. Valid Sudoku</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># V0</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment"># IDEA: Use sets to track seen values</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">isValidSudoku</span>(<span class="hljs-params">self, board</span>):</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-comment"># Track seen elements in rows, cols, boxes</span></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        seen = <span class="hljs-built_in">set</span>()</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">9</span>):</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">9</span>):</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">                <span class="hljs-keyword">if</span> board[i][j] != <span class="hljs-string">&#x27;.&#x27;</span>:</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">                    val = board[i][j]</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">                    box_idx = (i // <span class="hljs-number">3</span>) * <span class="hljs-number">3</span> + j // <span class="hljs-number">3</span></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">                    <span class="hljs-comment"># Create unique keys for row, col, box</span></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">                    row_key = <span class="hljs-string">f&quot;row_<span class="hljs-subst">{i}</span>_<span class="hljs-subst">{val}</span>&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">                    col_key = <span class="hljs-string">f&quot;col_<span class="hljs-subst">{j}</span>_<span class="hljs-subst">{val}</span>&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">                    box_key = <span class="hljs-string">f&quot;box_<span class="hljs-subst">{box_idx}</span>_<span class="hljs-subst">{val}</span>&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">                    <span class="hljs-keyword">if</span> row_key <span class="hljs-keyword">in</span> seen <span class="hljs-keyword">or</span> col_key <span class="hljs-keyword">in</span> seen <span class="hljs-keyword">or</span> box_key <span class="hljs-keyword">in</span> seen:</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">                        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span></span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">                    seen.add(row_key)</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">                    seen.add(col_key)</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">                    seen.add(box_key)</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span></span></span>
+<pre><code class="language-python"># LC 36. Valid Sudoku
+# V0
+# IDEA: Use sets to track seen values
+class Solution:
+    def isValidSudoku(self, board):
+        # Track seen elements in rows, cols, boxes
+        seen = set()
+
+        for i in range(9):
+            for j in range(9):
+                if board[i][j] != '.':
+                    val = board[i][j]
+                    box_idx = (i // 3) * 3 + j // 3
+
+                    # Create unique keys for row, col, box
+                    row_key = f&quot;row_{i}_{val}&quot;
+                    col_key = f&quot;col_{j}_{val}&quot;
+                    box_key = f&quot;box_{box_idx}_{val}&quot;
+
+                    if row_key in seen or col_key in seen or box_key in seen:
+                        return False
+
+                    seen.add(row_key)
+                    seen.add(col_key)
+                    seen.add(box_key)
+
+        return True
 </code></pre>
 <h3 id="2-8-number-of-distinct-islands" tabindex="-1"><a class="header-anchor" href="#2-8-number-of-distinct-islands"><span>2-8) Number of Distinct Islands</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># LC 694. Number of Distinct Islands</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># V0</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment"># IDEA: Use set to store unique island shapes</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">numDistinctIslands</span>(<span class="hljs-params">self, grid</span>):</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> grid:</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-keyword">def</span> <span class="hljs-title function_">dfs</span>(<span class="hljs-params">i, j, i0, j0</span>):</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">            <span class="hljs-comment"># Record relative position from starting point</span></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">            <span class="hljs-keyword">if</span> (<span class="hljs-number">0</span> &lt;= i &lt; <span class="hljs-built_in">len</span>(grid) <span class="hljs-keyword">and</span> <span class="hljs-number">0</span> &lt;= j &lt; <span class="hljs-built_in">len</span>(grid[<span class="hljs-number">0</span>]) <span class="hljs-keyword">and</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">                grid[i][j] == <span class="hljs-number">1</span>):</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">                grid[i][j] = <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">                path.append((i - i0, j - j0))</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">                dfs(i+<span class="hljs-number">1</span>, j, i0, j0)</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">                dfs(i-<span class="hljs-number">1</span>, j, i0, j0)</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">                dfs(i, j+<span class="hljs-number">1</span>, i0, j0)</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">                dfs(i, j-<span class="hljs-number">1</span>, i0, j0)</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        shapes = <span class="hljs-built_in">set</span>()</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(grid)):</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">            <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-built_in">len</span>(grid[<span class="hljs-number">0</span>])):</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">                <span class="hljs-keyword">if</span> grid[i][j] == <span class="hljs-number">1</span>:</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">                    path = []</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">                    dfs(i, j, i, j)</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">                    <span class="hljs-comment"># Convert list to tuple for hashing</span></span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">                    shapes.add(<span class="hljs-built_in">tuple</span>(path))</span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-built_in">len</span>(shapes)</span></span>
+<pre><code class="language-python"># LC 694. Number of Distinct Islands
+# V0
+# IDEA: Use set to store unique island shapes
+class Solution:
+    def numDistinctIslands(self, grid):
+        if not grid:
+            return 0
+
+        def dfs(i, j, i0, j0):
+            # Record relative position from starting point
+            if (0 &lt;= i &lt; len(grid) and 0 &lt;= j &lt; len(grid[0]) and
+                grid[i][j] == 1):
+                grid[i][j] = 0
+                path.append((i - i0, j - j0))
+                dfs(i+1, j, i0, j0)
+                dfs(i-1, j, i0, j0)
+                dfs(i, j+1, i0, j0)
+                dfs(i, j-1, i0, j0)
+
+        shapes = set()
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                if grid[i][j] == 1:
+                    path = []
+                    dfs(i, j, i, j)
+                    # Convert list to tuple for hashing
+                    shapes.add(tuple(path))
+
+        return len(shapes)
 </code></pre>
 <h3 id="2-9-linked-list-cycle-detection" tabindex="-1"><a class="header-anchor" href="#2-9-linked-list-cycle-detection"><span>2-9) Linked List Cycle Detection</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># LC 141. Linked List Cycle</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># V0</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment"># IDEA: Use set to track visited nodes</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">hasCycle</span>(<span class="hljs-params">self, head</span>):</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        visited = <span class="hljs-built_in">set</span>()</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        current = head</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-keyword">while</span> current:</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">            <span class="hljs-keyword">if</span> current <span class="hljs-keyword">in</span> visited:</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">                <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">            visited.add(current)</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">            current = current.<span class="hljs-built_in">next</span></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code"><span class="hljs-comment"># V0&#x27;</span></span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code"><span class="hljs-comment"># IDEA: Two pointers (Floyd&#x27;s algorithm) - O(1) space</span></span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">hasCycle</span>(<span class="hljs-params">self, head</span>):</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> head:</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span></span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">        slow = head</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">        fast = head.<span class="hljs-built_in">next</span></span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">        <span class="hljs-keyword">while</span> slow != fast:</span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> fast <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> fast.<span class="hljs-built_in">next</span>:</span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">                <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span></span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">            slow = slow.<span class="hljs-built_in">next</span></span></span>
-<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">            fast = fast.<span class="hljs-built_in">next</span>.<span class="hljs-built_in">next</span></span></span>
-<span class="ln-row"><span class="ln-num">32</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span></span></span>
+<pre><code class="language-python"># LC 141. Linked List Cycle
+# V0
+# IDEA: Use set to track visited nodes
+class Solution:
+    def hasCycle(self, head):
+        visited = set()
+        current = head
+
+        while current:
+            if current in visited:
+                return True
+            visited.add(current)
+            current = current.next
+
+        return False
+
+# V0'
+# IDEA: Two pointers (Floyd's algorithm) - O(1) space
+class Solution:
+    def hasCycle(self, head):
+        if not head:
+            return False
+
+        slow = head
+        fast = head.next
+
+        while slow != fast:
+            if not fast or not fast.next:
+                return False
+            slow = slow.next
+            fast = fast.next.next
+
+        return True
 </code></pre>
 <h3 id="2-10-word-pattern" tabindex="-1"><a class="header-anchor" href="#2-10-word-pattern"><span>2-10) Word Pattern</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># LC 290. Word Pattern</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment"># V0</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment"># IDEA: Use 2 sets to track bijection</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span>:</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">wordPattern</span>(<span class="hljs-params">self, pattern, s</span>):</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        words = s.split()</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(pattern) != <span class="hljs-built_in">len</span>(words):</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        char_to_word = {}</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        word_to_char = {}</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        <span class="hljs-keyword">for</span> c, word <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(pattern, words):</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">            <span class="hljs-keyword">if</span> c <span class="hljs-keyword">in</span> char_to_word:</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">                <span class="hljs-keyword">if</span> char_to_word[c] != word:</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">                    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span></span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">            <span class="hljs-keyword">else</span>:</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">                char_to_word[c] = word</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">            <span class="hljs-keyword">if</span> word <span class="hljs-keyword">in</span> word_to_char:</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">                <span class="hljs-keyword">if</span> word_to_char[word] != c:</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">                    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span></span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">            <span class="hljs-keyword">else</span>:</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">                word_to_char[word] = c</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span></span></span>
+<pre><code class="language-python"># LC 290. Word Pattern
+# V0
+# IDEA: Use 2 sets to track bijection
+class Solution:
+    def wordPattern(self, pattern, s):
+        words = s.split()
+
+        if len(pattern) != len(words):
+            return False
+
+        char_to_word = {}
+        word_to_char = {}
+
+        for c, word in zip(pattern, words):
+            if c in char_to_word:
+                if char_to_word[c] != word:
+                    return False
+            else:
+                char_to_word[c] = word
+
+            if word in word_to_char:
+                if word_to_char[word] != c:
+                    return False
+            else:
+                word_to_char[word] = c
+
+        return True
 </code></pre>
 <h2 id="problem-categories" tabindex="-1"><a class="header-anchor" href="#problem-categories"><span>Problem Categories</span></a></h2>
 <h3 id="category-1-duplicate-detection-10-problems" tabindex="-1"><a class="header-anchor" href="#category-1-duplicate-detection-10-problems"><span>Category 1: Duplicate Detection (10 problems)</span></a></h3>
@@ -1106,35 +1101,35 @@
 </table>
 <h2 id="decision-framework" tabindex="-1"><a class="header-anchor" href="#decision-framework"><span>Decision Framework</span></a></h2>
 <h3 id="when-to-use-set-vs-other-data-structures" tabindex="-1"><a class="header-anchor" href="#when-to-use-set-vs-other-data-structures"><span>When to Use Set vs Other Data Structures</span></a></h3>
-<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">Problem Analysis:</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">1. Need to track unique elements?</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">   ├── YES → Consider Set</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">   │   ├── Need ordering?</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">   │   │   ├── YES → TreeSet (Java) / sorted list (Python)</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">   │   │   └── NO → HashSet</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">   │   ├── Need count?</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">   │   │   └── NO → Use Counter/HashMap instead</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">   │   └── Need fast lookups?</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">   │       └── YES → HashSet (O(1) average)</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">   └── NO → Consider other structures</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">2. Performing set operations (union, intersection)?</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">   ├── YES → Use Set</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">   │   └── Multiple operations → Build set once</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">   └── NO → Continue analysis</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">3. Detecting duplicates/cycles?</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">   ├── YES → Use Set for visited tracking</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">   │   ├── Space constrained?</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">   │   │   └── YES → Consider Floyd's algorithm</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">   │   └── NO → Set is ideal</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">   └── NO → Continue analysis</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">4. Checking membership repeatedly?</span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">   ├── YES → Convert to Set first</span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">   │   └── O(n) conversion + O(1) lookups</span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">   └── NO → Linear search may be fine</span></span>
+<pre><code>Problem Analysis:
+
+1. Need to track unique elements?
+   ├── YES → Consider Set
+   │   ├── Need ordering?
+   │   │   ├── YES → TreeSet (Java) / sorted list (Python)
+   │   │   └── NO → HashSet
+   │   ├── Need count?
+   │   │   └── NO → Use Counter/HashMap instead
+   │   └── Need fast lookups?
+   │       └── YES → HashSet (O(1) average)
+   └── NO → Consider other structures
+
+2. Performing set operations (union, intersection)?
+   ├── YES → Use Set
+   │   └── Multiple operations → Build set once
+   └── NO → Continue analysis
+
+3. Detecting duplicates/cycles?
+   ├── YES → Use Set for visited tracking
+   │   ├── Space constrained?
+   │   │   └── YES → Consider Floyd's algorithm
+   │   └── NO → Set is ideal
+   └── NO → Continue analysis
+
+4. Checking membership repeatedly?
+   ├── YES → Convert to Set first
+   │   └── O(n) conversion + O(1) lookups
+   └── NO → Linear search may be fine
 </code></pre>
 <h3 id="set-vs-hashmap-choice" tabindex="-1"><a class="header-anchor" href="#set-vs-hashmap-choice"><span>Set vs HashMap Choice</span></a></h3>
 <table>

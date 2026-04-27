@@ -9,7 +9,8 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -20,42 +21,40 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    // Code block wrappers + copy buttons (highlighting done at build time)
-    try {
-      document.querySelectorAll('pre').forEach(function(pre) {
-        var codeEl = pre.querySelector('code');
-        var lang = pre.getAttribute('data-lang') || '';
-        var wrapper = document.createElement('div');
-        wrapper.className = 'code-block-wrapper';
-        pre.parentNode.insertBefore(wrapper, pre);
-        var header = document.createElement('div');
-        header.className = 'code-block-header';
-        if (lang) {
-          var label = document.createElement('span');
-          label.className = 'code-lang-label';
-          label.textContent = lang;
-          header.appendChild(label);
-        } else {
-          header.appendChild(document.createElement('span'));
-        }
-        var btn = document.createElement('button');
-        btn.className = 'copy-btn';
-        btn.textContent = 'Copy';
-        btn.addEventListener('click', function() {
-          var text = codeEl
-            ? Array.from(codeEl.querySelectorAll('.ln-code')).map(function(el) { return el.textContent; }).join('\n')
-            : pre.textContent;
-          navigator.clipboard.writeText(text).then(function() {
-            btn.textContent = 'Copied!';
-            btn.classList.add('copied');
-            setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-          });
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
         });
-        header.appendChild(btn);
-        wrapper.appendChild(header);
-        wrapper.appendChild(pre);
       });
-    } catch(e) { console.error('Code block setup error:', e); }
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -65,36 +64,32 @@
       }
     });
     // Reading progress bar
-    try {
-      var progressBar = document.getElementById('reading-progress');
-      if (progressBar) {
-        window.addEventListener('scroll', function() {
-          var winScroll = document.documentElement.scrollTop;
-          var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-          progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
-        });
-      }
-    } catch(e) {}
-    // Dark mode toggle — isolated so errors elsewhere never prevent this from working
-    try {
-      var toggle = document.getElementById('theme-toggle');
-      if (toggle) {
-        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-        toggle.textContent = isDark ? '☀️' : '🌙';
-        toggle.addEventListener('click', function() {
-          var dark = document.documentElement.getAttribute('data-theme') === 'dark';
-          if (dark) {
-            document.documentElement.removeAttribute('data-theme');
-            localStorage.setItem('theme', 'light');
-            toggle.textContent = '🌙';
-          } else {
-            document.documentElement.setAttribute('data-theme', 'dark');
-            localStorage.setItem('theme', 'dark');
-            toggle.textContent = '☀️';
-          }
-        });
-      }
-    } catch(e) { console.error('Theme toggle error:', e); }
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
   });</script>
 </head>
 <body>
@@ -239,243 +234,243 @@
 </tbody>
 </table>
 <h3 id="universal-template" tabindex="-1"><a class="header-anchor" href="#universal-template"><span>Universal Template</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">monotonic_stack_template</span>(<span class="hljs-params">arr</span>):</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    Universal template for monotonic stack problems</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    Modify the condition and processing logic based on problem requirements</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    &quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    stack = []  <span class="hljs-comment"># Store indices or values</span></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    result = []</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-keyword">for</span> i, val <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(arr):</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-comment"># Pop elements that violate monotonic property</span></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-keyword">while</span> stack <span class="hljs-keyword">and</span> should_pop(stack, val, i):</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">            <span class="hljs-comment"># Process the popped element</span></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">            popped = stack.pop()</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            process_popped_element(popped, i, result)</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        <span class="hljs-comment"># Add current element to stack</span></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        stack.append(i)  <span class="hljs-comment"># or val depending on problem</span></span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    <span class="hljs-comment"># Process remaining elements in stack</span></span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    <span class="hljs-keyword">while</span> stack:</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        popped = stack.pop()</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        process_remaining_element(popped, result)</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">    <span class="hljs-keyword">return</span> result</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">should_pop</span>(<span class="hljs-params">stack, current_val, current_idx</span>):</span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Define when to pop based on problem requirements&quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">    <span class="hljs-comment"># For next greater: return arr[stack[-1]] &lt;= current_val</span></span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">    <span class="hljs-comment"># For next smaller: return arr[stack[-1]] &gt;= current_val</span></span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">    <span class="hljs-keyword">pass</span></span></span>
-<span class="ln-row"><span class="ln-num">31</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">32</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">process_popped_element</span>(<span class="hljs-params">popped_idx, current_idx, result</span>):</span></span>
-<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Process element when it&#x27;s popped (found its next greater/smaller)&quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">    <span class="hljs-keyword">pass</span></span></span>
-<span class="ln-row"><span class="ln-num">35</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">36</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">process_remaining_element</span>(<span class="hljs-params">popped_idx, result</span>):</span></span>
-<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;Process elements remaining in stack at the end&quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">38</span><span class="ln-code">    <span class="hljs-keyword">pass</span></span></span>
+<pre><code class="language-python">def monotonic_stack_template(arr):
+    &quot;&quot;&quot;
+    Universal template for monotonic stack problems
+    Modify the condition and processing logic based on problem requirements
+    &quot;&quot;&quot;
+    stack = []  # Store indices or values
+    result = []
+    
+    for i, val in enumerate(arr):
+        # Pop elements that violate monotonic property
+        while stack and should_pop(stack, val, i):
+            # Process the popped element
+            popped = stack.pop()
+            process_popped_element(popped, i, result)
+        
+        # Add current element to stack
+        stack.append(i)  # or val depending on problem
+    
+    # Process remaining elements in stack
+    while stack:
+        popped = stack.pop()
+        process_remaining_element(popped, result)
+    
+    return result
+
+def should_pop(stack, current_val, current_idx):
+    &quot;&quot;&quot;Define when to pop based on problem requirements&quot;&quot;&quot;
+    # For next greater: return arr[stack[-1]] &lt;= current_val
+    # For next smaller: return arr[stack[-1]] &gt;= current_val
+    pass
+
+def process_popped_element(popped_idx, current_idx, result):
+    &quot;&quot;&quot;Process element when it's popped (found its next greater/smaller)&quot;&quot;&quot;
+    pass
+
+def process_remaining_element(popped_idx, result):
+    &quot;&quot;&quot;Process elements remaining in stack at the end&quot;&quot;&quot;
+    pass
 </code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// Java Universal Template</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] monotonicStackTemplate(<span class="hljs-type">int</span>[] arr) {</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    Stack&lt;Integer&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-type">int</span>[] result = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[arr.length];</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; arr.length; i++) {</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-comment">// Pop elements that violate monotonic property</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">while</span> (!stack.isEmpty() &amp;&amp; shouldPop(stack, arr, i)) {</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">            <span class="hljs-type">int</span> <span class="hljs-variable">poppedIdx</span> <span class="hljs-operator">=</span> stack.pop();</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">            processElement(poppedIdx, i, result, arr);</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-comment">// Add current element to stack</span></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        stack.push(i);</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-comment">// Process remaining elements</span></span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    <span class="hljs-keyword">while</span> (!stack.isEmpty()) {</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">poppedIdx</span> <span class="hljs-operator">=</span> stack.pop();</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        processRemainingElement(poppedIdx, result);</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    <span class="hljs-keyword">return</span> result;</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">}</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code"><span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">shouldPop</span><span class="hljs-params">(Stack&lt;Integer&gt; stack, <span class="hljs-type">int</span>[] arr, <span class="hljs-type">int</span> currentIdx)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">    <span class="hljs-comment">// Define condition based on problem requirements</span></span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">    <span class="hljs-keyword">return</span> arr[stack.peek()] &lt;= arr[currentIdx]; <span class="hljs-comment">// For next greater</span></span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// Java Universal Template
+public int[] monotonicStackTemplate(int[] arr) {
+    Stack&lt;Integer&gt; stack = new Stack&lt;&gt;();
+    int[] result = new int[arr.length];
+    
+    for (int i = 0; i &lt; arr.length; i++) {
+        // Pop elements that violate monotonic property
+        while (!stack.isEmpty() &amp;&amp; shouldPop(stack, arr, i)) {
+            int poppedIdx = stack.pop();
+            processElement(poppedIdx, i, result, arr);
+        }
+        
+        // Add current element to stack
+        stack.push(i);
+    }
+    
+    // Process remaining elements
+    while (!stack.isEmpty()) {
+        int poppedIdx = stack.pop();
+        processRemainingElement(poppedIdx, result);
+    }
+    
+    return result;
+}
+
+private boolean shouldPop(Stack&lt;Integer&gt; stack, int[] arr, int currentIdx) {
+    // Define condition based on problem requirements
+    return arr[stack.peek()] &lt;= arr[currentIdx]; // For next greater
+}
 </code></pre>
 <h3 id="template-1-next-greater-element-decreasing-stack" tabindex="-1"><a class="header-anchor" href="#template-1-next-greater-element-decreasing-stack"><span>Template 1: Next Greater Element (Decreasing Stack)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">next_greater_element</span>(<span class="hljs-params">nums</span>):</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    Find next greater element for each element</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    LC 496, LC 503, LC 739</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    &quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    n = <span class="hljs-built_in">len</span>(nums)</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    result = [-<span class="hljs-number">1</span>] * n</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    stack = []  <span class="hljs-comment"># Store indices</span></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-comment"># Pop smaller or equal elements</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-keyword">while</span> stack <span class="hljs-keyword">and</span> nums[stack[-<span class="hljs-number">1</span>]] &lt; nums[i]:</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">            idx = stack.pop()</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            result[idx] = nums[i]  <span class="hljs-comment"># Found next greater</span></span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        stack.append(i)</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    <span class="hljs-keyword">return</span> result</span></span>
+<pre><code class="language-python">def next_greater_element(nums):
+    &quot;&quot;&quot;
+    Find next greater element for each element
+    LC 496, LC 503, LC 739
+    &quot;&quot;&quot;
+    n = len(nums)
+    result = [-1] * n
+    stack = []  # Store indices
+    
+    for i in range(n):
+        # Pop smaller or equal elements
+        while stack and nums[stack[-1]] &lt; nums[i]:
+            idx = stack.pop()
+            result[idx] = nums[i]  # Found next greater
+        
+        stack.append(i)
+    
+    return result
 </code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// Java Template 1</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] nextGreaterElement(<span class="hljs-type">int</span>[] nums) {</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length;</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-type">int</span>[] result = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    Arrays.fill(result, -<span class="hljs-number">1</span>);</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    Stack&lt;Integer&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-keyword">while</span> (!stack.isEmpty() &amp;&amp; nums[stack.peek()] &lt; nums[i]) {</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">            result[stack.pop()] = nums[i];</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        stack.push(i);</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-keyword">return</span> result;</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// Java Template 1
+public int[] nextGreaterElement(int[] nums) {
+    int n = nums.length;
+    int[] result = new int[n];
+    Arrays.fill(result, -1);
+    Stack&lt;Integer&gt; stack = new Stack&lt;&gt;();
+    
+    for (int i = 0; i &lt; n; i++) {
+        while (!stack.isEmpty() &amp;&amp; nums[stack.peek()] &lt; nums[i]) {
+            result[stack.pop()] = nums[i];
+        }
+        stack.push(i);
+    }
+    
+    return result;
+}
 </code></pre>
 <h3 id="template-2-next-smaller-element-increasing-stack" tabindex="-1"><a class="header-anchor" href="#template-2-next-smaller-element-increasing-stack"><span>Template 2: Next Smaller Element (Increasing Stack)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">next_smaller_element</span>(<span class="hljs-params">nums</span>):</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    Find next smaller element for each element</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    Used in LC 84, LC 42</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    &quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    n = <span class="hljs-built_in">len</span>(nums)</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    result = [-<span class="hljs-number">1</span>] * n</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    stack = []  <span class="hljs-comment"># Store indices</span></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-comment"># Pop greater or equal elements</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-keyword">while</span> stack <span class="hljs-keyword">and</span> nums[stack[-<span class="hljs-number">1</span>]] &gt; nums[i]:</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">            idx = stack.pop()</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            result[idx] = nums[i]  <span class="hljs-comment"># Found next smaller</span></span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        stack.append(i)</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    <span class="hljs-keyword">return</span> result</span></span>
+<pre><code class="language-python">def next_smaller_element(nums):
+    &quot;&quot;&quot;
+    Find next smaller element for each element
+    Used in LC 84, LC 42
+    &quot;&quot;&quot;
+    n = len(nums)
+    result = [-1] * n
+    stack = []  # Store indices
+    
+    for i in range(n):
+        # Pop greater or equal elements
+        while stack and nums[stack[-1]] &gt; nums[i]:
+            idx = stack.pop()
+            result[idx] = nums[i]  # Found next smaller
+        
+        stack.append(i)
+    
+    return result
 </code></pre>
 <h3 id="template-3-largest-rectangle-in-histogram" tabindex="-1"><a class="header-anchor" href="#template-3-largest-rectangle-in-histogram"><span>Template 3: Largest Rectangle in Histogram</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">largest_rectangle_area</span>(<span class="hljs-params">heights</span>):</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    Find largest rectangle area in histogram</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    LC 84, LC 85</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    &quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    stack = []  <span class="hljs-comment"># Store indices</span></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    max_area = <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    heights.append(<span class="hljs-number">0</span>)  <span class="hljs-comment"># Add sentinel</span></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-keyword">for</span> i, h <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(heights):</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-comment"># Pop taller bars and calculate area</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-keyword">while</span> stack <span class="hljs-keyword">and</span> heights[stack[-<span class="hljs-number">1</span>]] &gt; h:</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">            height = heights[stack.pop()]</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            width = i <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> stack <span class="hljs-keyword">else</span> i - stack[-<span class="hljs-number">1</span>] - <span class="hljs-number">1</span></span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">            max_area = <span class="hljs-built_in">max</span>(max_area, height * width)</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        stack.append(i)</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    <span class="hljs-keyword">return</span> max_area</span></span>
+<pre><code class="language-python">def largest_rectangle_area(heights):
+    &quot;&quot;&quot;
+    Find largest rectangle area in histogram
+    LC 84, LC 85
+    &quot;&quot;&quot;
+    stack = []  # Store indices
+    max_area = 0
+    heights.append(0)  # Add sentinel
+    
+    for i, h in enumerate(heights):
+        # Pop taller bars and calculate area
+        while stack and heights[stack[-1]] &gt; h:
+            height = heights[stack.pop()]
+            width = i if not stack else i - stack[-1] - 1
+            max_area = max(max_area, height * width)
+        
+        stack.append(i)
+    
+    return max_area
 </code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// Java Template 3</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">largestRectangleArea</span><span class="hljs-params">(<span class="hljs-type">int</span>[] heights)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    Stack&lt;Integer&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Stack</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">maxArea</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> heights.length;</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt;= n; i++) {</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">h</span> <span class="hljs-operator">=</span> (i == n) ? <span class="hljs-number">0</span> : heights[i];</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-keyword">while</span> (!stack.isEmpty() &amp;&amp; heights[stack.peek()] &gt; h) {</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">            <span class="hljs-type">int</span> <span class="hljs-variable">height</span> <span class="hljs-operator">=</span> heights[stack.pop()];</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">            <span class="hljs-type">int</span> <span class="hljs-variable">width</span> <span class="hljs-operator">=</span> stack.isEmpty() ? i : i - stack.peek() - <span class="hljs-number">1</span>;</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">            maxArea = Math.max(maxArea, height * width);</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        stack.push(i);</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    <span class="hljs-keyword">return</span> maxArea;</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// Java Template 3
+public int largestRectangleArea(int[] heights) {
+    Stack&lt;Integer&gt; stack = new Stack&lt;&gt;();
+    int maxArea = 0;
+    int n = heights.length;
+    
+    for (int i = 0; i &lt;= n; i++) {
+        int h = (i == n) ? 0 : heights[i];
+        
+        while (!stack.isEmpty() &amp;&amp; heights[stack.peek()] &gt; h) {
+            int height = heights[stack.pop()];
+            int width = stack.isEmpty() ? i : i - stack.peek() - 1;
+            maxArea = Math.max(maxArea, height * width);
+        }
+        
+        stack.push(i);
+    }
+    
+    return maxArea;
+}
 </code></pre>
 <h3 id="template-4-circular-array-processing" tabindex="-1"><a class="header-anchor" href="#template-4-circular-array-processing"><span>Template 4: Circular Array Processing</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">next_greater_circular</span>(<span class="hljs-params">nums</span>):</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    Find next greater element in circular array</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    LC 503</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    &quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    n = <span class="hljs-built_in">len</span>(nums)</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    result = [-<span class="hljs-number">1</span>] * n</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    stack = []</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-comment"># Process array twice to handle circular nature</span></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">2</span> * n):</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-comment"># Pop smaller elements</span></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-keyword">while</span> stack <span class="hljs-keyword">and</span> nums[stack[-<span class="hljs-number">1</span>]] &lt; nums[i % n]:</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            idx = stack.pop()</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">            result[idx] = nums[i % n]</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        <span class="hljs-comment"># Only add indices from first pass</span></span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        <span class="hljs-keyword">if</span> i &lt; n:</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">            stack.append(i)</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">    <span class="hljs-keyword">return</span> result</span></span>
+<pre><code class="language-python">def next_greater_circular(nums):
+    &quot;&quot;&quot;
+    Find next greater element in circular array
+    LC 503
+    &quot;&quot;&quot;
+    n = len(nums)
+    result = [-1] * n
+    stack = []
+    
+    # Process array twice to handle circular nature
+    for i in range(2 * n):
+        # Pop smaller elements
+        while stack and nums[stack[-1]] &lt; nums[i % n]:
+            idx = stack.pop()
+            result[idx] = nums[i % n]
+        
+        # Only add indices from first pass
+        if i &lt; n:
+            stack.append(i)
+    
+    return result
 </code></pre>
 <h3 id="template-5-stack-with-additional-information" tabindex="-1"><a class="header-anchor" href="#template-5-stack-with-additional-information"><span>Template 5: Stack with Additional Information</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">monotonic_stack_with_info</span>(<span class="hljs-params">nums</span>):</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    Store additional information with stack elements</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    Used for complex calculations</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    &quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    stack = []  <span class="hljs-comment"># Store (index, value, additional_info)</span></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    result = []</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-keyword">for</span> i, val <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(nums):</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-keyword">while</span> stack <span class="hljs-keyword">and</span> stack[-<span class="hljs-number">1</span>][<span class="hljs-number">1</span>] &lt;= val:</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">            idx, old_val, info = stack.pop()</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">            <span class="hljs-comment"># Process with additional information</span></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">            result.append(calculate_result(idx, i, old_val, val, info))</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-comment"># Calculate additional information for current element</span></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        additional_info = calculate_info(val, stack)</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        stack.append((i, val, additional_info))</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    <span class="hljs-keyword">return</span> result</span></span>
+<pre><code class="language-python">def monotonic_stack_with_info(nums):
+    &quot;&quot;&quot;
+    Store additional information with stack elements
+    Used for complex calculations
+    &quot;&quot;&quot;
+    stack = []  # Store (index, value, additional_info)
+    result = []
+    
+    for i, val in enumerate(nums):
+        while stack and stack[-1][1] &lt;= val:
+            idx, old_val, info = stack.pop()
+            # Process with additional information
+            result.append(calculate_result(idx, i, old_val, val, info))
+        
+        # Calculate additional information for current element
+        additional_info = calculate_info(val, stack)
+        stack.append((i, val, additional_info))
+    
+    return result
 </code></pre>
 <h3 id="template-6-pattern-validation-132-pattern" tabindex="-1"><a class="header-anchor" href="#template-6-pattern-validation-132-pattern"><span>Template 6: Pattern Validation (132 Pattern)</span></a></h3>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">find_132_pattern</span>(<span class="hljs-params">nums</span>):</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">    <span class="hljs-string">&quot;&quot;&quot;</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    Find 132 pattern in array</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    LC 456</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    &quot;&quot;&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    n = <span class="hljs-built_in">len</span>(nums)</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">if</span> n &lt; <span class="hljs-number">3</span>:</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    stack = []  <span class="hljs-comment"># Store potential k values (decreasing)</span></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    second = <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;-inf&#x27;</span>)  <span class="hljs-comment"># The &quot;2&quot; in 132 pattern</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-comment"># Traverse from right to left</span></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n - <span class="hljs-number">1</span>, -<span class="hljs-number">1</span>, -<span class="hljs-number">1</span>):</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-keyword">if</span> nums[i] &lt; second:  <span class="hljs-comment"># Found &quot;1&quot; &lt; &quot;2&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">            <span class="hljs-keyword">return</span> <span class="hljs-literal">True</span></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        <span class="hljs-comment"># Pop smaller values and update second</span></span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        <span class="hljs-keyword">while</span> stack <span class="hljs-keyword">and</span> stack[-<span class="hljs-number">1</span>] &lt; nums[i]:</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">            second = stack.pop()</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        </span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        stack.append(nums[i])</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">    <span class="hljs-keyword">return</span> <span class="hljs-literal">False</span></span></span>
+<pre><code class="language-python">def find_132_pattern(nums):
+    &quot;&quot;&quot;
+    Find 132 pattern in array
+    LC 456
+    &quot;&quot;&quot;
+    n = len(nums)
+    if n &lt; 3:
+        return False
+    
+    stack = []  # Store potential k values (decreasing)
+    second = float('-inf')  # The &quot;2&quot; in 132 pattern
+    
+    # Traverse from right to left
+    for i in range(n - 1, -1, -1):
+        if nums[i] &lt; second:  # Found &quot;1&quot; &lt; &quot;2&quot;
+            return True
+        
+        # Pop smaller values and update second
+        while stack and stack[-1] &lt; nums[i]:
+            second = stack.pop()
+        
+        stack.append(nums[i])
+    
+    return False
 </code></pre>
 <h2 id="problems-by-pattern" tabindex="-1"><a class="header-anchor" href="#problems-by-pattern"><span>Problems by Pattern</span></a></h2>
 <h3 id="pattern-based-problem-classification" tabindex="-1"><a class="header-anchor" href="#pattern-based-problem-classification"><span>Pattern-Based Problem Classification</span></a></h3>
@@ -958,43 +953,43 @@
 </ul>
 <h2 id="pattern-selection-strategy" tabindex="-1"><a class="header-anchor" href="#pattern-selection-strategy"><span>Pattern Selection Strategy</span></a></h2>
 <h3 id="decision-framework-flowchart" tabindex="-1"><a class="header-anchor" href="#decision-framework-flowchart"><span>Decision Framework Flowchart</span></a></h3>
-<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">Problem Analysis for Monotonic Stack:</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">1. Does the problem involve finding next/previous elements?</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">   ├── YES: Next/Previous GREATER elements?</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">   │   ├── YES: Use Template 1 (Decreasing Stack)</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">   │   │   ├── Array is circular? → Use Template 4 (Circular)</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">   │   │   └── Standard case → Template 1</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">   │   └── NO: Next/Previous SMALLER elements?</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">   │       ├── YES: Use Template 2 (Increasing Stack)</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">   │       └── NO: Continue to step 2</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">   └── NO: Continue to step 2</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">2. Does the problem involve heights/areas/rectangles?</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">   ├── YES: Rectangle area calculation?</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">   │   ├── YES: Use Template 3 (Histogram)</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">   │   └── NO: Water trapping/volume?</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">   │       └── YES: Use Template 2 (Next Smaller)</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">   └── NO: Continue to step 3</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">3. Does the problem involve sequence validation/patterns?</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">   ├── YES: Parentheses/brackets?</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">   │   ├── YES: Use Template 5 (Validation)</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">   │   └── NO: Specific pattern (like 132)?</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">   │       └── YES: Use Template 6 (Pattern Detection)</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">   └── NO: Continue to step 4</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">4. Does the problem involve optimization/max-min constraints?</span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">   ├── YES: Multiple criteria optimization?</span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">   │   ├── YES: Use Template 5 (Complex Info)</span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">   │   └── NO: Simple max/min tracking?</span></span>
-<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">   │       └── YES: Use Template 1 or 2</span></span>
-<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">   └── NO: Continue to step 5</span></span>
-<span class="ln-row"><span class="ln-num">33</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">5. Does the problem involve circular arrays or cyclic behavior?</span></span>
-<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">   ├── YES: Use Template 4 (Circular Processing)</span></span>
-<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">   └── NO: Consider if monotonic stack is the right approach</span></span>
-<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">       └── May need different data structure/algorithm</span></span>
+<pre><code>Problem Analysis for Monotonic Stack:
+
+1. Does the problem involve finding next/previous elements?
+   ├── YES: Next/Previous GREATER elements?
+   │   ├── YES: Use Template 1 (Decreasing Stack)
+   │   │   ├── Array is circular? → Use Template 4 (Circular)
+   │   │   └── Standard case → Template 1
+   │   └── NO: Next/Previous SMALLER elements?
+   │       ├── YES: Use Template 2 (Increasing Stack)
+   │       └── NO: Continue to step 2
+   └── NO: Continue to step 2
+
+2. Does the problem involve heights/areas/rectangles?
+   ├── YES: Rectangle area calculation?
+   │   ├── YES: Use Template 3 (Histogram)
+   │   └── NO: Water trapping/volume?
+   │       └── YES: Use Template 2 (Next Smaller)
+   └── NO: Continue to step 3
+
+3. Does the problem involve sequence validation/patterns?
+   ├── YES: Parentheses/brackets?
+   │   ├── YES: Use Template 5 (Validation)
+   │   └── NO: Specific pattern (like 132)?
+   │       └── YES: Use Template 6 (Pattern Detection)
+   └── NO: Continue to step 4
+
+4. Does the problem involve optimization/max-min constraints?
+   ├── YES: Multiple criteria optimization?
+   │   ├── YES: Use Template 5 (Complex Info)
+   │   └── NO: Simple max/min tracking?
+   │       └── YES: Use Template 1 or 2
+   └── NO: Continue to step 5
+
+5. Does the problem involve circular arrays or cyclic behavior?
+   ├── YES: Use Template 4 (Circular Processing)
+   └── NO: Consider if monotonic stack is the right approach
+       └── May need different data structure/algorithm
 </code></pre>
 <h3 id="step-by-step-problem-analysis" tabindex="-1"><a class="header-anchor" href="#step-by-step-problem-analysis"><span>Step-by-Step Problem Analysis</span></a></h3>
 <ol>
@@ -1188,48 +1183,48 @@
 </table>
 <h3 id="common-patterns-tricks" tabindex="-1"><a class="header-anchor" href="#common-patterns-tricks"><span>Common Patterns &amp; Tricks</span></a></h3>
 <h4 id="next-greater-element-pattern" tabindex="-1"><a class="header-anchor" href="#next-greater-element-pattern"><span><strong>Next Greater Element Pattern</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Standard next greater element</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">next_greater_elements</span>(<span class="hljs-params">nums</span>):</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    stack, result = [], [-<span class="hljs-number">1</span>] * <span class="hljs-built_in">len</span>(nums)</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-keyword">for</span> i, num <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(nums):</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">        <span class="hljs-keyword">while</span> stack <span class="hljs-keyword">and</span> nums[stack[-<span class="hljs-number">1</span>]] &lt; num:</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">            result[stack.pop()] = num</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        stack.append(i)</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">return</span> result</span></span>
+<pre><code class="language-python"># Standard next greater element
+def next_greater_elements(nums):
+    stack, result = [], [-1] * len(nums)
+    for i, num in enumerate(nums):
+        while stack and nums[stack[-1]] &lt; num:
+            result[stack.pop()] = num
+        stack.append(i)
+    return result
 </code></pre>
 <h4 id="contribution-method-for-subarrays" tabindex="-1"><a class="header-anchor" href="#contribution-method-for-subarrays"><span><strong>Contribution Method for Subarrays</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Count contribution of each element</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">sum_subarray_mins</span>(<span class="hljs-params">arr</span>):</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    n = <span class="hljs-built_in">len</span>(arr)</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    left = [-<span class="hljs-number">1</span>] * n    <span class="hljs-comment"># Previous smaller element</span></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    right = [n] * n    <span class="hljs-comment"># Next smaller element</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-comment"># Calculate left boundaries</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    stack = []</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-keyword">while</span> stack <span class="hljs-keyword">and</span> arr[stack[-<span class="hljs-number">1</span>]] &gt;= arr[i]:</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">            stack.pop()</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        left[i] = stack[-<span class="hljs-number">1</span>] <span class="hljs-keyword">if</span> stack <span class="hljs-keyword">else</span> -<span class="hljs-number">1</span></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        stack.append(i)</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    </span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-comment"># Calculate contribution</span></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    result = <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n):</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        result += arr[i] * (i - left[i]) * (right[i] - i)</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    <span class="hljs-keyword">return</span> result % (<span class="hljs-number">10</span>**<span class="hljs-number">9</span> + <span class="hljs-number">7</span>)</span></span>
+<pre><code class="language-python"># Count contribution of each element
+def sum_subarray_mins(arr):
+    n = len(arr)
+    left = [-1] * n    # Previous smaller element
+    right = [n] * n    # Next smaller element
+    
+    # Calculate left boundaries
+    stack = []
+    for i in range(n):
+        while stack and arr[stack[-1]] &gt;= arr[i]:
+            stack.pop()
+        left[i] = stack[-1] if stack else -1
+        stack.append(i)
+    
+    # Calculate contribution
+    result = 0
+    for i in range(n):
+        result += arr[i] * (i - left[i]) * (right[i] - i)
+    return result % (10**9 + 7)
 </code></pre>
 <h4 id="histogram-area-calculation" tabindex="-1"><a class="header-anchor" href="#histogram-area-calculation"><span><strong>Histogram Area Calculation</strong></span></a></h4>
-<pre data-lang="python"><code class="hljs language-python"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment"># Largest rectangle with height as key</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">def</span> <span class="hljs-title function_">largest_rectangle_area</span>(<span class="hljs-params">heights</span>):</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">    stack = []</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    max_area = <span class="hljs-number">0</span></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">for</span> i, h <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(heights + [<span class="hljs-number">0</span>]):</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">        <span class="hljs-keyword">while</span> stack <span class="hljs-keyword">and</span> heights[stack[-<span class="hljs-number">1</span>]] &gt; h:</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">            height = heights[stack.pop()]</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">            width = i <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> stack <span class="hljs-keyword">else</span> i - stack[-<span class="hljs-number">1</span>] - <span class="hljs-number">1</span></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">            max_area = <span class="hljs-built_in">max</span>(max_area, height * width)</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        stack.append(i)</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-keyword">return</span> max_area</span></span>
+<pre><code class="language-python"># Largest rectangle with height as key
+def largest_rectangle_area(heights):
+    stack = []
+    max_area = 0
+    for i, h in enumerate(heights + [0]):
+        while stack and heights[stack[-1]] &gt; h:
+            height = heights[stack.pop()]
+            width = i if not stack else i - stack[-1] - 1
+            max_area = max(max_area, height * width)
+        stack.append(i)
+    return max_area
 </code></pre>
 <h3 id="problem-solving-steps" tabindex="-1"><a class="header-anchor" href="#problem-solving-steps"><span>Problem-Solving Steps</span></a></h3>
 <ol>
@@ -1354,267 +1349,267 @@
 <blockquote>
 <p>Stack stores indices; pop when a warmer day is found.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 739 - Daily Temperatures</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Monotonic decreasing stack — pop when current &gt; stack top</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N), space = O(N)</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] dailyTemperatures(<span class="hljs-type">int</span>[] temperatures) {</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> temperatures.length;</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-type">int</span>[] ans = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    Deque&lt;Integer&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;(); <span class="hljs-comment">// stores indices</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-keyword">while</span> (!stack.isEmpty() &amp;&amp; temperatures[i] &gt; temperatures[stack.peek()]) {</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">            <span class="hljs-type">int</span> <span class="hljs-variable">idx</span> <span class="hljs-operator">=</span> stack.pop();</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">            ans[idx] = i - idx;</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        stack.push(i);</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-keyword">return</span> ans;</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// LC 739 - Daily Temperatures
+// IDEA: Monotonic decreasing stack — pop when current &gt; stack top
+// time = O(N), space = O(N)
+public int[] dailyTemperatures(int[] temperatures) {
+    int n = temperatures.length;
+    int[] ans = new int[n];
+    Deque&lt;Integer&gt; stack = new ArrayDeque&lt;&gt;(); // stores indices
+    for (int i = 0; i &lt; n; i++) {
+        while (!stack.isEmpty() &amp;&amp; temperatures[i] &gt; temperatures[stack.peek()]) {
+            int idx = stack.pop();
+            ans[idx] = i - idx;
+        }
+        stack.push(i);
+    }
+    return ans;
+}
 </code></pre>
 <h3 id="2-2-largest-rectangle-in-histogram-lc-84-monotonic-increasing-stack" tabindex="-1"><a class="header-anchor" href="#2-2-largest-rectangle-in-histogram-lc-84-monotonic-increasing-stack"><span>2-2) Largest Rectangle in Histogram (LC 84) — Monotonic Increasing Stack</span></a></h3>
 <blockquote>
 <p>Pop a bar when a shorter bar arrives; compute area using width from stack.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 84 - Largest Rectangle in Histogram</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Monotonic increasing stack — pop and compute area on shorter bar</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N), space = O(N)</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">largestRectangleArea</span><span class="hljs-params">(<span class="hljs-type">int</span>[] heights)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    Deque&lt;Integer&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">maxArea</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt;= heights.length; i++) {</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">h</span> <span class="hljs-operator">=</span> (i == heights.length) ? <span class="hljs-number">0</span> : heights[i];</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-keyword">while</span> (!stack.isEmpty() &amp;&amp; h &lt; heights[stack.peek()]) {</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">            <span class="hljs-type">int</span> <span class="hljs-variable">height</span> <span class="hljs-operator">=</span> heights[stack.pop()];</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">            <span class="hljs-type">int</span> <span class="hljs-variable">width</span> <span class="hljs-operator">=</span> stack.isEmpty() ? i : i - stack.peek() - <span class="hljs-number">1</span>;</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">            maxArea = Math.max(maxArea, height * width);</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        stack.push(i);</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    <span class="hljs-keyword">return</span> maxArea;</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// LC 84 - Largest Rectangle in Histogram
+// IDEA: Monotonic increasing stack — pop and compute area on shorter bar
+// time = O(N), space = O(N)
+public int largestRectangleArea(int[] heights) {
+    Deque&lt;Integer&gt; stack = new ArrayDeque&lt;&gt;();
+    int maxArea = 0;
+    for (int i = 0; i &lt;= heights.length; i++) {
+        int h = (i == heights.length) ? 0 : heights[i];
+        while (!stack.isEmpty() &amp;&amp; h &lt; heights[stack.peek()]) {
+            int height = heights[stack.pop()];
+            int width = stack.isEmpty() ? i : i - stack.peek() - 1;
+            maxArea = Math.max(maxArea, height * width);
+        }
+        stack.push(i);
+    }
+    return maxArea;
+}
 </code></pre>
 <h3 id="2-3-next-greater-element-i-lc-496-monotonic-stack-hashmap" tabindex="-1"><a class="header-anchor" href="#2-3-next-greater-element-i-lc-496-monotonic-stack-hashmap"><span>2-3) Next Greater Element I (LC 496) — Monotonic Stack + HashMap</span></a></h3>
 <blockquote>
 <p>Precompute next greater element for nums2, then answer queries for nums1.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 496 - Next Greater Element I</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Monotonic decreasing stack on nums2; store results in map</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(M + N), space = O(M)</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] nextGreaterElement(<span class="hljs-type">int</span>[] nums1, <span class="hljs-type">int</span>[] nums2) {</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    Map&lt;Integer, Integer&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;(); <span class="hljs-comment">// val -&gt; next greater val</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    Deque&lt;Integer&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> num : nums2) {</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">while</span> (!stack.isEmpty() &amp;&amp; num &gt; stack.peek()) {</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">            map.put(stack.pop(), num);</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        stack.push(num);</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-type">int</span>[] ans = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[nums1.length];</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; nums1.length; i++) {</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        ans[i] = map.getOrDefault(nums1[i], -<span class="hljs-number">1</span>);</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-keyword">return</span> ans;</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// LC 496 - Next Greater Element I
+// IDEA: Monotonic decreasing stack on nums2; store results in map
+// time = O(M + N), space = O(M)
+public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+    Map&lt;Integer, Integer&gt; map = new HashMap&lt;&gt;(); // val -&gt; next greater val
+    Deque&lt;Integer&gt; stack = new ArrayDeque&lt;&gt;();
+    for (int num : nums2) {
+        while (!stack.isEmpty() &amp;&amp; num &gt; stack.peek()) {
+            map.put(stack.pop(), num);
+        }
+        stack.push(num);
+    }
+    int[] ans = new int[nums1.length];
+    for (int i = 0; i &lt; nums1.length; i++) {
+        ans[i] = map.getOrDefault(nums1[i], -1);
+    }
+    return ans;
+}
 </code></pre>
 <h3 id="2-4-trapping-rain-water-lc-42-monotonic-stack" tabindex="-1"><a class="header-anchor" href="#2-4-trapping-rain-water-lc-42-monotonic-stack"><span>2-4) Trapping Rain Water (LC 42) — Monotonic Stack</span></a></h3>
 <blockquote>
 <p>Pop a bar when a taller bar arrives; water trapped = (min height difference) * width.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 42 - Trapping Rain Water</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Monotonic stack — pop when taller bar found, water fills between boundaries</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N), space = O(N)</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">trap</span><span class="hljs-params">(<span class="hljs-type">int</span>[] height)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    Deque&lt;Integer&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">water</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; height.length; i++) {</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">while</span> (!stack.isEmpty() &amp;&amp; height[i] &gt; height[stack.peek()]) {</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">            <span class="hljs-type">int</span> <span class="hljs-variable">bottom</span> <span class="hljs-operator">=</span> stack.pop();</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">            <span class="hljs-keyword">if</span> (stack.isEmpty()) <span class="hljs-keyword">break</span>;</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">            <span class="hljs-type">int</span> <span class="hljs-variable">left</span> <span class="hljs-operator">=</span> stack.peek();</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">            <span class="hljs-type">int</span> <span class="hljs-variable">width</span> <span class="hljs-operator">=</span> i - left - <span class="hljs-number">1</span>;</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">            <span class="hljs-type">int</span> <span class="hljs-variable">boundedHeight</span> <span class="hljs-operator">=</span> Math.min(height[left], height[i]) - height[bottom];</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">            water += width * boundedHeight;</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        stack.push(i);</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    <span class="hljs-keyword">return</span> water;</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// LC 42 - Trapping Rain Water
+// IDEA: Monotonic stack — pop when taller bar found, water fills between boundaries
+// time = O(N), space = O(N)
+public int trap(int[] height) {
+    Deque&lt;Integer&gt; stack = new ArrayDeque&lt;&gt;();
+    int water = 0;
+    for (int i = 0; i &lt; height.length; i++) {
+        while (!stack.isEmpty() &amp;&amp; height[i] &gt; height[stack.peek()]) {
+            int bottom = stack.pop();
+            if (stack.isEmpty()) break;
+            int left = stack.peek();
+            int width = i - left - 1;
+            int boundedHeight = Math.min(height[left], height[i]) - height[bottom];
+            water += width * boundedHeight;
+        }
+        stack.push(i);
+    }
+    return water;
+}
 </code></pre>
 <h3 id="2-5-next-greater-element-ii-lc-503-circular-monotonic-stack" tabindex="-1"><a class="header-anchor" href="#2-5-next-greater-element-ii-lc-503-circular-monotonic-stack"><span>2-5) Next Greater Element II (LC 503) — Circular Monotonic Stack</span></a></h3>
 <blockquote>
 <p>Process array twice (or use modulo) to handle circular next-greater queries.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 503 - Next Greater Element II (circular array)</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Monotonic stack — traverse 2n indices with modulo for circular effect</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N), space = O(N)</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] nextGreaterElements(<span class="hljs-type">int</span>[] nums) {</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length;</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-type">int</span>[] ans = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    Arrays.fill(ans, -<span class="hljs-number">1</span>);</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    Deque&lt;Integer&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">2</span> * n; i++) {</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-keyword">while</span> (!stack.isEmpty() &amp;&amp; nums[i % n] &gt; nums[stack.peek()]) {</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">            ans[stack.pop()] = nums[i % n];</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-keyword">if</span> (i &lt; n) stack.push(i);</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-keyword">return</span> ans;</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// LC 503 - Next Greater Element II (circular array)
+// IDEA: Monotonic stack — traverse 2n indices with modulo for circular effect
+// time = O(N), space = O(N)
+public int[] nextGreaterElements(int[] nums) {
+    int n = nums.length;
+    int[] ans = new int[n];
+    Arrays.fill(ans, -1);
+    Deque&lt;Integer&gt; stack = new ArrayDeque&lt;&gt;();
+    for (int i = 0; i &lt; 2 * n; i++) {
+        while (!stack.isEmpty() &amp;&amp; nums[i % n] &gt; nums[stack.peek()]) {
+            ans[stack.pop()] = nums[i % n];
+        }
+        if (i &lt; n) stack.push(i);
+    }
+    return ans;
+}
 </code></pre>
 <h3 id="2-6-online-stock-span-lc-901-monotonic-decreasing-stack" tabindex="-1"><a class="header-anchor" href="#2-6-online-stock-span-lc-901-monotonic-decreasing-stack"><span>2-6) Online Stock Span (LC 901) — Monotonic Decreasing Stack</span></a></h3>
 <blockquote>
 <p>Pop all previous prices &lt;= current; span = days since last greater price.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 901 - Online Stock Span</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Monotonic decreasing stack storing [price, span] pairs</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(1) amortized per call, space = O(N)</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">StockSpanner</span> {</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    Deque&lt;<span class="hljs-type">int</span>[]&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;(); <span class="hljs-comment">// [price, span]</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">next</span><span class="hljs-params">(<span class="hljs-type">int</span> price)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">span</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">while</span> (!stack.isEmpty() &amp;&amp; stack.peek()[<span class="hljs-number">0</span>] &lt;= price) {</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">            span += stack.pop()[<span class="hljs-number">1</span>];</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        stack.push(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]{price, span});</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-keyword">return</span> span;</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// LC 901 - Online Stock Span
+// IDEA: Monotonic decreasing stack storing [price, span] pairs
+// time = O(1) amortized per call, space = O(N)
+class StockSpanner {
+    Deque&lt;int[]&gt; stack = new ArrayDeque&lt;&gt;(); // [price, span]
+    public int next(int price) {
+        int span = 1;
+        while (!stack.isEmpty() &amp;&amp; stack.peek()[0] &lt;= price) {
+            span += stack.pop()[1];
+        }
+        stack.push(new int[]{price, span});
+        return span;
+    }
+}
 </code></pre>
 <h3 id="2-7-sum-of-subarray-minimums-lc-907-monotonic-stack" tabindex="-1"><a class="header-anchor" href="#2-7-sum-of-subarray-minimums-lc-907-monotonic-stack"><span>2-7) Sum of Subarray Minimums (LC 907) — Monotonic Stack</span></a></h3>
 <blockquote>
 <p>For each element, find left/right boundaries where it is the minimum; use monotonic stack.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 907 - Sum of Subarray Minimums</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Monotonic stack — for each element find left &amp; right span as minimum</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N), space = O(N)</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">sumSubarrayMins</span><span class="hljs-params">(<span class="hljs-type">int</span>[] arr)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> arr.length;</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">MOD</span> <span class="hljs-operator">=</span> <span class="hljs-number">1_000_000_007</span>;</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-type">int</span>[] left = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n], right = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    Deque&lt;Integer&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-comment">// left[i] = distance to previous smaller element</span></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-keyword">while</span> (!stack.isEmpty() &amp;&amp; arr[stack.peek()] &gt;= arr[i]) stack.pop();</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        left[i] = stack.isEmpty() ? i + <span class="hljs-number">1</span> : i - stack.peek();</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        stack.push(i);</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    stack.clear();</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    <span class="hljs-comment">// right[i] = distance to next smaller or equal element</span></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> n-<span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        <span class="hljs-keyword">while</span> (!stack.isEmpty() &amp;&amp; arr[stack.peek()] &gt; arr[i]) stack.pop();</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        right[i] = stack.isEmpty() ? n - i : stack.peek() - i;</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        stack.push(i);</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    <span class="hljs-type">long</span> <span class="hljs-variable">ans</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) ans = (ans + (<span class="hljs-type">long</span>) arr[i] * left[i] * right[i]) % MOD;</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">    <span class="hljs-keyword">return</span> (<span class="hljs-type">int</span>) ans;</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// LC 907 - Sum of Subarray Minimums
+// IDEA: Monotonic stack — for each element find left &amp; right span as minimum
+// time = O(N), space = O(N)
+public int sumSubarrayMins(int[] arr) {
+    int n = arr.length;
+    int MOD = 1_000_000_007;
+    int[] left = new int[n], right = new int[n];
+    Deque&lt;Integer&gt; stack = new ArrayDeque&lt;&gt;();
+    // left[i] = distance to previous smaller element
+    for (int i = 0; i &lt; n; i++) {
+        while (!stack.isEmpty() &amp;&amp; arr[stack.peek()] &gt;= arr[i]) stack.pop();
+        left[i] = stack.isEmpty() ? i + 1 : i - stack.peek();
+        stack.push(i);
+    }
+    stack.clear();
+    // right[i] = distance to next smaller or equal element
+    for (int i = n-1; i &gt;= 0; i--) {
+        while (!stack.isEmpty() &amp;&amp; arr[stack.peek()] &gt; arr[i]) stack.pop();
+        right[i] = stack.isEmpty() ? n - i : stack.peek() - i;
+        stack.push(i);
+    }
+    long ans = 0;
+    for (int i = 0; i &lt; n; i++) ans = (ans + (long) arr[i] * left[i] * right[i]) % MOD;
+    return (int) ans;
+}
 </code></pre>
 <h3 id="2-8-remove-k-digits-lc-402-monotonic-increasing-stack" tabindex="-1"><a class="header-anchor" href="#2-8-remove-k-digits-lc-402-monotonic-increasing-stack"><span>2-8) Remove K Digits (LC 402) — Monotonic Increasing Stack</span></a></h3>
 <blockquote>
 <p>Maintain increasing stack; remove digits when a smaller digit arrives.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 402 - Remove K Digits</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Greedy + monotonic increasing stack — remove larger digits greedily</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N), space = O(N)</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> String <span class="hljs-title function_">removeKdigits</span><span class="hljs-params">(String num, <span class="hljs-type">int</span> k)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    Deque&lt;Character&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span> c : num.toCharArray()) {</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-keyword">while</span> (k &gt; <span class="hljs-number">0</span> &amp;&amp; !stack.isEmpty() &amp;&amp; stack.peek() &gt; c) {</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">            stack.pop(); k--;</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        stack.push(c);</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-keyword">while</span> (k-- &gt; <span class="hljs-number">0</span>) stack.pop(); <span class="hljs-comment">// remove from top if k still &gt; 0</span></span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-comment">// reconstruct result in correct order (bottom to top of stack)</span></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    Deque&lt;Character&gt; result = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;(stack);</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">sb</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>();</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    <span class="hljs-type">boolean</span> <span class="hljs-variable">leadingZero</span> <span class="hljs-operator">=</span> <span class="hljs-literal">true</span>;</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-keyword">while</span> (!result.isEmpty()) {</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        <span class="hljs-type">char</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> result.pollFirst();</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        <span class="hljs-keyword">if</span> (leadingZero &amp;&amp; c == <span class="hljs-string">&#x27;0&#x27;</span>) <span class="hljs-keyword">continue</span>;</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        leadingZero = <span class="hljs-literal">false</span>;</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">        sb.append(c);</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    <span class="hljs-keyword">return</span> sb.length() == <span class="hljs-number">0</span> ? <span class="hljs-string">&quot;0&quot;</span> : sb.toString();</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// LC 402 - Remove K Digits
+// IDEA: Greedy + monotonic increasing stack — remove larger digits greedily
+// time = O(N), space = O(N)
+public String removeKdigits(String num, int k) {
+    Deque&lt;Character&gt; stack = new ArrayDeque&lt;&gt;();
+    for (char c : num.toCharArray()) {
+        while (k &gt; 0 &amp;&amp; !stack.isEmpty() &amp;&amp; stack.peek() &gt; c) {
+            stack.pop(); k--;
+        }
+        stack.push(c);
+    }
+    while (k-- &gt; 0) stack.pop(); // remove from top if k still &gt; 0
+    // reconstruct result in correct order (bottom to top of stack)
+    Deque&lt;Character&gt; result = new ArrayDeque&lt;&gt;(stack);
+    StringBuilder sb = new StringBuilder();
+    boolean leadingZero = true;
+    while (!result.isEmpty()) {
+        char c = result.pollFirst();
+        if (leadingZero &amp;&amp; c == '0') continue;
+        leadingZero = false;
+        sb.append(c);
+    }
+    return sb.length() == 0 ? &quot;0&quot; : sb.toString();
+}
 </code></pre>
 <h3 id="2-9-maximal-rectangle-lc-85-histogram-monotonic-stack" tabindex="-1"><a class="header-anchor" href="#2-9-maximal-rectangle-lc-85-histogram-monotonic-stack"><span>2-9) Maximal Rectangle (LC 85) — Histogram + Monotonic Stack</span></a></h3>
 <blockquote>
 <p>For each row, compute histogram heights; apply LC 84 largest rectangle logic per row.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 85 - Maximal Rectangle</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: For each row build histogram; apply largestRectangleArea (LC 84) logic</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(M*N), space = O(N)</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">maximalRectangle</span><span class="hljs-params">(<span class="hljs-type">char</span>[][] matrix)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">if</span> (matrix.length == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> matrix[<span class="hljs-number">0</span>].length, maxArea = <span class="hljs-number">0</span>;</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-type">int</span>[] heights = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">char</span>[] row : matrix) {</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; n; j++)</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">            heights[j] = row[j] == <span class="hljs-string">&#x27;0&#x27;</span> ? <span class="hljs-number">0</span> : heights[j] + <span class="hljs-number">1</span>;</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        maxArea = Math.max(maxArea, largestRectangle(heights));</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-keyword">return</span> maxArea;</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">}</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"><span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">largestRectangle</span><span class="hljs-params">(<span class="hljs-type">int</span>[] heights)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    Deque&lt;Integer&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">max</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt;= heights.length; i++) {</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">h</span> <span class="hljs-operator">=</span> i == heights.length ? <span class="hljs-number">0</span> : heights[i];</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">        <span class="hljs-keyword">while</span> (!stack.isEmpty() &amp;&amp; h &lt; heights[stack.peek()]) {</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">            <span class="hljs-type">int</span> <span class="hljs-variable">height</span> <span class="hljs-operator">=</span> heights[stack.pop()];</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">            <span class="hljs-type">int</span> <span class="hljs-variable">width</span> <span class="hljs-operator">=</span> stack.isEmpty() ? i : i - stack.peek() - <span class="hljs-number">1</span>;</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">            max = Math.max(max, height * width);</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">        stack.push(i);</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">    <span class="hljs-keyword">return</span> max;</span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// LC 85 - Maximal Rectangle
+// IDEA: For each row build histogram; apply largestRectangleArea (LC 84) logic
+// time = O(M*N), space = O(N)
+public int maximalRectangle(char[][] matrix) {
+    if (matrix.length == 0) return 0;
+    int n = matrix[0].length, maxArea = 0;
+    int[] heights = new int[n];
+    for (char[] row : matrix) {
+        for (int j = 0; j &lt; n; j++)
+            heights[j] = row[j] == '0' ? 0 : heights[j] + 1;
+        maxArea = Math.max(maxArea, largestRectangle(heights));
+    }
+    return maxArea;
+}
+private int largestRectangle(int[] heights) {
+    Deque&lt;Integer&gt; stack = new ArrayDeque&lt;&gt;();
+    int max = 0;
+    for (int i = 0; i &lt;= heights.length; i++) {
+        int h = i == heights.length ? 0 : heights[i];
+        while (!stack.isEmpty() &amp;&amp; h &lt; heights[stack.peek()]) {
+            int height = heights[stack.pop()];
+            int width = stack.isEmpty() ? i : i - stack.peek() - 1;
+            max = Math.max(max, height * width);
+        }
+        stack.push(i);
+    }
+    return max;
+}
 </code></pre>
 <h3 id="2-10-car-fleet-lc-853-monotonic-stack-on-speed" tabindex="-1"><a class="header-anchor" href="#2-10-car-fleet-lc-853-monotonic-stack-on-speed"><span>2-10) Car Fleet (LC 853) — Monotonic Stack on Speed</span></a></h3>
 <blockquote>
 <p>Sort by position; stack tracks fleets — a car joining a fleet is removed.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 853 - Car Fleet</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Sort by position DESC; use stack to count distinct fleets</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N log N), space = O(N)</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">carFleet</span><span class="hljs-params">(<span class="hljs-type">int</span> target, <span class="hljs-type">int</span>[] position, <span class="hljs-type">int</span>[] speed)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> position.length;</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    Integer[] idx = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Integer</span>[n];</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) idx[i] = i;</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    Arrays.sort(idx, (a, b) -&gt; position[b] - position[a]);</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    Deque&lt;Double&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i : idx) {</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-type">double</span> <span class="hljs-variable">time</span> <span class="hljs-operator">=</span> (<span class="hljs-type">double</span>)(target - position[i]) / speed[i];</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-keyword">if</span> (stack.isEmpty() || time &gt; stack.peek()) stack.push(time);</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-comment">// if time &lt;= top, this car catches up (joins the fleet)</span></span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-keyword">return</span> stack.size();</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// LC 853 - Car Fleet
+// IDEA: Sort by position DESC; use stack to count distinct fleets
+// time = O(N log N), space = O(N)
+public int carFleet(int target, int[] position, int[] speed) {
+    int n = position.length;
+    Integer[] idx = new Integer[n];
+    for (int i = 0; i &lt; n; i++) idx[i] = i;
+    Arrays.sort(idx, (a, b) -&gt; position[b] - position[a]);
+    Deque&lt;Double&gt; stack = new ArrayDeque&lt;&gt;();
+    for (int i : idx) {
+        double time = (double)(target - position[i]) / speed[i];
+        if (stack.isEmpty() || time &gt; stack.peek()) stack.push(time);
+        // if time &lt;= top, this car catches up (joins the fleet)
+    }
+    return stack.size();
+}
 </code></pre>
 <h3 id="2-11-asteroid-collision-lc-735-stack-simulation" tabindex="-1"><a class="header-anchor" href="#2-11-asteroid-collision-lc-735-stack-simulation"><span>2-11) Asteroid Collision (LC 735) — Stack Simulation</span></a></h3>
 <blockquote>
 <p>Right-moving asteroids stay on stack; left-moving collide with top until stable.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 735 - Asteroid Collision</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Stack — simulate collisions between right (+) and left (-) asteroids</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N), space = O(N)</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[] asteroidCollision(<span class="hljs-type">int</span>[] asteroids) {</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    Deque&lt;Integer&gt; stack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> a : asteroids) {</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-type">boolean</span> <span class="hljs-variable">alive</span> <span class="hljs-operator">=</span> <span class="hljs-literal">true</span>;</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">while</span> (alive &amp;&amp; a &lt; <span class="hljs-number">0</span> &amp;&amp; !stack.isEmpty() &amp;&amp; stack.peek() &gt; <span class="hljs-number">0</span>) {</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">            <span class="hljs-keyword">if</span> (stack.peek() &lt; -a) { stack.pop(); }      <span class="hljs-comment">// stack top destroyed</span></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">            <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (stack.peek() == -a) { stack.pop(); alive = <span class="hljs-literal">false</span>; } <span class="hljs-comment">// both destroyed</span></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">            <span class="hljs-keyword">else</span> alive = <span class="hljs-literal">false</span>;                             <span class="hljs-comment">// incoming destroyed</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-keyword">if</span> (alive) stack.push(a);</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-type">int</span>[] res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[stack.size()];</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> res.length - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) res[i] = stack.pop();</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-keyword">return</span> res;</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// LC 735 - Asteroid Collision
+// IDEA: Stack — simulate collisions between right (+) and left (-) asteroids
+// time = O(N), space = O(N)
+public int[] asteroidCollision(int[] asteroids) {
+    Deque&lt;Integer&gt; stack = new ArrayDeque&lt;&gt;();
+    for (int a : asteroids) {
+        boolean alive = true;
+        while (alive &amp;&amp; a &lt; 0 &amp;&amp; !stack.isEmpty() &amp;&amp; stack.peek() &gt; 0) {
+            if (stack.peek() &lt; -a) { stack.pop(); }      // stack top destroyed
+            else if (stack.peek() == -a) { stack.pop(); alive = false; } // both destroyed
+            else alive = false;                             // incoming destroyed
+        }
+        if (alive) stack.push(a);
+    }
+    int[] res = new int[stack.size()];
+    for (int i = res.length - 1; i &gt;= 0; i--) res[i] = stack.pop();
+    return res;
+}
 </code></pre>
 
       </div>

@@ -9,7 +9,8 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -20,42 +21,40 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    // Code block wrappers + copy buttons (highlighting done at build time)
-    try {
-      document.querySelectorAll('pre').forEach(function(pre) {
-        var codeEl = pre.querySelector('code');
-        var lang = pre.getAttribute('data-lang') || '';
-        var wrapper = document.createElement('div');
-        wrapper.className = 'code-block-wrapper';
-        pre.parentNode.insertBefore(wrapper, pre);
-        var header = document.createElement('div');
-        header.className = 'code-block-header';
-        if (lang) {
-          var label = document.createElement('span');
-          label.className = 'code-lang-label';
-          label.textContent = lang;
-          header.appendChild(label);
-        } else {
-          header.appendChild(document.createElement('span'));
-        }
-        var btn = document.createElement('button');
-        btn.className = 'copy-btn';
-        btn.textContent = 'Copy';
-        btn.addEventListener('click', function() {
-          var text = codeEl
-            ? Array.from(codeEl.querySelectorAll('.ln-code')).map(function(el) { return el.textContent; }).join('\n')
-            : pre.textContent;
-          navigator.clipboard.writeText(text).then(function() {
-            btn.textContent = 'Copied!';
-            btn.classList.add('copied');
-            setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-          });
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
         });
-        header.appendChild(btn);
-        wrapper.appendChild(header);
-        wrapper.appendChild(pre);
       });
-    } catch(e) { console.error('Code block setup error:', e); }
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -65,36 +64,32 @@
       }
     });
     // Reading progress bar
-    try {
-      var progressBar = document.getElementById('reading-progress');
-      if (progressBar) {
-        window.addEventListener('scroll', function() {
-          var winScroll = document.documentElement.scrollTop;
-          var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-          progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
-        });
-      }
-    } catch(e) {}
-    // Dark mode toggle — isolated so errors elsewhere never prevent this from working
-    try {
-      var toggle = document.getElementById('theme-toggle');
-      if (toggle) {
-        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-        toggle.textContent = isDark ? '☀️' : '🌙';
-        toggle.addEventListener('click', function() {
-          var dark = document.documentElement.getAttribute('data-theme') === 'dark';
-          if (dark) {
-            document.documentElement.removeAttribute('data-theme');
-            localStorage.setItem('theme', 'light');
-            toggle.textContent = '🌙';
-          } else {
-            document.documentElement.setAttribute('data-theme', 'dark');
-            localStorage.setItem('theme', 'dark');
-            toggle.textContent = '☀️';
-          }
-        });
-      }
-    } catch(e) { console.error('Theme toggle error:', e); }
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
   });</script>
 </head>
 <body>
@@ -150,9 +145,9 @@
 <li>a++ : assign a first, then do a += 1</li>
 <li>++a : do a += 1 first, then assign value</li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// java</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">b = a++;</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">b = ++a;</span></span>
+<pre><code class="language-java">// java
+b = a++;
+b = ++a;
 </code></pre>
 <h3 id="java-basic-data-type-vs-reference-data-type" tabindex="-1"><a class="header-anchor" href="#java-basic-data-type-vs-reference-data-type"><span>Java basic data type (基本數據類型) VS reference data type (引用數據類型) **** ?</span></a></h3>
 <img src="../doc/pic/basic_ref_data_type.jpeg" width="500" height="300">
@@ -190,23 +185,23 @@
 <p>Note : some reference class’ equals method already overriden (e.g. String), so its equals method already compare attr</p>
 </li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// java</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">equals</span><span class="hljs-params">(Object obj)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"> <span class="hljs-keyword">return</span> (<span class="hljs-built_in">this</span> == obj);</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// java
+public boolean equals(Object obj) {
+ return (this == obj);
+}
 </code></pre>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// java</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// new Class : use a new storage in heap (內存)</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-type">String</span> <span class="hljs-variable">a</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(<span class="hljs-string">&quot;123&quot;</span>);</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-type">String</span> <span class="hljs-variable">b</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(<span class="hljs-string">&quot;123&quot;</span>);</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">System.out.println(a==b); <span class="hljs-comment">// false ( &quot;new&quot; will use NEW address in internal storage)</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"><span class="hljs-comment">// without new : will fetch from constant pool</span></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"><span class="hljs-type">String</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> b;</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">System.out.println(c==b); <span class="hljs-comment">// true ( c will fetch from constant pool (常量池))</span></span></span>
+<pre><code class="language-java">// java
+
+// new Class : use a new storage in heap (內存)
+String a = new String(&quot;123&quot;);
+String b = new String(&quot;123&quot;);
+
+System.out.println(a==b); // false ( &quot;new&quot; will use NEW address in internal storage)
+
+// without new : will fetch from constant pool
+String c = b;
+
+System.out.println(c==b); // true ( c will fetch from constant pool (常量池))
 </code></pre>
 </li>
 <li>
@@ -221,24 +216,24 @@
 <li>boxing : basic data type -&gt; reference type</li>
 <li>unboxing : reference type -&gt; basic data type</li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// java</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-type">Integer</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; <span class="hljs-comment">// boxing</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> i; <span class="hljs-comment">// unboxing</span></span></span>
+<pre><code class="language-java">// java
+Integer i = 1; // boxing
+int n = i; // unboxing
 </code></pre>
 <h3 id="string-constant-pool" tabindex="-1"><a class="header-anchor" href="#string-constant-pool"><span>String constant pool ?</span></a></h3>
 <ul>
 <li>Avoid repeatedly create same String, for better performance</li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// java</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// 在堆中创建字符串对象”ab“</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-comment">// 将字符串对象”ab“的引用保存在字符串常量池中</span></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"><span class="hljs-type">String</span> <span class="hljs-variable">aa</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;ab&quot;</span>;</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"><span class="hljs-comment">// 直接返回字符串常量池中字符串对象”ab“的引用</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"><span class="hljs-type">String</span> <span class="hljs-variable">bb</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;ab&quot;</span>;</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">System.out.println(aa==bb);<span class="hljs-comment">// true</span></span></span>
+<pre><code class="language-java">// java
+
+// 在堆中创建字符串对象”ab“
+// 将字符串对象”ab“的引用保存在字符串常量池中
+String aa = &quot;ab&quot;;
+
+// 直接返回字符串常量池中字符串对象”ab“的引用
+String bb = &quot;ab&quot;;
+
+System.out.println(aa==bb);// true
 </code></pre>
 <h3 id="member-variable-vs-local-variable" tabindex="-1"><a class="header-anchor" href="#member-variable-vs-local-variable"><span>成員變量 (member variable) VS 局部變量 (local variable) ?</span></a></h3>
 <ul>
@@ -274,38 +269,38 @@
 </ul>
 </li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// java</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">VariableExample</span> {</span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-comment">// 成员变量</span></span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">private</span> String name;</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> age;</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-comment">// 方法中的局部变量</span></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">method</span><span class="hljs-params">()</span> {</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">num1</span> <span class="hljs-operator">=</span> <span class="hljs-number">10</span>; <span class="hljs-comment">// 栈中分配的局部变量</span></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-type">String</span> <span class="hljs-variable">str</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;Hello, world!&quot;</span>; <span class="hljs-comment">// 栈中分配的局部变量</span></span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        System.out.println(num1);</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        System.out.println(str);</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    <span class="hljs-comment">// 带参数的方法中的局部变量</span></span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">method2</span><span class="hljs-params">(<span class="hljs-type">int</span> num2)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">sum</span> <span class="hljs-operator">=</span> num2 + <span class="hljs-number">10</span>; <span class="hljs-comment">// 栈中分配的局部变量</span></span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        System.out.println(sum);</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    <span class="hljs-comment">// 构造方法中的局部变量</span></span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-title function_">VariableExample</span><span class="hljs-params">(String name, <span class="hljs-type">int</span> age)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">        <span class="hljs-built_in">this</span>.name = name; <span class="hljs-comment">// 对成员变量进行赋值</span></span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">        <span class="hljs-built_in">this</span>.age = age; <span class="hljs-comment">// 对成员变量进行赋值</span></span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">num3</span> <span class="hljs-operator">=</span> <span class="hljs-number">20</span>; <span class="hljs-comment">// 栈中分配的局部变量</span></span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">        <span class="hljs-type">String</span> <span class="hljs-variable">str2</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;Hello, &quot;</span> + <span class="hljs-built_in">this</span>.name + <span class="hljs-string">&quot;!&quot;</span>; <span class="hljs-comment">// 栈中分配的局部变量</span></span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">        System.out.println(num3);</span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code">        System.out.println(str2);</span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">}</span></span>
-<span class="ln-row"><span class="ln-num">32</span><span class="ln-code"></span></span>
+<pre><code class="language-java">// java
+public class VariableExample {
+
+    // 成员变量
+    private String name;
+    private int age;
+
+    // 方法中的局部变量
+    public void method() {
+        int num1 = 10; // 栈中分配的局部变量
+        String str = &quot;Hello, world!&quot;; // 栈中分配的局部变量
+        System.out.println(num1);
+        System.out.println(str);
+    }
+
+    // 带参数的方法中的局部变量
+    public void method2(int num2) {
+        int sum = num2 + 10; // 栈中分配的局部变量
+        System.out.println(sum);
+    }
+
+    // 构造方法中的局部变量
+    public VariableExample(String name, int age) {
+        this.name = name; // 对成员变量进行赋值
+        this.age = age; // 对成员变量进行赋值
+        int num3 = 20; // 栈中分配的局部变量
+        String str2 = &quot;Hello, &quot; + this.name + &quot;!&quot;; // 栈中分配的局部变量
+        System.out.println(num3);
+        System.out.println(str2);
+    }
+}
+
 </code></pre>
 <h3 id="what-static-variable-for" tabindex="-1"><a class="header-anchor" href="#what-static-variable-for"><span>What static variable for ?</span></a></h3>
 <h3 id="static-method-vs-instance-method" tabindex="-1"><a class="header-anchor" href="#static-method-vs-instance-method"><span>static method VS instance method ?</span></a></h3>
@@ -473,15 +468,15 @@
 <li><a href="https://matthung0807.blogspot.com/2018/02/java-throw-throws.html">https://matthung0807.blogspot.com/2018/02/java-throw-throws.html</a></li>
 <li><a href="https://javabetter.cn/sidebar/sanfene/javase.html#_40-%E5%BC%82%E5%B8%B8%E7%9A%84%E5%A4%84%E7%90%86%E6%96%B9%E5%BC%8F">https://javabetter.cn/sidebar/sanfene/javase.html#_40-异常的处理方式</a></li>
 </ul>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// java</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-keyword">public</span> String <span class="hljs-title function_">getUserName</span><span class="hljs-params">(<span class="hljs-type">int</span> userId)</span> <span class="hljs-keyword">throws</span> SQLException { <span class="hljs-comment">// 會將SQLException拋給caller（就是呼叫這個方法的程式）</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">   </span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">   <span class="hljs-type">String</span> <span class="hljs-variable">userName</span> <span class="hljs-operator">=</span> userDao.getUserName(userId);</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">   <span class="hljs-keyword">if</span>(userName == <span class="hljs-literal">null</span>){</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">       <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">SQLException</span>(); <span class="hljs-comment">// 拋出一個SQLException例外</span></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">   }</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// java
+public String getUserName(int userId) throws SQLException { // 會將SQLException拋給caller（就是呼叫這個方法的程式）
+   
+   String userName = userDao.getUserName(userId);
+   if(userName == null){
+       throw new SQLException(); // 拋出一個SQLException例外
+   }
+
+}
 </code></pre>
 
       </div>

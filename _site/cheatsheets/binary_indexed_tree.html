@@ -9,7 +9,8 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -20,42 +21,40 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    // Code block wrappers + copy buttons (highlighting done at build time)
-    try {
-      document.querySelectorAll('pre').forEach(function(pre) {
-        var codeEl = pre.querySelector('code');
-        var lang = pre.getAttribute('data-lang') || '';
-        var wrapper = document.createElement('div');
-        wrapper.className = 'code-block-wrapper';
-        pre.parentNode.insertBefore(wrapper, pre);
-        var header = document.createElement('div');
-        header.className = 'code-block-header';
-        if (lang) {
-          var label = document.createElement('span');
-          label.className = 'code-lang-label';
-          label.textContent = lang;
-          header.appendChild(label);
-        } else {
-          header.appendChild(document.createElement('span'));
-        }
-        var btn = document.createElement('button');
-        btn.className = 'copy-btn';
-        btn.textContent = 'Copy';
-        btn.addEventListener('click', function() {
-          var text = codeEl
-            ? Array.from(codeEl.querySelectorAll('.ln-code')).map(function(el) { return el.textContent; }).join('\n')
-            : pre.textContent;
-          navigator.clipboard.writeText(text).then(function() {
-            btn.textContent = 'Copied!';
-            btn.classList.add('copied');
-            setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-          });
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
         });
-        header.appendChild(btn);
-        wrapper.appendChild(header);
-        wrapper.appendChild(pre);
       });
-    } catch(e) { console.error('Code block setup error:', e); }
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -65,36 +64,32 @@
       }
     });
     // Reading progress bar
-    try {
-      var progressBar = document.getElementById('reading-progress');
-      if (progressBar) {
-        window.addEventListener('scroll', function() {
-          var winScroll = document.documentElement.scrollTop;
-          var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-          progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
-        });
-      }
-    } catch(e) {}
-    // Dark mode toggle — isolated so errors elsewhere never prevent this from working
-    try {
-      var toggle = document.getElementById('theme-toggle');
-      if (toggle) {
-        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-        toggle.textContent = isDark ? '☀️' : '🌙';
-        toggle.addEventListener('click', function() {
-          var dark = document.documentElement.getAttribute('data-theme') === 'dark';
-          if (dark) {
-            document.documentElement.removeAttribute('data-theme');
-            localStorage.setItem('theme', 'light');
-            toggle.textContent = '🌙';
-          } else {
-            document.documentElement.setAttribute('data-theme', 'dark');
-            localStorage.setItem('theme', 'dark');
-            toggle.textContent = '☀️';
-          }
-        });
-      }
-    } catch(e) { console.error('Theme toggle error:', e); }
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
   });</script>
 </head>
 <body>
@@ -132,9 +127,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Binary Indexed Tree</span></nav>
       <div class="cheatsheet-header">
         <h1>Binary Indexed Tree</h1>
-        <span class="last-updated">Last updated: Apr 25, 2026</span>
+        <span class="last-updated">Last updated: Mar 17, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-range-sum-query-mutable-lc-307-bit-point-update-prefix-sum">2-1) Range Sum Query - Mutable (LC 307) — BIT Point Update + Prefix Sum</a></li><li class="toc-sub"><a href="#2-2-count-of-smaller-numbers-after-self-lc-315-bit-with-coordinate-compression">2-2) Count of Smaller Numbers After Self (LC 315) — BIT with Coordinate Compression</a></li><li class="toc-sub"><a href="#2-3-bit-generic-template-point-update-prefix-range-query">2-3) BIT Generic Template — Point Update + Prefix/Range Query</a></li><li class="toc-sub"><a href="#2-4-reverse-pairs-lc-493-bit-with-coordinate-compression">2-4) Reverse Pairs (LC 493) — BIT with Coordinate Compression</a></li><li class="toc-sub"><a href="#2-5-count-of-range-sum-lc-327-bit-merge-sort">2-5) Count of Range Sum (LC 327) — BIT / Merge Sort</a></li><li class="toc-sub"><a href="#2-6-queue-reconstruction-by-height-lc-406-greedy-insertion">2-6) Queue Reconstruction by Height (LC 406) — Greedy Insertion</a></li><li class="toc-sub"><a href="#2-7-range-sum-query-mutable-bit-vs-segment-tree-comparison">2-7) Range Sum Query Mutable — BIT vs Segment Tree Comparison</a></li><li class="toc-sub"><a href="#2-8-range-sum-query-2d-mutable-lc-308-2d-bit">2-8) Range Sum Query 2D - Mutable (LC 308) — 2D BIT</a></li><li class="toc-sub"><a href="#2-8-number-of-longest-increasing-subsequences-lc-673-dp">2-8) Number of Longest Increasing Subsequences (LC 673) — DP</a></li><li class="toc-sub"><a href="#2-9-create-sorted-array-through-instructions-lc-1649-bit">2-9) Create Sorted Array through Instructions (LC 1649) — BIT</a></li><li class="toc-sub"><a href="#2-10-global-and-local-inversions-lc-775-bit">2-10) Global and Local Inversions (LC 775) — BIT</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-range-sum-query-mutable-lc-307-bit-point-update-prefix-sum">2-1) Range Sum Query - Mutable (LC 307) — BIT Point Update + Prefix Sum</a></li><li class="toc-sub"><a href="#2-2-count-of-smaller-numbers-after-self-lc-315-bit-with-coordinate-compression">2-2) Count of Smaller Numbers After Self (LC 315) — BIT with Coordinate Compression</a></li><li class="toc-sub"><a href="#2-3-bit-generic-template-point-update-prefix-range-query">2-3) BIT Generic Template — Point Update + Prefix/Range Query</a></li><li class="toc-sub"><a href="#2-4-reverse-pairs-lc-493-bit-with-coordinate-compression">2-4) Reverse Pairs (LC 493) — BIT with Coordinate Compression</a></li><li class="toc-sub"><a href="#2-5-count-of-range-sum-lc-327-bit-merge-sort">2-5) Count of Range Sum (LC 327) — BIT / Merge Sort</a></li><li class="toc-sub"><a href="#2-6-queue-reconstruction-by-height-lc-406-greedy-insertion">2-6) Queue Reconstruction by Height (LC 406) — Greedy Insertion</a></li><li class="toc-sub"><a href="#2-7-range-sum-query-mutable-bit-vs-segment-tree-comparison">2-7) Range Sum Query Mutable — BIT vs Segment Tree Comparison</a></li><li class="toc-sub"><a href="#2-7-1-range-sum-query-2d-mutable-lc-308-2d-bit">2-7-1) Range Sum Query 2D - Mutable (LC 308) — 2D BIT</a></li><li class="toc-sub"><a href="#2-8-number-of-longest-increasing-subsequences-lc-673-dp">2-8) Number of Longest Increasing Subsequences (LC 673) — DP</a></li><li class="toc-sub"><a href="#2-9-create-sorted-array-through-instructions-lc-1649-bit">2-9) Create Sorted Array through Instructions (LC 1649) — BIT</a></li><li class="toc-sub"><a href="#2-10-global-and-local-inversions-lc-775-bit">2-10) Global and Local Inversions (LC 775) — BIT</a></li></ul></div>
       <div class="cheatsheet-content">
         <p>A Binary Indexed Tree (BIT), also known as a Fenwick Tree, is a data structure that efficiently supports both:</p>
 <p>Point updates (i.e., update an element in the array).
@@ -170,181 +165,181 @@ Consider an array: [3, 2, -1, 6, 5, 4].</p>
 <blockquote>
 <p>BIT supports O(log N) point update and prefix sum query.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 307 - Range Sum Query - Mutable</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Binary Indexed Tree (Fenwick Tree)</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(log N) per update/query, space = O(N)</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">NumArray</span> {</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-type">int</span>[] bit, nums;</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-type">int</span> n;</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-title function_">NumArray</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-built_in">this</span>.n = nums.length;</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-built_in">this</span>.nums = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-built_in">this</span>.bit = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n + <span class="hljs-number">1</span>];</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) update(i, nums[i]);</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">update</span><span class="hljs-params">(<span class="hljs-type">int</span> i, <span class="hljs-type">int</span> val)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">delta</span> <span class="hljs-operator">=</span> val - nums[i];</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        nums[i] = val;</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">x</span> <span class="hljs-operator">=</span> i + <span class="hljs-number">1</span>; x &lt;= n; x += x &amp; (-x)) bit[x] += delta;</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">sumRange</span><span class="hljs-params">(<span class="hljs-type">int</span> left, <span class="hljs-type">int</span> right)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">        <span class="hljs-keyword">return</span> prefixSum(right + <span class="hljs-number">1</span>) - prefixSum(left);</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">prefixSum</span><span class="hljs-params">(<span class="hljs-type">int</span> i)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">sum</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">x</span> <span class="hljs-operator">=</span> i; x &gt; <span class="hljs-number">0</span>; x -= x &amp; (-x)) sum += bit[x];</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">        <span class="hljs-keyword">return</span> sum;</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// LC 307 - Range Sum Query - Mutable
+// IDEA: Binary Indexed Tree (Fenwick Tree)
+// time = O(log N) per update/query, space = O(N)
+class NumArray {
+    int[] bit, nums;
+    int n;
+    public NumArray(int[] nums) {
+        this.n = nums.length;
+        this.nums = new int[n];
+        this.bit = new int[n + 1];
+        for (int i = 0; i &lt; n; i++) update(i, nums[i]);
+    }
+    public void update(int i, int val) {
+        int delta = val - nums[i];
+        nums[i] = val;
+        for (int x = i + 1; x &lt;= n; x += x &amp; (-x)) bit[x] += delta;
+    }
+    public int sumRange(int left, int right) {
+        return prefixSum(right + 1) - prefixSum(left);
+    }
+    private int prefixSum(int i) {
+        int sum = 0;
+        for (int x = i; x &gt; 0; x -= x &amp; (-x)) sum += bit[x];
+        return sum;
+    }
+}
 </code></pre>
 <h3 id="2-2-count-of-smaller-numbers-after-self-lc-315-bit-with-coordinate-compression" tabindex="-1"><a class="header-anchor" href="#2-2-count-of-smaller-numbers-after-self-lc-315-bit-with-coordinate-compression"><span>2-2) Count of Smaller Numbers After Self (LC 315) — BIT with Coordinate Compression</span></a></h3>
 <blockquote>
 <p>Map values to ranks; for each element query how many smaller are already inserted.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 315 - Count of Smaller Numbers After Self</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: BIT + coordinate compression — process right to left</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N log N), space = O(N)</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> List&lt;Integer&gt; <span class="hljs-title function_">countSmaller</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length;</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-type">int</span>[] sorted = nums.clone();</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    Arrays.sort(sorted);</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    Map&lt;Integer, Integer&gt; rank = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> v : sorted) <span class="hljs-keyword">if</span> (!rank.containsKey(v)) rank.put(v, r++);</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-type">int</span>[] bit = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[r];</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    Integer[] result = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Integer</span>[n];</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> n - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">pos</span> <span class="hljs-operator">=</span> rank.get(nums[i]);</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        result[i] = query(bit, pos - <span class="hljs-number">1</span>);</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        update(bit, pos, r - <span class="hljs-number">1</span>);</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    <span class="hljs-keyword">return</span> Arrays.asList(result);</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">}</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">update</span><span class="hljs-params">(<span class="hljs-type">int</span>[] bit, <span class="hljs-type">int</span> i, <span class="hljs-type">int</span> n)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">    <span class="hljs-keyword">for</span> (; i &lt;= n; i += i &amp; (-i)) bit[i]++;</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">}</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code"><span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">query</span><span class="hljs-params">(<span class="hljs-type">int</span>[] bit, <span class="hljs-type">int</span> i)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">sum</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">    <span class="hljs-keyword">for</span> (; i &gt; <span class="hljs-number">0</span>; i -= i &amp; (-i)) sum += bit[i];</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">    <span class="hljs-keyword">return</span> sum;</span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// LC 315 - Count of Smaller Numbers After Self
+// IDEA: BIT + coordinate compression — process right to left
+// time = O(N log N), space = O(N)
+public List&lt;Integer&gt; countSmaller(int[] nums) {
+    int n = nums.length;
+    int[] sorted = nums.clone();
+    Arrays.sort(sorted);
+    Map&lt;Integer, Integer&gt; rank = new HashMap&lt;&gt;();
+    int r = 1;
+    for (int v : sorted) if (!rank.containsKey(v)) rank.put(v, r++);
+    int[] bit = new int[r];
+    Integer[] result = new Integer[n];
+    for (int i = n - 1; i &gt;= 0; i--) {
+        int pos = rank.get(nums[i]);
+        result[i] = query(bit, pos - 1);
+        update(bit, pos, r - 1);
+    }
+    return Arrays.asList(result);
+}
+private void update(int[] bit, int i, int n) {
+    for (; i &lt;= n; i += i &amp; (-i)) bit[i]++;
+}
+private int query(int[] bit, int i) {
+    int sum = 0;
+    for (; i &gt; 0; i -= i &amp; (-i)) sum += bit[i];
+    return sum;
+}
 </code></pre>
 <h3 id="2-3-bit-generic-template-point-update-prefix-range-query" tabindex="-1"><a class="header-anchor" href="#2-3-bit-generic-template-point-update-prefix-range-query"><span>2-3) BIT Generic Template — Point Update + Prefix/Range Query</span></a></h3>
 <blockquote>
 <p>Reusable BIT class supporting point updates and prefix-sum queries.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// BIT (Fenwick Tree) — Generic Template</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// time = O(log N) per update/query, space = O(N)</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">BIT</span> {</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-type">int</span>[] tree;</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-type">int</span> n;</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    BIT(<span class="hljs-type">int</span> n) { <span class="hljs-built_in">this</span>.n = n; tree = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n + <span class="hljs-number">1</span>]; }</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">void</span> <span class="hljs-title function_">update</span><span class="hljs-params">(<span class="hljs-type">int</span> i, <span class="hljs-type">int</span> delta)</span> {          <span class="hljs-comment">// 1-indexed; add delta at position i</span></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        <span class="hljs-keyword">for</span> (; i &lt;= n; i += i &amp; -i) tree[i] += delta;</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-title function_">query</span><span class="hljs-params">(<span class="hljs-type">int</span> i)</span> {                        <span class="hljs-comment">// prefix sum [1..i]</span></span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">sum</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        <span class="hljs-keyword">for</span> (; i &gt; <span class="hljs-number">0</span>; i -= i &amp; -i) sum += tree[i];</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        <span class="hljs-keyword">return</span> sum;</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-title function_">query</span><span class="hljs-params">(<span class="hljs-type">int</span> l, <span class="hljs-type">int</span> r)</span> { <span class="hljs-keyword">return</span> query(r) - query(l - <span class="hljs-number">1</span>); } <span class="hljs-comment">// range [l..r]</span></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// BIT (Fenwick Tree) — Generic Template
+// time = O(log N) per update/query, space = O(N)
+class BIT {
+    int[] tree;
+    int n;
+    BIT(int n) { this.n = n; tree = new int[n + 1]; }
+    void update(int i, int delta) {          // 1-indexed; add delta at position i
+        for (; i &lt;= n; i += i &amp; -i) tree[i] += delta;
+    }
+    int query(int i) {                        // prefix sum [1..i]
+        int sum = 0;
+        for (; i &gt; 0; i -= i &amp; -i) sum += tree[i];
+        return sum;
+    }
+    int query(int l, int r) { return query(r) - query(l - 1); } // range [l..r]
+}
 </code></pre>
 <h3 id="2-4-reverse-pairs-lc-493-bit-with-coordinate-compression" tabindex="-1"><a class="header-anchor" href="#2-4-reverse-pairs-lc-493-bit-with-coordinate-compression"><span>2-4) Reverse Pairs (LC 493) — BIT with Coordinate Compression</span></a></h3>
 <blockquote>
 <p>For each nums[i] (right to left), count previously inserted values &lt; nums[i]; then insert 2*nums[i].</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 493 - Reverse Pairs</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: BIT + coordinate compression — process right to left; query then update</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N log N), space = O(N)</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">reversePairs</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length;</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-type">long</span>[] sorted = <span class="hljs-keyword">new</span> <span class="hljs-title class_">long</span>[<span class="hljs-number">2</span> * n];</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) { sorted[i] = nums[i]; sorted[n+i] = <span class="hljs-number">2L</span> * nums[i]; }</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    Arrays.sort(sorted);</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    Map&lt;Long, Integer&gt; rank = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">long</span> v : sorted) <span class="hljs-keyword">if</span> (!rank.containsKey(v)) rank.put(v, r++);</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-type">int</span>[] bit = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[r];</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> n - <span class="hljs-number">1</span>; i &gt;= <span class="hljs-number">0</span>; i--) {</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        count += queryBIT(bit, rank.get((<span class="hljs-type">long</span>)nums[i]) - <span class="hljs-number">1</span>);</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        updateBIT(bit, rank.get(<span class="hljs-number">2L</span> * nums[i]), r - <span class="hljs-number">1</span>);</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    <span class="hljs-keyword">return</span> count;</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">}</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">updateBIT</span><span class="hljs-params">(<span class="hljs-type">int</span>[] b, <span class="hljs-type">int</span> i, <span class="hljs-type">int</span> n)</span> { <span class="hljs-keyword">for</span> (; i &lt;= n; i += i&amp;-i) b[i]++; }</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code"><span class="hljs-keyword">private</span> <span class="hljs-type">int</span>  <span class="hljs-title function_">queryBIT</span><span class="hljs-params">(<span class="hljs-type">int</span>[] b, <span class="hljs-type">int</span> i)</span>         { <span class="hljs-type">int</span> s=<span class="hljs-number">0</span>; <span class="hljs-keyword">for</span>(;i&gt;<span class="hljs-number">0</span>;i-=i&amp;-i) s+=b[i]; <span class="hljs-keyword">return</span> s; }</span></span>
+<pre><code class="language-java">// LC 493 - Reverse Pairs
+// IDEA: BIT + coordinate compression — process right to left; query then update
+// time = O(N log N), space = O(N)
+public int reversePairs(int[] nums) {
+    int n = nums.length;
+    long[] sorted = new long[2 * n];
+    for (int i = 0; i &lt; n; i++) { sorted[i] = nums[i]; sorted[n+i] = 2L * nums[i]; }
+    Arrays.sort(sorted);
+    Map&lt;Long, Integer&gt; rank = new HashMap&lt;&gt;();
+    int r = 1;
+    for (long v : sorted) if (!rank.containsKey(v)) rank.put(v, r++);
+    int[] bit = new int[r];
+    int count = 0;
+    for (int i = n - 1; i &gt;= 0; i--) {
+        count += queryBIT(bit, rank.get((long)nums[i]) - 1);
+        updateBIT(bit, rank.get(2L * nums[i]), r - 1);
+    }
+    return count;
+}
+private void updateBIT(int[] b, int i, int n) { for (; i &lt;= n; i += i&amp;-i) b[i]++; }
+private int  queryBIT(int[] b, int i)         { int s=0; for(;i&gt;0;i-=i&amp;-i) s+=b[i]; return s; }
 </code></pre>
 <h3 id="2-5-count-of-range-sum-lc-327-bit-merge-sort" tabindex="-1"><a class="header-anchor" href="#2-5-count-of-range-sum-lc-327-bit-merge-sort"><span>2-5) Count of Range Sum (LC 327) — BIT / Merge Sort</span></a></h3>
 <blockquote>
 <p>For each prefix sum, count how many previous prefix sums fall in [prefixSum-upper, prefixSum-lower].</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 327 - Count of Range Sum (merge sort approach)</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Merge sort — count valid pairs during the merge step</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N log N), space = O(N)</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">countRangeSum</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> lower, <span class="hljs-type">int</span> upper)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length;</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-type">long</span>[] prefix = <span class="hljs-keyword">new</span> <span class="hljs-title class_">long</span>[n + <span class="hljs-number">1</span>];</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) prefix[i+<span class="hljs-number">1</span>] = prefix[i] + nums[i];</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">return</span> mergeCount(prefix, <span class="hljs-number">0</span>, n + <span class="hljs-number">1</span>, lower, upper);</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">}</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code"><span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">mergeCount</span><span class="hljs-params">(<span class="hljs-type">long</span>[] arr, <span class="hljs-type">int</span> l, <span class="hljs-type">int</span> r, <span class="hljs-type">int</span> lo, <span class="hljs-type">int</span> hi)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">    <span class="hljs-keyword">if</span> (r - l &lt;= <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> (l + r) / <span class="hljs-number">2</span>;</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> mergeCount(arr, l, mid, lo, hi) + mergeCount(arr, mid, r, lo, hi);</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> mid, k = mid;</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> l; i &lt; mid; i++) {</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        <span class="hljs-keyword">while</span> (j &lt; r &amp;&amp; arr[j] - arr[i] &lt; lo) j++;</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        <span class="hljs-keyword">while</span> (k &lt; r &amp;&amp; arr[k] - arr[i] &lt;= hi) k++;</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        count += k - j;</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    <span class="hljs-type">long</span>[] tmp = Arrays.copyOfRange(arr, l, r);</span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">    Arrays.sort(tmp);</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">    System.arraycopy(tmp, <span class="hljs-number">0</span>, arr, l, tmp.length);</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">    <span class="hljs-keyword">return</span> count;</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// LC 327 - Count of Range Sum (merge sort approach)
+// IDEA: Merge sort — count valid pairs during the merge step
+// time = O(N log N), space = O(N)
+public int countRangeSum(int[] nums, int lower, int upper) {
+    int n = nums.length;
+    long[] prefix = new long[n + 1];
+    for (int i = 0; i &lt; n; i++) prefix[i+1] = prefix[i] + nums[i];
+    return mergeCount(prefix, 0, n + 1, lower, upper);
+}
+private int mergeCount(long[] arr, int l, int r, int lo, int hi) {
+    if (r - l &lt;= 1) return 0;
+    int mid = (l + r) / 2;
+    int count = mergeCount(arr, l, mid, lo, hi) + mergeCount(arr, mid, r, lo, hi);
+    int j = mid, k = mid;
+    for (int i = l; i &lt; mid; i++) {
+        while (j &lt; r &amp;&amp; arr[j] - arr[i] &lt; lo) j++;
+        while (k &lt; r &amp;&amp; arr[k] - arr[i] &lt;= hi) k++;
+        count += k - j;
+    }
+    long[] tmp = Arrays.copyOfRange(arr, l, r);
+    Arrays.sort(tmp);
+    System.arraycopy(tmp, 0, arr, l, tmp.length);
+    return count;
+}
 </code></pre>
 <h3 id="2-6-queue-reconstruction-by-height-lc-406-greedy-insertion" tabindex="-1"><a class="header-anchor" href="#2-6-queue-reconstruction-by-height-lc-406-greedy-insertion"><span>2-6) Queue Reconstruction by Height (LC 406) — Greedy Insertion</span></a></h3>
 <blockquote>
 <p>Sort by height DESC (k ASC for ties); insert each person at index k — taller already placed.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 406 - Queue Reconstruction by Height</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Sort height DESC (k ASC); insert at index k — taller people already positioned</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N^2), space = O(N)</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span>[][] reconstructQueue(<span class="hljs-type">int</span>[][] people) {</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    Arrays.sort(people, (a, b) -&gt; a[<span class="hljs-number">0</span>] != b[<span class="hljs-number">0</span>] ? b[<span class="hljs-number">0</span>] - a[<span class="hljs-number">0</span>] : a[<span class="hljs-number">1</span>] - b[<span class="hljs-number">1</span>]);</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    List&lt;<span class="hljs-type">int</span>[]&gt; res = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span>[] p : people) res.add(p[<span class="hljs-number">1</span>], p);</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">return</span> res.toArray(<span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[res.size()][]);</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// LC 406 - Queue Reconstruction by Height
+// IDEA: Sort height DESC (k ASC); insert at index k — taller people already positioned
+// time = O(N^2), space = O(N)
+public int[][] reconstructQueue(int[][] people) {
+    Arrays.sort(people, (a, b) -&gt; a[0] != b[0] ? b[0] - a[0] : a[1] - b[1]);
+    List&lt;int[]&gt; res = new ArrayList&lt;&gt;();
+    for (int[] p : people) res.add(p[1], p);
+    return res.toArray(new int[res.size()][]);
+}
 </code></pre>
 <h3 id="2-7-range-sum-query-mutable-bit-vs-segment-tree-comparison" tabindex="-1"><a class="header-anchor" href="#2-7-range-sum-query-mutable-bit-vs-segment-tree-comparison"><span>2-7) Range Sum Query Mutable — BIT vs Segment Tree Comparison</span></a></h3>
 <blockquote>
 <p>BIT for point update + prefix query; Segment Tree for arbitrary range query/update.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 307 - Range Sum Query Mutable (BIT version)</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: BIT — O(log N) point update and prefix sum; range via subtraction</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(log N) per update/query, space = O(N)</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">NumArray</span> {</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-type">int</span>[] bit, nums;</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-type">int</span> n;</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-title function_">NumArray</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        n = nums.length;</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-built_in">this</span>.nums = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        bit = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n + <span class="hljs-number">1</span>];</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) update(i, nums[i]);</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">update</span><span class="hljs-params">(<span class="hljs-type">int</span> i, <span class="hljs-type">int</span> val)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">delta</span> <span class="hljs-operator">=</span> val - nums[i];</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        nums[i] = val;</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">x</span> <span class="hljs-operator">=</span> i + <span class="hljs-number">1</span>; x &lt;= n; x += x &amp; -x) bit[x] += delta;</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">sumRange</span><span class="hljs-params">(<span class="hljs-type">int</span> l, <span class="hljs-type">int</span> r)</span> { <span class="hljs-keyword">return</span> prefix(r+<span class="hljs-number">1</span>) - prefix(l); }</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">prefix</span><span class="hljs-params">(<span class="hljs-type">int</span> i)</span> { <span class="hljs-type">int</span> s=<span class="hljs-number">0</span>; <span class="hljs-keyword">for</span>(;i&gt;<span class="hljs-number">0</span>;i-=i&amp;-i) s+=bit[i]; <span class="hljs-keyword">return</span> s; }</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// LC 307 - Range Sum Query Mutable (BIT version)
+// IDEA: BIT — O(log N) point update and prefix sum; range via subtraction
+// time = O(log N) per update/query, space = O(N)
+class NumArray {
+    int[] bit, nums;
+    int n;
+    public NumArray(int[] nums) {
+        n = nums.length;
+        this.nums = new int[n];
+        bit = new int[n + 1];
+        for (int i = 0; i &lt; n; i++) update(i, nums[i]);
+    }
+    public void update(int i, int val) {
+        int delta = val - nums[i];
+        nums[i] = val;
+        for (int x = i + 1; x &lt;= n; x += x &amp; -x) bit[x] += delta;
+    }
+    public int sumRange(int l, int r) { return prefix(r+1) - prefix(l); }
+    private int prefix(int i) { int s=0; for(;i&gt;0;i-=i&amp;-i) s+=bit[i]; return s; }
+}
 </code></pre>
-<h3 id="2-8-range-sum-query-2d-mutable-lc-308-2d-bit" tabindex="-1"><a class="header-anchor" href="#2-8-range-sum-query-2d-mutable-lc-308-2d-bit"><span>2-8) Range Sum Query 2D - Mutable (LC 308) — 2D BIT</span></a></h3>
+<h3 id="2-7-1-range-sum-query-2d-mutable-lc-308-2d-bit" tabindex="-1"><a class="header-anchor" href="#2-7-1-range-sum-query-2d-mutable-lc-308-2d-bit"><span>2-7-1) Range Sum Query 2D - Mutable (LC 308) — 2D BIT</span></a></h3>
 <blockquote>
 <p>Extend BIT to 2D: O(log M * log N) per update/query on a matrix.</p>
 </blockquote>
@@ -386,104 +381,104 @@ Consider an array: [3, 2, -1, 6, 5, 4].</p>
 </tbody>
 </table>
 <h4 id="why-2d-inclusion-exclusion" tabindex="-1"><a class="header-anchor" href="#why-2d-inclusion-exclusion"><span>Why 2D Inclusion-Exclusion?</span></a></h4>
-<pre><code class="hljs"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">To get sum of rectangle (r1,c1) to (r2,c2):</span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">  query(r2, c2)           = entire top-left block</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">- query(r1-1, c2)         = remove rows above</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">- query(r2, c1-1)         = remove cols to the left</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">+ query(r1-1, c1-1)       = add back double-subtracted corner</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">Visual:</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">  ┌──────────┬──────────┐</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">  │  +added  │  -removed│     query(r1-1, c2) removes this top strip</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">  │  back    │  (top)   │</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">  ├──────────┼──────────┤  r1</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">  │  -removed│ ★ TARGET │</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">  │  (left)  │  REGION  │</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">  └──────────┴──────────┘  r2</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">            c1          c2</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">  sum = query(r2,c2) - query(r1-1,c2) - query(r2,c1-1) + query(r1-1,c1-1)</span></span>
+<pre><code>To get sum of rectangle (r1,c1) to (r2,c2):
+
+  query(r2, c2)           = entire top-left block
+- query(r1-1, c2)         = remove rows above
+- query(r2, c1-1)         = remove cols to the left
++ query(r1-1, c1-1)       = add back double-subtracted corner
+
+Visual:
+
+  ┌──────────┬──────────┐
+  │  +added  │  -removed│     query(r1-1, c2) removes this top strip
+  │  back    │  (top)   │
+  ├──────────┼──────────┤  r1
+  │  -removed│ ★ TARGET │
+  │  (left)  │  REGION  │
+  └──────────┴──────────┘  r2
+            c1          c2
+
+  sum = query(r2,c2) - query(r1-1,c2) - query(r2,c1-1) + query(r1-1,c1-1)
 </code></pre>
 <p>This is the same inclusion-exclusion as 2D prefix sum (LC 304), but BIT supports <strong>mutable updates</strong>.</p>
 <h4 id="java-implementation" tabindex="-1"><a class="header-anchor" href="#java-implementation"><span>Java Implementation</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 308 - Range Sum Query 2D - Mutable</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: 2D Binary Indexed Tree (Fenwick Tree)</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(log M * log N) per update/query, space = O(M * N)</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">NumMatrix</span> {</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span>[][] tree;  <span class="hljs-comment">// 2D BIT (1-indexed)</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span>[][] nums;  <span class="hljs-comment">// original values (for computing delta)</span></span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> m, n;</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-title function_">NumMatrix</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] matrix)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-keyword">if</span> (matrix.length == <span class="hljs-number">0</span> || matrix[<span class="hljs-number">0</span>].length == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span>;</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        m = matrix.length;</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        n = matrix[<span class="hljs-number">0</span>].length;</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        tree = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[m + <span class="hljs-number">1</span>][n + <span class="hljs-number">1</span>];</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        nums = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[m][n];</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; m; i++)</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; n; j++)</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">                update(i, j, matrix[i][j]);</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code">    <span class="hljs-comment">// Point update: set matrix[row][col] = val</span></span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">update</span><span class="hljs-params">(<span class="hljs-type">int</span> row, <span class="hljs-type">int</span> col, <span class="hljs-type">int</span> val)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">delta</span> <span class="hljs-operator">=</span> val - nums[row][col];</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        nums[row][col] = val;</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">        <span class="hljs-comment">// Propagate delta through 2D BIT (nested lowbit traversal)</span></span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> row + <span class="hljs-number">1</span>; i &lt;= m; i += i &amp; -i)</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> col + <span class="hljs-number">1</span>; j &lt;= n; j += j &amp; -j)</span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">                tree[i][j] += delta;</span></span>
-<span class="ln-row"><span class="ln-num">28</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">29</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">30</span><span class="ln-code">    <span class="hljs-comment">// Prefix sum query: sum of (0,0) to (row,col)</span></span></span>
-<span class="ln-row"><span class="ln-num">31</span><span class="ln-code">    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">query</span><span class="hljs-params">(<span class="hljs-type">int</span> row, <span class="hljs-type">int</span> col)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">32</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">sum</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
-<span class="ln-row"><span class="ln-num">33</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> row + <span class="hljs-number">1</span>; i &gt; <span class="hljs-number">0</span>; i -= i &amp; -i)</span></span>
-<span class="ln-row"><span class="ln-num">34</span><span class="ln-code">            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> col + <span class="hljs-number">1</span>; j &gt; <span class="hljs-number">0</span>; j -= j &amp; -j)</span></span>
-<span class="ln-row"><span class="ln-num">35</span><span class="ln-code">                sum += tree[i][j];</span></span>
-<span class="ln-row"><span class="ln-num">36</span><span class="ln-code">        <span class="hljs-keyword">return</span> sum;</span></span>
-<span class="ln-row"><span class="ln-num">37</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">38</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">39</span><span class="ln-code">    <span class="hljs-comment">// Range sum: rectangle (row1,col1) to (row2,col2)</span></span></span>
-<span class="ln-row"><span class="ln-num">40</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">sumRegion</span><span class="hljs-params">(<span class="hljs-type">int</span> row1, <span class="hljs-type">int</span> col1, <span class="hljs-type">int</span> row2, <span class="hljs-type">int</span> col2)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">41</span><span class="ln-code">        <span class="hljs-comment">// 2D inclusion-exclusion</span></span></span>
-<span class="ln-row"><span class="ln-num">42</span><span class="ln-code">        <span class="hljs-keyword">return</span> query(row2, col2)</span></span>
-<span class="ln-row"><span class="ln-num">43</span><span class="ln-code">             - query(row1 - <span class="hljs-number">1</span>, col2)</span></span>
-<span class="ln-row"><span class="ln-num">44</span><span class="ln-code">             - query(row2, col1 - <span class="hljs-number">1</span>)</span></span>
-<span class="ln-row"><span class="ln-num">45</span><span class="ln-code">             + query(row1 - <span class="hljs-number">1</span>, col1 - <span class="hljs-number">1</span>);</span></span>
-<span class="ln-row"><span class="ln-num">46</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">47</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// LC 308 - Range Sum Query 2D - Mutable
+// IDEA: 2D Binary Indexed Tree (Fenwick Tree)
+// time = O(log M * log N) per update/query, space = O(M * N)
+class NumMatrix {
+    private int[][] tree;  // 2D BIT (1-indexed)
+    private int[][] nums;  // original values (for computing delta)
+    private int m, n;
+
+    public NumMatrix(int[][] matrix) {
+        if (matrix.length == 0 || matrix[0].length == 0) return;
+        m = matrix.length;
+        n = matrix[0].length;
+        tree = new int[m + 1][n + 1];
+        nums = new int[m][n];
+        for (int i = 0; i &lt; m; i++)
+            for (int j = 0; j &lt; n; j++)
+                update(i, j, matrix[i][j]);
+    }
+
+    // Point update: set matrix[row][col] = val
+    public void update(int row, int col, int val) {
+        int delta = val - nums[row][col];
+        nums[row][col] = val;
+        // Propagate delta through 2D BIT (nested lowbit traversal)
+        for (int i = row + 1; i &lt;= m; i += i &amp; -i)
+            for (int j = col + 1; j &lt;= n; j += j &amp; -j)
+                tree[i][j] += delta;
+    }
+
+    // Prefix sum query: sum of (0,0) to (row,col)
+    private int query(int row, int col) {
+        int sum = 0;
+        for (int i = row + 1; i &gt; 0; i -= i &amp; -i)
+            for (int j = col + 1; j &gt; 0; j -= j &amp; -j)
+                sum += tree[i][j];
+        return sum;
+    }
+
+    // Range sum: rectangle (row1,col1) to (row2,col2)
+    public int sumRegion(int row1, int col1, int row2, int col2) {
+        // 2D inclusion-exclusion
+        return query(row2, col2)
+             - query(row1 - 1, col2)
+             - query(row2, col1 - 1)
+             + query(row1 - 1, col1 - 1);
+    }
+}
 </code></pre>
 <h4 id="alternative-row-based-1d-bit-simpler-but-slower" tabindex="-1"><a class="header-anchor" href="#alternative-row-based-1d-bit-simpler-but-slower"><span>Alternative: Row-based 1D BIT (simpler but slower)</span></a></h4>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// Each row has its own 1D BIT</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// update = O(log N), sumRegion = O(M * log N)  — slower for large M</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-keyword">class</span> <span class="hljs-title class_">NumMatrix_RowBIT</span> {</span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">    <span class="hljs-keyword">private</span> BIT[] trees;</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-title function_">NumMatrix_RowBIT</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] matrix)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> matrix.length, n = matrix[<span class="hljs-number">0</span>].length;</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        trees = <span class="hljs-keyword">new</span> <span class="hljs-title class_">BIT</span>[m];</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; m; i++) {</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">            trees[i] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">BIT</span>(n);</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; n; j++)</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">                trees[i].update(j + <span class="hljs-number">1</span>, matrix[i][j]);</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">update</span><span class="hljs-params">(<span class="hljs-type">int</span> row, <span class="hljs-type">int</span> col, <span class="hljs-type">int</span> val)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">prev</span> <span class="hljs-operator">=</span> trees[row].query(col + <span class="hljs-number">1</span>) - trees[row].query(col);</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">        trees[row].update(col + <span class="hljs-number">1</span>, val - prev);</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">20</span><span class="ln-code"></span></span>
-<span class="ln-row"><span class="ln-num">21</span><span class="ln-code">    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">sumRegion</span><span class="hljs-params">(<span class="hljs-type">int</span> row1, <span class="hljs-type">int</span> col1, <span class="hljs-type">int</span> row2, <span class="hljs-type">int</span> col2)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">22</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">sum</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
-<span class="ln-row"><span class="ln-num">23</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> row1; i &lt;= row2; i++)</span></span>
-<span class="ln-row"><span class="ln-num">24</span><span class="ln-code">            sum += trees[i].query(col2 + <span class="hljs-number">1</span>) - trees[i].query(col1);</span></span>
-<span class="ln-row"><span class="ln-num">25</span><span class="ln-code">        <span class="hljs-keyword">return</span> sum;</span></span>
-<span class="ln-row"><span class="ln-num">26</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">27</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// Each row has its own 1D BIT
+// update = O(log N), sumRegion = O(M * log N)  — slower for large M
+class NumMatrix_RowBIT {
+    private BIT[] trees;
+
+    public NumMatrix_RowBIT(int[][] matrix) {
+        int m = matrix.length, n = matrix[0].length;
+        trees = new BIT[m];
+        for (int i = 0; i &lt; m; i++) {
+            trees[i] = new BIT(n);
+            for (int j = 0; j &lt; n; j++)
+                trees[i].update(j + 1, matrix[i][j]);
+        }
+    }
+
+    public void update(int row, int col, int val) {
+        int prev = trees[row].query(col + 1) - trees[row].query(col);
+        trees[row].update(col + 1, val - prev);
+    }
+
+    public int sumRegion(int row1, int col1, int row2, int col2) {
+        int sum = 0;
+        for (int i = row1; i &lt;= row2; i++)
+            sum += trees[i].query(col2 + 1) - trees[i].query(col1);
+        return sum;
+    }
+}
 </code></pre>
 <h4 id="approach-comparison-for-lc-308" tabindex="-1"><a class="header-anchor" href="#approach-comparison-for-lc-308"><span>Approach Comparison for LC 308</span></a></h4>
 <table>
@@ -563,62 +558,62 @@ Consider an array: [3, 2, -1, 6, 5, 4].</p>
 <blockquote>
 <p>Track both length and count at each position; update count when equal-length path found.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 673 - Number of Longest Increasing Subsequences</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: DP — (len[i], cnt[i]) = (LIS length at i, number of such LIS)</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N^2), space = O(N)</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">findNumberOfLIS</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">n</span> <span class="hljs-operator">=</span> nums.length, maxLen = <span class="hljs-number">0</span>, result = <span class="hljs-number">0</span>;</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-type">int</span>[] len = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n], cnt = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n];</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; n; i++) {</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">        len[i] = cnt[i] = <span class="hljs-number">1</span>;</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; i; j++) {</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">            <span class="hljs-keyword">if</span> (nums[j] &lt; nums[i]) {</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">                <span class="hljs-keyword">if</span> (len[j] + <span class="hljs-number">1</span> &gt; len[i]) { len[i] = len[j]+<span class="hljs-number">1</span>; cnt[i] = cnt[j]; }</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">                <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (len[j] + <span class="hljs-number">1</span> == len[i]) cnt[i] += cnt[j];</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">            }</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">        }</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">        <span class="hljs-keyword">if</span> (len[i] &gt; maxLen) { maxLen = len[i]; result = cnt[i]; }</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">        <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (len[i] == maxLen) result += cnt[i];</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code">    <span class="hljs-keyword">return</span> result;</span></span>
-<span class="ln-row"><span class="ln-num">19</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// LC 673 - Number of Longest Increasing Subsequences
+// IDEA: DP — (len[i], cnt[i]) = (LIS length at i, number of such LIS)
+// time = O(N^2), space = O(N)
+public int findNumberOfLIS(int[] nums) {
+    int n = nums.length, maxLen = 0, result = 0;
+    int[] len = new int[n], cnt = new int[n];
+    for (int i = 0; i &lt; n; i++) {
+        len[i] = cnt[i] = 1;
+        for (int j = 0; j &lt; i; j++) {
+            if (nums[j] &lt; nums[i]) {
+                if (len[j] + 1 &gt; len[i]) { len[i] = len[j]+1; cnt[i] = cnt[j]; }
+                else if (len[j] + 1 == len[i]) cnt[i] += cnt[j];
+            }
+        }
+        if (len[i] &gt; maxLen) { maxLen = len[i]; result = cnt[i]; }
+        else if (len[i] == maxLen) result += cnt[i];
+    }
+    return result;
+}
 </code></pre>
 <h3 id="2-9-create-sorted-array-through-instructions-lc-1649-bit" tabindex="-1"><a class="header-anchor" href="#2-9-create-sorted-array-through-instructions-lc-1649-bit"><span>2-9) Create Sorted Array through Instructions (LC 1649) — BIT</span></a></h3>
 <blockquote>
 <p>For each instruction, cost = min(count smaller, count larger) already inserted; use BIT.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 1649 - Create Sorted Array through Instructions</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: BIT on value range — count smaller and greater elements already inserted</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N log M), space = O(M)  M = max value</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">createSortedArray</span><span class="hljs-params">(<span class="hljs-type">int</span>[] instructions)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-type">int</span> <span class="hljs-variable">MOD</span> <span class="hljs-operator">=</span> <span class="hljs-number">1_000_000_007</span>, n = <span class="hljs-number">100001</span>;</span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-type">int</span>[] bit = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[n + <span class="hljs-number">1</span>];</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">    <span class="hljs-type">long</span> <span class="hljs-variable">cost</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; instructions.length; i++) {</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">x</span> <span class="hljs-operator">=</span> instructions[i];</span></span>
-<span class="ln-row"><span class="ln-num">10</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">smaller</span> <span class="hljs-operator">=</span> query(bit, x - <span class="hljs-number">1</span>);</span></span>
-<span class="ln-row"><span class="ln-num">11</span><span class="ln-code">        <span class="hljs-type">int</span> <span class="hljs-variable">larger</span>  <span class="hljs-operator">=</span> i - query(bit, x);</span></span>
-<span class="ln-row"><span class="ln-num">12</span><span class="ln-code">        cost = (cost + Math.min(smaller, larger)) % MOD;</span></span>
-<span class="ln-row"><span class="ln-num">13</span><span class="ln-code">        update(bit, x, n);</span></span>
-<span class="ln-row"><span class="ln-num">14</span><span class="ln-code">    }</span></span>
-<span class="ln-row"><span class="ln-num">15</span><span class="ln-code">    <span class="hljs-keyword">return</span> (<span class="hljs-type">int</span>) cost;</span></span>
-<span class="ln-row"><span class="ln-num">16</span><span class="ln-code">}</span></span>
-<span class="ln-row"><span class="ln-num">17</span><span class="ln-code"><span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">update</span><span class="hljs-params">(<span class="hljs-type">int</span>[] b, <span class="hljs-type">int</span> i, <span class="hljs-type">int</span> n)</span> { <span class="hljs-keyword">for</span> (; i &lt;= n; i += i&amp;-i) b[i]++; }</span></span>
-<span class="ln-row"><span class="ln-num">18</span><span class="ln-code"><span class="hljs-keyword">private</span> <span class="hljs-type">int</span>  <span class="hljs-title function_">query</span><span class="hljs-params">(<span class="hljs-type">int</span>[] b, <span class="hljs-type">int</span> i)</span>         { <span class="hljs-type">int</span> s=<span class="hljs-number">0</span>; <span class="hljs-keyword">for</span>(;i&gt;<span class="hljs-number">0</span>;i-=i&amp;-i) s+=b[i]; <span class="hljs-keyword">return</span> s; }</span></span>
+<pre><code class="language-java">// LC 1649 - Create Sorted Array through Instructions
+// IDEA: BIT on value range — count smaller and greater elements already inserted
+// time = O(N log M), space = O(M)  M = max value
+public int createSortedArray(int[] instructions) {
+    int MOD = 1_000_000_007, n = 100001;
+    int[] bit = new int[n + 1];
+    long cost = 0;
+    for (int i = 0; i &lt; instructions.length; i++) {
+        int x = instructions[i];
+        int smaller = query(bit, x - 1);
+        int larger  = i - query(bit, x);
+        cost = (cost + Math.min(smaller, larger)) % MOD;
+        update(bit, x, n);
+    }
+    return (int) cost;
+}
+private void update(int[] b, int i, int n) { for (; i &lt;= n; i += i&amp;-i) b[i]++; }
+private int  query(int[] b, int i)         { int s=0; for(;i&gt;0;i-=i&amp;-i) s+=b[i]; return s; }
 </code></pre>
 <h3 id="2-10-global-and-local-inversions-lc-775-bit" tabindex="-1"><a class="header-anchor" href="#2-10-global-and-local-inversions-lc-775-bit"><span>2-10) Global and Local Inversions (LC 775) — BIT</span></a></h3>
 <blockquote>
 <p>Global inversions &gt;= local inversions always; equal iff no non-adjacent inversion exists.</p>
 </blockquote>
-<pre data-lang="java"><code class="hljs language-java"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code"><span class="hljs-comment">// LC 775 - Global and Local Inversions</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code"><span class="hljs-comment">// IDEA: Global inversions == local iff no nums[i] &gt; nums[j] for j &gt;= i+2</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code"><span class="hljs-comment">// time = O(N), space = O(1)</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code"><span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isIdealPermutation</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {</span></span>
-<span class="ln-row"><span class="ln-num">5</span><span class="ln-code">    <span class="hljs-comment">// global == local iff every element is within 1 of its sorted position</span></span></span>
-<span class="ln-row"><span class="ln-num">6</span><span class="ln-code">    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; nums.length; i++)</span></span>
-<span class="ln-row"><span class="ln-num">7</span><span class="ln-code">        <span class="hljs-keyword">if</span> (Math.abs(nums[i] - i) &gt; <span class="hljs-number">1</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;</span></span>
-<span class="ln-row"><span class="ln-num">8</span><span class="ln-code">    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;</span></span>
-<span class="ln-row"><span class="ln-num">9</span><span class="ln-code">}</span></span>
+<pre><code class="language-java">// LC 775 - Global and Local Inversions
+// IDEA: Global inversions == local iff no nums[i] &gt; nums[j] for j &gt;= i+2
+// time = O(N), space = O(1)
+public boolean isIdealPermutation(int[] nums) {
+    // global == local iff every element is within 1 of its sorted position
+    for (int i = 0; i &lt; nums.length; i++)
+        if (Math.abs(nums[i] - i) &gt; 1) return false;
+    return true;
+}
 </code></pre>
 
       </div>

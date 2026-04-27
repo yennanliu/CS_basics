@@ -9,7 +9,8 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="../vendor/fonts.css">
-  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
+  <link rel="stylesheet" href="../vendor/highlight/github-dark.min.css">
+  <script src="../vendor/highlight/highlight.min.js"></script>
   <script>
   // Apply theme before render to prevent flash
   (function() {
@@ -20,42 +21,40 @@
   })();
   </script>
   <script>document.addEventListener('DOMContentLoaded', function() {
-    // Code block wrappers + copy buttons (highlighting done at build time)
-    try {
-      document.querySelectorAll('pre').forEach(function(pre) {
-        var codeEl = pre.querySelector('code');
-        var lang = pre.getAttribute('data-lang') || '';
-        var wrapper = document.createElement('div');
-        wrapper.className = 'code-block-wrapper';
-        pre.parentNode.insertBefore(wrapper, pre);
-        var header = document.createElement('div');
-        header.className = 'code-block-header';
-        if (lang) {
-          var label = document.createElement('span');
-          label.className = 'code-lang-label';
-          label.textContent = lang;
-          header.appendChild(label);
-        } else {
-          header.appendChild(document.createElement('span'));
-        }
-        var btn = document.createElement('button');
-        btn.className = 'copy-btn';
-        btn.textContent = 'Copy';
-        btn.addEventListener('click', function() {
-          var text = codeEl
-            ? Array.from(codeEl.querySelectorAll('.ln-code')).map(function(el) { return el.textContent; }).join('\n')
-            : pre.textContent;
-          navigator.clipboard.writeText(text).then(function() {
-            btn.textContent = 'Copied!';
-            btn.classList.add('copied');
-            setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
-          });
+    hljs.highlightAll();
+    document.querySelectorAll('pre code').forEach(function(codeEl) {
+      var pre = codeEl.parentElement;
+      var lang = '';
+      var cls = codeEl.className || '';
+      var m = cls.match(/language-(S+)/) || cls.match(/hljss+(S+)/);
+      if (m) lang = m[1];
+      var wrapper = document.createElement('div');
+      wrapper.className = 'code-block-wrapper';
+      pre.parentNode.insertBefore(wrapper, pre);
+      var header = document.createElement('div');
+      header.className = 'code-block-header';
+      if (lang) {
+        var label = document.createElement('span');
+        label.className = 'code-lang-label';
+        label.textContent = lang;
+        header.appendChild(label);
+      } else {
+        header.appendChild(document.createElement('span'));
+      }
+      var btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(codeEl.textContent).then(function() {
+          btn.textContent = 'Copied!';
+          btn.classList.add('copied');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
         });
-        header.appendChild(btn);
-        wrapper.appendChild(header);
-        wrapper.appendChild(pre);
       });
-    } catch(e) { console.error('Code block setup error:', e); }
+      header.appendChild(btn);
+      wrapper.appendChild(header);
+      wrapper.appendChild(pre);
+    });
     document.querySelectorAll('table').forEach(function(table) {
       if (!table.parentElement.classList.contains('table-wrap')) {
         var wrapper = document.createElement('div');
@@ -65,36 +64,32 @@
       }
     });
     // Reading progress bar
-    try {
-      var progressBar = document.getElementById('reading-progress');
-      if (progressBar) {
-        window.addEventListener('scroll', function() {
-          var winScroll = document.documentElement.scrollTop;
-          var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-          progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
-        });
-      }
-    } catch(e) {}
-    // Dark mode toggle — isolated so errors elsewhere never prevent this from working
-    try {
-      var toggle = document.getElementById('theme-toggle');
-      if (toggle) {
-        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-        toggle.textContent = isDark ? '☀️' : '🌙';
-        toggle.addEventListener('click', function() {
-          var dark = document.documentElement.getAttribute('data-theme') === 'dark';
-          if (dark) {
-            document.documentElement.removeAttribute('data-theme');
-            localStorage.setItem('theme', 'light');
-            toggle.textContent = '🌙';
-          } else {
-            document.documentElement.setAttribute('data-theme', 'dark');
-            localStorage.setItem('theme', 'dark');
-            toggle.textContent = '☀️';
-          }
-        });
-      }
-    } catch(e) { console.error('Theme toggle error:', e); }
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    // Dark mode toggle
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      toggle.textContent = isDark ? '☀️' : '🌙';
+      toggle.addEventListener('click', function() {
+        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (dark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    }
   });</script>
 </head>
 <body>
@@ -153,43 +148,43 @@
 <hr>
 <h2 id="basic-leaderboard-operations-with-redis" tabindex="-1"><a class="header-anchor" href="#basic-leaderboard-operations-with-redis"><span>✅ Basic Leaderboard Operations with Redis</span></a></h2>
 <h3 id="1-add-or-update-a-player-s-score" tabindex="-1"><a class="header-anchor" href="#1-add-or-update-a-player-s-score"><span>1. Add or Update a Player’s Score</span></a></h3>
-<pre data-lang="bash"><code class="hljs language-bash"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">ZADD leaderboard &lt;score&gt; &lt;user_id&gt;</span></span>
+<pre><code class="language-bash">ZADD leaderboard &lt;score&gt; &lt;user_id&gt;
 </code></pre>
 <p>✅ Adds the user if not present, or updates the score if already in the set.</p>
 <p><strong>Example:</strong></p>
-<pre data-lang="bash"><code class="hljs language-bash"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">ZADD leaderboard 1500 <span class="hljs-string">&quot;user:123&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">ZADD leaderboard 1800 <span class="hljs-string">&quot;user:456&quot;</span></span></span>
+<pre><code class="language-bash">ZADD leaderboard 1500 &quot;user:123&quot;
+ZADD leaderboard 1800 &quot;user:456&quot;
 </code></pre>
 <h3 id="2-get-top-n-players" tabindex="-1"><a class="header-anchor" href="#2-get-top-n-players"><span>2. Get Top N Players</span></a></h3>
-<pre data-lang="bash"><code class="hljs language-bash"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">ZREVRANGE leaderboard 0 N-1 WITHSCORES</span></span>
+<pre><code class="language-bash">ZREVRANGE leaderboard 0 N-1 WITHSCORES
 </code></pre>
 <ul>
 <li>Use <code>ZREVRANGE</code> for <strong>descending order</strong> (highest score first).</li>
 <li><code>WITHSCORES</code> returns both user IDs and scores.</li>
 </ul>
 <p><strong>Example:</strong></p>
-<pre data-lang="bash"><code class="hljs language-bash"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">ZREVRANGE leaderboard 0 9 WITHSCORES  <span class="hljs-comment"># Top 10 players</span></span></span>
+<pre><code class="language-bash">ZREVRANGE leaderboard 0 9 WITHSCORES  # Top 10 players
 </code></pre>
 <h3 id="3-get-player-rank" tabindex="-1"><a class="header-anchor" href="#3-get-player-rank"><span>3. Get Player Rank</span></a></h3>
-<pre data-lang="bash"><code class="hljs language-bash"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">ZREVRANK leaderboard &lt;user_id&gt;</span></span>
+<pre><code class="language-bash">ZREVRANK leaderboard &lt;user_id&gt;
 </code></pre>
 <ul>
 <li>Returns the 0-based <strong>rank</strong> of the player in descending order.</li>
 </ul>
 <p><strong>Example:</strong></p>
-<pre data-lang="bash"><code class="hljs language-bash"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">ZREVRANK leaderboard <span class="hljs-string">&quot;user:123&quot;</span>  <span class="hljs-comment"># e.g., returns 5</span></span></span>
+<pre><code class="language-bash">ZREVRANK leaderboard &quot;user:123&quot;  # e.g., returns 5
 </code></pre>
 <h3 id="4-get-player-score" tabindex="-1"><a class="header-anchor" href="#4-get-player-score"><span>4. Get Player Score</span></a></h3>
-<pre data-lang="bash"><code class="hljs language-bash"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">ZSCORE leaderboard &lt;user_id&gt;</span></span>
+<pre><code class="language-bash">ZSCORE leaderboard &lt;user_id&gt;
 </code></pre>
 <p><strong>Example:</strong></p>
-<pre data-lang="bash"><code class="hljs language-bash"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">ZSCORE leaderboard <span class="hljs-string">&quot;user:123&quot;</span>  <span class="hljs-comment"># e.g., returns 1500.0</span></span></span>
+<pre><code class="language-bash">ZSCORE leaderboard &quot;user:123&quot;  # e.g., returns 1500.0
 </code></pre>
 <h3 id="5-remove-a-player" tabindex="-1"><a class="header-anchor" href="#5-remove-a-player"><span>5. Remove a Player</span></a></h3>
-<pre data-lang="bash"><code class="hljs language-bash"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">ZREM leaderboard &lt;user_id&gt;</span></span>
+<pre><code class="language-bash">ZREM leaderboard &lt;user_id&gt;
 </code></pre>
 <p><strong>Example:</strong></p>
-<pre data-lang="bash"><code class="hljs language-bash"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">ZREM leaderboard <span class="hljs-string">&quot;user:123&quot;</span></span></span>
+<pre><code class="language-bash">ZREM leaderboard &quot;user:123&quot;
 </code></pre>
 <hr>
 <h2 id="optional-enhancements" tabindex="-1"><a class="header-anchor" href="#optional-enhancements"><span>🧱 Optional Enhancements</span></a></h2>
@@ -215,20 +210,20 @@
 </li>
 <li>
 <p>Store user metadata in a <strong>Redis hash or another DB</strong>:</p>
-<pre data-lang="bash"><code class="hljs language-bash"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">HGETALL user:123  <span class="hljs-comment"># e.g., {&quot;username&quot;: &quot;Alice&quot;, &quot;avatar&quot;: &quot;...&quot;}</span></span></span>
+<pre><code class="language-bash">HGETALL user:123  # e.g., {&quot;username&quot;: &quot;Alice&quot;, &quot;avatar&quot;: &quot;...&quot;}
 </code></pre>
 </li>
 </ul>
 <h3 id="score-incrementation" tabindex="-1"><a class="header-anchor" href="#score-incrementation"><span>🔁 Score Incrementation</span></a></h3>
-<pre data-lang="bash"><code class="hljs language-bash"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">ZINCRBY leaderboard 100 <span class="hljs-string">&quot;user:123&quot;</span></span></span>
+<pre><code class="language-bash">ZINCRBY leaderboard 100 &quot;user:123&quot;
 </code></pre>
 <p>Adds 100 to the existing score of <code>user:123</code>.</p>
 <hr>
 <h2 id="sample-use-case-gaming" tabindex="-1"><a class="header-anchor" href="#sample-use-case-gaming"><span>🧪 Sample Use Case (Gaming)</span></a></h2>
-<pre data-lang="bash"><code class="hljs language-bash"><span class="ln-row"><span class="ln-num">1</span><span class="ln-code">ZADD game:leaderboard 2000 <span class="hljs-string">&quot;player:alice&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">2</span><span class="ln-code">ZADD game:leaderboard 1900 <span class="hljs-string">&quot;player:bob&quot;</span></span></span>
-<span class="ln-row"><span class="ln-num">3</span><span class="ln-code">ZREVRANGE game:leaderboard 0 4 WITHSCORES  <span class="hljs-comment"># top 5</span></span></span>
-<span class="ln-row"><span class="ln-num">4</span><span class="ln-code">ZREVRANK game:leaderboard <span class="hljs-string">&quot;player:alice&quot;</span>   <span class="hljs-comment"># alice&#x27;s rank</span></span></span>
+<pre><code class="language-bash">ZADD game:leaderboard 2000 &quot;player:alice&quot;
+ZADD game:leaderboard 1900 &quot;player:bob&quot;
+ZREVRANGE game:leaderboard 0 4 WITHSCORES  # top 5
+ZREVRANK game:leaderboard &quot;player:alice&quot;   # alice's rank
 </code></pre>
 <hr>
 <h2 id="scalability-notes" tabindex="-1"><a class="header-anchor" href="#scalability-notes"><span>🧩 Scalability Notes</span></a></h2>
