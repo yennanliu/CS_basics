@@ -3026,7 +3026,7 @@ public class Workspace25 {
      *  IDEA 1) STACK
      *
      *   1. map ? record the `last idx` of every alphabet
-     *   2. 
+     *   2.
      *
      *  IDEA 2) BRUTE FORCE
      *
@@ -3037,8 +3037,58 @@ public class Workspace25 {
      */
     //  IDEA 1) STACK
     public String removeDuplicateLetters(String s) {
+        // edge
 
-        return null;
+        int[] index = new int[26]; // ???
+        int i = 0;
+        for(char ch: s.toCharArray()){
+            index[ch - 'a'] = i; // ????
+            i += 1;
+        }
+
+        Stack<Character> st = new Stack<>();
+        StringBuilder sb = new StringBuilder();
+
+        // ???
+        boolean[] used = new boolean[26];
+        HashSet<Character> visited = new HashSet<>();
+
+
+        int j = 0;
+        for(char ch: s.toCharArray()){
+            // ??
+            // ???
+            // avoid add `duplicated alpha`
+            if(visited.contains(ch)){
+                continue;
+            }
+            if(st.isEmpty()){
+                st.add(ch);
+                // ???
+                visited.add(ch);
+            }else{
+                while (!st.isEmpty() &&
+                        st.peek() - ch > 0 &&
+                        index[st.peek() - 'a'] > j
+                        ){
+
+                    visited.add(st.pop());
+
+                }
+
+                st.add(ch);
+                visited.add(ch);
+            }
+
+            j += 1;
+        }
+
+        // ??
+        for(char ch: st){
+            sb.append(ch); // ????
+        }
+
+        return sb.toString();
     }
 
 

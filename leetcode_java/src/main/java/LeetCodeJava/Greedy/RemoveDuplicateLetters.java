@@ -80,6 +80,8 @@ public class RemoveDuplicateLetters {
 
             /** NOTE !!!
              *
+             *  need `visited`, to avoid add DUPLICATED elements
+             *
              *  If 'x' is already in the stack, skip.
              *  -> to avoid duplicates
              */
@@ -101,7 +103,9 @@ public class RemoveDuplicateLetters {
              *
              */
             // 3. Monotonic logic: Pop if top is bigger AND will appear later
-            while (!st.isEmpty() && st.peek() > x && lastIndexMap.get(st.peek()) > i) {
+            while (!st.isEmpty() &&
+                    st.peek() > x &&
+                    lastIndexMap.get(st.peek()) > i) {
                 char removed = st.pop();
                 inStack.remove(removed); // Remember to remove from the set too!
             }
