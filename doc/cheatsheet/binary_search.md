@@ -472,6 +472,96 @@ return left;
 
 ---
 
+#### Search Boundary Pattern: `left = max(nums)`, `right = sum(nums)` ⭐⭐⭐⭐⭐
+
+This is the **canonical search space setup** for "Binary Search on Answer" problems
+that ask you to split/partition/allocate elements from an array.
+
+##### Why `left = max(nums)`?
+
+Any valid answer (max subarray sum, capacity, speed, etc.) must be **at least** as
+large as the biggest single element — because that element must appear in *some*
+group by itself in the worst case.
+
+```
+nums = [7, 2, 5, 10, 8]
+             ^  ^^
+        max = 10  ← no matter how you split, some subarray contains 10 alone
+                     → answer cannot be smaller than 10
+left = max(nums) = 10
+```
+
+##### Why `right = sum(nums)`?
+
+If you put **all** elements in one group, the sum is `sum(nums)`. That always works —
+it's the trivially valid upper bound. The answer can never exceed this.
+
+```
+nums = [7, 2, 5, 10, 8]  →  sum = 32
+If k=1: one subarray containing everything, max sum = 32 ✓
+right = sum(nums) = 32
+```
+
+##### Visual: The Answer Lives Inside `[max, sum]`
+
+```
+Answer space for nums=[7,2,5,10,8], k=2:
+
+  10    12    14    16    18    20    22   ...   32
+  |-----|-----|-----|-----|-----|-----|---------|
+  left=max                                right=sum
+
+  Can split into ≤2 subarrays with max sum ≤ mid?
+
+  mid=10: [7,2,5] ok? sum=14 > 10 ✗  →  impossible
+  mid=18: [7,2,5]=14 ✓, [10,8]=18 ✓  →  2 subarrays ✓
+  mid=15: [7,2,5]=14 ✓, [10,8]=18 > 15 ✗  →  need 3 subarrays ✗
+  mid=16: [7,2,5]=14 ✓, [10,8]=18 > 16 ✗  →  need 3 ✗
+  mid=17: same ✗
+  mid=18: ✓  ← answer = 18
+
+  Feasibility:  ✗ ✗ ✗ ✗ ✗ ✗ ✗ ✗ ✓ ✓ ✓ ... ✓
+                |<--  infeasible -->|<-- feasible -->|
+                                   ^
+                                answer = leftmost ✓
+```
+
+##### The Code Pattern (reusable across problems)
+
+```java
+int left = 0, right = 0;
+for (int x : nums) {
+    left = Math.max(left, x);  // lower bound: must hold the largest element
+    right += x;                // upper bound: put everything in one group
+}
+// Now binary search on [left, right]
+while (left < right) {
+    int mid = left + (right - left) / 2;
+    if (isValid(nums, k, mid)) {
+        right = mid;      // valid → try smaller (minimize)
+    } else {
+        left = mid + 1;   // invalid → need larger
+    }
+}
+return left;
+```
+
+##### Similar Problems Using the Same `[max, sum]` Boundary
+
+| LC # | Problem | What's minimized | `left` | `right` |
+|------|---------|-----------------|--------|---------|
+| **410** | Split Array Largest Sum | max subarray sum | `max(nums)` | `sum(nums)` |
+| **1011** | Capacity To Ship Packages | ship capacity | `max(weights)` | `sum(weights)` |
+| **1482** | Min Days to Make m Bouquets | days | `1` | `max(bloomDay)` |
+| **875** | Koko Eating Bananas | eating speed | `1` | `max(piles)` |
+| **1283** | Find the Smallest Divisor | divisor | `1` | `max(nums)` |
+| **2064** | Minimized Maximum of Products Distributed | max per store | `1` | `max(quantities)` |
+
+> **Tip:** Whenever the problem says "split/ship/distribute array elements into K groups,
+> minimize the maximum", reach for `left = max(nums)`, `right = sum(nums)`.
+
+---
+
 #### Example 1: LC 410 - Split Array Largest Sum ⭐⭐⭐⭐⭐
 
 **Problem:** Split array into m subarrays, minimize the largest sum among subarrays.
