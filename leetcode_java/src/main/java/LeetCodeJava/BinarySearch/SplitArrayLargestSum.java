@@ -52,10 +52,46 @@ public class SplitArrayLargestSum {
 
     // V0
     // IDEA: BINARY SEARCH (GPT)
+    // https://youtu.be/YUF3_eBdzsk?si=1_zhqR3qx15vMOdo
+    /** CORE IDEA:
+     *
+     * Binary search on the answer
+     *   (max subarray sum) + greedy check
+     *
+     *
+     * ------
+     *
+     *
+     * Steps:
+     *
+     *
+     * Step 1: Search space
+     *   - Minimum possible max sum = max(nums)
+     *   - Maximum possible max sum = sum(nums)
+     *
+     *
+     * Step 2: Greedy check
+     *
+     *   - Given a candidate maxSum,
+     *      can we split into ≤ k subarrays?
+     *
+     */
     public int splitArray(int[] nums, int k) {
         int left = 0, right = 0;
 
         // define search range
+        /** NOTE !!!
+         *
+         *  observation
+         *   -> use search boundary [left, right]
+         *
+         *   -> `left` is `max single element` in nums
+         *   -> `right` is the `sum of val` in nums
+         *
+         *   -> so we can `search the space`
+         *      via binary search,
+         *       -> which is the O(log n) time complexity
+         */
         for (int x : nums) {
             left = Math.max(left, x); // at least the largest element
             right += x; // at most total sum
@@ -74,6 +110,7 @@ public class SplitArrayLargestSum {
         return left;
     }
 
+    // NOTE !!! help func
     private boolean canSplit_0(int[] nums, int k, int maxSum) {
         int count = 1; // at least one subarray
         int curSum = 0;
