@@ -53,6 +53,12 @@ public class SplitArrayLargestSum {
     // V0
     // IDEA: BINARY SEARCH (GPT)
     // https://youtu.be/YUF3_eBdzsk?si=1_zhqR3qx15vMOdo
+    /**
+     * Approach,Time Complexity,Space Complexity,Notes
+     *
+     * Binary Search (Ours),O(NlogS),O(1),Optimal for large N and large sums.
+     *
+     */
     /** CORE IDEA:
      *
      * Binary search on the answer
