@@ -86,18 +86,16 @@
 		- gemini
 	- LC 35
 		- gpt
+			- 34
 		- gemini
 	- LC 1011
 		- gpt
-			- 1552
-			- 1283
 			- 1891
 		- gemini
 			- 1761
 	- LC 33
 		- gpt
 			- 34
-			- 410
 			- 154
 		- gemini
 			- 162
