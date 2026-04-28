@@ -1668,6 +1668,137 @@ class Solution(object):
 ```
 
 ### 4.3) Find Peak Element (LC 162, LC 852)
+
+#### Core Idea: Hill Climbing (Guaranteed Peak Exists)
+
+**Key Rule:**
+```
+If nums[mid] < nums[mid + 1]  →  peak is on the RIGHT  (move l = mid + 1)
+If nums[mid] > nums[mid + 1]  →  peak is on the LEFT   (move r = mid)
+```
+
+**Why it's guaranteed to work (the "-∞ boundary" trick):**
+
+The problem states `nums[-1] = nums[n] = -∞`. This means the array is
+always "sandwiched" between two bottomless pits on each end.
+
+```
+         peak
+        /    \
+       /      \
+-∞ ___/        \___ -∞
+```
+
+No matter where you are in the array, if you walk toward the *higher*
+neighbor, you are guaranteed to hit a peak — either the ground rises
+and then falls (a peak in the middle), or it keeps rising all the way
+to the end (the last element is a peak because -∞ is on its right).
+
+---
+
+#### Case 1: `nums[mid] < nums[mid+1]` → Going UPHILL → move RIGHT
+
+```
+         ?
+        /
+       /
+ .... mid  mid+1 ....
+      low  HIGH
+
+You are on an upward slope. Two sub-cases:
+  a) The slope eventually drops → peak is somewhere to the right
+  b) The slope never drops → last element is a peak (because -∞ is on its right)
+
+Either way, a peak MUST exist to the right → l = mid + 1
+```
+
+```
+Example: nums = [1, 2, 3, 1]
+                    ^mid ^mid+1
+nums[mid]=2 < nums[mid+1]=3  → uphill → move RIGHT
+                        ^--- peak is here (index 2, value 3)
+```
+
+---
+
+#### Case 2: `nums[mid] > nums[mid+1]` → Going DOWNHILL → stay LEFT (include mid)
+
+```
+ ....  mid  mid+1 ....
+       HIGH  low
+          \
+           \
+            ?
+
+You are on a downward slope. Two sub-cases:
+  a) nums[mid] > nums[mid-1]: mid itself IS a peak
+  b) nums[mid] < nums[mid-1]: the slope was already rising from the left,
+     so a peak exists somewhere to the left of mid
+
+Either way, the peak is at mid or to the left → r = mid
+```
+
+```
+Example: nums = [1, 2, 1, 3, 5, 6, 4]
+                               ^mid ^mid+1
+nums[mid]=5 > nums[mid+1]=6?  No — pick a better example:
+                                  ^mid  ^mid+1
+nums[mid]=6 > nums[mid+1]=4  → downhill → move LEFT (r = mid, keep mid)
+              ^--- peak is here (index 5, value 6)
+```
+
+---
+
+#### Visual: Search Space Convergence
+
+```
+nums = [1, 2, 3, 1]
+        0  1  2  3
+
+l=0, r=3:  mid=1, nums[1]=2 < nums[2]=3  → uphill → l=2
+           [_, _, 2, 3]
+                  l  r
+
+l=2, r=3:  mid=2, nums[2]=3 > nums[3]=1  → downhill → r=2
+           [_, _, 3, _]
+                  l
+                  r
+
+l==r → return 2  ✓  (nums[2]=3 is the peak)
+```
+
+```
+nums = [1, 2, 1, 3, 5, 6, 4]
+        0  1  2  3  4  5  6
+
+l=0, r=6:  mid=3, nums[3]=3 < nums[4]=5  → uphill → l=4
+l=4, r=6:  mid=5, nums[5]=6 > nums[6]=4  → downhill → r=5
+l=4, r=5:  mid=4, nums[4]=5 < nums[5]=6  → uphill → l=5
+l=5, r=5:  l==r → return 5  ✓  (nums[5]=6 is the peak)
+```
+
+---
+
+#### Why `while (l < r)` and NOT `while (l <= r)`?
+
+With `r = mid` (not `r = mid - 1`), when `l == r` the loop must stop —
+otherwise `mid == l == r` would cause infinite loop (`r = mid` never shrinks).
+
+```java
+// ✅ Correct: while (l < r)
+while (l < r) {
+    int mid = (l + r) / 2;
+    if (nums[mid] > nums[mid + 1])
+        r = mid;       // Keep mid, since it may be the peak
+    else
+        l = mid + 1;   // mid is not the peak, skip it
+}
+// When l == r, that IS the peak index
+return l;
+```
+
+---
+
 **Approach**: Compare mid with adjacent elements to determine search direction
 ```python
 # LC 162 Find Peak Element, LC 852 Peak Index in a Mountain Array
