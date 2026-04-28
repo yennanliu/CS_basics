@@ -3453,10 +3453,86 @@ public class Workspace25 {
 
 
     // LC 410
+    // 14.33 - 43 pm
+    /**
+     *  -> Return the minimized largest sum of the split.
+     *
+     *
+     *   - split nums into `k non-empty subarrays `
+     *      such that the `largest sum `
+     *      of any subarray is `minimized.`
+     *
+     *    NOTE:
+     *      - A subarray is a `contiguous`
+     *        part of the array.
+     *
+     *   nums: int arr
+     *   k: int
+     *
+     *
+     *
+     *
+     *
+     *  -----------
+     *
+     *   IDEA 1) BRUTE FORCE
+     *
+     *   IDEA 2) BINARY SEARCH ????
+     *
+     *   IDEA 3) GREEDY ??? + MATH ???
+     *
+     *
+     *  -----------
+     *
+     */
+    // IDEA 3) GREEDY ??? + MATH ???
     public int splitArray(int[] nums, int k) {
+        // edge
+        if(k == 0){
+            int res = 0;
+            for(int x: nums){
+                //sum += x;r
+                res += x;
+            }
+            return res;
+        }
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
 
-        return 0;
+        // ???
+        int sum = 0;
+        for(int x: nums){
+            sum += x;
+        }
+
+        int n = nums.length;
+
+        // ??
+        int avg = sum / n; // ???
+
+        // ??
+        int cur = 0;
+        int res = 0;
+
+        for(int i = 0; i < n; i++){
+            int val = nums[i];
+            // ???
+            if(cur + val >= avg){
+                // ??? reset cur
+                cur = val;
+                res = Math.max(res, cur);
+            }else{
+                cur += val;
+                res = Math.max(res, cur);
+            }
+
+        }
+
+        return res;
     }
+
+
 
 
 

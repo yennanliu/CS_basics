@@ -51,10 +51,47 @@ import java.util.Arrays;
 public class SplitArrayLargestSum {
 
     // V0
-    // TODO : implement
-//    public int splitArray(int[] nums, int k) {
-//
-//    }
+    // IDEA: BINARY SEARCH (GPT)
+    public int splitArray(int[] nums, int k) {
+        int left = 0, right = 0;
+
+        // define search range
+        for (int x : nums) {
+            left = Math.max(left, x); // at least the largest element
+            right += x; // at most total sum
+        }
+
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+
+            if (canSplit_0(nums, k, mid)) {
+                right = mid; // try smaller max sum
+            } else {
+                left = mid + 1; // need bigger max sum
+            }
+        }
+
+        return left;
+    }
+
+    private boolean canSplit_0(int[] nums, int k, int maxSum) {
+        int count = 1; // at least one subarray
+        int curSum = 0;
+
+        for (int x : nums) {
+            if (curSum + x > maxSum) {
+                count++; // start new subarray
+                curSum = x;
+                if (count > k)
+                    return false;
+            } else {
+                curSum += x;
+            }
+        }
+
+        return true;
+    }
+
 
     // V0-1
     // IDEA: Binary Search (gemini)
