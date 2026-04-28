@@ -3302,8 +3302,72 @@ public class Workspace25 {
      *
      *
      */
-    // IDEA 1) BRUTE FORCE
+    // IDEA 2) BINARY SEARCH
     public int[] searchRange(int[] nums, int target) {
+        int[] res = new int[]{-1, -1};
+
+        int left = getLeftBoundary(nums, target, 0, nums.length - 1);
+        int right = getRightBoundary(nums, target, 0, nums.length - 1);
+
+        if(left == right && left != -1){
+            return new int[] {left, left};
+        }
+
+        if(left != -1 && right != -1){
+            return new int[] {left, right};
+        }
+
+        return res; // ???
+    }
+
+    // /??
+    private int getLeftBoundary(int[] nums, int target, int l, int r){
+        int res = -1;
+
+        // ???
+        while (r >= l){
+          int mid = l + (r - l) / 2;
+          int midVal = nums[mid];
+          if(midVal == target){
+              res = mid; /// ???
+              r = mid - 1;
+          }else if(midVal > target){
+              r = mid  - 1;
+          }else{
+              l = mid + 1;
+          }
+        }
+
+        return res; // ???
+    }
+
+    private int getRightBoundary(int[] nums, int target, int l, int r){
+        int res = -1;
+
+        // ???
+        while (r >= l){
+            int mid = l + (r - l) / 2;
+            int midVal = nums[mid];
+            if(midVal == target){
+                res = mid; /// ???
+                //r = mid - 1;
+                l = mid + 1;
+            }else if(midVal > target){
+                r = mid  - 1;
+            }else{
+                l = mid + 1;
+            }
+        }
+
+        return res; // ???
+    }
+
+
+
+
+
+    // IDEA 1) BRUTE FORCE
+    public int[] searchRange_99(int[] nums, int target) {
         int[] res = new int[]{-1, -1};
 
         for(int i = 0; i < nums.length; i++){

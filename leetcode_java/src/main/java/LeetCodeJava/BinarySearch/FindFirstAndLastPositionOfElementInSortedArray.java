@@ -40,13 +40,69 @@ package LeetCodeJava.BinarySearch;
 public class FindFirstAndLastPositionOfElementInSortedArray {
 
     // V0
+    // IDEA: BINARY SEARCH + LEFT, RIGHT BOUNDARY (fixed by gpt)
+    /**
+     * time = O(log N)
+     * space = O(1)
+     */
+    public int[] searchRange(int[] nums, int target) {
+        int left = getLeftBoundary(nums, target);
+        int right = getRightBoundary(nums, target);
+
+        return new int[] { left, right };
+    }
+
+    private int getLeftBoundary(int[] nums, int target) {
+        int l = 0, r = nums.length - 1;
+        int res = -1;
+
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+
+            if (nums[mid] == target) {
+                res = mid;
+                /** NOTE !!! */
+                r = mid - 1; // keep searching left
+            } else if (nums[mid] > target) {
+                r = mid - 1;
+            } else {
+                l = mid + 1; // FIXED
+            }
+        }
+
+        return res;
+    }
+
+    private int getRightBoundary(int[] nums, int target) {
+        int l = 0, r = nums.length - 1;
+        int res = -1;
+
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+
+            if (nums[mid] == target) {
+                res = mid;
+                /** NOTE !!! */
+                l = mid + 1; // keep searching right
+            } else if (nums[mid] > target) {
+                r = mid - 1;
+            } else {
+                l = mid + 1; // FIXED
+            }
+        }
+
+        return res;
+    }
+
+
+    // V0-0-0-0-1
     // IDEA: BINARY SEARCH (fixed by gpt)
     /**
      * time = O(log N)
      * space = O(1)
      */
 
-    public int[] searchRange(int[] nums, int target) {
+    public int[] searchRange_0_0_0_1(int[] nums, int target) {
         int[] res = new int[] { -1, -1 };
         if (nums == null || nums.length == 0)
             return res;
