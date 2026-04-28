@@ -3281,10 +3281,90 @@ public class Workspace25 {
 
 
     // LC 1283
+    // 7.32 - 43 am
+    /**
+     *
+     *  ->
+     *
+     *   Find the `smallest` divisor such that the result
+     *   mentioned above is less than or equal to threshold.
+     *
+     *
+     *   --------------
+     *
+     *
+     *   IDEA 1) MATH + BRUTE FORCE ??
+     *
+     *   IDEA 2) BINARY SEARCH ?>>>
+     *
+     *
+     *   --------------
+     *
+     *
+     */
+    // IDEA 2) BINARY SEARCH ?>>>
     public int smallestDivisor(int[] nums, int threshold) {
+        // edge
+        if(threshold == 0){
+            int res = nums[0];
+            for(int x: nums){
+                res = Math.min(res, x);
+            }
+            return res;
+        }
+        // ??
+        if(nums == null || nums.length == 0){
+            return 0; // ????
+        }
 
-        return 0;
+        //
+        int l = nums[0]; // ??
+        int r = 0;
+        // ??
+        for(int x: nums){
+            l = Math.min(x, l);
+            r += x; // ??
+        }
+
+        //???
+        int minDivisor = r;
+
+
+        while (r >= l){
+            int mid = l + (r - l) / 2;
+            int midVal = nums[mid];
+            if(canDivide(nums, threshold, midVal)){
+                minDivisor = Math.min(minDivisor, mid);
+                // NOTE !!! try smaller candidates
+                r = mid - 1;
+            }else{
+                l = mid + 1;
+            }
+        }
+
+        return minDivisor;
     }
+
+
+
+    // ???
+    private boolean canDivide(int[] nums, int threshold, int x){
+        int tmp = 0;
+        for(int val: nums){
+            // ???
+            tmp += (int) Math.floor( ( (double) val / x) ); // ????
+        }
+
+        return tmp <= threshold;
+    }
+
+
+
+
+
+
+
+
 
 
     // LC 34

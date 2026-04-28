@@ -48,8 +48,88 @@ public class FindTheSmallestDivisorGivenAThreshold {
 //    }
 
 
-    // V1
+    // V1-1
+    // IDEA: BINARY SEARCH (GPT)
+    public int smallestDivisor_1_1(int[] nums, int threshold) {
+        if (nums == null || nums.length == 0)
+            return 0;
 
+        int l = 1;
+        int r = 0;
+
+        // find max value
+        for (int x : nums) {
+            r = Math.max(r, x);
+        }
+
+        int ans = r;
+
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+
+            if (canDivide(nums, threshold, mid)) {
+                ans = mid; // valid divisor
+                r = mid - 1; // try smaller
+            } else {
+                l = mid + 1; // need larger divisor
+            }
+        }
+
+        return ans;
+    }
+
+    private boolean canDivide(int[] nums, int threshold, int d) {
+        int sum = 0;
+
+        for (int val : nums) {
+            // ceil(val / d) without using double
+            sum += (val + d - 1) / d;
+
+            if (sum > threshold)
+                return false; // early stop
+        }
+
+        return sum <= threshold;
+    }
+
+
+
+    // V1-2
+    // IDEA: BINARY SEARCH (GEMINI)
+    public int smallestDivisor_1_2(int[] nums, int threshold) {
+        // 1. Define the search range
+        int left = 1;
+        int right = 0;
+        for (int x : nums) {
+            right = Math.max(right, x);
+        }
+
+        int ans = right;
+
+        // 2. Binary Search on the result (the divisor)
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            if (calculateSum(nums, mid) <= threshold) {
+                ans = mid; // Possible, try to find a smaller divisor
+                right = mid - 1;
+            } else {
+                left = mid + 1; // Sum too large, need a larger divisor
+            }
+        }
+        return ans;
+    }
+
+    private int calculateSum(int[] nums, int divisor) {
+        int sum = 0;
+        for (int val : nums) {
+            // Ceiling division: (val + divisor - 1) / divisor
+            sum += (val + divisor - 1) / divisor;
+        }
+        return sum;
+    }
+
+    
 
     // V2
     // IDEA: BINARY SEARCH
