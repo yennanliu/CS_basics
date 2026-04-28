@@ -3281,6 +3281,48 @@ public class Workspace25 {
 
 
 
+    // LC 34
+    // 13.30 - 40 pm
+    /**
+     *   -> find the `starting and ending `
+     *      position of a given target value.
+     *
+     *       - sorted in non-decreasing ( increasing)
+     *       - If target is not found in the array, return [-1, -1].
+     *
+     *  ----------------
+     *
+     *   IDEA 1) BRUTE FORCE
+     *
+     *   IDEA 2) BINARY SEARCH
+     *
+     *
+     *
+     *  ----------------
+     *
+     *
+     */
+    // IDEA 1) BRUTE FORCE
+    public int[] searchRange(int[] nums, int target) {
+        int[] res = new int[]{-1, -1};
+
+        for(int i = 0; i < nums.length; i++){
+            int val = nums[i];
+            if(val == target){
+                // ???
+                if(res[0] == -1){
+                    res[0] = i;
+                }else{
+                    res[0] = Math.min(i, res[0]);
+                }
+                res[1] = Math.max(i, res[1]);
+            }
+        }
+
+        return res;
+    }
+
+
 
 
 

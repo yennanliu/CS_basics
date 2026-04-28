@@ -61,7 +61,6 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
      * time = O(log N)
      * space = O(1)
      */
-
     private int getLeftBound(int[] nums, int target) {
         int l = 0, r = nums.length - 1;
         /**
@@ -272,6 +271,29 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
 
         return bound;
     }
+
+
+    // V0-3
+    // IDEA: BRUTE FORCE
+    public int[] searchRange_0_3(int[] nums, int target) {
+        int[] res = new int[] { -1, -1 };
+
+        for (int i = 0; i < nums.length; i++) {
+            int val = nums[i];
+            if (val == target) {
+                // ???
+                if (res[0] == -1) {
+                    res[0] = i;
+                } else {
+                    res[0] = Math.min(i, res[0]);
+                }
+                res[1] = Math.max(i, res[1]);
+            }
+        }
+
+        return res;
+    }
+
 
 
     // V2
@@ -486,6 +508,9 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
 
         return boundary;
     }
+
+
+
     
 
 }
