@@ -3280,6 +3280,12 @@ public class Workspace25 {
     }
 
 
+    // LC 1283
+    public int smallestDivisor(int[] nums, int threshold) {
+
+        return 0;
+    }
+
 
     // LC 34
     // 13.30 - 40 pm
