@@ -3388,6 +3388,71 @@ public class Workspace25 {
 
 
 
+    // LC 162
+    // 13.51 - 14.01 pm
+    /**
+     *
+     *  -> find a peak element, and return its index.
+     *     If the array contains multiple peaks,
+     *     return the index to any of the peaks.
+     *
+     *
+     *  -------------
+     *
+     *
+     *  IDEA 1) BINARY SEARCH ???
+     *
+     *  IDEA 2) BRUTE FORCE
+     *
+     *
+     *  -------------
+     *
+     *
+     */
+    // IDEA 1) BINARY SEARCH ???
+    public int findPeakElement(int[] nums) {
+
+        // ???
+        return findPeakHelper(nums, 0, nums.length - 1);
+    }
+
+    // /??
+    private int findPeakHelper(int[] nums, int l, int r){
+        // edge /????
+        if(l > r){
+            return -1;
+        }
+
+        while (r >= l){
+            int mid = l + (r -l) / 2;
+            int midVal = nums[mid];
+
+            // ???
+            if(mid - 1 >= 0 && mid + 1 < r){
+                if(nums[mid] > nums[mid-1] && nums[mid] > nums[mid + 1]){
+                    return mid;
+                }
+            }
+
+            // ??
+            int leftRes = findPeakHelper(nums, l, mid - 1);
+            int rightRes = findPeakHelper(nums, mid + 1, r);
+
+            if(leftRes != -1){
+                return leftRes;
+            }
+            if(rightRes != -1){
+                return rightRes;
+            }
+
+        }
+
+        return -1;
+    }
+
+
+
+
 
 
 }
