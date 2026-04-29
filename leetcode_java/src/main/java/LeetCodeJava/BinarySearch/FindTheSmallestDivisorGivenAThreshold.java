@@ -43,9 +43,71 @@ import java.util.Arrays;
 public class FindTheSmallestDivisorGivenAThreshold {
 
     // V0
-//    public int smallestDivisor(int[] nums, int threshold) {
-//
-//    }
+    // IDEA: BINARY SEARCH
+    public int smallestDivisor(int[] nums, int threshold) {
+        // edge
+        if (nums == null || nums.length == 0) {
+            return 0;
+        }
+
+
+        /**  NOTE !!!
+         *
+         * l init as 1
+         */
+        int l = 1; // ???? nums[0]; // ??
+        int r = 0;
+        for (int x : nums) {
+            /**  NOTE !!!
+             *
+             * r is the max val in nums
+             */
+            r = Math.max(x, r);
+        }
+
+        int minDivisor = r;
+
+        while (r >= l) {
+
+            int mid = l + (r - l) / 2;
+            /**  NOTE !!!
+             *
+             *  use mid directly, instead treat it as idx
+             */
+            if (canDivide_0(nums, threshold, mid)) {
+                minDivisor = Math.min(minDivisor, mid);
+                // NOTE !!! try smaller candidates
+                r = mid - 1;
+            } else {
+                l = mid + 1;
+            }
+        }
+
+        return minDivisor;
+    }
+
+    // ???
+    private boolean canDivide_0(int[] nums, int threshold, int x) {
+        int tmp = 0;
+        for (int val : nums) {
+            /** NOTE !!!
+             *
+             *  1. use `ceil`
+             *     - ceil(val / d) without using double
+             */
+            // ceil(val / d) without using double
+            tmp += (val + x - 1) / x;
+
+            // early exit
+            if (tmp > threshold) {
+                return false;
+            }
+
+        }
+
+        return tmp <= threshold;
+    }
+
 
 
     // V1-1
@@ -129,7 +191,7 @@ public class FindTheSmallestDivisorGivenAThreshold {
         return sum;
     }
 
-    
+
 
     // V2
     // IDEA: BINARY SEARCH

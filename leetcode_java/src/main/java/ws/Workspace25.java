@@ -3305,25 +3305,28 @@ public class Workspace25 {
     // IDEA 2) BINARY SEARCH ?>>>
     public int smallestDivisor(int[] nums, int threshold) {
         // edge
-        if(threshold == 0){
-            int res = nums[0];
-            for(int x: nums){
-                res = Math.min(res, x);
-            }
-            return res;
-        }
+//        if(threshold == 0){
+//            int res = nums[0];
+//            for(int x: nums){
+//                res = Math.min(res, x);
+//            }
+//            return res;
+//        }
         // ??
         if(nums == null || nums.length == 0){
             return 0; // ????
         }
 
         //
-        int l = nums[0]; // ??
+        // int l = nums[0]; // ??
+        int l = 1; // ???? nums[0]; // ??
         int r = 0;
         // ??
         for(int x: nums){
-            l = Math.min(x, l);
-            r += x; // ??
+           // l = Math.min(x, l);
+           // r += x; // ??
+            // ???
+            r = Math.max(x, r);
         }
 
         //???
@@ -3331,9 +3334,11 @@ public class Workspace25 {
 
 
         while (r >= l){
+
             int mid = l + (r - l) / 2;
-            int midVal = nums[mid];
-            if(canDivide(nums, threshold, midVal)){
+            // NOTE !!!
+            //int midVal = mid; //nums[mid];
+            if(canDivide(nums, threshold, mid)){
                 minDivisor = Math.min(minDivisor, mid);
                 // NOTE !!! try smaller candidates
                 r = mid - 1;
@@ -3351,8 +3356,19 @@ public class Workspace25 {
     private boolean canDivide(int[] nums, int threshold, int x){
         int tmp = 0;
         for(int val: nums){
-            // ???
-            tmp += (int) Math.floor( ( (double) val / x) ); // ????
+//            // ???
+//           // tmp += (int) Math.floor( ( (double) val / x) ); // ????
+//            // ????
+//            tmp += (int) Math.ceil( ( (double) val / x) ); // ????
+
+
+            // ceil(val / d) without using double
+            tmp += (val + x - 1) / x;
+
+            if(tmp > threshold){
+                return false;
+            }
+
         }
 
         return tmp <= threshold;
