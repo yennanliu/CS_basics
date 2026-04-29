@@ -3047,3 +3047,148 @@ new Integer(s.charAt(i))  // ❌ gives ASCII (e.g. 51)
 s.charAt(i) - '0'         // ✅ gives actual digit (e.g. 3)
 ```
 
+---
+
+## 9) Integer Math: Ceil, Floor, and Rounding ⭐
+
+### 9.1) `ceil` vs `floor` — Definition
+
+| Operation | Meaning | Example |
+|-----------|---------|---------|
+| `Math.ceil(x)` | Round **up** to nearest integer | `ceil(7.0/3)` → `3.0` |
+| `Math.floor(x)` | Round **down** to nearest integer | `floor(7.0/3)` → `2.0` |
+| `(int)(a/b)` | **Truncate toward zero** (same as floor for positives) | `7/3` → `2` |
+
+```java
+// Using double division + Math.ceil / floor
+System.out.println(Math.ceil(7.0 / 3));   // 3.0  (rounds UP)
+System.out.println(Math.floor(7.0 / 3));  // 2.0  (rounds DOWN)
+System.out.println(7 / 3);               // 2    (integer truncation = floor for positives)
+
+// Cast result back to int
+int ceilVal  = (int) Math.ceil((double) 7 / 3);  // 3
+int floorVal = (int) Math.floor((double) 7 / 3); // 2
+```
+
+**Key gotcha**: integer division in Java **always truncates toward zero** (= floor for positive numbers).
+```java
+7  / 3  →  2   // floor (positive)
+-7 / 3  → -2   // truncates toward zero (NOT floor, which would be -3)
+```
+
+---
+
+### 9.2) Integer Ceiling Division — No `double` Needed ⭐
+
+**Formula**: `ceil(a / b)` using only integers:
+
+```java
+int ceilDiv = (a + b - 1) / b;
+```
+
+**Why it works:**
+```
+ceil(a / b)  =  (a + b - 1) / b   (integer division, b > 0)
+
+Example: a=7, b=3
+  (7 + 3 - 1) / 3  =  9 / 3  =  3  ✅  (Math.ceil(7.0/3) = 3)
+
+Example: a=6, b=3 (exact division)
+  (6 + 3 - 1) / 3  =  8 / 3  =  2  ✅  (Math.ceil(6.0/3) = 2)
+
+Example: a=1, b=5
+  (1 + 5 - 1) / 5  =  5 / 5  =  1  ✅  (Math.ceil(1.0/5) = 1)
+```
+
+**Comparison: two ways to compute ceiling division**
+
+```java
+// Method 1: Integer trick (faster, no casting)
+int ceil1 = (val + d - 1) / d;
+
+// Method 2: double cast + Math.ceil (clearer intent, slightly slower)
+int ceil2 = (int) Math.ceil((double) val / d);
+
+// Both produce identical results for positive val and d
+```
+
+**Classic usage — LC 1283 Find the Smallest Divisor Given a Threshold:**
+```java
+// ceil(val / divisor) without using double
+private boolean canDivide(int[] nums, int threshold, int d) {
+    int sum = 0;
+    for (int val : nums) {
+        sum += (val + d - 1) / d;  // ← integer ceiling division
+        if (sum > threshold) return false; // early exit
+    }
+    return sum <= threshold;
+}
+```
+
+---
+
+### 9.3) Integer Floor Division
+
+For positive integers, `/` already gives floor:
+```java
+int floorDiv = a / b;  // works when a >= 0 and b > 0
+```
+
+For **negative numbers**, use `Math.floorDiv`:
+```java
+Math.floorDiv(-7, 3);   // -3  (true floor)
+-7 / 3;                 // -2  (truncation, NOT floor!)
+
+Math.floorDiv(7, 3);    //  2  (same as 7/3 for positives)
+```
+
+---
+
+### 9.4) Quick Reference Table
+
+| Goal | Code | Notes |
+|------|------|-------|
+| Ceil (double) | `(int) Math.ceil((double) a / b)` | Readable, casting required |
+| Ceil (integer trick) | `(a + b - 1) / b` | Fast, no casting, positive only |
+| Floor (positive) | `a / b` | Integer division truncates |
+| Floor (any sign) | `Math.floorDiv(a, b)` | Handles negatives correctly |
+| Round (half-up) | `(int) Math.round((double) a / b)` | Nearest integer |
+| Mid without overflow | `l + (r - l) / 2` | Standard binary search midpoint |
+
+---
+
+### 9.5) Classic LeetCode Problems Using Ceiling Division
+
+| LC | Problem | Ceiling Division Usage |
+|----|---------|----------------------|
+| **1283** | Find the Smallest Divisor Given a Threshold | `(val + d - 1) / d` per element |
+| **1011** | Capacity To Ship Packages Within D Days | `(wt + cap - 1) / cap` days needed |
+| **875**  | Koko Eating Bananas | `(pile + k - 1) / k` hours per pile |
+| **2064** | Minimized Maximum of Products Distributed | `(n + m - 1) / m` ceiling per group |
+
+**Pattern**: These are all **binary search on the answer** problems where the check function requires ceiling division to count "how many X fit in Y".
+
+```java
+// General template for this binary search pattern
+// (Binary search on divisor/capacity/speed)
+int l = 1, r = MAX_VAL;
+while (l <= r) {
+    int mid = l + (r - l) / 2;
+    if (check(nums, threshold, mid)) {
+        r = mid - 1;  // valid, try smaller
+    } else {
+        l = mid + 1;  // too small, try larger
+    }
+}
+return l;
+
+// Inside check(): use ceiling division
+private boolean check(int[] nums, int threshold, int d) {
+    int sum = 0;
+    for (int val : nums) {
+        sum += (val + d - 1) / d;  // ceil(val / d)
+    }
+    return sum <= threshold;
+}
+```
+
