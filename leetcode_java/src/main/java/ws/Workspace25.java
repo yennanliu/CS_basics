@@ -3781,6 +3781,12 @@ public class Workspace25 {
 
 
 
+    // LC 1891
+    public int maxLength(int[] ribbons, int k) {
+        return 0;
+    }
+
+
 
 
 
