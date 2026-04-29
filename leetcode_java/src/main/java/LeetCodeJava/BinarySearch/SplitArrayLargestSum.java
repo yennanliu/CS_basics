@@ -50,7 +50,112 @@ import java.util.Arrays;
 
 public class SplitArrayLargestSum {
 
+
     // V0
+    // IDEA: BINARY SEARCH (refined by GPT)
+    // https://youtu.be/YUF3_eBdzsk?si=1_zhqR3qx15vMOdo
+    public int splitArray(int[] nums, int k) {
+        int l = 0;
+        int r = 0;
+
+        for (int x : nums) {
+            /** NOTE !!!
+             *
+             *  l is the `max` val in nums
+             */
+            l = Math.max(l, x); // IMPORTANT
+
+            /** NOTE !!!
+             *
+             *  r is the `sum` of val over nums
+             */
+            r += x;
+        }
+
+        int ans = r;
+
+        while (l <= r) {
+
+            int mid = l + (r - l) / 2;
+
+            /** NOTE !!!
+             *
+             *  call helper func
+             */
+            if (canSplit_0_0(nums, k, mid)) {
+                ans = mid; // valid → try smaller
+                /** NOTE !!!
+                 *
+                 *   if found one, try SMALLER candidates
+                 */
+                r = mid - 1;
+            } else {
+                l = mid + 1;
+            }
+        }
+
+        return ans;
+    }
+
+    private boolean canSplit_0_0(int[] nums, int k, int threshold) {
+        /** NOTE !!!
+         *
+         *   groups init as 1
+         */
+        int groups = 1; // start with one subarray
+        int curSum = 0;
+
+        for (int x : nums) {
+            /** NOTE !!!
+             *
+             *   early end case 1
+             */
+            // if single element `exceeds` threshold → impossible
+            if (x > threshold){
+                return false;
+            }
+
+            /** NOTE !!!
+             *
+             *   we check if `curSum + x` > threshold,
+             *   instead of `curSum` > threshold,
+             *   so our code is cleaner, and DON'T need to do extra checks later
+             */
+            if (curSum + x > threshold) {
+                groups++;
+                curSum = x;
+
+                /** NOTE !!!
+                 *
+                 *   early end case 2  -> too MANY groups
+                 */
+                if (groups > k){
+                    return false;
+                }
+            } else {
+                curSum += x;
+            }
+        }
+
+        /** NOTE !!!
+         *
+         *   the final validation logic:
+         *
+         *    ```
+         *    groups <= k
+         *    ```
+         *
+         *  -> since it always the case that we can
+         *     `re-split` groups to smaller ones,
+         *     make it count == k,
+         *     so `<` is also the acceptable case
+         *
+         */
+        return groups <= k;
+    }
+
+
+    // V0-0-0-1
     // IDEA: BINARY SEARCH (GPT)
     // https://youtu.be/YUF3_eBdzsk?si=1_zhqR3qx15vMOdo
     /**
@@ -82,7 +187,7 @@ public class SplitArrayLargestSum {
      *      can we split into ≤ k subarrays?
      *
      */
-    public int splitArray(int[] nums, int k) {
+    public int splitArray_0_0_0_1(int[] nums, int k) {
         int left = 0, right = 0;
 
         // define search range

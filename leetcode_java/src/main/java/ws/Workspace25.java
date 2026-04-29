@@ -3587,8 +3587,93 @@ public class Workspace25 {
      *  -----------
      *
      */
-    // IDEA 3) GREEDY ??? + MATH ???
+
+    // 10.48 - 10.58
+    // IDEA: BINARY SEARCH ????
     public int splitArray(int[] nums, int k) {
+        // edge
+
+        // ??
+        int l = nums[0];
+        int r = 0;
+        // ??
+        for(int x: nums){
+            r += x;
+
+            // NOTE !!!!
+            l = Math.max(l, x); // ???????
+        }
+
+        int ans = r; // /??
+
+        while (r >= l){
+            int mid = l + (r - l) / 2;
+            // ??
+            if(canSplit(nums, k, mid)){
+                ans = Math.min(ans, mid);
+                // NOTE !!! keep finding the smaller candiates
+                r = mid - 1;
+            }else{
+                l = mid + 1;
+            }
+        }
+
+
+        return ans;
+    }
+
+
+    // threshold
+    private boolean canSplit(int[] nums, int k, int threshold){
+        // edge
+        if(k <= 1){
+            return true; // ?
+        }
+
+
+        //  int groups = 1;   // start with one subarray
+        ///  ???? start from 1 but not 0 ??? why ????
+        int curGroup = 1; // ????
+        int curSum = 0;
+
+        for(int x: nums){
+
+            // ?????????
+            // early quit
+//            if(curGroup >= k){
+//                return false;
+//            }
+            // NOTE !!!
+            if (x > threshold){
+                return false;
+            }
+
+            // NOTE !!!!
+            if(curSum > threshold){
+                curSum = x;
+                curGroup += 1;
+            }else{
+                curSum += x;
+            }
+        }
+
+
+        // NOTE !!! should be `<=` k
+        //return curGroup == k;
+        return curGroup <= k;
+    }
+
+
+
+
+
+
+
+
+
+
+    // IDEA 3) GREEDY ??? + MATH ???
+    public int splitArray_999(int[] nums, int k) {
         // edge
         if(k == 0){
             int res = 0;
