@@ -45,10 +45,19 @@ import java.util.Arrays;
 public class MagneticForceBetweenTwoBalls {
 
     // V0
-    // IDEA: BINARY SEARCH (gpt)
+    // IDEA: SORTING + BINARY SEARCH (gpt)
     public int maxDistance(int[] position, int m) {
+
+        /** NOTE !!! sort first */
         Arrays.sort(position);
 
+        /** NOTE !!!
+         *
+         * - l = 1 (smallest possible distance)
+         *
+         * - r = max(position) - min(position)
+         *
+         */
         int l = 1;
         int r = position[position.length - 1] - position[0];
 
@@ -59,6 +68,17 @@ public class MagneticForceBetweenTwoBalls {
 
             if (canDistribute(position, m, mid)) {
                 ans = mid; // valid → try larger distance
+                /** NOTE !!!
+                 *
+                 *  If valid, -> Try larger distance
+                 *
+                 *
+                 *
+                 *  Try placing balls greedily:
+                 *
+                 *   ->  Always place next ball at
+                 *       the earliest position ≥ last + dist
+                 */
                 l = mid + 1;
             } else {
                 r = mid - 1; // invalid → reduce distance
@@ -68,6 +88,8 @@ public class MagneticForceBetweenTwoBalls {
         return ans;
     }
 
+
+    /** the `core logic` of this helper func */
     private boolean canDistribute(int[] position, int m, int dist) {
         int count = 1; // first ball placed at position[0]
         int last = position[0];
