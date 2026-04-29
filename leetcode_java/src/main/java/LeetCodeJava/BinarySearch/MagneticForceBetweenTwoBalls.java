@@ -45,9 +45,87 @@ import java.util.Arrays;
 public class MagneticForceBetweenTwoBalls {
 
     // V0
-//    public int maxDistance(int[] position, int m) {
-//
-//    }
+    // IDEA: BINARY SEARCH (gpt)
+    public int maxDistance(int[] position, int m) {
+        Arrays.sort(position);
+
+        int l = 1;
+        int r = position[position.length - 1] - position[0];
+
+        int ans = 0;
+
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+
+            if (canDistribute(position, m, mid)) {
+                ans = mid; // valid → try larger distance
+                l = mid + 1;
+            } else {
+                r = mid - 1; // invalid → reduce distance
+            }
+        }
+
+        return ans;
+    }
+
+    private boolean canDistribute(int[] position, int m, int dist) {
+        int count = 1; // first ball placed at position[0]
+        int last = position[0];
+
+        for (int i = 1; i < position.length; i++) {
+            if (position[i] - last >= dist) {
+                count++;
+                last = position[i];
+
+                if (count >= m)
+                    return true;
+            }
+        }
+
+        return false;
+    }
+
+
+    // V0-0-1
+    // IDEA: BINARY SEARCH (GEMINI)
+    public int maxDistance_0_0_1(int[] position, int m) {
+        // 1. MUST sort to use greedy placement
+        Arrays.sort(position);
+
+        int n = position.length;
+        int left = 1;
+        int right = position[n - 1] - position[0];
+        int ans = 1;
+
+        // 2. Binary Search on the "Minimum Force"
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            if (canPlace_0_0_1(position, m, mid)) {
+                ans = mid; // This distance is possible, try larger
+                left = mid + 1;
+            } else {
+                right = mid - 1; // Too far apart, must reduce distance
+            }
+        }
+        return ans;
+    }
+
+    private boolean canPlace_0_0_1(int[] position, int m, int minDist) {
+        int count = 1; // Place the first ball in the first basket
+        int lastPos = position[0];
+
+        for (int i = 1; i < position.length; i++) {
+            if (position[i] - lastPos >= minDist) {
+                count++;
+                lastPos = position[i];
+                if (count >= m)
+                    return true;
+            }
+        }
+        return count >= m;
+    }
+
 
 
     // V0-1

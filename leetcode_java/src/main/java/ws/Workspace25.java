@@ -3635,6 +3635,69 @@ public class Workspace25 {
     }
 
 
+    // LC 1552
+    // 8.14 -24 am
+    /**
+     *
+     *  -> Given the integer array position and the integer m.
+     *  Return the required force.
+     *
+     *
+     *   - such that the `minimum` magnetic force
+     *      between any two balls is `maximum.`
+     *
+     *  -------------
+     *
+     *   IDEA 1) BRUTE FORCE
+     *
+     *   IDEA 2) BINARY SEARCH ??
+     *
+     *
+     *  -------------
+     *
+     *
+     */
+    // IDEA 2) BINARY SEARCH ??
+    public int maxDistance(int[] position, int m) {
+        // edge
+
+        int l = 1; // ??
+        int sumDist = 0;
+        // ?
+        for(int x: position){
+            sumDist += x;
+        }
+        // ???
+        int r = sumDist / m;
+
+        int ans = r; // ???
+
+        // ??
+        while (r >= l){
+            int mid = l + (r - l) / 2;
+            // ??
+            if(canDistribute(position, m, mid)){
+                ans = Math.min(ans, mid);
+                r = mid - 1;
+            }else{
+                l = mid + 1;
+            }
+        }
+
+        return ans;
+    }
+
+
+    // ???
+    private boolean canDistribute(int[] position, int m, int dist){
+
+        return false;
+    }
+
+
+
+
+
 
 
 
