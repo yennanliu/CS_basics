@@ -41,7 +41,7 @@
 	- monotonic_queue.md (OK)
 	- monotonic_stack.md (OK)
 	- n_sum.md (OK)
-	- palindrome.md (TODO: LC examples)
+	- palindrome.md (TODO: LC examples - `2-8) Minimum Insertion Steps to Make a String Palindrome (LC 1312) — Interval DP`)
 
 
 - to review
@@ -347,6 +347,9 @@
 		- 907,402**,853**
 	- todo (20260427)
 		- 1099
+	- todo (20260429)
+		- 5,647,680
+		- 516
 
  	==================================
 
