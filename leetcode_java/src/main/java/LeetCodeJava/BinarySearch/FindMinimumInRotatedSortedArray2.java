@@ -43,8 +43,77 @@ public class FindMinimumInRotatedSortedArray2 {
 
     // V0
 //    public int findMin(int[] nums) {
-//
 //    }
+
+
+    // V0-1
+    // IDEA: BRUTE FORCE
+    public int findMin_0_1(int[] nums) {
+        // edge
+
+        int ans = 5001;
+        for(int x: nums){
+            ans = Math.min(x, ans);
+        }
+
+        return ans;
+    }
+
+
+    // V0-2
+    // IDEA: BINARY SEARCH (gpt)
+    public int findMin_0_2(int[] nums) {
+        int l = 0, r = nums.length - 1;
+
+        while (l < r) {
+            int mid = l + (r - l) / 2;
+
+            if (nums[mid] < nums[r]) {
+                r = mid; // min in left incl. mid
+            } else if (nums[mid] > nums[r]) {
+                l = mid + 1; // min in right
+            } else {
+                r--; // handle duplicates
+            }
+        }
+
+        return nums[l];
+    }
+
+    
+    // V0-3
+    // IDEA: BINARY SEARCH (gpt)
+    public int findMin_0_3(int[] nums) {
+        int l = 0;
+        int r = nums.length - 1;
+
+        while (l < r) {
+            // Optimization: If the segment is already sorted, nums[l] is the min
+            if (nums[l] < nums[r]) {
+                return nums[l];
+            }
+
+            int mid = l + (r - l) / 2;
+
+            if (nums[mid] > nums[r]) {
+                // Case 1: Left part is sorted, pivot is to the right
+                // Example: [3, 4, 5, 1, 2] -> mid is 5, r is 2. 5 > 2.
+                l = mid + 1;
+            } else if (nums[mid] < nums[r]) {
+                // Case 2: Right part is sorted, mid could be the min or left of it
+                // Example: [5, 1, 2, 3, 4] -> mid is 2, r is 4. 2 < 4.
+                r = mid;
+            } else {
+                // Case 3: nums[mid] == nums[r] (The Duplicate Case)
+                // We don't know where the min is, so we shrink the search space
+                // Example: [1, 0, 1, 1, 1] vs [1, 1, 1, 0, 1]
+                r--;
+            }
+        }
+
+        return nums[l];
+    }
+
 
 
 

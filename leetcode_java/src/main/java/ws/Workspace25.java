@@ -3880,15 +3880,119 @@ public class Workspace25 {
 
 
     // LC 154
-    // 8.51 - 9.01 am
+    // 8.51 - 10.25 am
     /**
+     *  ->  return the minimum element of this array.
      *
+     *
+     *  -------
+     *
+     *   IDEA 1) BRUTE FORCE
+     *
+     *   IDEA 2) BINARY SEARCH ???
      *
      *
      */
+    // IDEA 2) BINARY SEARCH ???
     public int findMin(int[] nums) {
+        // edge
+        if(nums.length == 1){
+            return nums[0];
+        }
+        // already sorted (small -> big)
+        if(nums[nums.length - 1] > nums[0]){
+            return nums[0];
+        }
 
-        return 0;
+        // ???
+        int ans = nums[0];
+        int l = 0;
+        int r = nums.length - 1;
+        // ??
+        while (r >= l){
+            int mid = l + (r - l) / 2;
+            int midVal = nums[mid];
+
+            // ?? already sorted
+            if(nums[r] > nums[l]){
+                ans = Math.min(ans, nums[l]); // ?????
+            }
+
+            /** NOTE !!!
+             *
+             *  ONLY 2 cases:
+             *
+             *   1. nums[mid] >= nums[l]
+             *   2. nums[mid] < nums[r]
+             *
+             *
+             *  ---------------
+             *
+             *   DON'T just memorize, get understand via below practical example:
+             *
+             *             // [1,2,3,4,5]     // already in acending order
+             *             // [5,1,2,3,4]     // mid < r, right part is sorted
+             *             // [4,5,1,2,3]     // mid < r, right part is sorted
+             *             // [3,4,5,1,2]     // mid >= l, left part is sorted
+             *             // [2,3,4,5,1]     / mid >= l, left part is sorted
+             *
+             *             // cycle
+             *             // [1,2,3,4,5]
+             *
+             *
+             *
+             *     -> so via above, we are VERY CLEAR on
+             *        why we need to check `nums[mid] >= nums[l]` and else
+             */
+
+            ans = Math.min(ans, nums[mid]); // ?????
+
+            // ???
+            // case 1) mid is left part
+            // ???
+            // if(midVal >= nums[0]){
+            if(midVal >= nums[l]){
+//                // ???
+//                if(nums[0] < nums[mid+1]){
+//                    r = mid - 1; // ???
+//                }else{
+//                    l = mid + 1;
+//                }
+                l = mid + 1;
+
+            }
+            // case 2) mid is right part
+            else{
+//                if(nums[0] < nums[mid+1]){
+//                    r = mid - 1; // ???
+//                }else{
+//                    l = mid + 1;
+//                }
+                r = mid - 1; // ???
+            }
+        }
+
+        return ans;
+    }
+
+
+
+
+
+
+
+
+
+    // IDEA 1) BRUTE FORCE
+    public int findMin_99(int[] nums) {
+        // edge
+
+        int ans = 5001;
+        for(int x: nums){
+            ans = Math.min(x, ans);
+        }
+
+        return ans;
     }
 
 
