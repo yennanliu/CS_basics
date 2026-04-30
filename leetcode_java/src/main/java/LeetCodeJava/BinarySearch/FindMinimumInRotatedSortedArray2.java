@@ -48,6 +48,19 @@ public class FindMinimumInRotatedSortedArray2 {
 
     // V0-1
     // IDEA: BRUTE FORCE
+    /**  CORE IDEA:
+     *
+     *
+     * Compare with right pointer (nums[r]), not left.
+     *
+     * There are 3 cases:
+     *
+     *   1. nums[mid] < nums[r] → min is in left (including mid)
+     *   2. nums[mid] > nums[r] → min is in right
+     *   3. nums[mid] == nums[r] → shrink search space (r--)
+     *
+     *
+     */
     public int findMin_0_1(int[] nums) {
         // edge
 
@@ -60,9 +73,39 @@ public class FindMinimumInRotatedSortedArray2 {
     }
 
 
-    // V0-2
+    // V0-5
+    // IDEA: BINARY SEARCH (l <= r) (gpt)
+    public int findMin_0_5(int[] nums) {
+        int l = 0, r = nums.length - 1;
+        int ans = nums[0];
+
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+
+            ans = Math.min(ans, nums[mid]);
+
+            // if right part is sorted or mid could be min
+            if (nums[mid] < nums[r]) {
+                r = mid - 1;
+            }
+            // min is in right part
+            else if (nums[mid] > nums[r]) {
+                l = mid + 1;
+            }
+            // duplicates, cannot decide
+            else {
+                r--;
+            }
+        }
+
+        return ans;
+    }
+
+
+
+    // V0-6
     // IDEA: BINARY SEARCH (gpt)
-    public int findMin_0_2(int[] nums) {
+    public int findMin_0_6(int[] nums) {
         int l = 0, r = nums.length - 1;
 
         while (l < r) {
@@ -80,10 +123,10 @@ public class FindMinimumInRotatedSortedArray2 {
         return nums[l];
     }
 
-    
-    // V0-3
+
+    // V0-7
     // IDEA: BINARY SEARCH (gpt)
-    public int findMin_0_3(int[] nums) {
+    public int findMin_0_7(int[] nums) {
         int l = 0;
         int r = nums.length - 1;
 
