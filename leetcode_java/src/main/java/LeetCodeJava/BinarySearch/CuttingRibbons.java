@@ -54,7 +54,83 @@ public class CuttingRibbons {
 //    }
 
 
-    // V1
+    // V1-1
+    // IDEA: BINARY SEARCH (GPT)
+    // TODO: validate
+    public int maxLength_1_1(int[] ribbons, int k) {
+        if (ribbons == null || ribbons.length == 0) {
+            return 0;
+        }
+
+        int l = 1;
+        int r = 0;
+        for (int x : ribbons) {
+            r = Math.max(r, x);
+        }
+
+        int ans = 0;
+
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+
+            if (canSplit(ribbons, k, mid)) {
+                ans = mid;        // valid, try bigger
+                l = mid + 1;
+            } else {
+                r = mid - 1;
+            }
+        }
+
+        return ans;
+    }
+
+    private boolean canSplit(int[] ribbons, int k, int len) {
+        int count = 0;
+
+        for (int x : ribbons) {
+            count += x / len;
+        }
+
+        return count >= k;
+    }
+
+
+    // V1-2
+    // IDEA: BINARY SEARCH (GEMINI)
+    // TODO: validate
+    public int maxLength_1_2(int[] ribbons, int k) {
+        // 1. Range: Smallest length is 1, largest is the max ribbon length
+        int l = 1;
+        int r = 0;
+        for (int x : ribbons) {
+            r = Math.max(r, x);
+        }
+
+        int ans = 0;
+
+        // 2. Binary Search on the length
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+
+            if (canCut(ribbons, k, mid)) {
+                ans = mid;      // Possible to get k ribbons, try a larger length
+                l = mid + 1;
+            } else {
+                r = mid - 1;    // Length too long, must go smaller
+            }
+        }
+
+        return ans;
+    }
+
+    private boolean canCut(int[] ribbons, int k, int len) {
+        long count = 0;
+        for (int x : ribbons) {
+            // How many pieces of 'len' can we get from ribbon 'x'?
+            count += (x / len);
+        }
+        return count >= k;
+    }
 
 
     // V2-1
@@ -102,6 +178,9 @@ public class CuttingRibbons {
 
 
     // V3
+
+
+    
 
 
 }

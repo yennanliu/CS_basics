@@ -3782,9 +3782,80 @@ public class Workspace25 {
 
 
     // LC 1891
+    // 7.54 - 8.04 am
+    /**
+     *
+     *  -> Return the `maximum possible `positive integer`
+     *     length that you can obtain` k ribbons` of,
+     *        or `0` if you cannot obtain k ribbons of the same length.
+     *
+     *
+     *     NOTE:
+     *
+     *      Your goal is to obtain` k ribbons` of all the
+     *          ` same positive integer length`.
+     *         You are allowed to throw away any
+     *         excess ribbon as a result of cutting.
+     *
+     *
+     *   --------------
+     *
+     *   IDEA 1) BRUTE FORCE ??
+     *
+     *   IDEA 2) BINARY SEARCH
+     *
+     *
+     */
+    // IDEA 2) BINARY SEARCH
     public int maxLength(int[] ribbons, int k) {
-        return 0;
+        // edge
+        if(ribbons == null || ribbons.length == 0){
+            return 0;
+        }
+
+        int l = 1; // /?
+        int r = 0;
+        for(int x: ribbons){
+            r = Math.max(r, x);
+        }
+
+        int ans = r;
+        boolean foundSolution = false;
+
+        // ??
+        while (r >= l){
+            int mid = l + (r - l) / 2;
+            if(canSplit2(ribbons, k, mid)){
+                foundSolution = true;
+                ans = Math.min(ans, mid);
+                // NOTE !! find bigger candiates
+                l = mid + 1;
+            }else{
+                r = mid - 1;
+            }
+        }
+
+
+        return !foundSolution ?  0 : ans; // ????
     }
+
+
+    private boolean canSplit2(int[] ribbons, int k, int len){
+        // ???
+        int curCnt = 0;
+
+        for(int x: ribbons){
+            if(x < len){
+                return false;
+            }
+            curCnt += 2;
+        }
+
+
+        // ????
+        return curCnt >= k;
+    }
+
 
 
 
