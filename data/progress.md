@@ -91,7 +91,6 @@
 	- LC 1011
 		- gpt
 		- gemini
-			- 1761
 	- LC 33
 		- gpt
 			- 34

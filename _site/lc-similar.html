@@ -1013,19 +1013,20 @@ function drawTree() {
   const filter = defs.append('filter').attr('id','tree-drop-shadow').attr('x','-30%').attr('y','-30%').attr('width','160%').attr('height','160%');
   filter.append('feDropShadow').attr('dx',0).attr('dy',1).attr('stdDeviation',2).attr('flood-opacity',.18);
 
-  treeZoomBeh = d3.zoom().scaleExtent([0.1, 5])
-    .on('zoom', e => treeGSel.attr('transform', e.transform));
-  svg.call(treeZoomBeh);
-
   const isRadial = layout === 'radial';
   const initScale = isRadial ? 0.72 : 1;
   const initTx = isRadial
     ? d3.zoomIdentity.translate(W/2, H/2).scale(initScale)
     : d3.zoomIdentity.translate(60, H/2).scale(initScale);
 
-  svg.call(treeZoomBeh.transform, initTx);
+  // assign treeGSel BEFORE wiring the zoom handler so it's never undefined
   treeGSel = svg.append('g').attr('transform', initTx.toString());
   treeSvgSel = svg;
+
+  treeZoomBeh = d3.zoom().scaleExtent([0.1, 5])
+    .on('zoom', e => treeGSel.attr('transform', e.transform));
+  svg.call(treeZoomBeh);
+  svg.call(treeZoomBeh.transform, initTx);
 
   const data = buildTreeHierarchy();
   treeRootNode = d3.hierarchy(data);
