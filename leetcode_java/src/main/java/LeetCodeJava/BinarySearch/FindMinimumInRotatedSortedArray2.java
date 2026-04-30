@@ -42,6 +42,11 @@ package LeetCodeJava.BinarySearch;
 public class FindMinimumInRotatedSortedArray2 {
 
     // V0
+//    public int findMin(int[] nums) {
+//
+//    }
+
+
 
     // V1
     // https://leetcode.ca/2016-05-02-154-Find-Minimum-in-Rotated-Sorted-Array-II/
@@ -65,6 +70,7 @@ public class FindMinimumInRotatedSortedArray2 {
         return nums[left];
     }
 
+
     // V2
     // https://leetcode.com/problems/find-minimum-in-rotated-sorted-array-ii/solutions/7157901/easy-code-for-solve-this-problem-by-4_k4-5p13/
     /**
@@ -82,6 +88,7 @@ public class FindMinimumInRotatedSortedArray2 {
         return min;
 
     }
+
 
     // V3
     // https://leetcode.com/problems/find-minimum-in-rotated-sorted-array-ii/solutions/7135635/java-solution-beats-100-proof-concise-co-2vpe/
@@ -110,5 +117,9 @@ public class FindMinimumInRotatedSortedArray2 {
         }
         return min;
     }
+
+
+
+
 
 }
