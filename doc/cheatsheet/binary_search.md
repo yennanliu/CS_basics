@@ -221,24 +221,118 @@ while (l <= r) {
 - **Key Concept**: Determine which half is sorted, then decide search direction
 - **Applications**: Find target, find minimum element
 
-#### Find Minimum in Rotated Sorted Array (LC 153)
+#### Find Minimum in Rotated Sorted Array (LC 153) ⭐⭐⭐⭐⭐
+
+##### Pattern: Find Rotation Point
+
+A rotated sorted array always has this structure:
+
+```
+[Left Higher Plateau] > [Right Lower Plateau]
+e.g. [3, 4, 5, 1, 2]
+      ^^^^^^^^  ^^^^
+      left part  right part (contains minimum)
+```
+
+The **minimum is always at the rotation point** — the single "drop" in the array.
+
+##### Core Idea
+
+Check which side of `mid` is on which plateau, then move toward the **unsorted side** (which contains the minimum):
+
+```
+Rotation examples (length 5):
+[1, 2, 3, 4, 5]  → already sorted, min at index 0
+[5, 1, 2, 3, 4]  → mid < r → right is sorted → go left (r = mid)
+[4, 5, 1, 2, 3]  → mid < r → right is sorted → go left (r = mid)
+[3, 4, 5, 1, 2]  → mid >= l → left is sorted → go right (l = mid + 1)
+[2, 3, 4, 5, 1]  → mid >= l → left is sorted → go right (l = mid + 1)
+```
+
+**Decision Rule:**
+- `nums[mid] >= nums[l]` → mid is on the **Left Plateau** → minimum is to the right → `l = mid + 1`
+- `nums[mid] < nums[l]`  → mid is on the **Right Plateau** → minimum is at mid or left → `r = mid - 1`
+
+##### Recommended Template (Closed Boundary, track `ans`)
+
 ```java
-// Approach: Compare mid with boundaries to determine rotation point
-while (r >= l) {
-    int mid = (l + r) / 2;
-    // Case 1: left subarray + mid is ascending -> search right
-    if (nums[mid] >= nums[l]) {
-        l = mid + 1;
+// LC 153 - Find Minimum in Rotated Sorted Array
+// time = O(log N), space = O(1)
+public int findMin(int[] nums) {
+    int l = 0, r = nums.length - 1;
+    int ans = nums[0];
+
+    while (l <= r) {
+        // Early exit: current window already sorted → minimum is at l
+        if (nums[l] <= nums[r]) {
+            ans = Math.min(ans, nums[l]);
+            break;
+        }
+
+        int mid = l + (r - l) / 2;
+        ans = Math.min(ans, nums[mid]);
+
+        if (nums[mid] >= nums[l]) {
+            l = mid + 1;  // left plateau → go right
+        } else {
+            r = mid - 1;  // right plateau → go left
+        }
     }
-    // Case 2: right subarray + mid is ascending -> search left  
-    else {
-        r = mid - 1;
-    }
+    return ans;
 }
 ```
 
+##### Alternative Template (Open Boundary `r > l`, no `ans` variable)
+
 ```java
-// Two-step approach: determine sorted half, then check target location
+// Cleaner: converges l == r to the minimum index
+// time = O(log N), space = O(1)
+public int findMin(int[] nums) {
+    int l = 0, r = nums.length - 1;
+    while (r > l) {
+        int mid = l + (r - l) / 2;
+        if (nums[mid] < nums[r]) {
+            r = mid;       // right side sorted → min could be at mid
+        } else {
+            l = mid + 1;   // left side sorted → min is to the right
+        }
+    }
+    return nums[l];  // l == r → minimum
+}
+```
+
+##### Visual Trace: `nums = [3,4,5,1,2]`
+
+```
+l=0, r=4: nums[l]=3 > nums[r]=2 → rotated
+  mid=2, nums[2]=5 >= nums[0]=3 → left plateau → l=3
+
+l=3, r=4: nums[l]=1 < nums[r]=2 → sorted → ans=min(ans,1), break
+
+Answer = 1 ✓
+```
+
+##### Template Comparison
+
+| Template | Loop condition | Update | Return | Best when |
+|----------|---------------|--------|--------|-----------|
+| Closed `l <= r` + `ans` | `l <= r` | `l=mid+1` / `r=mid-1` | `ans` | Need to track candidate |
+| Open `r > l` | `r > l` | `r=mid` / `l=mid+1` | `nums[l]` | Cleanest, converges to index |
+
+##### Similar Problems
+
+| LC # | Problem | Key Difference |
+|------|---------|---------------|
+| **153** | Find Minimum in Rotated Sorted Array | Unique elements, find min |
+| **154** | Find Minimum in Rotated Sorted Array II | With duplicates — use `r--` when `nums[mid]==nums[r]` |
+| **33** | Search in Rotated Sorted Array | Find target (not min) — check target location within sorted half |
+| **81** | Search in Rotated Sorted Array II | Find target with duplicates |
+| **189** | Rotate Array | Related concept, different task |
+
+---
+
+```java
+// Two-step approach: determine sorted half, then check target location (LC 33/81)
 while (r >= l) {
     int mid = (l + r) / 2;
     
