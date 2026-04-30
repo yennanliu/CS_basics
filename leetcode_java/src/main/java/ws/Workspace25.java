@@ -3873,10 +3873,114 @@ public class Workspace25 {
 
 
     // LC 1761
+    // 11.20 - 45 am
+    /**
+     *  -> Return the minimum degree of a connected trio in the graph,
+     *
+     *  or -1 if the graph has no connected trios.
+     *
+     *
+     *  ------------------
+     *
+     *  IDEA 1) DFS ??
+     *
+     *     -> map:  { node :  [neigh_1, neigh_2, .. ] }
+     *     -> find if there is `cycle` ??
+     *         -> e.g.  move from node_1, ...
+     *                  finally back to node_1
+     *                  -> and ALL of node visited exactly once
+     *
+     *                  -> trio is found
+     *
+     *
+     *
+     *  IDEA 2) GRAPH ??
+     *
+     *  IDEA 3) UNION FIND ???
+     *
+     *
+     *   ------------------
+     *
+     *
+     *
+     */
+    // IDEA 1) DFS ??
+    int minDegree = 0; // ???? edges.length * edges.length; // ???
     public int minTrioDegree(int n, int[][] edges) {
 
-        return 0;
+        //int minDegree = 0; // ???? edges.length * edges.length; // ???
+        // -> map:  { node :  [neigh_1, neigh_2, .. ] } ???
+        Map<Integer, HashSet<Integer>> map = new HashMap<>();
+        // /??
+        Set<Integer> nodeSet = new HashSet<>();
+
+        for(int[] x: edges){
+            int a = x[0];
+            int b = x[1];
+
+            nodeSet.add(a);
+            nodeSet.add(b);
+
+            // ???
+            if(!map.containsKey(a)){
+                map.put(a, new HashSet<>());
+            }
+            if(!map.containsKey(b)){
+                map.put(b, new HashSet<>());
+            }
+
+            HashSet<Integer> set = map.get(a);
+            set.add(b);
+            map.put(a, set);
+
+            set = map.get(b);
+            set.add(a);
+            map.put(b, set);
+        }
+
+        // /??
+        for(Integer node: nodeSet){
+            // ???
+            dfsTrioHelper(n, edges, node, map, new HashSet<>(), 0);
+        }
+
+
+        return minDegree;
     }
+
+    private void dfsTrioHelper(int n, int[][] edges, int node, Map<Integer, HashSet<Integer>> map, HashSet<Integer> visited, int move){
+        // ??
+        if(visited.contains(node)){
+            if(move > 0){
+                if(minDegree == 0){
+                    minDegree = move;
+                }else{
+                    minDegree = Math.min(move, minDegree);
+                }
+            }
+            return;
+        }
+
+        // ???
+        for(int next: map.get(node)){
+            if(!visited.contains(next)){
+                visited.add(next);
+                dfsTrioHelper(n, edges, next, map, visited, move + 1);
+            }
+        }
+
+
+    }
+
+
+
+
+
+
+
+
+
+
 
 
     // LC 154

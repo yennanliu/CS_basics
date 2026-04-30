@@ -58,7 +58,82 @@ public class MinimumDegreeOfAConnectedTrioInAGraph {
 //    }
 
 
-    // V1
+    // V1-1
+    // IDEA: Adjacency + Enumeration (GPT)
+    public int minTrioDegree_1_1(int n, int[][] edges) {
+        // adjacency matrix (fast lookup)
+        boolean[][] connected = new boolean[n + 1][n + 1];
+        int[] degree = new int[n + 1];
+
+        for (int[] e : edges) {
+            int u = e[0], v = e[1];
+            connected[u][v] = true;
+            connected[v][u] = true;
+            degree[u]++;
+            degree[v]++;
+        }
+
+        int ans = Integer.MAX_VALUE;
+
+        // enumerate all trios
+        for (int i = 1; i <= n; i++) {
+            for (int j = i + 1; j <= n; j++) {
+                if (!connected[i][j])
+                    continue;
+
+                for (int k = j + 1; k <= n; k++) {
+                    if (connected[i][k] && connected[j][k]) {
+                        int trioDegree = degree[i] + degree[j] + degree[k] - 6;
+                        ans = Math.min(ans, trioDegree);
+                    }
+                }
+            }
+        }
+
+        return ans == Integer.MAX_VALUE ? -1 : ans;
+    }
+
+
+    // V1-2
+    // IDEA: Adjacency Matrix (GEMINI)
+    public int minTrioDegree_1_2(int n, int[][] edges) {
+        // 1. Use Adjacency Matrix for O(1) edge lookup
+        // n is up to 400, so 401x401 boolean array is fine (~160KB)
+        boolean[][] isConnected = new boolean[n + 1][n + 1];
+        int[] degree = new int[n + 1];
+
+        for (int[] edge : edges) {
+            isConnected[edge[0]][edge[1]] = true;
+            isConnected[edge[1]][edge[0]] = true;
+            degree[edge[0]]++;
+            degree[edge[1]]++;
+        }
+
+        int minDegree = Integer.MAX_VALUE;
+
+        // 2. Triple loop to find every possible Trio (u, v, w)
+        // Ensure u < v < w to avoid redundant checks
+        for (int u = 1; u <= n; u++) {
+            for (int v = u + 1; v <= n; v++) {
+                if (!isConnected[u][v])
+                    continue; // Optimization: skip if u-v not connected
+
+                for (int w = v + 1; w <= n; w++) {
+                    if (isConnected[u][w] && isConnected[v][w]) {
+                        // We found a trio!
+                        // Calculate degree: (deg(u)-2) + (deg(v)-2) + (deg(w)-2)
+                        // Simplified: deg(u) + deg(v) + deg(w) - 6
+                        int currentDegree = degree[u] + degree[v] + degree[w] - 6;
+                        minDegree = Math.min(minDegree, currentDegree);
+                    }
+                }
+            }
+        }
+
+        return minDegree == Integer.MAX_VALUE ? -1 : minDegree;
+    }
+
+
 
 
     // V2
