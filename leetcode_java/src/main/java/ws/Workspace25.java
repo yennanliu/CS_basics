@@ -3872,6 +3872,11 @@ public class Workspace25 {
 
 
 
+    // LC 1761
+    public int minTrioDegree(int n, int[][] edges) {
+
+        return 0;
+    }
 
 
 
