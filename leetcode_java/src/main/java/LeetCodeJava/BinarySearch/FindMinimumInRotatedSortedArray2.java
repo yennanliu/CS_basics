@@ -48,19 +48,6 @@ public class FindMinimumInRotatedSortedArray2 {
 
     // V0-1
     // IDEA: BRUTE FORCE
-    /**  CORE IDEA:
-     *
-     *
-     * Compare with right pointer (nums[r]), not left.
-     *
-     * There are 3 cases:
-     *
-     *   1. nums[mid] < nums[r] → min is in left (including mid)
-     *   2. nums[mid] > nums[r] → min is in right
-     *   3. nums[mid] == nums[r] → shrink search space (r--)
-     *
-     *
-     */
     public int findMin_0_1(int[] nums) {
         // edge
 
@@ -75,6 +62,165 @@ public class FindMinimumInRotatedSortedArray2 {
 
     // V0-5
     // IDEA: BINARY SEARCH (l <= r) (gpt)
+    /**  CORE IDEA:
+     *
+     *
+     * Compare with right pointer (nums[r]), not left.  !!!!!
+     *
+     *
+     *
+     *
+     * There are 3 cases:
+     *
+     *   1. nums[mid] < nums[r] → min is in left (including mid)
+     *   2. nums[mid] > nums[r] → min is in right
+     *   3. nums[mid] == nums[r] → shrink search space (r--)
+     *
+     *
+     */
+    /**  Q: why we check `nums[r]` but NOT nums[l]
+     *      for finding `moving directions` ?
+     *
+     *
+     * -> Ans:
+     *
+     * Short answer:
+     *
+     * **because the right boundary gives you a stable
+     * reference even with duplicates**,
+     * while the left boundary often doesn’t.
+     *
+     * ---
+     *
+     * ## The key property we exploit
+     *
+     * In **Find Minimum in Rotated Sorted Array II**, the array is:
+     *
+     * * originally sorted
+     * * then rotated
+     * * may contain duplicates
+     *
+     * That means **at least one side (left or right of `mid`)
+     * is sorted**, but duplicates can blur which one.
+     *
+     * ---
+     *
+     * ## Why compare with `nums[r]` (right side)?
+     *
+     * ### Case 1: `nums[mid] < nums[r]`
+     *
+     * 👉 The **right side is sorted**, and `mid` is inside that sorted region.
+     *
+     * Example:
+     *
+     * ```
+     * [4,5,6,7,0,1,2]
+     *          ↑   ↑
+     *         mid  r
+     * ```
+     *
+     * * `nums[mid] < nums[r]`
+     * * So min **cannot be to the right of mid**
+     * * → move `r = mid`
+     *
+     * ---
+     *
+     * ### Case 2: `nums[mid] > nums[r]`
+     *
+     * 👉 The **rotation point is to the right**
+     *
+     * Example:
+     *
+     * ```
+     * [4,5,6,7,0,1,2]
+     *      ↑       ↑
+     *     mid      r
+     * ```
+     *
+     * * `nums[mid] > nums[r]`
+     * * So min is **strictly in right half**
+     * * → `l = mid + 1`
+     *
+     * ---
+     *
+     * ### Case 3: `nums[mid] == nums[r]`
+     *
+     * 👉 **Ambiguous due to duplicates**
+     *
+     * Example:
+     *
+     * ```
+     * [2,2,2,0,1,2]
+     *         ↑   ↑
+     *        mid  r
+     * ```
+     *
+     * * You **cannot tell** which side contains the min
+     * * But you *can safely shrink*:
+     *   → `r--`
+     *
+     * ---
+     *
+     * ## Why NOT compare with `nums[l]`?
+     *
+     * Because duplicates break your logic.
+     *
+     * ### Counterexample:
+     *
+     * ```
+     * [2,2,2,0,1,2]
+     *  ↑
+     *  l
+     * ```
+     *
+     * If you try:
+     *
+     * ```java
+     * if (nums[mid] >= nums[l])
+     * ```
+     *
+     * You might think:
+     *
+     * * "left side is sorted" → go right
+     *
+     * ❌ But that’s wrong:
+     *
+     * * `nums[mid] == nums[l]` gives **no information**
+     * * You might skip the minimum
+     *
+     * ---
+     *
+     * ## Intuition (this is the real takeaway)
+     *
+     * * `nums[r]` helps you answer:
+     *   👉 “Is `mid` in the **sorted tail**?”
+     *
+     * * That’s reliable because:
+     *
+     *   * the **rightmost value anchors the sorted suffix**
+     *   * even with duplicates, you can still **shrink safely**
+     *
+     * ---
+     *
+     * ## Mental model
+     *
+     * Think of it like:
+     *
+     * > “Is `mid` already in the clean, sorted ending segment?”
+     *
+     * * YES → go left
+     * * NO → go right
+     * * NOT SURE → shrink right
+     *
+     * ---
+     *
+     * ## Bottom line
+     *
+     * * Comparing with `r` → **stable, safe with duplicates**
+     * * Comparing with `l` → **ambiguous, error-prone**
+     *
+     *
+     */
     public int findMin_0_5(int[] nums) {
         int l = 0, r = nums.length - 1;
         int ans = nums[0];
