@@ -75,6 +75,10 @@ public class CuttingRibbons {
 
             if (canSplit(ribbons, k, mid)) {
                 ans = mid;        // valid, try bigger
+                /** NOTE !!!
+                 *
+                 *  valid, try bigger
+                 */
                 l = mid + 1;
             } else {
                 r = mid - 1;
@@ -88,9 +92,17 @@ public class CuttingRibbons {
         int count = 0;
 
         for (int x : ribbons) {
+            /** NOTE !!!
+             *
+             *  should be `count += x / len`,
+             *  but NOT `count += 2`
+             */
             count += x / len;
         }
 
+        /** NOTE !!!
+         *
+         */
         return count >= k;
     }
 
@@ -180,7 +192,7 @@ public class CuttingRibbons {
     // V3
 
 
-    
+
 
 
 }

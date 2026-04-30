@@ -159,6 +159,15 @@
     .cl-item{display:flex;align-items:center;gap:.3rem}
     .cl-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
 
+    /* ── TRAVERSAL ANIMATION ─────────────────────────── */
+    .traversal-panel{border-left:3px solid var(--accent)}
+    .tr-step{transition:opacity .2s, background .2s, border-color .2s}
+    #gr-traversal-bar{transition:width .1s linear}
+
+    /* ── RADIAL TREE ENHANCEMENTS ────────────────────── */
+    #tree-svg .t-node circle{transition:opacity .2s}
+    #tree-svg .t-label{text-shadow:0 1px 3px rgba(0,0,0,.25)}
+
     @media(max-width:768px){
       .page-header h1{font-size:1.4rem}
       .ctrl-bar{flex-direction:column;align-items:flex-start}
@@ -247,7 +256,7 @@
       <label>Show:</label>
       <select id="tree-show" onchange="drawTree()">
         <option value="tags">Patterns only</option>
-        <option value="probs">Top problems</option>
+        <option value="probs" selected>Top problems</option>
       </select>
       <button class="btn" onclick="treeZoomIn()">＋</button>
       <button class="btn" onclick="treeZoomOut()">－</button>
@@ -256,7 +265,9 @@
         Click node to expand/collapse · drag to pan · scroll to zoom
       </span>
     </div>
-    <svg id="tree-svg" class="chart-svg" height="640" style="cursor:grab"></svg>
+    <div class="panel-note">Click a group node to expand/collapse · Click a problem node to open LeetCode · Scroll/drag to navigate</div>
+    <svg id="tree-svg" class="chart-svg" height="720" style="cursor:grab"></svg>
+    <div class="tip" id="tree-tip"></div>
   </div>
 </div>
 
@@ -352,11 +363,18 @@
     <!-- Traversal + zoom controls -->
     <div class="gr-zoom-bar">
       <label>Traversal:</label>
-      <select id="gr-traverse" onchange="runTraversal()">
-        <option value="bfs">BFS</option>
-        <option value="dfs">DFS</option>
+      <select id="gr-traverse">
+        <option value="bfs">BFS (Breadth-First)</option>
+        <option value="dfs">DFS (Depth-First)</option>
       </select>
-      <button class="btn primary" onclick="runTraversal()">▶ Show traversal order</button>
+      <label>Speed:</label>
+      <select id="gr-speed">
+        <option value="120">Normal</option>
+        <option value="60">Fast</option>
+        <option value="250">Slow</option>
+      </select>
+      <button class="btn primary" onclick="runTraversal()">▶ Animate Traversal</button>
+      <button class="btn" id="gr-stop-btn" onclick="stopTraversal()" style="display:none">⏹ Stop</button>
       <button class="btn" onclick="clearTraversal()">✕ Clear</button>
       <span style="width:1px;background:var(--border);height:22px;margin:0 .3rem"></span>
       <button class="btn" onclick="grZoomIn()">＋ Zoom in</button>
@@ -375,6 +393,17 @@
       <div class="traversal-header">
         <span id="gr-traversal-title">BFS Traversal Order</span>
         <span id="gr-traversal-info" style="font-weight:400;color:var(--text-light);font-size:.8rem"></span>
+      </div>
+      <!-- progress bar -->
+      <div style="height:4px;background:var(--border);border-radius:2px;margin:.4rem 0 .6rem;overflow:hidden">
+        <div id="gr-traversal-bar" style="height:100%;width:0%;background:var(--accent);border-radius:2px;transition:width .1s linear"></div>
+      </div>
+      <!-- legend for traversal colors -->
+      <div style="display:flex;gap:1rem;font-size:.75rem;color:var(--text-light);margin-bottom:.5rem;flex-wrap:wrap">
+        <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#f59e0b;margin-right:4px;vertical-align:middle"></span>Current</span>
+        <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#10b981;margin-right:4px;vertical-align:middle"></span>Visited</span>
+        <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--accent);margin-right:4px;vertical-align:middle;opacity:.35"></span>Unvisited</span>
+        <span id="gr-traversal-mode-hint" style="margin-left:auto"></span>
       </div>
       <div class="traversal-list" id="gr-traversal-list"></div>
     </div>
@@ -911,16 +940,20 @@ function drawSankey() {
 }
 
 /* ══════════════════════════════════════════════════════════
-   TAB 2 — TOPIC TREE
+   TAB 2 — TOPIC TREE (enhanced)
 ══════════════════════════════════════════════════════════ */
 let treeSvgSel, treeGSel, treeZoomBeh, treeRootNode;
 
 function treeZoomIn()    { treeSvgSel && treeSvgSel.transition().duration(300).call(treeZoomBeh.scaleBy, 1.4); }
 function treeZoomOut()   { treeSvgSel && treeSvgSel.transition().duration(300).call(treeZoomBeh.scaleBy, 0.7); }
 function treeResetZoom() {
-  const W = svgW('tree-svg'), H = 640;
+  const W = svgW('tree-svg'), H = 720;
+  const initScale = document.getElementById('tree-layout').value === 'radial' ? 0.72 : 1;
   treeSvgSel && treeSvgSel.transition().duration(400)
-    .call(treeZoomBeh.transform, d3.zoomIdentity.translate(W/2, H/2));
+    .call(treeZoomBeh.transform,
+      document.getElementById('tree-layout').value === 'radial'
+        ? d3.zoomIdentity.translate(W/2, H/2).scale(initScale)
+        : d3.zoomIdentity.translate(60, H/2).scale(initScale));
 }
 
 function buildTreeHierarchy() {
@@ -928,40 +961,46 @@ function buildTreeHierarchy() {
   const root = { name:'LeetCode', children:[] };
 
   Object.entries(PATTERN_GROUPS).forEach(([grp, groupTags]) => {
-    // collect problems in this group
-    const probs = ALL.filter(p => p.tags.some(t => groupTags.map(x=>x.toLowerCase()).includes(t.toLowerCase())));
+    const lcTags = groupTags.map(x=>x.toLowerCase());
+    const probs = ALL.filter(p => p.tags.some(t => lcTags.includes(t.toLowerCase())));
     if (probs.length === 0) return;
 
-    // sub-tags within group
     const subTagMap = {};
     probs.forEach(p => {
       p.tags.forEach(t => {
-        if (groupTags.map(x=>x.toLowerCase()).includes(t.toLowerCase())) {
-          subTagMap[t] = (subTagMap[t]||0) + 1;
-        }
+        if (lcTags.includes(t.toLowerCase())) subTagMap[t] = (subTagMap[t]||0) + 1;
       });
     });
 
     const children = Object.entries(subTagMap)
-      .sort((a,b)=>b[1]-a[1]).slice(0,8)
+      .sort((a,b)=>b[1]-a[1]).slice(0,6)
       .map(([tag, cnt]) => {
-        const node = { name: tag, value: cnt, diff: grp };
+        const node = { name: tag, value: cnt, diff: grp, type:'tag' };
         if (showProbs) {
-          node.children = probs.filter(p => p.tags.map(x=>x.toLowerCase()).includes(tag.toLowerCase()))
-            .sort((a,b)=>b.acceptance-a.acceptance).slice(0,5)
-            .map(p => ({ name:`#${p.id} ${p.title.slice(0,22)}`, value:1, diff:p.difficulty, prob:p }));
+          const tagProbs = probs.filter(p => p.tags.map(x=>x.toLowerCase()).includes(tag.toLowerCase()));
+          // sort by high acceptance for top interview problems
+          const sorted = tagProbs.sort((a,b) => {
+            // prefer medium/hard with higher acceptance
+            const dw = {Easy:0, Medium:1, Hard:2};
+            return (dw[b.difficulty]||0)*30 + b.acceptance - ((dw[a.difficulty]||0)*30 + a.acceptance);
+          }).slice(0, 4);
+          node.children = sorted.map(p => ({
+            name: p.title.length > 20 ? p.title.slice(0,19)+'…' : p.title,
+            fullName: p.title,
+            value: 1, diff: p.difficulty, type:'prob', prob: p
+          }));
         }
         return node;
       });
 
-    root.children.push({ name:grp, value:probs.length, diff:grp, children });
+    root.children.push({ name:grp, value:probs.length, diff:grp, type:'group', children });
   });
   return root;
 }
 
 function drawTree() {
   const layout = document.getElementById('tree-layout').value;
-  const W = svgW('tree-svg'), H = 640;
+  const W = svgW('tree-svg'), H = 720;
   const svg = d3.select('#tree-svg');
   svg.selectAll('*').remove();
   svg.attr('width', W).attr('height', H);
@@ -969,53 +1008,87 @@ function drawTree() {
   const textC = css('--text'), surfC = css('--surface'), borderC = css('--border');
   const groupColors = Object.fromEntries(Object.keys(PATTERN_GROUPS).map((g,i)=>[g,PALETTE[i%PALETTE.length]]));
 
-  treeZoomBeh = d3.zoom().scaleExtent([0.15,5])
+  // defs: drop shadow + radial glow
+  const defs = svg.append('defs');
+  const filter = defs.append('filter').attr('id','tree-drop-shadow').attr('x','-30%').attr('y','-30%').attr('width','160%').attr('height','160%');
+  filter.append('feDropShadow').attr('dx',0).attr('dy',1).attr('stdDeviation',2).attr('flood-opacity',.18);
+
+  treeZoomBeh = d3.zoom().scaleExtent([0.1, 5])
     .on('zoom', e => treeGSel.attr('transform', e.transform));
   svg.call(treeZoomBeh);
 
-  const initTx = layout === 'radial' ? `translate(${W/2},${H/2})` : `translate(80,${H/2})`;
-  treeGSel = svg.append('g').attr('transform', initTx);
+  const isRadial = layout === 'radial';
+  const initScale = isRadial ? 0.72 : 1;
+  const initTx = isRadial
+    ? d3.zoomIdentity.translate(W/2, H/2).scale(initScale)
+    : d3.zoomIdentity.translate(60, H/2).scale(initScale);
+
+  svg.call(treeZoomBeh.transform, initTx);
+  treeGSel = svg.append('g').attr('transform', initTx.toString());
   treeSvgSel = svg;
 
   const data = buildTreeHierarchy();
   treeRootNode = d3.hierarchy(data);
 
-  // collapse all except first-level on load
+  // collapse to group level on load
   treeRootNode.children && treeRootNode.children.forEach(d => {
     if (d.children) { d._children = d.children; d.children = null; }
   });
 
   let treeLayout;
-  if (layout === 'radial') {
-    treeLayout = d3.tree().size([2*Math.PI, Math.min(W,H)/2 - 80])
-      .separation((a,b) => (a.parent===b.parent ? 1 : 2) / a.depth);
+  if (isRadial) {
+    const radius = Math.min(W, H) * 0.62;
+    treeLayout = d3.tree().size([2 * Math.PI, radius])
+      .separation((a,b) => {
+        const base = a.parent === b.parent ? 1 : 2.2;
+        return base / Math.max(1, a.depth);
+      });
   } else {
-    treeLayout = d3.tree().size([H - 80, W - 200]);
+    treeLayout = d3.tree().nodeSize([24, 200]);
+  }
+
+  function nodeRadius(d) {
+    if (d.data.type === 'prob') return 6;
+    if (d.data.type === 'tag')  return 8;
+    if (d.data.type === 'group') return 12;
+    return 15; // root
   }
 
   function nodeColor(d) {
     if (d.depth === 0) return css('--accent');
+    if (d.data.type === 'prob') return DIFF_HEX[d.data.diff] || '#64748b';
     const g = d.data.diff || d.data.name;
     return groupColors[g] || css('--accent2');
   }
+
+  const tip = (html,e) => showTip('tree-tip', html, e);
 
   function update(source) {
     treeLayout(treeRootNode);
     const nodes = treeRootNode.descendants();
     const links = treeRootNode.links();
 
-    // ── Links ──────────────────────────────────────────
+    // ── Links ─────────────────────────────────────────────
     const link = treeGSel.selectAll('.t-link').data(links, d => d.target.data.name + d.source.data.name);
-    const linkPath = layout === 'radial'
+    const linkPath = isRadial
       ? d3.linkRadial().angle(d=>d.x).radius(d=>d.y)
       : d3.linkHorizontal().x(d=>d.y).y(d=>d.x);
 
-    link.enter().append('path').attr('class','t-link')
-      .attr('fill','none').attr('stroke',borderC).attr('stroke-width',1.2).attr('opacity',.4)
-      .merge(link).transition().duration(250).attr('d', linkPath);
+    const linkEnter = link.enter().append('path').attr('class','t-link')
+      .attr('fill','none')
+      .attr('stroke', d => {
+        const g = d.target.data.diff || d.source.data.diff;
+        const col = groupColors[g];
+        return col || borderC;
+      })
+      .attr('stroke-width', d => d.target.data.type==='prob' ? 1 : d.target.data.type==='tag' ? 1.5 : 2.2)
+      .attr('opacity', d => d.target.data.type==='prob' ? 0.25 : 0.4)
+      .attr('stroke-dasharray', d => d.target.data.type==='prob' ? '4,3' : 'none');
+
+    linkEnter.merge(link).transition().duration(300).attr('d', linkPath);
     link.exit().remove();
 
-    // ── Nodes ──────────────────────────────────────────
+    // ── Nodes ─────────────────────────────────────────────
     const node = treeGSel.selectAll('.t-node').data(nodes, d => d.data.name);
     const nodeEnter = node.enter().append('g').attr('class','t-node')
       .style('cursor','pointer')
@@ -1024,43 +1097,112 @@ function drawTree() {
         if (d.children)  { d._children = d.children; d.children = null; }
         else if (d._children) { d.children = d._children; d._children = null; }
         update(d);
-      });
+      })
+      .on('mousemove', (ev, d) => {
+        if (d.data.type === 'prob' && d.data.prob) {
+          const p = d.data.prob;
+          tip(`<div class="tip-title">#${p.id} ${p.title}</div>
+            <span class="diff-${p.difficulty}">${p.difficulty}</span> · ${p.acceptance}% acceptance<br>
+            <div class="tip-sub">${p.tags.slice(0,4).join(' · ')}</div>
+            <div class="tip-sub" style="margin-top:.2rem;color:var(--accent)">Click to open LeetCode ↗</div>`, ev);
+        } else if (d.data.type === 'tag') {
+          tip(`<div class="tip-title">${d.data.name}</div>
+            <b>${d.data.value}</b> problems<br>
+            Group: ${d.data.diff}`, ev);
+        } else if (d.data.type === 'group') {
+          tip(`<div class="tip-title">${d.data.name}</div>
+            <b>${d.data.value}</b> total problems<br>
+            <div class="tip-sub">Click to expand/collapse</div>`, ev);
+        }
+      })
+      .on('mouseleave', () => hideTip('tree-tip'));
 
+    // outer glow ring for group nodes
+    nodeEnter.filter(d => d.data.type==='group')
+      .append('circle')
+      .attr('r', d => nodeRadius(d) + 5)
+      .attr('fill', 'none')
+      .attr('stroke', d => nodeColor(d))
+      .attr('stroke-width', 1.5)
+      .attr('opacity', 0.3);
+
+    // main circle
     nodeEnter.append('circle')
-      .attr('r', d => d.depth===0?14 : d.depth===1?10 : d.depth===2?7 : 5)
+      .attr('r', nodeRadius)
       .attr('fill', nodeColor)
-      .attr('stroke', surfC).attr('stroke-width', 2).attr('opacity',.9);
+      .attr('stroke', surfC)
+      .attr('stroke-width', d => d.data.type==='prob' ? 1.5 : 2)
+      .attr('opacity', d => d.data.type==='prob' ? 0.88 : 0.92)
+      .attr('filter', d => d.depth <= 1 ? 'url(#tree-drop-shadow)' : null);
+
+    // expand/collapse indicator on group nodes with hidden children
+    nodeEnter.filter(d => d.data.type==='group' || d.data.type==='tag')
+      .append('text')
+      .attr('class','t-expand-icon')
+      .attr('text-anchor','middle')
+      .attr('dominant-baseline','middle')
+      .attr('font-size','9px')
+      .attr('font-weight','700')
+      .attr('fill','#fff')
+      .style('pointer-events','none');
 
     nodeEnter.append('text')
-      .attr('font-size', d => d.depth===0?'13px':d.depth===1?'11px':d.depth===2?'10px':'9px')
-      .attr('font-weight', d => d.depth<2?'700':'400')
-      .attr('fill', textC).style('pointer-events','none');
+      .attr('class','t-label')
+      .attr('font-weight', d => d.data.type==='prob' ? '400' : d.depth<2 ? '700' : '600')
+      .attr('fill', d => d.data.type==='prob' ? (DIFF_HEX[d.data.diff]||textC) : textC)
+      .style('pointer-events','none');
 
     const allNodes = node.merge(nodeEnter);
 
     allNodes.select('circle').attr('fill', nodeColor);
 
-    allNodes.select('text').text(d => {
-      const n = d.data.name, v = d.data.value ? ` (${d.data.value})` : '';
-      const trunc = n.length > 24 ? n.slice(0,22)+'…' : n;
-      return trunc + (d.depth<=2 ? v : '');
+    // update expand icons
+    allNodes.select('.t-expand-icon').text(d => {
+      if (d.data.type === 'group' || d.data.type === 'tag') {
+        return d._children ? '+' : (d.children ? '−' : '');
+      }
+      return '';
     });
 
-    allNodes.transition().duration(280).attr('transform', d => {
-      if (layout === 'radial') {
+    // update labels
+    allNodes.select('.t-label').text(d => {
+      if (d.data.type === 'prob') {
+        return d.data.name; // already truncated
+      }
+      const n = d.data.name;
+      const v = d.data.value ? ` (${d.data.value})` : '';
+      const trunc = n.length > 20 ? n.slice(0,18)+'…' : n;
+      return trunc + (d.depth <= 2 ? v : '');
+    });
+
+    allNodes.transition().duration(300).attr('transform', d => {
+      if (isRadial) {
         const angle = d.x - Math.PI/2;
         return `translate(${d.y*Math.cos(angle)},${d.y*Math.sin(angle)})`;
       }
       return `translate(${d.y},${d.x})`;
     });
 
-    allNodes.select('text').attr('x', d => {
-      if (layout === 'radial') return d.x >= Math.PI ? -12 : 12;
-      return d.children || d._children ? -14 : 12;
-    }).attr('text-anchor', d => {
-      if (layout === 'radial') return d.x >= Math.PI ? 'end' : 'start';
-      return d.children || d._children ? 'end' : 'start';
-    }).attr('dy','0.35em');
+    allNodes.select('.t-label')
+      .attr('font-size', d => {
+        if (d.data.type==='prob') return '9px';
+        if (d.data.type==='tag')  return '10px';
+        if (d.data.type==='group') return '11px';
+        return '13px';
+      })
+      .attr('x', d => {
+        if (isRadial) {
+          const flip = d.x >= Math.PI;
+          const off = nodeRadius(d) + 4;
+          return flip ? -(off) : off;
+        }
+        return (d.children || d._children) ? -(nodeRadius(d)+5) : (nodeRadius(d)+5);
+      })
+      .attr('text-anchor', d => {
+        if (isRadial) return d.x >= Math.PI ? 'end' : 'start';
+        return (d.children || d._children) ? 'end' : 'start';
+      })
+      .attr('dy','0.35em');
 
     node.exit().remove();
   }
@@ -1071,9 +1213,18 @@ function drawTree() {
 
 function highlightTree(q) {
   if (!treeGSel) return;
-  treeGSel.selectAll('.t-node text').attr('fill', d => {
-    if (!q) return css('--text');
-    return d.data.name.toLowerCase().includes(q.toLowerCase()) ? '#f59e0b' : css('--text-light');
+  treeGSel.selectAll('.t-node .t-label').attr('fill', d => {
+    if (!q) {
+      if (d.data.type==='prob') return DIFF_HEX[d.data.diff] || css('--text');
+      return css('--text');
+    }
+    const name = (d.data.fullName || d.data.name).toLowerCase();
+    return name.includes(q.toLowerCase()) ? '#f59e0b' : css('--text-light');
+  });
+  treeGSel.selectAll('.t-node circle:last-of-type').attr('opacity', d => {
+    if (!q) return d.data.type==='prob' ? 0.88 : 0.92;
+    const name = (d.data.fullName || d.data.name).toLowerCase();
+    return name.includes(q.toLowerCase()) ? 1 : 0.3;
   });
 }
 
@@ -1460,8 +1611,9 @@ function drawGraph() {
         ${d.cluster>=0?`<div class="tip-sub">Cluster ${d.cluster+1}</div>`:''}`, ev))
     .on('mouseleave', () => hideTip('gr-tip'));
 
-  // outer ring for cluster color
+  // outer ring for cluster color (also used as pulse target in traversal)
   nodeSel.append('circle')
+    .attr('class', 'gr-node-outer')
     .attr('r', d => rScale(d) + 4)
     .attr('fill', 'none')
     .attr('stroke', d => {
@@ -1472,8 +1624,9 @@ function drawGraph() {
     .attr('stroke-width', d => d.isSeed ? 3 : 2.5)
     .attr('opacity', .85);
 
-  // inner fill by difficulty
+  // inner fill by difficulty (traversal animation targets this)
   nodeSel.append('circle')
+    .attr('class', 'gr-node-inner')
     .attr('r', rScale)
     .attr('fill', d => DIFF_HEX[d.difficulty])
     .attr('stroke', surfC)
@@ -1509,12 +1662,28 @@ function drawGraph() {
   clearTraversal();
 }
 
-/* ── BFS / DFS traversal ──────────────────────────────── */
-let grTraversalHighlight = null;
+/* ── BFS / DFS traversal (enhanced animation) ────────── */
+let grTraversalTimers = [];
+
+function stopTraversal() {
+  grTraversalTimers.forEach(t => clearTimeout(t));
+  grTraversalTimers = [];
+  document.getElementById('gr-stop-btn').style.display = 'none';
+  // restore node colors
+  d3.select('#gr-svg').selectAll('.gr-node-inner')
+    .transition().duration(300)
+    .attr('fill', d => DIFF_HEX[d.difficulty])
+    .attr('opacity', .9)
+    .attr('stroke', css('--surface'))
+    .attr('stroke-width', 1.5);
+}
 
 function runTraversal() {
   const mode = document.getElementById('gr-traverse').value;
+  const speed = +document.getElementById('gr-speed').value;
   if (!grCurrentNodes.length) return;
+
+  stopTraversal(); // cancel any running animation
 
   const seed = grCurrentNodes.find(n=>n.isSeed) || grCurrentNodes[0];
   const adjMap = {};
@@ -1526,95 +1695,166 @@ function runTraversal() {
     if (adjMap[tid]) adjMap[tid].push(sid);
   });
 
-  const order = [];
+  // build traversal order AND record BFS frontier levels / DFS depth
+  const order = [];    // [{id, level/depth}]
   const seen = new Set();
 
   if (mode === 'bfs') {
-    const queue = [seed.id];
+    let queue = [{id: seed.id, level: 0}];
     seen.add(seed.id);
     while (queue.length) {
-      const cur = queue.shift();
-      order.push(cur);
-      (adjMap[cur]||[]).forEach(nb => { if (!seen.has(nb)) { seen.add(nb); queue.push(nb); } });
+      const {id: cur, level} = queue.shift();
+      order.push({id: cur, level});
+      (adjMap[cur]||[]).forEach(nb => {
+        if (!seen.has(nb)) { seen.add(nb); queue.push({id:nb, level:level+1}); }
+      });
     }
   } else {
-    const stack = [seed.id];
+    // DFS with depth tracking
+    const stack = [{id: seed.id, depth: 0}];
+    const depthMap = {};
     while (stack.length) {
-      const cur = stack.pop();
+      const {id: cur, depth} = stack.pop();
       if (seen.has(cur)) continue;
-      seen.add(cur); order.push(cur);
-      (adjMap[cur]||[]).reverse().forEach(nb => { if (!seen.has(nb)) stack.push(nb); });
+      seen.add(cur);
+      depthMap[cur] = depth;
+      order.push({id: cur, level: depth});
+      const neighbors = (adjMap[cur]||[]).filter(nb => !seen.has(nb)).reverse();
+      neighbors.forEach(nb => stack.push({id:nb, depth:depth+1}));
     }
   }
 
+  const maxLevel = Math.max(...order.map(o=>o.level), 1);
   const nodeById = Object.fromEntries(grCurrentNodes.map(n=>[n.id,n]));
+
+  // setup panel
   const panel = document.getElementById('gr-traversal-panel');
   const list  = document.getElementById('gr-traversal-list');
   const title = document.getElementById('gr-traversal-title');
   const info  = document.getElementById('gr-traversal-info');
+  const bar   = document.getElementById('gr-traversal-bar');
+  const hint  = document.getElementById('gr-traversal-mode-hint');
 
-  title.textContent = (mode === 'bfs' ? '🌊 BFS' : '🔍 DFS') + ' Traversal Order';
-  info.textContent  = `${order.length} nodes visited`;
+  title.textContent = mode === 'bfs' ? '🌊 BFS — Level-by-Level Traversal' : '🔍 DFS — Depth-First Traversal';
+  info.textContent  = `${order.length} nodes · ${maxLevel+1} ${mode==='bfs'?'levels':'depth levels'}`;
+  hint.textContent  = mode === 'bfs'
+    ? 'BFS explores all neighbors before going deeper (queue)'
+    : 'DFS follows one path as deep as possible (stack)';
+  bar.style.width = '0%';
   panel.classList.add('open');
+  document.getElementById('gr-stop-btn').style.display = '';
 
-  list.innerHTML = order.map((id, i) => {
+  // pre-render all step pills (grayed out)
+  list.innerHTML = order.map(({id, level}, i) => {
     const n = nodeById[id];
     if (!n) return '';
     const diffColor = DIFF_HEX[n.difficulty] || '#888';
-    return `<span class="tr-step" data-id="${id}"
-              style="border-color:${diffColor}22"
+    const levelLabel = mode === 'bfs' ? `L${level}` : `D${level}`;
+    return `<span class="tr-step" id="tr-step-${id}" data-id="${id}"
+              style="border-color:${diffColor}33;opacity:.35"
               onmouseenter="hlTraversalNode('${id}',true)"
               onmouseleave="hlTraversalNode('${id}',false)"
               onclick="openLC('${n.title.replace(/'/g,"\\'")}')">
-              <span class="step-num">${i+1}.</span>
-              <span style="color:${diffColor};font-size:.7rem">●</span>
-              ${n.title.length>22?n.title.slice(0,20)+'…':n.title}
+              <span class="step-num" style="font-weight:700">${i+1}.</span>
+              <span style="color:${diffColor};font-size:.68rem">●</span>
+              <span style="font-size:.68rem;color:var(--text-light);margin-right:.15rem">${levelLabel}</span>
+              ${n.title.length>20?n.title.slice(0,18)+'…':n.title}
             </span>`;
   }).join('');
 
-  // animate highlight on the SVG nodes in traversal order
-  grHighlightTraversalSequence(order, nodeById);
+  // dim all graph nodes
+  d3.select('#gr-svg').selectAll('.gr-node-inner')
+    .attr('opacity', .2).attr('stroke', css('--surface')).attr('stroke-width', 1.5);
+
+  // animate each step
+  order.forEach(({id, level}, i) => {
+    const t = setTimeout(() => {
+      const n = nodeById[id];
+      if (!n) return;
+
+      // color previously-current nodes green (visited)
+      if (i > 0) {
+        const prevId = order[i-1].id;
+        d3.select('#gr-svg').selectAll('.gr-node-inner')
+          .filter(d => d && d.id == prevId)
+          .transition().duration(200)
+          .attr('fill', '#10b981')  // visited = green
+          .attr('opacity', .85)
+          .attr('stroke', '#064e3b')
+          .attr('stroke-width', 2);
+      }
+
+      // highlight current node (yellow/amber)
+      d3.select('#gr-svg').selectAll('.gr-node-inner')
+        .filter(d => d && d.id == id)
+        .transition().duration(150)
+        .attr('fill', '#f59e0b')
+        .attr('opacity', 1)
+        .attr('stroke', '#92400e')
+        .attr('stroke-width', 3);
+
+      // pulse ring effect
+      d3.select('#gr-svg').selectAll('.gr-node-outer')
+        .filter(d => d && d.id == id)
+        .transition().duration(300)
+        .attr('r', d => (d.isSeed ? 20 : Math.max(9, 9+(d.deg/(d3.max(grCurrentNodes,x=>x.deg)||1))*11)) + 10)
+        .attr('opacity', .6)
+        .transition().duration(300)
+        .attr('r', d => (d.isSeed ? 20 : Math.max(9, 9+(d.deg/(d3.max(grCurrentNodes,x=>x.deg)||1))*11)) + 4)
+        .attr('opacity', .85);
+
+      // update progress bar
+      bar.style.width = `${Math.round((i+1)/order.length*100)}%`;
+
+      // scroll step pill into view + activate
+      const pill = document.getElementById(`tr-step-${id}`);
+      if (pill) {
+        pill.style.opacity = '1';
+        pill.style.background = 'rgba(245,158,11,.15)';
+        pill.style.borderColor = '#f59e0b';
+        pill.scrollIntoView({ behavior:'smooth', block:'nearest' });
+        const pt = setTimeout(() => {
+          pill.style.background = '';
+          pill.style.borderColor = '';
+        }, speed + 200);
+        grTraversalTimers.push(pt);
+      }
+    }, i * speed);
+    grTraversalTimers.push(t);
+  });
+
+  // finalize: restore all to "visited" green after done
+  const finalT = setTimeout(() => {
+    d3.select('#gr-svg').selectAll('.gr-node-inner')
+      .transition().duration(500)
+      .attr('fill', d => DIFF_HEX[d.difficulty])
+      .attr('opacity', .9)
+      .attr('stroke', css('--surface'))
+      .attr('stroke-width', 1.5);
+    bar.style.width = '100%';
+    document.getElementById('gr-stop-btn').style.display = 'none';
+    info.textContent += ' ✓ done';
+    // mark all pills as visited
+    order.forEach(({id}) => {
+      const pill = document.getElementById(`tr-step-${id}`);
+      if (pill) { pill.style.opacity = '1'; }
+    });
+  }, order.length * speed + 400);
+  grTraversalTimers.push(finalT);
 }
 
 function hlTraversalNode(id, on) {
-  d3.select('#gr-svg').selectAll('g g')
+  d3.select('#gr-svg').selectAll('.gr-node-inner')
     .filter(d => d && d.id == id)
-    .select('circle:nth-child(2)')
     .attr('stroke', on ? 'gold' : css('--surface'))
-    .attr('stroke-width', on ? 4 : 1.5);
-}
-
-function grHighlightTraversalSequence(order, nodeById) {
-  // flash nodes in order with a short delay
-  d3.select('#gr-svg').selectAll('g g').select('circle:nth-child(2)')
-    .attr('opacity', .35);
-  order.forEach((id, i) => {
-    setTimeout(() => {
-      d3.select('#gr-svg').selectAll('g g')
-        .filter(d => d && d.id == id)
-        .select('circle:nth-child(2)')
-        .transition().duration(200)
-        .attr('opacity', 1)
-        .attr('stroke', 'gold')
-        .attr('stroke-width', 3);
-      // highlight step pill
-      const pills = document.querySelectorAll('#gr-traversal-list .tr-step');
-      if (pills[i]) {
-        pills[i].classList.add('hl');
-        setTimeout(() => pills[i].classList.remove('hl'), 400);
-      }
-    }, i * 80);
-  });
-  // restore normal after all done
-  setTimeout(() => {
-    d3.select('#gr-svg').selectAll('g g').select('circle:nth-child(2)')
-      .attr('opacity', .9).attr('stroke', css('--surface')).attr('stroke-width', 1.5);
-  }, order.length * 80 + 600);
+    .attr('stroke-width', on ? 4 : 2);
 }
 
 function clearTraversal() {
+  stopTraversal();
   document.getElementById('gr-traversal-panel').classList.remove('open');
   document.getElementById('gr-traversal-list').innerHTML = '';
+  document.getElementById('gr-traversal-bar').style.width = '0%';
 }
 
 /* ══════════════════════════════════════════════════════════

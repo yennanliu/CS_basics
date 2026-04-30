@@ -3816,18 +3816,29 @@ public class Workspace25 {
         int l = 1; // /?
         int r = 0;
         for(int x: ribbons){
+
+
+            // ?????
             r = Math.max(r, x);
+           // r = Math.min(r, x);
         }
 
-        int ans = r;
+        //int ans = r;
+        int ans = 0;
+
+
+
         boolean foundSolution = false;
 
         // ??
         while (r >= l){
+
             int mid = l + (r - l) / 2;
+
             if(canSplit2(ribbons, k, mid)){
                 foundSolution = true;
-                ans = Math.min(ans, mid);
+                //ans = Math.min(ans, mid);
+                ans = mid;
                 // NOTE !! find bigger candiates
                 l = mid + 1;
             }else{
@@ -3836,7 +3847,8 @@ public class Workspace25 {
         }
 
 
-        return !foundSolution ?  0 : ans; // ????
+       // return !foundSolution ?  0 : ans; // ????
+        return ans;
     }
 
 
@@ -3845,10 +3857,12 @@ public class Workspace25 {
         int curCnt = 0;
 
         for(int x: ribbons){
-            if(x < len){
-                return false;
-            }
-            curCnt += 2;
+//            if(x < len){
+//                return false;
+//            }
+
+           // curCnt += 2;
+            curCnt += (x / len); // ????
         }
 
 
