@@ -58,8 +58,48 @@ public class MinimumDegreeOfAConnectedTrioInAGraph {
 //    }
 
 
+    /** NOTE !!
+     *
+     *
+     *   -> CAN'T do this LC with DFS
+     *
+     *
+     *   DFS doesn’t naturally enforce
+     *   “all 3 nodes are mutually connected,” and your current code:
+     *
+     *      doesn’t ensure 3 distinct nodes
+     *      doesn’t check all 3 edges exist
+     *      doesn’t compute the correct “degree” definition
+     *
+     */
+
+
     // V1-1
     // IDEA: Adjacency + Enumeration (GPT)
+    /** NOTE !!
+     *
+     *  CORE:
+     *
+     *   -> A trio = 3 nodes where every pair is connected (a triangle)
+     *
+     *
+     *  Key idea
+     *
+     *    - Build adjacency sets
+     *
+     *    - Try all triples (i, j, k) such that:
+     *         - i < j < k
+     *         - all edges exist → triangle
+     *
+     *    - Compute degree:
+     *          ```
+     *          degree = deg[i] + deg[j] + deg[k] - 6
+     *          ```
+     *
+     * (we subtract the 3 internal edges counted twice)
+     *
+     *
+     */
     public int minTrioDegree_1_1(int n, int[][] edges) {
         // adjacency matrix (fast lookup)
         boolean[][] connected = new boolean[n + 1][n + 1];
