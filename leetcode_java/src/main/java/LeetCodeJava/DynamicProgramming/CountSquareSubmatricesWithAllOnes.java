@@ -63,6 +63,33 @@ public class CountSquareSubmatricesWithAllOnes {
 
     // V0-1
     // IDEA: 2D DP (gpt)
+    /**  NOTE !!!
+     *
+     *  1. DP def:
+     *
+     *   dp[y][x] should mean:
+     *
+     *    -> the size of the largest square ending at (y, x)
+     *
+     *       (Not “number of squares so far”.)
+     *
+     *
+     * 2. DP eq:
+     *
+     *    - if matrix[y][x] == 1:
+     *
+     *        dp[y][x] = min(
+     *     dp[y-1][x],      // top
+     *     dp[y][x-1],      // left
+     *     dp[y-1][x-1]     // top-left
+     *      ) + 1
+     *
+     *    else:
+     *
+     *      dp[y][x] = 0
+     *
+     *
+     */
     public int countSquares_0_1(int[][] matrix) {
         int n = matrix.length;
         int m = matrix[0].length;
@@ -80,6 +107,11 @@ public class CountSquareSubmatricesWithAllOnes {
                                 Math.min(dp[y - 1][x], dp[y][x - 1]),
                                 dp[y - 1][x - 1]) + 1;
                     }
+                    /**  NOTE
+                     *
+                     * Then the answer is sum of all dp values,
+                     * NOT just bottom-right.
+                     */
                     res += dp[y][x];
                 }
             }
@@ -87,6 +119,7 @@ public class CountSquareSubmatricesWithAllOnes {
 
         return res;
     }
+    
 
     // V0-2
     // IDEA: 2D DP (gemini)
@@ -218,6 +251,6 @@ public class CountSquareSubmatricesWithAllOnes {
 
 
 
-    
+
 
 }
