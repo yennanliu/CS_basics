@@ -62,6 +62,51 @@ public class CountSquareSubmatricesWithAllOnes {
 
 
     // V0-1
+    // IDEA: 2D DP (GEMINI)
+    /**
+     *
+     *  DP def:
+     *
+     *  dp[i][j] represents the
+     * ` total count of square submatrices `
+     *  whose bottom-right corner is at cell $(i, j)$.
+     *
+     *
+     * DP eq:
+     *
+     *   if !(i == 0 || j == 0):
+     *
+     *    dp[i][j] =
+     *       Math.min(Math.min(dp[i-1][j], dp[i][j-1]), dp[i-1][j-1])
+     *       + 1;
+     *
+     */
+    public int countSquares_0_1(int[][] matrix) {
+        int rows = matrix.length;
+        int cols = matrix[0].length;
+        int[][] dp = new int[rows][cols];
+        int result = 0;
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (matrix[i][j] == 1) {
+                    if (i == 0 || j == 0) {
+                        dp[i][j] = 1; // Only 1x1 possible on edges
+                    } else {
+                        // This is the "Magic" line:
+                        dp[i][j] = Math.min(Math.min(dp[i - 1][j], dp[i][j - 1]), dp[i - 1][j - 1]) + 1;
+                    }
+                    // We add the count found at this cell to our global total
+                    result += dp[i][j];
+                }
+            }
+        }
+        return result;
+    }
+
+
+
+    // V0-2
     // IDEA: 2D DP (gpt)
     /**  NOTE !!!
      *
@@ -90,7 +135,7 @@ public class CountSquareSubmatricesWithAllOnes {
      *
      *
      */
-    public int countSquares_0_1(int[][] matrix) {
+    public int countSquares_0_2(int[][] matrix) {
         int n = matrix.length;
         int m = matrix[0].length;
 
@@ -140,9 +185,9 @@ public class CountSquareSubmatricesWithAllOnes {
     }
 
 
-    // V0-2
+    // V0-3
     // IDEA: 2D DP (gemini)
-    public int countSquares_0_2(int[][] matrix) {
+    public int countSquares_0_3(int[][] matrix) {
         int n = matrix.length;
         int m = matrix[0].length;
         int[][] dp = new int[n][m];
