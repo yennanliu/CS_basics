@@ -61,6 +61,63 @@ public class CountSquareSubmatricesWithAllOnes {
 //    }
 
 
+    // V0-1
+    // IDEA: 2D DP (gpt)
+    public int countSquares_0_1(int[][] matrix) {
+        int n = matrix.length;
+        int m = matrix[0].length;
+
+        int[][] dp = new int[n][m];
+        int res = 0;
+
+        for (int y = 0; y < n; y++) {
+            for (int x = 0; x < m; x++) {
+                if (matrix[y][x] == 1) {
+                    if (y == 0 || x == 0) {
+                        dp[y][x] = 1; // first row/col
+                    } else {
+                        dp[y][x] = Math.min(
+                                Math.min(dp[y - 1][x], dp[y][x - 1]),
+                                dp[y - 1][x - 1]) + 1;
+                    }
+                    res += dp[y][x];
+                }
+            }
+        }
+
+        return res;
+    }
+
+    // V0-2
+    // IDEA: 2D DP (gemini)
+    public int countSquares_0_2(int[][] matrix) {
+        int n = matrix.length;
+        int m = matrix[0].length;
+        int[][] dp = new int[n][m];
+        int totalSquares = 0;
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                // Only process if the cell contains a 1
+                if (matrix[i][j] == 1) {
+                    if (i == 0 || j == 0) {
+                        // Base case: first row or column
+                        dp[i][j] = 1;
+                    } else {
+                        // Transition: Min of three neighbors + 1
+                        dp[i][j] = Math.min(Math.min(dp[i - 1][j], dp[i][j - 1]), dp[i - 1][j - 1]) + 1;
+                    }
+                }
+                // Accumulate the count of squares ending at (i, j)
+                totalSquares += dp[i][j];
+            }
+        }
+
+        return totalSquares;
+    }
+
+
+
     // V1-1
     // IDEA: Bottom-up Approach
     // https://leetcode.com/problems/count-square-submatrices-with-all-ones/editorial/
@@ -153,13 +210,14 @@ public class CountSquareSubmatricesWithAllOnes {
 
 
 
-
     // V2
+
 
 
     // V3
 
 
 
+    
 
 }

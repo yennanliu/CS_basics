@@ -4199,10 +4199,95 @@ public class Workspace25 {
 
 
     // LC 1277
+    // 3.26 - 48 pm
+    /**
+     *    ->
+     *
+     *    return how `many` square `submatrices` have
+     *    `all ones.`
+     *
+     *    - M X N matrix
+     *
+     *   ----------------
+     *
+     *    IDEA 1) BRUTE FORCE
+     *
+     *    IDEA 2) DP ???
+     *
+     *     - 2D DP ???
+     *
+     *     - DP def:
+     *
+     *        dp[i][j]:
+     *          - total cnt of `submatrices` at
+     *            cell (i, j)
+     *
+     *            - NOTE:
+     *              ALL ONE submatrices
+     *
+     *     - DP eq:
+     *
+     *      dp[i][j] =
+     *
+     *        if m[i][j] == 1 && m[i-1][j] == 1 && m[i][j-1] == 1:
+     *
+     *            m[i][j] = m[i-1][j-1] + 1 // ????
+     *
+     *
+     *
+     *
+     *
+     *   ----------------
+     *
+     *
+     *
+     */
+    // IDEA 2) DP ???
     public int countSquares(int[][] matrix) {
+        // edge ??
 
-        return 0;
+        int n = matrix.length;
+        int m = matrix[0].length;
+
+        // ???
+        int[][] dp = new int[n-1][m-1];
+
+        // init ???
+        for(int y = 0; y < n; y++){
+            // ???
+            if(dp[y][0] == 1){
+                dp[y][0] = 1;
+            }
+        }
+
+        for(int x = 0; x < m; x++){
+            // ???
+            if(dp[0][x] == 1){
+                dp[0][x] = 1;
+            }
+        }
+
+
+        // ???
+        for(int y = 1; y < n; y++){
+            for(int x = 1; x < m; x++){
+                // ???
+                if(dp[y][x] == 1 &&
+                   dp[y-1][x] == 1 &&
+                   dp[y][x-1] == 1){
+                    // ????
+                    dp[y][x] = (dp[y-1][x-1] + dp[y][x-1] + dp[y-1][x] + 1);
+                }else{
+                    dp[y][x] = (dp[y][x-1] + dp[y-1][x] + 1);
+                }
+            }
+        }
+
+
+        return dp[n-1][m-1];
     }
+
+
 
 
 
