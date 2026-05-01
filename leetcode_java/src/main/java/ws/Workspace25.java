@@ -4100,6 +4100,13 @@ public class Workspace25 {
     }
 
 
+    // LC 1760
+    public int minimumSize(int[] nums, int maxOperations) {
+
+        return -1;
+    }
+
+
 
 
 
