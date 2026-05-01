@@ -57,6 +57,82 @@ public class MinimumLimitOfBallsInABag {
 //
 //    }
 
+    // V0-1
+    // IDEA: BINARY SEARCH (gpt)
+    public int minimumSize_0_1(int[] nums, int maxOperations) {
+        int l = 1;
+        int r = 0;
+
+        for (int x : nums) {
+            r = Math.max(r, x); // max, not min
+        }
+
+        int ans = r;
+
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+
+            if (canSplit(nums, maxOperations, mid)) {
+                ans = mid;
+                r = mid - 1; // try smaller penalty
+            } else {
+                l = mid + 1;
+            }
+        }
+
+        return ans;
+    }
+
+    private boolean canSplit(int[] nums, int maxOperations, int maxBalls) {
+        int ops = 0;
+
+        for (int x : nums) {
+            ops += (x - 1) / maxBalls; // required splits
+            if (ops > maxOperations) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+    // V0-2
+    // IDEA: BINARY SEARCH (GEMINI)
+    public int minimumSize_0_2(int[] nums, int maxOperations) {
+        int l = 1;
+        int r = 0;
+        for (int x : nums) {
+            r = Math.max(r, x);
+        }
+
+        int ans = r;
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+
+            if (canAchieve(nums, maxOperations, mid)) {
+                ans = mid; // This penalty is possible, try to go lower
+                r = mid - 1;
+            } else {
+                l = mid + 1; // Penalty too small, need more operations
+            }
+        }
+        return ans;
+    }
+
+    private boolean canAchieve(int[] nums, int maxOperations, int penalty) {
+        long opsNeeded = 0;
+        for (int x : nums) {
+            // Number of operations to split x into bags of size <= penalty
+            // Formula: ceil(x / penalty) - 1  OR  (x - 1) / penalty
+            opsNeeded += (x - 1) / penalty;
+
+            if (opsNeeded > maxOperations)
+                return false;
+        }
+        return opsNeeded <= maxOperations;
+    }
+
 
     // V1
     // IDEA: BINARY SEARCH
@@ -77,6 +153,7 @@ public class MinimumLimitOfBallsInABag {
         }
         return high;
     }
+
 
     // V2
     // IDEA: Binary Search on The Answer
@@ -158,6 +235,7 @@ public class MinimumLimitOfBallsInABag {
         return ans;
     }
 
+    
 
     // V4
 

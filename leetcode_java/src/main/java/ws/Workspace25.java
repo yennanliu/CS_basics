@@ -4101,11 +4101,94 @@ public class Workspace25 {
 
 
     // LC 1760
+    // 2.27 - 37 pm
+    /**
+     *  -> Return the minimum possible
+     *     penalty after performing the operations.
+     *
+     *
+     *    - nums[i]: balls at i th bag
+     *    - maxOperations: int
+     *
+     *    - can do below op
+     *      <= `most maxOperations` times
+     *
+     *      - Take any bag of balls and divide
+     *        it into two new bags
+     *        with a `positive` number
+     *
+     *
+     *  --------------
+     *
+     *   IDEA 1) BINARY SEARCH ???
+     *
+     *   IDEA 2) BRUTE FORCE ???
+     *
+     *   IDEA 3) greedy ???
+     *
+     *
+     *
+     *  --------------
+     *
+     *
+     */
+    // IDEA 1) BINARY SEARCH ???
     public int minimumSize(int[] nums, int maxOperations) {
+        // edge
 
-        return -1;
+        int l = 1; // ???
+        int r = nums[0];
+
+        // /?
+        for(int x: nums){
+            r = Math.min(x, r);
+        }
+        // ???
+        int ans = r; // ??
+
+        while (r >= l){
+            // mid: possible `ball cnt` in bags ??????
+            int mid = l + (r - l) / 2;
+            // ???
+            if(canSplit5(nums, maxOperations, mid)){
+                ans = mid;
+                // Return the minimum possible penalty after performing the operations.
+                // NOTE !!! find the `bigger` candidate
+                l = mid + 1;
+            }else{
+                r = mid - 1;
+            }
+        }
+
+        return ans;
     }
 
+
+    private boolean canSplit5(int[] nums, int maxOperations, int ballCnt){
+        int opCnt = 0;
+        int group = 0; // ???
+        for(int x: nums){
+            // ???
+            if(opCnt > maxOperations){
+                return false; // ???
+            }
+            // /??
+//            while (x > ballCnt){
+//                group += 1;
+//                x = x %
+//            }
+            int curCnt = x / ballCnt;
+            int remain = x % ballCnt;
+            // ???
+            if(remain != 0){
+                curCnt += 1;
+            }
+            // ???
+            group += curCnt;
+        }
+
+        return opCnt <= maxOperations;
+    }
 
 
 
