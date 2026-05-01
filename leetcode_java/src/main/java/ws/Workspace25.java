@@ -3995,10 +3995,72 @@ public class Workspace25 {
      *
      *   IDEA 2) BINARY SEARCH ???
      *
+     * -------
+     *
+     *
+     *  ex 1)
+     *
+     *    CORE: compare with `nums[r]`
+     *
+     *    [2,2,2,0,1]
+     *         mid
+     *
+     *
+     *   [0,1,2,2,2]
+     *        mid
+     *
      *
      */
     // IDEA 2) BINARY SEARCH ???
     public int findMin(int[] nums) {
+        // edge
+        int l = 0;
+        int r = nums.length - 1;
+
+        int ans = nums[0];
+
+        while (r >= l){
+
+            int mid = l + (r - l) / 2;
+            int midVal = nums[mid];
+            ans = Math.min(ans, midVal);
+
+            // edge: if already sorted (small -> big)
+            // /??
+            if(nums[r] > nums[l]){
+                return nums[l];
+            }
+            // ???
+            if(midVal > nums[r]){
+                l = mid + 1;
+               // r = mid - 1; // ???
+                ans = Math.min(ans, nums[l]);
+            }else if (midVal < nums[r]){
+                //l = mid + 1;
+                r = mid - 1; // ???
+                ans = Math.min(ans, nums[r]);
+            }
+            // ??? NOTE !!!
+            else{
+                r -= 1;
+            }
+
+        }
+
+
+        return ans;
+    }
+
+
+
+
+
+
+
+
+
+    // IDEA 2) BINARY SEARCH ???
+    public int findMin_999(int[] nums) {
         // edge
         if(nums.length == 1){
             return nums[0];

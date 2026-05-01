@@ -1,6 +1,6 @@
 # Progress
 
-# 2026-05-01
+# 2026-05-02
 
 - Needcode DP playlist
 	- https://www.youtube.com/watch?v=73r3KWiEvyk&list=PLot-Xpze53lcvx_tjrr_m2lgD2NsRHlNO

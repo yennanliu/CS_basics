@@ -42,8 +42,48 @@ package LeetCodeJava.BinarySearch;
 public class FindMinimumInRotatedSortedArray2 {
 
     // V0
-//    public int findMin(int[] nums) {
-//    }
+    // IDEA: BINARY SEARCH (l <= r) (gpt)
+    public int findMin(int[] nums) {
+        int l = 0;
+        int r = nums.length - 1;
+        int ans = nums[0];
+
+        while (l <= r) {
+            int mid = l + (r - l) / 2;
+
+            ans = Math.min(ans, nums[mid]);
+
+            /** NOTE !!!
+             *
+             *
+             *  ALWAYS compare with nums[r]
+             */
+            if (nums[mid] > nums[r]) {
+                l = mid + 1;
+            }
+            /** NOTE !!!
+             *
+             *
+             *  ALWAYS compare with nums[r]
+             */
+            else if (nums[mid] < nums[r]) {
+                r = mid - 1;
+            }
+            /** NOTE !!!
+             *
+             *
+             * handle duplicates
+             * e.g.
+             *
+             * nums[mid] == nums[r]
+             */
+            else {
+                r--;
+            }
+        }
+
+        return ans;
+    }
 
 
     // V0-1
