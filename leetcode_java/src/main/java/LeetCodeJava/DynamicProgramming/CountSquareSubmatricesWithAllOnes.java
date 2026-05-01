@@ -99,14 +99,33 @@ public class CountSquareSubmatricesWithAllOnes {
 
         for (int y = 0; y < n; y++) {
             for (int x = 0; x < m; x++) {
+                /**
+                 *
+                 * At each cell, you’re asking:
+                 *
+                 *   -> “How big of a square can
+                 *       I form with this as bottom-right corner?”
+                 *
+                 *   -> You’re limited by the smallest of the three neighbors.
+                 *
+                 */
                 if (matrix[y][x] == 1) {
+
+                    // case 1) first row/col
+                    // NOTE !!!
+                    // how we handle first row/col
                     if (y == 0 || x == 0) {
                         dp[y][x] = 1; // first row/col
-                    } else {
+                    }
+
+                    // case 2) other row/col (NOT first)
+                    else {
                         dp[y][x] = Math.min(
                                 Math.min(dp[y - 1][x], dp[y][x - 1]),
-                                dp[y - 1][x - 1]) + 1;
+                                dp[y - 1][x - 1])
+                                + 1; // NOTE !!! here
                     }
+
                     /**  NOTE
                      *
                      * Then the answer is sum of all dp values,
@@ -119,7 +138,7 @@ public class CountSquareSubmatricesWithAllOnes {
 
         return res;
     }
-    
+
 
     // V0-2
     // IDEA: 2D DP (gemini)
