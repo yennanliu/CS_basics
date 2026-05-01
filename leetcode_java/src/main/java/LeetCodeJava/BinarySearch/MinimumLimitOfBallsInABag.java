@@ -64,16 +64,30 @@ public class MinimumLimitOfBallsInABag {
         int r = 0;
 
         for (int x : nums) {
+            /** NOTE !!!
+             *
+             *  -> max, not min
+             *
+             */
             r = Math.max(r, x); // max, not min
         }
 
         int ans = r;
 
         while (l <= r) {
+            /** NOTE !!!
+             *
+             *  binary search is finding
+             *  `penalty`
+             */
             int mid = l + (r - l) / 2;
 
             if (canSplit(nums, maxOperations, mid)) {
                 ans = mid;
+                /** NOTE !!!
+                 *
+                 *  ->  r = mid - 1; // try smaller penalty
+                 */
                 r = mid - 1; // try smaller penalty
             } else {
                 l = mid + 1;
@@ -83,10 +97,53 @@ public class MinimumLimitOfBallsInABag {
         return ans;
     }
 
+    /** NOTE !!!
+     *
+     *  binary search is finding
+     *  `penalty`
+     *
+     *  // e.g. `maxBalls` is `penalty`
+     */
     private boolean canSplit(int[] nums, int maxOperations, int maxBalls) {
         int ops = 0;
 
         for (int x : nums) {
+            /** NOTE !!!
+             *
+             *  1. `x-1`
+             *
+             *  2. ONLY track `op count`,
+             *     NO NEED to deal with group cnt
+             *
+             *  3. why `x-1` ?
+             *
+             *  -> V1
+             *
+             *   Formula:
+             *
+             *   ceil(x / penalty) - 1
+             *   OR
+             *   (x - 1) / penalty
+             *
+             *
+             *  -> V2
+             *
+             *  Why (x - 1) / maxBalls works
+             *
+             * If a bag has x balls and each
+             * bag can have at most maxBalls,
+             * the number of splits needed is:
+             *
+             * Example: x = 9, maxBalls = 3
+             * We want groups like [3,3,3]
+             * Splits needed = 2
+             * (9 - 1) / 3 = 8 / 3 = 2
+             *
+             * This formula avoids edge cases cleanly.
+             *
+             *
+             *
+             */
             ops += (x - 1) / maxBalls; // required splits
             if (ops > maxOperations) {
                 return false;
@@ -107,6 +164,11 @@ public class MinimumLimitOfBallsInABag {
         }
 
         int ans = r;
+        /** NOTE !!!
+         *
+         *  binary search is finding
+         *  `penalty`
+         */
         while (l <= r) {
             int mid = l + (r - l) / 2;
 
@@ -120,6 +182,11 @@ public class MinimumLimitOfBallsInABag {
         return ans;
     }
 
+    /** NOTE !!!
+     *
+     *  binary search is finding
+     *  `penalty`
+     */
     private boolean canAchieve(int[] nums, int maxOperations, int penalty) {
         long opsNeeded = 0;
         for (int x : nums) {
@@ -235,7 +302,7 @@ public class MinimumLimitOfBallsInABag {
         return ans;
     }
 
-    
+
 
     // V4
 

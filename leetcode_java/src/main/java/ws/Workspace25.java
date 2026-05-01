@@ -4141,7 +4141,9 @@ public class Workspace25 {
 
         // /?
         for(int x: nums){
-            r = Math.min(x, r);
+            // NOTE !! r should be the max value in nums, not min
+            //r = Math.min(x, r);
+            r = Math.max(x, r);
         }
         // ???
         int ans = r; // ??
@@ -4153,10 +4155,15 @@ public class Workspace25 {
             if(canSplit5(nums, maxOperations, mid)){
                 ans = mid;
                 // Return the minimum possible penalty after performing the operations.
+
+                // ???
                 // NOTE !!! find the `bigger` candidate
-                l = mid + 1;
+                //l = mid + 1;
+                r = mid - 1; // try smaller penalty
             }else{
-                r = mid - 1;
+                // /????
+              //  r = mid - 1;
+                l = mid + 1;
             }
         }
 
@@ -4166,7 +4173,7 @@ public class Workspace25 {
 
     private boolean canSplit5(int[] nums, int maxOperations, int ballCnt){
         int opCnt = 0;
-        int group = 0; // ???
+       // int group = 0; // ???
         for(int x: nums){
             // ???
             if(opCnt > maxOperations){
@@ -4184,7 +4191,7 @@ public class Workspace25 {
                 curCnt += 1;
             }
             // ???
-            group += curCnt;
+            opCnt += curCnt;
         }
 
         return opCnt <= maxOperations;
