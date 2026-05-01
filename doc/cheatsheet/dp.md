@@ -5996,4 +5996,158 @@ Why `dp[3] = 3`? Element `7` must wait: step 1 removes `1`, step 2 removes `2`, 
 - Don't confuse left-scan (`>=`) with right-scan (`>`) — they encode different "who eats whom" semantics.
 
 ---
+
+### **Maximal Square / Count Squares Pattern (LC 1277, LC 221)** 🟦
+
+#### 🎯 Pattern
+
+| Aspect | Detail |
+|--------|--------|
+| **Category** | 2D Grid DP — Bottom-right Corner Expansion |
+| **State** | `dp[i][j]` = side length of the **largest all-ones square** whose bottom-right corner is at `(i, j)` |
+| **Transition** | `dp[i][j] = min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]) + 1` |
+| **Base Cases** | First row or first column: `dp[i][j] = matrix[i][j]` (at most 1×1) |
+| **Answer (LC 1277)** | Sum of all `dp[i][j]` values — each value counts how many squares end here |
+| **Answer (LC 221)** | `max(dp[i][j])²` — largest square area |
+| **Time** | O(m × n) |
+| **Space** | O(m × n) standard, O(n) space-optimized |
+
+#### 💡 Core Idea
+
+**The "Magic" Transition**: `dp[i][j] = min(top, left, top-left) + 1`
+
+> If the three neighbors all support a square of side `k`, then `(i, j)` can be the bottom-right of a square of side `k+1`. The **minimum** of the three determines the bottleneck.
+
+**Why `dp[i][j]` also equals the count of squares ending at `(i, j)`**:
+- A cell with `dp[i][j] = 3` can be the bottom-right corner of squares of size 1×1, 2×2, and 3×3
+- So it contributes **3** to the total count
+- Summing all `dp[i][j]` = total count of all squares (LC 1277)
+
+```
+Matrix:       dp values:     Contribution:
+0 1 1 1       0 1 1 1        0+1+1+1 = 3   (row 0)
+1 1 1 1  →    1 1 2 2   →   1+1+2+2 = 6   (row 1)
+0 1 1 1       0 1 2 3        0+1+2+3 = 6   (row 2)
+                                  Total = 15 ✓
+```
+
+#### **Java Implementation (Bottom-Up 2D DP)**
+
+```java
+// LC 1277: Count Square Submatrices with All Ones
+public int countSquares(int[][] matrix) {
+    int rows = matrix.length, cols = matrix[0].length;
+    int[][] dp = new int[rows][cols];
+    int result = 0;
+
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            if (matrix[i][j] == 1) {
+                if (i == 0 || j == 0) {
+                    dp[i][j] = 1;  // first row/col: only 1×1 possible
+                } else {
+                    dp[i][j] = Math.min(
+                        Math.min(dp[i-1][j], dp[i][j-1]),
+                        dp[i-1][j-1]
+                    ) + 1;
+                }
+                result += dp[i][j];  // dp[i][j] = count of squares ending here
+            }
+        }
+    }
+    return result;
+}
+```
+
+**Alternative with (n+1) × (m+1) sizing (avoids first-row/col special case)**:
+```java
+public int countSquares(int[][] matrix) {
+    int row = matrix.length, col = matrix[0].length;
+    int[][] dp = new int[row + 1][col + 1];  // +1 removes boundary check
+    int ans = 0;
+    for (int i = 0; i < row; i++) {
+        for (int j = 0; j < col; j++) {
+            if (matrix[i][j] == 1) {
+                dp[i+1][j+1] = Math.min(
+                    Math.min(dp[i][j+1], dp[i+1][j]),
+                    dp[i][j]
+                ) + 1;
+                ans += dp[i+1][j+1];
+            }
+        }
+    }
+    return ans;
+}
+```
+
+#### **Space-Optimized (O(n) 1D DP)**
+
+```java
+public int countSquares(int[][] matrix) {
+    int row = matrix.length, col = matrix[0].length, result = 0, prev = 0;
+    int[] dp = new int[col + 1];
+
+    for (int i = 1; i <= row; i++) {
+        for (int j = 1; j <= col; j++) {
+            int temp = dp[j];
+            if (matrix[i-1][j-1] == 1) {
+                dp[j] = 1 + Math.min(prev, Math.min(dp[j-1], dp[j]));
+                result += dp[j];
+            } else {
+                dp[j] = 0;
+            }
+            prev = temp;
+        }
+    }
+    return result;
+}
+```
+
+#### **LC 1277 vs LC 221 Comparison**
+
+| Aspect | LC 1277: Count Squares | LC 221: Maximal Square |
+|--------|------------------------|------------------------|
+| **Goal** | Count ALL squares of all sizes | Find the LARGEST square |
+| **DP transition** | Same: `min(top, left, diagonal) + 1` | Same: `min(top, left, diagonal) + 1` |
+| **Answer** | `sum(dp[i][j])` | `max(dp[i][j])²` |
+| **Key insight** | `dp[i][j]` counts squares ending here | `dp[i][j]` is the side length |
+| **Difficulty** | Medium | Medium |
+
+#### **Why `min` and Not `max`?**
+
+```
+Consider:    dp[i-1][j] = 3   →  top supports 3×3
+             dp[i][j-1] = 1   →  left supports 1×1 only
+             dp[i-1][j-1] = 2  →  diagonal supports 2×2
+
+Even though top supports 3×3, the LEFT neighbor only supports 1×1.
+If you tried to make a 2×2 square ending at (i,j), the cell one
+column left would need to support a 2×2 — but it only supports 1×1.
+So the bottleneck is min(3, 1, 2) = 1 → dp[i][j] = 2.
+```
+
+The `min` ensures all three "arms" of the square are simultaneously valid.
+
+#### **Similar LeetCode Problems** 📚
+
+| Problem | LC # | Key Difference | Algorithm |
+|---------|------|----------------|-----------|
+| **Count Square Submatrices** | 1277 | Count ALL squares (sum dp) | 2D DP (min of 3 neighbors) |
+| **Maximal Square** | 221 | Find LARGEST square (max dp) | 2D DP (min of 3 neighbors) |
+| **Maximal Rectangle** | 85 | Any rectangle of 1s, not just squares | Histogram + stack (per row) |
+| **Count Submatrices with All Ones** | 1504 | All rectangles, not just squares | Row compression + prefix sums |
+| **Largest Plus Sign** | 764 | Plus-shape instead of square | DP in 4 directions |
+| **Minimum Path Sum** | 64 | Min-cost path (not all-ones shape) | 2D DP (min of 2 neighbors) |
+
+#### **Pattern Recognition Checklist** ✅
+
+Use this pattern when:
+- ✅ Grid contains 0s and 1s
+- ✅ Problem asks about **squares** (not rectangles) of all-ones
+- ✅ Need to count or find max square(s) in a binary matrix
+- ✅ Keywords: "square submatrix", "all ones", "count squares"
+
+**File Reference**: `leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/CountSquareSubmatricesWithAllOnes.java`
+
+---
 **Keywords**: DP, dynamic programming, memoization, tabulation, optimal substructure, overlapping subproblems, state transition, knapsack, LCS, LIS, interval DP, tree DP, state machine, bitmask, monotonic stack, mono stack, stack DP
