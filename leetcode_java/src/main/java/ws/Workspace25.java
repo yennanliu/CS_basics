@@ -4291,10 +4291,26 @@ public class Workspace25 {
     // LC 1231
     // 4.42 - 52 pm
     /**
+     *  -> Find the `maximum` total
+     *  sweetness of the piece you can
+     *  get by cutting the chocolate bar optimally.
      *
      *
+     *  -------------
+     *
+     *  IDEA 1) GREEDY ???
+     *
+     *  IDEA 2) BRUTE FORCE ???
+     *
+     *  IDEA 3) DP ???
+     *
+     *  IDEA 4) binary search ???
+     *
+     *
+     *  -------------
      *
      */
+    //IDEA 4) binary search ???
     public int maximizeSweetness(int[] sweetness, int k) {
 
         return 0;
