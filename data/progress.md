@@ -1,6 +1,6 @@
 # Progress
 
-# 2026-04-30
+# 2026-05-01
 
 - Needcode DP playlist
 	- https://www.youtube.com/watch?v=73r3KWiEvyk&list=PLot-Xpze53lcvx_tjrr_m2lgD2NsRHlNO
@@ -94,8 +94,6 @@
 		- gemini
 	- LC 410
 		- gpt
-			- 1760
-			- 1231
 			- 1283
 			- 644
 			- 2187
