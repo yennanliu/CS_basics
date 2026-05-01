@@ -4198,6 +4198,12 @@ public class Workspace25 {
     }
 
 
+    // LC 1277
+    public int countSquares(int[][] matrix) {
+
+        return 0;
+    }
+
 
 
 }
