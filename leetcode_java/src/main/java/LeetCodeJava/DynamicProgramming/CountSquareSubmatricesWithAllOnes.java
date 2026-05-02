@@ -56,9 +56,85 @@ import java.util.Arrays;
 public class CountSquareSubmatricesWithAllOnes {
 
     // V0
-//    public int countSquares(int[][] matrix) {
-//
-//    }
+    public int countSquares(int[][] matrix) {
+        // edge ???
+
+        int n = matrix.length;
+        int m = matrix[0].length;
+
+        // ???
+        /**
+         *  DP def:
+         *
+         *    dp[i][j]:
+         *       the `total` COUNT of square `submatrices`
+         *       at cell (i,j)
+         *
+         *
+         *  DP eq:
+         *
+         *     if matrix[y][x] == 1:
+         *
+         *     ```
+         *       dp[y][x] = min(
+         *         dp[y-1][x],     // top
+         *         [y][x-1],       // left
+         *        dp[y-1][x-1]    // top-left (IMPORTANT)
+         *        ) + 1
+         *     ```
+         *
+         */
+        int[][] dp = new int[n][m];
+        int ans = 0;
+
+        // ???
+        for (int y = 0; y < n; y++) {
+            for (int x = 0; x < m; x++) {
+                /**
+                 * Case 1) x == 0 or y == 0
+                 */
+                if (x == 0 || y == 0) {
+                    /** NOTE !!!
+                     *
+                     *  for x == 0 or y == 0,
+                     *  get set dp val from matrix val
+                     */
+                    dp[y][x] = matrix[y][x];
+                }
+                /**
+                 * Case 2) Other cells (e.g. NOT x == 0 AND y == 0)
+                 */
+                else {
+                    /**
+                     *  ONLY do below DP transition
+                     *  if cur matrix val == 1
+                     */
+                    if (matrix[y][x] == 1) {
+                        /**
+                         *  we compare if all of below cells are `1`:
+                         *    - left
+                         *    - top
+                         *    - top-left (IMPORTANT)
+                         *
+                         *
+                         *  -> and DON'T foret to add extra `1` as dp val
+                         */
+                        dp[y][x] = Math.min(dp[y - 1][x - 1],
+                                Math.min(dp[y - 1][x], dp[y][x - 1])) + 1;
+                    }
+                }
+
+                /**
+                 *   we maintain a var (ans)
+                 *   that keep tracking submatric count
+                 *   visited.
+                 */
+                ans += dp[y][x];
+            }
+        }
+
+        return ans;
+    }
 
 
     // V0-1

@@ -4304,8 +4304,65 @@ public class Workspace25 {
      *
      *
      */
-    // IDEA 2) DP ???
+    // 7.41 - 51 am
+    // IDEA: 2D DP
     public int countSquares(int[][] matrix) {
+        // edge ???
+
+        int n = matrix.length;
+        int m = matrix[0].length;
+
+        // ???
+        /**
+         *  DP def:
+         *
+         *    dp[i][j]:
+         *       the `total` square submatrices
+         *       at cell (i,j)
+         *
+         *
+         *  DP eq:
+         *
+         *
+         *
+         */
+        int[][] dp = new int[n][m];
+        int ans = 0;
+
+        // ???
+        for(int y = 0; y < n; y++){
+            for(int x = 0; x < m; x++){
+                // ??? x or y == 0
+                if(x == 0 || y == 0){
+                    dp[y][x] = matrix[y][x]; //?????
+                }
+                else{
+                    if(matrix[y][x] == 1){
+                        dp[y][x] = Math.min(dp[y-1][x-1],
+                                Math.min(dp[y-1][x], dp[y][x-1])) + 1;
+                    }
+                }
+
+                // /??
+                ans += dp[y][x];
+            }
+        }
+
+
+
+        return ans;
+    }
+
+
+
+
+
+
+
+
+
+    // IDEA 2) DP ???
+    public int countSquares_97(int[][] matrix) {
         // edge ??
 
         int n = matrix.length;
