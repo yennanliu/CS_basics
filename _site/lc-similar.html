@@ -199,7 +199,7 @@
       <li><a href="lc-random-picker.html">random</a></li>
       <li><a href="lc-review-plan.html">review</a></li>
     </ul>
-    <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle theme">[light]</button>
+    <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle theme">☀ light</button>
   </div>
 </nav>
 
@@ -535,14 +535,14 @@ function toggleTheme() {
   document.documentElement.setAttribute('data-theme', next);
   localStorage.setItem('theme', next);
   const btn = document.querySelector('.theme-btn');
-  if (btn) btn.textContent = isDark ? '[dark]' : '[light]';
+  if (btn) btn.textContent = isDark ? '● dark' : '☀ light';
   redrawActive();
 }
 const saved = localStorage.getItem('theme') || 'dark';
 document.documentElement.setAttribute('data-theme', saved);
 document.addEventListener('DOMContentLoaded', () => {
   const btn = document.querySelector('.theme-btn');
-  if (btn) btn.textContent = saved === 'dark' ? '[light]' : '[dark]';
+  if (btn) btn.textContent = saved === 'dark' ? '☀ light' : '● dark';
 });
 
 function css(v) { return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }

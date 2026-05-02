@@ -46,8 +46,8 @@ body { overflow-x: hidden; }
 body {
   font-family: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace,
                'Cascadia Mono', 'Fira Code', 'Menlo', 'Courier New', monospace;
-  font-size: 15px;
-  line-height: 1.6;
+  font-size: 16px;
+  line-height: 1.7;
   color: var(--text);
   background: var(--bg);
   font-variant-numeric: tabular-nums;
@@ -55,10 +55,10 @@ body {
   transition: background 0.2s, color 0.2s;
 }
 
-h1 { font-size: 28px; font-weight: 600; line-height: 1.2; margin-bottom: 16px; }
-h2 { font-size: 20px; font-weight: 600; line-height: 1.2; margin-top: 32px; margin-bottom: 16px; }
-h3 { font-size: 17px; font-weight: 600; line-height: 1.2; margin-top: 24px; margin-bottom: 8px; }
-h4 { font-size: 15px; font-weight: 600; line-height: 1.2; margin-top: 16px; margin-bottom: 8px; }
+h1 { font-size: 30px; font-weight: 600; line-height: 1.2; margin-bottom: 16px; }
+h2 { font-size: 22px; font-weight: 600; line-height: 1.2; margin-top: 32px; margin-bottom: 16px; }
+h3 { font-size: 18px; font-weight: 600; line-height: 1.2; margin-top: 24px; margin-bottom: 8px; }
+h4 { font-size: 16px; font-weight: 600; line-height: 1.2; margin-top: 16px; margin-bottom: 8px; }
 
 p { margin-bottom: 16px; line-height: 1.6; }
 
@@ -132,12 +132,18 @@ a:hover { opacity: 0.6; }
 .github-link:hover { color: var(--text); opacity: 1; }
 
 .theme-toggle {
-  background: none; border: none; cursor: pointer; color: var(--text-muted);
-  font-family: inherit; font-size: 13px; padding: 2px 10px; margin: 0;
+  background: var(--bg-alt); cursor: pointer; color: var(--text-muted);
+  font-family: inherit; font-size: 12px; padding: 4px 10px; margin: 0;
   white-space: nowrap; border-left: 1px solid var(--border-strong);
-  transition: color 0.15s;
+  border-top: 1px solid var(--border-strong); border-right: 1px solid var(--border-strong);
+  border-bottom: 1px solid var(--border-strong);
+  transition: color 0.15s, background 0.15s;
+  text-transform: uppercase; letter-spacing: 0.05em;
 }
-.theme-toggle:hover { color: var(--text); }
+[data-theme="dark"] .theme-toggle {
+  background: var(--text); color: var(--bg); border-color: var(--text);
+}
+.theme-toggle:hover { color: var(--text); background: var(--bg-alt); }
 
 /* hamburger – hidden on desktop */
 .nav-toggle {
@@ -187,7 +193,7 @@ pre {
 
 pre code {
   background: none; border: none; padding: 0;
-  font-size: 13px; line-height: 1.7;
+  font-size: 14px; line-height: 1.7;
   color: #e6edf3; /* GitHub dark default text */
 }
 

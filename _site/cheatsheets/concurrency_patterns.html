@@ -46,7 +46,7 @@
     var toggle = document.getElementById('theme-toggle');
     if (toggle) {
       var updateLabel = function() {
-        toggle.textContent = document.documentElement.getAttribute('data-theme') === 'dark' ? '[light]' : '[dark]';
+        toggle.textContent = document.documentElement.getAttribute('data-theme') === 'dark' ? '☀ light' : '● dark';
       };
       updateLabel();
       toggle.addEventListener('click', function() {
@@ -78,7 +78,7 @@
         <a href="../lc-similar.html" class="">similar</a>
         <a href="../lc-random-picker.html" class="">random</a>
         <a href="../lc-review-plan.html" class="">review</a>
-        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">[dark]</button>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">☀ light</button>
         <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">github</a>
       </div>
     </div>

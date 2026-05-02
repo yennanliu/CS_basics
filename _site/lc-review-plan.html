@@ -3,265 +3,336 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Review Plan - CS Basics</title>
-  <meta name="description" content="Spaced Repetition review plan for LeetCode practice">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📅</text></svg>">
+  <title>Review Plan — CS Basics</title>
   <style>
-    * { box-sizing: border-box; }
+    /* ── tokens ── */
     :root {
-      --bg: #ffffff; --surface: #f0f0f0; --text: #000000;
-      --text-light: #555555; --border: #cccccc; --radius: 0px;
-      --accent: #000000; --accent2: #555555; --warn: #555555; --danger: #888888;
+      --bg:#ffffff; --surface:#f4f4f4; --surface2:#e8e8e8;
+      --text:#000000; --muted:#555555; --dim:#999999;
+      --border:#cccccc; --border-s:#888888;
+      --code-bg:#0d1117; --code-text:#e6edf3;
     }
     [data-theme="dark"] {
-      --bg: #000000; --surface: #111111; --text: #ffffff;
-      --text-light: #8a8a8a; --border: #1f1f1f;
-      --accent: #ffffff; --accent2: #aaaaaa; --warn: #8a8a8a; --danger: #aaaaaa;
+      --bg:#000000; --surface:#111111; --surface2:#1a1a1a;
+      --text:#ffffff; --muted:#8a8a8a; --dim:#4a4a4a;
+      --border:#222222; --border-s:#555555;
+      --code-bg:#0d1117; --code-text:#e6edf3;
     }
+    *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+    html { scroll-behavior:smooth; }
     body {
-      margin: 0; padding: 0;
-      font-family: 'SF Mono','JetBrains Mono','IBM Plex Mono',ui-monospace,'Menlo',monospace;
-      background: var(--bg); color: var(--text);
-      transition: background 0.2s, color 0.2s; font-size: 13px;
+      font-family:'SF Mono','JetBrains Mono','IBM Plex Mono',ui-monospace,'Menlo',monospace;
+      font-size:16px; line-height:1.6; background:var(--bg); color:var(--text);
+      transition:background .2s,color .2s;
     }
-    .navbar {
-      background: var(--bg); border-bottom: 1px solid var(--border);
-      padding: 10px 32px; position: sticky; top: 0; z-index: 100;
-    }
-    .nav-content {
-      max-width: 100%; margin: 0 auto;
-      display: flex; justify-content: space-between; align-items: center;
-    }
-    .nav-links { display: flex; gap: 0; list-style: none; margin: 0; padding: 0; flex-wrap: nowrap; }
-    .nav-links a {
-      color: var(--text-light); text-decoration: none;
-      font-size: 13px; padding: 2px 10px; border-bottom: 1px solid transparent;
-      white-space: nowrap; transition: color 0.15s;
-    }
-    .nav-links li + li > a { border-left: 1px solid var(--border); }
-    .nav-links a:hover { color: var(--text); }
-    .nav-links a.active { color: var(--text); border-bottom-color: var(--text); }
-    .logo { font-size: 13px; font-weight: 700; color: var(--text); text-decoration: none; text-transform: uppercase; letter-spacing: .08em; margin-right: 24px; }
-    .theme-btn { background: none; border: none; border-left: 1px solid var(--border); font-size: 13px; color: var(--text-light); cursor: pointer; padding: 2px 10px; font-family: inherit; white-space: nowrap; }
-    .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
-    h1 { font-size: 2rem; margin-bottom: 0.5rem; }
-    .subtitle { color: var(--text-light); margin-bottom: 2rem; }
+    a { color:var(--text); text-decoration:underline; }
+    a:hover { opacity:.6; }
 
-    /* Stats row */
+    /* ── Navbar ── */
+    .navbar {
+      background:var(--bg); border-bottom:1px solid var(--border);
+      padding:10px 32px; position:sticky; top:0; z-index:100;
+    }
+    .nav-content { display:flex; justify-content:space-between; align-items:center; }
+    .logo { font-size:13px; font-weight:700; color:var(--text); text-decoration:none;
+            text-transform:uppercase; letter-spacing:.08em; margin-right:24px; }
+    .nav-links { display:flex; gap:0; list-style:none; flex-wrap:nowrap; }
+    .nav-links a { font-size:13px; color:var(--muted); text-decoration:none;
+                   padding:2px 10px; border-bottom:1px solid transparent; white-space:nowrap; }
+    .nav-links li+li>a { border-left:1px solid var(--border); }
+    .nav-links a:hover { color:var(--text); }
+    .nav-links a.active { color:var(--text); border-bottom-color:var(--text); }
+
+    /* ── Theme toggle switch ── */
+    .theme-switch {
+      display:flex; align-items:center; gap:8px;
+      border-left:1px solid var(--border); padding-left:14px; margin-left:4px;
+    }
+    .switch-label { font-size:12px; color:var(--muted); user-select:none; min-width:32px; }
+    .switch-track {
+      width:44px; height:22px; border:1px solid var(--border-s);
+      background:var(--surface2); position:relative; cursor:pointer;
+      transition:background .2s, border-color .2s; flex-shrink:0;
+    }
+    .switch-track:hover { border-color:var(--text); }
+    .switch-thumb {
+      position:absolute; top:3px; left:3px;
+      width:14px; height:14px; background:var(--muted);
+      transition:transform .2s, background .2s;
+    }
+    [data-theme="dark"] .switch-track { background:var(--surface); border-color:var(--border-s); }
+    [data-theme="dark"] .switch-thumb { transform:translateX(22px); background:var(--text); }
+
+    /* ── Container ── */
+    .container { max-width:1200px; margin:0 auto; padding:32px 32px; }
+    h1 { font-size:24px; font-weight:700; margin-bottom:6px; }
+    .subtitle { color:var(--muted); font-size:14px; margin-bottom:28px; }
+
+    /* ── Stats row ── */
     .stats-row {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 1rem; margin-bottom: 2rem;
+      display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+      gap:0; margin-bottom:32px; border:1px solid var(--border);
     }
     .stat-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 1.25rem; text-align: center;
+      padding:20px 16px; text-align:center; border-right:1px solid var(--border);
+      background:var(--surface);
     }
-    .stat-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
-    .stat-label { font-size: 0.8rem; color: var(--text-light); margin-top: 0.3rem; }
+    .stat-card:last-child { border-right:none; }
+    .stat-num { font-size:28px; font-weight:700; line-height:1; }
+    .stat-label { font-size:12px; color:var(--muted); margin-top:6px; text-transform:uppercase; letter-spacing:.05em; }
 
-    /* Section */
-    .section {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 1.5rem; margin-bottom: 2rem;
-    }
-    .section h2 { margin: 0 0 1.25rem; font-size: 1.2rem; }
-
-    /* Due today / upcoming */
-    .due-list { list-style: none; margin: 0; padding: 0; }
-    .due-item {
-      display: flex; align-items: center; gap: 0.75rem;
-      padding: 0.6rem 0; border-bottom: 1px solid var(--border);
-    }
-    .due-item:last-child { border-bottom: none; }
-    .due-badge {
-      font-size: 0.75rem; padding: 0.2rem 0.5rem; border-radius: 12px;
-      font-weight: 600; white-space: nowrap;
-    }
-    .badge-overdue { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
-    .badge-today   { background: var(--text); color: var(--bg); border: 1px solid var(--text); }
-    .badge-soon    { background: var(--surface); color: var(--text-light); border: 1px solid var(--border); }
-    .badge-later   { background: var(--surface); color: var(--text-light); border: 1px solid var(--border); }
-    .prob-link {
-      color: var(--accent); text-decoration: none; font-weight: 600;
-    }
-    .prob-link:hover { text-decoration: underline; }
-    .prob-meta { font-size: 0.8rem; color: var(--text-light); margin-left: auto; }
-
-    /* Heatmap */
-    .heatmap-wrap { overflow-x: auto; }
-    .heatmap {
-      display: grid;
-      grid-template-rows: repeat(7, 14px);
-      grid-auto-flow: column;
-      gap: 2px;
-      width: max-content;
-    }
-    .hm-cell {
-      width: 14px; height: 14px; border-radius: 0;
-      background: var(--border);
-      cursor: default;
-    }
-    .hm-cell[title]:hover { outline: 1px solid var(--text); }
-    .hm-months {
-      display: flex; gap: 0; margin-bottom: 4px;
-      font-size: 0.72rem; color: var(--text-light);
-      width: max-content;
-    }
-    .hm-month-label { width: 0; overflow: visible; white-space: nowrap; }
-    .hm-legend {
-      display: flex; align-items: center; gap: 4px;
-      margin-top: 8px; font-size: 0.78rem; color: var(--text-light);
-    }
-    .hm-swatch { width: 14px; height: 14px; border-radius: 2px; }
-
-    /* Timeline */
-    .timeline { position: relative; padding-left: 2rem; }
-    .timeline::before {
-      content: ''; position: absolute; left: 0.6rem; top: 0; bottom: 0;
-      width: 2px; background: var(--border);
-    }
-    .tl-item { position: relative; margin-bottom: 1.5rem; }
-    .tl-dot {
-      position: absolute; left: -1.8rem; top: 0.25rem;
-      width: 14px; height: 14px; border-radius: 50%;
-      background: var(--accent); border: 2px solid var(--surface);
-    }
-    .tl-dot.today { background: var(--accent2); }
-    .tl-date { font-size: 0.8rem; color: var(--text-light); font-weight: 600; margin-bottom: 0.3rem; }
-    .tl-probs { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-    .tl-tag {
-      font-size: 0.8rem; padding: 0.15rem 0.5rem; border-radius: 0;
-      background: var(--surface); color: var(--text); border: 1px solid var(--border); cursor: default;
-    }
-
-    /* Frequency chart */
-    .freq-chart { display: flex; flex-direction: column; gap: 6px; }
-    .freq-row { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; }
-    .freq-label { width: 60px; text-align: right; color: var(--text-light); flex-shrink: 0; }
-    .freq-bar-wrap { flex: 1; background: var(--border); border-radius: 0; height: 14px; overflow: hidden; }
-    .freq-bar { height: 100%; background: var(--text); border-radius: 0; transition: width 0.5s; }
-    .freq-count { width: 30px; text-align: right; color: var(--text-light); font-size: 0.8rem; }
-
-    /* Tabs */
-    .tabs { display: flex; gap: 0.5rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
+    /* ── Tabs ── */
+    .tabs { display:flex; gap:0; margin-bottom:0; border:1px solid var(--border); border-bottom:none; flex-wrap:wrap; }
     .tab-btn {
-      padding: 0.4rem 1rem; border-radius: var(--radius);
-      border: 1px solid var(--border); background: transparent;
-      color: var(--text-light); cursor: pointer; font-size: 0.85rem; transition: all 0.2s;
+      padding:10px 18px; border:none; border-right:1px solid var(--border);
+      background:var(--surface); color:var(--muted); cursor:pointer;
+      font-family:inherit; font-size:13px; transition:background .15s,color .15s;
     }
-    .tab-btn.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+    .tab-btn:last-child { border-right:none; }
+    .tab-btn:hover { color:var(--text); background:var(--surface2); }
+    .tab-btn.active { background:var(--bg); color:var(--text); font-weight:600;
+                      border-bottom:2px solid var(--text); margin-bottom:-1px; }
+    .tab-panel { display:none; border:1px solid var(--border); padding:24px; background:var(--bg); }
+    .tab-panel.active { display:block; }
 
-    .tab-panel { display: none; }
-    .tab-panel.active { display: block; }
+    /* ── Section header ── */
+    .sec-header { font-size:13px; font-weight:700; text-transform:uppercase;
+                  letter-spacing:.06em; color:var(--muted); margin-bottom:16px; }
 
-    /* Empty state */
-    .empty { color: var(--text-light); font-style: italic; }
+    /* ── Due list — date grouped ── */
+    .due-group { margin-bottom:28px; }
+    .due-date-header {
+      display:flex; align-items:baseline; gap:12px; padding:8px 0;
+      border-bottom:1px solid var(--border); margin-bottom:12px;
+    }
+    .due-date { font-size:15px; font-weight:700; }
+    .due-date-tag {
+      font-size:12px; padding:2px 8px; border:1px solid var(--border-s);
+      background:var(--surface); color:var(--muted);
+    }
+    .due-date-tag.tag-overdue { border-color:var(--text); color:var(--text); background:var(--surface2); }
+    .due-date-tag.tag-today   { background:var(--text); color:var(--bg); border-color:var(--text); }
+    .due-date-tag.tag-soon    { background:var(--surface2); }
 
-    @media (max-width: 600px) {
-      .container { padding: 1rem; }
-      .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .due-row {
+      display:grid; grid-template-columns:60px 1fr auto;
+      align-items:center; gap:12px; padding:10px 0;
+      border-bottom:1px solid var(--border); font-size:15px;
+    }
+    .due-row:last-child { border-bottom:none; }
+    .prob-num { font-weight:700; }
+    .prob-num a { text-decoration:none; color:var(--text); }
+    .prob-num a:hover { text-decoration:underline; }
+    .prob-history { display:flex; flex-wrap:wrap; gap:4px; align-items:center; }
+    .hist-date { font-size:12px; background:var(--surface); border:1px solid var(--border);
+                 padding:1px 6px; color:var(--muted); }
+    .hist-date.latest { background:var(--surface2); color:var(--text); border-color:var(--border-s); }
+    .prob-interval { font-size:13px; color:var(--muted); white-space:nowrap; text-align:right; }
+
+    /* ── All Problems table ── */
+    .filter-bar { display:flex; gap:12px; margin-bottom:16px; flex-wrap:wrap; }
+    .filter-bar input {
+      flex:1; min-width:200px; padding:8px 12px; font-family:inherit; font-size:14px;
+      background:var(--surface); border:1px solid var(--border); color:var(--text);
+      outline:none;
+    }
+    .filter-bar input:focus { border-color:var(--border-s); }
+    .filter-bar select {
+      padding:8px 12px; font-family:inherit; font-size:14px;
+      background:var(--surface); border:1px solid var(--border); color:var(--text);
+      outline:none; cursor:pointer;
+    }
+    .all-table-wrap { overflow-x:auto; }
+    .all-table { width:100%; border-collapse:collapse; font-size:14px; }
+    .all-table th {
+      text-align:left; padding:8px 12px; font-size:12px; text-transform:uppercase;
+      letter-spacing:.05em; border-bottom:2px solid var(--border-s);
+      background:var(--surface); color:var(--muted); cursor:pointer; white-space:nowrap;
+      user-select:none;
+    }
+    .all-table th:hover { color:var(--text); }
+    .all-table th.sorted { color:var(--text); }
+    .all-table th .sort-arrow { margin-left:4px; font-size:10px; }
+    .all-table td { padding:8px 12px; border-bottom:1px solid var(--border); }
+    .all-table tr:hover td { background:var(--surface); }
+    .all-table .prob-link { font-weight:700; text-decoration:none; color:var(--text); }
+    .all-table .prob-link:hover { text-decoration:underline; }
+    .status-pill { font-size:11px; padding:2px 7px; border:1px solid var(--border);
+                   background:var(--surface); color:var(--muted); white-space:nowrap; }
+    .status-pill.overdue { border-color:var(--text); color:var(--text); background:var(--surface2); }
+    .status-pill.today   { background:var(--text); color:var(--bg); border-color:var(--text); }
+    .all-count { font-size:12px; color:var(--muted); margin-top:10px; }
+
+    /* ── Heatmap ── */
+    .hm-wrap { overflow-x:auto; }
+    .hm-months { display:flex; margin-bottom:4px; font-size:11px; color:var(--muted); width:max-content; }
+    .hm-month-lbl { width:0; overflow:visible; white-space:nowrap; }
+    .hm-grid {
+      display:grid; grid-template-rows:repeat(7,14px);
+      grid-auto-flow:column; gap:2px; width:max-content;
+    }
+    .hm-cell { width:14px; height:14px; background:var(--surface2); cursor:default; }
+    .hm-cell:hover { outline:1px solid var(--text); }
+    .hm-legend { display:flex; align-items:center; gap:4px; margin-top:8px;
+                 font-size:12px; color:var(--muted); }
+    .hm-sw { width:14px; height:14px; }
+
+    /* ── Freq chart ── */
+    .freq-chart { display:flex; flex-direction:column; gap:6px; }
+    .freq-row { display:flex; align-items:center; gap:10px; font-size:14px; }
+    .freq-lbl { width:65px; text-align:right; color:var(--muted); flex-shrink:0; font-size:13px; }
+    .freq-bar-wrap { flex:1; background:var(--surface2); height:16px; overflow:hidden; }
+    .freq-bar { height:100%; background:var(--text); transition:width .4s; }
+    .freq-cnt { width:32px; text-align:right; color:var(--muted); font-size:13px; }
+
+    /* ── Timeline ── */
+    .tl { position:relative; padding-left:28px; }
+    .tl::before { content:''; position:absolute; left:6px; top:0; bottom:0; width:1px; background:var(--border); }
+    .tl-item { position:relative; margin-bottom:20px; }
+    .tl-dot { position:absolute; left:-25px; top:4px; width:10px; height:10px;
+              background:var(--border-s); border:1px solid var(--surface2); }
+    .tl-dot.today { background:var(--text); }
+    .tl-date { font-size:13px; color:var(--muted); font-weight:600; margin-bottom:6px; }
+    .tl-probs { display:flex; flex-wrap:wrap; gap:4px; }
+    .tl-tag { font-size:13px; padding:2px 7px; background:var(--surface); border:1px solid var(--border); color:var(--text); }
+
+    /* ── Empty / misc ── */
+    .empty { color:var(--muted); font-style:italic; font-size:14px; }
+    @media(max-width:640px) {
+      .container { padding:16px; }
+      .stats-row { grid-template-columns:repeat(2,1fr); }
+      .due-row { grid-template-columns:50px 1fr; }
+      .prob-interval { display:none; }
     }
   </style>
 </head>
 <body>
+
 <nav class="navbar">
   <div class="nav-content">
     <a href="index.html" class="logo">CS_basics</a>
-    <ul class="nav-links">
-      <li><a href="lc-explorer.html">lc-explorer</a></li>
-      <li><a href="lc-similar.html">similar</a></li>
-      <li><a href="lc-random-picker.html">random</a></li>
-      <li><a href="lc-review-plan.html" class="active">review</a></li>
-    </ul>
-    <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle theme">[light]</button>
+    <div style="display:flex;align-items:center;">
+      <ul class="nav-links">
+        <li><a href="lc-explorer.html">lc-explorer</a></li>
+        <li><a href="lc-similar.html">similar</a></li>
+        <li><a href="lc-random-picker.html">random</a></li>
+        <li><a href="lc-review-plan.html" class="active">review</a></li>
+      </ul>
+      <div class="theme-switch" onclick="toggleTheme()" title="Toggle light/dark">
+        <div class="switch-track"><div class="switch-thumb"></div></div>
+        <span class="switch-label" id="theme-label">light</span>
+      </div>
+    </div>
   </div>
 </nav>
 
 <div class="container">
   <h1>Spaced Repetition Review Plan</h1>
-  <p class="subtitle">Fibonacci intervals: 1 → 2 → 3 → 5 → 8 → 13 → 21 days</p>
+  <p class="subtitle">Fibonacci intervals: 1 → 2 → 3 → 5 → 8 → 13 → 21 → 34 → 55 days</p>
 
   <div class="stats-row" id="stats-row"></div>
 
   <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab('due')">due</button>
-    <button class="tab-btn" onclick="switchTab('heatmap')">heatmap</button>
-    <button class="tab-btn" onclick="switchTab('freq')">frequency</button>
-    <button class="tab-btn" onclick="switchTab('history')">history</button>
+    <button class="tab-btn active" onclick="switchTab('due',this)">Due for Review</button>
+    <button class="tab-btn"        onclick="switchTab('all',this)">All Problems</button>
+    <button class="tab-btn"        onclick="switchTab('heatmap',this)">Heatmap</button>
+    <button class="tab-btn"        onclick="switchTab('freq',this)">Frequency</button>
+    <button class="tab-btn"        onclick="switchTab('history',this)">History</button>
   </div>
 
+  <!-- Due for review -->
   <div id="tab-due" class="tab-panel active">
-    <div class="section">
-      <h2>Problems Due for Review</h2>
-      <ul class="due-list" id="due-list"></ul>
-    </div>
+    <div id="due-content"></div>
   </div>
 
+  <!-- All problems -->
+  <div id="tab-all" class="tab-panel">
+    <div class="filter-bar">
+      <input id="prob-search" type="text" placeholder="Search problem # or date…" oninput="filterTable()">
+      <select id="prob-sort" onchange="sortTable()">
+        <option value="num">Sort: Problem #</option>
+        <option value="first">Sort: First seen</option>
+        <option value="last">Sort: Last seen</option>
+        <option value="count-desc">Sort: Most practiced</option>
+        <option value="next">Sort: Next due</option>
+      </select>
+    </div>
+    <div class="all-table-wrap">
+      <table class="all-table" id="all-table">
+        <thead>
+          <tr>
+            <th onclick="setSortCol('num')">Problem <span class="sort-arrow" id="arr-num">↕</span></th>
+            <th onclick="setSortCol('first')">First seen <span class="sort-arrow" id="arr-first">↕</span></th>
+            <th onclick="setSortCol('last')">Last seen <span class="sort-arrow" id="arr-last">↕</span></th>
+            <th onclick="setSortCol('count-desc')">Times <span class="sort-arrow" id="arr-count-desc">↕</span></th>
+            <th onclick="setSortCol('next')">Next review <span class="sort-arrow" id="arr-next">↕</span></th>
+            <th>Status</th>
+            <th>All dates practiced</th>
+          </tr>
+        </thead>
+        <tbody id="all-tbody"></tbody>
+      </table>
+    </div>
+    <div class="all-count" id="all-count"></div>
+  </div>
+
+  <!-- Heatmap -->
   <div id="tab-heatmap" class="tab-panel">
-    <div class="section">
-      <h2>Practice Heatmap (last 52 weeks)</h2>
-      <div class="heatmap-wrap">
-        <div class="hm-months" id="hm-months"></div>
-        <div class="heatmap" id="heatmap"></div>
-        <div class="hm-legend">
-          Less
-          <div class="hm-swatch" style="background:var(--border)"></div>
-          <div class="hm-swatch" style="background:#555"></div>
-          <div class="hm-swatch" style="background:#777"></div>
-          <div class="hm-swatch" style="background:#aaa"></div>
-          <div class="hm-swatch" style="background:var(--text)"></div>
-          More
-        </div>
+    <div class="sec-header">Practice heatmap — last 52 weeks</div>
+    <div class="hm-wrap">
+      <div class="hm-months" id="hm-months"></div>
+      <div class="hm-grid" id="hm-grid"></div>
+      <div class="hm-legend">
+        Less
+        <div class="hm-sw" style="background:var(--surface2)"></div>
+        <div class="hm-sw" style="background:#444"></div>
+        <div class="hm-sw" style="background:#666"></div>
+        <div class="hm-sw" style="background:#999"></div>
+        <div class="hm-sw" style="background:var(--text)"></div>
+        More
       </div>
     </div>
   </div>
 
+  <!-- Frequency -->
   <div id="tab-freq" class="tab-panel">
-    <div class="section">
-      <h2>Most Practiced Problems (Top 30)</h2>
-      <div class="freq-chart" id="freq-chart"></div>
-    </div>
+    <div class="sec-header">Most practiced problems (top 40)</div>
+    <div class="freq-chart" id="freq-chart"></div>
   </div>
 
+  <!-- History -->
   <div id="tab-history" class="tab-panel">
-    <div class="section">
-      <h2>Recent Practice (last 30 days)</h2>
-      <div class="timeline" id="timeline"></div>
-    </div>
+    <div class="sec-header">Recent practice sessions</div>
+    <div class="tl" id="timeline"></div>
   </div>
 </div>
 
 <script>
-// ── Theme ────────────────────────────────────────────────────────────
+// ── Theme ────────────────────────────────────────────────────────────────
 function toggleTheme() {
   const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-  const t = isDark ? 'light' : 'dark';
-  document.documentElement.setAttribute('data-theme', t);
-  localStorage.setItem('theme', t);
-  const btn = document.querySelector('.theme-btn');
-  if (btn) btn.textContent = isDark ? '[dark]' : '[light]';
+  const next = isDark ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('theme', next);
+  document.getElementById('theme-label').textContent = isDark ? 'dark' : 'light';
 }
-(function() {
+(function initTheme() {
   const t = localStorage.getItem('theme') || 'dark';
   document.documentElement.setAttribute('data-theme', t);
   document.addEventListener('DOMContentLoaded', () => {
-    const btn = document.querySelector('.theme-btn');
-    if (btn) btn.textContent = t === 'dark' ? '[light]' : '[dark]';
+    document.getElementById('theme-label').textContent = t === 'dark' ? 'light' : 'dark';
   });
 })();
 
-// ── Tabs ─────────────────────────────────────────────────────────────
-function switchTab(name) {
-  document.querySelectorAll('.tab-btn').forEach((b, i) => {
-    const tabs = ['due','heatmap','freq','history'];
-    b.classList.toggle('active', tabs[i] === name);
-  });
-  document.querySelectorAll('.tab-panel').forEach(p => {
-    p.classList.toggle('active', p.id === 'tab-' + name);
-  });
+// ── Tabs ──────────────────────────────────────────────────────────────────
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-' + name).classList.add('active');
 }
 
-// ── Raw progress data ─────────────────────────────────────────────────
+// ── Raw data ──────────────────────────────────────────────────────────────
 const RAW = `20260502: 154,1761,1277
 20260501: 1760,1277,1231
 20260430: 1891,1761,154,153,221
@@ -474,71 +545,60 @@ const RAW = `20260502: 154,1761,1277
 20250702: 297,200
 20250701: 124`;
 
-// ── Parse progress ─────────────────────────────────────────────────────
+// ── Parse ─────────────────────────────────────────────────────────────────
 function parseDate(s) {
-  const y = +s.slice(0,4), m = +s.slice(4,6)-1, d = +s.slice(6,8);
-  return new Date(y, m, d);
+  return new Date(+s.slice(0,4), +s.slice(4,6)-1, +s.slice(6,8));
 }
-function toKey(date) {
-  const y = date.getFullYear();
-  const m = String(date.getMonth()+1).padStart(2,'0');
-  const d = String(date.getDate()).padStart(2,'0');
-  return `${y}${m}${d}`;
+function toKey(d) {
+  return d.getFullYear()
+    + String(d.getMonth()+1).padStart(2,'0')
+    + String(d.getDate()).padStart(2,'0');
+}
+function fmtKey(k) { return `${k.slice(0,4)}-${k.slice(4,6)}-${k.slice(6,8)}`; }
+function daysBetween(a, b) {
+  return Math.round((parseDate(b) - parseDate(a)) / 86400000);
+}
+function addDays(key, n) {
+  const d = parseDate(key); d.setDate(d.getDate() + n); return toKey(d);
 }
 
-const dayMap = {}; // "YYYYMMDD" -> [prob, ...]
-const probMap = {}; // prob -> [date, ...]
+const dayMap  = {}; // YYYYMMDD → [prob, ...]
+const probMap = {}; // prob → sorted [YYYYMMDD, ...]
+
 RAW.split('\n').forEach(line => {
   const m = line.match(/^(\d{8}):\s*(.+)$/);
   if (!m) return;
   const key = m[1];
-  const probs = m[2].split(',').map(p => p.trim().replace(/[^0-9]/g, '')).filter(Boolean);
+  const probs = m[2].split(',').map(p => p.trim().replace(/[^0-9]/g,'')).filter(Boolean);
   if (!dayMap[key]) dayMap[key] = [];
   probs.forEach(p => {
     dayMap[key].push(p);
     if (!probMap[p]) probMap[p] = [];
-    probMap[p].push(key);
+    if (!probMap[p].includes(key)) probMap[p].push(key);
   });
 });
+// Sort each prob's dates
+Object.values(probMap).forEach(arr => arr.sort());
 
-// ── Fibonacci intervals ────────────────────────────────────────────────
 const FIB = [1, 2, 3, 5, 8, 13, 21, 34, 55];
-
-function addDays(dateKey, n) {
-  const d = parseDate(dateKey);
-  d.setDate(d.getDate() + n);
-  return toKey(d);
-}
-
-// For each problem, compute next review date based on last practice date
-// and how many times they've practiced (interval index)
-const today = new Date();
-today.setHours(0,0,0,0);
+const today = new Date(); today.setHours(0,0,0,0);
 const todayKey = toKey(today);
 
-function daysBetween(keyA, keyB) {
-  return Math.round((parseDate(keyB) - parseDate(keyA)) / 86400000);
-}
-
-// Build review schedule: for each problem, figure out next due date
-const dueItems = []; // {prob, lastDate, nextDate, count, intervalDays}
-Object.entries(probMap).forEach(([prob, dates]) => {
-  dates.sort();
-  const count = dates.length;
-  const lastKey = dates[dates.length - 1];
-  // Which fibonacci interval applies based on review count
+// Build dueItems
+const dueItems = Object.entries(probMap).map(([prob, dates]) => {
+  const count  = dates.length;
+  const firstKey = dates[0];
+  const lastKey  = dates[dates.length - 1];
   const fibIdx = Math.min(count - 1, FIB.length - 1);
   const interval = FIB[fibIdx];
-  const nextKey = addDays(lastKey, interval);
-  dueItems.push({ prob, lastKey, nextKey, count, interval });
+  const nextKey  = addDays(lastKey, interval);
+  return { prob: +prob, probStr: prob, lastKey, firstKey, nextKey, count, interval, dates };
 });
+dueItems.sort((a,b) => a.nextKey.localeCompare(b.nextKey));
 
-// Sort: overdue first, then today, then future
-dueItems.sort((a, b) => a.nextKey.localeCompare(b.nextKey));
-
-// ── Stats ─────────────────────────────────────────────────────────────
-const totalDays = Object.keys(dayMap).length;
-const totalProbs = Object.keys(probMap).length;
+// ── Stats ─────────────────────────────────────────────────────────────────
+const totalDays    = Object.keys(dayMap).length;
+const totalProbs   = Object.keys(probMap).length;
 const overdueCount = dueItems.filter(x => x.nextKey < todayKey).length;
 const todayCount   = dueItems.filter(x => x.nextKey === todayKey).length;
 const weekCount    = dueItems.filter(x => x.nextKey > todayKey && daysBetween(todayKey, x.nextKey) <= 7).length;
@@ -546,120 +606,231 @@ const weekCount    = dueItems.filter(x => x.nextKey > todayKey && daysBetween(to
 document.getElementById('stats-row').innerHTML = `
   <div class="stat-card"><div class="stat-num">${totalProbs}</div><div class="stat-label">Unique Problems</div></div>
   <div class="stat-card"><div class="stat-num">${totalDays}</div><div class="stat-label">Practice Days</div></div>
-  <div class="stat-card"><div class="stat-num" style="color:var(--danger)">${overdueCount}</div><div class="stat-label">Overdue</div></div>
-  <div class="stat-card"><div class="stat-num" style="color:var(--accent2)">${todayCount}</div><div class="stat-label">Due Today</div></div>
-  <div class="stat-card"><div class="stat-num" style="color:var(--warn)">${weekCount}</div><div class="stat-label">Due This Week</div></div>
+  <div class="stat-card"><div class="stat-num" style="border-bottom:2px solid var(--text)">${overdueCount}</div><div class="stat-label">Overdue</div></div>
+  <div class="stat-card"><div class="stat-num" style="border-bottom:2px solid var(--border-s)">${todayCount}</div><div class="stat-label">Due Today</div></div>
+  <div class="stat-card"><div class="stat-num">${weekCount}</div><div class="stat-label">Due This Week</div></div>
 `;
 
-// ── Due list ───────────────────────────────────────────────────────────
-function formatKey(key) {
-  return `${key.slice(0,4)}-${key.slice(4,6)}-${key.slice(6,8)}`;
-}
-function lcUrl(prob) {
-  return `https://leetcode.com/problems/?q=${prob}`;
-}
+// ── Due for Review — date-grouped ─────────────────────────────────────────
+(function buildDue() {
+  const container = document.getElementById('due-content');
 
-const dueEl = document.getElementById('due-list');
-const shown = dueItems.filter(x => x.nextKey <= addDays(todayKey, 14));
-if (shown.length === 0) {
-  dueEl.innerHTML = '<li class="empty">No problems due in the next 2 weeks. Great job!</li>';
-} else {
-  shown.forEach(({ prob, lastKey, nextKey, count, interval }) => {
-    const diffDays = daysBetween(todayKey, nextKey);
-    let badgeClass, badgeText;
-    if (nextKey < todayKey) { badgeClass = 'badge-overdue'; badgeText = `${Math.abs(diffDays)}d overdue`; }
-    else if (nextKey === todayKey) { badgeClass = 'badge-today'; badgeText = 'Today'; }
-    else if (diffDays <= 3) { badgeClass = 'badge-soon'; badgeText = `in ${diffDays}d`; }
-    else { badgeClass = 'badge-later'; badgeText = `in ${diffDays}d`; }
-    const li = document.createElement('li');
-    li.className = 'due-item';
-    li.innerHTML = `
-      <span class="due-badge ${badgeClass}">${badgeText}</span>
-      <a class="prob-link" href="https://leetcode.com/problems/?q=${prob}" target="_blank">#${prob}</a>
-      <span class="prob-meta">last: ${formatKey(lastKey)} · ×${count} · next interval: ${interval}d</span>`;
-    dueEl.appendChild(li);
+  // Group by nextKey, show overdue + next 60 days
+  const cutoff = addDays(todayKey, 60);
+  const visible = dueItems.filter(x => x.nextKey <= cutoff);
+
+  // Group by date
+  const byDate = {};
+  visible.forEach(item => {
+    if (!byDate[item.nextKey]) byDate[item.nextKey] = [];
+    byDate[item.nextKey].push(item);
+  });
+
+  const dates = Object.keys(byDate).sort();
+  if (dates.length === 0) {
+    container.innerHTML = '<p class="empty">Nothing due in the next 60 days.</p>';
+    return;
+  }
+
+  // Sections: overdue, today, upcoming
+  let overdueHTML = '', todayHTML = '', upcomingHTML = '';
+
+  dates.forEach(dateKey => {
+    const items = byDate[dateKey];
+    const diff = daysBetween(todayKey, dateKey); // negative = overdue
+    const isOverdue = dateKey < todayKey;
+    const isToday   = dateKey === todayKey;
+
+    let tagClass = '', tagText = '';
+    if (isOverdue) { tagClass = 'tag-overdue'; tagText = `${Math.abs(diff)}d overdue`; }
+    else if (isToday) { tagClass = 'tag-today'; tagText = 'today'; }
+    else if (diff === 1) { tagClass = 'tag-soon'; tagText = 'tomorrow'; }
+    else if (diff <= 7) { tagClass = 'tag-soon'; tagText = `in ${diff} days`; }
+    else { tagText = `in ${diff} days`; }
+
+    let rowsHTML = '';
+    items.sort((a,b) => a.prob - b.prob).forEach(({probStr, prob, dates: dArr, count, interval, lastKey, firstKey}) => {
+      const datesHTML = dArr.map((d,i) =>
+        `<span class="hist-date${i===dArr.length-1?' latest':''}">${fmtKey(d)}</span>`
+      ).join('');
+      rowsHTML += `
+        <div class="due-row">
+          <div class="prob-num"><a href="https://leetcode.com/problems/?q=${probStr}" target="_blank">#${probStr}</a></div>
+          <div class="prob-history">${datesHTML}</div>
+          <div class="prob-interval">×${count} · next: ${interval}d</div>
+        </div>`;
+    });
+
+    const groupHTML = `
+      <div class="due-group">
+        <div class="due-date-header">
+          <span class="due-date">${fmtKey(dateKey)}</span>
+          <span class="due-date-tag ${tagClass}">${tagText}</span>
+          <span style="font-size:12px;color:var(--dim);margin-left:auto">${items.length} problem${items.length>1?'s':''}</span>
+        </div>
+        ${rowsHTML}
+      </div>`;
+
+    if (isOverdue) overdueHTML += groupHTML;
+    else if (isToday) todayHTML += groupHTML;
+    else upcomingHTML += groupHTML;
+  });
+
+  let html = '';
+  if (overdueHTML) html += `<div class="sec-header" style="color:var(--text)">── OVERDUE ──────────────────────────</div>${overdueHTML}`;
+  if (todayHTML)   html += `<div class="sec-header" style="margin-top:${overdueHTML?'24px':'0'}">── TODAY ────────────────────────────</div>${todayHTML}`;
+  if (upcomingHTML) html += `<div class="sec-header" style="margin-top:24px">── UPCOMING (next 60 days) ──────────</div>${upcomingHTML}`;
+
+  container.innerHTML = html;
+})();
+
+// ── All Problems table ────────────────────────────────────────────────────
+let allRows = dueItems.map(item => ({...item}));
+let sortCol = 'num';
+let sortAsc = true;
+
+function setSortCol(col) {
+  if (sortCol === col) sortAsc = !sortAsc;
+  else { sortCol = col; sortAsc = col !== 'count-desc'; }
+  document.getElementById('prob-sort').value = col;
+  renderAllTable();
+  // update arrows
+  ['num','first','last','count-desc','next'].forEach(c => {
+    const el = document.getElementById('arr-' + c);
+    if (el) el.textContent = c === sortCol ? (sortAsc ? '↑' : '↓') : '↕';
+    const th = el && el.parentElement;
+    if (th) th.classList.toggle('sorted', c === sortCol);
   });
 }
 
-// ── Heatmap ────────────────────────────────────────────────────────────
+function sortTable() { setSortCol(document.getElementById('prob-sort').value); }
+
+function filterTable() {
+  const q = document.getElementById('prob-search').value.trim().toLowerCase();
+  allRows = dueItems.filter(r =>
+    r.probStr.includes(q) ||
+    r.firstKey.includes(q.replace(/-/g,'')) ||
+    r.lastKey.includes(q.replace(/-/g,'')) ||
+    r.dates.some(d => fmtKey(d).includes(q))
+  );
+  renderAllTable();
+}
+
+function renderAllTable() {
+  const sorted = [...allRows].sort((a,b) => {
+    let va, vb;
+    if (sortCol === 'num')        { va=a.prob;       vb=b.prob; }
+    else if (sortCol === 'first') { va=a.firstKey;   vb=b.firstKey; }
+    else if (sortCol === 'last')  { va=a.lastKey;    vb=b.lastKey; }
+    else if (sortCol === 'count-desc') { va=a.count; vb=b.count; }
+    else if (sortCol === 'next')  { va=a.nextKey;    vb=b.nextKey; }
+    if (va < vb) return sortAsc ? -1 : 1;
+    if (va > vb) return sortAsc ?  1 : -1;
+    return 0;
+  });
+
+  const tbody = document.getElementById('all-tbody');
+  tbody.innerHTML = '';
+  sorted.forEach(({probStr, prob, firstKey, lastKey, nextKey, count, interval, dates: dArr}) => {
+    const diff = daysBetween(todayKey, nextKey);
+    const isOverdue = nextKey < todayKey;
+    const isToday   = nextKey === todayKey;
+    let statusClass = '', statusText = '';
+    if (isOverdue) { statusClass='overdue'; statusText=`${Math.abs(diff)}d overdue`; }
+    else if (isToday) { statusClass='today'; statusText='due today'; }
+    else { statusText=`in ${diff}d`; }
+
+    const allDatesHTML = dArr.map((d,i) =>
+      `<span class="hist-date${i===dArr.length-1?' latest':''}">${fmtKey(d)}</span>`
+    ).join(' ');
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><a class="prob-link" href="https://leetcode.com/problems/?q=${probStr}" target="_blank">#${probStr}</a></td>
+      <td>${fmtKey(firstKey)}</td>
+      <td>${fmtKey(lastKey)}</td>
+      <td>${count}×</td>
+      <td>${fmtKey(nextKey)}<br><span style="font-size:11px;color:var(--muted)">interval: ${interval}d</span></td>
+      <td><span class="status-pill ${statusClass}">${statusText}</span></td>
+      <td><div style="display:flex;flex-wrap:wrap;gap:3px">${allDatesHTML}</div></td>`;
+    tbody.appendChild(tr);
+  });
+
+  document.getElementById('all-count').textContent =
+    `Showing ${sorted.length} of ${dueItems.length} problems`;
+}
+
+// Initial render with default sort
+allRows = dueItems;
+renderAllTable();
+
+// ── Heatmap ───────────────────────────────────────────────────────────────
 (function buildHeatmap() {
   const WEEKS = 52;
   const end = new Date(today);
-  // align to Saturday
-  while (end.getDay() !== 6) end.setDate(end.getDate() + 1);
+  while (end.getDay() !== 6) end.setDate(end.getDate()+1);
   const start = new Date(end);
-  start.setDate(start.getDate() - WEEKS * 7 + 1);
+  start.setDate(start.getDate() - WEEKS*7 + 1);
 
-  const hm = document.getElementById('heatmap');
-  const monthsEl = document.getElementById('hm-months');
-
-  const cells = [];
-  let cur = new Date(start);
-  let lastMonth = -1;
-  let colOffset = 0;
+  const grid = document.getElementById('hm-grid');
+  const mths = document.getElementById('hm-months');
+  let cur = new Date(start), lastMo = -1;
+  const colors = ['var(--surface2)','#444','#666','#999','var(--text)'];
 
   while (cur <= end) {
     const key = toKey(cur);
-    const count = (dayMap[key] || []).length;
+    const cnt = (dayMap[key] || []).length;
     const cell = document.createElement('div');
     cell.className = 'hm-cell';
-    const colors = ['var(--border)', '#555555', '#777777', '#aaaaaa', 'var(--text)'];
-    cell.style.background = colors[Math.min(count, 4)];
-    if (count) cell.title = `${formatKey(key)}: ${count} problems`;
-    hm.appendChild(cell);
+    cell.style.background = colors[Math.min(cnt, 4)];
+    if (cnt) cell.title = `${fmtKey(key)}: ${cnt} problem${cnt>1?'s':''}`;
+    grid.appendChild(cell);
 
-    // month label
-    if (cur.getMonth() !== lastMonth) {
-      lastMonth = cur.getMonth();
-      const col = Math.floor((cur - start) / (7 * 86400000));
+    if (cur.getMonth() !== lastMo) {
+      lastMo = cur.getMonth();
+      const col = Math.floor((cur - start)/(7*86400000));
       const lbl = document.createElement('div');
-      lbl.className = 'hm-month-label';
-      lbl.style.marginLeft = (col === 0 ? 0 : col) * 16 + 'px';
-      lbl.textContent = cur.toLocaleString('default', { month: 'short' });
-      monthsEl.appendChild(lbl);
+      lbl.className = 'hm-month-lbl';
+      lbl.style.marginLeft = col * 16 + 'px';
+      lbl.textContent = cur.toLocaleString('default',{month:'short'});
+      mths.appendChild(lbl);
     }
-
-    cur.setDate(cur.getDate() + 1);
+    cur.setDate(cur.getDate()+1);
   }
 })();
 
-// ── Frequency chart ────────────────────────────────────────────────────
+// ── Frequency ─────────────────────────────────────────────────────────────
 (function buildFreq() {
   const sorted = Object.entries(probMap)
-    .sort((a, b) => b[1].length - a[1].length)
-    .slice(0, 30);
+    .sort((a,b) => b[1].length - a[1].length).slice(0, 40);
   const max = sorted[0][1].length;
   const el = document.getElementById('freq-chart');
   sorted.forEach(([prob, dates]) => {
     const pct = (dates.length / max * 100).toFixed(1);
-    el.innerHTML += `
-      <div class="freq-row">
-        <span class="freq-label">#${prob}</span>
-        <div class="freq-bar-wrap"><div class="freq-bar" style="width:${pct}%"></div></div>
-        <span class="freq-count">${dates.length}×</span>
-      </div>`;
+    const div = document.createElement('div');
+    div.className = 'freq-row';
+    div.innerHTML = `
+      <span class="freq-lbl">#${prob}</span>
+      <div class="freq-bar-wrap"><div class="freq-bar" style="width:${pct}%"></div></div>
+      <span class="freq-cnt">${dates.length}×</span>`;
+    el.appendChild(div);
   });
 })();
 
-// ── Timeline ───────────────────────────────────────────────────────────
-(function buildTimeline() {
+// ── History ───────────────────────────────────────────────────────────────
+(function buildHistory() {
   const el = document.getElementById('timeline');
-  // last 30 days with activity
-  const recent = Object.keys(dayMap)
-    .filter(k => k <= todayKey)
-    .sort()
-    .reverse()
-    .slice(0, 30);
-  if (recent.length === 0) { el.innerHTML = '<p class="empty">No recent data.</p>'; return; }
-  recent.forEach(key => {
-    const probs = [...new Set(dayMap[key])];
+  const days = Object.keys(dayMap).filter(k => k <= todayKey).sort().reverse();
+  if (!days.length) { el.innerHTML='<p class="empty">No data.</p>'; return; }
+  days.forEach(key => {
+    const probs = [...new Set(dayMap[key])].sort((a,b)=>+a-+b);
     const isToday = key === todayKey;
     const div = document.createElement('div');
     div.className = 'tl-item';
     div.innerHTML = `
-      <div class="tl-dot${isToday ? ' today' : ''}"></div>
-      <div class="tl-date">${formatKey(key)}${isToday ? ' (today)' : ''} — ${probs.length} problem${probs.length > 1 ? 's' : ''}</div>
-      <div class="tl-probs">${probs.map(p => `<span class="tl-tag">#${p}</span>`).join('')}</div>`;
+      <div class="tl-dot${isToday?' today':''}"></div>
+      <div class="tl-date">${fmtKey(key)}${isToday?' (today)':''} — ${probs.length} problem${probs.length>1?'s':''}</div>
+      <div class="tl-probs">${probs.map(p=>`<span class="tl-tag">#${p}</span>`).join('')}</div>`;
     el.appendChild(div);
   });
 })();
