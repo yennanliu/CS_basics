@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Review Plan - CS Basics</title>
+  <meta name="description" content="Spaced Repetition review plan for LeetCode practice">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📅</text></svg>">
+  <style>
+    * { box-sizing: border-box; }
+    :root {
+      --bg: #fafafa;
+      --surface: #fff;
+      --text: #1a1a2e;
+      --text-light: #666;
+      --border: #e0e0e0;
+      --accent: #4f46e5;
+      --accent2: #10b981;
+      --warn: #f59e0b;
+      --danger: #ef4444;
+      --radius: 8px;
+    }
+    [data-theme="dark"] {
+      --bg: #0f0f1a;
+      --surface: #1a1a2e;
+      --text: #e0e0e0;
+      --text-light: #aaa;
+      --border: #2a2a3e;
+    }
+    body {
+      margin: 0; padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg); color: var(--text);
+      transition: background 0.3s, color 0.3s;
+    }
+    .navbar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .nav-content {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .nav-links { display: flex; gap: 1rem; list-style: none; margin: 0; padding: 0; }
+    .nav-links a {
+      color: var(--text-light); text-decoration: none;
+      font-size: 0.9rem; padding: 0.3rem 0;
+      border-bottom: 2px solid transparent; transition: all 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--text); border-bottom-color: var(--accent); }
+    .logo { font-size: 1.1rem; font-weight: 700; color: var(--text); text-decoration: none; }
+    .theme-btn { background: none; border: none; font-size: 1.2rem; cursor: pointer; padding: 0.5rem; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+    h1 { font-size: 2rem; margin-bottom: 0.5rem; }
+    .subtitle { color: var(--text-light); margin-bottom: 2rem; }
+
+    /* Stats row */
+    .stats-row {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1rem; margin-bottom: 2rem;
+    }
+    .stat-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.25rem; text-align: center;
+    }
+    .stat-num { font-size: 2rem; font-weight: 700; color: var(--accent); }
+    .stat-label { font-size: 0.8rem; color: var(--text-light); margin-top: 0.3rem; }
+
+    /* Section */
+    .section {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.5rem; margin-bottom: 2rem;
+    }
+    .section h2 { margin: 0 0 1.25rem; font-size: 1.2rem; }
+
+    /* Due today / upcoming */
+    .due-list { list-style: none; margin: 0; padding: 0; }
+    .due-item {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.6rem 0; border-bottom: 1px solid var(--border);
+    }
+    .due-item:last-child { border-bottom: none; }
+    .due-badge {
+      font-size: 0.75rem; padding: 0.2rem 0.5rem; border-radius: 12px;
+      font-weight: 600; white-space: nowrap;
+    }
+    .badge-overdue { background: #fee2e2; color: #b91c1c; }
+    .badge-today   { background: #d1fae5; color: #065f46; }
+    .badge-soon    { background: #fef3c7; color: #92400e; }
+    .badge-later   { background: #ede9fe; color: #5b21b6; }
+    .prob-link {
+      color: var(--accent); text-decoration: none; font-weight: 600;
+    }
+    .prob-link:hover { text-decoration: underline; }
+    .prob-meta { font-size: 0.8rem; color: var(--text-light); margin-left: auto; }
+
+    /* Heatmap */
+    .heatmap-wrap { overflow-x: auto; }
+    .heatmap {
+      display: grid;
+      grid-template-rows: repeat(7, 14px);
+      grid-auto-flow: column;
+      gap: 2px;
+      width: max-content;
+    }
+    .hm-cell {
+      width: 14px; height: 14px; border-radius: 2px;
+      background: var(--border);
+      cursor: default;
+    }
+    .hm-cell[title]:hover { outline: 2px solid var(--accent); }
+    .hm-months {
+      display: flex; gap: 0; margin-bottom: 4px;
+      font-size: 0.72rem; color: var(--text-light);
+      width: max-content;
+    }
+    .hm-month-label { width: 0; overflow: visible; white-space: nowrap; }
+    .hm-legend {
+      display: flex; align-items: center; gap: 4px;
+      margin-top: 8px; font-size: 0.78rem; color: var(--text-light);
+    }
+    .hm-swatch { width: 14px; height: 14px; border-radius: 2px; }
+
+    /* Timeline */
+    .timeline { position: relative; padding-left: 2rem; }
+    .timeline::before {
+      content: ''; position: absolute; left: 0.6rem; top: 0; bottom: 0;
+      width: 2px; background: var(--border);
+    }
+    .tl-item { position: relative; margin-bottom: 1.5rem; }
+    .tl-dot {
+      position: absolute; left: -1.8rem; top: 0.25rem;
+      width: 14px; height: 14px; border-radius: 50%;
+      background: var(--accent); border: 2px solid var(--surface);
+    }
+    .tl-dot.today { background: var(--accent2); }
+    .tl-date { font-size: 0.8rem; color: var(--text-light); font-weight: 600; margin-bottom: 0.3rem; }
+    .tl-probs { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .tl-tag {
+      font-size: 0.8rem; padding: 0.15rem 0.5rem; border-radius: 4px;
+      background: #ede9fe; color: #5b21b6; cursor: default;
+    }
+    [data-theme="dark"] .tl-tag { background: #3730a3; color: #c4b5fd; }
+
+    /* Frequency chart */
+    .freq-chart { display: flex; flex-direction: column; gap: 6px; }
+    .freq-row { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; }
+    .freq-label { width: 60px; text-align: right; color: var(--text-light); flex-shrink: 0; }
+    .freq-bar-wrap { flex: 1; background: var(--border); border-radius: 4px; height: 16px; overflow: hidden; }
+    .freq-bar { height: 100%; background: var(--accent); border-radius: 4px; transition: width 0.5s; }
+    .freq-count { width: 30px; text-align: right; color: var(--text-light); font-size: 0.8rem; }
+
+    /* Tabs */
+    .tabs { display: flex; gap: 0.5rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
+    .tab-btn {
+      padding: 0.4rem 1rem; border-radius: var(--radius);
+      border: 1px solid var(--border); background: transparent;
+      color: var(--text-light); cursor: pointer; font-size: 0.85rem; transition: all 0.2s;
+    }
+    .tab-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* Empty state */
+    .empty { color: var(--text-light); font-style: italic; }
+
+    @media (max-width: 600px) {
+      .container { padding: 1rem; }
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+<nav class="navbar">
+  <div class="nav-content">
+    <a href="index.html" class="logo">CS Basics</a>
+    <ul class="nav-links">
+      <li><a href="lc-explorer.html">LC Explorer</a></li>
+      <li><a href="lc-similar.html">🔗 Similar LC</a></li>
+      <li><a href="lc-random-picker.html">🎲 Random Picker</a></li>
+      <li><a href="lc-review-plan.html" class="active">📅 Review Plan</a></li>
+    </ul>
+    <button class="theme-btn" onclick="toggleTheme()" aria-label="Toggle dark mode">🌙</button>
+  </div>
+</nav>
+
+<div class="container">
+  <h1>📅 Spaced Repetition Review Plan</h1>
+  <p class="subtitle">Based on your practice history — Fibonacci intervals (1 → 2 → 3 → 5 → 8 → 13 → 21 days)</p>
+
+  <div class="stats-row" id="stats-row"></div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('due')">Due for Review</button>
+    <button class="tab-btn" onclick="switchTab('heatmap')">Practice Heatmap</button>
+    <button class="tab-btn" onclick="switchTab('freq')">Most Practiced</button>
+    <button class="tab-btn" onclick="switchTab('history')">Recent History</button>
+  </div>
+
+  <div id="tab-due" class="tab-panel active">
+    <div class="section">
+      <h2>Problems Due for Review</h2>
+      <ul class="due-list" id="due-list"></ul>
+    </div>
+  </div>
+
+  <div id="tab-heatmap" class="tab-panel">
+    <div class="section">
+      <h2>Practice Heatmap (last 52 weeks)</h2>
+      <div class="heatmap-wrap">
+        <div class="hm-months" id="hm-months"></div>
+        <div class="heatmap" id="heatmap"></div>
+        <div class="hm-legend">
+          Less
+          <div class="hm-swatch" style="background:var(--border)"></div>
+          <div class="hm-swatch" style="background:#c4b5fd"></div>
+          <div class="hm-swatch" style="background:#8b5cf6"></div>
+          <div class="hm-swatch" style="background:#6d28d9"></div>
+          <div class="hm-swatch" style="background:#4c1d95"></div>
+          More
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-freq" class="tab-panel">
+    <div class="section">
+      <h2>Most Practiced Problems (Top 30)</h2>
+      <div class="freq-chart" id="freq-chart"></div>
+    </div>
+  </div>
+
+  <div id="tab-history" class="tab-panel">
+    <div class="section">
+      <h2>Recent Practice (last 30 days)</h2>
+      <div class="timeline" id="timeline"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Theme ────────────────────────────────────────────────────────────
+function toggleTheme() {
+  const t = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', t);
+  localStorage.setItem('theme', t);
+}
+(function() {
+  const t = localStorage.getItem('theme') || 'light';
+  document.documentElement.setAttribute('data-theme', t);
+})();
+
+// ── Tabs ─────────────────────────────────────────────────────────────
+function switchTab(name) {
+  document.querySelectorAll('.tab-btn').forEach((b, i) => {
+    const tabs = ['due','heatmap','freq','history'];
+    b.classList.toggle('active', tabs[i] === name);
+  });
+  document.querySelectorAll('.tab-panel').forEach(p => {
+    p.classList.toggle('active', p.id === 'tab-' + name);
+  });
+}
+
+// ── Raw progress data ─────────────────────────────────────────────────
+const RAW = `20260502: 154,1761,1277
+20260501: 1760,1277,1231
+20260430: 1891,1761,154,153,221
+20260429: 1552,1283,410,32,224
+20260428: 34,162,410
+20260427: 1081,316,1099,402,853,2289
+20260426: 402,853,2289
+20260425: 739,84,2406
+20260424: 85,84,1438
+20260423: 2345,2406,765
+20260422: 2406,1675,1150,26
+20260421: 1150,765,80,26
+20260420: 10,486,1248
+20260419: 363,1074,1292,865
+20260418: 312,1048,931,1905
+20260417: 1492,1167,1048,931,499
+20260416: 115,161,72,1905,827
+20260415: 516,227,456,729
+20260414: 35,986,64,329,1110
+20260413: 494,309,518,322,1143,871
+20260412: 373,1140,97,336,153
+20260411: 1353,1481,97
+20260410: 309,518,494,153,336,1032
+20260409: 1143,1049,394,1209,1047,358
+20260408: 877,64,464,814,865,1631,1325,1110
+20260407: 64,1631
+20260406: 62,63,486,133,815,814
+20260405: 1406,486,865,91,343
+20260404: 343,953,399,865
+20260403: 746,279,494,582,91
+20260402: 70,322,518,91,3,582
+20260401: 1137,509,213,91,639
+20260331: 700,310,133,508,2657
+20260330: 865,399,953,399
+20260329: 694,207,210
+20260328: 1020,694,130,392
+20260327: 207,210,547,721,1971,429
+20260326: 1436,542,1765,815,95,96,776
+20260325: 752,733,994,127,126
+20260324: 1971,1791,277
+20260323: 953,165,524,997,669
+20260322: 1109,948,1231,2616,410
+20260321: 988,669,99
+20260320: 892,463,200,695,1254
+20260319: 387,1405,1054,871,834,776,872
+20260318: 257,104,872,129,968,776
+20260317: 303,1150,58,108,776,308
+20260316: 2614,2615,2616,984,652
+20260315: 14,984,1314,2616,2617
+20260314: 2615
+20260313: 404,163,1150,214,1288,179
+20260312: 1405,767,1209,251
+20260311: 1544,108,938,109,112
+20260310: 905,26,113,27
+20260309: 1041,198,213,437,652
+20260308: 506,1094,623,334,670
+20260307: 703,865,973,253
+20260306: 203,2331,814,1325,1110,394
+20260305: 394,337,28,530,907,155,2104,316,402
+20260304: 737,1482,525,738
+20260303: 1482,560,696,917,622,239,701,235,938,450
+20260302: 27,541,1552
+20260229: 81,540,1124,523,325,974,1248,3,532,554,1257
+20260228: 394,1047,1209
+20260227: 33,153,336,1032,980
+20260226: 35,374,852,316,901
+20260225: 71,844,316,591,402,496
+20260224: 980,881,455,682,402,496,901
+20260222: 1920,1480,1089,720,1023
+20260221: 62,63,88,977,493,164,327
+20260220: 680,917,151,345,214
+20260219: 1672,1431,75,274
+20260218: 229,137,659,992
+20260217: 542,694,711,652,1991,525,560,974,727,560
+20260216: 1470,66,727,189,442,41
+20260215: 449,297,303,724,560
+20260204: 283,435
+20260201: 14,165,416
+20260131: 1929,128
+20260130: 986,435,1851,392
+20260128: 72,678,322,518,228,452,1143
+20260125: 1899,763,309
+20260124: 134,846,367,875
+20260123: 55,45
+20260121: 72,312,10,309
+20260118: 97,329,115
+20260117: 309,518,494
+20260116: 14,392,1143,140,388,518
+20260114: 1025,551,552,62,139
+20260113: 132,376,416
+20260111: 5,516,131
+20260110: 2560,53,32
+20260109: 1905,416,740
+20260107: 1381,1382,1383,140,300
+20260106: 322,518
+20260105: 300
+20260104: 5,403,312
+20260103: 140,139,551,552
+20260102: 1137,91,377
+20260101: 746,198,213
+20251231: 2316,261,509,338
+20251230: 1971,997,1381,1382,1383
+20251227: 444,864,127,126
+20251226: 3092,909,317
+20251225: 207,210,802
+20251224: 1791,310,3092
+20251223: 997,1971,3092,3091
+20251222: 407,1020
+20251220: 1162,332,1647
+20251219: 542,994
+20251217: 785,1905,1617,2962
+20251216: 841,207,1466
+20251215: 108,305
+20251213: 323,1091,934,977,164,420,327
+20251212: 733,997
+20251210: 588,2765,2766,3120,3121
+20251209: 934
+20251206: 733,695,827
+20251205: 108,675,529,3120,3121
+20251203: 286,323,675
+20251202: 305,127
+20251130: 2963
+20251129: 694,547,745
+20251128: 463,130,1020,895
+20251126: 733,695,1254
+20251125: 677,432,2962
+20251124: 706,4
+20251123: 2960,2961,2962,706,4
+20251122: 705,981,1647,1094
+20251121: 380,359,362,785
+20251119: 14,146,1481
+20251118: 149,1047,394,648
+20251116: 496,84
+20251115: 1268,387,1054,358
+20251114: 1145,2542,124
+20251112: 703,414,324,280
+20251111: 506,767,502,2682,2683,2684
+20251109: 1901
+20251108: 23,703,264
+20251107: 215,373,973,378,383,2279,739
+20251106: 993
+20251105: 2641,2642
+20251104: 35,886
+20251103: 785
+20251102: 94,450,1109,1094
+20251101: 173,272,99
+20251031: 1382,653
+20251029: 2872,2871
+20251028: 2869,2870,200
+20251027: 2591,2592,2593,2594
+20251018: 209,407,594,640
+20251017: 30,336
+20251015: 333,530,700
+20251014: 987,675,1091
+20251011: 314,107,103
+20251010: 863,32,160,652
+20251008: 752,1268
+20251007: 117,863
+20251006: 24,86,21
+20251005: 1838,1740
+20251004: 298
+20251003: 437,129
+20251001: 124,108,501
+20250930: 98,173
+20250929: 235,236,530,700
+20250928: 572,652,510
+20250927: 110,112,113
+20250926: 111,543
+20250924: 101,100,226,617,116,2290
+20250922: 82,61
+20250921: 876,142,43
+20250920: 104,101,114
+20250917: 206,237,234,141,92
+20250916: 678,921
+20250914: 1004,904,155
+20250913: 239,340
+20250912: 438,76
+20250910: 121,122,219
+20250909: 42,34,35,85
+20250907: 852,162,153
+20250906: 53,152
+20250905: 42,84
+20250903: 35,336,214,278,34
+20250902: 167,5,11,772,1157
+20250831: 3,329,125,680,430
+20250830: 451,973
+20250829: 297
+20250827: 394,535
+20250826: 395
+20250824: 347,215,692,767
+20250823: 438,249,890
+20250822: 335,430
+20250820: 1060,256,321
+20250819: 297
+20250817: 104,199,222,297
+20250816: 124,450
+20250815: 337
+20250810: 1325,450
+20250809: 1448,1666
+20250803: 427
+20250802: 701,450
+20250727: 4
+20250726: 981,1011
+20250725: 271,84
+20250720: 394
+20250719: 71
+20250712: 853
+20250708: 567
+20250704: 133,525
+20250702: 297,200
+20250701: 124`;
+
+// ── Parse progress ─────────────────────────────────────────────────────
+function parseDate(s) {
+  const y = +s.slice(0,4), m = +s.slice(4,6)-1, d = +s.slice(6,8);
+  return new Date(y, m, d);
+}
+function toKey(date) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth()+1).padStart(2,'0');
+  const d = String(date.getDate()).padStart(2,'0');
+  return `${y}${m}${d}`;
+}
+
+const dayMap = {}; // "YYYYMMDD" -> [prob, ...]
+const probMap = {}; // prob -> [date, ...]
+RAW.split('\n').forEach(line => {
+  const m = line.match(/^(\d{8}):\s*(.+)$/);
+  if (!m) return;
+  const key = m[1];
+  const probs = m[2].split(',').map(p => p.trim().replace(/[^0-9]/g, '')).filter(Boolean);
+  if (!dayMap[key]) dayMap[key] = [];
+  probs.forEach(p => {
+    dayMap[key].push(p);
+    if (!probMap[p]) probMap[p] = [];
+    probMap[p].push(key);
+  });
+});
+
+// ── Fibonacci intervals ────────────────────────────────────────────────
+const FIB = [1, 2, 3, 5, 8, 13, 21, 34, 55];
+
+function addDays(dateKey, n) {
+  const d = parseDate(dateKey);
+  d.setDate(d.getDate() + n);
+  return toKey(d);
+}
+
+// For each problem, compute next review date based on last practice date
+// and how many times they've practiced (interval index)
+const today = new Date();
+today.setHours(0,0,0,0);
+const todayKey = toKey(today);
+
+function daysBetween(keyA, keyB) {
+  return Math.round((parseDate(keyB) - parseDate(keyA)) / 86400000);
+}
+
+// Build review schedule: for each problem, figure out next due date
+const dueItems = []; // {prob, lastDate, nextDate, count, intervalDays}
+Object.entries(probMap).forEach(([prob, dates]) => {
+  dates.sort();
+  const count = dates.length;
+  const lastKey = dates[dates.length - 1];
+  // Which fibonacci interval applies based on review count
+  const fibIdx = Math.min(count - 1, FIB.length - 1);
+  const interval = FIB[fibIdx];
+  const nextKey = addDays(lastKey, interval);
+  dueItems.push({ prob, lastKey, nextKey, count, interval });
+});
+
+// Sort: overdue first, then today, then future
+dueItems.sort((a, b) => a.nextKey.localeCompare(b.nextKey));
+
+// ── Stats ─────────────────────────────────────────────────────────────
+const totalDays = Object.keys(dayMap).length;
+const totalProbs = Object.keys(probMap).length;
+const overdueCount = dueItems.filter(x => x.nextKey < todayKey).length;
+const todayCount   = dueItems.filter(x => x.nextKey === todayKey).length;
+const weekCount    = dueItems.filter(x => x.nextKey > todayKey && daysBetween(todayKey, x.nextKey) <= 7).length;
+
+document.getElementById('stats-row').innerHTML = `
+  <div class="stat-card"><div class="stat-num">${totalProbs}</div><div class="stat-label">Unique Problems</div></div>
+  <div class="stat-card"><div class="stat-num">${totalDays}</div><div class="stat-label">Practice Days</div></div>
+  <div class="stat-card"><div class="stat-num" style="color:var(--danger)">${overdueCount}</div><div class="stat-label">Overdue</div></div>
+  <div class="stat-card"><div class="stat-num" style="color:var(--accent2)">${todayCount}</div><div class="stat-label">Due Today</div></div>
+  <div class="stat-card"><div class="stat-num" style="color:var(--warn)">${weekCount}</div><div class="stat-label">Due This Week</div></div>
+`;
+
+// ── Due list ───────────────────────────────────────────────────────────
+function formatKey(key) {
+  return `${key.slice(0,4)}-${key.slice(4,6)}-${key.slice(6,8)}`;
+}
+function lcUrl(prob) {
+  return `https://leetcode.com/problems/?q=${prob}`;
+}
+
+const dueEl = document.getElementById('due-list');
+const shown = dueItems.filter(x => x.nextKey <= addDays(todayKey, 14));
+if (shown.length === 0) {
+  dueEl.innerHTML = '<li class="empty">No problems due in the next 2 weeks. Great job!</li>';
+} else {
+  shown.forEach(({ prob, lastKey, nextKey, count, interval }) => {
+    const diffDays = daysBetween(todayKey, nextKey);
+    let badgeClass, badgeText;
+    if (nextKey < todayKey) { badgeClass = 'badge-overdue'; badgeText = `${Math.abs(diffDays)}d overdue`; }
+    else if (nextKey === todayKey) { badgeClass = 'badge-today'; badgeText = 'Today'; }
+    else if (diffDays <= 3) { badgeClass = 'badge-soon'; badgeText = `in ${diffDays}d`; }
+    else { badgeClass = 'badge-later'; badgeText = `in ${diffDays}d`; }
+    const li = document.createElement('li');
+    li.className = 'due-item';
+    li.innerHTML = `
+      <span class="due-badge ${badgeClass}">${badgeText}</span>
+      <a class="prob-link" href="https://leetcode.com/problems/?q=${prob}" target="_blank">#${prob}</a>
+      <span class="prob-meta">last: ${formatKey(lastKey)} · ×${count} · next interval: ${interval}d</span>`;
+    dueEl.appendChild(li);
+  });
+}
+
+// ── Heatmap ────────────────────────────────────────────────────────────
+(function buildHeatmap() {
+  const WEEKS = 52;
+  const end = new Date(today);
+  // align to Saturday
+  while (end.getDay() !== 6) end.setDate(end.getDate() + 1);
+  const start = new Date(end);
+  start.setDate(start.getDate() - WEEKS * 7 + 1);
+
+  const hm = document.getElementById('heatmap');
+  const monthsEl = document.getElementById('hm-months');
+
+  const cells = [];
+  let cur = new Date(start);
+  let lastMonth = -1;
+  let colOffset = 0;
+
+  while (cur <= end) {
+    const key = toKey(cur);
+    const count = (dayMap[key] || []).length;
+    const cell = document.createElement('div');
+    cell.className = 'hm-cell';
+    const colors = ['var(--border)', '#c4b5fd', '#8b5cf6', '#6d28d9', '#4c1d95'];
+    cell.style.background = colors[Math.min(count, 4)];
+    if (count) cell.title = `${formatKey(key)}: ${count} problems`;
+    hm.appendChild(cell);
+
+    // month label
+    if (cur.getMonth() !== lastMonth) {
+      lastMonth = cur.getMonth();
+      const col = Math.floor((cur - start) / (7 * 86400000));
+      const lbl = document.createElement('div');
+      lbl.className = 'hm-month-label';
+      lbl.style.marginLeft = (col === 0 ? 0 : col) * 16 + 'px';
+      lbl.textContent = cur.toLocaleString('default', { month: 'short' });
+      monthsEl.appendChild(lbl);
+    }
+
+    cur.setDate(cur.getDate() + 1);
+  }
+})();
+
+// ── Frequency chart ────────────────────────────────────────────────────
+(function buildFreq() {
+  const sorted = Object.entries(probMap)
+    .sort((a, b) => b[1].length - a[1].length)
+    .slice(0, 30);
+  const max = sorted[0][1].length;
+  const el = document.getElementById('freq-chart');
+  sorted.forEach(([prob, dates]) => {
+    const pct = (dates.length / max * 100).toFixed(1);
+    el.innerHTML += `
+      <div class="freq-row">
+        <span class="freq-label">#${prob}</span>
+        <div class="freq-bar-wrap"><div class="freq-bar" style="width:${pct}%"></div></div>
+        <span class="freq-count">${dates.length}×</span>
+      </div>`;
+  });
+})();
+
+// ── Timeline ───────────────────────────────────────────────────────────
+(function buildTimeline() {
+  const el = document.getElementById('timeline');
+  // last 30 days with activity
+  const recent = Object.keys(dayMap)
+    .filter(k => k <= todayKey)
+    .sort()
+    .reverse()
+    .slice(0, 30);
+  if (recent.length === 0) { el.innerHTML = '<p class="empty">No recent data.</p>'; return; }
+  recent.forEach(key => {
+    const probs = [...new Set(dayMap[key])];
+    const isToday = key === todayKey;
+    const div = document.createElement('div');
+    div.className = 'tl-item';
+    div.innerHTML = `
+      <div class="tl-dot${isToday ? ' today' : ''}"></div>
+      <div class="tl-date">${formatKey(key)}${isToday ? ' (today)' : ''} — ${probs.length} problem${probs.length > 1 ? 's' : ''}</div>
+      <div class="tl-probs">${probs.map(p => `<span class="tl-tag">#${p}</span>`).join('')}</div>`;
+    el.appendChild(div);
+  });
+})();
+</script>
+</body>
+</html>
