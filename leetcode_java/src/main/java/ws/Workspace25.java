@@ -4444,5 +4444,101 @@ public class Workspace25 {
     }
 
 
+    // LC 173
+    // 7.14 - 24
+    /**
+     *
+     *
+     */
+// Definition for a binary tree node.
+    public class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+
+        TreeNode() {}
+
+        TreeNode(int val) {
+            this.val = val;
+        }
+
+        TreeNode(int val, TreeNode left, TreeNode right) {
+            this.val = val;
+            this.left = left;
+            this.right = right;
+        }
+    }
+
+
+
+
+    class BSTIterator {
+        // attr
+        TreeNode root;
+       // int val; // ??
+        List<Integer> vals;
+        int idx;
+
+        public BSTIterator(TreeNode root) {
+            this.root = root;
+            this.vals = new ArrayList<>();
+            helper(this.root); // ???
+            this.idx = 0;
+        }
+
+        public int next() {
+
+//            TreeNode _left = this.root.left;
+//            TreeNode _right = this.root.right;
+//            if(_left != null){
+//                this.root = _left; // /???
+//                return _left.val;
+//            }
+//
+//            this.root = _right; // /???
+//            return _right.val;
+            this.idx += 1; // ???
+            return this.vals.get(this.idx);
+        }
+
+        public boolean hasNext() {
+//            if(this.root == null){
+//                return false;
+//            }
+//            TreeNode _left = this.root.left;
+//            TreeNode _right = this.root.right;
+//            if(_left == null && _right == null){
+//                return false;
+//            }
+//            return true;
+            return this.idx < this.vals.size();
+        }
+
+        // /??
+        // BST:
+        // `IN ORDER` traverse
+        // -> ascending order (small -> big)
+        private void helper(TreeNode root){
+            // edge
+            if(root == null){
+                return;
+            }
+            helper(root.left);
+            this.vals.add(root.val);
+            helper(root.right);
+        }
+
+
+
+    }
+
+
+
+
+
+
+
+
+
 
 }

@@ -86,9 +86,75 @@ public class BinarySearchTreeIterator {
      * int param_1 = obj.next();
      * boolean param_2 = obj.hasNext();
      */
+
     // V0
-    // IDEA : tree traversal + list + sorting
+    // IDEA: STACK + BST (GPT)
     class BSTIterator {
+        List<Integer> vals;
+        int idx;
+
+        public BSTIterator(TreeNode root) {
+            this.vals = new ArrayList<>();
+            helper(root);
+            this.idx = 0;
+        }
+
+        public int next() {
+            return this.vals.get(this.idx++);
+        }
+
+        public boolean hasNext() {
+            return this.idx < this.vals.size();
+        }
+
+        // In-order traversal (sorted order for BST)
+        private void helper(TreeNode root) {
+            if (root == null)
+                return;
+
+            helper(root.left);
+            vals.add(root.val);
+            helper(root.right);
+        }
+    }
+
+
+    // V0-0-0-1
+    // IDEA: STACK + BST (lazy traversal) (GPT)
+    // NOTE: in this version, we `DON'T need to get ALL BST nodes `
+    // at first place, which is more doable if big dataset
+    class BSTIterator_0_0_0_1 {
+        private Stack<TreeNode> stack = new Stack<>();
+
+        public BSTIterator_0_0_0_1(TreeNode root) {
+            pushLeft(root);
+        }
+
+        private void pushLeft(TreeNode node) {
+            while (node != null) {
+                stack.push(node);
+                node = node.left;
+            }
+        }
+
+        public int next() {
+            // Stack: FILO
+            TreeNode node = stack.pop();
+            if (node.right != null) {
+                pushLeft(node.right);
+            }
+            return node.val;
+        }
+
+        public boolean hasNext() {
+            return !stack.isEmpty();
+        }
+    }
+
+
+    // V0-0-x
+    // IDEA : tree traversal + list + sorting
+    class BSTIterator_0_0_x {
 
         // attr
         TreeNode treeNode;
@@ -98,7 +164,7 @@ public class BinarySearchTreeIterator {
          * time = O(1)
          * space = O(N)
          */
-        public BSTIterator(TreeNode root) {
+        public BSTIterator_0_0_x(TreeNode root) {
             this.treeNode = root;
             this.cache = new ArrayList<>();
             this.getValues(root);
@@ -430,6 +496,10 @@ public class BinarySearchTreeIterator {
             }
         }
     }
+
+
+
+
 
 
 }

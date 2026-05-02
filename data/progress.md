@@ -1,6 +1,6 @@
 # Progress
 
-# 2026-05-02
+# 2026-05-03
 
 - Needcode DP playlist
 	- https://www.youtube.com/watch?v=73r3KWiEvyk&list=PLot-Xpze53lcvx_tjrr_m2lgD2NsRHlNO
@@ -104,7 +104,6 @@
 	- tree
 	- LC 701
 		- gpt
-			- 173
 			- 99
 			- 449
 			- 285
