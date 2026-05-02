@@ -2,7 +2,10 @@
 <html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <title>Similar LC Problems - CS Basics</title>
   <meta name="description" content="Explore similar LeetCode problems by topic, pattern, and difficulty">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💻</text></svg>">
@@ -186,6 +189,24 @@
     .nav-links a:hover { color: var(--text) !important; }
     .theme-btn { background: none !important; border: none !important; border-left: 1px solid var(--border) !important; font-size: 13px !important; color: var(--text-light) !important; cursor: pointer; font-family: inherit !important; padding: 2px 10px !important; white-space: nowrap; }
     input, select, button:not(.theme-btn) { border-radius: 0 !important; font-family: inherit !important; }
+    /* ── Mobile responsive ── */
+    html { -webkit-text-size-adjust:100%; -webkit-tap-highlight-color:transparent; }
+    a, button { touch-action:manipulation; }
+    @media(max-width:768px) {
+      .navbar { padding: 0 !important; }
+      .nav-content { padding: 8px 14px !important; flex-wrap: wrap; gap: 6px; }
+      .nav-links { flex-wrap: wrap !important; gap: 2px !important; }
+      .nav-links a { font-size: 14px !important; padding: 8px 8px !important; min-height: 44px !important; border-left: none !important; }
+      .nav-links li+li>a { border-left: none !important; }
+      .theme-btn { font-size: 14px !important; padding: 8px 10px !important; min-height: 44px !important; border-left: none !important; }
+      .ctrl-bar { flex-direction: column !important; }
+      input[type="text"], select { font-size: 16px !important; min-height: 44px; }
+      table { font-size: 13px !important; }
+      th, td { padding: 8px !important; }
+    }
+    @supports(padding:env(safe-area-inset-left)) {
+      .navbar { padding-left: env(safe-area-inset-left) !important; padding-right: env(safe-area-inset-right) !important; }
+    }
   </style>
 </head>
 <body>

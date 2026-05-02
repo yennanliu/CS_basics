@@ -152,6 +152,23 @@ a:hover { opacity: 0.6; }
 }
 .nav-toggle span { display: block; width: 20px; height: 1px; background: var(--text); }
 
+/* ── Global mobile resets ─── */
+html {
+  -webkit-text-size-adjust: 100%;  /* prevent iOS auto font inflation */
+  text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent; /* remove blue flash on tap */
+}
+a, button, [role="button"] {
+  touch-action: manipulation; /* remove 300ms tap delay */
+}
+/* Minimum touch target: 44×44px (Apple HIG) */
+.nav-links a, .nav-links > a, .github-link, .theme-toggle,
+.nav-toggle, .tab-btn, .copy-btn {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
 /* ── Container ─── */
 .container { max-width: 1100px; margin: 0 auto; padding: 0 32px; }
 
@@ -433,45 +450,178 @@ h3 > a.header-anchor:hover,
 h4 > a.header-anchor:hover { text-decoration: underline; }
 
 /* ── Responsive ─── */
+/* ═══════════════════════════════════════════════════════
+   RESPONSIVE — tablet ≤1024px
+   ═══════════════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .container { padding: 0 24px; }
+  .navbar .container { padding: 10px 24px; }
+
+  /* Slightly tighter nav on tablet */
+  .nav-links a, .nav-links > a { padding: 2px 8px; font-size: 16px; }
+  .nav-links { font-size: 16px; }
+  .nav-title { font-size: 16px; }
+  .nav-brand { font-size: 16px; margin-right: 16px; }
+
+  .cheatsheet-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+}
+
+/* ═══════════════════════════════════════════════════════
+   RESPONSIVE — mobile ≤768px  (phones, small tablets)
+   ═══════════════════════════════════════════════════════ */
 @media (max-width: 768px) {
   .container { padding: 0 16px; }
   .content { padding: 24px 0; }
+  main { padding: 24px 0; }
 
+  /* ── Hamburger ── */
   .nav-toggle { display: flex; }
+  .navbar .container { position: relative; padding: 0 16px; min-height: 52px; }
+  .nav-brand { font-size: 15px; margin-right: 0; }
 
   .nav-links {
-    display: none; position: absolute; top: 100%; left: 0; right: 0;
-    background: var(--bg); border-bottom: 1px solid var(--border);
-    flex-direction: column; align-items: flex-start;
-    padding: 8px 32px; gap: 0;
+    display: none;
+    position: absolute; top: 100%; left: 0; right: 0; z-index: 200;
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+    border-bottom: 2px solid var(--border-strong);
+    flex-direction: column; align-items: stretch;
+    padding: 0; gap: 0;
+    /* iOS momentum scroll inside drawer */
+    overflow-y: auto; -webkit-overflow-scrolling: touch;
+    max-height: 80vh;
   }
   .nav-links.open { display: flex; }
+
   .nav-links a, .nav-links > a {
-    padding: 10px 0; font-size: 18px;
+    padding: 14px 20px; font-size: 17px;
     border-bottom: 1px solid var(--border); border-left: none !important;
-    width: 100%;
+    border-right: none; width: 100%; min-height: 52px;
+    display: flex; align-items: center;
   }
   .nav-links a + a, .nav-links > a + a { border-left: none !important; }
-  .github-link, .theme-toggle {
-    padding: 10px 0; border-bottom: 1px solid var(--border);
-    border-left: none !important; width: 100%;
+  .nav-links a.active, .nav-links > a.active {
+    background: var(--surface); border-bottom-color: var(--border);
+    font-weight: 700;
   }
 
-  .navbar .container { position: relative; }
+  .github-link {
+    padding: 14px 20px; font-size: 17px;
+    border-bottom: 1px solid var(--border); border-left: none !important;
+    width: 100%; min-height: 52px; display: flex; align-items: center;
+  }
+  .theme-toggle {
+    padding: 14px 20px; font-size: 17px;
+    border-bottom: none; border-left: none !important; border-right: none !important;
+    border-top: none; width: 100%; min-height: 52px;
+    display: flex; align-items: center; justify-content: flex-start;
+    background: var(--surface2, var(--surface));
+  }
 
-  h1 { font-size: 20px; }
-  h2 { font-size: 22px; }
+  /* ── Typography ── */
+  h1 { font-size: 24px; }
+  h2 { font-size: 20px; }
+  h3 { font-size: 18px; }
+  h4 { font-size: 17px; }
 
+  /* ── Code blocks — horizontal scroll with touch ── */
+  pre {
+    font-size: 15px !important;
+    padding: 14px 16px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .code-block-wrapper { overflow: hidden; }
+  .code-block-wrapper pre { font-size: 15px !important; }
+  .cheatsheet-content pre { font-size: 15px !important; }
+
+  /* ── Tables ── */
+  .table-wrap {
+    overflow-x: auto; -webkit-overflow-scrolling: touch;
+    border: 1px solid var(--border);
+  }
+  table { font-size: 16px; }
+  th, td { padding: 10px 12px; }
+
+  /* ── Layout ── */
   .cheatsheet-grid { grid-template-columns: 1fr; }
-  .cheatsheet-footer { flex-direction: column; align-items: flex-start; }
-  .cheatsheet-content pre { font-size: 16px; }
+  .cheatsheet-footer { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .cheatsheet-content > h2 { font-size: 20px; }
+  .cheatsheet-content h3 { font-size: 18px; }
+  .cheatsheet-content h4 { font-size: 17px; }
+
+  .prev-next { flex-direction: column; gap: 10px; }
+  .prev-next a { max-width: 100%; }
+  .toc { padding: 16px; }
+  .toc ul li { font-size: 16px; padding: 6px 0; }
+
+  /* ── Broader content area ── */
+  .content { padding: 20px 0; }
+
+  /* ── Images ── */
+  img { width: 100%; height: auto; }
 }
 
+/* ═══════════════════════════════════════════════════════
+   RESPONSIVE — small phones ≤480px
+   ═══════════════════════════════════════════════════════ */
 @media (max-width: 480px) {
   .container { padding: 0 12px; }
   .content { padding: 16px 0; }
-  .prev-next { flex-direction: column; gap: 8px; }
+
+  h1 { font-size: 22px; }
+  h2 { font-size: 19px; }
+  h3 { font-size: 17px; }
+  h4 { font-size: 16px; }
+
+  pre, .cheatsheet-content pre { font-size: 14px !important; padding: 12px; }
+
+  table { font-size: 15px; }
+  th, td { padding: 8px 10px; }
+
   .breadcrumbs { font-size: 15px; }
+  .cheatsheet-card h3 { font-size: 16px; }
+  .cheatsheet-card p { font-size: 15px; }
+  .toc ul li { font-size: 15px; }
+  footer p { font-size: 14px; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   RESPONSIVE — very small phones ≤360px
+   ═══════════════════════════════════════════════════════ */
+@media (max-width: 360px) {
+  .container { padding: 0 10px; }
+  h1 { font-size: 20px; }
+  h2 { font-size: 18px; }
+  pre, .cheatsheet-content pre { font-size: 13px !important; }
+  .navbar .container { padding: 0 12px; }
+}
+
+/* ═══════════════════════════════════════════════════════
+   iOS safe-area insets (notch / home indicator)
+   ═══════════════════════════════════════════════════════ */
+@supports (padding: env(safe-area-inset-left)) {
+  .navbar .container {
+    padding-left: max(32px, env(safe-area-inset-left));
+    padding-right: max(32px, env(safe-area-inset-right));
+  }
+  .container {
+    padding-left: max(32px, env(safe-area-inset-left));
+    padding-right: max(32px, env(safe-area-inset-right));
+  }
+  footer .container {
+    padding-bottom: max(24px, env(safe-area-inset-bottom));
+  }
+  @media (max-width: 768px) {
+    .navbar .container {
+      padding-left: max(16px, env(safe-area-inset-left));
+      padding-right: max(16px, env(safe-area-inset-right));
+    }
+    .container {
+      padding-left: max(16px, env(safe-area-inset-left));
+      padding-right: max(16px, env(safe-area-inset-right));
+    }
+  }
 }
 
 /* ── Print ─── */
