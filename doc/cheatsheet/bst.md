@@ -223,6 +223,131 @@ def kth_smallest_optimized(root, k):
         root = root.right
 ```
 
+### Template 5b: BST Lazy Traversal (Iterator Pattern)
+
+#### **Pattern Overview**
+- **Description**: Simulate inorder traversal on-demand using a stack — only traverse as far as needed, not the whole tree upfront
+- **Recognition**: "BST Iterator", "next smallest", "streaming traversal", large dataset where loading all nodes is expensive
+- **Key Insight**: Push only the left spine into the stack; when popping a node, push its right subtree's left spine
+- **Time Complexity**: O(1) amortized per `next()` call, O(h) space where h = tree height
+- **Space Complexity**: O(h) — far better than O(n) from pre-collecting all nodes
+
+#### **Core Idea**
+
+```
+Pre-collect ALL nodes (eager):              Lazy traversal:
+  O(n) space, O(n) init time                 O(h) space, O(1) amortized per call
+
+  [1, 3, 5, 7, 9, ...]   ← full list        Stack: only current left spine
+  load everything first                      push more only when needed
+```
+
+**Three-step pattern:**
+```
+1. INIT:    Push entire left spine from root into stack
+             (leftmost path = smallest values on top)
+
+2. next():  Pop top node (= current smallest)
+             → if it has a right child, push that subtree's left spine
+             → return popped node's value
+
+3. hasNext(): stack is non-empty
+```
+
+**Visual walkthrough:**
+```
+BST:          7
+             / \
+            3   15
+               /  \
+              9   20
+
+Init: pushLeft(7) → stack = [7, 3]  (3 on top)
+
+next() → pop 3, no right child → return 3,  stack = [7]
+next() → pop 7, pushLeft(15)   → return 7,  stack = [15, 9]
+next() → pop 9, no right child → return 9,  stack = [15]
+next() → pop 15, pushLeft(20)  → return 15, stack = [20]
+next() → pop 20, no right child → return 20, stack = []
+hasNext() → false
+```
+
+#### **Java Implementation**
+```java
+class BSTIterator {
+    private Stack<TreeNode> stack = new Stack<>();
+
+    public BSTIterator(TreeNode root) {
+        pushLeft(root);
+    }
+
+    private void pushLeft(TreeNode node) {
+        while (node != null) {
+            stack.push(node);
+            node = node.left;
+        }
+    }
+
+    public int next() {
+        TreeNode node = stack.pop();
+        if (node.right != null) {
+            pushLeft(node.right);   // lazily expand right subtree
+        }
+        return node.val;
+    }
+
+    public boolean hasNext() {
+        return !stack.isEmpty();
+    }
+}
+```
+
+#### **Python Implementation**
+```python
+class BSTIterator:
+    def __init__(self, root):
+        self.stack = []
+        self._push_left(root)
+
+    def _push_left(self, node):
+        while node:
+            self.stack.append(node)
+            node = node.left
+
+    def next(self) -> int:
+        node = self.stack.pop()
+        if node.right:
+            self._push_left(node.right)
+        return node.val
+
+    def hasNext(self) -> bool:
+        return bool(self.stack)
+```
+
+#### **Eager vs Lazy Comparison**
+| Approach | Init Time | Init Space | next() Time | next() Space | Best For |
+|----------|-----------|------------|-------------|--------------|----------|
+| **Eager** (collect all) | O(n) | O(n) | O(1) | O(1) | Small trees, many calls |
+| **Lazy** (stack) | O(h) | O(h) | O(1) amortized | O(1) | Large trees, partial traversal |
+
+#### **Similar LeetCode Problems**
+| Problem | LC # | Difficulty | How Lazy Traversal Applies |
+|---------|------|------------|----------------------------|
+| Binary Search Tree Iterator | 173 | Medium | Core pattern — iterator with `next()` / `hasNext()` |
+| Kth Smallest in BST | 230 | Medium | Stop after k pops instead of collecting all |
+| Inorder Successor in BST | 285 | Medium | One step of lazy traversal |
+| Two Sum IV - Input is BST | 653 | Easy | Two iterators (forward + reverse) meet in middle |
+| All Elements in Two BSTs | 1305 | Medium | Merge two lazy iterators |
+
+#### **Key Takeaways**
+```
+1. Push LEFT SPINE only — this gives smallest-first access
+2. On pop: expand right subtree's left spine lazily
+3. Stack depth = O(h), not O(n) — critical for tall/large trees
+4. Amortized O(1) per next(): each node is pushed and popped exactly once
+5. Enables partial traversal — stop early without wasting work
+```
+
 ### Template 6: BST Construction
 
 #### **Pattern Overview**

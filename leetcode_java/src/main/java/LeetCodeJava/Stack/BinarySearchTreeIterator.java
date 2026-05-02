@@ -88,7 +88,7 @@ public class BinarySearchTreeIterator {
      */
 
     // V0
-    // IDEA: STACK + BST (GPT)
+    // IDEA: STACK + BST (`eager` traversal) (GPT)
     class BSTIterator {
         List<Integer> vals;
         int idx;
@@ -108,6 +108,12 @@ public class BinarySearchTreeIterator {
         }
 
         // In-order traversal (sorted order for BST)
+        /**
+         *         // BST:
+         *         // `IN ORDER` traverse
+         *         // -> ascending order (small -> big)
+         *
+         */
         private void helper(TreeNode root) {
             if (root == null)
                 return;
@@ -120,9 +126,237 @@ public class BinarySearchTreeIterator {
 
 
     // V0-0-0-1
-    // IDEA: STACK + BST (lazy traversal) (GPT)
+    // IDEA: STACK + BST (`lazy` traversal) (GPT)
     // NOTE: in this version, we `DON'T need to get ALL BST nodes `
     // at first place, which is more doable if big dataset
+    /**  Dry run:
+     *
+     * # 🧠 What “lazy traversal” means here
+     *
+     * Instead of:
+     *
+     * * Precomputing **all nodes** (your list version, O(n) space)
+     *
+     * We:
+     *
+     * * Only prepare **just enough nodes** to answer the next query
+     * * Expand the traversal **on demand**
+     *
+     * So:
+     *
+     * * `next()` does a *small amount of work each time*
+     * * Total work is still O(n), but spread across calls
+     *
+     * ---
+     *
+     * # 🔑 Core idea
+     *
+     * In-order traversal = **left → node → right**
+     *
+     * To simulate that lazily:
+     *
+     * 1. Always go as far **left as possible**
+     * 2. Use a **stack** to remember the path
+     * 3. When visiting a node:
+     *
+     *    * Return it
+     *    * Then explore its **right subtree**
+     *
+     * ---
+     *
+     * # 🔄 Key invariant (super important)
+     *
+     * > The stack always contains the path to the **next smallest node**,
+     * with the top being the next answer.
+     *
+     * ---
+     *
+     * # 🌳 Dry run example
+     *
+     * Consider this BST:
+     *
+     * ```
+     *         7
+     *        / \
+     *       3   15
+     *          /  \
+     *         9   20
+     * ```
+     *
+     * ---
+     *
+     * ## Step 1: Initialization
+     *
+     * ```java
+     * BSTIterator(root)
+     * → pushLeft(7)
+     * ```
+     *
+     * ### pushLeft(7):
+     *
+     * * push 7
+     * * push 3
+     * * stop (3.left == null)
+     *
+     * **Stack (top → bottom):**
+     *
+     * ```
+     * 3
+     * 7
+     * ```
+     *
+     * ---
+     *
+     * ## Step 2: next()
+     *
+     * ```java
+     * pop → 3
+     * ```
+     *
+     * * 3 has no right child
+     *
+     * **Return:** `3`
+     *
+     * **Stack now:**
+     *
+     * ```
+     * 7
+     * ```
+     *
+     * ---
+     *
+     * ## Step 3: next()
+     *
+     * ```java
+     * pop → 7
+     * ```
+     *
+     * * 7 has right child → 15
+     *   → call `pushLeft(15)`
+     *
+     * ### pushLeft(15):
+     *
+     * * push 15
+     * * push 9
+     * * stop
+     *
+     * **Stack:**
+     *
+     * ```
+     * 9
+     * 15
+     * ```
+     *
+     * **Return:** `7`
+     *
+     * ---
+     *
+     * ## Step 4: next()
+     *
+     * ```java
+     * pop → 9
+     * ```
+     *
+     * * no right child
+     *
+     * **Stack:**
+     *
+     * ```
+     * 15
+     * ```
+     *
+     * **Return:** `9`
+     *
+     * ---
+     *
+     * ## Step 5: next()
+     *
+     * ```java
+     * pop → 15
+     * ```
+     *
+     * * has right → 20
+     *   → pushLeft(20)
+     *
+     * **Stack:**
+     *
+     * ```
+     * 20
+     * ```
+     *
+     * **Return:** `15`
+     *
+     * ---
+     *
+     * ## Step 6: next()
+     *
+     * ```java
+     * pop → 20
+     * ```
+     *
+     * * no right
+     *
+     * **Stack:**
+     * (empty)
+     *
+     * **Return:** `20`
+     *
+     * ---
+     *
+     * ## Final output order:
+     *
+     * ```
+     * 3 → 7 → 9 → 15 → 20
+     * ```
+     *
+     * ✔ Sorted (correct for BST)
+     *
+     * ---
+     *
+     * # ⚖️ Why this works
+     *
+     * ### pushLeft(node)
+     *
+     * This ensures:
+     *
+     * * The **smallest available node** is always on top
+     *
+     * ### next()
+     *
+     * * Pops the current smallest
+     * * Then prepares the next candidates from the right subtree
+     *
+     * ---
+     *
+     * # ⏱ Complexity
+     *
+     * | Operation   | Time           | Space |
+     * | ----------- | -------------- | ----- |
+     * | `next()`    | amortized O(1) | O(h)  |
+     * | `hasNext()` | O(1)           | O(h)  |
+     *
+     * * `h` = tree height
+     * * Worst case (skewed tree): O(n)
+     * * Balanced tree: O(log n)
+     *
+     * ---
+     *
+     * # ⚠️ Common pitfalls
+     *
+     * * Forgetting `pushLeft(node.right)` → skips nodes
+     * * Trying to store values instead of nodes → loses structure
+     * * Not understanding stack invariant → leads to bugs
+     *
+     * ---
+     *
+     * # 🧩 Intuition in one sentence
+     *
+     * > “Always keep the next smallest node on top of the stack,
+     * and when you consume one, prepare the next by
+     * exploring its right subtree.”
+     *
+     *
+     */
     class BSTIterator_0_0_0_1 {
         private Stack<TreeNode> stack = new Stack<>();
 
@@ -139,8 +373,18 @@ public class BinarySearchTreeIterator {
 
         public int next() {
             // Stack: FILO
+            // NOTE !!! we pop cur element from stack first
             TreeNode node = stack.pop();
             if (node.right != null) {
+                /** NOTE !!!
+                 *
+                 *  (if root.right != null)
+                 *
+                 *  we call the `pushLeft()`
+                 *  with node.right
+                 *  in `next()`
+                 *
+                 */
                 pushLeft(node.right);
             }
             return node.val;
