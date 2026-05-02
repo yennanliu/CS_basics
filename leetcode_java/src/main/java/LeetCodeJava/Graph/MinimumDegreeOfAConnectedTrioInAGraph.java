@@ -57,6 +57,60 @@ public class MinimumDegreeOfAConnectedTrioInAGraph {
 //
 //    }
 
+    // V0-1
+    // IDEA: Adjacency + Enumeration (GPT)
+    /** CORE IDEA:
+     *
+     * For every edge `(u, v)`:
+     *
+     * * A triangle exists if there’s a node `w` such that:
+     *
+     *   ```text
+     *   w ∈ neighbors(u) AND w ∈ neighbors(v)
+     *   ```
+     * * So we just need the **intersection of neighbors**
+     *
+     * Then compute:
+     *
+     * ```text
+     * degree = deg[u] + deg[v] + deg[w] - 6
+     * ```
+     *
+     *
+     */
+    public int minTrioDegree_0_1(int n, int[][] edges) {
+        // adjacency matrix for O(1) lookup
+        boolean[][] adj = new boolean[n + 1][n + 1];
+        int[] deg = new int[n + 1];
+
+        // build graph
+        for (int[] e : edges) {
+            int u = e[0], v = e[1];
+            adj[u][v] = true;
+            adj[v][u] = true;
+            deg[u]++;
+            deg[v]++;
+        }
+
+        int ans = Integer.MAX_VALUE;
+
+        // iterate over edges
+        for (int[] e : edges) {
+            int u = e[0], v = e[1];
+
+            // find common neighbor
+            for (int w = 1; w <= n; w++) {
+                if (adj[u][w] && adj[v][w]) {
+                    int degree = deg[u] + deg[v] + deg[w] - 6;
+                    ans = Math.min(ans, degree);
+                }
+            }
+        }
+
+        return ans == Integer.MAX_VALUE ? -1 : ans;
+    }
+
+
 
     /** NOTE !!
      *
@@ -182,7 +236,8 @@ public class MinimumDegreeOfAConnectedTrioInAGraph {
     public int minTrioDegree_2(int n, int[][] edges) {
         // to store edge information
         boolean[][] graph = new boolean[n + 1][n + 1];
-        //to store inDegrees to a node(NOTE: here inDegree and outDegree are same because it is Undirected graph)
+        //to store inDegrees to a node
+        // (NOTE: here inDegree and outDegree are same because it is Undirected graph)
         int[] inDegree = new int[n + 1];
 
         for (int[] edge : edges) {
@@ -199,7 +254,12 @@ public class MinimumDegreeOfAConnectedTrioInAGraph {
                 if (graph[i][j]) {
                     for (int k = j + 1; k <= n; k++) {
                         if (graph[i][k] && graph[j][k]) {
-                            result = Math.min(result, inDegree[i] + inDegree[j] + inDegree[k] - 6);
+
+                            result = Math.min(
+                                    result,
+                                    inDegree[i] + inDegree[j] + inDegree[k] - 6
+                            );
+
                         }
                     }
                 }
