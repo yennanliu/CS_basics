@@ -46,8 +46,8 @@ body { overflow-x: hidden; }
 body {
   font-family: 'SF Mono', 'JetBrains Mono', 'IBM Plex Mono', ui-monospace,
                'Cascadia Mono', 'Fira Code', 'Menlo', 'Courier New', monospace;
-  font-size: 16px;
-  line-height: 1.7;
+  font-size: 18px;
+  line-height: 1.75;
   color: var(--text);
   background: var(--bg);
   font-variant-numeric: tabular-nums;
@@ -55,10 +55,10 @@ body {
   transition: background 0.2s, color 0.2s;
 }
 
-h1 { font-size: 30px; font-weight: 600; line-height: 1.2; margin-bottom: 16px; }
-h2 { font-size: 22px; font-weight: 600; line-height: 1.2; margin-top: 32px; margin-bottom: 16px; }
-h3 { font-size: 18px; font-weight: 600; line-height: 1.2; margin-top: 24px; margin-bottom: 8px; }
-h4 { font-size: 16px; font-weight: 600; line-height: 1.2; margin-top: 16px; margin-bottom: 8px; }
+h1 { font-size: 32px; font-weight: 600; line-height: 1.2; margin-bottom: 16px; }
+h2 { font-size: 26px; font-weight: 600; line-height: 1.2; margin-top: 32px; margin-bottom: 16px; }
+h3 { font-size: 22px; font-weight: 600; line-height: 1.2; margin-top: 24px; margin-bottom: 8px; }
+h4 { font-size: 20px; font-weight: 600; line-height: 1.2; margin-top: 16px; margin-bottom: 8px; }
 
 p { margin-bottom: 16px; line-height: 1.6; }
 
@@ -193,7 +193,7 @@ pre {
 
 pre code {
   background: none; border: none; padding: 0;
-  font-size: 14px; line-height: 1.7;
+  font-size: 17px; line-height: 1.7;
   color: #e6edf3; /* GitHub dark default text */
 }
 
@@ -340,10 +340,10 @@ footer a:hover { color: var(--text); opacity: 1; }
 
 .cheatsheet-content pre {
   background: #0d1117; border: 1px solid #30363d;
-  border-radius: 0; padding: 20px; font-size: 13px; overflow-x: auto;
+  border-radius: 0; padding: 20px; font-size: 17px; overflow-x: auto;
   box-shadow: none;
 }
-.cheatsheet-content pre code { color: #e6edf3; background: none; border: none; }
+.cheatsheet-content pre code { color: #e6edf3; background: none; border: none; font-size: 17px; }
 
 .cheatsheet-content code {
   background: var(--code-bg); border: 1px solid var(--border);
