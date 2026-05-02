@@ -302,22 +302,19 @@ if (fs.existsSync(faqDir)) {
 
 const htmlTemplate = (title, bodyContent, currentPage = 'home', basePath = '') => `
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${title} - CS_basics</title>
+  <title>${title} — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="${basePath}style.css">
-  <link rel="stylesheet" href="${basePath}vendor/fonts.css">
   <link rel="stylesheet" href="${basePath}vendor/highlight/atom-one-dark.min.css">
   <script>
   (function() {
-    var saved = localStorage.getItem('theme');
-    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      document.documentElement.setAttribute('data-theme', 'dark');
-    }
+    var saved = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', saved);
   })();
   </script>
   <script>
@@ -325,9 +322,9 @@ const htmlTemplate = (title, bodyContent, currentPage = 'home', basePath = '') =
     var pre = btn.closest('.code-block-wrapper').querySelector('pre');
     var text = pre ? pre.innerText : '';
     navigator.clipboard.writeText(text).then(function() {
-      btn.textContent = 'Copied!';
+      btn.textContent = 'copied';
       btn.classList.add('copied');
-      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      setTimeout(function() { btn.textContent = 'copy'; btn.classList.remove('copied'); }, 2000);
     });
   }
   </script>
@@ -350,19 +347,16 @@ const htmlTemplate = (title, bodyContent, currentPage = 'home', basePath = '') =
     }
     var toggle = document.getElementById('theme-toggle');
     if (toggle) {
-      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      toggle.textContent = isDark ? '☀️' : '🌙';
+      var updateLabel = function() {
+        toggle.textContent = document.documentElement.getAttribute('data-theme') === 'dark' ? '[light]' : '[dark]';
+      };
+      updateLabel();
       toggle.addEventListener('click', function() {
-        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
-        if (dark) {
-          document.documentElement.removeAttribute('data-theme');
-          localStorage.setItem('theme', 'light');
-          toggle.textContent = '🌙';
-        } else {
-          document.documentElement.setAttribute('data-theme', 'dark');
-          localStorage.setItem('theme', 'dark');
-          toggle.textContent = '☀️';
-        }
+        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        var next = isDark ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+        updateLabel();
       });
     }
   });</script>
@@ -371,28 +365,23 @@ const htmlTemplate = (title, bodyContent, currentPage = 'home', basePath = '') =
   <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
   <nav class="navbar">
     <div class="container">
-      <div class="nav-brand">
-        <span class="nav-icon">💻</span>
+      <a href="${basePath}index.html" class="nav-brand">
         <span class="nav-title">CS_basics</span>
-      </div>
+      </a>
       <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
         <span></span><span></span><span></span>
       </button>
       <div class="nav-links">
-        <a href="${basePath}index.html" class="${currentPage === 'home' ? 'active' : ''}">Home</a>
-        <a href="${basePath}cheatsheets.html" class="${currentPage === 'cheatsheets' ? 'active' : ''}">Cheat Sheets</a>
-        <a href="${basePath}patterns.html" class="${currentPage === 'patterns' ? 'active' : ''}">Pattern Recognition</a>
-        <a href="${basePath}faqs.html" class="${currentPage === 'faqs' ? 'active' : ''}">FAQs</a>
-        <a href="${basePath}lc-explorer.html" class="${currentPage === 'lc-explorer' ? 'active' : ''}">LC Explorer</a>
-        <a href="${basePath}lc-similar.html" class="${currentPage === 'lc-similar' ? 'active' : ''}">🔗 Similar LC</a>
-        <a href="${basePath}lc-random-picker.html" class="${currentPage === 'lc-random-picker' ? 'active' : ''}">🎲 Random Picker</a>
-        <a href="${basePath}lc-review-plan.html" class="${currentPage === 'lc-review-plan' ? 'active' : ''}">📅 Review Plan</a>
-        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
-        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
-          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
-            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
-          </svg>
-        </a>
+        <a href="${basePath}index.html" class="${currentPage === 'home' ? 'active' : ''}">home</a>
+        <a href="${basePath}cheatsheets.html" class="${currentPage === 'cheatsheets' ? 'active' : ''}">cheatsheets</a>
+        <a href="${basePath}patterns.html" class="${currentPage === 'patterns' ? 'active' : ''}">patterns</a>
+        <a href="${basePath}faqs.html" class="${currentPage === 'faqs' ? 'active' : ''}">faqs</a>
+        <a href="${basePath}lc-explorer.html" class="${currentPage === 'lc-explorer' ? 'active' : ''}">lc-explorer</a>
+        <a href="${basePath}lc-similar.html" class="${currentPage === 'lc-similar' ? 'active' : ''}">similar</a>
+        <a href="${basePath}lc-random-picker.html" class="${currentPage === 'lc-random-picker' ? 'active' : ''}">random</a>
+        <a href="${basePath}lc-review-plan.html" class="${currentPage === 'lc-review-plan' ? 'active' : ''}">review</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">[dark]</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">github</a>
       </div>
     </div>
   </nav>
@@ -405,11 +394,11 @@ const htmlTemplate = (title, bodyContent, currentPage = 'home', basePath = '') =
 
   <footer>
     <div class="container">
-      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>CS_basics — computer science fundamentals &amp; interview preparation</p>
       <p>
-        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
-        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
-        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+        <a href="https://github.com/yennanliu/CS_basics">github</a> |
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">docs</a> |
+        <a href="https://github.com/yennanliu/CS_basics/issues">issues</a>
       </p>
     </div>
   </footer>

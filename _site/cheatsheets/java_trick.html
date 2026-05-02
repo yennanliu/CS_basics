@@ -1,21 +1,18 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Java Trick - CS_basics</title>
+  <title>Java Trick — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="../style.css">
-  <link rel="stylesheet" href="../vendor/fonts.css">
   <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   (function() {
-    var saved = localStorage.getItem('theme');
-    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      document.documentElement.setAttribute('data-theme', 'dark');
-    }
+    var saved = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', saved);
   })();
   </script>
   <script>
@@ -23,9 +20,9 @@
     var pre = btn.closest('.code-block-wrapper').querySelector('pre');
     var text = pre ? pre.innerText : '';
     navigator.clipboard.writeText(text).then(function() {
-      btn.textContent = 'Copied!';
+      btn.textContent = 'copied';
       btn.classList.add('copied');
-      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      setTimeout(function() { btn.textContent = 'copy'; btn.classList.remove('copied'); }, 2000);
     });
   }
   </script>
@@ -48,19 +45,16 @@
     }
     var toggle = document.getElementById('theme-toggle');
     if (toggle) {
-      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      toggle.textContent = isDark ? '☀️' : '🌙';
+      var updateLabel = function() {
+        toggle.textContent = document.documentElement.getAttribute('data-theme') === 'dark' ? '[light]' : '[dark]';
+      };
+      updateLabel();
       toggle.addEventListener('click', function() {
-        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
-        if (dark) {
-          document.documentElement.removeAttribute('data-theme');
-          localStorage.setItem('theme', 'light');
-          toggle.textContent = '🌙';
-        } else {
-          document.documentElement.setAttribute('data-theme', 'dark');
-          localStorage.setItem('theme', 'dark');
-          toggle.textContent = '☀️';
-        }
+        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        var next = isDark ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+        updateLabel();
       });
     }
   });</script>
@@ -69,27 +63,23 @@
   <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
   <nav class="navbar">
     <div class="container">
-      <div class="nav-brand">
-        <span class="nav-icon">💻</span>
+      <a href="../index.html" class="nav-brand">
         <span class="nav-title">CS_basics</span>
-      </div>
+      </a>
       <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
         <span></span><span></span><span></span>
       </button>
       <div class="nav-links">
-        <a href="../index.html" class="">Home</a>
-        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
-        <a href="../patterns.html" class="">Pattern Recognition</a>
-        <a href="../faqs.html" class="">FAQs</a>
-        <a href="../resources.html" class="">Resources</a>
-        <a href="../lc-explorer.html" class="">LC Explorer</a>
-        <a href="../algo_demo/index.html" class="">Visualizer</a>
-        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
-        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
-          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
-            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
-          </svg>
-        </a>
+        <a href="../index.html" class="">home</a>
+        <a href="../cheatsheets.html" class="active">cheatsheets</a>
+        <a href="../patterns.html" class="">patterns</a>
+        <a href="../faqs.html" class="">faqs</a>
+        <a href="../lc-explorer.html" class="">lc-explorer</a>
+        <a href="../lc-similar.html" class="">similar</a>
+        <a href="../lc-random-picker.html" class="">random</a>
+        <a href="../lc-review-plan.html" class="">review</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">[dark]</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">github</a>
       </div>
     </div>
   </nav>
@@ -100,9 +90,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Java Trick</span></nav>
       <div class="cheatsheet-header">
         <h1>Java Trick</h1>
-        <span class="last-updated">Last updated: Apr 4, 2026</span>
+        <span class="last-updated">Last updated: Apr 29, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#1-core-data-structures">1) Core Data Structures</a></li><li class="toc-sub"><a href="#1-1-priority-queue-heap">1.1) Priority Queue (Heap)</a></li><li class="toc-sub"><a href="#1-2-character-operations">1.2) Character Operations</a></li><li class="toc-sub"><a href="#1-3-char-digit-to-integer-value-char-0">1.3) Char Digit to Integer Value (char - '0')</a></li><li class="toc-sub"><a href="#1-4-replace-char-at-idx-in-string">1.4) Replace char at idx in String</a></li><li><a href="#2-array-and-collection-operations">2) Array and Collection Operations</a></li><li class="toc-sub"><a href="#2-1-arrays-vs-collections-key-differences">2.1) Arrays vs Collections Key Differences</a></li><li class="toc-sub"><a href="#2-2-array-initialization-patterns">2.2) Array Initialization Patterns</a></li><li class="toc-sub"><a href="#2-2-array-initialization-patterns-1">2.2) Array Initialization Patterns</a></li><li class="toc-sub"><a href="#2-3-array-list-conversions">2.3) Array ↔ List Conversions</a></li><li class="toc-sub"><a href="#2-4-hashmap-advanced-operations">2.4) HashMap Advanced Operations</a></li><li><a href="#3-string-operations">3) String Operations</a></li><li class="toc-sub"><a href="#3-1-string-to-character-array">3.1) String to Character Array</a></li><li class="toc-sub"><a href="#1-0-1-init-a-list">1-0-1) Init a List</a></li><li class="toc-sub"><a href="#1-0-0-1-replace-list-val-at-index">1-0-0-1) Replace list val at index</a></li><li class="toc-sub"><a href="#1-0-2-append-value-to-a-2d-list">1-0-2) append value to a 2D list</a></li><li class="toc-sub"><a href="#1-0-3-paste-value-to-list-with-index">1-0-3) Paste value to List with index</a></li><li class="toc-sub"><a href="#1-0-3-reverse-list">1-0-3) Reverse List</a></li><li class="toc-sub"><a href="#1-0-4-reverse-string">1-0-4) Reverse String</a></li><li class="toc-sub"><a href="#3-2-substring-operations">3.2) Substring Operations</a></li><li class="toc-sub"><a href="#3-3-string-character-replacement">3.3) String Character Replacement</a></li><li class="toc-sub"><a href="#3-4-string-to-integer-parsing-integer-parseint">3.4) String to Integer Parsing (Integer.parseInt)</a></li><li class="toc-sub"><a href="#1-0-4-2-sort-string">1-0-4-2) Sort String</a></li><li class="toc-sub"><a href="#1-0-5-access-elements-in-a-string">1-0-5) Access elements in a String</a></li><li class="toc-sub"><a href="#1-0-6-check-if-a-str-a-can-be-formed-by-the-oter-str-b-by-deleting-some-of-characters">1-0-6) Check if a str A can be formed by the oter str B by deleting some of characters</a></li><li class="toc-sub"><a href="#1-0-7-access-element-in-stringbuilder">1-0-7) Access element in StringBuilder</a></li><li class="toc-sub"><a href="#1-0-8-update-val-with-idx-in-stringbuilder">1-0-8) Update val with idx in StringBuilder</a></li><li class="toc-sub"><a href="#1-1-swap-elements-in-char-array">1-1) Swap elements in char array</a></li><li class="toc-sub"><a href="#1-1-1-assign-value-to-an-integer-array">1-1-1) Assign value to an integer array</a></li><li class="toc-sub"><a href="#1-1-2-init-a-m-x-n-boolean-matrix">1-1-2) Init a M x N boolean matrix</a></li><li class="toc-sub"><a href="#1-1-3-access-m-x-n-boolean-matrix">1-1-3) Access M x N boolean matrix</a></li><li class="toc-sub"><a href="#1-2-char-array-to-string">1-2) Char array to String</a></li><li class="toc-sub"><a href="#1-2-1-array-to-string">1-2-1) Array to String</a></li><li class="toc-sub"><a href="#1-3-stack-to-string">1-3) Stack to String</a></li><li><a href="#4-sorting-operations">4) Sorting Operations</a></li><li class="toc-sub"><a href="#4-1-array-sorting">4.1) Array Sorting</a></li><li class="toc-sub"><a href="#4-2-in-place-vs-stream-sorting">4.2) In-Place vs Stream Sorting</a></li><li class="toc-sub"><a href="#4-3-collections-sorting">4.3) Collections Sorting</a></li><li class="toc-sub"><a href="#1-4-4-custom-sorting-list">1-4-4) Custom sorting (List)</a></li><li class="toc-sub"><a href="#1-4-4-1-custom-sort-comparator-return-value-rules">1-4-4-1) Custom Sort — Comparator Return Value Rules ⭐</a></li><li class="toc-sub"><a href="#1-4-5-sort-on-hash-map-s-key-and-value">1-4-5) Sort on Hash Map's key and value *****</a></li><li class="toc-sub"><a href="#1-4-6-sort-string-on-lexicographical-order">1-4-6) sort string on lexicographical order</a></li><li class="toc-sub"><a href="#1-5-arrays-copyofrange-get-sub-array">1-5) Arrays.copyOfRange : Get sub array</a></li><li class="toc-sub"><a href="#1-6-arrays-tostring-array-print-array-value">1-6) Arrays.toString(array): Print array value</a></li><li class="toc-sub"><a href="#1-7-put-array-into-stack">1-7) Put array into stack</a></li><li class="toc-sub"><a href="#1-7-1-loop-over-elements-in-stack">1-7-1) Loop over elements in stack</a></li><li class="toc-sub"><a href="#1-8-remove-element-in-string-stringbuilder">1-8) remove element in String (StringBuilder)</a></li><li class="toc-sub"><a href="#1-9-1-order-hashmap-by-key-treemap">1-9-1) Order HashMap by key (TreeMap)</a></li><li class="toc-sub"><a href="#1-9-2-sort-by-map-key-value">1-9-2) Sort by Map key, value</a></li><li class="toc-sub"><a href="#1-9-3-access-map-s-key-value-on-the-same-time">1-9-3) Access Map’s key, value on the same time</a></li><li class="toc-sub"><a href="#1-10-get-max-val-from-an-array">1-10) Get max val from an Array</a></li><li class="toc-sub"><a href="#1-12-get-most-freq-element-in-an-array">1-12) Get most freq element in an array</a></li><li class="toc-sub"><a href="#1-13-pair-data-structure">1-13) Pair data structure</a></li><li class="toc-sub"><a href="#1-14-k-vs-k">1-14) k++ VS k++</a></li><li class="toc-sub"><a href="#1-15-get-copy-current-object-e-g-array-list-instance">1-15) Get/copy current object (e.g. Array, List…) instance</a></li><li class="toc-sub"><a href="#1-16-equals-vs-when-to-use-which">1-16) equals() vs == — When to Use Which</a></li><li class="toc-sub"><a href="#1-16-1-check-if-a-string-is-palindrome">1-16-1) Check if a string is Palindrome</a></li><li class="toc-sub"><a href="#1-17-init-2d-array">1-17) init 2D array</a></li><li class="toc-sub"><a href="#1-18-arrays-fill-1-d">1-18) Arrays.fill (1 D)</a></li><li><a href="#5-queue-operations">5) Queue Operations</a></li><li class="toc-sub"><a href="#5-1-priority-queue-examples">5.1) Priority Queue Examples</a></li><li class="toc-sub"><a href="#1-19-1-pq-priority-queue-with-custom-logic">1-19-1) PQ (priority queue) with custom logic</a></li><li class="toc-sub"><a href="#5-2-queue-methods-add-vs-offer">5.2) Queue Methods: add() vs offer()</a></li><li class="toc-sub"><a href="#5-3-queue-removal-methods">5.3) Queue Removal Methods</a></li><li class="toc-sub"><a href="#1-20-hashmap-return-defalut-val">1-20) Hashmap return defalut val</a></li><li class="toc-sub"><a href="#2-1-init-var-modify-it-in-another-method-and-use-it-pass-by-reference-pattern">2-1) Init var, modify it in another method, and use it — Pass-by-Reference Pattern ⭐</a></li><li class="toc-sub"><a href="#2-2-get-max-min-from-3-numbers">2-2) Get max, min from 3 numbers</a></li><li class="toc-sub"><a href="#2-3-use-long-to-avoid-int-overflow">2-3) Use long to avoid int overflow</a></li><li class="toc-sub"><a href="#2-4-get-1-count-from-integer-s-binary-format">2-4) get “1” count from integer’s binary format</a></li><li class="toc-sub"><a href="#2-5-init-queue">2-5) Init Queue</a></li><li class="toc-sub"><a href="#2-6-loop-over-elements-in-map">2-6) loop over elements in map</a></li><li class="toc-sub"><a href="#2-7-treemap">2-7) TreeMap</a></li><li class="toc-sub"><a href="#2-8-random-nextint">2-8) random.nextInt</a></li><li class="toc-sub"><a href="#2-9-hashmap-track-element-count-in-order">2-9) HashMap - Track element count in order</a></li><li class="toc-sub"><a href="#3-1-primitive-type-pass-in-func">3-1) Primitive type pass in func</a></li><li class="toc-sub"><a href="#3-2-map-characters-to-idx">3-2) Map characters to idx</a></li><li class="toc-sub"><a href="#line-in-question">👇 Line in question:</a></li><li class="toc-sub"><a href="#what-s-happening">🔍 What’s happening?</a></li><li class="toc-sub"><a href="#so-what-is-c-a">🧠 So what is 'c' - 'a'?</a></li><li class="toc-sub"><a href="#why-do-we-use-this">✅ Why do we use this?</a></li><li class="toc-sub"><a href="#tl-dr">✅ TL;DR</a></li><li class="toc-sub"><a href="#6-2-character-range-iteration">6.2) Character Range Iteration</a></li><li><a href="#7-quick-reference-summary">7) Quick Reference &amp; Summary</a></li><li class="toc-sub"><a href="#7-1-most-common-patterns">7.1) Most Common Patterns</a></li><li class="toc-sub"><a href="#7-2-performance-tips">7.2) Performance Tips</a></li><li class="toc-sub"><a href="#7-3-common-leetcode-patterns">7.3) Common LeetCode Patterns</a></li><li class="toc-sub"><a href="#7-4-memory-management">7.4) Memory Management</a></li><li><a href="#8-advanced-examples-recursion-patterns">8) Advanced Examples &amp; Recursion Patterns</a></li><li class="toc-sub"><a href="#8-1-recursion-parameter-passing">8.1) Recursion Parameter Passing</a></li><li class="toc-sub"><a href="#8-2-primitive-vs-reference-types-in-recursion-backtracking-rule">8.2) Primitive vs Reference Types in Recursion — Backtracking Rule ⭐</a></li><li><a href="#9-others">9) Others</a></li><li class="toc-sub"><a href="#9-0-modifying-custom-class-fields-directly-v-field-1">9.0) Modifying Custom Class Fields Directly (v.field -= 1) ⭐</a></li><li class="toc-sub"><a href="#9-1-java-value-assign">9.1) Java value assign</a></li><li class="toc-sub"><a href="#9-2-java-re-construct-nodes">9.2) Java re-construct nodes</a></li><li class="toc-sub"><a href="#9-3-pre-calculate-perfect-squares-up-to-n">9.3) Pre-calculate Perfect Squares up to N</a></li><li class="toc-sub"><a href="#9-4-charat-returns-ascii-not-the-digit-value">9.4) charAt() Returns ASCII, NOT the Digit Value</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#1-core-data-structures">1) Core Data Structures</a></li><li class="toc-sub"><a href="#1-1-priority-queue-heap">1.1) Priority Queue (Heap)</a></li><li class="toc-sub"><a href="#1-2-character-operations">1.2) Character Operations</a></li><li class="toc-sub"><a href="#1-3-char-digit-to-integer-value-char-0">1.3) Char Digit to Integer Value (char - '0')</a></li><li class="toc-sub"><a href="#1-4-replace-char-at-idx-in-string">1.4) Replace char at idx in String</a></li><li><a href="#2-array-and-collection-operations">2) Array and Collection Operations</a></li><li class="toc-sub"><a href="#2-1-arrays-vs-collections-key-differences">2.1) Arrays vs Collections Key Differences</a></li><li class="toc-sub"><a href="#2-2-array-initialization-patterns">2.2) Array Initialization Patterns</a></li><li class="toc-sub"><a href="#2-2-array-initialization-patterns-1">2.2) Array Initialization Patterns</a></li><li class="toc-sub"><a href="#2-3-array-list-conversions">2.3) Array ↔ List Conversions</a></li><li class="toc-sub"><a href="#2-4-hashmap-advanced-operations">2.4) HashMap Advanced Operations</a></li><li><a href="#3-string-operations">3) String Operations</a></li><li class="toc-sub"><a href="#3-1-string-to-character-array">3.1) String to Character Array</a></li><li class="toc-sub"><a href="#1-0-1-init-a-list">1-0-1) Init a List</a></li><li class="toc-sub"><a href="#1-0-0-1-replace-list-val-at-index">1-0-0-1) Replace list val at index</a></li><li class="toc-sub"><a href="#1-0-2-append-value-to-a-2d-list">1-0-2) append value to a 2D list</a></li><li class="toc-sub"><a href="#1-0-3-paste-value-to-list-with-index">1-0-3) Paste value to List with index</a></li><li class="toc-sub"><a href="#1-0-3-reverse-list">1-0-3) Reverse List</a></li><li class="toc-sub"><a href="#1-0-4-reverse-string">1-0-4) Reverse String</a></li><li class="toc-sub"><a href="#3-2-substring-operations">3.2) Substring Operations</a></li><li class="toc-sub"><a href="#3-3-string-character-replacement">3.3) String Character Replacement</a></li><li class="toc-sub"><a href="#3-4-string-to-integer-parsing-integer-parseint">3.4) String to Integer Parsing (Integer.parseInt)</a></li><li class="toc-sub"><a href="#1-0-4-2-sort-string">1-0-4-2) Sort String</a></li><li class="toc-sub"><a href="#1-0-5-access-elements-in-a-string">1-0-5) Access elements in a String</a></li><li class="toc-sub"><a href="#1-0-6-check-if-a-str-a-can-be-formed-by-the-oter-str-b-by-deleting-some-of-characters">1-0-6) Check if a str A can be formed by the oter str B by deleting some of characters</a></li><li class="toc-sub"><a href="#1-0-7-access-element-in-stringbuilder">1-0-7) Access element in StringBuilder</a></li><li class="toc-sub"><a href="#1-0-8-update-val-with-idx-in-stringbuilder">1-0-8) Update val with idx in StringBuilder</a></li><li class="toc-sub"><a href="#1-1-swap-elements-in-char-array">1-1) Swap elements in char array</a></li><li class="toc-sub"><a href="#1-1-1-assign-value-to-an-integer-array">1-1-1) Assign value to an integer array</a></li><li class="toc-sub"><a href="#1-1-2-init-a-m-x-n-boolean-matrix">1-1-2) Init a M x N boolean matrix</a></li><li class="toc-sub"><a href="#1-1-3-access-m-x-n-boolean-matrix">1-1-3) Access M x N boolean matrix</a></li><li class="toc-sub"><a href="#1-2-char-array-to-string">1-2) Char array to String</a></li><li class="toc-sub"><a href="#1-2-1-array-to-string">1-2-1) Array to String</a></li><li class="toc-sub"><a href="#1-3-stack-to-string">1-3) Stack to String</a></li><li><a href="#4-sorting-operations">4) Sorting Operations</a></li><li class="toc-sub"><a href="#4-1-array-sorting">4.1) Array Sorting</a></li><li class="toc-sub"><a href="#4-2-in-place-vs-stream-sorting">4.2) In-Place vs Stream Sorting</a></li><li class="toc-sub"><a href="#4-3-collections-sorting">4.3) Collections Sorting</a></li><li class="toc-sub"><a href="#1-4-4-custom-sorting-list">1-4-4) Custom sorting (List)</a></li><li class="toc-sub"><a href="#1-4-4-1-custom-sort-comparator-return-value-rules">1-4-4-1) Custom Sort — Comparator Return Value Rules ⭐</a></li><li class="toc-sub"><a href="#1-4-5-sort-on-hash-map-s-key-and-value">1-4-5) Sort on Hash Map's key and value *****</a></li><li class="toc-sub"><a href="#1-4-6-sort-string-on-lexicographical-order">1-4-6) sort string on lexicographical order</a></li><li class="toc-sub"><a href="#1-5-arrays-copyofrange-get-sub-array">1-5) Arrays.copyOfRange : Get sub array</a></li><li class="toc-sub"><a href="#1-6-arrays-tostring-array-print-array-value">1-6) Arrays.toString(array): Print array value</a></li><li class="toc-sub"><a href="#1-7-put-array-into-stack">1-7) Put array into stack</a></li><li class="toc-sub"><a href="#1-7-1-loop-over-elements-in-stack">1-7-1) Loop over elements in stack</a></li><li class="toc-sub"><a href="#1-8-remove-element-in-string-stringbuilder">1-8) remove element in String (StringBuilder)</a></li><li class="toc-sub"><a href="#1-9-1-order-hashmap-by-key-treemap">1-9-1) Order HashMap by key (TreeMap)</a></li><li class="toc-sub"><a href="#1-9-2-sort-by-map-key-value">1-9-2) Sort by Map key, value</a></li><li class="toc-sub"><a href="#1-9-3-access-map-s-key-value-on-the-same-time">1-9-3) Access Map’s key, value on the same time</a></li><li class="toc-sub"><a href="#1-10-get-max-val-from-an-array">1-10) Get max val from an Array</a></li><li class="toc-sub"><a href="#1-12-get-most-freq-element-in-an-array">1-12) Get most freq element in an array</a></li><li class="toc-sub"><a href="#1-13-pair-data-structure">1-13) Pair data structure</a></li><li class="toc-sub"><a href="#1-14-k-vs-k">1-14) k++ VS k++</a></li><li class="toc-sub"><a href="#1-15-get-copy-current-object-e-g-array-list-instance">1-15) Get/copy current object (e.g. Array, List…) instance</a></li><li class="toc-sub"><a href="#1-16-equals-vs-when-to-use-which">1-16) equals() vs == — When to Use Which</a></li><li class="toc-sub"><a href="#1-16-1-check-if-a-string-is-palindrome">1-16-1) Check if a string is Palindrome</a></li><li class="toc-sub"><a href="#1-17-init-2d-array">1-17) init 2D array</a></li><li class="toc-sub"><a href="#1-18-arrays-fill-1-d">1-18) Arrays.fill (1 D)</a></li><li><a href="#5-queue-operations">5) Queue Operations</a></li><li class="toc-sub"><a href="#5-1-priority-queue-examples">5.1) Priority Queue Examples</a></li><li class="toc-sub"><a href="#1-19-1-pq-priority-queue-with-custom-logic">1-19-1) PQ (priority queue) with custom logic</a></li><li class="toc-sub"><a href="#5-2-queue-methods-add-vs-offer">5.2) Queue Methods: add() vs offer()</a></li><li class="toc-sub"><a href="#5-3-queue-removal-methods">5.3) Queue Removal Methods</a></li><li class="toc-sub"><a href="#1-20-hashmap-return-defalut-val">1-20) Hashmap return defalut val</a></li><li class="toc-sub"><a href="#2-1-init-var-modify-it-in-another-method-and-use-it-pass-by-reference-pattern">2-1) Init var, modify it in another method, and use it — Pass-by-Reference Pattern ⭐</a></li><li class="toc-sub"><a href="#2-2-get-max-min-from-3-numbers">2-2) Get max, min from 3 numbers</a></li><li class="toc-sub"><a href="#2-3-use-long-to-avoid-int-overflow">2-3) Use long to avoid int overflow</a></li><li class="toc-sub"><a href="#2-4-get-1-count-from-integer-s-binary-format">2-4) get “1” count from integer’s binary format</a></li><li class="toc-sub"><a href="#2-5-init-queue">2-5) Init Queue</a></li><li class="toc-sub"><a href="#2-6-loop-over-elements-in-map">2-6) loop over elements in map</a></li><li class="toc-sub"><a href="#2-7-treemap">2-7) TreeMap</a></li><li class="toc-sub"><a href="#2-8-random-nextint">2-8) random.nextInt</a></li><li class="toc-sub"><a href="#2-9-hashmap-track-element-count-in-order">2-9) HashMap - Track element count in order</a></li><li class="toc-sub"><a href="#3-1-primitive-type-pass-in-func">3-1) Primitive type pass in func</a></li><li class="toc-sub"><a href="#3-2-map-characters-to-idx">3-2) Map characters to idx</a></li><li class="toc-sub"><a href="#line-in-question">👇 Line in question:</a></li><li class="toc-sub"><a href="#what-s-happening">🔍 What’s happening?</a></li><li class="toc-sub"><a href="#so-what-is-c-a">🧠 So what is 'c' - 'a'?</a></li><li class="toc-sub"><a href="#why-do-we-use-this">✅ Why do we use this?</a></li><li class="toc-sub"><a href="#tl-dr">✅ TL;DR</a></li><li class="toc-sub"><a href="#6-2-character-range-iteration">6.2) Character Range Iteration</a></li><li><a href="#7-quick-reference-summary">7) Quick Reference &amp; Summary</a></li><li class="toc-sub"><a href="#7-1-most-common-patterns">7.1) Most Common Patterns</a></li><li class="toc-sub"><a href="#7-2-performance-tips">7.2) Performance Tips</a></li><li class="toc-sub"><a href="#7-3-common-leetcode-patterns">7.3) Common LeetCode Patterns</a></li><li class="toc-sub"><a href="#7-4-memory-management">7.4) Memory Management</a></li><li><a href="#8-advanced-examples-recursion-patterns">8) Advanced Examples &amp; Recursion Patterns</a></li><li class="toc-sub"><a href="#8-1-recursion-parameter-passing">8.1) Recursion Parameter Passing</a></li><li class="toc-sub"><a href="#8-2-primitive-vs-reference-types-in-recursion-backtracking-rule">8.2) Primitive vs Reference Types in Recursion — Backtracking Rule ⭐</a></li><li><a href="#9-others">9) Others</a></li><li class="toc-sub"><a href="#9-0-modifying-custom-class-fields-directly-v-field-1">9.0) Modifying Custom Class Fields Directly (v.field -= 1) ⭐</a></li><li class="toc-sub"><a href="#9-1-java-value-assign">9.1) Java value assign</a></li><li class="toc-sub"><a href="#9-2-java-re-construct-nodes">9.2) Java re-construct nodes</a></li><li class="toc-sub"><a href="#9-3-pre-calculate-perfect-squares-up-to-n">9.3) Pre-calculate Perfect Squares up to N</a></li><li class="toc-sub"><a href="#9-4-charat-returns-ascii-not-the-digit-value">9.4) charAt() Returns ASCII, NOT the Digit Value</a></li><li><a href="#9-integer-math-ceil-floor-and-rounding">9) Integer Math: Ceil, Floor, and Rounding ⭐</a></li><li class="toc-sub"><a href="#9-1-ceil-vs-floor-definition">9.1) ceil vs floor — Definition</a></li><li class="toc-sub"><a href="#9-2-integer-ceiling-division-no-double-needed">9.2) Integer Ceiling Division — No double Needed ⭐</a></li><li class="toc-sub"><a href="#9-3-integer-floor-division">9.3) Integer Floor Division</a></li><li class="toc-sub"><a href="#9-4-quick-reference-table">9.4) Quick Reference Table</a></li><li class="toc-sub"><a href="#9-5-classic-leetcode-problems-using-ceiling-division">9.5) Classic LeetCode Problems Using Ceiling Division</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="java-programming-tricks-patterns" tabindex="-1"><a class="header-anchor" href="#java-programming-tricks-patterns"><span>Java Programming Tricks &amp; Patterns</span></a></h1>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
@@ -3069,6 +3059,195 @@ Integer.valueOf(...)      <span class="hljs-comment">// ✅ If you need an Integ
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">new</span> <span class="hljs-title class_">Integer</span>(s.charAt(i))  <span class="hljs-comment">// ❌ gives ASCII (e.g. 51)</span>
 s.charAt(i) - <span class="hljs-string">&#x27;0&#x27;</span>         <span class="hljs-comment">// ✅ gives actual digit (e.g. 3)</span>
 </code></pre></div>
+<hr>
+<h2 id="9-integer-math-ceil-floor-and-rounding" tabindex="-1"><a class="header-anchor" href="#9-integer-math-ceil-floor-and-rounding"><span>9) Integer Math: Ceil, Floor, and Rounding ⭐</span></a></h2>
+<h3 id="9-1-ceil-vs-floor-definition" tabindex="-1"><a class="header-anchor" href="#9-1-ceil-vs-floor-definition"><span>9.1) <code>ceil</code> vs <code>floor</code> — Definition</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Meaning</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Math.ceil(x)</code></td>
+<td>Round <strong>up</strong> to nearest integer</td>
+<td><code>ceil(7.0/3)</code> → <code>3.0</code></td>
+</tr>
+<tr>
+<td><code>Math.floor(x)</code></td>
+<td>Round <strong>down</strong> to nearest integer</td>
+<td><code>floor(7.0/3)</code> → <code>2.0</code></td>
+</tr>
+<tr>
+<td><code>(int)(a/b)</code></td>
+<td><strong>Truncate toward zero</strong> (same as floor for positives)</td>
+<td><code>7/3</code> → <code>2</code></td>
+</tr>
+</tbody>
+</table>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Using double division + Math.ceil / floor</span>
+System.out.println(Math.ceil(<span class="hljs-number">7.0</span> / <span class="hljs-number">3</span>));   <span class="hljs-comment">// 3.0  (rounds UP)</span>
+System.out.println(Math.floor(<span class="hljs-number">7.0</span> / <span class="hljs-number">3</span>));  <span class="hljs-comment">// 2.0  (rounds DOWN)</span>
+System.out.println(<span class="hljs-number">7</span> / <span class="hljs-number">3</span>);               <span class="hljs-comment">// 2    (integer truncation = floor for positives)</span>
+
+<span class="hljs-comment">// Cast result back to int</span>
+<span class="hljs-type">int</span> <span class="hljs-variable">ceilVal</span>  <span class="hljs-operator">=</span> (<span class="hljs-type">int</span>) Math.ceil((<span class="hljs-type">double</span>) <span class="hljs-number">7</span> / <span class="hljs-number">3</span>);  <span class="hljs-comment">// 3</span>
+<span class="hljs-type">int</span> <span class="hljs-variable">floorVal</span> <span class="hljs-operator">=</span> (<span class="hljs-type">int</span>) Math.floor((<span class="hljs-type">double</span>) <span class="hljs-number">7</span> / <span class="hljs-number">3</span>); <span class="hljs-comment">// 2</span>
+</code></pre></div>
+<p><strong>Key gotcha</strong>: integer division in Java <strong>always truncates toward zero</strong> (= floor for positive numbers).</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-number">7</span>  / <span class="hljs-number">3</span>  →  <span class="hljs-number">2</span>   <span class="hljs-comment">// floor (positive)</span>
+-<span class="hljs-number">7</span> / <span class="hljs-number">3</span>  → -<span class="hljs-number">2</span>   <span class="hljs-comment">// truncates toward zero (NOT floor, which would be -3)</span>
+</code></pre></div>
+<hr>
+<h3 id="9-2-integer-ceiling-division-no-double-needed" tabindex="-1"><a class="header-anchor" href="#9-2-integer-ceiling-division-no-double-needed"><span>9.2) Integer Ceiling Division — No <code>double</code> Needed ⭐</span></a></h3>
+<p><strong>Formula</strong>: <code>ceil(a / b)</code> using only integers:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-type">int</span> <span class="hljs-variable">ceilDiv</span> <span class="hljs-operator">=</span> (a + b - <span class="hljs-number">1</span>) / b;
+</code></pre></div>
+<p><strong>Why it works:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">ceil(a / b)  =  (a + b - 1) / b   (integer division, b &gt; 0)
+
+Example: a=7, b=3
+  (7 + 3 - 1) / 3  =  9 / 3  =  3  ✅  (Math.ceil(7.0/3) = 3)
+
+Example: a=6, b=3 (exact division)
+  (6 + 3 - 1) / 3  =  8 / 3  =  2  ✅  (Math.ceil(6.0/3) = 2)
+
+Example: a=1, b=5
+  (1 + 5 - 1) / 5  =  5 / 5  =  1  ✅  (Math.ceil(1.0/5) = 1)
+</code></pre></div>
+<p><strong>Comparison: two ways to compute ceiling division</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Method 1: Integer trick (faster, no casting)</span>
+<span class="hljs-type">int</span> <span class="hljs-variable">ceil1</span> <span class="hljs-operator">=</span> (val + d - <span class="hljs-number">1</span>) / d;
+
+<span class="hljs-comment">// Method 2: double cast + Math.ceil (clearer intent, slightly slower)</span>
+<span class="hljs-type">int</span> <span class="hljs-variable">ceil2</span> <span class="hljs-operator">=</span> (<span class="hljs-type">int</span>) Math.ceil((<span class="hljs-type">double</span>) val / d);
+
+<span class="hljs-comment">// Both produce identical results for positive val and d</span>
+</code></pre></div>
+<p><strong>Classic usage — LC 1283 Find the Smallest Divisor Given a Threshold:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ceil(val / divisor) without using double</span>
+<span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">canDivide</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> threshold, <span class="hljs-type">int</span> d)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">sum</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> val : nums) {
+        sum += (val + d - <span class="hljs-number">1</span>) / d;  <span class="hljs-comment">// ← integer ceiling division</span>
+        <span class="hljs-keyword">if</span> (sum &gt; threshold) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>; <span class="hljs-comment">// early exit</span>
+    }
+    <span class="hljs-keyword">return</span> sum &lt;= threshold;
+}
+</code></pre></div>
+<hr>
+<h3 id="9-3-integer-floor-division" tabindex="-1"><a class="header-anchor" href="#9-3-integer-floor-division"><span>9.3) Integer Floor Division</span></a></h3>
+<p>For positive integers, <code>/</code> already gives floor:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-type">int</span> <span class="hljs-variable">floorDiv</span> <span class="hljs-operator">=</span> a / b;  <span class="hljs-comment">// works when a &gt;= 0 and b &gt; 0</span>
+</code></pre></div>
+<p>For <strong>negative numbers</strong>, use <code>Math.floorDiv</code>:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java">Math.floorDiv(-<span class="hljs-number">7</span>, <span class="hljs-number">3</span>);   <span class="hljs-comment">// -3  (true floor)</span>
+-<span class="hljs-number">7</span> / <span class="hljs-number">3</span>;                 <span class="hljs-comment">// -2  (truncation, NOT floor!)</span>
+
+Math.floorDiv(<span class="hljs-number">7</span>, <span class="hljs-number">3</span>);    <span class="hljs-comment">//  2  (same as 7/3 for positives)</span>
+</code></pre></div>
+<hr>
+<h3 id="9-4-quick-reference-table" tabindex="-1"><a class="header-anchor" href="#9-4-quick-reference-table"><span>9.4) Quick Reference Table</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>Goal</th>
+<th>Code</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ceil (double)</td>
+<td><code>(int) Math.ceil((double) a / b)</code></td>
+<td>Readable, casting required</td>
+</tr>
+<tr>
+<td>Ceil (integer trick)</td>
+<td><code>(a + b - 1) / b</code></td>
+<td>Fast, no casting, positive only</td>
+</tr>
+<tr>
+<td>Floor (positive)</td>
+<td><code>a / b</code></td>
+<td>Integer division truncates</td>
+</tr>
+<tr>
+<td>Floor (any sign)</td>
+<td><code>Math.floorDiv(a, b)</code></td>
+<td>Handles negatives correctly</td>
+</tr>
+<tr>
+<td>Round (half-up)</td>
+<td><code>(int) Math.round((double) a / b)</code></td>
+<td>Nearest integer</td>
+</tr>
+<tr>
+<td>Mid without overflow</td>
+<td><code>l + (r - l) / 2</code></td>
+<td>Standard binary search midpoint</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="9-5-classic-leetcode-problems-using-ceiling-division" tabindex="-1"><a class="header-anchor" href="#9-5-classic-leetcode-problems-using-ceiling-division"><span>9.5) Classic LeetCode Problems Using Ceiling Division</span></a></h3>
+<table>
+<thead>
+<tr>
+<th>LC</th>
+<th>Problem</th>
+<th>Ceiling Division Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1283</strong></td>
+<td>Find the Smallest Divisor Given a Threshold</td>
+<td><code>(val + d - 1) / d</code> per element</td>
+</tr>
+<tr>
+<td><strong>1011</strong></td>
+<td>Capacity To Ship Packages Within D Days</td>
+<td><code>(wt + cap - 1) / cap</code> days needed</td>
+</tr>
+<tr>
+<td><strong>875</strong></td>
+<td>Koko Eating Bananas</td>
+<td><code>(pile + k - 1) / k</code> hours per pile</td>
+</tr>
+<tr>
+<td><strong>2064</strong></td>
+<td>Minimized Maximum of Products Distributed</td>
+<td><code>(n + m - 1) / m</code> ceiling per group</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Pattern</strong>: These are all <strong>binary search on the answer</strong> problems where the check function requires ceiling division to count “how many X fit in Y”.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// General template for this binary search pattern</span>
+<span class="hljs-comment">// (Binary search on divisor/capacity/speed)</span>
+<span class="hljs-type">int</span> <span class="hljs-variable">l</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>, r = MAX_VAL;
+<span class="hljs-keyword">while</span> (l &lt;= r) {
+    <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> l + (r - l) / <span class="hljs-number">2</span>;
+    <span class="hljs-keyword">if</span> (check(nums, threshold, mid)) {
+        r = mid - <span class="hljs-number">1</span>;  <span class="hljs-comment">// valid, try smaller</span>
+    } <span class="hljs-keyword">else</span> {
+        l = mid + <span class="hljs-number">1</span>;  <span class="hljs-comment">// too small, try larger</span>
+    }
+}
+<span class="hljs-keyword">return</span> l;
+
+<span class="hljs-comment">// Inside check(): use ceiling division</span>
+<span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">check</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums, <span class="hljs-type">int</span> threshold, <span class="hljs-type">int</span> d)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">sum</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> val : nums) {
+        sum += (val + d - <span class="hljs-number">1</span>) / d;  <span class="hljs-comment">// ceil(val / d)</span>
+    }
+    <span class="hljs-keyword">return</span> sum &lt;= threshold;
+}
+</code></pre></div>
 
       </div>
       <div class="cheatsheet-footer">
@@ -3081,11 +3260,11 @@ s.charAt(i) - <span class="hljs-string">&#x27;0&#x27;</span>         <span class
 
   <footer>
     <div class="container">
-      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>CS_basics — computer science fundamentals &amp; interview preparation</p>
       <p>
-        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
-        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
-        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+        <a href="https://github.com/yennanliu/CS_basics">github</a> |
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">docs</a> |
+        <a href="https://github.com/yennanliu/CS_basics/issues">issues</a>
       </p>
     </div>
   </footer>

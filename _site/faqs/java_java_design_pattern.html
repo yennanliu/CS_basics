@@ -1,21 +1,18 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Java Design Pattern - CS_basics</title>
+  <title>Java Design Pattern — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="../style.css">
-  <link rel="stylesheet" href="../vendor/fonts.css">
   <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   (function() {
-    var saved = localStorage.getItem('theme');
-    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      document.documentElement.setAttribute('data-theme', 'dark');
-    }
+    var saved = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', saved);
   })();
   </script>
   <script>
@@ -23,9 +20,9 @@
     var pre = btn.closest('.code-block-wrapper').querySelector('pre');
     var text = pre ? pre.innerText : '';
     navigator.clipboard.writeText(text).then(function() {
-      btn.textContent = 'Copied!';
+      btn.textContent = 'copied';
       btn.classList.add('copied');
-      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      setTimeout(function() { btn.textContent = 'copy'; btn.classList.remove('copied'); }, 2000);
     });
   }
   </script>
@@ -48,19 +45,16 @@
     }
     var toggle = document.getElementById('theme-toggle');
     if (toggle) {
-      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      toggle.textContent = isDark ? '☀️' : '🌙';
+      var updateLabel = function() {
+        toggle.textContent = document.documentElement.getAttribute('data-theme') === 'dark' ? '[light]' : '[dark]';
+      };
+      updateLabel();
       toggle.addEventListener('click', function() {
-        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
-        if (dark) {
-          document.documentElement.removeAttribute('data-theme');
-          localStorage.setItem('theme', 'light');
-          toggle.textContent = '🌙';
-        } else {
-          document.documentElement.setAttribute('data-theme', 'dark');
-          localStorage.setItem('theme', 'dark');
-          toggle.textContent = '☀️';
-        }
+        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        var next = isDark ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+        updateLabel();
       });
     }
   });</script>
@@ -69,27 +63,23 @@
   <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
   <nav class="navbar">
     <div class="container">
-      <div class="nav-brand">
-        <span class="nav-icon">💻</span>
+      <a href="../index.html" class="nav-brand">
         <span class="nav-title">CS_basics</span>
-      </div>
+      </a>
       <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
         <span></span><span></span><span></span>
       </button>
       <div class="nav-links">
-        <a href="../index.html" class="">Home</a>
-        <a href="../cheatsheets.html" class="">Cheat Sheets</a>
-        <a href="../patterns.html" class="">Pattern Recognition</a>
-        <a href="../faqs.html" class="active">FAQs</a>
-        <a href="../resources.html" class="">Resources</a>
-        <a href="../lc-explorer.html" class="">LC Explorer</a>
-        <a href="../algo_demo/index.html" class="">Visualizer</a>
-        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
-        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
-          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
-            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
-          </svg>
-        </a>
+        <a href="../index.html" class="">home</a>
+        <a href="../cheatsheets.html" class="">cheatsheets</a>
+        <a href="../patterns.html" class="">patterns</a>
+        <a href="../faqs.html" class="active">faqs</a>
+        <a href="../lc-explorer.html" class="">lc-explorer</a>
+        <a href="../lc-similar.html" class="">similar</a>
+        <a href="../lc-random-picker.html" class="">random</a>
+        <a href="../lc-review-plan.html" class="">review</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">[dark]</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">github</a>
       </div>
     </div>
   </nav>
@@ -122,11 +112,11 @@
 
   <footer>
     <div class="container">
-      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>CS_basics — computer science fundamentals &amp; interview preparation</p>
       <p>
-        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
-        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
-        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+        <a href="https://github.com/yennanliu/CS_basics">github</a> |
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">docs</a> |
+        <a href="https://github.com/yennanliu/CS_basics/issues">issues</a>
       </p>
     </div>
   </footer>

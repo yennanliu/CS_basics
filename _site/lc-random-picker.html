@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,27 +8,18 @@
   <style>
     * { box-sizing: border-box; }
     :root {
-      --bg: #fafafa;
-      --surface: #fff;
-      --text: #1a1a2e;
-      --text-light: #666;
-      --border: #e0e0e0;
-      --radius: 8px;
-      --accent: #2563eb;
+      --bg: #ffffff; --surface: #f0f0f0; --text: #000000;
+      --text-light: #555555; --border: #cccccc; --radius: 0px; --accent: #000000;
     }
     [data-theme="dark"] {
-      --bg: #0f0f1a;
-      --surface: #1a1a2e;
-      --text: #e0e0e0;
-      --text-light: #aaa;
-      --border: #2a2a3e;
+      --bg: #000000; --surface: #111111; --text: #ffffff;
+      --text-light: #8a8a8a; --border: #1f1f1f; --accent: #ffffff;
     }
     body {
       margin: 0; padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      transition: background 0.3s, color 0.3s;
+      font-family: 'SF Mono','JetBrains Mono','IBM Plex Mono',ui-monospace,'Menlo',monospace;
+      background: var(--bg); color: var(--text);
+      transition: background 0.2s, color 0.2s; font-size: 13px;
     }
 
     /* ── Navbar ── */
@@ -196,25 +187,39 @@
     .empty-state .emoji { font-size: 3rem; display: block; margin-bottom: 0.75rem; }
 
     .loading { text-align: center; padding: 3rem; color: var(--text-light); }
+    /* ── Terminal-core overrides ── */
+    *, *::before, *::after { border-radius: 0 !important; box-shadow: none !important; }
+    body { font-family: 'SF Mono','JetBrains Mono','IBM Plex Mono',ui-monospace,'Menlo',monospace !important; }
+    .navbar { background: var(--bg) !important; border-bottom: 1px solid var(--border) !important; padding: 10px 24px !important; }
+    .logo { font-size: 13px !important; font-weight: 600 !important; text-transform: uppercase; letter-spacing: .05em; }
+    .nav-links { gap: 0 !important; }
+    .nav-links a { font-size: 12px !important; color: var(--text-light) !important; text-decoration: none !important; border-bottom: none !important; }
+    .nav-links a.active { color: var(--text) !important; text-decoration: underline !important; }
+    .nav-links li + li > a::before { content: " | "; color: var(--border); }
+    .nav-links a:hover { color: var(--text) !important; }
+    .theme-btn { background: none !important; border: none !important; font-size: 12px !important; color: var(--text-light) !important; cursor: pointer; font-family: inherit !important; padding: 0 !important; }
+    .theme-btn::before { content: " | "; color: var(--border); }
+    input, select, button { border-radius: 0 !important; font-family: inherit !important; }
+    .empty-state .emoji { font-size: 2rem !important; }
   </style>
 </head>
 <body>
   <nav class="navbar">
     <div class="nav-content">
-      <a href="index.html" class="logo">CS Basics</a>
+      <a href="index.html" class="logo">CS_basics</a>
       <ul class="nav-links">
-        <li><a href="lc-explorer.html">LC Explorer</a></li>
-        <li><a href="lc-similar.html">🔗 Similar LC</a></li>
-        <li><a href="lc-random-picker.html" class="active">🎲 Random Picker</a></li>
-        <li><a href="lc-review-plan.html">📅 Review Plan</a></li>
+        <li><a href="lc-explorer.html">lc-explorer</a></li>
+        <li><a href="lc-similar.html">similar</a></li>
+        <li><a href="lc-random-picker.html" class="active">random</a></li>
+        <li><a href="lc-review-plan.html">review</a></li>
       </ul>
-      <button class="theme-btn" onclick="toggleTheme()" title="Toggle theme">🌓</button>
+      <button class="theme-btn" onclick="toggleTheme()" title="Toggle theme">[light]</button>
     </div>
   </nav>
 
   <div class="container">
     <div class="page-header">
-      <h1>🎲 Random LC Picker</h1>
+      <h1>Random LC Picker</h1>
       <p>Pick random LeetCode problems from your list. Filter first, then roll.</p>
     </div>
 
@@ -365,11 +370,19 @@
     /* ── Theme ── */
     function toggleTheme() {
       const html = document.documentElement;
-      const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      const next = isDark ? 'light' : 'dark';
       html.setAttribute('data-theme', next);
       localStorage.setItem('theme', next);
+      const btn = document.querySelector('.theme-btn');
+      if (btn) btn.textContent = isDark ? '[dark]' : '[light]';
     }
-    document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') || 'light');
+    const _t = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', _t);
+    document.addEventListener('DOMContentLoaded', () => {
+      const btn = document.querySelector('.theme-btn');
+      if (btn) btn.textContent = _t === 'dark' ? '[light]' : '[dark]';
+    });
 
     /* ── Keyboard ── */
     document.addEventListener('keydown', e => {

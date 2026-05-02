@@ -1,21 +1,18 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dp - CS_basics</title>
+  <title>Dp — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="../style.css">
-  <link rel="stylesheet" href="../vendor/fonts.css">
   <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   (function() {
-    var saved = localStorage.getItem('theme');
-    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      document.documentElement.setAttribute('data-theme', 'dark');
-    }
+    var saved = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', saved);
   })();
   </script>
   <script>
@@ -23,9 +20,9 @@
     var pre = btn.closest('.code-block-wrapper').querySelector('pre');
     var text = pre ? pre.innerText : '';
     navigator.clipboard.writeText(text).then(function() {
-      btn.textContent = 'Copied!';
+      btn.textContent = 'copied';
       btn.classList.add('copied');
-      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      setTimeout(function() { btn.textContent = 'copy'; btn.classList.remove('copied'); }, 2000);
     });
   }
   </script>
@@ -48,19 +45,16 @@
     }
     var toggle = document.getElementById('theme-toggle');
     if (toggle) {
-      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      toggle.textContent = isDark ? '☀️' : '🌙';
+      var updateLabel = function() {
+        toggle.textContent = document.documentElement.getAttribute('data-theme') === 'dark' ? '[light]' : '[dark]';
+      };
+      updateLabel();
       toggle.addEventListener('click', function() {
-        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
-        if (dark) {
-          document.documentElement.removeAttribute('data-theme');
-          localStorage.setItem('theme', 'light');
-          toggle.textContent = '🌙';
-        } else {
-          document.documentElement.setAttribute('data-theme', 'dark');
-          localStorage.setItem('theme', 'dark');
-          toggle.textContent = '☀️';
-        }
+        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        var next = isDark ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+        updateLabel();
       });
     }
   });</script>
@@ -69,27 +63,23 @@
   <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
   <nav class="navbar">
     <div class="container">
-      <div class="nav-brand">
-        <span class="nav-icon">💻</span>
+      <a href="../index.html" class="nav-brand">
         <span class="nav-title">CS_basics</span>
-      </div>
+      </a>
       <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
         <span></span><span></span><span></span>
       </button>
       <div class="nav-links">
-        <a href="../index.html" class="">Home</a>
-        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
-        <a href="../patterns.html" class="">Pattern Recognition</a>
-        <a href="../faqs.html" class="">FAQs</a>
-        <a href="../resources.html" class="">Resources</a>
-        <a href="../lc-explorer.html" class="">LC Explorer</a>
-        <a href="../algo_demo/index.html" class="">Visualizer</a>
-        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
-        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
-          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
-            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
-          </svg>
-        </a>
+        <a href="../index.html" class="">home</a>
+        <a href="../cheatsheets.html" class="active">cheatsheets</a>
+        <a href="../patterns.html" class="">patterns</a>
+        <a href="../faqs.html" class="">faqs</a>
+        <a href="../lc-explorer.html" class="">lc-explorer</a>
+        <a href="../lc-similar.html" class="">similar</a>
+        <a href="../lc-random-picker.html" class="">random</a>
+        <a href="../lc-review-plan.html" class="">review</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">[dark]</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">github</a>
       </div>
     </div>
   </nav>
@@ -100,9 +90,9 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Dp</span></nav>
       <div class="cheatsheet-header">
         <h1>Dp</h1>
-        <span class="last-updated">Last updated: Apr 26, 2026</span>
+        <span class="last-updated">Last updated: May 1, 2026</span>
       </div>
-      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#core-characteristics">Core Characteristics</a></li><li class="toc-sub"><a href="#step">Step</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#category-1-linear-dp">Category 1: Linear DP</a></li><li class="toc-sub"><a href="#category-2-grid-2d-dp">Category 2: Grid/2D DP</a></li><li class="toc-sub"><a href="#category-3-interval-dp">Category 3: Interval DP</a></li><li class="toc-sub"><a href="#category-3-2-game-theory-minimax-dp">Category 3-2: Game Theory / Minimax DP</a></li><li class="toc-sub"><a href="#category-4-tree-dp">Category 4: Tree DP</a></li><li class="toc-sub"><a href="#category-5-state-machine-dp">Category 5: State Machine DP</a></li><li class="toc-sub"><a href="#category-6-knapsack-dp">Category 6: Knapsack DP</a></li><li class="toc-sub"><a href="#category-7-string-dp">Category 7: String DP</a></li><li class="toc-sub"><a href="#category-8-state-compression-dp">Category 8: State Compression DP</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#universal-dp-template">Universal DP Template</a></li><li class="toc-sub"><a href="#template-1-1d-linear-dp">Template 1: 1D Linear DP</a></li><li class="toc-sub"><a href="#1d-dp-array-sizing-and-loop-bounds-n-vs-n-1">1D DP: Array Sizing and Loop Bounds (n vs n+1)</a></li><li class="toc-sub"><a href="#template-2-2d-grid-dp">Template 2: 2D Grid DP</a></li><li class="toc-sub"><a href="#template-3-interval-dp">Template 3: Interval DP</a></li><li class="toc-sub"><a href="#template-3-2-classic-interval-dp-pattern-lc-312-burst-balloons-style">Template 3-2: Classic Interval DP Pattern (LC 312 Burst Balloons Style)</a></li><li class="toc-sub"><a href="#template-3-3-backward-i-forward-j-loop-order-palindrome-substring-dp">Template 3-3: Backward-i + Forward-j Loop Order (Palindrome/Substring DP)</a></li><li class="toc-sub"><a href="#template-4-0-1-knapsack">Template 4: 0/1 Knapsack</a></li><li class="toc-sub"><a href="#template-5-state-machine-dp">Template 5: State Machine DP</a></li><li class="toc-sub"><a href="#template-5-2-state-machine-dp-with-cooldown-lc-309-pattern">Template 5-2: State Machine DP with Cooldown (LC 309 Pattern)</a></li><li class="toc-sub"><a href="#template-6-top-down-memoization">Template 6: Top-Down Memoization</a></li><li class="toc-sub"><a href="#template-6-1-dfs-memoization-pattern-graph-sequence-chaining">Template 6-1: DFS + Memoization Pattern (Graph/Sequence Chaining)</a></li><li class="toc-sub"><a href="#template-7-string-dp-edit-distance-levenshtein-distance">Template 7: String DP (Edit Distance / Levenshtein Distance)</a></li><li class="toc-sub"><a href="#template-8-longest-common-subsequence-lcs">Template 8: Longest Common Subsequence (LCS)</a></li><li class="toc-sub"><a href="#template-9-state-compression-bitmask-dp">Template 9: State Compression (Bitmask DP)</a></li><li class="toc-sub"><a href="#template-10-palindrome-dp">Template 10: Palindrome DP</a></li><li class="toc-sub"><a href="#template-11-fibonacci-like-patterns">Template 11: Fibonacci-like Patterns</a></li><li><a href="#comprehensive-pattern-analysis">Comprehensive Pattern Analysis</a></li><li class="toc-sub"><a href="#1d-dp-patterns">1D DP Patterns</a></li><li class="toc-sub"><a href="#2d-dp-patterns">2D DP Patterns</a></li><li class="toc-sub"><a href="#knapsack-patterns">Knapsack Patterns</a></li><li class="toc-sub"><a href="#critical-pattern-loop-order-in-unbounded-knapsack-combinations-vs-permutations">Critical Pattern: Loop Order in Unbounded Knapsack (Combinations vs Permutations)</a></li><li class="toc-sub"><a href="#deep-dive-0-1-knapsack-subset-sum-pattern">Deep Dive: 0/1 Knapsack &amp; Subset Sum Pattern 🎒</a></li><li class="toc-sub"><a href="#critical-pattern-understanding-if-i-coin-0-in-coin-change-dp">Critical Pattern: Understanding if (i - coin &gt;= 0) in Coin Change DP</a></li><li class="toc-sub"><a href="#string-dp-patterns">String DP Patterns</a></li><li class="toc-sub"><a href="#deep-dive-the-prefix-based-indexing-pattern-lcs-variants">Deep Dive: The Prefix-Based Indexing Pattern (LCS &amp; Variants) 🔍</a></li><li class="toc-sub"><a href="#interleaving-string-pattern-lc-97">Interleaving String Pattern (LC 97) 🧩</a></li><li class="toc-sub"><a href="#classic-string-dp-patterns-detailed">Classic String DP Patterns (Detailed)</a></li><li class="toc-sub"><a href="#valid-parenthesis-string-pattern-lc-678">Valid Parenthesis String Pattern (LC 678) 🌟</a></li><li class="toc-sub"><a href="#state-compression-patterns">State Compression Patterns</a></li><li class="toc-sub"><a href="#advanced-dp-patterns">Advanced DP Patterns</a></li><li class="toc-sub"><a href="#template-12-0-game-theory-minimax-dp-lc-486-predict-the-winner-style">Template 12-0: Game Theory / Minimax DP (LC 486 Predict the Winner Style)</a></li><li class="toc-sub"><a href="#template-12-digit-dp-counting-numbers-with-constraints">Template 12: Digit DP (Counting Numbers with Constraints)</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#linear-dp-problems">Linear DP Problems</a></li><li class="toc-sub"><a href="#2d-grid-problems">2D Grid Problems</a></li><li class="toc-sub"><a href="#interval-dp-problems">Interval DP Problems</a></li><li class="toc-sub"><a href="#game-theory-minimax-dp-problems">Game Theory / Minimax DP Problems</a></li><li class="toc-sub"><a href="#knapsack-problems">Knapsack Problems</a></li><li class="toc-sub"><a href="#state-machine-problems">State Machine Problems</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-unique-paths-lc-62-grid-dp-count-paths">2-1) Unique Paths (LC 62) — Grid DP Count Paths</a></li><li class="toc-sub"><a href="#2-2-maximum-product-subarray-lc-152-track-min-max-product">2-2) Maximum Product Subarray (LC 152) — Track Min/Max Product</a></li><li class="toc-sub"><a href="#2-3-best-time-to-buy-and-sell-stock-with-transaction-fee-lc-714-two-state-dp">2-3) Best Time to Buy and Sell Stock with Transaction Fee (LC 714) — Two-State DP</a></li><li class="toc-sub"><a href="#2-4-best-time-to-buy-and-sell-stock-with-cooldown-lc-309-three-state-dp">2-4) Best Time to Buy and Sell Stock with Cooldown (LC 309) — Three-State DP</a></li><li class="toc-sub"><a href="#2-5-n-th-tribonacci-number-lc-1137-rolling-three-variables">2-5) N-th Tribonacci Number (LC 1137) — Rolling Three Variables</a></li><li class="toc-sub"><a href="#2-6-decode-ways-lc-91-linear-dp-with-one-two-digit-check">2-6) Decode Ways (LC 91) — Linear DP with One/Two Digit Check</a></li><li class="toc-sub"><a href="#2-7-longest-increasing-subsequence-lc-300-lis-binary-search-dp">2-7) Longest Increasing Subsequence (LC 300) — LIS Binary Search / DP</a></li><li class="toc-sub"><a href="#2-8-sum-of-distances-in-tree-lc-834-re-rooting-dp">2-8) Sum of Distances in Tree (LC 834) — Re-rooting DP</a></li><li class="toc-sub"><a href="#2-6-perfect-squares-lc-279-unbounded-knapsack-min-count">2-6) Perfect Squares (LC 279) — Unbounded Knapsack (Min Count)</a></li><li class="toc-sub"><a href="#2-7-integer-break-lc-343-linear-dp-break-vs-no-break">2-7) Integer Break (LC 343) — Linear DP (Break vs No-Break)</a></li><li><a href="#decision-framework">Decision Framework</a></li><li class="toc-sub"><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-sub"><a href="#when-to-use-dp-vs-other-approaches">When to Use DP vs Other Approaches</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#state-definition-guidelines">State Definition Guidelines</a></li><li class="toc-sub"><a href="#common-recurrence-relations">Common Recurrence Relations</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#space-optimization-techniques">Space Optimization Techniques</a></li><li class="toc-sub"><a href="#interview-tips-2">Interview Tips</a></li><li class="toc-sub"><a href="#state-machine-dp-interview-pattern-recognition">State Machine DP Interview Pattern Recognition</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li><a href="#quick-decision-tree-which-dp-pattern-to-use">Quick Decision Tree: Which DP Pattern to Use?</a></li><li class="toc-sub"><a href="#decision-flowchart">Decision Flowchart</a></li><li class="toc-sub"><a href="#quick-pattern-selection-table">Quick Pattern Selection Table</a></li><li class="toc-sub"><a href="#recognition-patterns-by-keywords">Recognition Patterns by Keywords</a></li><li class="toc-sub"><a href="#quick-decision-examples">Quick Decision Examples</a></li><li class="toc-sub"><a href="#pro-tips-for-pattern-selection">Pro Tips for Pattern Selection</a></li><li class="toc-sub"><a href="#common-pitfalls-3">Common Pitfalls</a></li><li><a href="#category-9-monotonic-stack-dp">Category 9: Monotonic Stack + DP</a></li><li class="toc-sub"><a href="#pattern-overview">Pattern Overview</a></li><li class="toc-sub"><a href="#template-lc-2289-steps-to-make-array-non-decreasing">Template: LC 2289 — Steps to Make Array Non-Decreasing</a></li><li class="toc-sub"><a href="#key-insights-1">Key Insights</a></li><li class="toc-sub"><a href="#similar-leetcode-problems-3">Similar LeetCode Problems</a></li></ul></div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#core-characteristics">Core Characteristics</a></li><li class="toc-sub"><a href="#step">Step</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#problem-categories">Problem Categories</a></li><li class="toc-sub"><a href="#category-1-linear-dp">Category 1: Linear DP</a></li><li class="toc-sub"><a href="#category-2-grid-2d-dp">Category 2: Grid/2D DP</a></li><li class="toc-sub"><a href="#category-3-interval-dp">Category 3: Interval DP</a></li><li class="toc-sub"><a href="#category-3-2-game-theory-minimax-dp">Category 3-2: Game Theory / Minimax DP</a></li><li class="toc-sub"><a href="#category-4-tree-dp">Category 4: Tree DP</a></li><li class="toc-sub"><a href="#category-5-state-machine-dp">Category 5: State Machine DP</a></li><li class="toc-sub"><a href="#category-6-knapsack-dp">Category 6: Knapsack DP</a></li><li class="toc-sub"><a href="#category-7-string-dp">Category 7: String DP</a></li><li class="toc-sub"><a href="#category-8-state-compression-dp">Category 8: State Compression DP</a></li><li><a href="#templates-algorithms">Templates &amp; Algorithms</a></li><li class="toc-sub"><a href="#template-comparison-table">Template Comparison Table</a></li><li class="toc-sub"><a href="#universal-dp-template">Universal DP Template</a></li><li class="toc-sub"><a href="#template-1-1d-linear-dp">Template 1: 1D Linear DP</a></li><li class="toc-sub"><a href="#1d-dp-array-sizing-and-loop-bounds-n-vs-n-1">1D DP: Array Sizing and Loop Bounds (n vs n+1)</a></li><li class="toc-sub"><a href="#template-2-2d-grid-dp">Template 2: 2D Grid DP</a></li><li class="toc-sub"><a href="#template-3-interval-dp">Template 3: Interval DP</a></li><li class="toc-sub"><a href="#template-3-2-classic-interval-dp-pattern-lc-312-burst-balloons-style">Template 3-2: Classic Interval DP Pattern (LC 312 Burst Balloons Style)</a></li><li class="toc-sub"><a href="#template-3-3-backward-i-forward-j-loop-order-palindrome-substring-dp">Template 3-3: Backward-i + Forward-j Loop Order (Palindrome/Substring DP)</a></li><li class="toc-sub"><a href="#template-4-0-1-knapsack">Template 4: 0/1 Knapsack</a></li><li class="toc-sub"><a href="#template-5-state-machine-dp">Template 5: State Machine DP</a></li><li class="toc-sub"><a href="#template-5-2-state-machine-dp-with-cooldown-lc-309-pattern">Template 5-2: State Machine DP with Cooldown (LC 309 Pattern)</a></li><li class="toc-sub"><a href="#template-6-top-down-memoization">Template 6: Top-Down Memoization</a></li><li class="toc-sub"><a href="#template-6-1-dfs-memoization-pattern-graph-sequence-chaining">Template 6-1: DFS + Memoization Pattern (Graph/Sequence Chaining)</a></li><li class="toc-sub"><a href="#template-7-string-dp-edit-distance-levenshtein-distance">Template 7: String DP (Edit Distance / Levenshtein Distance)</a></li><li class="toc-sub"><a href="#template-8-longest-common-subsequence-lcs">Template 8: Longest Common Subsequence (LCS)</a></li><li class="toc-sub"><a href="#template-9-state-compression-bitmask-dp">Template 9: State Compression (Bitmask DP)</a></li><li class="toc-sub"><a href="#template-10-palindrome-dp">Template 10: Palindrome DP</a></li><li class="toc-sub"><a href="#template-11-fibonacci-like-patterns">Template 11: Fibonacci-like Patterns</a></li><li><a href="#comprehensive-pattern-analysis">Comprehensive Pattern Analysis</a></li><li class="toc-sub"><a href="#1d-dp-patterns">1D DP Patterns</a></li><li class="toc-sub"><a href="#2d-dp-patterns">2D DP Patterns</a></li><li class="toc-sub"><a href="#knapsack-patterns">Knapsack Patterns</a></li><li class="toc-sub"><a href="#critical-pattern-loop-order-in-unbounded-knapsack-combinations-vs-permutations">Critical Pattern: Loop Order in Unbounded Knapsack (Combinations vs Permutations)</a></li><li class="toc-sub"><a href="#deep-dive-0-1-knapsack-subset-sum-pattern">Deep Dive: 0/1 Knapsack &amp; Subset Sum Pattern 🎒</a></li><li class="toc-sub"><a href="#critical-pattern-understanding-if-i-coin-0-in-coin-change-dp">Critical Pattern: Understanding if (i - coin &gt;= 0) in Coin Change DP</a></li><li class="toc-sub"><a href="#string-dp-patterns">String DP Patterns</a></li><li class="toc-sub"><a href="#deep-dive-the-prefix-based-indexing-pattern-lcs-variants">Deep Dive: The Prefix-Based Indexing Pattern (LCS &amp; Variants) 🔍</a></li><li class="toc-sub"><a href="#interleaving-string-pattern-lc-97">Interleaving String Pattern (LC 97) 🧩</a></li><li class="toc-sub"><a href="#classic-string-dp-patterns-detailed">Classic String DP Patterns (Detailed)</a></li><li class="toc-sub"><a href="#valid-parenthesis-string-pattern-lc-678">Valid Parenthesis String Pattern (LC 678) 🌟</a></li><li class="toc-sub"><a href="#state-compression-patterns">State Compression Patterns</a></li><li class="toc-sub"><a href="#advanced-dp-patterns">Advanced DP Patterns</a></li><li class="toc-sub"><a href="#template-12-0-game-theory-minimax-dp-lc-486-predict-the-winner-style">Template 12-0: Game Theory / Minimax DP (LC 486 Predict the Winner Style)</a></li><li class="toc-sub"><a href="#template-12-digit-dp-counting-numbers-with-constraints">Template 12: Digit DP (Counting Numbers with Constraints)</a></li><li><a href="#problems-by-pattern">Problems by Pattern</a></li><li class="toc-sub"><a href="#linear-dp-problems">Linear DP Problems</a></li><li class="toc-sub"><a href="#2d-grid-problems">2D Grid Problems</a></li><li class="toc-sub"><a href="#interval-dp-problems">Interval DP Problems</a></li><li class="toc-sub"><a href="#game-theory-minimax-dp-problems">Game Theory / Minimax DP Problems</a></li><li class="toc-sub"><a href="#knapsack-problems">Knapsack Problems</a></li><li class="toc-sub"><a href="#state-machine-problems">State Machine Problems</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-unique-paths-lc-62-grid-dp-count-paths">2-1) Unique Paths (LC 62) — Grid DP Count Paths</a></li><li class="toc-sub"><a href="#2-2-maximum-product-subarray-lc-152-track-min-max-product">2-2) Maximum Product Subarray (LC 152) — Track Min/Max Product</a></li><li class="toc-sub"><a href="#2-3-best-time-to-buy-and-sell-stock-with-transaction-fee-lc-714-two-state-dp">2-3) Best Time to Buy and Sell Stock with Transaction Fee (LC 714) — Two-State DP</a></li><li class="toc-sub"><a href="#2-4-best-time-to-buy-and-sell-stock-with-cooldown-lc-309-three-state-dp">2-4) Best Time to Buy and Sell Stock with Cooldown (LC 309) — Three-State DP</a></li><li class="toc-sub"><a href="#2-5-n-th-tribonacci-number-lc-1137-rolling-three-variables">2-5) N-th Tribonacci Number (LC 1137) — Rolling Three Variables</a></li><li class="toc-sub"><a href="#2-6-decode-ways-lc-91-linear-dp-with-one-two-digit-check">2-6) Decode Ways (LC 91) — Linear DP with One/Two Digit Check</a></li><li class="toc-sub"><a href="#2-7-longest-increasing-subsequence-lc-300-lis-binary-search-dp">2-7) Longest Increasing Subsequence (LC 300) — LIS Binary Search / DP</a></li><li class="toc-sub"><a href="#2-8-sum-of-distances-in-tree-lc-834-re-rooting-dp">2-8) Sum of Distances in Tree (LC 834) — Re-rooting DP</a></li><li class="toc-sub"><a href="#2-6-perfect-squares-lc-279-unbounded-knapsack-min-count">2-6) Perfect Squares (LC 279) — Unbounded Knapsack (Min Count)</a></li><li class="toc-sub"><a href="#2-7-integer-break-lc-343-linear-dp-break-vs-no-break">2-7) Integer Break (LC 343) — Linear DP (Break vs No-Break)</a></li><li><a href="#decision-framework">Decision Framework</a></li><li class="toc-sub"><a href="#pattern-selection-strategy">Pattern Selection Strategy</a></li><li class="toc-sub"><a href="#when-to-use-dp-vs-other-approaches">When to Use DP vs Other Approaches</a></li><li><a href="#summary-quick-reference">Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#complexity-quick-reference">Complexity Quick Reference</a></li><li class="toc-sub"><a href="#state-definition-guidelines">State Definition Guidelines</a></li><li class="toc-sub"><a href="#common-recurrence-relations">Common Recurrence Relations</a></li><li class="toc-sub"><a href="#problem-solving-steps">Problem-Solving Steps</a></li><li class="toc-sub"><a href="#common-mistakes-tips">Common Mistakes &amp; Tips</a></li><li class="toc-sub"><a href="#space-optimization-techniques">Space Optimization Techniques</a></li><li class="toc-sub"><a href="#interview-tips-2">Interview Tips</a></li><li class="toc-sub"><a href="#state-machine-dp-interview-pattern-recognition">State Machine DP Interview Pattern Recognition</a></li><li class="toc-sub"><a href="#related-topics">Related Topics</a></li><li><a href="#quick-decision-tree-which-dp-pattern-to-use">Quick Decision Tree: Which DP Pattern to Use?</a></li><li class="toc-sub"><a href="#decision-flowchart">Decision Flowchart</a></li><li class="toc-sub"><a href="#quick-pattern-selection-table">Quick Pattern Selection Table</a></li><li class="toc-sub"><a href="#recognition-patterns-by-keywords">Recognition Patterns by Keywords</a></li><li class="toc-sub"><a href="#quick-decision-examples">Quick Decision Examples</a></li><li class="toc-sub"><a href="#pro-tips-for-pattern-selection">Pro Tips for Pattern Selection</a></li><li class="toc-sub"><a href="#common-pitfalls-3">Common Pitfalls</a></li><li><a href="#category-9-monotonic-stack-dp">Category 9: Monotonic Stack + DP</a></li><li class="toc-sub"><a href="#pattern-overview">Pattern Overview</a></li><li class="toc-sub"><a href="#template-lc-2289-steps-to-make-array-non-decreasing">Template: LC 2289 — Steps to Make Array Non-Decreasing</a></li><li class="toc-sub"><a href="#key-insights-1">Key Insights</a></li><li class="toc-sub"><a href="#similar-leetcode-problems-3">Similar LeetCode Problems</a></li><li class="toc-sub"><a href="#maximal-square-count-squares-pattern-lc-1277-lc-221">Maximal Square / Count Squares Pattern (LC 1277, LC 221) 🟦</a></li></ul></div>
       <div class="cheatsheet-content">
         <h1 id="dynamic-programming-dp" tabindex="-1"><a class="header-anchor" href="#dynamic-programming-dp"><span>Dynamic Programming (DP)</span></a></h1>
 <h2 id="overview" tabindex="-1"><a class="header-anchor" href="#overview"><span>Overview</span></a></h2>
@@ -7857,6 +7847,238 @@ answer = max(dp[i]) for all i
 <li>Don’t confuse left-scan (<code>&gt;=</code>) with right-scan (<code>&gt;</code>) — they encode different “who eats whom” semantics.</li>
 </ul>
 <hr>
+<h3 id="maximal-square-count-squares-pattern-lc-1277-lc-221" tabindex="-1"><a class="header-anchor" href="#maximal-square-count-squares-pattern-lc-1277-lc-221"><span><strong>Maximal Square / Count Squares Pattern (LC 1277, LC 221)</strong> 🟦</span></a></h3>
+<h4 id="pattern-1" tabindex="-1"><a class="header-anchor" href="#pattern-1"><span>🎯 Pattern</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Category</strong></td>
+<td>2D Grid DP — Bottom-right Corner Expansion</td>
+</tr>
+<tr>
+<td><strong>State</strong></td>
+<td><code>dp[i][j]</code> = side length of the <strong>largest all-ones square</strong> whose bottom-right corner is at <code>(i, j)</code></td>
+</tr>
+<tr>
+<td><strong>Transition</strong></td>
+<td><code>dp[i][j] = min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]) + 1</code></td>
+</tr>
+<tr>
+<td><strong>Base Cases</strong></td>
+<td>First row or first column: <code>dp[i][j] = matrix[i][j]</code> (at most 1×1)</td>
+</tr>
+<tr>
+<td><strong>Answer (LC 1277)</strong></td>
+<td>Sum of all <code>dp[i][j]</code> values — each value counts how many squares end here</td>
+</tr>
+<tr>
+<td><strong>Answer (LC 221)</strong></td>
+<td><code>max(dp[i][j])²</code> — largest square area</td>
+</tr>
+<tr>
+<td><strong>Time</strong></td>
+<td>O(m × n)</td>
+</tr>
+<tr>
+<td><strong>Space</strong></td>
+<td>O(m × n) standard, O(n) space-optimized</td>
+</tr>
+</tbody>
+</table>
+<h4 id="core-idea-1" tabindex="-1"><a class="header-anchor" href="#core-idea-1"><span>💡 Core Idea</span></a></h4>
+<p><strong>The “Magic” Transition</strong>: <code>dp[i][j] = min(top, left, top-left) + 1</code></p>
+<blockquote>
+<p>If the three neighbors all support a square of side <code>k</code>, then <code>(i, j)</code> can be the bottom-right of a square of side <code>k+1</code>. The <strong>minimum</strong> of the three determines the bottleneck.</p>
+</blockquote>
+<p><strong>Why <code>dp[i][j]</code> also equals the count of squares ending at <code>(i, j)</code></strong>:</p>
+<ul>
+<li>A cell with <code>dp[i][j] = 3</code> can be the bottom-right corner of squares of size 1×1, 2×2, and 3×3</li>
+<li>So it contributes <strong>3</strong> to the total count</li>
+<li>Summing all <code>dp[i][j]</code> = total count of all squares (LC 1277)</li>
+</ul>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Matrix:       dp values:     Contribution:
+0 1 1 1       0 1 1 1        0+1+1+1 = 3   (row 0)
+1 1 1 1  →    1 1 2 2   →   1+1+2+2 = 6   (row 1)
+0 1 1 1       0 1 2 3        0+1+2+3 = 6   (row 2)
+                                  Total = 15 ✓
+</code></pre></div>
+<h4 id="java-implementation-bottom-up-2d-dp" tabindex="-1"><a class="header-anchor" href="#java-implementation-bottom-up-2d-dp"><span><strong>Java Implementation (Bottom-Up 2D DP)</strong></span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 1277: Count Square Submatrices with All Ones</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">countSquares</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] matrix)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">rows</span> <span class="hljs-operator">=</span> matrix.length, cols = matrix[<span class="hljs-number">0</span>].length;
+    <span class="hljs-type">int</span>[][] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[rows][cols];
+    <span class="hljs-type">int</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; rows; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; cols; j++) {
+            <span class="hljs-keyword">if</span> (matrix[i][j] == <span class="hljs-number">1</span>) {
+                <span class="hljs-keyword">if</span> (i == <span class="hljs-number">0</span> || j == <span class="hljs-number">0</span>) {
+                    dp[i][j] = <span class="hljs-number">1</span>;  <span class="hljs-comment">// first row/col: only 1×1 possible</span>
+                } <span class="hljs-keyword">else</span> {
+                    dp[i][j] = Math.min(
+                        Math.min(dp[i-<span class="hljs-number">1</span>][j], dp[i][j-<span class="hljs-number">1</span>]),
+                        dp[i-<span class="hljs-number">1</span>][j-<span class="hljs-number">1</span>]
+                    ) + <span class="hljs-number">1</span>;
+                }
+                result += dp[i][j];  <span class="hljs-comment">// dp[i][j] = count of squares ending here</span>
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> result;
+}
+</code></pre></div>
+<p><strong>Alternative with (n+1) × (m+1) sizing (avoids first-row/col special case)</strong>:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">countSquares</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] matrix)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">row</span> <span class="hljs-operator">=</span> matrix.length, col = matrix[<span class="hljs-number">0</span>].length;
+    <span class="hljs-type">int</span>[][] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[row + <span class="hljs-number">1</span>][col + <span class="hljs-number">1</span>];  <span class="hljs-comment">// +1 removes boundary check</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">ans</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; row; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; col; j++) {
+            <span class="hljs-keyword">if</span> (matrix[i][j] == <span class="hljs-number">1</span>) {
+                dp[i+<span class="hljs-number">1</span>][j+<span class="hljs-number">1</span>] = Math.min(
+                    Math.min(dp[i][j+<span class="hljs-number">1</span>], dp[i+<span class="hljs-number">1</span>][j]),
+                    dp[i][j]
+                ) + <span class="hljs-number">1</span>;
+                ans += dp[i+<span class="hljs-number">1</span>][j+<span class="hljs-number">1</span>];
+            }
+        }
+    }
+    <span class="hljs-keyword">return</span> ans;
+}
+</code></pre></div>
+<h4 id="space-optimized-o-n-1d-dp" tabindex="-1"><a class="header-anchor" href="#space-optimized-o-n-1d-dp"><span><strong>Space-Optimized (O(n) 1D DP)</strong></span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">countSquares</span><span class="hljs-params">(<span class="hljs-type">int</span>[][] matrix)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">row</span> <span class="hljs-operator">=</span> matrix.length, col = matrix[<span class="hljs-number">0</span>].length, result = <span class="hljs-number">0</span>, prev = <span class="hljs-number">0</span>;
+    <span class="hljs-type">int</span>[] dp = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[col + <span class="hljs-number">1</span>];
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; i &lt;= row; i++) {
+        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; j &lt;= col; j++) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">temp</span> <span class="hljs-operator">=</span> dp[j];
+            <span class="hljs-keyword">if</span> (matrix[i-<span class="hljs-number">1</span>][j-<span class="hljs-number">1</span>] == <span class="hljs-number">1</span>) {
+                dp[j] = <span class="hljs-number">1</span> + Math.min(prev, Math.min(dp[j-<span class="hljs-number">1</span>], dp[j]));
+                result += dp[j];
+            } <span class="hljs-keyword">else</span> {
+                dp[j] = <span class="hljs-number">0</span>;
+            }
+            prev = temp;
+        }
+    }
+    <span class="hljs-keyword">return</span> result;
+}
+</code></pre></div>
+<h4 id="lc-1277-vs-lc-221-comparison" tabindex="-1"><a class="header-anchor" href="#lc-1277-vs-lc-221-comparison"><span><strong>LC 1277 vs LC 221 Comparison</strong></span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>LC 1277: Count Squares</th>
+<th>LC 221: Maximal Square</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Goal</strong></td>
+<td>Count ALL squares of all sizes</td>
+<td>Find the LARGEST square</td>
+</tr>
+<tr>
+<td><strong>DP transition</strong></td>
+<td>Same: <code>min(top, left, diagonal) + 1</code></td>
+<td>Same: <code>min(top, left, diagonal) + 1</code></td>
+</tr>
+<tr>
+<td><strong>Answer</strong></td>
+<td><code>sum(dp[i][j])</code></td>
+<td><code>max(dp[i][j])²</code></td>
+</tr>
+<tr>
+<td><strong>Key insight</strong></td>
+<td><code>dp[i][j]</code> counts squares ending here</td>
+<td><code>dp[i][j]</code> is the side length</td>
+</tr>
+<tr>
+<td><strong>Difficulty</strong></td>
+<td>Medium</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<h4 id="why-min-and-not-max" tabindex="-1"><a class="header-anchor" href="#why-min-and-not-max"><span><strong>Why <code>min</code> and Not <code>max</code>?</strong></span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Consider:    dp[i-1][j] = 3   →  top supports 3×3
+             dp[i][j-1] = 1   →  left supports 1×1 only
+             dp[i-1][j-1] = 2  →  diagonal supports 2×2
+
+Even though top supports 3×3, the LEFT neighbor only supports 1×1.
+If you tried to make a 2×2 square ending at (i,j), the cell one
+column left would need to support a 2×2 — but it only supports 1×1.
+So the bottleneck is min(3, 1, 2) = 1 → dp[i][j] = 2.
+</code></pre></div>
+<p>The <code>min</code> ensures all three “arms” of the square are simultaneously valid.</p>
+<h4 id="similar-leetcode-problems-4" tabindex="-1"><a class="header-anchor" href="#similar-leetcode-problems-4"><span><strong>Similar LeetCode Problems</strong> 📚</span></a></h4>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>LC #</th>
+<th>Key Difference</th>
+<th>Algorithm</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Count Square Submatrices</strong></td>
+<td>1277</td>
+<td>Count ALL squares (sum dp)</td>
+<td>2D DP (min of 3 neighbors)</td>
+</tr>
+<tr>
+<td><strong>Maximal Square</strong></td>
+<td>221</td>
+<td>Find LARGEST square (max dp)</td>
+<td>2D DP (min of 3 neighbors)</td>
+</tr>
+<tr>
+<td><strong>Maximal Rectangle</strong></td>
+<td>85</td>
+<td>Any rectangle of 1s, not just squares</td>
+<td>Histogram + stack (per row)</td>
+</tr>
+<tr>
+<td><strong>Count Submatrices with All Ones</strong></td>
+<td>1504</td>
+<td>All rectangles, not just squares</td>
+<td>Row compression + prefix sums</td>
+</tr>
+<tr>
+<td><strong>Largest Plus Sign</strong></td>
+<td>764</td>
+<td>Plus-shape instead of square</td>
+<td>DP in 4 directions</td>
+</tr>
+<tr>
+<td><strong>Minimum Path Sum</strong></td>
+<td>64</td>
+<td>Min-cost path (not all-ones shape)</td>
+<td>2D DP (min of 2 neighbors)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="pattern-recognition-checklist-3" tabindex="-1"><a class="header-anchor" href="#pattern-recognition-checklist-3"><span><strong>Pattern Recognition Checklist</strong> ✅</span></a></h4>
+<p>Use this pattern when:</p>
+<ul>
+<li>✅ Grid contains 0s and 1s</li>
+<li>✅ Problem asks about <strong>squares</strong> (not rectangles) of all-ones</li>
+<li>✅ Need to count or find max square(s) in a binary matrix</li>
+<li>✅ Keywords: “square submatrix”, “all ones”, “count squares”</li>
+</ul>
+<p><strong>File Reference</strong>: <code>leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/CountSquareSubmatricesWithAllOnes.java</code></p>
+<hr>
 <p><strong>Keywords</strong>: DP, dynamic programming, memoization, tabulation, optimal substructure, overlapping subproblems, state transition, knapsack, LCS, LIS, interval DP, tree DP, state machine, bitmask, monotonic stack, mono stack, stack DP</p>
 
       </div>
@@ -7870,11 +8092,11 @@ answer = max(dp[i]) for all i
 
   <footer>
     <div class="container">
-      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>CS_basics — computer science fundamentals &amp; interview preparation</p>
       <p>
-        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
-        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
-        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+        <a href="https://github.com/yennanliu/CS_basics">github</a> |
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">docs</a> |
+        <a href="https://github.com/yennanliu/CS_basics/issues">issues</a>
       </p>
     </div>
   </footer>

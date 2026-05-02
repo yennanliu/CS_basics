@@ -1,0 +1,271 @@
+
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Overbooking Prevention — CS_basics</title>
+  <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
+  <script>
+  (function() {
+    var saved = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', saved);
+  })();
+  </script>
+  <script>
+  function copyCode(btn) {
+    var pre = btn.closest('.code-block-wrapper').querySelector('pre');
+    var text = pre ? pre.innerText : '';
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'copied';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.textContent = 'copy'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+  </script>
+  <script>document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('table').forEach(function(table) {
+      if (!table.parentElement.classList.contains('table-wrap')) {
+        var wrapper = document.createElement('div');
+        wrapper.className = 'table-wrap';
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    });
+    var progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', function() {
+        var winScroll = document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = height > 0 ? (winScroll / height * 100) + '%' : '0%';
+      });
+    }
+    var toggle = document.getElementById('theme-toggle');
+    if (toggle) {
+      var updateLabel = function() {
+        toggle.textContent = document.documentElement.getAttribute('data-theme') === 'dark' ? '[light]' : '[dark]';
+      };
+      updateLabel();
+      toggle.addEventListener('click', function() {
+        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        var next = isDark ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+        updateLabel();
+      });
+    }
+  });</script>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
+  <nav class="navbar">
+    <div class="container">
+      <a href="../index.html" class="nav-brand">
+        <span class="nav-title">CS_basics</span>
+      </a>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="../index.html" class="">home</a>
+        <a href="../cheatsheets.html" class="">cheatsheets</a>
+        <a href="../patterns.html" class="">patterns</a>
+        <a href="../faqs.html" class="active">faqs</a>
+        <a href="../lc-explorer.html" class="">lc-explorer</a>
+        <a href="../lc-similar.html" class="">similar</a>
+        <a href="../lc-random-picker.html" class="">random</a>
+        <a href="../lc-review-plan.html" class="">review</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">[dark]</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">github</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="content">
+      
+      <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../faqs.html">FAQs</a> <span class="sep">›</span> <span class="current">Overbooking Prevention</span></nav>
+      <div class="cheatsheet-header">
+        <h1>Overbooking Prevention</h1>
+        <span class="last-updated">Last updated: Apr 27, 2026</span>
+      </div>
+      <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#problem">Problem</a></li><li><a href="#strategies">Strategies</a></li><li class="toc-sub"><a href="#1-atomic-decr-redis">1. Atomic DECR (Redis)</a></li><li class="toc-sub"><a href="#2-lua-script-redis">2. Lua Script (Redis)</a></li><li class="toc-sub"><a href="#3-distributed-lock-redis-zookeeper">3. Distributed Lock (Redis / Zookeeper)</a></li><li><a href="#comparison">Comparison</a></li><li><a href="#layered-architecture-production">Layered Architecture (Production)</a></li><li><a href="#common-pitfalls">Common Pitfalls</a></li></ul></div>
+      <div class="cheatsheet-content">
+        <h1 id="overbooking-prevention-in-booking-systems" tabindex="-1"><a class="header-anchor" href="#overbooking-prevention-in-booking-systems"><span>Overbooking Prevention in Booking Systems</span></a></h1>
+<h2 id="problem" tabindex="-1"><a class="header-anchor" href="#problem"><span>Problem</span></a></h2>
+<p>In high-concurrency booking systems (flash sales, ticket booking, hotel reservations), multiple requests can simultaneously read the same available count and all proceed — leading to <strong>overselling/overbooking</strong>.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Thread A: reads stock=1 → proceeds
+Thread B: reads stock=1 → proceeds   ← race condition
+Both confirm → stock goes to -1
+</code></pre></div>
+<hr>
+<h2 id="strategies" tabindex="-1"><a class="header-anchor" href="#strategies"><span>Strategies</span></a></h2>
+<h3 id="1-atomic-decr-redis" tabindex="-1"><a class="header-anchor" href="#1-atomic-decr-redis"><span>1. Atomic DECR (Redis)</span></a></h3>
+<p>Use Redis <code>DECR</code> or <code>DECRBY</code> — atomic by nature, no locking needed.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">lua</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="lua"><code class="hljs language-lua"><span class="hljs-comment">-- Single command, atomic</span>
+result = redis.call(<span class="hljs-string">&#x27;DECR&#x27;</span>, <span class="hljs-string">&#x27;stock:item_123&#x27;</span>)
+<span class="hljs-keyword">if</span> result &lt; <span class="hljs-number">0</span> <span class="hljs-keyword">then</span>
+    redis.call(<span class="hljs-string">&#x27;INCR&#x27;</span>, <span class="hljs-string">&#x27;stock:item_123&#x27;</span>)  <span class="hljs-comment">-- rollback</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>  <span class="hljs-comment">-- out of stock</span>
+<span class="hljs-keyword">end</span>
+<span class="hljs-keyword">return</span> <span class="hljs-number">1</span>  <span class="hljs-comment">-- success</span>
+</code></pre></div>
+<p><strong>Flow:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Client → Redis DECR → if result &gt;= 0: proceed to DB write
+                     if result &lt; 0:  rollback INCR, reject
+</code></pre></div>
+<p><strong>Pros:</strong> Ultra-high throughput, minimal latency, no lock contention<br>
+<strong>Cons:</strong> Simple logic only — no per-user limits, no complex conditions<br>
+<strong>Use case:</strong> Flash sales, simple inventory (e.g., “100 items, first come first served”)</p>
+<hr>
+<h3 id="2-lua-script-redis" tabindex="-1"><a class="header-anchor" href="#2-lua-script-redis"><span>2. Lua Script (Redis)</span></a></h3>
+<p>Execute a multi-step check atomically inside Redis. Lua scripts run as a single atomic operation — no other command can interleave.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">lua</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="lua"><code class="hljs language-lua"><span class="hljs-comment">-- lua script: limit 1 booking per user</span>
+<span class="hljs-keyword">local</span> stock_key  = KEYS[<span class="hljs-number">1</span>]   <span class="hljs-comment">-- e.g. &quot;stock:event_42&quot;</span>
+<span class="hljs-keyword">local</span> user_key   = KEYS[<span class="hljs-number">2</span>]   <span class="hljs-comment">-- e.g. &quot;booked:event_42:user_99&quot;</span>
+
+<span class="hljs-comment">-- check if user already booked</span>
+<span class="hljs-keyword">if</span> redis.call(<span class="hljs-string">&#x27;EXISTS&#x27;</span>, user_key) == <span class="hljs-number">1</span> <span class="hljs-keyword">then</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">-1</span>  <span class="hljs-comment">-- duplicate booking</span>
+<span class="hljs-keyword">end</span>
+
+<span class="hljs-comment">-- check and decrement stock</span>
+<span class="hljs-keyword">local</span> stock = <span class="hljs-built_in">tonumber</span>(redis.call(<span class="hljs-string">&#x27;GET&#x27;</span>, stock_key))
+<span class="hljs-keyword">if</span> stock &lt;= <span class="hljs-number">0</span> <span class="hljs-keyword">then</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>  <span class="hljs-comment">-- out of stock</span>
+<span class="hljs-keyword">end</span>
+
+redis.call(<span class="hljs-string">&#x27;DECR&#x27;</span>, stock_key)
+redis.call(<span class="hljs-string">&#x27;SET&#x27;</span>, user_key, <span class="hljs-number">1</span>, <span class="hljs-string">&#x27;EX&#x27;</span>, <span class="hljs-number">86400</span>)  <span class="hljs-comment">-- mark user as booked (TTL 1 day)</span>
+<span class="hljs-keyword">return</span> <span class="hljs-number">1</span>  <span class="hljs-comment">-- success</span>
+</code></pre></div>
+<p><strong>Java call:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-type">String</span> <span class="hljs-variable">lua</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;...&quot;</span>;  <span class="hljs-comment">// script above</span>
+List&lt;String&gt; keys = Arrays.asList(<span class="hljs-string">&quot;stock:event_42&quot;</span>, <span class="hljs-string">&quot;booked:event_42:&quot;</span> + userId);
+<span class="hljs-type">Long</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> jedis.eval(lua, keys, Collections.emptyList());
+<span class="hljs-comment">// -1 = duplicate, 0 = sold out, 1 = success</span>
+</code></pre></div>
+<p><strong>Pros:</strong> Atomic multi-condition check, handles per-user dedup<br>
+<strong>Cons:</strong> Redis single-threaded during script — keep scripts short; harder to debug<br>
+<strong>Use case:</strong> “Limit 1 per user”, coupon redemption, event registration</p>
+<hr>
+<h3 id="3-distributed-lock-redis-zookeeper" tabindex="-1"><a class="header-anchor" href="#3-distributed-lock-redis-zookeeper"><span>3. Distributed Lock (Redis / Zookeeper)</span></a></h3>
+<p>Acquire a lock before entering the critical section. Ensures only one process executes the booking logic at a time.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-type">String</span> <span class="hljs-variable">lockKey</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;lock:booking:event_42&quot;</span>;
+<span class="hljs-type">String</span> <span class="hljs-variable">lockValue</span> <span class="hljs-operator">=</span> UUID.randomUUID().toString();
+<span class="hljs-type">int</span> <span class="hljs-variable">expireMs</span> <span class="hljs-operator">=</span> <span class="hljs-number">3000</span>;
+
+<span class="hljs-comment">// try acquire lock (SET NX PX)</span>
+<span class="hljs-type">boolean</span> <span class="hljs-variable">acquired</span> <span class="hljs-operator">=</span> redis.set(lockKey, lockValue, <span class="hljs-string">&quot;NX&quot;</span>, <span class="hljs-string">&quot;PX&quot;</span>, expireMs) != <span class="hljs-literal">null</span>;
+<span class="hljs-keyword">if</span> (!acquired) {
+    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BusyException</span>(<span class="hljs-string">&quot;System busy, please retry&quot;</span>);
+}
+
+<span class="hljs-keyword">try</span> {
+    <span class="hljs-comment">// safe to run complex logic now</span>
+    <span class="hljs-type">int</span> <span class="hljs-variable">stock</span> <span class="hljs-operator">=</span> db.queryStock(eventId);
+    <span class="hljs-keyword">if</span> (stock &lt;= <span class="hljs-number">0</span>) <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">SoldOutException</span>();
+
+    <span class="hljs-type">boolean</span> <span class="hljs-variable">alreadyBooked</span> <span class="hljs-operator">=</span> db.hasBooked(userId, eventId);
+    <span class="hljs-keyword">if</span> (alreadyBooked) <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">DuplicateException</span>();
+
+    db.deductStock(eventId);
+    db.createOrder(userId, eventId);
+} <span class="hljs-keyword">finally</span> {
+    <span class="hljs-comment">// release lock only if we still own it (Lua for atomicity)</span>
+    <span class="hljs-type">String</span> <span class="hljs-variable">releaseLua</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;if redis.call(&#x27;GET&#x27;,KEYS[1])==ARGV[1] then return redis.call(&#x27;DEL&#x27;,KEYS[1]) else return 0 end&quot;</span>;
+    redis.eval(releaseLua, Collections.singletonList(lockKey), Collections.singletonList(lockValue));
+}
+</code></pre></div>
+<p><strong>Pros:</strong> Full flexibility — arbitrary business logic, multi-DB transactions<br>
+<strong>Cons:</strong> Serialized throughput (one lock holder at a time), lock timeout tuning required, risk of lock holder dying mid-execution<br>
+<strong>Use case:</strong> Hotel/flight booking with complex validation, multi-table DB writes, payment flows</p>
+<hr>
+<h2 id="comparison" tabindex="-1"><a class="header-anchor" href="#comparison"><span>Comparison</span></a></h2>
+<table>
+<thead>
+<tr>
+<th>Strategy</th>
+<th>Throughput</th>
+<th>Complexity</th>
+<th>Best For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Atomic DECR</td>
+<td>Ultra High</td>
+<td>Low</td>
+<td>High-concurrency flash sales (simple stock)</td>
+</tr>
+<tr>
+<td>Lua Script</td>
+<td>High</td>
+<td>Medium</td>
+<td>Logic-gated booking (e.g., limit 1 per person)</td>
+</tr>
+<tr>
+<td>Distributed Lock</td>
+<td>Medium</td>
+<td>High</td>
+<td>Complex business logic spanning multiple DBs</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="layered-architecture-production" tabindex="-1"><a class="header-anchor" href="#layered-architecture-production"><span>Layered Architecture (Production)</span></a></h2>
+<p>In practice, combine all three layers:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Request
+  │
+  ▼
+[Rate Limiter]          ← reject obvious abuse early
+  │
+  ▼
+[Redis Lua Script]      ← fast atomic pre-check (stock + dedup)
+  │ success
+  ▼
+[DB Optimistic Lock]    ← final guard with version/CAS
+  │
+  ▼
+[Order Created]
+</code></pre></div>
+<p><strong>DB optimistic lock as final safety net:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">sql</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="sql"><code class="hljs language-sql"><span class="hljs-keyword">UPDATE</span> inventory
+<span class="hljs-keyword">SET</span> stock <span class="hljs-operator">=</span> stock <span class="hljs-operator">-</span> <span class="hljs-number">1</span>, version <span class="hljs-operator">=</span> version <span class="hljs-operator">+</span> <span class="hljs-number">1</span>
+<span class="hljs-keyword">WHERE</span> item_id <span class="hljs-operator">=</span> ? <span class="hljs-keyword">AND</span> version <span class="hljs-operator">=</span> ? <span class="hljs-keyword">AND</span> stock <span class="hljs-operator">&gt;</span> <span class="hljs-number">0</span>;
+<span class="hljs-comment">-- if affected rows = 0 → lost the race, retry or reject</span>
+</code></pre></div>
+<p>This pattern gives you Redis-level speed for 99% of requests while the DB prevents any edge-case oversell from Redis failures (e.g., crash between DECR and DB write).</p>
+<hr>
+<h2 id="common-pitfalls" tabindex="-1"><a class="header-anchor" href="#common-pitfalls"><span>Common Pitfalls</span></a></h2>
+<ul>
+<li><strong>Forgetting rollback</strong>: If DB write fails after Redis DECR, restore Redis stock — otherwise inventory leaks.</li>
+<li><strong>Lock expiry too short</strong>: If business logic takes longer than lock TTL, another thread acquires it mid-execution → use async heartbeat or extend TTL.</li>
+<li><strong>Redis cluster</strong>: Lua scripts and atomic ops are per-slot; if stock key and user key hash to different slots, use hash tags <code>{event_42}:stock</code> / <code>{event_42}:user:99</code> to co-locate.</li>
+<li><strong>Thundering herd on lock</strong>: If lock fails, add random jitter before retry to avoid stampede.</li>
+</ul>
+
+      </div>
+      <div class="cheatsheet-footer">
+        <a href="../faqs.html" class="back-link">← Back to FAQs</a>
+        <a href="https://github.com/yennanliu/CS_basics/blob/master/doc/faq/backend/overbooking_prevention.md" class="github-edit" target="_blank">Edit on GitHub →</a>
+      </div>
+    <nav class="prev-next"><a href="backend_db_isolation_demo_mysql.html" class="prev-link">← Db Isolation Demo Mysql</a><a href="backend_web_long_connections.html" class="next-link">Web Long Connections →</a></nav>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>CS_basics — computer science fundamentals &amp; interview preparation</p>
+      <p>
+        <a href="https://github.com/yennanliu/CS_basics">github</a> |
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">docs</a> |
+        <a href="https://github.com/yennanliu/CS_basics/issues">issues</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

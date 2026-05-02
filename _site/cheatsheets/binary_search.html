@@ -1,21 +1,18 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Binary Search - CS_basics</title>
+  <title>Binary Search — CS_basics</title>
   <meta name="description" content="Computer Science fundamentals: algorithms, data structures, system design, and LeetCode solutions">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>CS</text></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' fill='white'>$</text></svg>">
   <link rel="stylesheet" href="../style.css">
-  <link rel="stylesheet" href="../vendor/fonts.css">
   <link rel="stylesheet" href="../vendor/highlight/atom-one-dark.min.css">
   <script>
   (function() {
-    var saved = localStorage.getItem('theme');
-    if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-      document.documentElement.setAttribute('data-theme', 'dark');
-    }
+    var saved = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', saved);
   })();
   </script>
   <script>
@@ -23,9 +20,9 @@
     var pre = btn.closest('.code-block-wrapper').querySelector('pre');
     var text = pre ? pre.innerText : '';
     navigator.clipboard.writeText(text).then(function() {
-      btn.textContent = 'Copied!';
+      btn.textContent = 'copied';
       btn.classList.add('copied');
-      setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+      setTimeout(function() { btn.textContent = 'copy'; btn.classList.remove('copied'); }, 2000);
     });
   }
   </script>
@@ -48,19 +45,16 @@
     }
     var toggle = document.getElementById('theme-toggle');
     if (toggle) {
-      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      toggle.textContent = isDark ? '☀️' : '🌙';
+      var updateLabel = function() {
+        toggle.textContent = document.documentElement.getAttribute('data-theme') === 'dark' ? '[light]' : '[dark]';
+      };
+      updateLabel();
       toggle.addEventListener('click', function() {
-        var dark = document.documentElement.getAttribute('data-theme') === 'dark';
-        if (dark) {
-          document.documentElement.removeAttribute('data-theme');
-          localStorage.setItem('theme', 'light');
-          toggle.textContent = '🌙';
-        } else {
-          document.documentElement.setAttribute('data-theme', 'dark');
-          localStorage.setItem('theme', 'dark');
-          toggle.textContent = '☀️';
-        }
+        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        var next = isDark ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+        updateLabel();
       });
     }
   });</script>
@@ -69,27 +63,23 @@
   <div class="progress-container"><div class="progress-bar" id="reading-progress"></div></div>
   <nav class="navbar">
     <div class="container">
-      <div class="nav-brand">
-        <span class="nav-icon">💻</span>
+      <a href="../index.html" class="nav-brand">
         <span class="nav-title">CS_basics</span>
-      </div>
+      </a>
       <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle menu">
         <span></span><span></span><span></span>
       </button>
       <div class="nav-links">
-        <a href="../index.html" class="">Home</a>
-        <a href="../cheatsheets.html" class="active">Cheat Sheets</a>
-        <a href="../patterns.html" class="">Pattern Recognition</a>
-        <a href="../faqs.html" class="">FAQs</a>
-        <a href="../resources.html" class="">Resources</a>
-        <a href="../lc-explorer.html" class="">LC Explorer</a>
-        <a href="../algo_demo/index.html" class="">Visualizer</a>
-        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">&#127769;</button>
-        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">
-          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
-            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
-          </svg>
-        </a>
+        <a href="../index.html" class="">home</a>
+        <a href="../cheatsheets.html" class="active">cheatsheets</a>
+        <a href="../patterns.html" class="">patterns</a>
+        <a href="../faqs.html" class="">faqs</a>
+        <a href="../lc-explorer.html" class="">lc-explorer</a>
+        <a href="../lc-similar.html" class="">similar</a>
+        <a href="../lc-random-picker.html" class="">random</a>
+        <a href="../lc-review-plan.html" class="">review</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">[dark]</button>
+        <a href="https://github.com/yennanliu/CS_basics" target="_blank" class="github-link" aria-label="GitHub">github</a>
       </div>
     </div>
   </nav>
@@ -100,7 +90,7 @@
       <nav class="breadcrumbs"><a href="../index.html">Home</a> <span class="sep">›</span> <a href="../cheatsheets.html">Cheat Sheets</a> <span class="sep">›</span> <span class="current">Binary Search</span></nav>
       <div class="cheatsheet-header">
         <h1>Binary Search</h1>
-        <span class="last-updated">Last updated: Apr 21, 2026</span>
+        <span class="last-updated">Last updated: Apr 30, 2026</span>
       </div>
       <div class="toc"><h2>Table of Contents</h2><ul><li><a href="#overview">Overview</a></li><li class="toc-sub"><a href="#key-properties">Key Properties</a></li><li class="toc-sub"><a href="#core-algorithm-steps">Core Algorithm Steps</a></li><li class="toc-sub"><a href="#when-to-use-binary-search">When to Use Binary Search</a></li><li class="toc-sub"><a href="#references">References</a></li><li><a href="#understanding-binary-search-pointer-behavior">Understanding Binary Search Pointer Behavior</a></li><li class="toc-sub"><a href="#core-insight-what-do-l-and-r-actually-mean">Core Insight: What Do l and r Actually Mean?</a></li><li class="toc-sub"><a href="#summary-table">Summary Table</a></li><li class="toc-sub"><a href="#application-search-insert-position-lc-35">Application: Search Insert Position (LC 35)</a></li><li class="toc-sub"><a href="#common-mistake-to-avoid">Common Mistake to Avoid</a></li><li><a href="#1-binary-search-types-patterns">1) Binary Search Types &amp; Patterns</a></li><li class="toc-sub"><a href="#1-1-basic-binary-search">1.1) Basic Binary Search</a></li><li class="toc-sub"><a href="#1-2-search-in-rotated-array">1.2) Search in Rotated Array</a></li><li class="toc-sub"><a href="#1-3-recursive-binary-search">1.3) Recursive Binary Search</a></li><li class="toc-sub"><a href="#1-4-search-in-2d-matrix-lc-74">1.4) Search in 2D Matrix (LC 74)</a></li><li class="toc-sub"><a href="#1-5-find-boundaries-lc-34">1.5) Find Boundaries (LC 34)</a></li><li class="toc-sub"><a href="#1-6-left-boundary-search-lc-367-875">1.6) Left Boundary Search (LC 367, 875)</a></li><li class="toc-sub"><a href="#1-7-right-boundary-search">1.7) Right Boundary Search</a></li><li class="toc-sub"><a href="#1-8-binary-search-on-answer-space">1.8) Binary Search on Answer Space ⭐⭐⭐⭐⭐</a></li><li class="toc-sub"><a href="#1-9-related-algorithms-data-structures">1.9) Related Algorithms &amp; Data Structures</a></li><li><a href="#2-binary-search-templates-patterns">2) Binary Search Templates &amp; Patterns</a></li><li class="toc-sub"><a href="#additional-resources">Additional Resources</a></li><li class="toc-sub"><a href="#2-1-standard-binary-search-template">2.1) Standard Binary Search Template</a></li><li class="toc-sub"><a href="#2-2-left-boundary-template">2.2) Left Boundary Template</a></li><li class="toc-sub"><a href="#2-3-right-boundary-template">2.3) Right Boundary Template</a></li><li><a href="#3-summary-quick-reference">3) Summary &amp; Quick Reference</a></li><li class="toc-sub"><a href="#3-1-when-to-use-binary-search">3.1) When to Use Binary Search</a></li><li class="toc-sub"><a href="#3-2-template-selection-guide">3.2) Template Selection Guide</a></li><li class="toc-sub"><a href="#3-3-common-pitfalls-tips">3.3) Common Pitfalls &amp; Tips</a></li><li class="toc-sub"><a href="#3-4-time-space-complexity">3.4) Time &amp; Space Complexity</a></li><li><a href="#4-leetcode-examples-applications">4) LeetCode Examples &amp; Applications</a></li><li class="toc-sub"><a href="#4-1-search-in-rotated-sorted-array-lc-33-lc-81">4.1) Search in Rotated Sorted Array (LC 33, LC 81)</a></li><li class="toc-sub"><a href="#4-2-two-sum-ii-input-array-is-sorted-lc-167">4.2) Two Sum II - Input Array is Sorted (LC 167)</a></li><li class="toc-sub"><a href="#4-3-find-peak-element-lc-162-lc-852">4.3) Find Peak Element (LC 162, LC 852)</a></li><li class="toc-sub"><a href="#4-4-valid-perfect-square-lc-367-sqrt-x-lc-69">4.4) Valid Perfect Square (LC 367) &amp; Sqrt(x) (LC 69)</a></li><li class="toc-sub"><a href="#4-5-minimum-size-subarray-sum-lc-209">4.5) Minimum Size Subarray Sum (LC 209)</a></li><li class="toc-sub"><a href="#4-6-first-bad-version-lc-278">4.6) First Bad Version (LC 278)</a></li><li class="toc-sub"><a href="#4-7-search-insert-position-lc-35">4.7) Search Insert Position (LC 35)</a></li><li class="toc-sub"><a href="#4-8-capacity-to-ship-packages-within-d-days-lc-1011">4.8) Capacity To Ship Packages Within D Days (LC 1011)</a></li><li class="toc-sub"><a href="#4-9-split-array-largest-sum-lc-410-hard">4.9) Split Array Largest Sum (LC 410) [Hard]</a></li><li class="toc-sub"><a href="#4-10-koko-eating-bananas-lc-875">4.10) Koko Eating Bananas (LC 875)</a></li><li class="toc-sub"><a href="#4-11-find-k-closest-elements-lc-658">4.11) Find K Closest Elements (LC 658)</a></li><li class="toc-sub"><a href="#4-12-sqrt-x-lc-69-alternative-implementation">4.12) Sqrt(x) (LC 69) - Alternative Implementation</a></li><li class="toc-sub"><a href="#4-13-find-first-and-last-position-of-element-in-sorted-array-lc-34">4.13) Find First and Last Position of Element in Sorted Array (LC 34)</a></li><li class="toc-sub"><a href="#4-14-search-a-2d-matrix-lc-74">4.14) Search a 2D Matrix (LC 74)</a></li><li class="toc-sub"><a href="#4-15-find-minimum-in-rotated-sorted-array-lc-153">4.15) Find Minimum in Rotated Sorted Array (LC 153)</a></li><li class="toc-sub"><a href="#4-16-find-first-and-last-position-alternative-implementation">4.16) Find First and Last Position - Alternative Implementation</a></li><li class="toc-sub"><a href="#4-17-find-smallest-letter-greater-than-target-lc-744">4.17) Find Smallest Letter Greater Than Target (LC 744)</a></li><li class="toc-sub"><a href="#4-18-arranging-coins-lc-441">4.18) Arranging Coins (LC 441)</a></li><li class="toc-sub"><a href="#4-19-minimum-number-of-days-to-make-m-bouquets-lc-1482">4.19) Minimum Number of Days to Make m Bouquets (LC 1482)</a></li><li class="toc-sub"><a href="#4-20-search-a-2d-matrix-ii-lc-240">4.20) Search a 2D Matrix II (LC 240)</a></li><li class="toc-sub"><a href="#4-21-find-minimum-in-rotated-sorted-array-ii-lc-154">4.21) Find Minimum in Rotated Sorted Array II (LC 154)</a></li><li class="toc-sub"><a href="#4-22-missing-element-in-sorted-array-lc-1060">4.22) Missing Element in Sorted Array (LC 1060)</a></li><li><a href="#lc-examples">LC Examples</a></li><li class="toc-sub"><a href="#2-1-find-first-and-last-position-lc-34-left-right-binary-search">2-1) Find First and Last Position (LC 34) — Left/Right Binary Search</a></li><li class="toc-sub"><a href="#2-2-search-in-rotated-sorted-array-lc-33-binary-search-on-rotated-array">2-2) Search in Rotated Sorted Array (LC 33) — Binary Search on Rotated Array</a></li><li class="toc-sub"><a href="#2-3-koko-eating-bananas-lc-875-binary-search-on-answer">2-3) Koko Eating Bananas (LC 875) — Binary Search on Answer</a></li><li class="toc-sub"><a href="#2-4-find-minimum-in-rotated-sorted-array-lc-153-binary-search">2-4) Find Minimum in Rotated Sorted Array (LC 153) — Binary Search</a></li><li class="toc-sub"><a href="#2-5-capacity-to-ship-packages-within-d-days-lc-1011-binary-search-on-answer">2-5) Capacity to Ship Packages Within D Days (LC 1011) — Binary Search on Answer</a></li><li class="toc-sub"><a href="#2-6-find-peak-element-lc-162-binary-search-on-peak">2-6) Find Peak Element (LC 162) — Binary Search on Peak</a></li><li class="toc-sub"><a href="#2-7-split-array-largest-sum-lc-410-binary-search-on-answer">2-7) Split Array Largest Sum (LC 410) — Binary Search on Answer</a></li><li class="toc-sub"><a href="#2-8-first-bad-version-lc-278-classic-binary-search">2-8) First Bad Version (LC 278) — Classic Binary Search</a></li><li class="toc-sub"><a href="#2-9-median-of-two-sorted-arrays-lc-4-binary-search-on-partition">2-9) Median of Two Sorted Arrays (LC 4) — Binary Search on Partition</a></li><li class="toc-sub"><a href="#2-10-time-based-key-value-store-lc-981-binary-search-on-timestamps">2-10) Time Based Key-Value Store (LC 981) — Binary Search on Timestamps</a></li><li class="toc-sub"><a href="#2-11-minimum-number-of-days-to-make-m-bouquets-lc-1482-binary-search-on-days">2-11) Minimum Number of Days to Make m Bouquets (LC 1482) — Binary Search on Days</a></li><li class="toc-sub"><a href="#2-12-single-element-in-a-sorted-array-lc-540-binary-search">2-12) Single Element in a Sorted Array (LC 540) — Binary Search</a></li><li class="toc-sub"><a href="#2-13-minimize-the-maximum-difference-of-pairs-lc-2616-minimize-maximum-pattern">2-13) Minimize the Maximum Difference of Pairs (LC 2616) — Minimize Maximum Pattern</a></li><li class="toc-sub"><a href="#2-14-divide-chocolate-lc-1231-maximize-minimum-pattern">2-14) Divide Chocolate (LC 1231) — Maximize Minimum Pattern</a></li></ul></div>
       <div class="cheatsheet-content">
@@ -337,21 +327,146 @@ Loop ends (l &gt; r):
 <li><strong>Key Concept</strong>: Determine which half is sorted, then decide search direction</li>
 <li><strong>Applications</strong>: Find target, find minimum element</li>
 </ul>
-<h4 id="find-minimum-in-rotated-sorted-array-lc-153" tabindex="-1"><a class="header-anchor" href="#find-minimum-in-rotated-sorted-array-lc-153"><span>Find Minimum in Rotated Sorted Array (LC 153)</span></a></h4>
-<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Approach: Compare mid with boundaries to determine rotation point</span>
-<span class="hljs-keyword">while</span> (r &gt;= l) {
-    <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> (l + r) / <span class="hljs-number">2</span>;
-    <span class="hljs-comment">// Case 1: left subarray + mid is ascending -&gt; search right</span>
-    <span class="hljs-keyword">if</span> (nums[mid] &gt;= nums[l]) {
-        l = mid + <span class="hljs-number">1</span>;
+<h4 id="find-minimum-in-rotated-sorted-array-lc-153" tabindex="-1"><a class="header-anchor" href="#find-minimum-in-rotated-sorted-array-lc-153"><span>Find Minimum in Rotated Sorted Array (LC 153) ⭐⭐⭐⭐⭐</span></a></h4>
+<h5 id="pattern-find-rotation-point" tabindex="-1"><a class="header-anchor" href="#pattern-find-rotation-point"><span>Pattern: Find Rotation Point</span></a></h5>
+<p>A rotated sorted array always has this structure:</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">[Left Higher Plateau] &gt; [Right Lower Plateau]
+e.g. [3, 4, 5, 1, 2]
+      ^^^^^^^^  ^^^^
+      left part  right part (contains minimum)
+</code></pre></div>
+<p>The <strong>minimum is always at the rotation point</strong> — the single “drop” in the array.</p>
+<h5 id="core-idea" tabindex="-1"><a class="header-anchor" href="#core-idea"><span>Core Idea</span></a></h5>
+<p>Check which side of <code>mid</code> is on which plateau, then move toward the <strong>unsorted side</strong> (which contains the minimum):</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Rotation examples (length 5):
+[1, 2, 3, 4, 5]  → already sorted, min at index 0
+[5, 1, 2, 3, 4]  → mid &lt; r → right is sorted → go left (r = mid)
+[4, 5, 1, 2, 3]  → mid &lt; r → right is sorted → go left (r = mid)
+[3, 4, 5, 1, 2]  → mid &gt;= l → left is sorted → go right (l = mid + 1)
+[2, 3, 4, 5, 1]  → mid &gt;= l → left is sorted → go right (l = mid + 1)
+</code></pre></div>
+<p><strong>Decision Rule:</strong></p>
+<ul>
+<li><code>nums[mid] &gt;= nums[l]</code> → mid is on the <strong>Left Plateau</strong> → minimum is to the right → <code>l = mid + 1</code></li>
+<li><code>nums[mid] &lt; nums[l]</code>  → mid is on the <strong>Right Plateau</strong> → minimum is at mid or left → <code>r = mid - 1</code></li>
+</ul>
+<h5 id="recommended-template-closed-boundary-track-ans" tabindex="-1"><a class="header-anchor" href="#recommended-template-closed-boundary-track-ans"><span>Recommended Template (Closed Boundary, track <code>ans</code>)</span></a></h5>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// LC 153 - Find Minimum in Rotated Sorted Array</span>
+<span class="hljs-comment">// time = O(log N), space = O(1)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">findMin</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">l</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, r = nums.length - <span class="hljs-number">1</span>;
+    <span class="hljs-type">int</span> <span class="hljs-variable">ans</span> <span class="hljs-operator">=</span> nums[<span class="hljs-number">0</span>];
+
+    <span class="hljs-keyword">while</span> (l &lt;= r) {
+        <span class="hljs-comment">// Early exit: current window already sorted → minimum is at l</span>
+        <span class="hljs-keyword">if</span> (nums[l] &lt;= nums[r]) {
+            ans = Math.min(ans, nums[l]);
+            <span class="hljs-keyword">break</span>;
+        }
+
+        <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> l + (r - l) / <span class="hljs-number">2</span>;
+        ans = Math.min(ans, nums[mid]);
+
+        <span class="hljs-keyword">if</span> (nums[mid] &gt;= nums[l]) {
+            l = mid + <span class="hljs-number">1</span>;  <span class="hljs-comment">// left plateau → go right</span>
+        } <span class="hljs-keyword">else</span> {
+            r = mid - <span class="hljs-number">1</span>;  <span class="hljs-comment">// right plateau → go left</span>
+        }
     }
-    <span class="hljs-comment">// Case 2: right subarray + mid is ascending -&gt; search left  </span>
-    <span class="hljs-keyword">else</span> {
-        r = mid - <span class="hljs-number">1</span>;
-    }
+    <span class="hljs-keyword">return</span> ans;
 }
 </code></pre></div>
-<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Two-step approach: determine sorted half, then check target location</span>
+<h5 id="alternative-template-open-boundary-r-l-no-ans-variable" tabindex="-1"><a class="header-anchor" href="#alternative-template-open-boundary-r-l-no-ans-variable"><span>Alternative Template (Open Boundary <code>r &gt; l</code>, no <code>ans</code> variable)</span></a></h5>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Cleaner: converges l == r to the minimum index</span>
+<span class="hljs-comment">// time = O(log N), space = O(1)</span>
+<span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">findMin</span><span class="hljs-params">(<span class="hljs-type">int</span>[] nums)</span> {
+    <span class="hljs-type">int</span> <span class="hljs-variable">l</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, r = nums.length - <span class="hljs-number">1</span>;
+    <span class="hljs-keyword">while</span> (r &gt; l) {
+        <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> l + (r - l) / <span class="hljs-number">2</span>;
+        <span class="hljs-keyword">if</span> (nums[mid] &lt; nums[r]) {
+            r = mid;       <span class="hljs-comment">// right side sorted → min could be at mid</span>
+        } <span class="hljs-keyword">else</span> {
+            l = mid + <span class="hljs-number">1</span>;   <span class="hljs-comment">// left side sorted → min is to the right</span>
+        }
+    }
+    <span class="hljs-keyword">return</span> nums[l];  <span class="hljs-comment">// l == r → minimum</span>
+}
+</code></pre></div>
+<h5 id="visual-trace-nums-3-4-5-1-2" tabindex="-1"><a class="header-anchor" href="#visual-trace-nums-3-4-5-1-2"><span>Visual Trace: <code>nums = [3,4,5,1,2]</code></span></a></h5>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">l=0, r=4: nums[l]=3 &gt; nums[r]=2 → rotated
+  mid=2, nums[2]=5 &gt;= nums[0]=3 → left plateau → l=3
+
+l=3, r=4: nums[l]=1 &lt; nums[r]=2 → sorted → ans=min(ans,1), break
+
+Answer = 1 ✓
+</code></pre></div>
+<h5 id="template-comparison" tabindex="-1"><a class="header-anchor" href="#template-comparison"><span>Template Comparison</span></a></h5>
+<table>
+<thead>
+<tr>
+<th>Template</th>
+<th>Loop condition</th>
+<th>Update</th>
+<th>Return</th>
+<th>Best when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Closed <code>l &lt;= r</code> + <code>ans</code></td>
+<td><code>l &lt;= r</code></td>
+<td><code>l=mid+1</code> / <code>r=mid-1</code></td>
+<td><code>ans</code></td>
+<td>Need to track candidate</td>
+</tr>
+<tr>
+<td>Open <code>r &gt; l</code></td>
+<td><code>r &gt; l</code></td>
+<td><code>r=mid</code> / <code>l=mid+1</code></td>
+<td><code>nums[l]</code></td>
+<td>Cleanest, converges to index</td>
+</tr>
+</tbody>
+</table>
+<h5 id="similar-problems" tabindex="-1"><a class="header-anchor" href="#similar-problems"><span>Similar Problems</span></a></h5>
+<table>
+<thead>
+<tr>
+<th>LC #</th>
+<th>Problem</th>
+<th>Key Difference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>153</strong></td>
+<td>Find Minimum in Rotated Sorted Array</td>
+<td>Unique elements, find min</td>
+</tr>
+<tr>
+<td><strong>154</strong></td>
+<td>Find Minimum in Rotated Sorted Array II</td>
+<td>With duplicates — use <code>r--</code> when <code>nums[mid]==nums[r]</code></td>
+</tr>
+<tr>
+<td><strong>33</strong></td>
+<td>Search in Rotated Sorted Array</td>
+<td>Find target (not min) — check target location within sorted half</td>
+</tr>
+<tr>
+<td><strong>81</strong></td>
+<td>Search in Rotated Sorted Array II</td>
+<td>Find target with duplicates</td>
+</tr>
+<tr>
+<td><strong>189</strong></td>
+<td>Rotate Array</td>
+<td>Related concept, different task</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// Two-step approach: determine sorted half, then check target location (LC 33/81)</span>
 <span class="hljs-keyword">while</span> (r &gt;= l) {
     <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> (l + r) / <span class="hljs-number">2</span>;
     
@@ -589,6 +704,125 @@ Loop ends (l &gt; r):
 }
 <span class="hljs-keyword">return</span> left;
 </code></pre></div>
+<hr>
+<h4 id="search-boundary-pattern-left-max-nums-right-sum-nums" tabindex="-1"><a class="header-anchor" href="#search-boundary-pattern-left-max-nums-right-sum-nums"><span>Search Boundary Pattern: <code>left = max(nums)</code>, <code>right = sum(nums)</code> ⭐⭐⭐⭐⭐</span></a></h4>
+<p>This is the <strong>canonical search space setup</strong> for “Binary Search on Answer” problems
+that ask you to split/partition/allocate elements from an array.</p>
+<h5 id="why-left-max-nums" tabindex="-1"><a class="header-anchor" href="#why-left-max-nums"><span>Why <code>left = max(nums)</code>?</span></a></h5>
+<p>Any valid answer (max subarray sum, capacity, speed, etc.) must be <strong>at least</strong> as
+large as the biggest single element — because that element must appear in <em>some</em>
+group by itself in the worst case.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">nums = [7, 2, 5, 10, 8]
+             ^  ^^
+        max = 10  ← no matter how you split, some subarray contains 10 alone
+                     → answer cannot be smaller than 10
+left = max(nums) = 10
+</code></pre></div>
+<h5 id="why-right-sum-nums" tabindex="-1"><a class="header-anchor" href="#why-right-sum-nums"><span>Why <code>right = sum(nums)</code>?</span></a></h5>
+<p>If you put <strong>all</strong> elements in one group, the sum is <code>sum(nums)</code>. That always works —
+it’s the trivially valid upper bound. The answer can never exceed this.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">nums = [7, 2, 5, 10, 8]  →  sum = 32
+If k=1: one subarray containing everything, max sum = 32 ✓
+right = sum(nums) = 32
+</code></pre></div>
+<h5 id="visual-the-answer-lives-inside-max-sum" tabindex="-1"><a class="header-anchor" href="#visual-the-answer-lives-inside-max-sum"><span>Visual: The Answer Lives Inside <code>[max, sum]</code></span></a></h5>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Answer space for nums=[7,2,5,10,8], k=2:
+
+  10    12    14    16    18    20    22   ...   32
+  |-----|-----|-----|-----|-----|-----|---------|
+  left=max                                right=sum
+
+  Can split into ≤2 subarrays with max sum ≤ mid?
+
+  mid=10: [7,2,5] ok? sum=14 &gt; 10 ✗  →  impossible
+  mid=18: [7,2,5]=14 ✓, [10,8]=18 ✓  →  2 subarrays ✓
+  mid=15: [7,2,5]=14 ✓, [10,8]=18 &gt; 15 ✗  →  need 3 subarrays ✗
+  mid=16: [7,2,5]=14 ✓, [10,8]=18 &gt; 16 ✗  →  need 3 ✗
+  mid=17: same ✗
+  mid=18: ✓  ← answer = 18
+
+  Feasibility:  ✗ ✗ ✗ ✗ ✗ ✗ ✗ ✗ ✓ ✓ ✓ ... ✓
+                |&lt;--  infeasible --&gt;|&lt;-- feasible --&gt;|
+                                   ^
+                                answer = leftmost ✓
+</code></pre></div>
+<h5 id="the-code-pattern-reusable-across-problems" tabindex="-1"><a class="header-anchor" href="#the-code-pattern-reusable-across-problems"><span>The Code Pattern (reusable across problems)</span></a></h5>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-type">int</span> <span class="hljs-variable">left</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>, right = <span class="hljs-number">0</span>;
+<span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> x : nums) {
+    left = Math.max(left, x);  <span class="hljs-comment">// lower bound: must hold the largest element</span>
+    right += x;                <span class="hljs-comment">// upper bound: put everything in one group</span>
+}
+<span class="hljs-comment">// Now binary search on [left, right]</span>
+<span class="hljs-keyword">while</span> (left &lt; right) {
+    <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> left + (right - left) / <span class="hljs-number">2</span>;
+    <span class="hljs-keyword">if</span> (isValid(nums, k, mid)) {
+        right = mid;      <span class="hljs-comment">// valid → try smaller (minimize)</span>
+    } <span class="hljs-keyword">else</span> {
+        left = mid + <span class="hljs-number">1</span>;   <span class="hljs-comment">// invalid → need larger</span>
+    }
+}
+<span class="hljs-keyword">return</span> left;
+</code></pre></div>
+<h5 id="similar-problems-using-the-same-max-sum-boundary" tabindex="-1"><a class="header-anchor" href="#similar-problems-using-the-same-max-sum-boundary"><span>Similar Problems Using the Same <code>[max, sum]</code> Boundary</span></a></h5>
+<table>
+<thead>
+<tr>
+<th>LC #</th>
+<th>Problem</th>
+<th>What’s minimized</th>
+<th><code>left</code></th>
+<th><code>right</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>410</strong></td>
+<td>Split Array Largest Sum</td>
+<td>max subarray sum</td>
+<td><code>max(nums)</code></td>
+<td><code>sum(nums)</code></td>
+</tr>
+<tr>
+<td><strong>1011</strong></td>
+<td>Capacity To Ship Packages</td>
+<td>ship capacity</td>
+<td><code>max(weights)</code></td>
+<td><code>sum(weights)</code></td>
+</tr>
+<tr>
+<td><strong>1482</strong></td>
+<td>Min Days to Make m Bouquets</td>
+<td>days</td>
+<td><code>1</code></td>
+<td><code>max(bloomDay)</code></td>
+</tr>
+<tr>
+<td><strong>875</strong></td>
+<td>Koko Eating Bananas</td>
+<td>eating speed</td>
+<td><code>1</code></td>
+<td><code>max(piles)</code></td>
+</tr>
+<tr>
+<td><strong>1283</strong></td>
+<td>Find the Smallest Divisor</td>
+<td>divisor</td>
+<td><code>1</code></td>
+<td><code>max(nums)</code></td>
+</tr>
+<tr>
+<td><strong>2064</strong></td>
+<td>Minimized Maximum of Products Distributed</td>
+<td>max per store</td>
+<td><code>1</code></td>
+<td><code>max(quantities)</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Tip:</strong> Whenever the problem says “split/ship/distribute array elements into K groups,
+minimize the maximum”, reach for <code>left = max(nums)</code>, <code>right = sum(nums)</code>.</p>
+</blockquote>
 <hr>
 <h4 id="example-1-lc-410-split-array-largest-sum" tabindex="-1"><a class="header-anchor" href="#example-1-lc-410-split-array-largest-sum"><span>Example 1: LC 410 - Split Array Largest Sum ⭐⭐⭐⭐⭐</span></a></h4>
 <p><strong>Problem:</strong> Split array into m subarrays, minimize the largest sum among subarrays.</p>
@@ -1883,6 +2117,104 @@ Larger max_diff → More pairs possible → Easier to satisfy constraint
                     r = mid-<span class="hljs-number">1</span>
 </code></pre></div>
 <h3 id="4-3-find-peak-element-lc-162-lc-852" tabindex="-1"><a class="header-anchor" href="#4-3-find-peak-element-lc-162-lc-852"><span>4.3) Find Peak Element (LC 162, LC 852)</span></a></h3>
+<h4 id="core-idea-hill-climbing-guaranteed-peak-exists" tabindex="-1"><a class="header-anchor" href="#core-idea-hill-climbing-guaranteed-peak-exists"><span>Core Idea: Hill Climbing (Guaranteed Peak Exists)</span></a></h4>
+<p><strong>Key Rule:</strong></p>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">If nums[mid] &lt; nums[mid + 1]  →  peak is on the RIGHT  (move l = mid + 1)
+If nums[mid] &gt; nums[mid + 1]  →  peak is on the LEFT   (move r = mid)
+</code></pre></div>
+<p><strong>Why it’s guaranteed to work (the “-∞ boundary” trick):</strong></p>
+<p>The problem states <code>nums[-1] = nums[n] = -∞</code>. This means the array is
+always “sandwiched” between two bottomless pits on each end.</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">         peak
+        /    \
+       /      \
+-∞ ___/        \___ -∞
+</code></pre></div>
+<p>No matter where you are in the array, if you walk toward the <em>higher</em>
+neighbor, you are guaranteed to hit a peak — either the ground rises
+and then falls (a peak in the middle), or it keeps rising all the way
+to the end (the last element is a peak because -∞ is on its right).</p>
+<hr>
+<h4 id="case-1-nums-mid-nums-mid-1-going-uphill-move-right" tabindex="-1"><a class="header-anchor" href="#case-1-nums-mid-nums-mid-1-going-uphill-move-right"><span>Case 1: <code>nums[mid] &lt; nums[mid+1]</code> → Going UPHILL → move RIGHT</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">         ?
+        /
+       /
+ .... mid  mid+1 ....
+      low  HIGH
+
+You are on an upward slope. Two sub-cases:
+  a) The slope eventually drops → peak is somewhere to the right
+  b) The slope never drops → last element is a peak (because -∞ is on its right)
+
+Either way, a peak MUST exist to the right → l = mid + 1
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Example: nums = [1, 2, 3, 1]
+                    ^mid ^mid+1
+nums[mid]=2 &lt; nums[mid+1]=3  → uphill → move RIGHT
+                        ^--- peak is here (index 2, value 3)
+</code></pre></div>
+<hr>
+<h4 id="case-2-nums-mid-nums-mid-1-going-downhill-stay-left-include-mid" tabindex="-1"><a class="header-anchor" href="#case-2-nums-mid-nums-mid-1-going-downhill-stay-left-include-mid"><span>Case 2: <code>nums[mid] &gt; nums[mid+1]</code> → Going DOWNHILL → stay LEFT (include mid)</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs"> ....  mid  mid+1 ....
+       HIGH  low
+          \
+           \
+            ?
+
+You are on a downward slope. Two sub-cases:
+  a) nums[mid] &gt; nums[mid-1]: mid itself IS a peak
+  b) nums[mid] &lt; nums[mid-1]: the slope was already rising from the left,
+     so a peak exists somewhere to the left of mid
+
+Either way, the peak is at mid or to the left → r = mid
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">Example: nums = [1, 2, 1, 3, 5, 6, 4]
+                               ^mid ^mid+1
+nums[mid]=5 &gt; nums[mid+1]=6?  No — pick a better example:
+                                  ^mid  ^mid+1
+nums[mid]=6 &gt; nums[mid+1]=4  → downhill → move LEFT (r = mid, keep mid)
+              ^--- peak is here (index 5, value 6)
+</code></pre></div>
+<hr>
+<h4 id="visual-search-space-convergence" tabindex="-1"><a class="header-anchor" href="#visual-search-space-convergence"><span>Visual: Search Space Convergence</span></a></h4>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">nums = [1, 2, 3, 1]
+        0  1  2  3
+
+l=0, r=3:  mid=1, nums[1]=2 &lt; nums[2]=3  → uphill → l=2
+           [_, _, 2, 3]
+                  l  r
+
+l=2, r=3:  mid=2, nums[2]=3 &gt; nums[3]=1  → downhill → r=2
+           [_, _, 3, _]
+                  l
+                  r
+
+l==r → return 2  ✓  (nums[2]=3 is the peak)
+</code></pre></div>
+<div class="code-block-wrapper"><div class="code-block-header"><span></span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre><code class="hljs">nums = [1, 2, 1, 3, 5, 6, 4]
+        0  1  2  3  4  5  6
+
+l=0, r=6:  mid=3, nums[3]=3 &lt; nums[4]=5  → uphill → l=4
+l=4, r=6:  mid=5, nums[5]=6 &gt; nums[6]=4  → downhill → r=5
+l=4, r=5:  mid=4, nums[4]=5 &lt; nums[5]=6  → uphill → l=5
+l=5, r=5:  l==r → return 5  ✓  (nums[5]=6 is the peak)
+</code></pre></div>
+<hr>
+<h4 id="why-while-l-r-and-not-while-l-r" tabindex="-1"><a class="header-anchor" href="#why-while-l-r-and-not-while-l-r"><span>Why <code>while (l &lt; r)</code> and NOT <code>while (l &lt;= r)</code>?</span></a></h4>
+<p>With <code>r = mid</code> (not <code>r = mid - 1</code>), when <code>l == r</code> the loop must stop —
+otherwise <code>mid == l == r</code> would cause infinite loop (<code>r = mid</code> never shrinks).</p>
+<div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">java</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="java"><code class="hljs language-java"><span class="hljs-comment">// ✅ Correct: while (l &lt; r)</span>
+<span class="hljs-keyword">while</span> (l &lt; r) {
+    <span class="hljs-type">int</span> <span class="hljs-variable">mid</span> <span class="hljs-operator">=</span> (l + r) / <span class="hljs-number">2</span>;
+    <span class="hljs-keyword">if</span> (nums[mid] &gt; nums[mid + <span class="hljs-number">1</span>])
+        r = mid;       <span class="hljs-comment">// Keep mid, since it may be the peak</span>
+    <span class="hljs-keyword">else</span>
+        l = mid + <span class="hljs-number">1</span>;   <span class="hljs-comment">// mid is not the peak, skip it</span>
+}
+<span class="hljs-comment">// When l == r, that IS the peak index</span>
+<span class="hljs-keyword">return</span> l;
+</code></pre></div>
+<hr>
 <p><strong>Approach</strong>: Compare mid with adjacent elements to determine search direction</p>
 <div class="code-block-wrapper"><div class="code-block-header"><span class="code-lang-label">python</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div><pre data-lang="python"><code class="hljs language-python"><span class="hljs-comment"># LC 162 Find Peak Element, LC 852 Peak Index in a Mountain Array</span>
 <span class="hljs-comment"># V0&#x27;</span>
@@ -3398,11 +3730,11 @@ value:  2  4 [5] 5  5  5 [5] 6  6
 
   <footer>
     <div class="container">
-      <p>CS_basics - Computer Science Fundamentals & Interview Preparation</p>
+      <p>CS_basics — computer science fundamentals &amp; interview preparation</p>
       <p>
-        <a href="https://github.com/yennanliu/CS_basics">GitHub</a> •
-        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">Documentation</a> •
-        <a href="https://github.com/yennanliu/CS_basics/issues">Report Issues</a>
+        <a href="https://github.com/yennanliu/CS_basics">github</a> |
+        <a href="https://github.com/yennanliu/CS_basics/tree/master/doc">docs</a> |
+        <a href="https://github.com/yennanliu/CS_basics/issues">issues</a>
       </p>
     </div>
   </footer>
