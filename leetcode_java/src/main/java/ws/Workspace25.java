@@ -3904,9 +3904,27 @@ public class Workspace25 {
      *
      *
      */
+    // 8.17 - 27 am
+    /**
+     *
+     *  IDEA 1) BRUTE FORCE ????
+     *
+     *
+     */
+    public int minTrioDegree(int n, int[][] edges) {
+
+
+        return 0;
+    }
+
+
+
+
+
+
     // IDEA 1) DFS ??
     int minDegree = 0; // ???? edges.length * edges.length; // ???
-    public int minTrioDegree(int n, int[][] edges) {
+    public int minTrioDegree_99(int n, int[][] edges) {
 
         //int minDegree = 0; // ???? edges.length * edges.length; // ???
         // -> map:  { node :  [neigh_1, neigh_2, .. ] } ???
