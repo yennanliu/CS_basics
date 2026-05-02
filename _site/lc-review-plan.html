@@ -26,23 +26,23 @@
     }
     .navbar {
       background: var(--bg); border-bottom: 1px solid var(--border);
-      padding: 10px 24px; position: sticky; top: 0; z-index: 100;
+      padding: 10px 32px; position: sticky; top: 0; z-index: 100;
     }
     .nav-content {
-      max-width: 960px; margin: 0 auto;
+      max-width: 100%; margin: 0 auto;
       display: flex; justify-content: space-between; align-items: center;
     }
-    .nav-links { display: flex; gap: 0; list-style: none; margin: 0; padding: 0; }
+    .nav-links { display: flex; gap: 0; list-style: none; margin: 0; padding: 0; flex-wrap: nowrap; }
     .nav-links a {
       color: var(--text-light); text-decoration: none;
-      font-size: 12px; padding: 2px 0; border-bottom: none; transition: color 0.15s;
+      font-size: 13px; padding: 2px 10px; border-bottom: 1px solid transparent;
+      white-space: nowrap; transition: color 0.15s;
     }
-    .nav-links li + li > a::before { content: " | "; color: var(--border); }
+    .nav-links li + li > a { border-left: 1px solid var(--border); }
     .nav-links a:hover { color: var(--text); }
-    .nav-links a.active { color: var(--text); text-decoration: underline; }
-    .logo { font-size: 13px; font-weight: 600; color: var(--text); text-decoration: none; text-transform: uppercase; letter-spacing: .05em; }
-    .theme-btn { background: none; border: none; font-size: 12px; color: var(--text-light); cursor: pointer; padding: 0; font-family: inherit; }
-    .theme-btn::before { content: " | "; color: var(--border); }
+    .nav-links a.active { color: var(--text); border-bottom-color: var(--text); }
+    .logo { font-size: 13px; font-weight: 700; color: var(--text); text-decoration: none; text-transform: uppercase; letter-spacing: .08em; margin-right: 24px; }
+    .theme-btn { background: none; border: none; border-left: 1px solid var(--border); font-size: 13px; color: var(--text-light); cursor: pointer; padding: 2px 10px; font-family: inherit; white-space: nowrap; }
     .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
     h1 { font-size: 2rem; margin-bottom: 0.5rem; }
     .subtitle { color: var(--text-light); margin-bottom: 2rem; }

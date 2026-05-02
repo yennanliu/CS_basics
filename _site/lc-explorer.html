@@ -399,19 +399,20 @@
     }
     /* ── Terminal-core overrides ── */
     *, *::before, *::after { border-radius: 0 !important; box-shadow: none !important; }
-    body { font-family: 'SF Mono','JetBrains Mono','IBM Plex Mono',ui-monospace,'Menlo',monospace !important; }
-    .navbar { background: var(--bg) !important; border-bottom: 1px solid var(--border) !important; padding: 10px 24px !important; }
-    .nav-content { max-width: 960px !important; }
-    .logo { font-size: 13px !important; font-weight: 600 !important; text-transform: uppercase; letter-spacing: .05em; }
-    .nav-links { gap: 0 !important; list-style: none !important; }
-    .nav-links li { display: inline; }
-    .nav-links a { font-size: 12px !important; color: var(--text-light) !important; text-decoration: none !important; border-bottom: none !important; }
-    .nav-links a.active { color: var(--text) !important; text-decoration: underline !important; }
-    .nav-links li + li > a::before { content: " | "; color: var(--border); }
+    body { font-family: 'SF Mono','JetBrains Mono','IBM Plex Mono',ui-monospace,'Menlo',monospace !important; font-size: 15px !important; }
+    .navbar { background: var(--bg) !important; border-bottom: 1px solid var(--border) !important; padding: 10px 32px !important; }
+    .nav-content { max-width: 100% !important; }
+    .logo { font-size: 13px !important; font-weight: 700 !important; text-transform: uppercase; letter-spacing: .08em; margin-right: 24px; }
+    .nav-links { gap: 0 !important; list-style: none !important; flex-wrap: nowrap !important; }
+    .nav-links li { display: inline-flex; }
+    .nav-links a { font-size: 13px !important; color: var(--text-light) !important; text-decoration: none !important; border-bottom: 1px solid transparent !important; white-space: nowrap; padding: 2px 10px !important; }
+    .nav-links a.active { color: var(--text) !important; border-bottom-color: var(--text) !important; }
+    .nav-links li + li > a { border-left: 1px solid var(--border) !important; }
     .nav-links a:hover { color: var(--text) !important; }
-    .theme-btn { background: none !important; border: none !important; font-size: 12px !important; color: var(--text-light) !important; cursor: pointer; font-family: inherit !important; padding: 0 !important; }
-    .theme-btn::before { content: " | "; color: var(--border); }
-    input, select, button { border-radius: 0 !important; font-family: inherit !important; }
+    .theme-btn { background: none !important; border: none !important; border-left: 1px solid var(--border) !important; font-size: 13px !important; color: var(--text-light) !important; cursor: pointer; font-family: inherit !important; padding: 2px 10px !important; white-space: nowrap; }
+    input, select, button:not(.theme-btn) { border-radius: 0 !important; font-family: inherit !important; }
+    pre, .code-block-wrapper pre { background: #0d1117 !important; border-color: #30363d !important; }
+    .hljs { background: #0d1117 !important; }
     .card, .filter-section, .filter-bar, .results-section { border-radius: 0 !important; box-shadow: none !important; }
   </style>
 </head>
