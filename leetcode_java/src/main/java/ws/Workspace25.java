@@ -4665,7 +4665,43 @@ public class Workspace25 {
      *
      *
      */
+
     public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
+        // edge
+        if(root == null){
+            return null;
+        }
+        // ??
+        Stack<TreeNode> st = new Stack<>();
+        // ???
+        st.add(root);
+
+        // /??
+        while (!st.isEmpty()){
+            // ???
+//            while (root.left != null){
+//                st.add(root.left);
+//            }
+
+            TreeNode cur = st.pop();
+            if(cur.val == p.val){
+                return st.pop(); // ??
+            }
+            // ????
+            while (cur.right != null){
+                st.add(cur.right);
+            }
+        }
+
+        return null;
+    }
+
+
+
+
+
+
+    public TreeNode inorderSuccessor_99(TreeNode root, TreeNode p) {
         List<TreeNode> list = new ArrayList<>();
         dfs2(root, list);
         for(TreeNode x: list){

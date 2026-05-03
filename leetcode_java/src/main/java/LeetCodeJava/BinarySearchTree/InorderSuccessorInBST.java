@@ -75,6 +75,24 @@ public class InorderSuccessorInBST {
     }
 
 
+    // V0-2
+    // IDEA: BST + lazy traversal (GPT)
+    public TreeNode inorderSuccessor_0_2(TreeNode root, TreeNode p) {
+        TreeNode successor = null;
+
+        while (root != null) {
+            if (p.val < root.val) {
+                successor = root;      // potential answer
+                root = root.left;
+            } else {
+                root = root.right;
+            }
+        }
+
+        return successor;
+    }
+
+
     // V1
     // https://leetcode.ca/2016-09-10-285-Inorder-Successor-in-BST/
     public TreeNode inorderSuccessor_1(TreeNode root, TreeNode p) {
