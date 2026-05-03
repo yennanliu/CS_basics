@@ -4659,11 +4659,33 @@ public class Workspace25 {
 
 
     // LC 285
+    // 8.50 - 9.00 am
+    /**
+     *
+     *
+     *
+     */
     public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
+        List<TreeNode> list = new ArrayList<>();
+        dfs2(root, list);
+        for(TreeNode x: list){
+            if(x.val > p.val){
+                return x;
+            }
+        }
         return null;
     }
 
 
+    private void dfs2(TreeNode root, List<TreeNode> list){
+        if(root == null){
+            return;
+        }
+        dfs2(root.left, list);
+        //list.add(root.val);
+        list.add(root);
+        dfs2(root.right, list);
+    }
 
 
 

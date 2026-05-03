@@ -5,6 +5,9 @@ package LeetCodeJava.BinarySearchTree;
 
 import LeetCodeJava.DataStructure.TreeNode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *  285. Inorder Successor in BST
  * Given a binary search tree and a node in it, find the in-order successor of that node in the BST.
@@ -47,6 +50,30 @@ public class InorderSuccessorInBST {
 //    public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
 //
 //    }
+
+
+    // V0-1
+    // IDEA: BST property + DFS (eager traversal) (gpt)
+    public TreeNode inorderSuccessor_0_1(TreeNode root, TreeNode p) {
+        List<TreeNode> list = new ArrayList<>();
+        dfs2(root, list);
+
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i) == p) {
+                return (i + 1 < list.size()) ? list.get(i + 1) : null;
+            }
+        }
+        return null;
+    }
+
+    private void dfs2(TreeNode root, List<TreeNode> list){
+        if (root == null) return;
+
+        dfs2(root.left, list);
+        list.add(root);
+        dfs2(root.right, list);
+    }
+
 
     // V1
     // https://leetcode.ca/2016-09-10-285-Inorder-Successor-in-BST/
