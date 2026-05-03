@@ -44,48 +44,196 @@ import java.util.Stack;
  */
 public class MaxChunksToMakeSorted {
 
-    // V0
-    // IDEA: prefix + problem understanding
 
-    /**
-     * IDEA:
-     * <p>
-     * since this problem wants to find the MAX value of sub array with sort op
-     * and concatenate can same as the SORTED ORIGINAL ARRAY
-     * <p>
-     * -> so all we need to do within looping is:
-     * maintain
-     * 1) sorted prefixSum (sort all array and its prefix sum)
-     * 2) prefixSum (current array's prefix sum)
-     * <p>
-     * -> so, for `sorted prefixSum`, it's sortedPrefixSum + i, ... (since the array is the permutation of element within [0, n - 1])
-     * for `prefixSum`, it's prefixSum + i ,....
+
+    // V0
+    // IDEA: GREEDY (prefix maximum) - max so far (gpt)
+    /**  NOTE !!!
+     *
+     *  Core idea:
+     *
+     *   A chunk can end at index i
+     *
+     *     - if the maximum value seen so far equals i
+     *      (since the array is a permutation (排列) of [0..n-1]).
+     *
+     *
+     *      -> should just track the running max.
+     *
+     */
+    /**  Dry run:
+     *
+     * Let’s dry run the **greedy + prefix max**
+     * solution step by step for
+     * LeetCode 769 Max Chunks To
+     * Make Sorted so you can see exactly how the chunks form.
+     *
+     * ---
+     *
+     * ## ✅ Example 1
+     *
+     * **Input:**
+     *
+     * ```text
+     * arr = [1, 0, 2, 3, 4]
+     * ```
+     *
+     * ### Initialization
+     *
+     * ```text
+     * chunks = 0
+     * maxSoFar = 0
+     * ```
+     *
+     * ---
+     *
+     * ### Iteration
+     *
+     * #### i = 0
+     *
+     * ```text
+     * arr[i] = 1
+     * maxSoFar = max(0, 1) = 1
+     * maxSoFar != i (1 != 0) → cannot split
+     * ```
+     *
+     * ---
+     *
+     * #### i = 1
+     *
+     * ```text
+     * arr[i] = 0
+     * maxSoFar = max(1, 0) = 1
+     * maxSoFar == i (1 == 1) → ✅ split here
+     *
+     * chunks = 1
+     * ```
+     *
+     * 👉 Chunk: `[1, 0]` → after sorting → `[0, 1]`
+     *
+     * ---
+     *
+     * #### i = 2
+     *
+     * ```text
+     * arr[i] = 2
+     * maxSoFar = max(1, 2) = 2
+     * maxSoFar == i (2 == 2) → ✅ split
+     *
+     * chunks = 2
+     * ```
+     *
+     * 👉 Chunk: `[2]`
+     *
+     * ---
+     *
+     * #### i = 3
+     *
+     * ```text
+     * arr[i] = 3
+     * maxSoFar = 3
+     * maxSoFar == i → ✅ split
+     *
+     * chunks = 3
+     * ```
+     *
+     * 👉 Chunk: `[3]`
+     *
+     * ---
+     *
+     * #### i = 4
+     *
+     * ```text
+     * arr[i] = 4
+     * maxSoFar = 4
+     * maxSoFar == i → ✅ split
+     *
+     * chunks = 4
+     * ```
+     *
+     * 👉 Chunk: `[4]`
+     *
+     * ---
+     *
+     * ### ✅ Final Answer
+     *
+     * ```text
+     * chunks = 4
+     * ```
+     *
+     * ---
+     *
+     * ## ❗ Example 2 (more interesting)
+     *
+     * **Input:**
+     *
+     * ```text
+     * arr = [4, 3, 2, 1, 0]
+     * ```
+     *
+     * ---
+     *
+     * ### Iteration
+     *
+     * #### i = 0 → 3
+     *
+     * ```text
+     * maxSoFar keeps increasing: 4
+     * At i = 0 → 4 != 0
+     * At i = 1 → 4 != 1
+     * At i = 2 → 4 != 2
+     * At i = 3 → 4 != 3
+     * ```
+     *
+     * No splits yet ❌
+     *
+     * ---
+     *
+     * #### i = 4
+     *
+     * ```text
+     * arr[i] = 0
+     * maxSoFar = 4
+     * maxSoFar == i (4 == 4) → ✅ split
+     * ```
+     *
+     * ---
+     *
+     * ### ✅ Final Answer
+     *
+     * ```text
+     * chunks = 1
+     * ```
+     *
+     * 👉 Whole array must be one chunk
+     *
+     * ---
+     *
+     * ## 🔑 Key Insight from Dry Run
+     *
+     * * `maxSoFar` tells you the **largest number that must be placed**
+     * * If it equals current index `i`, then:
+     *
+     *   * all numbers `[0..i]` are already within `[0..i]`
+     *   * so sorting this segment won’t affect the rest
+     *
+     * ---
+     *
+     * ## 🧠 Visual intuition
+     *
+     * Think of it like:
+     *
+     * ```text
+     * Index:      0  1  2  3  4
+     * arr:        1  0  2  3  4
+     * maxSoFar:   1  1  2  3  4
+     *               ↑     ↑  ↑  ↑
+     *            split  split...
+     * ```
+     *
+     *
      */
     public int maxChunksToSorted(int[] arr) {
-
-        int n = arr.length;
-        int chunks = 0, prefixSum = 0, sortedPrefixSum = 0;
-
-        // Iterate over the array
-        for (int i = 0; i < n; i++) {
-            // Update prefix sum of `arr`
-            prefixSum += arr[i];
-            // Update prefix sum of the sorted array
-            sortedPrefixSum += i;
-
-            // If the two sums are equal, the two prefixes contain the same elements; a
-            // chunk can be formed
-            if (prefixSum == sortedPrefixSum) {
-                chunks++;
-            }
-        }
-        return chunks;
-    }
-
-
-    // V0-1
-    // IDEA: max so far (gpt)
-    public int maxChunksToSorted_0_1(int[] arr) {
         int chunks = 0;
         int maxSoFar = 0;
 
@@ -101,8 +249,49 @@ public class MaxChunksToMakeSorted {
     }
 
 
+
     // V0-2
-    // IDEA: max so far (GEMINI)
+    // IDEA: GREEDY (prefix maximum) - max so far (GEMINI)
+    /**  Dry run:
+     *
+     * In **LC 769 (Max Chunks To Make Sorted)**,
+     * the array is a permutation of
+     * numbers from `0` to `n - 1`.
+     *
+     * The key observation is
+     * that a chunk can be formed if the **maximum value**
+     * seen so far in the current segment is equal to the **current index**.
+     *
+     * If the max value seen from index `0` to `i`
+     * is exactly `i`, it means all the numbers
+     * that *should* be in the first `i + 1` positions (0 through $i$) are present in that segment, just in a different order.
+     *
+     * ### 🐛 The Logic Fixes
+     * 1.  **Avoid Sorting/Copying**: Using `Arrays.sort` inside a loop makes the code $O(n^2 \log n)$. This problem can be solved in $O(n)$.
+     * 2.  **The Index Property**: Since the values are `[0, 1, ..., n-1]`, at any point `i`, if `max(arr[0...i]) == i`, you can successfully "cut" a chunk there.
+     * 3.  **The Counter**: Start your result at `0` and increment it every time the "max == index" condition is met.
+     *
+     *
+     * ### 🔍 Senior Engineering Review
+     *
+     * *   **Complexity**:
+     *     *   **Time**: $O(n)$. We pass through the array exactly once.
+     *     *   **Space**: $O(1)$. No extra arrays or lists needed.
+     * *   **Why this works**: Because the sorted version of the array is guaranteed to be `[0, 1, 2, ..., n-1]`, index `i` *must* eventually hold value `i`. If our maximum value up to index `i` is `i`, it implies we haven't seen any numbers larger than `i`, meaning the set of numbers we have seen is exactly `{0, 1, ..., i}`.
+     *
+     *
+     *
+     * ### 📊 Dry Run: `arr = [1, 0, 2, 4, 3]`
+     * 1.  **i = 0**: `maxSoFar = 1`. `maxSoFar (1) != i (0)`. (No chunk)
+     * 2.  **i = 1**: `maxSoFar = max(1, 0) = 1`. `maxSoFar (1) == i (1)`. **(Chunk 1: [1, 0])**
+     * 3.  **i = 2**: `maxSoFar = max(1, 2) = 2`. `maxSoFar (2) == i (2)`. **(Chunk 2: [2])**
+     * 4.  **i = 3**: `maxSoFar = max(2, 4) = 4`. `maxSoFar (4) != i (3)`. (No chunk)
+     * 5.  **i = 4**: `maxSoFar = max(4, 3) = 4`. `maxSoFar (4) == i (4)`. **(Chunk 3: [4, 3])**
+     *
+     * **Result: 3**
+     *
+     *
+     */
     public int maxChunksToSorted_0_2(int[] arr) {
         if (arr == null || arr.length == 0)
             return 0;
@@ -123,7 +312,46 @@ public class MaxChunksToMakeSorted {
 
         return chunks;
     }
+    
 
+
+    // V0-3
+    // IDEA: prefix + problem understanding
+
+    /**
+     * IDEA:
+     * <p>
+     * since this problem wants to find the MAX value of sub array with sort op
+     * and concatenate can same as the SORTED ORIGINAL ARRAY
+     * <p>
+     * -> so all we need to do within looping is:
+     * maintain
+     * 1) sorted prefixSum (sort all array and its prefix sum)
+     * 2) prefixSum (current array's prefix sum)
+     * <p>
+     * -> so, for `sorted prefixSum`, it's sortedPrefixSum + i, ... (since the array is the permutation of element within [0, n - 1])
+     * for `prefixSum`, it's prefixSum + i ,....
+     */
+    public int maxChunksToSorted_0_3(int[] arr) {
+
+        int n = arr.length;
+        int chunks = 0, prefixSum = 0, sortedPrefixSum = 0;
+
+        // Iterate over the array
+        for (int i = 0; i < n; i++) {
+            // Update prefix sum of `arr`
+            prefixSum += arr[i];
+            // Update prefix sum of the sorted array
+            sortedPrefixSum += i;
+
+            // If the two sums are equal, the two prefixes contain the same elements; a
+            // chunk can be formed
+            if (prefixSum == sortedPrefixSum) {
+                chunks++;
+            }
+        }
+        return chunks;
+    }
 
 
     // V1-1
@@ -268,6 +496,6 @@ public class MaxChunksToMakeSorted {
 
 
 
-    
+
 
 }
