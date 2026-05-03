@@ -4757,54 +4757,63 @@ public class Workspace25 {
      *
      *
      */
-    // IDEA 3) SLIDE WINDOW ???
+//    // IDEA 3) SLIDE WINDOW ???
+//    public int maxChunksToSorted(int[] arr) {
+//        // edge
+//        if(arr == null || arr.length <= 1){
+//            return arr.length; // ???
+//        }
+//
+//        int res = 1;
+//        int curChunkCnt = 0;
+//
+//
+//        // ???
+//        int l = 0;
+//        for(int r = 1; r < arr.length; r++){
+//            if(canChunk(arr, r, l, r)){
+//                curChunkCnt += 1;
+//                l = r; // ??
+//            }
+//        }
+//
+//
+//        // ???
+//        return Math.max(res, curChunkCnt);
+//    }
+//
+//
+//    // ???
+//    // idx: the `idx` in arr
+//    // val: the `EXPECTED` val in sorted arr
+//    private boolean canChunk(int[] arr, int val, int start, int end){
+//        // edge
+//        if(end < start){
+//            return false;
+//        }
+//
+//        int[] sub = Arrays.copyOfRange(arr, start, end); // ??
+//        // sort
+//        // by default, it's ascending order ??? (small -> big
+//        Arrays.sort(sub);
+//        // ???
+//        for(int x: sub){
+//            if(x != val){
+//                return false;
+//            }
+//        }
+//
+//
+//        return true;
+//    }
+
+
+
+
+    // LC 768
     public int maxChunksToSorted(int[] arr) {
-        // edge
-        if(arr == null || arr.length <= 1){
-            return arr.length; // ???
-        }
 
-        int res = 1;
-        int curChunkCnt = 0;
-
-
-        // ???
-        int l = 0;
-        for(int r = 1; r < arr.length; r++){
-            if(canChunk(arr, r, l, r)){
-                curChunkCnt += 1;
-                l = r; // ??
-            }
-        }
-
-
-        // ???
-        return Math.max(res, curChunkCnt);
-    }
-
-
-    // ???
-    // idx: the `idx` in arr
-    // val: the `EXPECTED` val in sorted arr
-    private boolean canChunk(int[] arr, int val, int start, int end){
-        // edge
-        if(end < start){
-            return false;
-        }
-
-        int[] sub = Arrays.copyOfRange(arr, start, end); // ??
-        // sort
-        // by default, it's ascending order ??? (small -> big
-        Arrays.sort(sub);
-        // ???
-        for(int x: sub){
-            if(x != val){
-                return false;
-            }
-        }
-
-
-        return true;
+        return 0;
     }
 
 

@@ -64,6 +64,12 @@
 - **Pattern**: Convert elements to 0/1, then apply prefix sum with conditions
 - **Key Insight**: Transform problem to simpler prefix sum problem
 
+### **Pattern 8: Prefix Maximum (Greedy Chunk / Partition)**
+- **Description**: Track the running maximum of the array. When `maxSoFar == i`, the prefix `[0..i]` contains exactly the elements `{0, 1, ..., i}` and can form an independent sorted chunk.
+- **Examples**: LC 769 - Max Chunks To Make Sorted, LC 768 - Max Chunks To Make Sorted II
+- **Pattern**: Single pass with a `maxSoFar` variable; increment chunk count whenever `maxSoFar == currentIndex`
+- **Key Insight**: Because the array is a permutation of `[0, n-1]`, if the max value seen so far equals the current index, all values needed for positions `0..i` are already present in `arr[0..i]`
+
 ### **Pattern 7: Sum of Distances (Left-Right Split)**
 - **Description**: Calculate sum of absolute differences between indices efficiently
 - **Examples**: LC 2615 - Sum of Distances, LC 2121 - Intervals Between Identical Elements, LC 1685 - Sum of Absolute Differences
@@ -486,6 +492,57 @@ public long[] distance(int[] nums) {
 }
 ```
 
+### Template 8: Prefix Maximum (Greedy Chunk / Partition)
+
+**Core Idea:** For a permutation of `[0, n-1]`, the prefix `arr[0..i]` can be an independent sorted chunk if and only if `max(arr[0..i]) == i`. Track this with a single `maxSoFar` variable.
+
+```java
+// Java — LC 769 Max Chunks To Make Sorted
+// Time: O(n)  Space: O(1)
+public int maxChunksToSorted(int[] arr) {
+    int chunks = 0, maxSoFar = 0;
+    for (int i = 0; i < arr.length; i++) {
+        maxSoFar = Math.max(maxSoFar, arr[i]);
+        if (maxSoFar == i) chunks++;   // all values 0..i are present in arr[0..i]
+    }
+    return chunks;
+}
+```
+
+```python
+# Python — LC 769
+def maxChunksToSorted(arr):
+    chunks = max_so_far = 0
+    for i, val in enumerate(arr):
+        max_so_far = max(max_so_far, val)
+        if max_so_far == i:
+            chunks += 1
+    return chunks
+```
+
+**Equivalent prefix-sum formulation** (also O(n)/O(1)):
+```java
+// prefixSum of arr == prefixSum of sorted arr  →  same multiset in [0..i]
+int chunks = 0, prefixSum = 0, sortedPrefixSum = 0;
+for (int i = 0; i < arr.length; i++) {
+    prefixSum += arr[i];
+    sortedPrefixSum += i;           // sorted array is [0,1,2,...,n-1]
+    if (prefixSum == sortedPrefixSum) chunks++;
+}
+```
+
+**When to upgrade to PrefixMax + SuffixMin (LC 768, general arrays):**
+```java
+// If values are NOT a permutation, use:
+// max(arr[0..i-1]) < min(arr[i..n-1])  →  valid cut point
+int[] prefixMax = arr.clone(), suffixMin = arr.clone();
+for (int i = 1; i < n; i++) prefixMax[i] = Math.max(prefixMax[i-1], prefixMax[i]);
+for (int i = n-2; i >= 0; i--) suffixMin[i] = Math.min(suffixMin[i+1], suffixMin[i]);
+int chunks = 0;
+for (int i = 0; i < n; i++)
+    if (i == 0 || suffixMin[i] > prefixMax[i-1]) chunks++;
+```
+
 #### Alternative: Running Sum Approach (No Prefix Array)
 ```python
 def sum_of_distances_optimized(nums):
@@ -581,6 +638,13 @@ def sum_of_distances_optimized(nums):
 | Flip String to Monotone Increasing | 926 | Transform 0/1 counting | Medium | Template 6 |
 | Max Chunks To Make Sorted | 769 | Sum comparison | Medium | Template 6 |
 | Longest Arithmetic Subsequence | 1027 | Transform differences | Medium | Template 6 |
+
+#### **Pattern 8: Prefix Maximum Problems**
+| Problem | LC # | Key Technique | Difficulty | Template |
+|---------|------|---------------|------------|----------|
+| Max Chunks To Make Sorted | 769 | Prefix max == index | Medium | Template 8 |
+| Max Chunks To Make Sorted II | 768 | PrefixMax + SuffixMin arrays | Hard | Template 8 |
+| Find the Longest Turbulent Subarray | 978 | Running state tracking | Medium | Modified Template 8 |
 
 #### **Pattern 7: Sum of Distances Problems**
 | Problem | LC # | Key Technique | Difficulty | Template |
@@ -679,6 +743,7 @@ Problem Analysis Flowchart:
 | "2D", "matrix", "rectangle" | Template 5 | LC 304, 1314 |
 | "odd numbers", "binary", "transform" | Template 6 | LC 1248, 926 |
 | "sum of distances", "absolute differences", "identical elements" | Template 7 | LC 2615, 2121, 1685 |
+| "max chunks", "partition to sort", "split into sorted segments" | Template 8 | LC 769, 768 |
 
 ### Problem Identification Patterns
 
@@ -718,6 +783,12 @@ Problem Analysis Flowchart:
 - Key insight: Split into left/right parts, use `count * value - sum` formula
 - HashMap stores: `{value: [list of indices]}`
 - Time complexity reduces from O(n²) to O(n)
+
+#### **Identify Template 8 Usage:**
+- Problem mentions: "max chunks", "partition array so each part can be sorted independently", "split to sort"
+- Input array is a permutation of `[0, n-1]` (or can be generalized with prefix/suffix arrays)
+- Key insight: `maxSoFar == i` means prefix `[0..i]` is a complete, self-contained set ready to sort
+- Equivalent check: prefix sum of `arr[0..i]` equals prefix sum of sorted array `[0..i]`
 
 ## Legacy Examples
 
@@ -1352,6 +1423,7 @@ def distance(nums):
 | **Template 5** | 2D Matrix | `prefix[i][j] = val + left + top - topleft` |
 | **Template 6** | Transform Count | `transform array first, then apply prefix sum` |
 | **Template 7** | Sum of Distances | `left = idx * countLeft - sumLeft; right = sumRight - idx * countRight` |
+| **Template 8** | Prefix Maximum | `maxSoFar = max(maxSoFar, arr[i]); if (maxSoFar == i) chunks++` |
 
 ### Core Mathematical Insights
 
