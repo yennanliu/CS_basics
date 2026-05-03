@@ -4533,6 +4533,129 @@ public class Workspace25 {
     }
 
 
+    // LC 99
+    // 8.01 - 11 am
+    /**
+     *  ->  `Recover` the tree
+     *     without changing its structure.
+     *
+     *
+     *     where the values of `exactly two nodes `
+     *     of the tree were `swapped` by mistake
+     *
+     *
+     *  -----------------
+     *
+     *   IDEA 1) BST property + DFS ???
+     *
+     *      BST property:
+     *        in order:
+     *          ascending order (small -> big)
+     *
+     *
+     *  -----------------
+     *
+     */
+
+    public void recoverTree(TreeNode root) {
+
+        List<TreeNode> list = new ArrayList<>();
+        dfs1(root, list);
+
+        // NOTE !! we DON'T sort
+        // which will `break` the BST info
+
+//        // NOTE !!!  sort (small -> big
+//        Collections.sort(list, new Comparator<TreeNode>() {
+//            @Override
+//            public int compare(TreeNode o1, TreeNode o2) {
+//                int diff = o1.val - o2.val;
+//                return diff;
+//            }
+//        });
+
+        // ???
+        int idx1 = -1;
+        int idx2 = -1;
+        for(int i = 1; i < list.size() - 1; i++){
+            TreeNode node = list.get(i);
+            TreeNode prev = list.get(i-1);
+            TreeNode next = list.get(i+1);
+            if(node.val <= prev.val || node.val >= next.val){
+                if(idx1 == -1){
+                    idx1 = i;
+                }else{
+                    idx2 = i;
+                }
+            }
+
+        }
+
+        // SWAP !!!
+        TreeNode node1 = list.get(idx1);
+        TreeNode node2 = list.get(idx2);
+        int tmp = node1.val;
+
+        node1.val = node2.val;
+        node2.val = tmp;
+    }
+
+
+    private void dfs1(TreeNode root, List<TreeNode> list){
+        if(root == null){
+            return;
+        }
+        dfs1(root.left, list);
+        //list.add(root.val);
+        list.add(root);
+        dfs1(root.right, list);
+    }
+
+
+
+
+    // ???
+    TreeNode node1;
+    TreeNode node2;
+    public void recoverTree_99(TreeNode root) {
+        // edge
+        if(root == null){
+            return;
+        }
+
+
+        // ???
+        BSTHelper(root, Integer.MAX_VALUE, -1 * Integer.MAX_VALUE);
+
+
+        // swap ??
+        int tmp = node1.val;
+        node1.val = node2.val;
+        node2.val = tmp;
+    }
+
+    // ????
+    private void BSTHelper(TreeNode root, int smallest, int biggest){
+        // edge
+        if(root == null){
+            return;
+        }
+
+        BSTHelper(root.left, smallest, root.val);
+        // check
+        // ???
+        if(root.val <= smallest || root.val >= biggest){
+            // ???
+            if(node1 == null){
+                node1 = root;
+            }else{
+                node2 = root;
+            }
+        }
+
+        BSTHelper(root.right, root.val, biggest);
+    }
+
 
 
 

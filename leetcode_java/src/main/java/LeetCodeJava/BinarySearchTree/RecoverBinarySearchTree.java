@@ -334,6 +334,179 @@ public class RecoverBinarySearchTree {
     }
 
 
+    // V0-0-0-1
+    // IDEA: IN-ORDER DFS + BST property + `node val` swap (fixed by GPT)
+    public void recoverTree_0_0_0_1(TreeNode root) {
+        List<TreeNode> list = new ArrayList<>();
+        dfs1(root, list);
+
+        TreeNode first = null;
+        TreeNode second = null;
+
+        for (int i = 1; i < list.size(); i++) {
+            if (list.get(i).val < list.get(i - 1).val) {
+                // first violation
+                if (first == null) {
+                    first = list.get(i - 1);
+                    second = list.get(i);
+                } else {
+                    // second violation
+                    second = list.get(i);
+                }
+            }
+        }
+
+        // swap values
+        int tmp = first.val;
+        first.val = second.val;
+        second.val = tmp;
+    }
+
+    private void dfs1(TreeNode root, List<TreeNode> list) {
+        if (root == null)
+            return;
+
+        dfs1(root.left, list);
+        list.add(root);
+        dfs1(root.right, list);
+    }
+
+
+
+    // V0-0-0-1-1
+    // IDEA: Morris Traversal (a threaded in-order traversal). (GPT)
+    /** Core idea:
+     *
+     *  Yes—you *can* get **O(1) extra space** for
+     *  Recover Binary Search Tree (LeetCode 99),
+     *  but not with a stack or list.
+     *
+     *  -> The trick is **Morris Traversal**
+     *  (a threaded in-order traversal).
+     *
+     * ---
+     *
+     * # 🧠 Core idea (Morris traversal)
+     *
+     * Normally, in-order traversal needs:
+     *
+     * * recursion → O(h) space
+     * * or stack → O(h) space
+     *
+     * Morris traversal:
+     *
+     * * temporarily modifies the tree (creates “threads”)
+     * * avoids stack/recursion
+     * * restores the tree afterward
+     *
+     * 👉 So space = **O(1)**
+     *
+     * ---
+     *
+     * # 🔑 How it works (intuition)
+     *
+     * For each node:
+     *
+     * 1. If no left child → visit it, go right
+     * 2. If has left child:
+     *
+     *    * Find its **in-order predecessor** (rightmost node of left subtree)
+     *    * Link predecessor.right → current (temporary thread)
+     *    * Move left
+     *    * When you come back, remove the thread
+     *
+     * ---
+     *
+     * # 🔍 Why this works
+     *
+     * You’re still doing:
+     *
+     * ```
+     * in-order traversal
+     * → detect inversions
+     * → swap two nodes
+     * ```
+     *
+     * But instead of:
+     *
+     * * stack ❌
+     * * recursion ❌
+     *
+     * You use:
+     *
+     * * temporary links (threads) ✅
+     *
+     * ---
+     *
+     * # ⚖️ Complexity
+     *
+     * | Approach            | Time | Space    |
+     * | ------------------- | ---- | -------- |
+     * | List (your version) | O(n) | O(n)     |
+     * | Stack               | O(n) | O(h)     |
+     * | **Morris (this)**   | O(n) | **O(1)** |
+     *
+     * ---
+     *
+     * # ⚠️ Subtle but important
+     *
+     * * Tree is modified temporarily, but **fully restored**
+     * * Each edge is visited at most **twice**
+     * * Works because BST in-order must be sorted
+     *
+     */
+    public void recoverTree_0_0_1_1(TreeNode root) {
+        TreeNode first = null, second = null;
+        TreeNode prev = null;
+        TreeNode curr = root;
+
+        while (curr != null) {
+            if (curr.left == null) {
+                // visit
+                if (prev != null && curr.val < prev.val) {
+                    if (first == null)
+                        first = prev;
+                    second = curr;
+                }
+                prev = curr;
+                curr = curr.right;
+            } else {
+                // find predecessor
+                TreeNode pred = curr.left;
+                while (pred.right != null && pred.right != curr) {
+                    pred = pred.right;
+                }
+
+                if (pred.right == null) {
+                    // create thread
+                    pred.right = curr;
+                    curr = curr.left;
+                } else {
+                    // remove thread
+                    pred.right = null;
+
+                    // visit
+                    if (prev != null && curr.val < prev.val) {
+                        if (first == null)
+                            first = prev;
+                        second = curr;
+                    }
+                    prev = curr;
+
+                    curr = curr.right;
+                }
+            }
+        }
+
+        // swap
+        int tmp = first.val;
+        first.val = second.val;
+        second.val = tmp;
+    }
+
+
+
+
     // V0-0-1
     // IDEA: IN-ORDER DFS + BST property + `node val` swap (fixed by gemini)
     List<TreeNode> inOrderNodes = new ArrayList<>();
