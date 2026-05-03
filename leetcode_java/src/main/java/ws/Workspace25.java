@@ -4658,6 +4658,12 @@ public class Workspace25 {
 
 
 
+    // LC 285
+    public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
+        return null;
+    }
+
+
 
 
 
