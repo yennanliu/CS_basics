@@ -4818,61 +4818,78 @@ public class Workspace25 {
      *
      *
      */
+    // IDEA: Prefix Sum Matching
+    /** CORE IDEA:
+     *
+     * If two prefixes have the same sum,
+     *   -> they contain the same multiset → valid chunk.
+     *
+     */
     public int maxChunksToSorted(int[] arr) {
-        // edge
 
-        // case 1) element are ALL unique
-        // -> LC 769
-        Set<Integer> set = new HashSet<>();
-        for(int x: arr){
-            set.add(x);
-        }
-        if(arr.length == set.size()){
-            return LC768(arr); // ???
-        }
-
-
-        // case 2) element are NOT unique
-        // -> slide window
-        int chunks = 0;
-        int l = 0;
-        for(int r = 1; r < arr.length; r++){
-
-        }
-
-
-
-
-        return chunks;
+        return 0;
     }
 
 
 
-    private int LC768(int[] arr){
-        int res = 1;
-        int chunks = 0;
-        int maxSoFar = 0;
 
-        // ???
-//        int[] arr2 = arr; // /?
+
+    // idea: slide window
+//    public int maxChunksToSorted(int[] arr) {
+//        // edge
+//
+//        // case 1) element are ALL unique
+//        // -> LC 769
+//        Set<Integer> set = new HashSet<>();
+//        for(int x: arr){
+//            set.add(x);
+//        }
+//        if(arr.length == set.size()){
+//            return LC768(arr); // ???
+//        }
+//
+//
+//        // case 2) element are NOT unique
+//        // -> slide window
+//        int chunks = 0;
+//        int l = 0;
+//        for(int r = 1; r < arr.length; r++){
+//
+//        }
+//
+//
+//
+//
+//        return chunks;
+//    }
+//
+//
+//
+//    private int LC768(int[] arr){
+//        int res = 1;
+//        int chunks = 0;
+//        int maxSoFar = 0;
+//
+//        // ???
+////        int[] arr2 = arr; // /?
+////        Arrays.sort(arr2);
+//
+//        int[] arr2 = arr.clone();
 //        Arrays.sort(arr2);
-
-        int[] arr2 = arr.clone();
-        Arrays.sort(arr2);
-
-        for(int i = 0; i < arr.length; i++){
-            // /??
-            maxSoFar = Math.max(maxSoFar, arr[i]);
-            if(maxSoFar == arr2[i]){
-                chunks += 1;
-            }
-        }
-
-
-        return Math.max(chunks, res);
-    }
-
-
+//
+//        for(int i = 0; i < arr.length; i++){
+//            // /??
+//            maxSoFar = Math.max(maxSoFar, arr[i]);
+//            if(maxSoFar == arr2[i]){
+//                chunks += 1;
+//            }
+//        }
+//
+//
+//        return Math.max(chunks, res);
+//    }
+//
+//
 
 
 

@@ -52,6 +52,12 @@ public class MaxChunksToMakeSorted2 {
 
     // V0-1
     // IDEA: Prefix Sum Matching (GPT)
+    /** CORE IDEA:
+     *
+     * If two prefixes have the same sum,
+     *   -> they contain the same multiset → valid chunk.
+     *
+     */
     public int maxChunksToSorted_0_1(int[] arr) {
         int[] sorted = arr.clone();
         Arrays.sort(sorted);
@@ -111,6 +117,68 @@ public class MaxChunksToMakeSorted2 {
     }
 
 
+    // V0-4
+    // IDEA: SLIDE WINDOW (GEMINI)
+    public int maxChunksToSorted_0_4(int[] arr) {
+        int n = arr.length;
+        int[] expect = arr.clone();
+        Arrays.sort(expect);
+
+        Map<Integer, Integer> countMap = new HashMap<>();
+        int ans = 0;
+        int nonzero = 0;
+
+        for (int i = 0; i < n; i++) {
+            int x = arr[i];
+            int y = expect[i];
+
+            // Process element from the actual array
+            int xFreq = countMap.getOrDefault(x, 0);
+            if (xFreq == 0)
+                nonzero++; // New mismatch starting
+            countMap.put(x, xFreq + 1);
+            if (countMap.get(x) == 0)
+                nonzero--; // Mismatch resolved
+
+            // Process element from the expected (sorted) array
+            int yFreq = countMap.getOrDefault(y, 0);
+            if (yFreq == 0)
+                nonzero++; // New mismatch starting
+            countMap.put(y, yFreq - 1);
+            if (countMap.get(y) == 0)
+                nonzero--; // Mismatch resolved
+
+            // If all frequencies are balanced, the sets match
+            if (nonzero == 0) {
+                ans++;
+            }
+        }
+
+        return ans;
+    }
+
+
+
+    // V0-7
+    // IDEA: Monotonic Stack (GPT)
+    public int maxChunksToSorted_0_7(int[] arr) {
+        Stack<Integer> stack = new Stack<>();
+
+        for (int num : arr) {
+            if (stack.isEmpty() || num >= stack.peek()) {
+                stack.push(num);
+            } else {
+                int max = stack.pop();
+                while (!stack.isEmpty() && stack.peek() > num) {
+                    stack.pop();
+                }
+                stack.push(max);
+            }
+        }
+
+        return stack.size();
+    }
+
 
 
 
@@ -125,6 +193,7 @@ public class MaxChunksToMakeSorted2 {
         Arrays.sort(expect);
 
         for (int i = 0; i < arr.length; ++i) {
+
             int x = arr[i], y = expect[i];
 
             count.put(x, count.getOrDefault(x, 0) + 1);
@@ -142,6 +211,8 @@ public class MaxChunksToMakeSorted2 {
             if (nonzero == 0)
                 ans++;
         }
+
+
 
         return ans;
     }
