@@ -50,6 +50,69 @@ public class MaxChunksToMakeSorted2 {
 //    }
 
 
+    // V0-1
+    // IDEA: Prefix Sum Matching (GPT)
+    public int maxChunksToSorted_0_1(int[] arr) {
+        int[] sorted = arr.clone();
+        Arrays.sort(sorted);
+
+        int chunks = 0;
+        long sum1 = 0, sum2 = 0;
+
+        for (int i = 0; i < arr.length; i++) {
+            sum1 += arr[i];
+            sum2 += sorted[i];
+
+            if (sum1 == sum2) {
+                chunks++;
+            }
+        }
+
+        return chunks;
+    }
+
+
+    // V0-2
+    // IDEA: Prefix Sum Matching (GEMINI)
+    /**
+     *  ->
+     *  The robust logic here is to compare the running
+     *  maximum of the original array with
+     *  the suffix minimum of the remaining array.
+     *
+     *
+     */
+    public int maxChunksToSorted_0_2(int[] arr) {
+        int n = arr.length;
+        if (n == 0)
+            return 0;
+
+        // minRight[i] stores the minimum value from arr[i] to arr[n-1]
+        int[] minRight = new int[n];
+        minRight[n - 1] = arr[n - 1];
+        for (int i = n - 2; i >= 0; i--) {
+            minRight[i] = Math.min(minRight[i + 1], arr[i]);
+        }
+
+        int chunks = 0;
+        int maxLeft = Integer.MIN_VALUE;
+
+        // We iterate up to n-1. We can cut after index i if:
+        // Max of everything to the left <= Min of everything to the right
+        for (int i = 0; i < n - 1; i++) {
+            maxLeft = Math.max(maxLeft, arr[i]);
+            if (maxLeft <= minRight[i + 1]) {
+                chunks++;
+            }
+        }
+
+        // The last chunk always completes at the end of the array
+        return chunks + 1;
+    }
+
+
+
+
 
     // V1-1
     // IDEA: SLIDE WINDOW
@@ -124,6 +187,7 @@ public class MaxChunksToMakeSorted2 {
 
         return ans;
     }
+
 
 
 
