@@ -4900,6 +4900,11 @@ public class Workspace25 {
 
 
 
+    // LC 926
+    public int minFlipsMonoIncr(String s) {
+
+        return 0;
+    }
 
 
 
