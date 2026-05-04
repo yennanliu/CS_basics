@@ -6150,4 +6150,121 @@ Use this pattern when:
 **File Reference**: `leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/CountSquareSubmatricesWithAllOnes.java`
 
 ---
+
+### Template: One-Pass DP — Flip String to Monotone Increasing (LC 926)
+
+#### 🎯 Pattern
+
+| Aspect | Detail |
+|--------|--------|
+| **Pattern** | One-pass 1D DP with two running state variables |
+| **State** | `flips` = min flips to make prefix monotone; `ones` = count of `'1'`s seen so far |
+| **Transition** | Only triggered when a `'0'` is encountered (conflict with prior `'1'`s) |
+| **Time** | O(n) |
+| **Space** | O(1) |
+
+#### 💡 Core Idea
+
+> A monotone-increasing binary string looks like `000...111`.  
+> Imagine scanning left-to-right and maintaining an invisible **split point**: everything left of it must be `0`, everything right must be `1`.
+
+When we see a `'1'`, we just count it (`ones++`) — it doesn't force a flip yet.  
+When we see a `'0'` **after** some `'1'`s, there's a conflict. Two choices:
+
+1. **Flip this `'0'` → `'1'`**: costs `flips + 1` (keep all previous decisions, pay 1 more)
+2. **Flip all previous `'1'`s → `'0'`**: costs `ones` (reset the prefix, undo all prior `'1'`s)
+
+Take the cheaper option: `flips = min(flips + 1, ones)`
+
+**Key insight**: `ones` is the "undo cost" — how expensive it would be to backtrack and flip everything seen so far to `0`.
+
+#### **Core Code (Java)**
+
+```java
+// LC 926 — O(n) time, O(1) space
+public int minFlipsMonoIncr(String s) {
+    int flips = 0;   // min flips to make prefix monotone
+    int ones = 0;    // count of '1's seen so far
+
+    for (char c : s.toCharArray()) {
+        if (c == '1') {
+            ones++;              // potential future cost if we later want all-0 prefix
+        } else {                 // c == '0' — conflict with prior '1's
+            // choice 1: flip this '0' → '1'  : cost = flips + 1
+            // choice 2: flip all prior '1'→'0': cost = ones
+            flips = Math.min(flips + 1, ones);
+        }
+    }
+
+    return flips;
+}
+```
+
+#### **Dry Run: `s = "00110"`**
+
+| i | char | ones | flips (before) | transition | flips (after) |
+|---|------|------|----------------|-----------|---------------|
+| 0 | `'0'` | 0 | 0 | min(0+1, 0)=0 | **0** |
+| 1 | `'0'` | 0 | 0 | min(0+1, 0)=0 | **0** |
+| 2 | `'1'` | 1 | 0 | ones++ | **0** |
+| 3 | `'1'` | 2 | 0 | ones++ | **0** |
+| 4 | `'0'` | 2 | 0 | min(0+1, 2)=1 | **1** |
+
+Result: `1` ✅ (flip last `'0'` → `'1'`: `"00111"`)
+
+#### **Dry Run: `s = "00011000"`**
+
+| i | char | ones | flips |
+|---|------|------|-------|
+| 0-2 | `'0'` | 0 | 0 |
+| 3-4 | `'1'` | 2 | 0 |
+| 5 | `'0'` | 2 | min(0+1,2)=1 |
+| 6 | `'0'` | 2 | min(1+1,2)=2 |
+| 7 | `'0'` | 2 | min(2+1,2)=2 |
+
+Result: `2` ✅ (flip the two `'1'`s → `'0'`: `"00000000"`)
+
+#### **Alternative: Two-pass prefix sum approach**
+
+```java
+// Count total zeroes first, then scan for the best "split point"
+public int minFlipsMonoIncr(String s) {
+    int zeroes = 0, ones = 0;
+    for (char c : s.toCharArray()) if (c == '0') zeroes++;
+
+    int output = zeroes;  // worst case: flip all '0' → '1'
+    for (char c : s.toCharArray()) {
+        if (c == '0') zeroes--;      // this '0' is now on the right → must flip
+        else          ones++;        // this '1' is on the left → must flip
+        output = Math.min(output, zeroes + ones);
+    }
+    return output;
+}
+```
+
+Both approaches are O(n) / O(1). The one-pass version is more elegant for interviews.
+
+#### **Similar LeetCode Problems** 📚
+
+| Problem | LC # | Similarity | Key Variable |
+|---------|------|-----------|--------------|
+| **Flip String to Monotone Increasing** | 926 | Exact pattern | `flips`, `ones` |
+| **Minimum Number of Flips to Make Binary String Alternating** | 1888 | Flip to alternating pattern | Sliding window + parity count |
+| **Make Array Non-decreasing / Non-increasing** | — | Same "split point" idea | Prefix/suffix min-max |
+| **Partition Array into Disjoint Intervals** | 915 | Left-max ≤ right-min | Running max/min |
+| **Maximum Subarray** (Kadane's) | 53 | Running state: keep or restart | `maxEndingHere` |
+| **Best Time to Buy and Sell Stock** | 121 | Running min (buy price) | `minPrice`, `maxProfit` |
+| **Count Binary Substrings** | 696 | Scan binary runs | `prev`, `cur` group counts |
+
+#### **Pattern Recognition Checklist** ✅
+
+Use this pattern when:
+- ✅ Binary string transformation into a target shape (`000...111`, `010101...`, etc.)
+- ✅ At each position, **two choices** exist and costs depend on prior decisions
+- ✅ O(1) space is achievable because you only need running counters, not the full history
+- ✅ Keywords: "minimum flips", "monotone", "non-decreasing binary", "partition into prefix/suffix"
+
+**File Reference**: `leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/FlipStringToMonotoneIncreasing.java`
+
+---
 **Keywords**: DP, dynamic programming, memoization, tabulation, optimal substructure, overlapping subproblems, state transition, knapsack, LCS, LIS, interval DP, tree DP, state machine, bitmask, monotonic stack, mono stack, stack DP
