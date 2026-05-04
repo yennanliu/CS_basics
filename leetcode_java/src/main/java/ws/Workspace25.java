@@ -4901,9 +4901,103 @@ public class Workspace25 {
 
 
     // LC 926
+    // 10.23 - 33 am
+    /**
+     *  -> Return the `minimum` number
+     *  of flips to make s monotone increasing.
+     *
+     *   - You are given a binary string s.
+     *     You can flip s[i] changing it from
+     *     0 to 1 or from 1 to 0.
+     *
+     *
+     *     NOTE:
+     *        there are ONLY 1, 0
+     *        val in nums
+     *
+     *
+     *  -------------
+     *
+     *  IDEA 1) BRUTE FORCE
+     *
+     *  IDEA 2) GREEDY
+     *
+     *  IDEA 3) MONO STACK ????
+     *
+     *  -------------
+     *
+     *
+     */
+    //  IDEA 3) MONO STACK ????
+    // (mono increasing ????
+    // stack: FILO
+    // check from right -> left
+    // 2 cases:  starts with 0 or 1
     public int minFlipsMonoIncr(String s) {
+        // edge
 
-        return 0;
+        int minOp = s.length();
+        int cur = -1;
+        int curOp = 0;
+        // ???
+        int prev = Integer.MAX_VALUE; // ????
+
+        // case 1) start with 0
+        for(int i = s.length() -1; i > 0; i--){
+            // ???
+            if(i == s.length() - 1){
+                cur = getVal(s.charAt(i));
+                if(cur != 0){
+                    curOp += 1;
+                }
+                cur = 0;
+                continue;
+            }
+            if(cur > prev){
+                curOp += 1;
+                cur = prev;
+            }
+
+            prev = cur;
+        }
+
+        minOp = Math.min(minOp, curOp);
+
+        // reset
+        //minOp = s.length();
+        cur = -1;
+        curOp = 0;
+        // ???
+        prev = Integer.MAX_VALUE; // ????
+
+        // case 2) start with 1
+        for(int i = s.length() -1; i > 0; i--){
+            // ???
+            if(i == s.length() - 1){
+                cur = getVal(s.charAt(i));
+                if(cur != 1){
+                    curOp += 1;
+                }
+                cur = 1;
+                continue;
+            }
+            if(cur > prev){
+                curOp += 1;
+                cur = 1; // ???
+            }
+
+            prev = cur;
+        }
+
+
+
+
+        return minOp;
+    }
+
+
+    private int getVal(char ch){
+        return ch == '0' ? 0 : -1;
     }
 
 

@@ -50,10 +50,53 @@ public class FlipStringToMonotoneIncreasing {
 
 
 
-    // V1
+    // V1-1
+    // IDEA: DP (gpt)
+    public int minFlipsMonoIncr_1_1(String s) {
+        int flips = 0; // min flips so far
+        int ones = 0; // number of '1's seen so far
+
+        for (char c : s.toCharArray()) {
+            if (c == '1') {
+                ones++;
+            } else {
+                // c == '0'
+                flips = Math.min(flips + 1, ones);
+            }
+        }
+
+        return flips;
+    }
 
 
+    // V1-2
+    // IDEA: DP (One-Pass Dynamic Programming) (GEMINI)
+    public int minFlipsMonoIncr_1_2(String s) {
+        int flips = 0;
+        int onesCount = 0;
+
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+
+            if (c == '1') {
+                // We don't flip 1s immediately. We just count them
+                // as "potential" future costs if we find a 0.
+                onesCount++;
+            } else {
+                // We found a '0'. To keep it monotone, we have two choices:
+                // 1. Flip this current '0' to a '1' (cost: flips + 1)
+                // 2. Keep this '0', which means all previous '1's MUST be '0's (cost: onesCount)
+                flips = Math.min(flips + 1, onesCount);
+            }
+        }
+
+        return flips;
+    }
+
+
+    
     // V2
+
 
 
     // V3
@@ -111,6 +154,7 @@ public class FlipStringToMonotoneIncreasing {
         // Return the minimum number of flips
         return ans;
     }
+
 
 
 
