@@ -51,6 +51,29 @@ public class FlipStringToMonotoneIncreasing {
 
     // V1-1
     // IDEA: DP (One-Pass Dynamic Programming) (GEMINI)
+    /**  Dry run
+     *
+     * Remember the two variables:
+     * *   **`onesCount`**: Number of `1`s encountered so far (potential flips if we want to keep them as `0`s).
+     * *   **`flips`**: The minimum cost to keep the current prefix monotone.
+     *
+     * ---
+     *
+     * ### Step-by-Step Dry Run: `011010`
+     *
+     * | Index | Char | Action | `onesCount` | `flips` Calculation | Resulting `flips` |
+     * | :--- | :--- | :--- | :--- | :--- | :--- |
+     * | **Start** | - | Initialize | 0 | - | 0 |
+     * | **0** | `'0'` | Already 0 | 0 | `Math.min(0 + 1, 0)` | **0** |
+     * | **1** | `'1'` | Found a 1 | 1 | (No flip needed yet) | **0** |
+     * | **2** | `'1'` | Found a 1 | 2 | (No flip needed yet) | **0** |
+     * | **3** | `'0'` | **Conflict!** | 2 | `Math.min(0 + 1, 2)` | **1** |
+     * | **4** | `'1'` | Found a 1 | 3 | (No flip needed yet) | **1** |
+     * | **5** | `'0'` | **Conflict!** | 3 | `Math.min(1 + 1, 3)` | **2** |
+     *
+     * **Final Answer: 2**
+     *
+     */
     public int minFlipsMonoIncr_1_1(String s) {
         int flips = 0;
         int onesCount = 0;
@@ -73,6 +96,15 @@ public class FlipStringToMonotoneIncreasing {
                  *  `filps + 1`, and `onesCount`
                  *   are the `cost of 2 choices,`
                  *   and we want to get the smaller one (e.g. min)
+                 *
+                 * ---
+                 *
+                 *  e.g.
+                 *
+                 *         // choice:
+                 *         // 1) flip this '0' → '1'  => flips + 1
+                 *         // 2) flip all previous '1' → '0' => ones
+                 *
                  */
                 flips = Math.min(flips + 1, onesCount);
             }
@@ -97,21 +129,22 @@ public class FlipStringToMonotoneIncreasing {
      *
      */
     public int minFlipsMonoIncr_1_2(String s) {
-        int flips = 0; // min flips so far
-        int ones = 0; // number of '1's seen so far
+        int ones = 0;
+        int flips = 0;
 
         for (char c : s.toCharArray()) {
             if (c == '1') {
-                ones++;
-            } else {
-                // c == '0'
+                ones++; // keep it
+            } else { // c == '0'
+                // choice:
+                // 1) flip this '0' → '1'  => flips + 1
+                // 2) flip all previous '1' → '0' => ones
                 flips = Math.min(flips + 1, ones);
             }
         }
 
         return flips;
     }
-
 
 
     // V2
