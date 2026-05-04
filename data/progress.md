@@ -42,7 +42,8 @@
 	- monotonic_stack.md (OK)
 	- n_sum.md (OK)
 	- palindrome.md (OK)
-	- prefix_sum.md (TODO: LC examples - `2-7) Max Chunks To Make Sorted`)
+	- prefix_sum.md (OK)
+	- recursion.md  (TODO: LC examples)
 
 
 - to review
@@ -345,6 +346,10 @@
 		- 926,370,1248
 		- 325,560
 		- 523
+	- todo (20260504)
+		- 1031
+		- 1292,304
+		- 2615
 
  	==================================
 
