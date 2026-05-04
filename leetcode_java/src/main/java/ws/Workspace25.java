@@ -4854,7 +4854,10 @@ public class Workspace25 {
         int maxSoFar = 0;
 
         // ???
-        int[] arr2 = arr; // /?
+//        int[] arr2 = arr; // /?
+//        Arrays.sort(arr2);
+
+        int[] arr2 = arr.clone();
         Arrays.sort(arr2);
 
         for(int i = 0; i < arr.length; i++){

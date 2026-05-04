@@ -233,6 +233,77 @@ System.out.println(Arrays.deepToString(result)); // 2D: [[0, 1], [2, 3], [0, 0],
 ### 2.2) Array Initialization Patterns
 
 
+### 2.2-1) Array / Collection Copying ⭐
+
+> **Core Rule**: `arr2 = arr` copies the **reference**, not the data. Both variables point to the same array — mutating one mutates the other.
+
+#### 1-D Array
+
+```java
+int[] arr = {3, 1, 4, 1, 5};
+
+// ❌ Reference copy — arr2 and arr share the same memory
+int[] arr2 = arr;
+Arrays.sort(arr2);        // also sorts arr!
+System.out.println(Arrays.toString(arr));   // [1, 1, 3, 4, 5]  ← original changed
+
+// ✅ Shallow copy — independent array with same values
+int[] arr3 = arr.clone();
+Arrays.sort(arr3);        // arr is NOT affected
+System.out.println(Arrays.toString(arr));   // [3, 1, 4, 1, 5]  ← original intact
+
+// ✅ Alternative: Arrays.copyOf (explicit size)
+int[] arr4 = Arrays.copyOf(arr, arr.length);
+
+// ✅ Alternative: Arrays.copyOfRange (sub-range)
+int[] arr5 = Arrays.copyOfRange(arr, 1, 4);  // [1, 4, 1]
+```
+
+#### 2-D Array (shallow vs deep)
+
+```java
+int[][] matrix = {{1, 2}, {3, 4}};
+
+// ❌ Reference copy
+int[][] m2 = matrix;
+
+// ⚠ Shallow clone — outer array is new, but inner arrays are still shared
+int[][] m3 = matrix.clone();
+m3[0][0] = 99;            // also changes matrix[0][0]!
+
+// ✅ Deep copy — fully independent
+int[][] m4 = new int[matrix.length][];
+for (int i = 0; i < matrix.length; i++) {
+    m4[i] = matrix[i].clone();
+}
+```
+
+#### List
+
+```java
+List<Integer> original = new ArrayList<>(Arrays.asList(1, 2, 3));
+
+// ❌ Reference copy
+List<Integer> ref = original;
+ref.add(4);               // also adds to original!
+
+// ✅ Shallow copy — independent list, same Integer objects
+List<Integer> copy = new ArrayList<>(original);
+copy.add(99);             // original is NOT affected
+```
+
+#### Quick Reference
+
+| Type | Reference (wrong) | Shallow copy (correct) | Deep copy |
+|------|-------------------|------------------------|-----------|
+| `int[]` | `arr2 = arr` | `arr.clone()` / `Arrays.copyOf(arr, n)` | N/A (primitives) |
+| `int[][]` | `m2 = matrix` | `matrix.clone()` ⚠ (inner shared) | loop + `row.clone()` |
+| `List<T>` | `list2 = list` | `new ArrayList<>(list)` | deep-copy each element |
+| `String[]` | `s2 = s` | `s.clone()` | N/A (Strings are immutable) |
+
+**When this matters most**: sorting a copy before comparing with the original (e.g. LC 769, LC 75, LC 242), or BFS/DFS where you need a snapshot of the current state.
+
+
 ### 2.3) Array ↔ List Conversions
 
 ```java
