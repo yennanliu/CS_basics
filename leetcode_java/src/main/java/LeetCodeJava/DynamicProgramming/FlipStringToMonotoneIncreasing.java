@@ -44,9 +44,47 @@ package LeetCodeJava.DynamicProgramming;
 public class FlipStringToMonotoneIncreasing {
 
     // V0
-//    public int minFlipsMonoIncr(String s) {
-//
-//    }
+    // IDEA: DP (One-Pass Dynamic Programming) (GEMINI)
+    public int minFlipsMonoIncr(String s) {
+        // 'flip' tracks the minimum flips needed to keep the string monotone so far
+        int flip = 0;
+        // 'oneCnt' tracks the number of 1s in the current "0-zone"
+        int oneCnt = 0;
+
+        for (char ch : s.toCharArray()) {
+            if (ch == '1') {
+                // Found a 1: Increment the potential cost of flipping all 1s to 0s
+                oneCnt++;
+            } else {
+                // Found a 0: We decide the cheaper path:
+                // 1. Flip this 0 to 1 (current flip count + 1)
+                // 2. Keep this 0 (must flip all ones seen so far to 0s)
+                /**  NOTE !!!
+                 *
+                 *  `filps + 1`, and `onesCount`
+                 *   are the `cost of 2 choices,`
+                 *   and we want to get the smaller one (e.g. min)
+                 *
+                 * ---
+                 *
+                 *  e.g.
+                 *
+                 *         // choice:
+                 *
+                 *         // 1) flip this '0' → '1'  => flips + 1
+                 *                -> cost = `flips + 1`
+                 *
+                 *         // 2) flip all previous '1' → '0' => ones
+                 *                -> cost = `onesCount`
+                 *
+                 *
+                 */
+                flip = Math.min(flip + 1, oneCnt);
+            }
+        }
+
+        return flip;
+    }
 
 
     // V1-1
@@ -102,8 +140,13 @@ public class FlipStringToMonotoneIncreasing {
                  *  e.g.
                  *
                  *         // choice:
+                 *
                  *         // 1) flip this '0' → '1'  => flips + 1
+                 *                -> cost = `flips + 1`
+                 *
                  *         // 2) flip all previous '1' → '0' => ones
+                 *                -> cost = `onesCount`
+                 *
                  *
                  */
                 flips = Math.min(flips + 1, onesCount);

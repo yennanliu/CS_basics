@@ -4924,16 +4924,65 @@ public class Workspace25 {
      *
      *  IDEA 3) MONO STACK ????
      *
+     *  IDEA 4) 1D DP ???
+     *
      *  -------------
      *
      *
      */
+    // 7.25 - 35 am
+    //  IDEA 4) 1D DP ???
+    // NOTE: the updated str need to be in `000111` format
+    //       or `00000` or `1111` format
+    public int minFlipsMonoIncr(String s) {
+        // edge
+
+        int flip = 0;
+        int oneCnt = 0;
+
+        // ???
+        for(char ch: s.toCharArray()){
+            if(ch == '1'){
+
+                // We DON'T `flip` 1s immediately. We just `COUNT` them
+                // as "potential" `future` costs if we find a 0.
+
+                oneCnt += 1;
+            }else{
+                /**  options:
+                 *
+                 *  1) flip all of prev and cur to `1`
+                 *  2) keep as `0` ???
+                 */
+
+                // We found a '0'. To keep it `monotone`, we have `two` `choices`:
+                // ->
+                // 1. Flip this current '0' to a '1' (cost: flips + 1)
+                // 2. Keep this '0', which means all previous '1's MUST be '0's
+                //    (cost: onesCount)
+
+                flip = Math.min(flip + 1, oneCnt);
+            }
+        }
+
+        return flip;
+    }
+
+
+
+
+
+
+
+
+
+
     //  IDEA 3) MONO STACK ????
     // (mono increasing ????
     // stack: FILO
     // check from right -> left
     // 2 cases:  starts with 0 or 1
-    public int minFlipsMonoIncr(String s) {
+    public int minFlipsMonoIncr_999(String s) {
         // edge
 
         int minOp = s.length();
