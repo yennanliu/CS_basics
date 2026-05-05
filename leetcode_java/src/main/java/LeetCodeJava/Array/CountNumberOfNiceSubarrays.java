@@ -144,7 +144,8 @@ public class CountNumberOfNiceSubarrays {
      * cnt += 1;
      * ```
      *
-     * But in **LeetCode 1248 Nice Subarrays**, for a fixed `r`, there can be **multiple valid starting points `l`**.
+     * But in **LeetCode 1248 Nice Subarrays**, for a fixed `r`,
+     * there can be **multiple valid starting points `l`**.
      *
      * ---
      *
@@ -312,7 +313,7 @@ public class CountNumberOfNiceSubarrays {
      *
      * ---
      *
-     * ## ⚖️ Sliding Window vs HashMap
+     * ## ⚖️3
      *
      * | Approach         | When to use       |
      * | ---------------- | ----------------- |

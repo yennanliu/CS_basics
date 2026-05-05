@@ -696,7 +696,110 @@ Generalized: S(k) \ S(k-1) = subarrays with exactly k distinct
 
 ---
 
-### 1.8) When Pure Sliding Window Works vs. When You Need Extra Tricks
+### 1.8) Prefix Sum + HashMap vs Sliding Window — Which to Use?
+
+#### Core Ideas
+
+**Sliding Window**
+- Maintain a window `[left, right]` and shrink/expand it based on a **monotonic** condition.
+- Works when validity is monotonic: once the window goes invalid, shrinking from the left always restores validity.
+- Naturally handles **"at most K"** and **"longest/shortest"** constraints.
+
+**Prefix Sum + HashMap**
+- Track a running cumulative count (e.g., number of odd elements seen so far).
+- Store how many times each prefix count has appeared in a HashMap.
+- At each index, look up `prefixCount - k` in the map to find how many subarrays ending here have **exactly k** of the target element.
+- Works when you need to count subarrays with an **exact** target, especially when "exactly k" breaks sliding window monotonicity.
+
+#### Why "Exactly K" Breaks Pure Sliding Window
+
+```
+nums = [2,2,1,2,1], k = 2
+
+At r = 4 (last element), valid subarrays ending here:
+  [1,2,1]        → starts at index 2
+  [2,1,2,1]      → starts at index 1
+  [2,2,1,2,1]    → starts at index 0
+
+→ 3 valid left boundaries — but pure sliding window finds only 1!
+```
+
+The sliding window can only track **one** left boundary. For "exactly k", there are **multiple** valid left boundaries per right position — prefix sum + HashMap counts all of them in O(1) per step.
+
+#### Comparison Table
+
+| Aspect | Sliding Window | Prefix Sum + HashMap |
+|---|---|---|
+| **Best for** | at most K / longest / shortest | exactly K / count of subarrays |
+| **Condition type** | Monotonic (≤ k, ≥ k) | Non-monotonic (== k) |
+| **Multiple left boundaries** | ❌ Handles only one | ✅ Counts all |
+| **Space** | O(1) | O(n) for the HashMap |
+| **Time** | O(n) | O(n) |
+| **Code complexity** | Simple two-pointer | Requires prefix tracking + base case `map.put(0, 1)` |
+| **Key trick** | `while (invalid) { shrink left }` | `res += map.get(prefixCount - k)` |
+
+#### Decision Guide
+
+```
+Is the condition monotonic? (e.g., sum ≤ k, distinct ≤ k)
+  ├── YES → Pure Sliding Window
+  └── NO (exactly k, == k) →
+        ├── atMost(k) - atMost(k-1)  [two sliding window passes]
+        ├── Prefix Sum + HashMap      [one pass, O(n) space]
+        └── Prefix Trick in Sliding Window [one pass, O(1) space — see §1.9]
+```
+
+#### Code Patterns Side-by-Side
+
+**Sliding Window — "at most K odds":**
+```java
+private int atMost(int[] nums, int k) {
+    int l = 0, res = 0, oddCount = 0;
+    for (int r = 0; r < nums.length; r++) {
+        if (nums[r] % 2 == 1) oddCount++;
+        while (oddCount > k) {
+            if (nums[l] % 2 == 1) oddCount--;
+            l++;
+        }
+        res += (r - l + 1);   // all subarrays ending at r with ≤ k odds
+    }
+    return res;
+}
+```
+
+**Prefix Sum + HashMap — "exactly K odds":**
+```java
+public int numberOfSubarrays(int[] nums, int k) {
+    Map<Integer, Integer> map = new HashMap<>();
+    map.put(0, 1);  // base case: empty prefix has 0 odd numbers
+    int oddCount = 0, res = 0;
+    for (int val : nums) {
+        if (val % 2 == 1) oddCount++;
+        // how many previous prefixes had (oddCount - k) odds?
+        // → those prefixes + current position = subarray with exactly k odds
+        res += map.getOrDefault(oddCount - k, 0);
+        map.put(oddCount, map.getOrDefault(oddCount, 0) + 1);
+    }
+    return res;
+}
+```
+
+#### Similar LeetCode Problems
+
+| Problem | LC# | Difficulty | Approach | Key Insight |
+|---------|-----|------------|----------|-------------|
+| Count Number of Nice Subarrays | 1248 | Medium | Both work | Treat odd=1, even=0; prefix sum or atMost trick |
+| Binary Subarrays With Sum | 930 | Medium | Both work | Binary array; prefix sum is most direct |
+| Subarray Sum Equals K | 560 | Medium | **Prefix Sum only** | Negative numbers → sliding window fails |
+| Subarrays with K Different Integers | 992 | Hard | Sliding Window (atMost) | Distinct count; atMost(k)-atMost(k-1) |
+| Number of Subarrays with Sum = k | 974 | Medium | **Prefix Sum only** | Divisibility variant; exact match needed |
+| Contiguous Array | 525 | Medium | **Prefix Sum only** | Equal 0s and 1s; exact balance needed |
+
+> **Rule of thumb**: If the array can have **negative numbers** or the condition is a hard equality that can't be rephrased as "at most", use **Prefix Sum + HashMap**. If values are non-negative and the condition is a range (≤ k), use **Sliding Window**.
+
+---
+
+### 1.8b) When Pure Sliding Window Works vs. When You Need Extra Tricks
 
 #### Core Question: Is the Validity Condition Monotonic?
 
