@@ -4873,6 +4873,21 @@ public class Workspace25 {
         for(int i = 0; i < arr.length; i++){
             maxSoFar = Math.max(arr[i], maxSoFar);
             // ????
+            /**  NOTE !!!
+             *
+             * maxSoFar == arr2[i] only compares one value,
+             * but for LC 768 you must ensure:
+             *
+             *      the entire prefix [0..i] in arr
+             *      has the same multiset as [0..i] in sorted array
+             *
+             * So we need to compare all elements,
+             * not just the max.
+             *
+             *
+             *
+             *
+             */
             if(maxSoFar == arr2[i]){
                 chunks += 1;
             }

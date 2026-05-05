@@ -45,9 +45,66 @@ import java.util.*;
 public class MaxChunksToMakeSorted2 {
 
     // V0
-//    public int maxChunksToSorted(int[] arr) {
-//
-//    }
+    // IDEA: Prefix Sum Matching (GPT)
+    /** CORE IDEA:
+     *
+     *
+     * At index i
+     *
+     *   - if sum(arr[0..i]) == sum(sorted[0..i]):
+     *
+     *     -> then both sides contain the same elements → valid chunk boundary.
+     *
+     *     NOTE:
+     *       the `boundary` is `[0,i]` for BOTH arr, and arr2
+     *
+     */
+    public int maxChunksToSorted(int[] arr) {
+        int chunks = 0;
+
+        /** NOTE !!!
+         *
+         *  we do `deep copy` from arr as arr2
+         *  (.clone())
+         */
+        int[] arr2 = arr.clone();
+        Arrays.sort(arr2);
+
+        long sum1 = 0;
+        long sum2 = 0;
+
+        for (int i = 0; i < arr.length; i++) {
+            /** NOTE !!!
+             *
+             *  we maintain sum in arr, and arr2
+             */
+            sum1 += arr[i];
+            sum2 += arr2[i];
+
+            /** NOTE !!!
+             *
+             *  maxSoFar == arr2[i] only compares one value,
+             *  but for LC 768 you must ensure:
+             *
+             *  ->
+             *   ```
+             *   the entire prefix [0..i] in arr
+             *   has the same multiset as [0..i]
+             *   in sorted array
+             *   ```
+             *
+             * ->
+             *    So we need to compare `all elements`,
+             *    NOT just the max.
+             *
+             */
+            if (sum1 == sum2) {
+                chunks++;
+            }
+        }
+
+        return chunks;
+    }
 
 
     // V0-1
@@ -85,7 +142,6 @@ public class MaxChunksToMakeSorted2 {
      *  The robust logic here is to compare the running
      *  maximum of the original array with
      *  the suffix minimum of the remaining array.
-     *
      *
      */
     public int maxChunksToSorted_0_2(int[] arr) {
