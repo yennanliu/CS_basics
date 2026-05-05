@@ -43,8 +43,9 @@
 	- n_sum.md (OK)
 	- palindrome.md (OK)
 	- prefix_sum.md (OK)
-	- recursion.md  (TODO: LC examples)
-
+	- recursion.md  (OK)
+	- recursion_to_dp.md (TODO: LC examples)
+ 
 
 - to review
 - needcode `250` - similar LC by AI
@@ -350,6 +351,10 @@
 		- 1031
 		- 1292,304
 		- 2615
+	- todo (20260505)
+		- 101
+		- 161
+		- 21 (Recursion)
 
  	==================================
 

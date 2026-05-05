@@ -4762,23 +4762,23 @@ public class Workspace25 {
     // core idea:
     // if min val == n (0 bases)
     //   -> we can split as new chunk
-    public int maxChunksToSorted(int[] arr) {
-        // edge
-
-        int chunk = 0;
-        int maxTillNow = -1 * Integer.MAX_VALUE; // ??
-
-        for(int i = 0; i < arr.length; i++){
-            maxTillNow = Math.max(maxTillNow, arr[i]);
-            // ???
-            if(maxTillNow == i){
-                chunk += 1;
-            }
-        }
-
-
-        return chunk > 0 ? chunk : 1;
-    }
+//    public int maxChunksToSorted(int[] arr) {
+//        // edge
+//
+//        int chunk = 0;
+//        int maxTillNow = -1 * Integer.MAX_VALUE; // ??
+//
+//        for(int i = 0; i < arr.length; i++){
+//            maxTillNow = Math.max(maxTillNow, arr[i]);
+//            // ???
+//            if(maxTillNow == i){
+//                chunk += 1;
+//            }
+//        }
+//
+//
+//        return chunk > 0 ? chunk : 1;
+//    }
 
 
 
@@ -4842,6 +4842,56 @@ public class Workspace25 {
 
 
     // LC 768
+    // 8.06 - 16 am
+    /**
+     *
+     *  NOTE !!!
+     *    -> the element in arr
+     *       could be DUPLICATED (difference VS LC 769)
+     *
+     *
+     *   -----------------
+     *
+     *    IDEA 1) 1D DP ????
+     *
+     *
+     *   -----------------
+     *
+     */
+    public int maxChunksToSorted(int[] arr) {
+        //edge
+
+        int chunks = 0;
+        int maxSoFar = -1 * Integer.MAX_VALUE; // ??
+
+        // /??
+        int[] arr2 = arr.clone(); // ??
+        // sorting:
+        // default should be: increasing ??? (small -> big
+        Arrays.sort(arr2);
+
+        for(int i = 0; i < arr.length; i++){
+            maxSoFar = Math.max(arr[i], maxSoFar);
+            // ????
+            if(maxSoFar == arr2[i]){
+                chunks += 1;
+            }
+        }
+
+
+
+        return chunks;
+    }
+
+
+
+
+
+
+
+
+
+
     // 7.50 - 8.00 am
     /**
      *
