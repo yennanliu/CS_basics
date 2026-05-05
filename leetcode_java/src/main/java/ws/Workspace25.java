@@ -5283,6 +5283,12 @@ public class Workspace25 {
     }
 
 
+    // LC 1031
+    // 7.52 - 8.02 am
+    public int maxSumTwoNoOverlap(int[] nums, int firstLen, int secondLen) {
+
+        return 0;
+    }
 
 
 

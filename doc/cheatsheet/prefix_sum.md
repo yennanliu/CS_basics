@@ -266,6 +266,25 @@ public int subarraySum(int[] nums, int k) {
 
 ### Template 3: Modulo Prefix Sum (Divisibility Problems)
 
+**Core Mathematical Insight:**
+```
+Let prefix[i] = sum of nums[0..i]
+
+A subarray sum nums[j+1..i] is divisible by k:
+  (prefix[i] - prefix[j]) % k == 0
+
+This implies:
+  prefix[i] % k == prefix[j] % k
+
+So if we see the SAME remainder again at index i vs a previous index j,
+the subarray nums[j+1..i] has sum divisible by k.
+
+map stores: { remainder -> earliest index }
+
+If the current remainder already exists in the map
+AND the distance (i - map[remainder]) >= 2, we found a valid subarray.
+```
+
 ```python
 def subarray_divisible_by_k(nums, k):
     """Count subarrays with sum divisible by k"""
