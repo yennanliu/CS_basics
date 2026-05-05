@@ -5223,6 +5223,72 @@ public class Workspace25 {
 
 
 
+    // LC 523
+    // 7.14 -24 am
+    /**
+     *  IDEA 1) HASH MAP + PREFIX SUM
+     *
+     *  If two prefix sums have the
+     *  same remainder mod k,
+     *  their difference is divisible by k.
+     *
+     */
+    // IDEA 1) HASH MAP + PREFIX SUM
+    public boolean checkSubarraySum(int[] nums, int k) {
+        // edge
+
+        // map: { prefix_sum: idx }
+        // prefix_1 - prefix_2 = k * N
+        //   -> prefix_2 = prefix_1 - k * N
+        //   and if prefix_1 is also k multiply
+        //   -> prefix_2 = k * ()
+        Map<Integer, Integer> map = new HashMap<>();
+
+        // NOTE !!! init
+        //map.put(0, 1); // ???
+        map.put(0, -1); // ???
+        int prefix = 0;
+
+        for(int i = 0; i < nums.length; i++){
+            int x = nums[i];
+
+            // ???
+            prefix += x;
+            // ???
+            //prefix = prefix % k;
+            if (k != 0) {
+                prefix %= k;
+            }
+
+
+
+            // ???
+            // prefix_1 - prefix_2 = k
+            //   -> prefix_2 = prefix_1 - k
+            //int diff = prefix - k;
+            if( map.containsKey(prefix % k) && i - map.get(prefix % k) >= 2 ){
+                return true;
+            }
+
+            // ???
+            // ?? get the smaller one
+            if(!map.containsKey(prefix)){
+                map.put(prefix, i);
+            }
+
+        }
+
+
+        return false;
+    }
+
+
+
+
+
+
+
+
 
 
 }

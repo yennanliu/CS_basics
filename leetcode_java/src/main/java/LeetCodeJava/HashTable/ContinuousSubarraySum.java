@@ -87,12 +87,38 @@ public class ContinuousSubarraySum {
             int remainder = (k != 0) ? presum % k : presum;
 
             // If the remainder already exists in the map
+            /**
+             * CORE IDEA:
+             *
+             * Let prefix[i] be sum of nums[0..i]
+             *
+             * A subarray sum nums[j+1..i] is divisible by k:
+             *   (prefix[i] - prefix[j]) % k == 0
+             *
+             * This implies:
+             *   prefix[i] % k == prefix[j] % k
+             *
+             * So if we see the SAME remainder again,
+             * the subarray between those indices has sum divisible by k.
+             *
+             * map stores: { remainder -> earliest index }
+             *
+             * If current remainder already exists in map,
+             * and distance >= 2, we found a valid subarray.
+             *
+             *
+             */
             if (map.containsKey(remainder)) {
                 // Check if the subarray length is at least 2
                 if (i - map.get(remainder) > 1) {
                     return true;
                 }
             } else {
+                /** NOTE !!!
+                 *
+                 *  we ONLY update map once per prefix sum
+                 *  (keep earliest idx)
+                 */
                 // Store the first occurrence of this remainder
                 map.put(remainder, i);
             }
@@ -100,6 +126,62 @@ public class ContinuousSubarraySum {
 
         return false;
     }
+
+
+    // V0-0-1
+    // IDEA : HASH MAP (fixed by gpt)
+    public boolean checkSubarraySum_0_0_1(int[] nums, int k) {
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(0, -1); // handle subarray starting at index 0
+
+        int prefix = 0;
+
+        for (int i = 0; i < nums.length; i++) {
+            prefix += nums[i];
+
+            if (k != 0) {
+                prefix %= k;
+            }
+
+            /**
+             * CORE IDEA:
+             *
+             * Let prefix[i] be sum of nums[0..i]
+             *
+             * A subarray sum nums[j+1..i] is divisible by k:
+             *   (prefix[i] - prefix[j]) % k == 0
+             *
+             * This implies:
+             *   prefix[i] % k == prefix[j] % k
+             *
+             * So if we see the SAME remainder again,
+             * the subarray between those indices has sum divisible by k.
+             *
+             * map stores: { remainder -> earliest index }
+             *
+             * If current remainder already exists in map,
+             * and distance >= 2, we found a valid subarray.
+             *
+             *
+             */
+            if (map.containsKey(prefix)) {
+                if (i - map.get(prefix) >= 2) {
+                    return true;
+                }
+            } else {
+                /** NOTE !!!
+                 *
+                 *  we ONLY update map once per prefix sum
+                 *  (keep earliest idx)
+                 */
+                // keep earliest index only
+                map.put(prefix, i);
+            }
+        }
+
+        return false;
+    }
+
 
     // V0-1
     /**
@@ -125,20 +207,26 @@ public class ContinuousSubarraySum {
              *
              *  NOTE !!!!!
              *
+             *   why `map.containsKey(presum)` ?
+             *
+             *
+             * ->
+             *
              *
              *  sum(i,j) = presum(j+1) - presum(i)
              *
              *
              *  remainder : presum = (presum + cur) % k
              *
-             *  so if map has "key" with remainder value (AKA (presum + cur) % k)
-             *  -> we found a sub-array sum that is multiple of k
+             *  so if map has "key" with remainder val
+             *     (AKA (presum + cur) % k)
+             *     -> we found a sub-array sum that is multiple of k
              *
              *
              *  e.g. if remainder = (presum + cur) % k
-             *  -> we can find a subarray with k multiple
+             *     -> we can find a subarray with k multiple
              *
-             *  -> idea 1) (presum + cur) % k - (presum) = 0, so it's  k multiple
+             *     -> idea 1) (presum + cur) % k - (presum) = 0, so it's  k multiple
              *
              *
              */
@@ -169,6 +257,7 @@ public class ContinuousSubarraySum {
 
         return false;
     }
+
 
     // V0-2
     // IDEA : presum + hashmap
@@ -269,4 +358,8 @@ public class ContinuousSubarraySum {
         }
         return false;
     }
+
+
+
+
 }
