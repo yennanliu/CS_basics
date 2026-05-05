@@ -4757,6 +4757,37 @@ public class Workspace25 {
      *
      *
      */
+    // 7.48 - 58 am
+    // idea: prefix max ?? + for loop
+    // core idea:
+    // if min val == n (0 bases)
+    //   -> we can split as new chunk
+    public int maxChunksToSorted(int[] arr) {
+        // edge
+
+        int chunk = 0;
+        int maxTillNow = -1 * Integer.MAX_VALUE; // ??
+
+        for(int i = 0; i < arr.length; i++){
+            maxTillNow = Math.max(maxTillNow, arr[i]);
+            // ???
+            if(maxTillNow == i){
+                chunk += 1;
+            }
+        }
+
+
+        return chunk > 0 ? chunk : 1;
+    }
+
+
+
+
+
+
+
+
+
 //    // IDEA 3) SLIDE WINDOW ???
 //    public int maxChunksToSorted(int[] arr) {
 //        // edge
@@ -4825,10 +4856,10 @@ public class Workspace25 {
      *   -> they contain the same multiset → valid chunk.
      *
      */
-    public int maxChunksToSorted(int[] arr) {
-
-        return 0;
-    }
+//    public int maxChunksToSorted(int[] arr) {
+//
+//        return 0;
+//    }
 
 
 

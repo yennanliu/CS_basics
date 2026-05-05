@@ -44,6 +44,10 @@ import java.util.Stack;
  */
 public class MaxChunksToMakeSorted {
 
+    /** NOTE !!!
+     *
+     *    All the elements of arr are `unique`.
+     */
 
 
     // V0
@@ -491,6 +495,8 @@ public class MaxChunksToMakeSorted {
         }
         return monotonicStack.size();
     }
+
+
 
     // V2
 
