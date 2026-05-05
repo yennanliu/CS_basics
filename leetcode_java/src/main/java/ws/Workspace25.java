@@ -1254,8 +1254,83 @@ public class Workspace25 {
      *            x
      *
      */
-    //IDEA 3) HASH ??? + prefix sum ???
+    // 10.17 - 34 am
+    // IDEA 1) PREFIX SUM ????? + HASHMAP.
+    // ??? `k odd` numbers
+    //        = (k) - (k-1) cnt  ???
     public int numberOfSubarrays(int[] nums, int k) {
+        // edge
+        //int cnt = 0;
+
+        /**  NOTE !!!
+         *
+         *  map: frequency of prefix sums
+         *
+         *  -> {prefix_sum: cnt}
+         *
+         *
+         */
+        // map: {odd_num_prefix_sum: 1}
+        // ???
+        // { idx : odd_cnt_till_now }  // ???
+        //  -> e.g. { idx : prefix_sum_of_odd_num_cnt }
+        /**
+         *   ??
+         *
+         *   x + y = k
+         *   -> if meet x, check if y in map
+         *   -> e.g. check if k - x in map ???
+         *
+         */
+        Map<Integer, Integer> map = new HashMap<>();
+        // NOTE !!! base case:
+        map.put(0, 1);
+
+        int oddCntTillNow = 0;
+        int oddSubArr = 0;
+
+        for(int i = 0; i < nums.length; i++){
+            int val = nums[i];
+
+            // ???
+            if(val % 2 == 1){
+                oddCntTillNow += 1;
+            }
+
+            // ???
+            // prefix_sum_1 - prefix_sum_2 = k
+            // -> prefix_sum_1 - k = prefix_sum_2  // ????
+            if(map.containsKey(oddCntTillNow - k)){
+                oddSubArr += map.get(oddCntTillNow - k);
+            }
+
+
+            map.put(oddCntTillNow,
+                    map.getOrDefault(oddCntTillNow, 0) + 1
+            ); // ???
+
+
+        }
+
+
+        return oddSubArr;
+    }
+
+
+
+
+
+
+
+
+//
+//    private static int getKey(int k, int oddCntTillNow) {
+//        return oddCntTillNow - k;
+//    }
+
+
+    //IDEA 3) HASH ??? + prefix sum ???
+    public int numberOfSubarrays_93(int[] nums, int k) {
         // edge
 
         int cnt = 0;

@@ -47,9 +47,80 @@ import java.util.Queue;
 public class CountNumberOfNiceSubarrays {
 
     // V0
-//    public int numberOfSubarrays(int[] nums, int k) {
-//
-//    }
+    // IDEA: PREFIX SUM + HASHMAP (GPT)
+    public int numberOfSubarrays(int[] nums, int k) {
+
+        /** NOTE !!
+         *
+         *  V1:
+         *
+         *
+         *  map store `frequency of prefix sums,`  (odd val)
+         *
+         *   -> map: { prefix_sums: cnt }
+         *
+         *
+         * ----
+         *
+         *  V2:
+         *          *  map :  {oddCount : frequency }
+         *          *
+         *          *  -> How many times a certain `number`
+         *          *     of `odd numbers` has appeared so far
+         *
+         */
+        Map<Integer, Integer> map = new HashMap<>();
+        /** NOTE !!! base case */
+        map.put(0, 1);  // base case
+
+        int oddCntTillNow = 0;
+        int oddSubArr = 0;
+
+        for (int val : nums) {
+            /** NOTE !!! ONLY update cnt when `odd` val  */
+            // update prefix sum first
+            if (val % 2 == 1) {
+                oddCntTillNow++;
+            }
+
+            /** NOTE !!!
+             *
+             *   prefix_1 - prefix_2 = k
+             *   -> prefix_2 = prefix_1 - k
+             *
+             *   -> so we check if `prefix_1 - k`
+             *      is in hashmap
+             *
+             *   -> e.g. check if we already visited
+             *           `prefix_1 - k` `odd val cnt` before.
+             *
+             */
+            /** NOTE !!!
+             *
+             *  we do `oddSubArr` update first,
+             *  them do `hashMap` update
+             *
+             */
+            // check how many times (current - k) appeared
+            if (map.containsKey(oddCntTillNow - k)) {
+                oddSubArr += map.get(oddCntTillNow - k);
+            }
+
+            /** NOTE !!!
+             *
+             *  update hashmap
+             *   map: { prefix_sums: cnt }
+             *
+             */
+            // record current prefix sum
+            map.put(oddCntTillNow,
+                    map.getOrDefault(oddCntTillNow, 0) + 1
+            );
+
+        }
+
+        return oddSubArr;
+    }
 
 
     // NOTE !!! below is WRONG !!!
@@ -340,7 +411,7 @@ public class CountNumberOfNiceSubarrays {
      *        atMost(k) - atMost(k - 1)
      *
      */
-    public int numberOfSubarrays(int[] nums, int k) {
+    public int numberOfSubarrays_0_3(int[] nums, int k) {
         // Exactly k = (At most k) - (At most k-1)
         return atMost_0_3(nums, k) - atMost_0_3(nums, k - 1);
     }
