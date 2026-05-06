@@ -5505,6 +5505,13 @@ public class Workspace25 {
     }
 
 
+    // LC 1015
+    public int smallestRepunitDivByK(int k) {
+
+        return 0;
+    }
+
+
 
 
 
