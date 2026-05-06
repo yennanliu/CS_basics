@@ -44,7 +44,8 @@
 	- palindrome.md (OK)
 	- prefix_sum.md (OK)
 	- recursion.md  (OK)
-	- recursion_to_dp.md (TODO: LC examples)
+	- recursion_to_dp.md (OK)
+	- scanning_line.md (TODO: LC examples)
  
 
 - to review
@@ -355,6 +356,12 @@
 		- 101
 		- 161
 		- 21 (Recursion)
+	- todo (20260506)
+		- 139,72
+		- 120
+		- 516
+		- 377
+		- 1547,1043
 
  	==================================
 
