@@ -5317,8 +5317,79 @@ public class Workspace25 {
      *
      *
      */
+    /**
+     * The key issue: this problem isn’t about matching prefix sums
+     *
+     * —> it’s about tracking the best subarray
+     * seen so far while scanning.
+     *
+     *
+     * ---------------
+     * Correct Approach (Prefix Sum + Sliding Window)
+     *
+     * Use prefix sum + keep track of:
+     *
+     * best firstLen before secondLen
+     * best secondLen before firstLen
+     *
+     * We try both orders.
+     *
+     * Use prefix sum + keep track of:
+     *
+     * best firstLen before secondLen
+     * best secondLen before firstLen
+     *
+     * We try both orders.
+     *
+     */
     // IDEA 2) PREFIX SUM ????
     public int maxSumTwoNoOverlap(int[] nums, int firstLen, int secondLen) {
+        // edge
+
+        int n = nums.length;
+
+        // build prefix sum
+        int[] prefix = new int[n + 1];
+        for (int i = 0; i < n; i++) {
+            prefix[i + 1] = prefix[i] + nums[i];
+        }
+
+//        int ans = 0;
+//        // ???
+//        for(int i = 0; i < nums.length; i++){
+//            // ???
+//        }
+//
+//        return ans;
+        return Math.max(
+                helper99(prefix, firstLen, secondLen),
+                helper99(prefix, secondLen, firstLen)
+        );
+
+
+    }
+
+
+
+
+    private int helper99(int[] prefix, int L, int M){
+        int res = 0;
+        // ??
+        for(int i = L; i < M; i++){
+            res += prefix[i];
+        }
+        return res;
+    }
+
+
+
+
+
+
+
+
+    // IDEA 2) PREFIX SUM ????
+    public int maxSumTwoNoOverlap_999(int[] nums, int firstLen, int secondLen) {
         // edge
 
         // map: { prefix_sum: idx }

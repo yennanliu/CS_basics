@@ -1209,26 +1209,55 @@ public int maxChunksToSorted_1_1(int[] arr) {
 
 ### 2-8) Maximum Sum of Two Non-Overlapping Subarrays
 
+**Core Idea (LC 1031):**
+```
+Given two non-overlapping windows of fixed lengths L and M, maximize their combined sum.
+
+Key Insight: one window must come before the other. Handle both orderings separately:
+  - Case 1: L-window appears before M-window
+  - Case 2: M-window appears before L-window
+
+For each position i (right edge of the second window), track the maximum
+sum of the first window seen so far (t), then combine with the current second window.
+
+Prefix sum formula for a window of length W ending at index i (1-based):
+  window_sum = prefix[i] - prefix[i - W]
+
+At each step:
+  t   = max(t, prefix[i - M] - prefix[i - M - L])   ← best L-window before M starts
+  ans = max(ans, t + prefix[i] - prefix[i - M])      ← best L + current M
+
+Why two passes? The two window orders (L before M, M before L) are
+independent. The overall answer is max of both passes.
+```
+
+**Pattern:** Prefix Sum + Running Maximum (two-pass)
+- Build prefix sum array once: O(n)
+- For each pass, slide the second window right while maintaining `maxFirst` (best first window so far)
+- Two passes cover all non-overlapping configurations
+
 ```java
 // java
-// LC 1031
-
-// V1
-// https://leetcode.ca/2018-09-26-1031-Maximum-Sum-of-Two-Non-Overlapping-Subarrays/
-// IDEA: PREFIX SUM
-public int maxSumTwoNoOverlap_1(int[] nums, int firstLen, int secondLen) {
+// LC 1031 — Prefix Sum + Running Max
+// time: O(N), space: O(N)
+public int maxSumTwoNoOverlap(int[] nums, int firstLen, int secondLen) {
     int n = nums.length;
     int[] s = new int[n + 1];
     for (int i = 0; i < n; ++i) {
         s[i + 1] = s[i] + nums[i];
     }
     int ans = 0;
-    // case 1)  check `firstLen`, then `secondLen`
+
+    // Case 1: firstLen window comes before secondLen window
+    // i is the right edge (exclusive) of the secondLen window
     for (int i = firstLen, t = 0; i + secondLen - 1 < n; ++i) {
+        // best firstLen window that ends at or before position i (before M starts)
         t = Math.max(t, s[i] - s[i - firstLen]);
+        // current secondLen window starting at i
         ans = Math.max(ans, t + s[i + secondLen] - s[i]);
     }
-    // case 2)  check  `secondLen`, then `firstLen`
+
+    // Case 2: secondLen window comes before firstLen window
     for (int i = secondLen, t = 0; i + firstLen - 1 < n; ++i) {
         t = Math.max(t, s[i] - s[i - secondLen]);
         ans = Math.max(ans, t + s[i + firstLen] - s[i]);
@@ -1236,6 +1265,39 @@ public int maxSumTwoNoOverlap_1(int[] nums, int firstLen, int secondLen) {
     return ans;
 }
 ```
+
+**Alternative helper-function style (cleaner):**
+```java
+// Calls helper(L before M) and helper(M before L), returns max
+public int maxSumTwoNoOverlap(int[] nums, int firstLen, int secondLen) {
+    int n = nums.length;
+    int[] prefix = new int[n + 1];
+    for (int i = 0; i < n; i++) prefix[i + 1] = prefix[i] + nums[i];
+    return Math.max(helper(prefix, firstLen, secondLen),
+                    helper(prefix, secondLen, firstLen));
+}
+
+// L comes before M
+private int helper(int[] prefix, int L, int M) {
+    int maxL = 0, res = 0;
+    for (int i = L + M; i < prefix.length; i++) {
+        // best L-window ending just before the M-window
+        maxL = Math.max(maxL, prefix[i - M] - prefix[i - M - L]);
+        // current M-window
+        res  = Math.max(res, maxL + prefix[i] - prefix[i - M]);
+    }
+    return res;
+}
+```
+
+**Similar LCs:**
+| Problem | LC # | Similarity |
+|---------|------|------------|
+| Maximum Subarray | 53 | Running max subarray (Kadane's) |
+| Best Time to Buy and Sell Stock III | 123 | Two non-overlapping operations, prefix+suffix |
+| Maximum Sum of 3 Non-Overlapping Subarrays | 689 | Same pattern extended to 3 windows |
+| Subarray Sum Equals K | 560 | Prefix sum + HashMap |
+| Maximum Average Subarray II | 644 | Fixed/variable window with prefix sum |
 
 ### 2-9) Maximum Side Length of a Square with Sum ≤ Threshold (LC 1292)
 

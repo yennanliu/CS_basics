@@ -49,7 +49,7 @@ public class MaximumSumOfTwoNonOverlappingSubarrays {
 
 
     // V-0-1
-    // IDEA: PREFIX SUM (GPT)
+    // IDEA: Prefix Sum + Sliding Window (GPT)
     public int maxSumTwoNoOverlap_0_1(int[] nums, int firstLen, int secondLen) {
         int n = nums.length;
 
@@ -61,9 +61,17 @@ public class MaximumSumOfTwoNonOverlappingSubarrays {
 
         return Math.max(
                 helper(prefix, firstLen, secondLen),
-                helper(prefix, secondLen, firstLen));
+                helper(prefix, secondLen, firstLen)
+        );
     }
 
+    /** NOTE !!!
+     *
+     *  L, M are `len` of sub array
+     *    - firstLen, secondLen
+     *    - secondLen, firstLen
+     *
+     */
     // L comes before M
     private int helper(int[] prefix, int L, int M) {
         int maxL = 0;
@@ -82,8 +90,10 @@ public class MaximumSumOfTwoNonOverlappingSubarrays {
         return res;
     }
 
+
+
     // V0-2
-    // IDEA: PREFIX SUM (GRMINI)
+    // IDEA: Prefix Sum + Sliding Window  (gemini)
     public int maxSumTwoNoOverlap_0_2(int[] nums, int firstLen, int secondLen) {
         int n = nums.length;
         int[] prefixSum = new int[n + 1];
@@ -354,7 +364,7 @@ public class MaximumSumOfTwoNonOverlappingSubarrays {
     }
 
 
-    
+
 
 
 }
