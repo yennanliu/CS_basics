@@ -80,6 +80,11 @@ public class RangeSumQuery2DImmutable {
             int l = matrix.length;
             int w = matrix[0].length;
 
+            /** NOTE !!!
+             *
+             *  the preSumMatrix
+             *   is `l+1` x `w+1` size
+             */
             // Create a prefix sum matrix with dimensions (l+1) x (w+1)
             this.preSumMatrix = new int[l + 1][w + 1];
 
@@ -102,6 +107,11 @@ public class RangeSumQuery2DImmutable {
                     preSumMatrix[i][j] = matrix[i - 1][j - 1]
                             + preSumMatrix[i - 1][j]
                             + preSumMatrix[i][j - 1]
+                            /** NOTE !!!
+                             *
+                             *  need to remove the overlap
+                             *   (preSumMatrix[i - 1][j - 1])
+                             */
                             - preSumMatrix[i - 1][j - 1];
                 }
             }
@@ -130,9 +140,15 @@ public class RangeSumQuery2DImmutable {
             return preSumMatrix[row2 + 1][col2 + 1]
                     - preSumMatrix[row1][col2 + 1]
                     - preSumMatrix[row2 + 1][col1]
+                    /** NOTE !!!
+                     *
+                     *  need to add the overlap back
+                     *   (preSumMatrix[row1][col1])
+                     */
                     + preSumMatrix[row1][col1];
         }
     }
+
 
 
     // V1-1

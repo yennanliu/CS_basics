@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mvn:*)",
+      "Bash(grep:*)",
+      "Bash(pdftotext:*)",
+      "Skill(markdown-doc-writer)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

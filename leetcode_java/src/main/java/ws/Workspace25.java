@@ -5417,6 +5417,98 @@ public class Workspace25 {
 
 
 
+    // LC 304
+    // 10.13 - 32 am
+    /**
+     *
+     *  IDEA 1) 2D PREFIX SUM
+     *
+     */
+    class NumMatrix {
+
+        // ???
+        //int elementCnt;
+        int n;
+        int m;
+        int[][] prefix;
+
+        public NumMatrix(int[][] matrix) {
+            // ???
+            this.n = matrix.length;
+            this.m = matrix[0].length;
+
+            // NOTE !!!
+            // use (n+1) x (m+1)
+            this.prefix = new int[n + 1][m + 1];
+
+            //this.prefix = new int[n][m]; // ????
+
+            // ??? prepare 2D prefix sum
+            //int prefixSum = 0;
+            for(int y = 0; y < this.n; y++){
+                for(int x = 0; x < this.m; x++){
+                    // ???
+                    if(x == 0 || y == 0){
+                        this.prefix[y][x] = matrix[y][x];
+                    }
+                    else{
+                        this.prefix[y][x] = (
+                                  this.prefix[y-1][x]
+                                  + this.prefix[y][x-1]
+                                  - this.prefix[y-1][x-1]
+                                  + matrix[y][x]
+                                );
+                    }
+                }
+            }
+
+
+        }
+
+        public int sumRegion(int row1, int col1, int row2, int col2) {
+            // edge // ???
+            if(row2 + col2 < row1 + col1){
+                // swap ???
+                int row1Tmp = row1;
+                int col1Tmp = col1;
+
+                row1 = row2;
+                col1 = col2;
+
+                row2 = row1Tmp;
+                col2 = col1Tmp;
+            }
+
+            /**  NOTE !!!
+             *
+             *  for 2D prefix sum
+             *
+             *  ->
+             *
+             *   // ???
+             *
+             *   sum[y][x] =
+             *      prefix[y][x]
+             *      - prefix[y-1][x]
+             *      - prefix[y-1][x - 1]
+             *       + prefix[y-1][x-1]
+             *
+             *
+             */
+            return this.prefix[row2][col2] -
+                    this.prefix[row2-1][col2] -
+                    this.prefix[row2][col2-1] +
+                    this.prefix[row1][col1];
+        }
+
+
+    }
+
+
+
+
+
+
 
 
 
