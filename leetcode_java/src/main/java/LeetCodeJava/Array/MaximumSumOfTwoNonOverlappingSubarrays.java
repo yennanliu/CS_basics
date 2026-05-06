@@ -59,6 +59,14 @@ public class MaximumSumOfTwoNonOverlappingSubarrays {
             prefix[i + 1] = prefix[i] + nums[i];
         }
 
+        /** NOTE !!!
+         *
+         * We do both:
+         *
+         * firstLen → secondLen
+         * secondLen → firstLen
+         *
+         */
         return Math.max(
                 helper(prefix, firstLen, secondLen),
                 helper(prefix, secondLen, firstLen)
@@ -78,6 +86,13 @@ public class MaximumSumOfTwoNonOverlappingSubarrays {
         int res = 0;
 
         for (int i = L + M; i < prefix.length; i++) {
+
+            /** NOTE !!!
+             *
+             * maxL:
+             *   keeps the `best` `L-length` subarray
+             *   before current position
+             */
             // best L subarray before current M
             maxL = Math.max(maxL, prefix[i - M] - prefix[i - M - L]);
 
@@ -115,7 +130,9 @@ public class MaximumSumOfTwoNonOverlappingSubarrays {
         // We start 'i' at a point where at least one L-length
         // and one M-length subarray can exist.
         for (int i = L + M; i < p.length; i++) {
-            // p[i-M] - p[i-M-L] is the L-length window ending just before the M-window starts
+
+            // p[i-M] - p[i-M-L] is the L-length
+            // window ending just before the M-window starts
             maxL = Math.max(maxL, p[i - M] - p[i - M - L]);
 
             // p[i] - p[i-M] is the current M-length window
