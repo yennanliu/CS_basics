@@ -83,8 +83,9 @@ public class RangeSumQuery2DImmutable {
             /** NOTE !!!
              *
              *  the preSumMatrix
-             *   is `l+1` x `w+1` size
+             *   is `int[n + 1][m + 1]` size
              *
+             *  ----
              *
              * -> Why ?
              *
@@ -95,27 +96,61 @@ public class RangeSumQuery2DImmutable {
              * effectively handling the "edge" naturally
              * without any if statements.
              *
+             *
+             *
+             * With Padding:
+             *
+             * Index 0 acts as a "buffer" filled with zeros.
+             * When you access prefix[row1][col1],
+             * you are effectively accessing the sum up
+             * to the previous index safely.
+             *
+             *
+             * ----
+             *
+             * Example:
+             *
+             * |        | Col 0            | Col 1                          | Col 2     |
+             * |--------|------------------|--------------------------------|-----------|
+             * | Row 0  | 0                | 0                              | 0         |
+             * | Row 1  | 0                | M[0][0]                        | M[0][0] + M[0][1] |
+             * | Row 2  | 0                | M[0][0] + M[1][0]              | Total Sum |
+             *
+             *
+             *
              */
             // Create a prefix sum matrix with dimensions (l+1) x (w+1)
             this.preSumMatrix = new int[l + 1][w + 1];
 
             // Populate the prefix sum matrix
+            /**
+             *  NOTE !!!
+             *
+             *   i, j starts from 1,
+             *   and ends at l, w
+             *
+             */
             for (int i = 1; i <= l; i++) {
                 for (int j = 1; j <= w; j++) {
                     /**
                      *  NOTE !!! below
                      *
                      *
-                     *  1) The preSumMatrix[i][j] at each position (i, j) is calculated using the formula
-                     *    ->  preSumMatrix[i][j] = matrix[i-1][j-1] + preSumMatrix[i-1][j] + preSumMatrix[i][j-1] - preSumMatrix[i-1][j-1];
+                     *  1) The preSumMatrix[i][j] at each position (i, j)
+                     *     is calculated using the formula
+                     *    ->  preSumMatrix[i][j] =
+                     *           matrix[i-1][j-1] + preSumMatrix[i-1][j]
+                     *           + preSumMatrix[i][j-1] - preSumMatrix[i-1][j-1];
                      *
                      *    -> This formula adds the current element matrix[i-1][j-1]
-                     *       and all the sums from the left and above, and subtracts the overlap
+                     *       and all the sums from the left and above,
+                     *       and subtracts the overlap
                      *       from the top-left corner to avoid double counting.
                      *
                      *
                      */
-                    preSumMatrix[i][j] = matrix[i - 1][j - 1]
+                    preSumMatrix[i][j] =
+                            matrix[i - 1][j - 1]
                             + preSumMatrix[i - 1][j]
                             + preSumMatrix[i][j - 1]
                             /** NOTE !!!
@@ -147,7 +182,6 @@ public class RangeSumQuery2DImmutable {
              *   which was subtracted twice.
              *
              */
-
             return preSumMatrix[row2 + 1][col2 + 1]
                     - preSumMatrix[row1][col2 + 1]
                     - preSumMatrix[row2 + 1][col1]
@@ -193,7 +227,7 @@ public class RangeSumQuery2DImmutable {
                                 + prefix[y - 1][x]
                                 + prefix[y][x - 1]
                                 - prefix[y - 1][x - 1];
-                        
+
                     }
                 }
             }
