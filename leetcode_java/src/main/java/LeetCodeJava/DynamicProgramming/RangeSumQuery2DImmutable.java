@@ -67,7 +67,7 @@ public class RangeSumQuery2DImmutable {
 //    }
 
     // V0-1
-    // IDEA: 2-D Prefix sum (gpt)
+    // IDEA: 2-D Prefix sum ( prefix matrix with [l+1][w+1] size )   (gpt)
     class NumMatrix_0_1 {
 
         // Attributes
@@ -84,6 +84,17 @@ public class RangeSumQuery2DImmutable {
              *
              *  the preSumMatrix
              *   is `l+1` x `w+1` size
+             *
+             *
+             * -> Why ?
+             *
+             * By using new int[n + 1][m + 1],
+             * prefix[0][x] and prefix[y][0] are always $0$.
+             * When you calculate sumRegion(0, 0, 2, 2),
+             * the formula uses prefix[0][...] which is $0$,
+             * effectively handling the "edge" naturally
+             * without any if statements.
+             *
              */
             // Create a prefix sum matrix with dimensions (l+1) x (w+1)
             this.preSumMatrix = new int[l + 1][w + 1];
@@ -148,6 +159,68 @@ public class RangeSumQuery2DImmutable {
                     + preSumMatrix[row1][col1];
         }
     }
+
+
+    // V0-2
+    // IDEA: 2-D Prefix sum ( prefix matrix with [l][w] size )   (GEMINI)
+    class NumMatrix_0_2 {
+        private int[][] prefix;
+
+        public NumMatrix_0_2(int[][] matrix) {
+            if (matrix.length == 0 || matrix[0].length == 0)
+                return;
+
+            int n = matrix.length;
+            int m = matrix[0].length;
+            this.prefix = new int[n][m];
+
+            for (int y = 0; y < n; y++) {
+                for (int x = 0; x < m; x++) {
+                    int currentVal = matrix[y][x];
+
+                    if (y == 0 && x == 0) {
+                        // Top-left corner
+                        prefix[y][x] = currentVal;
+                    } else if (y == 0) {
+                        // First row: only look left
+                        prefix[y][x] = prefix[y][x - 1] + currentVal;
+                    } else if (x == 0) {
+                        // First column: only look up
+                        prefix[y][x] = prefix[y - 1][x] + currentVal;
+                    } else {
+                        // Middle: Standard 2D prefix formula
+                        prefix[y][x] = currentVal
+                                + prefix[y - 1][x]
+                                + prefix[y][x - 1]
+                                - prefix[y - 1][x - 1];
+                        
+                    }
+                }
+            }
+        }
+
+        public int sumRegion(int row1, int col1, int row2, int col2) {
+            int total = prefix[row2][col2];
+
+            // Subtract the "top" rectangle if it exists
+            if (row1 > 0) {
+                total -= prefix[row1 - 1][col2];
+            }
+
+            // Subtract the "left" rectangle if it exists
+            if (col1 > 0) {
+                total -= prefix[row2][col1 - 1];
+            }
+
+            // Add back the "top-left" corner if we subtracted it twice
+            if (row1 > 0 && col1 > 0) {
+                total += prefix[row1 - 1][col1 - 1];
+            }
+
+            return total;
+        }
+    }
+
 
 
 
