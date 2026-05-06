@@ -5284,10 +5284,64 @@ public class Workspace25 {
 
 
     // LC 1031
-    // 7.52 - 8.02 am
+    // 7.52 - 8.10 am
+    /**
+     *  -> return the `maximum` `sum` of elements
+     *     in `two NON-overlapping` subarrays
+     *     with lengths `firstLen and secondLen.`
+     *
+     *   - arr: int arr
+     *   - firstLen, secondLen: int
+     *
+     *   - arr with `firstLen` could come BEFORE or AFTER
+     *     than arr with secondLen
+     *     and NOT OVERLAPPING
+     *
+     *
+     *
+     *  --------------
+     *
+     *   IDEA 1) BRUTE FORCE
+     *
+     *   IDEA 2) PREFIX SUM ????
+     *
+     *     map: { prefix_sum: idx }
+     *
+     *     -> try firstLen, then 2nd len
+     *     -> try 2nd len, firstLen
+     *
+     *     -> get the max res
+     *
+     *
+     *  --------------
+     *
+     *
+     */
+    // IDEA 2) PREFIX SUM ????
     public int maxSumTwoNoOverlap(int[] nums, int firstLen, int secondLen) {
+        // edge
 
-        return 0;
+        // map: { prefix_sum: idx }
+        Map<Integer, Integer> map = new HashMap<>();
+        // ???
+
+        map.put(0, -1);
+        int prefix = 0;
+        int ans = 0;
+
+        // try firstLen, then 2nd len
+        for(int i = 0; i < nums.length; i++){
+            int x = nums[i];
+            prefix += x;
+
+            // ???
+            map.put(prefix, i);
+        }
+
+
+
+
+        return ans;
     }
 
 

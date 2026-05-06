@@ -1,6 +1,7 @@
 package LeetCodeJava.Array;
 
 // https://leetcode.com/problems/maximum-sum-of-two-non-overlapping-subarrays/description/
+
 /**
  * 1031. Maximum Sum of Two Non-Overlapping Subarrays
  * Medium
@@ -8,63 +9,129 @@ package LeetCodeJava.Array;
  * Companies
  * Hint
  * Given an integer array nums and two integers firstLen and secondLen, return the maximum sum of elements in two non-overlapping subarrays with lengths firstLen and secondLen.
- *
+ * <p>
  * The array with length firstLen could occur before or after the array with length secondLen, but they have to be non-overlapping.
- *
+ * <p>
  * A subarray is a contiguous part of an array.
- *
- *
- *
+ * <p>
+ * <p>
+ * <p>
  * Example 1:
- *
+ * <p>
  * Input: nums = [0,6,5,2,2,5,1,9,4], firstLen = 1, secondLen = 2
  * Output: 20
  * Explanation: One choice of subarrays is [9] with length 1, and [6,5] with length 2.
  * Example 2:
- *
+ * <p>
  * Input: nums = [3,8,1,3,2,1,8,9,0], firstLen = 3, secondLen = 2
  * Output: 29
  * Explanation: One choice of subarrays is [3,8,1] with length 3, and [8,9] with length 2.
  * Example 3:
- *
+ * <p>
  * Input: nums = [2,1,5,6,0,9,5,0,3,8], firstLen = 4, secondLen = 3
  * Output: 31
  * Explanation: One choice of subarrays is [5,6,0,9] with length 4, and [0,3,8] with length 3.
- *
- *
+ * <p>
+ * <p>
  * Constraints:
- *
+ * <p>
  * 1 <= firstLen, secondLen <= 1000
  * 2 <= firstLen + secondLen <= 1000
  * firstLen + secondLen <= nums.length <= 1000
  * 0 <= nums[i] <= 1000
- *
  */
 public class MaximumSumOfTwoNonOverlappingSubarrays {
 
-  // V0
-  //    public int maxSumTwoNoOverlap(int[] nums, int firstLen, int secondLen) {
-  //
-  //    }
+    // V0
+    //    public int maxSumTwoNoOverlap(int[] nums, int firstLen, int secondLen) {
+    //
+    //    }
 
 
+    // V-0-1
+    // IDEA: PREFIX SUM (GPT)
+    public int maxSumTwoNoOverlap_0_1(int[] nums, int firstLen, int secondLen) {
+        int n = nums.length;
 
-  // V0-1
-  // IDEA: PREFIX SUM
-  // time: O(N), space: O(N)
-  /**
-   *  Does This Cover All Configurations?
-   *
-   * Yes, it does. By handling the two cases separately, the algorithm ensures:
-   * 	•	All valid configurations are checked:
-   * 	•	firstLen subarray is before secondLen.
-   * 	•	secondLen subarray is before firstLen.
-   * 	•	There’s no need to explicitly consider cases where:
-   * 	•	secondLen subarray comes before firstLen in the “case 1” loop because “case 2” handles that.
-   * 	•	Similarly, the converse is true for “case 2”.
-   *
-   */
-  public int maxSumTwoNoOverlap_0_1(int[] nums, int firstLen, int secondLen) {
+        // build prefix sum
+        int[] prefix = new int[n + 1];
+        for (int i = 0; i < n; i++) {
+            prefix[i + 1] = prefix[i] + nums[i];
+        }
+
+        return Math.max(
+                helper(prefix, firstLen, secondLen),
+                helper(prefix, secondLen, firstLen));
+    }
+
+    // L comes before M
+    private int helper(int[] prefix, int L, int M) {
+        int maxL = 0;
+        int res = 0;
+
+        for (int i = L + M; i < prefix.length; i++) {
+            // best L subarray before current M
+            maxL = Math.max(maxL, prefix[i - M] - prefix[i - M - L]);
+
+            // current M subarray
+            int currM = prefix[i] - prefix[i - M];
+
+            res = Math.max(res, maxL + currM);
+        }
+
+        return res;
+    }
+
+    // V0-2
+    // IDEA: PREFIX SUM (GRMINI)
+    public int maxSumTwoNoOverlap_0_2(int[] nums, int firstLen, int secondLen) {
+        int n = nums.length;
+        int[] prefixSum = new int[n + 1];
+        for (int i = 0; i < n; i++) {
+            prefixSum[i + 1] = prefixSum[i] + nums[i];
+        }
+
+        // We need to check both cases:
+        // 1. firstLen before secondLen
+        // 2. secondLen before firstLen
+        return Math.max(solve(prefixSum, firstLen, secondLen),
+                solve(prefixSum, secondLen, firstLen));
+    }
+
+    private int solve(int[] p, int L, int M) {
+        int maxL = 0;
+        int res = 0;
+
+        // We start 'i' at a point where at least one L-length
+        // and one M-length subarray can exist.
+        for (int i = L + M; i < p.length; i++) {
+            // p[i-M] - p[i-M-L] is the L-length window ending just before the M-window starts
+            maxL = Math.max(maxL, p[i - M] - p[i - M - L]);
+
+            // p[i] - p[i-M] is the current M-length window
+            res = Math.max(res, maxL + (p[i] - p[i - M]));
+        }
+
+        return res;
+    }
+
+
+    // V0-4
+    // IDEA: PREFIX SUM
+    // time: O(N), space: O(N)
+
+    /**
+     * Does This Cover All Configurations?
+     * <p>
+     * Yes, it does. By handling the two cases separately, the algorithm ensures:
+     * •	All valid configurations are checked:
+     * •	firstLen subarray is before secondLen.
+     * •	secondLen subarray is before firstLen.
+     * •	There’s no need to explicitly consider cases where:
+     * •	secondLen subarray comes before firstLen in the “case 1” loop because “case 2” handles that.
+     * •	Similarly, the converse is true for “case 2”.
+     */
+    public int maxSumTwoNoOverlap_0_4(int[] nums, int firstLen, int secondLen) {
         int n = nums.length;
         int[] s = new int[n + 1];
         for (int i = 0; i < n; ++i) {
@@ -72,66 +139,66 @@ public class MaximumSumOfTwoNonOverlappingSubarrays {
         }
         int ans = 0;
 
-    /**
-     * where end is exclusive and start is inclusive.
-     * 	2.	Two Cases:
-     * 	•	Case 1: Calculate the maximum sum when a subarray of length firstLen
-     * 	            comes before a subarray of length secondLen.
-     *
-     * 	•	Case 2: Calculate the maximum sum when a subarray of length secondLen
-     * 	            comes before a subarray of length firstLen.
-     *
-     *
-     */
+        /**
+         * where end is exclusive and start is inclusive.
+         * 	2.	Two Cases:
+         * 	•	Case 1: Calculate the maximum sum when a subarray of length firstLen
+         * 	            comes before a subarray of length secondLen.
+         *
+         * 	•	Case 2: Calculate the maximum sum when a subarray of length secondLen
+         * 	            comes before a subarray of length firstLen.
+         *
+         *
+         */
 
-    // case 1) check `firstLen`, then `secondLen`
-    for (int i = firstLen, t = 0; i + secondLen - 1 < n; ++i) {
-      /**
-       *  - Logic:
-       *
-       * 	1.	Start at index i = firstLen because the first subarray
-       *       	must be at least firstLen long.
-       *
-       * 	2.	Use t to track the maximum sum of a subarray of length firstLen
-       *    	ending at or before index i.
-       *
-       * 	3.	Add the sum of a subarray of length secondLen starting at index i
-       *    	and update ans with the combined sum.
-       *
-       *
-       *    NOTE !!!
-       *
-       *
-       *  - In this case:
-       *    - The loop ensures the first subarray (firstLen) is placed before the second subarray (secondLen).
-       * 	- The variable t keeps track of the maximum sum of the firstLen subarray that ends before the second subarray starts at index i.
-       *  - Important Note:
-       *    - The secondLen subarray must always start after the firstLen subarray ends because the iteration proceeds sequentially.
-       */
-      t = Math.max(t, s[i] - s[i - firstLen]); // Maximum sum of `firstLen` ending at or before `i`
+        // case 1) check `firstLen`, then `secondLen`
+        for (int i = firstLen, t = 0; i + secondLen - 1 < n; ++i) {
+            /**
+             *  - Logic:
+             *
+             * 	1.	Start at index i = firstLen because the first subarray
+             *       	must be at least firstLen long.
+             *
+             * 	2.	Use t to track the maximum sum of a subarray of length firstLen
+             *    	ending at or before index i.
+             *
+             * 	3.	Add the sum of a subarray of length secondLen starting at index i
+             *    	and update ans with the combined sum.
+             *
+             *
+             *    NOTE !!!
+             *
+             *
+             *  - In this case:
+             *    - The loop ensures the first subarray (firstLen) is placed before the second subarray (secondLen).
+             * 	- The variable t keeps track of the maximum sum of the firstLen subarray that ends before the second subarray starts at index i.
+             *  - Important Note:
+             *    - The secondLen subarray must always start after the firstLen subarray ends because the iteration proceeds sequentially.
+             */
+            t = Math.max(t, s[i] - s[i - firstLen]); // Maximum sum of `firstLen` ending at or before `i`
             ans = Math.max(ans, t + s[i + secondLen] - s[i]); // Combine with `secondLen` starting at `i`
         }
-    // case 2) check `secondLen`, then `firstLen`
+        // case 2) check `secondLen`, then `firstLen`
 
-    /**
-     *  - Logic
-     *
-     *      * 	1.	Start at index i = secondLen because the first subarray must be at least secondLen long.
-     *      * 	2.	Use t to track the maximum sum of a subarray of length secondLen ending at or before index i.
-     *      * 	3.	Add the sum of a subarray of length firstLen starting at index i and update ans with the combined sum.
-     *
-     *  - Goal: Calculate the maximum sum where a subarray of length secondLen comes before a subarray of length firstLen.
-     *
-     *  NOTE !!!
-     *
-     * - In this case:
-     *      - The loop ensures the first subarray (secondLen) is placed before the second subarray (firstLen).
-     *      - The variable t keeps track of the maximum sum of the secondLen subarray that ends before the first subarray starts at index i.
-     * 	- Important Note:
-     *      - The firstLen subarray must always start after the secondLen subarray ends because the iteration proceeds sequentially.
-     *
-     */
-    for (int i = secondLen, t = 0; i + firstLen - 1 < n; ++i) {
+        /**
+         *  - Logic
+         *
+         *      * 	1.	Start at index i = secondLen because the first subarray must be at least secondLen long.
+         *      * 	2.	Use t to track the maximum sum of a subarray of length secondLen ending at or before index i.
+         *      * 	3.	Add the sum of a subarray of length firstLen starting at index i and update ans with the combined sum.
+         *
+         *  - Goal: Calculate the maximum sum where a subarray of length secondLen comes before a subarray of length firstLen.
+         *
+         *  NOTE !!!
+         *
+         * - In this case:
+         *      - The loop ensures the first subarray (secondLen) is placed before the second subarray (firstLen).
+         *      - The variable t keeps track of the maximum sum of the secondLen subarray that ends before the first subarray starts at index i.
+         * 	- Important Note:
+         *      - The firstLen subarray must always start after the secondLen subarray ends because the iteration proceeds sequentially.
+         *
+         */
+        for (int i = secondLen, t = 0; i + firstLen - 1 < n; ++i) {
             t = Math.max(t, s[i] - s[i - secondLen]);
             ans = Math.max(ans, t + s[i + firstLen] - s[i]);
         }
@@ -142,11 +209,12 @@ public class MaximumSumOfTwoNonOverlappingSubarrays {
     // V1
     // https://leetcode.ca/2018-09-26-1031-Maximum-Sum-of-Two-Non-Overlapping-Subarrays/
     // IDEA: PREFIX SUM
+
     /**
      * time = O(N)
      * space = O(N)
      */
-        public int maxSumTwoNoOverlap_1(int[] nums, int firstLen, int secondLen) {
+    public int maxSumTwoNoOverlap_1(int[] nums, int firstLen, int secondLen) {
         int n = nums.length;
         int[] s = new int[n + 1];
         for (int i = 0; i < n; ++i) {
@@ -169,11 +237,12 @@ public class MaximumSumOfTwoNonOverlappingSubarrays {
     // V1-2
     // IDEA: PREFIX SUM
     // https://leetcode.com/problems/maximum-sum-of-two-non-overlapping-subarrays/solutions/1489581/java-easy-to-understand-prefix-sum-by-rm-5d2z/
+
     /**
      * time = O(N)
      * space = O(N)
      */
-        public int maxSumTwoNoOverlap_1_2(int[] A, int L, int M) {
+    public int maxSumTwoNoOverlap_1_2(int[] A, int L, int M) {
         int sums[] = new int[A.length + 1];
 
         for (int i = 1; i <= A.length; i++)
@@ -221,11 +290,12 @@ public class MaximumSumOfTwoNonOverlappingSubarrays {
 
     // V3
     // https://leetcode.com/problems/maximum-sum-of-two-non-overlapping-subarrays/solutions/913234/on-thought-process-java-by-133c7-wn3a/
+
     /**
      * time = O(N)
      * space = O(N)
      */
-        public int maxSumTwoNoOverlap_3(int[] A, int L, int M) {
+    public int maxSumTwoNoOverlap_3(int[] A, int L, int M) {
         int n = A.length;
         if (n == 0) {
             return 0;
@@ -284,7 +354,7 @@ public class MaximumSumOfTwoNonOverlappingSubarrays {
     }
 
 
-
+    
 
 
 }
