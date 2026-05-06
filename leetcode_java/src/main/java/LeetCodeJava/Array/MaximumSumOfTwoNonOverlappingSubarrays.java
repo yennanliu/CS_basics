@@ -79,26 +79,96 @@ public class MaximumSumOfTwoNonOverlappingSubarrays {
      *    - firstLen, secondLen
      *    - secondLen, firstLen
      *
+     * L: length of the first subarray (must come first)
+     * M: length of the second subarray (comes after L)
+     *
      */
     // L comes before M
     private int helper(int[] prefix, int L, int M) {
+        // maxL: the maximum sum of
+        // `any L-length` subarray seen so far
+        // (on the left side)
         int maxL = 0;
         int res = 0;
 
+        /**  NOTE !!!
+         *
+         * Why start at L + M?
+         *
+         * ->
+         * We need:
+         *   an L-length subarray
+         *   AND an M-length subarray after it
+         *    -> So minimum total length = L + M
+         *
+         * At each i, we treat:
+         *
+         *    ->
+         *
+         *    M-subarray ends at index i-1
+         *    L-subarray must end before that
+         *
+         */
         for (int i = L + M; i < prefix.length; i++) {
 
             /** NOTE !!!
              *
+             *  1.
              * maxL:
              *   keeps the `best` `L-length` subarray
              *   before current position
+             *
+             *
+             * 2.
+             * prefix[i - M] - prefix[i - M - L]
+             *  -> sum of subarray of length L ending at index (i - M - 1)
+             *  -> why ?
+             *     - i - M → start of current M window
+             *       -> So L must end before that
+             *       -> The L window is:
+             *           ```
+             *           [i - M - L, ..., i - M - 1]
+             *           ```
+             *
+             * 3.
+             *
+             * So this line does:
+             *
+             *    Compute current candidate L-window
+             *    Compare with previous best
+             *    Store the maximum in maxL
+             *
+             *
+             *
              */
             // best L subarray before current M
             maxL = Math.max(maxL, prefix[i - M] - prefix[i - M - L]);
 
+
+            /** NOTE !!!
+             *
+             * sum of subarray of length M ending at index i-1
+             *
+             */
             // current M subarray
             int currM = prefix[i] - prefix[i - M];
 
+            /**  NOTE !!
+             *
+             * Now we combine:
+             *
+             *   - best L before
+             *   - current M
+             *
+             *
+             * ->
+             *
+             * This guarantees:
+             * ✅ no overlap
+             * ✅ optimal pairing so far
+             *
+             *
+             */
             res = Math.max(res, maxL + currM);
         }
 
