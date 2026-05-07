@@ -5506,9 +5506,50 @@ public class Workspace25 {
 
 
     // LC 1015
+    // 7.42 - 52 am
+    /**
+     *  -> Return the length of n.
+     *  If there is no such n, return -1.
+     *
+     *  k: positive int
+     *
+     *  -> find len of smallest positive int (n),
+     *    s.t. n % k == 0
+     *    and  n ONLY contains the digit 1
+     *
+     *
+     *  ------------
+     *
+     *   IDEA 1) MATH + BRUTE FORCE ???
+     *
+     *
+     *  ------------
+     *
+     *
+     */
+    // IDEA 1) MATH + BRUTE FORCE ???
     public int smallestRepunitDivByK(int k) {
+        // edge ???
+//        if(k < 10){
+//            return k == 1 ? 1: -1;
+//        }
 
-        return 0;
+        int val = 0;
+
+        // ???
+        for(int i = 0; i < k; i++){
+            val = val * 10 + 1;
+
+            System.out.println(">>> val = " + val
+                    + ", k = " + k);
+            if(val % k == 0){
+                return i+1; // ???
+            }
+        }
+
+
+
+        return val % k == 0 ? k : -1;
     }
 
 

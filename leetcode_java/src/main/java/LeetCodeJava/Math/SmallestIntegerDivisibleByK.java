@@ -47,6 +47,62 @@ public class SmallestIntegerDivisibleByK {
 //    }
 
 
+    // V0-1
+    // IDEA: MATH (gemini)
+    public int smallestRepunitDivByK_0_1(int k) {
+        // 1. Quick check: No repunit (1, 11, 111...) ends in 0, 2, 4, 5, 6, 8.
+        // Thus, it cannot be divisible by 2 or 5.
+        if (k % 2 == 0 || k % 5 == 0) {
+            return -1;
+        }
+
+        int remainder = 0;
+
+        // 2. We only need to check up to k lengths (Pigeonhole Principle)
+        for (int length = 1; length <= k; length++) {
+            // Update remainder instead of storing the massive number
+            // (remainder * 10 + 1) % k
+            remainder = (remainder * 10 + 1) % k;
+
+            // 3. If remainder is 0, we found the length
+            if (remainder == 0) {
+                return length;
+            }
+        }
+
+        return -1;
+    }
+
+
+    // V0-2
+    // IDEA: MATH (GPT)
+    public int smallestRepunitDivByK_0_2(int k) {
+
+        // Numbers made only of 1's
+        // can never be divisible by 2 or 5
+        if (k % 2 == 0 || k % 5 == 0) {
+            return -1;
+        }
+
+        int val = 0;
+
+        for (int i = 0; i < k; i++) {
+
+            // Keep remainder only
+            val = (val * 10 + 1) % k;
+
+            //System.out.println(">>> remainder = " + val);
+
+            if (val == 0) {
+                return i + 1;
+            }
+        }
+
+        return -1;
+    }
+
+
+
     // V1
     // IDEA: Checking Loop
     // https://leetcode.com/problems/smallest-integer-divisible-by-k/editorial/
@@ -101,5 +157,6 @@ public class SmallestIntegerDivisibleByK {
 
 
 
+    
 
 }
