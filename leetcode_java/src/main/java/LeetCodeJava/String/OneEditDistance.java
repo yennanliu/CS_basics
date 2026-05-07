@@ -201,8 +201,183 @@ public class OneEditDistance {
 
 
     // V0-3
+    // IDEA: DP (GPT)
+    // TODO: validate
+    boolean isOneEditDistance_0_3(String s, String t) {
+
+        // equal strings -> 0 edits
+        if (s.equals(t)) {
+            return false;
+        }
+
+        int len_s = s.length();
+        int len_t = t.length();
+
+        // impossible
+        if (Math.abs(len_s - len_t) > 1) {
+            return false;
+        }
+
+        // optional optimization
+        if (len_s > len_t) {
+            return isOneEditDistance_0_3(t, s);
+        }
+
+        /**
+         * dp[i][j]
+         * =
+         * min edits to convert:
+         *
+         * s[0...i-1] -> t[0...j-1]
+         */
+        int[][] dp = new int[len_s + 1][len_t + 1];
+
+        // init
+        for (int i = 0; i <= len_s; i++) {
+            dp[i][0] = i;
+        }
+
+        for (int j = 0; j <= len_t; j++) {
+            dp[0][j] = j;
+        }
+
+        // build dp
+        for (int i = 1; i <= len_s; i++) {
+
+            for (int j = 1; j <= len_t; j++) {
+
+                // same char
+                if (s.charAt(i - 1) == t.charAt(j - 1)) {
+
+                    dp[i][j] = dp[i - 1][j - 1];
+
+                } else {
+
+                    /**  DP eq:
+                     *
+                     * | Operation | Previous Subproblem |
+                     * | --------- | ------------------- |
+                     * | Insert    | dp[i][j-1]          |
+                     * | Delete    | dp[i-1][j]          |
+                     * | Replace   | dp[i-1][j-1]        |
+                     *
+                     */
+
+                    // insert
+                    /** NOTE !!  INSERT
+                     *
+                     * ## Visualization
+                     *
+                     * Example:
+                     *
+                     * ```text id="i8pv7d"
+                     * s = "ab"
+                     * t = "acb"
+                     * ```
+                     *
+                     * Suppose:
+                     *
+                     * ```text id="rwjy3q"
+                     * i = 2
+                     * j = 3
+                     * ```
+                     *
+                     * We're computing:
+                     *
+                     * ```text id="f9gxux"
+                     * "ab" -> "acb"
+                     * ```
+                     *
+                     * Insert interpretation:
+                     *
+                     * First solve:
+                     *
+                     * ```text id="uk51ca"
+                     * "ab" -> "ac"
+                     * ```
+                     *
+                     * which is:
+                     *
+                     * ```text id="oc01vb"
+                     * dp[2][2]
+                     * ```
+                     *
+                     * Then insert:
+                     *
+                     * ```text id="hff28z"
+                     * 'b'
+                     * ```
+                     *
+                     * So:
+                     *
+                     * ```text id="w1fpk7"
+                     * dp[2][3] = dp[2][2] + 1
+                     *
+                     */
+                    int insert = dp[i][j - 1] + 1;
+
+                    // delete
+                    /**  NOTE !!! DELETE
+                     *
+                     *  ## Visualization
+                     *
+                     *   ```
+                     *    "abc" -> "ac"
+                     *    ```
+                     *
+                     * Delete:  'b'
+                     *
+                     * First solve:
+                     *
+                     *      ```
+                     *      "ab" -> "ac"
+                     *       ```
+                     *
+                     * then delete final char.
+                     *
+                     *
+                     */
+                    int delete = dp[i - 1][j] + 1;
+
+                    // replace
+                    /**  NOTE !!!   REPLACE
+                     *
+                     *  ## Visualization
+                     *
+                     *   ```
+                     *   "abc" -> "adc"
+                     *   ```
+                     *
+                     *  At mismatch:
+                     *
+                     *    'b' vs 'd'
+                     *
+                     * First solve:
+                     *
+                     *     "a" -> "a"
+                     *
+                     * then replace:
+                     *
+                     *     b -> d
+                     *
+                     *
+                     */
+                    int replace = dp[i - 1][j - 1] + 1;
+
+                    dp[i][j] = Math.min(insert,
+                            Math.min(delete, replace));
+                }
+            }
+        }
+
+        return dp[len_s][len_t] == 1;
+    }
+
+
+    // V0-4
     // IDEA: DP (GEMINI)
-    public boolean isOneEditDistance_0_3(String s, String t) {
+    // TODO: validate
+    public boolean isOneEditDistance_0_4(String s, String t) {
         int ns = s.length();
         int nt = t.length();
 

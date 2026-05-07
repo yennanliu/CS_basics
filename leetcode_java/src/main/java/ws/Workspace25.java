@@ -5797,58 +5797,90 @@ public class Workspace25 {
          *
          *
          */
-        int[][]dp = new int[len_s][len_t];
-        // init ??
-        // if t is `null` ????
-        for(int i = 0; i < len_s; i++){
-            dp[i][0] = 0; // ???
+
+        /**
+         * dp[i][j]
+         * =
+         * min edits to convert:
+         *
+         * s[0...i-1] -> t[0...j-1]
+         */
+
+        // because DP includes empty-string states.
+        //int[][]dp = new int[len_s][len_t];
+        int[][] dp = new int[len_s + 1][len_t + 1];
+
+//        // init ??
+//        // if t is `null` ????
+//        for(int i = 0; i < len_s; i++){
+//            dp[i][0] = 0; // ???
+//        }
+//        // if s is `null` ????
+//        for(int i = 0; i < len_t; i++){
+//            dp[0][i] = 0; // ???
+//        }
+
+        // init
+        for (int i = 0; i <= len_s; i++) {
+            dp[i][0] = i;
         }
-        // if s is `null` ????
-        for(int i = 0; i < len_t; i++){
-            dp[0][i] = 0; // ???
+
+        for (int j = 0; j <= len_t; j++) {
+            dp[0][j] = j;
         }
 
 
-        for(int i = 1; i < len_s; i++){
-            for(int j = 1 ; j < len_t; j++){
+        for(int i = 1; i <= len_s; i++){
+            for(int j = 1 ; j <= len_t; j++){
                 // 3 ops:
 
                 // if same, continue
-                if(s.charAt(i) == t.charAt(j)){
+                if(s.charAt(i-1) == t.charAt(j-1)){
                     // ???
                     dp[i][j] = dp[i-1][j-1];
                 }else{
                     // insert
                     // ???
-                    dp[i][j] = Math.min(dp[i][j],
-                            dp[i-1][j] + 1
-                    );
+//                    dp[i][j] = Math.min(dp[i][j],
+//                            dp[i-1][j] + 1
+//                    );
+
+                    int insert = dp[i][j - 1] + 1;
 
                     // delete
                     // ???
-                    dp[i][j] = Math.min(dp[i][j],
-                            dp[i][j-1] + 1
-                    );
+//                    dp[i][j] = Math.min(dp[i][j],
+//                            dp[i][j-1] + 1
+//                    );
+                    int delete = dp[i - 1][j] + 1;
 
                     // replace
                     // ???
-                    dp[i][j] = Math.min(dp[i][j],
-                            dp[i-1][j-1] + 1);
+//                    dp[i][j] = Math.min(dp[i][j],
+//                            dp[i-1][j-1] + 1);
+
+                    int replace = dp[i - 1][j - 1] + 1;
+
+                    dp[i][j] = Math.min(insert,
+                            Math.min(delete, replace));
+
                 }
 
 
-                // early quit ???
-                if(dp[i][j] > 1){
-                    return false;
-                }
+//                // early quit ???
+//                if(dp[i][j] > 1){
+//                    return false;
+//                }
 
             }
         }
 
 
         // ???
-        return dp[len_s][len_t] == 1;
+        return dp[len_s - 1][len_t - 1] == 1;
     }
+
+
 
 
 
