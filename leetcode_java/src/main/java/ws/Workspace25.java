@@ -5714,6 +5714,36 @@ public class Workspace25 {
 
 
 
+    // LC 161
+    // 10.10 - 20 am
+    /**
+     *   -> Given two strings s and t,
+     *     determine if they are
+     *     both `one edit distance` apart.
+     *
+     *     3 types OP that is acceptable:
+     *
+     *       -  Insert a character into s to get t
+     *       - Delete a character from s to get t
+     *       - Replace a character of s to get t
+     *
+     *  --------------------
+     *
+     *   IDEA 1) BRUTE FORCE
+     *
+     *   IDEA 2) DP ???
+     *
+     *   IDEA 3) 2 POINTERS ???
+     *
+     *
+     *  --------------------
+     *
+     */
+    public boolean isOneEditDistance(String s, String t) {
+
+
+        return false;
+    }
 
 
 

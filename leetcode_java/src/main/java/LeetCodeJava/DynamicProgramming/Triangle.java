@@ -135,6 +135,56 @@ public class Triangle {
     }
 
 
+    // V1-3
+    // IDEA: BRUTE FORCE (DFS) (TLE) (GPT)
+    public int minimumTotal_1_3(List<List<Integer>> triangle) {
+        return dfs(triangle, 0, 0);
+    }
+
+    private int dfs(List<List<Integer>> triangle, int y, int x) {
+
+        // base case
+        if (y == triangle.size() - 1) {
+            return triangle.get(y).get(x);
+        }
+
+        int cur = triangle.get(y).get(x);
+
+        // go down
+        int left = dfs(triangle, y + 1, x);
+
+        // go down-right
+        int right = dfs(triangle, y + 1, x + 1);
+
+        return cur + Math.min(left, right);
+    }
+
+
+    // V1-4
+    // IDEA: BRUTE FORCE (DFS) (TLE) (GEMINI)
+    public int minimumTotal(List<List<Integer>> triangle) {
+        return findPath(0, 0, triangle);
+    }
+
+    private int findPath(int y, int x, List<List<Integer>> triangle) {
+        // Base Case: If we've reached the bottom row, return the cell's value
+        if (y == triangle.size() - 1) {
+            return triangle.get(y).get(x);
+        }
+
+        // Recursive Step:
+        // 1. Find the min path starting from the left child (y+1, x)
+        int leftChild = findPath(y + 1, x, triangle);
+
+        // 2. Find the min path starting from the right child (y+1, x+1)
+        int rightChild = findPath(y + 1, x + 1, triangle);
+
+        // Current value + the minimum of the two possible paths below
+        return triangle.get(y).get(x) + Math.min(leftChild, rightChild);
+    }
+
+
+
 
     // V2
     // IDEA: DP

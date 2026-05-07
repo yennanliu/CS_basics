@@ -45,6 +45,9 @@ import java.util.Objects;
 public class OneEditDistance {
 
     // V0
+//    public boolean isOneEditDistance(String s, String t) {
+//    }
+
 
     // V1-1
     // IDEA:
