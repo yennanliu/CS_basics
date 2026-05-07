@@ -5529,11 +5529,6 @@ public class Workspace25 {
      */
     // IDEA 1) MATH + BRUTE FORCE ???
     public int smallestRepunitDivByK(int k) {
-        // edge ???
-//        if(k < 10){
-//            return k == 1 ? 1: -1;
-//        }
-
         int val = 0;
 
         // ???

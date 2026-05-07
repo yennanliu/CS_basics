@@ -46,6 +46,26 @@ public class SmallestIntegerDivisibleByK {
 //
 //    }
 
+    // TODO: fix below
+//    public int smallestRepunitDivByK(int k) {
+//        int val = 0;
+//
+//        // ???
+//        for(int i = 0; i < k; i++){
+//            val = val * 10 + 1;
+//
+//            System.out.println(">>> val = " + val
+//                    + ", k = " + k);
+//            if(val % k == 0){
+//                return i+1; // ???
+//            }
+//        }
+//
+//
+//        return val % k == 0 ? k : -1;
+//    }
+
+
 
     // V0-1
     // IDEA: MATH (gemini)
@@ -60,6 +80,26 @@ public class SmallestIntegerDivisibleByK {
 
         // 2. We only need to check up to k lengths (Pigeonhole Principle)
         for (int length = 1; length <= k; length++) {
+            /**  NOTE !!!
+             *
+             *  to avoid `overflow`, we need to
+             *  keep the `REMAINDER`, instead of the original number
+             *
+             *  ->
+             *
+             *  cannot fit inside int (or even long) for large k.
+             *
+             * You must keep only the remainder instead of the full number.
+             *
+             *
+             * ->
+             *
+             *  e.g.
+             *
+             *  remainder = (remainder * 10 + 1) % k;
+             *
+             *
+             */
             // Update remainder instead of storing the massive number
             // (remainder * 10 + 1) % k
             remainder = (remainder * 10 + 1) % k;
@@ -89,6 +129,26 @@ public class SmallestIntegerDivisibleByK {
         for (int i = 0; i < k; i++) {
 
             // Keep remainder only
+            /**  NOTE !!!
+             *
+             *  to avoid `overflow`, we need to
+             *  keep the `REMAINDER`, instead of the original number
+             *
+             *  ->
+             *
+             *  cannot fit inside int (or even long) for large k.
+             *
+             * You must keep only the remainder instead of the full number.
+             *
+             *
+             * ->
+             *
+             *  e.g.
+             *
+             *  remainder = (remainder * 10 + 1) % k;
+             *
+             *
+             */
             val = (val * 10 + 1) % k;
 
             //System.out.println(">>> remainder = " + val);
@@ -157,6 +217,6 @@ public class SmallestIntegerDivisibleByK {
 
 
 
-    
+
 
 }
