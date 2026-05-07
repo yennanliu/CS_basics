@@ -1700,6 +1700,71 @@ public boolean isOneEditDistance(String s, String t) {
 
 **Why the early `Math.abs > 1` guard matters**: strings that differ in length by more than 1 always have edit distance ≥ 2, so we skip the O(m×n) work entirely.
 
+#### 📐 **Why These Three DP Transitions? (Intuition with Example)**
+
+```
+| Operation | DP Cell Used  | Meaning                                      |
+|-----------|---------------|----------------------------------------------|
+| Insert    | dp[i][j-1]    | Already matched s[0..i] to t[0..j-1], then insert t[j] |
+| Delete    | dp[i-1][j]    | Already matched s[0..i-1] to t[0..j], then delete s[i] |
+| Replace   | dp[i-1][j-1]  | Already matched s[0..i-1] to t[0..j-1], then swap s[i]→t[j] |
+```
+
+**Concrete walkthrough: s = "ab", t = "acb"**
+
+Build the table where `dp[i][j]` = min edits to convert `s[0..i-1]` → `t[0..j-1]`:
+
+```
+       ""   a    c    b
+  ""  [ 0][ 1][ 2][ 3]
+  a   [ 1][ 0][ 1][ 2]
+  b   [ 2][ 1][ 1][ 1]
+```
+
+Focus on `dp[2][3]` (convert "ab" → "acb"):
+
+```
+s[1] = 'b',  t[2] = 'b'   → chars MATCH → dp[2][3] = dp[1][2] = 1  ✓
+```
+
+Now focus on `dp[1][2]` (convert "a" → "ac") where s[0]='a', t[1]='c' (NO match):
+
+```
+Option 1 — INSERT 'c' into s after "a":
+    We already know it takes dp[1][1] = 0 ops to match "a"→"a",
+    then we insert 'c' → dp[1][1] + 1 = 1
+    → uses dp[i][j-1]  (same row, one column back = t is one char shorter)
+
+Option 2 — DELETE s[0]='a' from s:
+    We already know it takes dp[0][2] = 2 ops to match ""→"ac",
+    then we delete 'a' → dp[0][2] + 1 = 3
+    → uses dp[i-1][j]  (one row up = s is one char shorter)
+
+Option 3 — REPLACE s[0]='a' with t[1]='c':
+    We already know it takes dp[0][1] = 1 op to match ""→"a",
+    then swap 'a'→'c' → dp[0][1] + 1 = 2
+    → uses dp[i-1][j-1]  (diagonal = both strings one char shorter)
+
+→ dp[1][2] = min(1, 3, 2) = 1
+```
+
+**Mental model for the three cells:**
+
+```
+dp[i-1][j-1]  dp[i-1][j]
+     ↘              ↓
+dp[i][j-1]  →   dp[i][j]
+
+  ↘ Replace      ↓ Delete (from s)
+  → Insert (into s, advance t only)
+```
+
+- **`dp[i][j-1]` (left)**: t advanced one step but s didn't → we filled the gap with an **insert**
+- **`dp[i-1][j]` (up)**: s advanced one step but t didn't → we removed a char from s (**delete**)
+- **`dp[i-1][j-1]` (diagonal)**: both advanced → we **replaced** s[i] with t[j]
+
+For LC 161 specifically: after filling the table, `dp[ns][nt] == 1` means exactly one of these three operations was needed.
+
 #### **When to Use Which**
 
 | Approach | When to Prefer |

@@ -277,14 +277,14 @@ public class OneEditDistance {
                      *
                      * Suppose:
                      *
-                     * ```text id="rwjy3q"
+                     * ```
                      * i = 2
                      * j = 3
                      * ```
                      *
                      * We're computing:
                      *
-                     * ```text id="f9gxux"
+                     * ```
                      * "ab" -> "acb"
                      * ```
                      *
@@ -292,25 +292,25 @@ public class OneEditDistance {
                      *
                      * First solve:
                      *
-                     * ```text id="uk51ca"
+                     * ```
                      * "ab" -> "ac"
                      * ```
                      *
                      * which is:
                      *
-                     * ```text id="oc01vb"
+                     * ```
                      * dp[2][2]
                      * ```
                      *
                      * Then insert:
                      *
-                     * ```text id="hff28z"
+                     * ```
                      * 'b'
                      * ```
                      *
                      * So:
                      *
-                     * ```text id="w1fpk7"
+                     * ```
                      * dp[2][3] = dp[2][2] + 1
                      *
                      */
