@@ -49,6 +49,113 @@ public class OneEditDistance {
 //    }
 
 
+
+    // V0-1
+    // IDEA: 2 POINTERS (fixed by gpt)
+    // TODO: validate
+    public boolean isOneEditDistance_0_1(String s, String t) {
+
+        // equal strings -> 0 edits
+        if (s.equals(t)) {
+            return false;
+        }
+
+        int len_s = s.length();
+        int len_t = t.length();
+
+        // length difference > 1 impossible
+        if (Math.abs(len_s - len_t) > 1) {
+            return false;
+        }
+
+        // ensure s is shorter (or equal)
+        if (len_s > len_t) {
+            String tmp = s;
+            s = t;
+            t = tmp;
+        }
+
+        len_s = s.length();
+        len_t = t.length();
+
+        boolean isLenEquals = (len_s == len_t);
+
+        int i = 0;
+        int j = 0;
+
+        int op = 0;
+
+        while (i < len_s && j < len_t) {
+
+            if (s.charAt(i) == t.charAt(j)) {
+                i++;
+                j++;
+            } else {
+
+                op++;
+
+                if (op > 1) {
+                    return false;
+                }
+
+                // replace
+                if (isLenEquals) {
+                    i++;
+                    j++;
+                }
+                // insert into shorter string
+                else {
+                    j++;
+                }
+            }
+        }
+
+        // leftover character
+        if (j < len_t || i < len_s) {
+            op++;
+        }
+
+        return op == 1;
+    }
+
+
+    // V0-2
+    // IDEA: 2 POINTERS (fixed by gemini)
+    // TODO: validate
+    public boolean isOneEditDistance_0_2(String s, String t) {
+        int ns = s.length();
+        int nt = t.length();
+
+        // Ensure s is always the shorter string
+        if (ns > nt) {
+            return isOneEditDistance_0_2(t, s);
+        }
+
+        // If length difference is more than 1, they can't be one edit apart
+        if (nt - ns > 1) {
+            return false;
+        }
+
+        for (int i = 0; i < ns; i++) {
+            if (s.charAt(i) != t.charAt(i)) {
+                // If lengths are the same, they must be equal after this character (Replace)
+                if (ns == nt) {
+                    return s.substring(i + 1).equals(t.substring(i + 1));
+                } else {
+                    // If lengths are different, s must match t starting from the next char of t (Insert)
+                    // s.substring(i) because we haven't consumed s.charAt(i) yet
+                    return s.substring(i).equals(t.substring(i + 1));
+                }
+            }
+        }
+
+        // If we get here, all characters of s matched the prefix of t.
+        // They are one edit apart only if t has exactly one more character at the end.
+        return (ns + 1 == nt);
+    }
+
+
+
     // V1-1
     // IDEA:
     // https://leetcode.ca/2016-05-09-161-One-Edit-Distance/
@@ -122,6 +229,7 @@ public class OneEditDistance {
 
 
 
+    
     // V2
 
 

@@ -5738,12 +5738,92 @@ public class Workspace25 {
      *
      *  --------------------
      *
+     *
+     *  ex 1)
+     *
+     *  Input: s = "ab", t = "acb"
+     *  Output: true
+     *
+     *
+     *  ex 2)
+     *
+     *   Input: s = "cb", t = "acb"
+     *   Output: true
+     *
+     *
+     *
+     *
      */
+    // IDEA 3) 2 POINTERS ???
     public boolean isOneEditDistance(String s, String t) {
+        // edge
+        if(s.equals(t)){
+            return false;
+        }
+
+        // ???
+        // assume: t is the longer one
+        int len_s = s.length();
+        int len_t = t.length();
+
+        // ???
+        if(Math.abs(len_s - len_t) > 1){
+            return false;
+        }
+
+        // assume:
+        // t is the longer one
+        //   -> if NOT, swap ?????
+        if(len_t < len_s){
+            String tmp = s;
+            t = s;
+            s = tmp;
+        }
+        // ???
+        len_s = s.length();
+        len_t = t.length();
+
+        // /??
+        boolean isLenEquals = len_s == len_t;
 
 
-        return false;
+        int op = 0;
+
+        // case 1) s len == t len
+        // case 2) s len != t len
+
+        // ???
+        int i = 0;
+        // NOTE !!! we move j anyway (idx in t)
+        for(int j = 0; j < len_t; j++){
+            if(s.charAt(i) == t.charAt(j)){
+                i += 1;
+            }else{
+                op += 1;
+                // ???
+                if(op > 1){
+                    return false;
+                }
+
+                // ???
+                if(isLenEquals){
+                    i += 1;
+                }
+            }
+
+            // ?? if i read the end of s
+            if(i == s.length() - 1){
+                break;
+            }
+        }
+
+
+        return op == 1; // ????
     }
+
+
+
+
 
 
 
