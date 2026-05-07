@@ -5763,8 +5763,17 @@ public class Workspace25 {
      * Final return condition is wrong for insertion case
      *
      */
+    // IDEA: DP
+    // 10.51 - 11.01 AM
+    boolean isOneEditDistance(String s, String t) {
+        return false;
+    }
+
+
+
+
     // IDEA 3) 2 POINTERS ???
-    public boolean isOneEditDistance(String s, String t) {
+    public boolean isOneEditDistance_99(String s, String t) {
         // edge
         // equal strings -> 0 edits
         if (s.equals(t)) {

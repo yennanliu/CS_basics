@@ -81,6 +81,16 @@ public class OneEditDistance {
             t = tmp;
         }
 
+        /** NOTE !!!
+         *
+         *  actually, for `swap handling`, we could do below as well,
+         *  which is more elegant and clean
+         */
+//        if (len_s > len_t) {
+//            return isOneEditDistance_0_1(t, s);
+//        }
+
+
         len_s = s.length();
         len_t = t.length();
 
@@ -155,7 +165,7 @@ public class OneEditDistance {
 
 
     // V0-2
-    // IDEA: 2 POINTERS (fixed by gemini)
+    // IDEA: 2 POINTERS + SUB STRING OP (fixed by gemini)
     // TODO: validate
     public boolean isOneEditDistance_0_2(String s, String t) {
         int ns = s.length();

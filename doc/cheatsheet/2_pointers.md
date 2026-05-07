@@ -782,6 +782,77 @@ public boolean isSubsequence(String s, String t) {
 - LC 524 Longest Word in Dictionary through Deleting
 - LC 792 Number of Matching Subsequences
 
+#### 0-2-5b) One Edit Distance (Insert / Delete / Replace)
+
+**Core Idea:**
+Check whether two strings differ by exactly one edit (insert, delete, or replace).
+
+Key observations:
+1. If `|len(s) - len(t)| > 1` → impossible, return false
+2. If `s == t` → zero edits, return false
+3. Always work with `s` as the shorter string (swap if needed)
+4. Scan left-to-right: on the **first mismatch**, try the only possible operation and verify the remainder in O(1) with `substring.equals()`
+
+**Three cases at first mismatch:**
+
+| Lengths | Operation | Check |
+|---------|-----------|-------|
+| `len(s) == len(t)` | Replace `s[i]` | `s[i+1..] == t[i+1..]` |
+| `len(s) < len(t)` | Insert into s (skip t[i]) | `s[i..] == t[i+1..]` |
+| `len(s) > len(t)` | Delete from s (skip s[i]) | `s[i+1..] == t[i..]` |
+
+After the loop (no mismatch found): valid only if `len(t) == len(s) + 1` (one trailing insert).
+
+**Pattern (Java):**
+```java
+// LC 161 - One Edit Distance
+public boolean isOneEditDistance(String s, String t) {
+    int ns = s.length(), nt = t.length();
+
+    // Ensure s is always the shorter string
+    if (ns > nt) return isOneEditDistance(t, s);
+
+    // Length gap > 1 → impossible
+    if (nt - ns > 1) return false;
+
+    for (int i = 0; i < ns; i++) {
+        if (s.charAt(i) != t.charAt(i)) {
+            if (ns == nt) {
+                // Replace: rest of both strings must match
+                return s.substring(i + 1).equals(t.substring(i + 1));
+            } else {
+                // Insert into s (skip one char in t)
+                return s.substring(i).equals(t.substring(i + 1));
+            }
+        }
+    }
+
+    // No mismatch in s — valid only if t has exactly one extra trailing char
+    return ns + 1 == nt;
+}
+```
+
+**Why `substring` comparison instead of continuing the loop?**
+Once we find the first mismatch, there is only ONE valid repair move. Checking the suffix via `substring.equals()` resolves this in O(n) without needing extra flags or pointer bookkeeping.
+
+**Pointer movement summary:**
+```
+Both i and j advance together while chars match.
+At FIRST mismatch:
+  - Same length  → advance both (replace): check suffix
+  - Diff length  → advance j only (insert): check suffix
+No second chance — any further mismatch = false.
+```
+
+**Similar LC problems:**
+| Problem | LC# | Key Difference |
+|---------|-----|----------------|
+| One Edit Distance | 161 | Exactly 1 edit (insert/delete/replace) |
+| Edit Distance | 72 | Minimum edits (DP) |
+| Is Subsequence | 392 | Deletions only, any count |
+| Longest Common Subsequence | 1143 | Max common chars (DP) |
+| Valid Palindrome II | 680 | At most 1 delete to form palindrome |
+
 #### 0-2-6) Pattern Matching with Character Type Constraints (CamelCase Matching)
 
 ```java
