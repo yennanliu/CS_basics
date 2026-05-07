@@ -5754,10 +5754,20 @@ public class Workspace25 {
      *
      *
      */
+    /**  MAIN BUGS:
+     *
+     * Wrong swap logic
+     * Possible IndexOutOfBounds on s.charAt(i)
+     * Incorrect loop/break condition
+     * Missing handling for extra last char
+     * Final return condition is wrong for insertion case
+     *
+     */
     // IDEA 3) 2 POINTERS ???
     public boolean isOneEditDistance(String s, String t) {
         // edge
-        if(s.equals(t)){
+        // equal strings -> 0 edits
+        if (s.equals(t)) {
             return false;
         }
 
@@ -5766,22 +5776,33 @@ public class Workspace25 {
         int len_s = s.length();
         int len_t = t.length();
 
-        // ???
-        if(Math.abs(len_s - len_t) > 1){
+
+        // length difference > 1 impossible
+        if (Math.abs(len_s - len_t) > 1) {
             return false;
         }
+
+
 
         // assume:
         // t is the longer one
         //   -> if NOT, swap ?????
+
+        // ensure s is shorter (or equal)
         if(len_t < len_s){
             String tmp = s;
-            t = s;
-            s = tmp;
+            s = t;
+            t = tmp;
         }
+
+
+
         // ???
         len_s = s.length();
         len_t = t.length();
+
+
+
 
         // /??
         boolean isLenEquals = len_s == len_t;

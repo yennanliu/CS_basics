@@ -68,6 +68,12 @@ public class OneEditDistance {
             return false;
         }
 
+        /** NOTE !!!
+         *
+         *  we assume `s` is the shorter one,
+         *  if NOT, we swap them
+         *  e.g. s -> t, t -> s
+         */
         // ensure s is shorter (or equal)
         if (len_s > len_t) {
             String tmp = s;
@@ -78,6 +84,12 @@ public class OneEditDistance {
         len_s = s.length();
         len_t = t.length();
 
+        /** NOTE !!!
+         *
+         *  we setup this boolean flag (isLenEquals),
+         *  since, we need to `special handling` if
+         *  s, t have same len
+         */
         boolean isLenEquals = (len_s == len_t);
 
         int i = 0;
@@ -98,11 +110,23 @@ public class OneEditDistance {
                     return false;
                 }
 
+                /** NOTE !!!
+                 *
+                 *  if s, t have same len,
+                 *  we do `replace` op.
+                 *  -> move both idx (i, j)
+                 */
                 // replace
                 if (isLenEquals) {
                     i++;
                     j++;
                 }
+
+                /** NOTE !!!
+                 *
+                 *  if s, t have DIFFERENT len,
+                 *  we should insert char to the `SHORTER` one
+                 */
                 // insert into shorter string
                 else {
                     j++;
@@ -110,11 +134,22 @@ public class OneEditDistance {
             }
         }
 
+        /** NOTE !!!
+         *
+         *  still need to handle the `remaining elements`
+         *  e.g. leftover chars
+         */
         // leftover character
         if (j < len_t || i < len_s) {
             op++;
         }
 
+
+        /** NOTE !!!
+         *
+         *  ONLY return true,
+         *  if the op is exactly 1
+         */
         return op == 1;
     }
 
@@ -229,7 +264,7 @@ public class OneEditDistance {
 
 
 
-    
+
     // V2
 
 
