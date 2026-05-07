@@ -5550,8 +5550,11 @@ public class Workspace25 {
 
 
 
+    // LC 120
+    public int minimumTotal(List<List<Integer>> triangle) {
 
-
+        return 0;
+    }
 
 
 

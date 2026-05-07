@@ -211,6 +211,59 @@ int countPrimes(int n){
 }
 ```
 
+#### 1-1-3) Keep Remainder to Avoid Overflow (Repunit / Modular Arithmetic)
+
+**Core Idea:**
+When building a number digit-by-digit (e.g. 1 → 11 → 111 → ...), the number grows exponentially and overflows `int`/`long`.
+Instead of storing the full number, **only keep the remainder mod k** at each step.
+
+This works because:
+```
+(a * 10 + 1) % k  ==  ((a % k) * 10 + 1) % k
+```
+So the remainder after adding a new digit can always be computed from the *previous* remainder alone.
+
+**Pattern:**
+```java
+int remainder = 0;
+for (int len = 1; len <= k; len++) {
+    remainder = (remainder * 10 + 1) % k;  // build next repunit mod k
+    if (remainder == 0) return len;         // found divisible repunit
+}
+return -1;
+```
+
+**Key insight — Pigeonhole Principle:**
+There are only `k` possible remainders (0 to k-1). After `k` steps, if no remainder is 0, a remainder must repeat → cycle with no solution → return -1. So we only need to loop up to `k` times.
+
+**Quick check — early exit:**
+A number made only of 1s never ends in 0, 2, 4, 5, 6, or 8, so it can never be divisible by 2 or 5:
+```java
+if (k % 2 == 0 || k % 5 == 0) return -1;
+```
+
+**Similar LC problems using this remainder trick:**
+| Problem | Pattern |
+|---------|---------|
+| LC 1015 - Smallest Integer Divisible by K | repunit mod k |
+| LC 29  - Divide Two Integers | avoid overflow with bit ops |
+| LC 166 - Fraction to Recurring Decimal | detect cycle via remainder map |
+| LC 523 - Continuous Subarray Sum | prefix sum mod k |
+| LC 974 - Subarray Sums Divisible by K | prefix sum mod k |
+
+```java
+// LC 1015 full solution
+public int smallestRepunitDivByK(int k) {
+    if (k % 2 == 0 || k % 5 == 0) return -1;
+    int remainder = 0;
+    for (int len = 1; len <= k; len++) {
+        remainder = (remainder * 10 + 1) % k;
+        if (remainder == 0) return len;
+    }
+    return -1;
+}
+```
+
 ## 2) LC Example
 
 ### 2-1) Excel Sheet Column Title
