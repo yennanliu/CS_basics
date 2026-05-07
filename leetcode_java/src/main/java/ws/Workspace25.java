@@ -5551,10 +5551,139 @@ public class Workspace25 {
 
 
     // LC 120
+    // 8.22 - 32 am
+    /**
+     *
+     *  -> Given a triangle array,
+     *  return the `minimum path sum `
+     *  from top to bottom.
+     *
+     *   -  if you are on index i on the current row,
+     *     you may move to either index i
+     *     or index i + 1 on the next row.
+     *
+     *
+     *  -----------
+     *
+     *   IDEA 1) BRUTE FORCE
+     *
+     *   IDEA 2) DP
+     *
+     *
+     *  -----------
+     *
+     */
+    // IDEA 2) DP
     public int minimumTotal(List<List<Integer>> triangle) {
+        // edge
+        if(triangle.size() == 1){
+            return triangle.get(0).get(0);
+        }
 
-        return 0;
+        // ???
+        int minPathSum = 10000 * 200; // ???
+
+        // ??
+        /**  DP def:
+         *
+         *    dp[i][j]: min path sum as (i.j)
+         *
+         *   DP eq:
+         *
+         *
+         * ----
+         *
+         *   DP def:
+         *
+         *     dp[i]: min path sum at layer i
+         *
+         */
+        // ???
+        int l = triangle.size();
+        int w = triangle.get(triangle.size() - 1).size(); // ???
+
+        int[][] dp = new int[l][w]; // ?????
+        //int[] dp = new int[l]; // ???
+
+        // init ???
+        dp[0][0] = triangle.get(0).get(0);
+
+        // ??
+       // int minPathSum = 0;
+
+        // ???
+        for(int y = 1; y < l; y++){
+
+            List<Integer> row = triangle.get(0);
+
+            for(int x = 0; x < row.size(); x++){
+                // ???
+                int lastSmall = 1000; // ???
+                // ???
+                if(x - 1 >= 0){
+                    lastSmall = Math.min(lastSmall, dp[y-1][x-1]);
+                }
+                if(x + 1 < row.size()){
+                    lastSmall = Math.min(lastSmall, dp[y-1][x+1]);
+                }
+                dp[y][x] = lastSmall + row.get(x);
+            }
+            
+        }
+
+        // ??
+        for(int x: dp[l-1]){
+            minPathSum = Math.min(x, minPathSum);
+        }
+
+        return minPathSum;
     }
+
+
+
+
+
+
+
+
+
+
+    // IDEA 1) BRUTE FORCE
+    public int minimumTotal_99(List<List<Integer>> triangle) {
+        // edge
+        if(triangle.size() == 1){
+            return triangle.get(0).get(0);
+        }
+
+        // ???
+        int minPathSum = 10000 * 200; // ???
+
+        // ??
+        for(int i = 0; i < triangle.size(); i++){
+
+            List<Integer> row = triangle.get(i);
+
+            for(int j = 0; j < row.size(); j++){
+                int left = j - 1;
+                int right = j + 1;
+
+                // ???
+                int val = row.get(j);
+
+                // ???
+                if(left >= 0){
+                  //  val
+                }
+            }
+        }
+
+
+        return minPathSum;
+    }
+
+
+
+
 
 
 

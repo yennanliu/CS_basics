@@ -54,7 +54,86 @@ public class Triangle {
 //    }
 
 
-    // V1
+    // V1-1
+    // IDEA: 2D DP (gpt)
+    // DP
+    public int minimumTotal_1_1(List<List<Integer>> triangle) {
+
+        // edge
+        if (triangle == null || triangle.size() == 0) {
+            return 0;
+        }
+
+        int l = triangle.size();
+
+        // dp[i][j] = minimum path sum to reach triangle[i][j]
+        int[][] dp = new int[l][l];
+
+        // init
+        dp[0][0] = triangle.get(0).get(0);
+
+        // build dp
+        for (int y = 1; y < l; y++) {
+
+            List<Integer> row = triangle.get(y);
+
+            for (int x = 0; x < row.size(); x++) {
+
+                int val = row.get(x);
+
+                // left edge
+                if (x == 0) {
+                    dp[y][x] = dp[y - 1][x] + val;
+                }
+                // right edge
+                else if (x == row.size() - 1) {
+                    dp[y][x] = dp[y - 1][x - 1] + val;
+                }
+                // middle
+                else {
+                    dp[y][x] = Math.min(dp[y - 1][x - 1],
+                            dp[y - 1][x]) + val;
+                }
+            }
+        }
+
+        // answer = min value in last row
+        int minPathSum = Integer.MAX_VALUE;
+
+        for (int x = 0; x < l; x++) {
+            minPathSum = Math.min(minPathSum, dp[l - 1][x]);
+        }
+
+        return minPathSum;
+    }
+
+
+    // V1-2
+    // IDEA: 1D DP (gemini)
+    public int minimumTotal_1_2(List<List<Integer>> triangle) {
+        int n = triangle.size();
+        // Use a 1D DP array initialized with the bottom row of the triangle
+        int[] dp = new int[n];
+        List<Integer> bottomRow = triangle.get(n - 1);
+
+        for (int i = 0; i < n; i++) {
+            dp[i] = bottomRow.get(i);
+        }
+
+        // Start from the second-to-last row and move upwards
+        for (int y = n - 2; y >= 0; y--) {
+            List<Integer> currentRow = triangle.get(y);
+            for (int x = 0; x <= y; x++) {
+                // The minimum path to current cell is its own value
+                // plus the smaller of the two adjacent values below it
+                dp[x] = currentRow.get(x) + Math.min(dp[x], dp[x + 1]);
+            }
+        }
+
+        // The result is stored in the first element
+        return dp[0];
+    }
+
 
 
     // V2
