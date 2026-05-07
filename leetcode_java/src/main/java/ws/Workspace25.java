@@ -5576,6 +5576,11 @@ public class Workspace25 {
     // IDEA 2) DP
     public int minimumTotal(List<List<Integer>> triangle) {
         // edge
+        if (triangle == null || triangle.size() == 0) {
+            return 0;
+        }
+
+
         if(triangle.size() == 1){
             return triangle.get(0).get(0);
         }
@@ -5598,11 +5603,18 @@ public class Workspace25 {
          *     dp[i]: min path sum at layer i
          *
          */
+
+        // dp[i][j] = `minimum` path sum
+        // to reach triangle[i][j]
+
         // ???
         int l = triangle.size();
-        int w = triangle.get(triangle.size() - 1).size(); // ???
+       //int w = triangle.get(triangle.size() - 1).size(); // ???
 
-        int[][] dp = new int[l][w]; // ?????
+        int[][] dp = new int[l][l];
+
+
+        //int[][] dp = new int[l][w]; // ?????
         //int[] dp = new int[l]; // ???
 
         // init ???
@@ -5614,21 +5626,40 @@ public class Workspace25 {
         // ???
         for(int y = 1; y < l; y++){
 
-            List<Integer> row = triangle.get(0);
+            List<Integer> row = triangle.get(y);
 
             for(int x = 0; x < row.size(); x++){
                 // ???
                 int lastSmall = 1000; // ???
-                // ???
-                if(x - 1 >= 0){
-                    lastSmall = Math.min(lastSmall, dp[y-1][x-1]);
+
+                int val = row.get(x);
+
+                // left edge
+                if(x == 0){
+                    dp[y][x] = dp[y-1][x] + val; // ???
                 }
-                if(x + 1 < row.size()){
-                    lastSmall = Math.min(lastSmall, dp[y-1][x+1]);
+
+                // right edge
+                else if(x == row.size() - 1){
+                    dp[y][x] = dp[y - 1][x - 1] + val;
                 }
-                dp[y][x] = lastSmall + row.get(x);
+
+                // middle
+                else{
+                    dp[y][x] = Math.min(dp[y - 1][x - 1],
+                            dp[y - 1][x]) + val;
+                }
+
+//                // ???
+//                if(x - 1 >= 0){
+//                    lastSmall = Math.min(lastSmall, dp[y-1][x-1]);
+//                }
+//                if(x + 1 < row.size()){
+//                    lastSmall = Math.min(lastSmall, dp[y-1][x-1]);
+//                }
+//                dp[y][x] = lastSmall + row.get(x);
             }
-            
+
         }
 
         // ??
