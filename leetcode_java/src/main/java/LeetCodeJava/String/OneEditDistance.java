@@ -200,6 +200,44 @@ public class OneEditDistance {
     }
 
 
+    // V0-3
+    // IDEA: DP (GEMINI)
+    public boolean isOneEditDistance_0_3(String s, String t) {
+        int ns = s.length();
+        int nt = t.length();
+
+        // Optimization: If length difference > 1, impossible to be 1 edit apart
+        if (Math.abs(ns - nt) > 1) {
+            return false;
+        }
+
+        // dp[i][j] = min edits between s[0...i-1] and t[0...j-1]
+        int[][] dp = new int[ns + 1][nt + 1];
+
+        // Initialization: distance from empty string
+        for (int i = 0; i <= ns; i++) dp[i][0] = i;
+        for (int j = 0; j <= nt; j++) dp[0][j] = j;
+
+        for (int i = 1; i <= ns; i++) {
+            for (int j = 1; j <= nt; j++) {
+                if (s.charAt(i - 1) == t.charAt(j - 1)) {
+                    // Characters match, no operation needed
+                    dp[i][j] = dp[i - 1][j - 1];
+                } else {
+                    // Characters differ, choose min of:
+                    // 1. Replace: dp[i-1][j-1]
+                    // 2. Delete from S: dp[i-1][j]
+                    // 3. Insert into S (Delete from T): dp[i][j-1]
+                    dp[i][j] = 1 + Math.min(dp[i - 1][j - 1],
+                            Math.min(dp[i - 1][j], dp[i][j - 1]));
+                }
+            }
+        }
+
+        // We return true ONLY if the final distance is exactly 1
+        return dp[ns][nt] == 1;
+    }
+
 
     // V1-1
     // IDEA:

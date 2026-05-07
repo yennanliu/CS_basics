@@ -5766,8 +5766,98 @@ public class Workspace25 {
     // IDEA: DP
     // 10.51 - 11.01 AM
     boolean isOneEditDistance(String s, String t) {
-        return false;
+        // edge
+        // equal strings -> 0 edits
+        if (s.equals(t)) {
+            return false;
+        }
+
+        // ???
+        // assume: t is the longer one
+        int len_s = s.length();
+        int len_t = t.length();
+
+
+        // length difference > 1 impossible
+        if (Math.abs(len_s - len_t) > 1) {
+            return false;
+        }
+
+        if(len_s > len_t){
+            return isOneEditDistance(t, s);
+        }
+
+        // ??
+        /**  DP def:
+         *    op cnt at (i, j)
+         *    i is the idx of s,
+         *    j is the idx of t
+         *
+         *   DP eq:
+         *
+         *
+         */
+        int[][]dp = new int[len_s][len_t];
+        // init ??
+        // if t is `null` ????
+        for(int i = 0; i < len_s; i++){
+            dp[i][0] = 0; // ???
+        }
+        // if s is `null` ????
+        for(int i = 0; i < len_t; i++){
+            dp[0][i] = 0; // ???
+        }
+
+
+        for(int i = 1; i < len_s; i++){
+            for(int j = 1 ; j < len_t; j++){
+                // 3 ops:
+
+                // if same, continue
+                if(s.charAt(i) == t.charAt(j)){
+                    // ???
+                    dp[i][j] = dp[i-1][j-1];
+                }else{
+                    // insert
+                    // ???
+                    dp[i][j] = Math.min(dp[i][j],
+                            dp[i-1][j] + 1
+                    );
+
+                    // delete
+                    // ???
+                    dp[i][j] = Math.min(dp[i][j],
+                            dp[i][j-1] + 1
+                    );
+
+                    // replace
+                    // ???
+                    dp[i][j] = Math.min(dp[i][j],
+                            dp[i-1][j-1] + 1);
+                }
+
+
+                // early quit ???
+                if(dp[i][j] > 1){
+                    return false;
+                }
+
+            }
+        }
+
+
+        // ???
+        return dp[len_s][len_t] == 1;
     }
+
+
+
+
+
+
+
+
+
 
 
 

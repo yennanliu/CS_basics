@@ -1619,6 +1619,106 @@ Use this pattern when you see:
   - Well-commented with detailed DP transition explanations
 - **Related**: See also Template 8 (Longest Common Subsequence) for the comparison-maximization variant
 
+### Template 7-1: One Edit Distance (LC 161) — Exactly-1-Edit Variant
+
+#### 🎯 **Pattern Recognition**
+
+**This is NOT the same as Edit Distance (LC 72).**
+
+| | LC 72 Edit Distance | LC 161 One Edit Distance |
+|---|---|---|
+| **Goal** | Find **minimum** edit count | Check if edit count is **exactly 1** |
+| **Operations** | Insert, Delete, Replace | Same three |
+| **Output** | Integer (min ops) | Boolean |
+| **Approach** | Full 2D DP | 2-pointer OR 2D DP (check `== 1`) |
+| **Time** | O(m × n) | O(n) two-pointer, O(m×n) DP |
+
+#### 💡 **Core Idea — Two-Pointer (O(n), preferred)**
+
+Instead of filling the whole DP table, scan left-to-right and at the **first mismatch**, apply the only possible repair and verify the suffix immediately:
+
+```
+Three cases at first mismatch position i:
+  len(s) == len(t) → Replace s[i]:  check s[i+1..] == t[i+1..]
+  len(s) <  len(t) → Insert into s: check s[i..]   == t[i+1..]
+  len(s) >  len(t) → Delete from s: check s[i+1..] == t[i..]
+```
+
+Post-loop (no mismatch): valid only if `len(t) == len(s) + 1`.
+
+**Java (two-pointer):**
+```java
+// LC 161 - One Edit Distance  O(n) time, O(1) space
+public boolean isOneEditDistance(String s, String t) {
+    int ns = s.length(), nt = t.length();
+    if (ns > nt) return isOneEditDistance(t, s); // ensure s is shorter
+    if (nt - ns > 1) return false;               // gap > 1 → impossible
+
+    for (int i = 0; i < ns; i++) {
+        if (s.charAt(i) != t.charAt(i)) {
+            if (ns == nt) {
+                // Replace: rest of both strings must match
+                return s.substring(i + 1).equals(t.substring(i + 1));
+            } else {
+                // Insert into s (skip one char in t)
+                return s.substring(i).equals(t.substring(i + 1));
+            }
+        }
+    }
+    // No mismatch in s — valid only if t has one trailing extra char
+    return ns + 1 == nt;
+}
+```
+
+#### 💡 **Core Idea — DP (O(m×n), same table as LC 72)**
+
+Run the full Edit Distance DP and return `dp[m][n] == 1`:
+
+```java
+// LC 161 - DP approach
+public boolean isOneEditDistance(String s, String t) {
+    int ns = s.length(), nt = t.length();
+    if (Math.abs(ns - nt) > 1) return false;
+
+    int[][] dp = new int[ns + 1][nt + 1];
+    for (int i = 0; i <= ns; i++) dp[i][0] = i;
+    for (int j = 0; j <= nt; j++) dp[0][j] = j;
+
+    for (int i = 1; i <= ns; i++) {
+        for (int j = 1; j <= nt; j++) {
+            if (s.charAt(i - 1) == t.charAt(j - 1)) {
+                dp[i][j] = dp[i - 1][j - 1];
+            } else {
+                dp[i][j] = 1 + Math.min(dp[i - 1][j - 1],
+                               Math.min(dp[i - 1][j], dp[i][j - 1]));
+            }
+        }
+    }
+    return dp[ns][nt] == 1;
+}
+```
+
+**Why the early `Math.abs > 1` guard matters**: strings that differ in length by more than 1 always have edit distance ≥ 2, so we skip the O(m×n) work entirely.
+
+#### **When to Use Which**
+
+| Approach | When to Prefer |
+|----------|----------------|
+| Two-pointer (`substring.equals`) | Interview, O(n) time, simple to reason |
+| Full DP | Already have LC 72 solution, want code reuse |
+
+#### **Similar LC Problems**
+
+| Problem | LC# | Relation |
+|---------|-----|----------|
+| Edit Distance | 72 | Generalized version (minimize ops) |
+| One Edit Distance | 161 | Exactly 1 op — this pattern |
+| Valid Palindrome II | 680 | At most 1 delete to form palindrome |
+| Longest Common Subsequence | 1143 | Maximize matches instead of minimize ops |
+| Delete Operation for Two Strings | 583 | Delete-only edit distance |
+
+---
+
 ### Template 8: Longest Common Subsequence (LCS)
 ```python
 def lcs_dp(text1, text2):
