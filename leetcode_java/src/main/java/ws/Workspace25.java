@@ -5342,8 +5342,142 @@ public class Workspace25 {
      * We try both orders.
      *
      */
-    // IDEA 2) PREFIX SUM ????
+
+    // 8.24 - 10.14 am
+    // IDEA 2) PREFIX SUM + sum arr op >??? ????
+
+
+    // IDEA: Prefix Sum + Sliding Window  (gemini)
     public int maxSumTwoNoOverlap(int[] nums, int firstLen, int secondLen) {
+        // edge
+
+//        int ans = 0;
+//
+//        // ??
+//        int[] prefix = new int[nums.length + 1]; // ??
+//        int prefixSum = 0;
+//
+//        for(int i = 0; i < nums.length; i++){
+//            // ???
+//            prefixSum += nums[i];
+//            prefix[i] = prefixSum;
+//        }
+//
+//        // ???
+//        for(int i = 0; i < nums.length; i++){
+//            int val1 = helper98(prefix, firstLen, secondLen);
+//            int val2 = helper98(prefix, secondLen, firstLen);
+//            // ???
+//            ans = Math.max(val1,
+//                    Math.max(val2, ans)
+//            );
+//        }
+//
+//        return ans;
+
+        return Math.max(
+                helper98(nums, firstLen, secondLen),
+                helper98(nums, secondLen, firstLen)
+        );
+
+    }
+
+
+
+    /** NOTE !!!
+     *
+     *  L, M are `len` of sub array
+     *    - firstLen, secondLen
+     *    - secondLen, firstLen
+     *
+     * L: length of the first subarray (must come first)
+     * M: length of the second subarray (comes after L)
+     *
+     */
+    /**
+     * L subarray comes BEFORE M subarray
+     */
+    // private int helper(int[] prefix, int L, int M) {
+    private int helper98(int[] nums, int L, int M){
+        // edge ??
+        // ???
+        int n = nums.length;
+
+        // prefix sum
+        int[] prefix = new int[n + 1];
+
+        for (int i = 0; i < n; i++) {
+            prefix[i + 1] = prefix[i] + nums[i];
+        }
+
+
+        int maxL = 0;
+        int ans = 0;
+
+        /**
+         * i = ending position of M window
+         */
+        // ???
+        // for(int i = L-1; i < prefix.length; i++){
+        for(int i = L + M; i < n; i++){
+
+            /**
+             * Try both orders:
+             *
+             * 1. firstLen before secondLen
+             * 2. secondLen before firstLen
+             *
+             * For each order:
+             * - maintain best L-window seen so far
+             * - combine with current M-window
+             *
+             */
+
+            // 1. get L
+            // ???
+            /**
+             * L window:
+             * [i-M-L, i-M)
+             */
+            //int firstSum = prefix[i + 1] - prefix[i-L]; // ????
+            int lSum = prefix[i - M] - prefix[i - M - L];
+            maxL = Math.max(maxL, lSum);
+
+
+            // 2. get M
+            // ???
+            /**
+             * M window:
+             * [i-M, i)
+             */
+            //int secondSum = prefix[i + M + 1] - prefix[i];
+            int mSum = prefix[i] - prefix[i - M];
+
+            //ans = Math.max(firstSum, Math.max(secondSum, ans));
+            //ans = Math.max(firstSum + secondSum, ans);
+            ans = Math.max(ans, maxL + mSum);
+        }
+
+
+        return ans;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // IDEA 2) PREFIX SUM ????
+    public int maxSumTwoNoOverlap_97(int[] nums, int firstLen, int secondLen) {
         // edge
 
         int n = nums.length;

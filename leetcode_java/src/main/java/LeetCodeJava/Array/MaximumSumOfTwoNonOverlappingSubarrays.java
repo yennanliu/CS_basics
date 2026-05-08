@@ -43,10 +43,57 @@ package LeetCodeJava.Array;
 public class MaximumSumOfTwoNonOverlappingSubarrays {
 
     // V0
-    //    public int maxSumTwoNoOverlap(int[] nums, int firstLen, int secondLen) {
-    //
-    //    }
+    // IDEA: Prefix Sum + Sliding Window (GPT)
+    public int maxSumTwoNoOverlap(int[] nums, int firstLen, int secondLen) {
 
+        return Math.max(
+                helper_0(nums, firstLen, secondLen),
+                helper_0(nums, secondLen, firstLen));
+    }
+
+    /**
+     * L subarray comes BEFORE M subarray
+     */
+    private int helper_0(int[] nums, int L, int M) {
+
+        int n = nums.length;
+
+        // prefix sum
+        int[] prefix = new int[n + 1];
+
+        for (int i = 0; i < n; i++) {
+            prefix[i + 1] = prefix[i] + nums[i];
+        }
+
+        int maxL = 0;
+        int ans = 0;
+
+        /**
+         * i = ending position of M window
+         */
+        for (int i = L + M; i <= n; i++) {
+
+            /**
+             * L window:
+             * [i-M-L, i-M)
+             */
+            int lSum = prefix[i - M] - prefix[i - M - L];
+
+            maxL = Math.max(maxL, lSum);
+
+            /**
+             * M window:
+             * [i-M, i)
+             */
+            int mSum = prefix[i] - prefix[i - M];
+
+            ans = Math.max(ans, maxL + mSum);
+        }
+
+        return ans;
+    }
+
+    
 
     // V-0-1
     // IDEA: Prefix Sum + Sliding Window (GPT)
