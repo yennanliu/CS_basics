@@ -155,7 +155,7 @@ public class MaximumSumOfTwoNonOverlappingSubarrays {
          *    - L window: Range [i - M - L, i - M)
          *    - M window: Range [i - M, i)
          *
-         *  
+         *
          *
          */
         for (int i = L + M; i <= n; i++) {

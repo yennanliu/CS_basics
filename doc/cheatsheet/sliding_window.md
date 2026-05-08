@@ -2028,6 +2028,77 @@ public int[] maxSlidingWindow(int[] nums, int k) {
 }
 ```
 
+#### LC 1031: Maximum Sum of Two Non-Overlapping Subarrays — Prefix Sum + Sliding Window
+
+> Try both orderings (L before M, M before L). For each ordering, scan with `i` as the **exclusive end** of the M window; maintain `maxL` = best L-window seen so far to the left of M.
+
+**Key index layout (i = exclusive end of M window):**
+```
+Indices:  0 . . . [i-M-L] . . . [i-M] . . . [i] . . . n
+                   |--- L window ---| |--- M window ---|
+
+L window sum: prefix[i-M]   - prefix[i-M-L]
+M window sum: prefix[i]     - prefix[i-M]
+```
+
+**Why start at `i = L + M`?**  The minimum prefix length needed to fit both windows end-to-end.  `i` runs up to `<= n` (inclusive) because `prefix` has size `n+1`.
+
+```java
+// LC 1031 - Maximum Sum of Two Non-Overlapping Subarrays
+// IDEA: Prefix Sum + Sliding Window — try both L-before-M and M-before-L
+// time = O(N), space = O(N)
+public int maxSumTwoNoOverlap(int[] nums, int firstLen, int secondLen) {
+    return Math.max(
+        helper(nums, firstLen, secondLen),   // firstLen before secondLen
+        helper(nums, secondLen, firstLen));  // secondLen before firstLen
+}
+
+// L comes before M; i is the exclusive end of the M window
+private int helper(int[] nums, int L, int M) {
+    int n = nums.length;
+    int[] prefix = new int[n + 1];
+    for (int i = 0; i < n; i++) {
+        prefix[i + 1] = prefix[i] + nums[i];
+    }
+
+    int maxL = 0; // best L-window sum seen so far (left of current M)
+    int ans   = 0;
+
+    /**
+     * i = ending position (exclusive) of M window
+     *
+     * 1. i starts from L + M  (minimum length to fit both windows)
+     * 2. i ends at <= n       (prefix has size n+1)
+     *
+     * Index layout:
+     *   0 . . . [i-M-L] . . . [i-M] . . . [i] . . . n
+     *            |--- L window ---| |--- M window ---|
+     *
+     *   L window: prefix[i-M]   - prefix[i-M-L]   (range [i-M-L, i-M))
+     *   M window: prefix[i]     - prefix[i-M]      (range [i-M,   i))
+     */
+    for (int i = L + M; i <= n; i++) {
+        // L window: [i-M-L, i-M)
+        int lSum = prefix[i - M] - prefix[i - M - L];
+        maxL = Math.max(maxL, lSum);          // keep best L seen so far
+
+        // M window: [i-M, i)
+        int mSum = prefix[i] - prefix[i - M];
+
+        ans = Math.max(ans, maxL + mSum);     // best non-overlapping pair
+    }
+
+    return ans;
+}
+```
+
+**Pattern summary:**
+- Build prefix sum once: O(N)
+- Single pass per ordering: maintain `maxL` (best left window) while advancing the right window
+- Call twice (swap L/M) to cover both orderings → final answer is `Math.max` of both
+
+---
+
 #### LC 1838: Frequency of the Most Frequent Element — Sliding Window
 > Sort array; expand right, shrink left when cost to equalize window exceeds k.
 
