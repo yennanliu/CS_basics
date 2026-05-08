@@ -55,16 +55,90 @@ public class RangeSumQuery2DImmutable {
      */
 
     // V0
-//    class NumMatrix {
-//
-//        public NumMatrix(int[][] matrix) {
-//
-//        }
-//
-//        public int sumRegion(int row1, int col1, int row2, int col2) {
-//
-//        }
-//    }
+    // IDEA: 2-D Prefix sum ( prefix matrix with [l+1][w+1] size )   (gpt)
+    class NumMatrix {
+
+        int[][] preSumMatrix;
+
+        public NumMatrix(int[][] matrix) {
+
+            int n = matrix.length;
+            int m = matrix[0].length;
+
+            /**
+             * NOTE !!!
+             *
+             * use (n + 1) x (m + 1)
+             *
+             * extra top row + left col
+             * to simplify boundary handling
+             */
+            preSumMatrix = new int[n + 1][m + 1];
+
+            /**
+             * preSumMatrix[i][j]
+             *
+             * means:
+             *
+             * sum of rectangle:
+             * (0,0) -> (i-1, j-1)
+             */
+            for (int i = 1; i <= n; i++) {
+
+                for (int j = 1; j <= m; j++) {
+
+                    preSumMatrix[i][j] = matrix[i - 1][j - 1]
+                            + preSumMatrix[i - 1][j]
+                            + preSumMatrix[i][j - 1]
+
+                            /** NOTE !!!
+                             *
+                             * need to remove overlap
+                             *
+                             * overlap area:
+                             * preSumMatrix[i - 1][j - 1]
+                             */
+                            - preSumMatrix[i - 1][j - 1];
+                }
+            }
+        }
+
+        public int sumRegion(int row1,
+                             int col1,
+                             int row2,
+                             int col2) {
+
+            /**
+             * NOTE !!!
+             *
+             * shift by +1 because
+             * preSumMatrix uses 1-based indexing
+             */
+            row1++;
+            col1++;
+            row2++;
+            col2++;
+
+            /**
+             * Inclusion-Exclusion:
+             *
+             * total
+             * - upper rectangle
+             * - left rectangle
+             * + overlap
+             */
+            return preSumMatrix[row2][col2]
+                    - preSumMatrix[row1 - 1][col2]
+                    - preSumMatrix[row2][col1 - 1]
+
+                    /** NOTE !!!
+                     *
+                     * add overlap back
+                     */
+                    + preSumMatrix[row1 - 1][col1 - 1];
+        }
+    }
+
 
     // V0-1
     // IDEA: 2-D Prefix sum ( prefix matrix with [l+1][w+1] size )   (gpt)

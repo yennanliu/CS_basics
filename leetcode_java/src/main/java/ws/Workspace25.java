@@ -5558,7 +5558,114 @@ public class Workspace25 {
      *  IDEA 1) 2D PREFIX SUM
      *
      */
+    // 10.52 - 11.02 am
+    //  IDEA 1) 2D PREFIX SUM
     class NumMatrix {
+
+        //int elementCnt;
+        int n;
+        int m;
+        int[][] prefix;
+
+
+        // Attributes
+        int[][] matrix;
+        int[][] preSumMatrix;
+
+
+        public NumMatrix(int[][] matrix) {
+            // ???
+            this.n = matrix.length;
+            this.m = matrix[0].length;
+
+            this.matrix = matrix;
+            int l = matrix.length;
+            int w = matrix[0].length;
+
+            // NOTE !!!
+            // use (n+1) x (m+1)
+            // ???
+            this.prefix = new int[n + 1][m + 1];
+
+            // ???
+            this.prefix[0][0] = matrix[0][0];
+
+            // ???
+
+            // ???
+//            for(int y = 0; y < this.n; y++){
+//                for(int x = 0; x < this.m; x++){
+//
+//                }
+            for(int y = 1; y < this.n + 1; y++){
+                for(int x = 1; x < this.m + 1; x++){
+//                    // ???
+//                    if(x == 0 && y == 0){
+//                        continue;
+//                    }
+//                    // ???
+//                    if(y == 0){
+//                        this.prefix[y][x] = this.prefix[y][x-1] + matrix[y][x];
+//
+//                    }else if(x == 0){
+//                        // ???
+//                        this.prefix[y][x] = this.prefix[y-1][x] + matrix[y][x];
+//                    }else{
+//                        // /??
+//                        this.prefix[y][x] =
+//                                        this.prefix[y][x-1]
+//                                        + this.prefix[y-1][x]
+//                                        + matrix[y][x]
+//                                        - this.prefix[y-1][x-1];
+//                    }
+
+                    this.prefix[y][x] =
+                            this.prefix[y][x-1]
+                                    + this.prefix[y-1][x]
+                                   // + matrix[y][x]
+                                    + matrix[y - 1][x - 1]
+                                    - this.prefix[y-1][x-1];
+
+                }
+            }
+
+
+        }
+
+        public int sumRegion(int row1, int col1, int row2, int col2) {
+            // edge
+
+            //return 0;
+//            return this.prefix[row2][col2]
+//                    - this.prefix[row2-1][col2]
+//                    - this.prefix[row2][col2-1]
+//                    + this.prefix[row1][col1];
+
+            return preSumMatrix[row2 + 1][col2 + 1]
+                    - preSumMatrix[row1][col2 + 1]
+                    - preSumMatrix[row2 + 1][col1]
+                    /** NOTE !!!
+                     *
+                     *  need to add the overlap back
+                     *   (preSumMatrix[row1][col1])
+                     */
+                    + preSumMatrix[row1][col1];
+
+        }
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+    class NumMatrix_96 {
 
         // ???
         //int elementCnt;
@@ -5566,7 +5673,8 @@ public class Workspace25 {
         int m;
         int[][] prefix;
 
-        public NumMatrix(int[][] matrix) {
+        public NumMatrix_96
+                (int[][] matrix) {
             // ???
             this.n = matrix.length;
             this.m = matrix[0].length;
@@ -5637,6 +5745,9 @@ public class Workspace25 {
 
 
     }
+
+
+
 
 
     // LC 1015
