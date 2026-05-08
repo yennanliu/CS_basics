@@ -44,6 +44,41 @@ public class MaximumSumOfTwoNonOverlappingSubarrays {
 
     // V0
     // IDEA: Prefix Sum + Sliding Window (GPT)
+    /**  Core idea:
+     *
+     *
+     * ```
+     * Try both orders:
+     *
+     * 1. firstLen before secondLen
+     * 2. secondLen before firstLen
+     *
+     * For each order:
+     * - maintain best L-window seen so far
+     * - combine with current M-window
+     * ```
+     *
+     *
+     * ----
+     *
+     * ## Key DP / Sliding Window Idea
+     *
+     * While scanning the `M` window from left → right, maintain:
+     *
+     * ```text
+     * maxL = best L-window BEFORE current M-window
+     *
+     * So each step becomes:
+     *
+     * best previous L
+     * + current M
+     *
+     *
+     * Complexity
+     *   - Time: O(n)
+     *   - Space: O(n) for prefix sums
+     *
+     */
     public int maxSumTwoNoOverlap(int[] nums, int firstLen, int secondLen) {
 
         return Math.max(
@@ -51,13 +86,37 @@ public class MaximumSumOfTwoNonOverlappingSubarrays {
                 helper_0(nums, secondLen, firstLen));
     }
 
-    /**
-     * L subarray comes BEFORE M subarray
+    /** NOTE !!!
+     *
+     * the helper func does:
+     *
+     * ```
+     * Fix the RIGHT window (M),
+     * while remembering the BEST LEFT window (L).
+     * ```
+     *
+     *
+     *    1. L subarray comes BEFORE M subarray
+     *
+     *      e.g.
+     *        [--- L ---][---- M ----]
+     *
+     *
+     *    2. pass `nums` as param (NOT prefix)
+     */
+    /** NOTE !!!
+     *
+     *   L: left window
+     *   M: right window
      */
     private int helper_0(int[] nums, int L, int M) {
 
         int n = nums.length;
 
+        /** NOTE !!!
+         *
+         *   get prefix here in helper func
+         */
         // prefix sum
         int[] prefix = new int[n + 1];
 
@@ -65,17 +124,45 @@ public class MaximumSumOfTwoNonOverlappingSubarrays {
             prefix[i + 1] = prefix[i] + nums[i];
         }
 
+        /** NOTE !!!
+         *
+         *   we maintain 2 var within loop:
+         *
+         *    1. max left sum (maxL)
+         *    2. ans (biggest `lSum + rSum`)
+         */
         int maxL = 0;
         int ans = 0;
 
         /**
          * i = ending position of M window
          */
+        /** NOTE !!!
+         *
+         *  1. i starts from `L + M`
+         *
+         *  2. i ends at <= n, e.g. i in prefix[L+M, n]
+         *   (prefix has n+1 size)
+         *
+         *
+         * 3.
+         *
+         * ```
+         * Indices:  0 . . . [i - M - L] . . . [i - M] . . . [i] . . . n
+         *                    |--- L window ---| |--- M window ---|
+         *
+         * ```
+         *    - L window: Range [i - M - L, i - M)
+         *    - M window: Range [i - M, i)
+         *
+         *  
+         *
+         */
         for (int i = L + M; i <= n; i++) {
 
             /**
              * L window:
-             * [i-M-L, i-M)
+             *     [i-M-L, i-M)
              */
             int lSum = prefix[i - M] - prefix[i - M - L];
 
@@ -83,17 +170,23 @@ public class MaximumSumOfTwoNonOverlappingSubarrays {
 
             /**
              * M window:
-             * [i-M, i)
+             *    [i-M, i)
              */
             int mSum = prefix[i] - prefix[i - M];
 
+
+            /** NOTE !!!
+             *
+             *  get max from ans, `maxL + mSum`
+             */
             ans = Math.max(ans, maxL + mSum);
         }
+
 
         return ans;
     }
 
-    
+
 
     // V-0-1
     // IDEA: Prefix Sum + Sliding Window (GPT)
