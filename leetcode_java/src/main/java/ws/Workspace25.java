@@ -5764,8 +5764,8 @@ public class Workspace25 {
      *
      */
     // IDEA: DP
-    // 10.51 - 11.01 AM
-    boolean isOneEditDistance(String s, String t) {
+    // 7.56 - 8.06 am
+    public boolean isOneEditDistance(String s, String t) {
         // edge
         // equal strings -> 0 edits
         if (s.equals(t)) {
@@ -5785,6 +5785,101 @@ public class Workspace25 {
 
         if(len_s > len_t){
             return isOneEditDistance(t, s);
+        }
+
+        // /??
+        int[][] dp = new int[len_s + 1][len_t + 1]; // ???
+
+        // init ???
+        for(int i = 0; i < len_s + 1; i++){
+            dp[i][0] = i; // len_s; // ???
+        }
+        for(int i = 0; i < len_t + 1; i++){
+            dp[0][i] = i; //len_t; // ???
+        }
+
+
+        for(int i = 1; i < len_s + 1; i++){
+            for(int j = 1; j < len_t + 1; j++){
+                // case 1) equals
+                // NOTE !!!
+                // (s.charAt(i-1) == t.charAt(j-1))
+                if(s.charAt(i-1) == t.charAt(j-1)){
+                    dp[i][j] = dp[i-1][j-1];
+                }
+                // case 2) NOT equals
+                else{
+                    // NOTE !!
+                    // 3 ops: insert, delete, replace
+
+                    /**
+                     *  insert
+                     *
+                     *
+                     *  s = "ab", t = "acb"
+                     *
+                     *  -> "ab", "a"
+                     *
+                     */
+                    int insert = dp[i][j-1] + 1;
+
+                    /**
+                     *  delete
+                     *
+                     *
+                     *  s = "axb", t = "ab"
+                     *
+                     *  -> "ab", "abc"
+                     *
+                     */
+                    int delete = dp[i-1][j] + 1;
+
+                    int replace = dp[i-1][j-1] + 1;
+
+                    // NOTE !!!
+//                    dp[i][j] = Math.min(dp[i][j],
+//                            Math.min(insert, Math.min(delete, replace)));
+
+
+                    dp[i][j] = Math.min(insert,
+                            Math.min(delete, replace));
+
+                }
+            }
+        }
+
+
+
+        // ???
+        return dp[len_s][len_t] == 1;
+    }
+
+
+
+
+
+    // IDEA: DP
+    // 10.51 - 11.01 AM
+    boolean isOneEditDistance_988(String s, String t) {
+        // edge
+        // equal strings -> 0 edits
+        if (s.equals(t)) {
+            return false;
+        }
+
+        // ???
+        // assume: t is the longer one
+        int len_s = s.length();
+        int len_t = t.length();
+
+
+        // length difference > 1 impossible
+        if (Math.abs(len_s - len_t) > 1) {
+            return false;
+        }
+
+        if(len_s > len_t){
+            return isOneEditDistance_988(t, s);
         }
 
         // ??

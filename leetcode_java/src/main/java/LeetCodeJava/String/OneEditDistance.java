@@ -223,12 +223,39 @@ public class OneEditDistance {
             return isOneEditDistance_0_3(t, s);
         }
 
-        /**
+        /** NOTE !!! DP def:
+         *
+         * dp[i][j]
+         * = minimum number of edit operations
+         *   needed to convert
+         *
+         *   ```
+         *   s[0 ... i-1]
+         *   into
+         *   t[0 ... j-1]
+         *   ```
+         *
+         * ->
+         *    i and j are LENGTHS;
+         *    NOT indices  !!!!
+         *
+         *
+         * -----
+         *
+         *
+         * V2
+         *
+         *
          * dp[i][j]
          * =
          * min edits to convert:
          *
          * s[0...i-1] -> t[0...j-1]
+         */
+        /** NOTE !!!
+         *
+         *  i and j are LENGTHS
+         *  NOT indices  !!!!
          */
         int[][] dp = new int[len_s + 1][len_t + 1];
 
@@ -247,6 +274,11 @@ public class OneEditDistance {
             for (int j = 1; j <= len_t; j++) {
 
                 // same char
+                /** NOTE !!!
+                 *
+                 *  i and j are LENGTHS
+                 *  NOT indices  !!!!
+                 */
                 if (s.charAt(i - 1) == t.charAt(j - 1)) {
 
                     dp[i][j] = dp[i - 1][j - 1];
@@ -264,7 +296,7 @@ public class OneEditDistance {
                      */
 
                     // insert
-                    /** NOTE !!  INSERT
+                    /** INSERT
                      *
                      * ## Visualization
                      *
@@ -317,7 +349,9 @@ public class OneEditDistance {
                     int insert = dp[i][j - 1] + 1;
 
                     // delete
-                    /**  NOTE !!! DELETE
+                    /**  DELETE
+                     *
+                     *
                      *
                      *  ## Visualization
                      *
@@ -340,7 +374,7 @@ public class OneEditDistance {
                     int delete = dp[i - 1][j] + 1;
 
                     // replace
-                    /**  NOTE !!!   REPLACE
+                    /**   REPLACE
                      *
                      *  ## Visualization
                      *
@@ -372,6 +406,7 @@ public class OneEditDistance {
 
         return dp[len_s][len_t] == 1;
     }
+
 
 
     // V0-4
