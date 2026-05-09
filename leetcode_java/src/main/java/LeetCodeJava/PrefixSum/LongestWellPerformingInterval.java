@@ -57,24 +57,76 @@ public class LongestWellPerformingInterval {
             work[i] = hours[i] > 8 ? 1 : -1;
         }
 
+        /** NOTE !!
+         *
+         *  - map stores the `first occurrence` of each `prefix sum.`
+         *     - Key → prefix sum
+         *     - Value → index where this sum first occurred
+         *
+         *     -> map: { prefix_sum: idx_first_occur }
+         *
+         *  - prefix tracks the running sum of the transformed array.
+         *
+         *  - maxLen keeps the length of the longest well-performing interval found so far.
+         *
+         */
         Map<Integer, Integer> map = new HashMap<>();
         int prefix = 0;
         int maxLen = 0;
 
+        /** NOTE !!!
+         *
+         * Loop through each day.
+         * Update prefix with the current day’s value (+1 or -1).
+         * This is the cumulative sum up to index i.
+         */
         for (int i = 0; i < n; i++) {
             prefix += work[i];
 
             // Case 1: the prefix sum itself > 0
+            /** NOTE !!!  case 1)
+             *
+             * - If the total sum from day 0 to i is positive,
+             *    then the interval [0..i] is well-performing.
+             *
+             * - Its length is i + 1 (0-based index).
+             *
+             * - Update maxLen because this
+             *   might be the longest interval.
+             *
+             */
             if (prefix > 0) {
                 maxLen = i + 1;
-            } else {
+            }
+            /** NOTE !!!  case 2)
+             *
+             *
+             *  - If prefix <= 0, we can’t take [0..i].
+             *
+             *  -> (NOTE !!!)
+             *     But there may exist a `subarray` starting
+             *     later that is well-performing:
+             *
+             * Reasoning:
+             *
+             *   - Let j be the first index where prefix[j] = prefix[i] - 1.
+             *   - Then prefix[i] - prefix[j] = 1 → sum of [j+1..i] is positive.
+             *   - Length = i - j.
+             *
+             * - map.get(prefix - 1) gives the earliest index j where this happened.
+             * - Update maxLen if this subarray is longer than the previous best.
+             *
+             */
+            else {
                 // Case 2: check if (prefix - 1) was seen before
                 if (map.containsKey(prefix - 1)) {
                     maxLen = Math.max(maxLen, i - map.get(prefix - 1));
                 }
             }
 
-            // Only store the first occurrence of each prefix sum
+            /**
+             * Only store the first occurrence of each prefix sum
+             */
             map.putIfAbsent(prefix, i);
         }
 

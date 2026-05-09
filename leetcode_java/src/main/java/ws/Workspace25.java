@@ -6474,14 +6474,29 @@ public class Workspace25 {
     // IDEA 3) HASHMAP + PREFIX SUM
     public int longestWPI(int[] hours) {
         // edge
-        int tiringDay = 0;
+
         int n = hours.length;
+        // Convert hours to 1 (tiring) or -1 (non-tiring)
+        int[] work = new int[n];
+        for (int i = 0; i < n; i++) {
+            work[i] = hours[i] > 8 ? 1 : -1;
+        }
+
+
+
+        int tiringDay = 0;
+        //int n = hours.length;
         int[] prefix1 = new int[n + 1]; // ???
         int[] prefix2 = new int[n + 1]; // ???
 
         if(hours[0] > 8){
             tiringDay += 1;
         }
+
+
+        int prefix = 0;
+        int maxLen = 0;
+
 
         // ???
         // map1: { tiring_day_cum_sum: idx }
