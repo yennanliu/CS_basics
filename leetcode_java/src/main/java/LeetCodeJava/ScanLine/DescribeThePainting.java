@@ -2,10 +2,7 @@ package LeetCodeJava.ScanLine;
 
 // https://leetcode.com/problems/describe-the-painting/description/
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  *  1943. Describe the Painting
@@ -74,8 +71,84 @@ import java.util.TreeMap;
 public class DescribeThePainting {
 
     // V0
+//    public List<List<Long>> splitPainting(int[][] segments) {
+//
+//    }
 
-    // V1
+    // V1-1
+    // IDEA: SCAN LINE (gpt)
+    public List<List<Long>> splitPainting_1_1(int[][] segments) {
+        List<int[]> events = new ArrayList<>();
+        for (int[] seg : segments) {
+            int start = seg[0], end = seg[1], color = seg[2];
+            events.add(new int[] { start, color }); // start adds color
+            events.add(new int[] { end, -color }); // end subtracts color
+        }
+
+        // Sort by position, start events before end if same position
+        Collections.sort(events, (a, b) -> a[0] != b[0] ? a[0] - b[0] : a[1] - b[1]);
+
+        List<List<Long>> res = new ArrayList<>();
+        long curColor = 0;
+        int prevPos = -1;
+
+        for (int[] e : events) {
+            int pos = e[0];
+            int delta = e[1];
+
+            // Record interval if there was color
+            if (prevPos != -1 && prevPos != pos && curColor > 0) {
+                res.add(Arrays.asList((long) prevPos, (long) pos, curColor));
+            }
+
+            curColor += delta;
+            prevPos = pos;
+        }
+
+        return res;
+    }
+
+
+    // V1-2
+    // IDEA: SCAN LINE (gemini)
+    public List<List<Long>> splitPainting_1_2(int[][] segments) {
+        // 1. Use TreeMap to store coordinate -> color change
+        // TreeMap keeps coordinates sorted automatically
+        Map<Integer, Long> diff = new TreeMap<>();
+
+        for (int[] s : segments) {
+            int start = s[0];
+            int end = s[1];
+            long color = s[2];
+
+            // Add color at start, subtract at end
+            diff.put(start, diff.getOrDefault(start, 0L) + color);
+            diff.put(end, diff.getOrDefault(end, 0L) - color);
+        }
+
+        List<List<Long>> res = new ArrayList<>();
+        long currentSum = 0;
+        Integer prevCoordinate = null;
+
+        // 2. Iterate through the sorted coordinates
+        for (Map.Entry<Integer, Long> entry : diff.entrySet()) {
+            int coordinate = entry.getKey();
+            long colorChange = entry.getValue();
+
+            // 3. If there was a previous coordinate and a non-zero color sum,
+            // it means the interval [prev, current] has a consistent color.
+            if (prevCoordinate != null && currentSum > 0) {
+                res.add(Arrays.asList((long) prevCoordinate, (long) coordinate, currentSum));
+            }
+
+            // Update the running sum of colors
+            currentSum += colorChange;
+            prevCoordinate = coordinate;
+        }
+
+        return res;
+    }
+
 
     // V2
     // https://leetcode.com/problems/describe-the-painting/solutions/1359720/line-sweep-by-votrubac-otky/
@@ -169,6 +242,8 @@ public class DescribeThePainting {
 
         return result;
     }
+
+
 
 
 

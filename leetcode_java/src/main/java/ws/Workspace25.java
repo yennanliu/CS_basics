@@ -6314,6 +6314,107 @@ public class Workspace25 {
     }
 
 
+    // LC 1943
+    // 3.07 - 17 pm
+    /**
+     *   -> Return the 2D array painting
+     *       describing the `finished painting`
+     *       (excluding any parts that are not painted).
+     *       You may return the segments in any order.
+     *
+     *   - painting[j] = [leftj, rightj, mixj]
+     *
+     *      - [leftj, rightj)
+     *      -  mixed color sum of mixj
+     *
+     *
+     *   -> if colors 2, 4, and 6 are mixed,
+     *      then the resulting mixed color
+     *      is {2,4,6}.
+     *
+     *      -> , you should only output
+     *           the `sum` of the elements
+     *           in the `set`
+     *           rather than the full set.
+     *
+     *
+     *  -----------
+     *
+     *   IDEA 1) SCAN LINE
+     *
+     *
+     *  -----------
+     */
+    //  IDEA 1) SCAN LINE
+    public List<List<Long>> splitPainting(int[][] segments) {
+        // edge
+
+        List<Integer[]> list = new ArrayList<>();
+        for(int[] x: segments){
+            int start = x[0];
+            int end = x[1];
+
+            // ???
+            list.add(new Integer[]{start, 1});
+            list.add(new Integer[]{end, -1});
+        }
+
+        // sort ???
+        Collections.sort(list, new Comparator<Integer[]>() {
+            @Override
+            public int compare(Integer[] o1, Integer[] o2) {
+                // ???
+                int diff = o1[0] - o2[0];
+                // ???
+                if(diff == 0){
+                    return o1[1] - o2[1];
+                }
+                return diff;
+            }
+        });
+
+        List<List<Long>> res = new ArrayList<>();
+        Long cur = 0L;
+
+        // ????
+        int tmpStart = -1;
+        int tmpEnd = -1;
+
+        for(Integer[] x: list){
+            // ???
+            int idx = x[0];
+            int state = x[1];
+            if(state == 1){
+                cur += idx;
+                tmpStart = idx;
+            }else{
+                cur  += (-1 * idx);
+                tmpEnd = idx;
+            }
+
+            // ????
+            if(state == -1){
+                List<Long> tmp = new ArrayList<>();
+                // ???
+                tmp.add((long) tmpStart);
+                tmp.add((long) tmpEnd);
+                tmp.add(cur);
+                res.add(tmp);
+
+                // reset start, end ???
+                tmpStart = tmpEnd; // ???
+                tmpEnd = -1;
+            }
+
+        }
+
+
+        return res;
+    }
+
+
+
+
 
 
 
