@@ -163,6 +163,10 @@ public class MaximumSumOfTwoNonOverlappingSubarrays {
             /**
              * L window:
              *     [i-M-L, i-M)
+             *
+             *  -> need to `subtract / `prepare` a space for
+             *    `M` window, so the
+             *    right idx is `i-M`
              */
             int lSum = prefix[i - M] - prefix[i - M - L];
 
@@ -171,6 +175,9 @@ public class MaximumSumOfTwoNonOverlappingSubarrays {
             /**
              * M window:
              *    [i-M, i)
+             *
+             *  -> simply using `i` as right idx
+             *     and `i-M`  as left idx
              */
             int mSum = prefix[i] - prefix[i - M];
 

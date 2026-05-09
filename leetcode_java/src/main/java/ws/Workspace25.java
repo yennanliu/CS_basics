@@ -5344,12 +5344,99 @@ public class Workspace25 {
      *
      */
 
-    // 8.24 - 10.14 am
+
+
+    // 4.45 - 55 pm
     // IDEA 2) PREFIX SUM + sum arr op >??? ????
+    public int maxSumTwoNoOverlap(int[] nums, int firstLen, int secondLen) {
+
+//        return Math.max(
+//                helper96(nums, firstLen, secondLen),
+//               // helper96(nums, secondLen, firstLen),
+//                );
+
+        int v1 = helper96(nums, firstLen, secondLen);
+        int v2 = helper96(nums, secondLen, firstLen);
+        return Math.max(v1,v2);
+    }
+
+
+    /** NOTE !!!
+     *
+     *   L: left window
+     *   M: right window
+     */
+    private int helper96(int[] nums, int L, int M){
+        // edge
+
+        // ?? get prefix sum
+        int[] prefix = new int[nums.length + 1]; //??
+
+
+        //?? what're the start, end idx ???
+        // for(int i = 1; i < nums.length; i++){
+//        for(int i = 1; i < nums.length; i++){
+//            prefix[i] += prefix[i-1];
+//        }
+        for(int i = 0; i < nums.length; i++){
+            prefix[i + 1] = (nums[i] + prefix[i]);
+        }
+
+
+
+        /** NOTE !!!
+         *
+         *   we maintain 2 var within loop:
+         *
+         *    1. max left sum (maxL)
+         *    2. ans (biggest `lSum + rSum`)
+         */
+
+
+        // ??
+        int maxSubSum = 0;
+        int maxL = 0; // ???
+
+        // /?
+        /**
+         *
+         *  [ L ][ M ]
+         *
+         */
+        /**
+         * i = ending position of M window
+         */
+        // for(int i = L + M - 1; i < nums.length; i++){
+        for(int i = L + M; i < nums.length + 1; i++){
+            // ???
+            int curL = prefix[i + L] - prefix[i]; // ???
+            // ???
+            maxL = Math.max(curL, maxL);
+
+            //  ???
+            int maxM = prefix[i + L + M] - prefix[i + L]; // ???
+
+            maxSubSum = Math.max(maxM + maxL, maxSubSum);
+        }
+
+        // ???
+
+
+        return maxSubSum;
+    }
+
+
+
+
+
+
+
+
+
 
 
     // IDEA: Prefix Sum + Sliding Window  (gemini)
-    public int maxSumTwoNoOverlap(int[] nums, int firstLen, int secondLen) {
+    public int maxSumTwoNoOverlap_96(int[] nums, int firstLen, int secondLen) {
         // edge
 
 //        int ans = 0;
