@@ -624,6 +624,7 @@ def sum_of_distances_optimized(nums):
 | Subarray Sum Equals K II | 713 | Product version | Medium | Modified Template 2 |
 | Binary Subarrays With Sum | 930 | Transform to sum equals | Medium | Template 6 |
 | Number of Subarrays with Bounded Maximum | 795 | Range sum technique | Medium | Template 2 |
+| Longest Well-Performing Interval | 1124 | First-occurrence map + score-1 trick | Medium | Template 2 variant |
 
 #### **Pattern 3: Subarray with Divisibility/Modulo Problems**
 | Problem | LC # | Key Technique | Difficulty | Template |
@@ -1375,6 +1376,66 @@ public int maxSideLength(int[][] mat, int threshold) {
 | Number of Submatrices That Sum to Target | 1074 | 2D prefix sum + count (harder) |
 | Maximal Square | 221 | Max square in matrix (DP approach) |
 | Largest 1-Bordered Square | 1139 | Max square with border condition |
+
+### 2-10) Longest Well-Performing Interval (LC 1124)
+
+**Pattern:** HashMap + Prefix Sum — Longest Subarray with Positive Sum
+
+**Core Idea:**
+Transform each day: tiring (`hours[i] > 8`) → `+1`, non-tiring → `-1`. The problem becomes: find the longest subarray whose sum > 0.
+
+```
+At each index i with running prefix sum p:
+
+  Case 1: p > 0
+    → entire interval [0..i] is valid
+    → length = i + 1
+
+  Case 2: p ≤ 0
+    → look for the earliest index j where prefix[j] = p - 1
+    → subarray [j+1..i] has sum = p - (p-1) = 1 > 0
+    → length = i - j
+
+Why (p - 1)?
+  We want the LONGEST span ending at i with a net positive sum.
+  That means we need the SMALLEST prefix sum just one below the current value,
+  recorded at the EARLIEST index possible — hence putIfAbsent (first occurrence only).
+```
+
+**Key Difference from Template 2:**
+- Template 2 stores `{prefix_sum: count}` for counting subarrays.
+- This variant stores `{prefix_sum: first_index}` for maximum length — only the first occurrence matters because an earlier start gives a longer interval.
+
+**Java Code:**
+```java
+// LC 1124 — Time: O(n), Space: O(n)
+public int longestWPI(int[] hours) {
+    Map<Integer, Integer> map = new HashMap<>();
+    int prefix = 0, maxLen = 0;
+
+    for (int i = 0; i < hours.length; i++) {
+        prefix += hours[i] > 8 ? 1 : -1;
+
+        if (prefix > 0) {
+            maxLen = i + 1;                           // whole prefix is valid
+        } else {
+            if (map.containsKey(prefix - 1)) {
+                maxLen = Math.max(maxLen, i - map.get(prefix - 1));
+            }
+        }
+        map.putIfAbsent(prefix, i);                   // first occurrence only
+    }
+    return maxLen;
+}
+```
+
+**Similar LCs:**
+| Problem | LC # | Similarity |
+|---------|------|------------|
+| Contiguous Array | 525 | Longest subarray with equal 0s and 1s — same pattern, target sum = 0 |
+| Maximum Size Subarray Sum Equals k | 325 | Longest subarray with sum = k, first-occurrence map |
+| Subarray Sum Equals K | 560 | Count variant (store count, not index) |
+| Binary Subarrays With Sum | 930 | Count subarrays with binary-transformed sum = k |
 
 ### 2-11) Sum of Distances (Pattern 7)
 
