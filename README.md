@@ -129,6 +129,7 @@ claude
 * [Hash Table](https://github.com/yennanliu/CS_basics#hash-table)
 * [Math](https://github.com/yennanliu/CS_basics#math)
 * [Two Pointers](https://github.com/yennanliu/CS_basics#two-pointers)
+* [Scan Line](https://github.com/yennanliu/CS_basics#scan-line)
 * [Sort](https://github.com/yennanliu/CS_basics#sort)
 * [Recursion](https://github.com/yennanliu/CS_basics#recursion)
 * [Binary Search](https://github.com/yennanliu/CS_basics#binary-search)
@@ -862,6 +863,15 @@ claude
 3091|[Apply Operations to Make Sum of Array Greater Than or Equal to k](https://leetcode.com/problems/apply-operations-to-make-sum-of-array-greater-than-or-equal-to-k) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Math/ApplyOperationsToMakeSumOfArrayGreaterThanOrEqualToK.java) ||| Medium |LC weekly, math| AGAIN (1)
 3190 |[Find Minimum Operations to Make All Elements Divisible by Three](https://leetcode.com/problems/find-minimum-operations-to-make-all-elements-divisible-by-three/) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Math/FindMinimumOperationsToMakeAllElementsDivisibleByThree.java) ||| Easy |LC weekly, math| OK
 3194|[Minimum Average of Smallest and Largest Elements](https://leetcode.com/problems/minimum-average-of-smallest-and-largest-elements/description/) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Math/minimumAverageOfSmallestAndLargestElements.java) ||| Easy |LC weekly, math| OK
+
+
+
+## Scan Line
+
+|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note| Status| 
+|-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
+1943| [Describe the Painting](https://leetcode.com/problems/describe-the-painting)   | [Java](./leetcode_java/src/main/java/LeetCodeJava/ScanLine/DescribeThePainting.java)| _O(n)_ | _O(1)_ | Medium |scan line, google| AGAIN (1))(not start)
+
 
 
 ## Sort
