@@ -90,9 +90,76 @@ import java.util.*;
  */
 public class SimplifyPath {
 
+
     // V0
-    // IDEA: Deque (gemini)
+    // IDEA: STACK + split + stringBuilder (gpt)
     public String simplifyPath(String path) {
+        Stack<String> st = new Stack<>();
+
+        /** NOTE !!! split by `/` */
+        String[] arr = path.split("/");
+
+        for (String cur : arr) {
+
+            /** NOTE !!!  skip if "" or "."   */
+            // skip empty and "."
+            if (cur.equals("") || cur.equals(".")) {
+                continue;
+            }
+
+            /** NOTE !!!  pop if ".." and stack is NOT empty */
+            // go back one directory
+            if (cur.equals("..")) {
+                if (!st.isEmpty()) {
+                    st.pop();
+                }
+            }
+            // normal directory name
+            else {
+                st.push(cur);
+            }
+        }
+
+        // build result
+        StringBuilder sb = new StringBuilder();
+
+
+        for (String dir : st) {
+            /** NOTE !!!
+             *
+             *  how we add `/` back to the result path
+             *
+             *  -> we add '/' (Separator first), then add the dir
+             *
+             *  -----
+             *
+             *  Or,  we can something as below:
+             *
+             *  ```
+             *          int size = st.size();
+             *         int i = 0;
+             *         for(String x: st){
+             *             sb.append(x);
+             *             if(i < size - 1){
+             *                 sb.append("/");
+             *             }
+             *             i += 1;
+             *         }
+             * ```
+             *
+             */
+            sb.append("/").append(dir);
+        }
+
+        // if empty => root
+        return sb.length() == 0 ? "/" : sb.toString();
+    }
+
+
+
+    // V0-0-0-1
+    // IDEA: Deque (gemini)
+    public String simplifyPath_0_0_0_1(String path) {
         // 1. Clean up edge cases/logic: split("/") handles empty segments and slashes
         Deque<String> deque = new ArrayDeque<>();
 
@@ -213,12 +280,14 @@ public class SimplifyPath {
         return sb.length() == 0 ? "/" : sb.toString();
     }
 
+
     // V1
     // (needcode)
     // https://www.youtube.com/watch?v=qYlHrAKJfyA
 
+
     // V2
-    // IDEA: DEQEUE + SET
+    // IDEA: DEQUEUE + SET
     // https://leetcode.com/problems/simplify-path/solutions/25686/java-10-lines-solution-with-stack-by-shp-u6t2/
     /**
      * time = O(1)
@@ -238,6 +307,8 @@ public class SimplifyPath {
             res = "/" + dir + res;
         return res.isEmpty() ? "/" : res;
     }
+
+
 
     // V3
     // IDEA: STACK
@@ -262,6 +333,8 @@ public class SimplifyPath {
         }
         return "/" + String.join("/", stack); // join the directories in the stack with slash '/' and add a slash at the beginning
     }
+
+
 
     // V4
     // IDEA: STACK

@@ -1,7 +1,7 @@
 package ws;
 
 import LeetCodeJava.DataStructure.TreeNode;
-import com.sun.org.apache.bcel.internal.generic.IINC;
+//import com.sun.org.apache.bcel.internal.generic.IINC;
 //import com.sun.org.apache.bcel.internal.generic.SIPUSH;
 
 import java.rmi.server.RemoteRef;
@@ -6619,6 +6619,91 @@ public class Workspace25 {
 
 
         return ans;
+    }
+
+
+
+
+
+    // LC 71
+    // 7.15 - 25 AM
+    /**
+     *  -> Return the simplified canonical path.
+     *
+     *
+     *  ------------
+     *
+     *
+     *  IDEA 1) STACK (FILO)
+     *
+     *
+     *  ------------
+     *
+     *
+     */
+    // IDEA 1) STACK (FILO)
+    public String simplifyPath(String path) {
+        // edge
+//        if(path == null || path.equals(".")){
+//            return null; /// ???
+//        }
+        if(path == null){
+            return null; /// ???
+        }
+
+
+        Stack<String> st = new Stack<>();
+        StringBuilder sb = new StringBuilder();
+
+        // ??
+        String[] arr = path.split("/");
+
+        if(arr.length == 1){
+            return arr[0]; // ???
+        }
+
+        // /??
+        for(int i = 0; i < arr.length; i++){
+//            if(i == 0 || i == arr.length - 1){
+//                continue;
+//            }
+            String cur = arr[i];
+            // ??
+            if(cur.equals("..")){
+                if(!st.isEmpty()){
+                    st.pop();
+                }
+            }
+            // ???
+            else if(cur.isEmpty() || cur.equals(".")){
+                continue;
+            }
+            else{
+                st.add(cur);
+            }
+        }
+
+        // ???
+        if(st.isEmpty()){
+            return "/";
+        }
+
+        // ??? handle `first` `/`
+        sb.append("/");
+
+        // ???
+        int size = st.size();
+        int i = 0;
+        for(String x: st){
+            sb.append(x);
+            if(i < size - 1){
+                sb.append("/");
+            }
+            i += 1;
+        }
+
+
+        return sb.toString();
     }
 
 

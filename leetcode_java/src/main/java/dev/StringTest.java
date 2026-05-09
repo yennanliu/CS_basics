@@ -43,9 +43,16 @@ public class StringTest {
 //        }
 
 
-        String version2 = "00001";
-        int v2 = Integer.parseInt(version2);
-        System.out.println(v2);
+//        String version2 = "00001";
+//        int v2 = Integer.parseInt(version2);
+//        System.out.println(v2);
+
+
+        String path = "/home/";
+        String[] arr = path.split("/");
+        for(String x: arr){
+            System.out.println("val = " + x);
+        }
 
 
     }
