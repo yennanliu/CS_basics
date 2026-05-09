@@ -1455,7 +1455,7 @@ claude
 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note| Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-1124| [Longest Well-Performing Interval](https://leetcode.com/problems/longest-well-performing-interval)   | [Java](./leetcode_java/src/main/java/LeetCodeJava/PrefixSum/LongestWellPerformingInterval.java)| _O(n)_ | _O(1)_ | Medium |hashmap, prefix sum, google| AGAIN (1))(not start)
+1124| [Longest Well-Performing Interval](https://leetcode.com/problems/longest-well-performing-interval)   | [Java](./leetcode_java/src/main/java/LeetCodeJava/PrefixSum/LongestWellPerformingInterval.java)| _O(n)_ | _O(1)_ | Medium |hashmap, prefix sum, google| AGAIN (1)(not start)
 
 
 

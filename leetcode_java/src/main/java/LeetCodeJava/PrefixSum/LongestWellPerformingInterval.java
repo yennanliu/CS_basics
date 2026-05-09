@@ -47,7 +47,71 @@ public class LongestWellPerformingInterval {
 //    }
 
 
-    // V1
+    // V1-1
+    // IDEA: PREFIX SUM + HASHMAP (gpt)
+    public int longestWPI_1_1(int[] hours) {
+        int n = hours.length;
+        // Convert hours to 1 (tiring) or -1 (non-tiring)
+        int[] work = new int[n];
+        for (int i = 0; i < n; i++) {
+            work[i] = hours[i] > 8 ? 1 : -1;
+        }
+
+        Map<Integer, Integer> map = new HashMap<>();
+        int prefix = 0;
+        int maxLen = 0;
+
+        for (int i = 0; i < n; i++) {
+            prefix += work[i];
+
+            // Case 1: the prefix sum itself > 0
+            if (prefix > 0) {
+                maxLen = i + 1;
+            } else {
+                // Case 2: check if (prefix - 1) was seen before
+                if (map.containsKey(prefix - 1)) {
+                    maxLen = Math.max(maxLen, i - map.get(prefix - 1));
+                }
+            }
+
+            // Only store the first occurrence of each prefix sum
+            map.putIfAbsent(prefix, i);
+        }
+
+        return maxLen;
+    }
+
+
+
+    // V1-2
+    // IDEA: PREFIX SUM + HASHMAP (gemini)
+    public int longestWPI_1_2(int[] hours) {
+        int res = 0;
+        int score = 0;
+        // Map stores {score : earliest_index_found}
+        Map<Integer, Integer> map = new HashMap<>();
+
+        for (int i = 0; i < hours.length; i++) {
+            // Step 1: Transform to +1 / -1
+            score += (hours[i] > 8) ? 1 : -1;
+
+            // Step 2: Check if current prefix is already valid
+            if (score > 0) {
+                res = i + 1;
+            } else {
+                // Step 3: If score <= 0, we need to find a previous score
+                // that is exactly score - 1.
+                // If we find it, the subarray between that index and i has sum 1.
+                map.putIfAbsent(score, i);
+                if (map.containsKey(score - 1)) {
+                    res = Math.max(res, i - map.get(score - 1));
+                }
+            }
+        }
+
+        return res;
+    }
+
 
 
     // V2

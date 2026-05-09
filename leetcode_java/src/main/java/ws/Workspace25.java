@@ -1,6 +1,7 @@
 package ws;
 
 import LeetCodeJava.DataStructure.TreeNode;
+import com.sun.org.apache.bcel.internal.generic.IINC;
 //import com.sun.org.apache.bcel.internal.generic.SIPUSH;
 
 import java.rmi.server.RemoteRef;
@@ -6430,10 +6431,95 @@ public class Workspace25 {
 
 
     // LC 1124
+    // 3.52 - 4.02 pm
+    /**
+     *  -> Return the length of the
+     *     longest well-performing interval.
+     *
+     *
+     *   - tiring day
+     *      if and only if
+     *      the number of hours
+     *      worked is `(strictly) greater than 8.`
+     *
+     *
+     *   NOTE:
+     *
+     *     A well-performing interval is an
+     *     interval of days for which the
+     *     number of `tiring days` is strictly
+     *     `larger` than the number of `non-tiring days.`
+     *
+     *
+     *
+     *  ----------
+     *
+     *   IDEA 1) BRUTE FORCE
+     *
+     *   IDEA 2) SLIDE WINDOW ???
+     *
+     *   IDEA 3) HASHMAP + PREFIX SUM
+     *`
+     *      -> prefix sum: cnt ` tiring day` ?
+     *      -> prefix sum: cnt ` normal day` ?
+     *
+     *      -> hashmap:
+     *        { tiring day : idx }  // ??
+     *
+     *       ->
+     *
+     *  ----------
+     *
+     */
+    // IDEA 3) HASHMAP + PREFIX SUM
     public int longestWPI(int[] hours) {
+        // edge
+        int tiringDay = 0;
+        int n = hours.length;
+        int[] prefix1 = new int[n + 1]; // ???
+        int[] prefix2 = new int[n + 1]; // ???
 
-        return 0;
+        if(hours[0] > 8){
+            tiringDay += 1;
+        }
+
+        // ???
+        // map1: { tiring_day_cum_sum: idx }
+        Map<Integer, Integer> map1 = new HashMap<>();
+        // map2: { normal_day_cum_sum: idx }
+        Map<Integer, Integer> map2 = new HashMap<>();
+
+        for(int i = 1; i < hours.length; i++){
+            int x = hours[i];
+            if(x > 8){
+                tiringDay += 1;
+                prefix1[i] += prefix1[i-1];
+                map1.put(prefix1[i], i); // ??
+            }else{
+                prefix2[i] += prefix2[i-1];
+                map2.put(prefix2[i], i); // ??
+            }
+        }
+        // ??
+        if(tiringDay == 0){
+            return 0;
+        }
+
+        int ans = 0;
+
+        // ???
+        for(int i = 0; i < prefix1.length; i++){
+           // if(prefix1[i+1] )
+        }
+
+
+
+
+
+        return ans;
     }
+
+
 
 
 
