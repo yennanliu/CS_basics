@@ -141,6 +141,7 @@ claude
 * [Greedy](https://github.com/yennanliu/CS_basics#greedy)
 * [Graph](https://github.com/yennanliu/CS_basics#graph)
 * [Geometry](https://github.com/yennanliu/CS_basics#geometry)
+* [Prefix Sum](https://github.com/yennanliu/CS_basics#prefix-sum)
 * [Simulation](https://github.com/yennanliu/CS_basics#simulation)
 * [Design](https://github.com/yennanliu/CS_basics#Design)
 * [Concurrency](https://github.com/yennanliu/CS_basics#Concurrency)
@@ -1447,6 +1448,15 @@ claude
 1756| [Design Recent Used Queue](https://leetcode.com/problems/design-most-recently-used-queue/) | [Python](./leetcode_python/Design/design-most-recently-used-queue.py) | _O(k)_ | _O(k)_ | Medium |design, queue| AGAIN
 1797| [Design Authentication Manager](https://leetcode.com/problems/design-authentication-manager/) | [Python](./leetcode_python/Design/design-authentication-manager.py) | _O(k)_ | _O(k)_ | Medium |design, hashmap| AGAIN 
 1976| [Number of Ways to Arrive at Destination](https://leetcode.com/problems/number-of-ways-to-arrive-at-destination/) | [Python](./leetcode_python/Design/number-of-ways-to-arrive-at-destination.py) | _O(k)_ | _O(k)_ | Medium || 
+
+
+
+## Prefix Sum
+
+|  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note| Status| 
+|-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
+1124| [Longest Well-Performing Interval](https://leetcode.com/problems/longest-well-performing-interval)   | [Java](./leetcode_java/src/main/java/LeetCodeJava/PrefixSum/LongestWellPerformingInterval.java)| _O(n)_ | _O(1)_ | Medium |hashmap, prefix sum, google| AGAIN (1))(not start)
+
 
 
 ## Simulation 

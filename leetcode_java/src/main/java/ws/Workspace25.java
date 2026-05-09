@@ -6350,28 +6350,37 @@ public class Workspace25 {
         // edge
 
         List<Integer[]> list = new ArrayList<>();
-        for(int[] x: segments){
-            int start = x[0];
-            int end = x[1];
+        for(int[] seg: segments){
+//            int start = x[0];
+//            int end = x[1];
+//
+//            // ???
+////            list.add(new Integer[]{start, 1});
+////            list.add(new Integer[]{end, -1});
 
-            // ???
-            list.add(new Integer[]{start, 1});
-            list.add(new Integer[]{end, -1});
+            int start = seg[0], end = seg[1], color = seg[2];
+            list.add(new Integer[]{start, color});   // start adds color
+            list.add(new Integer[]{end, -color});    // end subtracts color
+
         }
 
         // sort ???
-        Collections.sort(list, new Comparator<Integer[]>() {
-            @Override
-            public int compare(Integer[] o1, Integer[] o2) {
-                // ???
-                int diff = o1[0] - o2[0];
-                // ???
-                if(diff == 0){
-                    return o1[1] - o2[1];
-                }
-                return diff;
-            }
-        });
+//        Collections.sort(list, new Comparator<Integer[]>() {
+//            @Override
+//            public int compare(Integer[] o1, Integer[] o2) {
+//                // ???
+//                int diff = o1[0] - o2[0];
+//                // ???
+//                if(diff == 0){
+//                    return o1[1] - o2[1];
+//                }
+//                return diff;
+//            }
+//        });
+        Collections.sort(list,
+                (a, b) -> a[0] != b[0] ? a[0] - b[0] : a[1] - b[1]);
+
+
 
         List<List<Long>> res = new ArrayList<>();
         Long cur = 0L;
@@ -6379,6 +6388,12 @@ public class Workspace25 {
         // ????
         int tmpStart = -1;
         int tmpEnd = -1;
+
+        // NOTE !!!
+        long curColor = 0;
+        int prevPos = -1;
+
+
 
         for(Integer[] x: list){
             // ???
@@ -6413,6 +6428,12 @@ public class Workspace25 {
     }
 
 
+
+    // LC 1124
+    public int longestWPI(int[] hours) {
+
+        return 0;
+    }
 
 
 
