@@ -129,6 +129,7 @@ public class RemoveDuplicateLetters {
         return sb.toString();
     }
 
+
     // V0-0-1
     // IDEA: MONO STACK (gemini)
     public String removeDuplicateLetters_0_0_1(String s) {
@@ -170,6 +171,71 @@ public class RemoveDuplicateLetters {
         }
         return sb.toString();
     }
+
+
+    // V0-0-2
+    // IDEA: STACK (fixed by gpt)
+    public String removeDuplicateLetters_0_0_2(String s) {
+        if (s.isEmpty()) {
+            return null;
+        }
+        if (s.length() == 1) {
+            return s;
+        }
+
+        Map<Character, Integer> map = new HashMap<>();
+        for (int i = 0; i < s.length(); i++) {
+            map.put(s.charAt(i), i);
+        }
+
+
+        /** NOTE !!!
+         *
+         * use below,
+         *  -> to avoid `DUPLICATED adding to stack`
+         *
+         */
+        boolean[] added = new boolean[26];
+        //System.out.println(">>> map = " + map);
+
+        Stack<Character> st = new Stack<>();
+        for (int i = 0; i < s.length(); i++) {
+            char cur = s.charAt(i);
+
+            /** NOTE !!!
+             *
+             *  the conditions whether we should pop
+             *  element from stack
+             */
+            while (!st.isEmpty()
+                    && st.peek() - cur > 0
+                    && map.get(st.peek()) > i
+                    && !added[cur - 'a']) {
+
+                char tmp = st.pop();
+                added[tmp - 'a'] = false;
+            }
+
+            /** NOTE !!!
+             *
+             *  ONLY if `not added`
+             *  we add it to stack
+             *  (to avoid duplicated adding)
+             */
+            if (!added[cur - 'a']) {
+                st.add(cur);
+                added[cur - 'a'] = true;
+            }
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (char ch : st) {
+            sb.append(ch);
+        }
+
+        return sb.toString();
+    }
+
 
 
     // V0-1

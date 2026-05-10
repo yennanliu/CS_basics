@@ -3269,8 +3269,96 @@ public class Workspace25 {
      *
      *
      */
-    //  IDEA 1) STACK
+    // 7.51 - 8.01 am
+    /**
+     *
+     *  -> remove duplicate letters so that
+     *  every letter appears once and only once.
+     *
+     *
+     *  NOTE:
+     *   -  result is the smallest in
+     *      lexicographical order among
+     *      all possible results.
+     *
+     *
+     *  -------------
+     *
+     *   IDEA 1) STACK ??? + char arr
+     *
+     *    -> map : { string, last_occur_idx }
+     *
+     *
+     *    and stack, check if `last < cur` cur,
+     *    via char_a - char_b < 0 ?
+     *
+     *
+     *
+     *
+     */
+    // IDEA 1) STACK ??? + char arr
     public String removeDuplicateLetters(String s) {
+        // edge
+//        if (s == null || s.length() == 0){
+//            return "";
+//        }
+        if(s.isEmpty()){
+            return null;
+        }
+        if(s.length() == 1){
+            return s; // ??
+        }
+
+        Map<Character, Integer> map = new HashMap<>();
+        for(int i = 0; i < s.length(); i++){
+            map.put(s.charAt(i), i); // ??
+        }
+
+        // ???
+        // use below, to avoid `DUPLICATED adding to stack` ???
+        boolean[] added = new boolean[26];
+
+        System.out.println(">>> map = " + map);
+
+        Stack<Character> st = new Stack<>();
+        for(int i = 0; i < s.length(); i++){
+            char cur = s.charAt(i);
+            // ??
+            while (!st.isEmpty()
+                    && st.peek() - cur > 0
+                    && map.get(st.peek()) > i
+                    && !added[cur - 'a']){
+
+                char tmp = st.pop();
+                added[tmp - 'a'] = false;
+            }
+            if(!added[cur - 'a']){
+                st.add(cur);
+                added[cur - 'a'] = true;
+            }
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for(char ch: st){
+            sb.append(ch); // ????
+        }
+
+
+        return sb.toString();
+    }
+
+
+
+
+
+
+
+
+
+
+
+    //  IDEA 1) STACK
+    public String removeDuplicateLetters_94(String s) {
         // edge
 
         int[] index = new int[26]; // ???
