@@ -50,9 +50,75 @@ import java.util.List;
 public class CamelcaseMatching {
 
     // V0
-//    public List<Boolean> camelMatch(String[] queries, String pattern) {
-//
-//    }
+    // IDEA: 2 POINTERS + PATTERN MATCH (GPT)
+    public List<Boolean> camelMatch(String[] queries, String pattern) {
+
+        List<Boolean> res = new ArrayList<>();
+
+        for (String query : queries) {
+            res.add(canGen(query, pattern));
+        }
+
+        return res;
+    }
+
+    private boolean canGen(String query, String pattern) {
+
+        int j = 0;
+
+        for (int i = 0; i < query.length(); i++) {
+
+            char cur = query.charAt(i);
+
+            /** NOTE !!!
+             *
+             *    we do below 2 checks,
+             *    for the `matching case`
+             *
+             *    1. j still in boundary
+             *    2. if char is equals
+             *
+             */
+            // case 1) match
+            // match pattern char
+            if (j < pattern.length() && cur == pattern.charAt(j)) {
+                j++;
+            }
+            // case 2) lowercase is ALLOWED
+            // extra lowercase letters are allowed
+            else if (Character.isLowerCase(cur)) {
+                continue;
+            }
+            // case 3) upper is NOT ALLOWED,
+            //         -> return false directly
+            // extra uppercase letters are NOT allowed
+            else {
+                return false;
+            }
+        }
+
+        /** NOTE !!!
+         *
+         *   why `j == pattern.length();` ?
+         *   but not `j == pattern.length() - 1;` ?
+         *
+         *   -> since we update `j` above when `matching`,
+         *      even when j is in the last idx in pattern,
+         *
+         *      ```
+         *           if (j < pattern.length() && cur == pattern.charAt(j)) {
+         *                 j++;
+         *             }
+         *     ```
+         *
+         *      -> we'll add `1 extra` idx to it,
+         *         so it's `j == pattern.length();`
+         */
+        // must consume all pattern chars
+        return j == pattern.length();
+    }
+
+
 
     // V0-1
     // IDEA: 2 POINTERS + PATTERN MATCH (gemini)
@@ -228,7 +294,7 @@ public class CamelcaseMatching {
     // V1
     // IDEA: DP
     // https://leetcode.com/problems/camelcase-matching/solutions/270742/java-4ms-dp-solution-and-summarization-o-clpi/
-    public List<Boolean> camelMatch(String[] queries, String pattern) {
+    public List<Boolean> camelMatch_1(String[] queries, String pattern) {
         List<Boolean> resultList = new ArrayList<Boolean>();
         for (int i = 0; i < queries.length; i++) {
             if (isMatch_1(queries[i], pattern))
@@ -284,7 +350,9 @@ public class CamelcaseMatching {
     }
 
 
+
     // V3
+
 
 
 

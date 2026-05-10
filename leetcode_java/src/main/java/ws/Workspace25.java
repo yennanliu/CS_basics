@@ -6796,6 +6796,82 @@ public class Workspace25 {
 
 
 
+    // LC 1023
+    // 8.40 - 50 am
+    /**
+     *  -> return a boolean array answer
+     *      where answer[i] is true if queries[i]
+     *      matches pattern, and false otherwise.
+     *
+     *
+     *    NOTE:
+     *      - A query word queries[i] matches pattern if you can insert
+     *        lowercase English letters into the
+     *        pattern so that it equals the query.
+     *
+     *        -> You may insert a character at any position
+     *            in pattern or you may choose not to
+     *            insert any characters at all.
+     *
+     *
+     *  ---------------
+     *
+     *  IDEA 1) 2 POINTERS
+     *
+     *  IDEA 2) BRUTE FORCE
+     *
+     *
+     *  ---------------
+     *
+     *
+     */
+    // IDEA 1) 2 POINTERS
+    public List<Boolean> camelMatch(String[] queries, String pattern) {
+        // edge
+
+        List<Boolean> res = new ArrayList<>();
+
+        for(int i = 0; i < queries.length; i++){
+//            boolean resp = canGen(queries[i], pattern);
+//            res.add(resp);
+            res.add(canGen(queries[i], pattern));
+        }
+
+
+        return res;
+    }
+
+
+    private boolean canGen(String query, String pattern){
+        // edge ??
+
+        //char cur = query.charAt(i);
+
+        //int i = 0;
+        int j = 0;
+        for(int i = 0; i < query.length(); i++){
+
+            char cur = query.charAt(i);
+
+            // match pattern char
+            if (j < pattern.length() && cur == pattern.charAt(j)) {
+                j++;
+            }
+
+//            if(cur == pattern.charAt(j)){
+//                j += 1;
+//            }
+            else if(Character.isLowerCase(cur)){
+                continue;
+            }else{
+                return false;
+            }
+        }
+
+        return j == pattern.length() - 1;
+    }
+
+
 
 
 
