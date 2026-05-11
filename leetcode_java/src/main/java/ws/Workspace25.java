@@ -6872,6 +6872,13 @@ public class Workspace25 {
     }
 
 
+    // LC 539
+    public int findMinDifference(List<String> timePoints) {
+
+        return 0;
+    }
+
+
 
 
 
