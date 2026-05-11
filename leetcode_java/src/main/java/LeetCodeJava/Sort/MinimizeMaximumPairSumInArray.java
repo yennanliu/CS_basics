@@ -55,15 +55,42 @@ public class MinimizeMaximumPairSumInArray {
 
 
     // V0-1
-    // IDEA: GREEDY (gpt)
+    // IDEA: GREEDY + 2 pointers + sort (gpt)
+    /**  Core idea:
+     *
+     * 1. Sort the array
+     * 2. Pair:
+     *   - smallest with largest
+     *   - 2nd smallest with 2nd largest
+     *    ...
+     *
+     * 3. Track the maximum pair sum
+     *
+     *
+     * Why above ?
+     *
+     * -> If you pair large numbers together,
+     *    you create an unnecessarily huge pair sum.
+     *    Pairing small + large balances
+     *    the sums and minimizes the maximum.
+     *
+     */
     public int minPairSum_0_1(int[] nums) {
         Arrays.sort(nums);
 
+        /** NOTE !!!
+         *
+         *  we use 2 pointers
+         */
         int left = 0;
         int right = nums.length - 1;
 
         int ans = 0;
 
+        /** NOTE !!!
+         *
+         *  the trick to get `min pair diff`
+         */
         while (left < right) {
             ans = Math.max(ans, nums[left] + nums[right]);
 
