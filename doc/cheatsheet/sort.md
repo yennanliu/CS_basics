@@ -69,6 +69,12 @@
 - **Examples**: LC 23, 148, 315, 327, 493
 - **Pattern**: Merge sorted sequences
 
+### **Pattern 7: Greedy Pairing (Sort + Two Pointers)**
+- **Description**: Sort then pair smallest with largest to balance pair sums and minimize the maximum
+- **Core idea**: Pairing large numbers together creates unnecessarily large sums; pairing extremes (min+max) distributes weight evenly
+- **Examples**: LC 1877, 561, 881, 2491
+- **Pattern**: Sort → two pointers from both ends → track max/min of pair results
+
 ## Templates & Algorithms
 
 ### Algorithm Comparison Table
@@ -596,6 +602,14 @@ def topologicalSortDFS(numNodes, edges):
 | Count of Smaller Numbers | 315 | Merge sort with count | Hard |
 | Count of Range Sum | 327 | Merge sort | Hard |
 | Reverse Pairs | 493 | Modified merge sort | Hard |
+
+#### **Greedy Pairing Problems**
+| Problem | LC # | Key Technique | Difficulty |
+|---------|------|---------------|------------|
+| Minimize Maximum Pair Sum | 1877 | Sort + two pointers (min+max pairs) | Medium |
+| Array Partition | 561 | Sort + pair adjacent elements | Easy |
+| Boats to Save People | 881 | Sort + greedy two pointers | Medium |
+| Divide Players Into Teams | 2491 | Sort + pair smallest with largest | Medium |
 
 ## Pattern Selection Strategy
 
@@ -1196,6 +1210,41 @@ public String sort(String s) {
     }
 ```
 
+
+### 2-8) Minimize Maximum Pair Sum in Array
+
+```java
+// java
+// LC 1877. Minimize Maximum Pair Sum in Array
+// Pattern: Greedy Pairing — Sort + Two Pointers
+
+// Core idea:
+//   1. Sort the array
+//   2. Pair smallest with largest (two pointers from both ends)
+//   3. Track the maximum pair sum across all pairs
+//
+// Why it works: pairing large+large inflates the max unnecessarily;
+// pairing min+max balances every pair sum and minimizes the maximum.
+
+public int minPairSum(int[] nums) {
+    Arrays.sort(nums);
+    int left = 0, right = nums.length - 1;
+    int ans = 0;
+    while (left < right) {
+        ans = Math.max(ans, nums[left] + nums[right]);
+        left++;
+        right--;
+    }
+    return ans;
+}
+```
+
+**Similar problems using the same Greedy Pairing pattern:**
+| Problem | LC # | Twist |
+|---------|------|-------|
+| Array Partition | 561 | Maximize sum of pair minimums → pair adjacent after sort |
+| Boats to Save People | 881 | Minimize boats → greedy two pointers with weight limit |
+| Divide Players Into Teams | 2491 | Equal skill sum → pair 1st with last |
 
 ### 2-7)  TopK Frequent Words
 
