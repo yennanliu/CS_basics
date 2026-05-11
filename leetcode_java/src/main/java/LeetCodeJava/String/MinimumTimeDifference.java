@@ -56,6 +56,13 @@ public class MinimumTimeDifference {
 
         Collections.sort(list);
 
+        /** NOTE !!!
+         *
+         *  circular diff between last and first
+         *
+         *  -> e.g.
+         *   diff between `23:59` and `00:00`
+         */
         // circular diff between last and first
         int minGap = 24 * 60 - (list.get(list.size() - 1) - list.get(0));
 

@@ -6931,7 +6931,11 @@ public class Workspace25 {
 
 
 
+    // LC 1877
+    public int minPairSum(int[] nums) {
 
+        return 0;
+    }
 
 
 
