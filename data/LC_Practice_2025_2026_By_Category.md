@@ -1,9 +1,9 @@
 # LeetCode Practice List (2025-2026) - By Category
 
-**Total Unique Problems: 497**
+**Total Unique Problems: 500**
 
 Generated from: `data/progress.md`
-Date: 2026-05-04
+Date: 2026-05-11
 
 ---
 
@@ -27,11 +27,11 @@ Date: 2026-05-04
 - [Recursion](#recursion) (19 problems)
 - [Sliding Window](#sliding-window) (3 problems)
 - [Sort](#sort) (15 problems)
-- [Stack](#stack) (22 problems)
-- [String](#string) (18 problems)
+- [Stack](#stack) (23 problems)
+- [String](#string) (19 problems)
 - [Tree](#tree) (26 problems)
 - [Two Pointers](#two-pointers) (11 problems)
-- [Uncategorized](#uncategorized) (99 problems)
+- [Uncategorized](#uncategorized) (100 problems)
 
 ---
 
@@ -204,20 +204,20 @@ Date: 2026-05-04
 
 ## Stack
 
-**Count: 22**
+**Count: 23**
 
-20, 32, 71, 85, 155, 173, 224, 227, 321, 341
-394, 503, 739, 772, 853, 856, 872, 895, 901, 1047
-1081, 2289
+20, 32, 71, 85, 101, 155, 173, 224, 227, 321
+341, 394, 503, 739, 772, 853, 856, 872, 895, 901
+1047, 1081, 2289
 
 ---
 
 ## String
 
-**Count: 18**
+**Count: 19**
 
-5, 14, 28, 58, 76, 125, 242, 271, 340, 383
-541, 647, 678, 680, 720, 791, 890, 953
+5, 14, 28, 58, 76, 125, 161, 242, 271, 340
+383, 541, 647, 678, 680, 720, 791, 890, 953
 
 ---
 
@@ -242,7 +242,7 @@ Date: 2026-05-04
 
 ## Uncategorized
 
-**Count: 99**
+**Count: 100**
 
 These problems were not found in the leetcode_python or leetcode_java directory structure.
 
@@ -251,11 +251,11 @@ These problems were not found in the leetcode_python or leetcode_java directory 
 576, 583, 642, 644, 668, 685, 691, 697, 704, 711
 715, 718, 719, 730, 741, 744, 759, 773, 803, 823
 839, 847, 857, 862, 894, 899, 930, 935, 956, 979
-990, 1008, 1026, 1035, 1080, 1092, 1123, 1136, 1186, 1201
-1202, 1203, 1220, 1235, 1245, 1249, 1278, 1293, 1319, 1326
-1373, 1425, 1434, 1449, 1480, 1499, 1510, 1514, 1547, 1557
-1569, 1690, 1696, 1697, 1745, 1770, 1911, 1931, 2034, 2050
-2064, 2127, 2182, 2187, 2192, 2226, 2246, 2398, 2493
+990, 1008, 1026, 1035, 1043, 1080, 1092, 1123, 1136, 1186
+1201, 1202, 1203, 1220, 1235, 1245, 1249, 1278, 1293, 1319
+1326, 1373, 1425, 1434, 1449, 1480, 1499, 1510, 1514, 1547
+1557, 1569, 1690, 1696, 1697, 1745, 1770, 1911, 1931, 2034
+2050, 2064, 2127, 2182, 2187, 2192, 2226, 2246, 2398, 2493
 
 ---
 
@@ -263,17 +263,17 @@ These problems were not found in the leetcode_python or leetcode_java directory 
 
 | Category | Count | Percentage |
 |----------|-------|------------|
-| Dynamic Programming | 49 | 9.9% |
-| Array | 43 | 8.7% |
+| Dynamic Programming | 49 | 9.8% |
+| Array | 43 | 8.6% |
 | Tree | 26 | 5.2% |
 | Binary Search | 24 | 4.8% |
 | Depth-First-Search | 24 | 4.8% |
+| Stack | 23 | 4.6% |
 | Greedy | 22 | 4.4% |
-| Stack | 22 | 4.4% |
 | Breadth-First-Search | 22 | 4.4% |
 | Hash Table | 20 | 4.0% |
+| String | 19 | 3.8% |
 | Recursion | 19 | 3.8% |
-| String | 18 | 3.6% |
 | Heap | 18 | 3.6% |
 | Linked List | 16 | 3.2% |
 | Sort | 15 | 3.0% |
@@ -285,4 +285,4 @@ These problems were not found in the leetcode_python or leetcode_java directory 
 | Math | 4 | 0.8% |
 | Sliding Window | 3 | 0.6% |
 | Queue | 1 | 0.2% |
-| Uncategorized | 99 | 19.9% |
+| Uncategorized | 100 | 20.0% |
