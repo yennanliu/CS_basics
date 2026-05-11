@@ -6873,9 +6873,58 @@ public class Workspace25 {
 
 
     // LC 539
+    // 3.35 - 45 pm
+    /**
+     * IDEA 1) CUSTOM SORTING
+     *
+     * IDEA 2) sort (str -> int)
+     *
+     *
+     */
+    //IDEA 2) sort (str -> int)
     public int findMinDifference(List<String> timePoints) {
+        // edge
+        if(timePoints.size() <= 1){
+            return 0;
+        }
 
-        return 0;
+        List<Integer> list = new ArrayList<>();
+        for(String x: timePoints){
+            list.add(getTimeStamp(x));
+        }
+
+        // ??? sorting
+        Collections.sort(list);
+
+        int minGap = Math.abs(list.get(0) - list.get(list.size() - 1));
+        for(int i = 1; i < list.size(); i++){
+            // ???
+            int val1 = Math.abs(list.get(i) - list.get(i-1));
+            // ???
+            int val2 = Math.abs(1440 - list.get(i) - list.get(i-1));
+
+            minGap = Math.min(minGap,
+                    Math.min(val1, val2)
+            );
+        }
+
+
+        return minGap;
+    }
+
+
+    private int getTimeStamp(String str){
+        int res = 0;
+        // ???
+        if(str.isEmpty()){
+            return 0;
+        }
+        String arr[] = str.split(":");
+        res += Integer.parseInt(arr[0]) * 60;
+        res += Integer.parseInt(arr[1]);
+        System.out.println(">>> str = " + str
+        + ", res = " + res);
+        return res;
     }
 
 

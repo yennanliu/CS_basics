@@ -2,7 +2,9 @@ package LeetCodeJava.String;
 
 // https://leetcode.com/problems/minimum-time-difference/description/
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -36,6 +38,88 @@ public class MinimumTimeDifference {
 //    public int findMinDifference(List<String> timePoints) {
 //
 //    }
+
+
+    // V0-1
+    // IDEA: sort (str -> int) (GPT)
+    public int findMinDifference_0_1(List<String> timePoints) {
+        // edge
+        if (timePoints.size() <= 1) {
+            return 0;
+        }
+
+        List<Integer> list = new ArrayList<>();
+
+        for (String x : timePoints) {
+            list.add(getTimeStamp(x));
+        }
+
+        Collections.sort(list);
+
+        // circular diff between last and first
+        int minGap = 24 * 60 - (list.get(list.size() - 1) - list.get(0));
+
+        for (int i = 1; i < list.size(); i++) {
+            minGap = Math.min(
+                    minGap,
+                    list.get(i) - list.get(i - 1));
+        }
+
+        return minGap;
+    }
+
+    private int getTimeStamp(String str) {
+        String[] arr = str.split(":");
+
+        int hour = Integer.parseInt(arr[0]);
+        int minute = Integer.parseInt(arr[1]);
+
+        return hour * 60 + minute;
+    }
+
+
+    // V0-2
+    // IDEA: sort (str -> int) (GEMINI)
+    public int findMinDifference_0_2(List<String> timePoints) {
+        // 1. Pigeonhole Principle: If more than 1440 points, a duplicate is guaranteed
+        if (timePoints.size() > 1440)
+            return 0;
+
+        List<Integer> minutes = new ArrayList<>();
+        for (String time : timePoints) {
+            minutes.add(getTimeStamp_0_2(time));
+        }
+
+        // 2. Sort the timestamps
+        Collections.sort(minutes);
+
+        // 3. Initialize minGap with the circular "wraparound" case:
+        // Difference between the last time and the first time of the next day
+        int n = minutes.size();
+        int first = minutes.get(0);
+        int last = minutes.get(n - 1);
+        int minGap = (1440 - last) + first;
+
+        // 4. Compare adjacent time points
+        for (int i = 1; i < n; i++) {
+            minGap = Math.min(minGap, minutes.get(i) - minutes.get(i - 1));
+            // Optimization: if minGap is 0, we can't get any lower
+            if (minGap == 0)
+                return 0;
+        }
+
+        return minGap;
+    }
+
+    private int getTimeStamp_0_2(String str) {
+        // Split "HH:mm" into hours and minutes
+        String[] parts = str.split(":");
+        int h = Integer.parseInt(parts[0]);
+        int m = Integer.parseInt(parts[1]);
+        return h * 60 + m;
+    }
+
+
 
 
     // V1-1
