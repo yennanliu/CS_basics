@@ -428,6 +428,7 @@ claude
 599| [Minimum Index Sum of Two Lists](https://leetcode.com/problems/minimum-index-sum-of-two-lists/) | [Python ](./leetcode_python/Hash_table/minimum-index-sum-of-two-lists.py) | _O((m + n) * l)_ | _O(m * l)_ | Easy   | `yelp`| OK* 
 609| [Find Duplicate File in System](https://leetcode.com/problems/find-duplicate-file-in-system/) | [Python ](./leetcode_python/Hash_table/find-duplicate-file-in-system.py) | _O(n * l)_ | _O(n * l)_ | Medium  | `collections.defaultdict(list)`, `dropbox`| OK* 
 657| [Robot Return to Origin](https://leetcode.com/problems/robot-return-to-origin/)|[Python ](./leetcode_python/Array/rebot_return_to_origin.py)  ||| Easy |`amazon`| OK (2)
+710| [Random Pick with Blacklist](https://leetcode.com/problems/random-pick-with-blacklist)|[Java](./leetcode_java/src/main/java/LeetCodeJava/HashTable/RandomPickWithBlacklist.java) ||| Hard |hashmap, google| AGAIN (not start)
 748 | [Shortest Completing Word](https://leetcode.com/problems/shortest-completing-word/) |  [Python ](./leetcode_python/Hash_table/shortest-completing-word.py) | _O(n)_ | _O(1)_ | Easy |`collections.Counter`, `hash table`,`google`| AGAIN* (3)
 760 | [Find Anagram Mappings](https://leetcode.com/problems/find-anagram-mappings/) | [Python ](./leetcode_python/Hash_table/find-anagram-mappings.py)  | _O(n)_ | _O(n)_ | Easy |`basic`, `collections.defaultdict`| OK
 771 | [Jewels and Stones](https://leetcode.com/problems/jewels-and-stones/) | [Python ](./leetcode_python/Hash_table/jewels-and-stones.py)  | _O(m + n)_ | _O(n)_ | Easy |`amazon`| OK (2) 

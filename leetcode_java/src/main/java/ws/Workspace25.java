@@ -6954,6 +6954,18 @@ public class Workspace25 {
 
 
 
+    // LC 710
+    class Solution {
+
+        public Solution(int n, int[] blacklist) {
+
+        }
+
+        public int pick() {
+
+            return 0;
+        }
+    }
 
 
 }
