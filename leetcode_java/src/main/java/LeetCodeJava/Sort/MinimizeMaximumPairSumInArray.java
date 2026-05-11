@@ -54,6 +54,51 @@ public class MinimizeMaximumPairSumInArray {
 //    }
 
 
+    // V0-1
+    // IDEA: GREEDY (gpt)
+    public int minPairSum_0_1(int[] nums) {
+        Arrays.sort(nums);
+
+        int left = 0;
+        int right = nums.length - 1;
+
+        int ans = 0;
+
+        while (left < right) {
+            ans = Math.max(ans, nums[left] + nums[right]);
+
+            left++;
+            right--;
+        }
+
+        return ans;
+    }
+
+
+
+    // V0-2
+    // IDEA: GREEDY (GEMINI)
+    public int minPairSum_0_2(int[] nums) {
+        // 1. Sort the array to easily pick the smallest and largest elements
+        Arrays.sort(nums);
+
+        int n = nums.length;
+        int maxPairSum = 0;
+
+        // 2. Use two pointers:
+        // i starts at the beginning (smallest),
+        // j starts at the end (largest)
+        for (int i = 0; i < n / 2; i++) {
+            int currentPairSum = nums[i] + nums[n - 1 - i];
+
+            // 3. Track the maximum sum encountered among all pairs
+            maxPairSum = Math.max(maxPairSum, currentPairSum);
+        }
+
+        return maxPairSum;
+    }
+
+
 
     // V1
     // IDEA: SORT

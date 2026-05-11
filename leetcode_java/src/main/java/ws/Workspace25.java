@@ -6932,6 +6932,21 @@ public class Workspace25 {
 
 
     // LC 1877
+    // 4.12 - 22 pm
+    /**
+     *
+     * -> Return the
+     * `minimized maximum pair sum `
+     * after `optimally pairing up` the elements.
+     *
+     *  ------
+     *
+     *  IDEA 1) SORT
+     *
+     *  IDEA 2) GREEDY
+     *
+     */
+    //  IDEA 1) SORT
     public int minPairSum(int[] nums) {
 
         return 0;
