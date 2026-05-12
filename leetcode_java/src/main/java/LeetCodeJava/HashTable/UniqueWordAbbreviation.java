@@ -62,6 +62,10 @@ public class UniqueWordAbbreviation {
     // TODO: validate
     class ValidWordAbbr_1_1 {
 
+        /** NOTE !!!
+         *
+         *   map key is `set`
+         */
         private Map<String, Set<String>> map;
 
         public ValidWordAbbr_1_1(String[] dictionary) {
@@ -84,6 +88,10 @@ public class UniqueWordAbbreviation {
 
             Set<String> set = map.get(abbr);
 
+            /** NOTE !!!
+             *
+             *   how we check `unique`
+             */
             // unique if:
             // 1) only this word exists in that bucket
             // 2) OR same word repeated
@@ -128,6 +136,10 @@ public class UniqueWordAbbreviation {
                 return true;
             }
 
+            /** NOTE !!!
+             *
+             *   how we check `unique`
+             */
             // 2. If the abbreviation exists, it's ONLY unique if:
             //    - There is only ONE word in that abbreviation set
             //    - AND that one word is the word we are checking
@@ -139,7 +151,9 @@ public class UniqueWordAbbreviation {
             if (str.length() <= 2) {
                 return str;
             }
-            return str.charAt(0) + String.valueOf(str.length() - 2) + str.charAt(str.length() - 1);
+            return str.charAt(0)
+                    + String.valueOf(str.length() - 2)
+                    + str.charAt(str.length() - 1);
         }
     }
 
