@@ -3263,3 +3263,85 @@ private boolean check(int[] nums, int threshold, int d) {
 }
 ```
 
+---
+
+## 10) HashMap Key Pitfalls
+
+### 10.1) Arrays CANNOT Be Used as HashMap Keys ⭐
+
+> **Core Rule**: Never use `int[]` or `Integer[]` as a `HashMap` key — they use memory address for `.equals()` and `.hashCode()`, not element values.
+
+```java
+// LC 2013 - Detect Squares
+
+/** NOTE !!!
+ *
+ *  CAN'T use `Integer[]{x, y}` as HashMap key
+ *
+ *  Array Keys in HashMap:
+ *  In Java, int[] or Integer[] use the default `memory address`
+ *  for .equals() and .hashCode().
+ *  This means new Integer[]{1, 2} will NOT match a
+ *  previously stored new Integer[]{1, 2}.
+ */
+
+// ❌ WRONG — array identity, not content
+Map<Integer[], Integer> pointCount = new HashMap<>();
+pointCount.put(new Integer[]{1, 2}, 1);
+pointCount.get(new Integer[]{1, 2});  // returns null! different object
+```
+
+#### Correct Alternatives
+
+**Option 1: String key (simplest)**
+```java
+// ✅ Use "x,y" string as key
+Map<String, Integer> pointCount = new HashMap<>();
+pointCount.put(x + "," + y, pointCount.getOrDefault(x + "," + y, 0) + 1);
+pointCount.getOrDefault(x + "," + y, 0);  // works correctly
+```
+
+**Option 2: Nested Map**
+```java
+// ✅ Map<Integer, Map<Integer, Integer>> — no string encoding needed
+Map<Integer, Map<Integer, Integer>> pointCount = new HashMap<>();
+pointCount.putIfAbsent(x, new HashMap<>());
+pointCount.get(x).put(y, pointCount.get(x).getOrDefault(y, 0) + 1);
+```
+
+**Option 3: Custom Point class with `equals()` + `hashCode()` overridden**
+```java
+// ✅ Custom class
+class Point {
+    int x, y;
+    Point(int x, int y) { this.x = x; this.y = y; }
+
+    @Override
+    public boolean equals(Object o) {
+        Point p = (Point) o;
+        return x == p.x && y == p.y;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
+    }
+}
+
+Map<Point, Integer> pointCount = new HashMap<>();
+pointCount.put(new Point(1, 2), 1);
+pointCount.get(new Point(1, 2));  // ✅ returns 1
+```
+
+#### Summary Table
+
+| Key Type | Works? | Why |
+|----------|--------|-----|
+| `int[]` / `Integer[]` | ❌ | Uses memory address for `equals()`/`hashCode()` |
+| `String` (e.g. `"x,y"`) | ✅ | Value-based equality built in |
+| `Map<Integer, Map<Integer, Integer>>` | ✅ | Nested map avoids the problem entirely |
+| Custom class with `equals()` + `hashCode()` | ✅ | Explicit value-based identity |
+| `List<Integer>` | ✅ | `ArrayList.equals()` is content-based |
+
+**Note**: `List<Integer>` (e.g. `Arrays.asList(x, y)`) also works as a map key because `ArrayList` overrides `equals()` and `hashCode()` to compare elements — but it is slower than a `String` key.
+
