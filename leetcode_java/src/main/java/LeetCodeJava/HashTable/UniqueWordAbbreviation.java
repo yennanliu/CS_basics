@@ -53,9 +53,89 @@ public class UniqueWordAbbreviation {
     // V0
 //    public void ValidWordAbbr(String[] dictionary) {
 //    }
+//    public boolean isUnique(String word) {
+//    }
 
 
-    // V1
+    // V1-1
+    // IDEA: HASHMAP (GPT)
+    // TODO: validate
+    private Map<String, Set<String>> map;
+    public void ValidWordAbbr_1_1(String[] dictionary) {
+        map = new HashMap<>();
+
+        for (String word : dictionary) {
+            String abbr = String.valueOf(isUnique_1_1(word));
+
+            map.putIfAbsent(abbr, new HashSet<>());
+            map.get(abbr).add(word);
+        }
+    }
+
+    public boolean isUnique_1_1(String word) {
+        String abbr = getAbbr_1_1(word);
+
+        if (!map.containsKey(abbr)) {
+            return true;
+        }
+
+        Set<String> set = map.get(abbr);
+
+        // unique if:
+        // 1) only this word exists in that bucket
+        // 2) OR same word repeated
+        return set.size() == 1 && set.contains(word);
+    }
+
+    private String getAbbr_1_1(String str) {
+        if (str.length() <= 2) {
+            return str;
+        }
+
+        return "" + str.charAt(0)
+                + (str.length() - 2)
+                + str.charAt(str.length() - 1);
+    }
+
+
+
+    // V1-2
+    // IDEA: HASHMAP (gemini)
+    // TODO: validate
+// Map of abbreviation -> Set of original words that have this abbreviation
+    private Map<String, Set<String>> dictMap;
+
+    public void ValidWordAbbr_1_2(String[] dictionary) {
+        dictMap = new HashMap<>();
+        for (String word : dictionary) {
+            String abbr = String.valueOf(isUnique_1_2(word));
+            dictMap.putIfAbsent(abbr, new HashSet<>());
+            dictMap.get(abbr).add(word);
+        }
+    }
+
+    public boolean isUnique_1_2(String word) {
+        String abbr = getAbbr_1_2(word);
+
+        // 1. If the abbreviation doesn't exist in the dictionary, it's unique
+        if (!dictMap.containsKey(abbr)) {
+            return true;
+        }
+
+        // 2. If the abbreviation exists, it's ONLY unique if:
+        //    - There is only ONE word in that abbreviation set
+        //    - AND that one word is the word we are checking
+        Set<String> wordsWithAbbr = dictMap.get(abbr);
+        return wordsWithAbbr.size() == 1 && wordsWithAbbr.contains(word);
+    }
+
+    private String getAbbr_1_2(String str) {
+        if (str.length() <= 2) {
+            return str;
+        }
+        return str.charAt(0) + String.valueOf(str.length() - 2) + str.charAt(str.length() - 1);
+    }
+
 
 
     // V2
@@ -69,7 +149,7 @@ public class UniqueWordAbbreviation {
         }
     }
 
-    public boolean isUnique(String word) {
+    public boolean isUnique_2(String word) {
         Set<String> ws = d.get(abbr(word));
         return ws == null || (ws.size() == 1 && ws.contains(word));
     }

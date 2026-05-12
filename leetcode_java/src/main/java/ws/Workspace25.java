@@ -7116,8 +7116,69 @@ public class Workspace25 {
 
 
     // LC 288
-    public void ValidWordAbbr(String[] dictionary) {
+    // 10.44 - 54 am
+    /**
+     *  Abbreviation 縮寫
+     *
+     *   ->  find whether its abbreviation
+     *   is unique in the dictionary
+     *
+     *     NOTE:
+     *      - A word's abbreviation is unique
+     *        if no other word from the dictionary
+     *        has the same abbreviation.
+     *
+     *
+     *     abbreviations:
+     *        <first letter><number><last letter>.
+     *
+     *
+     *  -----------
+     *
+     *   IDEA 1) HASHMAP
+     *
+     *
+     *  -----------
+     *
+     */
+    // IDEA 1) HASHMAP
+    public boolean ValidWordAbbr(String[] dictionary) {
+        // edge
+        if(dictionary == null || dictionary.length <= 1){
+            return true; // ??
+        }
+
+        //Map<String, Integer> map = new HashMap<>();
+        Set<String> set = new HashSet<>();
+        // ??
+        for(String x: dictionary){
+            String abbr = getAbbr(x);
+            if(set.contains(abbr)){
+                return false;
+            }
+            set.add(getAbbr(x));
+        }
+        return true;
     }
+
+
+//    public boolean isUnique(String word) {
+//        return false;
+//    }
+
+    private String getAbbr(String str){
+        if(str.length() <= 2){
+            return str;
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append(str.charAt(0));
+        sb.append(str.length() - 2);
+        sb.append(str.charAt(str.length() - 1));
+
+        return sb.toString();
+    }
+
+
 
 
 
