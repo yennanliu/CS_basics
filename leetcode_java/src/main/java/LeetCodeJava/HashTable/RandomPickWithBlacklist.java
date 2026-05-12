@@ -207,7 +207,9 @@ public class RandomPickWithBlacklist {
                 blackSet.add(b);
             }
 
-            // 2. We only need to remap blacklisted numbers that fall within the [0, safeRange)
+            /** Virtual Remapping strategy */
+            // 2. We only need to `remap` blacklisted numbers that
+            //    fall within the [0, safeRange)
             // We will map them to valid numbers in the [safeRange, n) zone.
             int last = n - 1;
             for (int b : blacklist) {
