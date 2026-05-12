@@ -7115,6 +7115,12 @@ public class Workspace25 {
 
 
 
+    // LC 288
+    public void ValidWordAbbr(String[] dictionary) {
+    }
+
+
+
 
 
 
