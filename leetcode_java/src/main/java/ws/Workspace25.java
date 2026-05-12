@@ -7066,9 +7066,51 @@ public class Workspace25 {
 
 
     // LC 2126
+    // 10.09 - 19 am
+    /**
+     *  -> Return true if all asteroids can be destroyed.
+     *  Otherwise, return false..
+     *
+     *
+     *
+     *   Asteroids 小行星
+     *
+     *
+     *
+     *  ---------
+     *
+     *   IDEA 1) GREEDY
+     *
+     *   IDEA 2) SORT
+     *    -> small -> big ???
+     *
+     *
+     *  ---------
+     *
+     *
+     */
+    // IDEA 2) SORT
     public boolean asteroidsDestroyed(int mass, int[] asteroids) {
+        // edge
+        if(asteroids == null || asteroids.length == 0){
+            return true;
+        }
 
-        return false;
+        // default: small -> big ???
+        Arrays.sort(asteroids);
+        //int cur = 0;
+        Long mass2 = (long) mass; // ???
+        for(int x: asteroids){
+            System.out.println(">>> mass2 = " + mass2
+            + ", x = " + x);
+            if(mass2 < x){
+                return false;
+            }
+            mass2 += x;
+        }
+
+
+        return true;
     }
 
 

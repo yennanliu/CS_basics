@@ -50,12 +50,52 @@ import java.util.Arrays;
 public class DestroyingAsteroids {
 
     // V0
-//    public boolean asteroidsDestroyed(int mass, int[] asteroids) {
-//
-//    }
+    // IDEA: GREEDY + SORT + LONG
+    public boolean asteroidsDestroyed(int mass, int[] asteroids) {
+        // edge
+        if (asteroids == null || asteroids.length == 0) {
+            return true;
+        }
+
+        // default: small -> big ???
+        Arrays.sort(asteroids);
+        //int cur = 0;
+
+        // IMPORTANT: use long
+        Long mass2 = (long) mass; // ???
+        for (int x : asteroids) {
+            if (mass2 < x) {
+//                System.out.println(">>> mass2 = " + mass2
+//                        + ", x = " + x);
+                return false;
+            }
+            mass2 += x;
+        }
+
+        return true;
+    }
 
 
-    // V1
+    // V1-1
+    // IDEA: GREEDY + SORT + LONG (GPT)
+    public boolean asteroidsDestroyed_1_1(int mass, int[] asteroids) {
+        if (asteroids == null || asteroids.length == 0) {
+            return true;
+        }
+
+        Arrays.sort(asteroids);
+
+        long curMass = mass; // IMPORTANT: use long
+
+        for (int x : asteroids) {
+            if (curMass < x) {
+                return false;
+            }
+            curMass += x;
+        }
+
+        return true;
+    }
 
 
     // V2
