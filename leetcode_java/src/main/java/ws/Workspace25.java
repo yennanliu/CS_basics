@@ -6978,17 +6978,50 @@ public class Workspace25 {
 
 
     // LC 710
+    // 11.22 - 12.01 am
+    /**
+     *
+     *
+     */
     class Solution {
+        // ???
+        HashSet<Integer> set;
+        int n;
+        int[] blacklist;
+        Random random;
 
         public Solution(int n, int[] blacklist) {
-
+            this.set = new HashSet<>();
+            this.n = n;
+            this.blacklist = blacklist;
+            for(int x: blacklist){
+                this.set.add(x);
+            }
+            // ???
+            this.random = new Random();
         }
 
         public int pick() {
-
-            return 0;
+            // edge
+            if(this.n <= 1){
+                return this.n; // :::
+            }
+            //int val = -1;
+            int val = this.random.nextInt(n); // ???
+            while (this.set.contains(val)){
+                val = this.random.nextInt(n);
+            }
+            return val; // ??
         }
+
+
     }
+
+
+
+
+
+
 
 
     // LC 2013

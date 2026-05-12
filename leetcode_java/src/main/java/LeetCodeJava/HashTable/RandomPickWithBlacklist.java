@@ -2,10 +2,7 @@ package LeetCodeJava.HashTable;
 
 // https://leetcode.com/problems/random-pick-with-blacklist/description/
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  *  710. Random Pick with Blacklist
@@ -67,7 +64,131 @@ public class RandomPickWithBlacklist {
 //    }
 
 
+    // V0-1
+    // IDEA: MATH + BRUTE FORCE (TLE)
+//    class Solution {
+//        // ???
+//        HashSet<Integer> set;
+//        int n;
+//        int[] blacklist;
+//        Random random;
+//
+//        public Solution(int n, int[] blacklist) {
+//            this.set = new HashSet<>();
+//            this.n = n;
+//            this.blacklist = blacklist;
+//            for(int x: blacklist){
+//                this.set.add(x);
+//            }
+//            // ???
+//            this.random = new Random();
+//        }
+//
+//        public int pick() {
+//            // edge
+//            if(this.n <= 1){
+//                return this.n; // :::
+//            }
+//            //int val = -1;
+//            int val = this.random.nextInt(n); // ???
+//            while (this.set.contains(val)){
+//                val = this.random.nextInt(n);
+//            }
+//            return val; // ??
+//        }
+//
+//    }
+
+    
+
+    // V0-1
+    // IDEA: (fixed by gpt)
+    class Solution_0_1 {
+
+        private Map<Integer, Integer> map;
+        private int bound;
+        private Random random;
+
+        public Solution_0_1(int n, int[] blacklist) {
+            map = new HashMap<>();
+            random = new Random();
+
+            Set<Integer> black = new HashSet<>();
+            for (int b : blacklist) {
+                black.add(b);
+            }
+
+            bound = n - blacklist.length;
+
+            int last = n - 1;
+
+            for (int b : blacklist) {
+                if (b < bound) {
+                    while (black.contains(last)) {
+                        last--;
+                    }
+                    map.put(b, last);
+                    last--;
+                }
+            }
+        }
+
+        public int pick() {
+            int x = random.nextInt(bound);
+            return map.getOrDefault(x, x);
+        }
+    }
+
+
+
+    // V0-2
+    // IDEA: (gemini)
+    class Solution_0_2 {
+        private Map<Integer, Integer> mapping;
+        private Random random;
+        private int safeRange;
+
+        public Solution_0_2(int n, int[] blacklist) {
+            this.random = new Random();
+            this.mapping = new HashMap<>();
+            this.safeRange = n - blacklist.length;
+
+            // 1. Put all blacklisted numbers into a set for O(1) lookup
+            Set<Integer> blackSet = new HashSet<>();
+            for (int b : blacklist) {
+                blackSet.add(b);
+            }
+
+            // 2. We only need to remap blacklisted numbers that fall within the [0, safeRange)
+            // We will map them to valid numbers in the [safeRange, n) zone.
+            int last = n - 1;
+            for (int b : blacklist) {
+                if (b < safeRange) {
+                    // Find a 'last' index that is NOT in the blacklist
+                    while (blackSet.contains(last)) {
+                        last--;
+                    }
+                    mapping.put(b, last);
+                    last--;
+                }
+            }
+        }
+
+        public int pick() {
+            // 3. Generate a random index within the guaranteed safe count
+            int idx = random.nextInt(safeRange);
+
+            // 4. If the index is a blacklisted number, return its mapped valid value
+            // Otherwise, return the index itself
+            return mapping.getOrDefault(idx, idx);
+        }
+    }
+
+
+
+
     // V1
+
 
 
     // V2
