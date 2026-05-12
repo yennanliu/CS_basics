@@ -6968,4 +6968,106 @@ public class Workspace25 {
     }
 
 
+    // LC 2013
+    // 8.07 - 24 am
+    /**
+     *
+     *
+     */
+    class DetectSquares {
+
+
+        // key = "x,y"
+        private Map<String, Integer> cnt;
+        private List<int[]> points;
+
+
+        // ???
+        Map<Integer[], Integer> map;
+        int cellCnt;
+        // ???
+        Map<Integer[], Integer> cache;
+
+        public DetectSquares() {
+            this.map = new HashMap<>();
+            this.cellCnt = 0;
+            this.cache = new HashMap<>();
+        }
+
+        public void add(int[] point) {
+            // ???
+            Integer[] key = new Integer[]{point[0], point[1]};
+            map.put(key, map.getOrDefault(key, 0) + 1);
+            this.cellCnt += 1;
+        }
+
+        public int count(int[] point) {
+            // edge
+            if(map.isEmpty() || this.cellCnt < 4){
+                return 0;
+            }
+            // ??? if point already `existed`
+            Integer[] key = new Integer[]{point[0], point[1]};
+            if(map.containsKey(key)){
+                return this.cache.get(key); // ???
+            }
+
+            // ???
+            /**  IDEA:
+             *
+             *  1. loop over cells,
+             *     get 2 cell as a pair,
+             *  2. check if there exist
+             *     2 other cells that can
+             *     form a valid `square`
+             *
+             *  3. cnt the val per above,
+             *     and add to final result
+             *
+             *   ... repeat above
+             */
+            int cnt = 0;
+            // ???
+            for(Integer[] k: map.keySet()){
+                // ??
+                int x1 = k[0];
+                int y1 = k[1];
+                int x2 = point[0];
+                int y2 = point[1];
+
+                //???
+                int tmpx1 = x1;
+                int tmpy1 = y2;
+
+                int tmpx2 = x2;
+                int tmpy2 = y1;
+
+                Integer[] cellNew = new Integer[]{x2, y2};
+
+                Integer[] cell1 = new Integer[]{tmpx1, tmpy1};
+                Integer[] cell2 = new Integer[]{tmpx2, tmpy2};
+
+                if(map.containsKey(cell1) && map.containsKey(cell2)){
+                    int val = map.get(cell1) * map.get(cell2);
+                    cnt += val; // ???
+                    // ??? update cache ???
+                    cache.put(cellNew, val);
+                }
+
+            }
+
+
+            return cnt;
+        }
+    }
+
+
+
+
+
+
+
+
+
+
 }

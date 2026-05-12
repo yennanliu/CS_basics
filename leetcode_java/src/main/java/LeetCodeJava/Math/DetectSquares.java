@@ -59,19 +59,120 @@ import java.util.*;
  */
 public class DetectSquares {
 
+    /** NOTE !!!
+     *
+     *  CAN'T use `Integer[]{x, y} as hashMap key
+     *
+     *  ->
+     *
+     *  Array Keys in HashMap:
+     *  In Java, int[] or Integer[] use the default `memory address`
+     *  for .equals() and .hashCode().
+     *  This means new Integer[]{1, 2} will not match a
+     *  previously stored new Integer[]{1, 2}.
+     *
+     *  -> You should use a String (e.g., "x,y")
+     *  or a custom Point class, or simply a nested Map
+     *  Map<Integer, Integer Map<Integer,>>.
+     *
+     *
+     */
+
     // V0
+    // IDEA: MATH + HASHMAP (gpt)
+    class DetectSquares_ {
+
+        /**  NOTE !!!
+         *
+         *   -> use `x,y` as cnt map key
+         *
+         *   // map : { "x-y" : count }
+         *
+         */
+        // key = "x,y"
+        private Map<String, Integer> cnt;
+        private List<int[]> points;
+
+        public DetectSquares_() {
+            cnt = new HashMap<>();
+            points = new ArrayList<>();
+        }
+
+        public void add(int[] point) {
+            int x = point[0];
+            int y = point[1];
+
+            /**  NOTE !!!
+             *
+             *   -> use `x,y` as cnt map key
+             *
+             */
+            String key = x + "," + y;
+
+            cnt.put(key, cnt.getOrDefault(key, 0) + 1);
+            points.add(point);
+        }
+
+        public int count(int[] point) {
+            int x = point[0];
+            int y = point[1];
+
+            int ans = 0;
+
+            for (int[] p : points) {
+
+                int px = p[0];
+                int py = p[1];
+
+                /**  NOTE !!!
+                 *
+                 *  need to form a square,
+                 *  -> the len of sides MUST be the SAME
+                 *
+                 */
+                // must form diagonal
+                if (Math.abs(px - x) != Math.abs(py - y)) {
+                    continue;
+                }
+
+                // avoid zero-area square
+                if (px == x || py == y) {
+                    continue;
+                }
+
+                // other two corners
+                String key1 = px + "," + y;
+                String key2 = x + "," + py;
+
+                /**  NOTE !!!
+                 *
+                 *  how we calculate the `cnt`
+                 *  -> by multiplying cell cnt
+                 *  -> and sum them up
+                 */
+                ans += cnt.getOrDefault(key1, 0)
+                        * cnt.getOrDefault(key2, 0);
+            }
+
+            return ans;
+        }
+    }
+
+
+    // V0-0-0-x
     // IDEA: MATH (fixed by gpt)
     /**
      *  NOTE !!!
      *
-     *   we have `shouldProceed` and `existed` nested logic as `should go forward validation`
+     *   we have `shouldProceed` and `existed`
+     *   nested logic as `should go forward validation`
      *
      *
      *    - shouldProceed : if the dist are the same
      *    - existed : if the expected points existed in storage set
      *
      */
-    class DetectSquares_0 {
+    class DetectSquares_0_0_0_x {
 
         // attr
         // map : { "x-y" : count }
@@ -79,7 +180,7 @@ public class DetectSquares {
         // NOTE !!! use set to quick check if a point existed
         Set<String> points;
 
-        public DetectSquares_0() {
+        public DetectSquares_0_0_0_x() {
             this.map = new HashMap<>();
             this.points = new HashSet<>();
         }
@@ -163,7 +264,8 @@ public class DetectSquares {
                          *  so we need multiply 3 terms above as our result
                          *
                          */
-                        res += this.map.get(coord_1) * this.map.get(coord_2) * this.map.get(coord_0);
+                        res += this.map.get(coord_1) * this.map.get(coord_2)
+                                        * this.map.get(coord_0);
                     }
                 }
 
@@ -645,4 +747,10 @@ public class DetectSquares {
 //    };
 
     }
+
+
+
+
+
+
 }
