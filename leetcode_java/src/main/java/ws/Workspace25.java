@@ -6946,11 +6946,34 @@ public class Workspace25 {
      *  IDEA 2) GREEDY
      *
      */
-    //  IDEA 1) SORT
+    //  IDEA 1) SORT + 2 pointers
+    // 11.16 - 26 am
+    /**
+     *
+     *
+     */
     public int minPairSum(int[] nums) {
+        // edge
+        // default: small -> big ???
+        Arrays.sort(nums);
 
-        return 0;
+        int ans = nums[nums.length - 1] - nums[0];
+        int l = 0;
+        int r = nums.length - 1;
+        // ??
+        while (r > l){
+            ans = Math.max(ans, nums[r] - nums[l]);
+            l += 1;
+            r -= 1;
+        }
+
+        return ans;
     }
+
+
+
+
+
 
 
 
