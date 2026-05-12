@@ -99,10 +99,58 @@ public class RandomPickWithBlacklist {
 //
 //    }
 
-    
+
 
     // V0-1
     // IDEA: (fixed by gpt)
+    /**  Core idea:
+     *
+     * We must:
+     *
+     * Only sample from valid range [0, bound)
+     * Remap blacklisted numbers in that range
+     *
+     *
+     * -----
+     *
+     * ## ✅ Correct approach (standard solution)
+     *
+     * We must:
+     *
+     * * Only sample from valid range `[0, bound)`
+     * * Remap blacklisted numbers in that range
+     *
+     * ---
+     *
+     * ## 🧠 Key intuition
+     *
+     * We split numbers:
+     *
+     * ### Valid pool:
+     *
+     * ```
+     * [0, bound)
+     * ```
+     *
+     * ### Blacklisted inside that range:
+     *
+     * → must be replaced with valid numbers from
+     * `[bound, n)`
+     *
+     * So we guarantee:
+     *
+     * * uniform sampling
+     * * O(1) pick
+     * * no rejection loop
+     *
+     * ---
+     *
+     * ## ⏱ Complexity
+     *
+     * * Constructor: O(B)
+     * * pick(): O(1)
+     *
+     */
     class Solution_0_1 {
 
         private Map<Integer, Integer> map;
