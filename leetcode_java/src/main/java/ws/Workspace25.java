@@ -7016,6 +7016,7 @@ public class Workspace25 {
             /**  IDEA:
              *
              *  1. loop over cells,
+             *
              *     get 2 cell as a pair,
              *  2. check if there exist
              *     2 other cells that can
@@ -7062,6 +7063,13 @@ public class Workspace25 {
     }
 
 
+
+
+    // LC 2126
+    public boolean asteroidsDestroyed(int mass, int[] asteroids) {
+
+        return false;
+    }
 
 
 

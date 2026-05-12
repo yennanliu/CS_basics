@@ -45,7 +45,7 @@
 	- prefix_sum.md (OK)
 	- recursion.md  (OK)
 	- recursion_to_dp.md (OK)
-	- scanning_line.md (TODO: `Template 4: Calendar Booking`, LC examples)
+	- scanning_line.md (TODO: `2-1) Meeting Rooms II (LC 253) — Sweep Line Peak Count`, LC examples)
  
 
 - to review
