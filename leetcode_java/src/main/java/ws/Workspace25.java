@@ -7407,6 +7407,26 @@ public class Workspace25 {
 
 
 
+    // LC 1244
+    class Leaderboard {
+        public Leaderboard() {
+        }
+
+        public void addScore(int playerId, int score) {
+        }
+
+        public int top(int K) {
+            return 0;
+        }
+
+        public void reset(int playerId) {
+        }
+
+
+    }
+
+
+
 
 
 
