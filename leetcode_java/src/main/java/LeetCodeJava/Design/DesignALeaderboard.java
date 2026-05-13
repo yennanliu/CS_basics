@@ -77,11 +77,36 @@ public class DesignALeaderboard {
 
     // V0-1
     // IDEA: TREEMAP (GPT)
+    /**  CORE IDEA:
+     *
+     * The standard solution is:
+     *
+     * playerId -> score
+     * score -> frequency/count
+     *
+     * using:
+     *
+     * HashMap for player scores
+     * TreeMap (reverse order) for score frequencies
+     *
+     * Fixed version with full comments:
+     *
+     *
+     */
     class Leaderboard_0_1{
 
+        /** NOTE !!!
+         *
+         *   map: { player_id: score }
+         */
         // playerId -> current score
         Map<Integer, Integer> playerToScore;
 
+
+        /** NOTE !!!
+         *
+         *   TreeMap: { score: freq }
+         */
         // score -> how many players have this score
         //
         // Reverse order:
@@ -93,6 +118,12 @@ public class DesignALeaderboard {
 
             playerToScore = new HashMap<>();
 
+            /** NOTE !!!
+             *
+             *   `Collections.reverseOrder()`
+             *
+             *   -> high score comes first
+             */
             scoreCount = new TreeMap<>(Collections.reverseOrder());
         }
 
@@ -161,12 +192,9 @@ public class DesignALeaderboard {
 
                 int freq = scoreCount.get(score);
 
-
                 // Multiple players may share same score
                 for (int i = 0; i < freq && K > 0; i++) {
-
                     sum += score;
-
                     K--;
                 }
 
@@ -200,6 +228,7 @@ public class DesignALeaderboard {
             // Remove player completely
             playerToScore.remove(playerId);
         }
+
     }
 
 
