@@ -7473,6 +7473,13 @@ public class Workspace25 {
     }
 
 
+    // LC 2079
+    public int wateringPlants(int[] plants, int capacity) {
+
+        return 0;
+    }
+
+
 
 
 
