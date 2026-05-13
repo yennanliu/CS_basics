@@ -47,41 +47,93 @@ public class LongestWellPerformingInterval {
 
 
     // V0-1
-    // IDEA: TREEMAP + SORT (GPT)
-    public List<List<Long>> splitPainting_0_1(int[][] segments) {
+    // IDEA: TREEMAP + SORT + SCAN LINE (GPT)
+    /**  CORE IDEA:
+     *
+     * - TreeMap keeps positions sorted automatically.
+     *
+     * - At each coordinate:
+     *    - First, the segment between prev and curr
+     *      uses the OLD color sum.
+     *    - Then apply the delta at curr.
+     *
+     * - We only add intervals when colorSum > 0.
+     *
+     *
+     */
+    public List<List<Long>> splitPainting(int[][] segments) {
 
-        // position -> color delta
+        // TreeMap automatically sorts keys in ascending order.
+        // key   = position on number line
+        // value = color change (delta) happening at that position
         TreeMap<Integer, Long> map = new TreeMap<>();
 
+        // ---------------------------------------------------
+        // Build sweep line events
+        // ---------------------------------------------------
         for (int[] seg : segments) {
+
             int start = seg[0];
             int end = seg[1];
             int color = seg[2];
 
-            map.put(start, map.getOrDefault(start, 0L) + color);
-            map.put(end, map.getOrDefault(end, 0L) - color);
+            // At "start", this color begins contributing
+            // so add +color
+            map.put(start,
+                    map.getOrDefault(start, 0L) + color);
+
+            // At "end", this color stops contributing
+            // so add -color
+            map.put(end,
+                    map.getOrDefault(end, 0L) - color);
         }
 
+        // Final answer
         List<List<Long>> res = new ArrayList<>();
 
+        // Current mixed color sum while sweeping
         long colorSum = 0;
+
+        // Previous coordinate
         Integer prev = null;
 
-        for (Map.Entry<Integer, Long> entry : map.entrySet()) {
+        // ---------------------------------------------------
+        // Sweep from left to right
+        // ---------------------------------------------------
+        for (Integer curr : map.keySet()) {
 
-            int curr = entry.getKey();
-
-            // interval [prev, curr)
+            // BEFORE updating current position:
+            //
+            // The interval [prev, curr)
+            // should use the OLD colorSum
+            //
+            // Example:
+            // prev = 1
+            // curr = 4
+            // colorSum = 14
+            //
+            // Means:
+            // from 1 to 4, mixed color = 14
+            //
+            // Only add valid painted intervals
             if (prev != null && colorSum > 0) {
+
                 res.add(Arrays.asList(
                         (long) prev,
                         (long) curr,
                         colorSum));
             }
 
-            // apply delta at current position
-            colorSum += entry.getValue();
+            // Apply all color changes happening at "curr"
+            //
+            // Example:
+            // curr = 4
+            // map.get(4) = +2
+            //
+            // means total color increases by 2
+            colorSum += map.get(curr);
 
+            // Move prev pointer forward
             prev = curr;
         }
 
