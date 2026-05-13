@@ -3,6 +3,7 @@ package LeetCodeJava.Design;
 // https://leetcode.com/problems/design-a-leaderboard/
 // https://leetcode.ca/all/1244.html
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -74,6 +75,203 @@ public class DesignALeaderboard {
 //    }
 
 
+    // V0-1
+    // IDEA: TREEMAP (GPT)
+    class Leaderboard_0_1{
+
+        // playerId -> current score
+        Map<Integer, Integer> playerToScore;
+
+        // score -> how many players have this score
+        //
+        // Reverse order:
+        // highest score comes first
+        TreeMap<Integer, Integer> scoreCount;
+
+
+        public Leaderboard_0_1() {
+
+            playerToScore = new HashMap<>();
+
+            scoreCount = new TreeMap<>(Collections.reverseOrder());
+        }
+
+
+        public void addScore(int playerId, int score) {
+
+            // ------------------------------------------------
+            // CASE 1:
+            // New player
+            // ------------------------------------------------
+            if (!playerToScore.containsKey(playerId)) {
+
+                playerToScore.put(playerId, score);
+
+                scoreCount.put(
+                        score,
+                        scoreCount.getOrDefault(score, 0) + 1
+                );
+
+                return;
+            }
+
+
+            // ------------------------------------------------
+            // CASE 2:
+            // Existing player
+            // Need to:
+            // 1. remove old score frequency
+            // 2. add new score frequency
+            // ------------------------------------------------
+
+            int oldScore = playerToScore.get(playerId);
+
+            int newScore = oldScore + score;
+
+
+            // Remove old score count
+            int oldFreq = scoreCount.get(oldScore);
+
+            if (oldFreq == 1) {
+                scoreCount.remove(oldScore);
+            } else {
+                scoreCount.put(oldScore, oldFreq - 1);
+            }
+
+
+            // Update player's new score
+            playerToScore.put(playerId, newScore);
+
+
+            // Add new score count
+            scoreCount.put(
+                    newScore,
+                    scoreCount.getOrDefault(newScore, 0) + 1
+            );
+        }
+
+
+        public int top(int K) {
+
+            int sum = 0;
+
+
+            // Traverse scores from HIGH -> LOW
+            for (int score : scoreCount.keySet()) {
+
+                int freq = scoreCount.get(score);
+
+
+                // Multiple players may share same score
+                for (int i = 0; i < freq && K > 0; i++) {
+
+                    sum += score;
+
+                    K--;
+                }
+
+
+                // Already got top K players
+                if (K == 0) {
+                    break;
+                }
+            }
+
+            return sum;
+        }
+
+
+        public void reset(int playerId) {
+
+            // Player's current score
+            int score = playerToScore.get(playerId);
+
+
+            // Remove score frequency
+            int freq = scoreCount.get(score);
+
+            if (freq == 1) {
+                scoreCount.remove(score);
+            } else {
+                scoreCount.put(score, freq - 1);
+            }
+
+
+            // Remove player completely
+            playerToScore.remove(playerId);
+        }
+    }
+
+
+
+    // V0-2
+    // IDEA: TREE MAP (GEMINI)
+    class Leaderboard_0_2 {
+        // 1. Map player ID to their current total score
+        private Map<Integer, Integer> playerScores;
+        // 2. Sorted Map of Score -> Count of players with that score (Descending)
+        private TreeMap<Integer, Integer> scoreCounts;
+
+        public Leaderboard_0_2() {
+            playerScores = new HashMap<>();
+            // Use reverseOrder so the highest scores are at the top of the map
+            scoreCounts = new TreeMap<>(Collections.reverseOrder());
+        }
+
+        public void addScore(int playerId, int score) {
+            if (!playerScores.containsKey(playerId)) {
+                // New Player
+                playerScores.put(playerId, score);
+                scoreCounts.put(score, scoreCounts.getOrDefault(score, 0) + 1);
+            } else {
+                // Existing Player: Must update both maps
+                int oldScore = playerScores.get(playerId);
+                removeScoreCount(oldScore);
+
+                int newScore = oldScore + score;
+                playerScores.put(playerId, newScore);
+                scoreCounts.put(newScore, scoreCounts.getOrDefault(newScore, 0) + 1);
+            }
+        }
+
+        public int top(int K) {
+            int totalSum = 0;
+            int countFound = 0;
+
+            // Iterate through the scores from highest to lowest
+            for (Map.Entry<Integer, Integer> entry : scoreCounts.entrySet()) {
+                int score = entry.getKey();
+                int numPlayersWithScore = entry.getValue();
+
+                // We need to take at most 'numPlayersWithScore' or the remaining 'K'
+                int playersToTake = Math.min(numPlayersWithScore, K - countFound);
+                totalSum += score * playersToTake;
+                countFound += playersToTake;
+
+                if (countFound == K) break;
+            }
+
+            return totalSum;
+        }
+
+        public void reset(int playerId) {
+            int oldScore = playerScores.get(playerId);
+            removeScoreCount(oldScore);
+            playerScores.remove(playerId);
+        }
+
+        // Helper to decrement score count and clean up if it reaches zero
+        private void removeScoreCount(int score) {
+            int count = scoreCounts.get(score);
+            if (count == 1) {
+                scoreCounts.remove(score);
+            } else {
+                scoreCounts.put(score, count - 1);
+            }
+        }
+    }
+
+
 
     // V1
     // https://leetcode.ca/2019-04-27-1244-Design-A-Leaderboard/
@@ -119,6 +317,7 @@ public class DesignALeaderboard {
 
 
     // V2
+
 
 
 

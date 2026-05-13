@@ -7408,18 +7408,65 @@ public class Workspace25 {
 
 
     // LC 1244
+    // 11.24 - 34 am
+    /**
+     *
+     *
+     *  IDEA 1) TREE MAP
+     *
+     *  IDEA 2) PQ ????
+     */
+    // IDEA 1) TREE MAP
     class Leaderboard {
+        // attr
+        // ???
+        Map<Integer, Integer> idToScore;
+        Map<Integer, Integer> scoreToId;
+
         public Leaderboard() {
+            // ???
+            this.idToScore = new TreeMap<>();
+            this.scoreToId = new TreeMap<>();
         }
 
         public void addScore(int playerId, int score) {
+            if(!this.idToScore.containsKey(playerId)){
+                this.idToScore.put(playerId, score);
+                this.scoreToId.put(score, playerId);
+            }else{
+                int oldScore = this.idToScore.get(playerId);
+                int newScore = oldScore + score;
+                this.idToScore.put(playerId, newScore);
+//                for(int x: this.scoreToId.get(1)){
+//
+//                }
+            }
         }
 
         public int top(int K) {
-            return 0;
+            // ???
+            int res = 0;
+            if(this.idToScore.size() < K){
+                for(int score: this.idToScore.values()){
+                    res += score;
+                }
+                return res;
+            }
+
+            int i = 0;
+            for(int score: this.idToScore.values()){
+                if(i >= K){
+                    break;
+                }
+                res += score;
+            }
+
+            return res;
         }
 
+
         public void reset(int playerId) {
+            this.idToScore.put(playerId, 0);
         }
 
 
