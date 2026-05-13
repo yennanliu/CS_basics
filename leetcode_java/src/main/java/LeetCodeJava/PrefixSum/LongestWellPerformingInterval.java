@@ -41,9 +41,139 @@ import java.util.*;
 public class LongestWellPerformingInterval {
 
     // V0
-//    public int longestWPI(int[] hours) {
-//
-//    }
+    // IDEA: PREFIX SUM + HASHMAP (GPT)
+    public int longestWPI(int[] hours) {
+
+        /** NOTE !!!
+         *
+         *    map: { prefix_score: first_idx_the_score_appears }
+         *
+         *
+         *    - key   = prefix score
+         *    - value = FIRST index where this score appears
+         *
+         *
+         *  NOTE !!!
+         *
+         *   -> We only store first occurrence because
+         */
+        // map:
+        // key   = prefix score
+        // value = FIRST index where this score appears
+        //
+        // We only store first occurrence because
+        // earlier index gives longer interval
+        Map<Integer, Integer> map = new HashMap<>();
+
+        // Base case:
+        //
+        // score = 0 occurs before array starts
+        // index = -1
+        map.put(0, -1);
+
+        // Running prefix score
+        //
+        // +1 => tiring day (> 8 hours)
+        // -1 => non-tiring day
+        int score = 0;
+
+        // Final answer
+        int ans = 0;
+
+        for (int i = 0; i < hours.length; i++) {
+
+            // Convert current day into +1 / -1
+            if (hours[i] > 8) {
+                score += 1;
+            } else {
+                score -= 1;
+            }
+
+            // ------------------------------------------------
+            // Case 1:
+            //
+            // Entire prefix [0 ... i] is well-performing
+            //
+            // because total score > 0
+            // ------------------------------------------------
+            if (score > 0) {
+
+                ans = i + 1;
+
+            } else {
+
+                // ------------------------------------------------
+                // Case 2:
+                //
+                // Need earlier prefix with smaller score
+                //
+                // If current score = x
+                // then find first occurrence of (x - 1)
+                //
+                // Why?
+                //
+                // prefix[i] - prefix[j] > 0
+                // => prefix[j] < prefix[i]
+                //
+                // Since scores move by only +1/-1,
+                // checking (score - 1) is enough
+                // ------------------------------------------------
+                if (map.containsKey(score - 1)) {
+
+                    ans = Math.max(
+                            ans,
+                            i - map.get(score - 1));
+                }
+            }
+
+            // ------------------------------------------------
+            // IMPORTANT:
+            //
+            // Only store FIRST occurrence
+            //
+            // Earlier index => longer interval
+            // ------------------------------------------------
+            if (!map.containsKey(score)) {
+                map.put(score, i);
+            }
+        }
+
+        return ans;
+    }
+
+
+    // V0-0-1
+    // IDEA: PREFIX SUM + HASHMAP (GEMINI)
+    public int longestWPI_0_0_1(int[] hours) {
+        int ans = 0;
+        int score = 0;
+        // Map stores: {prefix_sum : earliest_index_it_occurred}
+        Map<Integer, Integer> map = new HashMap<>();
+
+        for (int i = 0; i < hours.length; i++) {
+            // 1. Transform input into +1 or -1
+            score += (hours[i] > 8) ? 1 : -1;
+
+            // 2. If total score is positive, the whole prefix [0...i] is a WPI
+            if (score > 0) {
+                ans = i + 1;
+            } else {
+                // 3. If score is non-positive, look for the earliest index where
+                // the score was (score - 1). This ensures the interval sum is 1.
+                if (map.containsKey(score - 1)) {
+                    ans = Math.max(ans, i - map.get(score - 1));
+                }
+
+                // 4. Only store the EARLIEST index of a score to maximize interval length
+                if (!map.containsKey(score)) {
+                    map.put(score, i);
+                }
+            }
+        }
+
+        return ans;
+    }
+
 
 
     // V0-1

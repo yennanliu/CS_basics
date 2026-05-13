@@ -6727,6 +6727,95 @@ public class Workspace25 {
 
 
 
+    // 10.20 - 30 am
+    /**
+     *
+     *  -> Return the length of the longest well-performing interval.
+     *
+     *  --------
+     *
+     *  IDEA 1) PREFIX + HASHMAP ???
+     *
+     *  --------
+     *
+     *  ex 1)
+     *
+     *  Input: hours = [9,9,6,0,6,6,9]
+     *  Output: 3
+     *
+     *
+     *  ex 2)
+     *
+     *  Input: hours = [9,9,6,8,6,8,9]
+     *  Output:
+     *
+     *
+     *
+     */
+    // IDEA 1) PREFIX + HASHMAP ???
+    public int longestWPI(int[] hours) {
+        // edge
+
+        //int n = hours.length;
+
+        // ???
+        // map: { well_day_prefix : idx } // ???
+        Map<Integer, Integer> map = new HashMap<>();
+        // ??? init ??
+        map.put(0, -1);
+
+        // ???
+        int wellDays = 0;
+
+        int ans = 0;
+
+        for(int i = 0; i < hours.length; i++){
+            int val = hours[i];
+            if(val > 8){
+                wellDays += 1;
+            }else{
+                wellDays -= 1;
+            }
+            // ???
+            if(wellDays > 0){
+                //ans = Math.max(wellDays, ans);
+                ans = Math.max(i + 1, ans);
+            }
+            // ???
+            // ???
+            // prefix_1 - prefix_2 > 0 // e.g. the `well-days` > 0
+            // -> prefix_1 > prefix_2 // ?????
+            if(!map.isEmpty()){
+                for(int k: map.keySet()){
+                    if(wellDays > k){
+                        // ????
+                        ans = Math.max(i - map.get(k) + 1, ans);
+                    }
+                }
+            }
+            // ??
+            // ONLY update the `first idx` of given wellDays ???
+            if (!map.containsKey(wellDays)) {
+                map.put(wellDays, i);
+            }
+
+        }
+
+
+
+        return ans;
+    }
+
+
+
+
+
+
+
+
+
+
+
 
     // IDEA 3) HASHMAP + PREFIX SUM
     public int longestWPI_99(int[] hours) {
