@@ -46,7 +46,7 @@ public class LongestWellPerformingInterval {
 
         /** NOTE !!!
          *
-         *    map: { prefix_score: first_idx_the_score_appears }
+         *    Map stores: {prefix_sum : earliest_index_it_occurred}
          *
          *
          *    - key   = prefix score
@@ -69,6 +69,10 @@ public class LongestWellPerformingInterval {
         //
         // score = 0 occurs before array starts
         // index = -1
+        /** NOTE !!!
+         *
+         *   the base case: (0, -1)
+         */
         map.put(0, -1);
 
         // Running prefix score
@@ -98,6 +102,10 @@ public class LongestWellPerformingInterval {
             // ------------------------------------------------
             if (score > 0) {
 
+                /** NOTE !!!
+                 *
+                 *  the len is `i+1` for case 1)
+                 */
                 ans = i + 1;
 
             } else {
@@ -118,8 +126,28 @@ public class LongestWellPerformingInterval {
                 // Since scores move by only +1/-1,
                 // checking (score - 1) is enough
                 // ------------------------------------------------
+                /**  NOTE !!!
+                 *
+                 * We do NOT need to `loop` through `all keys` in hashmap.
+                 * The key trick is:
+                 *
+                 *     ```
+                 *     If current prefix sum = score,
+                 *     then we only need to check whether (score - 1) existed before.
+                 *     ```
+                 *
+                 * -> Since scores move by only +1/-1,
+                 *    checking (score - 1) is enough
+                 */
                 if (map.containsKey(score - 1)) {
 
+                    /**  NOTE !!!
+                     *
+                     *  here, we leverage prefix_sum's first idx.
+                     *  and `prefix[i] - prefix[j] > 0`,
+                     *  to get the `longest` possible performing day
+                     *  via hashMap
+                     */
                     ans = Math.max(
                             ans,
                             i - map.get(score - 1));
@@ -129,7 +157,7 @@ public class LongestWellPerformingInterval {
             // ------------------------------------------------
             // IMPORTANT:
             //
-            // Only store FIRST occurrence
+            // Only store `FIRST` occurrence
             //
             // Earlier index => longer interval
             // ------------------------------------------------
