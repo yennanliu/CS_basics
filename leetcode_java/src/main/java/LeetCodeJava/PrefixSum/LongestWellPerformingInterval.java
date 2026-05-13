@@ -63,11 +63,14 @@ public class LongestWellPerformingInterval {
      */
     public List<List<Long>> splitPainting(int[][] segments) {
 
-        // `TreeMap`
-        //   -> automatically sorts keys in `ascending` order.
-        //
-        // key   = position on number line
-        // value = `color change` (delta) happening at that position
+        /**  NOTE !!!
+         *
+         * `TreeMap` : automatically sorts keys in `ascending` order.
+         *
+         *   key   = position on number line
+         *   value = `color change` (delta) happening at that position
+         *
+         */
         TreeMap<Integer, Long> map = new TreeMap<>();
 
         // ---------------------------------------------------

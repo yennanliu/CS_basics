@@ -53,6 +53,11 @@ Key: transform `change` to `event`, so we can handle the `changed state` via pro
 - **Examples**: LC 370, 1109, 1893, 2251
 - **Pattern**: Difference array with sweep line
 
+### **Pattern 7: Prefix Sum + Longest Positive-Sum Subarray**
+- **Description**: Find the longest subarray whose element sum > 0 after transforming values to +1/−1
+- **Examples**: LC 1124, 525, 560, 974
+- **Pattern**: Prefix sum with HashMap storing first-occurrence of each sum; if `prefix > 0` take full length; else look up `prefix - 1` in map
+
 ### **Pattern 6: Geometric Intersection**
 - **Description**: Finding intersections of geometric objects
 - **Examples**: LC 836, 223, 391, 850
@@ -425,6 +430,57 @@ def mergeIntervals(intervals):
     return merged
 ```
 
+### Template 7: Prefix Sum — Longest Positive-Sum Subarray
+```python
+# Python - Longest subarray with sum > 0 after +1/-1 transform
+def longestWPI(hours):
+    prefix = 0
+    max_len = 0
+    seen = {}  # { prefix_sum: first_index }
+
+    for i, h in enumerate(hours):
+        prefix += 1 if h > 8 else -1
+
+        if prefix > 0:
+            # entire [0..i] is valid
+            max_len = i + 1
+        else:
+            # look for earliest j where prefix[j] == prefix[i] - 1
+            # subarray [j+1..i] then has sum == 1 > 0
+            if (prefix - 1) in seen:
+                max_len = max(max_len, i - seen[prefix - 1])
+
+        seen.setdefault(prefix, i)  # only store first occurrence
+
+    return max_len
+```
+
+```java
+// Java - LC 1124 Longest Well-Performing Interval
+// IDEA: prefix sum +1/-1 transform + HashMap (first occurrence of each sum)
+// Key insight: if prefix[i] <= 0, find earliest j where prefix[j] = prefix[i]-1
+//              then subarray [j+1..i] has sum = 1 > 0 (well-performing)
+// time = O(N), space = O(N)
+public int longestWPI(int[] hours) {
+    Map<Integer, Integer> map = new HashMap<>();
+    int prefix = 0, maxLen = 0;
+
+    for (int i = 0; i < hours.length; i++) {
+        prefix += hours[i] > 8 ? 1 : -1;
+
+        if (prefix > 0) {
+            maxLen = i + 1;                          // whole prefix is valid
+        } else {
+            if (map.containsKey(prefix - 1))
+                maxLen = Math.max(maxLen, i - map.get(prefix - 1));
+        }
+
+        map.putIfAbsent(prefix, i);                  // first occurrence only
+    }
+    return maxLen;
+}
+```
+
 ## Problems by Pattern
 
 ### Pattern-Based Problem Tables
@@ -471,6 +527,14 @@ def mergeIntervals(intervals):
 | Corporate Flight Bookings | 1109 | Difference array | Medium |
 | Plates Between Candles | 2055 | Prefix + binary search | Medium |
 | Count Integers in Intervals | 2276 | Interval merge | Hard |
+
+#### **Prefix Sum Subarray Problems**
+| Problem | LC # | Key Technique | Difficulty |
+|---------|------|---------------|------------|
+| Longest Well-Performing Interval | 1124 | Prefix sum +1/−1, first-occurrence map | Medium |
+| Contiguous Array | 525 | Prefix sum 0→−1, first-occurrence map | Medium |
+| Subarray Sum Equals K | 560 | Prefix sum count map | Medium |
+| Subarray Sums Divisible by K | 974 | Prefix mod, count map | Medium |
 
 #### **Geometric Problems**
 | Problem | LC # | Key Technique | Difficulty |
@@ -937,4 +1001,63 @@ class MyCalendarTwo {
         return true;
     }
 }
+```
+
+### 2-5) Longest Well-Performing Interval (LC 1124) — Prefix Sum + First-Occurrence HashMap
+> Transform each day to +1 (tiring, >8 h) or −1 (non-tiring). Find the longest subarray whose sum > 0.
+>
+> **Core idea**:
+> - If `prefix > 0` at index `i` → entire range `[0..i]` is valid (length = `i+1`).
+> - Otherwise, look up the **first index** where `prefix - 1` was seen; the subarray from that index+1 to i has sum = 1 > 0.
+>
+> **Key insight**: storing only the *first* occurrence maximises the subarray length. This is identical to LC 525 (Contiguous Array) where 0 is mapped to -1.
+>
+> **Similar LC**: 525 Contiguous Array, 560 Subarray Sum Equals K, 974 Subarray Sums Divisible by K
+
+```java
+// LC 1124 - Longest Well-Performing Interval
+// IDEA: prefix sum (+1/-1 transform) + HashMap (first occurrence of each prefix sum)
+// Case 1: prefix > 0  → maxLen = i + 1 (whole prefix valid)
+// Case 2: prefix <= 0 → find earliest j where prefix[j] = prefix[i]-1; length = i - j
+// time = O(N), space = O(N)
+public int longestWPI(int[] hours) {
+    Map<Integer, Integer> map = new HashMap<>();
+    int prefix = 0, maxLen = 0;
+
+    for (int i = 0; i < hours.length; i++) {
+        prefix += hours[i] > 8 ? 1 : -1;
+
+        if (prefix > 0) {
+            maxLen = i + 1;
+        } else {
+            if (map.containsKey(prefix - 1))
+                maxLen = Math.max(maxLen, i - map.get(prefix - 1));
+        }
+
+        map.putIfAbsent(prefix, i);   // only first occurrence
+    }
+    return maxLen;
+}
+```
+
+```python
+# LC 1124 - Longest Well-Performing Interval
+# IDEA: prefix sum +1/-1 + dict of first occurrence
+class Solution:
+    def longestWPI(self, hours: List[int]) -> int:
+        prefix, max_len = 0, 0
+        seen = {}  # { prefix_sum: first_index }
+
+        for i, h in enumerate(hours):
+            prefix += 1 if h > 8 else -1
+
+            if prefix > 0:
+                max_len = i + 1
+            else:
+                if (prefix - 1) in seen:
+                    max_len = max(max_len, i - seen[prefix - 1])
+
+            seen.setdefault(prefix, i)
+
+        return max_len
 ```
