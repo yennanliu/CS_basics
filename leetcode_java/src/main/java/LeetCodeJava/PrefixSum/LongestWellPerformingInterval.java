@@ -2,8 +2,7 @@ package LeetCodeJava.PrefixSum;
 
 // https://leetcode.com/problems/longest-well-performing-interval/description/
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  *  1124. Longest Well-Performing Interval
@@ -45,6 +44,86 @@ public class LongestWellPerformingInterval {
 //    public int longestWPI(int[] hours) {
 //
 //    }
+
+
+    // V0-1
+    // IDEA: TREEMAP + SORT (GPT)
+    public List<List<Long>> splitPainting_0_1(int[][] segments) {
+
+        // position -> color delta
+        TreeMap<Integer, Long> map = new TreeMap<>();
+
+        for (int[] seg : segments) {
+            int start = seg[0];
+            int end = seg[1];
+            int color = seg[2];
+
+            map.put(start, map.getOrDefault(start, 0L) + color);
+            map.put(end, map.getOrDefault(end, 0L) - color);
+        }
+
+        List<List<Long>> res = new ArrayList<>();
+
+        long colorSum = 0;
+        Integer prev = null;
+
+        for (Map.Entry<Integer, Long> entry : map.entrySet()) {
+
+            int curr = entry.getKey();
+
+            // interval [prev, curr)
+            if (prev != null && colorSum > 0) {
+                res.add(Arrays.asList(
+                        (long) prev,
+                        (long) curr,
+                        colorSum));
+            }
+
+            // apply delta at current position
+            colorSum += entry.getValue();
+
+            prev = curr;
+        }
+
+        return res;
+    }
+
+
+    // V0-2
+    // IDEA: TREEMAP + SORT (GEMINI)
+    public List<List<Long>> splitPainting_0_2(int[][] segments) {
+        // 1. Use a TreeMap to store color changes at each coordinate.
+        // TreeMap keeps coordinates sorted and handles multiple segments at the same point.
+        Map<Integer, Long> diff = new TreeMap<>();
+
+        for (int[] seg : segments) {
+            int start = seg[0];
+            int end = seg[1];
+            int color = seg[2];
+
+            diff.put(start, diff.getOrDefault(start, 0L) + color);
+            diff.put(end, diff.getOrDefault(end, 0L) - color);
+        }
+
+        List<List<Long>> res = new ArrayList<>();
+        long runningColorSum = 0;
+        Integer prev = null;
+
+        // 2. Iterate through the sorted boundary points
+        for (int curr : diff.keySet()) {
+            if (prev != null && runningColorSum > 0) {
+                // Create an interval from the previous boundary to the current one
+                res.add(Arrays.asList((long) prev, (long) curr, runningColorSum));
+            }
+
+            // Update the cumulative color sum for the next interval
+            runningColorSum += diff.get(curr);
+            prev = curr;
+        }
+
+        return res;
+    }
+
 
 
     // V1-1

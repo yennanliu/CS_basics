@@ -6521,8 +6521,86 @@ public class Workspace25 {
      *
      *  -----------
      */
+    // LC 1943
+    // 8.04 - 14 AM
+    /**
+     *
+     *
+     */
     //  IDEA 1) SCAN LINE
     public List<List<Long>> splitPainting(int[][] segments) {
+        // edge
+        //int n = hours.length;
+        List<Integer[]> list = new ArrayList<>();
+
+        for(int[] seg: segments){
+            int start = seg[0], end = seg[1], color = seg[2];
+            list.add(new Integer[]{start, color});   // start adds color
+            list.add(new Integer[]{end, -1 * color});    // end subtracts color
+        }
+
+        // sort ??
+        Collections.sort(list, new Comparator<Integer[]>() {
+            @Override
+            public int compare(Integer[] o1, Integer[] o2) {
+                int diff = o1[0] - o2[0];
+                return diff; // ????
+            }
+        });
+
+
+        List<List<Long>> res = new ArrayList<>();
+        // ??
+        // ???
+        int start = -1;
+        int end = -1;
+        int colorCumSum = 0;
+
+        for(Integer[] x: list){
+            int idx = x[0];
+            int color = x[1];
+            // ???
+            colorCumSum += color;
+            // ???
+            if(start == -1){
+                start = idx;
+            }else{
+                end = idx; // ??
+            }
+//            if(color > 0){
+//                start = idx;
+//            }else{
+//                end = idx;
+//                // ???
+//                // ???
+//                start = end;  //??????
+//            }
+            // ??
+            if(start != -1 && end != -1){
+                List<Long> tmp = new ArrayList<>();
+                tmp.add((long) start);
+                tmp.add((long) end);
+                tmp.add((long) colorCumSum);
+                res.add(tmp);
+                // ???
+                start = end;  //??????
+            }
+
+        }
+
+
+        return res;
+    }
+
+
+
+
+
+
+
+
+    //  IDEA 1) SCAN LINE
+    public List<List<Long>> splitPainting_03(int[][] segments) {
         // edge
 
         List<Integer[]> list = new ArrayList<>();
@@ -6646,8 +6724,12 @@ public class Workspace25 {
      *  ----------
      *
      */
+
+
+
+
     // IDEA 3) HASHMAP + PREFIX SUM
-    public int longestWPI(int[] hours) {
+    public int longestWPI_99(int[] hours) {
         // edge
 
         int n = hours.length;
