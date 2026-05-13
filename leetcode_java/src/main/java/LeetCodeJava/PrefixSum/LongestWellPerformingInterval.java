@@ -63,9 +63,11 @@ public class LongestWellPerformingInterval {
      */
     public List<List<Long>> splitPainting(int[][] segments) {
 
-        // TreeMap automatically sorts keys in ascending order.
+        // `TreeMap`
+        //   -> automatically sorts keys in `ascending` order.
+        //
         // key   = position on number line
-        // value = color change (delta) happening at that position
+        // value = `color change` (delta) happening at that position
         TreeMap<Integer, Long> map = new TreeMap<>();
 
         // ---------------------------------------------------
@@ -77,6 +79,11 @@ public class LongestWellPerformingInterval {
             int end = seg[1];
             int color = seg[2];
 
+            /** NOTE !!!
+             *
+             *  we use `map` to `continuously` collect `delta` (e.g. color diff)
+             *  within indices (start, end)
+             */
             // At "start", this color begins contributing
             // so add +color
             map.put(start,
@@ -94,6 +101,11 @@ public class LongestWellPerformingInterval {
         // Current mixed color sum while sweeping
         long colorSum = 0;
 
+        /** NOTE !!!
+         *
+         *  we setup `prev` index
+         *
+         */
         // Previous coordinate
         Integer prev = null;
 

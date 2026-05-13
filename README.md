@@ -872,7 +872,7 @@ claude
 
 |  #  | Title           |  Solution       |  Time           | Space           | Difficulty    | Note| Status| 
 |-----|---------------- | --------------- | --------------- | --------------- | ------------- |--------------|-----|
-1943| [Describe the Painting](https://leetcode.com/problems/describe-the-painting)   | [Java](./leetcode_java/src/main/java/LeetCodeJava/ScanLine/DescribeThePainting.java)| _O(n)_ | _O(1)_ | Medium |scan line, google| AGAIN (1))(not start)
+1943| [Describe the Painting](https://leetcode.com/problems/describe-the-painting)   | [Java](./leetcode_java/src/main/java/LeetCodeJava/ScanLine/DescribeThePainting.java)| _O(n)_ | _O(1)_ | Medium |scan line, treeMap, delta, good basic, google| AGAIN***** (1)(MUST)
 
 
 
