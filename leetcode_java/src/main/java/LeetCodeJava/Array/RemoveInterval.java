@@ -46,11 +46,37 @@ import java.util.List;
 public class RemoveInterval {
 
     // V0
-//    public List<List<Integer>> removeInterval(int[][] intervals, int[] toBeRemoved) {
-//    }
+    // IDEA: INTERVAL OP + ARRAY
+    public List<List<Integer>> removeInterval(int[][] intervals, int[] toBeRemoved) {
+        List<List<Integer>> res = new ArrayList<>();
+        int rStart = toBeRemoved[0];
+        int rEnd = toBeRemoved[1];
+
+        for (int[] interval : intervals) {
+            int start = interval[0];
+            int end = interval[1];
+
+            // 1. Check if there is no overlap at all
+            if (end <= rStart || start >= rEnd) {
+                res.add(Arrays.asList(start, end));
+            } else {
+                // 2. Overlap exists. There are two potential remaining parts:
+
+                // Part A: The segment before the removal range starts
+                if (start < rStart) {
+                    res.add(Arrays.asList(start, rStart));
+                }
+
+                // Part B: The segment after the removal range ends
+                if (end > rEnd) {
+                    res.add(Arrays.asList(rEnd, end));
+                }
+            }
+        }
+        return res;
+    }
 
 
-    
     // V0-1
     // IDEA: SORT + INTERVAL (GPT)
     // TODO: validate

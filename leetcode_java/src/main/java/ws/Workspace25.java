@@ -7660,17 +7660,18 @@ public class Workspace25 {
     public List<List<Integer>> removeInterval(int[][] intervals, int[] toBeRemoved) {
         // edge
 
+        //  sorting is NOT necessary
         // sort (small -> big)
-        Arrays.sort(intervals, new Comparator<int[]>() {
-            @Override
-            public int compare(int[] o1, int[] o2) {
-                int diff = o1[0] - o2[0];
-                if(diff == 0){
-                    return o1[1] - o2[1]; // ???
-                }
-                return diff;
-            }
-        });
+//        Arrays.sort(intervals, new Comparator<int[]>() {
+//            @Override
+//            public int compare(int[] o1, int[] o2) {
+//                int diff = o1[0] - o2[0];
+//                if(diff == 0){
+//                    return o1[1] - o2[1]; // ???
+//                }
+//                return diff;
+//            }
+//        });
 
 
         List<List<Integer>> res = new ArrayList<>();
@@ -7688,6 +7689,8 @@ public class Workspace25 {
          *
          */
         for(int[] x: intervals){
+
+
             int start = x[0];
             int end = x[1];
 
