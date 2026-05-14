@@ -58,7 +58,7 @@ public class TupleWithSameProduct {
 
 
     // V0-1
-    // IDEA: HASHMAP (gpt)
+    // IDEA: HASHMAP + MATH (gpt)
     /** Core idea:
      *
      * The key idea:
@@ -100,17 +100,164 @@ public class TupleWithSameProduct {
      * They generate 8 tuples.
      *
      */
+    /**  Dry run:
+     *
+     * Let's begin. Here's the dry run for LeetCode 1726.
+     *
+     * ---
+     *
+     * # Input
+     *
+     * ```java
+     * nums = [2, 3, 4, 6]
+     * ```
+     * ---
+     *
+     * # Step 1 — Generate All Pairs
+     *
+     * We iterate through every unique pair.
+     *
+     * ---
+     *
+     * # Pair Computation Table
+     *
+     * | Pair Index | nums[i] | nums[j] | Product | productCount Map After Update  |
+     * | ---------- | ------- | ------- | ------- | ------------------------------ |
+     * | (0,1)      | 2       | 3       | 6       | `{6=1}`                        |
+     * | (0,2)      | 2       | 4       | 8       | `{6=1, 8=1}`                   |
+     * | (0,3)      | 2       | 6       | 12      | `{6=1, 8=1, 12=1}`             |
+     * | (1,2)      | 3       | 4       | 12      | `{6=1, 8=1, 12=2}`             |
+     * | (1,3)      | 3       | 6       | 18      | `{6=1, 8=1, 12=2, 18=1}`       |
+     * | (2,3)      | 4       | 6       | 24      | `{6=1, 8=1, 12=2, 18=1, 24=1}` |
+     *
+     * ---
+     *
+     * # Final HashMap
+     *
+     * ```java
+     * {
+     *   6=1,
+     *   8=1,
+     *   12=2,
+     *   18=1,
+     *   24=1
+     * }
+     * ```
+     *
+     * Meaning:
+     *
+     * ```text
+     * Product 12 appears twice:
+     * (2,6)
+     * (3,4)
+     * ```
+     *
+     * ---
+     *
+     * # Step 2 — Count Valid Tuple Groups
+     *
+     * We iterate through map frequencies.
+     *
+     * ---
+     *
+     * # Frequency Processing Table
+     *
+     * | Product | Frequency (count) | Formula C(n,2)   | Pair Combinations | Tuples Added |
+     * | ------- | ----------------- | ---------------- | ----------------- | ------------ |
+     * | 6       | 1                 | Not enough pairs | 0                 | 0            |
+     * | 8       | 1                 | Not enough pairs | 0                 | 0            |
+     * | 12      | 2                 | `2 * (2-1) / 2`  | 1                 | `1 * 8 = 8`  |
+     * | 18      | 1                 | Not enough pairs | 0                 | 0            |
+     * | 24      | 1                 | Not enough pairs | 0                 | 0            |
+     *
+     * ---
+     *
+     * # Running Answer Table
+     *
+     * | Step       | Product | Tuples Added | Running ans |
+     * | ---------- | ------- | ------------ | ----------- |
+     * | Initial    | -       | 0            | 0           |
+     * | Product 6  | 0       | 0            | 0           |
+     * | Product 8  | 0       | 0            | 0           |
+     * | Product 12 | 8       | 8            | 8           |
+     * | Product 18 | 0       | 0            | 8           |
+     * | Product 24 | 0       | 0            | 8           |
+     *
+     * ---
+     *
+     * # Why Multiply by 8?
+     *
+     * For product `12`:
+     *
+     * Pairs:
+     *
+     * ```text
+     * (2,6)
+     * (3,4)
+     * ```
+     *
+     * Possible tuples:
+     *
+     * | Tuple # | Tuple     |
+     * | ------- | --------- |
+     * | 1       | (2,6,3,4) |
+     * | 2       | (2,6,4,3) |
+     * | 3       | (6,2,3,4) |
+     * | 4       | (6,2,4,3) |
+     * | 5       | (3,4,2,6) |
+     * | 6       | (4,3,2,6) |
+     * | 7       | (3,4,6,2) |
+     * | 8       | (4,3,6,2) |
+     *
+     * Total:
+     *
+     * ```text
+     * 8 tuples
+     * ```
+     *
+     * ---
+     *
+     * # Final Output
+     *
+     * ```java
+     * return 8;
+     * ```
+     *
+     * ---
+     *
+     * # Time Complexity
+     *
+     * | Operation          | Complexity |
+     * | ------------------ | ---------- |
+     * | Generate all pairs | O(n²)      |
+     * | Traverse hashmap   | O(n²)      |
+     * | Total              | O(n²)      |
+     *
+     * ---
+     *
+     * # Space Complexity
+     *
+     * | Data Structure | Complexity |
+     * | -------------- | ---------- |
+     * | HashMap        | O(n²)      |
+     *
+     */
     public int tupleSameProduct_0_1(int[] nums) {
 
         /** NOTE !!!
          *
-         *  map : 
+         *  map : { product_of_two_numbers: pair_cnt }
          *
          */
         // key   = product of two numbers
         // value = how many pairs produce this product
         Map<Integer, Integer> productCount = new HashMap<>();
 
+        /** NOTE !!!
+         *
+         *  get ALL possible pairs
+         *
+         */
         // ---------------------------------------------------
         // Step 1:
         // Generate ALL possible pairs
@@ -134,6 +281,11 @@ public class TupleWithSameProduct {
         // final answer
         int ans = 0;
 
+        /** NOTE !!!
+         *
+         *  for each `product`, get count and update result
+         *
+         */
         // ---------------------------------------------------
         // Step 2:
         // For each product frequency:
@@ -187,6 +339,79 @@ public class TupleWithSameProduct {
                 // Simplified: 4 * count * (count - 1)
                 totalTuples += 4 * count * (count - 1);
             }
+        }
+
+        return totalTuples;
+    }
+
+
+    // V0-3
+    // IDEA: Mathematical Combination During Pair Generation (GPT)
+    public int tupleSameProduct_0_3(int[] nums) {
+
+        Map<Integer, Integer> map = new HashMap<>();
+
+        int ans = 0;
+
+        for (int i = 0; i < nums.length; i++) {
+
+            for (int j = i + 1; j < nums.length; j++) {
+
+                int product = nums[i] * nums[j];
+
+                int count = map.getOrDefault(product, 0);
+
+                ans += count * 8;
+
+                map.put(product, count + 1);
+            }
+        }
+
+        return ans;
+    }
+
+
+    // V0-4
+    // IDEA: SORT + 2 POINTERS (gemini)
+    public int tupleSameProduct_0_4(int[] nums) {
+        int n = nums.length;
+        // 1. Total number of pairs is (n * (n - 1)) / 2
+        int pairCount = n * (n - 1) / 2;
+        int[] products = new int[pairCount];
+
+        // 2. Generate all products and store them in an array
+        int idx = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                products[idx++] = nums[i] * nums[j];
+            }
+        }
+
+        // 3. Sort the products: O(M log M) where M is n^2
+        Arrays.sort(products);
+
+        int totalTuples = 0;
+        int i = 0;
+
+        // 4. Use two pointers to find groups of identical products
+        while (i < products.length) {
+            int j = i;
+            // Move j to the end of the current group of identical products
+            while (j < products.length && products[j] == products[i]) {
+                j++;
+            }
+
+            // The number of pairs with the same product is (j - i)
+            int count = j - i;
+            if (count >= 2) {
+                // Combinations of 2 pairs: n * (n - 1) / 2
+                // Permutations of those pairs into tuples: * 8
+                // Simplified: 4 * count * (count - 1)
+                totalTuples += 4 * count * (count - 1);
+            }
+
+            // Move i to the start of the next product group
+            i = j;
         }
 
         return totalTuples;
