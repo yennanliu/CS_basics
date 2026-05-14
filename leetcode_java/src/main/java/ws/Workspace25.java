@@ -7606,6 +7606,11 @@ public class Workspace25 {
 
 
 
+    // LC 1272
+    public List<List<Integer>> removeInterval(int[][] intervals, int[] toBeRemoved) {
+        return null;
+    }
+
 
 
 
