@@ -57,6 +57,70 @@ public class TupleWithSameProduct {
 //    }
 
 
+    // V0-1
+    // IDEA: HASHMAP (gpt)
+    public int tupleSameProduct_0_1(int[] nums) {
+
+        Map<Integer, Integer> map = new HashMap<>();
+
+        // count pair products
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = i + 1; j < nums.length; j++) {
+
+                int product = nums[i] * nums[j];
+
+                map.put(product, map.getOrDefault(product, 0) + 1);
+            }
+        }
+
+        int ans = 0;
+
+        // if a product appears n times:
+        // number of tuple groups = C(n,2)
+        // each contributes 8 tuples
+        for (int count : map.values()) {
+
+            if (count >= 2) {
+                ans += count * (count - 1) / 2 * 8;
+            }
+        }
+
+        return ans;
+    }
+
+
+    // V0-2
+    // IDEA: HASHMAP (gemini)
+    public int tupleSameProduct_0_2(int[] nums) {
+        // 1. Map to store: Product -> Frequency of that product
+        Map<Integer, Integer> productCounts = new HashMap<>();
+        int n = nums.length;
+
+        // 2. Generate all possible pairs and count their products
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                int product = nums[i] * nums[j];
+                productCounts.put(product, productCounts.getOrDefault(product, 0) + 1);
+            }
+        }
+
+        int totalTuples = 0;
+
+        // 3. For each product that appeared more than once, calculate tuples
+        for (int count : productCounts.values()) {
+            if (count >= 2) {
+                // Combinations of 2 pairs: (count * (count - 1)) / 2
+                // Multiply by 8 for all permutations of those 2 pairs
+                // Simplified: 4 * count * (count - 1)
+                totalTuples += 4 * count * (count - 1);
+            }
+        }
+
+        return totalTuples;
+    }
+
+    
+
     // V1-1
     // IDEA: Optimized Brute Force
     // https://leetcode.com/problems/tuple-with-same-product/editorial/

@@ -7550,10 +7550,61 @@ public class Workspace25 {
 
 
     // LC 1726
+    // 8.37 - 47 am
+    /**
+     *  ->  return the `number` of tuples (a, b, c, d)
+     *    - s.t.
+     *      - a * b = c * d
+     *      - where a, b, c, and d are elements of nums,
+     *        and a != b != c != d.
+     *
+     *  --------------------
+     *
+     *  IDEA 1) BRUTE FORCE ?????
+     *
+     *
+     *  IDEA 2) HASHMAP ?????
+     *
+     *
+     *  IDEA 3) MATH ???
+     *
+     *  IDEA 4) SORT + 2 POINTERS  ???
+     *
+     *
+     *
+     *  --------------------
+     *
+     */
+    // IDEA 4) SORT + 2 POINTERS  ???
     public int tupleSameProduct(int[] nums) {
+        // edge
 
-        return 0;
+        // sort: small -> big ??
+        Arrays.sort(nums);
+        System.out.println(">>> (after sort) nums = " + Arrays.toString(nums));
+
+        int cnt = 0;
+        for(int l = 0; l < nums.length; l++){
+            // ???
+            int r = nums.length - 1;
+            if(sameProduct()){
+                cnt += 4;
+            }
+
+        }
+
+
+        return cnt;
     }
+
+
+
+    // ???
+    private boolean sameProduct(){
+        return false;
+    }
+
+
 
 
 
