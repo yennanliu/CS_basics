@@ -7607,9 +7607,127 @@ public class Workspace25 {
 
 
     // LC 1272
+    // 10.41 - 10.51 am
+    /**
+     *  -> Return a sorted list of
+     *    intervals after all such removals.
+     *
+     *  ---------
+     *
+     *   IDEA 1) SORT + INTERVAL OP
+     *
+     *  ---------
+     *
+     *  ex 1)
+     *
+     *  Input: intervals = [[0,2],[3,4],[5,7]], toBeRemoved = [1,6]
+     *  Output: [[0,1],[6,7]]
+     *
+     *
+     *  -> sort
+     *
+     *   [[0,2],[3,4],[5,7]]
+     *
+     *  -> loop over intervals
+     *
+     *  |----|
+     *  0    2
+     *          |-----|
+     *          3     4
+     *                   |-----|
+     *                   5     7
+     *
+     *    |-----------------|
+     *    1                 6
+     *
+     *
+     *  -> if overlap and `NOT` fully `included` in toBeRemoved
+     *
+     *  -> case 1) `left overlap`
+     *
+     *      -> (start, start_to_remove)
+     *
+     *  case 2) `right overlap`
+     *
+     *      -> (end_to_remove, end)
+     *
+     *
+     *
+     *
+     *
+     */
+    // IDEA 1) SORT + INTERVAL OP
     public List<List<Integer>> removeInterval(int[][] intervals, int[] toBeRemoved) {
-        return null;
+        // edge
+
+        // sort (small -> big)
+        Arrays.sort(intervals, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                int diff = o1[0] - o2[0];
+                if(diff == 0){
+                    return o1[1] - o2[1]; // ???
+                }
+                return diff;
+            }
+        });
+
+
+        List<List<Integer>> res = new ArrayList<>();
+        /**
+         *      *  -> if overlap and `NOT` fully `included` in toBeRemoved
+         *      *
+         *      *  -> case 1) `left overlap`
+         *      *
+         *      *      -> (start, start_to_remove)
+         *      *
+         *      *  case 2) `right overlap`
+         *      *
+         *      *      -> (end_to_remove, end)
+         *      *
+         *
+         */
+        for(int[] x: intervals){
+            int start = x[0];
+            int end = x[1];
+
+            int toRemoveStart = toBeRemoved[0];
+            int toRemoveEnd = toBeRemoved[1];
+
+            List<Integer> tmp = new ArrayList<>();
+            // case 1) NOT overlap
+            if(end < toBeRemoved[0]){
+                tmp.add(start);
+                tmp.add(end);
+                res.add(tmp);
+            }
+            // case 1) full `include`
+            else if(start >= toRemoveStart && end <= toRemoveEnd){
+                continue;
+            }else{
+                // case 3) left `overlap`
+                if(end > toRemoveStart && end < toRemoveEnd){
+                    tmp.add(start);
+                    tmp.add(toRemoveStart);
+                    res.add(tmp);
+                }
+                // case 4) right `overlap`
+                else{
+                    tmp.add(toRemoveEnd);
+                    tmp.add(end);
+                    res.add(tmp);
+                }
+            }
+        }
+
+
+        return res;
     }
+
+
+
+
+
 
 
 
