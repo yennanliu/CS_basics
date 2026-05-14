@@ -7474,10 +7474,81 @@ public class Workspace25 {
 
 
     // LC 2079
+    // 7.56 - 8.06 am
+    /**
+     *
+     *  -> return the number of
+     *  steps needed to water
+     *  all the plants.
+     *
+     *  plants: plants[i]: location of plant
+     *
+     *  capacity: capacity of can
+     *
+     *  -1: refill can
+     *
+     *  CAN only refill water can when CAN'T
+     *  completely water cur plant
+     *
+     *  need to water plant from left -> right in order
+     *
+     *  need to `COMPLETELY` water cur plant
+     *
+     *  init at x = -1 (river)
+     *
+     *
+     *
+     *  ------------
+     *
+     *   IDEA 1) BRUTE FORCE + ARRAY
+     *
+     *   IDEA 2) GREEDY ???
+     *
+     *
+     *
+     *  ------------
+     *
+     *
+     *
+     *
+     */
+    // IDEA 1) BRUTE FORCE + ARRAY
     public int wateringPlants(int[] plants, int capacity) {
+        // edge
 
-        return 0;
+        int moves = 0;
+        int curCap = capacity;
+        //int preIdx = -1; // ????
+        // ??
+        for(int i = 0; i < plants.length; i++){
+            int plant = plants[i];
+            // water can should ALWAYS be able
+            // to water `first` plant
+            if(i == 0){
+                moves += 1;
+                curCap -= plant;
+                // ???
+                continue;
+            }
+            if(curCap >= plant){
+                moves += 1;
+                curCap -= plant;
+            }else{
+                // move back to water, refill
+                // and back to cur idx, water plant
+                moves += (i + i + 1); // ??
+                curCap = capacity;
+                curCap -= plant;
+            }
+        }
+
+
+
+        return moves;
     }
+
+
+
 
 
 

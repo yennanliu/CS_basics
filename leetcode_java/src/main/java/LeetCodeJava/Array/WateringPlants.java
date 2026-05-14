@@ -63,12 +63,100 @@ package LeetCodeJava.Array;
 public class WateringPlants {
 
     // V0
-//    public int wateringPlants(int[] plants, int capacity) {
-//
-//    }
+    // IDEA: ARRAY + BRUTE FORCE
+    /** CORE IDEA:
+     *
+     *  when need to `refill` at idx:
+     *  -> the move = (i + i + 1)
+     *
+     */
+    public int wateringPlants(int[] plants, int capacity) {
+        // edge
+
+        int moves = 0;
+        int curCap = capacity;
+        //int preIdx = -1; // ????
+        // ??
+        for (int i = 0; i < plants.length; i++) {
+            int plant = plants[i];
+            // water can should ALWAYS be able
+            // to water `first` plant
+            if (i == 0) {
+                moves += 1;
+                curCap -= plant;
+                // ???
+                continue;
+            }
+            if (curCap >= plant) {
+                moves += 1;
+                curCap -= plant;
+            } else {
+                // move back to water, refill
+                // and back to cur idx, water plant
+                /** CORE IDEA:
+                 *
+                 *  when need to `refill` at idx:
+                 *  -> the move = (i + i + 1)
+                 *
+                 */
+                moves += (i + i + 1); // ??
+                curCap = capacity;
+                curCap -= plant;
+            }
+        }
+
+        return moves;
+    }
 
 
-    // V1
+    // V1-1
+    // IDEA: ARRAY (gpt)
+    public int wateringPlants_1_1(int[] plants, int capacity) {
+        int moves = 0;
+        int curCap = capacity;
+
+        for (int i = 0; i < plants.length; i++) {
+
+            // need refill first
+            if (curCap < plants[i]) {
+                moves += i * 2; // go back and return
+                curCap = capacity;
+            }
+
+            // move to current plant and water it
+            moves += 1;
+            curCap -= plants[i];
+        }
+
+        return moves;
+    }
+
+
+    // V1-2
+    // IDEA: ARRAY (gemini)
+    public int wateringPlants_1_2(int[] plants, int capacity) {
+        int moves = 0;
+        int curCap = capacity;
+
+        for (int i = 0; i < plants.length; i++) {
+            if (curCap >= plants[i]) {
+                // Case 1: Enough water, just move to the next plant
+                moves += 1;
+                curCap -= plants[i];
+            } else {
+                // Case 2: Not enough water, go back to river and return to plant i
+                // Distance to river from i-1 is i.
+                // Distance from river to i is i + 1.
+                moves += (2 * i) + 1;
+
+                // Refill and water the plant
+                curCap = capacity - plants[i];
+            }
+        }
+
+        return moves;
+    }
+
 
 
     // V2
