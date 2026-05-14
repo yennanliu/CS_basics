@@ -2295,6 +2295,94 @@ public String findSmallestRegion_0_1(List<List<String>> regions, String region1,
 }
 ```
 
+---
+
+### 2-15) Tuple with Same Product (LC 1726)
+
+**Core Idea: Pair Product Frequency → Combination Counting**
+
+Given an array of distinct positive integers, count tuples `(a, b, c, d)` such that `a * b = c * d`.
+
+#### Key Insight
+
+1. Compute **every pair product** `nums[i] * nums[j]` for all `i < j`
+2. Count **how many pairs** share the same product
+3. If a product appears `n` times, choose any 2 pairs → `C(n, 2) = n*(n-1)/2` combinations
+4. Each pair combination generates **8 tuples** (permutations of `(a,b,c,d)`)
+
+**Why 8?** Given two pairs `(a,b)` and `(c,d)` with `a*b = c*d`:
+- Swap within pair 1: `(a,b)` or `(b,a)` → 2 choices
+- Swap within pair 2: `(c,d)` or `(d,c)` → 2 choices
+- Swap which pair is `(a,b)` vs `(c,d)` → 2 choices
+- Total: `2 × 2 × 2 = 8`
+
+#### Pattern
+
+```
+Step 1: Build productCount map
+  for i in [0, n):
+    for j in (i, n):
+      productCount[nums[i]*nums[j]]++
+
+Step 2: For each count n >= 2:
+  ans += C(n, 2) * 8
+       = n*(n-1)/2 * 8
+       = 4 * n * (n-1)
+```
+
+#### Java Implementation
+
+```java
+// LC 1726 - Tuple with Same Product
+// Time: O(N^2)  Space: O(N^2)
+public int tupleSameProduct(int[] nums) {
+    Map<Integer, Integer> productCount = new HashMap<>();
+
+    // Step 1: count frequency of each pair product
+    for (int i = 0; i < nums.length; i++) {
+        for (int j = i + 1; j < nums.length; j++) {
+            int product = nums[i] * nums[j];
+            productCount.put(product, productCount.getOrDefault(product, 0) + 1);
+        }
+    }
+
+    // Step 2: for each product with n pairs, C(n,2) * 8 tuples
+    int ans = 0;
+    for (int count : productCount.values()) {
+        if (count >= 2) {
+            ans += count * (count - 1) / 2 * 8;
+            // equivalent: ans += 4 * count * (count - 1);
+        }
+    }
+    return ans;
+}
+```
+
+#### Key Formula Equivalence
+
+```
+C(n,2) * 8
+= n*(n-1)/2 * 8
+= 4 * n * (n-1)
+```
+
+Both forms are correct. The `4 * count * (count - 1)` form avoids integer division.
+
+#### Related Problems (Same Pattern)
+
+| Problem | LC# | Difficulty | Pattern |
+|---------|-----|------------|---------|
+| Tuple with Same Product | 1726 | Medium | Pair product → C(n,2) × 8 |
+| Number of Good Pairs | 1512 | Easy | Pair count → C(n,2) |
+| Number of Boomerangs | 447 | Medium | Pair distance frequency → n*(n-1) |
+| Count Number of Texts | 2266 | Medium | Frequency → combination count |
+
+**Key Difference from LC 1512 (Good Pairs):**
+- LC 1512: count pairs where `nums[i] == nums[j]` → `C(n,2)` per value
+- LC 1726: count **tuples** from pairs sharing product → `C(n,2) * 8` per product
+
+---
+
 ## Problem Classification Table
 
 ### Category 1: Counting and Frequency (25 problems)

@@ -102,6 +102,11 @@ public class TupleWithSameProduct {
      */
     public int tupleSameProduct_0_1(int[] nums) {
 
+        /** NOTE !!!
+         *
+         *  map : 
+         *
+         */
         // key   = product of two numbers
         // value = how many pairs produce this product
         Map<Integer, Integer> productCount = new HashMap<>();
