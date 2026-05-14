@@ -7549,6 +7549,11 @@ public class Workspace25 {
 
 
 
+    // LC 1726
+    public int tupleSameProduct(int[] nums) {
+
+        return 0;
+    }
 
 
 
