@@ -7575,8 +7575,84 @@ public class Workspace25 {
      *  --------------------
      *
      */
-    // IDEA 4) SORT + 2 POINTERS  ???
+
+    // 8.06 - 16 am
+    /**
+     *  ->  return the number of tuples (a, b, c, d)
+     *      such that a * b = c * d
+     *      where a, b, c, and d are elements of nums,
+     *      and a != b != c != d.
+     *
+     *
+     *  --------------
+     *
+     *  IDEA 1) double loop + HASHMAP + PREFIX SUM ???
+     *
+     *
+     *  --------------
+     *
+     */
+    // IDEA 1) HASHMAP + PREFIX SUM ???
     public int tupleSameProduct(int[] nums) {
+        // edge
+
+        // map: { prefix_multiply : cnt } // ?????
+        Map<Integer, Integer> map = new HashMap<>();
+        // ???
+        for(int i = 0; i < nums.length; i++){
+            for(int j = i + 1; j < nums.length; j++){
+                // ????
+                int val = nums[i] * nums[j]; // ???
+                map.put(val, map.getOrDefault(val, 0) + 1);
+            }
+        }
+
+        System.out.println(">>> map = " + map);
+
+        int res = 0;
+
+        // ???
+        // C n 2 = (n * n - 1) / 2
+        // ???
+        int n = nums.length; // ??
+        // ???
+        for(int cnt: map.values()){
+            if(cnt >= 2){
+                int combinations = ( (cnt) * (cnt - 1)) / 2;
+                res += combinations * 8;
+            }
+        }
+//        for(int k: map.keySet()){
+//            // ???
+//            if(map.get(k) >= 2){
+//                // ???
+//               // res += 8;
+//                int cnt = map.get(k);
+//                // ???
+//                int combinations =
+//                res += ( (cnt * (cnt - 1)) / 2 ) * 8;
+//            }
+//        }
+
+
+        return res;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // IDEA 4) SORT + 2 POINTERS  ???
+    public int tupleSameProduct_99(int[] nums) {
         // edge
 
         // sort: small -> big ??

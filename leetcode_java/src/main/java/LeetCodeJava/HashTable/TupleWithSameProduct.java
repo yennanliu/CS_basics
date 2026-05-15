@@ -52,13 +52,61 @@ import java.util.*;
 public class TupleWithSameProduct {
 
     // V0
-//    public int tupleSameProduct(int[] nums) {
-//
-//    }
+    // IDEA: HASHMAP + MATH
+    /** NOTE !!!
+     *
+     *  map : { product_of_two_numbers: pair_cnt }
+     *
+     */
+    public int tupleSameProduct(int[] nums) {
+
+        Map<Integer, Integer> map = new HashMap<>();
+
+        // count pair products
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = i + 1; j < nums.length; j++) {
+
+                int product = nums[i] * nums[j];
+
+                map.put(product, map.getOrDefault(product, 0) + 1);
+            }
+        }
+
+        int res = 0;
+
+        // for each product frequency
+        for (int cnt : map.values()) {
+
+            /** NOTE !!!
+             *
+             *  `when` there is a `tuple with same product` exists
+             */
+            if (cnt >= 2) {
+
+                // choose 2 pairs
+                // choose ANY 2 pairs from "count" pairs
+                //
+                // combination formula:
+                // C(n,2) = n * (n - 1) / 2
+                //
+                int combinations = cnt * (cnt - 1) / 2;
+
+                // each combination contributes 8 tuples
+                res += combinations * 8;
+            }
+        }
+
+        return res;
+    }
 
 
     // V0-1
     // IDEA: HASHMAP + MATH (gpt)
+    /** NOTE !!!
+     *
+     *  map : { product_of_two_numbers: pair_cnt }
+     *
+     */
     /** Core idea:
      *
      * The key idea:
