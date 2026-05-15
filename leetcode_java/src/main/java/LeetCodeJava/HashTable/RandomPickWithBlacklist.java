@@ -72,24 +72,306 @@ public class RandomPickWithBlacklist {
      *      of the array (the range $[N - M, N)$).
      *
      *
+     */
+    /**  CORE IDEA & DRY RUN
      *
-     * ----
+     *  Suppose:
+     *
+     * ```
+     * n = 10
+     * blacklist = [2,3,5,8]
+     * ```
+     *
+     * ---
+     *
+     * # STEP 1: Compute bound
+     *
+     * ```
+     * bound = n - blacklist.length
+     *       = 10 - 4
+     *       = 6
+     * ```
+     *
+     * So random only generates:
+     *
+     * ```
+     * [0 ... 5]
+     * ```
+     *
+     * Visualization:
+     *
+     * ```
+     * RANDOM RANGE
+     * |----|----|----|----|----|----|
+     *   0    1    2    3    4    5
+     *             X    X         X
+     * ```
+     *
+     * Blacklisted inside random range:
+     *
+     * * 2
+     * * 3
+     * * 5
+     *
+     * These are BAD.
+     *
+     * ---
+     *
+     * # STEP 2: Find replacement values
+     *
+     * Remaining numbers:
+     *
+     * ```
+     * [6 ... 9]
+     * ```
+     *
+     * Visualization:
+     *
+     * ```
+     * OUTSIDE RANDOM RANGE
+     * |----|----|----|----|
+     *   6    7    8    9
+     *             X
+     * ```
+     *
+     * 8 is blacklisted.
+     *
+     * Valid replacement numbers:
+     *
+     * ```
+     * 6, 7, 9
+     * ```
+     *
+     * ---
+     *
+     * # STEP 3: Start mapping
+     *
+     * Initial:
+     *
+     * ```
+     * last = 9
+     * ```
+     *
+     * ---
+     *
+     * # ITERATION 1
+     *
+     * ```
+     * b = 2
+     * ```
+     *
+     * Need to remap 2.
+     *
+     * ---
+     *
+     * Current structure:
+     *
+     * ```
+     * RANDOM RANGE
+     * |----|----|----|----|----|----|
+     *   0    1    2    3    4    5
+     *             X    X         X
      *
      *
-     * ### 📊 Computation State Table
+     * OUTSIDE RANGE
+     * |----|----|----|----|
+     *   6    7    8    9
+     *             X         ^
+     *                       last
+     * ```
      *
-     * Assume $n=6$ and $blacklist=[0, 2]$.
+     * Check:
      *
-     * * `bound` = $6 - 2 = 4$.
-     * * Safe Range: $[0, 1, 2, 3]$ | Danger Zone: $[4, 5]$
+     * ```
+     * while (blackSet.contains(last))
+     * ```
      *
-     * | Variable | State Change / Logic |
-     * | --- | --- |
-     * | **`blackSet`** | `{0, 2}` |
-     * | **`last`** | Starts at 5. Since 5 is NOT in `blackSet`, we map $0 \to 5$. |
-     * | **`last`** | Decrements to 4. Since 4 is NOT in `blackSet`, we map $2 \to 4$. |
-     * | **`mapping`** | `{0: 5, 2: 4}` |
-     * | **`pick()`** | Generates `random.nextInt(4)`. If it picks 2, it returns `mapping.get(2)` which is 4. |
+     * Is 9 blacklisted?
+     *
+     * ```
+     * NO
+     * ```
+     *
+     * So map:
+     *
+     * ```
+     * 2 -> 9
+     * ```
+     *
+     * Visualization:
+     *
+     * ```
+     * |----|----|----|----|----|----|
+     *   0    1    2    3    4    5
+     *             |
+     *             |
+     *             v
+     *             9
+     * ```
+     *
+     * Then:
+     *
+     * ```
+     * last--
+     * ```
+     *
+     * Now:
+     *
+     * ```
+     * last = 8
+     * ```
+     *
+     * ---
+     *
+     * # ITERATION 2
+     *
+     * ```
+     * b = 3
+     * ```
+     *
+     * Need remapping.
+     *
+     * Current:
+     *
+     * ```
+     * |----|----|----|----|
+     *   6    7    8    9
+     *             ^
+     *            last
+     * ```
+     *
+     * But:
+     *
+     * ```
+     * 8 is blacklisted
+     * ```
+     *
+     * So while loop runs:
+     *
+     * ```
+     * last--
+     * ```
+     *
+     * Now:
+     *
+     * ```
+     * last = 7
+     * ```
+     *
+     * Visualization:
+     *
+     * ```
+     * |----|----|----|----|
+     *   6    7    8    9
+     *        ^    X
+     *       last
+     * ```
+     *
+     * 7 is valid.
+     *
+     * So:
+     *
+     * ```
+     * 3 -> 7
+     * ```
+     *
+     * Visualization:
+     *
+     * ```
+     * |----|----|----|----|----|----|
+     *   0    1    2    3    4    5
+     *                  |
+     *                  |
+     *                  v
+     *                  7
+     * ```
+     *
+     * Then:
+     *
+     * ```
+     * last = 6
+     * ```
+     *
+     * ---
+     *
+     * # ITERATION 3
+     *
+     * ```
+     * b = 5
+     * ```
+     *
+     * Current:
+     *
+     * ```
+     * |----|----|----|----|
+     *   6    7    8    9
+     *   ^
+     *  last
+     * ```
+     *
+     * 6 is valid.
+     *
+     * So:
+     *
+     * ```
+     * 5 -> 6
+     * ```
+     *
+     * Visualization:
+     *
+     * ```
+     * |----|----|----|----|----|----|
+     *   0    1    2    3    4    5
+     *                                 |
+     *                                 |
+     *                                 v
+     *                                 6
+     * ```
+     *
+     * ---
+     *
+     * # FINAL MAPPING
+     *
+     * ```
+     * 2 -> 9
+     * 3 -> 7
+     * 5 -> 6
+     * ```
+     *
+     * ---
+     *
+     * # FINAL RANDOM BEHAVIOR
+     *
+     * Random only generates:
+     *
+     * ```
+     * [0..5]
+     * ```
+     *
+     * Visualization:
+     *
+     * ```
+     * |----|----|----|----|----|----|
+     *   0    1    2    3    4    5
+     *             |    |         |
+     *             v    v         v
+     *             9    7         6
+     * ```
+     *
+     * So actual returned values become:
+     *
+     * ```
+     * 0, 1, 9, 7, 4, 6
+     * ```
+     *
+     * Which are exactly ALL valid numbers:
+     *
+     * ```
+     * 0,1,4,6,7,9
+     * ```
+     *
+     * uniformly distributed.
+     *
      *
      *
      */
@@ -110,12 +392,23 @@ public class RandomPickWithBlacklist {
                 blackSet.add(b);
             }
 
-            // 2. We only need to remap blacklisted numbers that fall within [0, bound)
-            // We will map them to valid numbers in the [bound, n) range.
+            /** NOTE !!!   CORE IDEA
+             *
+             *  RE-MAP `blacklisted numbers`
+             *
+             *  ->
+             *
+             *   1. ONLY need to map blacklisted val in [0, bound) range
+             *
+             *   2. will map above to a valid val in `[bound, n)` range
+             */
+            // 2. We only need to `remap` blacklisted numbers that fall within [0, bound)
+            // We will map them to valid numbers in the `[bound, n)` range.
             int last = n - 1;
             for (int b : blacklist) {
                 if (b < bound) {
-                    // Find a 'last' index that is NOT in the blacklist to use as a destination
+                    // Find a 'last' index that is `NOT` in the blacklist
+                    // to use as a `destination`
                     while (blackSet.contains(last)) {
                         last--;
                     }
@@ -123,16 +416,25 @@ public class RandomPickWithBlacklist {
                     last--;
                 }
             }
+
         }
 
         public int pick() {
             // 3. Generate a random index within the safe bound
             int idx = random.nextInt(bound);
 
+            /** NOTE !!!
+             *
+             *  how we return val on `blacklisted`, and `non-blacklisted` cases
+             *
+             *   -> 1. if is a `blacklisted number` -> return mapped valid val
+             *   -> 2. if NOT a `blacklisted`  -> return directly (index itself)
+             */
             // 4. If the index is a blacklisted number, return its mapped valid value
             // Otherwise, return the index itself
             return mapping.getOrDefault(idx, idx);
         }
+
     }
 
 
