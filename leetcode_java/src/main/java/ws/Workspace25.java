@@ -7416,61 +7416,153 @@ public class Workspace25 {
      *
      *  IDEA 2) PQ ????
      */
-    // IDEA 1) TREE MAP
+
+    // 8.25 - 44 am
+    // IDEA: TREEMAP + FREE CNT ???
+    /**
+     *  1. Treemap: can loop over key, by sorted val (small -> big)
+     *  2. freq map: be able to get TOP K
+     *     -> NOTE !!! this LC doesn't care about the playerID when
+     *                 do `get top K`
+     *
+     */
     class Leaderboard {
         // attr
-        // ???
-        Map<Integer, Integer> idToScore;
-        Map<Integer, Integer> scoreToId;
+        // map: { score : cnt }
+        Map<Integer, Integer> map;
+        //Map<Integer, Integer>
+        // map: { playerId : score }
+        Map<Integer, Integer> playerMap;
+
+
+
+        // score -> frequency
+        TreeMap<Integer, Integer> scoreCount;
+
+        // playerId -> score
+        Map<Integer, Integer> playerScore;
+
+
 
         public Leaderboard() {
-            // ???
-            this.idToScore = new TreeMap<>();
-            this.scoreToId = new TreeMap<>();
+            // ??? Collections.reverseOrder()
+            this.map = new TreeMap<>(Collections.reverseOrder()); // ???
+            this.playerMap = new HashMap<>(); // ??
+
+
+            scoreCount = new TreeMap<>();
+            playerScore = new HashMap<>();
         }
 
         public void addScore(int playerId, int score) {
-            if(!this.idToScore.containsKey(playerId)){
-                this.idToScore.put(playerId, score);
-                this.scoreToId.put(score, playerId);
-            }else{
-                int oldScore = this.idToScore.get(playerId);
-                int newScore = oldScore + score;
-                this.idToScore.put(playerId, newScore);
-//                for(int x: this.scoreToId.get(1)){
-//
-//                }
-            }
+            // ??
+//            this.map.put(playerId,
+//                    this.map.getOrDefault(playerId, 0) + 1);
+            this.map.put(score,
+                    this.map.getOrDefault(score, 0) + 1);
+
+            this.playerMap.put(playerId, score);
         }
 
         public int top(int K) {
-            // ???
             int res = 0;
-            if(this.idToScore.size() < K){
-                for(int score: this.idToScore.values()){
-                    res += score;
-                }
-                return res;
-            }
-
+            // ???
             int i = 0;
-            for(int score: this.idToScore.values()){
+            //  ????
+            // ??? TreeMap default sort by key or value ?????
+            for(int key: map.keySet()){
+                // ???
                 if(i >= K){
                     break;
                 }
-                res += score;
-            }
+                if (i + map.get(key) <= K){
+                    res += key * map.get(key);
+                    i += map.get(key);
+                }
+                // ???
+                else{
+                    res += (K - i) * key;
+                }
 
+            }
             return res;
         }
 
-
         public void reset(int playerId) {
-            this.idToScore.put(playerId, 0);
+            int score = this.playerMap.get(playerId);
+            this.playerMap.put(playerId, 0);
+            // ???
+            if(this.map.get(score) == 1){
+                this.map.remove(score);
+            }
+            this.map.put(score, this.map.get(score) -1);
         }
 
 
     }
+
+
+
+
+
+
+
+
+    // IDEA 1) TREE MAP
+//    class Leaderboard {
+//        // attr
+//        // ???
+//        Map<Integer, Integer> idToScore;
+//        Map<Integer, Integer> scoreToId;
+//
+//        public Leaderboard() {
+//            // ???
+//            this.idToScore = new TreeMap<>();
+//            this.scoreToId = new TreeMap<>();
+//        }
+//
+//        public void addScore(int playerId, int score) {
+//            if(!this.idToScore.containsKey(playerId)){
+//                this.idToScore.put(playerId, score);
+//                this.scoreToId.put(score, playerId);
+//            }else{
+//                int oldScore = this.idToScore.get(playerId);
+//                int newScore = oldScore + score;
+//                this.idToScore.put(playerId, newScore);
+////                for(int x: this.scoreToId.get(1)){
+////
+////                }
+//            }
+//        }
+//
+//        public int top(int K) {
+//            // ???
+//            int res = 0;
+//            if(this.idToScore.size() < K){
+//                for(int score: this.idToScore.values()){
+//                    res += score;
+//                }
+//                return res;
+//            }
+//
+//            int i = 0;
+//            for(int score: this.idToScore.values()){
+//                if(i >= K){
+//                    break;
+//                }
+//                res += score;
+//            }
+//
+//            return res;
+//        }
+//
+//
+//        public void reset(int playerId) {
+//            this.idToScore.put(playerId, 0);
+//        }
+//
+//
+//    }
 
 
     // LC 2079

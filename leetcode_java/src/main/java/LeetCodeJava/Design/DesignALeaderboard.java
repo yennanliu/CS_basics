@@ -60,19 +60,121 @@ import java.util.TreeMap;
 public class DesignALeaderboard {
 
     // V0
-//    class Leaderboard {
-//        public Leaderboard() {
-//        }
-//
-//        public void addScore(int playerId, int score) {
-//        }
-//
-//        public int top(int K) {
-//        }
-//
-//        public void reset(int playerId) {
-//        }
-//    }
+    // IDEA: TREEMAP + HASHMAP (GPT)
+    /** NOTE !!!
+     *
+     *  we init 2 map:
+     *
+     *        // score -> frequency
+     *         TreeMap<Integer, Integer> scoreCount;
+     *
+     *         // playerId -> score
+     *         Map<Integer, Integer> pla
+     *
+     */
+    class Leaderboard {
+
+        // score -> frequency
+        TreeMap<Integer, Integer> scoreCount;
+
+        // playerId -> score
+        Map<Integer, Integer> playerScore;
+
+        public Leaderboard() {
+
+            // descending order
+            /** NOTE !!!
+             *
+             *   big -> small (for top K)
+             *     - Collections.reverseOrder()
+             */
+            scoreCount = new TreeMap<>(Collections.reverseOrder());
+
+            playerScore = new HashMap<>();
+        }
+
+        public void addScore(int playerId, int score) {
+
+            /** NOTE !!!
+             *
+             *  need to consider the case
+             *  that `playerId` already exists in the system
+             *
+             *  -> need to remove it first, before adding score
+             */
+            int oldScore = playerScore.getOrDefault(playerId, 0);
+
+            // remove old score frequency
+            if (oldScore > 0) {
+
+                int cnt = scoreCount.get(oldScore);
+
+                if (cnt == 1) {
+                    scoreCount.remove(oldScore);
+                } else {
+                    scoreCount.put(oldScore, cnt - 1);
+                }
+            }
+
+            // accumulate score
+            int newScore = oldScore + score;
+
+            // add new score frequency
+            scoreCount.put(
+                    newScore,
+                    scoreCount.getOrDefault(newScore, 0) + 1
+            );
+
+            // update player score
+            playerScore.put(playerId, newScore);
+        }
+
+        public int top(int K) {
+
+            int res = 0;
+            int cnt = 0;
+
+            // already descending
+            for (int score : scoreCount.keySet()) {
+
+                /** NOTE !!!
+                 *
+                 *  how we get Top K
+                 *  and terminate when either get exactly K score
+                 *  or no more score to collect
+                 */
+                int freq = scoreCount.get(score);
+
+                int take = Math.min(K - cnt, freq);
+
+                res += take * score;
+
+                cnt += take;
+
+                if (cnt == K) {
+                    break;
+                }
+            }
+
+            return res;
+        }
+
+        public void reset(int playerId) {
+
+            int score = playerScore.get(playerId);
+
+            int cnt = scoreCount.get(score);
+
+            if (cnt == 1) {
+                scoreCount.remove(score);
+            } else {
+                scoreCount.put(score, cnt - 1);
+            }
+
+            playerScore.remove(playerId);
+        }
+    }
+
 
 
     // V0-1
