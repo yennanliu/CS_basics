@@ -7149,22 +7149,59 @@ public class Workspace25 {
 
 
     // LC 710
-    // 11.22 - 12.01 am
+    // 10.36 - 46 am
     /**
+     *   * We must:
+     *      *
+     *      * Only sample from valid range [0, bound)
+     *      * Remap blacklisted numbers in that range
      *
+     *   ????
      *
      */
     class Solution {
 
-        public Solution(int n, int[] blacklist) {
+        // attr
+        int size; // ???
+        List<Integer> list;
+        Random random;
+        Set<Integer> set;
 
+        public Solution(int n, int[] blacklist) {
+            this.size = n - blacklist.length; // ??
+            this.list = new ArrayList<>(); // ??
+
+            this.set = new HashSet<>();
+            for(int x: blacklist){
+                set.add(x);
+            }
+            for(int i = 0; i < n; i++){
+                if(!set.contains(i)){
+                    list.add(i);
+                }
+            }
+
+            this.random = new Random(this.list.size()); // ???
         }
 
         public int pick() {
+            // ???
+            int random = this.random.nextInt();
+            if(this.set.contains(random)){
+                return this.pick();
+            }
 
-            return 0;
+            // ???
+            return random;
         }
+
+
     }
+
+
+
+
+
 
 
 

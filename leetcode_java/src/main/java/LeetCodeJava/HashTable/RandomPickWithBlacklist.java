@@ -52,56 +52,132 @@ import java.util.*;
 public class RandomPickWithBlacklist {
 
     // V0
-//    class Solution {
-//
-//        public Solution(int n, int[] blacklist) {
-//
-//        }
-//
-//        public int pick() {
-//
-//        }
-//    }
+    // IDEA: Virtual Mapping (GEMINI)
+    /**
+
+     * The goal is to use **Virtual Mapping**:
+     *
+     * 1. **Define the Safe Range**:
+     *
+     *       If there are $M$ blacklisted numbers,
+     *       there are $N - M$ valid numbers.
+     *       We only ever pick a random index
+     *       in the range $[0, N - M)$.
+     *
+     *
+     * 2. **The Re-map**:
+     *
+     *      If the random index we pick is a blacklisted number,
+     *      we "redirect" it to a valid number located in the "back"
+     *      of the array (the range $[N - M, N)$).
+     *
+     *
+     *
+     * ----
+     *
+     *
+     * ### 📊 Computation State Table
+     *
+     * Assume $n=6$ and $blacklist=[0, 2]$.
+     *
+     * * `bound` = $6 - 2 = 4$.
+     * * Safe Range: $[0, 1, 2, 3]$ | Danger Zone: $[4, 5]$
+     *
+     * | Variable | State Change / Logic |
+     * | --- | --- |
+     * | **`blackSet`** | `{0, 2}` |
+     * | **`last`** | Starts at 5. Since 5 is NOT in `blackSet`, we map $0 \to 5$. |
+     * | **`last`** | Decrements to 4. Since 4 is NOT in `blackSet`, we map $2 \to 4$. |
+     * | **`mapping`** | `{0: 5, 2: 4}` |
+     * | **`pick()`** | Generates `random.nextInt(4)`. If it picks 2, it returns `mapping.get(2)` which is 4. |
+     *
+     *
+     */
+    class Solution {
+        // Maps blacklisted numbers in the [0, bound) range to valid numbers in [bound, n)
+        private Map<Integer, Integer> mapping;
+        private Random random;
+        private int bound;
+
+        public Solution(int n, int[] blacklist) {
+            this.random = new Random();
+            this.mapping = new HashMap<>();
+            this.bound = n - blacklist.length;
+
+            // 1. Identify all blacklisted numbers for O(1) lookup
+            Set<Integer> blackSet = new HashSet<>();
+            for (int b : blacklist) {
+                blackSet.add(b);
+            }
+
+            // 2. We only need to remap blacklisted numbers that fall within [0, bound)
+            // We will map them to valid numbers in the [bound, n) range.
+            int last = n - 1;
+            for (int b : blacklist) {
+                if (b < bound) {
+                    // Find a 'last' index that is NOT in the blacklist to use as a destination
+                    while (blackSet.contains(last)) {
+                        last--;
+                    }
+                    mapping.put(b, last);
+                    last--;
+                }
+            }
+        }
+
+        public int pick() {
+            // 3. Generate a random index within the safe bound
+            int idx = random.nextInt(bound);
+
+            // 4. If the index is a blacklisted number, return its mapped valid value
+            // Otherwise, return the index itself
+            return mapping.getOrDefault(idx, idx);
+        }
+    }
+
 
 
     // V0-1
-    // IDEA: MATH + BRUTE FORCE (TLE)
-//    class Solution {
-//        // ???
-//        HashSet<Integer> set;
-//        int n;
-//        int[] blacklist;
-//        Random random;
-//
-//        public Solution(int n, int[] blacklist) {
-//            this.set = new HashSet<>();
-//            this.n = n;
-//            this.blacklist = blacklist;
-//            for(int x: blacklist){
-//                this.set.add(x);
-//            }
-//            // ???
-//            this.random = new Random();
-//        }
-//
-//        public int pick() {
-//            // edge
-//            if(this.n <= 1){
-//                return this.n; // :::
-//            }
-//            //int val = -1;
-//            int val = this.random.nextInt(n); // ???
-//            while (this.set.contains(val)){
-//                val = this.random.nextInt(n);
-//            }
-//            return val; // ??
-//        }
-//
-//    }
+    // IDEA: BRUTE FORCE (TLE) (GPT)
+    class Solution_0_1 {
+
+        // allowed numbers
+        List<Integer> list;
+
+        Random random;
+
+        public Solution_0_1(int n, int[] blacklist) {
+
+            Set<Integer> set = new HashSet<>();
+
+            for (int x : blacklist) {
+                set.add(x);
+            }
+
+            list = new ArrayList<>();
+
+            // store only valid numbers
+            for (int i = 0; i < n; i++) {
+
+                if (!set.contains(i)) {
+                    list.add(i);
+                }
+            }
+
+            random = new Random();
+        }
+
+        public int pick() {
+
+            // random index
+            int idx = random.nextInt(list.size());
+
+            return list.get(idx);
+        }
+    }
 
 
-
-    // V0-1
+    // V0-2
     // IDEA: (fixed by gpt)
     /**  Core idea:
      *
@@ -151,13 +227,13 @@ public class RandomPickWithBlacklist {
      * * pick(): O(1)
      *
      */
-    class Solution_0_1 {
+    class Solution_0_2 {
 
         private Map<Integer, Integer> map;
         private int bound;
         private Random random;
 
-        public Solution_0_1(int n, int[] blacklist) {
+        public Solution_0_2(int n, int[] blacklist) {
             map = new HashMap<>();
             random = new Random();
 
@@ -189,14 +265,14 @@ public class RandomPickWithBlacklist {
 
 
 
-    // V0-2
+    // V0-3
     // IDEA: (gemini)
-    class Solution_0_2 {
+    class Solution_0_3 {
         private Map<Integer, Integer> mapping;
         private Random random;
         private int safeRange;
 
-        public Solution_0_2(int n, int[] blacklist) {
+        public Solution_0_3(int n, int[] blacklist) {
             this.random = new Random();
             this.mapping = new HashMap<>();
             this.safeRange = n - blacklist.length;
