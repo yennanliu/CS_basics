@@ -45,8 +45,8 @@
 	- prefix_sum.md (OK)
 	- recursion.md  (OK)
 	- recursion_to_dp.md (OK)
-	- scanning_line.md (TODO: `2-1) Meeting Rooms II (LC 253) — Sweep Line Peak Count`, LC examples)
- 
+	- scanning_line.md (OK)
+ 	- segment_tree.md (TODO: LC examples)
 
 - to review
 - needcode `250` - similar LC by AI

@@ -7155,38 +7155,53 @@ public class Workspace25 {
      *
      */
     class Solution {
-        // ???
-        HashSet<Integer> set;
-        int n;
-        int[] blacklist;
-        Random random;
 
         public Solution(int n, int[] blacklist) {
-            this.set = new HashSet<>();
-            this.n = n;
-            this.blacklist = blacklist;
-            for(int x: blacklist){
-                this.set.add(x);
-            }
-            // ???
-            this.random = new Random();
+
         }
 
         public int pick() {
-            // edge
-            if(this.n <= 1){
-                return this.n; // :::
-            }
-            //int val = -1;
-            int val = this.random.nextInt(n); // ???
-            while (this.set.contains(val)){
-                val = this.random.nextInt(n);
-            }
-            return val; // ??
+
+            return 0;
         }
-
-
     }
+
+
+
+
+//    class Solution {
+//        // ???
+//        HashSet<Integer> set;
+//        int n;
+//        int[] blacklist;
+//        Random random;
+//
+//        public Solution(int n, int[] blacklist) {
+//            this.set = new HashSet<>();
+//            this.n = n;
+//            this.blacklist = blacklist;
+//            for(int x: blacklist){
+//                this.set.add(x);
+//            }
+//            // ???
+//            this.random = new Random();
+//        }
+//
+//        public int pick() {
+//            // edge
+//            if(this.n <= 1){
+//                return this.n; // :::
+//            }
+//            //int val = -1;
+//            int val = this.random.nextInt(n); // ???
+//            while (this.set.contains(val)){
+//                val = this.random.nextInt(n);
+//            }
+//            return val; // ??
+//        }
+//
+//
+//    }
 
 
 
