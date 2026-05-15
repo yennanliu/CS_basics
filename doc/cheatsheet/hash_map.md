@@ -2767,4 +2767,136 @@ Hash maps are one of the most versatile data structures in competitive programmi
 4. **Complexity Analysis**: Understand both average and worst-case performance
 5. **Code Clarity**: Write clean, readable code with proper variable names
 
+---
+
+## Virtual Map (Remapping) Pattern
+
+### Core Idea
+
+When you need to **randomly sample from a range with holes** (blacklisted values), instead of rejection-sampling (which wastes calls to `random`), **remap** the bad slots to valid replacements in O(1) pick time.
+
+**Key insight**: If there are `M` blacklisted numbers in `[0, N)`, there are exactly `N - M` valid numbers. So only ever pick a random index in `[0, N-M)` — call this `bound`. Any blacklisted index that falls inside that range gets **redirected** to a valid index pulled from the tail `[bound, N)`.
+
+### Pattern Steps
+
+1. **Compute `bound = N - blacklist.length`** — this is the safe random range.
+2. **Build `blackSet`** for O(1) membership tests.
+3. **Walk `last` pointer from `N-1` downward**, skipping blacklisted values, to collect valid replacement targets.
+4. **For every blacklisted `b < bound`**, map `b → last` (the next valid tail index).
+5. **On `pick()`**: draw `idx = random.nextInt(bound)`; return `mapping.getOrDefault(idx, idx)`.
+
+### Visualization
+
+```
+n=10, blacklist=[2,3,5,8]   →   bound = 10 - 4 = 6
+
+RANDOM RANGE  [0, bound)
+|----|----|----|----|----|----|
+  0    1    2    3    4    5
+             X    X         X
+             ↑bad inside range — must remap
+
+TAIL RANGE  [bound, n)
+|----|----|----|----|
+  6    7    8    9
+             X            ← also blacklisted, skip it
+
+Remapping (last starts at 9, walks left skipping blacklisted):
+  b=2  →  last=9 (valid)  → map 2→9,  last=8
+  b=3  →  last=8 (blacklisted, skip) → last=7 (valid) → map 3→7, last=6
+  b=5  →  last=6 (valid)  → map 5→6,  last=5
+
+Final mapping: { 2→9, 3→7, 5→6 }
+
+pick() result for each index in [0,5]:
+  0 → 0   (not mapped, return directly)
+  1 → 1
+  2 → 9   (remapped)
+  3 → 7   (remapped)
+  4 → 4
+  5 → 6   (remapped)
+
+Valid numbers returned: {0,1,4,6,7,9} ✓ uniformly distributed
+```
+
+### Java Template
+
+```java
+// LC 710 - Random Pick with Blacklist
+class Solution {
+    private Map<Integer, Integer> mapping = new HashMap<>();
+    private Random random = new Random();
+    private int bound;
+
+    public Solution(int n, int[] blacklist) {
+        bound = n - blacklist.length;
+
+        Set<Integer> blackSet = new HashSet<>();
+        for (int b : blacklist) blackSet.add(b);
+
+        int last = n - 1;
+        for (int b : blacklist) {
+            if (b < bound) {
+                // Skip tail values that are also blacklisted
+                while (blackSet.contains(last)) last--;
+                mapping.put(b, last);
+                last--;
+            }
+        }
+    }
+
+    public int pick() {
+        int idx = random.nextInt(bound);
+        return mapping.getOrDefault(idx, idx);  // remap if blacklisted, else return directly
+    }
+}
+```
+
+### Python Template
+
+```python
+import random
+
+class Solution:
+    def __init__(self, n: int, blacklist: list[int]):
+        self.bound = n - len(blacklist)
+        black_set = set(blacklist)
+        self.mapping = {}
+
+        last = n - 1
+        for b in blacklist:
+            if b < self.bound:
+                while last in black_set:
+                    last -= 1
+                self.mapping[b] = last
+                last -= 1
+
+    def pick(self) -> int:
+        idx = random.randrange(self.bound)
+        return self.mapping.get(idx, idx)
+```
+
+### Complexity
+
+| Operation | Time | Space |
+|-----------|------|-------|
+| Constructor | O(B) where B = blacklist size | O(B) |
+| `pick()` | O(1) | O(1) |
+
+### Why This Works
+
+- `bound = N - B` equals the count of valid numbers, so `random.nextInt(bound)` always hits a valid slot count.
+- Blacklisted indices inside `[0, bound)` are rare "bad slots" — exactly B of them need remapping.
+- The tail `[bound, N)` also has exactly B slots total, and the non-blacklisted ones among them are the replacements. The two-pointer walk guarantees a 1-to-1 pairing.
+- Non-blacklisted indices in `[0, bound)` fall through `getOrDefault` unchanged → no extra cost.
+
+### Similar / Related LC Problems
+
+| Problem | LC# | Difficulty | Key Idea |
+|---------|-----|------------|----------|
+| Random Pick with Blacklist | 710 | Hard | Virtual remap (this pattern) |
+| Random Pick Index | 398 | Medium | Reservoir sampling |
+| Random Pick with Weight | 528 | Medium | Prefix sum + binary search |
+| Shuffle an Array | 384 | Medium | Fisher-Yates (in-place swap map) |
+
 Remember: Hash maps excel at problems requiring fast lookups, frequency counting, and avoiding nested loops. When you see O(n²) brute force solutions, ask yourself: "Can I use a hash map to store some information and reduce this to O(n)?"

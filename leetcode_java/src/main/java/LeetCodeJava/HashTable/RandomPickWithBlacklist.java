@@ -401,6 +401,13 @@ public class RandomPickWithBlacklist {
              *   1. ONLY need to map blacklisted val in [0, bound) range
              *
              *   2. will map above to a valid val in `[bound, n)` range
+             *
+             *
+             *  ->
+             *
+             *  Convert blacklisted numbers INSIDE the random range
+             *  into valid numbers OUTSIDE the random range.
+             *
              */
             // 2. We only need to `remap` blacklisted numbers that fall within [0, bound)
             // We will map them to valid numbers in the `[bound, n)` range.
