@@ -7960,10 +7960,90 @@ public class Workspace25 {
 
 
     // LC 1658
+    // 8.33 - 43 am
+    /**
+     *  -> Return the `minimum` number
+     *     of op to reduce `x to exactly 0`
+     *       - it is possible, otherwise, return -1.
+     *
+     *
+     *     nums: int array
+     *     x: int
+     *
+     *     Op:
+     *       - remove leftmost or rightmost element
+     *         and subtract that val from x
+     *
+     *  -------------
+     *
+     *  IDEA 1) GREEDY ???
+     *
+     *  IDEA 2) 2 POINTERS ????
+     *
+     *  IDEA 3) SLIDE WINDOW /????
+     *
+     *
+     *  -------------
+     *
+     *   ex 1)
+     *
+     *    [1,4,4,3,2]
+     *
+     *    x = 4
+     *    x = 5
+     *
+     */
+    // IDEA 2) 2 POINTERS ????
     public int minOperations(int[] nums, int x) {
+        // edge
+        int n = nums.length;
+        if(x < nums[0] && x < nums[n-1]){
+            return -1;
+        }
 
-        return 0;
+        int op = 0;
+        int l = 0;
+        int r = n - 1;
+        // ???
+        while (x > 0 && r >= l){
+            int left = nums[l];
+            int right = nums[r];
+            System.out.println(">>> x = " + x
+            + ", left = " + left
+            + ", right  = " + right
+            + ", op = " + op);
+//            if(left == x || right == x){
+//                return op + 1;
+//            }
+            if(left <= x && right <= x){
+                if(right > left){
+                    x -= right;
+                    r -= 1;
+                }else{
+                    x -= left;
+                    l += 1;
+                }
+            }else{
+                if(left < x){
+                    x -= left;
+                    l += 1;
+                }else{
+                    x -= right;
+                    r -= 1;
+                }
+            }
+            op += 1;
+            // ???
+            if(x == 0){
+                return op;
+            }
+        }
+
+
+        return x == 0 ? op : -1;
     }
+
+
 
 
 

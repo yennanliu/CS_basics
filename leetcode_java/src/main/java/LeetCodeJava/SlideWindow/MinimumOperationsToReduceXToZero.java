@@ -48,7 +48,92 @@ public class MinimumOperationsToReduceXToZero {
 //    }
 
 
-    // V1
+    // V1-1
+    // IDEA: SLIDE WINDOW (gpt)
+    public int minOperations_1_1(int[] nums, int x) {
+
+        int total = 0;
+
+        for (int num : nums) {
+            total += num;
+        }
+
+        int target = total - x;
+
+        // remove all elements
+        if (target == 0) {
+            return nums.length;
+        }
+
+        int n = nums.length;
+
+        int l = 0;
+        int sum = 0;
+        int maxLen = -1;
+
+        for (int r = 0; r < n; r++) {
+
+            sum += nums[r];
+
+            while (l <= r && sum > target) {
+                sum -= nums[l];
+                l++;
+            }
+
+            if (sum == target) {
+                maxLen = Math.max(maxLen, r - l + 1);
+            }
+        }
+
+        return maxLen == -1 ? -1 : n - maxLen;
+    }
+
+
+
+    // V1-2
+    // IDEA: SLIDE WINDOW (gemini)
+    public int minOperations(int[] nums, int x) {
+        int totalSum = 0;
+        for (int num : nums) {
+            totalSum += num;
+        }
+
+        // The target sum we need to find in the middle subarray
+        int target = totalSum - x;
+
+        // Edge Case 1: If total sum is exactly x, we must remove all elements
+        if (target == 0) {
+            return nums.length;
+        }
+        // Edge Case 2: x is larger than the entire array sum, impossible to reach 0
+        if (target < 0) {
+            return -1;
+        }
+
+        int maxLength = -1;
+        int currentSum = 0;
+        int left = 0;
+
+        // Sliding Window to find the max length of a subarray summing to 'target'
+        for (int right = 0; right < nums.length; right++) {
+            currentSum += nums[right];
+
+            // Shrink the window from the left if the sum exceeds the target
+            while (currentSum > target && left <= right) {
+                currentSum -= nums[left];
+                left++;
+            }
+
+            // If we hit the exact target, track the maximum subarray length
+            if (currentSum == target) {
+                maxLength = Math.max(maxLength, right - left + 1);
+            }
+        }
+
+        // If maxLength remained -1, it means no valid subarray was found
+        return maxLength == -1 ? -1 : nums.length - maxLength;
+    }
+
 
 
     // V2
