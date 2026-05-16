@@ -55,6 +55,199 @@ public class MinimumOperationsToReduceXToZero {
 
     // V1-1
     // IDEA: SLIDE WINDOW (gpt)
+    /**  Dry run
+     *
+     *   > Example Input
+     * >
+     * > ```
+     * > nums = [1,1,4,2,3]
+     * > x = 5
+     * > ```
+     * >
+     * > Total Sum:
+     * >
+     * > ```
+     * > total = 1 + 1 + 4 + 2 + 3 = 11
+     * > ```
+     * >
+     * > Target:
+     * >
+     * > ```
+     * > target = total - x = 11 - 5 = 6
+     * > ```
+     * >
+     * > We now find:
+     * >
+     * > ```
+     * > longest subarray with sum = 6
+     * > ```
+     * >
+     * > ---
+     * >
+     * > ## Dry Run Table
+     * >
+     * > | Step | r | nums[r] | Window (`l..r`) | Window Elements | sum | Action               | maxLen |
+     * > | ---- | - | ------- | --------------- | --------------- | --- | -------------------- | ------ |
+     * > | Init | - | -       | -               | -               | 0   | Initialize variables | -1     |
+     * > | 1    | 0 | 1       | `0..0`          | `[1]`           | 1   | sum < target         | -1     |
+     * > | 2    | 1 | 1       | `0..1`          | `[1,1]`         | 2   | sum < target         | -1     |
+     * > | 3    | 2 | 4       | `0..2`          | `[1,1,4]`       | 6   | sum == target git a       | 3      |
+     * > | 4    | 3 | 2       | `0..3`          | `[1,1,4,2]`     | 8   | sum > target         | 3      |
+     * > | 5    | 3 | 2       | `1..3`          | `[1,4,2]`       | 7   | shrink window        | 3      |
+     * > | 6    | 3 | 2       | `2..3`          | `[4,2]`         | 6   | sum == target        | 3      |
+     * > | 7    | 4 | 3       | `2..4`          | `[4,2,3]`       | 9   | sum > target         | 3      |
+     * > | 8    | 4 | 3       | `3..4`          | `[2,3]`         | 5   | shrink window        | 3      |
+     * >
+     * > ---
+     * >
+     * > ## Detailed Explanation
+     * >
+     * > ### Step 1
+     * >
+     * > Add `1`
+     * >
+     * > ```
+     * > window = [1]
+     * > sum = 1
+     * > ```
+     * >
+     * > Smaller than target `6`.
+     * >
+     * > ---
+     * >
+     * > ### Step 2
+     * >
+     * > Add another `1`
+     * >
+     * > ```
+     * > window = [1,1]
+     * > sum = 2
+     * > ```
+     * >
+     * > Still smaller than `6`.
+     * >
+     * > ---
+     * >
+     * > ### Step 3
+     * >
+     * > Add `4`
+     * >
+     * > ```
+     * > window = [1,1,4]
+     * > sum = 6
+     * > ```
+     * >
+     * > Valid subarray found.
+     * >
+     * > Length:
+     * >
+     * > r-l+1 = 2-0+1 = 3
+     * >
+     * > ```
+     * > maxLen = 3
+     * > ```
+     * >
+     * > ---
+     * >
+     * > ### Step 4
+     * >
+     * > Add `2`
+     * >
+     * > ```
+     * > window = [1,1,4,2]
+     * > sum = 8
+     * > ```
+     * >
+     * > Too large.
+     * >
+     * > Need shrinking.
+     * >
+     * > ---
+     * >
+     * > ### Step 5
+     * >
+     * > Remove leftmost `1`
+     * >
+     * > ```
+     * > window = [1,4,2]
+     * > sum = 7
+     * > ```
+     * >
+     * > Still too large.
+     * >
+     * > ---
+     * >
+     * > ### Step 6
+     * >
+     * > Remove another `1`
+     * >
+     * > ```
+     * > window = [4,2]
+     * > sum = 6
+     * > ```
+     * >
+     * > Valid again.
+     * >
+     * > Length:
+     * >
+     * > r-l+1 = 3-2+1 = 2
+     * >
+     * > `maxLen` remains `3`.
+     * >
+     * > ---
+     * >
+     * > ### Step 7
+     * >
+     * > Add `3`
+     * >
+     * > ```
+     * > window = [4,2,3]
+     * > sum = 9
+     * > ```
+     * >
+     * > Too large.
+     * >
+     * > ---
+     * >
+     * > ### Step 8
+     * >
+     * > Shrink window:
+     * >
+     * > Remove `4`
+     * >
+     * > ```
+     * > window = [2,3]
+     * > sum = 5
+     * > ```
+     * >
+     * > End of loop.
+     * >
+     * > ---
+     * >
+     * > ## Final Result
+     * >
+     * > Longest valid subarray:
+     * >
+     * > ```
+     * > [1,1,4]
+     * > ```
+     * >
+     * > Length:
+     * >
+     * > ```
+     * > maxLen = 3
+     * > ```
+     * >
+     * > Minimum operations:
+     * >
+     * > n-maxLen = 5-3 = 2
+     * >
+     * > Final Answer:
+     * >
+     * > ```
+     * > 2
+     * > ```
+     */
     public int minOperations_1_1(int[] nums, int x) {
 
         // --------------------------------------------
