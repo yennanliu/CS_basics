@@ -6518,6 +6518,8 @@ public class Workspace25 {
      *
      *   IDEA 1) SCAN LINE
      *
+     *   IDEA 3) TREE MAP /???
+     *
      *
      *  -----------
      */
@@ -6526,9 +6528,121 @@ public class Workspace25 {
     /**
      *
      *
+     *
      */
-    //  IDEA 1) SCAN LINE
+    // 4.41 - 51 pm
+    // IDEA 3) TREE MAP /???
     public List<List<Long>> splitPainting(int[][] segments) {
+        // edge
+
+        // ???
+        // list : { idx : color } ( 1: start, -1: end)
+        // ???
+        List<Integer[]> list = new ArrayList<>();
+        for(int[] x: segments){
+            int start = x[0];
+            int end = x[1];
+            int color = x[2];
+            list.add(new Integer[]{start, color});
+            list.add(new Integer[]{end, -1 * color});
+        }
+
+        Collections.sort(list, new Comparator<Integer[]>() {
+            @Override
+            public int compare(Integer[] o1, Integer[] o2) {
+                // ??
+                int diff = o1[0] - o2[0];
+                return diff;
+            }
+        });
+
+        // /?? sort ???
+//        Arrays.sort(segments, new Comparator<int[]>() {
+//            @Override
+//            public int compare(int[] o1, int[] o2) {
+//                int diff = o1[0] - o2[0];
+//                return diff;
+//            }
+//        });
+
+        // ??
+        // map : { idx: color_prefix_sum } // ????
+        // TreeMap: can loop key (small -> big) by default ?????
+        Map<Integer, Integer> map = new TreeMap<>();
+        // ???
+        int prefix = 0;
+        for(Integer[] x: list){
+            int idx = x[0];
+            int color = x[1];
+            // ??
+            prefix += color;
+            map.put(idx, prefix);
+        }
+
+        // ???
+//        for(int[] x: segments){
+//            int start = x[0];
+//            int end = x[1];
+//            int color = x[2];
+//
+//            // /??
+//            prefix += color;
+//            // ???
+//            map.put(start, map.getOrDefault(start, 0) + prefix); // ???
+//
+//            prefix -= color;
+//            map.put(end, map.getOrDefault(end, 0) + (-1 * color)); // ???
+//        }
+
+        System.out.println(">>> map = " + map);
+
+        List<List<Long>> res = new ArrayList<>();
+
+        // TreeMap: can loop key (small -> big) by default ?????
+        // ???
+        // ???
+        int start = -1;
+        int end = -1; // ????
+        for(int idx: map.keySet()){
+            if(start == -1){
+                start = idx;
+            }else if(end == -1){
+                end = idx; //???
+                // ???
+                List<Long> tmp = new ArrayList<>();
+                tmp.add((long) start);
+                tmp.add((long) end);
+                tmp.add(Long.valueOf(map.get(end))); // /??
+                res.add(tmp);
+
+                start = end; // ???
+            }else{
+                end = idx; // ???
+                List<Long> tmp = new ArrayList<>();
+                tmp.add((long) start);
+                tmp.add((long) end);
+                tmp.add(Long.valueOf(map.get(end))); // /??
+                res.add(tmp);
+
+
+                start = end; // ???
+            }
+        }
+
+        return res;
+    }
+
+
+
+
+
+
+
+
+
+
+    //  IDEA 1) SCAN LINE
+    public List<List<Long>> splitPainting_99(int[][] segments) {
         // edge
         //int n = hours.length;
         List<Integer[]> list = new ArrayList<>();

@@ -77,18 +77,44 @@ public class DescribeThePainting {
 
     // V1-1
     // IDEA: SCAN LINE (gpt)
+    /** NOTE !!!
+     *
+     *  Steps:
+     *
+     *   1. collect start, end, and `color delta` as `list`
+     *
+     *   2. sort on list (start, end idx) (small -> big)
+     *
+     *   3. loop over list, and update color on `event` accordingly
+     *      (with the help of `prefix sum`)
+     */
     public List<List<Long>> splitPainting_1_1(int[][] segments) {
         List<int[]> events = new ArrayList<>();
         for (int[] seg : segments) {
             int start = seg[0], end = seg[1], color = seg[2];
+            /** NOTE !!!
+             *
+             *  the color below is `color delta`,
+             *  if we want to collect `accumulated color sum`
+             *  per given intervals
+             */
             events.add(new int[] { start, color }); // start adds color
             events.add(new int[] { end, -color }); // end subtracts color
         }
 
         // Sort by position, start events before end if same position
-        Collections.sort(events, (a, b) -> a[0] != b[0] ? a[0] - b[0] : a[1] - b[1]);
+        // e.g.
+        // 1. sort on `start` idx
+        // 2. sort on `end idx, (if same start idx)
+        Collections.sort(events, (a, b) ->
+                a[0] != b[0] ? a[0] - b[0] : a[1] - b[1]
+        );
 
         List<List<Long>> res = new ArrayList<>();
+        /** NOTE !!!
+         *
+         *   we use/maintain a `prefix` sum
+         */
         long curColor = 0;
         int prevPos = -1;
 
@@ -101,12 +127,18 @@ public class DescribeThePainting {
                 res.add(Arrays.asList((long) prevPos, (long) pos, curColor));
             }
 
+            /** NOTE !!!
+             *
+             *   we update `prefix` sum,
+             *   so can use in the next loops
+             */
             curColor += delta;
             prevPos = pos;
         }
 
         return res;
     }
+
 
 
     // V1-2
@@ -219,6 +251,10 @@ public class DescribeThePainting {
     // IDEA: TREE MAP + SCAN LINE
     // https://leetcode.com/problems/describe-the-painting/solutions/1359819/java-easiest-solution-onlogn-same-as-car-znpy/
     public List<List<Long>> splitPainting_4(int[][] segments) {
+        /** NOTE !!!
+         *
+         *  we use `treeMap` here
+         */
         TreeMap<Integer, Long> map = new TreeMap<>();
 
         for (int segment[] : segments) {
