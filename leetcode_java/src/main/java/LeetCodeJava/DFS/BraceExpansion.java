@@ -47,6 +47,160 @@ public class BraceExpansion {
 //    public String[] expand(String s) {
 //    }
 
+
+    // V0-1
+    // IDEA: (GPT)
+    // TODO : implement, validate
+    public String[] expand_0_1(String s) {
+
+        // ----------------------------------------
+        // res stores current expansion results
+        // Start with empty string
+        // ----------------------------------------
+        List<String> res = new ArrayList<>();
+        res.add("");
+
+        int i = 0;
+
+        // ----------------------------------------
+        // Process the input string
+        // ----------------------------------------
+        while (i < s.length()) {
+
+            List<String> choices = new ArrayList<>();
+
+            // ------------------------------------
+            // Case 1:
+            // Brace expansion
+            //
+            // Example:
+            // {a,b,c}
+            // ------------------------------------
+            if (s.charAt(i) == '{') {
+
+                i++; // skip '{'
+
+                // Collect all characters inside brace
+                while (s.charAt(i) != '}') {
+
+                    char ch = s.charAt(i);
+
+                    // Ignore commas
+                    if (ch != ',') {
+                        choices.add(String.valueOf(ch));
+                    }
+
+                    i++;
+                }
+
+                // skip '}'
+                i++;
+            }
+
+            // ------------------------------------
+            // Case 2:
+            // Normal character
+            // ------------------------------------
+            else {
+
+                choices.add(String.valueOf(s.charAt(i)));
+
+                i++;
+            }
+
+            // ------------------------------------
+            // Build Cartesian Product
+            //
+            // Example:
+            //
+            // res = ["a", "b"]
+            // choices = ["c", "d"]
+            //
+            // =>
+            // ["ac", "ad", "bc", "bd"]
+            // ------------------------------------
+            List<String> next = new ArrayList<>();
+
+            for (String prefix : res) {
+
+                for (String choice : choices) {
+
+                    next.add(prefix + choice);
+                }
+            }
+
+            // Update result
+            res = next;
+        }
+
+        // ----------------------------------------
+        // Sort lexicographically
+        // Required by problem
+        // ----------------------------------------
+        Collections.sort(res);
+
+        // Convert List -> String[]
+        return res.toArray(new String[0]);
+    }
+
+
+
+    // V0-2
+    // IDEA: BACKTRACK (GPT)
+    // TODO: validate
+    public String[] expand(String s) {
+        // Step 1: Parse the string into groups of choices
+        List<List<String>> groups = new ArrayList<>();
+        int i = 0;
+        int n = s.length();
+
+        while (i < n) {
+            List<String> currentGroup = new ArrayList<>();
+            if (s.charAt(i) == '{') {
+                i++; // Skip '{'
+                // Gather all characters inside the brackets
+                while (s.charAt(i) != '}') {
+                    if (s.charAt(i) != ',') {
+                        currentGroup.add(String.valueOf(s.charAt(i)));
+                    }
+                    i++;
+                }
+                i++; // Skip '}'
+            } else {
+                // It's a regular single character outside brackets
+                currentGroup.add(String.valueOf(s.charAt(i)));
+                i++;
+            }
+            // Sort each group alphabetically to guarantee lexicographical output order
+            Collections.sort(currentGroup);
+            groups.add(currentGroup);
+        }
+
+        // Step 2: Use Backtracking to generate all combinations
+        List<String> resultList = new ArrayList<>();
+        backtrack(groups, 0, new StringBuilder(), resultList);
+
+        // Convert the result list to a primitive String array
+        return resultList.toArray(new String[0]);
+    }
+
+    private void backtrack(List<List<String>> groups, int index, StringBuilder current, List<String> resultList) {
+        // Base case: If we've processed all groups, we've formed a complete string
+        if (index == groups.size()) {
+            resultList.add(current.toString());
+            return;
+        }
+
+        // Try every option available in the current group
+        List<String> options = groups.get(index);
+        for (String option : options) {
+            current.append(option);                     // Choose
+            backtrack(groups, index + 1, current, resultList); // Explore
+            current.deleteCharAt(current.length() - 1); // Unchoose (Backtrack)
+        }
+    }
+
+
     // V1
     // IDEA : DFS
     // https://leetcode.ca/2018-11-21-1087-Brace-Expansion/
@@ -107,6 +261,7 @@ public class BraceExpansion {
         }
     }
 
+
     // backtrack
     /**
      * NOTE !!!
@@ -131,6 +286,7 @@ public class BraceExpansion {
             t.remove(t.size() - 1);
         }
     }
+
 
 
     // V2
@@ -167,13 +323,18 @@ public class BraceExpansion {
         }
     }
 
+
+
     // V3
     // IDEA : DFS
     // https://blog.csdn.net/qq_46105170/article/details/108840420
 
+
+
     // V4
     // IDEA : DFS
     // https://blog.csdn.net/qq_21201267/article/details/107541722
+
 
 
 
@@ -186,5 +347,8 @@ public class BraceExpansion {
 //            System.out.println(x);
 //        }
 //    }
+
+
+
 
 }

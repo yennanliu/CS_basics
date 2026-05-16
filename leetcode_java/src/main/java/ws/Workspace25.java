@@ -8047,15 +8047,113 @@ public class Workspace25 {
 
 
     // LC 1087
-    // 8.29 - 39 am
+    // 8.29 - 43 am
     /**
+     *
+     *  -> Return all words that can be formed in this manner,
+     *  sorted in lexicographical order.
+     *
+     *
+     *  --------
+     *
+     *   IDEA 1) BTUTE FORCE
+     *
+     *   IDEA 2) BFS ????
+     *
+     *   IDEA 3) BACKTRACK ????
+     *
+     *
+     *  --------
+     *
+     *  ex 1)
+     *
+     *  Input: s = "{a,b}c{d,e}f"
+     *  Output: ["acdf","acef","bcdf","bcef"]
+     *
+     *
+     *  ->
+     *
+     *   s = "{a,b}c{d,e}f"
+     *             x
+     *
+     *   tmp = [ ac, bc ]
+     *
+     *
+     *   s = "{a,b}c{d,e}f"
+     *                x
+     *
+     *   tmp = [ acd, bcd,   ace, bce]
+     *
+     *
      *
      *
      *
      */
     public String[] expand(String s) {
-        return null;
+        // edge
+
+        // /??
+        List<String> tmp = new ArrayList<>();
+        //???
+        String str = "";
+
+        boolean inBracket = false;
+        for(char ch: s.toCharArray()){
+            if(ch == '{'){
+                inBracket = true;
+
+                // /???? build string ????
+                if(!str.isEmpty()){
+                    tmp = build(tmp, str);
+                    // reset
+                    //tmp = new ArrayList<>();
+                    str = "";
+                }
+
+                continue;
+            }
+            if(ch == '}'){
+                inBracket = false;
+                continue;
+            }
+            if(inBracket){
+                // /??
+                if(ch != ','){
+                    tmp.add(new String(String.valueOf(ch)));
+                }
+            }else{
+                str += String.valueOf(ch);
+            }
+        }
+
+
+        // /?? prepare res
+        String[] res = new String[tmp.size()];
+        // ??
+        for(int i = 0; i < tmp.size(); i++){
+            res[i] = tmp.get(i);
+        }
+
+        return res;
     }
+
+
+    //??? BFS
+    // tmp: [a,b]
+    // str: c
+    // -> expect res: [ac, bc]
+    private List<String> build(List<String> tmp, String str){
+        List<String> res = new ArrayList<>();
+        // /??
+        for(String x: tmp){
+            res.add(x + str);
+        }
+        return res;
+    }
+
+
+
+
 
 
 
