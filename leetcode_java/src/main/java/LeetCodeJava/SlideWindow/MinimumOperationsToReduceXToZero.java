@@ -41,6 +41,11 @@ package LeetCodeJava.SlideWindow;
  */
 public class MinimumOperationsToReduceXToZero {
 
+    /** NOTE !!!
+     *
+     *  CAN NOT use `greedy` algo for this LC
+     */
+
 
     // V0
 //    public int minOperations(int[] nums, int x) {
@@ -52,39 +57,116 @@ public class MinimumOperationsToReduceXToZero {
     // IDEA: SLIDE WINDOW (gpt)
     public int minOperations_1_1(int[] nums, int x) {
 
+        // --------------------------------------------
+        // Step 1:
+        // Calculate the total sum of the array
+        // --------------------------------------------
         int total = 0;
 
+        // Add every number into total
         for (int num : nums) {
             total += num;
         }
 
+        // --------------------------------------------
+        // Step 2:
+        // Convert problem:
+        //
+        // Instead of:
+        //   removing numbers from left/right = x
+        //
+        // We find:
+        //   longest subarray with sum = total - x
+        //
+        // Why?
+        //
+        // removed_sum + remaining_sum = total
+        //
+        // Therefore:
+        // remaining_sum = total - x
+        // --------------------------------------------
         int target = total - x;
 
-        // remove all elements
+        // --------------------------------------------
+        // Edge Case:
+        //
+        // If target == 0
+        // means:
+        // total == x
+        //
+        // So we must remove ALL elements
+        // --------------------------------------------
         if (target == 0) {
             return nums.length;
         }
 
+        // Length of array
         int n = nums.length;
 
+        // --------------------------------------------
+        // Sliding Window Variables
+        // --------------------------------------------
+
+        // Left pointer of window
         int l = 0;
+
+        // Current window sum
         int sum = 0;
+
+        // Store longest valid subarray length
+        // Initialize with -1 meaning "not found"
         int maxLen = -1;
 
+        // --------------------------------------------
+        // Step 3:
+        // Expand sliding window using right pointer
+        // --------------------------------------------
         for (int r = 0; r < n; r++) {
 
+            // Add current right element into window
             sum += nums[r];
 
+            // ----------------------------------------
+            // If window sum becomes too large,
+            // shrink window from left side
+            //
+            // Since all numbers are positive,
+            // shrinking decreases sum
+            // ----------------------------------------
             while (l <= r && sum > target) {
+
+                // Remove left element from window
                 sum -= nums[l];
+
+                // Move left pointer right
                 l++;
             }
 
+            // ----------------------------------------
+            // If current window sum equals target,
+            // we found a valid subarray
+            // ----------------------------------------
             if (sum == target) {
-                maxLen = Math.max(maxLen, r - l + 1);
+
+                // Current window length
+                int len = r - l + 1;
+
+                // Keep the longest one
+                maxLen = Math.max(maxLen, len);
             }
         }
 
+        // --------------------------------------------
+        // Step 4:
+        //
+        // If no valid subarray found:
+        // return -1
+        //
+        // Otherwise:
+        //
+        // minimum operations =
+        // total array length - longest kept subarray
+        // --------------------------------------------
         return maxLen == -1 ? -1 : n - maxLen;
     }
 
@@ -92,7 +174,7 @@ public class MinimumOperationsToReduceXToZero {
 
     // V1-2
     // IDEA: SLIDE WINDOW (gemini)
-    public int minOperations(int[] nums, int x) {
+    public int minOperations_1_2(int[] nums, int x) {
         int totalSum = 0;
         for (int num : nums) {
             totalSum += num;
