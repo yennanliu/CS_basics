@@ -57,6 +57,11 @@ public class TupleWithSameProduct {
      *
      *  map : { product_of_two_numbers: pair_cnt }
      *
+     *
+     *  e.g.
+     *
+     *   // product -> number of pairs producing that product
+     *
      */
     public int tupleSameProduct(int[] nums) {
 
@@ -89,6 +94,10 @@ public class TupleWithSameProduct {
                 // combination formula:
                 // C(n,2) = n * (n - 1) / 2
                 //
+                 /**
+                  *     // if a product appears k times,
+                  *     // choose any 2 pairs: C(k,2)
+                  */
                 int combinations = cnt * (cnt - 1) / 2;
 
                 // each combination contributes 8 tuples

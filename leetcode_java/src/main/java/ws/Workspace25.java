@@ -7848,8 +7848,51 @@ public class Workspace25 {
      *  --------------
      *
      */
-    // IDEA 1) HASHMAP + PREFIX SUM ???
+    // 4.21 - 38 pm
+    // IDEA 1) double loop + HASHMAP + PREFIX SUM ???
     public int tupleSameProduct(int[] nums) {
+        // edge
+
+        // map: { 2_val_multiply_res : cnt } // ??
+        Map<Integer, Integer> map = new HashMap<>();
+        for(int i = 0; i < nums.length; i++){
+            //??
+            for(int j = i + 1; j < nums.length; j++){
+                int multiplyVal = nums[i] * nums[j];
+                map.put(multiplyVal,
+                        map.getOrDefault(multiplyVal, 0) + 1
+                );
+
+            }
+        }
+
+        System.out.println(">>> map = " + map);
+        int res = 0;
+
+        // ???
+        for(int val: map.values()){
+            // ???
+            if(val >= 2){
+                // C(n, 2) = (n) * (n-1) / 2
+                int cnt = val * (val - 1) / 2;
+                res += cnt * 8;
+            }
+        }
+
+        return res;
+    }
+
+
+
+
+
+
+
+
+
+
+    // IDEA 1) HASHMAP + PREFIX SUM ???
+    public int tupleSameProduct_95(int[] nums) {
         // edge
 
         // map: { prefix_multiply : cnt } // ?????
