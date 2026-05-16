@@ -1,0 +1,23 @@
+Hash tables
+
+Linked list, stacks, queues, two pointers/sliding window
+
+Binary heaps
+
+Arrays
+
+Binary search
+
+Graphs, BFS/DFS/Flood fill
+
+Tree traversals
+
+Dynamic programming
+
+Union find
+
+Ad hoc/string manipulations
+
+Recursion. Backtracking. Greedy algorithms.
+
+Other good to know topics: Trie, segment trees/fenwick trees, bitmasks
