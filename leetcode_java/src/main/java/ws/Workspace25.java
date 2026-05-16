@@ -7959,7 +7959,11 @@ public class Workspace25 {
 
 
 
+    // LC 1658
+    public int minOperations(int[] nums, int x) {
 
+        return 0;
+    }
 
 
 
