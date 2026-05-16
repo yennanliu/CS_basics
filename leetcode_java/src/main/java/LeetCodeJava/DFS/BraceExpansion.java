@@ -141,7 +141,7 @@ public class BraceExpansion {
 
 
     // V0-2
-    // IDEA: BACKTRACK (GPT)
+    // IDEA: BACKTRACK (gemini)
     // TODO: validate
     public String[] expand_0_2(String s) {
         // Step 1: Parse the string into groups of choices
