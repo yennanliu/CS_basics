@@ -7159,44 +7159,156 @@ public class Workspace25 {
      *   ????
      *
      */
+    // 3.47 - 57 pm
     class Solution {
-
         // attr
-        int size; // ???
-        List<Integer> list;
+        //  { idx : val_not_in_blacklist }
+        Map<Integer, Integer> map;
+        //List<Integer> list = new ArrayList<>();
+        int[] arr; // ???
+        int n;
+        HashSet<Integer> set;
+        int boundary; // ???
         Random random;
-        Set<Integer> set;
 
         public Solution(int n, int[] blacklist) {
-            this.size = n - blacklist.length; // ??
-            this.list = new ArrayList<>(); // ??
-
+            // ???
+            this.n = n;
+            this.map = new HashMap<>();
+            //this.arr = new int[this.];
             this.set = new HashSet<>();
             for(int x: blacklist){
-                set.add(x);
+                this.set.add(x);
             }
+            int blackNumberInRangeCnt = 0;
+
+            // ???
             for(int i = 0; i < n; i++){
-                if(!set.contains(i)){
-                    list.add(i);
+                if(this.set.contains(i)){
+                    blackNumberInRangeCnt += 1;
                 }
             }
 
-            this.random = new Random(this.list.size()); // ???
+
+            // // valid random range: [0, boundary)
+
+
+            // /??
+            // Let boundary = n - blacklist.length
+            //this.boundary = this.n - blackNumberInRangeCnt;
+            this.boundary = this.n - blacklist.length; // ???
+
+
+            this.arr = new int[this.boundary]; // ????
+
+            this.random = new Random(this.boundary);
+
+
+            // start from the end
+            int last = n - 1;
+
+            for(int x: blacklist){
+                if(x < boundary){
+                    // ???
+                    while (set.contains(last)){
+                        last -= 1;
+                    }
+                }
+                map.put(x, last);
+                last -= 1;
+            }
+
+
+            // setup mapping
+            // ????
+            // /???
+//            int j = this.n; // ???
+//            for(int i = 0; i < boundary; i++){
+//                // in black list
+//                if(this.set.contains(i)){
+//                    //blackNumberInRangeCnt += 1;
+//                    // ???
+//                    // ???
+//                    while (j > this.boundary){
+//                        this.map.put(i, j);
+//                        // /??
+//                        j -= 1;
+//                        break;
+//                    }
+//
+//                }
+//                // NOT in black list
+//                else{
+//                    this.map.put(i, i);
+//                }
+//            }
+
         }
 
         public int pick() {
-            // ???
-            int random = this.random.nextInt();
-            if(this.set.contains(random)){
-                return this.pick();
-            }
+            // We only generate random numbers in [0, boundary)
+            // If a picked number is blacklisted,
+            // remap it to a valid number in [boundary, n)
 
+
+            //???
+            //return 0;
+           // return this.map.getOrDefault();
             // ???
-            return random;
+            int val = this.random.nextInt();//???
+            if(this.set.contains(val)){
+                return this.map.get(val);
+            }
+            return val;
         }
 
 
+
+
     }
+
+
+
+
+
+//    class Solution {
+//
+//        // attr
+//        int size; // ???
+//        List<Integer> list;
+//        Random random;
+//        Set<Integer> set;
+//
+//        public Solution(int n, int[] blacklist) {
+//            this.size = n - blacklist.length; // ??
+//            this.list = new ArrayList<>(); // ??
+//
+//            this.set = new HashSet<>();
+//            for(int x: blacklist){
+//                set.add(x);
+//            }
+//            for(int i = 0; i < n; i++){
+//                if(!set.contains(i)){
+//                    list.add(i);
+//                }
+//            }
+//
+//            this.random = new Random(this.list.size()); // ???
+//        }
+//
+//        public int pick() {
+//            // ???
+//            int random = this.random.nextInt();
+//            if(this.set.contains(random)){
+//                return this.pick();
+//            }
+//
+//            // ???
+//            return random;
+//        }
+//
+//
+//    }
 
 
 

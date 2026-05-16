@@ -53,6 +53,82 @@ public class RandomPickWithBlacklist {
 
     // V0
     // IDEA: Virtual Mapping (GEMINI)
+    class Solution {
+
+        Map<Integer, Integer> map;
+        Set<Integer> blackSet;
+        int boundary;
+        Random random;
+
+        public Solution(int n, int[] blacklist) {
+
+            map = new HashMap<>();
+            blackSet = new HashSet<>();
+
+            for (int b : blacklist) {
+                blackSet.add(b);
+            }
+
+            /** NOTE !!! CORE
+             *
+             *
+             *  boundary = n - blacklist.length;
+             *
+             *  -> so we know the `size` of `remaining`
+             *     val that NOT in black list
+             *     (we'll do `remapping` later)
+             *
+             */
+            // valid random range: [0, boundary)
+            boundary = n - blacklist.length;
+
+            // start from the end
+            int last = n - 1;
+
+            /** NOTE !!! Remapping
+             *
+             *
+             *  1. go through black list
+             *
+             *  2. if the `black list val` < boundary
+             *      -> NEED to REMAP
+             *      -> use `while` loop
+             *         -> check if `last` is in blacklist
+             *            (if yes, we CAN NOT use it as remapping val)
+             *         -> REMAPPING: { black_list_val : last }
+             *         -> DON'T forget to update last (last -= 1)
+             *
+             */
+            // only remap blacklisted numbers < boundary
+            for (int b : blacklist) {
+
+                if (b < boundary) {
+
+                    // find next valid number from the tail
+                    while (blackSet.contains(last)) {
+                        last--;
+                    }
+
+                    map.put(b, last);
+                    last--;
+                }
+            }
+
+            random = new Random();
+        }
+
+        public int pick() {
+
+            int x = random.nextInt(boundary);
+
+            // if x is blacklisted, use mapped value
+            return map.getOrDefault(x, x);
+        }
+    }
+
+
+    // V0-0-1
+    // IDEA: Virtual Mapping (GEMINI)
     /**
 
      * The goal is to use **Virtual Mapping**:
@@ -375,13 +451,13 @@ public class RandomPickWithBlacklist {
      *
      *
      */
-    class Solution {
+    class Solution_0_0_1 {
         // Maps blacklisted numbers in the [0, bound) range to valid numbers in [bound, n)
         private Map<Integer, Integer> mapping;
         private Random random;
         private int bound;
 
-        public Solution(int n, int[] blacklist) {
+        public Solution_0_0_1(int n, int[] blacklist) {
             this.random = new Random();
             this.mapping = new HashMap<>();
             this.bound = n - blacklist.length;
