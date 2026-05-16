@@ -1,6 +1,10 @@
 package LeetCodeJava.SlideWindow;
 
 // https://leetcode.com/problems/minimum-operations-to-reduce-x-to-zero/description/
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  *   1658. Minimum Operations to Reduce X to Zero
  * Medium
@@ -408,6 +412,153 @@ public class MinimumOperationsToReduceXToZero {
         // If maxLength remained -1, it means no valid subarray was found
         return maxLength == -1 ? -1 : nums.length - maxLength;
     }
+
+
+    // V1-3
+    // IDEA: PREFIX, SUFFIX SUM (GPT)
+    public int minOperations_1_3(int[] nums, int x) {
+
+        int n = nums.length;
+
+        // ----------------------------------------
+        // Map:
+        // key   = suffix sum
+        // value = operations used from right
+        // ----------------------------------------
+        Map<Integer, Integer> rightMap = new HashMap<>();
+
+        // Base case:
+        // taking nothing from right
+        rightMap.put(0, 0);
+
+        // ----------------------------------------
+        // Build suffix sums from right side
+        // ----------------------------------------
+        int rightSum = 0;
+
+        // r starts from n - 1
+        for (int r = n - 1; r >= 0; r--) {
+
+            // Add current right value
+            rightSum += nums[r];
+
+            // operations taken from right
+            int ops = n - r;
+
+            // Store:
+            // suffix sum -> operations
+            rightMap.put(rightSum, ops);
+        }
+
+        // ----------------------------------------
+        // Answer initialization
+        // ----------------------------------------
+        int ans = Integer.MAX_VALUE;
+
+        // ----------------------------------------
+        // Case:
+        // take ONLY from right
+        // ----------------------------------------
+        if (rightMap.containsKey(x)) {
+            ans = rightMap.get(x);
+        }
+
+        // ----------------------------------------
+        // Build prefix sums from left
+        // ----------------------------------------
+        int leftSum = 0;
+
+        // l starts from 0
+        for (int l = 0; l < n; l++) {
+
+            // Add current left value
+            leftSum += nums[l];
+
+            // operations used from left
+            int leftOps = l + 1;
+
+            // Remaining value needed from right
+            int remain = x - leftSum;
+
+            // ------------------------------------
+            // Check whether right side can provide
+            // the remaining sum
+            // ------------------------------------
+            if (rightMap.containsKey(remain)) {
+
+                int rightOps = rightMap.get(remain);
+
+                // --------------------------------
+                // Ensure no overlap
+                //
+                // total removed elements
+                // must not exceed array length
+                // --------------------------------
+                if (leftOps + rightOps <= n) {
+
+                    ans = Math.min(ans, leftOps + rightOps);
+                }
+            }
+        }
+
+        // ----------------------------------------
+        // No valid answer found
+        // ----------------------------------------
+        return ans == Integer.MAX_VALUE ? -1 : ans;
+    }
+
+
+    // V1-4
+    public int minOperations_1_4(int[] nums, int x) {
+        int n = nums.length;
+        int currentSum = 0;
+        int l = 0;
+
+        // 1. Push the left pointer as far as possible to try to hit 'x' from the left side
+        while (l < n && currentSum < x) {
+            currentSum += nums[l];
+            l++;
+        }
+
+        // If the entire array sum is less than x, it's impossible
+        if (currentSum < x) {
+            return -1;
+        }
+
+        int minOps = Integer.MAX_VALUE;
+
+        // If the prefix exactly hits x, record how many operations it took
+        if (currentSum == x) {
+            minOps = l;
+        }
+
+        // 2. Start the right pointer at the very end
+        int r = n - 1;
+
+        // 3. Move inward. Shrink the left prefix while expanding the right suffix.
+        while (l > 0) {
+            // Remove the last element included from the left side
+            l--;
+            currentSum -= nums[l];
+
+            // Compensate by taking elements from the right side until currentSum >= x
+            while (r > l && currentSum < x) {
+                currentSum += nums[r];
+                r--;
+            }
+
+            // If we hit the exact target, calculate total operations
+            if (currentSum == x) {
+                // Elements taken from left: l
+                // Elements taken from right: n - 1 - r
+                int currentOps = l + (n - 1 - r);
+                minOps = Math.min(minOps, currentOps);
+            }
+        }
+
+        return minOps == Integer.MAX_VALUE ? -1 : minOps;
+    }
+
 
 
 
