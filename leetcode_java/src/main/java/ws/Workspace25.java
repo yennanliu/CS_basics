@@ -8046,6 +8046,16 @@ public class Workspace25 {
 
 
 
+    // LC 1087
+    // 8.29 - 39 am
+    /**
+     *
+     *
+     *
+     */
+    public String[] expand(String s) {
+        return null;
+    }
 
 
 

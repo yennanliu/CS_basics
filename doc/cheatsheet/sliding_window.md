@@ -696,6 +696,123 @@ Generalized: S(k) \ S(k-1) = subarrays with exactly k distinct
 
 ---
 
+### 1.7b) Transformation: Min Operations → Max Subarray Length
+
+#### Core Idea
+
+When a problem asks for the **minimum number of operations removing elements from both ends** of an array until some target is reached, flip the perspective:
+
+```
+Instead of minimizing elements removed from edges,
+MAXIMIZE the elements kept in the middle.
+
+Min Edge Removals = Total Length − Max Middle Subarray Length
+```
+
+**Why this works:**
+
+```
+removed_sum + remaining_sum = total_sum
+
+If removed_sum must equal x:
+  remaining_sum = total_sum - x   ← this becomes the sliding window target
+
+Total Elements − Max Middle Subarray (sum = target) = Min Operations
+```
+
+```
+Visual layout:
+
+MIN EDGE PIECES (Ops)              MAX MIDDLE SUBARRAY
+ | nums[0] | nums[1] |      | ... | ... | ... |
+ \_______________________/  \_______________________/
+     Removed from Edges           Left in the Center
+          (Sum = x)               (Sum = total_sum - x)
+```
+
+#### Pattern
+
+```
+Step 1: Compute total = sum(nums)
+Step 2: Compute target = total - x
+        • If target == 0 → must remove ALL elements → return nums.length
+        • If target < 0  → impossible             → return -1
+Step 3: Sliding window to find LONGEST subarray with sum == target
+Step 4: return nums.length - maxLen   (or -1 if not found)
+```
+
+#### Template (Java)
+
+```java
+public int minOperations(int[] nums, int x) {
+    int total = 0;
+    for (int num : nums) total += num;
+
+    int target = total - x;
+    if (target == 0) return nums.length;
+    if (target < 0)  return -1;
+
+    int n = nums.length, l = 0, sum = 0, maxLen = -1;
+
+    for (int r = 0; r < n; r++) {
+        sum += nums[r];
+
+        // shrink from left while sum exceeds target
+        while (l <= r && sum > target) {
+            sum -= nums[l++];
+        }
+
+        // valid window found — track longest
+        if (sum == target) {
+            maxLen = Math.max(maxLen, r - l + 1);
+        }
+    }
+
+    return maxLen == -1 ? -1 : n - maxLen;
+}
+```
+
+> **Why pure sliding window works here:** all `nums[i] >= 1`, so the window sum is **monotonically non-decreasing** as we expand right. Shrinking from the left always reduces the sum — the validity condition is monotonic → clean two-pointer solution.
+
+#### Dry Run — `nums = [1,1,4,2,3], x = 5`
+
+```
+total = 11,  target = 11 - 5 = 6
+
+r  nums[r]  window     sum   action          maxLen
+0    1      [1]          1   sum < target      -1
+1    1      [1,1]        2   sum < target      -1
+2    4      [1,1,4]      6   sum == target      3   ← window [0..2]
+3    2      [1,1,4,2]    8   shrink left
+           [1,4,2]       7   shrink left
+           [4,2]         6   sum == target      3   ← window [2..3]
+4    3      [4,2,3]      9   shrink left
+           [2,3]         5   sum < target       3
+
+maxLen = 3  →  answer = 5 - 3 = 2 ✓
+```
+
+#### When to Apply This Transformation
+
+| Signal in the problem | Transformation |
+|-----------------------|----------------|
+| "remove from left or right" | Min removals = n − max middle subarray |
+| "minimum operations from both ends" | Find max subarray with sum = total − x |
+| "elements can only be taken from edges" | Complement is a contiguous middle subarray |
+
+#### Similar LeetCode Problems
+
+| Problem | LC# | Difficulty | Key Insight |
+|---------|-----|------------|-------------|
+| **Minimum Operations to Reduce X to Zero** | **1658** | **Medium** | Core example — max subarray with sum = total − x |
+| Minimum Size Subarray Sum | 209 | Medium | Min length subarray with sum ≥ target (direct, no flip) |
+| Maximum Erasure Value | 1695 | Medium | Max subarray with all unique elements |
+| Subarray Sum Equals K | 560 | Medium | Exact subarray sum — use prefix+HashMap (negatives present) |
+| Longest Subarray of 1's After Deleting One Element | 1493 | Medium | Max middle subarray, fixed removal budget |
+| Count Subarrays Where Max Element Appears at Least K Times | 2962 | Medium | Count valid middle windows, min-ops framing |
+
+---
+
 ### 1.8) Prefix Sum + HashMap vs Sliding Window — Which to Use?
 
 #### Core Ideas
