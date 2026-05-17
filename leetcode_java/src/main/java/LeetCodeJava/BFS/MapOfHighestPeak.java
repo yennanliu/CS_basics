@@ -67,6 +67,122 @@ public class MapOfHighestPeak {
 //    }
 
 
+    // V0-1
+    // IDEA: MULTI SOURCE BFS (gpt)
+    public int[][] highestPeak_0_1(int[][] isWater) {
+
+        int l = isWater.length;
+        int w = isWater[0].length;
+
+        int[][] res = new int[l][w];
+
+        // visited
+        boolean[][] visited = new boolean[l][w];
+
+        // bfs queue: {x, y, height}
+        Queue<int[]> q = new LinkedList<>();
+
+        // add all water cells as BFS sources
+        for (int y = 0; y < l; y++) {
+            for (int x = 0; x < w; x++) {
+                if (isWater[y][x] == 1) {
+                    visited[y][x] = true;
+                    res[y][x] = 0;
+                    q.offer(new int[] { x, y, 0 });
+                }
+            }
+        }
+
+        int[][] dirs = new int[][] {
+                { 0, 1 },
+                { 0, -1 },
+                { 1, 0 },
+                { -1, 0 }
+        };
+
+        while (!q.isEmpty()) {
+
+            int[] cur = q.poll();
+
+            int x = cur[0];
+            int y = cur[1];
+            int h = cur[2];
+
+            for (int[] d : dirs) {
+
+                int nx = x + d[0];
+                int ny = y + d[1];
+
+                // valid + not visited
+                if (nx >= 0 && nx < w &&
+                        ny >= 0 && ny < l &&
+                        !visited[ny][nx]) {
+
+                    visited[ny][nx] = true;
+
+                    res[ny][nx] = h + 1;
+
+                    q.offer(new int[] { nx, ny, h + 1 });
+                }
+            }
+        }
+
+        return res;
+    }
+
+
+
+    // V0-2
+    // IDEA: MULTI SOURCE BFS (gemini)
+    public int[][] highestPeak_0_2(int[][] isWater) {
+        int rows = isWater.length;
+        int cols = isWater[0].length;
+
+        int[][] res = new int[rows][cols];
+        // Use primitive boolean (defaults to false, avoiding NullPointerExceptions)
+        boolean[][] visited = new boolean[rows][cols];
+
+        // Queue stores only the coordinates: {row, col}
+        Queue<int[]> q = new LinkedList<>();
+
+        // 1. Initialize BFS queue with all water cells simultaneously
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                if (isWater[r][c] == 1) {
+                    res[r][c] = 0;
+                    visited[r][c] = true;
+                    q.add(new int[] { r, c }); // Directly add to queue
+                }
+            }
+        }
+
+        int[][] dirs = new int[][] { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
+
+        // 2. Multi-Source BFS loop
+        while (!q.isEmpty()) {
+            int[] cur = q.poll();
+            int r = cur[0];
+            int c = cur[1];
+
+            for (int[] d : dirs) {
+                int nr = r + d[0];
+                int nc = c + d[1];
+
+                // Check bounds and if the neighbor hasn't been visited yet
+                if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && !visited[nr][nc]) {
+                    visited[nr][nc] = true;
+                    // The neighbor's height is exactly 1 unit higher than the current cell
+                    res[nr][nc] = res[r][c] + 1;
+                    q.add(new int[] { nr, nc });
+                }
+            }
+        }
+
+        return res;
+    }
+
+
+
     // V1-1
     // IDEA: BFS
     // https://leetcode.com/problems/map-of-highest-peak/editorial/

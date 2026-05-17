@@ -8423,10 +8423,94 @@ public class Workspace25 {
 
 
     // LC 1765
+    // 8.19 - 29 am
+    /**
+     *  ->
+     *
+     *  Return an integer matrix height of size m x n
+     *  where height[i][j] is cell (i, j)'s height.
+     *  If there are multiple solutions, return any of them.
+     *
+     *
+     *  ------------
+     *
+     *   IDEA 1) BFS
+     *    -> 1. collect all `sea` cells
+     *       2. start from `sea` cells. move 4 dirs,
+     *          with BFS, update height
+     *       3. repeat above, till no cell to update
+     *
+     *        - use visited
+     *        - save last cell height ?????
+     *
+     *
+     *   ------------
+     *
+     *
+     */
+    // IDEA 1) BFS
     public int[][] highestPeak(int[][] isWater) {
+        // edge
 
-        return null;
+        int l = isWater.length;
+        int w = isWater[0].length;
+
+        int[][] res = new int[l][w]; // ???
+
+        List<Integer[]> waterList = new ArrayList<>();
+        for(int y = 0; y < l; y++){
+            for(int x = 0; x < w; x++){
+                if(isWater[y][x] == 1){
+                    res[y][x] = 0;
+                    waterList.add(new Integer[]{x,y});
+                }
+            }
+        }
+
+        // visited
+        Boolean[][] visited = new Boolean[l][w]; // ???
+
+        // bfs
+        // { [x, y, prev_height] }
+        Queue<Integer[]> q = new LinkedList<>();
+        // ???
+        for(Integer[] x: waterList){
+            visited[x[1]][x[0]] = true; // ???
+            q.add(new Integer[]{x[0], x[1], 0});  //????
+        }
+
+        // /??
+        int[][] dirs = new int[][]{ {0,1}, {0,-1}, {1,0},{-1,0} };
+
+        while (!q.isEmpty()){
+            int size = q.size();
+            for(int i = 0; i < size; i++){
+                Integer[] cur = q.poll();
+                // ???
+                int x = cur[0];
+                int y = cur[1];
+                int prevH = cur[2];
+                // ???
+                for(int[] d: dirs){
+                    int x_ = x + d[0];
+                    int y_ = y + d[1];
+                    // ???
+                    if(x_ >= 0 && x_ < w && y_ >= 0 && y_ < l && !visited[y_][x_]){
+                        visited[y_][x_] = true; // ???
+                        // ???
+                        res[y_][x_] = prevH + 1;
+                        q.add(new Integer[]{x_, y_, prevH + 1});
+                    }
+                }
+            }
+        }
+
+
+
+        return res;
     }
+
+
 
 
 
