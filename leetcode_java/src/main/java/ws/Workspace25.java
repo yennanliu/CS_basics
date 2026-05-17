@@ -8422,6 +8422,14 @@ public class Workspace25 {
 
 
 
+    // LC 1765
+    public int[][] highestPeak(int[][] isWater) {
+
+        return null;
+    }
+
+
+
 
 
 
