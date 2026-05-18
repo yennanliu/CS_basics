@@ -3,25 +3,25 @@
 **Total Unique Problems: 500**
 
 Generated from: `data/progress.md`
-Date: 2026-05-11
+Date: 2026-05-18
 
 ---
 
 ## Table of Contents
 
-- [Array](#array) (43 problems)
+- [Array](#array) (44 problems)
 - [Backtracking](#backtracking) (6 problems)
 - [Binary Search](#binary-search) (24 problems)
 - [Binary Search Tree](#binary-search-tree) (13 problems)
-- [Breadth-First-Search](#breadth-first-search) (22 problems)
+- [Breadth-First-Search](#breadth-first-search) (23 problems)
 - [Depth-First-Search](#depth-first-search) (24 problems)
 - [Design](#design) (13 problems)
 - [Dynamic Programming](#dynamic-programming) (49 problems)
 - [Graph](#graph) (9 problems)
 - [Greedy](#greedy) (22 problems)
-- [Hash Table](#hash-table) (20 problems)
+- [Hash Table](#hash-table) (18 problems)
 - [Heap](#heap) (18 problems)
-- [Linked List](#linked-list) (16 problems)
+- [Linked List](#linked-list) (15 problems)
 - [Math](#math) (4 problems)
 - [Queue](#queue) (1 problems)
 - [Recursion](#recursion) (19 problems)
@@ -30,20 +30,20 @@ Date: 2026-05-11
 - [Stack](#stack) (23 problems)
 - [String](#string) (19 problems)
 - [Tree](#tree) (26 problems)
-- [Two Pointers](#two-pointers) (11 problems)
+- [Two Pointers](#two-pointers) (12 problems)
 - [Uncategorized](#uncategorized) (100 problems)
 
 ---
 
 ## Array
 
-**Count: 43**
+**Count: 44**
 
-4, 15, 26, 27, 41, 54, 57, 66, 80, 121
-163, 189, 209, 215, 229, 240, 287, 289, 308, 335
-370, 442, 713, 731, 849, 905, 909, 918, 921, 1031
-1074, 1089, 1094, 1109, 1248, 1288, 1314, 1431, 1470, 1672
-1920, 1929, 1991
+3, 4, 15, 26, 27, 41, 54, 57, 66, 80
+121, 163, 189, 209, 215, 229, 240, 287, 289, 308
+335, 370, 442, 713, 731, 849, 905, 909, 918, 921
+1031, 1074, 1089, 1094, 1109, 1248, 1288, 1314, 1431, 1470
+1672, 1920, 1929, 1991
 
 ---
 
@@ -76,11 +76,11 @@ Date: 2026-05-11
 
 ## Breadth-First-Search
 
-**Count: 22**
+**Count: 23**
 
-102, 127, 130, 133, 207, 210, 261, 286, 310, 317
-407, 444, 675, 742, 743, 752, 787, 864, 934, 1091
-1162, 1905
+1, 102, 127, 130, 133, 207, 210, 261, 286, 310
+317, 407, 444, 675, 742, 743, 752, 787, 864, 934
+1091, 1162, 1905
 
 ---
 
@@ -135,10 +135,10 @@ Date: 2026-05-11
 
 ## Hash Table
 
-**Count: 20**
+**Count: 18**
 
-1, 3, 49, 219, 249, 325, 336, 359, 387, 424
-438, 463, 523, 525, 560, 594, 974, 992, 1099, 2615
+49, 219, 249, 325, 336, 359, 387, 424, 438, 463
+523, 525, 560, 594, 974, 992, 1099, 2615
 
 ---
 
@@ -153,10 +153,10 @@ Date: 2026-05-11
 
 ## Linked List
 
-**Count: 16**
+**Count: 15**
 
-2, 21, 23, 24, 25, 61, 82, 92, 138, 160
-206, 234, 430, 725, 817, 1836
+21, 23, 24, 25, 61, 82, 92, 138, 160, 206
+234, 430, 725, 817, 1836
 
 ---
 
@@ -233,10 +233,10 @@ Date: 2026-05-11
 
 ## Two Pointers
 
-**Count: 11**
+**Count: 12**
 
-19, 42, 86, 143, 167, 214, 567, 904, 986, 1023
-2104
+2, 19, 42, 86, 143, 167, 214, 567, 904, 986
+1023, 2104
 
 ---
 
@@ -264,22 +264,22 @@ These problems were not found in the leetcode_python or leetcode_java directory 
 | Category | Count | Percentage |
 |----------|-------|------------|
 | Dynamic Programming | 49 | 9.8% |
-| Array | 43 | 8.6% |
+| Array | 44 | 8.8% |
 | Tree | 26 | 5.2% |
 | Binary Search | 24 | 4.8% |
 | Depth-First-Search | 24 | 4.8% |
+| Breadth-First-Search | 23 | 4.6% |
 | Stack | 23 | 4.6% |
 | Greedy | 22 | 4.4% |
-| Breadth-First-Search | 22 | 4.4% |
-| Hash Table | 20 | 4.0% |
 | String | 19 | 3.8% |
 | Recursion | 19 | 3.8% |
+| Hash Table | 18 | 3.6% |
 | Heap | 18 | 3.6% |
-| Linked List | 16 | 3.2% |
+| Linked List | 15 | 3.0% |
 | Sort | 15 | 3.0% |
 | Binary Search Tree | 13 | 2.6% |
 | Design | 13 | 2.6% |
-| Two Pointers | 11 | 2.2% |
+| Two Pointers | 12 | 2.4% |
 | Graph | 9 | 1.8% |
 | Backtracking | 6 | 1.2% |
 | Math | 4 | 0.8% |
