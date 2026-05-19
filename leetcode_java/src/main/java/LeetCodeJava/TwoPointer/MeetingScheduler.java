@@ -88,6 +88,99 @@ public class MeetingScheduler {
                 return res;
             }
 
+            /** NOTE !!!
+             *
+             *   move the one that ends `earlier`
+             *
+             *   ---
+             *
+             *
+             *   Reason:
+             *
+             * ->  Because the interval that ends `earlier `
+             *     can NEVEN help produce a` better overlap later.`
+             *
+             *
+             * Suppose we have:
+             *
+             * ```
+             * slots1[i] = [10, 20]
+             * slots2[j] = [15, 30]
+             * ```
+             *
+             * Current overlap:
+             *
+             * ```
+             * [15, 20]
+             * ```
+             *
+             * Now compare end times:
+             *
+             * * `slots1[i]` ends at `20`
+             * * `slots2[j]` ends at `30`
+             *
+             * Since `[10,20]` ends earlier, after time `20` it is useless.
+             * It cannot overlap with any future interval beyond `20`.
+             *
+             * So we move `i++`.
+             *
+             * ---
+             *
+             * Another example:
+             *
+             * ```
+             * slots1[i] = [10, 50]
+             * slots2[j] = [20, 25]
+             * ```
+             *
+             * Overlap:
+             *
+             * ```
+             * [20, 25]
+             * ```
+             *
+             * `slots2[j]` ends earlier (`25`).
+             *
+             * Even if we keep it and move `slots1`, this interval can never overlap past `25`.
+             *
+             * So we discard it:
+             *
+             * ```
+             * j++;
+             * ```
+             *
+             * ---
+             *
+             * The greedy intuition:
+             *
+             * At each step:
+             *
+             * ```
+             * overlap = [max(start1, start2), min(end1, end2)]
+             * ```
+             *
+             * The limiting factor is the **smaller end**.
+             *
+             * To possibly get a larger future overlap, we must keep the interval with the
+             * larger end and discard the smaller-end interval.
+             *
+             * That’s why:
+             *
+             * ```
+             * if (slots1[i][1] < slots2[j][1]) {
+             *     i++;
+             * } else {
+             *     j++;
+             * }
+             * ```
+             *
+             * This guarantees:
+             *
+             * * no valid answer is skipped
+             * * time complexity stays `O(n log n + m log m)` due to sorting + linear scan afterward.
+             *
+             *
+             */
             // move the one that ends earlier
             if (slots1[i][1] < slots2[j][1]) {
                 i++;
@@ -132,6 +225,27 @@ public class MeetingScheduler {
                 return res;
             }
 
+            /** NOTE !!!
+             *
+             *  Move the pointer that points to the slot ending earlier
+             *
+             *
+             *  ----
+             *
+             *  slots1 [i]:  |========= 10 ------------ 50 =========| (Ends at 50) -> Keep
+             *  slots2 [j]:  |=== 0 ---- 15 ===|                       (Ends at 15) -> Drop! j++
+             *
+             * Intersection: [10, 15] (Length 5 < 8) -> Move j forward because 15 < 50.
+             *
+             *  ----
+             *
+             *  Step,i Pointer,j Pointer,overlapStart / overlapEnd,overlapEnd - overlapStart >= duration,Pointer Decision (slots1[i][1] vs slots2[j][1])
+             * Start,0,0,"max(10,0)=10 / min(50,15)=15",15−10=5≥8 (False),slots1[0][1] (50) > slots2[0][1] (15) → j++
+             * Step 2,0,1,"max(10,60)=60 / min(50,70)=50",50−60=−10≥8 (False),slots1[0][1] (50) < slots2[1][1] (70) → i++
+             * Step 3,1,1,"max(60,60)=60 / min(120,70)=70",70−60=10≥8 (True),"Match Found! Returns [60, 68]"
+             * 
+             *
+             */
             // 3. Move the pointer that points to the slot ending earlier
             if (slots1[i][1] < slots2[j][1]) {
                 i++;
@@ -170,7 +284,7 @@ public class MeetingScheduler {
 
 
 
-    
+
     // V2
 
 

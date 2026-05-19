@@ -8643,6 +8643,7 @@ public class Workspace25 {
         // assume l1 len > l2 len
         int l1 = slots1.length;
         int l2 = slots2.length;
+
         if(l2 > l1){
             return minAvailableDuration(slots2, slots1, duration);
         }
