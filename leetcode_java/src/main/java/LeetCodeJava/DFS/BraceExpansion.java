@@ -48,7 +48,7 @@ public class BraceExpansion {
     // V0-1
     // IDEA: BFS (GPT)
     // TODO: validate
-    public String[] expand(String s) {
+    public String[] expand_0_1(String s) {
 
         // ----------------------------------------
         // Queue for BFS
@@ -136,6 +136,67 @@ public class BraceExpansion {
         Collections.sort(res);
 
         return res.toArray(new String[0]);
+    }
+
+
+    // V0-1-1
+    // IDEA: BFS (GEMINI)
+    public String[] expand_0_1_1(String s) {
+        // Step 1: Parse the string into distinct groups of options
+        List<List<String>> groups = new ArrayList<>();
+        int i = 0;
+        int n = s.length();
+
+        while (i < n) {
+            List<String> currentGroup = new ArrayList<>();
+            char ch = s.charAt(i);
+
+            if (ch == '{') {
+                i++; // Skip '{'
+                // Collect all characters inside this specific bracket pair
+                while (s.charAt(i) != '}') {
+                    if (s.charAt(i) != ',') {
+                        currentGroup.add(String.valueOf(s.charAt(i)));
+                    }
+                    i++;
+                }
+                i++; // Skip '}'
+            } else {
+                // Regular character outside brackets forms a group of size 1
+                currentGroup.add(String.valueOf(ch));
+                i++;
+            }
+
+            // Sort each group alphabetically to ensure lexicographical order later
+            Collections.sort(currentGroup);
+            groups.add(currentGroup);
+        }
+
+        // Step 2: Perform BFS to combine the groups layer by layer
+        Queue<String> queue = new LinkedList<>();
+        queue.add(""); // Start with an empty base prefix string
+
+        // Process groups one by one
+        for (List<String> group : groups) {
+            int currentQueueSize = queue.size();
+
+            // Empty the current layer and append every option from the new group
+            for (int k = 0; k < currentQueueSize; k++) {
+                String currentPrefix = queue.poll();
+                for (String option : group) {
+                    queue.add(currentPrefix + option);
+                }
+            }
+        }
+
+        // Step 3: Convert the final accumulated layer in the queue into a String array
+        String[] res = new String[queue.size()];
+        int idx = 0;
+        while (!queue.isEmpty()) {
+            res[idx++] = queue.poll();
+        }
+
+        return res;
     }
 
 

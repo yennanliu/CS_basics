@@ -1,10 +1,9 @@
 package ws;
 
-import LeetCodeJava.DataStructure.TreeNode;
+//import LeetCodeJava.DataStructure.TreeNode;
 //import com.sun.org.apache.bcel.internal.generic.IINC;
 //import com.sun.org.apache.bcel.internal.generic.SIPUSH;
 
-import java.rmi.server.RemoteRef;
 import java.util.*;
 
 public class Workspace25 {
@@ -8401,7 +8400,71 @@ public class Workspace25 {
 
 
     // LC 1087
-    // 8.29 - 43 am
+    // 5.53 - 6.13 pm
+    //  IDEA 2) BFS ????
+    public String[] expand(String s) {
+        // edge
+
+        // ??
+        List<List<String>> list = new ArrayList<>();
+        boolean shouldStart = false;
+       // boolean shouldEnd = true;
+
+        // ???
+        List<String> tmp1 = new ArrayList<>();
+        //List<String> tmp2 = new ArrayList<>();
+        StringBuilder sb1 = new StringBuilder();
+        StringBuilder sb2 = new StringBuilder();
+
+        for(char ch: s.toCharArray()){
+            if(ch == '{'){
+                shouldStart = true;
+            }
+            else if(ch == '}'){
+                //shouldEnd = true;
+                shouldStart = false;
+            }
+            if(shouldStart){
+                if(ch != ','){
+                    sb1.append(ch);
+                    tmp1.add(sb1.toString());
+                    // ??? reset
+                    sb1 = new StringBuilder();
+                }
+            }else{
+                // ???
+                if(ch != ','){
+                   // tmp2.add(new String(String.valueOf(ch)));
+                    sb2.append(ch); // ???
+                }
+            }
+
+        }
+
+
+        List<String> cache = new ArrayList<>();
+
+        // bfs call ????
+        // ???
+        Deque<String> deque = new LinkedList<>();
+        // ???
+       // Collections.sort(tmp1, Collections.reverseOrder());
+        deque.add(tmp1.get(0));
+        while (!deque.isEmpty()){
+            String cur = deque.poll();
+
+        }
+
+
+        return null;
+    }
+
+
+
+
+
+
+
     /**
      *
      *  -> Return all words that can be formed in this manner,
@@ -8410,7 +8473,7 @@ public class Workspace25 {
      *
      *  --------
      *
-     *   IDEA 1) BTUTE FORCE
+     *   IDEA 1) BRUTE FORCE
      *
      *   IDEA 2) BFS ????
      *
@@ -8443,7 +8506,7 @@ public class Workspace25 {
      *
      *
      */
-    public String[] expand(String s) {
+    public String[] expand_99(String s) {
         // edge
 
         // /??
