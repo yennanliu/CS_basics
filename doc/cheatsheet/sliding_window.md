@@ -1051,6 +1051,112 @@ Answer: 3 ✅ — the three subarrays `[1,2,1]`, `[2,1,2,1]`, `[2,2,1,2,1]`
 
 ---
 
+### 1.10) Two Pointers on Sorted Intervals
+
+**When to use:** Two sorted interval arrays; find the first (or all) overlapping interval(s) that satisfy a duration/length requirement.
+
+#### Core Idea
+
+```
+Sort both interval arrays by start time.
+Use one pointer per array (i, j).
+At each step:
+  overlap = [max(start_i, start_j), min(end_i, end_j)]
+  If overlap length >= required → answer found.
+  Otherwise, advance the pointer whose interval ends EARLIER.
+
+Why advance the earlier-ending interval?
+  The interval that ends first can NEVER produce a larger overlap
+  with any future interval — it's already exhausted.
+  Keeping the later-ending interval gives the best chance of
+  overlapping with something further right.
+```
+
+#### Pattern
+
+```
+Step 1: Sort both arrays by start time — O(n log n + m log m)
+Step 2: i = 0, j = 0 (one pointer per array)
+Step 3: while i < len(A) and j < len(B):
+          overlapStart = max(A[i][0], B[j][0])
+          overlapEnd   = min(A[i][1], B[j][1])
+          if overlapEnd - overlapStart >= duration:
+              return [overlapStart, overlapStart + duration]
+          if A[i][1] < B[j][1]:   # A[i] ends earlier → advance i
+              i++
+          else:                    # B[j] ends earlier (or tie) → advance j
+              j++
+Step 4: return [] (no valid overlap found)
+```
+
+#### Template (Java) — LC 1229 Meeting Scheduler
+
+```java
+// LC 1229 - Meeting Scheduler
+// IDEA: Sort + Two Pointers on interval arrays
+// time = O(n log n + m log m), space = O(1)
+public List<Integer> minAvailableDuration(int[][] slots1, int[][] slots2, int duration) {
+    Arrays.sort(slots1, (a, b) -> a[0] - b[0]);
+    Arrays.sort(slots2, (a, b) -> a[0] - b[0]);
+
+    int i = 0, j = 0;
+    while (i < slots1.length && j < slots2.length) {
+        int overlapStart = Math.max(slots1[i][0], slots2[j][0]);
+        int overlapEnd   = Math.min(slots1[i][1], slots2[j][1]);
+
+        if (overlapEnd - overlapStart >= duration) {
+            return Arrays.asList(overlapStart, overlapStart + duration);
+        }
+
+        // advance the pointer whose interval ends earlier
+        if (slots1[i][1] < slots2[j][1]) {
+            i++;
+        } else {
+            j++;
+        }
+    }
+    return Collections.emptyList();
+}
+```
+
+#### Dry Run — `slots1=[[10,50],[60,120],[140,210]], slots2=[[0,15],[60,70]], duration=8`
+
+```
+i  j  overlapStart  overlapEnd  length  action
+0  0  max(10,0)=10  min(50,15)=15   5   < 8 → slots1[0][1]=50 > slots2[0][1]=15 → j++
+0  1  max(10,60)=60 min(50,70)=50  -10  < 8 → slots1[0][1]=50 < slots2[1][1]=70 → i++
+1  1  max(60,60)=60 min(120,70)=70  10  ≥ 8 → return [60, 68] ✓
+```
+
+#### Similar LeetCode Problems
+
+| Problem | LC# | Difficulty | Key Insight |
+|---------|-----|------------|-------------|
+| **Meeting Scheduler** | **1229** | **Medium** | Core example — first overlap of duration d across two slot arrays |
+| Interval List Intersections | 986 | Medium | Collect ALL overlaps between two sorted interval lists; same advance-earlier-end rule |
+| Employee Free Time | 759 | Hard | Merge all employee intervals, find gaps — same sorted multi-list pointer idea |
+| Merge Intervals | 56 | Medium | Single sorted interval list; merge overlapping intervals greedily |
+| Insert Interval | 57 | Medium | Insert + merge into a sorted interval list in one pass |
+| Meeting Rooms | 252 | Easy | Check if any two intervals overlap (sort by start, compare adjacent ends) |
+| Meeting Rooms II | 253 | Medium | Count minimum rooms needed; sort starts/ends separately with two pointers |
+| Non-overlapping Intervals | 435 | Medium | Greedy — remove minimum intervals to make remainder non-overlapping |
+
+#### Pattern Recognition
+
+```
+✅ Use Sort + Two Pointers on Intervals when:
+   - Two sorted interval arrays, find first/all overlaps
+   - "Earliest common availability" type problems
+   - Merging or intersecting two independently sorted lists
+
+✅ Related patterns:
+   - Single interval list → sort + greedy scan (LC 56, 435)
+   - Min rooms / conflicts → sort starts & ends separately (LC 253)
+   - All intersections → same two-pointer loop, collect instead of return early (LC 986)
+```
+
+---
+
 ## 2) Problems by Template Pattern
 
 ### 2.1) Template Classification Guide
