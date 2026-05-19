@@ -8604,6 +8604,11 @@ public class Workspace25 {
 
 
 
+    // LC 1229
+    public List<Integer> minAvailableDuration(int[][] slots1, int[][] slots2, int duration) {
+
+        return null;
+    }
 
 
 
