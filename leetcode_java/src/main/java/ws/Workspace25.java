@@ -8605,10 +8605,98 @@ public class Workspace25 {
 
 
     // LC 1229
+    // 3.47 - 57 pm
+    /**
+     * ->  return the `earliest` time slot
+     *    that works for `both` of them
+     *    and is of `duration`.
+     *
+     *    - slot1, slot2
+     *    - if NO common time slot
+     *       -> return empty list
+     *
+     *     -
+     *
+     *
+     *  ------------
+     *
+     *  IDEA 1) SORT + 2 POINTERS
+     *
+     *  IDEA 2) BRUTE FORCE ???
+     *
+     *  IDEA 3) slide window ???
+     *
+     *
+     *  ------------
+     *
+     *
+     */
+    // IDEA 1) SORT + 2 POINTERS
     public List<Integer> minAvailableDuration(int[][] slots1, int[][] slots2, int duration) {
+        // edge
+        List<Integer> res = new ArrayList<>();
+        if(slots1 == null || slots2 == null || duration == 0){
+            return res;
+        }
 
-        return null;
+        // /??
+        // assume l1 len > l2 len
+        int l1 = slots1.length;
+        int l2 = slots2.length;
+        if(l2 > l1){
+            return minAvailableDuration(slots2, slots1, duration);
+        }
+
+        // sort:
+        // start: small -> big
+        // end: small -> big ??
+        Arrays.sort(slots1, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                int diff = o1[0] - o2[0];
+                if(diff == 0){
+                    return o1[1] - o2[1];
+                }
+                return diff;
+            }
+        });
+
+        Arrays.sort(slots2, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                int diff = o1[0] - o2[0];
+                if(diff == 0){
+                    return o1[1] - o2[1];
+                }
+                return diff;
+            }
+        });
+
+       // int i = 0;
+        int j = 0;
+        // ???
+        for(int i = 0; i < l1; i++){
+            // case 1) NO overlap
+            // ???
+            while (slots2[j][0] > slots1[i][1] && j < l2){
+                j += 1;
+            }
+            // case 2) overlap
+            // check if overlap time >= duration
+            int overLapStart = Math.max(slots1[i][0], slots1[j][0]);
+            int overLapEnd = Math.min(slots1[i][1], slots1[j][1]);
+
+            if(overLapStart + duration == overLapEnd){
+                res.add(overLapStart);
+                res.add(overLapEnd);
+                return res;
+            }
+        }
+
+        return res;
     }
+
+
 
 
 

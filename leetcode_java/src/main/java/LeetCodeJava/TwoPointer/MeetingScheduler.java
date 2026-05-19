@@ -3,6 +3,7 @@ package LeetCodeJava.TwoPointer;
 // https://leetcode.com/problems/meeting-scheduler/description/
 // https://leetcode.ca/all/1229.html
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -55,6 +56,95 @@ public class MeetingScheduler {
 //    }
 
 
+    // V0-1
+    // IDEA: SORT + 2 POINTERS (GPT)
+    // TODO: validate
+    // IDEA: Sort + Two Pointers
+    public List<Integer> minAvailableDuration_0_1(int[][] slots1, int[][] slots2, int duration) {
+
+        List<Integer> res = new ArrayList<>();
+
+        if (slots1 == null || slots2 == null || duration <= 0) {
+            return res;
+        }
+
+        // sort by start time
+        Arrays.sort(slots1, (a, b) -> a[0] - b[0]);
+        Arrays.sort(slots2, (a, b) -> a[0] - b[0]);
+
+        int i = 0;
+        int j = 0;
+
+        while (i < slots1.length && j < slots2.length) {
+
+            // overlap interval
+            int start = Math.max(slots1[i][0], slots2[j][0]);
+            int end = Math.min(slots1[i][1], slots2[j][1]);
+
+            // enough duration
+            if (end - start >= duration) {
+                res.add(start);
+                res.add(start + duration);
+                return res;
+            }
+
+            // move the one that ends earlier
+            if (slots1[i][1] < slots2[j][1]) {
+                i++;
+            } else {
+                j++;
+            }
+        }
+
+        return res;
+    }
+
+
+    // V0-2
+    // IDEA: SORT + 2 POINTERS (gpt)
+    // TODO: validate
+    // IDEA: Sort + Two Pointers
+    public List<Integer> minAvailableDuration_0_2(int[][] slots1, int[][] slots2, int duration) {
+        List<Integer> res = new ArrayList<>();
+        if (slots1 == null || slots2 == null || duration == 0) {
+            return res;
+        }
+
+        // 1. Sort both slots by their start times in ascending order
+        Arrays.sort(slots1, (o1, o2) -> Integer.compare(o1[0], o2[0]));
+        Arrays.sort(slots2, (o1, o2) -> Integer.compare(o1[0], o2[0]));
+
+        int i = 0;
+        int j = 0;
+        int l1 = slots1.length;
+        int l2 = slots2.length;
+
+        // 2. Parallel linear scan
+        while (i < l1 && j < l2) {
+            // Calculate intersection boundaries correctly between slots1 and slots2
+            int overlapStart = Math.max(slots1[i][0], slots2[j][0]);
+            int overlapEnd = Math.min(slots1[i][1], slots2[j][1]);
+
+            // If the overlap can accommodate the duration requirement
+            if (overlapEnd - overlapStart >= duration) {
+                res.add(overlapStart);
+                res.add(overlapStart + duration); // First available slot of required length
+                return res;
+            }
+
+            // 3. Move the pointer that points to the slot ending earlier
+            if (slots1[i][1] < slots2[j][1]) {
+                i++;
+            } else {
+                j++;
+            }
+        }
+
+        return res;
+    }
+
+
+
     // V1
     // IDEA: SORT + 2 POINTERS
     // https://leetcode.ca/2019-04-12-1229-Meeting-Scheduler/
@@ -80,7 +170,9 @@ public class MeetingScheduler {
 
 
 
+    
     // V2
+
 
 
 
