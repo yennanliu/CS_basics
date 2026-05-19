@@ -45,6 +45,23 @@ public class FlipStringToMonotoneIncreasing {
 
     // V0
     // IDEA: DP (One-Pass Dynamic Programming) (GEMINI)
+    /**  NOTE !!!
+     *
+     *  we track 2 var:
+     *
+     *  1. flip cnt
+     *    - tracks the minimum flips needed
+     *      to keep the string monotone so far
+     *
+     *  2. oneCnt
+     *    - tracks the number of 1s
+     *      in the current "0-zone"
+     *
+     *
+     *  3. we loop from `left` to `right`
+     *     ( --> )
+     *
+     */
     public int minFlipsMonoIncr(String s) {
         // 'flip' tracks the minimum flips needed to keep the string monotone so far
         int flip = 0;
@@ -84,6 +101,32 @@ public class FlipStringToMonotoneIncreasing {
         }
 
         return flip;
+    }
+
+
+    // V0-1
+    // IDEA: 1D DP (gpt)
+    public int minFlipsMonoIncr_0_1(String s) {
+        int flips = 0;
+        int ones = 0;
+
+        for (char c : s.toCharArray()) {
+
+            // count number of 1s seen so far
+            if (c == '1') {
+                ones++;
+            } else {
+                // Option 1:
+                // flip this 0 -> 1
+                flips++;
+
+                // Option 2:
+                // flip all previous 1s -> 0
+                flips = Math.min(flips, ones);
+            }
+        }
+
+        return flips;
     }
 
 

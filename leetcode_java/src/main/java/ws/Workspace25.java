@@ -5192,9 +5192,100 @@ public class Workspace25 {
      */
     // 7.25 - 35 am
     //  IDEA 4) 1D DP ???
+
+
+    // 2.08 - 27 pm
+    //  IDEA 4) 1D DP ???
+    /**
+     *
+     *  - DP def:
+     *     ( <---- right to left)
+     *     - dp[i] = min op to make sub array mono
+     *              e.g. s[i.. end]
+     *
+     *  - DP eq:
+     *
+     *
+     */
+    public int minFlipsMonoIncr(String s) {
+        int flips = 0;
+        int ones = 0;
+
+        // /??
+        for(char c: s.toCharArray()){
+            if(c == '1'){
+                ones += 1;
+            }else{
+                // option 1: make as 0
+                //flips += (ones + 1);
+                flips = Math.min(flips,
+                        ones + 1);
+
+                // option 2: make as 1
+                flips += 1;
+            }
+        }
+
+
+        return flips;
+    }
+
+
+
+
+
+//    public int minFlipsMonoIncr(String s) {
+//        // edge
+//
+//        int flip = 0;
+//        int oneCnt = 0;
+//
+//        int n = s.length();
+//
+//        // ??
+//        int[] dp = new int[n]; // ???
+//        // ???
+//        dp[n - 1] = s.charAt(n - 1) == '1' ? 0 : 1;
+//        oneCnt = s.charAt(n - 1) == '1' ? 1: 0;
+//
+//
+//        //dp[n-1] = val; // ???
+//
+//        // ??
+//        for(int i = n - 2; i > 0; i--){
+//            // ??
+//            // case 1) if `1`
+//            if(s.charAt(i) == '1'){
+//                oneCnt += 1;
+//                // ???
+//                // ??
+//                dp[i] = dp[i-1]; // ???
+//            }
+//            // /??
+//            // case 1) if `0`
+//            else{
+//                dp[i] = Math.min(
+//                        dp[i-1],
+//                        i - oneCnt
+//                );
+//            }
+//        }
+//
+//
+//        // /??
+//        return dp[0];
+//    }
+
+
+
+
+
+
+
+
     // NOTE: the updated str need to be in `000111` format
     //       or `00000` or `1111` format
-    public int minFlipsMonoIncr(String s) {
+    public int minFlipsMonoIncr_99(String s) {
         // edge
 
         int flip = 0;
@@ -5227,12 +5318,6 @@ public class Workspace25 {
 
         return flip;
     }
-
-
-
-
-
-
 
 
 
@@ -8510,6 +8595,12 @@ public class Workspace25 {
         return res;
     }
 
+
+//    // LC 926
+//    public int minFlipsMonoIncr(String s) {
+//
+//        return 0;
+//    }
 
 
 
