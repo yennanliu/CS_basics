@@ -5198,15 +5198,48 @@ public class Workspace25 {
     /**
      *
      *  - DP def:
-     *     ( <---- right to left)
-     *     - dp[i] = min op to make sub array mono
-     *              e.g. s[i.. end]
+     *
+     *    dp[i]: min op to make sub array monotonice at idx = i
      *
      *  - DP eq:
      *
      *
      */
+    // 9.09 - 19 am
+    //IDEA 4) 1D DP ???
     public int minFlipsMonoIncr(String s) {
+        // edge
+
+       // int n = s.length(); // ??
+        int oneCnt = 0;
+        int flips = 0;
+
+        // ???
+        for(char ch: s.toCharArray()){
+            if(ch == '1'){
+                oneCnt += 1;
+            }else{
+                // option 2: set as 1'
+                //flips += 1; // ???
+
+                // option 1: set as 0
+               // flips = Math.min(flips, oneCnt); // ??
+                flips = Math.min(flips + 1, oneCnt);
+            }
+        }
+
+
+
+        return flips;
+    }
+
+
+
+
+
+
+
+    public int minFlipsMonoIncr_82(String s) {
         int flips = 0;
         int ones = 0;
 
