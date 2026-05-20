@@ -52,14 +52,67 @@ import java.util.List;
 public class MeetingScheduler {
 
     // V0
-//    public List<Integer> minAvailableDuration(int[][] slots1, int[][] slots2, int duration) {
-//    }
+    // IDEA: SORT + 2 POINTERS
+    // TODO: validate
+    public List<Integer> minAvailableDuration(int[][] slots1, int[][] slots2, int duration) {
+
+        List<Integer> res = new ArrayList<>();
+
+        if (slots1 == null || slots2 == null || duration <= 0) {
+            return res;
+        }
+
+        Arrays.sort(slots1, (a, b) -> a[0] - b[0]);
+        Arrays.sort(slots2, (a, b) -> a[0] - b[0]);
+
+        int i = 0;
+        int j = 0;
+
+        /** NOTE !!!
+         *
+         *  while loop on i, j index
+         */
+        while (i < slots1.length && j < slots2.length) {
+
+            // overlap interval
+            /** NOTE !!!
+             *
+             *  how we get the overlap start, and end idx
+             */
+            int overlapStart = Math.max(slots1[i][0], slots2[j][0]);
+            int overlapEnd = Math.min(slots1[i][1], slots2[j][1]);
+
+            // enough duration
+            if (overlapEnd - overlapStart >= duration) {
+                res.add(overlapStart);
+                /** NOTE !!!
+                 *
+                 *  the `end` iex is `overlapStart + duration`
+                 */
+                res.add(overlapStart + duration);
+                return res;
+            }
+
+            /** NOTE !!!
+             *
+             *  we move the slot has `smaller` end to next idx,
+             *  since it is more UNLIKELY to form a `longer` overlap
+             */
+            // move the interval with smaller end
+            if (slots1[i][1] < slots2[j][1]) {
+                i++;
+            } else {
+                j++;
+            }
+        }
+
+        return res;
+    }
 
 
     // V0-1
     // IDEA: SORT + 2 POINTERS (GPT)
     // TODO: validate
-    // IDEA: Sort + Two Pointers
     public List<Integer> minAvailableDuration_0_1(int[][] slots1, int[][] slots2, int duration) {
 
         List<Integer> res = new ArrayList<>();

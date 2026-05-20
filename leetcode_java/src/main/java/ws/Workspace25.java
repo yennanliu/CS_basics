@@ -8727,8 +8727,84 @@ public class Workspace25 {
      *
      *
      */
-    // IDEA 1) SORT + 2 POINTERS
+    // 9.36 - 46 am
+    /**
+     *  IDEA 1) SORT + 2 POINTERS ????
+     *
+     *
+     */
     public List<Integer> minAvailableDuration(int[][] slots1, int[][] slots2, int duration) {
+        // edge
+        List<Integer> res = new ArrayList<>();
+        if(slots1 == null || slots2 == null || duration <= 0){
+            return res;
+        }
+        Arrays.sort(slots1, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                int diff = o1[0] - o2[0];
+                return diff;
+            }
+        });
+
+        Arrays.sort(slots2, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                int diff = o1[0] - o2[0];
+                return diff;
+            }
+        });
+
+        //List<Integer> res = new ArrayList<>();
+        // ???
+        int i = 0;
+        int j = 0;
+        int l1 = slots1.length;
+        int l2 = slots2.length;
+
+        // ???
+        while (i < l1 && j < l2){
+            // ???
+            int overLapStart = Math.max(slots1[i][0], slots2[j][0]);
+            int overLapEnd = Math.min(slots1[i][1], slots2[j][1]);
+
+            // CASE 1) OVERLAP
+            // or
+            // overLapEnd - overLapStart >= duration
+            if(overLapEnd - duration >= overLapStart) {
+                //List<Integer> tmp = new ArrayList<>();
+                res.add(overLapStart);
+                //res.add(overLapEnd);
+                res.add(overLapStart + duration);
+                //res.add(tmp);
+                return res;
+            }
+            // CASE 2) NON OVERLAP
+            // ??? we move to next on the one
+            // that has `smaller end`
+            // since it is more UNLIKELY for the one
+            // to have better `overlap`
+            if(slots1[i][1] < slots2[j][1]){
+                i += 1;
+            }else{
+                j += 1;
+            }
+
+        }
+
+
+
+        return res;
+    }
+
+
+
+
+
+
+
+    // IDEA 1) SORT + 2 POINTERS
+    public List<Integer> minAvailableDuration_99(int[][] slots1, int[][] slots2, int duration) {
         // edge
         List<Integer> res = new ArrayList<>();
         if(slots1 == null || slots2 == null || duration == 0){
@@ -8741,7 +8817,7 @@ public class Workspace25 {
         int l2 = slots2.length;
 
         if(l2 > l1){
-            return minAvailableDuration(slots2, slots1, duration);
+            return minAvailableDuration_99(slots2, slots1, duration);
         }
 
         // sort:
