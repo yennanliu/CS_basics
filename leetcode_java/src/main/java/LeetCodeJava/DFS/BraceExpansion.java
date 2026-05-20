@@ -40,6 +40,7 @@ import java.util.*;
 public class BraceExpansion {
 
     // V0
+    // IDEA: BFS + PREFIX SUM !!!!
     // TODO : implement, validate
     public String[] expand(String s) {
         // Step 1: Parse the string into distinct groups of options

@@ -8433,9 +8433,95 @@ public class Workspace25 {
 
 
     // LC 1087
-    // 5.53 - 6.13 pm
+    // 10.12 - 30 am
     //  IDEA 2) BFS ????
     public String[] expand(String s) {
+        // edge
+
+
+
+        // Step 1: Parse the string into distinct groups of options
+        List<List<String>> groups = new ArrayList<>();
+
+
+
+        List<String> list = new ArrayList<>();
+
+        int i = 0;
+        int n = s.length();
+        boolean inBracket = false;
+        // ???
+        StringBuilder sb = new StringBuilder();
+
+        // ???
+        while (i < n){
+
+            List<String> currentGroup = new ArrayList<>();
+            //char ch = s.charAt(i);
+
+
+
+            // ???
+            char ch = s.charAt(i);
+            // case 1) {a,b}
+            if (ch == '{') {
+                inBracket = true;
+                i += 1;
+
+                // add `NOT in bracket` elements to list
+                list.add(sb.toString());
+                // rest
+                sb = new StringBuilder();
+
+                continue; // ???
+            }
+            // ????
+            if(ch == '}'){
+                inBracket = false;
+                i += 1;
+                continue; // ???
+            }
+            // ???
+            while (inBracket){
+                if(ch != ','){
+                    // ??
+                    list.add(String.valueOf(ch));
+                }
+                i += 1;
+            }
+
+            sb.append(String.valueOf(ch));
+
+        }
+
+        // bfs ????
+        Queue<String> q = new LinkedList<>();
+
+
+
+
+
+
+
+        return null;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public String[] expand_93(String s) {
         // edge
 
         // ??
