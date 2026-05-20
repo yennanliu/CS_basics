@@ -8957,6 +8957,107 @@ public class Workspace25 {
 
 
 
+    // LC 1383
+    // 4.53 - 5.17 pm
+    /**
+     *
+     *
+     *  Return the `maximum` performance of this team.
+     *  Since the answer can be a huge number,
+     *  return it modulo 109 + 7.
+     *
+     *
+     *  The `performance` of a team is the sum of
+     *  its engineers' speeds multiplied
+     *  by the `minimum efficiency` among its engineers.
+     *
+     *
+     *   map: { speed : efficiency } // ???
+     *
+     *   PQ: on speed (big -> small)
+     *
+     *   how to get max res from below ???
+     *     (a+b+c) * min (i, j, k)
+     *
+     *   -> need to get top N `(i, j, k)` ???
+     *
+     *
+     *   PQ on performance ???
+     *
+     *
+     *
+     *          int[][] engineers = new int[n][2];
+     *         for (int i = 0; i < n; i++) {
+     *             engineers[i] = new int[] { efficiency[i], speed[i] };
+     *         }
+     *
+     *         // 1. Sort engineers by efficiency in descending order
+     *         Arrays.sort(engineers, (a, b) -> b[0] - a[0]);
+     *
+     *         // 2. Min-Heap to keep track of the highest speeds
+     *         PriorityQueue<Integer> pq = new PriorityQueue<>(k);
+     *
+     *
+     *
+     *  -------
+     *
+     *
+     *  IDEA 1) PQ
+     *
+     *
+     */
+    public int maxPerformance(int n, int[] speed, int[] efficiency, int k) {
+        // edge
+
+        // ???
+        int[][] eng  = new int[n][2];
+        // ??
+        for(int i = 0; i < n; i++){
+            eng[i] =  new int[] { efficiency[i], speed[i] }; // new int[]{speed[i], efficiency[i]};
+
+        }
+
+        // ???
+        // 1. Sort engineers by efficiency in descending order
+        Arrays.sort(eng, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                int diff = o2[0] - o1[0];
+                return diff;
+            }
+        });
+
+
+        // ???
+        // 2. Min-Heap to keep track of the highest speeds
+        // ???
+        // what's difference between
+        // new PriorityQueue<>(k); VS new PriorityQueue<>(); // ???
+        PriorityQueue<Integer> pq = new PriorityQueue<>(k);
+
+        long totalSpeed = 0;
+        long maxPerformance = 0;
+
+       // int res = 0;
+       // ???
+        for (int[] engineer : eng) {
+
+            int currEff = engineer[0];
+            int currSpeed = engineer[1];
+
+
+
+
+
+        }
+
+
+
+        return Math.toIntExact(maxPerformance);
+    }
+
+
+
 
 
 

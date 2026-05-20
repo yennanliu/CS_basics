@@ -61,6 +61,76 @@ public class MaximumPerformanceOfAeam {
 
     // V0-1
     // IDEA: PQ (gemini)
+    /** CORE IDEA:
+     *
+     *  Team performance = (sum of speeds) × (minimum efficiency)
+     *
+     *  -> so, the difficult part is handling the minimum `efficiency` correctly.
+     *
+     *  ---
+     *
+     *  Why sort by efficiency descending ???
+     *
+     *
+     *  The performance formula for a team of engineers is defined by the problem as:
+     *
+     * $$\text{Performance} = (\sum \text{Speeds}) \times \min(\text{Efficiencies})$$
+     *
+     * ### 🎯 Why We Must Sort by Efficiency (Big $\rightarrow$ Small)
+     *
+     * The magic of sorting by **efficiency in descending order**
+     * is that it completely solves the most difficult part of
+     * the equation: tracking the minimum efficiency ($\min(\text{Efficiencies})$).
+     *
+     * When you iterate through the engineers after sorting this way,
+     * **the current engineer's efficiency (`currEff`)
+     * is guaranteed to be the absolute minimum efficiency
+     * of anyone chosen so far.**
+     *
+     * This creates a beautiful system:
+     *
+     * 1. **The Bottleneck is Fixed:** For every step of the loop,
+     *    you *know* exactly what the multiplier will be (`currEff`).
+     *
+     * 2. **The Problem Simplifies:** Since the multiplier is fixed,
+     *     your only remaining job is to maximize the other half of
+     *     the equation—the sum of speeds ($\sum \text{Speeds}$).
+     *
+     * 3. **The Greedy Choice Works:** To maximize the sum of speeds
+     *     with up to $k$ engineers, you just use a Min-Heap (`PriorityQueue`)
+     *     to hold the top $k$ fastest speeds seen so far.
+     *     If you encounter an $(k+1)$-th engineer,
+     *     you simply kick out the slowest one (`pq.poll()`).
+     *
+     * ---
+     *
+     * ### ❌ Why Sorting by Speed (Big $\rightarrow$ Small) Fails
+     *
+     * If you sorted by speed from largest to smallest instead, your strategy would break down completely:
+     *
+     * 1. **Unpredictable Bottlenecks:** As you iterate, the sum of speeds would be easy to maximize, but the efficiencies of the engineers in your heap would be completely random.
+     * 2. **No Constant Multiplier:** You wouldn't know which engineer is dictating the team's minimum efficiency without constantly scanning your entire heap.
+     * 3. **Unable to Evict Correctly:** If your team exceeded size $k$, you wouldn't know whom to kick out. Do you remove the engineer with the lowest speed? Or the one with the lowest efficiency who is ruining your multiplier?
+     *
+     * Sorting by speed forces you to optimize two moving targets simultaneously. Sorting by efficiency freezes the multiplier, leaving you with only one moving target (speed).
+     *
+     * ---
+     *
+     * ### 📊 Computation State Trace
+     *
+     * Let's see this in action. Imagine $k = 2$, and your sorted engineers list is:
+     *
+     * * Engineer A: `[Eff: 10, Speed: 2]`
+     * * Engineer B: `[Eff: 5,  Speed: 10]`
+     * * Engineer C: `[Eff: 2,  Speed: 11]`
+     *
+     * | Loop Step | Current Engineer | `currEff` (Fixed Bottleneck) | Min-Heap State (`pq`) | `totalSpeed` | Performance Calculation | `maxPerformance` |
+     * | --- | --- | --- | --- | --- | --- | --- |
+     * | **1** | A `[10, 2]` | **10** (Guaranteed Min) | `[2]` | 2 | $2 \times 10 = 20$ | 20 |
+     * | **2** | B `[5, 10]` | **5** (Guaranteed Min) | `[2, 10]` | 12 | $12 \times 5 = 60$ | **60** |
+     * | **3** | C `[2, 11]` | **2** (Guaranteed Min) | `[2, 10, 11]` $\rightarrow$ Evicts `2` $\rightarrow$ `[10, 11]` | $12 + 11 - 2 = \mathbf{21}$ | $21 \times 2 = 42$ | **60** |
+     *
+     */
     /**
      * time = O(N log N)
      * space = O(N)
@@ -71,10 +141,19 @@ public class MaximumPerformanceOfAeam {
             engineers[i] = new int[] { efficiency[i], speed[i] };
         }
 
-        // 1. Sort engineers by efficiency in descending order
+
+        // 1. Sort engineers by `efficiency` in descending order
+        /** NOTE !!!
+         *
+         *  sort by `efficiency` (big -> small)
+         */
         Arrays.sort(engineers, (a, b) -> b[0] - a[0]);
 
         // 2. Min-Heap to keep track of the highest speeds
+        /** NOTE !!!
+         *
+         *  min PQ to keep the `highest speed`
+         */
         PriorityQueue<Integer> pq = new PriorityQueue<>(k);
 
         long totalSpeed = 0;
@@ -88,7 +167,7 @@ public class MaximumPerformanceOfAeam {
             totalSpeed += currSpeed;
             pq.add(currSpeed);
 
-            // If team size exceeds k, remove the engineer with the lowest speed
+            // If team size exceeds k, remove the engineer with the `lowest` speed
             if (pq.size() > k) {
                 totalSpeed -= pq.poll();
             }
@@ -100,6 +179,7 @@ public class MaximumPerformanceOfAeam {
         // The problem asks for the result modulo 10^9 + 7
         return (int) (maxPerformance % 1000000007);
     }
+
 
     // V0-2
     // IDEA: PQ (gpt)
