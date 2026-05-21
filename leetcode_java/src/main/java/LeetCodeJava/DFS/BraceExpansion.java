@@ -77,6 +77,63 @@ public class BraceExpansion {
          *
          *   BFS + prefix
          *
+         *
+         * ----
+         *
+         *  Q: is below a BFS algo?
+         *
+         *  -> Yes — this is a breadth-first style expansion over combinations.
+         *
+         * More precisely, it is a level-by-level traversal where:
+         *
+         * * each `group` represents one “depth level”
+         * * the queue stores partial combinations
+         * * for every level, you expand all current prefixes
+         * with all options from the next group
+         *
+         * That pattern matches the core idea of BFS:
+         *
+         * * process all nodes at the current depth
+         * * generate the next layer
+         * * continue level by level
+         *
+         * Conceptually, if:
+         *
+         * ```java
+         * groups = [
+         *   ["A", "B"],
+         *   ["1", "2"],
+         *   ["X"]
+         * ]
+         * ```
+         *
+         * the queue evolves like:
+         *
+         * ```text
+         * Start:
+         * [""]
+         *
+         * After first group:
+         * ["A", "B"]
+         *
+         * After second group:
+         * ["A1", "A2", "B1", "B2"]
+         *
+         * After third group:
+         * ["A1X", "A2X", "B1X", "B2X"]
+         * ```
+         *
+         * So this is effectively BFS over a combination tree.
+         *
+         * A more precise description would be:
+         *
+         * * “iterative BFS-style Cartesian product generation”
+         * * or “level-order combination building”
+         *
+         * It is not BFS over a graph with visited nodes/cycles,
+         * but structurally it uses the BFS traversal pattern.
+         *
+         *
          */
         // Step 2: Perform BFS to combine the groups layer by layer
         Queue<String> queue = new LinkedList<>();

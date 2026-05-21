@@ -1556,6 +1556,128 @@ Final result: 2 paths found ✓
 
 ---
 
+### Pattern 9: BFS-Style Cartesian Product Generation (Level-by-Level Combination Building)
+
+**Core idea:** Use a queue of partial strings (prefixes). Each independent "group" of options maps to one BFS depth level. For every level, drain the current queue and expand every prefix with every option in that group — producing the full Cartesian product one layer at a time.
+
+This is **not** BFS over a graph with visited-node tracking. It is the BFS traversal structure applied to combination enumeration: process all nodes at depth `k`, generate all nodes at depth `k+1`, repeat.
+
+#### When to Use
+
+| Signal | Reason |
+|--------|--------|
+| Output must enumerate **all combinations** from independent choice groups | Cartesian product = one choice per group |
+| Groups are **independent** (no constraint between them) | No pruning needed; every combination is valid |
+| Want **lexicographic order** | Sort each group before BFS; row-major queue output is already sorted |
+| Prefer **iterative** over recursive | BFS loop replaces DFS/backtracking recursion |
+
+**Why NOT DFS/backtracking?** Both work, but BFS avoids recursion depth limits and naturally produces combinations in group-order. Backtracking is better when choices within groups have cross-constraints (e.g., no duplicate characters in path).
+
+#### How the Queue Evolves (Cartesian Product Visualization)
+
+```
+Input: s = "{a,b}c{d,e}f"
+Parsed groups: [["a","b"], ["c"], ["d","e"], ["f"]]
+
+Start:
+  queue = [""]
+
+After group ["a","b"]  (level 1):
+  Drain "" → append "a", "b"
+  queue = ["a", "b"]
+
+After group ["c"]      (level 2):
+  Drain "a" → "ac"
+  Drain "b" → "bc"
+  queue = ["ac", "bc"]
+
+After group ["d","e"]  (level 3):
+  Drain "ac" → "acd", "ace"
+  Drain "bc" → "bcd", "bce"
+  queue = ["acd", "ace", "bcd", "bce"]
+
+After group ["f"]      (level 4):
+  queue = ["acdf", "acef", "bcdf", "bcef"]   ← final result
+```
+
+Each level multiplies the queue size by the group's option count.  
+Total combinations = `|group_0| × |group_1| × ... × |group_k|` (the Cartesian product size).
+
+#### Template (Java)
+
+```java
+// Pattern 9: BFS-Style Cartesian Product Generation
+// Time: O(G * |result|) where G = number of groups, |result| = total combinations
+// Space: O(|result|) for the queue at the final level
+public String[] cartesianBFS(List<List<String>> groups) {
+    Queue<String> queue = new LinkedList<>();
+    queue.add("");  // seed: one empty prefix at depth 0
+
+    for (List<String> group : groups) {
+        int size = queue.size();  // snapshot current layer size
+        for (int k = 0; k < size; k++) {
+            String prefix = queue.poll();
+            for (String option : group) {
+                queue.add(prefix + option);  // expand: prefix × option
+            }
+        }
+        // After the loop: queue holds exactly one layer deeper
+    }
+
+    String[] res = new String[queue.size()];
+    int idx = 0;
+    while (!queue.isEmpty()) res[idx++] = queue.poll();
+    return res;
+}
+```
+
+**Key invariant:** after processing group `i`, every string in the queue has length `i + 1` (one char per group so far). The queue holds exactly the complete Cartesian product of groups `[0..i]`.
+
+#### Variant: Explicit State Object (more canonical BFS)
+
+```java
+// Use State(prefix, groupIndex) so the BFS loop drives termination
+Queue<State> queue = new LinkedList<>();
+queue.add(new State("", 0));
+
+while (!queue.isEmpty()) {
+    State cur = queue.poll();
+    if (cur.groupIndex == groups.size()) {
+        result.add(cur.prefix);  // leaf: complete combination
+        continue;
+    }
+    for (String opt : groups.get(cur.groupIndex))
+        queue.add(new State(cur.prefix + opt, cur.groupIndex + 1));
+}
+```
+
+Both variants are correct; the snapshot-size version is more concise; the State version makes the "BFS tree" structure explicit.
+
+#### Comparison: BFS vs Backtracking for Cartesian Products
+
+| Aspect | BFS (Pattern 9) | Backtracking / DFS |
+|--------|-----------------|---------------------|
+| **Control flow** | Iterative loop, one group per iteration | Recursive, one group per call frame |
+| **Ordering** | Natural row-major order if groups pre-sorted | Same if groups pre-sorted |
+| **Memory peak** | Full final layer (all combinations) | O(depth) recursion stack |
+| **Pruning** | Not straightforward | Easy to add |
+| **Constraint between groups?** | Hard to express | Easy (check at each step) |
+| **Best for** | Enumerate all, no cross-group constraints | Constrained search (e.g., sum ≤ target) |
+
+#### Similar Problems
+
+| Problem | LC # | How Cartesian BFS Applies |
+|---------|------|---------------------------|
+| Brace Expansion | 1087 | Each `{a,b}` or single char = one group |
+| Letter Combinations of a Phone Number | 17 | Each digit maps to a letter group |
+| Letter Case Permutation | 784 | Each char has 1 (digit) or 2 (letter) options |
+| Word Squares | 425 | Each position in the word is a group |
+| Generalized Abbreviation | 320 | Each char = keep or abbreviate (2-option group) |
+
+> **Rule of thumb**: if you can parse the input into `k` independent groups and need **all** length-`k` strings formed by picking one element from each group, use BFS-style Cartesian product generation. If groups have cross-constraints, switch to backtracking.
+
+---
+
 ## Problem Categories
 
 ### 1. Tree Traversal Problems
@@ -1589,6 +1711,12 @@ Final result: 2 paths found ✓
 - **Surrounded Regions**: LC 130
 - **Walls and Gates**: LC 286
 - **Maze Problems**: LC 490
+
+### 5. Combination Enumeration Problems (Pattern 9 — BFS-Style Cartesian Product)
+- **Brace Expansion (LC 1087)** — parse into groups, BFS layer-by-layer
+- **Letter Combinations of a Phone Number (LC 17)** — digit → letter group, Cartesian BFS
+- **Letter Case Permutation (LC 784)** — per-char 1-or-2 option groups
+- **Generalized Abbreviation (LC 320)** — keep-or-skip groups per character
 
 ## Time & Space Complexity
 
