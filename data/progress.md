@@ -47,7 +47,8 @@
 	- recursion_to_dp.md (OK)
 	- scanning_line.md (OK)
  	- segment_tree.md (again)
- 	- stock_trading.md (TODO: LC examples)
+ 	- stock_trading.md (again)
+ 	- streaming_algorithms.md (TODO: LC examples)
 
 - to review
 - needcode `250` - similar LC by AI
