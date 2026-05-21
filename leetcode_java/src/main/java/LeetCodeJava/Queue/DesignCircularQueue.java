@@ -184,6 +184,139 @@ public class DesignCircularQueue {
 
     }
 
+
+    // V0-2
+    // IDEA: START, END IDX + ARRAY (GPT)
+    class MyCircularQueue_0_2 {
+
+        int[] q;
+        int size;
+        int count;
+
+        int front;
+        int rear;
+
+        public MyCircularQueue_0_2(int k) {
+            q = new int[k];
+            size = k;
+            count = 0;
+
+            front = 0;
+            rear = -1;
+        }
+
+        public boolean enQueue(int value) {
+            if (isFull()) {
+                return false;
+            }
+
+            rear = (rear + 1) % size;
+            q[rear] = value;
+            count++;
+
+            return true;
+        }
+
+        public boolean deQueue() {
+            if (isEmpty()) {
+                return false;
+            }
+
+            front = (front + 1) % size;
+            count--;
+
+            return true;
+        }
+
+        public int Front() {
+            if (isEmpty()) {
+                return -1;
+            }
+
+            return q[front];
+        }
+
+        public int Rear() {
+            if (isEmpty()) {
+                return -1;
+            }
+
+            return q[rear];
+        }
+
+        public boolean isEmpty() {
+            return count == 0;
+        }
+
+        public boolean isFull() {
+            return count == size;
+        }
+    }
+
+
+    // V0-3
+    // IDEA: START, END IDX + ARRAY (GEMINI)
+    class MyCircularQueue_0_3 {
+        private final int[] queue;
+        private final int capacity;
+        private int head;
+        private int elementCnt;
+
+        public MyCircularQueue_0_3(int k) {
+            this.capacity = k;
+            this.queue = new int[k];
+            this.head = 0;
+            this.elementCnt = 0;
+        }
+
+        public boolean enQueue(int value) {
+            if (isFull()) {
+                return false;
+            }
+            // Calculate insertion index: (head + current count) wrapped around capacity
+            int tail = (head + elementCnt) % capacity;
+            queue[tail] = value;
+            elementCnt++;
+            return true;
+        }
+
+        public boolean deQueue() {
+            if (isEmpty()) {
+                return false;
+            }
+            // Advance head pointer circularly
+            head = (head + 1) % capacity;
+            elementCnt--;
+            return true;
+        }
+
+        public int Front() {
+            if (isEmpty()) {
+                return -1;
+            }
+            return queue[head];
+        }
+
+        public int Rear() {
+            if (isEmpty()) {
+                return -1;
+            }
+            // Calculate the last element's index dynamically
+            int tail = (head + elementCnt - 1) % capacity;
+            return queue[tail];
+        }
+
+        public boolean isEmpty() {
+            return elementCnt == 0;
+        }
+
+        public boolean isFull() {
+            return elementCnt == capacity;
+        }
+    }
+
+
+
     // V1
     // https://youtu.be/aBbsfn863oA?si=zekB_25Mq5KHIxJl
 
@@ -636,5 +769,9 @@ public class DesignCircularQueue {
             return front != -1 && next(rear) == front;
         }
     }
+
+
+
+    
 
 }

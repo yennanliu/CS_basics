@@ -9228,6 +9228,105 @@ public class Workspace25 {
 
 
 
+    // LC 622
+    // 2.02 - 12 pm
+    /**
+     *
+     *
+     *
+     */
+    class MyCircularQueue {
+        // attr
+        int size;
+        int elementCnt;
+        // ???
+        Deque<Integer> dq; // ???
+        // ??? start, end idx ???
+        int start;
+        int end;
+
+
+        public MyCircularQueue(int k) {
+            this.size = k;
+            this.elementCnt = 0;
+            this.dq = new LinkedList<>(); // /??
+            // ???
+            this.start = 0;
+            this.end = 0;
+        }
+
+        public boolean enQueue(int value) {
+            if(this.isFull()){
+                return false;
+            }
+
+            // ????
+            if(this.end < this.size){
+                this.dq.add(value);
+                this.end += 1;
+            }else{
+                // ???
+                this.dq.addFirst(value);
+                this.start -= 1;
+            }
+
+            this.elementCnt += 1;
+            return true;
+        }
+
+        public boolean deQueue() {
+            if(this.isEmpty()){
+                return false;
+            }
+
+            // ????
+            if(this.end < this.size){
+               // this.dq.add(value);
+                this.dq.removeLast();
+                this.end -= 1;
+            }else{
+                // ???
+                this.dq.removeLast();
+                this.start += 1;
+            }
+
+            this.elementCnt -= 1;
+            return true;
+        }
+
+        public int Front() {
+            // ???
+            if(this.isEmpty()){
+                return -1;
+            }
+
+            // /???
+            return this.dq.getFirst();
+        }
+
+        public int Rear() {
+            // ??
+            if(this.isEmpty()){
+                return -1;
+            }
+
+            // /???
+            return this.dq.getLast();
+        }
+
+        public boolean isEmpty() {
+
+            return this.elementCnt == 0;
+        }
+
+        public boolean isFull() {
+
+            return this.elementCnt == this.size;
+        }
+
+
+
+    }
 
 
 
