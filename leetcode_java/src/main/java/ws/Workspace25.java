@@ -8433,9 +8433,134 @@ public class Workspace25 {
 
 
     // LC 1087
-    // 10.12 - 30 am
-    //  IDEA 2) BFS ????
+    // 3.19 - 29 pm
+    // IDEA 2) BFS  + PREFIX SUM ???? ????
     public String[] expand(String s) {
+        // edge
+
+        // Step 1: Parse the string into distinct groups of options
+        List<List<String>> groups = new ArrayList<>();
+
+        int n = s.length();
+        // ??
+        int i = 0;
+
+        // ??
+        List<String> list = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+
+        while (i < n){
+            // ??
+            char cur = s.charAt(i);
+            if(cur == '{'){
+                // ???
+                if(!sb.toString().isEmpty()){
+                    list.add(sb.toString());
+                    groups.add(list);
+                    list = new ArrayList<>();
+                }
+
+
+                // ??
+                i += 1;
+                char tmp = s.charAt(i);
+                if(tmp != ','){
+
+                    // ??
+                    //List<String> list = new ArrayList<>();
+                    list.add(String.valueOf(tmp));
+                    // ???
+                    //groups.add(list);
+                }
+                // ???
+                i += 1;
+            }
+            // ??
+            if(cur == '}'){
+                groups.add(list);
+                list = new ArrayList<>();
+                i += 1; // ??
+                //continue;
+            }
+            // ???
+            //list.add()
+            sb.append(cur); // ???
+
+        }
+
+        // ???
+        // ??? bfs ?? PREFIX SUM ???? ????
+        /**
+         *   Input: s = "{a,b}c{d,e}f"
+         *
+         *   -> expected `group`:
+         *
+         *     [ [a, b], c, [d, e], f]
+         *
+         */
+
+        Queue<String> queue = new LinkedList<>();
+        queue.add(""); // Start with an empty base prefix string
+
+        // Process groups one by one
+        for(List<String> g: groups){
+            // ???
+            int size = queue.size();
+            for(int j = 0; j < size; j++){
+                String curPrefix = queue.poll();
+                // ???
+                for(String x: g){
+                    queue.add(curPrefix + x);
+                }
+            }
+
+        }
+
+
+
+        List<String> cache = new ArrayList<>();
+        for(List<String> x: groups){
+            // ??
+            String prefix = ""; // ???
+
+            for(String y: x){
+                //cache.add(y);
+                // /??
+                prefix += y; // ??
+            }
+        }
+
+
+
+
+//        // ???
+//        Queue<List<String>> q = new LinkedList<>();
+//        // ???
+//        for(List<String> x: groups){
+//            q.add(x); // ???
+//        }
+//
+//        List<String> cache = new ArrayList<>();
+//        // ??
+//        while (!q.isEmpty()){
+//            List<String> tmp = q.poll();
+//            // ???
+//            for(String x: tmp){
+//                prefix += x;
+//                q.add(tmp);
+//            }
+//        }
+
+        return null;
+    }
+
+
+
+
+
+
+
+    public String[] expand_80(String s) {
         // edge
 
 

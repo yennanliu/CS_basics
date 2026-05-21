@@ -73,6 +73,11 @@ public class BraceExpansion {
             groups.add(currentGroup);
         }
 
+        /** NOTE !!
+         *
+         *   BFS + prefix
+         *
+         */
         // Step 2: Perform BFS to combine the groups layer by layer
         Queue<String> queue = new LinkedList<>();
         queue.add(""); // Start with an empty base prefix string
@@ -99,6 +104,85 @@ public class BraceExpansion {
 
         return res;
     }
+
+
+    // V0-0-1
+    // IDEA: CLASS BFS + PREFIX (GEMINI)
+    // A classic BFS State container to track the string prefix
+    // alongside its current depth/layer in the decision tree.
+    /** NOTE !!!
+     *
+     *  we define a helper class
+     *  for storing prefix, and group idx info
+     */
+    private static class State {
+        String prefix;
+        int groupIndex;
+
+        State(String prefix, int groupIndex) {
+            this.prefix = prefix;
+            this.groupIndex = groupIndex;
+        }
+    }
+
+    public String[] expand_0_0_1(String s) {
+        // Step 1: Parse the string into distinct sorted groups (Same as before)
+        List<List<String>> groups = new ArrayList<>();
+        int i = 0;
+        int n = s.length();
+        while (i < n) {
+            List<String> currentGroup = new ArrayList<>();
+            char ch = s.charAt(i);
+            if (ch == '{') {
+                i++;
+                while (s.charAt(i) != '}') {
+                    if (s.charAt(i) != ',') {
+                        currentGroup.add(String.valueOf(s.charAt(i)));
+                    }
+                    i++;
+                }
+                i++;
+            } else {
+                currentGroup.add(String.valueOf(ch));
+                i++;
+            }
+            Collections.sort(currentGroup);
+            groups.add(currentGroup);
+        }
+
+        // List to hold our final complete combinations
+        List<String> resultList = new ArrayList<>();
+
+        // Step 2: Canonical BFS using a state-tracking Queue
+        Queue<State> queue = new LinkedList<>();
+
+        // Push the root node: empty prefix starting at group index 0
+        queue.add(new State("", 0));
+
+        // The core BFS loop driven entirely by queue emptiness
+        while (!queue.isEmpty()) {
+            State current = queue.poll();
+
+            // Base Case / Leaf Node: If we have processed all groups,
+            // the prefix is complete and can be added directly to results.
+            if (current.groupIndex == groups.size()) {
+                resultList.add(current.prefix);
+                continue;
+            }
+
+            // Get the current layer's choices
+            List<String> currentGroup = groups.get(current.groupIndex);
+
+            // Expand neighbors (generate children) and push them back into the queue
+            for (String option : currentGroup) {
+                queue.add(new State(current.prefix + option, current.groupIndex + 1));
+            }
+        }
+
+        // Step 3: Convert the populated results list to a String array
+        return resultList.toArray(new String[0]);
+    }
+
 
 
     // V0-1
