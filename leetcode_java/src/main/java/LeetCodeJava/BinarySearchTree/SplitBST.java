@@ -76,8 +76,84 @@ public class SplitBST {
 
 
     // V0
-//    public TreeNode[] splitBST(TreeNode root, int target) {
-//    }
+    // IDEA: DFS (pre-order traverse) + BST
+    /**  CORE IDEA:
+     *
+     *      *
+     *      * | Index    | Meaning                                        |
+     *      * | -------- | ---------------------------------------------- |
+     *      * | `res[0]` | root of BST containing **all values ≤ target** |
+     *      * | `res[1]` | root of BST containing **all values > target** |
+     *      *
+     *
+     *
+     */
+    public TreeNode[] splitBST(TreeNode root, int target) {
+        // Base Case: An empty tree splits into two empty trees
+        if (root == null) {
+            return new TreeNode[]{null, null};
+        }
+
+        // Case 1: The current root belongs to the small/equal side
+        /**
+         *  Example:
+         *
+         *  root = 4, target = 4
+         *
+         *            4
+         *         /   \
+         *       2      6
+         *      / \    / \
+         *     1   3  5   7
+         *
+         */
+        if (root.val <= target) {
+            // Recursively split the right subtree
+            TreeNode[] split = splitBST(root.right, target);
+
+            /** NOTE !!!
+             *
+             *  re-connect smaller nodes to root, as root's right
+             */
+            // Reconnect the smaller portion of the split to root's right
+            root.right = split[0];
+
+            // Return [modified root (small side), remaining large side]
+            return new TreeNode[]{root, split[1]};
+
+        }
+        // Case 2: The current root belongs to the strictly larger side
+        /**
+         *  Example:
+         *
+         *  root: 2, target = 5
+         *
+         *           2
+         *          / \
+         *         1   4
+         *              \
+         *               5
+         *
+         */
+        else {
+            // Recursively split the left subtree
+            TreeNode[] split = splitBST(root.left, target);
+
+            /** NOTE !!!
+             *
+             *  re-connect larger nodes to root, as root's left
+             */
+            // Reconnect the larger portion of the split to root's left
+            root.left = split[1];
+
+            // Return [remaining small side, modified root (large side)]
+            return new TreeNode[]{split[0], root};
+        }
+
+    }
+
+
+
 
     // V0-1
     // IDEA: DFS (PRE-ORDER traverse) (gemini)

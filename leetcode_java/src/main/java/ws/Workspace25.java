@@ -9058,6 +9058,130 @@ public class Workspace25 {
 
 
 
+    // LC 776
+    // 8.08 - 18 am
+    /**
+     *  -> You should output the root
+     *  TreeNode of both subtrees after splitting,
+     *  in any order.
+     *
+     *
+     *   BST
+     *   root
+     *   V
+     *
+     *
+     *   split the tree into two subtrees where one subtree
+     *   has nodes that are all smaller or equal to the
+     *   target value, while the other subtree has
+     *   all nodes that are greater than the target value.
+     *   It's not necessarily the case that
+     *   the tree contains a node with value V.
+     *
+     *  ---------------
+     *
+     *   IDEA 1) DFS (preorder traverse) + BST property
+     *
+     *   preorder traverse: root -> left -> right
+     *
+     *   BST:  left.val < root.val < right.val
+     *
+     *   for `private TreeNode[] splitHelper(TreeNode root, int target)`,
+     *   the resp: output[0], and output[1]
+     *
+     *
+     *   -> output[0] is ALWAYS the nodes that `bigger` than target
+     *   -> output[1] is ALWAYS the nodes that `smaller` than target
+     *
+     *
+     *   but !!!,
+     *   for output[0], maybe there are still left sub nodes
+     *        that > target
+     *
+     *    for output[1], maybe there are still right sub nodes
+     *        that < target
+     *
+     *
+     *    so we need to explicitly handle above
+     *
+     *  ---------------
+     *
+     *
+     */
+    // IDEA 1) DFS + BST property
+    public TreeNode[] splitBST(TreeNode root, int target) {
+//        if (root == null) {
+//            /** NOTE !!! the return val */
+//            return new TreeNode[]{null, null};
+//        }
+        return splitHelper(root, target);
+    }
+
+
+
+    // ???
+    private TreeNode[] splitHelper(TreeNode root, int target){
+        // ??
+        // edge
+        if(root == null){
+            return new TreeNode[]{null, null}; // ???
+        }
+
+
+        /**  ???
+         *
+         *      *   -> output[0] is ALWAYS the nodes that `bigger` than target
+         *      *   -> output[1] is ALWAYS the nodes that `smaller` than target
+         *      *
+         *      *
+         *      *   but !!!,
+         *      *   for output[0], maybe there are still left sub nodes
+         *      *        that > target
+         *      *
+         *      *    for output[1], maybe there are still right sub nodes
+         *      *        that < target
+         *      *
+         *      *
+         *      *    so we need to explicitly handle above
+         *      *
+         *
+         *           * | Index    | Meaning                                        |
+         *      * | -------- | ---------------------------------------------- |
+         *      * | `res[0]` | root of BST containing **all values ≤ target** |
+         *      * | `res[1]` | root of BST containing **all values > target** |
+         *
+         */
+
+        // ???
+        if(root.val <= target){
+            // Root belongs to the "Small" side.
+            // But some of its RIGHT children might still be > target.
+            // So we split the right subtree.
+            TreeNode[] res = splitHelper(root.right, target);
+            root.right = res[0];
+            // ???
+            return new TreeNode[]{ root, res[1] };
+        }else{
+            // Root belongs to the "big" side.
+            // But some of its LEFT children might still be <= target.
+            // So we split the left subtree.
+            TreeNode[] res = splitHelper(root.left, target);
+            root.left = res[1];
+            return new TreeNode[]{ res[0], root  };
+        }
+
+////        TreeNode[] res1 = splitHelper(root.left, target);
+////        TreeNode[] res2 = splitHelper(root.right, target);
+//
+//
+//        return null;
+
+    }
+
+
+
+
+
 
 
 
