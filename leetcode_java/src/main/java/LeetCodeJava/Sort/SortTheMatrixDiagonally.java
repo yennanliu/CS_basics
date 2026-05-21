@@ -71,7 +71,7 @@ public class SortTheMatrixDiagonally {
      *
      * Let's dry run the solution for:
      *
-     * ```text id="j1m08g"
+     * ```
      * mat =
      * [
      *  [3, 3, 1, 1],
@@ -86,7 +86,7 @@ public class SortTheMatrixDiagonally {
      *
      * Each diagonal shares the same:
      *
-     * ```text id="hh1xjg"
+     * ```
      * r - c
      * ```
      *
