@@ -9180,6 +9180,53 @@ public class Workspace25 {
 
 
 
+    // LC 701
+    // 1.35 - 45 pm
+    /**
+     *   Return the `root node` of the BST after the insertion
+     *
+     *   NOTE:
+     *     -  It is guaranteed that the
+     *        new value does
+     *        NOT exist in the original BST.
+     *
+     *
+     *  ----------------
+     *
+     *  IDEA 1) DFS (pre-order ??? ) + BST property ???
+     *
+     *  NOTE: BST:
+     *     left < root < right
+     *
+     *
+     *  ----------------
+     *
+     */
+    public TreeNode insertIntoBST(TreeNode root, int val) {
+        // edge ??
+        if(root == null){
+            return new TreeNode(val); // ???
+        }
+
+        int cur = root.val;
+
+        //???
+        if(val > cur){
+            TreeNode _right = insertIntoBST(root.right, val);
+            root.right = _right; // ???
+            //return insertIntoBST(root.right, val);
+        }else{
+           // return insertIntoBST(root.left, val);
+            TreeNode _left = insertIntoBST(root.left, val);
+            root.left = _left;
+        }
+
+        // ???
+        return root;
+    }
+
+
+
 
 
 

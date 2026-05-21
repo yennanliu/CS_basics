@@ -18,9 +18,40 @@ import LeetCodeJava.DataStructure.TreeNode;
 public class InsertIntoABinarySearchTreeFollowup {
 
     // V0
-//    public TreeNode insertIntoBST(TreeNode root, int val) {
-//
-//    }
+    // IDEA: DFS (pre-order traverse) + BST property
+    /**  NOTE !!!
+     *
+     *  -> we need to `re-connect` sub-tree to root,
+     *     then return root, so we DON'T miss any information.
+     *
+     */
+    public TreeNode insertIntoBST(TreeNode root, int val) {
+        // insert position found
+        if (root == null) {
+            return new TreeNode(val);
+        }
+
+        if (val > root.val) {
+            /**  NOTE !!!
+             *
+             *  -> we need to `re-connect` sub-tree to root,
+             *     then return root, so we DON'T miss any information.
+             *
+             */
+            root.right = insertIntoBST(root.right, val);
+        } else {
+            /**  NOTE !!!
+             *
+             *  -> we need to `re-connect` sub-tree to root,
+             *     then return root, so we DON'T miss any information.
+             *
+             */
+            root.left = insertIntoBST(root.left, val);
+        }
+
+        return root;
+    }
+
 
     // V1
     // IDEA: BST (gemini)
@@ -150,6 +181,7 @@ public class InsertIntoABinarySearchTreeFollowup {
     }
 
 
+    
 
 
 }
