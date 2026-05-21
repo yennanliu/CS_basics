@@ -420,6 +420,40 @@ def unique_paths(m, n):
 - **Direction**: Top-right → Bottom-left
 - **Elements**: (0,n-1), (1,n-2), (2,n-3), ..., (n-1,0)
 
+##### Diagonal Grouping Key (All Top-Left → Bottom-Right Diagonals)
+- **Formula**: All cells `(i, j)` with the same `i - j` value lie on the same diagonal
+- **Property**: `i - j = constant` → same diagonal; main diagonal = 0, below = positive, above = negative
+- **Direction**: Top-left → Bottom-right (same as primary diagonal family)
+- **Use case**: Group, sort, or process each diagonal independently (LC 1329, LC 766)
+
+```
+Example (3×4 matrix) — diagonal keys (i - j):
+       j=0   j=1   j=2   j=3
+i=0  [  0 ] [ -1 ] [ -2 ] [ -3 ]
+i=1  [  1 ] [  0 ] [ -1 ] [ -2 ]
+i=2  [  2 ] [  1 ] [  0 ] [ -1 ]
+
+Diagonal key 0  → (0,0), (1,1), (2,2)       ← main diagonal
+Diagonal key -1 → (0,1), (1,2), (2,3)       ← above main
+Diagonal key  1 → (1,0), (2,1)              ← below main
+```
+
+**Core algorithm (sort / process each diagonal):**
+```java
+// Step 1: group elements by diagonal key
+Map<Integer, PriorityQueue<Integer>> map = new HashMap<>();
+for (int i = 0; i < m; i++)
+    for (int j = 0; j < n; j++)
+        map.computeIfAbsent(i - j, k -> new PriorityQueue<>()).add(mat[i][j]);
+
+// Step 2: refill matrix — traverse in same row-major order
+for (int i = 0; i < m; i++)
+    for (int j = 0; j < n; j++)
+        mat[i][j] = map.get(i - j).poll();   // min-heap gives ascending order
+```
+
+**Why row-major refill works:** traversal visits each diagonal's cells top-left → bottom-right, so polling the min-heap in that order writes values in ascending order along every diagonal.
+
 ##### Visual Example (4×4 Matrix, n=4)
 
 ```text
@@ -526,13 +560,16 @@ public int diagonalPrime(int[][] nums) {
 | **Secondary** | `(i, n-1-i)` | `row + col == n-1` | ↙ (top-right to bottom-left) |
 
 ##### Related Problems
-| Problem | LC # | Diagonal Usage |
-|---------|------|----------------|
-| Prime In Diagonal | 2614 | Find max prime on any diagonal |
-| Diagonal Traverse | 498 | Traverse all diagonals |
-| Matrix Diagonal Sum | 1572 | Sum of both diagonals |
-| Toeplitz Matrix | 766 | Check diagonal constancy |
-| Sort Matrix Diagonally | 1329 | Sort each diagonal independently |
+| Problem | LC # | Diagonal Key | Technique |
+|---------|------|--------------|-----------|
+| Sort the Matrix Diagonally | 1329 | `i - j` | Group by key → sort (PQ or sort+reverse) → refill |
+| Toeplitz Matrix | 766 | `i - j` | All cells on same diagonal must share same value |
+| Diagonal Traverse II | 1424 | `i + j` | Anti-diagonal grouping (key = `i + j`) |
+| Diagonal Traverse | 498 | direction flag | Alternate up/down per diagonal |
+| Matrix Diagonal Sum | 1572 | `i == j` / `i + j == n-1` | Primary + secondary diagonal sum |
+| Prime In Diagonal | 2614 | `i == j` / `i + j == n-1` | Find max prime on either diagonal |
+
+> **Key distinction**: use `i - j` for top-left→bottom-right diagonals; use `i + j` for top-right→bottom-left (anti-diagonals).
 
 #### Coordinate System
 ```python
@@ -567,6 +604,15 @@ def is_valid(row, col, rows, cols):
 | Spiral Matrix III | 885 | Expanding spiral with bounds checking | Medium | Traversal Template |
 | Matrix Cells in Distance Order | 1030 | Manhattan distance sorting | Easy | Traversal Template |
 | Shift 2D Grid | 1260 | Circular array shifting in 2D | Easy | Traversal Template |
+
+#### **Pattern 1b: Diagonal Grouping Problems** (`key = i - j`)
+> **Core idea**: cells sharing `i - j` lie on the same top-left→bottom-right diagonal → group by key, process, refill.
+
+| Problem | LC # | Key Technique | Difficulty |
+|---------|------|---------------|------------|
+| Sort the Matrix Diagonally | 1329 | Group by `i-j` → min-heap sort → refill | Medium |
+| Toeplitz Matrix | 766 | Group by `i-j` → all values must be equal | Easy |
+| Diagonal Traverse II | 1424 | Group by `i+j` (anti-diagonal) → reverse order | Medium |
 
 #### **Pattern 2: Matrix Transformation Problems**
 | Problem | LC # | Key Technique | Difficulty | Template Used |
@@ -1480,3 +1526,46 @@ TARGET = pref[r2+1][c2+1] - A - C + TopLeft
 - LC 304: Range Sum Query 2D - Immutable (same 2D prefix sum)
 - LC 308: Range Sum Query 2D - Mutable (needs segment tree / BIT)
 - LC 1292: Maximum Side Length of Square (2D prefix sum + binary search)
+
+---
+
+### 2-11) Sort the Matrix Diagonally (LC 1329) — Pattern: Diagonal Grouping (`i - j`)
+> Group cells by `i - j` (same diagonal), sort each group, refill matrix in row-major order.
+
+**Core insight**: any two cells `(i1,j1)` and `(i2,j2)` are on the same top-left→bottom-right diagonal iff `i1 - j1 == i2 - j2`. Use this as a HashMap key to collect, sort, then rewrite each diagonal.
+
+```java
+// LC 1329 - Sort the Matrix Diagonally
+// IDEA: Group by diagonal key (i-j) → min-heap per diagonal → refill row-major
+// time = O(M*N*log(min(M,N))), space = O(M*N)
+public int[][] diagonalSort(int[][] mat) {
+    int m = mat.length, n = mat[0].length;
+    Map<Integer, PriorityQueue<Integer>> map = new HashMap<>();
+    // Pass 1: collect each diagonal into a min-heap
+    for (int i = 0; i < m; i++)
+        for (int j = 0; j < n; j++)
+            map.computeIfAbsent(i - j, k -> new PriorityQueue<>()).add(mat[i][j]);
+    // Pass 2: refill — row-major order matches diagonal top-to-bottom order
+    for (int i = 0; i < m; i++)
+        for (int j = 0; j < n; j++)
+            mat[i][j] = map.get(i - j).poll();
+    return mat;
+}
+```
+
+**Alternative (sort descending + remove from tail):**
+```java
+// Sort list descending, remove from end to get ascending values
+for (List<Integer> list : map.values())
+    Collections.sort(list, Collections.reverseOrder());
+for (int i = 0; i < m; i++)
+    for (int j = 0; j < n; j++)
+        mat[i][j] = map.get(i - j).remove(map.get(i - j).size() - 1);
+```
+
+**Similar Problems using diagonal grouping key:**
+| Problem | Key | Condition |
+|---------|-----|-----------|
+| Toeplitz Matrix (LC 766) | `i - j` | All cells in group must equal the first |
+| Diagonal Traverse II (LC 1424) | `i + j` | Anti-diagonal grouping; reverse each group |
+| Sort Matrix Diagonally (LC 1329) | `i - j` | Sort each group ascending |

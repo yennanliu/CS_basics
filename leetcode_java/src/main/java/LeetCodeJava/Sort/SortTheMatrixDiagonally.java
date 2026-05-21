@@ -66,6 +66,263 @@ public class SortTheMatrixDiagonally {
      *  3. put them back into the matrix
      *
      *
+     */
+    /**  Dry run
+     *
+     * Let's dry run the solution for:
+     *
+     * ```text id="j1m08g"
+     * mat =
+     * [
+     *  [3, 3, 1, 1],
+     *  [2, 2, 1, 2],
+     *  [1, 1, 1, 2]
+     * ]
+     * ```
+     *
+     * ---
+     *
+     * # Step 1: Group by diagonal `(r - c)`
+     *
+     * Each diagonal shares the same:
+     *
+     * ```text id="hh1xjg"
+     * r - c
+     * ```
+     *
+     * We traverse the matrix.
+     *
+     * ---
+     *
+     * ## Matrix coordinates
+     *
+     * ```text id="m5s6t9"
+     * (0,0)=3   (0,1)=3   (0,2)=1   (0,3)=1
+     * (1,0)=2   (1,1)=2   (1,2)=1   (1,3)=2
+     * (2,0)=1   (2,1)=1   (2,2)=1   (2,3)=2
+     * ```
+     *
+     * ---
+     *
+     * ## Compute keys
+     *
+     * | Position | Value | r-c |
+     * | -------- | ----- | --- |
+     * | (0,0)    | 3     | 0   |
+     * | (0,1)    | 3     | -1  |
+     * | (0,2)    | 1     | -2  |
+     * | (0,3)    | 1     | -3  |
+     * | (1,0)    | 2     | 1   |
+     * | (1,1)    | 2     | 0   |
+     * | (1,2)    | 1     | -1  |
+     * | (1,3)    | 2     | -2  |
+     * | (2,0)    | 1     | 2   |
+     * | (2,1)    | 1     | 1   |
+     * | (2,2)    | 1     | 0   |
+     * | (2,3)    | 2     | -1  |
+     *
+     * ---
+     *
+     * # Step 2: Build hashmap
+     *
+     * ```
+     * Map<Integer, List<Integer>>
+     * ```
+     *
+     * After collection:
+     *
+     * ```
+     * 0   -> [3, 2, 1]
+     * -1  -> [3, 1, 2]
+     * -2  -> [1, 2]
+     * -3  -> [1]
+     * 1   -> [2, 1]
+     * 2   -> [1]
+     * ```
+     *
+     * ---
+     *
+     * # Step 3: Sort each diagonal descending
+     *
+     * We sort descending because later we remove from the end.
+     *
+     * ```
+     * 0   -> [3, 2, 1]
+     * -1  -> [3, 2, 1]
+     * -2  -> [2, 1]
+     * -3  -> [1]
+     * 1   -> [2, 1]
+     * 2   -> [1]
+     * ```
+     *
+     * ---
+     *
+     * # Step 4: Refill matrix
+     *
+     * We traverse again row by row.
+     *
+     * ---
+     *
+     * ## Cell (0,0)
+     *
+     * key = 0
+     *
+     * list:
+     *
+     * ```
+     * [3,2,1]
+     * ```
+     *
+     * Take last:
+     *
+     * ```
+     * 1
+     * ```
+     *
+     * Matrix:
+     *
+     * ```
+     * [
+     *  [1, _, _, _],
+     *  [_, _, _, _],
+     *  [_, _, _, _]
+     * ]
+     * ```
+     *
+     * Remaining:
+     *
+     * ```
+     * 0 -> [3,2]
+     * ```
+     *
+     * ---
+     *
+     * ## Cell (0,1)
+     *
+     * key = -1
+     *
+     * list:
+     *
+     * ```
+     * [3,2,1]
+     * ```
+     *
+     * Take last → 1
+     *
+     * ```
+     * [
+     *  [1,1,_,_],
+     *  [_,_,_,_],
+     *  [_,_,_,_]
+     * ]
+     * ```
+     *
+     * Remaining:
+     *
+     * ```
+     * -1 -> [3,2]
+     * ```
+     *
+     * ---
+     *
+     * ## Cell (0,2)
+     *
+     * key = -2
+     *
+     * take 1
+     *
+     * ```
+     * [
+     *  [1,1,1,_],
+     *  [_,_,_,_],
+     *  [_,_,_,_]
+     * ]
+     * ```
+     *
+     * ---
+     *
+     * ## Cell (0,3)
+     *
+     * key = -3
+     *
+     * take 1
+     *
+     * ```
+     * [
+     *  [1,1,1,1],
+     *  [_,_,_,_],
+     *  [_,_,_,_]
+     * ]
+     * ```
+     *
+     * ---
+     *
+     * Continue similarly...
+     *
+     * Final matrix:
+     *
+     * ```
+     * [
+     *  [1,1,1,1],
+     *  [1,2,2,2],
+     *  [1,2,3,3]
+     * ]
+     * ```
+     *
+     * ---
+     *
+     * # Why sorting descending works
+     *
+     * Suppose diagonal values are:
+     *
+     * ```
+     * [3,2,1]
+     * ```
+     *
+     * We want ascending order in matrix:
+     *
+     * ```
+     * 1 -> 2 -> 3
+     * ```
+     *
+     * If we sort descending:
+     *
+     * ```
+     * [3,2,1]
+     * ```
+     *
+     * then repeatedly:
+     *
+     * ```
+     * remove(list.size() - 1)
+     * ```
+     *
+     * gives:
+     *
+     * ```
+     * 1
+     * 2
+     * 3
+     * ```
+     *
+     * which is ascending.
+     *
+     * ---
+     *
+     * # Core idea summary
+     *
+     * The entire solution depends on this invariant:
+     *
+     * ```
+     * same diagonal => same (row - col)
+     * ```
+     *
+     * Then:
+     *
+     * 1. group
+     * 2. sort
+     * 3. refill matrix in traversal order
+     *
      *
      */
     public int[][] diagonalSort_1_1(int[][] mat) {
@@ -73,6 +330,9 @@ public class SortTheMatrixDiagonally {
         int m = mat.length;
         int n = mat[0].length;
 
+        /**
+         *  map:  { diagonal id : elements }
+         */
         // diagonal id -> elements
         Map<Integer, List<Integer>> map = new HashMap<>();
 
@@ -80,6 +340,11 @@ public class SortTheMatrixDiagonally {
         for (int r = 0; r < m; r++) {
             for (int c = 0; c < n; c++) {
 
+                /**
+                 *  the key is `r -c`,
+                 *  since the same diagonal elements
+                 *  have the same `r-c`  value
+                 */
                 int key = r - c;
 
                 map.putIfAbsent(key, new ArrayList<>());
@@ -87,7 +352,11 @@ public class SortTheMatrixDiagonally {
             }
         }
 
-        // 2. sort each diagonal descending
+
+        /**
+         *  sort each diagonal `descending`
+         */
+        // 2. sort each diagonal `descending`
         // so we can remove from end efficiently
         for (List<Integer> list : map.values()) {
             Collections.sort(list, Collections.reverseOrder());
