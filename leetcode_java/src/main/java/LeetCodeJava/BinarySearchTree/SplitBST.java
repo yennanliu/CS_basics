@@ -98,15 +98,18 @@ public class SplitBST {
         /**
          *  Example:
          *
-         *  root = 4, target = 4
+         *  root: 2, target = 5
          *
-         *            4
-         *         /   \
-         *       2      6
-         *      / \    / \
-         *     1   3  5   7
+         *           2
+         *          / \
+         *         1   4
+         *              \
+         *               5
          *
          */
+        // Root belongs to the "Small" side.
+        // But some of its RIGHT children might still be > target.
+        // So we split the right subtree.
         if (root.val <= target) {
             // Recursively split the right subtree
             TreeNode[] split = splitBST(root.right, target);
@@ -123,18 +126,22 @@ public class SplitBST {
 
         }
         // Case 2: The current root belongs to the strictly larger side
-        /**
-         *  Example:
+        /** Example:
          *
-         *  root: 2, target = 5
          *
-         *           2
-         *          / \
-         *         1   4
-         *              \
-         *               5
+         *  root = 4, target = 2
+         *
+         *
+         *           4
+         *         /   \
+         *       2      6
+         *      / \    / \
+         *     1   3  5   7
          *
          */
+        // Root belongs to the "Big" side.
+        // But some of its LEFT children might still be <= target.
+        // So we split the left subtree.
         else {
             // Recursively split the left subtree
             TreeNode[] split = splitBST(root.left, target);
