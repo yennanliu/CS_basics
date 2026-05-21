@@ -100,7 +100,7 @@ public class MaximumPerformanceOfAeam {
      *     with up to $k$ engineers, you just use a Min-Heap (`PriorityQueue`)
      *     to hold the top $k$ fastest speeds seen so far.
      *     If you encounter an $(k+1)$-th engineer,
-     *     you simply kick out the slowest one (`pq.poll()`).
+     *      you simply kick out the slowest one (`pq.poll()`).
      *
      * ---
      *
