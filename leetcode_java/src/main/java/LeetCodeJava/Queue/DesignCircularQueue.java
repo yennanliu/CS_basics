@@ -67,37 +67,135 @@ public class DesignCircularQueue {
      * boolean param_5 = obj.isEmpty();
      * boolean param_6 = obj.isFull();
      */
+
+
     // V0
-//    class MyCircularQueue {
-//
-//        public MyCircularQueue(int k) {
-//
-//        }
-//
-//        public boolean enQueue(int value) {
-//
-//        }
-//
-//        public boolean deQueue() {
-//
-//        }
-//
-//        public int Front() {
-//
-//        }
-//
-//        public int Rear() {
-//
-//        }
-//
-//        public boolean isEmpty() {
-//
-//        }
-//
-//        public boolean isFull() {
-//
-//        }
-//    }
+    // IDEA: array + head idx + elementCnt +`circular` handling (gemini)
+    class MyCircularQueue_0 {
+        // Underlying primitive array used to store our queue elements
+        private final int[] queue;
+
+        // The maximum capacity size limits of our circular queue
+        private final int capacity;
+
+        // Pointer index tracking the absolute front (head) of the queue
+        private int head;
+
+        // Scalar counter tracking exactly how many elements are currently active
+        private int elementCnt;
+
+        /**
+         * Constructor: Initializes the object data structure with a fixed size k.
+         */
+        public MyCircularQueue_0(int k) {
+            this.capacity = k;
+            this.queue = new int[k]; // Allocate memory for the fixed array
+            this.head = 0; // Start the read pointer at the first index
+            this.elementCnt = 0; // Initially, the queue contains no elements
+        }
+
+        /**
+         * Inserts an element into the circular queue. Return true if successful.
+         */
+        public boolean enQueue(int value) {
+            // If the queue is already full, we cannot insert anymore elements
+            if (isFull()) {
+                return false;
+            }
+
+            /** NOTE !!!
+             *
+             *  how we get `to insert` index
+             */
+            // Calculate the next empty write slot (tail) dynamically.
+            // The next spot is logically 'elementCnt' steps ahead of the head.
+            // We use modulo (%) to gracefully wrap around back to 0 if it exceeds capacity.
+            int tail = (head + elementCnt) % capacity;
+
+            // Store the value into our computed circular target index
+            queue[tail] = value;
+
+            // Increment the total count of elements inside our queue
+            elementCnt++;
+
+            // Return true to indicate a successful enqueue operation
+            return true;
+        }
+
+        /**
+         * Deletes an element from the circular queue. Return true if successful.
+         */
+        public boolean deQueue() {
+            // If the queue is empty, there is nothing left to remove
+            if (isEmpty()) {
+                return false;
+            }
+
+            /** NOTE !!!
+             *
+             *  how we get `new head` index
+             */
+            // Advance the head pointer forward by 1 to point to the next valid element.
+            // We apply modulo (%) here too, so that if head steps off the end of the array,
+            // it wraps back around to index 0 smoothly.
+            head = (head + 1) % capacity;
+
+            // Decrement our total active element count
+            elementCnt--;
+
+            // Return true to indicate a successful dequeue operation
+            return true;
+        }
+
+        /**
+         * Gets the front item from the queue. If empty, returns -1.
+         */
+        public int Front() {
+            // Guard check: return -1 if there are no elements to inspect
+            if (isEmpty()) {
+                return -1;
+            }
+            // Return the item sitting exactly where the head pointer is looking
+            return queue[head];
+        }
+
+        /**
+         * Gets the last item from the queue. If empty, returns -1.
+         */
+        public int Rear() {
+            // Guard check: return -1 if there are no elements to inspect
+            if (isEmpty()) {
+                return -1;
+            }
+
+            // Calculate the index of the absolute last element currently added.
+            // The last item sits exactly 'elementCnt - 1' steps ahead of our head.
+            // Modulo (%) prevents index out of bounds by handling structural wrap arounds.
+            int tail = (head + elementCnt - 1) % capacity;
+
+            // Return the item sitting at our calculated tail index
+            return queue[tail];
+        }
+
+        /**
+         * Checks whether the circular queue is empty or not.
+         */
+        public boolean isEmpty() {
+            // The queue is empty if and only if our active counter reads exactly 0
+            return elementCnt == 0;
+        }
+
+        /**
+         * Checks whether the circular queue is full or not.
+         */
+        public boolean isFull() {
+            // The queue is full if our active counter reaches our designated maximum capacity
+            return elementCnt == capacity;
+        }
+    }
+
+
+
 
     // V0-1
     // IDEA: DEQUEUE
@@ -139,7 +237,12 @@ public class DesignCircularQueue {
             if (this.isEmpty()) {
                 return false;
             }
-            // ???
+            /** NOTE !!!
+             *
+             *  we `remove` element from `FIRST`,
+             *  so it ensures that there is always
+             *  an element at that idx can be removed.
+             */
             this.dq.pollFirst();
             return true;
         }
@@ -273,7 +376,12 @@ public class DesignCircularQueue {
             if (isFull()) {
                 return false;
             }
-            // Calculate insertion index: (head + current count) wrapped around capacity
+            /** NOTE !!!
+             *
+             *  how we get `insertion` index
+             */
+            // Calculate `insertion` index:
+            // (head + current count) wrapped around capacity
             int tail = (head + elementCnt) % capacity;
             queue[tail] = value;
             elementCnt++;
@@ -772,6 +880,6 @@ public class DesignCircularQueue {
 
 
 
-    
+
 
 }
