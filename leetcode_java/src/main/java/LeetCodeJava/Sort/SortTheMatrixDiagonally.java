@@ -45,7 +45,153 @@ public class SortTheMatrixDiagonally {
 
 
 
-    // V1
+    // V1-1
+    // IDEA:  SORT, GROUP (GPT)
+    /**  NOTE !!!
+     *
+     *  Key observation:
+     *
+     *   ```
+     *   elements on the same diagonal have the same value of:
+     *
+     *   row - col
+     *   ```
+     *
+     *  ->
+     *
+     *  So we can:
+     *
+     *  1. group elements by (r - c)
+     *  2. sort each diagonal
+     *  3. put them back into the matrix
+     *
+     *
+     *
+     */
+    public int[][] diagonalSort_1_1(int[][] mat) {
+
+        int m = mat.length;
+        int n = mat[0].length;
+
+        // diagonal id -> elements
+        Map<Integer, List<Integer>> map = new HashMap<>();
+
+        // 1. collect elements
+        for (int r = 0; r < m; r++) {
+            for (int c = 0; c < n; c++) {
+
+                int key = r - c;
+
+                map.putIfAbsent(key, new ArrayList<>());
+                map.get(key).add(mat[r][c]);
+            }
+        }
+
+        // 2. sort each diagonal descending
+        // so we can remove from end efficiently
+        for (List<Integer> list : map.values()) {
+            Collections.sort(list, Collections.reverseOrder());
+        }
+
+        // 3. write back sorted values
+        for (int r = 0; r < m; r++) {
+            for (int c = 0; c < n; c++) {
+
+                int key = r - c;
+                List<Integer> list = map.get(key);
+
+                mat[r][c] = list.remove(list.size() - 1);
+            }
+        }
+
+        return mat;
+    }
+
+
+
+    // V1-2
+    /**
+     *  The trick to solving **LC 1329 (Sort the Matrix Diagonally)**
+     *  relies on a beautiful property of 2D grid diagonals:
+     *
+     * > **Any two cells `mat[i][j]` belong to the
+     *   exact same top-left to bottom-right diagonal
+     *   if and only if their index
+     *   difference `i - j` is identical.**
+     *
+     * For instance:
+     *
+     * * The main diagonal cells like `(0,0)`, `(1,1)`, `(2,2)` all yield `i - j = 0`.
+     * * Diagonals below it yield positive integers (`1 - 0 = 1`, `2 - 1 = 1`, etc.).
+     * * Diagonals above it yield negative integers (`0 - 1 = -1`, `1 - 2 = -1`, etc.).
+     *
+     * By leveraging a `HashMap` mapping this unique `i - j` diagonal key to a min-heap (`PriorityQueue`), we can effortlessly sort the diagonals on the fly.
+     *
+     *
+     * ---
+     *
+     * ### 📊 Complexity Analysis
+     *
+     * * **Time Complexity:** $\mathcal{O}(M \times N \log(\min(M, N)))$ where $M$ is the number of rows and $N$ is the number of columns.
+     * * We iterate over all cells ($M \times N$ steps) to insert and extract from our min-heaps.
+     * * The maximum size of any single diagonal heap is capped at $\min(M, N)$, resulting in a $\log(\min(M, N))$ runtime penalty for queue operations.
+     *
+     *
+     * * **Space Complexity:** $\mathcal{O}(M \times N)$ to store the cell values temporarily inside the hash map structure.
+     *
+     * ---
+     *
+     * ### 🎥 Recommended Walkthrough
+     *
+     * For a deeper visual understanding,
+     * this [Sort the Matrix Diagonally Video Explanation]
+     * (https://www.youtube.com/watch?v=JBqUl7avtG8)
+     * dry-runs the entire diagonal mapping concept
+     * with clear tracing diagrams.
+     *
+     */
+    public int[][] diagonalSort_1_2(int[][] mat) {
+        // Guard check for safely terminating on empty input boundaries
+        if (mat == null || mat.length == 0 || mat[0].length == 0) {
+            return mat;
+        }
+
+        int rows = mat.length;
+        int cols = mat[0].length;
+
+        // Map to group elements belonging to the same diagonal.
+        // Key: The mathematical identifier 'i - j'
+        // Value: A min-heap (PriorityQueue) that naturally keeps elements sorted in ascending order.
+        Map<Integer, Queue<Integer>> diagonalGroups = new HashMap<>();
+
+        // PASS 1: Group all elements by their respective diagonal signature
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                int diagonalKey = i - j;
+
+                // If the diagonal key doesn't exist yet, initialize a new Min-Heap
+                diagonalGroups.computeIfAbsent(diagonalKey, k -> new PriorityQueue<>());
+
+                // Add the current cell value into its designated sorted diagonal bucket
+                diagonalGroups.get(diagonalKey).add(mat[i][j]);
+            }
+        }
+
+        // PASS 2: Place the sorted values back into the original matrix positions
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                int diagonalKey = i - j;
+
+                // Poll the smallest remaining element from the min-heap to write it back.
+                // Since we traverse row-by-row and col-by-col, we fill it from top-left to bottom-right.
+                mat[i][j] = diagonalGroups.get(diagonalKey).poll();
+            }
+        }
+
+        // Return the modified sorted matrix in-place
+        return mat;
+    }
+
 
 
     // V2
@@ -72,7 +218,7 @@ public class SortTheMatrixDiagonally {
     // https://leetcode.com/problems/sort-the-matrix-diagonally/solutions/7771300/1329-sort-the-matrix-diagonally-by-agupt-ajgv/
     // Refer this for beter understanding:
     // https://www.youtube.com/watch?v=mNWwJQ7_z4Q
-    public int[][] diagonalSort(int[][] mat) {
+    public int[][] diagonalSort_3(int[][] mat) {
 
         /*
             <----- Key Idea ------>
