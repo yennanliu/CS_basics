@@ -52,7 +52,151 @@ public class ExpressiveWords {
 //
 //    }
 
-    
+
+    // V0-1
+    // IDEA: STR OP (GPT)
+    public int expressiveWords_0_1(String s, String[] words) {
+
+        int cnt = 0;
+
+        for (String word : words) {
+            if (isStretchy_0_1(s, word)) {
+                cnt++;
+            }
+        }
+
+        return cnt;
+    }
+
+    private boolean isStretchy_0_1(String s, String word) {
+
+        int i = 0;
+        int j = 0;
+
+        while (i < s.length() && j < word.length()) {
+
+            // chars must match
+            if (s.charAt(i) != word.charAt(j)) {
+                return false;
+            }
+
+            char ch = s.charAt(i);
+
+            // count group length in s
+            int cntS = 0;
+            while (i < s.length() && s.charAt(i) == ch) {
+                cntS++;
+                i++;
+            }
+
+            // count group length in word
+            int cntW = 0;
+            while (j < word.length() && word.charAt(j) == ch) {
+                cntW++;
+                j++;
+            }
+
+            // invalid cases
+            if (cntS < cntW) {
+                return false;
+            }
+
+            if (cntS != cntW && cntS < 3) {
+                return false;
+            }
+        }
+
+        // both must finish together
+        return i == s.length() && j == word.length();
+    }
+
+
+
+    // V0-2
+    // IDEA: STR OP (GPT)
+    public int expressiveWords_0_2(String s, String[] words) {
+        if (s == null || words == null)
+            return 0;
+
+        // Compress the target string into ordered groups
+        List<Group> targetGroups = getGroups(s);
+        int expressiveCount = 0;
+
+        for (String word : words) {
+            if (isStretchy(targetGroups, getGroups(word))) {
+                expressiveCount++;
+            }
+        }
+
+        return expressiveCount;
+    }
+
+    // Custom helper class to store an ordered character block
+    private static class Group {
+        char ch;
+        int count;
+
+        Group(char ch, int count) {
+            this.ch = ch;
+            this.count = count;
+        }
+    }
+
+    // Compresses a string into a list of character groups preserving order
+    private List<Group> getGroups(String str) {
+        List<Group> groups = new ArrayList<>();
+        if (str.isEmpty())
+            return groups;
+
+        char[] chars = str.toCharArray();
+        char current = chars[0];
+        int count = 1;
+
+        for (int i = 1; i < chars.length; i++) {
+            if (chars[i] == current) {
+                count++;
+            } else {
+                groups.add(new Group(current, count));
+                current = chars[i];
+                count = 1;
+            }
+        }
+        groups.add(new Group(current, count)); // Don't forget the last group!
+        return groups;
+    }
+
+    // Validates if the query word groups can stretch into the target groups
+    private boolean isStretchy(List<Group> target, List<Group> query) {
+        // Condition 1: They must have the exact same number of distinct character blocks
+        if (target.size() != query.size()) {
+            return false;
+        }
+
+        for (int i = 0; i < target.size(); i++) {
+            Group tHead = target.get(i);
+            Group qHead = query.get(i);
+
+            // Condition 2: The characters must match in order
+            if (tHead.ch != qHead.ch) {
+                return false;
+            }
+
+            // Condition 3: Cannot reduce characters from the query word
+            if (qHead.count > tHead.count) {
+                return false;
+            }
+
+            // Condition 4: If counts differ, target must have a group size >= 3 to allow extension
+            if (qHead.count < tHead.count && tHead.count < 3) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+
     // V1
     // IDEA : (gpt)
     /**

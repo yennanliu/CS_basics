@@ -9572,9 +9572,61 @@ public class Workspace25 {
 
 
     // LC 809
+    // 5.19 - 29 pm
+    /**
+     *  -> Return the number
+     *     of query strings
+     *     that are `stretchy` (有彈性的)
+     *
+     *
+     *  ----------------
+     *
+     *  IDEA 1) STRING OP ???? + HASHMAP ???
+     *
+     *
+     *  ----------------
+     *
+     */
+    //  IDEA 1) STRING OP ???? + HASHMAP ???
     public int expressiveWords(String s, String[] words) {
+        // edge
 
-        return 9;
+
+        Map<String, Integer> mapS = getCnt(s); // ??
+        int cnt = 0;
+        for(String x: words){
+            // ???
+            Map<String, Integer> map = getCnt(x);
+            boolean isStretchy= false;
+
+            for(String k: map.keySet()){
+                if(!mapS.containsKey(k)){
+                    break;
+                }
+                // /??
+                if(mapS.get(k) - map.get(k) == 0){
+                    continue;
+                }
+                // ???
+                if(mapS.get(k) - map.get(k) < 2){
+                    break;
+                }
+            }
+            cnt += 1;
+        }
+
+
+        return cnt;
+    }
+
+
+    private Map<String, Integer> getCnt(String s){
+        Map<String, Integer> map = new HashMap<>();
+        for(char ch: s.toCharArray()){
+            String str = String.valueOf(ch); // ???
+            map.put(str, map.getOrDefault(str, 0) + 1 );
+        }
+        return map;
     }
 
 
