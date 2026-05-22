@@ -46,6 +46,11 @@
     - LC 392 (Is Subsequence)
     - LC 1023 (Camelcase Matching - with uppercase/lowercase constraint)
 
+- `Group-by-Group String Comparison`
+    - Both pointers advance by group (run of same char), not by single char
+    - Validate each aligned group: size must allow extension (>= 3) if counts differ
+    - LC 809 (Expressive Words)
+
 - Algorithm
     - binary search
     - sliding window
@@ -1075,6 +1080,95 @@ Query 2: "FooBarTest"
 - LC 392 Is Subsequence (simpler version)
 - LC 524 Longest Word in Dictionary through Deleting
 - LC 792 Number of Matching Subsequences
+
+### 0-2-7) Group-by-Group String Comparison (Expressive Words)
+
+#### Core Idea
+
+Compare two strings **group by group**, where a group is a maximal run of the same character. For each aligned group:
+1. Characters must match
+2. The source group count `cntS` must be **≥** query group count `cntW` (can only expand, not shrink)
+3. If counts differ (`cntS != cntW`), `cntS` must be **≥ 3** — otherwise the source can't have been "extended" from the query
+
+```
+Key invariant:
+  cntS < cntW          → impossible (word has more chars than s)
+  cntS != cntW && cntS < 3  → impossible (s has too few to be an extension)
+  otherwise            → valid group match
+```
+
+Both pointers must reach the end of their strings simultaneously.
+
+---
+
+```java
+// java
+// LC 809 - Expressive Words
+// time: O(S + W) per word, O(N * (S + W)) total
+// space: O(1)
+/**
+ * Example:
+ *   s = "heeellooo", word = "hello"
+ *
+ *   Group 'h': cntS=1, cntW=1  → equal, OK
+ *   Group 'e': cntS=3, cntW=1  → differ, but cntS=3 >= 3, OK (extended)
+ *   Group 'l': cntS=2, cntW=2  → equal, OK
+ *   Group 'o': cntS=3, cntW=1  → differ, but cntS=3 >= 3, OK (extended)
+ *   Both exhausted → true (stretchy)
+ *
+ *   s = "heeellooo", word = "helo"
+ *   Group 'l': cntS=2, cntW=1  → differ, but cntS=2 < 3, FAIL
+ */
+public int expressiveWords(String s, String[] words) {
+    int cnt = 0;
+    for (String word : words) {
+        if (isStretchy(s, word)) cnt++;
+    }
+    return cnt;
+}
+
+private boolean isStretchy(String s, String word) {
+    int i = 0, j = 0;
+
+    while (i < s.length() && j < word.length()) {
+        if (s.charAt(i) != word.charAt(j)) return false;
+
+        char ch = s.charAt(i);
+
+        // count group in s
+        int cntS = 0;
+        while (i < s.length() && s.charAt(i) == ch) { cntS++; i++; }
+
+        // count group in word
+        int cntW = 0;
+        while (j < word.length() && word.charAt(j) == ch) { cntW++; j++; }
+
+        if (cntS < cntW) return false;              // word has more than s → can't shrink
+        if (cntS != cntW && cntS < 3) return false; // extension requires group size >= 3
+    }
+
+    return i == s.length() && j == word.length();
+}
+```
+
+#### Decision Table Per Group
+
+| `cntS` vs `cntW` | `cntS >= 3`? | Result |
+|-----------------|-------------|--------|
+| `cntS == cntW` | — | Valid (exact match) |
+| `cntS < cntW` | — | **Invalid** (s is shorter) |
+| `cntS > cntW` | Yes (>= 3) | Valid (extended) |
+| `cntS > cntW` | No (< 3) | **Invalid** (can't extend a small group) |
+
+#### Similar Problems
+
+| Problem | LC# | Key Difference |
+|---------|-----|----------------|
+| Expressive Words | 809 | Multi-word: count stretchy words |
+| String Compression | 443 | Encode groups as `char + count` in-place |
+| Count and Say | 38 | Generate next sequence by reading groups |
+| Consecutive Characters | 1446 | Find longest single-char run |
+| Run-Length Encoding | — | Encode/decode character groups |
 
 ### 0-2-3) QuickSelect (Partition Algorithm for Kth Element)
 
