@@ -519,13 +519,13 @@ public class SortTheMatrixDiagonally {
         }
 
         // Again fill entires to matrix.
-        for (int i = row - 1; i >= 0; i--) {
-            for (int j = col - 1; j >= 0; j--) {
-                int key = i - j;
-                int val = map.get(key).removeLast();
-                mat[i][j] = val;
-            }
-        }
+//        for (int i = row - 1; i >= 0; i--) {
+//            for (int j = col - 1; j >= 0; j--) {
+//                int key = i - j;
+//                int val = map.get(key).removeLast();
+//                mat[i][j] = val;
+//            }
+//        }
 
         return mat;
     }
