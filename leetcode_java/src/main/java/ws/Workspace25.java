@@ -9477,6 +9477,12 @@ public class Workspace25 {
     }
 
 
+    // LC 1147
+    public int longestDecomposition(String text) {
+
+        return 0;
+    }
+
 
 
 
