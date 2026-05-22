@@ -43,7 +43,9 @@ package LeetCodeJava.String;
  *
  */
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ExpressiveWords {
 
@@ -53,13 +55,68 @@ public class ExpressiveWords {
 //    }
 
 
+    /** NOTE !!!
+     *
+     *  CAN'T use below logic, because:
+     *
+     *   - character counts alone are insufficient
+     *   - order/grouping matters
+     *
+     */
+//    //  IDEA 1) STRING OP ???? + HASHMAP ???
+//    public int expressiveWords(String s, String[] words) {
+//        // edge
+//
+//
+//        Map<String, Integer> mapS = getCnt(s); // ??
+//        int cnt = 0;
+//        for(String x: words){
+//            // ???
+//            Map<String, Integer> map = getCnt(x);
+//            boolean isStretchy= false;
+//
+//            for(String k: map.keySet()){
+//                if(!mapS.containsKey(k)){
+//                    break;
+//                }
+//                // /??
+//                if(mapS.get(k) - map.get(k) == 0){
+//                    continue;
+//                }
+//                // ???
+//                if(mapS.get(k) - map.get(k) < 2){
+//                    break;
+//                }
+//            }
+//            cnt += 1;
+//        }
+//
+//
+//        return cnt;
+//    }
+//
+//
+//    private Map<String, Integer> getCnt(String s){
+//        Map<String, Integer> map = new HashMap<>();
+//        for(char ch: s.toCharArray()){
+//            String str = String.valueOf(ch); // ???
+//            map.put(str, map.getOrDefault(str, 0) + 1 );
+//        }
+//        return map;
+//    }
+
+
     // V0-1
-    // IDEA: STR OP (GPT)
+    // IDEA: two-pointer/group-count (GPT)
     public int expressiveWords_0_1(String s, String[] words) {
 
         int cnt = 0;
 
         for (String word : words) {
+            /** NOTE !!
+             *
+             *  call helper func here
+             */
             if (isStretchy_0_1(s, word)) {
                 cnt++;
             }
@@ -68,6 +125,13 @@ public class ExpressiveWords {
         return cnt;
     }
 
+
+    /** NOTE !!
+     *
+     *  helper func here
+     *
+     *   -> check if s, and word are `stretchy`)
+     */
     private boolean isStretchy_0_1(String s, String word) {
 
         int i = 0;
@@ -82,6 +146,10 @@ public class ExpressiveWords {
 
             char ch = s.charAt(i);
 
+            /** NOTE !!
+             *
+             *  count `group length` in `s`
+             */
             // count group length in s
             int cntS = 0;
             while (i < s.length() && s.charAt(i) == ch) {
@@ -89,6 +157,10 @@ public class ExpressiveWords {
                 i++;
             }
 
+            /** NOTE !!
+             *
+             *  count `group length` in `word`
+             */
             // count group length in word
             int cntW = 0;
             while (j < word.length() && word.charAt(j) == ch) {
@@ -113,7 +185,7 @@ public class ExpressiveWords {
 
 
     // V0-2
-    // IDEA: STR OP (GPT)
+    // IDEA: two-pointer/group-count (gemini)
     public int expressiveWords_0_2(String s, String[] words) {
         if (s == null || words == null)
             return 0;
