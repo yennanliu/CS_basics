@@ -4,8 +4,8 @@ package ws;
 //import com.sun.org.apache.bcel.internal.generic.IINC;
 //import com.sun.org.apache.bcel.internal.generic.SIPUSH;
 
-import LeetCodeJava.LinkedList.ListNode;
 
+import java.math.BigInteger;
 import java.util.*;
 
 public class Workspace25 {
@@ -9487,6 +9487,11 @@ public class Workspace25 {
 
 
     // LC 445
+    // 4.37 - 47 pm
+    /**
+     * IDEA 1) get as array, sum up, then make it back to linked list
+     *
+     */
     public class ListNode {
         int val;
         ListNode next;
@@ -9503,9 +9508,65 @@ public class Workspace25 {
         }
     }
 
+    // IDEA 1) get as array, sum up, then make it back to linked list
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        // edge
+        if(l1 == null || l2 == null){
+            if (l1 == null){
+                return l2;
+            }
+            return l1;
+        }
 
-        return null;
+        // get as int
+        // ???
+        StringBuilder sb1 = new StringBuilder();
+        StringBuilder sb2 = new StringBuilder();
+
+        // ??
+        while (l1 != null){
+            sb1.append(l1.val);
+            l1 = l1.next;
+        }
+
+        while (l2 != null){
+            sb2.append(l2.val);
+            l2 = l2.next;
+        }
+
+
+        // use BigInteger to avoid overflow
+        BigInteger num1 = new BigInteger(sb1.toString());
+        BigInteger num2 = new BigInteger(sb2.toString());
+
+
+        String sum = num1.add(num2).toString();
+
+
+
+
+        System.out.println(">>> sb1 = " + sb1.toString()
+        + ", sb2 = " + sb2.toString());
+
+        // ??
+        int sum = Integer.parseInt(sb1.toString()) +
+                Integer.parseInt(sb2.toString());
+
+        System.out.println(">>> sum = " + sum);
+
+        ListNode dummy = new ListNode();
+        ListNode res = dummy; // ???
+        // ???
+        for(char ch: String.valueOf(res).toCharArray()){
+            //res.next = new ListNode(Integer.parseInt(String.valueOf(ch)));
+            res.next = new ListNode(ch - '0'); // ????
+            res = res.next;
+        }
+
+
+
+        // /??
+        return dummy.next;
     }
 
 

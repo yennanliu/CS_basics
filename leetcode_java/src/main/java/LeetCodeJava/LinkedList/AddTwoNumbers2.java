@@ -2,6 +2,7 @@ package LeetCodeJava.LinkedList;
 
 // https://leetcode.com/problems/add-two-numbers-ii/description/
 
+import java.math.BigInteger;
 import java.util.Stack;
 
 /**
@@ -66,6 +67,141 @@ public class AddTwoNumbers2 {
 //    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
 //
 //    }
+
+
+    // V0-1
+    // IDEA: STR -> INT -> LINKED LIST (GPT)
+    public ListNode addTwoNumbers_0_1(ListNode l1, ListNode l2) {
+
+        /** NOTE !!!
+         *
+         *
+         *  Linked list -> str
+         *
+         */
+        // convert l1 -> string
+        StringBuilder sb1 = new StringBuilder();
+        while (l1 != null) {
+            sb1.append(l1.val);
+            l1 = l1.next;
+        }
+
+        // convert l2 -> string
+        StringBuilder sb2 = new StringBuilder();
+        while (l2 != null) {
+            sb2.append(l2.val);
+            l2 = l2.next;
+        }
+
+        /** NOTE !!!
+         *
+         *  1.  Str -> big integer
+         *
+         *
+         *  2. use `BigInteger` to avoid overflow
+         *
+         */
+        // use BigInteger to avoid overflow
+        BigInteger num1 = new BigInteger(sb1.toString());
+        BigInteger num2 = new BigInteger(sb2.toString());
+
+        /** NOTE !!!
+         *
+         *
+         *  BigInteger -> str
+         *
+         */
+        String sum = num1.add(num2).toString();
+
+        /** NOTE !!!
+         *
+         *
+         *  we init dummy,
+         *  and assign its val to cur,
+         *  -> so cur can be used to `re-connect` nodes
+         *  -> and dummy can be returned as the `placeholder` of final result
+         *
+         */
+        // build linked list
+        ListNode dummy = new ListNode(0);
+        ListNode cur = dummy;
+
+        for (char ch : sum.toCharArray()) {
+            cur.next = new ListNode(ch - '0');
+            cur = cur.next;
+        }
+
+        return dummy.next;
+    }
+
+
+
+    // V0-2
+    // IDEA: STACK (gemini)
+    public ListNode addTwoNumbers_0_2(ListNode l1, ListNode l2) {
+        // Edge cases
+        if (l1 == null)
+            return l2;
+        if (l2 == null)
+            return l1;
+
+        // Two stacks to store nodes so we can process them backward
+        /** NOTE !!!
+         *
+         *
+         *   STACK: FILO
+         *
+         */
+        Stack<Integer> s1 = new Stack<>();
+        Stack<Integer> s2 = new Stack<>();
+
+        // Push all digits of l1 onto s1
+        while (l1 != null) {
+            s1.push(l1.val);
+            l1 = l1.next;
+        }
+
+        // Push all digits of l2 onto s2
+        while (l2 != null) {
+            s2.push(l2.val);
+            l2 = l2.next;
+        }
+
+        int carry = 0;
+        ListNode head = null;
+
+        /** NOTE !!!
+         *
+         *
+         *   STACK: FILO
+         *
+         */
+        // Process digits from right to left until both stacks are empty AND carry is 0
+        while (!s1.isEmpty() || !s2.isEmpty() || carry != 0) {
+            int sum = carry;
+
+            if (!s1.isEmpty()) {
+                sum += s1.pop();
+            }
+            if (!s2.isEmpty()) {
+                sum += s2.pop();
+            }
+
+            // Calculate the new carry
+            carry = sum / 10;
+
+            // Create a new node with the single-digit remainder
+            ListNode newNode = new ListNode(sum % 10);
+
+            // Reconstruct the list forward:
+            // Connect our new node to the front of the previously built head
+            newNode.next = head;
+            head = newNode;
+        }
+
+        return head;
+    }
+
 
 
     // V1-1
