@@ -4,6 +4,8 @@ package ws;
 //import com.sun.org.apache.bcel.internal.generic.IINC;
 //import com.sun.org.apache.bcel.internal.generic.SIPUSH;
 
+import LeetCodeJava.LinkedList.ListNode;
+
 import java.util.*;
 
 public class Workspace25 {
@@ -9482,6 +9484,30 @@ public class Workspace25 {
 
         return 0;
     }
+
+
+    // LC 445
+    public class ListNode {
+        int val;
+        ListNode next;
+
+        ListNode() {}
+
+        ListNode(int val) {
+            this.val = val;
+        }
+
+        ListNode(int val, ListNode next) {
+            this.val = val;
+            this.next = next;
+        }
+    }
+
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+
+        return null;
+    }
+
 
 
 
