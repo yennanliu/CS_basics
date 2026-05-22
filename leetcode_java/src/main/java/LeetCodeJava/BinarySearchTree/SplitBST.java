@@ -86,7 +86,6 @@ public class SplitBST {
      *      * | `res[1]` | root of BST containing **all values > target** |
      *      *
      *
-     *
      */
     public TreeNode[] splitBST(TreeNode root, int target) {
         // Base Case: An empty tree splits into two empty trees
@@ -95,6 +94,11 @@ public class SplitBST {
         }
 
         // Case 1: The current root belongs to the small/equal side
+        /** NOTE !!!
+         *
+         *    if root <= target
+         *     -> go `right`
+         */
         /**
          *  Example:
          *
@@ -109,7 +113,7 @@ public class SplitBST {
          */
         // Root belongs to the "Small" side.
         // But some of its RIGHT children might still be > target.
-        // So we split the right subtree.
+        // So we split the `right` subtree.
         if (root.val <= target) {
             // Recursively split the right subtree
             TreeNode[] split = splitBST(root.right, target);
@@ -121,11 +125,31 @@ public class SplitBST {
             // Reconnect the smaller portion of the split to root's right
             root.right = split[0];
 
+            /** NOTE !!!
+             *
+             *  the return format fit what this helper func
+             *  is designed for.
+             *  e.g.  [smaller_nodes, bigger_nodes]
+             *
+             *  e.g.
+             *             *
+             *             * | Index    | Meaning                                        |
+             *             * | -------- | ---------------------------------------------- |
+             *             * | `res[0]` | root of BST containing **all values ≤ target** |
+             *             * | `res[1]` | root of BST containing **all values > target** |
+             *             *
+             *
+             */
             // Return [modified root (small side), remaining large side]
             return new TreeNode[]{root, split[1]};
 
         }
         // Case 2: The current root belongs to the strictly larger side
+        /** NOTE !!!
+         *
+         *    if root > target
+         *     -> go `left`
+         */
         /** Example:
          *
          *
@@ -143,7 +167,7 @@ public class SplitBST {
         // But some of its LEFT children might still be <= target.
         // So we split the left subtree.
         else {
-            // Recursively split the left subtree
+            // Recursively split the `left` subtree
             TreeNode[] split = splitBST(root.left, target);
 
             /** NOTE !!!

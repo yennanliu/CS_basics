@@ -9235,8 +9235,71 @@ public class Workspace25 {
      *
      *
      */
+    // 6.07 - 17 pm
     // IDEA 1) DFS + BST property
     public TreeNode[] splitBST(TreeNode root, int target) {
+//        if (root == null) {
+//            /** NOTE !!! the return val */
+//            return new TreeNode[]{null, null};
+//        }
+
+
+
+        return splitHelper_97(root, target);
+        //return null;
+    }
+
+
+
+    private TreeNode[] splitHelper_97(TreeNode root, int target){
+        // edge
+        if(root == null){
+            return new TreeNode[]{null, null}; // ???
+        }
+        // ???
+        // case 1) root.val > target
+        // (Case 1: The current root belongs to the strictly larger side)
+        // move `left`,
+        // but there may be some nodes that
+        // still > target
+        // -> need to re-connect them
+        if(root.val > target){
+            // ???
+            TreeNode[] res1 = splitHelper_97(root.left, target);
+            // ???
+            root.right = res1[1];
+           //return new TreeNode[]{root, res1[1]}; // ???
+            return new TreeNode[]{res1[0], root}; // ???
+        }
+
+
+
+        // Case 2: The current root belongs to the small/equal side ???
+        // go to `right`
+        // but there may be some nodes that still < target
+        // -> need to re-connect them
+        else{
+
+            TreeNode[] res2 = splitHelper_97(root.right, target);
+            root.left = res2[0];
+            return new TreeNode[]{root, res2[1]}; // ???
+        }
+
+      //  return null;
+    }
+
+
+
+
+
+
+
+
+
+
+
+    // IDEA 1) DFS + BST property
+    public TreeNode[] splitBST_94(TreeNode root, int target) {
 //        if (root == null) {
 //            /** NOTE !!! the return val */
 //            return new TreeNode[]{null, null};
