@@ -49,7 +49,7 @@ public class ThreeSumClosest {
 
 
     // V0-1
-    // IDEA: SORT + 3 VAR (gpt)
+    // IDEA: SORT + 3 POINTERS (gpt)
     /**
      *
      * but LC 16 requires checking `3 numbers together`.
@@ -62,16 +62,60 @@ public class ThreeSumClosest {
      * 4. Track the closest sum
      *
      */
+    /**  Dry run:
+     *
+     * ==============================================================================================================================
+     * |  i  |  l  |  r  |  Current Array Snapshot  |  currentSum Calculation  |  Distance  |  closestSum Update  |     Action Taken      |
+     * ==============================================================================================================================
+     * |  0  |  1  |  3  |  [-4, -1,  1,  2]        |  -4 + (-1) + 2 = -3      |  |-3 - 1|  |  Updates to -3      |  currentSum < 1 -> l++|
+     * |     |     |     |   ^   ^        ^         |                          |    = 4     |                     |                       |
+     * |     |     |     |   i   l        r         |                          |            |                     |                       |
+     * ------------------------------------------------------------------------------------------------------------------------------
+     * |  0  |  2  |  3  |  [-4, -1,  1,  2]        |  -4 + 1 + 2 = -1         |  |-1 - 1|  |  Updates to -1      |  currentSum < 1 -> l++|
+     * |     |     |     |   ^        ^   ^         |                          |    = 2     |                     |                       |
+     * |     |     |     |   i        l   r         |                          |            |                     |                       |
+     * ------------------------------------------------------------------------------------------------------------------------------
+     * |  0  |  3  |  3  |  [-4, -1,  1,  2]        |  *Pointers Collide* |     --     |  No Change (-1)     |  Loop breaks          |
+     * |     |     |     |   ^            ^         |                          |            |                     |  (l < r fails)        |
+     * |     |     |     |   i           l,r        |                          |            |                     |                       |
+     * ------------------------------------------------------------------------------------------------------------------------------
+     * |  1  |  2  |  3  |  [-4, -1,  1,  2]        |  -1 + 1 + 2 = 2          |  |2 - 1|   |  Updates to 2       |  currentSum > 1 -> r--|
+     * |     |     |     |       ^    ^   ^         |                          |    = 1     |                     |                       |
+     * |     |     |     |       i    l   r         |                          |            |                     |                       |
+     * ------------------------------------------------------------------------------------------------------------------------------
+     * |  1  |  2  |  2  |  [-4, -1,  1,  2]        |  *Pointers Collide* |     --     |  Final Ans = 2      |  Loop breaks          |
+     * |     |     |     |       ^    ^             |                          |            |                     |  (l < r fails)        |
+     * |     |     |     |       i   l,r            |                          |            |                     |                       |
+     * ==============================================================================================================================
+     *
+     *
+     */
     public int threeSumClosest_0_1(int[] nums, int target) {
         Arrays.sort(nums);
 
         int closest = nums[0] + nums[1] + nums[2];
 
+        /** NOTE !!!
+         *
+         *  i starts from 0 and end at `nums.length - 2`
+         *
+         */
         for (int i = 0; i < nums.length - 2; i++) {
 
+            /** NOTE !!!
+             *
+             *   l = i + 1
+             *   r = nums.len - 1
+             *
+             */
             int l = i + 1;
             int r = nums.length - 1;
 
+            /** NOTE !!!
+             *
+             *  while(l < r) loop
+             *
+             */
             while (l < r) {
 
                 int sum = nums[i] + nums[l] + nums[r];
@@ -101,7 +145,7 @@ public class ThreeSumClosest {
 
 
     // V0-2
-    // IDEA: SORT + 3 VAR (GEMINI)
+    // IDEA:  SORT + 3 POINTERS  (GEMINI)
     public int threeSumClosest_0_2(int[] nums, int target) {
         // Step 1: Sort the array to enable directional two-pointer adjustments
         Arrays.sort(nums);
