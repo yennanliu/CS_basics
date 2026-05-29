@@ -50,8 +50,105 @@ package LeetCodeJava.Array;
 public class MinimumNumberOfOperationsToReinitializeAPermutation {
 
     // V0
+//    public int reinitializePermutation(int n) {
+//
+//    }
 
-    // V1
+    // V1-1
+    // IDEA: Direct Simulation (Most Intuitive) (GEMINI)
+    /**
+     * Since the maximum value of $n$ is relatively
+     * small ($n \le 1000$), we can directly simulate
+     * the operation step-by-step using two arrays until the
+     * array returns to its original configuration
+     * (arr[i] == i for all indices).
+     *
+     */
+    public int reinitializePermutation_1(int n) {
+        // Initialize the array as specified: arr[i] = i
+        int[] arr = new int[n];
+        for (int i = 0; i < n; i++) {
+            arr[i] = i;
+        }
+
+        int operations = 0;
+
+        // Keep simulating operations until the array matches its original state
+        while (true) {
+            int[] next = new int[n];
+
+            // Apply the transformation rules given in the problem statement
+            for (int i = 0; i < n; i++) {
+                if (i % 2 == 0) {
+                    next[i] = arr[i / 2];
+                } else {
+                    next[i] = arr[n / 2 + (i - 1) / 2];
+                }
+            }
+
+            // Advance our operation counter
+            operations++;
+            arr = next; // Move to the next state
+
+            // Check if the array has returned to the initial configuration
+            if (isOriginal(arr)) {
+                break;
+            }
+        }
+
+        return operations;
+    }
+
+    // Helper method to verify if the array matches its original initialization (arr[i] == i)
+    private boolean isOriginal(int[] arr) {
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] != i) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    // V1-2
+    // IDEA: MATH (GEMINI)
+    /**
+     * If you trace the position of a single element
+     * (excluding the first and last elements, which never move),
+     * you will notice that its index follows a deterministic cycle.
+     *
+     * Instead of moving the entire array, we can track
+     * the index of just a single number
+     * (e.g., the number originally at index 1).
+     * When index 1 cycles all the way back to position 1,
+     * the entire permutation is guaranteed to have returned to its original state.
+     *
+     *   - If the current index i is even: it moves to i / 2.
+     *
+     *   - If the current index i is odd: it moves to n / 2 + (i - 1) / 2.
+     *
+     */
+    public int reinitializePermutation(int n) {
+        // Track only the index location of the element that started at index 1
+        int currentIndex = 1;
+        int operations = 0;
+
+        // Run until the element cycles completely back to index 1
+        while (operations == 0 || currentIndex != 1) {
+            if (currentIndex % 2 == 0) {
+                // Even index rule inverted: what lands at index 'currentIndex' came from 'currentIndex / 2'
+                currentIndex = currentIndex / 2;
+            } else {
+                // Odd index rule inverted
+                currentIndex = n / 2 + (currentIndex - 1) / 2;
+            }
+            operations++;
+        }
+
+        return operations;
+    }
+
+
 
     // V2
     // IDEA: BRUTE FORCE

@@ -9910,6 +9910,37 @@ public class Workspace25 {
     }
 
 
+    // LC 1806
+    // 6.57 - 7.07 pm
+    /**
+     *   permutation: 排列
+     *
+     *    You initially have a permutation perm of size n
+     *    where perm[i] == i (0-indexed)
+     *
+     *
+     *
+     *  --------------
+     *
+     *  IDEA 1) BRUTE FORCE ???
+     *
+     *
+     *  --------------
+     *
+     *
+     */
+    public int reinitializePermutation(int n) {
+        // edge
+        if(n < 2){
+            return 0; // ???
+        }
+        if(n == 2){
+            return 1;
+        }
+
+        return 0;
+    }
+
 
 
 
