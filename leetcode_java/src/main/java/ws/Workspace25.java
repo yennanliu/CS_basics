@@ -9694,7 +9694,82 @@ public class Workspace25 {
 
 
     // LC 16
+    // 4.56 - 5.07 pm
+    /**
+     * -> Return the `sum` of the
+     * three integers.
+     *
+     *   find three integers at
+     *   `distinct` indices in nums
+     *   such that the sum is closest to target.
+     *
+     *
+     *   assume that each input
+     *   would have
+     *   exactly `one` solution.
+     *
+     *
+     * ----------------
+     *
+     *  IDEA 1) BRUTE FORCE
+     *
+     *  IDEA 2) SORT + 2 POINTERS ???
+     *
+     *  IDEA 3) 3 sum ?????
+     *
+     *
+     *
+     * ----------------
+     *
+     *  ex 1)
+     *
+     *  Input: nums = [-1,2,1,-4], target = 1
+     *  Output: 2
+     *
+     *  -> sort
+     *  -> [ -4, -1, 1, 2 ]
+     *
+     *
+     */
     public int threeSumClosest(int[] nums, int target) {
+        // edge
+//        if(nums.length < 3){
+//            return  -1;
+//        }
+        if(nums.length == 3){
+            return nums[0] + nums[1] + nums[2]; // ???
+        }
+        // ??? sort (small -> big)
+        Arrays.sort(nums);
+
+        // ??? 2 pointers ??
+        int l = 0;
+        int r = nums.length - 1; //??
+        while (r >= l){
+            // ???
+            int cur = nums[l] + nums[r];
+            // ???
+            if(r - l == 2){
+                return cur + nums[l+1]; // ???
+            }
+            if(cur == target){
+                // try to find the min within (l, r)
+                // interval
+                int val = 1000;
+                for(int i = l + 1; i < r; i++){
+                    val = Math.min(val, nums[i]);
+                }
+                return cur + val; // ???
+            }
+            // ???
+            else if(cur > target){
+                r -= 1;
+            }
+            // ???
+            else{
+                l += 1;
+            }
+        }
 
         return 0;
     }

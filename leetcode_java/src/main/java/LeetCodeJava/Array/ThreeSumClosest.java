@@ -47,6 +47,103 @@ public class ThreeSumClosest {
 //
 //    }
 
+
+    // V0-1
+    // IDEA: SORT + 3 VAR (gpt)
+    /**
+     *
+     * but LC 16 requires checking `3 numbers together`.
+     *
+     *  The standard solution is:
+     *
+     * 1. Sort the array
+     * 2. Fix one number i
+     * 3. Use two pointers (l, r) for the remaining part
+     * 4. Track the closest sum
+     *
+     */
+    public int threeSumClosest_0_1(int[] nums, int target) {
+        Arrays.sort(nums);
+
+        int closest = nums[0] + nums[1] + nums[2];
+
+        for (int i = 0; i < nums.length - 2; i++) {
+
+            int l = i + 1;
+            int r = nums.length - 1;
+
+            while (l < r) {
+
+                int sum = nums[i] + nums[l] + nums[r];
+
+                // update closest
+                if (Math.abs(sum - target) < Math.abs(closest - target)) {
+                    closest = sum;
+                }
+
+                // exact match
+                if (sum == target) {
+                    return sum;
+                }
+                // need smaller sum
+                else if (sum > target) {
+                    r--;
+                }
+                // need bigger sum
+                else {
+                    l++;
+                }
+            }
+        }
+
+        return closest;
+    }
+
+
+    // V0-2
+    // IDEA: SORT + 3 VAR (GEMINI)
+    public int threeSumClosest_0_2(int[] nums, int target) {
+        // Step 1: Sort the array to enable directional two-pointer adjustments
+        Arrays.sort(nums);
+
+        // Initialize our closest sum with the first possible combination triplet
+        int closestSum = nums[0] + nums[1] + nums[2];
+        int n = nums.length;
+
+        // Step 2: Set an anchor pivot pointer 'i'
+        for (int i = 0; i < n - 2; i++) {
+            // Two pointers initialization on the remaining sub-array segment
+            int left = i + 1;
+            int right = n - 1;
+
+            while (left < right) {
+                // Calculate the true 3-sum combination using our anchor and pointers
+                int currentSum = nums[i] + nums[left] + nums[right];
+
+                // If we hit the exact target, return immediately
+                if (currentSum == target) {
+                    return currentSum;
+                }
+
+                // If the current combination is closer to the target than our previous best, update it
+                if (Math.abs(currentSum - target) < Math.abs(closestSum - target)) {
+                    closestSum = currentSum;
+                }
+
+                // Adjust pointers based on how our sum compares to the target
+                if (currentSum > target) {
+                    right--; // Sum is too big, move right pointer left to find smaller numbers
+                } else {
+                    left++; // Sum is too small, move left pointer right to find larger numbers
+                }
+            }
+        }
+
+        return closestSum;
+    }
+
+
+
     // V1
     // https://leetcode.com/problems/3sum-closest/solutions/6830683/using-two-pointer-easiest-explanation-an-r7q0/
     public int threeSumClosest_1(int[] nums, int target) {
