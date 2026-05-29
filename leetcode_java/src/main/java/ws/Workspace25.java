@@ -5023,7 +5023,17 @@ public class Workspace25 {
      *   -----------------
      *
      */
+    // 5.26 - 36 am
     public int maxChunksToSorted(int[] arr) {
+
+        return 0;
+    }
+
+
+
+
+
+    public int maxChunksToSorted_99(int[] arr) {
         //edge
 
         int chunks = 0;
@@ -9774,6 +9784,12 @@ public class Workspace25 {
         return 0;
     }
 
+
+    // LC 769
+//    public int maxChunksToSorted(int[] arr) {
+//
+//        return 0;
+//    }
 
 
 

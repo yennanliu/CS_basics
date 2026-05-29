@@ -36,6 +36,11 @@
 - Boats to Save People
     - LC 881
 
+- `Sort + Fix-One + Two-Pointer` (closest / smaller sum)
+    - Fix `i`, squeeze `l`/`r` inward; track closest by `|sum - target|`
+    - LC 16 (3Sum Closest)
+    - LC 259 (3Sum Smaller)
+
 - move `right pointer first`, then move `left point` per condition
     - LC 567
     - LC 209 (see `sliding window cheatsheet`)
@@ -2619,6 +2624,113 @@ public List<List<Integer>> threeSum(int[] nums) {
 - LC 259 3Sum Smaller
 - LC 1 Two Sum
 
+### 2-14b) 3Sum Closest (LC 16)
+
+#### Core Idea
+
+**Sort + Fix-One + Two-Pointer Squeeze:**
+- Sort the array so the two-pointer direction is deterministic
+- Fix the first element at index `i` (outer loop `i = 0..n-3`)
+- For the remaining sub-array, set `l = i+1`, `r = n-1` and squeeze inward
+- At each step compute `sum = nums[i] + nums[l] + nums[r]` and update `closest` when `|sum - target| < |closest - target|`
+- Exact match → return immediately (can't do better)
+- `sum > target` → `r--`  (reduce sum, need smaller right value)
+- `sum < target` → `l++`  (increase sum, need larger left value)
+
+```
+Key invariant:
+  closest always holds the best (minimum-distance) sum seen so far
+  
+Pointer movement:
+  i   — fixed anchor, advances each outer iteration
+  l   — moves right when sum is too small
+  r   — moves left when sum is too large
+```
+
+---
+
+```java
+// java
+// LC 16 - 3Sum Closest
+// time: O(N^2), space: O(1)
+/**
+ * Dry run: nums = [-1, 2, 1, -4], target = 1
+ * After sort: [-4, -1, 1, 2]
+ *
+ * ==================================================================
+ * | i | l | r | sum              | |sum-1| | closest | action      |
+ * ==================================================================
+ * | 0 | 1 | 3 | -4 + -1 + 2 = -3 |   4    |  -3     | l++         |
+ * | 0 | 2 | 3 | -4 +  1 + 2 = -1 |   2    |  -1     | l++         |
+ * | 0 | 3 | 3 | l >= r, inner loop ends                            |
+ * | 1 | 2 | 3 | -1 +  1 + 2 =  2 |   1    |   2     | r-- (>1)    |
+ * | 1 | 2 | 2 | l >= r, inner loop ends                            |
+ * | 2 | 3 | 3 | l >= r, inner loop ends                            |
+ * ==================================================================
+ * return closest = 2
+ */
+public int threeSumClosest(int[] nums, int target) {
+    Arrays.sort(nums);
+
+    // initialise with first possible triplet
+    int closest = nums[0] + nums[1] + nums[2];
+
+    /** NOTE !!!
+     *  outer loop ends at nums.length - 2
+     *  (need at least 2 elements after i for l and r)
+     */
+    for (int i = 0; i < nums.length - 2; i++) {
+
+        /** NOTE !!!
+         *  l = i + 1
+         *  r = last index
+         */
+        int l = i + 1;
+        int r = nums.length - 1;
+
+        while (l < r) {
+            int sum = nums[i] + nums[l] + nums[r];
+
+            // update closest if this sum is nearer to target
+            if (Math.abs(sum - target) < Math.abs(closest - target)) {
+                closest = sum;
+            }
+
+            if (sum == target) {
+                return sum;           // exact match — can't improve
+            } else if (sum > target) {
+                r--;                  // need a smaller sum
+            } else {
+                l++;                  // need a larger sum
+            }
+        }
+    }
+
+    return closest;
+}
+```
+
+#### Pattern vs 3Sum (LC 15)
+
+| Aspect | 3Sum (LC 15) | 3Sum Closest (LC 16) |
+|--------|-------------|----------------------|
+| **Goal** | All triplets summing to 0 | Single triplet closest to `target` |
+| **Track** | Result list | `closest` scalar |
+| **On exact match** | Record & skip duplicates | Return immediately |
+| **Duplicate skip** | Required (avoid repeated triplets) | Optional (problem guarantees unique answer) |
+| **Return** | `List<List<Integer>>` | `int` |
+
+#### Similar Problems
+
+| Problem | LC# | Key Difference |
+|---------|-----|----------------|
+| 3Sum | 15 | Sum == 0 exactly; collect all triplets |
+| **3Sum Closest** | **16** | **Closest sum to arbitrary target** |
+| 3Sum Smaller | 259 | Count triplets with sum < target |
+| 4Sum | 18 | Four elements; add one more fixed outer loop |
+| Two Sum II | 167 | Two elements, sorted array |
+| Two Sum (closest) | — | Two-pointer variant of this pattern |
+
 ### 2-15) Reverse String / Reverse Words
 
 **Pattern: In-place Reversal with Two Pointers**
@@ -2880,7 +2992,8 @@ private boolean isPalindrome(String s, int l, int r) {
 | **Merge Two Lists** | Merge sorted arrays/lists | LC 88, LC 21 |
 | **Partition** | Rearrange elements | LC 75, LC 86 |
 | **Palindrome with Deletion** | Allow k changes | LC 680, LC 1216 |
-| **Fixed + Two Pointers** | Sum problems (3Sum, 4Sum) | LC 15, LC 16, LC 18 |
+| **Fixed + Two Pointers (exact)** | Sum == target; collect all | LC 15, LC 18 |
+| **Fixed + Two Pointers (closest)** | Sum nearest to target | LC 16, LC 259 |
 | **Subsequence Matching** | Check if one string is subsequence of another | LC 392, LC 524, LC 792 |
 | **Pattern Match with Constraints** | Subsequence + character type validation | LC 1023 |
 | **Longest Palindromic Prefix** | Find longest palindromic prefix, prepend reversed suffix | LC 214, LC 336 |
