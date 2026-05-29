@@ -9828,5 +9828,91 @@ public class Workspace25 {
 
 
 
+    // LC 1209
+    // 5.51 - 6.01 pm
+    /**
+     *
+     *  -> Return the final string after
+     *   all such duplicate
+     *  removals have been made.
+     *  It is guaranteed that the answer is unique.
+     *
+     *
+     *
+     *  --------------
+     *
+     *   IDEA 1) CUSTOM CLASS + STACK ??? (FILO)
+     *
+     *
+     *  --------------
+     *
+     */
+    //  IDEA 1) CUSTOM CLASS + STACK ??? (FILO)
+    class MyAlpha{
+        // attr
+        char alpha;
+        int cnt;
+        // ???
+        MyAlpha(char alpha, int cnt){
+            this.alpha = alpha;
+            this.cnt = cnt;
+        }
+
+    }
+    public String removeDuplicates(String s, int k) {
+        // edge
+        if(s.isEmpty() || s.length() < k){
+            return s; // ???
+        }
+
+        Stack<MyAlpha> st = new Stack<>(); // ???
+        // ??
+        //char prev = '#'; // ???
+        for(char ch: s.toCharArray()){
+            if(st.isEmpty()){
+                st.add(new MyAlpha(ch, 1));
+            }else{
+                if(st.peek().alpha == ch){
+                    //st.pop();
+                    // case 1-1) same as prev, cnt >= k
+                    if(st.peek().cnt + 1 >= k){
+                        if(st.peek().cnt + 1 > k){
+                            //MyAlpha tmp = st.pop();
+                            st.pop();
+                            st.add(new MyAlpha(ch, st.peek().cnt + 1 - k));
+                        }
+                    }
+                    // case 1-2) same as prev, cnt < k
+                    else{
+                        //st.pop();
+                        st.pop();
+                        st.add(new MyAlpha(ch, st.peek().cnt + 1));
+                    }
+                }
+                // case 2) different from prev or
+                else{
+                    st.add(new MyAlpha(ch, 1));
+                }
+            }
+        }
+
+        // ???
+        StringBuilder sb = new StringBuilder();
+        for(MyAlpha myAlpha: st){
+            // ??? any better way ???
+            for(int i = 0; i < myAlpha.cnt; i++){
+                sb.append(String.valueOf(myAlpha.alpha));
+            }
+        }
+
+
+        return sb.toString();
+    }
+
+
+
+
+
+
 
 }

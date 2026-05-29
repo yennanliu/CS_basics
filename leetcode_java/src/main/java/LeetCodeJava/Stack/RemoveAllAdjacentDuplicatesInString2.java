@@ -52,7 +52,80 @@ import java.util.Stack;
  */
 public class RemoveAllAdjacentDuplicatesInString2 {
 
+
     // V0
+    // IDEA: CUSTOM CLASS + STACK (gpt)
+    class MyAlpha {
+        char alpha;
+        int cnt;
+
+        MyAlpha(char alpha, int cnt) {
+            this.alpha = alpha;
+            this.cnt = cnt;
+        }
+    }
+
+    public String removeDuplicates_0_3(String s, int k) {
+
+        if (s == null || s.length() < k) {
+            return s;
+        }
+
+        Stack<MyAlpha> st = new Stack<>();
+
+        for (char ch : s.toCharArray()) {
+
+            /** NOTE !!!
+             *
+             *   ONLY 2 main cases:
+             *
+             *   1. same char as top
+             *   2. different char
+             *
+             */
+            // case 1) same char as top
+            if (!st.isEmpty() && st.peek().alpha == ch) {
+
+                /** NOTE !!!
+                 *
+                 *  we use below trick update cnt of stack element (e.g. MyAlpha)
+                 */
+                // V1
+                //st.peek().cnt++;
+
+                // V2
+                MyAlpha top = st.peek();
+                top.cnt++;
+
+                /** NOTE !!!
+                 *
+                 *   ONLY remove top element,
+                 *   when the updated cnt is EXACTLY equals to k
+                 */
+                // remove when count reaches k
+                if (st.peek().cnt == k) {
+                    st.pop();
+                }
+            }
+            // case 2) different char
+            else {
+                st.push(new MyAlpha(ch, 1));
+            }
+        }
+
+        // rebuild string
+        StringBuilder sb = new StringBuilder();
+
+        for (MyAlpha node : st) {
+            for (int i = 0; i < node.cnt; i++) {
+                sb.append(node.alpha);
+            }
+        }
+
+        return sb.toString();
+    }
+
+    // V0-0-0-1
     // IDEA: STACK OF PAIR + CUSTOM CLASS (gemini)
     class ValCnt3 {
         char ch;
@@ -63,7 +136,7 @@ public class RemoveAllAdjacentDuplicatesInString2 {
             this.cnt = cnt;
         }
     }
-    public String removeDuplicates(String s, int k) {
+    public String removeDuplicates_0_0_0_1(String s, int k) {
         if (s == null || s.length() == 0)
             return "";
 
@@ -175,7 +248,6 @@ public class RemoveAllAdjacentDuplicatesInString2 {
     }
 
     
-
 
 
     // V0-1
@@ -307,6 +379,7 @@ public class RemoveAllAdjacentDuplicatesInString2 {
             this.freq = freq;
         }
     }
+
 
 
 
