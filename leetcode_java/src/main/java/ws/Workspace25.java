@@ -4917,11 +4917,46 @@ public class Workspace25 {
      *  IDEA 3) SLIDE WINDOW ???
      *
      *
+     *  IDEA 4) GET `index mapping` ???
+     *
+     *   or maintain the `cur max`
+     *   if  cur max == idx -> can split
+     *
+     *
      *  -------------
      *
      *
      *
      */
+    // 5.29 - 39 pm
+    public int maxChunksToSorted(int[] arr) {
+        // edge
+        if(arr.length <= 1){
+            return arr.length; // ???
+        }
+        // ??
+        int curMax = 0;
+        int group = 0;
+        for(int i = 0; i < arr.length; i++){
+            curMax = Math.max(arr[i], curMax);
+            // ????
+            if(curMax == i){
+                group += 1;
+            }
+        }
+
+        return group;
+    }
+
+
+
+
+
+
+
+
+
+
     // 7.48 - 58 am
     // idea: prefix max ?? + for loop
     // core idea:
@@ -5024,10 +5059,10 @@ public class Workspace25 {
      *
      */
     // 5.26 - 36 am
-    public int maxChunksToSorted(int[] arr) {
-
-        return 0;
-    }
+//    public int maxChunksToSorted(int[] arr) {
+//
+//        return 0;
+//    }
 
 
 

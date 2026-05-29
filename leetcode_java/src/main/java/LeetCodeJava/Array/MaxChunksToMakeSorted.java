@@ -51,7 +51,7 @@ public class MaxChunksToMakeSorted {
 
 
     // V0
-    // IDEA: GREEDY (prefix maximum) - max so far (gpt)
+    // IDEA: GREEDY (prefix maximum) AKA max so far (gpt)
     /**  NOTE !!!
      *
      *  Core idea:
@@ -251,6 +251,34 @@ public class MaxChunksToMakeSorted {
 
         return chunks;
     }
+
+
+    // V0-0-1
+    // IDEA: cur max (gpt)
+    public int maxChunksToSorted_0_0_1(int[] arr) {
+        // edge case
+        if (arr.length <= 1) {
+            return arr.length;
+        }
+
+        int curMax = 0;
+        int group = 0;
+
+        for (int i = 0; i < arr.length; i++) {
+
+            // maintain max value in current chunk
+            curMax = Math.max(curMax, arr[i]);
+
+            // if max value equals current index,
+            // we can split here
+            if (curMax == i) {
+                group++;
+            }
+        }
+
+        return group;
+    }
+
 
 
 
