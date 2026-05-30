@@ -43,10 +43,59 @@ import java.util.Arrays;
 public class ThreeSumClosest {
 
     // V0
-//    public int threeSumClosest(int[] nums, int target) {
-//
-//    }
+    // IDEA: SORT + 3 POINTERS (i, l, r)
+    public int threeSumClosest(int[] nums, int target) {
+        if (nums.length == 3) {
+            return nums[0] + nums[1] + nums[2]; // ???
+        }
 
+        // sort ??? (small -> big ??)
+        Arrays.sort(nums);
+
+        int res = nums[0] + nums[1] + nums[2]; // ???
+
+        /**  NOTE !!!
+         *
+         *  we define 3 POINTERS
+         *
+         *  -> i, l, r
+         *
+         *  [x,x,x,x... x,x, a,b]
+         *   i
+         *     l               r
+         *
+         *
+         *  (i is in [0, nums.len -2] range)
+         *
+         */
+        for (int i = 0; i < nums.length - 2; i++) {
+            int l = i + 1; // ???
+            int r = nums.length - 1; // ???
+            // ???
+            while (r > l) {
+                int cur = nums[i] + nums[l] + nums[r]; // ??
+                // NOTE !!!
+                // ONLY update res, when `cur` is
+                // more closer (the distance) to target
+                if (Math.abs(res - target) > Math.abs(cur - target)) {
+                    res = cur;
+                }
+
+                if (cur == target) {
+                    return cur;
+                }
+                if (cur > target) {
+                    r -= 1;
+                } else {
+                    l += 1;
+                }
+            }
+        }
+
+        return res;
+    }
+
+    
 
     // V0-1
     // IDEA: SORT + 3 POINTERS (gpt)
