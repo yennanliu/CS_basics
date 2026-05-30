@@ -10178,6 +10178,27 @@ public class Workspace25 {
 
 
     // LC 983
+    // 12.26 - 36 am
+    /**
+     * -> Return the minimum number of
+     * dollars you need to travel
+     * every day in the given list of days.
+     *
+     *
+     * ---------
+     *
+     *  IDEA 1) BRUTE FORCE
+     *
+     *  IDEA 2) TOP DOWN DP ???
+     *
+     *
+     *  IDEA 3) BOTTOM UP DP ???
+     *
+     *
+     * ---------
+     *
+     *
+     */
     public int mincostTickets(int[] days, int[] costs) {
 
         return 0;

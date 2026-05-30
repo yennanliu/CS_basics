@@ -4,6 +4,7 @@ package LeetCodeJava.DynamicProgramming;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  *  983. Minimum Cost For Tickets
@@ -58,6 +59,123 @@ public class MinimumCostForTickets {
 //    public int mincostTickets(int[] days, int[] costs) {
 //
 //    }
+
+
+    // V0-1
+    // IDEA: Top-down DP (Memoization) (GPT)
+    /**
+     * dp[i] =
+     *    minimum cost to cover travel days
+     *    from index i onward (向前)
+     *
+     */
+    /**
+     *
+     * Complexity
+     * Time: O(n²) worst case (because of the repeated scans)
+     * Space: O(n)
+     *
+     * Since days.length <= 365, this easily passes.
+     *
+     *
+     */
+    public int mincostTickets_0_1(int[] days, int[] costs) {
+        Integer[] memo = new Integer[days.length];
+        return dfs(0, days, costs, memo);
+    }
+
+    private int dfs(int i, int[] days, int[] costs, Integer[] memo) {
+        if (i >= days.length) {
+            return 0;
+        }
+
+        if (memo[i] != null) {
+            return memo[i];
+        }
+
+        // 1-day pass
+        int cost1 = costs[0] + dfs(i + 1, days, costs, memo);
+
+        // 7-day pass
+        int j = i;
+        while (j < days.length && days[j] < days[i] + 7) {
+            j++;
+        }
+        int cost7 = costs[1] + dfs(j, days, costs, memo);
+
+        // 30-day pass
+        j = i;
+        while (j < days.length && days[j] < days[i] + 30) {
+            j++;
+        }
+        int cost30 = costs[2] + dfs(j, days, costs, memo);
+
+        memo[i] = Math.min(cost1, Math.min(cost7, cost30));
+        return memo[i];
+    }
+
+
+
+    // V0-2
+    // IDEA: Calendar DP (GPT)
+    /**
+     *
+     *  - Since travel days are within [1, 365], use DP by calendar day.
+     *
+     *
+     *
+     * - DP def:
+     *     dp[d] = minimum cost to cover all travel up to day d
+     *
+     *
+     * - DP eq:
+     *
+     * Transition
+     *
+     *    - If d is not a travel day:
+     *
+     *           dp[d] = dp[d - 1]
+     *
+     *    - Otherwise:
+     *
+     *           dp[d] = min(
+     *              dp[d - 1] + cost1,
+     *              dp[max(0, d - 7)] + cost7,
+     *             dp[max(0, d - 30)] + cost30
+     *            )
+     *
+     */
+    public int mincostTickets_0_2(int[] days, int[] costs) {
+
+        Set<Integer> travelDays = new HashSet<>();
+        for (int day : days) {
+            travelDays.add(day);
+        }
+
+        int lastDay = days[days.length - 1];
+        int[] dp = new int[lastDay + 1];
+
+        for (int day = 1; day <= lastDay; day++) {
+
+            if (!travelDays.contains(day)) {
+                dp[day] = dp[day - 1];
+                continue;
+            }
+
+            int oneDay = dp[Math.max(0, day - 1)] + costs[0];
+
+            int sevenDay = dp[Math.max(0, day - 7)] + costs[1];
+
+            int thirtyDay = dp[Math.max(0, day - 30)] + costs[2];
+
+            dp[day] = Math.min(
+                    oneDay,
+                    Math.min(sevenDay, thirtyDay));
+        }
+
+        return dp[lastDay];
+    }
+
 
 
     // V1-1
