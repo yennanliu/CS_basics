@@ -50,9 +50,96 @@ import java.util.Map;
 public class ExpressiveWords {
 
     // V0
-//    public int expressiveWords(String s, String[] words) {
-//
-//    }
+    // IDEA: two-pointer/group-count (GPT)
+    /**  NOTE !!!
+     *
+     *  steps:
+     *
+     *   1. 2 pointers i, j (for s, word)
+     *   
+     *   2.
+     *    - cnt the `group len` in s
+     *    - cnt the `group len` in word
+     *
+     *    - validate if still `Stretchy`
+     *
+     *   3. continue above
+     *
+     */
+    public int expressiveWords(String s, String[] words) {
+
+        int cnt = 0;
+
+        for (String word : words) {
+            /** NOTE !!
+             *
+             *  call helper func here
+             */
+            if (isStretchy_0(s, word)) {
+                cnt++;
+            }
+        }
+
+        return cnt;
+    }
+
+
+    /** NOTE !!
+     *
+     *  helper func here
+     *
+     *   -> check if s, and word are `stretchy`)
+     */
+    private boolean isStretchy_0(String s, String word) {
+
+        int i = 0;
+        int j = 0;
+
+        while (i < s.length() && j < word.length()) {
+
+            // chars must match
+            if (s.charAt(i) != word.charAt(j)) {
+                return false;
+            }
+
+            char ch = s.charAt(i);
+
+            /** NOTE !!
+             *
+             *  count `group length` in `s`
+             */
+            // count group length in s
+            int cntS = 0;
+            while (i < s.length() && s.charAt(i) == ch) {
+                cntS++;
+                i++;
+            }
+
+            /** NOTE !!
+             *
+             *  count `group length` in `word`
+             */
+            // count group length in word
+            int cntW = 0;
+            while (j < word.length() && word.charAt(j) == ch) {
+                cntW++;
+                j++;
+            }
+
+            // invalid cases
+            if (cntS < cntW) {
+                return false;
+            }
+
+            if (cntS != cntW && cntS < 3) {
+                return false;
+            }
+        }
+
+        // both must finish together
+        return i == s.length() && j == word.length();
+    }
+
 
 
     /** NOTE !!!
@@ -265,6 +352,66 @@ public class ExpressiveWords {
         }
 
         return true;
+    }
+
+
+    // V0-3
+    // IDEA: two-pointer/group-count (gemini)
+    public int expressiveWords_0_3(String s, String[] words) {
+        int cnt = 0;
+        for (String x : words) {
+            if (isStretchy_0_3(s, x)) {
+                cnt += 1;
+            }
+        }
+        return cnt;
+    }
+
+    private boolean isStretchy_0_3(String s, String x) {
+        // A shorter query word cannot be stretched into a longer target string
+        if (x.length() > s.length()) {
+            return false;
+        }
+
+        int i = 0; // Pointer for target string s
+        int j = 0; // Pointer for query word x
+
+        while (i < s.length() && j < x.length()) {
+            // Characters must match at the beginning of the block
+            if (s.charAt(i) != x.charAt(j)) {
+                return false;
+            }
+
+            char currentChar = s.charAt(i);
+
+            // Count consecutive occurrences of currentChar in s
+            int cntS = 0;
+            while (i < s.length() && s.charAt(i) == currentChar) {
+                cntS++;
+                i++;
+            }
+
+            // Count consecutive occurrences of currentChar in x
+            int cntX = 0;
+            while (j < x.length() && x.charAt(j) == currentChar) {
+                cntX++;
+                j++;
+            }
+
+            // Check stretch conditions:
+            // 1. You cannot have more characters in the query word than the target
+            if (cntX > cntS) {
+                return false;
+            }
+
+            // 2. If counts differ, target must have at least 3 characters to stretch
+            if (cntX < cntS && cntS < 3) {
+                return false;
+            }
+        }
+
+        // Both pointers must completely exhaust their strings for it to be a perfect match
+        return i == s.length() && j == x.length();
     }
 
 
