@@ -94,6 +94,10 @@ public class MinimumCostForTickets {
         }
 
         // 1-day pass
+        /** NOTE !!
+         *
+         *  recursion call here
+         */
         int cost1 = costs[0] + dfs(i + 1, days, costs, memo);
 
         // 7-day pass
@@ -101,6 +105,10 @@ public class MinimumCostForTickets {
         while (j < days.length && days[j] < days[i] + 7) {
             j++;
         }
+        /** NOTE !!
+         *
+         *  recursion call here
+         */
         int cost7 = costs[1] + dfs(j, days, costs, memo);
 
         // 30-day pass
@@ -108,6 +116,10 @@ public class MinimumCostForTickets {
         while (j < days.length && days[j] < days[i] + 30) {
             j++;
         }
+        /** NOTE !!
+         *
+         *  recursion call here
+         */
         int cost30 = costs[2] + dfs(j, days, costs, memo);
 
         memo[i] = Math.min(cost1, Math.min(cost7, cost30));
@@ -199,8 +211,20 @@ public class MinimumCostForTickets {
             return dp[currDay];
         }
 
+        /** NOTE !!
+         *
+         *  recursion call here
+         */
         int oneDay = costs[0] + solve(dp, days, costs, currDay + 1);
+        /** NOTE !!
+         *
+         *  recursion call here
+         */
         int sevenDay = costs[1] + solve(dp, days, costs, currDay + 7);
+        /** NOTE !!
+         *
+         *  recursion call here
+         */
         int thirtyDay = costs[2] + solve(dp, days, costs, currDay + 30);
 
         // Store the cost with the minimum of the three options.
