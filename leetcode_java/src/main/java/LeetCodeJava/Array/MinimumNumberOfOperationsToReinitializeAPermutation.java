@@ -50,9 +50,59 @@ package LeetCodeJava.Array;
 public class MinimumNumberOfOperationsToReinitializeAPermutation {
 
     // V0
-//    public int reinitializePermutation(int n) {
-//
-//    }
+    // IDEA: BRUTE FORCE + CLONE (GPT)
+    public int reinitializePermutation(int n) {
+        if (n == 2) {
+            return 1;
+        }
+
+        // build perm
+        int[] perm = new int[n];
+        for (int i = 0; i < n; i++) {
+            perm[i] = i;
+        }
+
+        // build arr
+        int[] arr = new int[n];
+        int op = 0;
+
+        while (true) {
+
+            for (int i = 0; i < n; i++) {
+                if (i % 2 == 0) {
+                    arr[i] = perm[i / 2];
+                } else {
+                    arr[i] = perm[n / 2 + (i - 1) / 2];
+                }
+            }
+
+            /** NOTE !!!
+             *
+             *  need to op
+             */
+            op++;
+
+            if (isSame(arr)) {
+                return op;
+            }
+
+            /** NOTE !!!
+             *
+             *  need to update `perm`, as arr clone
+             */
+            perm = arr.clone();
+        }
+    }
+
+    private boolean isSame(int[] arr) {
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] != i) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 
     // V1-1
     // IDEA: Direct Simulation (Most Intuitive) (GEMINI)
@@ -128,7 +178,7 @@ public class MinimumNumberOfOperationsToReinitializeAPermutation {
      *   - If the current index i is odd: it moves to n / 2 + (i - 1) / 2.
      *
      */
-    public int reinitializePermutation(int n) {
+    public int reinitializePermutation_1_2(int n) {
         // Track only the index location of the element that started at index 1
         int currentIndex = 1;
         int operations = 0;

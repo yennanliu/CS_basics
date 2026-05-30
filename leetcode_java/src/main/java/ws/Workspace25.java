@@ -9987,7 +9987,81 @@ public class Workspace25 {
      *
      *
      */
+    // 10.32 - 43 AM
+    // IDEA: BRUTE FORCE (SIMULATION)
     public int reinitializePermutation(int n) {
+        // edge
+        if(n < 2){
+            return 0; // ???
+        }
+        if(n == 2){
+            return 1;
+        }
+
+        // ???
+        // 1-1. build perm
+        int[] perm = new int[n]; // ??
+        for(int i = 0; i < perm.length; i++){
+            perm[i] = i; // ??
+        }
+
+        // // 1-2 build arr
+        int[] arr = new int[n]; // ??
+
+        // 2. do op, if `fit`, quit earlier
+        int op = 0;
+        while (true){
+            // ???
+            for(int i = 0; i < arr.length; i++){
+                if(i % 2 == 0){
+                    // ???
+                    arr[i] = perm[i / 2];
+                }else{
+                    arr[i] = perm[n / 2 + (i - 1) / 2];
+                }
+            }
+
+            // ???
+            op += 1;
+
+            if(isSame(n, arr)){
+                // ???
+                //break;
+                return op;
+            }
+
+            // NOTE !!!
+            perm = arr.clone();
+
+        }
+
+
+        // ???
+        //return 0;
+       // return op;
+    }
+
+
+    private boolean isSame(int n, int[] arr){
+        // ???
+        for(int i = 0; i < arr.length; i++){
+            if(i != arr[i]){
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+
+
+
+
+
+
+
+    public int reinitializePermutation_99(int n) {
         // edge
         if(n < 2){
             return 0; // ???
