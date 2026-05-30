@@ -68,10 +68,78 @@ public class DesignCircularQueue {
      * boolean param_6 = obj.isFull();
      */
 
+    // V0
+    // IDEA: ARRAY + `front` + cnt + size (gpt)
+    class MyCircularQueue_0 {
+
+        int front;
+        int cnt;
+        int size;
+        int[] arr;
+
+        public MyCircularQueue_0(int k) {
+            this.front = 0;
+            this.cnt = 0;
+            this.size = k;
+            this.arr = new int[k];
+        }
+
+        public boolean enQueue(int value) {
+            if (isFull()) {
+                return false;
+            }
+
+            /** NOTE !!! */
+            int rear = (front + cnt) % size;
+            arr[rear] = value;
+            cnt++;
+
+            return true;
+        }
+
+        public boolean deQueue() {
+            if (isEmpty()) {
+                return false;
+            }
+
+            /** NOTE !!! */
+            front = (front + 1) % size;
+            cnt--;
+
+            return true;
+        }
+
+        public int Front() {
+            if (isEmpty()) {
+                return -1;
+            }
+
+            return arr[front];
+        }
+
+        public int Rear() {
+            if (isEmpty()) {
+                return -1;
+            }
+
+            /** NOTE !!! */
+            int rear = (front + cnt - 1) % size;
+            return arr[rear];
+        }
+
+        public boolean isEmpty() {
+            return cnt == 0;
+        }
+
+        public boolean isFull() {
+            return cnt == size;
+        }
+    }
+
 
     // V0
     // IDEA: array + head idx + elementCnt +`circular` handling (gemini)
-    class MyCircularQueue_0 {
+    class MyCircularQueue_0_0_1 {
         // Underlying primitive array used to store our queue elements
         private final int[] queue;
 
@@ -87,7 +155,7 @@ public class DesignCircularQueue {
         /**
          * Constructor: Initializes the object data structure with a fixed size k.
          */
-        public MyCircularQueue_0(int k) {
+        public MyCircularQueue_0_0_1(int k) {
             this.capacity = k;
             this.queue = new int[k]; // Allocate memory for the fixed array
             this.head = 0; // Start the read pointer at the first index

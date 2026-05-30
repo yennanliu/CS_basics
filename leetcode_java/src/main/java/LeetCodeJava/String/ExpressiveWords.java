@@ -56,7 +56,7 @@ public class ExpressiveWords {
      *  steps:
      *
      *   1. 2 pointers i, j (for s, word)
-     *   
+     *
      *   2.
      *    - cnt the `group len` in s
      *    - cnt the `group len` in word

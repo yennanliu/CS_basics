@@ -9470,7 +9470,7 @@ public class Workspace25 {
      *
      *
      */
-    class MyCircularQueue {
+    class MyCircularQueue_99 {
         // attr
         int size;
         int elementCnt;
@@ -9481,7 +9481,7 @@ public class Workspace25 {
         int end;
 
 
-        public MyCircularQueue(int k) {
+        public MyCircularQueue_99(int k) {
             this.size = k;
             this.elementCnt = 0;
             this.dq = new LinkedList<>(); // /??
@@ -10071,6 +10071,108 @@ public class Workspace25 {
         }
 
         return 0;
+    }
+
+
+
+
+    // 11.33 - 43 am
+    /**
+     *  IDEA 1) ARRAY + mod (%) op ??????
+     *
+     *  -----------
+     *
+     *
+     *  -----------
+     *
+     *
+     */
+    class MyCircularQueue {
+        // ???
+//        int cnt;
+//        int size;
+//        int[] arr;
+
+
+        int front;
+        int cnt;
+        int size;
+        int[] arr;
+
+
+        public MyCircularQueue(int k) {
+            this.cnt = 0;
+            this.size = k;
+            this.arr = new int[this.size];
+
+
+            this.front = 0;
+        }
+
+        public boolean enQueue(int value) {
+            if(this.isFull()){
+                return false;
+            }
+
+            // ???
+            //if()
+//            front += 1;
+//            this.arr[front] = value;
+
+            // NOTE !!!
+            int rear = (front + cnt) % size;
+            arr[rear] = value;
+            cnt++;
+
+
+            return true;
+        }
+
+        public boolean deQueue() {
+            if(this.isEmpty()){
+                return false;
+            }
+
+            // NOTE !!!
+            front = (front + 1) % size;
+            cnt--;
+
+            return false;
+        }
+
+        public int Front() {
+            if(this.isEmpty()){
+                return -1;
+            }
+
+            // ?????
+            return this.arr[front];
+        }
+
+        public int Rear() {
+            // ???
+            if(this.isEmpty()){
+                return -1;
+            }
+//            // ???
+//            return this.arr[cnt - 1];
+
+            // NOTE !!!
+            int rear = (front + cnt - 1) % size;
+            return arr[rear];
+
+        }
+
+        public boolean isEmpty() {
+
+            return this.cnt == 0;
+        }
+
+        public boolean isFull() {
+
+            return this.cnt == this.size;
+        }
+
     }
 
 
