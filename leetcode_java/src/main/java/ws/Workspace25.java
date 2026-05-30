@@ -10177,6 +10177,13 @@ public class Workspace25 {
 
 
 
+    // LC 983
+    public int mincostTickets(int[] days, int[] costs) {
+
+        return 0;
+    }
+
+
 
 
 
