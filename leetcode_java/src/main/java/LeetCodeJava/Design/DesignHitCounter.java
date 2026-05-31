@@ -53,15 +53,72 @@ import java.util.*;
 public class DesignHitCounter {
 
     // V0
-    // TODO: validate
+    // IDEA: TREE MAP (fixed by gpt)
     class HitCounter {
+
+        /** NOTE !!!
+         *
+         *  use `treeMap`, so we can loop key in order
+         *  (e.g. small -> big or big -> small)
+         */
+        private TreeMap<Integer, Integer> map;
+
+        public HitCounter() {
+            /** NOTE !!!
+             *
+             * via ` map = new TreeMap<>(Comparator.reverseOrder());`
+             *
+             *  -> we can get the `big -> small` key
+             *     when loop over tree map key
+             *
+             *
+             *  or, we can do via below as well:
+             *
+             *  for (int k : map.descendingKeySet()) {
+             *     ...
+             * }
+             *
+             *
+             */
+            map = new TreeMap<>(Comparator.reverseOrder());
+        }
+
+        public void hit(int timestamp) {
+            map.put(timestamp, map.getOrDefault(timestamp, 0) + 1);
+        }
+
+        public int getHits(int timestamp) {
+            int cnt = 0;
+
+            for (int k : map.keySet()) {
+
+                // outside 5-minute window
+                /** NOTE !!!
+                 *
+                 *  the `5 min` window check
+                 */
+                if (k <= timestamp - 300) {
+                    break;
+                }
+
+                cnt += map.get(k);
+            }
+
+            return cnt;
+        }
+    }
+
+
+    // V0_0_1
+    // TODO: validate
+    class HitCounter_0_0_1 {
 
         /**  counter : {timestamp : cnt }
          */
         private Map<Integer, Integer> counter;
 
         /** Initialize your data structure here. */
-        public HitCounter() {
+        public HitCounter_0_0_1() {
             counter = new HashMap<>(); // ?? check
         }
 
@@ -172,6 +229,7 @@ public class DesignHitCounter {
         }
     }
 
+
     // V0-3
     // IDEA: HASHMAP
     class HitCounter_0_3{
@@ -209,6 +267,51 @@ public class DesignHitCounter {
             return cnt;
         }
     }
+
+
+    // V0-4
+    // IDEA: ARRAY + MAPPING (GEMINI)
+    class HitCounter_0_4 {
+        // Since we only care about the past 5 minutes, lock the buffer size to 300 seconds
+        private final int[] times;
+        private final int[] hits;
+
+        public HitCounter_0_4() {
+            this.times = new int[300];
+            this.hits = new int[300];
+        }
+
+        /** Record a hit. */
+        public void hit(int timestamp) {
+            // Map the timestamp to a circular array bucket index
+            int idx = timestamp % 300;
+
+            // If the timestamp stored in this bucket is different, it means
+            // the old data is older than 5 minutes and can be safely overwritten.
+            if (times[idx] != timestamp) {
+                times[idx] = timestamp;
+                hits[idx] = 1; // Reset the hit counter to 1 for this new second
+            } else {
+                hits[idx]++;   // Otherwise, increment the count for the current second
+            }
+        }
+
+        /** Return the number of hits in the past 5 minutes. */
+        public int getHits(int timestamp) {
+            int totalHits = 0;
+
+            // Walk through all 300 available buckets
+            for (int i = 0; i < 300; i++) {
+                // Only count hits if the recorded timestamp falls within the 5-minute window
+                if (timestamp - times[i] < 300) {
+                    totalHits += hits[i];
+                }
+            }
+
+            return totalHits;
+        }
+    }
+
 
     // V1-1
     // https://leetcode.ca/2016-11-26-362-Design-Hit-Counter/
@@ -326,6 +429,10 @@ public class DesignHitCounter {
 
 
     // V2
+
+
+
+    
 
 
 }
