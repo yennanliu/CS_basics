@@ -10206,6 +10206,114 @@ public class Workspace25 {
 
 
 
+    // LC 498
+    // 2.46 - 56 pm
+    /**
+     *
+     * -> Given an m x n matrix mat,
+     *    return an array of all the
+     *    elements of the array in
+     *    a `diagonal` order.
+     *
+     *
+     *  --------------
+     *
+     *   IDEA 1) ARRAY OP
+     *
+     *    -> loop over i,j ???
+     *
+     *    -> starts from (0,0)
+     *    -> (i, j)
+     *       (
+     *       (j, i+1)
+     *       (j-1, i-1)
+     *       (j+1, i)
+     *       (j-1, i+1)
+     *
+     *
+     *      (y,x)
+     *   -> (i, j)
+     *       - if in boundary
+     *          (i-1, j+1) ... (move till reach the boundary)
+     *       - else
+     *          (i, j+1)
+     *
+     *       - if in boundary
+     *          (i+1, j-1) ... (move till reach the boundary)
+     *       - else
+     *           (i-1, j)
+     *
+     *        ...
+     *
+     *
+     *  --------------
+     *
+     */
+    public int[] findDiagonalOrder(int[][] mat) {
+        // edge
+        if(mat == null){
+            return new int[]{};
+        }
+
+        int m = mat.length;
+        int n = mat[0].length;
+        if(m == 0 || n == 0){
+            return new int[]{};
+        }
+
+        // ??
+        int[] res = new int[m * n];
+
+        int cnt = 0; // ???
+        int rounds = 0;
+//        Map<Integer, int[]> map = new HashMap<>(); // ??
+//        map.put(0, new int[]{})
+        // ???
+        int x = 0;
+        int y = 0;
+        // ??
+        while (cnt < m * n){
+            // ??
+            res[cnt] = mat[y][x];
+            cnt += 1;
+
+            // move ???
+            if(rounds % 2 == 0){
+                y -= 1;
+                x += 1;
+            }else{
+                y += 1;
+                x -= 1;
+            }
+
+            // if NOT in boundary
+            // `change` directions
+            boolean notInBoundary = (y < 0 || x < 0 || x > n || y > n);
+            if(notInBoundary){
+                // ???
+                if(rounds % 2 == 0){
+//                    y += 1;
+//                    x -= 1;
+                    x += 1;
+                }else{
+//                    y -= 1;
+//                    x += 1;
+                    y += 1;
+                }
+
+                rounds += 1; // ??
+            }
+           // rounds += 1; // ??
+        }
+
+
+
+        return res;
+    }
+
+
+
+
 
 
 }

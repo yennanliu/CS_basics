@@ -38,11 +38,98 @@ import java.util.Collections;
  */
 public class DiagonalTraverse {
 
+
     // V0
-    // TODO : implement
 //    public int[] findDiagonalOrder(int[][] mat) {
 //
 //    }
+
+
+    // V0-0-1
+    // IDEA: ARRAY OP (gpt)
+    public int[] findDiagonalOrder_0_0_1(int[][] mat) {
+        if (mat == null || mat.length == 0 || mat[0].length == 0) {
+            return new int[0];
+        }
+
+        int m = mat.length;
+        int n = mat[0].length;
+
+        int[] res = new int[m * n];
+        int idx = 0;
+
+        for (int d = 0; d < m + n - 1; d++) {
+
+            if (d % 2 == 0) {
+                // traverse up-right
+                int r = Math.min(d, m - 1);
+                int c = d - r;
+
+                while (r >= 0 && c < n) {
+                    res[idx++] = mat[r][c];
+                    r--;
+                    c++;
+                }
+            } else {
+                // traverse down-left
+                int c = Math.min(d, n - 1);
+                int r = d - c;
+
+                while (c >= 0 && r < m) {
+                    res[idx++] = mat[r][c];
+                    r++;
+                    c--;
+                }
+            }
+        }
+
+        return res;
+    }
+
+
+    // V0-0-2
+    // IDEA: ARRAY OP (GEMINI)
+    public int[] findDiagonalOrder_0_0_2(int[][] mat) {
+        if (mat == null || mat.length == 0 || mat[0].length == 0) {
+            return new int[] {};
+        }
+
+        int m = mat.length;
+        int n = mat[0].length;
+        int[] res = new int[m * n];
+
+        int r = 0, c = 0; // Matrix row and column pointers
+
+        for (int i = 0; i < res.length; i++) {
+            res[i] = mat[r][c];
+
+            // Case 1: Moving UP-RIGHT (Even rounds)
+            if ((r + c) % 2 == 0) {
+                if (c == n - 1) { // Hit the right wall -> must move DOWN
+                    r++;
+                } else if (r == 0) { // Hit the top wall -> must move RIGHT
+                    c++;
+                } else { // Normal up-right move
+                    r--;
+                    c++;
+                }
+            }
+            // Case 2: Moving DOWN-LEFT (Odd rounds)
+            else {
+                if (r == m - 1) { // Hit the bottom wall -> must move RIGHT
+                    c++;
+                } else if (c == 0) { // Hit the left wall -> must move DOWN
+                    r++;
+                } else { // Normal down-left move
+                    r++;
+                    c--;
+                }
+            }
+        }
+
+        return res;
+    }
+
 
     // V0-1
     // IDEA : matrix op (gpt)
@@ -300,5 +387,10 @@ public class DiagonalTraverse {
         return result;
     }
 
+
+
     // V2
+
+
+
 }
