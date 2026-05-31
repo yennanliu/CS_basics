@@ -695,6 +695,123 @@ for i in range(lens(s)):
 # ...
 ```
 
+#### 0-2-3b) Two-Pointer Expansion from Peak (Mountain Array Pattern)
+
+**Core Idea:**
+
+Find a valid **peak** (a local maximum where both neighbors are strictly smaller), then **expand left and right** from that peak to find the full mountain base. This is different from the "expand from center" palindrome pattern: here you first validate the peak, then walk outward along strictly monotone slopes.
+
+**Key Optimization — `i = right` skip:**
+
+After fully processing a mountain, jump `i` directly to `right` (the right base). Without this, the outer loop would re-examine every index on the descending slope — giving O(N²). With it, no index is ever revisited, so total work across all mountains is O(N).
+
+```
+Without skip: outer loop backtracks over already-visited slope indices → O(N²)
+With i = right: outer loop only ever moves forward → amortized O(N)
+```
+
+**Pattern (Java — find-peak + expand-left/right):**
+
+```java
+// LC 845 - Longest Mountain in Array
+// IDEA: For each valid peak, expand left and right; skip i to right base
+// time = O(N), space = O(1)
+public int longestMountain(int[] arr) {
+    if (arr == null || arr.length < 3) return 0;
+    int maxLen = 0, n = arr.length;
+
+    for (int i = 1; i < n - 1; i++) {
+        // Step 1: Check for a valid peak (strictly greater than both neighbors)
+        if (arr[i] > arr[i - 1] && arr[i] > arr[i + 1]) {
+
+            // Step 2: Expand LEFT — walk back while strictly increasing
+            int left = i - 1;
+            while (left > 0 && arr[left] > arr[left - 1]) left--;
+
+            // Step 3: Expand RIGHT — walk forward while strictly decreasing
+            int right = i + 1;
+            while (right < n - 1 && arr[right] > arr[right + 1]) right++;
+
+            // Step 4: Record length
+            maxLen = Math.max(maxLen, right - left + 1);
+
+            /** NOTE !!!
+             *  Skip i to the right base to avoid re-scanning the descending slope.
+             *  Without this, time complexity degrades to O(N²).
+             *  With this, each element is visited at most twice → O(N).
+             */
+            i = right;
+        }
+    }
+    return maxLen;
+}
+```
+
+**Dry-run — `arr = [2,1,4,7,3,2,5]`:**
+
+```
+i=1: arr[1]=1, 1 > 2? No → skip
+i=2: arr[2]=4, 4 > 1 && 4 > 7? No → skip
+i=3: arr[3]=7, 7 > 4 && 7 > 3? YES → peak found
+       expand left:  left=2 → left=1 (arr[1]=1 < arr[2]=4, stop)
+       expand right: right=4 → right=5 (arr[5]=2 < arr[4]=3, stop; arr[6]=5 > arr[5]=2, STOP)
+       len = right(5) - left(1) + 1 = 5  → maxLen = 5
+       i = right = 5  ← SKIP over the descending slope
+
+i=6: arr[6]=5, 5 > arr[5]=2 but 5 > arr[7]? out of bounds → skip (i=6 = n-2, loop ends)
+
+Result: 5  (mountain = [1,4,7,3,2])
+```
+
+**Alternative — `while` loop (explicit base tracking, V1 pattern):**
+
+```java
+// Scan from base; find ascending slope, peak, then descending slope in one pass
+// time = O(N), space = O(1)
+public int longestMountain_v1(int[] A) {
+    int N = A.length, ans = 0, base = 0;
+    while (base < N) {
+        int end = base;
+        if (end + 1 < N && A[end] < A[end + 1]) {      // found left slope
+            while (end + 1 < N && A[end] < A[end + 1]) end++;  // climb to peak
+            if (end + 1 < N && A[end] > A[end + 1]) {  // confirmed peak
+                while (end + 1 < N && A[end] > A[end + 1]) end++; // descend
+                ans = Math.max(ans, end - base + 1);
+            }
+        }
+        base = Math.max(end, base + 1);  // advance base past processed segment
+    }
+    return ans;
+}
+```
+
+**Comparison of approaches:**
+
+| Approach | Core pointer | Skip trick | When to use |
+|----------|-------------|------------|-------------|
+| Peak + expand (V0) | `i` scans for peaks; `left`/`right` expand | `i = right` after each mountain | Clearest structure |
+| Base + climb (V1) | `base` tracks mountain start | `base = max(end, base+1)` | Single-pass, no look-around |
+
+**Invariant for a valid mountain:**
+1. Peak must not be at index 0 or n-1
+2. At least one element strictly ascending on the left
+3. At least one element strictly descending on the right
+4. No flat segments (strict inequality required on both slopes)
+
+**Similar LC problems:**
+
+| Problem | LC# | Key Pattern |
+|---------|-----|-------------|
+| Longest Mountain in Array | 845 | Find peak → expand left/right → skip to right base |
+| Valid Mountain Array | 941 | Single pass: go up then down, verify full coverage |
+| Peak Index in Mountain Array | 852 | Binary search for peak in guaranteed mountain |
+| Find Peak Element | 162 | Binary search: always move toward higher neighbor |
+| Trapping Rain Water | 42 | Left/right expansion + height tracking |
+| Longest Palindromic Substring | 5 | Expand from center (symmetric version of this pattern) |
+| Count of Subarrays with Score less than K | 2302 | Slope expansion with sum tracking |
+
+---
+
 #### 0-2-4) Move `right pointer`, then move `left point`
 
 ```java
