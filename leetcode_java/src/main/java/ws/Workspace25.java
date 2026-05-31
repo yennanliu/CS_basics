@@ -10251,15 +10251,20 @@ public class Workspace25 {
      */
     public int[] findDiagonalOrder(int[][] mat) {
         // edge
-        if(mat == null){
-            return new int[]{};
+//        if(mat == null){
+//            return new int[]{};
+//        }
+        if (mat == null || mat.length == 0 || mat[0].length == 0) {
+            return new int[0];
         }
+
+
 
         int m = mat.length;
         int n = mat[0].length;
-        if(m == 0 || n == 0){
-            return new int[]{};
-        }
+//        if(m == 0 || n == 0){
+//            return new int[]{};
+//        }
 
         // ??
         int[] res = new int[m * n];
@@ -10271,7 +10276,15 @@ public class Workspace25 {
         // ???
         int x = 0;
         int y = 0;
+
         // ??
+
+
+        // ???
+        for(int d = 0; d < m * n - 1; d++){
+
+        }
+
         while (cnt < m * n){
             // ??
             res[cnt] = mat[y][x];
@@ -10288,7 +10301,10 @@ public class Workspace25 {
 
             // if NOT in boundary
             // `change` directions
-            boolean notInBoundary = (y < 0 || x < 0 || x > n || y > n);
+            //boolean notInBoundary = (y < 0 || x < 0 || x > n || y > n);
+            boolean notInBoundary = (y < 0 || x < 0 || y >= m || x >= n); // ???
+
+
             if(notInBoundary){
                 // ???
                 if(rounds % 2 == 0){

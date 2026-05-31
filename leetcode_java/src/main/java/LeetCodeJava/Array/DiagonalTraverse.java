@@ -40,9 +40,123 @@ public class DiagonalTraverse {
 
 
     // V0
-//    public int[] findDiagonalOrder(int[][] mat) {
-//
-//    }
+    // IDEA: ARRAY OP + `r+c` track (gemini)
+    // AND the `round` check and `boundary check` per even/odd rounds
+    /** Why `r+c` % 2 == 0 as `even` round, and `r+c` % 2 == 1 for odd round ?
+     *
+     *
+     *  ->
+     *
+     *  Col 0      Col 1      Col 2
+     *   ┌──────────┬──────────┬──────────┐
+     *   │  (0,0)   │  (0,1)   │  (0,2)   │
+     * Row 0 │  r+c = 0 │  r+c = 1 │  r+c = 2 │  ──► Diagonal 0 (Sum = 0)  [EVEN]  ▲ Up-Right
+     *   ├──────────┼──────────┼──────────┤
+     *   │  (1,0)   │  (1,1)   │  (1,2)   │
+     * Row 1 │  r+c = 1 │  r+c = 2 │  r+c = 3 │  ──► Diagonal 1 (Sum = 1)  [ODD]   ▼ Down-Left
+     *   ├──────────┼──────────┼──────────┤
+     *   │  (2,0)   │  (2,1)   │  (2,2)   │
+     * Row 2 │  r+c = 2 │  r+c = 3 │  r+c = 4 │  ──► Diagonal 2 (Sum = 2)  [EVEN]  ▲ Up-Right
+     *   └──────────┴──────────┴──────────┘
+     *
+     *
+     */
+    /**  Dry run
+     *
+     * ===================================================================================
+     * | Step | Position (r, c) | Val | Diag (r+c) | Direction | Boundary/Movement Rule  |
+     * ===================================================================================
+     * |  1   |      (0, 0)     |  1  |    0 (Even)| Up-Right  | Hit Top Wall -> c++     |
+     * |  2   |      (0, 1)     |  2  |    1 (Odd) | Down-Left | Hit Left Wall -> r++    |
+     * |  3   |      (1, 0)     |  4  |    1 (Odd) | Down-Left | Normal -> r++, c--      |
+     * |  4   |      (2, 0)     |  7  |    2 (Even)| Up-Right  | Hit Bottom Wall -> c++  |
+     * |  5   |      (1, 1)     |  5  |    2 (Even)| Up-Right  | Normal -> r--, c++      |
+     * |  6   |      (0, 2)     |  3  |    2 (Even)| Up-Right  | Hit Right Wall -> r++   |
+     * |  7   |      (1, 2)     |  6  |    3 (Odd) | Down-Left | Hit Right Wall -> r++   |
+     * |  8   |      (2, 1)     |  8  |    3 (Odd) | Down-Left | Hit Bottom Wall -> c++  |
+     * |  9   |      (2, 2)     |  9  |    4 (Even)| Up-Right  | Finished                |
+     * ===================================================================================
+     *
+     */
+    public int[] findDiagonalOrder(int[][] mat) {
+        if (mat == null || mat.length == 0 || mat[0].length == 0) {
+            return new int[] {};
+        }
+
+        int m = mat.length;
+        int n = mat[0].length;
+        int[] res = new int[m * n];
+
+        /** NOTE !!!
+         *
+         *  r, c is the row, column idx
+         */
+        int r = 0, c = 0; // Matrix row and column pointers
+
+        /** NOTE !!!
+         *
+         *  instead of `while` loop, we simply
+         *  use the for loop, and loop over `element` cnt of the matrix.
+         *  e.g. the `res.length`
+         */
+        for (int i = 0; i < res.length; i++) {
+            res[i] = mat[r][c];
+
+            /** NOTE !!!
+             *
+             *   (r + c) % 2 == 0
+             *    -> `even` rounds
+             */
+            // Case 1: Moving UP-RIGHT (Even rounds)
+            if ((r + c) % 2 == 0) {
+                /** NOTE !!!
+                 *
+                 *   Hit the right wall
+                 */
+                if (c == n - 1) { // Hit the right wall -> must move DOWN
+                    r++;
+                }
+                /** NOTE !!!
+                 *
+                 *   Hit the top wall
+                 */
+                else if (r == 0) { // Hit the top wall -> must move RIGHT
+                    c++;
+                } else { // Normal up-right move
+                    r--;
+                    c++;
+                }
+            }
+            /** NOTE !!!
+             *
+             *   (r + c) % 2 == 1
+             *    -> `odd` rounds
+             */
+            // Case 2: Moving DOWN-LEFT (Odd rounds)
+            else {
+                /** NOTE !!!
+                 *
+                 *   Hit the bottom wall
+                 */
+                if (r == m - 1) { // Hit the bottom wall -> must move RIGHT
+                    c++;
+                }
+                /** NOTE !!!
+                 *
+                 *   Hit the left wall
+                 */
+                else if (c == 0) { // Hit the left wall -> must move DOWN
+                    r++;
+                } else { // Normal down-left move
+                    r++;
+                    c--;
+                }
+            }
+        }
+
+        return res;
+    }
+
 
 
     // V0-0-1
