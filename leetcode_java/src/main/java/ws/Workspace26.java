@@ -81,13 +81,87 @@ public class Workspace26 {
     // 3.53 - 4.03 pm
     /**
      *
+     *  -> Given a string s containing only three
+     *     types of characters: '(', ')' and '*',
+     *     return true if s is valid.
+     *
+     *
+     * ---------------
+     *
+     *
+     *  IDEA 1) 2 POINTERS ???
+     *
+     *  IDEA 2) STACK ??
+     *
+     *  IDEA 3) DP ???
+     *
+     *  IDEA 4) GREEDY ???
+     *    - '(' max, min cnt
+     *    - ')' max, min cnt
+     *
+     *
+     * ---------------
+     *
      *
      *
      */
+    //IDEA 4) GREEDY ???
     public boolean checkValidString(String s) {
+        // edge
 
-        return false;
+        int minLCnt = 0;
+        int maxLCnt = 0;
+
+//        int minRCnt = 0;
+//        int maxRCnt = 0;
+
+        // ??
+
+        for(char ch: s.toCharArray()){
+            // '('
+            if(ch == '('){
+                minLCnt += 1;
+                maxLCnt += 1;
+            }
+            // ')'
+            else if(ch == ')'){
+                // ???
+//                minRCnt += 1;
+//                maxRCnt += 1;
+                minLCnt -= 1;
+                maxLCnt -= 1;
+            }
+            // '*'
+            else{
+                // ???
+//                minLCnt += 1;
+//                minRCnt += 1;
+                minLCnt -= 1;
+                maxLCnt += 1;
+            }
+
+
+            // ???
+            if(maxLCnt <= 0){
+                return false;
+            }
+
+
+            // ???
+            // we reset `minLCnt` if < 0
+            // at this point ????
+            minLCnt = Math.max(0, minLCnt); // ???
+        }
+
+
+
+        // ???
+        //return minLCnt == minRCnt || maxLCnt == maxRCnt;
+       // return true;
+        return  minLCnt == 0; // ?????
     }
+
+
 
 
 

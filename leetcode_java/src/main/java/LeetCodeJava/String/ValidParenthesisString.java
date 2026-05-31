@@ -45,6 +45,90 @@ import java.util.Stack;
 public class ValidParenthesisString {
 
     // V0
+    // IDEA:  min, max `(` cnt and '*' handling (gpt)
+    public boolean checkValidString(String s) {
+
+        int minLCnt = 0;
+        int maxLCnt = 0;
+
+        for (char ch : s.toCharArray()) {
+
+            if (ch == '(') {
+                minLCnt++;
+                maxLCnt++;
+            }
+            else if (ch == ')') {
+                minLCnt--;
+                maxLCnt--;
+            }
+            else { // '*'
+                minLCnt--; // treat as ')'
+                maxLCnt++; // treat as '('
+            }
+
+            /** NOTE !!!
+             *
+             *  if maxLCnt < 0,
+             *  it is NOT possible to form
+             *  a `valid` parenthesis at this point,
+             *
+             * -> should return false directly
+             *
+             */
+            if (maxLCnt < 0) {
+                return false;
+            }
+
+
+            //
+            /** NOTE !!!  reset `minLCnt` if it's < 0
+             *
+             *
+             *  why ?
+             *
+             *  -> minLCnt is:
+             *
+             *    The `minimum` possible number of unmatched
+             *    '(' after processing the current prefix.
+             *
+             *    e.g. It is NOT the actual count.
+             *         It's the `lower bound` of a range.
+             *
+             *
+             *
+             *   -> but we DON'T really need to keep this lower bound
+             *      when it goes negative.
+             *      -> what we need to do is:
+             *        -> The `smallest meaningful` number of
+             *           unmatched opens is 0.
+             *
+
+             *
+             * -----
+             *
+             *  1) if minParenCnt < 0, reset it as 0,
+             *     since it's possible to `keep 0 for minParenCnt`
+             *
+             *  2) if maxParenCnt < 0, reset false directly,
+             *     since it does NOT make sense to use negative val as maxParenCnt
+             */
+            minLCnt = Math.max(0, minLCnt);
+        }
+
+
+        /** NOTE !!!
+         *
+         *  final validation as below:
+         *
+         *   if s = "(((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((("
+         *
+         *   -> need below logic, then can verify successfully
+         */
+        return minLCnt == 0;
+    }
+
+
+    // V0
     // IDEA: GREEDY
     // https://neetcode.io/problems/valid-parenthesis-string
     /**
@@ -76,7 +160,7 @@ public class ValidParenthesisString {
      * time = O(N)
      * space = O(N)
      */
-    public boolean checkValidString(String s) {
+    public boolean checkValidString_0_0_0_1(String s) {
         // edge
         if(s == null || s.isEmpty()){
             return true;
@@ -140,7 +224,7 @@ public class ValidParenthesisString {
          *   -> need below logic, then can verify successfully
          */
         return minParenCnt == 0; // ???
-       }
+   }
 
   // V0-0-1
   // IDEA: 2D DP (gpt)
