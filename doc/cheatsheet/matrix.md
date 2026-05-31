@@ -1569,3 +1569,96 @@ for (int i = 0; i < m; i++)
 | Toeplitz Matrix (LC 766) | `i - j` | All cells in group must equal the first |
 | Diagonal Traverse II (LC 1424) | `i + j` | Anti-diagonal grouping; reverse each group |
 | Sort Matrix Diagonally (LC 1329) | `i - j` | Sort each group ascending |
+
+---
+
+### 2-12) Diagonal Traverse (LC 498) — Pattern: Traversal (`(r+c) % 2` parity)
+> Visit every element in zigzag diagonal order: even-sum diagonals go UP-RIGHT, odd-sum go DOWN-LEFT.
+
+**Core Idea:**
+
+Every cell `(r, c)` belongs to a diagonal identified by `r + c`.
+The **parity** of that sum determines travel direction:
+- `(r+c) % 2 == 0` → moving **UP-RIGHT** (`r--, c++`)
+- `(r+c) % 2 == 1` → moving **DOWN-LEFT** (`r++, c--`)
+
+Boundary conditions always take priority over the normal move:
+
+| Direction | Hit which wall | Override action |
+|-----------|----------------|-----------------|
+| UP-RIGHT | right wall (`c == n-1`) | `r++` (drop down) |
+| UP-RIGHT | top wall (`r == 0`)    | `c++` (slide right) |
+| DOWN-LEFT | bottom wall (`r == m-1`) | `c++` (slide right) |
+| DOWN-LEFT | left wall (`c == 0`)   | `r++` (drop down) |
+
+**Pattern:** single `for` loop over all `m*n` elements; decide next `(r, c)` via parity + boundary checks.
+
+```java
+// LC 498 - Diagonal Traverse
+// IDEA: (r+c)%2 parity → even = UP-RIGHT, odd = DOWN-LEFT; boundary checks first
+// time = O(M*N), space = O(1)
+public int[] findDiagonalOrder(int[][] mat) {
+    if (mat == null || mat.length == 0 || mat[0].length == 0) return new int[]{};
+    int m = mat.length, n = mat[0].length;
+    int[] res = new int[m * n];
+    int r = 0, c = 0;
+    for (int i = 0; i < res.length; i++) {
+        res[i] = mat[r][c];
+        if ((r + c) % 2 == 0) {          // UP-RIGHT
+            if      (c == n - 1) r++;     // hit right wall → go down
+            else if (r == 0)     c++;     // hit top wall   → go right
+            else               { r--; c++; }
+        } else {                          // DOWN-LEFT
+            if      (r == m - 1) c++;     // hit bottom wall → go right
+            else if (c == 0)     r++;     // hit left wall   → go down
+            else               { r++; c--; }
+        }
+    }
+    return res;
+}
+```
+
+**Dry-run — `mat = [[1,2,3],[4,5,6],[7,8,9]]`:**
+
+```
+Step | (r,c) | val | r+c | direction  | boundary/move
+-----|-------|-----|-----|------------|---------------------
+  0  | (0,0) |  1  |  0  | UP-RIGHT   | r==0  → c++ (right)
+  1  | (0,1) |  2  |  1  | DOWN-LEFT  | c==0? no, r==m-1? no → r++,c--
+  2  | (1,0) |  4  |  1  | DOWN-LEFT  | r==m-1? no, c==0 → r++ (down)
+  3  | (2,0) |  7  |  2  | UP-RIGHT   | r==m-1? c++ (right)
+  4  | (2,1) |  8  |  3  | DOWN-LEFT  | r==m-1 → c++ (right)
+  5  | (2,2) |  9  |  4  | UP-RIGHT   | c==n-1 → r++ (but done)
+```
+→ output: `[1, 2, 4, 7, 5, 3, 6, 8, 9]` ✓
+
+**Alternative approach — diagonal-by-diagonal (V0-0-1):**
+```java
+// Iterate over each diagonal d = 0..m+n-2; set start (r,c) and walk
+// time = O(M*N), space = O(1)
+public int[] findDiagonalOrder(int[][] mat) {
+    int m = mat.length, n = mat[0].length;
+    int[] res = new int[m * n];
+    int idx = 0;
+    for (int d = 0; d < m + n - 1; d++) {
+        if (d % 2 == 0) {                       // UP-RIGHT
+            int r = Math.min(d, m - 1), c = d - r;
+            while (r >= 0 && c < n) { res[idx++] = mat[r--][c++]; }
+        } else {                                 // DOWN-LEFT
+            int c = Math.min(d, n - 1), r = d - c;
+            while (c >= 0 && r < m) { res[idx++] = mat[r++][c--]; }
+        }
+    }
+    return res;
+}
+```
+
+**Similar LC problems:**
+| Problem | LC # | Key | Technique |
+|---------|------|-----|-----------|
+| Diagonal Traverse | 498 | `(r+c)%2` parity | Boundary simulation |
+| Diagonal Traverse II | 1424 | `r+c` group key | Group by anti-diagonal, collect in order |
+| Sort the Matrix Diagonally | 1329 | `r-c` group key | Group by main diagonal, sort each |
+| Spiral Matrix | 54 | boundary pointers | Shrink 4 boundaries each full loop |
+| Spiral Matrix II | 59 | boundary pointers | Same spiral, fill values instead |
+| Rotate Image | 48 | coordinate math | Transpose + reverse rows |
