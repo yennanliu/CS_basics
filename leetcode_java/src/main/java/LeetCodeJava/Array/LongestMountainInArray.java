@@ -44,9 +44,63 @@ package LeetCodeJava.Array;
 public class LongestMountainInArray {
 
     // V0
-//    public int longestMountain(int[] arr) {
-//
-//    }
+    // IDEA: Two-Pointer Expansion approach (gemini)
+    // NOTE !!! this is NOT a slide window approach
+    /**
+     * Time: O(N²)
+     * Space: O(1)
+     */
+    public int longestMountain(int[] arr) {
+        if (arr == null || arr.length < 3) {
+            return 0;
+        }
+
+        int maxLen = 0;
+        int n = arr.length;
+
+        // A peak cannot exist at the first (0) or last (n-1) index
+        for (int i = 1; i < n - 1; i++) {
+            // Step 1: Identify a valid peak
+            if (arr[i] > arr[i - 1] && arr[i] > arr[i + 1]) {
+
+                // Step 2: Expand left to find the starting base
+                int left = i - 1;
+                while (left > 0 && arr[left] > arr[left - 1]) {
+                    left--;
+                }
+
+                // Step 3: Expand right to find the ending base
+                int right = i + 1;
+                while (right < n - 1 && arr[right] > arr[right + 1]) {
+                    right++;
+                }
+
+                // Step 4: Calculate length and track the maximum seen so far
+                int currentLen = right - left + 1;
+                maxLen = Math.max(maxLen, currentLen);
+
+                /**  NOTE !!!!
+                 *
+                 *  via below, we make time complexity
+                 *  from O(N * N) to O(N)
+                 *
+                 *
+                 *  -> Without that line, your code would back up and
+                 *     `recheck` indices it has already visited.
+                 *     With it, the algorithm is forced to only move forward.
+                 *
+                 *
+                 * ----
+                 *
+                 */
+                // OPTIMIZATION: Skip 'i' directly to the right base
+                // to avoid re-scanning the descending slope
+                i = right;
+            }
+        }
+
+        return maxLen;
+    }
 
 
     // V0-1
@@ -123,6 +177,23 @@ public class LongestMountainInArray {
      * Time: O(N²)
      * Space: O(1)
      */
+    /**  Dry run
+     *
+     * ===================================================================================================
+     * | Index (i) | arr[i] | Peak Detected? | Left Base Expansion (left) | Right Base Expansion (right) | Len |
+     * ===================================================================================================
+     * |     1     |   1    | 1 > 2 (False)  | —                          | —                            |  0  |
+     * |     2     |   4    | 4 > 7 (False)  | —                          | —                            |  0  |
+     * |     3     |   7    | 7>4 && 7>3 (Yes)| left stops at idx 1 (val 1)| right stops at idx 5 (val 2)  |  5  |
+     * ---------------------------------------------------------------------------------------------------
+     * |  * i skips directly to index 5 (val 2) to continue checking for the next peak * |
+     * ---------------------------------------------------------------------------------------------------
+     * |     5     |   2    | 2 > 5 (False)  | —                          | —                            |  5  |
+     * ===================================================================================================
+     * Final Maximum Length Returned: 5 (representing the mountain subarray [1, 4, 7, 3, 2])
+     *
+     *
+     */
     public int longestMountain_0_2(int[] arr) {
         if (arr == null || arr.length < 3) {
             return 0;
@@ -152,6 +223,20 @@ public class LongestMountainInArray {
                 int currentLen = right - left + 1;
                 maxLen = Math.max(maxLen, currentLen);
 
+                /**  NOTE !!!!
+                 *
+                 *  via below, we make time complexity
+                 *  from O(N * N) to O(N)
+                 *
+                 *
+                 *  -> Without that line, your code would back up and
+                 *     `recheck` indices it has already visited.
+                 *     With it, the algorithm is forced to only move forward.
+                 *
+                 *
+                 * ----
+                 *
+                 */
                 // OPTIMIZATION: Skip 'i' directly to the right base
                 // to avoid re-scanning the descending slope
                 i = right;
