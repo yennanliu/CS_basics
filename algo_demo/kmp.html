@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KMP Algorithm - Algorithm Visualizer</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="common.js"></script>
+</head>
+<body>
+  <nav class="topbar">
+    <a href="../index.html" class="home-link">&larr; CS_basics</a>
+    <a href="index.html">Visualizer</a> <span class="sep">/</span>
+    <span class="title">KMP Algorithm</span>
+    <button id="theme-toggle">&#127769;</button>
+  </nav>
+  <div class="container">
+    <h1>KMP Algorithm <span style="font-size:0.55em;font-weight:400">Knuth-Morris-Pratt</span></h1>
+    <p>Find all occurrences of pattern in text in O(n+m) time using the failure function to skip redundant comparisons. LC 28, 214, 1392.</p>
+    <div class="viz-wrapper">
+      <div>
+        <div class="viz-canvas-area"><canvas id="canvas"></canvas></div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#4361ee"></div> Unvisited</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#f39c12"></div> Comparing</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div> Match found</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div> Mismatch</div>
+        </div>
+      </div>
+      <div class="viz-controls">
+        <h3>Controls</h3>
+        <label>Text</label>
+        <input type="text" id="text-input" value="AABABCABABCABAB" maxlength="30"
+          style="width:100%;box-sizing:border-box;padding:4px 6px;border-radius:6px;border:1px solid var(--border);background:var(--card-bg);color:var(--text);font-size:13px;font-family:monospace;">
+        <label style="margin-top:8px">Pattern</label>
+        <input type="text" id="pat-input" value="ABABCABAB" maxlength="14"
+          style="width:100%;box-sizing:border-box;padding:4px 6px;border-radius:6px;border:1px solid var(--border);background:var(--card-bg);color:var(--text);font-size:13px;font-family:monospace;">
+        <label style="margin-top:8px">Speed</label>
+        <input type="range" id="speed" min="1" max="10" value="5">
+        <div class="btn-row">
+          <button class="btn btn-primary" id="run-btn">Run</button>
+          <button class="btn btn-secondary" id="reset-btn">Reset</button>
+        </div>
+        <div class="complexity">Time: O(n+m) | Space: O(m)</div>
+        <h3>Steps</h3>
+        <div class="viz-log" id="log"></div>
+      </div>
+    </div>
+  </div>
+<script>
+(function() {
+  var canvas = document.getElementById('canvas'), ctx = canvas.getContext('2d');
+  var running = false, stopped = false, logger = createLogger('log');
+  var state = { i: -1, j: -1, phase: 'idle', matches: [], failI: -1 };
+  var text = '', pat = '', fail = [];
+
+  function buildFail(p) {
+    var f = new Array(p.length).fill(0);
+    var k = 0;
+    for (var i = 1; i < p.length; i++) {
+      while (k > 0 && p[i] !== p[k]) k = f[k - 1];
+      if (p[i] === p[k]) k++;
+      f[i] = k;
+    }
+    return f;
+  }
+
+  function load() {
+    text = document.getElementById('text-input').value.toUpperCase();
+    pat  = document.getElementById('pat-input').value.toUpperCase();
+    fail = buildFail(pat);
+    state = { i: -1, j: -1, phase: 'idle', matches: [], failI: -1 };
+  }
+
+  function draw() {
+    var r = canvas.parentElement.getBoundingClientRect();
+    canvas.width = r.width - 32;
+    canvas.height = Math.max(r.height - 32, 300);
+    var w = canvas.width, h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+    var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    var fg = dark ? '#ccc' : '#333';
+
+    if (!text || !pat) return;
+
+    var cellSize = Math.min(36, Math.floor((w - 20) / Math.max(text.length, 1)));
+    var pad = Math.floor((w - cellSize * text.length) / 2);
+
+    // --- draw fail function row (top) ---
+    var failY = 18;
+    ctx.fillStyle = fg; ctx.font = '11px sans-serif'; ctx.textAlign = 'left';
+    ctx.fillText('fail[ ]:', 4, failY + cellSize * 0.65);
+    for (var k = 0; k < pat.length; k++) {
+      var fx = pad + k * cellSize;
+      var active = (state.phase === 'fail' && k === state.failI);
+      ctx.fillStyle = active ? '#9b59b6' : (dark ? '#2a2a3a' : '#eee');
+      ctx.beginPath(); ctx.roundRect(fx, failY, cellSize - 2, cellSize - 2, 4); ctx.fill();
+      ctx.strokeStyle = dark ? '#555' : '#bbb'; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.roundRect(fx, failY, cellSize - 2, cellSize - 2, 4); ctx.stroke();
+      ctx.fillStyle = active ? '#fff' : fg;
+      ctx.font = 'bold ' + Math.min(14, cellSize - 10) + 'px monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(fail[k], fx + (cellSize - 2) / 2, failY + cellSize * 0.67);
+      // index label
+      ctx.fillStyle = dark ? '#888' : '#999';
+      ctx.font = '9px sans-serif';
+      ctx.fillText(k, fx + (cellSize - 2) / 2, failY + cellSize - 1);
+    }
+    // label for fail row
+    ctx.fillStyle = dark ? '#888' : '#999'; ctx.font = '10px sans-serif'; ctx.textAlign = 'left';
+    ctx.fillText('Failure function (lps)', pad, failY - 4);
+
+    // --- draw text row ---
+    var textY = failY + cellSize + 20;
+    ctx.fillStyle = fg; ctx.font = '11px sans-serif'; ctx.textAlign = 'left';
+    ctx.fillText('text:', 4, textY + cellSize * 0.65);
+    for (var k = 0; k < text.length; k++) {
+      var tx = pad + k * cellSize;
+      var isMatchStart = state.matches.indexOf(k) >= 0;
+      var isCoveredByMatch = false;
+      for (var m = 0; m < state.matches.length; m++) {
+        if (k >= state.matches[m] && k < state.matches[m] + pat.length) { isCoveredByMatch = true; break; }
+      }
+      var color = '#4361ee';
+      if (isCoveredByMatch) color = '#2ecc71';
+      if (state.i === k) {
+        if (state.phase === 'match') color = '#f39c12';
+        else if (state.phase === 'mismatch') color = '#e74c3c';
+      }
+      ctx.fillStyle = color;
+      ctx.beginPath(); ctx.roundRect(tx, textY, cellSize - 2, cellSize - 2, 4); ctx.fill();
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold ' + Math.min(15, cellSize - 8) + 'px monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(text[k], tx + (cellSize - 2) / 2, textY + cellSize * 0.67);
+      // index
+      ctx.fillStyle = dark ? '#888' : '#999'; ctx.font = '9px sans-serif';
+      ctx.fillText(k, tx + (cellSize - 2) / 2, textY + cellSize - 1);
+    }
+
+    // --- draw pattern row (aligned under text[i-j]) ---
+    var patY = textY + cellSize + 6;
+    ctx.fillStyle = fg; ctx.font = '11px sans-serif'; ctx.textAlign = 'left';
+    ctx.fillText('pat:', 4, patY + cellSize * 0.65);
+    var patOffset = state.i >= 0 && state.j >= 0 ? state.i - state.j : 0;
+    if (state.phase === 'found') patOffset = state.i;
+    for (var k = 0; k < pat.length; k++) {
+      var px = pad + (patOffset + k) * cellSize;
+      if (px < 0 || px > w) continue;
+      var color = '#4361ee';
+      if (state.phase === 'found') color = '#2ecc71';
+      else if (k < state.j) color = '#2ecc71';
+      else if (k === state.j) {
+        color = state.phase === 'match' ? '#f39c12' : (state.phase === 'mismatch' ? '#e74c3c' : '#4361ee');
+      }
+      ctx.fillStyle = color;
+      ctx.beginPath(); ctx.roundRect(px, patY, cellSize - 2, cellSize - 2, 4); ctx.fill();
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold ' + Math.min(15, cellSize - 8) + 'px monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(pat[k], px + (cellSize - 2) / 2, patY + cellSize * 0.67);
+    }
+
+    // --- pointer labels ---
+    if (state.i >= 0) {
+      var ix = pad + state.i * cellSize + (cellSize - 2) / 2;
+      ctx.fillStyle = '#f39c12'; ctx.font = 'bold 11px sans-serif'; ctx.textAlign = 'center';
+      ctx.fillText('i', ix, textY + cellSize + 3);
+    }
+
+    // --- status line ---
+    ctx.fillStyle = fg; ctx.font = '12px sans-serif'; ctx.textAlign = 'left';
+    var statusY = patY + cellSize + 22;
+    if (state.phase === 'idle') {
+      ctx.fillText('Ready. Press Run.', 10, statusY);
+    } else if (state.phase === 'match') {
+      ctx.fillText('text[' + state.i + ']="' + text[state.i] + '" == pat[' + state.j + ']="' + pat[state.j] + '"  →  match', 10, statusY);
+    } else if (state.phase === 'mismatch') {
+      ctx.fillText('text[' + state.i + ']="' + text[state.i] + '" ≠ pat[' + state.j + ']="' + pat[state.j] + '"  →  j = fail[j-1]=' + (state.j > 0 ? fail[state.j - 1] : 0), 10, statusY);
+    } else if (state.phase === 'found') {
+      ctx.fillText('Pattern found at index ' + state.i + '!', 10, statusY);
+    } else if (state.phase === 'done') {
+      ctx.fillText('Done. ' + state.matches.length + ' match(es) found.', 10, statusY);
+    }
+  }
+
+  async function run() {
+    if (running) return;
+    load();
+    if (!pat || !text) return;
+    running = true; stopped = false; logger.clear();
+
+    var delay = (11 - document.getElementById('speed').value) * 150;
+    var n = text.length, m = pat.length;
+    var matches = [];
+
+    // Phase 1: build fail (animate)
+    logger.log('Building failure function for "' + pat + '"...');
+    var f = new Array(m).fill(0);
+    fail = f;
+    var kk = 0;
+    for (var i = 1; i < m && !stopped; i++) {
+      state.phase = 'fail'; state.failI = i;
+      while (kk > 0 && pat[i] !== pat[kk]) kk = f[kk - 1];
+      if (pat[i] === pat[kk]) kk++;
+      f[i] = kk;
+      fail = f.slice();
+      draw();
+      logger.log('fail[' + i + '] = ' + kk + '  (pat[' + i + ']="' + pat[i] + '")');
+      await sleep(delay);
+    }
+    logger.log('fail = [' + fail.join(', ') + ']');
+    logger.log('--- Searching ---');
+
+    // Phase 2: search
+    var j = 0;
+    for (var i = 0; i < n && !stopped; i++) {
+      while (j > 0 && text[i] !== pat[j]) {
+        state = { i: i, j: j, phase: 'mismatch', matches: matches.slice(), failI: -1 };
+        draw();
+        logger.log('Mismatch text[' + i + ']="' + text[i] + '" ≠ pat[' + j + ']="' + pat[j] + '" → j = fail[' + (j-1) + ']=' + fail[j-1]);
+        await sleep(delay);
+        j = fail[j - 1];
+      }
+      if (text[i] === pat[j]) {
+        state = { i: i, j: j, phase: 'match', matches: matches.slice(), failI: -1 };
+        draw();
+        logger.log('Match text[' + i + ']="' + text[i] + '" == pat[' + j + ']');
+        await sleep(delay);
+        j++;
+      }
+      if (j === m) {
+        var matchStart = i - m + 1;
+        matches.push(matchStart);
+        state = { i: matchStart, j: 0, phase: 'found', matches: matches.slice(), failI: -1 };
+        draw();
+        logger.log('<span class="highlight">Pattern found at index ' + matchStart + '!</span>');
+        await sleep(delay * 2);
+        j = fail[j - 1];
+      }
+    }
+
+    if (!stopped) {
+      state.phase = 'done'; state.matches = matches;
+      draw();
+      if (matches.length === 0) logger.log('No match found.');
+      else logger.log('<span class="highlight">Total: ' + matches.length + ' match(es) at [' + matches.join(', ') + ']</span>');
+    }
+    running = false;
+  }
+
+  document.getElementById('run-btn').addEventListener('click', run);
+  document.getElementById('reset-btn').addEventListener('click', function() {
+    stopped = true; running = false; load(); logger.clear(); draw();
+  });
+  document.getElementById('text-input').addEventListener('input', function() { load(); logger.clear(); draw(); });
+  document.getElementById('pat-input').addEventListener('input', function() { load(); logger.clear(); draw(); });
+
+  load(); draw(); window.addEventListener('resize', draw);
+})();
+</script>
+</body>
+</html>

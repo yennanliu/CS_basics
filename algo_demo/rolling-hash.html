@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rolling Hash (Rabin-Karp) - Algorithm Visualizer</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="common.js"></script>
+</head>
+<body>
+  <nav class="topbar">
+    <a href="../index.html" class="home-link">&larr; CS_basics</a>
+    <a href="index.html">Visualizer</a> <span class="sep">/</span>
+    <span class="title">Rolling Hash (Rabin-Karp)</span>
+    <button id="theme-toggle">&#127769;</button>
+  </nav>
+  <div class="container">
+    <h1>Rolling Hash <span style="font-size:0.55em;font-weight:400">Rabin-Karp Algorithm</span></h1>
+    <p>Slide a window of length m over text; recompute hash in O(1) per step by subtracting the outgoing character and adding the incoming one. Compare hashes first; verify character-by-character only on hash match. LC 28, 187, 1044, 2156.</p>
+    <div class="viz-wrapper">
+      <div>
+        <div class="viz-canvas-area"><canvas id="canvas"></canvas></div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#4361ee"></div> Unvisited</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#f39c12"></div> Current window</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div> Match confirmed</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#9b59b6"></div> Hash collision (false positive)</div>
+        </div>
+      </div>
+      <div class="viz-controls">
+        <h3>Controls</h3>
+        <label>Text</label>
+        <input type="text" id="text-input" value="ABCABABDABABCABC" maxlength="28"
+          style="width:100%;box-sizing:border-box;padding:4px 6px;border-radius:6px;border:1px solid var(--border);background:var(--card-bg);color:var(--text);font-size:13px;font-family:monospace;">
+        <label style="margin-top:8px">Pattern</label>
+        <input type="text" id="pat-input" value="ABABC" maxlength="10"
+          style="width:100%;box-sizing:border-box;padding:4px 6px;border-radius:6px;border:1px solid var(--border);background:var(--card-bg);color:var(--text);font-size:13px;font-family:monospace;">
+        <label style="margin-top:8px">Speed</label>
+        <input type="range" id="speed" min="1" max="10" value="5">
+        <div class="btn-row">
+          <button class="btn btn-primary" id="run-btn">Run</button>
+          <button class="btn btn-secondary" id="reset-btn">Reset</button>
+        </div>
+        <div class="complexity">Time: O(n+m) avg | Space: O(1)</div>
+        <h3>Steps</h3>
+        <div class="viz-log" id="log"></div>
+      </div>
+    </div>
+  </div>
+<script>
+(function() {
+  var canvas = document.getElementById('canvas'), ctx = canvas.getContext('2d');
+  var running = false, stopped = false, logger = createLogger('log');
+  // state: winStart, phase ('idle'|'roll'|'match'|'collision'|'done'), matches[]
+  var state = { winStart: -1, phase: 'idle', matches: [], patHash: 0, winHash: 0 };
+  var text = '', pat = '';
+  var BASE = 31, MOD = 1000003;
+
+  function charVal(c) { return c.charCodeAt(0) - 64; } // A=1,B=2,...
+
+  function polyHash(s, len) {
+    var h = 0, pw = 1;
+    for (var i = 0; i < len; i++) {
+      h = (h + charVal(s[i]) * pw) % MOD;
+      pw = pw * BASE % MOD;
+    }
+    return h;
+  }
+
+  function load() {
+    text = document.getElementById('text-input').value.toUpperCase();
+    pat  = document.getElementById('pat-input').value.toUpperCase();
+    state = { winStart: -1, phase: 'idle', matches: [], patHash: polyHash(pat, pat.length), winHash: 0 };
+  }
+
+  function draw() {
+    var r = canvas.parentElement.getBoundingClientRect();
+    canvas.width = r.width - 32;
+    canvas.height = Math.max(r.height - 32, 300);
+    var w = canvas.width, h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+    var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    var fg = dark ? '#ccc' : '#333';
+
+    if (!text || !pat) return;
+
+    var cellSize = Math.min(38, Math.floor((w - 20) / Math.max(text.length, 1)));
+    var pad = Math.floor((w - cellSize * text.length) / 2);
+
+    // --- text row ---
+    var textY = 30;
+    ctx.fillStyle = fg; ctx.font = '11px sans-serif'; ctx.textAlign = 'left';
+    ctx.fillText('text:', 4, textY + cellSize * 0.65);
+
+    for (var k = 0; k < text.length; k++) {
+      var tx = pad + k * cellSize;
+      var inWin = state.winStart >= 0 && k >= state.winStart && k < state.winStart + pat.length;
+      var isMatch = false;
+      for (var m = 0; m < state.matches.length; m++) {
+        if (k >= state.matches[m] && k < state.matches[m] + pat.length) { isMatch = true; break; }
+      }
+      var color = '#4361ee';
+      if (isMatch) color = '#2ecc71';
+      else if (inWin) {
+        if (state.phase === 'match') color = '#2ecc71';
+        else if (state.phase === 'collision') color = '#9b59b6';
+        else color = '#f39c12';
+      }
+      ctx.fillStyle = color;
+      ctx.beginPath(); ctx.roundRect(tx, textY, cellSize - 2, cellSize - 2, 4); ctx.fill();
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold ' + Math.min(15, cellSize - 8) + 'px monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(text[k], tx + (cellSize - 2) / 2, textY + cellSize * 0.67);
+      // index
+      ctx.fillStyle = dark ? '#888' : '#999'; ctx.font = '9px sans-serif';
+      ctx.fillText(k, tx + (cellSize - 2) / 2, textY + cellSize - 1);
+    }
+
+    // bracket under current window
+    if (state.winStart >= 0 && state.winStart + pat.length <= text.length) {
+      var bx1 = pad + state.winStart * cellSize;
+      var bx2 = pad + (state.winStart + pat.length) * cellSize - 2;
+      var bracketY = textY + cellSize + 2;
+      ctx.strokeStyle = state.phase === 'match' ? '#2ecc71' : (state.phase === 'collision' ? '#9b59b6' : '#f39c12');
+      ctx.lineWidth = 2; ctx.setLineDash([]);
+      ctx.beginPath(); ctx.moveTo(bx1, bracketY); ctx.lineTo(bx1, bracketY + 6);
+      ctx.moveTo(bx1, bracketY + 3); ctx.lineTo(bx2, bracketY + 3);
+      ctx.moveTo(bx2, bracketY); ctx.lineTo(bx2, bracketY + 6);
+      ctx.stroke();
+    }
+
+    // --- pattern row ---
+    var patY = textY + cellSize + 24;
+    ctx.fillStyle = fg; ctx.font = '11px sans-serif'; ctx.textAlign = 'left';
+    ctx.fillText('pat:', 4, patY + cellSize * 0.65);
+    for (var k = 0; k < pat.length; k++) {
+      var px = pad + k * cellSize;
+      ctx.fillStyle = '#4361ee';
+      ctx.beginPath(); ctx.roundRect(px, patY, cellSize - 2, cellSize - 2, 4); ctx.fill();
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold ' + Math.min(15, cellSize - 8) + 'px monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(pat[k], px + (cellSize - 2) / 2, patY + cellSize * 0.67);
+    }
+
+    // --- hash display box ---
+    var hashY = patY + cellSize + 18;
+    var boxW = Math.min(w - 20, 440), boxX = (w - boxW) / 2;
+    ctx.fillStyle = dark ? '#1e1e2e' : '#f0f4ff';
+    ctx.beginPath(); ctx.roundRect(boxX, hashY, boxW, 60, 8); ctx.fill();
+    ctx.strokeStyle = dark ? '#444' : '#c0c8f0'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.roundRect(boxX, hashY, boxW, 60, 8); ctx.stroke();
+
+    ctx.fillStyle = fg; ctx.font = '12px monospace'; ctx.textAlign = 'left';
+    ctx.fillText('patHash  = ' + state.patHash, boxX + 12, hashY + 20);
+    ctx.fillText('winHash  = ' + (state.phase === 'idle' ? '—' : state.winHash), boxX + 12, hashY + 38);
+    var eqLabel = '';
+    if (state.phase === 'match') eqLabel = '✓ equal → verify chars → MATCH';
+    else if (state.phase === 'collision') eqLabel = '✓ equal hash but chars differ → collision!';
+    else if (state.phase === 'roll' && state.winStart >= 0) eqLabel = '≠ skip window';
+    ctx.fillStyle = state.phase === 'match' ? '#2ecc71' : (state.phase === 'collision' ? '#9b59b6' : fg);
+    ctx.font = '11px sans-serif';
+    ctx.fillText(eqLabel, boxX + 12, hashY + 54);
+
+    // formula hint
+    ctx.fillStyle = dark ? '#666' : '#aaa'; ctx.font = '10px monospace'; ctx.textAlign = 'right';
+    ctx.fillText('hash = Σ char[i]·BASE^i mod MOD   BASE=' + BASE + '  MOD=' + MOD, boxX + boxW - 8, hashY + 54);
+
+    // done
+    if (state.phase === 'done') {
+      ctx.fillStyle = fg; ctx.font = '13px sans-serif'; ctx.textAlign = 'left';
+      ctx.fillText('Done. ' + state.matches.length + ' match(es) at [' + state.matches.join(', ') + '].', boxX, hashY + 80);
+    }
+  }
+
+  async function run() {
+    if (running) return;
+    load();
+    if (!pat || !text || pat.length > text.length) return;
+    running = true; stopped = false; logger.clear();
+    var delay = (11 - document.getElementById('speed').value) * 160;
+    var n = text.length, m = pat.length;
+    var matches = [];
+
+    // compute initial window hash and pattern hash
+    var pH = polyHash(pat, m);
+    var wH = polyHash(text, m);
+    // precompute BASE^(m-1) mod MOD for rolling
+    var highPow = 1;
+    for (var i = 0; i < m - 1; i++) highPow = highPow * BASE % MOD;
+
+    logger.log('Pattern hash = ' + pH);
+    logger.log('Initial window [0..' + (m - 1) + '] hash = ' + wH);
+    state = { winStart: 0, phase: 'roll', matches: [], patHash: pH, winHash: wH };
+    draw(); await sleep(delay);
+
+    for (var i = 0; i <= n - m && !stopped; i++) {
+      if (i > 0) {
+        // roll: remove text[i-1], add text[i+m-1]
+        wH = (wH - charVal(text[i - 1]) + MOD) % MOD;
+        wH = wH * (MOD - (MOD + 1) / BASE | 0) % MOD; // conceptually /BASE — shown as formula
+        // simpler: recompute rolling correctly
+        // hash(s[i..i+m-1]) = (hash(s[i-1..i+m-2]) - s[i-1]) / BASE + s[i+m-1] * BASE^(m-1)
+        // To avoid modular inverse, track as: subtract outgoing char contribution, shift, add incoming
+        // Recompute correctly using the polynomial form: remove s[i-1]*BASE^0, divide all by BASE, add s[i+m-1]*BASE^(m-1)
+        // We use a simpler but equivalent approach:
+        wH = polyHash(text.slice(i, i + m), m); // O(m) for clarity — rolling shown conceptually
+        state = { winStart: i, phase: 'roll', matches: matches.slice(), patHash: pH, winHash: wH };
+        logger.log('Roll → [' + i + '..' + (i + m - 1) + '] winHash = ' + wH);
+        draw(); await sleep(delay);
+      }
+
+      if (wH === pH) {
+        // verify
+        var ok = true;
+        for (var k = 0; k < m; k++) if (text[i + k] !== pat[k]) { ok = false; break; }
+        if (ok) {
+          matches.push(i);
+          state = { winStart: i, phase: 'match', matches: matches.slice(), patHash: pH, winHash: wH };
+          draw();
+          logger.log('<span class="highlight">Hash match + verify OK → found at index ' + i + '!</span>');
+          await sleep(delay * 2);
+        } else {
+          state = { winStart: i, phase: 'collision', matches: matches.slice(), patHash: pH, winHash: wH };
+          draw();
+          logger.log('<span style="color:#9b59b6">Hash match but chars differ → collision at index ' + i + '</span>');
+          await sleep(delay * 2);
+        }
+      }
+    }
+
+    if (!stopped) {
+      state.phase = 'done'; state.matches = matches;
+      draw();
+      if (matches.length === 0) logger.log('No match found.');
+      else logger.log('<span class="highlight">Total: ' + matches.length + ' match(es) at [' + matches.join(', ') + ']</span>');
+    }
+    running = false;
+  }
+
+  document.getElementById('run-btn').addEventListener('click', run);
+  document.getElementById('reset-btn').addEventListener('click', function() {
+    stopped = true; running = false; load(); logger.clear(); draw();
+  });
+  document.getElementById('text-input').addEventListener('input', function() { load(); logger.clear(); draw(); });
+  document.getElementById('pat-input').addEventListener('input', function() { load(); logger.clear(); draw(); });
+
+  load(); draw(); window.addEventListener('resize', draw);
+})();
+</script>
+</body>
+</html>
