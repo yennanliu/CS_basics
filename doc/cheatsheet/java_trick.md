@@ -1559,6 +1559,81 @@ for (Map.Entry<Integer, Integer> entry : node_cnt.entrySet()) {
 ```
 
 
+### 1-9-4) TreeMap Key Ordering — Ascending vs Descending ⭐
+
+> **Core Rule**: `TreeMap` always keeps keys **sorted**. Default order is ascending (small → big). Pass `Comparator.reverseOrder()` to flip it to descending (big → small).
+
+```java
+// Default TreeMap — ascending key order (small → big)
+TreeMap<Integer, Integer> asc = new TreeMap<>();
+asc.put(3, 30); asc.put(1, 10); asc.put(2, 20);
+for (int k : asc.keySet()) { /* visits 1, 2, 3 */ }
+
+// Reverse-order TreeMap — descending key order (big → small)
+TreeMap<Integer, Integer> desc = new TreeMap<>(Comparator.reverseOrder());
+desc.put(3, 30); desc.put(1, 10); desc.put(2, 20);
+for (int k : desc.keySet()) { /* visits 3, 2, 1 */ }
+```
+
+**Alternative — `descendingKeySet()` on a default TreeMap:**
+```java
+// No need to create a reverse-order TreeMap; iterate existing one in reverse
+TreeMap<Integer, Integer> map = new TreeMap<>();
+map.put(1, 10); map.put(3, 30); map.put(2, 20);
+
+// Forward (small → big)
+for (int k : map.keySet()) { /* 1, 2, 3 */ }
+
+// Reverse (big → small) — descendingKeySet() returns a view, O(1)
+for (int k : map.descendingKeySet()) { /* 3, 2, 1 */ }
+```
+
+**Applied pattern — LC 362 Design Hit Counter (5-minute sliding window):**
+```java
+// IDEA: TreeMap (reverse order) so we can break early on out-of-window timestamps
+private TreeMap<Integer, Integer> map;
+
+public HitCounter() {
+    // Keys visited big → small; break as soon as key <= timestamp - 300
+    map = new TreeMap<>(Comparator.reverseOrder());
+}
+
+public void hit(int timestamp) {
+    map.put(timestamp, map.getOrDefault(timestamp, 0) + 1);
+}
+
+public int getHits(int timestamp) {
+    int cnt = 0;
+    for (int k : map.keySet()) {
+        if (k <= timestamp - 300) break;   // earlier timestamps are all invalid
+        cnt += map.get(k);
+    }
+    return cnt;
+}
+```
+
+**Why descending order helps here:** iterating big → small lets us `break` the moment we hit a key outside the 5-minute window, instead of scanning the entire map.
+
+**Summary:**
+
+| Goal | How |
+|------|-----|
+| Ascending iteration (default) | `new TreeMap<>()` |
+| Descending iteration (via constructor) | `new TreeMap<>(Comparator.reverseOrder())` |
+| Descending iteration (on existing map) | `map.descendingKeySet()` |
+| Nearest key ≤ target | `map.floorKey(target)` |
+| Nearest key ≥ target | `map.ceilingKey(target)` |
+
+**Similar LC problems using TreeMap ordering:**
+| Problem | LC # | Key Usage |
+|---------|------|-----------|
+| Design Hit Counter | 362 | Reverse-order iteration + early break |
+| Snapshot Array | 1146 | `floorEntry(snapId)` for last value before snap |
+| Time Based Key-Value Store | 981 | `floorKey(timestamp)` |
+| My Calendar I | 729 | `floorEntry` / `ceilingEntry` for overlap check |
+
+---
+
 ### 1-10) Get max val from an Array
 ```java
 // java
