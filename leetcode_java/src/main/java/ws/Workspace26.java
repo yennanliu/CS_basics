@@ -162,10 +162,74 @@ public class Workspace26 {
 
 
     // LC 845
+    // 4.37 - 47 pm
+    /**
+     * -> Given an integer array arr,
+     *    return the length of the longest subarray,
+     *    which is a `mountain. `
+     *
+     *    - Return 0 if there is no mountain subarray.
+     *
+     *
+     * -----------
+     *
+     *  IDEA 1) 2 POINTERS
+     *
+     *  IDEA 2) SLIDE WINDOW ???
+     *
+     *
+     */
+    //  IDEA 1) 2 POINTERS
+    // time: O (N * N) // ???
+    // space:  O(1) // ??
     public int longestMountain(int[] arr) {
+        // edge
+        if(arr == null || arr.length < 3){
+            return 0;
+        }
+        if(arr.length == 3){
+            if (arr[1] > arr[0] && arr[1] > arr[2]){
+                return 3;
+            }
+            return 0;
+        }
 
-        return 0;
+        int maxLen = 0;
+        for(int i = 0; i < arr.length; i++){
+            maxLen = Math.max(
+                    maxLen,
+                    getMountainLen(arr, i)
+            );
+        }
+
+
+        return maxLen;
     }
+
+
+
+    private int getMountainLen(int[] arr, int start){
+        int len = 0;
+        // ???
+        if(start == 0 || start == arr.length - 1){
+            return 0;
+        }
+        // ??
+        int peak = arr[start];
+        // ??
+        int l = start - 1;
+        int r = start + 1;
+        while (peak > arr[l] && peak > arr[r] && l > 0 && r < arr.length){
+            l -= 1;
+            r += 1;
+            len += 2;
+        }
+
+        return len;
+    }
+
+
+
 
 
 

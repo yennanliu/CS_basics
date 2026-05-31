@@ -49,6 +49,158 @@ public class LongestMountainInArray {
 //    }
 
 
+    // V0-1
+    // IDEA: 2 POINTERS (gpt)
+    /**
+     * Time: O(N²)
+     * Space: O(1)
+     */
+    public int longestMountain_0_1(int[] arr) {
+
+        int ans = 0;
+
+        for (int i = 1; i < arr.length - 1; i++) {
+            ans = Math.max(ans, getMountainLen(arr, i));
+        }
+
+        return ans;
+    }
+
+    private int getMountainLen(int[] arr, int peak) {
+        // edge
+        if (peak == 0 || peak == arr.length - 1) {
+            return 0;
+        }
+
+        /** NOTE !!!
+         *
+         *  the edge case:
+         *  if either `left` or `right` height is bigger than peak
+         *  at the beginning
+         *
+         *  -> NOT a valid, should return 0 directly
+         */
+        // peak must be local maximum
+        if (arr[peak] <= arr[peak - 1]
+                || arr[peak] <= arr[peak + 1]) {
+            return 0;
+        }
+
+        int l = peak;
+        int r = peak;
+
+        /** NOTE !!!
+         *
+         *   keep moving `left` pointer,
+         *   when arr[l - 1] < arr[l] and l still in boundary
+         */
+        while (l > 0 && arr[l - 1] < arr[l]) {
+            l--;
+        }
+
+        /** NOTE !!!
+         *
+         *   keep moving `right` pointer,
+         *   when arr[r] > arr[r + 1] and r still in boundary
+         */
+        while (r < arr.length - 1
+                && arr[r] > arr[r + 1]) {
+            r++;
+        }
+
+        /** NOTE !!!
+         *
+         *  how we get len
+         */
+        return r - l + 1;
+    }
+
+
+    // V0-2
+    // IDEA: Two-Pointer Expansion approach (gemini)
+    // (similar to finding the longest palindromic substring).
+    /**
+     * Time: O(N²)
+     * Space: O(1)
+     */
+    public int longestMountain_0_2(int[] arr) {
+        if (arr == null || arr.length < 3) {
+            return 0;
+        }
+
+        int maxLen = 0;
+        int n = arr.length;
+
+        // A peak cannot exist at the first (0) or last (n-1) index
+        for (int i = 1; i < n - 1; i++) {
+            // Step 1: Identify a valid peak
+            if (arr[i] > arr[i - 1] && arr[i] > arr[i + 1]) {
+
+                // Step 2: Expand left to find the starting base
+                int left = i - 1;
+                while (left > 0 && arr[left] > arr[left - 1]) {
+                    left--;
+                }
+
+                // Step 3: Expand right to find the ending base
+                int right = i + 1;
+                while (right < n - 1 && arr[right] > arr[right + 1]) {
+                    right++;
+                }
+
+                // Step 4: Calculate length and track the maximum seen so far
+                int currentLen = right - left + 1;
+                maxLen = Math.max(maxLen, currentLen);
+
+                // OPTIMIZATION: Skip 'i' directly to the right base
+                // to avoid re-scanning the descending slope
+                i = right;
+            }
+        }
+
+        return maxLen;
+    }
+
+
+    // V0-3
+    // IDEA: Two-Pointer Expansion approach (GPT)
+    public int longestMountain_0_3(int[] arr) {
+        int n = arr.length;
+        int maxLen = 0;
+
+        int i = 1;
+
+        while (i < n - 1) {
+
+            // Check whether arr[i] is a peak
+            if (arr[i - 1] < arr[i] && arr[i] > arr[i + 1]) {
+
+                int left = i;
+                int right = i;
+
+                // Expand left (strictly increasing)
+                while (left > 0 && arr[left - 1] < arr[left]) {
+                    left--;
+                }
+
+                // Expand right (strictly decreasing)
+                while (right < n - 1 && arr[right] > arr[right + 1]) {
+                    right++;
+                }
+
+                maxLen = Math.max(maxLen, right - left + 1);
+
+                // Skip the mountain we just processed
+                i = right;
+            }
+
+            i++;
+        }
+
+        return maxLen;
+    }
+
+
     // V1
     // IDEA: 2 POINTERS
     // https://leetcode.com/problems/longest-mountain-in-array/editorial/
