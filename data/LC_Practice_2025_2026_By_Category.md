@@ -3,7 +3,7 @@
 **Total Unique Problems: 500**
 
 Generated from: `data/progress.md`
-Date: 2026-05-25
+Date: 2026-06-01
 
 ---
 
@@ -13,7 +13,7 @@ Date: 2026-05-25
 - [Backtracking](#backtracking) (6 problems)
 - [Binary Search](#binary-search) (24 problems)
 - [Binary Search Tree](#binary-search-tree) (13 problems)
-- [Breadth-First-Search](#breadth-first-search) (23 problems)
+- [Breadth-First-Search](#breadth-first-search) (22 problems)
 - [Depth-First-Search](#depth-first-search) (24 problems)
 - [Design](#design) (13 problems)
 - [Dynamic Programming](#dynamic-programming) (49 problems)
@@ -24,11 +24,11 @@ Date: 2026-05-25
 - [Linked List](#linked-list) (15 problems)
 - [Math](#math) (4 problems)
 - [Queue](#queue) (1 problems)
-- [Recursion](#recursion) (19 problems)
+- [Recursion](#recursion) (18 problems)
 - [Sliding Window](#sliding-window) (3 problems)
 - [Sort](#sort) (15 problems)
 - [Stack](#stack) (23 problems)
-- [String](#string) (19 problems)
+- [String](#string) (21 problems)
 - [Tree](#tree) (26 problems)
 - [Two Pointers](#two-pointers) (12 problems)
 - [Uncategorized](#uncategorized) (100 problems)
@@ -39,7 +39,7 @@ Date: 2026-05-25
 
 **Count: 44**
 
-3, 4, 15, 26, 27, 41, 54, 57, 66, 80
+1, 3, 4, 15, 26, 27, 41, 54, 57, 80
 121, 163, 189, 209, 215, 229, 240, 287, 289, 308
 335, 370, 442, 713, 731, 849, 905, 909, 918, 921
 1031, 1074, 1089, 1094, 1109, 1248, 1288, 1314, 1431, 1470
@@ -76,11 +76,11 @@ Date: 2026-05-25
 
 ## Breadth-First-Search
 
-**Count: 23**
+**Count: 22**
 
-1, 102, 127, 130, 133, 207, 210, 261, 286, 310
-317, 407, 444, 675, 742, 743, 752, 787, 864, 934
-1091, 1162, 1905
+102, 127, 130, 133, 207, 210, 261, 286, 310, 317
+407, 444, 675, 742, 743, 752, 787, 864, 934, 1091
+1162, 1905
 
 ---
 
@@ -178,10 +178,10 @@ Date: 2026-05-25
 
 ## Recursion
 
-**Count: 19**
+**Count: 18**
 
-10, 95, 98, 100, 104, 105, 106, 108, 110, 116
-117, 129, 298, 337, 395, 404, 437, 501, 669
+95, 98, 100, 104, 105, 106, 108, 110, 116, 117
+129, 298, 337, 395, 404, 437, 501, 669
 
 ---
 
@@ -214,10 +214,11 @@ Date: 2026-05-25
 
 ## String
 
-**Count: 19**
+**Count: 21**
 
-5, 14, 28, 58, 76, 125, 161, 242, 271, 340
-383, 541, 647, 678, 680, 720, 791, 890, 953
+5, 10, 14, 28, 58, 66, 76, 125, 161, 242
+271, 340, 383, 541, 647, 678, 680, 720, 791, 890
+953
 
 ---
 
@@ -268,12 +269,12 @@ These problems were not found in the leetcode_python or leetcode_java directory 
 | Tree | 26 | 5.2% |
 | Binary Search | 24 | 4.8% |
 | Depth-First-Search | 24 | 4.8% |
-| Breadth-First-Search | 23 | 4.6% |
 | Stack | 23 | 4.6% |
 | Greedy | 22 | 4.4% |
-| String | 19 | 3.8% |
-| Recursion | 19 | 3.8% |
+| Breadth-First-Search | 22 | 4.4% |
+| String | 21 | 4.2% |
 | Hash Table | 18 | 3.6% |
+| Recursion | 18 | 3.6% |
 | Heap | 18 | 3.6% |
 | Linked List | 15 | 3.0% |
 | Sort | 15 | 3.0% |
