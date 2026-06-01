@@ -230,7 +230,11 @@ public class Workspace26 {
 
 
 
+    // LC 1794
+    public int countQuadruples(String firstString, String secondString) {
 
+        return 0;
+    }
 
 
 
