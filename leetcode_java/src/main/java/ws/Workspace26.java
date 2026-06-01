@@ -329,10 +329,111 @@ public class Workspace26 {
 
 
     // LC 399
-    public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
+    // 3.46 - 56 pm
+    /**
+     *  -> Return the answers to all queries.
+     *     If a single answer cannot be determined,
+     *     return -1.0.
+     *
+     *
+     *
+     * --------------
+     *
+     *  IDEA 1) DFS ???
+     *
+     *   -> build map:
+     *
+     *    map: { ai : [bi, res ] }  // ????
+     *
+     *   -> call dfs. and run the queries
+     *
+     *  IDEA 2) BFS ???
+     *
+     *
+     * --------------
+     */
+    // ???
+    public class MyVal{
+        String b;
+        double value;
 
-        return null;
+        MyVal(){
+
+        }
+
+        MyVal(String b, double value){
+            this.b = b;
+            this.value = value;
+        }
     }
+
+
+    // IDEA 1) DFS ???
+    public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
+        // edge
+
+
+        // ???
+        Map<String, List<MyVal>> map = new HashMap<>();
+        for(int i = 0; i < equations.size(); i++){
+            List<String> list = equations.get(i);
+            // ???
+            String a = list.get(0);
+            String b = list.get(1);
+            double val = values[i];
+
+            // ???
+            List<MyVal> list1 = map.getOrDefault(a, new ArrayList<>());
+            List<MyVal> list2 = map.getOrDefault(b, new ArrayList<>());
+
+            list1.add(new MyVal(b, val));
+            list2.add(new MyVal(a, 1 / val));
+
+
+            map.put(a, list1);
+            map.put(b, list2);
+        }
+
+
+        // ??
+        double[] res = new double[queries.size()];
+        for(int i = 0; i < queries.size(); i++){
+           // res[i] = dfsHelper(queries.get(i), map);
+        }
+
+        return res;
+    }
+
+
+    private double dfsHelper(List<String> q, Map<String, List<MyVal>> map, int res){
+        // edge
+        String a = q.get(0);
+        String b = q.get(1);
+        // ???
+        if(a.equals(b)){
+            return 1.0;
+        }
+        if(!map.containsKey(a) || !map.containsKey(b)){
+            return -1.0; // ???
+        }
+
+        // ???
+        //res = map.
+
+        // ???
+        for( MyVal next: map.get(a)){
+            dfsHelper(q, map, res);
+        }
+
+
+
+        return res; // ???
+    }
+
+
+
+
+
 
 
 }

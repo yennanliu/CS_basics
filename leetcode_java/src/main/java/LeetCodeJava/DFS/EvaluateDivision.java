@@ -184,7 +184,85 @@ public class EvaluateDivision {
 
 
 
+    // V0-0-1
+    // IDEA: DFS + CUSTOM CLASS (fixed by gpt)
+    class MyVal {
+        String b;
+        double value;
 
+        MyVal(String b, double value) {
+            this.b = b;
+            this.value = value;
+        }
+    }
+
+
+    public double[] calcEquation_0_0_1(
+            List<List<String>> equations,
+            double[] values,
+            List<List<String>> queries) {
+
+        Map<String, List<MyVal>> graph = new HashMap<>();
+
+        for (int i = 0; i < equations.size(); i++) {
+            String a = equations.get(i).get(0);
+            String b = equations.get(i).get(1);
+            double val = values[i];
+
+            graph.computeIfAbsent(a, k -> new ArrayList<>())
+                    .add(new MyVal(b, val));
+
+            graph.computeIfAbsent(b, k -> new ArrayList<>())
+                    .add(new MyVal(a, 1.0 / val));
+        }
+
+        double[] res = new double[queries.size()];
+
+        for (int i = 0; i < queries.size(); i++) {
+            String start = queries.get(i).get(0);
+            String end = queries.get(i).get(1);
+
+            res[i] = dfs(start, end, graph, new HashSet<>());
+        }
+
+        return res;
+    }
+
+    private double dfs(
+            String curr,
+            String target,
+            Map<String, List<MyVal>> graph,
+            Set<String> visited) {
+
+        if (!graph.containsKey(curr) || !graph.containsKey(target)) {
+            return -1.0;
+        }
+
+        if (curr.equals(target)) {
+            return 1.0;
+        }
+
+        visited.add(curr);
+
+        for (MyVal next : graph.get(curr)) {
+
+            if (visited.contains(next.b)) {
+                continue;
+            }
+
+            double sub = dfs(next.b, target, graph, visited);
+
+            if (sub != -1.0) {
+                return next.value * sub;
+            }
+        }
+
+        return -1.0;
+    }
+
+
+
+    
     // V0-1
     // IDEA: DFS (fixed by gpt)
     /**
