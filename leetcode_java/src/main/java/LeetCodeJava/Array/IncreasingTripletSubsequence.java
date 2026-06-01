@@ -44,8 +44,48 @@ public class IncreasingTripletSubsequence {
     // V0
     // IDEA: first, second biggest val
     /**
+     * The standard greedy solution keeps:
+     *
+     * a = smallest number seen so far
+     * b = smallest possible `second` number `greater` than a
+     *
+     *
+     * -> Initialize both to Integer.MAX_VALUE.
+     *
+     *
+     */
+    /**
      * time = O(N)
      * space = O(1)
+     */
+    /**  Dry run:
+     *
+     * | val | a | b |
+     * | --- | - | - |
+     * | 2   | 2 | ∞ |
+     * | 1   | 1 | ∞ |
+     * | 5   | 1 | 5 |
+     * | 0   | 0 | 5 |
+     * | 4   | 0 | 4 |
+     * | 6   | 0 | 4 |
+     */
+    /**
+     *   Q:
+     *
+     *  for `[2,1,5,0,4,6]` input,
+     * can our code above get `[1,5,6]` case ?
+     *
+     *  e.g.
+     *
+     *  Can the algorithm still detect [1,5,6] specifically?
+     *
+     *  -> Not explicitly.
+     *
+     *  -> the algo below is to return
+     *   `whether some increasing triplet exists`,
+     *     NOT to find out every valid triplet.
+     *
+     *
      */
     public boolean increasingTriplet(int[] nums) {
 
@@ -67,6 +107,37 @@ public class IncreasingTripletSubsequence {
 
         return false;
     }
+
+
+    // V0-0-1
+    // IDEA: 3 VAR (fixed by gpt)
+    public boolean increasingTriplet_0_0_1(int[] nums) {
+
+        int a = Integer.MAX_VALUE;
+        int b = Integer.MAX_VALUE;
+
+        for (int val : nums) {
+
+            /** NOTE !!!
+             *
+             */
+            if (val <= a) {
+                a = val;
+            }
+            /** NOTE !!!
+             *
+             */
+            else if (val <= b) {
+                b = val;
+            } else {
+                // val > b > a
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 
     // V0-1
     // IDEA: first, second biggest val (GPT)
@@ -201,6 +272,8 @@ public class IncreasingTripletSubsequence {
 //
 //        return false;
 //    }
+
+
 
 
 

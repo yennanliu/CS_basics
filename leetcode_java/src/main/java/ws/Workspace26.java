@@ -464,6 +464,88 @@ public class Workspace26 {
     }
 
 
+    // LC 334
+    // 4.32 - 42 pm
+    /**
+     * -> return true if there exists a triple of
+     * indices (i, j, k) such that i < j < k
+     * and nums[i] < nums[j] < nums[k].
+     * If no such indices exists, return false.
+     *
+     *
+     * ----------
+     *
+     *  IDEA 1) BRUTE FORCE ???
+     *
+     *  IDEA 2) 2 POINTERS ???
+     *
+     *
+     *  IDEA 3) GREEDY ???
+     *
+     *  IDEA 4) 3 VARS ???
+     *
+     *
+     * ----------
+     *
+     *
+     */
+    // IDEA 4) 3 VARS ???
+    public boolean increasingTriplet(int[] nums) {
+
+//        // ??? min so far
+//        int a = -1 * Integer.MAX_VALUE; // ???
+        int a = Integer.MAX_VALUE;
+
+//
+//        // 2nd min so far
+//        int b = -1 * Integer.MAX_VALUE; // ???
+        int b = Integer.MAX_VALUE;
+//
+//        // 3rd min so far ????
+//        int c = -1 * Integer.MAX_VALUE; // ???
+
+        // ??
+        for(int i = 0; i < nums.length; i++){
+            int val = nums[i];
+            // ??
+            //  if(a == -1 * Integer.MAX_VALUE){
+            if(a >= val){
+               // val = a;
+                a = val;
+            }
+            // ???
+            else if(b >= val){
+                b = val;
+            }
+            else{
+                return true;
+            }
+
+
+
+            // ???
+//            else {
+//                if(val < a){
+//                    a = val;
+//                }else{
+//                    // ???
+//                    if(b != -1 * Integer.MAX_VALUE){
+//                        if(val > b){
+//                            return true;
+//                        }
+//                    }
+//                    b = val; // ???
+//                }
+//            }
+
+
+
+        }
+
+
+        return false;
+    }
+
 
 
 
