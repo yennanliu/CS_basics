@@ -62,9 +62,32 @@ public class CountPairsOfEqualSubstringsWithMinimumDifference {
     // V1-1
     // IDEA: (GPT)
     // TODO: validate
+    /** NOTE !!! CORE IDEA
+     *
+     * The key observation is that the optimal
+     * quadruples always come from single-character substrings,
+     *
+     * so for each character we only need:
+     *
+     * its earliest occurrence in firstString
+     * its latest occurrence in secondString
+     *
+     * Then find the minimum i - j and count how many characters achieve it.
+     *
+     */
     public int countQuadruples_1_1(String firstString, String secondString) {
         int[] last = new int[26];
 
+        /** NOTE !!!
+         *
+         *
+         *  store `last` occurrence in secondString
+         *
+         *
+         *   if last[x] = 0
+         *
+         *   -> such character is NOT in secondString
+         */
         // store last occurrence in secondString (+1 so 0 means "not found")
         for (int j = 0; j < secondString.length(); j++) {
             last[secondString.charAt(j) - 'a'] = j + 1;
@@ -76,6 +99,17 @@ public class CountPairsOfEqualSubstringsWithMinimumDifference {
         for (int i = 0; i < firstString.length(); i++) {
             int j = last[firstString.charAt(i) - 'a'];
 
+            /** NOTE !!!
+             *
+             *  j > 0: the character is in secondString
+             *
+             *
+             *  ----------
+             *
+             *   if last[x] = 0
+             *
+             *   -> such character is NOT in secondString
+             */
             if (j > 0) {
                 int diff = i - j; // j is stored as index+1
 
@@ -155,12 +189,14 @@ public class CountPairsOfEqualSubstringsWithMinimumDifference {
                 int j = lastIdxSecond[charIdx];
                 int currentDiff = i - j;
 
-                // If we found a strictly smaller distance, update minDiff and reset count
+                // If we found a `strictly smaller` distance,
+                // update `minDif`f and `reset` count
                 if (currentDiff < minDiff) {
                     minDiff = currentDiff;
                     count = 1;
                 }
-                // If it matches our current minimum distance, increment the counter
+                // If it matches our current minimum distance,
+                // increment the counter
                 else if (currentDiff == minDiff) {
                     count++;
                 }
