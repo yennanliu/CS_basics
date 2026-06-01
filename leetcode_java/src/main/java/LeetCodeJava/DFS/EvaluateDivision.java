@@ -57,6 +57,26 @@ import java.util.*;
  */
 public class EvaluateDivision {
 
+    /** NOTE !!!
+     *
+     *  We have 2 ways to define our graph,
+     *  both work, but need to be CLEAR about their definition,
+     *  and how to use them in DFS call:
+     *
+     *
+     *  1. Map<String, Map<String, Double>> graph = new HashMap<>();
+     *
+     *      - nested map
+     *      - NOTE !!! val is `Map<String, Double>` type
+     *
+     *
+     *  2. Map<String, List<MyVal>> graph = new HashMap<>();
+     *
+     *     - custom class
+     *     - NOTE !!! val is `List<MyVal>` type
+     *
+     */
+
     // V0
     // IDEA: DFS (fixed by gpt)
     public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
@@ -250,9 +270,19 @@ public class EvaluateDivision {
                 continue;
             }
 
+            /** NOTE !!!
+             *
+             *  the trick below
+             *
+             */
             double sub = dfs(next.b, target, graph, visited);
 
             if (sub != -1.0) {
+                /** NOTE !!!
+                 *
+                 *  the trick below
+                 *
+                 */
                 return next.value * sub;
             }
         }
@@ -262,7 +292,7 @@ public class EvaluateDivision {
 
 
 
-    
+
     // V0-1
     // IDEA: DFS (fixed by gpt)
     /**

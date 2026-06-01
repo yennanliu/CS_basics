@@ -398,36 +398,69 @@ public class Workspace26 {
         // ??
         double[] res = new double[queries.size()];
         for(int i = 0; i < queries.size(); i++){
-           // res[i] = dfsHelper(queries.get(i), map);
+            // ???
+            List<String> q = queries.get(i);
+            String a = q.get(0);
+            String b = q.get(1);
+            if(a.equals(b)){
+                res[i] =  1.0;
+            }
+            else if(!map.containsKey(a) || !map.containsKey(b)){
+                res[i] =  -1.0;
+            }else{
+                // NOTE !!! need to use `visited`
+                // to `AVOID` duplicated visiting
+                Set<String> visited = new HashSet<>();
+                // res[i] = dfsHelper(queries.get(i), map);
+            }
         }
 
         return res;
     }
 
 
-    private double dfsHelper(List<String> q, Map<String, List<MyVal>> map, int res){
+    private double dfsHelper(String a, String b, Map<String, List<MyVal>> map, double res, Set<String> visited){
         // edge
-        String a = q.get(0);
-        String b = q.get(1);
+//        String a = q.get(0);
+//        String b = q.get(1);
+
+
+        visited.add(a);
+
+
         // ???
-        if(a.equals(b)){
-            return 1.0;
-        }
-        if(!map.containsKey(a) || !map.containsKey(b)){
-            return -1.0; // ???
-        }
+//        if(a.equals(b)){
+//            return 1.0;
+//        }
+//        if(!map.containsKey(a) || !map.containsKey(b)){
+//            return -1.0; // ???
+//        }
 
         // ???
         //res = map.
 
         // ???
         for( MyVal next: map.get(a)){
-            dfsHelper(q, map, res);
+          //  dfsHelper(q, map, res);
+            if(!visited.contains(next.b)){
+                double resp = dfsHelper(
+                        a,
+                        next.b,
+                        map,
+                        res * 1, // ???
+                        visited);
+
+                // ???
+                if(resp != -1){
+                    return resp;
+                }
+            }
+
         }
 
 
 
-        return res; // ???
+        return -1.0; // /??
     }
 
 
