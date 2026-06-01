@@ -2541,3 +2541,84 @@ Sorting approach trade-off:
 - LC 392 Is Subsequence (core two-pointer subsequence check)
 - LC 720 Longest Word in Dictionary (prefix-based, different pattern)
 - LC 1055 Shortest Way to Form String (subsequence with multiple passes)
+
+### 2-17) Count Pairs of Equal Substrings With Minimum Difference
+
+**Pattern: First/Last Character Occurrence + Minimum Difference Counting**
+- LC 1794. Count Pairs of Equal Substrings With Minimum Difference (Medium)
+
+#### Core Idea
+```
+Non-obvious key insight: optimal quadruples ALWAYS use single-character substrings.
+
+Why? For quadruple (i, j, a, b) minimizing j - a:
+  - Extending in firstString (j > i) increases j → diff gets larger
+  - Extending in secondString (b > a) decreases a → diff also gets larger
+  - Therefore i == j, a == b is always optimal → single characters only
+
+For each character c shared by both strings:
+  - FIRST occurrence in firstString  → smallest i, minimizes diff
+  - LAST  occurrence in secondString → largest  a, minimizes diff
+  - diff = i - a; track minimum and count characters achieving it
+```
+
+#### Java Implementation (O(n + m))
+```java
+// LC 1794 - Count Pairs of Equal Substrings With Minimum Difference
+/**
+ * Time: O(n + m)  Space: O(1) — fixed 26-char arrays
+ *
+ * Trick: last[c] = j + 1  so 0 means "not present in secondString"
+ */
+public int countQuadruples(String firstString, String secondString) {
+    int[] last = new int[26];
+
+    // Record LAST occurrence of each char in secondString (+1 offset)
+    for (int j = 0; j < secondString.length(); j++) {
+        last[secondString.charAt(j) - 'a'] = j + 1;
+    }
+
+    int minDiff = Integer.MAX_VALUE;
+    int count = 0;
+    boolean[] visited = new boolean[26]; // only use FIRST occurrence in firstString
+
+    for (int i = 0; i < firstString.length(); i++) {
+        int charIdx = firstString.charAt(i) - 'a';
+        if (visited[charIdx]) continue;
+        visited[charIdx] = true;
+
+        int j = last[charIdx];
+        if (j > 0) { // character exists in secondString
+            int diff = i - j; // j stored as actual_index + 1
+
+            if (diff < minDiff) {
+                minDiff = diff;
+                count = 1;
+            } else if (diff == minDiff) {
+                count++;
+            }
+        }
+    }
+
+    return count;
+}
+```
+
+**Key Tricks:**
+```
++1 offset for "not found" sentinel:
+  last[c] = 0  → character never appeared in secondString
+  last[c] = k  → character last appeared at index k-1
+
+Why FIRST in firstString + LAST in secondString:
+  - Later occurrence of c in firstString → larger i → larger diff (bad)
+  - Earlier occurrence of c in secondString → smaller a → larger diff (bad)
+  - First + Last gives the tightest (minimum) i - a for each character
+```
+
+**Similar Problems:**
+- LC 1624 Largest Substring Between Two Equal Characters (first/last occurrence span)
+- LC 387 First Unique Character in a String (first occurrence tracking)
+- LC 1 Two Sum (hash map for O(1) pairing/lookup)
+- LC 242 Valid Anagram (character frequency array)
+- LC 567 Permutation in String (character position mapping + sliding window)
