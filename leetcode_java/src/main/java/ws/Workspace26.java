@@ -231,9 +231,99 @@ public class Workspace26 {
 
 
     // LC 1794
+    // 3.13 - 23 pm
+    /**
+     *  -> Return the `number` of such quadruples.
+     *
+     *
+     *  ----------
+     *
+     *   IDEA 1) GREEDY ??? + hashmap ???
+     *
+     *
+     *   IDEA 2) slide window ???
+     *
+     *
+     *
+     *   -> loop over 1st str (i ->)
+     *      loop over 2nd str ( <- j)
+     *
+     *      and check if there is (i,j,a,b)
+     *      that meet the conditions ?????
+     *
+     *  ----------
+     *
+     *
+     */
     public int countQuadruples(String firstString, String secondString) {
+        // edge
 
-        return 0;
+        /** NOTE !!!
+         *
+         * The key observation is that
+         * the `optimal` quadruples always come
+         * from single-character substrings,
+         *
+         * so for each character we only need:
+         *
+         * its earliest occurrence in firstString
+         * its latest occurrence in secondString
+         *
+         * Then find the minimum `i - j` and
+         * count how many characters achieve it
+         *
+         *
+         *
+         */
+
+        // -> Map records below ????
+        //         * its earliest occurrence in firstString
+        //         * its latest occurrence in secondString
+        Map<Character, Integer> map1 = new HashMap<>();
+        Map<Character, Integer> map2 = new HashMap<>();
+
+        // ??
+        for(int i = 0 ; i < firstString.length(); i++){
+            char ch = firstString.charAt(i);
+            if(!map1.containsKey(ch)){
+                map1.put(ch, i);
+            }
+        }
+
+        for(int i = 0 ; i < secondString.length(); i++){
+            char ch = secondString.charAt(i);
+//            if(!map1.containsKey(ch)){
+//                map1.put(ch, i);
+//            }
+            map2.put(ch, i);
+        }
+
+
+        //int res = 2 * 100000; // ???
+        int res = 0;
+        // ??
+        for(int i = 0; i < firstString.length(); i++){
+            // for(int j = secondString.length() - 1; j > 0; j--){
+//            for(int j = secondString.length() - 1; j >= 0; j--){
+//                // ???
+//                if(firstString.charAt(i) == secondString.charAt(j)){
+//                    //return
+//                    //res = Math.min(res, i - j); // ???
+//                    res += 1;
+//                }
+//            }
+
+            // ???
+            char ch = firstString.charAt(i); // ??
+            if(map2.containsKey(ch)){
+                res += 1;
+            }
+
+        }
+
+
+
+        return res;
     }
 
 

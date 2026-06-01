@@ -2,7 +2,9 @@ package LeetCodeJava.HashTable;
 
 // https://leetcode.com/problems/count-pairs-of-equal-substrings-with-minimum-difference/description/
 // https://leetcode.ca/2021-05-16-1794-Count-Pairs-of-Equal-Substrings-With-Minimum-Difference/
+// https://leetcode.ca/2020-10-28-1794-Count-Pairs-of-Equal-Substrings-With-Minimum-Difference/
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -57,7 +59,118 @@ public class CountPairsOfEqualSubstringsWithMinimumDifference {
 //    }
 
 
-    // V1
+    // V1-1
+    // IDEA: (GPT)
+    // TODO: validate
+    public int countQuadruples_1_1(String firstString, String secondString) {
+        int[] last = new int[26];
+
+        // store last occurrence in secondString (+1 so 0 means "not found")
+        for (int j = 0; j < secondString.length(); j++) {
+            last[secondString.charAt(j) - 'a'] = j + 1;
+        }
+
+        int minDiff = Integer.MAX_VALUE;
+        int count = 0;
+
+        for (int i = 0; i < firstString.length(); i++) {
+            int j = last[firstString.charAt(i) - 'a'];
+
+            if (j > 0) {
+                int diff = i - j; // j is stored as index+1
+
+                if (diff < minDiff) {
+                    minDiff = diff;
+                    count = 1;
+                } else if (diff == minDiff) {
+                    count++;
+                }
+            }
+        }
+
+        return count;
+    }
+
+
+    // V1-2
+    // IDEA: BRUTE FORCE (GPT)
+    // TLE
+    // TODO: VALIDATE
+    public int countQuadruples_1_2(String firstString, String secondString) {
+
+        int minDiff = Integer.MAX_VALUE;
+        int count = 0;
+
+        for (int i = 0; i < firstString.length(); i++) {
+            for (int j = 0; j < secondString.length(); j++) {
+                if (firstString.charAt(i) == secondString.charAt(j)) {
+                    int diff = i - j;
+
+                    if (diff < minDiff) {
+                        minDiff = diff;
+                        count = 1;
+                    } else if (diff == minDiff) {
+                        count++;
+                    }
+                }
+            }
+        }
+
+        return count;
+    }
+
+
+    // V1-3
+    // IDEA: (GEMINI)
+    public int countQuadruples_1_3(String firstString, String secondString) {
+        // Arrays to store the last seen index of each character ('a' to 'z')
+        int[] lastIdxSecond = new int[26];
+        Arrays.fill(lastIdxSecond, -1);
+
+        // Step 1: Record the LAST occurrence of each character in secondString
+        for (int j = 0; j < secondString.length(); j++) {
+            lastIdxSecond[secondString.charAt(j) - 'a'] = j;
+        }
+
+        int minDiff = Integer.MAX_VALUE;
+        int count = 0;
+
+        // Step 2: Scan firstString to find the FIRST occurrence of each character
+        // tracking array ensures we only evaluate the absolute first occurrence of each character
+        boolean[] visitedFirst = new boolean[26];
+
+        for (int i = 0; i < firstString.length(); i++) {
+            char ch = firstString.charAt(i);
+            int charIdx = ch - 'a';
+
+            // If we've already processed this character in firstString, skip it
+            // (because subsequent occurrences would only increase 'i', making i - j larger)
+            if (visitedFirst[charIdx]) {
+                continue;
+            }
+            visitedFirst[charIdx] = true;
+
+            // If this character also exists in secondString, calculate the difference
+            if (lastIdxSecond[charIdx] != -1) {
+                int j = lastIdxSecond[charIdx];
+                int currentDiff = i - j;
+
+                // If we found a strictly smaller distance, update minDiff and reset count
+                if (currentDiff < minDiff) {
+                    minDiff = currentDiff;
+                    count = 1;
+                }
+                // If it matches our current minimum distance, increment the counter
+                else if (currentDiff == minDiff) {
+                    count++;
+                }
+            }
+        }
+
+        return count;
+    }
+
+
 
     // V2-1
     // IDEA:
