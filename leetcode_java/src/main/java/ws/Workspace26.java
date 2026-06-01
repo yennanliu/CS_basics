@@ -179,10 +179,73 @@ public class Workspace26 {
      *
      *
      */
+    //IDEA 1) 2 POINTERS  (WITH `RIGHT` pointer moving optimization)
+    // 5.08 - 29 pm
+    public int longestMountain(int[] arr) {
+        // edge
+        if(arr == null || arr.length < 3){
+            return 0;
+        }
+        if(arr.length == 3){
+            if (arr[1] > arr[0] && arr[1] > arr[2]){
+                return 3;
+            }
+            return 0;
+        }
+
+        // ??
+        int res = 0;
+
+        // ???
+        for(int i = 1; i < arr.length - 1; i++){
+            // ???
+            //int l = 1;
+            int l = i + 1; // ??
+            int r = arr.length - 1;
+            // ??
+            int cur = arr[i];
+
+            // edge
+            if(cur < arr[i-1] || cur < arr[i+1]){
+                continue;
+            }
+
+            // expand `boundary`
+            while (l >= 0 && r <= arr.length - 1){
+
+//                if(cur < arr[i-1] || cur < arr[i+1]){
+//                    break;
+//                }
+                // ??
+                //int cur = arr[i];
+                if(arr[l] > arr[l+1]){
+                    l -= 1;
+                }
+                if(arr[r] > arr[r+1]){
+                    l += 1;
+                }
+            }
+            // ??
+            res = Math.max(res, r - l + 1);
+
+        }
+
+        return res;
+    }
+
+
+
+
+
+
+
+
+
+
     //  IDEA 1) 2 POINTERS
     // time: O (N * N) // ???
     // space:  O(1) // ??
-    public int longestMountain(int[] arr) {
+    public int longestMountain_99(int[] arr) {
         // edge
         if(arr == null || arr.length < 3){
             return 0;

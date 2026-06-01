@@ -58,24 +58,43 @@ public class LongestMountainInArray {
         int maxLen = 0;
         int n = arr.length;
 
+        /** NOTE !!!
+         *
+         *  start from i = 1,
+         *  and end at n - 2
+         */
         // A peak cannot exist at the first (0) or last (n-1) index
         for (int i = 1; i < n - 1; i++) {
             // Step 1: Identify a valid peak
+            /** NOTE !!!
+             *
+             *  ONLY proceed if the [i-1, i, i+1]
+             *  is a `valid` peak
+             */
             if (arr[i] > arr[i - 1] && arr[i] > arr[i + 1]) {
 
                 // Step 2: Expand left to find the starting base
                 int left = i - 1;
+                /** NOTE !!!
+                 *
+                 *  `while` loop
+                 */
                 while (left > 0 && arr[left] > arr[left - 1]) {
                     left--;
                 }
 
                 // Step 3: Expand right to find the ending base
                 int right = i + 1;
+                /** NOTE !!!
+                 *
+                 *  `while` loop
+                 */
                 while (right < n - 1 && arr[right] > arr[right + 1]) {
                     right++;
                 }
 
-                // Step 4: Calculate length and track the maximum seen so far
+                // Step 4: Calculate length and
+                // track the maximum seen so far
                 int currentLen = right - left + 1;
                 maxLen = Math.max(maxLen, currentLen);
 
@@ -95,6 +114,12 @@ public class LongestMountainInArray {
                  */
                 // OPTIMIZATION: Skip 'i' directly to the right base
                 // to avoid re-scanning the descending slope
+                /** NOTE !!!
+                 *
+                 *  below optimization is optional,
+                 *  with it, time complexity is O(N);
+                 *  without it, time complexity is O(N * N);
+                 */
                 i = right;
             }
         }
