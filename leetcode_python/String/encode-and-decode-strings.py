@@ -140,6 +140,40 @@ class Codec:
         return res
 
 
+# V0-2
+# Time: O(N)
+# Space: O(N)
+class Codec:
+    def encode(self, strs):
+        if strs is None:
+            return ""
+        res = ""
+        for x in strs:
+            res += str(len(x)) + "#" + x
+        return res
+
+    def decode(self, s):
+        res = []
+        i = 0  # Pointer to track our position in the string
+        
+        while i < len(s):
+            # Find the position of the next '#' separator starting from index i
+            j = s.find('#', i)
+            
+            # The characters between i and j form the length string
+            length = int(s[i:j])
+            
+            # Extract the actual string using the calculated length
+            start_of_str = j + 1
+            end_of_str = start_of_str + length
+            res.append(s[start_of_str:end_of_str])
+            
+            # Jump 'i' directly to the start of the next encoded block
+            i = end_of_str
+            
+        return res
+
+
 # V0 
 # encode : len(element) + "$#"
 # decode : find the "#" and get the len(element) -> get original element
