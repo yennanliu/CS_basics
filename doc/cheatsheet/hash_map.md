@@ -1131,14 +1131,10 @@ Without this initialization, we'd miss subarrays starting at index 0.
 
 #### Visual Example
 Sequence: `[0, 0, 0, 0, 1, 1]`
-Count progression: 0 → -1 → -2 → -3 → -4 → -3 → -2
+Count progression (0→-1, 1→+1): 0 → -1 → -2 → -3 → -4 → -3 → -2
 
-The longest subarray has equal 0s and 1s when count returns to -2 (indices 1 and 5).
-Length = 5 - 1 = 4: `[0, 1, 1, 1]` wait, that's wrong...
+The count returns to **-2** at both index 2 and index 5. Length = 5 - 2 = **4**, which is the subarray `nums[3..5] = [0, 1, 1]` — wait, let's be precise: the subarray is `nums[index2+1 .. index5] = nums[3..5] = [0,1,1]`... actually the indices in the map represent where the running count was last seen, so length = `i - map[count]` = `5 - 1 = 4`, giving subarray `nums[2..5] = [0,0,1,1]` (4 elements, 2 zeros and 2 ones ✓).
 
-Actually, the charts show `changes VS index` of the sequence. We can find the longest subarray length is 4 (index 2 to 5), since `index 2 and index 5 have the same count` → `count at index 2 and index 5 are the same (-2)`.
-
-<p align="center"><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/lc_525_1.png" ></p>
 <p align="center"><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/lc_525_1.png" ></p>
 
 #### Mathematical Reasoning
@@ -1679,7 +1675,7 @@ class Solution:
 
 ```
 
-### 2-3) Longest Substring Without Repeating Characters
+### 2-3') Longest Substring Without Repeating Characters
 ```python
 # LC 003
 # V0'
@@ -1793,7 +1789,7 @@ class Solution(object):
 // LC 036 Valid Sudoku
 // backtrack
 // (algorithm book (labu) p.311)
-boolean backtrack(char[][] boolean,int i, int j){
+boolean backtrack(char[][] board, int i, int j){
 
     int m = 9, n = 9;
     
@@ -1956,7 +1952,7 @@ int subarraySum(int[] nums, int k){
     preSum.put(0,1);
 
     int ans = 0;
-    sum0_i = 0;
+    int sum0_i = 0;
 
     for (int i = 0; i < n; i++){
         sum0_i += nums[i];
@@ -2166,81 +2162,22 @@ class Solution(object):
 ### 2-13) Maximum Size Subarray Sum Equals k
 
 ```java
-// java
-// LC 325
-    public int maxSubArrayLen_0_1(int[] nums, int k) {
-        // Map to store (prefixSum, index)
-        Map<Integer, Integer> preSumMap = new HashMap<>();
-        preSumMap.put(0, -1); // Initialize for subarrays starting from index 0
+// LC 325 — prefix sum + hashmap, store FIRST occurrence (max length variant)
+// Key: prefixSum[j] - prefixSum[i] = k  →  check if (curSum - k) exists in map
+public int maxSubArrayLen(int[] nums, int k) {
+    Map<Integer, Integer> preSumMap = new HashMap<>();
+    preSumMap.put(0, -1); // handle subarrays starting at index 0
 
-        int curSum = 0;
-        int maxSize = 0;
-
-        for (int i = 0; i < nums.length; i++) {
-            curSum += nums[i];
-
-            /**
-             *
-             *   TODO: check if `preSum == k` already existed before (within loop over nunms)
-             *
-             *    -> if preSum == k existed
-             *    -> (let's say current idx = j, and a previous idx = i, can make sum(i, j) == k)
-             *    -> `preSum(j) - preSum(i) = k`  !!!!
-             *      -> preSum(j) if what we have  (preSum)
-             *      ----> so need to check if `preSum(j) - k` exists in map  !!!
-             */
-            // Check if there's a prefix sum such that curSum - prefixSum = k
-            /**
-             *  Prefix sum
-             *
-             *
-             * The prefix sum approach works because any subarray sum can be expressed in terms of two prefix sums:
-             *
-             *
-             * sum of subarray[i,j] = prefixSum[j] - prefixSum[i-1]
-             *
-             *
-             * Where:
-             *  •   prefixSum[j] is the cumulative sum of the array up to index j.
-             *  •   prefixSum[i-1] is the cumulative sum of the array up to index i-1.
-             *
-             * Rewriting this:
-             *
-             * -> prefixSum[j] - prefixSum[i-1] = k
-             *
-             * -> prefixSum[i-1] = prefixSum[j] - k
-             *
-             *
-             * Thus, the task is to find a previous prefix
-             * sum (prefixSum[i-1]) such that the
-             * difference between the current
-             * prefix sum (prefixSum[j]) and that value equals k.
-             *
-             *
-             *
-             *  How the Code Works
-             *
-             *  1.  Tracking Prefix Sums:
-             *      •   curSum is the cumulative prefix sum up to the current index i.
-             *      •   The map preSumMap stores previously seen prefix sums as keys, with their earliest index as the value.
-             *  2.  Checking for Subarrays:
-             *      •   At any index i, the condition curSum - k checks if there exists a previously seen prefix sum that, when subtracted from the current cumulative sum, gives the desired subarray sum k.
-             *
-             *  3.  Why It Covers All Possible Subarrays******:
-             *      •   The map contains all prefix sums seen so far, so it inherently includes all potential starting points of subarrays.
-             *      •   If a subarray [start, i] has a sum equal to k, the difference curSum - k corresponds to the prefix sum at start - 1. Since the map stores all previously seen prefix sums, this difference is guaranteed to be checked.
-             *
-             */
-            if (preSumMap.containsKey(curSum - k)) {
-                maxSize = Math.max(maxSize, i - preSumMap.get(curSum - k));
-            }
-
-            // Add current prefix sum to the map if not already present
-            preSumMap.putIfAbsent(curSum, i);
+    int curSum = 0, maxSize = 0;
+    for (int i = 0; i < nums.length; i++) {
+        curSum += nums[i];
+        if (preSumMap.containsKey(curSum - k)) {
+            maxSize = Math.max(maxSize, i - preSumMap.get(curSum - k));
         }
-
-        return maxSize;
+        preSumMap.putIfAbsent(curSum, i); // store FIRST occurrence only
     }
+    return maxSize;
+}
 ```
 
 ### 2-14)  Smallest Common Region
@@ -2380,6 +2317,294 @@ Both forms are correct. The `4 * count * (count - 1)` form avoids integer divisi
 **Key Difference from LC 1512 (Good Pairs):**
 - LC 1512: count pairs where `nums[i] == nums[j]` → `C(n,2)` per value
 - LC 1726: count **tuples** from pairs sharing product → `C(n,2) * 8` per product
+
+---
+
+---
+
+## Template 8: Bijection (Two-Way Mapping)
+
+**Pattern**: Maintain two maps (`x→y` and `y→x`) and check consistency in **both directions**. Required any time the mapping must be one-to-one (LC 205 Isomorphic Strings, LC 290 Word Pattern).
+
+**Why two maps?** One map catches `a→b` conflicts; the second catches `b→a` conflicts (two different `x` values mapping to the same `y`).
+
+```python
+# LC 205 Isomorphic Strings
+def isIsomorphic(s: str, t: str) -> bool:
+    s2t, t2s = {}, {}
+    for a, b in zip(s, t):
+        if s2t.get(a, b) != b or t2s.get(b, a) != a:
+            return False
+        s2t[a] = b
+        t2s[b] = a
+    return True
+
+# LC 290 Word Pattern
+def wordPattern(pattern: str, s: str) -> bool:
+    words = s.split()
+    if len(pattern) != len(words):
+        return False
+    p2w, w2p = {}, {}
+    for p, w in zip(pattern, words):
+        if p2w.get(p, w) != w or w2p.get(w, p) != p:
+            return False
+        p2w[p] = w
+        w2p[w] = p
+    return True
+```
+
+**Common mistake**: Using only one map — fails when two keys map to the same value (`"aa"` vs `"ab"`).
+
+---
+
+## Template 9: Bucket Sort via Hash Map (Top-K Frequency, O(n))
+
+**When asked for top-K frequent, ask: "Can you do O(n)?"** — The bucket trick avoids a heap.
+
+**Idea**: Create buckets where `bucket[freq]` holds all elements with that frequency. Scan buckets from highest freq down to collect top-K.
+
+```python
+# LC 347 Top K Frequent Elements — O(n) bucket approach
+from collections import Counter
+
+def topKFrequent(nums: list, k: int) -> list:
+    count = Counter(nums)
+    # bucket[i] = list of numbers that appear exactly i times
+    bucket = [[] for _ in range(len(nums) + 1)]
+    for num, freq in count.items():
+        bucket[freq].append(num)
+
+    result = []
+    for freq in range(len(bucket) - 1, 0, -1):
+        result.extend(bucket[freq])
+        if len(result) >= k:
+            return result[:k]
+    return result
+
+# LC 692 Top K Frequent Words — bucket + sort within bucket
+from collections import Counter
+
+def topKFrequent_words(words: list, k: int) -> list:
+    count = Counter(words)
+    bucket = [[] for _ in range(len(words) + 1)]
+    for word, freq in count.items():
+        bucket[freq].append(word)
+
+    result = []
+    for freq in range(len(bucket) - 1, 0, -1):
+        bucket[freq].sort()          # alphabetical within same frequency
+        result.extend(bucket[freq])
+        if len(result) >= k:
+            return result[:k]
+    return result
+```
+
+| Approach | Time | Space | When |
+|----------|------|-------|------|
+| Heap (nlargest) | O(n log k) | O(n) | Default |
+| Bucket sort | O(n) | O(n) | When O(n) is explicitly required |
+
+---
+
+## Template 10: Hash Map + Memoization / DP
+
+**Pattern**: Use a dict as a top-down DP cache (memoization). The key is the subproblem state (index, remaining target, visited set, etc.).
+
+```python
+# LC 139 Word Break — {index: bool}
+def wordBreak(s: str, wordDict: list) -> bool:
+    word_set = set(wordDict)
+    memo = {}
+
+    def dp(i):
+        if i == len(s):
+            return True
+        if i in memo:
+            return memo[i]
+        for j in range(i + 1, len(s) + 1):
+            if s[i:j] in word_set and dp(j):
+                memo[i] = True
+                return True
+        memo[i] = False
+        return False
+
+    return dp(0)
+
+# LC 1048 Longest String Chain — {word: longest_chain_ending_here}
+def longestStrChain(words: list) -> int:
+    words.sort(key=len)
+    dp = {}   # word -> longest chain ending at this word
+    best = 1
+    for word in words:
+        dp[word] = 1
+        for i in range(len(word)):
+            prev = word[:i] + word[i+1:]   # remove one character
+            if prev in dp:
+                dp[word] = max(dp[word], dp[prev] + 1)
+        best = max(best, dp[word])
+    return best
+
+# LC 322 Coin Change — classic DP, memo keyed by amount
+def coinChange(coins: list, amount: int) -> int:
+    memo = {}
+    def dp(rem):
+        if rem < 0: return float('inf')
+        if rem == 0: return 0
+        if rem in memo: return memo[rem]
+        memo[rem] = min(dp(rem - c) + 1 for c in coins)
+        return memo[rem]
+    res = dp(amount)
+    return res if res != float('inf') else -1
+```
+
+**Key rule**: Always check `if state in memo: return memo[state]` **before** computing. Store result **before** returning.
+
+---
+
+## Template 11: Monotonic Stack + Hash Map
+
+**Pattern**: Use a stack to process elements in a monotonic order; use a hash map to record the answer for each element by index or value.
+
+```python
+# LC 496 Next Greater Element I
+# map each element of nums1 to its next-greater in nums2
+def nextGreaterElement(nums1: list, nums2: list) -> list:
+    next_greater = {}   # val -> next greater val in nums2
+    stack = []          # monotonic decreasing stack
+
+    for num in nums2:
+        # pop all elements smaller than current — current is their next greater
+        while stack and stack[-1] < num:
+            next_greater[stack.pop()] = num
+        stack.append(num)
+
+    return [next_greater.get(n, -1) for n in nums1]
+
+# LC 503 Next Greater Element II (circular array)
+def nextGreaterElements(nums: list) -> list:
+    n = len(nums)
+    result = [-1] * n
+    stack = []  # stores indices
+
+    for i in range(2 * n):   # traverse twice for circular
+        while stack and nums[stack[-1]] < nums[i % n]:
+            result[stack.pop()] = nums[i % n]
+        if i < n:
+            stack.append(i)
+    return result
+
+# LC 739 Daily Temperatures — index-based answer map
+def dailyTemperatures(temps: list) -> list:
+    result = [0] * len(temps)
+    stack = []  # monotonic decreasing stack of indices
+
+    for i, t in enumerate(temps):
+        while stack and temps[stack[-1]] < t:
+            j = stack.pop()
+            result[j] = i - j
+        stack.append(i)
+    return result
+```
+
+**Recognition cues**: "next greater/smaller", "how many days until warmer", "span of prices", "largest rectangle".
+
+---
+
+## Template 12: Rolling Hash (Rabin-Karp)
+
+**When**: Find duplicate/matching substrings in O(n) expected time. Better than O(n²) naive substring comparison.
+
+**Idea**: Hash each window using polynomial rolling hash. Slide the window by removing the leftmost character and adding the new rightmost one in O(1).
+
+```python
+# LC 187 Repeated DNA Sequences — find all length-10 substrings appearing ≥ 2 times
+def findRepeatedDnaSequences(s: str) -> list:
+    if len(s) <= 10:
+        return []
+    seen, repeated = set(), set()
+    for i in range(len(s) - 9):
+        sub = s[i:i+10]
+        if sub in seen:
+            repeated.add(sub)
+        seen.add(sub)
+    return list(repeated)
+
+# General Rabin-Karp rolling hash template
+def rabin_karp(s: str, pattern: str) -> list:
+    """Return all start indices where pattern occurs in s."""
+    n, m = len(s), len(pattern)
+    if m > n:
+        return []
+
+    BASE = 26
+    MOD = (1 << 61) - 1   # Mersenne prime — minimises collisions
+
+    def char_val(c):
+        return ord(c) - ord('a')
+
+    # Precompute BASE^(m-1) mod MOD
+    power = pow(BASE, m - 1, MOD)
+
+    # Hash of pattern and first window
+    p_hash = 0
+    w_hash = 0
+    for i in range(m):
+        p_hash = (p_hash * BASE + char_val(pattern[i])) % MOD
+        w_hash = (w_hash * BASE + char_val(s[i])) % MOD
+
+    result = []
+    for i in range(n - m + 1):
+        if w_hash == p_hash and s[i:i+m] == pattern:  # verify on hash match
+            result.append(i)
+        if i < n - m:
+            # Roll: remove leftmost, add new rightmost
+            w_hash = (w_hash - char_val(s[i]) * power) % MOD
+            w_hash = (w_hash * BASE + char_val(s[i + m])) % MOD
+
+    return result
+
+# LC 1044 Longest Duplicate Substring — binary search + rolling hash
+def longestDupSubstring(s: str) -> str:
+    BASE, MOD = 31, (1 << 61) - 1
+
+    def has_dup(length):
+        if length == 0:
+            return ""
+        power = pow(BASE, length - 1, MOD)
+        h = 0
+        for c in s[:length]:
+            h = (h * BASE + ord(c) - ord('a')) % MOD
+        seen = {h: 0}
+        for i in range(1, len(s) - length + 1):
+            h = (h - (ord(s[i-1]) - ord('a')) * power) % MOD
+            h = (h * BASE + ord(s[i+length-1]) - ord('a')) % MOD
+            if h in seen:
+                # verify (collision guard)
+                start = seen[h]
+                if s[start:start+length] == s[i:i+length]:
+                    return s[i:i+length]
+            seen[h] = i
+        return ""
+
+    lo, hi, ans = 0, len(s) - 1, ""
+    while lo <= hi:
+        mid = (lo + hi) // 2
+        dup = has_dup(mid)
+        if dup:
+            ans = dup
+            lo = mid + 1
+        else:
+            hi = mid - 1
+    return ans
+```
+
+**Collision guard**: Always verify with `s[i:i+m] == pattern` when hashes match — hash collisions are rare but possible.
+
+| Problem | LC# | Difficulty | Technique |
+|---------|-----|------------|-----------|
+| Repeated DNA Sequences | 187 | Medium | Set of substrings / rolling hash |
+| Longest Duplicate Substring | 1044 | Hard | Binary search + rolling hash |
+| Rabin-Karp string match | - | - | Template above |
 
 ---
 
@@ -2590,6 +2815,26 @@ START: Analyzing Hash Map Problem
 *Amortized for most cache operations
 
 ## Interview Tips and Best Practices
+
+### 🔥 Google-Specific Patterns (Frequently Asked)
+
+| Topic | What Google Tests | Key Problems |
+|-------|------------------|--------------|
+| **Bijection** | Two-way consistency, isomorphism | LC 205, 290 |
+| **Bucket sort** | O(n) top-K, no heap | LC 347, 692 |
+| **Memoization + HashMap** | Top-down DP with state as key | LC 139, 1048, 322 |
+| **Monotonic stack + map** | Next greater/smaller, spans | LC 496, 739 |
+| **Rolling hash** | Duplicate/matching substrings | LC 187, 1044 |
+| **Prefix sum + modulo** | Subarrays divisible by K | LC 560, 974 |
+| **Virtual remap** | Random pick with exclusions | LC 710 |
+| **LRU/LFU** | O(1) cache design | LC 146, 460 |
+
+**Google interview signals to watch for:**
+- "Can you do it in O(n)?" → bucket sort, not heap
+- "Find duplicate / repeated substring" → rolling hash or binary search + hash
+- "Map one set of values to another consistently" → bijection (two maps)
+- "Optimize caching" → LRU with OrderedDict / doubly-linked list
+- Follow-up "What if the array is very large?" → space-efficient hash (rolling hash, coordinate compression)
 
 ### 🎯 Quick Recognition Patterns
 
