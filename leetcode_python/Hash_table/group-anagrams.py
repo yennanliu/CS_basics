@@ -33,6 +33,60 @@ strs[i] consists of lowercase English letters.
 """
 
 # V0
+# Time: O(N + M log M)
+# Space: O(M)
+#
+# N = len(nums)
+# M = number of unique elements
+class Solution(object):
+    def topKFrequent(self, nums, k):
+        # edge
+        if nums is None:
+            return []
+
+        # frequency map
+        freq = {}
+        for x in nums:
+            if x not in freq:
+                freq[x] = 1
+            else:
+                freq[x] += 1
+
+        # if k >= unique count
+        if k >= len(freq):
+            return list(freq.keys())
+
+        # [num, count]
+        num_cnt = []
+        for num, cnt in freq.items():
+            num_cnt.append([num, cnt])
+
+        # sort by frequency descending
+        num_cnt.sort(key=lambda x: x[1], reverse=True)
+
+        res = []
+        for i in range(k):
+            res.append(num_cnt[i][0])
+
+        return res
+
+
+
+# V0-0-X
+# IDEA : HASH TABLE
+class Solution(object):
+    def topKFrequent(self, nums, k):
+        freq = {}
+
+        for n in nums:
+            freq[n] = freq.get(n, 0) + 1
+
+        arr = sorted(freq.items(), key=lambda x: x[1], reverse=True)
+
+        return [num for num, cnt in arr[:k]]
+
+
+# V0-0-1
 # IDEA : HASH TABLE
 class Solution:
     def groupAnagrams(self, strs):
