@@ -70,6 +70,93 @@ class Solution(object):
         return [list(t) for t in res]
 
 
+# V0-1
+# IDEA: SORT + 2 POINTERS
+class Solution(object):
+    def threeSum(self, nums):
+        nums.sort()
+        res = []
+
+        n = len(nums)
+
+        for i in range(n - 2):
+            if i > 0 and nums[i] == nums[i - 1]:
+                continue
+
+            left = i + 1
+            right = n - 1
+
+            while left < right:
+                s = nums[i] + nums[left] + nums[right]
+
+                if s == 0:
+                    res.append([nums[i], nums[left], nums[right]])
+
+                    left += 1
+                    right -= 1
+
+                    while left < right and nums[left] == nums[left - 1]:
+                        left += 1
+
+                    while left < right and nums[right] == nums[right + 1]:
+                        right -= 1
+
+                elif s < 0:
+                    left += 1
+                else:
+                    right -= 1
+
+        return res
+
+
+# V0-2
+# IDEA: SORT + 2 POINTERS
+class Solution(object):
+    def threeSum(self, nums):
+        if nums is None or len(nums) < 3:
+            return []
+            
+        res = []
+        # Step 1: Sort the array to make duplicate skipping and pointer movement easy
+        nums.sort()
+        
+        for i in range(len(nums) - 2):
+            # Step 2: Skip duplicate values for 'a' to prevent duplicate triplets
+            if i > 0 and nums[i] == nums[i - 1]:
+                continue
+                
+            # Optimization: If the smallest possible number is greater than 0, 
+            # three positive numbers can never add up to 0!
+            if nums[i] > 0:
+                break
+                
+            # Step 3: Initialize Two-Pointers for the remaining Two-Sum target (-nums[i])
+            left = i + 1
+            right = len(nums) - 1
+            
+            while left < right:
+                current_sum = nums[i] + nums[left] + nums[right]
+                
+                if current_sum == 0:
+                    res.append([nums[i], nums[left], nums[right]])
+                    
+                    # Step 4: Skip duplicate values 
+                    # for 'left' and 'right' pointers
+                    while left < right and nums[left] == nums[left + 1]:
+                        left += 1
+                    while left < right and nums[right] == nums[right - 1]:
+                        right -= 1
+                        
+                    # Move both pointers inward after finding a match
+                    left += 1
+                    right -= 1
+                elif current_sum < 0:
+                    left += 1  # Sum is too small, make it bigger by moving left rightward
+                else:
+                    right -= 1 # Sum is too big, make it smaller by moving right leftward
+                    
+        return res
+
 # V0
 # IDEA : for loop + 2 sum
 class Solution(object):
