@@ -199,6 +199,7 @@ while (l <= r) {
     if (nums[mid] == target) return mid;
 
     // This is unnecessary and error-prone!
+    // ❌ WRONG — can cause index out of bounds
     if (mid + 1 <= nums.length - 1 && target < nums[mid+1] && target > nums[mid]) {
         return mid + 1;
     }
@@ -563,6 +564,12 @@ while (left < right) {
 }
 return left;
 ```
+
+> **Why `+1` in the Maximize template?**
+> `// +1 avoids infinite loop: when left+1==right, (left+right)/2 == left, so right never moves`
+> Without `+1`, when `left` and `right` are adjacent (`left + 1 == right`), `mid` computes to `left`.
+> If `isValid(mid)` is true, we set `left = mid = left` — no progress, infinite loop.
+> Adding `+1` biases `mid` upward so `mid == right`, guaranteeing the loop always shrinks.
 
 ---
 
@@ -3425,3 +3432,164 @@ value:  2  4 [5] 5  5  5 [5] 6  6
 2. **Key line**: `return majorityIndex < n && nums[majorityIndex] == target` — bounds check matters
 3. **Why not count?** Counting is O(N); binary search is O(log N) — interviewer expects the optimal
 4. **Edge cases**: target not in array, single element array, all elements equal target
+
+---
+
+## Missing Google Patterns
+
+### Monotonic Predicate (Conceptual Foundation)
+The real power of binary search: if you can define a predicate `P(x)` such that all `x` satisfying `P` form a contiguous range, binary search finds the boundary in O(log n).
+
+```
+P(x) = False, False, ..., False, True, True, ..., True
+                                 ^
+                          find this boundary
+```
+
+Examples of monotonic predicates:
+- `canFinish(speed)` — can Koko eat all bananas in H hours at speed ≥ k? (LC 875)
+- `canShip(capacity)` — can we ship all packages in D days with capacity ≥ c? (LC 1011)
+- `isEnough(mid)` — can we find k pairs with sum ≤ mid? (LC 719)
+
+**Template for "find minimum x satisfying P":**
+```python
+def binary_search_on_answer(lo, hi):
+    while lo < hi:
+        mid = (lo + hi) // 2
+        if predicate(mid):    # P(mid) is True → answer is ≤ mid
+            hi = mid
+        else:
+            lo = mid + 1
+    return lo   # lo == hi == first True
+```
+
+**Template for "find maximum x satisfying P":**
+```python
+def binary_search_max(lo, hi):
+    while lo < hi:
+        mid = (lo + hi + 1) // 2   # +1 to avoid infinite loop
+        if predicate(mid):
+            lo = mid
+        else:
+            hi = mid - 1
+    return lo
+```
+
+### Floating-Point Binary Search
+For problems asking for a real-number answer (sqrt, optimal allocation, geometric problems):
+
+```python
+def sqrt(x: float, precision=1e-9) -> float:
+    lo, hi = 0.0, max(1.0, x)
+    while hi - lo > precision:
+        mid = (lo + hi) / 2
+        if mid * mid <= x:
+            lo = mid
+        else:
+            hi = mid
+    return lo
+
+# LC 69 Integer Square Root
+def mySqrt(x: int) -> int:
+    lo, hi = 0, x
+    while lo <= hi:
+        mid = (lo + hi) // 2
+        if mid * mid == x: return mid
+        elif mid * mid < x: lo = mid + 1
+        else: hi = mid - 1
+    return hi   # hi = floor(sqrt(x))
+
+# General pattern: binary search on continuous domain
+def minimize_real(lo: float, hi: float, iterations=100) -> float:
+    for _ in range(iterations):   # fixed iterations avoids float precision issues
+        mid = (lo + hi) / 2
+        if feasible(mid):
+            hi = mid
+        else:
+            lo = mid
+    return (lo + hi) / 2
+```
+
+### Search in 2D Matrix — Two Different Problems
+
+**LC 74** (matrix rows and columns both sorted, values increase left-to-right, top-to-bottom):
+```python
+def searchMatrix(matrix, target):
+    m, n = len(matrix), len(matrix[0])
+    lo, hi = 0, m * n - 1
+    while lo <= hi:
+        mid = (lo + hi) // 2
+        val = matrix[mid // n][mid % n]
+        if val == target: return True
+        elif val < target: lo = mid + 1
+        else: hi = mid - 1
+    return False
+```
+
+**LC 240** (each row sorted, each column sorted, but NOT globally sorted — use Staircase Search):
+```python
+def searchMatrix(matrix, target):
+    row, col = 0, len(matrix[0]) - 1   # start top-right
+    while row < len(matrix) and col >= 0:
+        if matrix[row][col] == target: return True
+        elif matrix[row][col] > target: col -= 1   # too big → go left
+        else: row += 1                             # too small → go down
+    return False
+```
+**Key insight**: Staircase Search on LC 240 eliminates one row or column per step → O(m+n). Do NOT treat LC 240 as a flat binary search — the matrix is NOT globally sorted.
+
+### Binary Search on Answer (Classic Google Patterns)
+
+```python
+# LC 875 Koko Eating Bananas
+def minEatingSpeed(piles, h):
+    import math
+    def canFinish(speed):
+        return sum(math.ceil(p / speed) for p in piles) <= h
+    lo, hi = 1, max(piles)
+    while lo < hi:
+        mid = (lo + hi) // 2
+        if canFinish(mid): hi = mid
+        else: lo = mid + 1
+    return lo
+
+# LC 1011 Capacity To Ship Packages
+def shipWithinDays(weights, days):
+    def canShip(cap):
+        days_needed, cur = 1, 0
+        for w in weights:
+            if cur + w > cap: days_needed += 1; cur = 0
+            cur += w
+        return days_needed <= days
+    lo, hi = max(weights), sum(weights)
+    while lo < hi:
+        mid = (lo + hi) // 2
+        if canShip(mid): hi = mid
+        else: lo = mid + 1
+    return lo
+
+# LC 410 Split Array Largest Sum
+def splitArray(nums, k):
+    def canSplit(cap):
+        parts, cur = 1, 0
+        for n in nums:
+            if cur + n > cap: parts += 1; cur = 0
+            cur += n
+        return parts <= k
+    lo, hi = max(nums), sum(nums)
+    while lo < hi:
+        mid = (lo + hi) // 2
+        if canSplit(mid): hi = mid
+        else: lo = mid + 1
+    return lo
+```
+
+### Google Interview Tips for Binary Search
+| Signal | Pattern |
+|--------|---------|
+| "find minimum/maximum X such that..." | Binary search on answer |
+| "sorted array, find first/last occurrence" | Left/right boundary binary search |
+| "matrix with row+col sorted" | Staircase search (NOT flat binary search) |
+| "real number answer, precision required" | Floating-point binary search |
+| "can we achieve X?" is monotonic | Binary search on monotonic predicate |
+| O(n) solution exists but O(log n) asked | Think: what is the sorted search space? |

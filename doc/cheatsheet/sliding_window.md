@@ -387,6 +387,7 @@ def exactly_k(nums, k):
         return 0
 
     # Exactly K = At Most K - At Most (K-1)
+    # Edge case: atMost(0) means zero occurrences — verify your atMost function handles k=0 correctly
     return at_most_k(nums, k) - at_most_k(nums, k - 1)
 ```
 
@@ -772,7 +773,7 @@ public int minOperations(int[] nums, int x) {
 }
 ```
 
-> **Why pure sliding window works here:** all `nums[i] >= 1`, so the window sum is **monotonically non-decreasing** as we expand right. Shrinking from the left always reduces the sum — the validity condition is monotonic → clean two-pointer solution.
+> **Why pure sliding window works here:** `# Note: works for any nums[i] >= 0 (non-negative)` — the window sum is **monotonically non-decreasing** as we expand right. Shrinking from the left always reduces the sum — the validity condition is monotonic → clean two-pointer solution.
 
 #### Dry Run — `nums = [1,1,4,2,3], x = 5`
 
@@ -2368,3 +2369,108 @@ public int lengthOfLongestSubstringTwoDistinct(String s) {
     return ans;
 }
 ```
+
+---
+
+## Missing Google Patterns
+
+### Monotonic Deque in Sliding Window — LC 239
+When you need window max/min in O(1), use a deque that maintains monotonic order.
+
+```python
+from collections import deque
+
+def maxSlidingWindow(nums, k):
+    dq = deque()   # stores indices; nums[dq[0]] is always window max
+    result = []
+
+    for i, num in enumerate(nums):
+        # Remove elements outside window
+        if dq and dq[0] == i - k:
+            dq.popleft()
+        # Maintain decreasing order — remove smaller elements from back
+        while dq and nums[dq[-1]] < num:
+            dq.pop()
+        dq.append(i)
+
+        if i >= k - 1:
+            result.append(nums[dq[0]])
+    return result
+```
+
+**Time**: O(n) — each element enters and leaves deque at most once.
+
+### Minimum Window with Character Constraint — LC 76
+Classic "shrink when valid" variable-size window:
+
+```python
+from collections import Counter
+
+def minWindow(s, t):
+    need = Counter(t)
+    missing = len(t)
+    best = ""
+    left = 0
+
+    for right, c in enumerate(s):
+        if need[c] > 0:
+            missing -= 1
+        need[c] -= 1
+
+        if missing == 0:              # valid window found
+            # Shrink from left
+            while need[s[left]] < 0:
+                need[s[left]] += 1
+                left += 1
+            if not best or right - left + 1 < len(best):
+                best = s[left:right+1]
+            # Break window to search for next
+            need[s[left]] += 1
+            missing += 1
+            left += 1
+
+    return best
+```
+
+### At-Most K → Exactly K (General Pattern) — LC 992, LC 1248
+
+```python
+# "Exactly k" = "at most k" - "at most k-1"
+# Applies when: count of something in window must equal exactly k
+
+def exactly_k(nums, k):
+    return at_most(nums, k) - at_most(nums, k - 1)
+
+def at_most(nums, k):
+    count = 0
+    left = 0
+    freq = {}
+    for right, val in enumerate(nums):
+        freq[val] = freq.get(val, 0) + 1
+        while len(freq) > k:     # shrink condition (distinct elements > k)
+            freq[nums[left]] -= 1
+            if freq[nums[left]] == 0:
+                del freq[nums[left]]
+            left += 1
+        count += right - left + 1
+    return count
+# Edge case: at_most(nums, 0) means zero distinct values — returns 0 for any non-empty input
+```
+
+### Fixed-Size Window vs Variable-Size Window
+| Type | When to Use | Shrink Condition | Example |
+|------|------------|-----------------|---------|
+| Fixed size k | Window size is given | `right - left + 1 > k` | LC 567 (Permutation in String) |
+| Variable (minimize) | Find smallest valid window | Shrink while window is valid | LC 76 (Min Window Substring) |
+| Variable (maximize) | Find largest valid window | Shrink while window is invalid | LC 3 (Longest No-Repeat) |
+| Exactly K → AtMost | Count windows with exact constraint | N/A — use subtraction trick | LC 992, LC 1248 |
+
+### Google Interview Tips for Sliding Window
+| Signal | Pattern |
+|--------|---------|
+| "longest substring/subarray with constraint" | Variable window, expand right, shrink left |
+| "minimum window containing all chars" | Shrink-when-valid (LC 76) |
+| "window of fixed size k" | Fixed window, slide together |
+| "exactly k distinct/odd/..." | AtMost(k) - AtMost(k-1) |
+| "window maximum/minimum in O(n)" | Monotonic deque |
+| "permutation/anagram in string" | Fixed window + Counter comparison |

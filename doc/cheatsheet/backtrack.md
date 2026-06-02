@@ -2,8 +2,8 @@
 
 > Brute force via  `decision tree process`
 
-- [Fuck algorithm : BackTrack](https://labuladong.online/algo/essential-technique/backtrack-framework/#%E4%B8%80%E3%80%81%E5%85%A8%E6%8E%92%E5%88%97%E9%97%AE%E9%A2%98)
-- [Fuck algorithm : BackTrack different view](https://labuladong.online/algo/practice-in-action/two-views-of-backtrack/)
+- [Algorithm ref : BackTrack](https://labuladong.online/algo/essential-technique/backtrack-framework/#%E4%B8%80%E3%80%81%E5%85%A8%E6%8E%92%E5%88%97%E9%97%AE%E9%A2%98)
+- [Algorithm ref : BackTrack different view](https://labuladong.online/algo/practice-in-action/two-views-of-backtrack/)
     - https://labuladong.online/algo/practice-in-action/sudoku/
     - https://labuladong.online/algo/practice-in-action/generate-parentheses/
     - https://labuladong.online/algo/practice-in-action/partition-to-k-equal-sum-subsets/
@@ -149,18 +149,7 @@ Let's walk through it systematically by comparing well-known **Leetcode problems
 
 ## 🔍 Problem Comparison by Recursion Pattern
 
-| Leetcode # | Problem                           | Recursion Index        | Coin Usage       | Explanation                                                 |
-| ---------- | --------------------------------- | ---------------------- | ---------------- | ----------------------------------------------------------- |
-| **518**    | Coin Change II                    | `i`                    | Infinite         | You can reuse coins unlimited times → use `i`               |
-| **377**    | Combination Sum IV                | `i`                    | Infinite         | Order matters → use all i, don't restrict reuse             |
-| **39**     | Combination Sum                   | `i`                    | Infinite         | Choose the same number again → `i`                          |
-| **40**     | Combination Sum II                | `i + 1`                | Once             | Each number can be used **once only**                       |
-| **46**     | Permutations                      | no index (`visited[]`) | Once             | Full permutations → can't reuse → use boolean visited array |
-| **47**     | Permutations II (with duplicates) | no index + dedup       | Once             | Same as LC 46 + dedup logic                                    |
-| **90**     | Subsets II                        | `i + 1`                | Once             | Use each number once, skip duplicates                       |
-| **78**     | Subsets                           | `i + 1`                | Once             | Classic 0/1 inclusion/exclusion                             |
-| **322**    | Coin Change (min # of coins)      | `i`                    | Infinite         | Optimization version of coin change                         |
-| **494**    | Target Sum                        | `i + 1`                | Once per element | Only one + or - per number                                  |
+See Quick Reference Table below.
 
 ---
 
@@ -251,20 +240,7 @@ for (int i = start; i < candidates.length; i++) {
 
 ## 🧭 Summary
 
-* **Use `i`** when:
-
-  * You can reuse items (unlimited supply).
-  * Order matters (e.g., combinations with repetition).
-
-* **Use `i + 1`** when:
-
-  * Each item can be used at most once.
-  * You're generating combinations or subsets without repetition.
-
-* **Use `visited[]`** when:
-
-  * Generating permutations.
-  * Handling duplicates within the input.
+See Quick Reference Table above.
 
 ---
 
@@ -2063,14 +2039,14 @@ void backtrack(int left, int right, string& track, vector<string> & res){
     }
 
     // add one more left Parentheses
-    track.push_back('(') // do choice
+    track.push_back('('); // do choice
     backtrack(left - 1, right, track, res);
-    track.push_back(); // undo choice
+    track.pop_back(); // undo choice
 
     // add one more right Parentheses
-    track.push_back(')') // do choice
+    track.push_back(')'); // do choice
     backtrack(left, right - 1, track, res);
-    track.push_back(); // undo choice
+    track.pop_back(); // undo choice
 }
 ```
 
@@ -2467,3 +2443,114 @@ private boolean dfs(int crs, Map<Integer, List<Integer>> preMap, Set<Integer> vi
     return true;
 }
 ```
+
+---
+
+## Missing Google Patterns
+
+### N-Queens — LC 51 (Complete Solution)
+Classic backtracking with O(n!) search space, pruned by column/diagonal tracking.
+
+```python
+def solveNQueens(n):
+    result = []
+    cols = set()
+    diag1 = set()   # row - col (top-left to bottom-right)
+    diag2 = set()   # row + col (top-right to bottom-left)
+
+    def backtrack(row, board):
+        if row == n:
+            result.append(["".join(r) for r in board])
+            return
+        for col in range(n):
+            if col in cols or (row - col) in diag1 or (row + col) in diag2:
+                continue
+            cols.add(col); diag1.add(row - col); diag2.add(row + col)
+            board[row][col] = 'Q'
+            backtrack(row + 1, board)
+            board[row][col] = '.'; cols.remove(col)
+            diag1.remove(row - col); diag2.remove(row + col)
+
+    backtrack(0, [['.']*n for _ in range(n)])
+    return result
+```
+
+**Key pruning**: Three O(1) sets replace the O(n) column/diagonal scans. Time: O(n!), Space: O(n).
+
+### Sudoku Solver — LC 37
+Backtrack cell by cell; prune using row/col/box sets.
+
+```python
+def solveSudoku(board):
+    rows = [set() for _ in range(9)]
+    cols = [set() for _ in range(9)]
+    boxes = [set() for _ in range(9)]
+
+    empty = []
+    for r in range(9):
+        for c in range(9):
+            if board[r][c] != '.':
+                d = board[r][c]
+                rows[r].add(d); cols[c].add(d); boxes[(r//3)*3+c//3].add(d)
+            else:
+                empty.append((r, c))
+
+    def backtrack(idx):
+        if idx == len(empty): return True
+        r, c = empty[idx]
+        box = (r//3)*3 + c//3
+        for d in '123456789':
+            if d in rows[r] or d in cols[c] or d in boxes[box]: continue
+            board[r][c] = d
+            rows[r].add(d); cols[c].add(d); boxes[box].add(d)
+            if backtrack(idx + 1): return True
+            board[r][c] = '.'; rows[r].remove(d); cols[c].remove(d); boxes[box].remove(d)
+        return False
+
+    backtrack(0)
+```
+
+### Constraint Propagation (Early Termination)
+Beyond simple bound-checking, propagate constraints forward before recursing. This is the key insight separating O(n!) brute force from practical backtracking.
+
+```
+Standard backtracking:   try → recurse → undo
+With propagation:        try → propagate constraints → if valid: recurse → undo
+```
+
+Example: In Sudoku, after placing a digit, immediately eliminate it from peer cells. If any cell has zero candidates, backtrack immediately without reaching deeper levels.
+
+### Backtracking Complexity Cheat Sheet
+| Problem | Branching Factor | Depth | Pruning | Worst Case |
+|---------|----------------|-------|---------|------------|
+| Subsets | 2 | n | None | O(2^n) |
+| Permutations | n, n-1, ... | n | Used-set | O(n!) |
+| Combinations | n-k+1 | k | Start index | O(C(n,k)) |
+| N-Queens | n | n | 3 sets | O(n!) → much better in practice |
+| Sudoku | 9 | 81 | Row/col/box | O(9^81) → O(1) per board in practice |
+
+### Termination Condition Patterns
+```
+if len(current) == target_length:   # fixed-size result (permutations, combinations of size k)
+    result.append(current[:])
+    return
+
+if sum(current) == target:          # value-based result (subset sum, coin change)
+    result.append(current[:])
+    return
+
+if index == len(input):             # exhausted input (string partition, IP addresses)
+    if is_valid(current):
+        result.append(result_repr)
+    return
+```
+
+### Google Interview Tips for Backtracking
+| Signal | Pattern |
+|--------|---------|
+| "all possible combinations/permutations" | Standard backtracking + result.append(copy) |
+| "place N non-attacking queens" | N-Queens with 3 pruning sets |
+| "fill a grid with constraints" | Sudoku-style + row/col/box sets |
+| "partition string into valid parts" | Index-based backtrack with is_valid check |
+| "generate valid parentheses" | Track open/close counts as constraints |
+| "too slow? prune harder" | Propagate constraints before recursing |

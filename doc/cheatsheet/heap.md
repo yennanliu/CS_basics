@@ -1120,9 +1120,10 @@ class Solution:
             heapq.heappush(minHeap, val)
         
         while k:
-            minHeap[0] -= 1
-            if minHeap[0] == 0:
-                heapq.heappop(minHeap)
+            val = heapq.heappop(minHeap)
+            val -= 1
+            if val > 0:
+                heapq.heappush(minHeap, val)
             k -= 1
         
         return len(minHeap)
@@ -2555,4 +2556,126 @@ class LazyHeap:
 #### **C++ priority_queue**
 - Default is max heap
 - Use `priority_queue<int, vector<int>, greater<int>>` for min heap
+
+---
+
+## Missing Google Patterns
+
+### LC 502 IPO — Greedy + Max Heap (Two Heaps)
+Unlock projects greedily: always pick the highest-profit project you can currently afford.
+
+```python
+import heapq
+
+def findMaximizedCapital(k, w, profits, capital):
+    # Min-heap by capital (locked projects)
+    locked = sorted(zip(capital, profits))
+    # Max-heap by profit (available projects, negate for max-heap)
+    available = []
+    i = 0
+    for _ in range(k):
+        # Unlock all projects we can afford
+        while i < len(locked) and locked[i][0] <= w:
+            heapq.heappush(available, -locked[i][1])
+            i += 1
+        if not available: break
+        w += -heapq.heappop(available)   # pick highest profit
+    return w
+```
+
+### LC 630 Course Schedule III — Greedy + Max Heap (Replace)
+Always take a course if possible; if not, replace the longest previously taken course if it's longer.
+
+```python
+import heapq
+
+def scheduleCourse(courses):
+    courses.sort(key=lambda x: x[1])   # sort by deadline
+    heap = []   # max-heap (store negated durations)
+    time = 0
+    for duration, deadline in courses:
+        if time + duration <= deadline:
+            time += duration
+            heapq.heappush(heap, -duration)
+        elif heap and -heap[0] > duration:
+            # Replace longest course with current shorter one
+            time += duration + heap[0]   # heap[0] is negative
+            heapq.heapreplace(heap, -duration)
+    return len(heap)
+```
+
+**Key insight**: Replacing a longer course with a shorter one never increases total time but may allow fitting more courses.
+
+### Lazy Deletion (Heap with Stale Entries)
+When you can't remove arbitrary elements from a heap, mark them as invalid and skip on pop.
+
+```python
+import heapq
+
+class LazyHeap:
+    def __init__(self):
+        self.heap = []
+        self.removed = {}   # val -> count of removed instances
+
+    def push(self, val):
+        heapq.heappush(self.heap, val)
+
+    def remove(self, val):
+        self.removed[val] = self.removed.get(val, 0) + 1
+
+    def pop(self):
+        while self.heap:
+            val = self.heap[0]
+            if self.removed.get(val, 0) > 0:
+                heapq.heappop(self.heap)
+                self.removed[val] -= 1
+            else:
+                return heapq.heappop(self.heap)
+        return None
+
+# Used in: LC 480 Sliding Window Median, LC 1825 Finding MK Average
+```
+
+### Find Median from Data Stream — LC 295 (Two Heaps)
+
+```python
+import heapq
+
+class MedianFinder:
+    def __init__(self):
+        self.lo = []   # max-heap (negated): lower half
+        self.hi = []   # min-heap: upper half
+
+    def addNum(self, num):
+        heapq.heappush(self.lo, -num)
+        # Balance: ensure lo.top <= hi.top
+        heapq.heappush(self.hi, -heapq.heappop(self.lo))
+        if len(self.hi) > len(self.lo):
+            heapq.heappush(self.lo, -heapq.heappop(self.hi))
+
+    def findMedian(self):
+        if len(self.lo) > len(self.hi):
+            return -self.lo[0]
+        return (-self.lo[0] + self.hi[0]) / 2.0
+```
+
+### Google Interview Tips for Heap
+| Signal | Pattern |
+|--------|---------|
+| "kth largest/smallest" | Min-heap of size k |
+| "top k frequent" | Counter + nlargest / bucket sort |
+| "median of stream" | Two heaps (max + min) |
+| "always pick best available with constraint" | Greedy + max-heap (IPO pattern) |
+| "fit maximum number of tasks/courses" | Sort by deadline + replace heap |
+| "remove arbitrary element from heap" | Lazy deletion |
+| "merge k sorted lists" | Min-heap with (val, list_idx, elem_idx) |
+
+### Complexity Summary
+| Operation | Binary Heap | Sorted Array | AVL Tree |
+|-----------|------------|-------------|---------|
+| Insert | O(log n) | O(n) | O(log n) |
+| Delete min/max | O(log n) | O(1) | O(log n) |
+| Peek min/max | O(1) | O(1) | O(log n) |
+| Search arbitrary | O(n) | O(log n) | O(log n) |
+| Build from array | O(n) | O(n log n) | O(n log n) |
 - Methods: push, pop, top, size

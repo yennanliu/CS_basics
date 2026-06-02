@@ -352,76 +352,7 @@ def is_bipartite_union_find(n, edges):
     return True
 ```
 
-#### **Grid-based Bipartite Check**
-```python
-def is_bipartite_grid(grid):
-    """Check if grid graph is bipartite (checkerboard pattern)"""
-    rows, cols = len(grid), len(grid[0])
-    colors = [[-1] * cols for _ in range(rows)]
-    directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
-
-    def bfs(start_r, start_c):
-        from collections import deque
-        queue = deque([(start_r, start_c)])
-        colors[start_r][start_c] = 0
-
-        while queue:
-            r, c = queue.popleft()
-
-            for dr, dc in directions:
-                nr, nc = r + dr, c + dc
-
-                if 0 <= nr < rows and 0 <= nc < cols and grid[nr][nc] == 1:
-                    if colors[nr][nc] == -1:
-                        colors[nr][nc] = 1 - colors[r][c]
-                        queue.append((nr, nc))
-                    elif colors[nr][nc] == colors[r][c]:
-                        return False
-        return True
-
-    # Check each component
-    for i in range(rows):
-        for j in range(cols):
-            if grid[i][j] == 1 and colors[i][j] == -1:
-                if not bfs(i, j):
-                    return False
-
-    return True
-```
-
-#### **Enhanced Template with Partition Information**
-```python
-def bipartite_partition(graph):
-    """
-    Returns bipartite partition if exists, None otherwise
-    Returns: (setA, setB) or None
-    """
-    n = len(graph)
-    colors = [-1] * n
-
-    def dfs(node, color):
-        colors[node] = color
-
-        for neighbor in graph[node]:
-            if colors[neighbor] == -1:
-                if not dfs(neighbor, 1 - color):
-                    return False
-            elif colors[neighbor] == colors[node]:
-                return False
-        return True
-
-    # Check bipartite property
-    for i in range(n):
-        if colors[i] == -1:
-            if not dfs(i, 0):
-                return None
-
-    # Create partition sets
-    setA = [i for i in range(n) if colors[i] == 0]
-    setB = [i for i in range(n) if colors[i] == 1]
-
-    return setA, setB
-```
+# See BFS/DFS bipartite templates above.
 
 #### **Related Problems & Examples**
 
@@ -1821,10 +1752,10 @@ void dfs(char[][] grid, int r, int c){
     grid[r][c] = '0';
 
     /** NOTE here !!!*/
-    dfs_1(grid, r - 1, c);
-    dfs_1(grid, r + 1, c);
-    dfs_1(grid, r, c - 1);
-    dfs_1(grid, r, c + 1);
+    dfs(grid, r - 1, c);
+    dfs(grid, r + 1, c);
+    dfs(grid, r, c - 1);
+    dfs(grid, r, c + 1);
 }
 
 public int numIslands_1(char[][] grid) {
@@ -1840,7 +1771,7 @@ public int numIslands_1(char[][] grid) {
         for (int c = 0; c < nc; ++c) {
             if (grid[r][c] == '1') {
                 ++num_islands;
-                dfs_1(grid, r, c);
+                dfs(grid, r, c);
             }
         }
     }
@@ -2427,3 +2358,190 @@ private State dfs(int[][] graph, int node, State[] states) {
     return states[node] = State.SAFE;
 }
 ```
+
+---
+
+## Missing Google Patterns
+
+### Dijkstra — Shortest Path with Priority Queue
+
+```python
+import heapq
+from collections import defaultdict
+
+def dijkstra(n, edges, src):
+    """Returns shortest distances from src to all nodes."""
+    graph = defaultdict(list)
+    for u, v, w in edges:
+        graph[u].append((w, v))
+        graph[v].append((w, u))   # remove for directed graph
+
+    dist = [float('inf')] * n
+    dist[src] = 0
+    heap = [(0, src)]   # (distance, node)
+
+    while heap:
+        d, u = heapq.heappop(heap)
+        if d > dist[u]: continue   # stale entry
+        for w, v in graph[u]:
+            if dist[u] + w < dist[v]:
+                dist[v] = dist[u] + w
+                heapq.heappush(heap, (dist[v], v))
+    return dist
+
+# LC 743 Network Delay Time
+def networkDelayTime(times, n, k):
+    dist = dijkstra(n + 1, [(u, v, w) for u, v, w in times], k)
+    ans = max(dist[1:])
+    return ans if ans < float('inf') else -1
+```
+
+**Time**: O((V + E) log V), **Space**: O(V + E)
+**Use when**: Non-negative edge weights. For negative weights → Bellman-Ford.
+
+### Negative Cycle Detection — Bellman-Ford
+After V-1 relaxations, if any edge can still be relaxed, a negative cycle exists.
+
+```python
+def bellman_ford(n, edges, src):
+    dist = [float('inf')] * n
+    dist[src] = 0
+    for _ in range(n - 1):
+        for u, v, w in edges:
+            if dist[u] + w < dist[v]:
+                dist[v] = dist[u] + w
+    # Detect negative cycle
+    for u, v, w in edges:
+        if dist[u] + w < dist[v]:
+            return None   # negative cycle detected
+    return dist
+
+# Real-world: arbitrage detection in currency exchange
+# If converting A→B→C→A gains money → negative cycle in -log(rate) graph
+```
+
+### Articulation Points vs Bridges (Tarjan)
+
+```python
+def find_bridges(n, edges):
+    """Find all bridge edges using Tarjan's algorithm."""
+    graph = defaultdict(list)
+    for u, v in edges:
+        graph[u].append(v)
+        graph[v].append(u)
+
+    disc = [-1] * n   # discovery time
+    low = [0] * n     # lowest reachable disc time
+    bridges = []
+    timer = [0]
+
+    def dfs(u, parent):
+        disc[u] = low[u] = timer[0]; timer[0] += 1
+        for v in graph[u]:
+            if disc[v] == -1:
+                dfs(v, u)
+                low[u] = min(low[u], low[v])
+                if low[v] > disc[u]:   # bridge condition
+                    bridges.append((u, v))
+            elif v != parent:
+                low[u] = min(low[u], disc[v])
+
+    for i in range(n):
+        if disc[i] == -1:
+            dfs(i, -1)
+    return bridges
+
+# Articulation point condition (different from bridge):
+# u is articulation point if: disc[u] <= low[v] for any child v in DFS tree
+# (u is root and has ≥ 2 DFS children, OR u is non-root with the above condition)
+```
+
+| | Articulation Point | Bridge |
+|--|-------------------|--------|
+| What | Vertex whose removal disconnects graph | Edge whose removal disconnects graph |
+| Condition | `low[v] >= disc[u]` (for non-root) | `low[v] > disc[u]` |
+| LC | 1192 (Critical Connections = bridges) | 1192 |
+
+### Topological Sort — Kahn's Algorithm (BFS)
+
+```python
+from collections import defaultdict, deque
+
+def topoSort(n, prerequisites):
+    graph = defaultdict(list)
+    in_degree = [0] * n
+    for a, b in prerequisites:
+        graph[b].append(a)
+        in_degree[a] += 1
+
+    queue = deque(i for i in range(n) if in_degree[i] == 0)
+    order = []
+    while queue:
+        u = queue.popleft()
+        order.append(u)
+        for v in graph[u]:
+            in_degree[v] -= 1
+            if in_degree[v] == 0:
+                queue.append(v)
+    return order if len(order) == n else []   # empty = cycle detected
+
+# LC 207 Course Schedule, LC 210 Course Schedule II
+```
+
+### Max Flow / Min Cut — Ford-Fulkerson (BFS / Edmonds-Karp)
+**Min Cut = Max Flow** (by max-flow min-cut theorem).
+
+```python
+from collections import defaultdict, deque
+
+def max_flow(graph, source, sink, n):
+    """graph[u][v] = capacity. Returns max flow from source to sink."""
+    def bfs(source, sink, parent):
+        visited = set([source])
+        queue = deque([source])
+        while queue:
+            u = queue.popleft()
+            for v in range(n):
+                if v not in visited and graph[u][v] > 0:
+                    visited.add(v)
+                    parent[v] = u
+                    if v == sink: return True
+                    queue.append(v)
+        return False
+
+    flow = 0
+    while True:
+        parent = [-1] * n
+        if not bfs(source, sink, parent):
+            break
+        # Find min capacity along the path
+        path_flow = float('inf')
+        s = sink
+        while s != source:
+            u = parent[s]
+            path_flow = min(path_flow, graph[u][s])
+            s = parent[s]
+        # Update capacities
+        s = sink
+        while s != source:
+            u = parent[s]
+            graph[u][s] -= path_flow
+            graph[s][u] += path_flow
+            s = parent[s]
+        flow += path_flow
+    return flow
+```
+
+**Time**: O(VE²) Edmonds-Karp. **Use for**: network capacity, matching, crew scheduling.
+
+### Google Interview Tips for Graph
+| Signal | Pattern |
+|--------|---------|
+| "shortest path, non-negative weights" | Dijkstra |
+| "shortest path, negative weights / cycles" | Bellman-Ford |
+| "all-pairs shortest path" | Floyd-Warshall |
+| "course prerequisites, ordering" | Topological sort (Kahn's BFS) |
+| "connected components, union" | Union-Find |
+| "remove edge/vertex disconnects graph" | Bridges/Articulation (Tarjan) |
+| "max flow, bipartite matching" | Ford-Fulkerson / Edmonds-Karp |
+| "island counting, flood fill" | DFS/BFS on grid |

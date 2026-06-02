@@ -91,6 +91,7 @@ class Trie {
                 return false;
             }
             node = node.children.get(c);
+            if (node == null) return false;  // null-check guard
         }
         return node.isEnd;
     }
@@ -102,6 +103,7 @@ class Trie {
                 return false;
             }
             node = node.children.get(c);
+            if (node == null) return false;  // null-check guard
         }
         return true;
     }
@@ -181,6 +183,8 @@ class WildcardTrie:
         char = word[index]
         if char == '.':
             # Try all possible children
+            if not node.children:
+                return False
             for child in node.children.values():
                 if self._dfs_search(word, index + 1, child):
                     return True
@@ -1023,9 +1027,10 @@ class Solution:
         
         matchedWords = []
         
-        def backtracking(row, col, parent):    
-            
+        def backtracking(row, col, parent):
             letter = board[row][col]
+            if letter not in parent:
+                return
             currNode = parent[letter]
             
             # check if we find a match of word
@@ -1101,3 +1106,118 @@ class Solution(object):
                 self.checkList(board, row, col, "", trie, rList)
         return list(rList)
 ```
+
+---
+
+## Missing Google Patterns
+
+### XOR Trie (Binary Trie) — LC 421 Maximum XOR
+Use a binary trie (bits 0/1 as children) to find the maximum XOR between any two numbers.
+
+```python
+class XORTrie:
+    def __init__(self):
+        self.root = {}
+
+    def insert(self, num):
+        node = self.root
+        for i in range(31, -1, -1):
+            bit = (num >> i) & 1
+            node = node.setdefault(bit, {})
+
+    def max_xor(self, num):
+        node = self.root
+        xor = 0
+        for i in range(31, -1, -1):
+            bit = (num >> i) & 1
+            want = 1 - bit          # prefer the opposite bit
+            if want in node:
+                xor |= (1 << i)
+                node = node[want]
+            else:
+                node = node[bit]
+        return xor
+
+# LC 421
+def findMaximumXOR(nums):
+    trie = XORTrie()
+    for n in nums:
+        trie.insert(n)
+    return max(trie.max_xor(n) for n in nums)
+```
+
+### Trie + DP (Stream Matching) — LC 1032 Stream of Characters
+Combine a trie with a state machine to match words in a character stream in O(1) per query.
+
+```python
+class StreamChecker:
+    def __init__(self, words):
+        self.trie = {}
+        self.stream = []
+        # Insert reversed words — query from end of stream
+        for w in words:
+            node = self.trie
+            for c in reversed(w):
+                node = node.setdefault(c, {})
+            node['#'] = True
+
+    def query(self, letter: str) -> bool:
+        self.stream.append(letter)
+        node = self.trie
+        # Walk stream backwards through trie
+        for c in reversed(self.stream):
+            if c not in node:
+                return False
+            node = node[c]
+            if '#' in node:
+                return True
+        return False
+```
+
+### Trie Delete (Clean Leaf Removal)
+
+```python
+def delete(self, word: str) -> bool:
+    def _delete(node, word, depth):
+        if depth == len(word):
+            if not node.is_end:
+                return False
+            node.is_end = False
+            return len(node.children) == 0  # safe to delete if leaf
+        ch = word[depth]
+        if ch not in node.children:
+            return False
+        should_delete = _delete(node.children[ch], word, depth + 1)
+        if should_delete:
+            del node.children[ch]
+            return len(node.children) == 0 and not node.is_end
+        return False
+    _delete(self.root, word, 0)
+```
+
+### Prefix-Suffix Trie — LC 745
+For problems requiring both prefix and suffix matching, wrap each word as `suffix#word` and insert into one trie.
+
+```python
+# For word "apple", insert: "apple#apple", "pple#apple", "ple#apple", "le#apple", "e#apple"
+def buildIndex(words):
+    trie = {}
+    for weight, word in enumerate(words):
+        for i in range(len(word)):
+            key = word[i:] + '#' + word
+            node = trie
+            for c in key:
+                node = node.setdefault(c, {})
+            node['weight'] = weight  # store latest (highest) weight
+    return trie
+```
+
+### Google Interview Tips for Trie
+| Signal | Pattern |
+|--------|---------|
+| "prefix matching", "autocomplete" | Standard trie |
+| "maximum XOR", "bitwise optimization" | Binary XOR trie |
+| "stream of characters", "real-time matching" | Reversed-word trie + state |
+| "both prefix AND suffix" | Suffix#word trie |
+| "wildcard `.` matching" | DFS at `.` nodes |
+| "count words with prefix" | Add `count` field to TrieNode |

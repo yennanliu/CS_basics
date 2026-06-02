@@ -532,7 +532,7 @@ public int minPathSum(int[][] grid) {
         cur[0] += grid[0][j];  // First row: only from left
         for (int i = 1; i < m; i++)
             cur[i] = Math.min(cur[i - 1], cur[i]) + grid[i][j];
-            //                ↑ from above    ↑ from left (prev col, same row)
+            //                ↑ from above    ↑ current row, previous column
     }
 
     return cur[m - 1];
@@ -1086,7 +1086,7 @@ def state_machine_with_cooldown(prices):
         # 2. HOLD: Either continue holding OR buy today (after cooldown)
         hold = max(hold, rest - prices[i])
 
-        # 3. REST: Either rest again OR just finished cooldown from yesterday's sale
+        # 3. REST: rest: either stayed in rest, or just came out of sold cooldown
         rest = max(rest, prev_sold)
 
     # Max profit when not holding stock
@@ -6433,3 +6433,122 @@ Use this pattern when:
 
 ---
 **Keywords**: DP, dynamic programming, memoization, tabulation, optimal substructure, overlapping subproblems, state transition, knapsack, LCS, LIS, interval DP, tree DP, state machine, bitmask, monotonic stack, mono stack, stack DP
+
+---
+
+## Missing Google Patterns
+
+### DP with Monotonic Queue Optimization — LC 1425
+When `dp[i] = max(dp[j]) + f(i)` for `j` in a sliding window `[i-k, i-1]`, use monotonic deque to reduce O(n²) → O(n).
+
+```python
+from collections import deque
+
+# LC 1425 Constrained Subsequence Sum
+def constrainedSubsetSum(nums, k):
+    n = len(nums)
+    dp = nums[:]       # dp[i] = max sum of subsequence ending at i
+    dq = deque()       # decreasing deque of indices by dp value
+
+    for i in range(n):
+        # Best previous dp in window [i-k, i-1]
+        if dq and dp[dq[0]] > 0:
+            dp[i] = max(dp[i], dp[dq[0]] + nums[i])
+        # Maintain decreasing order
+        while dq and dp[dq[-1]] <= dp[i]:
+            dq.pop()
+        dq.append(i)
+        # Remove elements outside window
+        if dq[0] == i - k:
+            dq.popleft()
+
+    return max(dp)
+```
+
+### Re-rooting DP — LC 834 (Sum of Distances in Tree)
+Compute answer for every node as root in O(n) using two DFS passes instead of O(n²).
+
+```python
+def sumOfDistancesInTree(n, edges):
+    from collections import defaultdict
+    graph = defaultdict(set)
+    for u, v in edges:
+        graph[u].add(v); graph[v].add(u)
+
+    count = [1] * n    # subtree size rooted at node (1st DFS)
+    ans = [0] * n      # answer for root=0 first, then re-root
+
+    # Pass 1: DFS from root=0, compute count[] and ans[0]
+    def dfs1(node, parent):
+        for child in graph[node]:
+            if child != parent:
+                dfs1(child, node)
+                count[node] += count[child]
+                ans[0] += count[child]   # each node in subtree is 1 farther from root
+    dfs1(0, -1)
+
+    # Pass 2: re-root — when moving root from parent to child:
+    # ans[child] = ans[parent] - count[child] + (n - count[child])
+    def dfs2(node, parent):
+        for child in graph[node]:
+            if child != parent:
+                ans[child] = ans[node] - count[child] + (n - count[child])
+                dfs2(child, node)
+    dfs2(0, -1)
+    return ans
+```
+
+### Largest Rectangle in Histogram — LC 84 (Stack DP)
+Use monotonic stack to find the largest rectangle area in O(n).
+
+```python
+def largestRectangleArea(heights):
+    stack = []   # increasing stack of indices
+    max_area = 0
+    heights.append(0)   # sentinel to flush stack
+
+    for i, h in enumerate(heights):
+        while stack and heights[stack[-1]] >= h:
+            height = heights[stack.pop()]
+            width = i if not stack else i - stack[-1] - 1
+            max_area = max(max_area, height * width)
+        stack.append(i)
+    return max_area
+
+# LC 85 Maximal Rectangle in Matrix — apply LC 84 row by row
+def maximalRectangle(matrix):
+    if not matrix: return 0
+    n = len(matrix[0])
+    heights = [0] * n
+    ans = 0
+    for row in matrix:
+        heights = [heights[j] + int(row[j]) if row[j] != '0' else 0 for j in range(n)]
+        ans = max(ans, largestRectangleArea(heights[:]))
+    return ans
+```
+
+### State Machine DP Quick Reference
+```
+Stock Problems State Transitions:
+  held    = max(held,      rest - price)    # buy: rest → held
+  sold    = held + price                    # sell: held → sold
+  rest    = max(rest,      sold)            # cooldown: sold → rest
+
+Variants:
+  - No cooldown (LC 122):   held = max(held, rest - price); rest = max(rest, sold); sold = held_prev + price
+  - With cooldown (LC 309): above with sold → rest (not directly back to held)
+  - At most k tx (LC 188):  held[k] = max(held[k], rest[k-1] - price); sold[k] = held[k] + price
+  - With fee (LC 714):      held = max(held, rest - price); rest = max(rest, held + price - fee)
+```
+
+### Google Interview Tips for DP
+| Signal | Pattern |
+|--------|---------|
+| "max/min subarray with sliding constraint" | Monotonic queue DP |
+| "answer for every node as root" | Re-rooting (2 DFS passes) |
+| "largest rectangle / maximal square" | Stack DP or DP on prefix heights |
+| "game: two players pick optimally" | Minimax DP: dp[i][j] = score diff |
+| "count numbers with digit constraint" | Digit DP: (pos, tight, accumulator) |
+| "break string into valid words" | Memoized DP + word set |
+| "stock buy/sell variants" | State machine (held/sold/rest) |
+| "edit distance, LCS, interleaving" | 2D DP → 1D space optimization |

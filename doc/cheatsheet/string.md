@@ -69,6 +69,8 @@
 | **Prefix Validation** | Word building validation | O(n log n) | Check all prefixes exist |
 
 ### Template 1: Two Pointers Pattern
+> For the generic two-pointers pattern (fast/slow, left/right on arrays), see the two-pointers cheatsheet. This section focuses on palindrome-specific two-pointer usage.
+
 ```python
 # Python - Two pointers for palindrome
 def isPalindrome(s):
@@ -316,7 +318,7 @@ def rabinKarp(text, pattern):
             text_hash = (base * (text_hash - ord(text[i]) * h) + 
                         ord(text[i + len(pattern)])) % prime
             if text_hash < 0:
-                text_hash += prime
+                text_hash = (text_hash % prime + prime) % prime  # ensure positive remainder after modulo
     
     return -1
 ```
@@ -726,7 +728,7 @@ def longestPalindrome(s):
             C, R = i, i + P[i]
 
     max_len, idx = max((l, i) for i, l in enumerate(P))
-    return s[(idx-max_len)//2:(idx+max_len)//2]
+    return s[(idx-max_len)//2:(idx+max_len)//2]  # verify: in transformed string T, original string index = T_index // 2
 ```
 
 **5. Talking Points:**
@@ -897,6 +899,7 @@ def longestWord(words):
     if not words:
         return ""
 
+    # words.sort() works here because shorter words sort before longer ones lexicographically
     # Sort lexicographically (automatically handles tie-breaking)
     words.sort()
 
@@ -1222,12 +1225,14 @@ class Solution(object):
 | Find and Replace Pattern | 890 | Pattern mapping | Medium |
 
 #### **Palindrome Problems**
+> For LC examples comparing expand-from-center vs Manacher's, see the Classic LeetCode Problems table in Template 4.1 above.
+
 | Problem | LC # | Key Technique | Difficulty |
 |---------|------|---------------|------------|
-| Longest Palindromic Substring | 5 | Expand from center | Medium |
+| Longest Palindromic Substring | 5 | Expand from center or Manacher's O(n) | Medium |
 | Palindrome Partitioning | 131 | Backtracking | Medium |
 | Longest Palindrome | 409 | Character counting | Easy |
-| Palindromic Substrings | 647 | Expand from center | Medium |
+| Palindromic Substrings | 647 | Expand from center or Manacher's O(n) | Medium |
 | Longest Palindromic Subsequence | 516 | DP | Medium |
 | Valid Palindrome III | 1216 | K deletions | Hard |
 
@@ -2622,3 +2627,129 @@ Why FIRST in firstString + LAST in secondString:
 - LC 1 Two Sum (hash map for O(1) pairing/lookup)
 - LC 242 Valid Anagram (character frequency array)
 - LC 567 Permutation in String (character position mapping + sliding window)
+
+---
+
+## Missing Google Patterns
+
+### Z-Algorithm — O(n) Pattern Matching (Alternative to KMP)
+Build Z-array where `Z[i]` = length of the longest substring starting at `i` that matches a prefix of the string.
+
+```python
+def z_function(s):
+    n = len(s)
+    z = [0] * n
+    z[0] = n
+    l, r = 0, 0
+    for i in range(1, n):
+        if i < r:
+            z[i] = min(r - i, z[i - l])
+        while i + z[i] < n and s[z[i]] == s[i + z[i]]:
+            z[i] += 1
+        if i + z[i] > r:
+            l, r = i, i + z[i]
+    return z
+
+def z_search(text, pattern):
+    """Find all occurrences of pattern in text."""
+    s = pattern + '#' + text   # '#' acts as separator
+    z = z_function(s)
+    m = len(pattern)
+    return [i - m - 1 for i in range(m + 1, len(s)) if z[i] == m]
+
+# KMP vs Z-Algorithm:
+# Both O(n+m). KMP uses failure function; Z-algorithm is simpler to implement.
+# In interviews: pick whichever you can code correctly under pressure.
+```
+
+### Shortest Palindrome — LC 214 (KMP Application)
+Find the shortest palindrome by prepending characters to the front of `s`.
+
+```python
+def shortestPalindrome(s):
+    # Key insight: find longest palindromic prefix using KMP
+    # Build string: s + '#' + reverse(s)
+    # The KMP failure value at the end = length of longest palindromic prefix
+    t = s + '#' + s[::-1]
+    fail = [0] * len(t)
+    j = 0
+    for i in range(1, len(t)):
+        while j > 0 and t[i] != t[j]:
+            j = fail[j-1]
+        if t[i] == t[j]:
+            j += 1
+        fail[i] = j
+    # fail[-1] = length of longest palindromic prefix
+    return s[fail[-1]:][::-1] + s
+```
+
+### Anagram / Permutation Detection — Canonical Patterns
+
+```python
+# LC 242 Valid Anagram
+def isAnagram(s, t):
+    return Counter(s) == Counter(t)
+
+# LC 438 Find All Anagrams in String (Sliding Window)
+def findAnagrams(s, p):
+    need = Counter(p)
+    window = Counter()
+    result = []
+    for i, c in enumerate(s):
+        window[c] += 1
+        if i >= len(p):
+            left = s[i - len(p)]
+            window[left] -= 1
+            if window[left] == 0: del window[left]
+        if window == need:
+            result.append(i - len(p) + 1)
+    return result
+
+# LC 49 Group Anagrams (sorted key)
+def groupAnagrams(strs):
+    from collections import defaultdict
+    groups = defaultdict(list)
+    for s in strs:
+        groups[tuple(sorted(s))].append(s)
+    return list(groups.values())
+```
+
+### String DP Patterns
+
+```python
+# LC 72 Edit Distance — classic 2D DP
+def minDistance(word1, word2):
+    m, n = len(word1), len(word2)
+    dp = list(range(n + 1))
+    for i in range(1, m + 1):
+        prev = dp[:]
+        dp[0] = i
+        for j in range(1, n + 1):
+            if word1[i-1] == word2[j-1]:
+                dp[j] = prev[j-1]
+            else:
+                dp[j] = 1 + min(prev[j], dp[j-1], prev[j-1])
+    return dp[n]
+
+# LC 1143 Longest Common Subsequence
+def longestCommonSubsequence(text1, text2):
+    m, n = len(text1), len(text2)
+    dp = [0] * (n + 1)
+    for c in text1:
+        prev, dp = dp[:], [0] * (n + 1)
+        for j, d in enumerate(text2):
+            dp[j+1] = prev[j] + 1 if c == d else max(prev[j+1], dp[j])
+    return dp[n]
+```
+
+### Google Interview Tips for Strings
+| Signal | Pattern |
+|--------|---------|
+| "find pattern in text efficiently" | KMP or Z-algorithm |
+| "find all anagrams/permutations" | Sliding window + Counter |
+| "group by same characters" | Sort chars as key (Group Anagrams) |
+| "longest palindromic substring" | Expand from center or Manacher |
+| "shortest palindrome by prepending" | KMP on `s + '#' + reverse(s)` |
+| "edit distance, LCS" | 2D DP → space-optimize to 1D |
+| "repeated substrings" | Rolling hash or suffix array |
+| "is rotation of another string" | `s in (t+t)` |

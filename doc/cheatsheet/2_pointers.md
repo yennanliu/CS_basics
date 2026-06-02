@@ -1808,9 +1808,9 @@ void reverse(int[] nums){
 
     while (left < right){
 
-        int tmp = nums(left);
-        nums(left) = nums(right)
-        nums(right) = tmp;
+        int tmp = nums[left];
+        nums[left] = nums[right];
+        nums[right] = tmp;
         
         left += 1;
         right -= 1;
@@ -1980,12 +1980,10 @@ class Solution:
             1) nums[slow] != nums[fast]: for adding "1st" element
             2) nums[slow] != nums[slow-1] : for adding "2nd" element
             """
-            if nums[slow] != nums[fast] or nums[slow] != nums[slow-1]:
-                # both of below op are OK
-                #nums[slow+1] = nums[fast]
-                nums[slow+1], nums[fast] = nums[fast], nums[slow+1] 
+            if slow < 2 or nums[fast] != nums[slow - 2]:
+                nums[slow] = nums[fast]
                 slow += 1
-        return slow+1
+        return slow
 ```
 
 ### 2-2) Longest Palindromic Substring
@@ -3114,3 +3112,132 @@ private boolean isPalindrome(String s, int l, int r) {
 | **Subsequence Matching** | Check if one string is subsequence of another | LC 392, LC 524, LC 792 |
 | **Pattern Match with Constraints** | Subsequence + character type validation | LC 1023 |
 | **Longest Palindromic Prefix** | Find longest palindromic prefix, prepend reversed suffix | LC 214, LC 336 |
+
+---
+
+## Missing Google Patterns
+
+### Dutch National Flag (3-Way Partition) — LC 75 Sort Colors
+Partition array into three groups in O(n) time, O(1) space using three pointers.
+
+```python
+def sortColors(nums):
+    lo, mid, hi = 0, 0, len(nums) - 1
+    while mid <= hi:
+        if nums[mid] == 0:
+            nums[lo], nums[mid] = nums[mid], nums[lo]
+            lo += 1; mid += 1
+        elif nums[mid] == 1:
+            mid += 1
+        else:
+            nums[mid], nums[hi] = nums[hi], nums[mid]
+            hi -= 1  # don't advance mid — new nums[mid] is unknown
+```
+
+Invariant: `nums[0..lo-1]=0`, `nums[lo..mid-1]=1`, `nums[mid..hi]=unknown`, `nums[hi+1..n-1]=2`.
+
+### Tortoise and Hare (Cycle Detection) — LC 141, LC 142
+Fast pointer moves 2 steps, slow moves 1. They meet inside the cycle (if one exists).
+
+```python
+# LC 141 — Detect cycle
+def hasCycle(head):
+    slow = fast = head
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+        if slow is fast:
+            return True
+    return False
+
+# LC 142 — Find cycle entry point
+def detectCycle(head):
+    slow = fast = head
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+        if slow is fast:
+            break
+    else:
+        return None
+    # Reset one pointer to head; advance both one step at a time
+    slow = head
+    while slow is not fast:
+        slow = slow.next
+        fast = fast.next
+    return slow   # entry point of cycle
+```
+
+### Merge Two Sorted Arrays — LC 88
+Fill from the back to avoid shifting elements.
+
+```python
+def merge(nums1, m, nums2, n):
+    i, j, k = m - 1, n - 1, m + n - 1
+    while i >= 0 and j >= 0:
+        if nums1[i] >= nums2[j]:
+            nums1[k] = nums1[i]; i -= 1
+        else:
+            nums1[k] = nums2[j]; j -= 1
+        k -= 1
+    while j >= 0:           # remaining nums2 elements
+        nums1[k] = nums2[j]; j -= 1; k -= 1
+```
+
+### Container With Most Water — LC 11
+Start with widest window, shrink the shorter side to maximize area.
+
+```python
+def maxArea(height):
+    l, r = 0, len(height) - 1
+    ans = 0
+    while l < r:
+        ans = max(ans, min(height[l], height[r]) * (r - l))
+        if height[l] < height[r]:
+            l += 1
+        else:
+            r -= 1
+    return ans
+```
+
+**Why move the shorter side?** Moving the taller side can only decrease width without increasing the min-height bottleneck — no gain possible.
+
+### Valid Palindrome (Two Pointers from Edges) — LC 125, LC 680
+
+```python
+# LC 125 — ignore non-alphanumeric
+def isPalindrome(s):
+    l, r = 0, len(s) - 1
+    while l < r:
+        while l < r and not s[l].isalnum(): l += 1
+        while l < r and not s[r].isalnum(): r -= 1
+        if s[l].lower() != s[r].lower(): return False
+        l += 1; r -= 1
+    return True
+
+# LC 680 — can delete at most one character
+def validPalindrome(s):
+    def is_pal(l, r):
+        while l < r:
+            if s[l] != s[r]: return False
+            l += 1; r -= 1
+        return True
+
+    l, r = 0, len(s) - 1
+    while l < r:
+        if s[l] != s[r]:
+            return is_pal(l+1, r) or is_pal(l, r-1)
+        l += 1; r -= 1
+    return True
+```
+
+### Google Interview Tips for Two Pointers
+| Signal | Pattern |
+|--------|---------|
+| "sort + find pair" | Left-right pointers after sorting |
+| "in-place remove/deduplicate" | Slow-fast write pointer |
+| "cycle in linked list" | Tortoise and hare |
+| "partition into 3 groups" | Dutch national flag |
+| "merge sorted in-place" | Fill from back |
+| "palindrome check" | Pointers from both ends |
+| "maximum area / container" | Shrink shorter side |

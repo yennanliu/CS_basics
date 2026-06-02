@@ -21,41 +21,6 @@
 - **Greedy vs Brute Force**: Much faster but may miss optimal
 - **Path**: Brute Force → DP → Greedy (when applicable)
 
-## Problem Categories
-
-### **Category 1: Interval Scheduling**
-- **Description**: Select maximum non-overlapping intervals
-- **Examples**: LC 435 (Non-overlapping), LC 452 (Burst Balloons), LC 646 (Pair Chain)
-- **Pattern**: Sort by end time, select earliest ending
-
-### **Category 2: Activity Selection**
-- **Description**: Maximize number of activities or minimize resources
-- **Examples**: LC 621 (Task Scheduler), LC 1353 (Maximum Events)
-- **Pattern**: Priority queue or sorting with selection
-
-### **Category 3: Huffman Coding**
-- **Description**: Build optimal prefix codes
-- **Examples**: LC 1167 (Min Cost to Connect Sticks)
-- **Pattern**: Repeatedly merge smallest elements
-
-### **Category 4: Stock Trading**
-- **Description**: Maximize profit from transactions
-- **Examples**: LC 122 (Buy Sell Stock II), LC 134 (Gas Station)
-- **Pattern**: Accumulate positive differences
-
-### **Category 5: Jump Game**
-- **Description**: Reach target with minimum steps
-- **Examples**: LC 55 (Jump Game), LC 45 (Jump Game II)
-- **Pattern**: Track maximum reachable position
-
-### **Category 6: String Reorganization**
-- **Description**: Rearrange strings/characters with consecutive or distance constraints
-- **Examples**: LC 767 (Reorganize String), LC 984 (No AAA/BBB), LC 358 (K Distance), LC 1405 (Happy String)
-- **Pattern**:
-  - **Heap approach**: Always pick most frequent available character
-  - **Counter tracking**: Track consecutive count, force switch when limit reached
-- **Key Insight**: Greedy works because using the most frequent character first prevents getting stuck later
-
 ## Templates & Algorithms
 
 ### Template Comparison Table
@@ -653,7 +618,7 @@ class Solution(object):
                 -> 3) so total cnt = (6-1)*(2+1) + 1 =  16
         """
         time = (most - 1) * (n + 1) + num_most
-        return max(time, len(tasks)) # be aware of it 
+        return max(time, len(tasks)) # when idle slots go negative, just run all tasks sequentially
 ```
 
 ### 2-8) Maximum Units on a Truck (LC 1710) — Sort by Unit Value
@@ -771,176 +736,27 @@ Greedy Algorithm Selection Flowchart:
 | Overlapping subproblems | ❌ | ✅ | Fibonacci |
 | Simple selection rule | ✅ | ❌ | Fractional knapsack |
 
-## Greedy vs BFS/DFS in Graph Problems
+---
 
-### When to Choose: Decision Framework
+## Missing Google Patterns
+
+### Proof Template: Exchange Argument
+To verify a greedy choice, show that swapping the greedy pick with any other choice does not improve the result.
 
 ```
-Graph Problem Algorithm Selection:
-
-1. Problem Goal Analysis
-   ├── Find shortest path (unweighted) → BFS
-   ├── Find shortest path (weighted, all positive) → Dijkstra (Greedy)
-   ├── Find shortest path (negative weights) → Bellman-Ford (DP)
-   ├── Explore all paths/solutions → DFS
-   ├── Minimum spanning tree → Kruskal/Prim (Greedy)
-   ├── Topological sort → DFS or BFS (Kahn's)
-   └── Connectivity/reachability → DFS or BFS
-
-2. Problem Constraints Check
-   ├── Graph size (|V| + |E|) > 10^5 → Favor Greedy if applicable
-   ├── Dense graph (E ≈ V²) → Consider space complexity
-   ├── Sparse graph (E ≈ V) → BFS/DFS usually fine
-   └── Special structure (DAG, tree) → Enables certain optimizations
-
-3. Correctness Requirements
-   ├── Need to explore all possibilities → DFS/BFS required
-   ├── Greedy choice property proven → Greedy is optimal
-   ├── Optimal substructure exists → Consider DP or Greedy
-   └── No optimal substructure → BFS/DFS for complete search
+1. Assume optimal solution OPT differs from greedy solution G at some step.
+2. Show you can swap OPT's choice at that step with G's choice without making things worse.
+3. Repeat until OPT == G → greedy is optimal.
 ```
 
-### Complexity Comparison
+Common exchange argument problems: LC 435 (Non-overlapping Intervals), LC 452 (Burst Balloons), Job Scheduling.
 
-| Algorithm | Time Complexity | Space Complexity | Best Use Case | Graph Size Limit |
-|-----------|-----------------|------------------|---------------|------------------|
-| **BFS** | O(V + E) | O(V) | Shortest path (unweighted), level-order | < 10^6 nodes |
-| **DFS** | O(V + E) | O(V) | Path finding, cycle detection, topological sort | < 10^6 nodes |
-| **Dijkstra (Greedy)** | O((V + E)logV) | O(V) | Shortest path (weighted, positive) | < 10^5 nodes |
-| **Kruskal (Greedy)** | O(ElogE) | O(V + E) | Minimum spanning tree | < 10^5 edges |
-| **Prim (Greedy)** | O(ElogV) | O(V + E) | MST for dense graphs | < 10^5 nodes |
+### Minimum Spanning Tree (MST)
 
-### Problem Size Considerations
-
-#### Critical Thresholds
-
-**Small Scale (|V| + |E| < 10^3)**
-- ✅ Any algorithm works
-- Choose based on code simplicity
-- Performance differences negligible
-- Focus on correctness
-
-**Medium Scale (10^3 ≤ |V| + |E| ≤ 10^5)**
-- ⚠️ Algorithm choice matters
-- BFS/DFS: Usually acceptable
-- Greedy: Preferred if applicable (faster constants)
-- Consider optimization for dense graphs
-
-**Large Scale (|V| + |E| > 10^5)**
-- 🚨 Critical to choose correctly
-- BFS/DFS: May timeout if O(V²) or O(VE)
-- Greedy: Strongly preferred if problem allows
-- Space complexity becomes critical
-- Consider:
-  - Memory limits (often 256MB in contests)
-  - Time limits (1-2 seconds typical)
-  - Constant factors in complexity
-
-#### When Graph Size Forces Greedy Choice
-
-| Scenario | Size Threshold | Why Greedy Preferred | Example Problem |
-|----------|----------------|---------------------|-----------------|
-| Dense graph shortest path | V > 10^4, E ≈ V² | BFS O(V²) too slow | LC 743 Network Delay Time |
-| MST in large graph | E > 10^5 | Must avoid exploring all combinations | LC 1584 Min Cost Connect Points |
-| Large sparse graph | V > 10^5, E ≈ V | Greedy O(ElogE) vs BFS O(VE) | LC 1631 Path With Min Effort |
-| Real-time path finding | V > 10^5 | Need fast response | Navigation systems |
-
-### Decision Checkpoints
-
-#### Checkpoint 1: Can Greedy Work? (Mandatory Checks)
-
-✅ **Use Greedy if ALL are true:**
-1. **Greedy choice property exists**
-   - Local optimal choice leads to global optimal
-   - Can prove via exchange argument or contradiction
-
-2. **Problem has special structure**
-   - Shortest path with non-negative weights (Dijkstra)
-   - Minimum spanning tree (Kruskal/Prim)
-   - Interval scheduling patterns
-   - Optimal substructure with greedy choice
-
-3. **Performance requirement**
-   - Large input size (> 10^5)
-   - Need O(ElogV) or better complexity
-
-❌ **Cannot use Greedy if ANY are true:**
-1. Need to find ALL paths/solutions
-2. Negative edge weights exist
-3. Must backtrack or reconsider choices
-4. No proven greedy strategy exists
-
-#### Checkpoint 2: Which BFS/DFS? (If Greedy Doesn't Apply)
-
-**Use BFS when:**
-- ✅ Need shortest path in unweighted graph
-- ✅ Want level-by-level exploration
-- ✅ Need minimum steps/moves
-- ✅ Problem asks for "nearest" or "minimum depth"
-- 📊 Complexity: O(V + E), Space: O(V) queue
-
-**Use DFS when:**
-- ✅ Need to explore all paths
-- ✅ Checking connectivity or cycles
-- ✅ Topological sorting
-- ✅ Path reconstruction required
-- ✅ Smaller space complexity acceptable (recursion stack)
-- 📊 Complexity: O(V + E), Space: O(V) call stack
-
-#### Checkpoint 3: Performance Analysis
-
+**Kruskal's** (sort edges, union-find):
 ```python
-# Decision tree based on constraints
-def choose_algorithm(V, E, has_negative_weights, need_all_paths):
-    graph_size = V + E
-
-    if need_all_paths:
-        return "DFS" if V < 10000 else "Not feasible"
-
-    if has_negative_weights:
-        return "Bellman-Ford (DP)" if graph_size < 10^4 else "Not feasible"
-
-    # Shortest path problems
-    if is_weighted_graph:
-        if graph_size > 10^5:
-            return "Dijkstra (Greedy) - Required"
-        return "Dijkstra (Greedy) - Preferred"
-    else:  # unweighted
-        if graph_size > 10^6:
-            return "Optimize or Not feasible"
-        return "BFS"
-
-    # MST problems
-    if is_mst_problem:
-        if E > 10^5:
-            return "Kruskal (Greedy) - Required"
-        return "Kruskal/Prim (Greedy)"
-```
-
-### Common Graph Problem Patterns
-
-#### Pattern 1: Shortest Path Problems
-
-| Problem Type | Size < 10^3 | Size 10^3-10^5 | Size > 10^5 | Algorithm |
-|--------------|-------------|----------------|-------------|-----------|
-| Unweighted | BFS | BFS | BFS | O(V+E) |
-| Weighted (positive) | Dijkstra | Dijkstra | Dijkstra (required) | O((V+E)logV) |
-| Weighted (negative) | Bellman-Ford | Bellman-Ford | Not feasible* | O(VE) |
-| All pairs | Floyd-Warshall | BFS from each | Not feasible | O(V³) |
-
-*For size > 10^5 with negative weights, problem is typically not solvable in reasonable time
-
-#### Pattern 2: MST Problems
-
-```python
-# Kruskal's Algorithm (Greedy) - REQUIRED for large graphs
-def kruskal_mst(edges, n):
-    """
-    When to use: ANY MST problem, especially when E > 10^4
-    Time: O(E log E)
-    Space: O(V + E)
-    """
-    edges.sort(key=lambda x: x[2])  # Sort by weight - GREEDY CHOICE
+def kruskal(n, edges):
+    edges.sort(key=lambda x: x[2])  # sort by weight
     parent = list(range(n))
 
     def find(x):
@@ -948,186 +764,86 @@ def kruskal_mst(edges, n):
             parent[x] = find(parent[x])
         return parent[x]
 
+    def union(a, b):
+        a, b = find(a), find(b)
+        if a == b: return False
+        parent[a] = b
+        return True
+
     mst_cost = 0
-    for u, v, weight in edges:
-        pu, pv = find(u), find(v)
-        if pu != pv:  # Greedy: take smallest edge that doesn't form cycle
-            parent[pu] = pv
-            mst_cost += weight
-
+    for u, v, w in edges:
+        if union(u, v):
+            mst_cost += w
     return mst_cost
-
-# Why not BFS/DFS for MST?
-# - Would need to explore all possible spanning trees: O(V^V) - INFEASIBLE
-# - Greedy approach proven optimal (cut property, cycle property)
 ```
 
-#### Pattern 3: Reachability/Connectivity
-
-| Problem Type | Best Algorithm | When Size > 10^5 | Reasoning |
-|--------------|----------------|------------------|-----------|
-| Can reach target? | DFS or BFS | Use BFS (iterative) | DFS recursion may overflow |
-| Connected components | DFS or Union-Find | Union-Find (Greedy) | O(E⍺(V)) vs O(V+E) |
-| Cycle detection | DFS | DFS with iterative deepening | Need backtracking info |
-| Bipartite check | BFS or DFS | BFS preferred | Better cache locality |
-
-### LeetCode Examples with Size Analysis
-
-#### Greedy Required (Large Size)
-
-**LC 743: Network Delay Time**
-- **Constraint**: N ≤ 100, K ≤ 6000 (edges)
-- **Why Greedy**: Weighted shortest path with positive weights
-- **Algorithm**: Dijkstra (Greedy)
-- **BFS/DFS fails**: Unweighted BFS gives wrong answer, DFS explores all paths (exponential)
-
+**Prim's** (priority queue, dense graphs):
 ```python
-def networkDelayTime(times, n, k):
-    # Dijkstra - Greedy choice: always extend shortest known distance
+import heapq
+from collections import defaultdict
+
+def prim(n, edges):
     graph = defaultdict(list)
-    for u, v, w in times:
-        graph[u].append((v, w))
+    for u, v, w in edges:
+        graph[u].append((w, v))
+        graph[v].append((w, u))
 
-    dist = {i: float('inf') for i in range(1, n + 1)}
-    dist[k] = 0
-    heap = [(0, k)]  # (distance, node)
-
-    while heap:
-        d, node = heapq.heappop(heap)
-        if d > dist[node]:
-            continue
-        for nei, weight in graph[node]:
-            new_dist = d + weight
-            if new_dist < dist[nei]:  # Greedy choice
-                dist[nei] = new_dist
-                heapq.heappush(heap, (new_dist, nei))
-
-    return max(dist.values()) if max(dist.values()) < float('inf') else -1
+    visited = set()
+    heap = [(0, 0)]  # (cost, node)
+    total = 0
+    while heap and len(visited) < n:
+        cost, node = heapq.heappop(heap)
+        if node in visited: continue
+        visited.add(node)
+        total += cost
+        for w, nei in graph[node]:
+            if nei not in visited:
+                heapq.heappush(heap, (w, nei))
+    return total
 ```
 
-**LC 1584: Min Cost to Connect All Points**
-- **Constraint**: N ≤ 1000 points (up to 1000² edges)
-- **Why Greedy**: MST problem, E could be ~10^6
-- **Algorithm**: Kruskal or Prim (Greedy)
-- **BFS/DFS fails**: No clear BFS/DFS strategy exists for MST
+| Algorithm | Time | Best For |
+|-----------|------|---------|
+| Kruskal | O(E log E) | Sparse graphs |
+| Prim (heap) | O(E log V) | Dense graphs |
 
-**LC 1631: Path With Minimum Effort**
-- **Constraint**: rows * cols ≤ 10^6
-- **Why Greedy**: Need minimum maximum difference (variant of shortest path)
-- **Algorithm**: Dijkstra with modified distance
-- **BFS fails**: Need to consider edge weights
+### Weighted Interval Scheduling — LC 1235
+When intervals have weights/profits, greedy alone fails — use DP + binary search.
+```python
+# LC 1235 Maximum Profit in Job Scheduling
+import bisect
 
-#### BFS/DFS Optimal (Small to Medium Size)
-
-**LC 200: Number of Islands**
-- **Constraint**: m * n ≤ 10^4
-- **Why BFS/DFS**: Simple connectivity check
-- **Algorithm**: DFS or BFS
-- **Greedy doesn't apply**: No optimization problem, just exploration
-
-**LC 207: Course Schedule**
-- **Constraint**: numCourses ≤ 2000, prerequisites ≤ 5000
-- **Why BFS/DFS**: Cycle detection in directed graph
-- **Algorithm**: DFS (topological sort) or BFS (Kahn's)
-- **Greedy doesn't apply**: Must check all dependencies
-
-**LC 994: Rotting Oranges**
-- **Constraint**: grid size ≤ 100
-- **Why BFS**: Multi-source shortest path (unweighted)
-- **Algorithm**: BFS
-- **Greedy not needed**: Small size, unweighted
-
-#### Both Can Work (Trade-offs)
-
-**LC 785: Is Graph Bipartite?**
-- **Size**: Small (graph.length ≤ 100)
-- **BFS approach**: Color nodes level by level - O(V + E)
-- **Union-Find (Greedy)**: Group same-colored nodes - O(E⍺(V))
-- **Choice**: BFS simpler to code, Union-Find faster for dense graphs
-
-### Interview Strategy Guide
-
-#### Quick Decision Algorithm
-
-```
-Given a graph problem in interview:
-
-Step 1: Identify problem type (30 seconds)
-├── Shortest path? → Check weights
-├── MST? → Greedy (Kruskal/Prim)
-├── All paths? → DFS
-├── Minimum steps? → BFS
-└── Connectivity? → DFS/BFS or Union-Find
-
-Step 2: Check size constraints (10 seconds)
-├── Size > 10^5? → Must use optimal algorithm
-├── Dense graph? → Consider space complexity
-└── Small size? → Focus on correctness
-
-Step 3: Verify algorithm choice (20 seconds)
-├── Can I prove greedy works? → Use Greedy
-├── Need to explore all? → Use DFS
-├── Need shortest unweighted? → Use BFS
-└── Complex requirements? → Discuss trade-offs
-
-Step 4: Code and optimize (remaining time)
+def jobScheduling(startTime, endTime, profit):
+    jobs = sorted(zip(startTime, endTime, profit), key=lambda x: x[1])
+    dp = [(0, 0)]  # (end_time, max_profit)
+    for s, e, p in jobs:
+        # Find last job that ends <= s
+        i = bisect.bisect_right(dp, (s, float('inf'))) - 1
+        new_profit = dp[i][1] + p
+        if new_profit > dp[-1][1]:
+            dp.append((e, new_profit))
+    return dp[-1][1]
 ```
 
-#### Common Mistakes to Avoid
+### Fractional vs 0/1 Knapsack
+| Property | Fractional | 0/1 |
+|----------|-----------|-----|
+| Can split items | Yes | No |
+| Algorithm | Greedy (sort by value/weight) | DP |
+| Time | O(n log n) | O(nW) |
+| Greedy works? | Yes | No |
 
-🚫 **Using BFS for weighted shortest path**
-- Problem: BFS assumes all edges equal weight
-- Fix: Use Dijkstra (Greedy) for weighted graphs
+**Why greedy fails for 0/1**: Counter-example: items [(value=6, w=4), (value=5, w=3), (value=5, w=3)], capacity=6. Greedy picks highest ratio (item1, ratio=1.5) → only gets 6. DP picks item2+item3 → gets 10.
 
-🚫 **Using Dijkstra with negative weights**
-- Problem: Greedy assumption breaks down
-- Fix: Use Bellman-Ford (DP) - but check size constraints
-
-🚫 **Using DFS for shortest path**
-- Problem: DFS explores all paths (exponential)
-- Fix: Use BFS (unweighted) or Dijkstra (weighted)
-
-🚫 **Ignoring size constraints**
-- Problem: O(V²) algorithm on 10^5 nodes → TLE
-- Fix: Always calculate actual operations: if V=10^5, V²=10^10 (too slow)
-
-🚫 **Assuming Greedy always works**
-- Problem: Many graph problems need complete exploration
-- Fix: Prove greedy property or use BFS/DFS
-
-### Practical Performance Benchmarks
-
-| Operations | Time Limit 1s | Time Limit 2s | Typical Memory |
-|------------|---------------|---------------|----------------|
-| 10^6 | ✅ Fast | ✅ Fast | ~4MB |
-| 10^7 | ✅ OK | ✅ Fast | ~40MB |
-| 10^8 | ⚠️ Tight | ✅ OK | ~400MB |
-| 10^9 | ❌ TLE | ⚠️ Tight | ~4GB (exceeds limit) |
-| 10^10 | ❌ TLE | ❌ TLE | ❌ MLE |
-
-**Key Insight**:
-- If your algorithm has O(V²) or O(VE) and V > 10^4, consider greedy alternative
-- If E > 10^5 and you need MST, only greedy (Kruskal/Prim) will work
-- Space complexity matters: O(V²) adjacency matrix fails when V > 10^4 (100MB+)
-
-### Summary: Algorithm Selection Matrix
-
-| Problem Goal | Size < 10^3 | 10^3 ≤ Size ≤ 10^5 | Size > 10^5 | Algorithm |
-|--------------|-------------|---------------------|-------------|-----------|
-| Shortest path (unweighted) | BFS | BFS | BFS (if feasible) | O(V+E) |
-| Shortest path (weighted +) | Dijkstra | Dijkstra | Dijkstra required | O((V+E)logV) |
-| Shortest path (weighted -) | Bellman-Ford | Bellman-Ford | Usually infeasible | O(VE) |
-| MST | Any greedy | Kruskal/Prim | Kruskal/Prim required | O(ElogE) |
-| All paths | DFS | DFS (if small) | Usually infeasible | O(V! or 2^V) |
-| Connectivity | BFS/DFS/UF | Union-Find | Union-Find | O(E⍺(V)) |
-| Cycle detection | DFS | DFS | DFS | O(V+E) |
-| Topological sort | DFS/BFS | DFS/BFS | DFS/BFS | O(V+E) |
-
-**Bottom Line**:
-- **Size > 10^5** → Greedy is often required (if applicable)
-- **Need optimal path** → Greedy if proven, BFS/DFS otherwise
-- **Need all solutions** → BFS/DFS (but check if feasible)
-- **When in doubt** → Calculate operations: if > 10^8, find better algorithm
+### Google Interview Tips for Greedy
+| Signal | Pattern |
+|--------|---------|
+| "minimum cost to connect" | MST (Kruskal/Prim) |
+| "maximize non-overlapping intervals" | Sort by end time |
+| "schedule tasks with cooldown" | Math formula or max-heap |
+| "fractional items" | Sort by value/weight ratio |
+| "prove this greedy works" | Exchange argument |
+| "greedy gives wrong answer here" | Switch to DP |
 
 ## Summary & Quick Reference
 

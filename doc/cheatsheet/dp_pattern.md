@@ -185,7 +185,7 @@ def mcm(arr):
     dp = [[0] * n for _ in range(n)]
 
     # length is the chain length
-    for length in range(2, n):
+    for length in range(2, n + 1):
         for i in range(n - length):
             j = i + length
             dp[i][j] = float('inf')
@@ -201,7 +201,7 @@ def maxCoins(nums):
     n = len(nums)
     dp = [[0] * n for _ in range(n)]
 
-    for length in range(2, n):
+    for length in range(2, n + 1):
         for left in range(n - length):
             right = left + length
             for i in range(left + 1, right):
@@ -218,7 +218,7 @@ public int mcm(int[] arr) {
     int n = arr.length;
     int[][] dp = new int[n][n];
 
-    for (int length = 2; length < n; length++) {
+    for (int length = 2; length <= n; length++) {
         for (int i = 0; i < n - length; i++) {
             int j = i + length;
             dp[i][j] = Integer.MAX_VALUE;
@@ -242,7 +242,7 @@ public int maxCoins(int[] nums) {
     int n = arr.length;
     int[][] dp = new int[n][n];
 
-    for (int length = 2; length < n; length++) {
+    for (int length = 2; length <= n; length++) {
         for (int left = 0; left < n - length; left++) {
             int right = left + length;
             for (int i = left + 1; i < right; i++) {
@@ -299,13 +299,15 @@ def longestCommonSubsequence(text1, text2):
 
     return dp[m][n]
 
-# Space optimized version
+# Space optimized version (2D → 1D rolling array)
+# prev[j] represents dp[i-1][j]; curr[j] represents dp[i][j]
+# curr[0] = 0 is always the base case (empty prefix of text2 → LCS length 0)
 def longestCommonSubsequence_optimized(text1, text2):
     m, n = len(text1), len(text2)
     prev = [0] * (n + 1)
 
     for i in range(1, m + 1):
-        curr = [0] * (n + 1)
+        curr = [0] * (n + 1)  # curr[0] = 0 is the base case boundary
         for j in range(1, n + 1):
             if text1[i-1] == text2[j-1]:
                 curr[j] = prev[j-1] + 1
@@ -420,28 +422,24 @@ public int longestCommonSubstring(String text1, String text2) {
 
 **Time Complexity**: O(n*W) | **Space Complexity**: O(W)
 
-### Template Code:
+### Key Difference from 0/1 Knapsack
+
+| Variant | Loop Order | Why |
+|---------|-----------|-----|
+| 0/1 Knapsack | Outer: items, Inner: capacity **reverse** | Each item used at most once |
+| Unbounded Knapsack | Outer: items, Inner: capacity **forward** | Item can be reused |
+
+### Template Code (Coin Change examples):
 
 **Python:**
 ```python
-# Unbounded Knapsack - Maximum Value
-def unboundedKnapsack(weights, values, capacity):
-    dp = [0] * (capacity + 1)
-
-    for w in range(capacity + 1):
-        for i in range(len(weights)):
-            if weights[i] <= w:
-                dp[w] = max(dp[w], dp[w - weights[i]] + values[i])
-
-    return dp[capacity]
-
 # Coin Change - Minimum Coins (LC 322)
 def coinChange(coins, amount):
     dp = [float('inf')] * (amount + 1)
     dp[0] = 0
 
     for coin in coins:
-        for i in range(coin, amount + 1):
+        for i in range(coin, amount + 1):  # forward = unbounded
             dp[i] = min(dp[i], dp[i - coin] + 1)
 
     return dp[amount] if dp[amount] != float('inf') else -1
@@ -452,7 +450,7 @@ def change(amount, coins):
     dp[0] = 1
 
     for coin in coins:
-        for i in range(coin, amount + 1):
+        for i in range(coin, amount + 1):  # forward = unbounded
             dp[i] += dp[i - coin]
 
     return dp[amount]
@@ -460,21 +458,6 @@ def change(amount, coins):
 
 **Java:**
 ```java
-// Unbounded Knapsack - Maximum Value
-public int unboundedKnapsack(int[] weights, int[] values, int capacity) {
-    int[] dp = new int[capacity + 1];
-
-    for (int w = 0; w <= capacity; w++) {
-        for (int i = 0; i < weights.length; i++) {
-            if (weights[i] <= w) {
-                dp[w] = Math.max(dp[w], dp[w - weights[i]] + values[i]);
-            }
-        }
-    }
-
-    return dp[capacity];
-}
-
 // Coin Change - Minimum Coins (LC 322)
 public int coinChange(int[] coins, int amount) {
     int[] dp = new int[amount + 1];
@@ -482,7 +465,7 @@ public int coinChange(int[] coins, int amount) {
     dp[0] = 0;
 
     for (int coin : coins) {
-        for (int i = coin; i <= amount; i++) {
+        for (int i = coin; i <= amount; i++) {  // forward = unbounded
             dp[i] = Math.min(dp[i], dp[i - coin] + 1);
         }
     }
@@ -496,7 +479,7 @@ public int change(int amount, int[] coins) {
     dp[0] = 1;
 
     for (int coin : coins) {
-        for (int i = coin; i <= amount; i++) {
+        for (int i = coin; i <= amount; i++) {  // forward = unbounded
             dp[i] += dp[i - coin];
         }
     }
@@ -1003,6 +986,9 @@ def countNumbersWithUniqueDigits(n):
     result = 10  # For n=1
     unique_digits = 9
     available = 9
+    # when n > 10, answer is fixed (9 + 9*9 + 9*9*8 + ... for 1-10 digits)
+    # because there are only 10 distinct digits (0-9), so available hits 0 after 10 digits.
+    # The `available > 0` guard in Java's loop handles this; Python stops naturally at available=0.
 
     for i in range(2, n + 1):
         unique_digits *= available
@@ -1211,23 +1197,7 @@ private int dfs(TreeNode node) {
 ## LC Examples
 
 ### 2-1) Climbing Stairs (LC 70) — 1D Linear DP
-> dp[i] = dp[i-1] + dp[i-2]; classic Fibonacci-style DP.
-
-```java
-// LC 70 - Climbing Stairs
-// IDEA: dp[i] = number of ways to reach step i
-// time = O(N), space = O(1)
-public int climbStairs(int n) {
-    if (n <= 2) return n;
-    int prev2 = 1, prev1 = 2;
-    for (int i = 3; i <= n; i++) {
-        int curr = prev1 + prev2;
-        prev2 = prev1;
-        prev1 = curr;
-    }
-    return prev1;
-}
-```
+> dp[i] = dp[i-1] + dp[i-2]; Fibonacci-style DP. See Section 2 (LIS) for the pattern; same space-optimized rolling-variable approach applies here.
 
 ### 2-2) Coin Change (LC 322) — Unbounded Knapsack DP
 > dp[i] = minimum coins needed to make amount i; try all coin denominations.
@@ -1248,48 +1218,10 @@ public int coinChange(int[] coins, int amount) {
 ```
 
 ### 2-3) Longest Increasing Subsequence (LC 300) — LIS DP / Binary Search
-> dp[i] = length of LIS ending at index i; optimized with patience sorting.
-
-```java
-// LC 300 - Longest Increasing Subsequence
-// IDEA: Binary search + tails array (patience sorting)
-// time = O(N log N), space = O(N)
-public int lengthOfLIS(int[] nums) {
-    List<Integer> tails = new ArrayList<>();
-    for (int num : nums) {
-        int l = 0, r = tails.size();
-        while (l < r) {
-            int mid = (l + r) / 2;
-            if (tails.get(mid) < num) l = mid + 1;
-            else r = mid;
-        }
-        if (l == tails.size()) tails.add(num);
-        else tails.set(l, num);
-    }
-    return tails.size();
-}
-```
+> dp[i] = length of LIS ending at index i; optimized with patience sorting. See Section 2 (LIS) for both O(n²) and O(n log n) templates.
 
 ### 2-4) Partition Equal Subset Sum (LC 416) — 0/1 Knapsack DP
-> dp[j] = true if subset summing to j exists; iterate items and update dp right to left.
-
-```java
-// LC 416 - Partition Equal Subset Sum
-// IDEA: 0/1 Knapsack — dp[j] = can we reach sum j using subset of nums
-// time = O(N * sum), space = O(sum)
-public boolean canPartition(int[] nums) {
-    int sum = 0;
-    for (int n : nums) sum += n;
-    if ((sum & 1) == 1) return false;
-    int target = sum / 2;
-    boolean[] dp = new boolean[target + 1];
-    dp[0] = true;
-    for (int num : nums)
-        for (int j = target; j >= num; j--)
-            dp[j] = dp[j] || dp[j - num];
-    return dp[target];
-}
-```
+> dp[j] = true if subset summing to j exists; iterate items and update dp right to left. See Section 6 (0/1 Knapsack) for the full template and reverse-iteration explanation.
 
 ### 2-5) Unique Paths (LC 62) — 2D Grid DP
 > dp[i][j] = paths to reach (i,j) = dp[i-1][j] + dp[i][j-1]; first row/col = 1.
@@ -1429,3 +1361,128 @@ public int findTargetSumWays(int[] nums, int target) {
 }
 ```
 - **Convex Hull Trick**: For optimizing certain recurrence relations
+
+---
+
+## Missing Google Patterns
+
+### Game Theory / Minimax DP — LC 486, LC 877
+State: `dp[i][j]` = best score difference (current player − opponent) for subarray `[i..j]`.
+
+```python
+# LC 877 Stone Game — is first player guaranteed to win?
+def stoneGame(piles):
+    n = len(piles)
+    # dp[i][j] = max score diff the current player can achieve on piles[i..j]
+    dp = [[0] * n for _ in range(n)]
+    for i in range(n):
+        dp[i][i] = piles[i]
+    for length in range(2, n + 1):
+        for i in range(n - length + 1):
+            j = i + length - 1
+            dp[i][j] = max(piles[i] - dp[i+1][j], piles[j] - dp[i][j-1])
+    return dp[0][n-1] > 0
+
+# LC 486 Predict the Winner — generalized version
+def predictTheWinner(nums):
+    n = len(nums)
+    dp = [[0]*n for _ in range(n)]
+    for i in range(n): dp[i][i] = nums[i]
+    for length in range(2, n+1):
+        for i in range(n - length + 1):
+            j = i + length - 1
+            dp[i][j] = max(nums[i] - dp[i+1][j], nums[j] - dp[i][j-1])
+    return dp[0][n-1] >= 0
+```
+
+### Memoization vs Tabulation: When to Use Each
+| Aspect | Memoization (Top-down) | Tabulation (Bottom-up) |
+|--------|----------------------|----------------------|
+| Code clarity | Closer to recursion → easier to write | Explicit order needed |
+| Space | Stack frames + cache | Only DP table |
+| Subproblems | Only computes needed subproblems | Computes all subproblems |
+| Interview default | Start here | Switch if asked for O(1) space |
+| Infinite recursion risk | Yes (cycles) | No |
+
+**Rule**: In interviews, start with memoization (easier to verify correctness), then optimize to tabulation if space is a concern.
+
+### DP on DAG with Topological Sort — LC 2203, LC 1567
+When DP transitions only go from earlier to later nodes in a DAG, process in topological order.
+
+```python
+# General DAG DP template
+from collections import defaultdict, deque
+
+def dag_dp(n, edges, source_value):
+    graph = defaultdict(list)
+    in_degree = [0] * n
+    for u, v, w in edges:
+        graph[u].append((v, w))
+        in_degree[v] += 1
+
+    dp = [float('-inf')] * n
+    dp[0] = source_value
+
+    queue = deque([i for i in range(n) if in_degree[i] == 0])
+    while queue:
+        u = queue.popleft()
+        for v, w in graph[u]:
+            dp[v] = max(dp[v], dp[u] + w)
+            in_degree[v] -= 1
+            if in_degree[v] == 0:
+                queue.append(v)
+    return max(dp)
+```
+
+### Digit DP — LC 233, LC 1012
+Count numbers in `[1, n]` satisfying a digit constraint.
+
+```python
+# Template: count integers in [0, n] with property P
+# State: (position, tight, count_so_far, ...)
+def digitDP(n: int) -> int:
+    digits = list(map(int, str(n)))
+    from functools import lru_cache
+
+    @lru_cache(maxsize=None)
+    def dp(pos, tight, count):
+        if pos == len(digits):
+            return count  # or return 1, depending on problem
+        limit = digits[pos] if tight else 9
+        result = 0
+        for d in range(0, limit + 1):
+            result += dp(pos + 1, tight and d == limit, count + (d == 1))
+        return result
+
+    return dp(0, True, 0)
+```
+
+Key state variables:
+- `pos`: current digit position
+- `tight`: whether we're still bounded by `n`'s digits
+- Any problem-specific counter (number of 1s, digit sum, etc.)
+
+### Monotonic Queue DP Optimization — LC 1425, LC 239
+When DP transition is `dp[i] = max/min(dp[j]) + cost` for `j` in a sliding window, use a monotonic deque for O(n) instead of O(n²).
+
+```python
+# dp[i] = max(dp[j]) + nums[i]  for j in [i-k, i-1]
+from collections import deque
+
+def slidingWindowDP(nums, k):
+    n = len(nums)
+    dp = [0] * n
+    dp[0] = nums[0]
+    dq = deque([0])  # stores indices, dp values are decreasing
+
+    for i in range(1, n):
+        # Remove indices outside window
+        while dq and dq[0] < i - k:
+            dq.popleft()
+        dp[i] = dp[dq[0]] + nums[i]
+        # Maintain decreasing order
+        while dq and dp[dq[-1]] <= dp[i]:
+            dq.pop()
+        dq.append(i)
+    return dp[-1]
+```

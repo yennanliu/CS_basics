@@ -78,6 +78,16 @@ Trees can be efficiently represented using arrays, especially for complete binar
 - **Example**: LC 104 (Max Depth), LC 111 (Min Depth)
     - `maxDepth` can safely use Math.max() with null children.
     - `minDepth` needs this guard, because null doesn’t count as a valid path
+
+```python
+# Correct: when only one child is null, go deeper into the non-null child
+def minDepth(root):
+    if not root: return 0
+    if not root.left: return 1 + minDepth(root.right)
+    if not root.right: return 1 + minDepth(root.left)
+    return 1 + min(minDepth(root.left), minDepth(root.right))
+```
+
         - [MinimumDepthOfBinaryTree.java](https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Recursion/MinimumDepthOfBinaryTree.java)
 
 <img src="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/tree_depth_vs_height.jpeg" width="500">
@@ -1441,559 +1451,72 @@ public List<List<Integer>> levelOrder(TreeNode root) {
 ```
 
 #### **Template 5: Morris Traversal (O(1) Space Tree Traversal)**
-*In-order/Pre-order/Post-order traversal with O(1) space using threaded binary tree*
+*In-order traversal with O(1) space using threaded binary tree*
 
-**Core Concept:**
-Morris Traversal allows tree traversal without recursion or stack by temporarily modifying the tree structure (creating threaded links). It achieves **O(1) space complexity** by using the tree's empty right pointers as temporary links back to ancestors.
-
-**Key Insight:**
-- Standard traversal: O(h) space for recursion stack or explicit stack
-- Morris Traversal: O(1) space by threading tree nodes
-- Temporarily modify tree structure, then restore it
-
-**How It Works:**
-1. For current node, find its in-order predecessor (rightmost node in left subtree)
-2. Create a temporary thread from predecessor to current node
-3. Process nodes during traversal
-4. Remove threads after use to restore tree
-
----
-
-##### Morris In-Order Traversal (Most Common)
-
-**Algorithm Steps:**
-1. Initialize `current = root`
-2. While `current != null`:
-   - **Case 1**: If `current.left == null`:
-     - Process `current` (it's next in in-order)
-     - Move to `current = current.right`
-   - **Case 2**: If `current.left != null`:
-     - Find predecessor (rightmost node in left subtree)
-     - **Sub-case A**: If `predecessor.right == null` (first visit):
-       - Create thread: `predecessor.right = current`
-       - Move to `current = current.left`
-     - **Sub-case B**: If `predecessor.right == current` (second visit):
-       - Thread already exists, we're revisiting
-       - Process `current` (in-order position)
-       - Remove thread: `predecessor.right = null`
-       - Move to `current = current.right`
+**Core Concept:** Morris Traversal uses each node's empty right pointer as a temporary thread back to its in-order successor, enabling O(n) time, O(1) space traversal without a recursion stack.
 
 ```python
-# Python - Morris In-Order Traversal
-def morris_inorder(root):
-    """
-    In-order traversal with O(1) space using Morris algorithm.
-
-    Time: O(n) - each edge traversed at most twice
-    Space: O(1) - no recursion stack or explicit stack
-
-    Tree structure is temporarily modified but restored.
-    """
+# In-order Morris Traversal — O(n) time, O(1) space
+def inorderMorris(root):
     result = []
-    current = root
-
-    while current:
-        if current.left is None:
-            # No left subtree, process current node
-            result.append(current.val)
-            current = current.right
+    curr = root
+    while curr:
+        if not curr.left:
+            result.append(curr.val)
+            curr = curr.right
         else:
-            # Find in-order predecessor (rightmost in left subtree)
-            predecessor = current.left
-            while predecessor.right and predecessor.right != current:
-                predecessor = predecessor.right
-
-            if predecessor.right is None:
-                # First visit: create thread
-                predecessor.right = current
-                current = current.left
-            else:
-                # Second visit: thread exists, we're done with left subtree
-                # Remove thread and process current
-                predecessor.right = None
-                result.append(current.val)  # In-order position
-                current = current.right
-
+            # Find in-order predecessor
+            pred = curr.left
+            while pred.right and pred.right is not curr:
+                pred = pred.right
+            if not pred.right:          # Thread: set predecessor → curr
+                pred.right = curr
+                curr = curr.left
+            else:                        # Unthread: restore tree
+                pred.right = None
+                result.append(curr.val)
+                curr = curr.right
     return result
-
-# Visual Example:
-#       1
-#      / \
-#     2   3
-#    / \
-#   4   5
-#
-# In-order result: [4, 2, 5, 1, 3]
+# Pre/post-order variants follow the same thread-manipulation pattern.
 ```
 
 ```java
-// Java - Morris In-Order Traversal
-/**
- * LC 94 - Binary Tree Inorder Traversal (Morris)
- *
- * time = O(N)
- * space = O(1)
- */
+// Java — Morris In-Order (LC 94)
+// time = O(N), space = O(1)
 public List<Integer> inorderTraversal(TreeNode root) {
     List<Integer> result = new ArrayList<>();
     TreeNode current = root;
-
-    while (current != null) {
-        if (current.left == null) {
-            // No left subtree, process current
-            result.add(current.val);
-            current = current.right;
-        } else {
-            // Find in-order predecessor
-            TreeNode predecessor = current.left;
-            while (predecessor.right != null && predecessor.right != current) {
-                predecessor = predecessor.right;
-            }
-
-            if (predecessor.right == null) {
-                // First visit: create thread
-                predecessor.right = current;
-                current = current.left;
-            } else {
-                // Second visit: remove thread, process current
-                predecessor.right = null;
-                result.add(current.val);
-                current = current.right;
-            }
-        }
-    }
-
-    return result;
-}
-```
-
----
-
-##### Morris Pre-Order Traversal
-
-**Key Difference from In-Order:**
-- Process node on **first visit** (when creating thread) instead of second visit
-- Otherwise, same algorithm
-
-```python
-# Python - Morris Pre-Order Traversal
-def morris_preorder(root):
-    """
-    Pre-order traversal with O(1) space.
-
-    Time: O(n)
-    Space: O(1)
-    """
-    result = []
-    current = root
-
-    while current:
-        if current.left is None:
-            # No left subtree, process current
-            result.append(current.val)  # Pre-order position
-            current = current.right
-        else:
-            # Find predecessor
-            predecessor = current.left
-            while predecessor.right and predecessor.right != current:
-                predecessor = predecessor.right
-
-            if predecessor.right is None:
-                # First visit: process now (pre-order!)
-                result.append(current.val)  # ← Process here
-                # Create thread
-                predecessor.right = current
-                current = current.left
-            else:
-                # Second visit: remove thread
-                predecessor.right = None
-                current = current.right
-
-    return result
-
-# Visual Example (same tree):
-#       1
-#      / \
-#     2   3
-#    / \
-#   4   5
-#
-# Pre-order result: [1, 2, 4, 5, 3]
-```
-
-```java
-// Java - Morris Pre-Order Traversal
-/**
- * LC 144 - Binary Tree Preorder Traversal (Morris)
- *
- * time = O(N)
- * space = O(1)
- */
-public List<Integer> preorderTraversal(TreeNode root) {
-    List<Integer> result = new ArrayList<>();
-    TreeNode current = root;
-
     while (current != null) {
         if (current.left == null) {
             result.add(current.val);
             current = current.right;
         } else {
-            TreeNode predecessor = current.left;
-            while (predecessor.right != null && predecessor.right != current) {
-                predecessor = predecessor.right;
-            }
-
-            if (predecessor.right == null) {
-                // Pre-order: process on first visit
+            TreeNode pred = current.left;
+            while (pred.right != null && pred.right != current)
+                pred = pred.right;
+            if (pred.right == null) {   // first visit: create thread
+                pred.right = current;
+                current = current.left;
+            } else {                    // second visit: unthread + process
+                pred.right = null;
                 result.add(current.val);
-                predecessor.right = current;
-                current = current.left;
-            } else {
-                predecessor.right = null;
                 current = current.right;
             }
         }
     }
-
     return result;
 }
 ```
 
----
+**Performance:** O(n) time, O(1) space. Use when interviewer asks for O(1) space traversal.
+**Pre-order variant:** process node on *first* visit (when creating thread) instead of second.
+**Post-order:** requires reversing right spines — complex, rarely asked; prefer iterative stack.
 
-##### Morris Post-Order Traversal (Advanced)
-
-**Key Insight:**
-Post-order is more complex - requires reversing the right spine of left subtrees.
-
-```python
-# Python - Morris Post-Order Traversal (Simplified)
-def morris_postorder(root):
-    """
-    Post-order traversal with O(1) space.
-    More complex than in-order/pre-order.
-
-    Time: O(n)
-    Space: O(1)
-    """
-    def reverse_nodes(start, end):
-        """Reverse linked list from start to end."""
-        if start == end:
-            return
-        prev = None
-        current = start
-        while current != end:
-            next_node = current.right
-            current.right = prev
-            prev = current
-            current = next_node
-        end.right = prev
-
-    def process_nodes(start, end, result):
-        """Process nodes from start to end."""
-        reverse_nodes(start, end)
-        # Process in reverse
-        current = end
-        while True:
-            result.append(current.val)
-            if current == start:
-                break
-            current = current.right
-        # Reverse back
-        reverse_nodes(end, start)
-
-    # Create dummy root
-    dummy = TreeNode(0)
-    dummy.left = root
-    current = dummy
-    result = []
-
-    while current:
-        if current.left is None:
-            current = current.right
-        else:
-            # Find predecessor
-            predecessor = current.left
-            while predecessor.right and predecessor.right != current:
-                predecessor = predecessor.right
-
-            if predecessor.right is None:
-                # Create thread
-                predecessor.right = current
-                current = current.left
-            else:
-                # Process left subtree's right spine in reverse
-                process_nodes(current.left, predecessor, result)
-                predecessor.right = None
-                current = current.right
-
-    return result
-
-# Note: Post-order Morris is complex and rarely asked.
-# In interviews, use recursion or iterative stack for post-order.
-```
-
----
-
-##### Visual Example: Morris In-Order Step-by-Step
-
-```
-Original Tree:
-        1
-       / \
-      2   3
-     / \
-    4   5
-
-Step 1: current = 1, has left child
-  Find predecessor of 1 → node 2
-  Predecessor's right child of 2 → node 5
-  Node 5's right is null → Create thread: 5.right = 1
-
-        1  ←─┐
-       / \   │
-      2   3  │
-     / \     │
-    4   5 ──┘
-
-  Move current = 2
-
-Step 2: current = 2, has left child
-  Find predecessor of 2 → node 4
-  Node 4's right is null → Create thread: 4.right = 2
-
-        1  ←─┐
-       / \   │
-      2   3  │  ←─┐
-     / \     │    │
-    4   5 ──┘    │
-     └───────────┘
-
-  Move current = 4
-
-Step 3: current = 4, no left child
-  Process 4 → result = [4]
-  Move current = 4.right = 2 (following thread)
-
-Step 4: current = 2, has left child
-  Find predecessor of 2 → node 4
-  Node 4's right = 2 (thread exists!)
-  Remove thread: 4.right = null
-  Process 2 → result = [4, 2]
-  Move current = 5
-
-Step 5: current = 5, no left child
-  Process 5 → result = [4, 2, 5]
-  Move current = 5.right = 1 (following thread)
-
-Step 6: current = 1, has left child
-  Find predecessor of 1 → node 5
-  Node 5's right = 1 (thread exists!)
-  Remove thread: 5.right = null
-  Process 1 → result = [4, 2, 5, 1]
-  Move current = 3
-
-Step 7: current = 3, no left child
-  Process 3 → result = [4, 2, 5, 1, 3]
-  Move current = null
-
-Final result: [4, 2, 5, 1, 3] ✓
-Tree restored to original structure ✓
-```
-
----
-
-##### Classic LeetCode Problems
-
-| Problem | LC# | Difficulty | Morris Variant | Key Insight |
-|---------|-----|------------|----------------|-------------|
-| Binary Tree Inorder Traversal | 94 | Easy | Morris In-order | Follow-up asks O(1) space |
-| Binary Tree Preorder Traversal | 144 | Easy | Morris Pre-order | Process on first visit |
-| Binary Tree Postorder Traversal | 145 | Easy | Morris Post-order | Reverse right spine (complex) |
-| Kth Smallest in BST | 230 | Medium | Morris In-order + Counter | Stop at kth element |
-| Validate BST | 98 | Medium | Morris In-order + Prev | Check sorted order |
-| Recover BST | 99 | Medium | Morris In-order + Swap | Find swapped nodes |
-| Flatten Binary Tree to Linked List | 114 | Medium | Morris Pre-order variant | Modify pointers |
-| Morris Traversal | 501 | Easy | Morris In-order + Freq | Count mode in BST |
-
----
-
-##### Performance Comparison
-
-| Traversal Method | Time | Space | Modifies Tree | Use Case |
-|-----------------|------|-------|---------------|----------|
-| **Recursive** | O(n) | **O(h)** | No | Simple, clean code |
-| **Iterative Stack** | O(n) | **O(h)** | No | More control, no recursion |
-| **Morris** | O(n) | **O(1)** ✓ | Temporarily | Space-constrained, follow-up |
-| **Parent Pointer** | O(n) | **O(1)** | No (needs parent) | Upward traversal |
-
-**When to Use Morris:**
-- ✅ Follow-up asks for O(1) space solution
-- ✅ Space is constrained (embedded systems)
-- ✅ Tree modifications are acceptable (restored later)
-- ✅ In-order or pre-order traversal
-- ✅ Need to demonstrate advanced knowledge
-
-**When NOT to Use Morris:**
-- ❌ Post-order traversal needed (too complex)
-- ❌ Cannot modify tree structure at all
-- ❌ Simplicity/readability more important
-- ❌ Multi-threaded environment (race conditions)
-
----
-
-##### Interview Tips
-
-**1. Common Mistakes:**
-- Forgetting to remove threads (leaves tree corrupted)
-- Infinite loop: not handling `predecessor.right == current`
-- Confusing first visit vs second visit
-- Off-by-one errors when finding predecessor
-
-**2. Key Recognition:**
-```
-Interviewer: "Can you do this with O(1) space?"
-→ Think Morris Traversal (if in-order or pre-order)
-
-Interviewer: "Can you do tree traversal without recursion?"
-→ Can use iterative stack OR Morris for O(1) space
-```
-
-**3. Template Selection:**
-```python
-# In-order: Process on SECOND visit (when thread exists)
-if predecessor.right == current:
-    result.append(current.val)  # Process here
-
-# Pre-order: Process on FIRST visit (when creating thread)
-if predecessor.right is None:
-    result.append(current.val)  # Process here
-```
-
-**4. Interview Talking Points:**
-- "Morris uses threaded binary tree concept"
-- "Trade-off: O(1) space vs temporary tree modification"
-- "Each edge visited at most twice → still O(n) time"
-- "Tree structure is fully restored after traversal"
-
-**5. Follow-up Questions:**
-- Q: "Does Morris work for any tree traversal?"
-  - A: Best for in-order and pre-order. Post-order is complex.
-- Q: "Is Morris faster than recursion?"
-  - A: Same O(n) time, but better space. Slightly more overhead from threading.
-- Q: "Is it thread-safe?"
-  - A: No, temporary modifications cause race conditions.
-
----
-
-##### Advanced: Finding Kth Smallest in BST (O(1) Space)
-
-```python
-# LC 230 - Kth Smallest Element in BST (Morris)
-def kthSmallest(root, k):
-    """
-    Find kth smallest in BST using Morris In-order.
-
-    Time: O(n) worst-case, O(k) average (can stop early)
-    Space: O(1)
-    """
-    count = 0
-    current = root
-    result = None
-
-    while current:
-        if current.left is None:
-            # Process current
-            count += 1
-            if count == k:
-                result = current.val
-                break  # Early termination
-            current = current.right
-        else:
-            # Find predecessor
-            predecessor = current.left
-            while predecessor.right and predecessor.right != current:
-                predecessor = predecessor.right
-
-            if predecessor.right is None:
-                # Create thread
-                predecessor.right = current
-                current = current.left
-            else:
-                # Remove thread, process current
-                predecessor.right = None
-                count += 1
-                if count == k:
-                    result = current.val
-                    break  # Early termination
-                current = current.right
-
-    # Clean up any remaining threads if early terminated
-    # (In practice, rarely needed for interview)
-
-    return result
-```
-
-```java
-// Java - Kth Smallest Element in BST (Morris)
-/**
- * LC 230 - Kth Smallest Element in BST
- *
- * time = O(N) worst, O(K) average
- * space = O(1)
- */
-public int kthSmallest(TreeNode root, int k) {
-    int count = 0;
-    TreeNode current = root;
-    int result = -1;
-
-    while (current != null) {
-        if (current.left == null) {
-            count++;
-            if (count == k) {
-                result = current.val;
-                break;
-            }
-            current = current.right;
-        } else {
-            TreeNode predecessor = current.left;
-            while (predecessor.right != null && predecessor.right != current) {
-                predecessor = predecessor.right;
-            }
-
-            if (predecessor.right == null) {
-                predecessor.right = current;
-                current = current.left;
-            } else {
-                predecessor.right = null;
-                count++;
-                if (count == k) {
-                    result = current.val;
-                    break;
-                }
-                current = current.right;
-            }
-        }
-    }
-
-    return result;
-}
-```
-
-**Key Optimization:** Can terminate early when count reaches k, avoiding full tree traversal.
-
----
-
-##### Summary: Morris Traversal Patterns
-
-| Aspect | In-Order | Pre-Order | Post-Order |
-|--------|----------|-----------|------------|
-| **Process Timing** | Second visit (thread exists) | First visit (creating thread) | Reverse right spine |
-| **Complexity** | Simple | Simple | Complex |
-| **Interview Frequency** | ⭐⭐⭐⭐⭐ High | ⭐⭐⭐ Medium | ⭐ Rare |
-| **Use Cases** | BST problems, sorted order | Tree cloning, path problems | Avoid, use stack instead |
-
-**Remember:** Morris is impressive in interviews but recursive/iterative is often clearer. Use Morris when explicitly asked for O(1) space.
+| Traversal Method | Time | Space | Modifies Tree |
+|-----------------|------|-------|---------------|
+| Recursive | O(n) | O(h) | No |
+| Iterative Stack | O(n) | O(h) | No |
+| **Morris** | O(n) | **O(1)** | Temporarily (restored) |
 
 ---
 
@@ -5261,3 +4784,136 @@ class Solution:
 - **Tries**: Prefix trees for string operations  
 - **Segment Trees**: For range query problems
 - **Graph Algorithms**: Trees are special cases of graphs
+
+---
+
+## Missing Google Patterns
+
+### Binary Lifting — LCA in O(log n) per Query
+
+```python
+import math
+
+def build_binary_lifting(root, n):
+    """Preprocess tree for O(log n) LCA queries."""
+    LOG = max(1, int(math.log2(n)) + 1)
+    parent = [[-1] * n for _ in range(LOG)]
+    depth = [0] * n
+
+    # BFS to set parent[0] and depth
+    from collections import deque
+    queue = deque([root.val])
+    visited = {root.val}
+    # ... (wire up parent[0][v] = direct parent of v)
+
+    # Fill sparse table: parent[k][v] = 2^k-th ancestor of v
+    for k in range(1, LOG):
+        for v in range(n):
+            if parent[k-1][v] != -1:
+                parent[k][v] = parent[k-1][parent[k-1][v]]
+    return parent, depth
+
+def lca(u, v, parent, depth, LOG):
+    # Bring u and v to the same depth
+    if depth[u] < depth[v]: u, v = v, u
+    diff = depth[u] - depth[v]
+    for k in range(LOG):
+        if (diff >> k) & 1:
+            u = parent[k][u]
+    if u == v: return u
+    # Move both up until they meet
+    for k in range(LOG - 1, -1, -1):
+        if parent[k][u] != parent[k][v]:
+            u = parent[k][u]; v = parent[k][v]
+    return parent[0][u]
+```
+
+**Time**: O(n log n) preprocessing, O(log n) per LCA query.
+**Use for**: LC 236 (LCA) when query count is large, path sum between any two nodes.
+
+### Re-rooting DP — Answer for Every Root
+
+```python
+# LC 310 Minimum Height Trees — find roots minimizing tree height
+# Equivalent: find centroid(s) of tree
+def findMinHeightTrees(n, edges):
+    if n == 1: return [0]
+    from collections import defaultdict, deque
+    graph = defaultdict(set)
+    for u, v in edges:
+        graph[u].add(v); graph[v].add(u)
+
+    leaves = deque(i for i in range(n) if len(graph[i]) == 1)
+    remaining = n
+    while remaining > 2:
+        remaining -= len(leaves)
+        new_leaves = deque()
+        while leaves:
+            leaf = leaves.popleft()
+            neighbor = next(iter(graph[leaf]))
+            graph[neighbor].remove(leaf)
+            if len(graph[neighbor]) == 1:
+                new_leaves.append(neighbor)
+        leaves = new_leaves
+    return list(leaves)
+```
+
+### Tree Serialization / Deserialization — LC 297
+
+```python
+class Codec:
+    def serialize(self, root):
+        if not root: return 'N'
+        return f"{root.val},{self.serialize(root.left)},{self.serialize(root.right)}"
+
+    def deserialize(self, data):
+        vals = iter(data.split(','))
+        def build():
+            v = next(vals)
+            if v == 'N': return None
+            node = TreeNode(int(v))
+            node.left = build()
+            node.right = build()
+            return node
+        return build()
+```
+
+### Morris Traversal (O(1) Space) — Compact Reference
+
+```python
+# In-order Morris Traversal — O(n) time, O(1) space
+def inorderMorris(root):
+    result = []
+    curr = root
+    while curr:
+        if not curr.left:
+            result.append(curr.val)
+            curr = curr.right
+        else:
+            # Find in-order predecessor
+            pred = curr.left
+            while pred.right and pred.right is not curr:
+                pred = pred.right
+            if not pred.right:          # Thread: set predecessor → curr
+                pred.right = curr
+                curr = curr.left
+            else:                        # Unthread: restore tree
+                pred.right = None
+                result.append(curr.val)
+                curr = curr.right
+    return result
+# Pre/post-order variants follow same threading; O(n) time, O(1) space.
+```
+
+### Google Interview Tips for Trees
+| Signal | Pattern |
+|--------|---------|
+| "diameter / longest path" | Post-order: return height, track max diameter |
+| "lowest common ancestor" | Recursive: if root is one of nodes, return root |
+| "LCA with many queries" | Binary lifting (sparse table) |
+| "answer for each node as root" | Re-rooting DP (2 DFS) |
+| "serialize/deserialize tree" | Pre-order DFS with null markers |
+| "validate BST" | In-order should be strictly increasing |
+| "balanced BST from sorted array" | Mid-point recursion |
+| "O(1) space traversal" | Morris threading |
+| "path sum between any two nodes" | Post-order: track max path through each node |
