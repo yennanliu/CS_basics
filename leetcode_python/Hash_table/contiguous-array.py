@@ -27,6 +27,29 @@ nums[i] is either 0 or 1.
 """
 
 # V0
+class Solution(object):
+    def findMaxLength(self, nums):
+        mp = {0: -1}  # prefix_sum -> first index
+        prefix = 0
+        max_len = 0
+
+        for i, num in enumerate(nums):
+
+            # treat 0 as -1
+            if num == 0:
+                prefix -= 1
+            else:
+                prefix += 1
+
+            if prefix in mp:
+                max_len = max(max_len, i - mp[prefix])
+            else:
+                mp[prefix] = i
+
+        return max_len
+
+
+# V0
 # IDEA : PREFIX SUM, LC 1248,560
 # https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/count-number-of-nice-subarrays.py
 from collections import defaultdict
