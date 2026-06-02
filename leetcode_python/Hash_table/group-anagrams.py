@@ -44,6 +44,49 @@ class Solution:
             res[k].append(item)  # if same, put all the same string into dict k 
         return [res[x] for x in res]  # output the result 
 
+
+
+# V0-1
+# Time: O(N * K log K)
+# Space: O(N * K)
+class Solution(object):
+    def groupAnagrams(self, strs):
+        groups = {}
+
+        for s in strs:
+            key = "".join(sorted(s))
+
+            if key not in groups:
+                groups[key] = []
+
+            groups[key].append(s)
+
+        return list(groups.values())
+
+
+# V0-0-1
+# Time: O(N * K)
+# Space: O(N * K)
+class Solution(object):
+    def groupAnagrams(self, strs):
+        groups = {}
+
+        for s in strs:
+            count = [0] * 26
+
+            for c in s:
+                count[ord(c) - ord('a')] += 1
+
+            key = tuple(count)
+
+            if key not in groups:
+                groups[key] = []
+
+            groups[key].append(s)
+
+        return list(groups.values())
+
+
 # V0'
 # IDEA : SORT LIST strs.sort(key = lambda x : ''.join(sorted(x)) )
 class Solution:
