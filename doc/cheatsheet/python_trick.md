@@ -1378,3 +1378,692 @@ Out[13]: '0001'
 In [14]: x.zfill(10)
 Out[14]: '0000000001'
 ```
+
+### 1-30) `collections.defaultdict`
+```python
+# defaultdict never raises KeyError — returns a default value for missing keys
+from collections import defaultdict
+
+#----------------------------
+# example 1 : int (default 0)
+#----------------------------
+d = defaultdict(int)
+for ch in "aabbbc":
+    d[ch] += 1
+print(dict(d))  # {'a': 2, 'b': 3, 'c': 1}
+
+#----------------------------
+# example 2 : list (default [])
+#----------------------------
+graph = defaultdict(list)
+edges = [(0,1),(0,2),(1,3)]
+for u, v in edges:
+    graph[u].append(v)
+    graph[v].append(u)
+# graph[0] -> [1, 2],  graph[99] -> []  (no KeyError)
+
+#----------------------------
+# example 3 : set (default set())
+#----------------------------
+d = defaultdict(set)
+d['key'].add(1)
+d['key'].add(2)
+print(d['key'])  # {1, 2}
+
+#----------------------------
+# example 4 : nested defaultdict (adjacency matrix with weights)
+#----------------------------
+dist = defaultdict(lambda: defaultdict(lambda: float('inf')))
+dist[0][1] = 5
+print(dist[0][1])   # 5
+print(dist[0][99])  # inf
+```
+
+### 1-31) `collections.Counter`
+```python
+from collections import Counter
+
+#----------------------------
+# basic usage
+#----------------------------
+c = Counter("aabbbc")
+print(c)            # Counter({'b': 3, 'a': 2, 'c': 1})
+print(c['b'])       # 3
+print(c['z'])       # 0  (no KeyError, returns 0)
+
+# most_common(k) : top k frequent elements
+print(c.most_common(2))   # [('b', 3), ('a', 2)]
+
+# Counter arithmetic
+c1 = Counter("aab")
+c2 = Counter("abc")
+print(c1 + c2)  # Counter({'a': 3, 'b': 2, 'c': 1})
+print(c1 - c2)  # Counter({'a': 1})  (only positive counts)
+print(c1 & c2)  # Counter({'a': 1, 'b': 1})  intersection (min)
+print(c1 | c2)  # Counter({'a': 2, 'b': 1, 'c': 1})  union (max)
+
+# update (add) vs subtract
+c = Counter({'a': 3})
+c.update({'a': 1, 'b': 2})
+print(c)    # Counter({'a': 4, 'b': 2})
+c.subtract({'a': 2})
+print(c)    # Counter({'a': 2, 'b': 2})
+
+# LC 347 Top K Frequent Elements
+from collections import Counter
+def topKFrequent(nums, k):
+    return [x for x, _ in Counter(nums).most_common(k)]
+```
+
+### 1-32) `collections.deque` (Double-Ended Queue)
+```python
+from collections import deque
+
+# O(1) append/pop from BOTH ends (list.pop(0) is O(n))
+d = deque([1, 2, 3])
+
+d.append(4)       # [1, 2, 3, 4]
+d.appendleft(0)   # [0, 1, 2, 3, 4]
+d.pop()           # removes 4  -> [0, 1, 2, 3]
+d.popleft()       # removes 0  -> [1, 2, 3]
+
+# maxlen: auto-evicts oldest element (sliding window)
+d = deque(maxlen=3)
+for i in range(5):
+    d.append(i)
+print(d)  # deque([2, 3, 4], maxlen=3)
+
+#----------------------------
+# BFS template with deque
+#----------------------------
+def bfs(graph, start):
+    visited = set([start])
+    queue = deque([start])
+    while queue:
+        node = queue.popleft()
+        for neighbor in graph[node]:
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append(neighbor)
+
+#----------------------------
+# Monotonic deque (LC 239 Sliding Window Maximum)
+#----------------------------
+def maxSlidingWindow(nums, k):
+    d = deque()   # stores indices, decreasing order of values
+    result = []
+    for i, num in enumerate(nums):
+        while d and nums[d[-1]] <= num:
+            d.pop()
+        d.append(i)
+        if d[0] == i - k:   # front out of window
+            d.popleft()
+        if i >= k - 1:
+            result.append(nums[d[0]])
+    return result
+```
+
+### 1-33) `any()` operator
+```python
+# Returns True if ANY element in iterable is True (short-circuits)
+In [1]: any([False, False, True])
+Out[1]: True
+
+In [2]: any([False, False, False])
+Out[2]: False
+
+In [3]: any(x > 3 for x in [1, 2, 5])
+Out[3]: True
+
+# Complement to all():
+# all() -> every element must be True
+# any() -> at least one element must be True
+```
+
+### 1-34) `enumerate()`
+```python
+# Returns (index, value) pairs — avoids manual index tracking
+fruits = ['apple', 'banana', 'cherry']
+
+for i, v in enumerate(fruits):
+    print(i, v)
+# 0 apple
+# 1 banana
+# 2 cherry
+
+# start parameter
+for i, v in enumerate(fruits, start=1):
+    print(i, v)
+# 1 apple  2 banana  3 cherry
+
+# Build index map (very common in LC)
+s = "abcba"
+idx_map = {v: i for i, v in enumerate(s)}
+print(idx_map)  # {'a': 4, 'b': 3, 'c': 2}  (last occurrence)
+```
+
+### 1-35) String character operations: `ord()`, `chr()`, `isalpha()`, `isdigit()`
+```python
+#-------------------------------
+# ord() : char -> ASCII int
+# chr() : ASCII int -> char
+#-------------------------------
+print(ord('a'))   # 97
+print(ord('A'))   # 65
+print(ord('0'))   # 48
+
+print(chr(97))    # 'a'
+print(chr(65))    # 'A'
+
+# Common pattern: normalize letter to 0-25 index
+ch = 'c'
+idx = ord(ch) - ord('a')   # 2
+
+# Shift a character by n positions
+def shift(ch, n):
+    return chr((ord(ch) - ord('a') + n) % 26 + ord('a'))
+
+#-------------------------------
+# String check methods
+#-------------------------------
+"abc".isalpha()     # True  — all letters
+"abc123".isalpha()  # False
+"123".isdigit()     # True  — all digits
+"abc123".isalnum()  # True  — letters + digits
+"  ".isspace()      # True
+"ABC".isupper()     # True
+"abc".islower()     # True
+
+# LC 125 Valid Palindrome
+def isPalindrome(s):
+    filtered = [c.lower() for c in s if c.isalnum()]
+    return filtered == filtered[::-1]
+```
+
+### 1-36) Set operations
+```python
+a = {1, 2, 3, 4}
+b = {3, 4, 5, 6}
+
+# Basic ops
+a | b    # union        {1, 2, 3, 4, 5, 6}
+a & b    # intersection {3, 4}
+a - b    # difference   {1, 2}
+a ^ b    # symmetric diff {1, 2, 5, 6}
+
+# Membership: O(1) average
+3 in a   # True
+
+# Mutation
+a.add(5)
+a.discard(99)   # no error if missing (vs remove() which raises KeyError)
+a.remove(1)     # raises KeyError if missing
+
+# Set comprehension
+squares = {x**2 for x in range(5)}   # {0, 1, 4, 9, 16}
+
+# Freeze (hashable, usable as dict key)
+fs = frozenset([1, 2, 3])
+```
+
+### 1-37) Dict `get()`, `setdefault()`, comprehension
+```python
+d = {'a': 1, 'b': 2}
+
+# get(key, default) — safe access
+d.get('c', 0)     # 0  (no KeyError)
+d.get('a', 0)     # 1
+
+# setdefault(key, default) — insert if missing, return value
+d.setdefault('c', []).append(3)   # d['c'] = [3]
+d.setdefault('c', []).append(4)   # d['c'] = [3, 4]
+
+# dict comprehension
+squares = {x: x**2 for x in range(5)}
+# {0: 0, 1: 1, 2: 4, 3: 9, 4: 16}
+
+# invert a dict (assuming unique values)
+inv = {v: k for k, v in squares.items()}
+
+# filter dict
+evens = {k: v for k, v in squares.items() if v % 2 == 0}
+```
+
+### 1-38) Infinity and boundary values
+```python
+# Use float('inf') / float('-inf') instead of sys.maxsize for clarity
+INF = float('inf')
+NEG_INF = float('-inf')
+
+# Works with min/max comparisons
+min_val = float('inf')
+for x in [3, 1, 4, 1, 5]:
+    min_val = min(min_val, x)
+print(min_val)  # 1
+
+# Common in DP initialization
+dp = [[float('inf')] * n for _ in range(m)]
+
+# Python int has no overflow — safe to use large numbers
+# But float('inf') is cleaner for "unbounded" semantics
+```
+
+### 1-39) 2D array (matrix) initialization
+```python
+#-------------------------------------------------
+# CORRECT way — use list comprehension (independent rows)
+#-------------------------------------------------
+m, n = 3, 4
+grid = [[0] * n for _ in range(m)]
+grid[0][0] = 1
+# Only grid[0][0] is changed
+
+#-------------------------------------------------
+# WRONG way — all rows share the same list!
+#-------------------------------------------------
+bad = [[0] * n] * m
+bad[0][0] = 1
+# ALL rows become [1, 0, 0, 0]  — common bug!
+
+#-------------------------------------------------
+# Common DP patterns
+#-------------------------------------------------
+# 1D DP
+dp = [0] * (n + 1)
+
+# 2D DP (m rows, n cols, filled with False)
+dp = [[False] * (n + 1) for _ in range(m + 1)]
+
+# Fill with infinity
+dp = [[float('inf')] * n for _ in range(m)]
+```
+
+### 1-40) `nonlocal` and `global` in nested functions
+```python
+# nonlocal: modify a variable in the ENCLOSING (not global) scope
+def outer():
+    count = 0
+    def inner():
+        nonlocal count
+        count += 1
+    inner()
+    inner()
+    print(count)  # 2
+
+# Without nonlocal, count += 1 raises UnboundLocalError
+
+# global: modify a module-level variable inside a function
+total = 0
+def add(x):
+    global total
+    total += x
+
+# Common LC pattern: DFS with mutable result
+def maxDepth(root):
+    res = [0]
+    def dfs(node, depth):
+        if not node:
+            return
+        res[0] = max(res[0], depth)  # list trick avoids nonlocal
+        dfs(node.left, depth + 1)
+        dfs(node.right, depth + 1)
+    dfs(root, 1)
+    return res[0]
+```
+
+### 1-41) `min()` / `max()` with `key`
+```python
+# key= works exactly like sort's key= parameter
+nums = [-3, -1, 2, 4]
+print(max(nums, key=abs))   # -3  (largest absolute value)
+print(min(nums, key=abs))   # -1  (smallest absolute value)
+
+# With iterable of tuples
+points = [(1, 5), (3, 2), (2, 8)]
+print(max(points, key=lambda p: p[1]))  # (2, 8)
+
+# min/max with default (avoids error on empty iterable)
+print(min([], default=0))   # 0
+
+# clamp a value between lo and hi
+val = max(lo, min(val, hi))
+```
+
+### 1-42) Ternary (conditional) expression
+```python
+# syntax: <value_if_true> if <condition> else <value_if_false>
+x = 5
+result = "even" if x % 2 == 0 else "odd"   # "odd"
+
+# Nested ternary (keep shallow — hard to read beyond two levels)
+sign = "positive" if x > 0 else ("zero" if x == 0 else "negative")
+
+# Common LC use
+ans = left if left else right          # return whichever is not None
+val = node.val if node else 0
+```
+
+### 1-43) `pow(x, n, mod)` — fast modular exponentiation
+```python
+# Built-in 3-arg pow is O(log n), much faster than (x**n) % mod
+MOD = 10**9 + 7
+
+print(pow(2, 10, MOD))    # 1024
+print(pow(2, 100, MOD))   # 976371285  (computed efficiently)
+
+# Modular inverse (when mod is prime): pow(a, mod-2, mod)
+inv = pow(3, MOD - 2, MOD)   # modular inverse of 3
+
+# LC 50 Pow(x, n) — manual fast power
+def myPow(x, n):
+    if n < 0:
+        x, n = 1 / x, -n
+    res = 1
+    while n:
+        if n % 2 == 1:
+            res *= x
+        x *= x
+        n //= 2
+    return res
+```
+
+### 1-44) `reduce()` from functools
+```python
+from functools import reduce
+
+# reduce(func, iterable[, initializer])
+# Applies func cumulatively: func(func(a, b), c) ...
+
+product = reduce(lambda a, b: a * b, [1, 2, 3, 4])   # 24
+total   = reduce(lambda a, b: a + b, [1, 2, 3, 4], 0) # 10
+
+# XOR all elements (LC 136 Single Number)
+from functools import reduce
+import operator
+result = reduce(operator.xor, [4, 1, 2, 1, 2])  # 4
+# equivalent to:
+result = reduce(lambda a, b: a ^ b, [4, 1, 2, 1, 2])
+```
+
+### 1-45) String methods cheatsheet
+```python
+s = "  Hello, World!  "
+
+# Strip whitespace (or specific chars)
+s.strip()          # "Hello, World!"
+s.lstrip()         # "Hello, World!  "
+s.rstrip()         # "  Hello, World!"
+s.strip("!")       # "  Hello, World!  " (only strips specified chars from ends)
+
+# Case
+s.lower()          # "  hello, world!  "
+s.upper()          # "  HELLO, WORLD!  "
+s.title()          # "  Hello, World!  "
+s.swapcase()       # "  hELLO, wORLD!  "
+
+# Search
+s.find("World")    # 9  (-1 if not found)
+s.index("World")   # 9  (raises ValueError if not found)
+s.count("l")       # 3
+s.startswith("  H")  # True
+s.endswith("!  ")    # True
+
+# Replace and join
+s.replace("World", "Python")   # "  Hello, Python!  "
+", ".join(["a", "b", "c"])     # "a, b, c"
+"a,b,c".split(",")             # ['a', 'b', 'c']
+
+# Reverse a string
+rev = s[::-1]
+
+# String multiplication
+"ab" * 3   # "ababab"
+"-" * 10   # "----------"
+
+# Check if string is a palindrome
+def is_palindrome(s):
+    return s == s[::-1]
+```
+
+### 1-46) Useful built-ins: `sorted()`, `reversed()`, `sum()`, `abs()`
+```python
+# sorted() returns a NEW list; list.sort() is in-place
+nums = [3, 1, 4, 1, 5]
+print(sorted(nums))            # [1, 1, 3, 4, 5]  — nums unchanged
+print(sorted(nums, reverse=True))  # [5, 4, 3, 1, 1]
+
+# Sort list of tuples: primary key asc, secondary key desc
+pairs = [(1, 3), (2, 1), (1, 5)]
+pairs.sort(key=lambda x: (x[0], -x[1]))
+# [(1, 5), (1, 3), (2, 1)]
+
+# reversed() returns an iterator
+for x in reversed([1, 2, 3]):
+    print(x)  # 3 2 1
+
+list(reversed([1,2,3]))  # [3, 2, 1]
+
+# sum() with start
+sum([1, 2, 3], 10)   # 16
+
+# sum of 2D list
+matrix = [[1,2],[3,4]]
+total = sum(sum(row) for row in matrix)  # 10
+
+# abs()
+abs(-5)    # 5
+abs(3+4j)  # 5.0  (complex magnitude)
+```
+
+### 1-47) `map()` and generator expressions
+```python
+# map(func, iterable) — lazy, returns iterator
+nums = ["1", "2", "3"]
+ints = list(map(int, nums))    # [1, 2, 3]
+
+# map with lambda
+doubled = list(map(lambda x: x * 2, [1, 2, 3]))  # [2, 4, 6]
+
+# Generator expression (lazy list comprehension) — memory efficient
+gen = (x**2 for x in range(1000000))   # nothing computed yet
+total = sum(x**2 for x in range(1000000))  # computed on the fly
+
+# Prefer generator expression over list comprehension inside sum/any/all/max/min
+max_val = max(abs(x) for x in nums)
+has_neg = any(x < 0 for x in nums)
+```
+
+### 1-48) `int` tricks: integer division `//`, bit operations
+```python
+#-------------------------------
+# Integer division (floor division)
+#-------------------------------
+7 // 2    # 3
+-7 // 2   # -4  (rounds toward -inf, NOT toward 0!)
+int(-7/2) # -3  (truncation toward 0)
+
+# Safe mid-point (avoids overflow in other languages)
+lo, hi = 0, 100
+mid = (lo + hi) // 2
+
+#-------------------------------
+# Bit operations (common in LC)
+#-------------------------------
+# AND, OR, XOR, NOT
+5 & 3    # 1   (101 & 011 = 001)
+5 | 3    # 7   (101 | 011 = 111)
+5 ^ 3    # 6   (101 ^ 011 = 110)
+~5       # -6  (bitwise NOT: ~x = -(x+1))
+
+# Shift
+5 << 1   # 10  (multiply by 2)
+5 >> 1   # 2   (floor divide by 2)
+
+# Check/set/clear bit i
+x = 13          # 1101
+x & (1 << i)    # check bit i (non-zero if set)
+x | (1 << i)    # set bit i
+x & ~(1 << i)   # clear bit i
+x ^ (1 << i)    # flip bit i
+
+# Count set bits
+bin(13).count('1')   # 3
+# or: use Brian Kernighan
+def count_bits(n):
+    count = 0
+    while n:
+        n &= n - 1   # clear lowest set bit
+        count += 1
+    return count
+
+# x & (x-1) removes lowest set bit — useful for power-of-2 check
+def is_power_of_two(n):
+    return n > 0 and (n & (n - 1)) == 0
+```
+
+### 1-49) `isinstance()` and type checking
+```python
+isinstance(3, int)        # True
+isinstance(3.0, float)    # True
+isinstance("hi", str)     # True
+isinstance([], list)      # True
+isinstance({}, dict)      # True
+
+# Check multiple types at once
+isinstance(3, (int, float))   # True
+
+# type() for exact type (no inheritance)
+type(3) == int    # True
+type(True) == int # False  (bool is subclass of int, but type() is exact)
+isinstance(True, int)  # True  (True IS an int!)
+```
+
+### 1-50) Common LeetCode patterns cheatsheet
+```python
+#-------------------------------
+# Sliding window template
+#-------------------------------
+def sliding_window(s, k):
+    left = 0
+    window = {}
+    result = 0
+    for right, ch in enumerate(s):
+        window[ch] = window.get(ch, 0) + 1
+        while len(window) > k:       # shrink condition
+            lch = s[left]
+            window[lch] -= 1
+            if window[lch] == 0:
+                del window[lch]
+            left += 1
+        result = max(result, right - left + 1)
+    return result
+
+#-------------------------------
+# Binary search template
+#-------------------------------
+def binary_search(nums, target):
+    lo, hi = 0, len(nums) - 1
+    while lo <= hi:
+        mid = (lo + hi) // 2
+        if nums[mid] == target:
+            return mid
+        elif nums[mid] < target:
+            lo = mid + 1
+        else:
+            hi = mid - 1
+    return -1
+
+# Binary search on answer (find leftmost valid value)
+def binary_search_left(lo, hi, feasible):
+    while lo < hi:
+        mid = (lo + hi) // 2
+        if feasible(mid):
+            hi = mid
+        else:
+            lo = mid + 1
+    return lo
+
+#-------------------------------
+# DFS template (iterative)
+#-------------------------------
+def dfs_iterative(graph, start):
+    visited = set()
+    stack = [start]
+    while stack:
+        node = stack.pop()
+        if node in visited:
+            continue
+        visited.add(node)
+        for neighbor in graph[node]:
+            stack.append(neighbor)
+
+#-------------------------------
+# Backtracking template
+#-------------------------------
+def backtrack(result, current, choices):
+    if is_complete(current):
+        result.append(current[:])
+        return
+    for choice in choices:
+        current.append(choice)
+        backtrack(result, current, next_choices(choice))
+        current.pop()
+
+#-------------------------------
+# Union-Find (Disjoint Set Union)
+#-------------------------------
+class UnionFind:
+    def __init__(self, n):
+        self.parent = list(range(n))
+        self.rank = [0] * n
+
+    def find(self, x):
+        if self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])  # path compression
+        return self.parent[x]
+
+    def union(self, x, y):
+        px, py = self.find(x), self.find(y)
+        if px == py:
+            return False
+        if self.rank[px] < self.rank[py]:
+            px, py = py, px
+        self.parent[py] = px
+        if self.rank[px] == self.rank[py]:
+            self.rank[px] += 1
+        return True
+
+#-------------------------------
+# Trie (Prefix Tree)
+#-------------------------------
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.is_end = False
+
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+
+    def insert(self, word):
+        node = self.root
+        for ch in word:
+            node = node.children.setdefault(ch, TrieNode())
+        node.is_end = True
+
+    def search(self, word):
+        node = self.root
+        for ch in word:
+            if ch not in node.children:
+                return False
+            node = node.children[ch]
+        return node.is_end
+
+    def startsWith(self, prefix):
+        node = self.root
+        for ch in prefix:
+            if ch not in node.children:
+                return False
+            node = node.children[ch]
+        return True
+```
