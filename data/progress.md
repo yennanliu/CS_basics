@@ -1,5 +1,10 @@
 # Progress
 
+# 2026-06-02
+
+- array.md + hash_map.md
+- Do 3 Blind 75
+
 # 2026-06-01
 
 - Needcode DP playlist
