@@ -33,6 +33,29 @@ Constraints:
 """
 
 # V0
+# IDEA : PREFIX SUM, HASHMAP
+class Solution(object):
+    def subarraySum(self, nums, k):
+        if nums is None:
+            return 0
+
+        count_map = {0: 1}  # prefix sum frequency
+        prefix = 0
+        res = 0
+
+        for num in nums:
+            prefix += num
+
+            # check if there is a prefix that makes subarray sum = k
+            if prefix - k in count_map:
+                res += count_map[prefix - k]
+
+            # update frequency of current prefix
+            count_map[prefix] = count_map.get(prefix, 0) + 1
+
+        return res
+
+# V0
 # IDEA : PREFIX SUM, LC 1248
 # https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/count-number-of-nice-subarrays.py
 from collections import defaultdict
