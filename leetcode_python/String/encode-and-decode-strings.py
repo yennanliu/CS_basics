@@ -69,6 +69,77 @@ https://leetcode.ca/2016-08-27-271-Encode-and-Decode-Strings/
 
 """
 
+
+# V0
+# Time: O(N)
+# Space: O(N)
+class Codec:
+
+    def encode(self, strs):
+        if strs is None:
+            return ""
+
+        res = ""
+
+        for s in strs:
+            res += str(len(s)) + "#" + s
+
+        return res
+
+    def decode(self, s):
+        if not s:
+            return []
+
+        res = []
+        i = 0
+
+        while i < len(s):
+            j = i
+
+            while s[j] != "#":
+                j += 1
+
+            length = int(s[i:j])
+
+            word = s[j + 1 : j + 1 + length]
+            res.append(word)
+
+            i = j + 1 + length
+
+        return res
+
+
+# V0-1
+# Time: O(N)
+# Space: O(N)
+class Codec:
+
+    def encode(self, strs):
+        res = ""
+
+        for s in strs:
+            res += str(len(s)) + "#" + s
+
+        return res
+
+    def decode(self, s):
+        res = []
+        i = 0
+
+        while i < len(s):
+            sep = s.find("#", i)
+
+            length = int(s[i:sep])
+
+            word = s[sep + 1 : sep + 1 + length]
+
+            res.append(word)
+
+            i = sep + 1 + length
+
+        return res
+
+
 # V0 
 # encode : len(element) + "$#"
 # decode : find the "#" and get the len(element) -> get original element
