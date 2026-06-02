@@ -28,6 +28,59 @@ Constraints:
 """
 
 # V0
+# time: O(N log N)
+# space: O(N)
+class Solution(object):
+    def longestConsecutive(self, nums):
+        # edge
+        if not nums:
+            return 0
+
+        max_len = 1
+
+        s = set()
+        for x in nums:
+            s.add(x)
+
+        tmp = []
+        for x in s:
+            tmp.append(x)
+
+        # sort ascending
+        tmp.sort()
+
+        l = 0
+
+        for r in range(1, len(tmp)):
+            if tmp[r] == tmp[r - 1] + 1:
+                max_len = max(max_len, r - l + 1)
+            else:
+                l = r
+
+        return max_len
+
+
+# V0-1
+# time: O(N) # NOTE !!!
+# space: O(N)
+class Solution(object):
+    def longestConsecutive(self, nums):
+        num_set = set(nums)
+        longest = 0
+
+        for num in num_set:
+            if num - 1 not in num_set:
+                length = 1
+
+                while num + length in num_set:
+                    length += 1
+
+                longest = max(longest, length)
+
+        return longest
+
+
+# V0
 # IDEA : sliding window
 class Solution(object):
     def longestConsecutive(self, nums):
