@@ -34,6 +34,46 @@ Constraints:
 # IDEA : for loop + 2 sum
 class Solution(object):
     def threeSum(self, nums):
+        if nums is None or len(nums) < 3:
+            return []
+
+        res = set()
+
+        for i in range(len(nums)):
+            target = -nums[i]
+
+            my_map = {}  # reset for each i
+
+            """
+            NOTE !!!
+             -> we don't need below implementation (will cause TLE)
+
+                #_nums = nums[:i] + nums[i+1:]
+                #for j, x in enumerate(_nums):
+
+             -> this one is enough : for j, x in enumerate(nums[i+1:])
+            """
+            for j in range(i + 1, len(nums)):
+                complement = target - nums[j]
+
+                if complement in my_map:
+                    # V1
+                    # tmp = [cur, x, -x-cur]
+                    # tmp.sort()
+
+                    # V2
+                    triplet = tuple(sorted([nums[i], nums[j], complement]))
+                    res.add(triplet)
+
+                my_map[nums[j]] = j
+
+        return [list(t) for t in res]
+
+
+# V0
+# IDEA : for loop + 2 sum
+class Solution(object):
+    def threeSum(self, nums):
         # edge case
         if not nums or len(nums) < 3:
             return []
