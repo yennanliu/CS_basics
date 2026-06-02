@@ -3,7 +3,10 @@
 # 2026-06-02
 
 - array.md + hash_map.md
-- Do 3 Blind 75
+- Blind 75
+	- array, hashmap
+- needcode 150
+	- array, hashmap
 
 # 2026-06-01
 

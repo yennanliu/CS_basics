@@ -53,6 +53,60 @@ board[i][j] is a digit 1-9 or '.'.
 
 """
 
+
+# V0
+class Solution(object):
+    def isValidSudoku(self, board):
+        n = 9
+
+        for i in range(n):
+            if not self.check_row(board, i):
+                return False
+            if not self.check_col(board, i):
+                return False
+
+        for r in range(0, 9, 3):
+            for c in range(0, 9, 3):
+                if not self.check_box(board, r, c):
+                    return False
+
+        return True
+
+    def check_row(self, board, r):
+        s = set()
+        for c in range(9):
+            val = board[r][c]
+            if val == ".":
+                continue
+            if val in s:
+                return False
+            s.add(val)
+        return True
+
+    def check_col(self, board, c):
+        s = set()
+        for r in range(9):
+            val = board[r][c]
+            if val == ".":
+                continue
+            if val in s:
+                return False
+            s.add(val)
+        return True
+
+    def check_box(self, board, r0, c0):
+        s = set()
+        for r in range(r0, r0 + 3):
+            for c in range(c0, c0 + 3):
+                val = board[r][c]
+                if val == ".":
+                    continue
+                if val in s:
+                    return False
+                s.add(val)
+        return True
+
+
 # V0
 class Solution(object):
     def isValidSudoku(self, board):
@@ -92,6 +146,35 @@ class Solution(object):
                 if len(set(cell)) != len(cell): # if not repetition 
                     return False
         return True
+
+
+# V0-1
+class Solution(object):
+    def isValidSudoku(self, board):
+        rows = [set() for _ in range(9)]
+        cols = [set() for _ in range(9)]
+        boxes = [set() for _ in range(9)]
+
+        for r in range(9):
+            for c in range(9):
+                val = board[r][c]
+
+                if val == ".":
+                    continue
+
+                box_id = (r // 3) * 3 + (c // 3)
+
+                if (val in rows[r] or
+                    val in cols[c] or
+                    val in boxes[box_id]):
+                    return False
+
+                rows[r].add(val)
+                cols[c].add(val)
+                boxes[box_id].add(val)
+
+        return True
+
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/82813653
