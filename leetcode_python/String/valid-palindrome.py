@@ -35,6 +35,41 @@ s consists only of printable ASCII characters.
 
 """
 
+
+# V0
+class Solution(object):
+    def isPalindrome(self, s):
+        if s is None:
+            return True
+
+        """
+        NOTE !!!
+
+        1.  In Python, isalnum() is 
+            a built-in string method used
+             to check whether all characters
+              in a string are alphanumeric 
+              (meaning they are either letters or numbers)
+
+        
+        2. `lower()` do nothing on `numeric string`
+
+            For digits, lower() has no effect
+            
+            e.g.
+
+            >>> x = "0"
+            >>> x.lower()
+            '0'
+        """
+        fixed_s = ''.join(
+            c.lower() for c in s
+            if c.isalnum()
+        )
+
+        return fixed_s == fixed_s[::-1]
+
+
 # V0 
 # IDEA : string + isalpha + isalnum
 class Solution(object):
