@@ -2,14 +2,20 @@
 
 # 2026-06-03
 
-- string.md + sliding_window.md
+- string.md
+	- TODO: LC examples
+- sliding_window.md
+	- TODO: LC examples
 - Blind 75
 	- 2 pointers, slide window
 
 
 # 2026-06-02
 
-- array.md + hash_map.md
+- array.md
+	- TODO: LC examples
+- hash_map.md
+	- TODO: LC examples
 - Blind 75
 	- array, hashmap
 - needcode 150
