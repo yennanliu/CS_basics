@@ -1,5 +1,24 @@
 # Progress
 
+
+# 2026-06-04
+
+- stack.md
+- binary_search.md
+
+- linked_list.md
+- binary_tree.md
+- bst.md
+
+- Blind 75
+	- stack, binary search, 
+	- linked list, Trees
+- needcode 150
+	- stack, binary search
+	- linked list, Trees
+
+
+
 # 2026-06-03
 
 - string.md
