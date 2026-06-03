@@ -31,6 +31,90 @@ arr is sorted in ascending order.
 
 """
 
+# V0
+# IDEA: 2 POINTERS
+class Solution(object):
+    def findClosestElements(self, arr, k, x):
+        # edge
+        if not arr or len(arr) < 1:
+          return []
+        l = 0
+        r = len(arr) - 1
+        """
+         NOTE !!!
+
+         
+         the while condition
+         """
+        while r - l + 1 > k:
+         """
+         NOTE !!!
+
+
+          if there is a tie (e.g. >=),
+          we move right pointer first (r -= 1)
+         """
+          if abs(x - arr[l]) <= abs(x - arr[r]):
+            r -= 1
+          else:
+            l += 1
+
+        """
+         NOTE !!!
+
+         
+        `r+1`
+
+        arr[l:r + 1]
+         """
+        return arr[l:r + 1]
+
+
+
+# V0-1
+# IDEA: SLIDE WINDOW
+class Solution(object):
+    def findClosestElements(self, arr, k, x):
+        l, r = 0, len(arr) - 1
+
+        # shrink window until size == k
+        while r - l + 1 > k:
+            if abs(arr[l] - x) > abs(arr[r] - x):
+                l += 1
+            else:
+                r -= 1
+
+        return arr[l:r+1]
+
+
+# V0-2
+# IDEA: BINARY SEARCH
+class Solution(object):
+    def findClosestElements(self, arr, k, x):
+        if not arr:
+            return []
+            
+        # The starting index of a window of size k must fall within this range
+        l = 0
+        r = len(arr) - k
+        
+        # Binary search to locate the absolute best starting index for the window
+        while l < r:
+            mid = l + (r - l) // 2
+            
+            # Compare the distance of the element to the left of the window (arr[mid])
+            # vs the element just outside the right of the window (arr[mid + k])
+            if x - arr[mid] > arr[mid + k] - x:
+                # arr[mid + k] is closer to x than arr[mid], so slide the window right
+                l = mid + 1
+            else:
+                # arr[mid] is closer (or equal tie), so keep the window left
+                r = mid
+                
+        # 'l' is now the optimal starting index. Return the window slice.
+        return arr[l:l + k]
+
+
 # V0 
 # IDEA : TWO POINTERS
 class Solution(object):
@@ -41,6 +125,7 @@ class Solution(object):
             else:
                 arr.pop(0)
         return arr
+
 
 # V0'
 # IDEA : SORTING
