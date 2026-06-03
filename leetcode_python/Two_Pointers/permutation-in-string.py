@@ -113,6 +113,32 @@ class Solution(object):
 
         return False
 
+# V0-3
+class Solution(object):
+    def checkInclusion(self, s1, s2):
+        n1 = len(s1)
+        n2 = len(s2)
+
+        if n1 > n2:
+            return False
+
+        target = sorted(s1)
+
+        l = 0  # FIX: initialize l
+
+        for r in range(n2):
+            # shrink window if it exceeds size n1
+            while r - l + 1 > n1:
+                l += 1
+
+            # only check when window size matches n1
+            if r - l + 1 == n1:
+                if sorted(s2[l:r + 1]) == target:
+                    return True
+
+        return False
+
+
 # V0
 # IDEA : collections + sliding window
 from collections import Counter
