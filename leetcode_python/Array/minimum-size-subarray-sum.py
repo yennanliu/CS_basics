@@ -34,6 +34,64 @@ Follow up: If you have figured out the O(n) solution, try coding another solutio
 """
 
 # V0
+# IDEA : SLIDING WINDOW 
+class Solution(object):
+    def minSubArrayLen(self, target, nums):
+        """
+        NOTE !!!
+
+        init min_len as `float('inf')`
+        """
+        min_len = float('inf')
+        l = 0
+        cur = 0
+
+        for r in range(len(nums)):
+            cur += nums[r]
+
+            """
+            NOTE !!!
+
+            `whose sum is greater than or equal to target`
+
+            so, we need `>=`
+            """
+            while cur >= target:
+                min_len = min(min_len, r - l + 1)
+                cur -= nums[l]
+                l += 1
+
+        return 0 if min_len == float('inf') else min_len
+
+
+
+# V0-1
+class Solution(object):
+    def minSubArrayLen(self, target, nums):
+        if nums is None or len(nums) == 0:
+            return 0
+            
+        # Use float('inf') instead of an arbitrary hardcoded number
+        min_len = float('inf')
+        l = 0
+        cur = 0
+        
+        for r in range(len(nums)):
+            # Step 1: Add the current number to expand the window sum
+            cur += nums[r]
+            
+            # Step 2: As long as the window sum meets or exceeds the target,
+            # try to optimize it by shrinking from the left
+            while cur >= target:
+                min_len = min(min_len, r - l + 1)
+                cur -= nums[l]
+                l += 1
+                
+        # If min_len was never updated, it means no valid subarray exists
+        return 0 if min_len == float('inf') else min_len
+
+
+# V0
 # IDEA : SLIDING WINDOW : start, end
 class Solution:
     def minSubArrayLen(self, s, nums):
