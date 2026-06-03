@@ -1607,6 +1607,12 @@ a.add(5)
 a.discard(99)   # no error if missing (vs remove() which raises KeyError)
 a.remove(1)     # raises KeyError if missing
 
+# NOTE: can directly remove a specific element from a set by value (not index)
+# Common in sliding window problems (LC 3)
+seen = set()
+seen.add('a')
+seen.remove('a')   # removes 'a' directly — no index needed
+
 # Set comprehension
 squares = {x**2 for x in range(5)}   # {0, 1, 4, 9, 16}
 
