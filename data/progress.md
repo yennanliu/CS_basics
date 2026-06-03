@@ -6,9 +6,11 @@
 	- TODO: LC examples
 - sliding_window.md
 	- TODO: LC examples
+	- 1.6) Template 4: Counting Subarrays
 - Blind 75
 	- 2 pointers, slide window
-
+- needcode 150
+	- 2 pointers, slide window
 
 # 2026-06-02
 

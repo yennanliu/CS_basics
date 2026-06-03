@@ -38,6 +38,25 @@ The tests are generated such that there is exactly one solution.
 """
 
 # V0
+class Solution(object):
+    def twoSum(self, numbers, target):
+        l = 0
+        r = len(numbers) - 1
+
+        while l < r:
+            cur = numbers[l] + numbers[r]
+
+            if cur == target:
+                return [l + 1, r + 1]
+            elif cur > target:
+                r -= 1
+            else:
+                l += 1
+
+        return [-1, -1]
+
+
+# V0
 # IDEA : TWO POINTERS
 #       -> l = 0, r = len(numbers) - 1
 class Solution(object):
