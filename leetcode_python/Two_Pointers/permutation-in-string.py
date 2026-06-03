@@ -52,6 +52,67 @@ class Solution(object):
         return False
 
 
+# V0-1
+# IDEA :  sliding window + HASHMAP
+# https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/TwoPointer/PermutationInString.java#L48
+class Solution(object):
+    def checkInclusion(self, s1, s2):
+        # edge
+        if not s1 or not s2 or len(s1) > len(s2):
+            return False
+
+        if s1 == s2:
+            return True
+
+        # build frequency map for s1
+        s1_map = {}
+        for c in s1:
+            s1_map[c] = s1_map.get(c, 0) + 1
+
+        window_size = len(s1)
+
+        # slide over s2
+        for i in range(len(s2) - window_size + 1):
+            window = s2[i:i + window_size]
+
+            window_map = {}
+            for c in window:
+                window_map[c] = window_map.get(c, 0) + 1
+
+            if window_map == s1_map:
+                return True
+
+        return False
+
+
+# V0-2
+# IDEA :  sliding window
+class Solution(object):
+    def checkInclusion(self, s1, s2):
+        if len(s1) > len(s2):
+            return False
+
+        count1 = [0] * 26
+        count2 = [0] * 26
+
+        for i in range(len(s1)):
+            count1[ord(s1[i]) - ord('a')] += 1
+            count2[ord(s2[i]) - ord('a')] += 1
+
+        if count1 == count2:
+            return True
+
+        l = 0
+        for r in range(len(s1), len(s2)):
+            count2[ord(s2[r]) - ord('a')] += 1
+            count2[ord(s2[l]) - ord('a')] -= 1
+            l += 1
+
+            if count1 == count2:
+                return True
+
+        return False
+
 # V0
 # IDEA : collections + sliding window
 from collections import Counter
