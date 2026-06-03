@@ -37,6 +37,35 @@ s consists of only uppercase English letters.
 
 # V0
 # IDEA : SLIDING WINDOW + MAP + MAX_FREQ_CNT
+# Time:  O(N)
+# Space: O(1) (ONLY 26 alphabet)
+"""
+
+Time Complexity
+
+O(N)
+
+Why?
+
+r moves from 0 to N-1 exactly once.
+
+`l only moves forward, never backward.` !!!!!!
+Across the entire algorithm, l moves at most N times.
+
+So:
+
+r moves N times
+l moves at most N times
+
+
+->
+
+Total work:
+
+O(N + N) = O(N)
+
+
+"""
 class Solution(object):
     def characterReplacement(self, s, k):
         cnt = {}
