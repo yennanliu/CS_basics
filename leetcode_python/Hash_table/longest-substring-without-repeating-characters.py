@@ -31,6 +31,77 @@ Constraints:
 
 """
 
+
+# V0
+# IDEA: SLIDE WINDOW + HASHMAP
+"""
+SLIDE WINDOW template:
+
+for r in range(len(s)):
+    while some_conditons():
+        l += 1
+
+    res = do_sth
+
+return res
+
+"""
+class Solution(object):
+    def lengthOfLongestSubstring(self, s):
+        max_len = 0
+        l = 0
+
+        """
+        NOTE !!!
+
+        below
+        """
+        cnt_map = {}
+
+        for r in range(len(s)):
+            cnt_map[s[r]] = cnt_map.get(s[r], 0) + 1
+
+            """
+            NOTE !!!
+
+            below
+            """
+            while cnt_map[s[r]] > 1:
+                cnt_map[s[l]] -= 1
+                l += 1
+
+            max_len = max(max_len, r - l + 1)
+
+        return max_len
+
+
+
+# V0-1
+# IDEA: SLIDE WINDOW + SET
+class Solution(object):
+    def lengthOfLongestSubstring(self, s):
+        seen = set()
+        l = 0
+        max_len = 0
+
+        for r in range(len(s)):
+            while s[r] in seen:
+                """
+                NOTE !!!
+
+                we can directly remove
+                an element from `set`
+                in py
+                """
+                seen.remove(s[l])
+                l += 1
+
+            seen.add(s[r])
+            max_len = max(max_len, r - l + 1)
+
+        return max_len
+
+
 # V0
 # IDEA : brute force : SLIDING WINDOW + DICT
 from collections import Counter
