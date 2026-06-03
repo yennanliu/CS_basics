@@ -38,6 +38,55 @@ Could you do it in-place with O(1) extra space?
 """
 
 # V0
+# IDEA: SPLIT + MOD
+class Solution(object):
+    def rotate(self, nums, k):
+        if not nums or len(nums) <= 1:
+            return
+
+        n = len(nums)
+        """
+        NOTE !!!!
+        """
+        k = k % n
+        if k == 0:
+            return
+
+        # split
+        """
+        NOTE !!!!
+        """
+        tail = nums[n - k:]
+        head = nums[:n - k]
+
+        """
+        NOTE !!!!
+        """
+        # write back in-place
+        nums[:] = tail + head
+
+
+# V0-0-1
+class Solution(object):
+    def rotate(self, nums, k):
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        if nums is None or len(nums) <= 1:
+            return
+            
+        # Handle cases where k is greater than the length of the array
+        n = len(nums)
+        k = k % n
+        
+        if k == 0:
+            return
+
+        # CRITICAL FIX: Use nums[:] to overwrite the existing array elements in-place
+        nums[:] = nums[n - k:] + nums[:n - k]
+
+
+# V0
 # IDEA : pop + insert (python 3)
 class Solution(object):
     def rotate(self, nums, k):
@@ -55,6 +104,25 @@ class Solution(object):
             #nums = [tmp] + nums # this one is WRONG
             nums.insert(0, tmp)
             #print("i = " + str(i) + " nums = " + str(nums))
+
+
+
+# V0-1
+class Solution(object):
+    def rotate(self, nums, k):
+        n = len(nums)
+        k %= n
+
+        def reverse(l, r):
+            while l < r:
+                nums[l], nums[r] = nums[r], nums[l]
+                l += 1
+                r -= 1
+
+        reverse(0, n - 1)
+        reverse(0, k - 1)
+        reverse(k, n - 1)
+
 
 # V0
 # IDEA : pop + insert (python 3)
