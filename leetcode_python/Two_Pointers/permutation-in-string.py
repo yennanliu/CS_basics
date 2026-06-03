@@ -28,6 +28,31 @@ s1 and s2 consist of lowercase English letters.
 """
 
 # V0
+# IDEA : SORTRD + ARRAY INDEX
+class Solution(object):
+    def checkInclusion(self, s1, s2):
+        n1 = len(s1)
+        n2 = len(s2)
+
+        if n1 > n2:
+            return False
+
+        """
+        NOTE !!!
+        """
+        target = sorted(s1)
+
+        for l in range(n2 - n1 + 1):
+            """
+            NOTE !!!
+            """
+            if sorted(s2[l:l + n1]) == target:
+                return True
+
+        return False
+
+
+# V0
 # IDEA : collections + sliding window
 from collections import Counter
 class Solution(object):
