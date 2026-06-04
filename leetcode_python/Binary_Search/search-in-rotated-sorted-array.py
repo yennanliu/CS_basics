@@ -37,6 +37,80 @@ nums is an ascending array that is possibly rotated.
 
 """
 
+
+# V0
+# IDEA : BINARY SEARCH
+# CHECK IF MID is in left, or right part
+class Solution(object):
+    def search(self, nums, target):
+        l = 0
+        r = len(nums) - 1
+
+        while l <= r:
+            mid = l + (r - l) // 2
+            val = nums[mid]
+
+            if val == target:
+                return mid
+
+            # left half is sorted
+            if nums[l] <= val:
+                if nums[l] <= target < val:
+                    r = mid - 1
+                else:
+                    l = mid + 1
+
+            # right half is sorted
+            else:
+                if val < target <= nums[r]:
+                    l = mid + 1
+                else:
+                    r = mid - 1
+
+        return -1
+
+
+# V0-1
+# IDEA : BINARY SEARCH
+# CHECK IF MID is in left, or right part
+class Solution(object):
+    def search(self, nums, target):
+        if not nums:
+            return -1
+            
+        l = 0
+        r = len(nums) - 1
+        
+        while l <= r:
+            mid = l + (r - l) // 2
+            val = nums[mid]
+            
+            # Step 1: Found the target index immediately
+            if val == target:
+                return mid
+                
+            # Step 2: Determine if mid is in the LEFT sorted portion
+            # Use >= to safely handle windows of size 1 or 2
+            if val >= nums[l]:
+                # Is the target strictly locked inside this left sorted window?
+                # CRITICAL FIX: Added '=' to handle target living directly on nums[l]
+                if nums[l] <= target < val:
+                    r = mid - 1  # Search left
+                else:
+                    l = mid + 1  # Search right
+                    
+            # Step 3: Otherwise, mid must be in the RIGHT sorted portion
+            else:
+                # Is the target strictly locked inside this right sorted window?
+                # CRITICAL FIX: Added '=' to handle target living directly on nums[r]
+                if val < target <= nums[r]:
+                    l = mid + 1  # Search right
+                else:
+                    r = mid - 1  # Search left
+                    
+        # CRITICAL FIX: Return -1 outside the loop if target is never encountered
+        return -1
+
 # V0
 # IDEA : BINARY SEARCH
 #        -> CHECK WHICH PART IS ORDERING

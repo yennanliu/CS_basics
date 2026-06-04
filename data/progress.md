@@ -4,6 +4,7 @@
 # 2026-06-04
 
 - stack.md
+	- TODO: LC examples
 - binary_search.md
 
 - linked_list.md
