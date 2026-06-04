@@ -71,6 +71,182 @@ class Solution(object):
              `>=`
 
             e.g. nums[mid] >= nums[l]
+
+            
+            ------
+
+            nums[mid] >= nums[l]
+
+            -> "The segment from l to mid is sorted."
+
+
+            ------
+
+            explaination:
+
+
+            Great question. The reason is that 
+            in LC 153 there are **no duplicates**, 
+            so `nums[mid] == nums[l]` 
+            can only happen when `mid == l`.
+
+            Using `>=` handles that boundary case cleanly.
+
+            ### Example
+
+            ---
+
+            Now look at a smaller window:
+
+            ```python
+            nums = [5, 1]
+            ```
+
+            ```python
+            l = 0
+            r = 1
+            mid = 0
+            ```
+
+            So:
+
+            ```python
+            nums[mid] = nums[l] = 5
+            ```
+
+            #### With `>=`
+
+            ```python
+            if nums[mid] >= nums[l]:
+            ```
+
+            becomes
+
+            ```python
+            if 5 >= 5:
+            ```
+
+            True.
+
+            We conclude the left side `[5]` is sorted and move:
+
+            ```python
+            l = mid + 1 = 1
+            ```
+
+            which correctly points to the minimum.
+
+            ---
+
+            #### With `>`
+
+            ```python
+            if nums[mid] > nums[l]:
+            ```
+
+            becomes
+
+            ```python
+            if 5 > 5:
+            ```
+
+            False.
+
+            Now execution falls into the `else` branch:
+
+            ```python
+            r = mid - 1
+            ```
+
+            which gives
+
+            ```python
+            r = -1
+            ```
+
+            You've moved in the wrong direction because there was no actual evidence that the pivot was on the left side.
+
+            ---
+
+            ### Another practical example
+
+            Suppose later in the search you have:
+
+            ```python
+            nums = [4,5,6,7,0,1,2]
+
+            l = 4
+            r = 5
+            ```
+
+            Window:
+
+            ```python
+            [0,1]
+            ```
+
+            Then:
+
+            ```python
+            mid = 4
+            nums[mid] = 0
+            nums[l] = 0
+            ```
+
+            Again:
+
+            ```python
+            nums[mid] == nums[l]
+            ```
+
+            With `>=`, you recognize the one-element left portion is sorted and move right.
+
+            With `>`, you incorrectly treat it as the "pivot is left" case.
+
+            ---
+
+            ### Intuition
+
+            The condition
+
+            ```python
+            nums[mid] >= nums[l]
+            ```
+
+            really means:
+
+            > "The segment from `l` to `mid` is sorted."
+
+            For a segment containing just one element (`mid == l`), it is still sorted.
+
+            A one-element array satisfies:
+
+            ```python
+            nums[mid] >= nums[l]
+            ```
+
+            but not
+
+            ```python
+            nums[mid] > nums[l]
+            ```
+
+            so `>=` is the correct test.
+
+            ---
+
+            That said, the canonical LC 153 solution avoids this subtlety entirely:
+
+            ```python
+            if nums[mid] > nums[r]:
+                l = mid + 1
+            else:
+                r = mid
+            ```
+
+            because comparing against `nums[r]` naturally handles all boundary cases and is easier to reason about. That's why it's the version most interviewers expect.
+
+
             """
             if nums[mid] >= nums[l]:
                 min_val = min(min_val, nums[l])
@@ -96,6 +272,32 @@ class Solution(object):
                 r = mid
 
         return nums[l]
+
+
+# V0-2
+class Solution(object):
+    def findMin(self, nums):
+        l = 0
+        r = len(nums) - 1
+        # Initialize your tracking variable with the first element
+        min_val = nums[0]
+        
+        while l <= r:
+            mid = l + (r - l) // 2
+            
+            # 1. Update your global minimum tracking variable immediately
+            min_val = min(min_val, nums[mid])
+            
+            # 2. Decide which direction to search next
+            if nums[mid] > nums[r]:
+                # Minimum must be strictly to the right side of mid
+                l = mid + 1
+            else:
+                # Minimum is either at mid or to the left side of mid
+                # Since we already captured nums[mid] in min_val, we can safely do mid - 1
+                r = mid - 1
+                
+        return min_val
 
 
 # V0 
