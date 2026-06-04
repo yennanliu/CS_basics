@@ -43,6 +43,50 @@ tokens[i] is either an operator: "+", "-", "*", or "/", or an integer in the ran
 
 """
 
+
+# V0
+# IDEA : STACK + eval
+"""
+NOTE !!
+
+it's guanrantee that input
+is valid `polish notations`,
+so no need to handle below edge cases:
+
+tokens = ["+","1","3","*"]
+
+
+"""
+class Solution(object):
+    def evalRPN(self, tokens):
+        st = []
+        operators = {"+", "-", "*", "/"}
+        
+        for t in tokens:
+            # Step 1: If it's a number, convert to int and push to stack
+            if t not in operators:
+                st.append(int(t))
+            else:
+                # Step 2: It's an operator! Pop the two top operands
+                # Remember: the second item popped was actually processed first
+                prev = st.pop()
+                prev_prev = st.pop()
+                
+                if t == "+":
+                    st.append(prev_prev + prev)
+                elif t == "-":
+                    st.append(prev_prev - prev)
+                elif t == "*":
+                    st.append(prev_prev * prev)
+                elif t == "/":
+                    # CRITICAL FIX: int(a / b) forces truncation toward zero 
+                    # in Python for both positive and negative results
+                    st.append(int(float(prev_prev) / prev))
+                    
+        # The final remaining value in the stack is our calculation total
+        return st[0]
+
+
 # V0
 # IDEA : STACK + eval
 # https://blog.csdn.net/fuxuemingzhu/article/details/79559703
