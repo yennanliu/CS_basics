@@ -67,7 +67,11 @@ class Solution(object):
             t = float(target - position[i]) / speed[i]
             pos_speed.append([position[i], speed[i], t])
 
+        # NOTE !!!
+        # V1
         pos_speed.sort(key=lambda x: -x[0])
+        # V2
+        #pos_speed.sort(key=lambda x: -x[0])
 
         st = []
 

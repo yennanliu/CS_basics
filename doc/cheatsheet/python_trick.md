@@ -371,6 +371,52 @@ my_array=["a1 9 2 3 1","g1 act car","zo4 4 7","ab1 off key dog","a8 act zoo"]
 my_array.sort(key=lambda x : my_func)
 ```
 
+### 1-11') Descending sort: `key=lambda x: -x[0]` vs `reverse=True` vs `[::-1]`
+
+Three ways to sort descending — each has a distinct use case.
+
+```python
+# ── Context: LC 853 Car Fleet ──
+# We have pos_speed = [[pos, speed, time], ...] and want to sort by position DESC.
+
+# ── Form 1: negate the key  (in-place, fine-grained control) ──
+pos_speed.sort(key=lambda x: -x[0])
+# Use when:
+#   • You need MIXED direction: primary DESC, secondary ASC
+#     e.g. sort(key=lambda x: (-x[0], x[1]))  ← impossible with reverse=True alone
+#   • Works for int and float keys
+
+# ── Form 2: reverse=True  (cleaner for single-direction reversal) ──
+pos_speed.sort(key=lambda x: x[0], reverse=True)
+sorted_cars = sorted(cars, reverse=True)   # creates a NEW list
+# Use when:
+#   • ALL keys go the same direction (all DESC)
+#   • More readable for simple cases
+#   • sorted() is preferred over sort() when you need to keep the original
+
+# ── Form 3: sort ASC then reverse/slice  (separate steps) ──
+times = [(target - pos) / spe for pos, spe in sorted(cars)]   # ASC sort
+for time in times[::-1]:        # iterate in reverse  — does NOT mutate list
+    ...
+# -- or --
+for time in reversed(times):    # same effect, no extra list copy
+    ...
+# Use when:
+#   • You want to keep the sorted-ASC list around for other uses
+#   • reversed() is O(1) memory; [::-1] creates a new list copy
+
+# ── Quick comparison ──
+# Method              | In-place? | New list? | Mixed direction? | Readability
+# -x[0]               |   yes     |    no     |      YES         |  moderate
+# reverse=True        |   yes     |    no     |      no          |  high
+# sorted(reverse=True)|   no      |    YES    |      no          |  high
+# sort ASC + reversed |   yes     |    no     |      no          |  moderate
+
+# ── Multi-key mixed direction example (only negation works here) ──
+# Sort by position DESC, then by speed ASC as tiebreaker:
+data.sort(key=lambda x: (-x[0], x[1]))
+```
+
 ### 1-12) get remainder (residual) when divided by a number
 ```python
 #-----------------
