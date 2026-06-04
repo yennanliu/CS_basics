@@ -39,6 +39,65 @@ All the integers of nums are unique.
 nums is sorted and rotated between 1 and n times.
 
 """
+
+
+# V0
+# IDEA : BINARY SEARCH + CHECK mid is in left or right part
+class Solution(object):
+    def findMin(self, nums):
+        if not nums:
+            return -1
+
+        if len(nums) == 1:
+            return nums[0]
+
+        l = 0
+        r = len(nums) - 1
+        min_val = nums[0]
+
+        while l <= r:
+            # already sorted
+            if nums[l] <= nums[r]:
+                min_val = min(min_val, nums[l])
+                break
+
+            mid = l + (r - l) // 2
+            min_val = min(min_val, nums[mid])
+
+            # left half is sorted
+            """
+            NOTE !!!
+
+             `>=`
+
+            e.g. nums[mid] >= nums[l]
+            """
+            if nums[mid] >= nums[l]:
+                min_val = min(min_val, nums[l])
+                l = mid + 1
+            else:
+                r = mid - 1
+
+        return min_val
+
+
+# V0-1
+# IDEA : BINARY SEARCH + CHECK mid is in left or right part
+class Solution(object):
+    def findMin(self, nums):
+        l, r = 0, len(nums) - 1
+
+        while l < r:
+            mid = l + (r - l) // 2
+
+            if nums[mid] > nums[r]:
+                l = mid + 1
+            else:
+                r = mid
+
+        return nums[l]
+
+
 # V0 
 # IDEA : BINARY SEARCH
 class Solution(object):
