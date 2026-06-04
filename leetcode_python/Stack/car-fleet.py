@@ -52,7 +52,31 @@ All the values of position are unique.
 
 """
 
-# V0 
+# V0
+# IDEA : STACK
+# Step 1) Ordering by car position (big -> small)
+# Step 2) get every car's arrive time
+# Step 3) if `new` car travel_time > `prev` cars
+#         -> form a NEW FLEET
+# Step 4) keep above and return ans
+class Solution(object):
+    def carFleet(self, target, position, speed):
+        pos_speed = []
+
+        for i in range(len(position)):
+            t = float(target - position[i]) / speed[i]
+            pos_speed.append([position[i], speed[i], t])
+
+        pos_speed.sort(key=lambda x: -x[0])
+
+        st = []
+
+        for p, s, t in pos_speed:
+            if not st or t > st[-1]:
+                st.append(t)
+
+        return len(st)
+
 
 # V1
 # IDEA : STACK 
