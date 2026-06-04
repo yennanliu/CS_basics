@@ -36,6 +36,80 @@ piles.length <= h <= 109
 
 """
 
+
+# V0
+# IDEA : BINARY SEARCH
+class Solution(object):
+    def minEatingSpeed(self, piles, h):
+        l = 1
+        r = max(piles)
+
+        min_speed = r
+
+        while l <= r:
+            mid = l + (r - l) // 2
+
+            # NOTE !!!
+            time = self.get_finish_time(piles, mid)
+
+            # NOTE !!!
+            if time <= h:
+                # NOTE !!!
+                min_speed = mid
+                r = mid - 1
+            else:
+                l = mid + 1
+
+        return min_speed
+
+    def get_finish_time(self, piles, speed):
+        res = 0
+
+        for p in piles:
+            res += p // speed
+
+            if p % speed:
+                res += 1
+
+        return res
+
+
+# V0-1
+# IDEA : BINARY SEARCH
+class Solution(object):
+    def minEatingSpeed(self, piles, h):
+        l = 1
+        r = max(piles)  # Koko never needs to eat faster than the largest pile size
+        min_speed = r
+        
+        while l <= r:
+            mid = l + (r - l) // 2
+            
+            # CRITICAL FIX: Use self. to call helper methods within the same class
+            time = self.get_finish_time(piles, mid)
+            
+            if time <= h:
+                # This speed works! Record it and try to find an even smaller speed
+                min_speed = min(min_speed, mid)
+                
+                # CRITICAL FIX: Changed 'speed' to 'mid' to update bounds properly
+                r = mid - 1
+            else:
+                # Koko ate too slowly and ran out of time, increase the speed minimum
+                l = mid + 1
+                
+        return min_speed
+
+    def get_finish_time(self, piles, speed):
+        res = 0
+        for p in piles:
+            a = p // speed
+            b = p % speed
+            if b > 0:
+                a += 1
+            res += a
+        return res
+
 # V0 
 # IDEA : BINARY SEARCH
 import math
