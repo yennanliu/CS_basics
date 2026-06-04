@@ -31,6 +31,70 @@ n == matrix[i].length
 
 """
 
+
+# V0
+# IDEA: BINARY SEARCH
+# row = mid // w_
+# col = mid % w_
+class Solution(object):
+    def searchMatrix(self, matrix, target):
+        if not matrix or len(matrix) == 0:
+            return False
+
+        l_ = len(matrix)      # rows
+        w_ = len(matrix[0])   # cols
+
+        l = 0
+        r = l_ * w_ - 1
+
+        while l <= r:
+            mid = l + (r - l) // 2
+
+            # NOTE !!!
+            val = matrix[mid // w_][mid % w_]
+
+            if val == target:
+                return True
+            elif val < target:
+                l = mid + 1
+            else:
+                r = mid - 1
+
+        return False
+
+
+# V0-1
+# IDEA: BINARY SEARCH
+# row = mid // w_
+# col = mid % w_
+class Solution(object):
+    def searchMatrix(self, matrix, target):
+        if not matrix or len(matrix) == 0 or len(matrix[0]) == 0:
+            return False
+            
+        rows = len(matrix)
+        cols = len(matrix[0])
+        
+        # Treat the 2D matrix as a flat 1D array ranging from 0 to (total cells - 1)
+        l = 0
+        r = (rows * cols) - 1
+        
+        while l <= r:
+            mid = l + (r - l) // 2
+            
+            # CRITICAL FIX: Convert the 1D 'mid' index into 2D [row][col] indices 
+            # by dividing and modulo-ing by the number of COLUMNS (cols)
+            val = matrix[mid // cols][mid % cols]
+            
+            if val == target:
+                return True
+            elif val < target:
+                l = mid + 1
+            else:
+                r = mid - 1
+                
+        return False
+
 # V0 
 # IDEA : MATRIX IN ORDER + BRUTE FORCE
 # Space: O(1)
