@@ -29,6 +29,62 @@ Constraints:
 """
 
 # V0
+# IDEA: STACK
+class Solution(object):
+    def dailyTemperatures(self, temperatures):
+        # edge
+        if not temperatures or len(temperatures) == 0:
+            return []
+
+        res = []
+        # ??? simpler way ?
+        # for i in range(len(temperatures)):
+        #     res.append(0)
+
+        res = [0] * len(temperatures)
+        
+        # stack = [[index, temperature]]
+        # [ [idx, tmp] ]
+        st = []
+
+        for i in range(len(temperatures)):
+            cur = temperatures[i]
+            while st and st[-1][1] < cur:
+                prev = st.pop()
+                res[prev[0]] = i - prev[0]
+
+            # ???
+            st.append([i, cur])
+
+
+
+        return res
+
+
+# V0-1
+class Solution(object):
+    def dailyTemperatures(self, temperatures):
+        if not temperatures:
+            return []
+
+        res = [0] * len(temperatures)
+
+        # stack = [[index, temperature]]
+        st = []
+
+        for i in range(len(temperatures)):
+            cur = temperatures[i]
+
+            while st and st[-1][1] < cur:
+                idx, _ = st.pop()
+                res[idx] = i - idx
+
+            st.append([i, cur])
+
+        return res
+
+
+# V0
 # IDEA : STACK
 # // https://www.bilibili.com/list/525438321?sort_field=pubtime&spm_id_from=333.999.0.0&oid=779764003&bvid=BV1my4y1Z7jj
 class Solution(object):
