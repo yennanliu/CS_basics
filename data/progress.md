@@ -6,6 +6,7 @@
 - stack.md
 	- TODO: LC examples
 - binary_search.md
+	- TODO: not yet
 
 - linked_list.md
 - binary_tree.md
@@ -16,7 +17,7 @@
 
 	- linked list, Trees
 - needcode 150
-	- stack, binary search
+	- stack, binary search (ok)
 	
 	- linked list, Trees
 
