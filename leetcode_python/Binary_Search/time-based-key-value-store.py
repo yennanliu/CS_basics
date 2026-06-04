@@ -43,6 +43,92 @@ At most 2 * 105 calls will be made to set and get.
 """
 
 # V0
+# IDEA : Hashmap + Linear Search
+# map: [k : [v1, t1], [v2, t2], .... ]
+class TimeMap(object):
+
+    def __init__(self):
+        self.k_v_map = {}
+
+    def set(self, key, value, timestamp):
+        if key not in self.k_v_map:
+            self.k_v_map[key] = []
+
+        self.k_v_map[key].append([value, timestamp])
+
+    def get(self, key, timestamp):
+        if key not in self.k_v_map:
+            return ""
+
+        return self.get_recent_val(key, timestamp)
+
+    def get_recent_val(self, key, timestamp):
+        values = self.k_v_map[key]
+
+        l = 0
+        r = len(values) - 1
+
+        while l <= r:
+            mid = l + (r - l) // 2
+
+            cur_time = values[mid][1]
+
+            if cur_time == timestamp:
+                return values[mid][0]
+            elif cur_time < timestamp:
+                l = mid + 1
+            else:
+                r = mid - 1
+
+        if r < 0:
+            return ""
+
+        return values[r][0]
+
+
+# V0-1
+# IDEA : Hashmap + Linear Search
+# map: [k : [v1, t1], [v2, t2], .... ]
+class TimeMap(object):
+
+    def __init__(self):
+        # CRITICAL FIX: Changed 'this' to 'self'
+        self.k_v_map = {}
+        
+    def set(self, key, value, timestamp):
+        # CRITICAL FIX: Store as simple pairs [value, timestamp] without double-nesting
+        if key not in self.k_v_map:
+            self.k_v_map[key] = [[value, timestamp]]
+        else:
+            self.k_v_map[key].append([value, timestamp])
+        
+    def get(self, key, timestamp):
+        if key not in self.k_v_map:
+            return ""
+        return self.get_recent_val(key, timestamp)
+
+    def get_recent_val(self, key, timestamp):
+        values = self.k_v_map[key]
+        
+        # REMOVED: .sort() statement because timestamps are guaranteed to arrive in order
+        l = 0
+        r = len(values) - 1
+        
+        while l <= r:
+            mid = l + (r - l) // 2
+            curr_timestamp = values[mid][1]
+            
+            if curr_timestamp == timestamp:
+                # CRITICAL FIX: Return the string value, not the numerical timestamp
+                return values[mid][0]
+            elif curr_timestamp > timestamp:
+                r = mid - 1
+            else:
+                l = mid + 1
+                
+        # CRITICAL FIX: If r is less than 0, no historical timestamp exists.
+        # Otherwise, 'r' points perfectly to the largest timestamp <= target.
+        return values[r][0] if r >= 0 else ""
 
 # V1
 # IDEA : Hashmap + Linear Search
