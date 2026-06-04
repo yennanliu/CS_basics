@@ -44,6 +44,95 @@ At most 3 * 104 calls will be made to push, pop, top, and getMin.
 
 
 # V0
+# IDEA: 2 STACKS
+"""
+NOTE !!!
+
+
+so `minStack` is NOT storing the `actual element in from min to max`,
+but it saved the `min element`  (as a status) in each iteration,
+-> so we can easily fetch the `min element state` via get
+   the top element from  `minStack` via every API call
+
+
+
+e.g.
+
+minStack does not store all elements in sorted order.
+
+
+-> 
+Instead, minStack[i] stores the minimum value seen 
+in the main stack up to position i.
+
+"""
+class MinStack(object):
+
+    def __init__(self):
+        self.stack = []
+        self.minStack = []
+
+    def push(self, val):
+        self.stack.append(val)
+
+        """
+        NOTE !!!
+
+        below
+        """
+        if not self.minStack:
+            self.minStack.append(val)
+        else:
+            self.minStack.append(min(val, self.minStack[-1]))
+
+    def pop(self):
+        """
+        NOTE !!!
+
+        below
+        """
+        self.minStack.pop()
+        return self.stack.pop()
+
+    def top(self):
+        return self.stack[-1]
+
+    def getMin(self):
+        return self.minStack[-1]
+
+
+
+# V0-1
+# IDEA: ARRAY + MAP
+# NOTE !!! the getMin time complexity is O(N), NOT O(1)
+class MinStack(object):
+
+    def __init__(self):
+        self.arr = []
+        self.counts = {}
+
+    def push(self, val):
+        self.arr.append(val)
+        self.counts[val] = self.counts.get(val, 0) + 1
+
+    def pop(self):
+        val = self.arr.pop()
+
+        self.counts[val] -= 1
+        if self.counts[val] == 0:
+            del self.counts[val]
+
+        return val
+
+    def top(self):
+        return self.arr[-1]
+
+    def getMin(self):
+        return min(self.counts.keys())
+
+
+
+# V0
 # IDEA : STACK
 # IDEA : 
 # -> USE A STACK TO STORAGE MIN VALUE IN THE STACK WHEN EVERY PUSH

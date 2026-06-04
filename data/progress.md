@@ -12,10 +12,12 @@
 - bst.md
 
 - Blind 75
-	- stack, binary search, 
+	- stack, binary search (ok)
+
 	- linked list, Trees
 - needcode 150
 	- stack, binary search
+	
 	- linked list, Trees
 
 
