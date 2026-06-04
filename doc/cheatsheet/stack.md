@@ -1792,45 +1792,83 @@ class Solution:
 ```
 
 ### 2-10) Min Stack
+
+**Pattern: 2 Stacks (main stack + min-tracking stack)**
+
+```
+Key Insight:
+  minStack does NOT store elements in sorted order.
+  Instead, minStack[i] stores the minimum value seen
+  in the main stack up to position i.
+
+  -> This lets getMin() return the current minimum in O(1)
+     by simply reading minStack[-1] (the top).
+
+  Example: push -2, 0, -3
+    stack    = [-2,  0, -3]
+    minStack = [-2, -2, -3]   ← each entry is min-so-far, not sorted elements
+
+  After pop():
+    stack    = [-2,  0]
+    minStack = [-2, -2]       ← getMin() correctly returns -2
+
+When to Use:
+  - Need O(1) getMin() on a stack
+  - minStack mirrors the main stack size (one entry per push/pop)
+  - Both stacks are always the same length
+```
+
 ```python
 # LC 155. Min Stack
 # V0
-# IDEA : STACK
-# IDEA : 
-# -> USE A STACK TO STORAGE MIN VALUE IN THE STACK WHEN EVERY PUSH
-# -> SO WE CAN RETURN getMin IN CONSTANT TIEM VIA STACK ABOVE
+# IDEA: 2 STACKS
 class MinStack(object):
 
     def __init__(self):
-        """
-        initialize your data structure here.
-        """
         self.stack = []
-        
+        self.minStack = []
+
+    def push(self, val):
+        self.stack.append(val)
+        # minStack tracks running minimum, NOT sorted elements
+        if not self.minStack:
+            self.minStack.append(val)
+        else:
+            self.minStack.append(min(val, self.minStack[-1]))
+
+    def pop(self):
+        # both stacks must stay in sync — always pop together
+        self.minStack.pop()
+        return self.stack.pop()
+
+    def top(self):
+        return self.stack[-1]
+
+    def getMin(self):
+        # top of minStack is always the current minimum — O(1)
+        return self.minStack[-1]
+```
+
+```python
+# V1: single stack storing (value, current_min) tuples
+class MinStack(object):
+
+    def __init__(self):
+        self.stack = []
+
     def push(self, x):
         if not self.stack:
-            """
-            NOTE : we use stack = [(x, y)]
-                    x is the current element
-                    y in current MIN value in current stack
-            """
-            ### note here
             self.stack.append((x, x))
-        ### NOTICE HERE 
-        # stack[i][1] save to min value when every push
-        # so the latest min in stack is at stack[-1][1]
         else:
-            ### note here
             self.stack.append((x, min(x, self.stack[-1][1])))
-        
+
     def pop(self):
         self.stack.pop()
-        
+
     def top(self):
         return self.stack[-1][0]
-        
+
     def getMin(self):
-        # the latest min in stack is at stack[-1][1]
         return self.stack[-1][1]
 ```
 
