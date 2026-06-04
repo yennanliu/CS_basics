@@ -36,6 +36,56 @@ Follow up: A linked list can be reversed either iteratively or recursively. Coul
 # -> STEP 4) move head to "next"
 class Solution(object):
     def reverseList(self, head):
+        if not head or not head.next:
+            return head
+
+        node = None
+
+        while head:
+            _next = head.next
+            _cur = head
+
+            _cur.next = node
+            node = _cur
+
+            head = _next
+
+        return node
+
+
+
+# V0-1
+# IDEA : Linkedlist basics
+class Solution(object):
+    def reverseList(self, head):
+        # Initialize our pointer states
+        prev = None
+        curr = head
+        
+        while curr:
+            # Step 1: Save the rest of the list so we don't lose it
+            next_node = curr.next
+            
+            # Step 2: Reverse the arrow! Point backwards
+            curr.next = prev
+            
+            # Step 3: Move the pointers forward for the next loop
+            prev = curr
+            curr = next_node
+            
+        # When curr falls off the end (None), prev is sitting on the new head node
+        return prev
+
+
+# V0
+# IDEA : Linkedlist basics
+# STEPS)
+# -> STEP 1) cache "next"
+# -> STEP 2) point head.next to prev
+# -> STEP 3) move prev to head
+# -> STEP 4) move head to "next"
+class Solution(object):
+    def reverseList(self, head):
         # edge case
         if not head:
             return
