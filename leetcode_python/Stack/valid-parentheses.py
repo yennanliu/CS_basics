@@ -36,6 +36,54 @@ Output: true
 
 """
 
+
+# V0
+class Solution(object):
+    def isValid(self, s):
+        if not s:
+            return True
+
+        stack = []
+
+        b_map = {
+            "{": "}",
+            "[": "]",
+            "(": ")"
+        }
+
+        for ch in s:
+            if ch in b_map:
+                stack.append(ch)
+            else:
+                if not stack:
+                    return False
+
+                top = stack.pop()
+
+                if b_map[top] != ch:
+                    return False
+
+        return len(stack) == 0
+
+
+# V0-1
+class Solution(object):
+    def isValid(self, s):
+        stack = []
+
+        for ch in s:
+            if ch == '(':
+                stack.append(')')
+            elif ch == '[':
+                stack.append(']')
+            elif ch == '{':
+                stack.append('}')
+            else:
+                if not stack or stack.pop() != ch:
+                    return False
+
+        return not stack
+
 # V0
 # IDEA : STACK + DICT
 class Solution(object):
