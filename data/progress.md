@@ -1,5 +1,27 @@
 # Progress
 
+# 2026-06-06
+
+- binary_search.md
+	- TODO: `2) Binary Search Templates & Patterns`
+
+
+- linked_list.md
+- binary_tree.md
+- bst.md
+- backtrack.md
+
+- Blind 75
+	- Trees (doing)
+	- heap/PQ
+	- backtracking
+
+- needcode 150
+	
+	- linked list, Trees
+	- heap/PQ
+	- backtracking
+
 
 # 2026-06-05
 
