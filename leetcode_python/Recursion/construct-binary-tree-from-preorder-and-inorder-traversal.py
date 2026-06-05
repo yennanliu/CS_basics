@@ -31,6 +31,65 @@ inorder is guaranteed to be the inorder traversal of the tree.
 
 """
 
+
+# V0
+# IDEA: RECURSION + INORDER, PREORDER
+class Solution(object):
+    def buildTree(self, preorder, inorder):
+        # Base case
+        if not preorder or not inorder:
+            return None
+
+        root_val = preorder[0]
+        # NOTE !!!!
+        root = TreeNode(root_val)
+
+        # Find root position in inorder
+        idx = inorder.index(root_val)
+
+        # Left subtree
+        root.left = self.buildTree(
+            preorder[1:1 + idx],
+            inorder[:idx]
+        )
+
+        # Right subtree
+        root.right = self.buildTree(
+            preorder[1 + idx:],
+            inorder[idx + 1:]
+        )
+
+        return root
+
+
+
+# V0-1
+# IDEA: RECURSION + INORDER, PREORDER
+class Solution(object):
+    def buildTree(self, preorder, inorder):
+        # Base Case: If either list is empty, this subtree branch is empty
+        if not preorder or not inorder:
+            return None
+            
+        # CRITICAL FIX: Wrap the integer value inside a genuine TreeNode instance container
+        root_val = preorder[0]
+        root = TreeNode(root_val)
+        
+        # Locate the split position inside the inorder array
+        mid_idx = inorder.index(root_val)
+        
+        # CRITICAL FIX: Align the slicing windows perfectly using self.
+        # Left Preorder needs elements from index 1 up to (mid_idx + 1)
+        # Left Inorder takes everything up to (but excluding) mid_idx
+        root.left = self.buildTree(preorder[1 : mid_idx + 1], inorder[:mid_idx])
+        
+        # Right Preorder takes everything from (mid_idx + 1) onwards
+        # Right Inorder takes everything after mid_idx
+        root.right = self.buildTree(preorder[mid_idx + 1 :], inorder[mid_idx + 1 :])
+        
+        return root
+
+
 # V0
 # IDEA : BST property
 class Solution(object):
