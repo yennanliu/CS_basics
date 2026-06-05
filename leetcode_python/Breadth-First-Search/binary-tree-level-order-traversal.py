@@ -47,6 +47,75 @@ return its level order traversal as:
 
 """
 
+
+
+# V0
+# IDEA: BFS
+from collections import deque
+
+class Solution(object):
+    def levelOrder(self, root):
+        if not root:
+            return []
+
+        if not root.left and not root.right:
+            return [[root.val]]
+
+        q = deque([(0, root)])
+
+        l = 0
+        res = []
+
+        while q:
+            size = len(q)
+            res.append([])
+
+            for i in range(size):
+                layer, node = q.popleft()
+
+                res[l].append(node.val)
+
+                if node.left:
+                    q.append((layer + 1, node.left))
+
+                if node.right:
+                    q.append((layer + 1, node.right))
+
+            l += 1
+
+        return res
+
+
+# V0-1
+# IDEA: BFS
+from collections import deque
+
+class Solution(object):
+    def levelOrder(self, root):
+        if not root:
+            return []
+
+        q = deque([root])
+        res = []
+
+        while q:
+            level = []
+
+            for _ in range(len(q)):
+                node = q.popleft()
+                level.append(node.val)
+
+                if node.left:
+                    q.append(node.left)
+
+                if node.right:
+                    q.append(node.right)
+
+            res.append(level)
+
+        return res
+
+
 # V0
 # IDEA : BFS
 class Solution(object):
