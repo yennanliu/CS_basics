@@ -35,6 +35,37 @@ The number of nodes in both trees is in the range [0, 100].
 """
 
 # V0
+# IDEA: DFS
+class Solution(object):
+    def isSameTree(self, p, q):
+        if not p and not q:
+            return True
+        if not p or not q:
+            return False
+        # ??
+        if p.val != q.val:
+            return False
+        return self.isSameTree(p.left, q.left) and \
+        self.isSameTree(p.right, q.right)
+        
+
+# V0-1
+# IDEA: DFS
+class Solution(object):
+    def isSameTree(self, p, q):
+        if not p and not q:
+            return True
+
+        if not p or not q:
+            return False
+
+        return (
+            p.val == q.val and
+            self.isSameTree(p.left, q.left) and
+            self.isSameTree(p.right, q.right)
+        )
+
+# V0
 # IDEA : Recursion
 class Solution(object):
     def isSameTree(self, p, q):

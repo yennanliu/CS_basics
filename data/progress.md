@@ -12,7 +12,8 @@
 - bst.md
 
 - Blind 75
-	- linked list, Trees
+	- linked list (ok)
+	- Trees (doing)
 
 - needcode 150
 	

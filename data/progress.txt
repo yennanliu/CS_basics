@@ -1,4 +1,4 @@
-20250605: 206,21(again),143(again),19(again),226,104,2616(todo, compare PQ)
+20250605: 206,21(again),143(again),19(again),226,104,100,2616(todo, compare PQ)
 20250604: 20,153(again),33,155(again),150,74,875,981,1209(todo),1963(todo),227(todo),394(todo),34(todo),875(todo),81(todo)
 20250603: 15(again, 2 pointers),11,125,3,424(again),167,567(again),189,209,658
 20250602: 49,347,271(again),238(again),128(again),36,560,525(again),974
