@@ -4,7 +4,7 @@
 # 2026-06-05
 
 - binary_search.md
-	- TODO: not yet
+	- TODO: `2) Binary Search Templates & Patterns`
 
 
 - linked_list.md
