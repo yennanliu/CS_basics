@@ -30,6 +30,74 @@ Follow up: If the BST is modified often (i.e., we can do insert and delete opera
 """
 
 # V0
+# IDEA 1) IN - ORDER DFS
+class Solution(object):
+    def kthSmallest(self, root, k):
+        self.sorted_elements = []
+        self.inorder_traversal(root)
+        
+        # Since the list is sorted, the kth smallest is at index k - 1
+        return self.sorted_elements[k - 1]
+        
+    def inorder_traversal(self, node):
+        if not node:
+            return
+            
+        # 1. Traverse Left
+        self.inorder_traversal(node.left)
+        
+        # 2. Process Current Root Node
+        self.sorted_elements.append(node.val)
+        
+        # 3. Traverse Right
+        self.inorder_traversal(node.right)
+
+
+# V0
+# IDEA 1) IN - ORDER DFS
+class Solution(object):
+    def kthSmallest(self, root, k):
+        self.k = k
+        self.ans = None
+
+        self.inorder(root)
+        return self.ans
+
+    def inorder(self, root):
+        if not root or self.ans is not None:
+            return
+
+        self.inorder(root.left)
+
+        self.k -= 1
+        if self.k == 0:
+            self.ans = root.val
+            return
+
+        self.inorder(root.right)
+
+
+# V0-1
+class Solution(object):
+    def kthSmallest(self, root, k):
+        stack = []
+
+        while True:
+            while root:
+                stack.append(root)
+                root = root.left
+
+            root = stack.pop()
+            k -= 1
+
+            if k == 0:
+                return root.val
+
+            root = root.right
+
+
+
+# V0
 # IDEA : DFS
 # -> pre order traversal BST, then sort it and get the k (from 1) smallest element
 class Solution(object):
