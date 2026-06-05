@@ -1998,6 +1998,37 @@ type(True) == int # False  (bool is subclass of int, but type() is exact)
 isinstance(True, int)  # True  (True IS an int!)
 ```
 
+### 1-51) Array slicing (subarray / substring)
+
+**Syntax**: `arr[start:end]` — **end is exclusive**, so the slice covers indices `[start, end-1]`.
+
+```python
+arr = [0, 1, 2, 3, 4]
+
+arr[1:4]     # [1, 2, 3]  → indices 1, 2, 3  (end=4 is excluded)
+arr[i:j+1]   # indices i .. j  (inclusive on both ends)
+arr[:3]      # [0, 1, 2]  → from start up to index 2
+arr[2:]      # [2, 3, 4]  → index 2 to end
+arr[:]       # full copy
+arr[::-1]    # reversed copy
+
+# Common pattern: get subarray from index i to j (inclusive)
+sub = arr[i : j + 1]
+
+# String slicing works the same way
+s = "abcde"
+s[1:4]       # "bcd"  → indices 1, 2, 3
+s[i:j+1]     # chars from i to j (inclusive)
+```
+
+| Expression | Meaning |
+|-----------|---------|
+| `arr[i:j+1]` | indices `i` to `j` inclusive |
+| `arr[:j+1]` | indices `0` to `j` inclusive |
+| `arr[i:]` | indices `i` to end |
+| `arr[:]` | full shallow copy |
+| `arr[::-1]` | reversed |
+
 ### 1-50) Common LeetCode patterns cheatsheet
 ```python
 #-------------------------------

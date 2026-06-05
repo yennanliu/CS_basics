@@ -45,6 +45,7 @@ LC 021 Merge Two Sorted Lists.
 
 # V0
 # IDEA:  MIDDLE OF LINLED LIST,  Reverse the second half, Merge the two halves
+# https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/LinkedList/ReorderList.java#L61
 class Solution(object):
     def reorderList(self, head):
         """
