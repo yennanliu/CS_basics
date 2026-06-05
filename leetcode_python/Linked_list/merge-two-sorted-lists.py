@@ -29,6 +29,86 @@ Both l1 and l2 are sorted in non-decreasing order.
 """
 
 # V0
+# IDEA: LINKED LIST OP
+class Solution(object):
+    def mergeTwoLists(self, list1, list2):
+        if not list1:
+            return list2
+        if not list2:
+            return list1
+
+        # NOTE !!
+        # init dummy as ListNode()
+        # and use `node` refer dummy doing lined list op
+        dummy = ListNode()
+        node = dummy
+
+        while list1 and list2:
+            if list1.val <= list2.val:
+                node.next = ListNode(list1.val)
+                list1 = list1.next
+            else:
+                node.next = ListNode(list2.val)
+                list2 = list2.next
+
+            node = node.next
+
+        """
+        NOTE !!!
+
+        there MUST be case that
+        list1 or list2 is NOT None after the while loop running,
+        so below `if - else` logic can handle all of the cases.
+
+        example:
+
+        list:  1 -> 3
+        list2: 2 -> 4
+
+
+        """
+        if list1:
+            node.next = list1
+        else:
+            node.next = list2
+
+        # NOTE !!!
+        return dummy.next
+
+
+
+# V0-1
+# IDEA: LINKED LIST OP
+class Solution(object):
+    def mergeTwoLists(self, list1, list2):
+        # CRITICAL FIX: Base cases should only handle situations where an entire list is missing
+        if not list1: return list2
+        if not list2: return list1
+        
+        # Initialize our dummy anchor node
+        dummy = ListNode()
+        node = dummy
+        
+        while list1 and list2:
+            if list1.val <= list2.val:
+                # CRITICAL FIX: Link the EXISTING node directly instead of creating a new one
+                node.next = list1
+                list1 = list1.next
+            else:  
+                node.next = list2
+                list2 = list2.next
+            node = node.next
+            
+        # CRITICAL FIX: Simply link the remaining chain of whichever list is left over
+        if list1:
+            node.next = list1
+        else:
+            node.next = list2
+            
+        return dummy.next
+
+
+# V0
 # IDEA : LOOP 2 LINKED LISTS
 class Solution(object):
     def mergeTwoLists(self, l1, l2):
