@@ -35,6 +35,56 @@ p and q will exist in the BST.
 """
 
 # V0
+# IDEA: DFS + BST property
+class Solution(object):
+    def lowestCommonAncestor(self, root, p, q):
+        if not root:
+            return None
+            
+        # Case 1: If both target nodes are smaller than the root, move left
+        if p.val < root.val and q.val < root.val:
+            return self.lowestCommonAncestor(root.left, p, q)
+            
+        # Case 2: If both target nodes are larger than the root, move right
+        elif p.val > root.val and q.val > root.val:
+            return self.lowestCommonAncestor(root.right, p, q)
+            
+        # Case 3: We found the split point! 
+        # (One is left, one is right, or root matches p or q)
+        else:
+            return root
+
+
+# V0-1
+# IDEA 1) DFS
+class Solution(object):
+    def lowestCommonAncestor(self, root, p, q):
+        # edge
+        if not root:
+            return None # ?????
+        # ??
+        if p.val == q.val:
+            return root
+
+        # ???
+        if p.val == root.val or q.val == root.val:
+            return root # ????
+
+        _left = self.lowestCommonAncestor(root.left, p, q)
+        _right = self.lowestCommonAncestor(root.right, p, q)
+
+        # ???
+        if _left and _right:
+            return root
+
+        if _left and not _right:
+            return _left
+
+        else:
+            return _right
+
+
+# V0
 # IDEA : LC 236
 # V0
 # IDEA : RECURSION + POST ORDER TRANSVERSAL
