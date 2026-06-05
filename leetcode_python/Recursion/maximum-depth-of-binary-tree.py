@@ -28,6 +28,72 @@ The number of nodes in the tree is in the range [0, 104].
 
 """
 
+
+# V0
+# IDEA: DFS (post order)
+# NOTE !!! we DON'T need global var
+class Solution(object):
+    def maxDepth(self, root):
+        # Base case: empty tree has depth 0
+        if not root:
+            return 0
+
+        # Compute depth of left subtree
+        left_depth = self.maxDepth(root.left)
+
+        # Compute depth of right subtree
+        right_depth = self.maxDepth(root.right)
+
+        # Current node contributes +1 level
+        return max(left_depth, right_depth) + 1
+
+
+# V0-0-1
+# IDEA: DFS (post order)
+# NOTE !!! we DON'T need global var
+class Solution(object):
+    def maxDepth(self, root):
+        # Base case: empty tree has depth 0
+        if not root:
+            return 0
+
+        # Compute depth of left subtree
+        left_depth = self.maxDepth(root.left) + 1
+
+        # Compute depth of right subtree
+        right_depth = self.maxDepth(root.right) + 1
+
+        # Current node contributes +1 level
+        return max(left_depth, right_depth)
+
+
+# V0-1
+# IDEA: DFS (post order) with attr var
+# NOTE !!! we init `max_depth_tracker` everytime when the function is called
+#          so the `max_depth_tracker` in test cases NOT affect each other
+class Solution(object):
+    def maxDepth(self, root):
+        # CRITICAL FIX: Initialize your tracker inside the method.
+        # This resets the counter to 0 for every fresh LeetCode test case!
+        self.max_depth_tracker = 0
+        
+        # Start our recursive helper function at the root with an initial depth of 1
+        self.traverse(root, 1)
+        
+        return self.max_depth_tracker
+
+    def traverse(self, node, current_depth):
+        if not node:
+            return
+            
+        # Update our tracking variable if we've found a deeper path
+        self.max_depth_tracker = max(self.max_depth_tracker, current_depth)
+        
+        # Recurse down to children, incrementing the depth level by 1
+        self.traverse(node.left, current_depth + 1)
+        self.traverse(node.right, current_depth + 1)
+
+
 # V0
 # IDEA : BFS
 # compare with LC 111 : mininum Depth of Binary Tree
