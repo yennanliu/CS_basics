@@ -44,6 +44,22 @@ to
 
 """
 
+
+# V0
+# IDEA: DFS (Recursion)
+class Solution(object):
+    def invertTree(self, root):
+        # edge
+        if not root:
+            return root
+        _left = self.invertTree(root.left)
+        _right = self.invertTree(root.right)
+
+        root.left = _right
+        root.right = _left
+
+        return root
+
 # V0
 # IDEA : DFS
 # -> below code shows a good example that tree is a type of "linked list"
