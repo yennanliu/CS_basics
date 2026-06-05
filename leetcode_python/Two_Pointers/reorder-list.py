@@ -44,6 +44,118 @@ LC 021 Merge Two Sorted Lists.
 """
 
 # V0
+# IDEA:  MIDDLE OF LINLED LIST,  Reverse the second half, Merge the two halves
+class Solution(object):
+    def reorderList(self, head):
+        """
+        Modify the linked list in-place.
+
+        Example:
+        1 -> 2 -> 3 -> 4 -> 5
+
+        becomes
+
+        1 -> 5 -> 2 -> 4 -> 3
+        """
+
+        # Edge case:
+        # Empty list or single-node list is already reordered.
+        if not head or not head.next:
+            return
+
+        # ==================================================
+        # STEP 1: Find the middle of the linked list
+        # ==================================================
+
+        # Both pointers start at head.
+        slow = fast = head
+
+        # slow moves 1 step each iteration
+        # fast moves 2 steps each iteration
+        #
+        # When fast reaches the end,
+        # slow will be at the middle.
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+
+        # Example:
+        # 1 -> 2 -> 3 -> 4 -> 5
+        #
+        # slow ends at node 3
+
+        # ==================================================
+        # STEP 2: Reverse the second half
+        # ==================================================
+
+        # Start reversing from the node AFTER the middle.
+        curr = slow.next
+
+        # Disconnect first half from second half.
+        slow.next = None
+
+        # Standard LC 206 reverse-list setup.
+        prev = None
+
+        while curr:
+            # Save next node before changing pointers.
+            nxt = curr.next
+
+            # Reverse current node's pointer.
+            curr.next = prev
+
+            # Move prev forward.
+            prev = curr
+
+            # Move curr forward.
+            curr = nxt
+
+        # Example:
+        #
+        # Original second half:
+        # 4 -> 5
+        #
+        # After reverse:
+        # 5 -> 4
+        #
+        # prev points to 5.
+
+        # ==================================================
+        # STEP 3: Merge the two halves
+        # ==================================================
+
+        # First half:
+        # 1 -> 2 -> 3
+        #
+        # Second half:
+        # 5 -> 4
+        first = head
+        second = prev
+
+        while second:
+
+            # Save next nodes before rewiring.
+            tmp1 = first.next
+            tmp2 = second.next
+
+            # Insert node from second half
+            # after current node from first half.
+            first.next = second
+
+            # Connect back to next node
+            # in the first half.
+            second.next = tmp1
+
+            # Advance pointers.
+            first = tmp1
+            second = tmp2
+
+        # Done.
+        # The list is modified in-place.
+
+
+
+# V0
 # IDEA : Reverse the Second Part of the List and Merge Two Sorted Lists
 class Solution:
     def reorderList(self, head):
@@ -86,6 +198,41 @@ class Solution:
             tmp = second.next
             second.next = first
             second = tmp
+
+
+# V0-2
+class Solution(object):
+    def reorderList(self, head):
+        if not head or not head.next:
+            return
+            
+        # Step 1: Collect the ACTUAL Node objects into a list
+        nodes = []
+        curr = head
+        while curr:
+            nodes.append(curr)
+            curr = curr.next
+            
+        # Step 2: Use two pointers to interleave the original nodes in-place
+        l = 0
+        r = len(nodes) - 1
+        
+        while l < r:
+            # Point the left node to the right node
+            nodes[l].next = nodes[r]
+            l += 1
+            
+            # If pointers met, stop immediately to prevent circular link loops
+            if l == r:
+                break
+                
+            # Point the right node to the next left node
+            nodes[r].next = nodes[l]
+            r -= 1
+            
+        # Step 3: CRITICAL FIX: Cut off the tail node's next pointer 
+        # to prevent a circular reference loop cycle error
+        nodes[l].next = None
 
 # V0'
 # IDEA : Reverse the Second Part of the List and Merge Two Sorted Lists (simplified code from V1)
