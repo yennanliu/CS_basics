@@ -169,6 +169,129 @@ def linked_list_operation(head):
 - Reduces edge case bugs
 - Consistent prev pointer throughout traversal
 
+---
+
+#### **Why Dummy Node? Visual Comparison (LC 19)**
+
+> **Problem**: Remove the **n-th node from the end** of `[1, 2, 3, 4, 5]`.
+
+---
+
+##### Case A — Normal removal: `n = 2` (remove node `4`)
+
+**Without dummy** — works fine here:
+
+```
+fast = slow = head = [1]
+
+Step 1: move fast n=2 steps ahead
+  [1] -> [2] -> [3] -> [4] -> [5]
+  ^slow          ^fast
+
+Step 2: move both until fast.next is None
+  [1] -> [2] -> [3] -> [4] -> [5]
+                ^slow          ^fast
+
+Step 3: slow.next = slow.next.next  →  removes [4]
+  [1] -> [2] -> [3] -> [5]  ✓
+```
+
+**With dummy** — also works, same logic:
+
+```
+fast = slow = dummy[0]
+
+Step 1: move fast n+1=3 steps ahead
+  [0] -> [1] -> [2] -> [3] -> [4] -> [5]
+  ^slow                ^fast
+
+Step 2: move both until fast is None
+  [0] -> [1] -> [2] -> [3] -> [4] -> [5]
+                ^slow                 ^fast → None (stop)
+
+Step 3: slow.next = slow.next.next  →  removes [4]
+  [0] -> [1] -> [2] -> [3] -> [5]  → return dummy.next = [1] ✓
+```
+
+---
+
+##### Case B — Edge case: `n = 5` (remove the **head** node `1`)
+
+**Without dummy** — BREAKS, needs special-case code:
+
+```
+fast = slow = head = [1]
+
+Step 1: move fast n=5 steps
+  fast: 1 -> 2 -> 3 -> 4 -> 5 -> None
+
+  [1] -> [2] -> [3] -> [4] -> [5] -> None
+  ^slow                               ^fast (None!)
+
+Step 2: while fast.next → fast is None, loop NEVER runs
+  slow is still at [1]  (the head itself!)
+
+Step 3: slow.next = slow.next.next
+  → This removes [2], NOT the head — WRONG ❌
+
+  Must add a special case:
+  if not fast:
+      return head.next  # ← extra branch needed
+```
+
+**With dummy** — works uniformly, NO special case:
+
+```
+fast = slow = dummy[0]
+
+Step 1: move fast n+1=6 steps ahead
+  fast: dummy -> 1 -> 2 -> 3 -> 4 -> 5 -> None
+
+  [0] -> [1] -> [2] -> [3] -> [4] -> [5] -> None
+  ^slow                                       ^fast (None)
+
+Step 2: while fast → fast is None, loop NEVER runs
+  slow stays at dummy[0]  ← one node BEFORE the head
+
+Step 3: slow.next = slow.next.next
+  dummy.next = [2]  →  head [1] is removed ✓
+
+Return dummy.next = [2] -> [3] -> [4] -> [5]  ✓  No special case!
+```
+
+---
+
+##### Summary: Why dummy wins
+
+| | Without Dummy | With Dummy |
+|---|---|---|
+| Normal removal | ✓ Works | ✓ Works |
+| Remove head (n = len) | ❌ Needs `if not fast: return head.next` | ✓ Works uniformly |
+| Code branches | Extra conditional | None |
+| `slow` start position | `head` (can't reach before head) | `dummy` (one step before head) |
+
+**Key insight**: the dummy node gives `slow` a "standing position" **one node before the head**, so it can reconnect across any node — including the head itself — without special handling.
+
+```python
+# LC 19 — with dummy (handles all cases cleanly)
+def removeNthFromEnd(self, head, n):
+    dummy = ListNode(0)
+    dummy.next = head
+    fast = slow = dummy
+
+    for _ in range(n + 1):   # fast moves n+1 steps
+        fast = fast.next
+
+    while fast:               # move both until fast is None
+        fast = fast.next
+        slow = slow.next
+
+    slow.next = slow.next.next   # remove the target node
+    return dummy.next
+```
+
+---
+
 **Common Use Cases**:
 
 **1. Remove Nth Node From End (LC 19)**:

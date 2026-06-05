@@ -35,6 +35,32 @@ Follow up: Could you do this in one pass?
 
 """
 
+
+# V0
+class Solution(object):
+    def removeNthFromEnd(self, head, n):
+        # Dummy node to handle edge cases (like deleting head)
+        dummy = ListNode(0)
+        dummy.next = head
+
+        slow = dummy
+        fast = dummy
+
+        # Move fast pointer n+1 steps ahead
+        for _ in range(n + 1):
+            fast = fast.next
+
+        # Move both pointers until fast reaches end
+        while fast:
+            slow = slow.next
+            fast = fast.next
+
+        # Delete the nth node from end
+        slow.next = slow.next.next
+
+        return dummy.next
+
+
 # V0
 # IDEA : FAST-SLOW POINTERS (One pass algorithm)
 # Video : https://leetcode.com/problems/remove-nth-node-from-end-of-list/
