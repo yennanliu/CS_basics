@@ -33,6 +33,53 @@ The number of nodes in the tree is in the range [1, 104].
 
 """
 
+
+# V0
+# IDEA 1) DFS + BST
+class Solution(object):
+    def isValidBST(self, root):
+        if not root:
+            return True
+
+        return self.helper(root, float('-inf'), float('inf'))
+
+    def helper(self, root, min_val, max_val):
+        if not root:
+            return True
+
+        if root.val <= min_val or root.val >= max_val:
+            return False
+
+        return (
+            self.helper(root.left, min_val, root.val) and
+            self.helper(root.right, root.val, max_val)
+        )
+
+
+# V0-1
+# IDEA 1) DFS + BST
+class Solution(object):
+    def isValidBST(self, root):
+        if not root:
+            return True
+        # CRITICAL FIX: Use self. and Python's native float values for infinity
+        return self.helper(root, float('-inf'), float('inf'))
+        
+    def helper(self, root, min_val, max_val):
+        if not root:
+            return True
+            
+        # Check if the current node breaks the valid BST range boundaries
+        if root.val <= min_val or root.val >= max_val:
+            return False
+            
+        # CRITICAL FIX: Fixed 'max_val.val' typo to 'max_val'
+        # Left child must be smaller than the current root.val
+        # Right child must be larger than the current root.val
+        return (self.helper(root.left, min_val, root.val) and 
+                self.helper(root.right, root.val, max_val))
+
+
 # V0
 # IDEA : BFS
 #  -> trick : we make sure current tree and all of sub tree are valid BST
