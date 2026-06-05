@@ -73,32 +73,7 @@ The repository extensively references:
 
 ## Utility Scripts
 
-The `script/` directory contains utility scripts for managing and analyzing LeetCode practice data:
-
-### categorize_lc_by_type.py
-Categorizes LeetCode problems from `data/progress.md` by problem type (Array, DP, Graph, etc.) based on the directory structure in `leetcode_python/` and `leetcode_java/`.
-
-**Usage:**
-```bash
-# Default: 2025-2026
-python3 script/categorize_lc_by_type.py
-
-# Specify custom year range
-python3 script/categorize_lc_by_type.py 2024 2025
-```
-
-**Output:**
-- Generates `data/LC_Practice_{year_start}_{year_end}_By_Category.md`
-- Includes table of contents, problem counts per category, and summary statistics
-- Categorizes ~80%+ of problems based on existing codebase structure
-
-### Other Scripts
-- `get_again_problems.sh` - Extract problems to review again
-- `get_company_LC.sh` - Get company-specific LeetCode problems
-- `get_lc_per_rating.py` - Filter problems by difficulty rating
-- `get_must_problems.sh` - Extract must-do problems
-- `get_review_list.py` - Generate review lists
-- `list_leetcode_solutions_by_type.sh` - List solutions by type
+See [`doc/utility-scripts.md`](doc/utility-scripts.md) for full usage of all scripts in `script/`.
 
 ## Development Notes
 
@@ -107,6 +82,65 @@ python3 script/categorize_lc_by_type.py 2024 2025
 - System design includes both theoretical concepts and practical implementations
 - Documentation emphasizes interview preparation and pattern recognition
 - Use `data/progress.md` to track daily practice progress with AI-suggested related problems
+
+---
+
+## Cheatsheet Style Guide
+
+Cheatsheets live in `doc/cheatsheet/`. Use [`doc/cheatsheet/00_template.md`](doc/cheatsheet/00_template.md) as the base structure.
+
+### File Structure
+
+```
+# Algorithm Name
+
+## Overview                    ← Key Properties, When to Use, References
+## 0) Concept                  ← Types, categories, mental model
+### 0-1) Types
+### 0-2) Pattern
+## 1) General form             ← Templates with code
+### 1-1) Basic OP
+## 2) LC Example               ← Concrete LeetCode solutions
+```
+
+### Formatting Rules
+
+- **Bold** key terms: `**Pattern**`, `**Key Idea**`, `**Recurrence**`
+- Category headers: `#### **Category Name**`
+- Code blocks: always tag language (`java`, `python`)
+- Complexity: inside code as first comment — `// time = O(...), space = O(...)`
+- Images: `<p align="center"><img src="../pic/filename.png"></p>`
+- Priority markers: `⭐⭐⭐⭐⭐` for critical/frequently-tested patterns
+
+### Code Conventions
+
+- Open with `// IDEA: brief description` (Java) or `# IDEA: ...` (Python)
+- Provide both Java and Python implementations when applicable
+- Label each block: `// java` / `# python`
+- Include `// LC <number> - Problem Name` above the class/function
+
+### Common Section Patterns
+
+| Pattern | Use |
+|---------|-----|
+| Quick Decision Table | At section start — maps goal → template → examples |
+| Template Comparison Table | Side-by-side comparison of loop conditions / update rules |
+| Similar Problems Table | Group related LC numbers with key differences |
+| Visual Trace | ASCII walkthrough of algorithm steps on a concrete example |
+| Decision Matrix | `Minimize vs Maximize`, `Memoization vs Tabulation`, etc. |
+
+### Overview Section (for larger docs)
+
+```markdown
+### Key Properties
+- **Time Complexity**: O(...)
+- **Space Complexity**: O(...)
+- **Core Idea**: ...
+- **When to Use**: ...
+
+### References
+- [Name](url)
+```
 
 ---
 
