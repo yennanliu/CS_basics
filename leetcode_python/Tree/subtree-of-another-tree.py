@@ -32,6 +32,106 @@ Submissions
 """
 
 # V0
+# IDEA: DFS + isSAME tree
+class Solution(object):
+    def isSubtree(self, root, subRoot):
+        if not root:
+            return False
+
+        """
+        # NOTE !!!
+
+
+        call `isSubtree` on sub left, right tree
+        """
+        return (
+            self.sameTree(root, subRoot) or
+            self.isSubtree(root.left, subRoot) or
+            self.isSubtree(root.right, subRoot)
+        )
+
+    def sameTree(self, p, q):
+        if not p and not q:
+            return True
+
+        if not p or not q:
+            return False
+
+        return (
+            p.val == q.val and
+            self.sameTree(p.left, q.left) and
+            self.sameTree(p.right, q.right)
+        )
+
+
+# V0-1
+# IDEA: DFS
+class Solution(object):
+    def isSubtree(self, root, subRoot):
+        # Base Case: If the main tree is empty, subRoot cannot be a subtree of it
+        if not root:
+            return False
+            
+        # A tree is a subtree if:
+        # 1. It is identical to subRoot right here (self.sameTree)
+        # 2. OR subRoot is a subtree somewhere down the left branch (self.isSubtree)
+        # 3. OR subRoot is a subtree somewhere down the right branch (self.isSubtree)
+        return (self.sameTree(root, subRoot) or 
+                self.isSubtree(root.left, subRoot) or 
+                self.isSubtree(root.right, subRoot))
+
+    def sameTree(self, p, q):
+        if not p and not q:
+            return True
+        if not p or not q:
+            return False
+        return (p.val == q.val and 
+                self.sameTree(p.left, q.left) and 
+                self.sameTree(p.right, q.right))
+
+
+
+# V0-2
+# IDEA: BFS
+from collections import deque
+
+class Solution(object):
+    def isSubtree(self, root, subRoot):
+        # If the main tree is completely empty, subRoot cannot be a subtree
+        if not root:
+            return False
+            
+        # Initialize a standard BFS queue with our main root node
+        queue = deque([root])
+        
+        while queue:
+            curr_node = queue.popleft()
+            
+            # Step 1: Check if the current node's structural tree matches subRoot
+            if self.sameTree(curr_node, subRoot):
+                return True  # Match found! Stop early.
+                
+            # Step 2: Push existing children into the queue to continue the layer scan
+            if curr_node.left:
+                queue.append(curr_node.left)
+            if curr_node.right:
+                queue.append(curr_node.right)
+                
+        # If the queue runs empty and no matches were found, return False
+        return False
+
+    def sameTree(self, p, q):
+        # Standard structural identity validation helper
+        if not p and not q:
+            return True
+        if not p or not q:
+            return False
+        return (p.val == q.val and 
+                self.sameTree(p.left, q.left) and 
+                self.sameTree(p.right, q.right))
+
+
+# V0
 # IDEA : BFS + DFS (LC 100 Same tree)
 class Solution(object):
     def isSubtree(self, root, subRoot):
