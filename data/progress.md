@@ -15,14 +15,14 @@
 
 - Blind 75
 	- Trees (ok)
-	- heap/PQ
+	- heap/PQ (OK)
 	- backtracking
 
 - needcode 150
 	
 	- linked list (OK)
-	- Trees (doing)
-	- heap/PQ
+	- Trees (OK)
+	- heap/PQ (doing)
 	- backtracking
 
 

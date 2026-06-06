@@ -36,6 +36,74 @@ Constraints:
 
 """
 
+
+# V0
+# IDEA: PQ
+from heapq import heapify, heappop
+
+class Solution(object):
+    def kClosest(self, points, k):
+        if k == 0 or not points:
+            return []
+
+        pq = []
+
+        for x, y in points:
+            dist = x * x + y * y
+            pq.append((dist, x, y))
+
+        heapify(pq)
+
+        res = []
+
+        for _ in range(k):
+            dist, x, y = heappop(pq)
+            res.append([x, y])
+
+        return res
+
+
+# V0-1
+# IDEA: PQ
+from heapq import heapify, heappop
+
+class Solution(object):
+    def kClosest(self, points, k):
+        pq = [(x*x + y*y, x, y) for x, y in points]
+        heapify(pq)
+
+        return [[heappop(pq)[1], heappop(pq)[2]] for _ in range(k)]
+
+
+# V0-2
+# IDEA: PQ
+import heapq
+
+class Solution(object):
+    def kClosest(self, points, k):
+        if k == 0 or not points:
+            return []
+            
+        # Step 1: Unpack and calculate distances
+        # We store elements as (distance, x, y) because Python heaps sort by the 1st element
+        heap_data = []
+        for x, y in points:
+            dist = x * x + y * y
+            heap_data.append((dist, x, y))
+            
+        # Step 2: Transform the list into a min-heap in-place
+        heapq.heapify(heap_data)
+        
+        # Step 3: Extract the k smallest elements from the heap
+        res = []
+        for _ in range(k):
+            # heappop automatically extracts the element with the smallest distance
+            dist, x, y = heapq.heappop(heap_data)
+            res.append([x, y])
+            
+        return res
+
+
 # V0
 # IDEA : sort + lambda
 class Solution(object):
