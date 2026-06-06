@@ -18,8 +18,8 @@
 
 - needcode 150
 	
-	- linked list (doing)
-	- Trees
+	- linked list (OK)
+	- Trees (doing)
 	- heap/PQ
 	- backtracking
 

@@ -540,6 +540,113 @@ Return: dummy.next = [3]
 
 ---
 
+#### **Doubly Linked List + HashMap (LRU Cache Pattern)** ⭐⭐⭐⭐⭐
+
+**Core Idea**: Combine a HashMap for O(1) key lookup with a doubly linked list for O(1) ordered eviction. Most-recently-used nodes sit near the **tail**; least-recently-used sits near the **head**. Sentinel dummy head/tail nodes eliminate all edge-case pointer checks.
+
+**Layout**:
+```
+head(dummy) <-> [LRU] <-> ... <-> [MRU] <-> tail(dummy)
+```
+
+**When to Use**:
+- Need O(1) get + O(1) put with ordered eviction (LRU/MFU)
+- Any problem requiring a ordered access-tracked collection
+
+**Time Complexity**: O(1) get and put  
+**Space Complexity**: O(capacity)
+
+**Key Helper Operations**:
+- `_remove(node)` — splice a node out of the list in O(1)
+- `_insert(node)` — insert a node just before tail (MRU position) in O(1)
+
+**Template Pattern**:
+```python
+# python
+# LC 146 - LRU Cache
+class Node:
+    def __init__(self, key, val):
+        self.key = key
+        self.val = val
+        self.prev = None
+        self.next = None
+
+class LRUCache:
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.cache = {}  # key -> Node
+
+        # sentinel boundaries: head <-> ... <-> tail
+        self.head = Node(0, 0)  # LRU side
+        self.tail = Node(0, 0)  # MRU side
+        self.head.next = self.tail
+        self.tail.prev = self.head
+
+    def _remove(self, node):
+        prev = node.prev
+        nxt  = node.next
+        prev.next = nxt
+        nxt.prev  = prev
+
+    def _insert(self, node):          # insert just before tail (MRU)
+        prev = self.tail.prev
+        prev.next  = node
+        node.prev  = prev
+        node.next  = self.tail
+        self.tail.prev = node
+
+    def get(self, key):
+        if key not in self.cache:
+            return -1
+        node = self.cache[key]
+        self._remove(node)
+        self._insert(node)            # move to MRU
+        return node.val
+
+    def put(self, key, value):
+        if key in self.cache:
+            node = self.cache[key]
+            node.val = value
+            self._remove(node)
+            self._insert(node)        # refresh to MRU
+            return
+
+        if len(self.cache) == self.capacity:
+            lru = self.head.next      # evict LRU (closest to head)
+            self._remove(lru)
+            del self.cache[lru.key]
+
+        node = Node(key, value)
+        self.cache[key] = node
+        self._insert(node)
+```
+
+**Visual Trace** (capacity=2):
+```
+put(1,1): head <-> [1] <-> tail
+put(2,2): head <-> [1] <-> [2] <-> tail
+get(1):   head <-> [2] <-> [1] <-> tail   ← 1 moved to MRU
+put(3,3): evict head.next=[2]
+          head <-> [1] <-> [3] <-> tail
+```
+
+**Why sentinel nodes?**
+- `_remove` and `_insert` always have valid `.prev`/`.next` neighbors
+- No `if node.prev is None` or `if node.next is None` guards needed
+- Works uniformly for head removal, tail removal, and middle removal
+
+**Similar LC Problems**:
+| # | Problem | Key Difference |
+|---|---------|----------------|
+| 146 | LRU Cache | Classic pattern — evict least recently used |
+| 460 | LFU Cache | Two-level structure: frequency map + per-freq doubly linked list |
+| 432 | All O(1) Data Structure | Doubly linked list of count buckets |
+| 1472 | Design Browser History | Doubly linked list, truncate forward on visit |
+| 641 | Design Circular Deque | Doubly linked list with fixed capacity, both ends |
+| 716 | Max Stack | Stack + doubly linked list + TreeMap for O(log n) popMax |
+
+---
+
 ## 1) General form
 ```java
 // java
