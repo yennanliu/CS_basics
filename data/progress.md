@@ -23,6 +23,7 @@
 	- linked list (OK)
 	- Trees (OK)
 	- heap/PQ (OK)
+		- todo: LC 355. Design Twitter
 	- backtracking
 
 
