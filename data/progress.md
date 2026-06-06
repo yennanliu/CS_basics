@@ -12,13 +12,14 @@
 - backtrack.md
 
 - Blind 75
-	- Trees (doing)
+	- Trees (ok)
 	- heap/PQ
 	- backtracking
 
 - needcode 150
 	
-	- linked list, Trees
+	- linked list (doing)
+	- Trees
 	- heap/PQ
 	- backtracking
 

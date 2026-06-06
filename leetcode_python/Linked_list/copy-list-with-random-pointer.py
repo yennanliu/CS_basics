@@ -47,6 +47,69 @@ Node.random is null or is pointing to some node in the linked list.
 
 """
 
+
+# V0
+# IDEA: RECURSION + HASHMAP
+class Solution(object):
+    def copyRandomList(self, head):
+        # NOTE !!!
+        # we need this map
+        # to avoid `repeating processing`
+        # map: { node_val : node }
+        self.visited = {}
+        return self.copyHelper(head)
+
+    def copyHelper(self, node):
+        if not node:
+            return None
+
+        """
+        # NOTE !!!
+
+        try if already visited
+        """
+        if node in self.visited:
+            return self.visited[node]
+
+        newNode = Node(node.val)
+        self.visited[node] = newNode
+
+        """
+        # NOTE !!!
+
+        the core idea: recursion call
+        """
+        newNode.next = self.copyHelper(node.next)
+        newNode.random = self.copyHelper(node.random)
+
+        return newNode
+
+
+# V0-1
+# IDEA: 2 PASS + HASHMAP
+class Solution(object):
+    def copyRandomList(self, head):
+        if not head:
+            return None
+
+        old_to_new = {}
+
+        # First pass: create all nodes
+        curr = head
+        while curr:
+            old_to_new[curr] = Node(curr.val)
+            curr = curr.next
+
+        # Second pass: connect next and random
+        curr = head
+        while curr:
+            old_to_new[curr].next = old_to_new.get(curr.next)
+            old_to_new[curr].random = old_to_new.get(curr.random)
+            curr = curr.next
+
+        return old_to_new[head]
+        
+
 # V0
 # IDEA : 
 #   step 1) make 2 objects (m, n) refer to same instance (head)
