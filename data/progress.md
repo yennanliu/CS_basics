@@ -9,8 +9,10 @@
 - linked_list.md
 	- todo: 1-1) Basic OP
 - binary_tree.md
-	- todo: Templates & Algorithms
+	- OK
 - bst.md
+	- doing
+		- Universal BST Template
 - backtrack.md
 
 - Blind 75
