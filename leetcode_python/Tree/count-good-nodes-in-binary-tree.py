@@ -43,6 +43,81 @@ Each node's value is between [-10^4, 10^4].
 
 
 # V0
+# IDEA: RECURSION + HELPER + `max_so_far`
+class Solution(object):
+    def goodNodes(self, root):
+        # NOTE !!!
+        self.cnt = 0
+        self.helper(root, root.val)
+        return self.cnt
+
+    def helper(self, root, max_so_far):
+        if not root:
+            # NOTE !!!
+            return
+
+        # NOTE !!!
+        if self.isGoodNode(root, max_so_far):
+            self.cnt += 1
+
+        new_max = max(max_so_far, root.val)
+
+        # NOTE !!!
+        self.helper(root.left, new_max)
+        # NOTE !!!
+        self.helper(root.right, new_max)
+
+    def isGoodNode(self, node, max_so_far):
+        return node.val >= max_so_far
+
+
+# V0-1
+# IDEA: RECURSION + `max_so_far`
+class Solution(object):
+    def goodNodes(self, root):
+        self.cnt = 0
+
+        def dfs(node, max_so_far):
+            if not node:
+                return
+
+            if node.val >= max_so_far:
+                self.cnt += 1
+
+            dfs(node.left, max(max_so_far, node.val))
+            dfs(node.right, max(max_so_far, node.val))
+
+        dfs(root, root.val)
+        return self.cnt
+
+
+
+# V0-2
+# IDEA: RECURSION + `max_so_far`
+class Solution(object):
+    def goodNodes(self, root):
+        if not root:
+            return 0
+            
+        # The root node starts with its own value as the initial path maximum
+        return self.dfs(root, root.val)
+        
+    def dfs(self, node, max_so_far):
+        if not node:
+            return 0
+            
+        # Rule Check: If the current value is >= max_so_far, it is a good node (1)
+        current_node_count = 1 if node.val >= max_so_far else 0
+        
+        # Update the running maximum value for the upcoming child paths
+        new_max = max(max_so_far, node.val)
+        
+        # Recurse down both sides and sum up all good nodes found
+        left_nodes = self.dfs(node.left, new_max)
+        right_nodes = self.dfs(node.right, new_max)
+        
+        return current_node_count + left_nodes + right_nodes
+
 
 # V1
 # IDEA : DFS
