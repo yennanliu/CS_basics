@@ -29,6 +29,68 @@ The number of nodes in the tree is in the range [0, 100].
 
 """
 
+
+# V0
+# IDEA: BFS + right node process first
+from collections import deque
+
+class Solution(object):
+    def rightSideView(self, root):
+        if not root:
+            return []
+
+        q = deque([root])
+        res = []
+
+        while q:
+            size = len(q)
+
+            for i in range(size):
+                node = q.popleft()
+
+                # First node encountered at this level
+                # because right children are processed first
+                if i == 0:
+                    res.append(node.val)
+
+                if node.right:
+                    q.append(node.right)
+
+                if node.left:
+                    q.append(node.left)
+
+        return res
+
+
+# V0-1
+# IDEA: STANDARD BFS
+from collections import deque
+
+class Solution(object):
+    def rightSideView(self, root):
+        if not root:
+            return []
+
+        q = deque([root])
+        res = []
+
+        while q:
+            size = len(q)
+
+            for i in range(size):
+                node = q.popleft()
+
+                if i == size - 1:
+                    res.append(node.val)
+
+                if node.left:
+                    q.append(node.left)
+
+                if node.right:
+                    q.append(node.right)
+
+        return res
+
 # V0
 # IDEA : DFS
 class Solution(object):

@@ -3,11 +3,13 @@
 # 2026-06-06
 
 - binary_search.md
-	- TODO: `2) Binary Search Templates & Patterns`
+	- OK
 
 
 - linked_list.md
+	- todo: 1-1) Basic OP
 - binary_tree.md
+	- todo: Templates & Algorithms
 - bst.md
 - backtrack.md
 
