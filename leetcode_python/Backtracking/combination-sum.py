@@ -50,6 +50,52 @@ All elements of candidates are distinct.
 # IDEA : DFS + BACKTRACK
 class Solution(object):
     def combinationSum(self, candidates, target):
+        if not candidates:
+            return []
+
+        # NOTE !!! why `sort`
+        # Sorting lets us optimize
+        # and break early out of loops
+        candidates.sort()
+        self.res = []
+
+        # Pass 0 as the starting index to begin our search
+        self.helper(candidates, target, [], 0)
+        return self.res
+
+    # NOTE !!! why `start`
+    # Added 'start' to track our 
+    # position and avoid looking backward
+    def helper(self, candidates, target, cur, start):
+        # Base Case: Instead of calculating sum(cur) every time, 
+        # we subtract from target. If target hits 0, we found a match!
+        if target == 0:
+            self.res.append(cur[:])
+            return
+        
+        # Start our loop from the 'start' pointer, not from the beginning
+        for i in range(start, len(candidates)):
+            val = candidates[i]
+            
+            # OPTIMIZATION: Since candidates are sorted, if the current value 
+            # is greater than our target, all values after it are also too big.
+            if val > target:
+                break
+                
+            cur.append(val) 
+            
+            # Recurse: Pass 'i' as the next start index so the same 
+            # number can be reused, but numbers before 'i' are ignored.
+            self.helper(candidates, target - val, cur, i)
+            
+            # Backtrack
+            cur.pop()
+
+
+# V0
+# IDEA : DFS + BACKTRACK
+class Solution(object):
+    def combinationSum(self, candidates, target):
 
         def dfs(tmp):
             if sum(tmp) == target:
@@ -67,6 +113,39 @@ class Solution(object):
         tmp = []
         dfs(tmp)
         return res
+
+
+# V0-1
+class Solution(object):
+    def combinationSum(self, candidates, target):
+        self.res = []
+        candidates.sort()
+
+        self.helper(candidates, target, 0, [])
+        return self.res
+
+    def helper(self, candidates, target, start, cur):
+        if target == 0:
+            self.res.append(cur[:])
+            return
+
+        if target < 0:
+            return
+
+        for i in range(start, len(candidates)):
+            cur.append(candidates[i])
+
+            # i (not i+1) because we can reuse the same number
+            self.helper(
+                candidates,
+                target - candidates[i],
+                i,
+                cur
+            )
+
+            cur.pop()   # backtrack
+
+
 
 # V0'
 # IDEA : DFS + BACKTRACK
