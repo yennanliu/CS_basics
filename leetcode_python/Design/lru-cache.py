@@ -44,6 +44,172 @@ At most 2 * 105 calls will be made to get and put.
 
 """
 
+
+# V0
+# IDEA:  HASHMAP + doubly linked list( most recent used + least recent used )
+"""
+
+- HashMap: key → node
+- Doubly Linked List:
+  - most recently used near tail
+  - least recently used near head
+"""
+class Node:
+    def __init__(self, key, val):
+        self.key = key
+        self.val = val
+        self.prev = None
+        self.next = None
+
+
+class LRUCache:
+
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.cache = {}
+
+        self.head = Node(0, 0)
+        self.tail = Node(0, 0)
+
+        self.head.next = self.tail
+        self.tail.prev = self.head
+
+    # NOTE !!!  `_remove` helper func
+    def _remove(self, node):
+        prev = node.prev
+        nxt = node.next
+
+        prev.next = nxt
+        nxt.prev = prev
+
+    # NOTE !!!  `_insert` helper func
+    def _insert(self, node):
+        prev = self.tail.prev
+
+        prev.next = node
+        node.prev = prev
+
+        node.next = self.tail
+        self.tail.prev = node
+
+    def get(self, key):
+        if key not in self.cache:
+            return -1
+
+        node = self.cache[key]
+
+        self._remove(node)
+        self._insert(node)
+
+        return node.val
+
+    def put(self, key, value):
+
+        if key in self.cache:
+            node = self.cache[key]
+            node.val = value
+
+            self._remove(node)
+            self._insert(node)
+            return
+
+        if len(self.cache) == self.capacity:
+            lru = self.head.next
+
+            self._remove(lru)
+            del self.cache[lru.key]
+
+        node = Node(key, value)
+
+        self.cache[key] = node
+        self._insert(node)
+
+
+# V0-1
+# IDEA:  HASHMAP + doubly linked list( most recent used + least recent used )
+"""
+
+- HashMap: key → node
+- Doubly Linked List:
+  - most recently used near tail
+  - least recently used near head
+"""
+class Node:
+    def __init__(self, key=0, value=0):
+        self.key = key
+        self.value = value
+        self.prev = None
+        self.next = None
+
+class LRUCache(object):
+
+    def __init__(self, capacity):
+        """
+        :type capacity: int
+        """
+        self.capacity = capacity
+        # Map stores { key : Node_Object } for O(1) node access
+        self.cache = {}
+        
+        # Initialize sentinel/dummy head and tail boundaries
+        self.head = Node(0, 0)
+        self.tail = Node(0, 0)
+        self.head.next = self.tail
+        self.tail.prev = self.head
+
+    def _remove(self, node):
+        """Helper to splice a node completely out of the doubly linked list"""
+        prev_node = node.prev
+        next_node = node.next
+        prev_node.next = next_node
+        next_node.prev = prev_node
+
+    def _add_to_tail(self, node):
+        """Helper to insert a node right before the tail (Most Recently Used position)"""
+        prev_node = self.tail.prev
+        
+        prev_node.next = node
+        self.tail.prev = node
+        
+        node.prev = prev_node
+        node.next = self.tail
+
+    def get(self, key):
+        """
+        :type key: int
+        :rtype: int
+        """
+        if key in self.cache:
+            node = self.cache[key]
+            # Since it was accessed, move it to the MRU (tail) position
+            self._remove(node)
+            self._add_to_tail(node)
+            return node.value
+        return -1
+
+    def put(self, key, value):
+        """
+        :type key: int
+        :type value: int
+        :rtype: None
+        """
+        if key in self.cache:
+            # Update case: remove old node placement
+            self._remove(self.cache[key])
+            
+        node = Node(key, value)
+        self.cache[key] = node
+        self._add_to_tail(node)
+        
+        # Eviction case: capacity exceeded
+        if len(self.cache) > self.capacity:
+            # LRU node is always sitting directly right of the head sentinel node
+            lru_node = self.head.next
+            self._remove(lru_node)
+            # Delete it from our lookup hash map
+            del self.cache[lru_node.key]
+
+
 # V0
 # IDEA : ARRAY + LRU (implement LRU via array)
 # time: O(N) for get/put, space: O(capacity)
