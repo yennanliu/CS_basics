@@ -22,7 +22,7 @@
 	
 	- linked list (OK)
 	- Trees (OK)
-	- heap/PQ (doing)
+	- heap/PQ (OK)
 	- backtracking
 
 

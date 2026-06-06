@@ -2194,6 +2194,137 @@ public int minimumDeviation(int[] nums) {
  */
 ```
 
+### 2-18) Task Scheduler
+
+```python
+# python
+# LC 621
+# Reference: leetcode_python/Greedy/task-scheduler.py
+
+"""
+Problem: Given tasks (char array) and a cooling interval n, return the minimum
+         number of CPU intervals needed to finish all tasks.
+         Between two identical tasks there must be at least n intervals
+         (filled by other tasks or idle).
+
+Example:
+  tasks = ["A","A","A","B","B","B"], n = 2
+  Output: 8   →  A → B → idle → A → B → idle → A → B
+"""
+
+# ── Core Idea ────────────────────────────────────────────────────────────────
+# Use a MAX HEAP to always schedule the highest-frequency task next.
+# After execution, a task enters a COOLING QUEUE and becomes available again
+# only after n time units have passed.
+#
+#   max_heap  : stores negative counts (simulated max heap via Python's min heap)
+#               → always grabs the most-frequent remaining task
+#   cooling_queue : deque of (remaining_neg_count, available_at_time)
+#               → holds tasks waiting out their cooldown
+#
+# Each tick (time += 1):
+#   1. Pop highest-freq task from heap, execute it (count += 1 because negated).
+#   2. If count still < 0 (copies remain), push (count, time + n) into queue.
+#   3. If the front of the queue is now available (available_at == time), push it back to heap.
+# ─────────────────────────────────────────────────────────────────────────────
+
+# V0 : BIG PQ + COOLING QUEUE (simulate time tick-by-tick)
+import heapq
+from collections import Counter, deque
+
+class Solution(object):
+    def leastInterval(self, tasks, n):
+        if not tasks:
+            return 0
+        if n == 0:
+            return len(tasks)
+
+        counts = Counter(tasks)
+
+        # Max-heap via negation
+        max_heap = [-cnt for cnt in counts.values()]
+        heapq.heapify(max_heap)
+
+        # cooling_queue stores (remaining_neg_count, available_time)
+        cooling_queue = deque()
+        time = 0
+
+        while max_heap or cooling_queue:
+            time += 1
+
+            if max_heap:
+                neg_cnt = heapq.heappop(max_heap)
+                remaining_cnt = neg_cnt + 1   # one execution consumed
+
+                # remaining_cnt < 0  →  copies still exist; put in cooldown
+                # remaining_cnt == 0 →  task fully done; discard
+                if remaining_cnt < 0:
+                    cooling_queue.append((remaining_cnt, time + n))
+
+            # Re-queue any task whose cooldown just expired
+            if cooling_queue and cooling_queue[0][1] == time:
+                ready_cnt, _ = cooling_queue.popleft()
+                heapq.heappush(max_heap, ready_cnt)
+
+        return time
+
+
+# V0-1 : compact version (same algorithm)
+class Solution(object):
+    def leastInterval_v1(self, tasks, n):
+        freq = Counter(tasks)
+        max_heap = [-cnt for cnt in freq.values()]
+        heapq.heapify(max_heap)
+        cooldown = deque()   # (available_time, remaining_neg_count)
+        time = 0
+        while max_heap or cooldown:
+            time += 1
+            if max_heap:
+                cnt = heapq.heappop(max_heap) + 1
+                if cnt != 0:
+                    cooldown.append((time + n, cnt))
+            if cooldown and cooldown[0][0] == time:
+                _, cnt = cooldown.popleft()
+                heapq.heappush(max_heap, cnt)
+        return time
+
+
+# V1 : Math formula  O(N) time, O(1) space
+# task_time = (max_count - 1) * (n + 1) + num_tasks_with_max_count
+# Answer    = max(task_time, len(tasks))   ← can't be less than total task count
+import collections
+class Solution(object):
+    def leastInterval_math(self, tasks, n):
+        count = collections.Counter(tasks)
+        most      = count.most_common(1)[0][1]
+        num_most  = sum(1 for v in count.values() if v == most)
+        return max((most - 1) * (n + 1) + num_most, len(tasks))
+```
+
+**Why `remaining_cnt < 0` check?**
+
+Tasks are stored as **negative** counts to fake a max-heap.
+- `-3 + 1 = -2` → still 2 copies left → goes to cooldown queue.
+- `-1 + 1 =  0` → task exhausted → drop it, never re-queue.
+
+**Pattern: Max Heap + Cooling Queue (greedy scheduling)**
+
+| Step | Data structure | Purpose |
+|------|---------------|---------|
+| Pick next task | `max_heap` (negated counts) | Always schedule the most frequent task |
+| Enforce cooldown | `cooling_queue` deque | Hold task until `time + n` has elapsed |
+| Re-activate | pop from queue → push to heap | Task becomes available again |
+
+**Similar problems:**
+
+| LC # | Problem | Shared pattern |
+|------|---------|---------------|
+| 767 | Reorganize String | Max heap, interleave by frequency |
+| 1353 | Maximum Number of Events That Can Be Attended | Greedy + heap by deadline |
+| 502 | IPO | Two-heap greedy (profit + capital) |
+| 1675 | Minimize Deviation in Array | Max heap + greedy shrink |
+| 295 | Find Median from Data Stream | Two-heap system |
+
 ## Problems by Pattern
 
 ### Pattern-Based Problem Classification
