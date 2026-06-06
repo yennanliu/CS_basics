@@ -1,5 +1,32 @@
 # Progress
 
+
+# 2026-06-07
+
+- linked_list.md
+	- todo: 1-1) Basic OP
+- bst.md
+	- doing
+		- Universal BST Template
+- backtrack.md
+- tries.md
+
+- Blind 75
+
+	- backtracking
+	- tries
+	- graph
+
+
+- needcode 150
+
+	- heap/PQ (OK)
+		- todo: LC 355. Design Twitter
+	- backtracking
+	- tries
+	- graph
+
+
 # 2026-06-06
 
 - binary_search.md
