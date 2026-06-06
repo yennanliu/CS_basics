@@ -30,6 +30,90 @@ The integer n is in the range [0, 100].
 
 """
 
+
+# V0
+# IDEA: BIG PQ + QUEUE
+import heapq
+from collections import Counter, deque
+
+class Solution(object):
+    def leastInterval(self, tasks, n):
+        if not tasks:
+            return 0
+        if n == 0:
+            return len(tasks)
+            
+        # Step 1: Count task frequencies
+        counts = Counter(tasks)
+        
+        # Step 2: Build a Max-Heap based on frequencies
+        # We store negative counts because Python heapq is a min-heap by default
+        max_heap = [-cnt for cnt in counts.values()]
+        heapq.heapify(max_heap)
+        
+        # Step 3: Initialize the cooling queue and time tracker
+        # Queue elements store tuples: (negative_remaining_count, available_time)
+        cooling_queue = deque()
+        time = 0
+        
+        # Keep cycling as long as we have tasks ready or tasks cooling down
+        while max_heap or cooling_queue:
+            time += 1
+            
+            if max_heap:
+                # Extract the highest frequency task
+                neg_cnt = heapq.heappop(max_heap)
+                # Processing the task means its remaining count gets closer to 0
+                remaining_cnt = neg_cnt + 1 
+                
+                # If there are still copies left, it must wait until (time + n)
+                if remaining_cnt < 0:
+                    cooling_queue.append((remaining_cnt, time + n))
+            
+            # Check if the task at the front of the cooling queue is ready to be re-queued
+            if cooling_queue and cooling_queue[0][1] == time:
+                ready_task_cnt, _ = cooling_queue.popleft()
+                heapq.heappush(max_heap, ready_task_cnt)
+                
+        return time
+
+
+# V0-1
+# IDEA: BIG PQ + QUEUE
+from collections import Counter, deque
+from heapq import heapify, heappop, heappush
+
+class Solution(object):
+    def leastInterval(self, tasks, n):
+
+        freq = Counter(tasks)
+
+        max_heap = [-cnt for cnt in freq.values()]
+        heapify(max_heap)
+
+        cooldown = deque()  # (available_time, remaining_count)
+
+        time = 0
+
+        while max_heap or cooldown:
+
+            time += 1
+
+            if max_heap:
+                cnt = heappop(max_heap)
+
+                cnt += 1
+
+                if cnt != 0:
+                    cooldown.append((time + n, cnt))
+
+            if cooldown and cooldown[0][0] == time:
+                _, cnt = cooldown.popleft()
+                heappush(max_heap, cnt)
+
+        return time
+
+
 # V0
 # pattern :
 #    =============================================================================

@@ -1363,6 +1363,45 @@ heapq.heapify(heap)  # O(n)
 - ✅ For custom comparison: use tuple ordering or implement `__lt__`
 
 
+### 1-27-2) Big PQ (Max Heap via negation)
+
+Python's `heapq` only implements a **min heap** — there is no `reverse=True` option for `heapify()`.
+
+To simulate a **max heap**, negate the priority key:
+
+```python
+# Instead of storing (dist, x, y), store (-dist, x, y)
+
+from heapq import heapify, heappop
+
+pq = [(-10, "A"), (-5, "B"), (-20, "C")]
+heapify(pq)
+
+print(heappop(pq))  # (-20, 'C')  ← largest original dist (20) comes out first
+print(heappop(pq))  # (-10, 'A')
+print(heappop(pq))  # (-5,  'B')
+```
+
+**Push pattern:**
+```python
+import heapq
+
+max_heap = []
+heapq.heappush(max_heap, (-priority, value))
+
+# Pop: negate back to get original value
+neg_pri, val = heapq.heappop(max_heap)
+print(-neg_pri, val)
+```
+
+**Multi-key example (primary DESC, secondary ASC):**
+```python
+# Sort by dist descending; on tie, by name ascending
+heapq.heappush(pq, (-dist, name))
+```
+
+> **Rule of thumb**: negate whichever field(s) you want in descending order; leave the rest unchanged.
+
 ### 1-28) useful `functools` modules
 - functools.lru_cache
     - implement cache via LRU (Least Recently Used (LRU) cache) in py
