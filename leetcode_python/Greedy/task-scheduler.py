@@ -53,6 +53,7 @@ class Solution(object):
         
         # Step 3: Initialize the cooling queue and time tracker
         # Queue elements store tuples: (negative_remaining_count, available_time)
+        # queue: [(negative_remaining_count, available_time)]
         cooling_queue = deque()
         time = 0
         
@@ -67,6 +68,37 @@ class Solution(object):
                 remaining_cnt = neg_cnt + 1 
                 
                 # If there are still copies left, it must wait until (time + n)
+                """
+                NOTE !!!
+
+
+                Why remaining_cnt < 0?
+                
+                -> 
+
+                Remember that we are storing our 
+                frequencies as `negative` numbers 
+                to simulate a `Max-Heap` in Python.
+
+                If a task has a count of -3 
+                and we execute it once, 
+                we add 1 to it: -3 + 1 = -2.
+
+                Since -2 < 0, 
+                -> it means there are still 2 copies 
+                left of this task that need to 
+                be scheduled in the future. 
+                We must put it in the cooling queue.
+
+                If a task has a count of -1 and 
+                we execute it, -1 + 1 = 0. 
+
+                Since 0 is not < 0, 
+                it means this task is completely finished. 
+                We don't add it to the cooling queue 
+                because it never needs to run again!
+
+                """
                 if remaining_cnt < 0:
                     cooling_queue.append((remaining_cnt, time + n))
             
