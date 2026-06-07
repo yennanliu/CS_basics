@@ -58,6 +58,83 @@ The Graph is connected and all nodes can be visited starting from the given node
 
 """
 
+"""
+class Node(object):
+    def __init__(self, val = 0, neighbors = None):
+        self.val = val
+        self.neighbors = neighbors if neighbors is not None else []
+"""
+
+
+# V0
+# IDEA: DFS + node class
+class Solution(object):
+    def cloneGraph(self, node):
+        if not node:
+            return None
+
+        visited = {}
+
+        return self.helper(node, visited)
+
+    def helper(self, node, visited):
+        if node in visited:
+            return visited[node]
+
+        # NOTE !!!
+        # init the `cloned` node
+        res = Node(node.val)
+
+        # IMPORTANT:
+        # save clone before recursing
+        visited[node] = res
+
+        # NOTE !!!!
+        for nxt in node.neighbors:
+            # NOTE !!!!
+            res.neighbors.append(
+                self.helper(nxt, visited)
+            )
+
+        return res
+
+
+# V0-1
+# IDEA: DFS + node class
+# Definition for a Node.
+# class Node(object):
+#     def __init__(self, val = 0, neighbors = None):
+#         self.val = val
+#         self.neighbors = neighbors if neighbors is not None else []
+class Solution(object):
+    def cloneGraph(self, node):
+        if not node:
+            return None
+            
+        # Global map to track { original_node : cloned_node }
+        visited = {}
+        return self.dfs_helper(node, visited)
+        
+    def dfs_helper(self, node, visited):
+        # Base Case: If we already cloned this node, return its clone directly
+        if node in visited:
+            return visited[node]
+            
+        # 1. Action: Create a fresh clone of the current node (with an empty neighbors list)
+        clone_node = Node(node.val)
+        
+        # 2. Register the pairing inside our tracking map immediately
+        visited[node] = clone_node
+        
+        # 3. Recurse: Iterate through all neighbors of the original node
+        for neighbor in node.neighbors:
+            # Clone the neighbor recursively and append it to our clone's neighbors list
+            cloned_neighbor = self.dfs_helper(neighbor, visited)
+            clone_node.neighbors.append(cloned_neighbor)
+            
+        return clone_node
+
+
 # V0
 # IDEA : BFS
 class Solution(object):
