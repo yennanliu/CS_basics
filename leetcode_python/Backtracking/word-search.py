@@ -40,6 +40,55 @@ Follow up: Could you use search pruning to make your solution faster with a larg
 
 """
 
+
+# V0
+# IDEA : DFS + backtracking
+class Solution(object):
+    def exist(self, board, word):
+        if not board or not word:
+            return False
+            
+        self.rows = len(board)       
+        self.cols = len(board[0])
+        
+        # Start a search from every single cell on the board
+        for r in range(self.rows):
+            for c in range(self.cols):
+                # If the first character matches, kick off the backtracking depth search
+                if board[r][c] == word[0]:
+                    if self.dfs(board, word, r, c, 0):
+                        return True
+        return False
+        
+    def dfs(self, board, word, r, c, idx):
+        # Base Case: If our index matches the word length, we successfully matched everything!
+        if idx == len(word):
+            return True
+            
+        # Out of bounds check OR character mismatch check
+        if (r < 0 or r >= self.rows or 
+            c < 0 or c >= self.cols or 
+            board[r][c] != word[idx]):
+            return False
+            
+        # 1. Action: Save the character
+        # and mask the cell to mark it as visited
+        temp = board[r][c]
+        board[r][c] = "#"
+        
+        # 2. Recurse: Search all 4 adjacent directions
+        # If ANY path returns True, we bubble that True all the way up immediately!
+        found = (self.dfs(board, word, r + 1, c, idx + 1) or
+                 self.dfs(board, word, r - 1, c, idx + 1) or
+                 self.dfs(board, word, r, c + 1, idx + 1) or
+                 self.dfs(board, word, r, c - 1, idx + 1))
+                 
+        # 3. Backtrack: Restore the original character so other paths can use it
+        board[r][c] = temp
+        
+        return found
+
+
 # V0
 # IDEA : DFS + backtracking
 class Solution(object):
@@ -59,7 +108,8 @@ class Solution(object):
         return False
 
     def dfs(self, board, word, cur, i, j, visited):
-        # if "not false" till cur == len(word), means we already found the wprd in board
+        # if "not false" till cur == len(word), 
+        # means we already found the wprd in board
         if cur == len(word):
             return True
 
@@ -81,7 +131,65 @@ class Solution(object):
         visited[i][j] = False
 
         return result
-       
+   
+
+# V0-1
+class Solution(object):
+    def exist(self, board, word):
+        if not board and word:
+            return False
+
+        if not board and not word:
+            return True
+
+        l = len(board)
+        w = len(board[0])
+
+        for y in range(l):
+            for x in range(w):
+                if board[y][x] == word[0]:
+                    visited = [[False] * w for _ in range(l)]
+                    visited[y][x] = True
+
+                    if self.helper(board, word, x, y, visited, 0):
+                        return True
+
+        return False
+
+    def helper(self, board, word, x, y, visited, idx):
+        l = len(board)
+        w = len(board[0])
+
+        if board[y][x] != word[idx]:
+            return False
+
+        if idx == len(word) - 1:
+            return True
+
+        dirs = [[0,1], [0,-1], [1,0], [-1,0]]
+
+        for d in dirs:
+            _x = x + d[0]
+            _y = y + d[1]
+
+            if 0 <= _x < w and 0 <= _y < l:
+                if not visited[_y][_x]:
+                    visited[_y][_x] = True
+
+                    if self.helper(
+                        board,
+                        word,
+                        _x,
+                        _y,
+                        visited,
+                        idx + 1
+                    ):
+                        return True
+
+                    visited[_y][_x] = False
+
+        return False
+
 # V0'
 # IDEA : DFS
 class Solution(object):
