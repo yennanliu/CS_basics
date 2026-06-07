@@ -28,6 +28,208 @@ Adobe Amazon Facebook Google LinkedIn Pinterest Salesforce Zenefits
 """
 
 # V0
+# IDEA: UNION FIND
+# https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/BFS/GraphValidTree.java#L31
+class Solution(object):
+    def validTree(self, n, edges):
+
+        # A valid tree must contain exactly n - 1 edges.
+        #
+        # Why?
+        #
+        # Too few edges:
+        #   graph cannot be fully connected
+        #
+        # Too many edges:
+        #   graph must contain a cycle
+        #
+        if len(edges) != n - 1:
+            return False
+
+        # Initialize Union-Find
+        uf = UnionFind(n)
+
+        # Process every edge
+        for a, b in edges:
+
+            # If union returns False,
+            # a and b are already connected,
+            # therefore adding this edge creates a cycle.
+            if not uf.union(a, b):
+                return False
+
+        # No cycle found and edge count is n - 1
+        return True
+
+
+class UnionFind(object):
+
+    def __init__(self, n):
+
+        # Initially every node is its own parent.
+        #
+        # Example:
+        #
+        # n = 5
+        #
+        # parent =
+        # [0, 1, 2, 3, 4]
+        #
+        self.parent = [i for i in range(n)]
+
+    def find(self, x):
+
+        # If x is not the root,
+        # recursively find the root.
+        if self.parent[x] != x:
+
+            # Path Compression
+            #
+            # Example:
+            #
+            # 0 -> 1 -> 2 -> 3
+            #
+            # find(0)
+            #
+            # After compression:
+            #
+            # 0 -> 3
+            # 1 -> 3
+            # 2 -> 3
+            #
+            self.parent[x] = self.find(self.parent[x])
+
+        return self.parent[x]
+
+    def union(self, a, b):
+
+        # Find root(parent representative)
+        root_a = self.find(a)
+        root_b = self.find(b)
+
+        # If roots are equal,
+        # a and b already belong to the same connected component.
+        #
+        # Adding another edge between them
+        # would create a cycle.
+        #
+        # Example:
+        #
+        # 0 -- 1 -- 2
+        # |__________|
+        #
+        if root_a == root_b:
+            return False
+
+        # Merge two sets.
+        #
+        # Simple version:
+        #
+        # root_a --> root_b
+        #
+        self.parent[root_a] = root_b
+
+        return True
+
+
+
+# V0-1
+# IDEA: UNION FIND
+class UF(object):
+    def __init__(self, n):
+        # Initialize each node as its own parent
+        self.parents = [i for i in range(n)]
+
+    # Find operation with optimized path compression
+    def find(self, a):
+        if self.parents[a] != a:
+            # Recursively find the root and compress the path on the way back
+            self.parents[a] = self.find(self.parents[a])
+        return self.parents[a]
+
+    # Union operation that returns False if a cycle is detected
+    def union(self, a, b):
+        aParent = self.find(a)
+        bParent = self.find(b)
+        
+        # NOTE !!!
+        # If find(a) == find(b), it means they are already CONNECTED.
+        # Adding an extra edge between them would form a CYCLE!
+        if aParent == bParent:
+            return False # Cycle detected
+            
+        # Simple union step: hook one root to the other
+        self.parents[aParent] = bParent
+        return True
+
+
+class Solution(object):
+    def validTree(self, n, edges):
+        # NOTE !!!
+        # A valid tree must contain exactly `n - 1` edges.
+        # If it doesn't, it is either disconnected or contains a cycle.
+        if len(edges) != n - 1:
+            return False
+            
+        # Instantiate the Union-Find data structure
+        uf = UF(n)
+        
+        # Process every edge to connect nodes and inspect for cycles
+        for u, v in edges:
+            if not uf.union(u, v):
+                return False # Cycle detected!
+                
+        # If no cycles are detected and edge count matches n-1, it's a valid tree
+        return True
+
+
+# V0-2
+# IDEA: DFS
+class Solution(object):
+    def validTree(self, n, edges):
+        # Math Optimization: A valid tree MUST have exactly (n - 1) edges.
+        # If it doesn't, it either has a cycle or is disconnected!
+        if len(edges) != n - 1:
+            return False
+            
+        # Step 1: Build an UNDIRECTED adjacency list
+        neighbors = {i: [] for i in range(n)}
+        for a, b in edges:
+            neighbors[a].append(b)
+            neighbors[b].append(a)
+            
+        visited = set()
+        
+        # Step 2: Start a single DFS from node 0. 
+        # Pass -1 as the initial dummy parent.
+        if not self.helper(neighbors, visited, 0, -1):
+            return False # Cycle detected!
+            
+        # Step 3: Check connectivity. Did we reach all nodes?
+        return len(visited) == n
+
+    def helper(self, neighbors, visited, cur, parent):
+        # If we hit a node already in our visited set, we found a cycle!
+        if cur in visited:
+            return False
+            
+        # Mark the current node as visited
+        visited.add(cur)
+        
+        # Explore all connected neighbors
+        for neighbor in neighbors[cur]:
+            # CRITICAL FIX: Skip the trivial edge going backward to the parent
+            if neighbor == parent:
+                continue
+                
+            # Recurse down, passing 'cur' as the parent for the next node
+            if not self.helper(neighbors, visited, neighbor, cur):
+                return False
+                
+        return True
+
+
+# V0
 # IDEA : DFS (NEED TO VALIDATE***)
 # class Solution(object):
 #     def validTree(self, n, edges):
