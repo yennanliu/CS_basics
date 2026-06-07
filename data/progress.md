@@ -15,7 +15,7 @@
 
 	- backtracking (ok)
 	- tries (pass)
-	- graph (doing)
+	- graph (ok)
 
 
 - needcode 150
@@ -23,8 +23,8 @@
 	- heap/PQ (OK)
 		- todo: LC 355. Design Twitter
 	- backtracking (pass)
-	- tries 
-	- graph
+	- tries (pass)
+	- graph (doing)
 
 
 # 2026-06-06
