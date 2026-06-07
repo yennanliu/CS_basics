@@ -15,7 +15,7 @@
 
 	- backtracking (ok)
 	- tries (pass)
-	- graph
+	- graph (doing)
 
 
 - needcode 150

@@ -49,6 +49,118 @@ n == heights[r].length
 0 <= heights[r][c] <= 105
 
 """
+
+# V0
+# IDEA: REVERSE + 2 DFS + OVERLAPPING
+class Solution(object):
+    def pacificAtlantic(self, heights):
+        if not heights:
+            return []
+
+        rows = len(heights)
+        cols = len(heights[0])
+
+        # NOTE !!!
+        # 2 `visited` for 2 oceans
+        pacific = [[False] * cols for _ in range(rows)]
+        atlantic = [[False] * cols for _ in range(rows)]
+
+        # Pacific borders
+        for r in range(rows):
+            self.dfs(r, 0, pacific, heights)
+            self.dfs(r, cols - 1, atlantic, heights)
+
+        for c in range(cols):
+            self.dfs(0, c, pacific, heights)
+            self.dfs(rows - 1, c, atlantic, heights)
+
+        res = []
+
+        # NOTE !!!
+        # get the overlapping
+        for r in range(rows):
+            for c in range(cols):
+                if pacific[r][c] and atlantic[r][c]:
+                    res.append([r, c])
+
+        return res
+
+    def dfs(self, r, c, visited, heights):
+        if visited[r][c]:
+            return
+
+        visited[r][c] = True
+
+        rows = len(heights)
+        cols = len(heights[0])
+
+        dirs = [(1,0), (-1,0), (0,1), (0,-1)]
+
+        for dr, dc in dirs:
+            nr = r + dr
+            nc = c + dc
+
+            if (
+                0 <= nr < rows and
+                0 <= nc < cols and
+                not visited[nr][nc] and
+                heights[nr][nc] >= heights[r][c]
+            ):
+                self.dfs(nr, nc, visited, heights)
+
+
+# V0-1
+# IDEA: REVERSE + 2 DFS + OVERLAPPING
+class Solution(object):
+    def pacificAtlantic(self, heights):
+        if not heights:
+            return []
+            
+        l = len(heights)
+        w = len(heights[0])
+        
+        # CRITICAL FIX: Two separate tracking matrices initialized cleanly
+        pacific_visited = [[False] * w for _ in range(l)]
+        atlantic_visited = [[False] * w for _ in range(l)]
+        
+        # 1. Left and Right Borders (Pacific on Left, Atlantic on Right)
+        for y in range(l):
+            self.dfs(0, y, heights, pacific_visited)   # Left border
+            self.dfs(w - 1, y, heights, atlantic_visited) # Right border
+            
+        # 2. Top and Bottom Borders (Pacific on Top, Atlantic on Bottom)
+        for x in range(w):
+            self.dfs(x, 0, heights, pacific_visited)   # Top border
+            self.dfs(x, l - 1, heights, atlantic_visited) # Bottom border
+            
+        # 3. Find cells present in BOTH ocean reachability maps
+        res = []
+        for y in range(l):
+            for x in range(w):
+                if pacific_visited[y][x] and atlantic_visited[y][x]:
+                    res.append([y, x]) # LC expects row first, then col [row, col]
+                    
+        return res
+
+    def dfs(self, x, y, heights, visited):
+        l = len(heights)
+        w = len(heights[0])
+        
+        # Mark the current cell as visited immediately
+        visited[y][x] = True
+        
+        dirs = [[0, 1], [0, -1], [1, 0], [-1, 0]]
+        for d in dirs:
+            x_ = x + d[0]
+            y_ = y + d[1]
+            
+            # Boundary check
+            if 0 <= x_ < w and 0 <= y_ < l:
+                # CRITICAL FIX: Water flows UPSTREAM (child height >= parent height)
+                if not visited[y_][x_] and heights[y_][x_] >= heights[y][x]:
+                    self.dfs(x_, y_, heights, visited)
+
+
 # V0 
 # IDEA : DFS + SET
 class Solution:
