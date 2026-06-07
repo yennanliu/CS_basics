@@ -36,6 +36,136 @@ All the pairs prerequisites[i] are unique.
 """
 
 # V0
+# IDEA: DFS + STATUS CHECK
+class Solution(object):
+    def canFinish(self, numCourses, prerequisites):
+        # graph[course] = list of prerequisites for that course
+        graph = {}
+
+        # initialize an empty prerequisite list for every course
+        # cur_pre: [course, [pre_1, pre_2, ...]]
+        for course in range(numCourses):
+            graph[course] = []
+
+        # build the graph
+        # [a, b] means:
+        #   take b before a
+        #   therefore a depends on b
+
+        # V1
+        # for course, pre in prerequisites:
+        #     graph[course].append(pre)
+
+        # V2
+        for ai, bi in prerequisites:
+            cur_pre[ai].append(bi)
+
+        # status meaning:
+        # 0 = unvisited
+        # 1 = currently visiting (in recursion stack)
+        # 2 = fully processed (no cycle found below this node)
+        status = [0] * numCourses
+
+        # run DFS from every course
+        # some courses may belong to disconnected components
+        for course in range(numCourses):
+
+            # NOTE !!!
+            # -> need to `prapagate` the `False`
+            # if a cycle is found, impossible to finish all courses
+            if not self.dfs(course, graph, status):
+                return False
+
+        # no cycle found anywhere
+        return True
+
+    # NOTE !!!
+    # we DON'T need `visited` in dfs helper func
+    def dfs(self, course, graph, status):
+
+        # Case 1:
+        # already completely processed before
+        # no need to search again
+        if status[course] == 2:
+            return True
+
+        # Case 2:
+        # we reached a node already in the current DFS path
+        # cycle detected
+        # NOTE !!!
+        # -> status[course] == 1
+        # -> is enough for cycle check
+        if status[course] == 1:
+            return False
+
+        # mark current node as "visiting"
+        status[course] = 1
+
+        # visit all prerequisites
+        for pre in graph[course]:
+
+            # if any prerequisite leads to a cycle
+            # propagate failure upward
+            if not self.dfs(pre, graph, status):
+                return False
+
+        # all prerequisites checked successfully
+        # mark current node as completely processed
+        status[course] = 2
+
+        return True
+
+
+
+# V0-1
+# IDEA: DFS + STATUS CHECK
+class Solution(object):
+    def canFinish(self, numCourses, prerequisites):
+        # Step 1: Map out the adjacency list dependencies graph
+        cur_pre = {}
+        for i in range(numCourses):
+            cur_pre[i] = []
+        for ai, bi in prerequisites:
+            # CRITICAL FIX: Course ai depends on prerequisite bi
+            cur_pre[ai].append(bi)
+            
+        # Step 2: Initialize our 3-state tracking list
+        # 0: not visited, 1: visiting, 2: visited
+        status = [0] * numCourses
+        
+        # Step 3: Run cycle detection across all courses
+        for i in range(numCourses):
+            # CRITICAL FIX: Pass the actual status array instead of the integer 0
+            if not self.helper(i, status, cur_pre):
+                return False
+                
+        return True
+
+    # CRITICAL FIX: Removed the redundant visited list completely 
+    def helper(self, cur, status, cur_pre):
+        # If already fully processed and verified, this path is safe!
+        if status[cur] == 2:
+            return True 
+            
+        # If it's already in the "visiting" state on this path, we found a cycle!
+        if status[cur] == 1:
+            return False
+            
+        # Mark as visiting
+        status[cur] = 1
+        
+        for pre in cur_pre[cur]:
+            # CRITICAL FIX: Capture the return value! 
+            # If a prerequisite contains a cycle, bubble False up immediately.
+            if not self.helper(pre, status, cur_pre):
+                return False
+                
+        # Mark as fully visited / processed
+        status[cur] = 2
+        return True
+
+
+# V0
 # IDEA : DFS, LC Course Schedule II
 from collections import defaultdict
 class Solution(object):
