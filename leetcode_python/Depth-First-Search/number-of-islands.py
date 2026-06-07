@@ -38,6 +38,41 @@ grid[i][j] is '0' or '1'.
 
 """
 
+# V0
+# IDEA : DFS
+class Solution(object):
+    def numIslands(self, grid):
+        cnt = 0
+
+        l = len(grid)
+        w = len(grid[0])
+
+        for y in range(l):
+            for x in range(w):
+                if grid[y][x] == "1":
+                    self.dfs_helper(grid, x, y)
+                    cnt += 1
+
+        return cnt
+
+    def dfs_helper(self, grid, x, y):
+        dirs = [[0,1], [0,-1], [1,0], [-1,0]]
+        
+        # mark as visited
+        grid[y][x] = "#"
+
+        l = len(grid)
+        w = len(grid[0])
+
+        for d in dirs:
+            x_ = x + d[0]
+            y_ = y + d[1]
+
+            if w > x_ >= 0 and l > y_ >= 0:
+                if grid[y_][x_] == "1":
+                    self.dfs_helper(grid, x_, y_)
+
+
 # V0 
 # IDEA : DFS
 class Solution(object):

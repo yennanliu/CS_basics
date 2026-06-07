@@ -13,8 +13,8 @@
 
 - Blind 75
 
-	- backtracking
-	- tries
+	- backtracking (ok)
+	- tries (pass)
 	- graph
 
 
@@ -22,8 +22,8 @@
 
 	- heap/PQ (OK)
 		- todo: LC 355. Design Twitter
-	- backtracking
-	- tries
+	- backtracking (pass)
+	- tries 
 	- graph
 
 
