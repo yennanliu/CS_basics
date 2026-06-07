@@ -32,6 +32,117 @@ There are no repeated edges.
 
 """
 
+
+# V0
+# IDEA: UNION FIND
+class Solution:
+    def countComponents(self, n, edges):
+
+        uf = MyUF(n)
+
+        for a, b in edges:
+            uf.union(a, b)
+
+        return uf.cluster
+
+
+class MyUF:
+
+    def __init__(self, n):
+
+        # Initially every node is its own component
+        self.cluster = n
+
+        # parent[i] = i
+        self.parent = [i for i in range(n)]
+
+    def union(self, a, b):
+
+        root_a = self.get_parent(a)
+        root_b = self.get_parent(b)
+
+        # already connected
+        if root_a == root_b:
+            return False
+
+        # merge components
+        self.parent[root_a] = root_b
+
+        # one less connected component
+        self.cluster -= 1
+
+        return True
+
+    def get_parent(self, x):
+
+        # NOTE !!! below
+        # path compression
+        if self.parent[x] != x:
+            self.parent[x] = self.get_parent(self.parent[x])
+
+        return self.parent[x]
+
+    def is_connected(self, a, b):
+
+        root_a = self.get_parent(a)
+        root_b = self.get_parent(b)
+
+        return root_a == root_b
+
+
+
+# V0-1
+# IDEA: UNION FIND
+class Solution:
+    def countComponents(self, n: int, edges: list[list[int]]) -> int:
+        # Edge case: If there are no edges, every node is its own isolated component
+        if not edges:
+            return n
+            
+        # CRITICAL FIX: Pass 'n' into the constructor
+        my_uf = MyUF(n)
+        
+        # Merge components using union find
+        for a, b in edges:
+            my_uf.union(a, b)
+            
+        # The remaining dynamic cluster count is our absolute answer
+        return my_uf.cluster
+
+
+class MyUF:
+    def __init__(self, n):
+        self.cluster = n
+        # CRITICAL FIX: Initialize the parent list safely with valid indices
+        self.parent = [i for i in range(n)]
+
+    def get_parent(self, x):
+        # CRITICAL FIX: Base case check
+        if self.parent[x] != x:
+            # Recursively find the absolute root and compress the path
+            self.parent[x] = self.get_parent(self.parent[x])
+        return self.parent[x]
+
+    def union(self, a, b):
+        # CRITICAL FIX: Call the class method correctly using self.
+        parent_a = self.get_parent(a)
+        parent_b = self.get_parent(b)
+        
+        # If they already share the same absolute root, they are already grouped
+        if parent_a == parent_b:
+            return False
+            
+        # Connect the two roots together
+        self.parent[parent_a] = parent_b
+        
+        # CRITICAL INTUITION: A successful merge drops total unique components by 1
+        self.cluster -= 1
+        return True
+
+    def is_connected(self, a, b):
+        return self.get_parent(a) == self.get_parent(b)
+
+
 # V0'
 # IDEA : DFS
 from collections import defaultdict
