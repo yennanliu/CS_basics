@@ -24,8 +24,81 @@ s consist of only digits and English letters.
 
 """
 
+
 # V0
-# IDEA : TWO POINTERS
+# IDEA : TWO POINTERS + IDX EXPANSION
+# -> DEAL WITH odd, even len cases
+#  -> step 1) for loop on idx 
+#  -> step 2) and start from "center" 
+#  -> step 3) and do a while loop
+#  -> step 4) check if len of sub str > 1
+class Solution(object):
+    def longestPalindrome(self, s):
+        # edge
+        if not s or len(s) == 0:
+            return ""
+        if len(s) == 1:
+            return s
+
+        res = s[0] # ???
+        n = len(s)
+
+        for i in range(n):
+            # case 1) l, r = i
+            l = r = i
+            while l >= 0 and r < n and s[l] == s[r]:
+                if r - l + 1 > len(res):
+                    res = s[l:r+1] # ???
+                l -= 1
+                r += 1
+
+            # case 2) l=i,  r = i-1
+            l = i
+            r = i - 1
+            while l >= 0 and r < n and s[l] == s[r]:
+                if r - l + 1 > len(res):
+                    res = s[l:r+1] # ???
+                l -= 1
+                r += 1
+
+
+        return res
+
+
+# V0-1
+# IDEA : TWO POINTERS + IDX EXPANSION
+class Solution(object):
+    def longestPalindrome(self, s):
+        if not s:
+            return ""
+
+        res = s[0]
+        n = len(s)
+
+        for i in range(n):
+
+            # odd length palindrome
+            l = r = i
+            while l >= 0 and r < n and s[l] == s[r]:
+                if r - l + 1 > len(res):
+                    res = s[l:r+1]
+                l -= 1
+                r += 1
+
+            # even length palindrome
+            l = i
+            r = i + 1
+            while l >= 0 and r < n and s[l] == s[r]:
+                if r - l + 1 > len(res):
+                    res = s[l:r+1]
+                l -= 1
+                r += 1
+
+        return res
+
+
+# V0
+# IDEA : TWO POINTERS + IDX EXPANSION
 # -> DEAL WITH odd, even len cases
 #  -> step 1) for loop on idx 
 #  -> step 2) and start from "center" 
