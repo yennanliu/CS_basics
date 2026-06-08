@@ -1890,7 +1890,58 @@ while (!q.isEmpty() && freshOrange > 0) {
 }
 ```
 
-If we deferred `grid[nr][nc] = 2` until dequeue, two rotten neighbors processing in the same layer could both enqueue the same fresh orange, leading to `freshOrange` going negative and returning a wrong answer.
+**Python Implementation (LC 994 - Rotting Oranges):**
+```python
+# IDEA: MULTI SRC BFS
+# time = O(m × n), space = O(m × n)
+from collections import deque
+
+def orangesRotting(grid):
+    l = len(grid)
+    w = len(grid[0])
+    fresh = 0
+    q = deque()
+
+    for y in range(l):
+        for x in range(w):
+            if grid[y][x] == 1:
+                fresh += 1
+            elif grid[y][x] == 2:
+                q.append([x, y])
+
+    if fresh == 0:
+        return 0
+    if not q:
+        return -1
+
+    dirs = [[0, 1], [0, -1], [1, 0], [-1, 0]]
+    time = 0
+
+    while q and fresh > 0:
+        size = len(q)
+
+        for _ in range(size):
+            x, y = q.popleft()
+
+            for dx, dy in dirs:
+                x_ = x + dx
+                y_ = y + dy
+
+                if 0 <= x_ < w and 0 <= y_ < l and grid[y_][x_] == 1:
+                    # NOTE: update RIGHT AWAY — before enqueue
+                    # to avoid the same fresh orange being rotten several times
+                    # (two rotten neighbors in the same layer would both see it as fresh
+                    #  and enqueue it twice, causing fresh to go negative)
+                    grid[y_][x_] = 2
+                    fresh -= 1
+                    q.append([x_, y_])
+
+        time += 1  # increment AFTER processing the full level (Approach B)
+
+    return time if fresh == 0 else -1
+```
+
+If we deferred `grid[nr][nc] = 2` (Java) / `grid[y_][x_] = 2` (Python) until dequeue, two rotten neighbors processing in the same layer could both enqueue the same fresh orange, leading to `fresh` going negative and returning a wrong answer.
 
 #### Cases Where This Applies
 
