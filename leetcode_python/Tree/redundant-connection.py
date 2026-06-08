@@ -37,6 +37,140 @@ The given graph is connected.
 """
 
 # V0
+# IDEA: UNION FIND
+"""
+
+- high level idea:
+
+
+class Solution(object):
+    def findRedundantConnection(self, edges):
+        # edge
+
+        uf = MyUF()
+
+        for a, b in edges:
+            if not uf.union(a, b):
+                return [a,b]
+
+        return []
+    
+
+
+class MyUF(object):
+    def __init__(self):
+        pass
+
+    def union(self, a, b):
+        pass
+
+    def get_parent(self, x):
+        pass
+
+    def is_same_parent(self, a, b):
+        pass
+
+"""
+class Solution(object):
+    def findRedundantConnection(self, edges):
+        uf = MyUF()
+
+        for a, b in edges:
+            # NOTE !!! below
+            if not uf.union(a, b):
+                return [a, b]
+
+        return []
+
+
+class MyUF(object):
+    def __init__(self):
+        self.parent = {}
+        self.rank = {}
+
+    def get_parent(self, x):
+        # initialize if unseen
+        if x not in self.parent:
+            self.parent[x] = x
+            self.rank[x] = 0
+
+        # path compression
+        if self.parent[x] != x:
+            self.parent[x] = self.get_parent(self.parent[x])
+
+        return self.parent[x]
+
+    def is_same_parent(self, a, b):
+        return self.get_parent(a) == self.get_parent(b)
+
+    def union(self, a, b):
+        rootA = self.get_parent(a)
+        rootB = self.get_parent(b)
+
+        if rootA == rootB:
+            return False  # cycle detected
+
+        # union by rank
+        if self.rank[rootA] < self.rank[rootB]:
+            self.parent[rootA] = rootB
+        elif self.rank[rootA] > self.rank[rootB]:
+            self.parent[rootB] = rootA
+        else:
+            self.parent[rootB] = rootA
+            self.rank[rootA] += 1
+
+        return True
+
+
+
+# V0-1
+# IDEA: union find
+class UF(object):
+    def __init__(self, n):
+        # Initialize each node from 1 to n as its own parent
+        # We use n + 1 because LeetCode nodes are 1-indexed
+        self.parents = [i for i in range(n + 1)]
+
+    def find(self, a):
+        # Find the absolute root representative of node 'a'
+        if self.parents[a] != a:
+            # Path compression optimization
+            self.parents[a] = self.find(self.parents[a])
+        return self.parents[a]
+
+    def union(self, a, b):
+        root_a = self.find(a)
+        root_b = self.find(b)
+        
+        # INTUITION: If they have the same root, they are already connected.
+        # Adding this edge will close a loop and form a cycle!
+        if root_a == root_b:
+            return False # Union failed (Cycle detected)
+            
+        # Otherwise, link the roots to merge the sets together
+        self.parents[root_a] = root_b
+        return True
+
+
+class Solution(object):
+    def findRedundantConnection(self, edges):
+        """
+        :type edges: List[List[int]]
+        :rtype: List[int]
+        """
+        n = len(edges)
+        uf = UF(n)
+        
+        # Process every edge sequentially
+        for u, v in edges:
+            # If the union operation fails, u and v were already connected.
+            # This edge is the redundant loop closer!
+            if not uf.union(u, v):
+                return [u, v]
+                
+        return []
+
+
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/80487064
