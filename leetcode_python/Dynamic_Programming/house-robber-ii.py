@@ -34,6 +34,117 @@ Constraints:
 """
 
 # V0
+# IDEA 1) 1D DP (2 DP)
+class Solution(object):
+    def rob(self, nums):
+        if not nums:
+            return 0
+        if len(nums) == 1:
+            return nums[0]
+        if len(nums) == 2:
+            return max(nums[0], nums[1])
+
+        n = len(nums)
+
+        # exclude last
+        dp1 = [0] * n
+        dp1[0] = nums[0]
+        """
+        NOTE !!!
+            -> dp1[1] init as the max from  nums[0], nums[1]
+
+            -> # CRITICAL FIX: House 1 is a valid option in this scenario!
+
+            ---
+
+
+            This version is not correct.
+
+            The issue is:
+
+            dp1[0] = nums[0]
+            dp1[1] = 0
+
+            This does not represent "exclude the last house". It represents a strange state where house 0 is taken and house 1 is forbidden.
+
+            For example:
+
+            nums = [2, 7, 9, 3, 1]
+
+            Your dp1 becomes:
+
+            dp1[0] = 2
+            dp1[1] = 0
+            dp1[2] = max(2+9, 0) = 11
+
+            which is already wrong because the best answer for houses [0,1,2] is:
+
+            max(2+9, 7) = 11
+
+            but for other inputs you'll lose solutions that start from house 1.
+
+        """
+        dp1[1] = max(nums[0], nums[1])
+
+        # NOTE !!!
+        # dp1 loop from `n` to `n-1`
+        for i in range(2, n - 1):
+            dp1[i] = max(dp1[i - 2] + nums[i], dp1[i - 1])
+
+        # exclude first
+        dp2 = [0] * n
+        dp2[0] = 0
+        dp2[1] = nums[1]
+
+        for i in range(2, n):
+            dp2[i] = max(dp2[i - 2] + nums[i], dp2[i - 1])
+
+        # dp1 max is at `n-2` idx
+        return max(dp1[n - 2], dp2[n - 1])
+
+
+# V0-1
+# IDEA: 1D DP
+class Solution(object):
+    def rob(self, nums):
+        # Edge cases
+        if not nums or len(nums) == 0:
+            return 0
+        if len(nums) == 1:
+            return nums[0]
+        if len(nums) == 2:
+            return max(nums[0], nums[1])      
+            
+        n = len(nums)
+        
+        # ---------------------------------------------------------------------
+        # Scenario 1: Rob from house 0 up to house n-2 (Excludes the last house)
+        # ---------------------------------------------------------------------
+        dp1 = [0] * n 
+        dp1[0] = nums[0] 
+        # CRITICAL FIX: House 1 is a valid option in this scenario!
+        dp1[1] = max(nums[0], nums[1]) 
+        
+        # Even though the loop runs up to n, we will manually ignore the last 
+        # calculation by only reading up to index n-2 at the end.
+        for i in range(2, n):
+            dp1[i] = max(dp1[i-2] + nums[i], dp1[i-1])
+            
+        # ---------------------------------------------------------------------
+        # Scenario 2: Rob from house 1 up to house n-1 (Excludes the first house)
+        # ---------------------------------------------------------------------
+        dp2 = [0] * n 
+        dp2[0] = 0        # House 0 is skipped entirely
+        dp2[1] = nums[1]  # Our baseline starting point is now house 1
+        
+        for i in range(2, n):
+            dp2[i] = max(dp2[i-2] + nums[i], dp2[i-1])
+            
+        # CORRECT AND CLEAN POINTER EXTRACTION:
+        # As you correctly noted, the max for dp1 is safely stored at dp1[n-2]!
+        return max(dp2[n-1], dp1[n-2])
+
+
 
 # V1
 # IDEA : BRUTE FORCE
