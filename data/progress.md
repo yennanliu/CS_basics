@@ -10,7 +10,7 @@
 - graph.md
 
 - Blind 75
-	- advanced graph (pass)
+
 	- 1D DP (doing)
 	- 2D DP
 	- greedy

@@ -10,6 +10,59 @@
 # determine the maximum amount of money you can rob tonight without alerting the police.
 #
 
+
+# V0
+# IDEA: 1D DP
+"""
+    DP def
+        dp[i] = max can rob at idx = i
+
+    DP eq
+        dp[i] = max(dp[i-2] + nums[i], dp[i-1])
+"""
+class Solution(object):
+    def rob(self, nums):
+        # edge
+        if not nums or len(nums) == 0:
+            return 0
+        if len(nums) == 1:
+            return nums[0]
+
+        n = len(nums)
+        dp = [0] * n # ??
+        dp[0] = nums[0] # ??
+        dp[1] = max(nums[0], nums[1])
+
+
+        # NOTE !!
+        for i in range(2, n):
+            dp[i] = max(dp[i-2] + nums[i], dp[i-1])
+
+        return dp[n-1]
+
+
+
+# V0-1
+# IDEA: 1D DP
+class Solution(object):
+    def rob(self, nums):
+        if not nums:
+            return 0
+        if len(nums) == 1:
+            return nums[0]
+
+        n = len(nums)
+        dp = [0] * n
+
+        dp[0] = nums[0]
+        dp[1] = max(nums[0], nums[1])
+
+        for i in range(2, n):
+            dp[i] = max(dp[i - 2] + nums[i], dp[i - 1])
+
+        return dp[-1]
+
+
 # V0
 class Solution(object):
     def rob(self, nums: List[int]):
