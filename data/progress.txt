@@ -1,4 +1,4 @@
-20250608: 695,lazy_bst_in_order(todo),173(todo),2616(todo, compare PQ)
+20250608: 695,286,lazy_bst_in_order(todo),173(todo),2616(todo, compare PQ)
 20250607: 39(again),79(again),200,133,417,207(again),261(again),323
 20250606: 105(again),138(again),2,146(again),199,1448,973,621(again!!),355
 20250605: 206,21(again),143(again),19(again),226,104,100,572(again),235,102,98,230

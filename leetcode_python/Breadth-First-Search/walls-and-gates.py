@@ -40,6 +40,44 @@ rooms[i][j] is -1, 0, or 231 - 1.
 """
 
 # V0
+# IDEA: BFS
+from collections import deque
+
+class Solution:
+    def wallsAndGates(self, rooms):
+        if not rooms or not rooms[0]:
+            return
+
+        l = len(rooms)
+        w = len(rooms[0])
+
+        q = deque()
+
+        # Add all gates to queue
+        for y in range(l):
+            for x in range(w):
+                if rooms[y][x] == 0:
+                    q.append((x, y, 0))
+
+        dirs = [(0, 1), (0, -1), (-1, 0), (1, 0)]
+
+        while q:
+            x, y, moves = q.popleft()
+
+            for dx, dy in dirs:
+                x_ = x + dx
+                y_ = y + dy
+
+                if 0 <= x_ < w and 0 <= y_ < l:
+
+                    # If we found a shorter path
+                    if rooms[y_][x_] > moves + 1:
+                        rooms[y_][x_] = moves + 1
+                        q.append((x_, y_, moves + 1))
+
+
+
+# V0
 # IDEA : BFS 
 class Solution:
     def wallsAndGates(self, rooms):
@@ -65,6 +103,86 @@ class Solution:
                     # update the value
                     rooms[new_x][new_y] = distance
                     q.append((new_x, new_y))
+
+
+# V0-1
+# IDEA: BFS
+from collections import deque
+
+class Solution:
+    def wallsAndGates(self, rooms):
+        if not rooms or not rooms[0]:
+            return
+
+        rows, cols = len(rooms), len(rooms[0])
+        q = deque()
+
+        for r in range(rows):
+            for c in range(cols):
+                if rooms[r][c] == 0:
+                    q.append((r, c))
+
+        dirs = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+
+        while q:
+            r, c = q.popleft()
+
+            for dr, dc in dirs:
+                nr, nc = r + dr, c + dc
+
+                if (
+                    0 <= nr < rows and
+                    0 <= nc < cols and
+                    rooms[nr][nc] == 2147483647
+                ):
+                    rooms[nr][nc] = rooms[r][c] + 1
+                    q.append((nr, nc))
+
+
+# V0-2
+# IDEA : BFS  
+from collections import deque
+
+class Solution:
+    def wallsAndGates(self, rooms: list[list[int]]) -> None:
+        """
+        Do not return anything, modify rooms in-place instead.
+        """
+        if not rooms or not rooms[0]:
+            return
+            
+        l = len(rooms)
+        w = len(rooms[0])
+        
+        # We can push coordinates directly into our queue to save memory
+        q = deque()
+        
+        # Step 1: Find all gates (0) and add them to the queue as starting points
+        for y in range(l):
+            for x in range(w):
+                if rooms[y][x] == 0:
+                    q.append((x, y))
+                    
+        dirs = [[0, 1], [0, -1], [-1, 0], [1, 0]]
+        
+        # Step 2: Multi-source BFS
+        while q:
+            # CRITICAL FIX: Use len(q) and .popleft() for Python deques
+            x, y = q.popleft()
+            
+            for d in dirs:
+                x_ = x + d[0]
+                y_ = y + d[1] # CRITICAL FIX: Fixed assignment typo
+                
+                # Boundary check
+                if 0 <= x_ < w and 0 <= y_ < l:
+                    # CRITICAL FIX: Only step into unvisited empty rooms (INF = 2147483647).
+                    # This eliminates the need for expensive min() calculations!
+                    if rooms[y_][x_] == 2147483647:
+                        # The new room's score is exactly the parent room's score + 1
+                        rooms[y_][x_] = rooms[y][x] + 1
+                        q.append((x_, y_))
+
 
 # V0 
 # IDEA : DFS  -> TLE (time out error)
