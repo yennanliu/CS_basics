@@ -645,6 +645,77 @@ private void union(int[] parent, int x, int y) {
 }
 ```
 
+```python
+# LC 684 - Redundant Connection
+# IDEA: Union-Find (dict-based, union by rank) — process edges; return first edge that forms a cycle
+# time = O(N * α(N)), space = O(N)
+
+class Solution(object):
+    def findRedundantConnection(self, edges):
+        uf = MyUF()
+        for a, b in edges:
+            if not uf.union(a, b):
+                return [a, b]
+        return []
+
+class MyUF(object):
+    def __init__(self):
+        self.parent = {}
+        self.rank = {}
+
+    def get_parent(self, x):
+        if x not in self.parent:       # lazy init: node becomes its own root on first seen
+            self.parent[x] = x
+            self.rank[x] = 0
+        if self.parent[x] != x:
+            self.parent[x] = self.get_parent(self.parent[x])  # path compression
+        return self.parent[x]
+
+    def union(self, a, b):
+        rootA, rootB = self.get_parent(a), self.get_parent(b)
+        if rootA == rootB:
+            return False               # cycle detected — this edge is redundant
+        if self.rank[rootA] < self.rank[rootB]:
+            self.parent[rootA] = rootB
+        elif self.rank[rootA] > self.rank[rootB]:
+            self.parent[rootB] = rootA
+        else:
+            self.parent[rootB] = rootA
+            self.rank[rootA] += 1
+        return True
+```
+
+```python
+# LC 684 - Redundant Connection (array-based variant, matches Java approach)
+# IDEA: Union-Find (1-indexed array, path compression only) — simpler when nodes are 1..n
+# time = O(N * α(N)), space = O(N)
+
+class Solution(object):
+    def findRedundantConnection(self, edges):
+        n = len(edges)
+        uf = UF(n)
+        for u, v in edges:
+            if not uf.union(u, v):
+                return [u, v]
+        return []
+
+class UF(object):
+    def __init__(self, n):
+        self.parents = list(range(n + 1))   # 1-indexed; parents[i] = i initially
+
+    def find(self, a):
+        if self.parents[a] != a:
+            self.parents[a] = self.find(self.parents[a])  # path compression
+        return self.parents[a]
+
+    def union(self, a, b):
+        root_a, root_b = self.find(a), self.find(b)
+        if root_a == root_b:
+            return False               # already connected → cycle
+        self.parents[root_a] = root_b
+        return True
+```
+
 ### 2-2) Number of Provinces (LC 547) — Count Connected Components
 > Count the number of distinct roots after unioning all direct friendships.
 

@@ -18,8 +18,8 @@
 
 - needcode 150
 
-	- graph (doing)
-	- advanced graph (pass)
+	- graph (done)
+	- advanced graph (doing)
 	- 1D DP
 	- 2D DP
 
