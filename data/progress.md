@@ -1,6 +1,30 @@
 # Progress
 
 
+# 2026-06-08
+
+- linked_list.md
+	- todo: 1-1) Basic OP
+- bst.md
+	- doing
+		- Universal BST Template
+- backtrack.md
+- tries.md
+- graph.md
+
+- Blind 75
+	- advanced graph (pass)
+	- 1D DP
+	- 2D DP
+
+- needcode 150
+
+	- graph (doing)
+	- advanced graph (pass)
+	- 1D DP
+	- 2D DP
+
+
 # 2026-06-07
 
 - linked_list.md
