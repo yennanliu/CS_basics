@@ -33,6 +33,87 @@ grid[i][j] is either 0 or 1.
 
 """
 
+# V0
+# IDEA: DFS + VISITED
+class Solution(object):
+    def maxAreaOfIsland(self, grid):
+        # edge
+
+        l = len(grid)
+        w = len(grid[0])
+
+        self.max_area = 0
+
+        for y in range(l):
+            for x in range(w):
+                if grid[y][x] == 1:
+                    self.max_area = max(
+                    self.max_area, 
+                    self.helper(grid, x, y)
+                    )
+
+        return self.max_area
+
+
+
+    def helper(self, grid, x, y):
+        l = len(grid)
+        w = len(grid[0])
+
+        if x < 0 or x >= w or y < 0 or y >= l or grid[y][x] != 1:
+            return 0
+
+        # mark as visited
+        grid[y][x] = -1
+
+        return ( self.helper(grid, x-1, y) + 
+                 self.helper(grid, x+1, y) +
+                 self.helper(grid, x, y-1) +
+                 self.helper(grid, x, y+1) ) + 1
+
+
+
+# V0-1
+# IDEA: DFS + VISITED
+class Solution(object):
+    def maxAreaOfIsland(self, grid):
+        if not grid or not grid[0]:
+            return 0
+
+        l = len(grid)
+        w = len(grid[0])
+
+        self.max_area = 0
+
+        for y in range(l):
+            for x in range(w):
+                if grid[y][x] == 1:
+                    self.max_area = max(
+                        self.max_area,
+                        self.helper(grid, x, y)
+                    )
+
+        return self.max_area
+
+    def helper(self, grid, x, y):
+        l = len(grid)
+        w = len(grid[0])
+
+        if x < 0 or x >= w or y < 0 or y >= l or grid[y][x] != 1:
+            return 0
+
+        # mark visited
+        grid[y][x] = -1
+
+        return (
+            1
+            + self.helper(grid, x - 1, y)
+            + self.helper(grid, x + 1, y)
+            + self.helper(grid, x, y - 1)
+            + self.helper(grid, x, y + 1)
+        )
+
+
 # V0 
 # IDEA : DFS 
 # * PLEASE NOTE THAT IT IS NEEDED TO GO THROUGH EVERY ELEMENT IN THE GRID 
