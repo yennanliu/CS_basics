@@ -13,13 +13,13 @@
 
 - Blind 75
 	- advanced graph (pass)
-	- 1D DP
+	- 1D DP (doing)
 	- 2D DP
 
 - needcode 150
 
 	- graph (done)
-	- advanced graph (doing)
+	- advanced graph (OK)
 	- 1D DP
 	- 2D DP
 
