@@ -36,6 +36,15 @@ All the pairs (ui, vi) are unique. (i.e., no multiple edges.)
 
 """
 
+""" 
+
+NOTE !!!
+
+We will send a signal from a given `node k`
+
+
+-> our algo runs starting from `node k`
+"""
 
 # V0
 # IDEA : Dijkstra (PQ + BFS)
@@ -67,6 +76,23 @@ class Solution(object):
 
             for nei, w in graph[node]:
                 if nei not in dist:
+                    """
+                    NOTE !!!
+
+
+                    we've added the `path cost` via below,
+                    -> so we DON'T need to worry if `next` node
+                       is reachable from cur node,
+                       -> since we already calculated `path cost`
+                          via BFS (below)
+
+
+                    plus, we ALWAYS pop the `next min cost` via
+                    min PQ pop (heapq.heappop), so we're sure
+                    that we can get the global min path sum
+                    via the Dijkstra algo (PQ + BFS)
+
+                    """
                     heapq.heappush(heap, (time + w, nei))
 
         # check if all nodes reached
