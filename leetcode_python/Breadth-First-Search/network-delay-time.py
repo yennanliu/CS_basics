@@ -46,7 +46,79 @@ We will send a signal from a given `node k`
 -> our algo runs starting from `node k`
 """
 
+
 # V0
+# IDEA : Dijkstra (PQ + BFS)
+import heapq
+from collections import defaultdict
+
+class Solution(object):
+    def networkDelayTime(self, times, n, k):
+        """
+        :type times: List[List[int]]
+        :type n: int
+        :type k: int
+        :type rtype: int
+        """
+        # Step 1: Build the directed weighted graph adjacency list
+        graph = defaultdict(list)
+        for u, v, w in times:
+            graph[u].append((v, w)) # u -> (neighbor node v, travel time weight w)
+            
+        # Step 2: Initialize min-heap priority queue
+        # Format elements as: (accumulated_time, current_node)
+        # Starting point: 0 time elapsed to reach the source node k
+        min_heap = [(0, k)]
+        
+        # Track nodes that have permanently finalized their shortest signal paths
+        visited = set()
+        
+        # Step 3: Run the priority queue loop
+        while min_heap:
+            time, node = heapq.heappop(min_heap)
+            
+            # If this node was already visited, skip to avoid redundant processing
+            if node in visited:
+                continue
+                
+            # Mark the node as visited immediately upon popping
+            visited.add(node)
+            
+            # CRITICAL OPTIMIZATION: The exact moment our visited group hits size n,
+            # it means the signal has successfully saturated every node in the network!
+            if len(visited) == n:
+                return time
+                
+            # Explore all outgoing neighbors from the current node
+            for neighbor, weight in graph[node]:
+                if neighbor not in visited:
+                    """
+                    NOTE !!!
+
+
+                    we've added the `path cost` via below,
+                    -> so we DON'T need to worry if `next` node
+                       is reachable from cur node,
+                       -> since we already calculated `path cost`
+                          via BFS (below)
+
+
+                    plus, we ALWAYS pop the `next min cost` via
+                    min PQ pop (heapq.heappop), so we're sure
+                    that we can get the global min path sum
+                    via the Dijkstra algo (PQ + BFS)
+
+                    """
+
+                    # Calculate total time from source to neighbor and push to heap
+                    heapq.heappush(min_heap, (time + weight, neighbor))
+                    
+        # If the heap empties out but len(visited) < n, some nodes are unreachable!
+        return -1
+
+
+
+# V0-1
 # IDEA : Dijkstra (PQ + BFS)
 import heapq
 from collections import defaultdict
@@ -101,57 +173,6 @@ class Solution(object):
 
         return max(dist.values())
 
-
-# V0-1
-# IDEA : Dijkstra (PQ + BFS)
-import heapq
-from collections import defaultdict
-
-class Solution(object):
-    def networkDelayTime(self, times, n, k):
-        """
-        :type times: List[List[int]]
-        :type n: int
-        :type k: int
-        :type rtype: int
-        """
-        # Step 1: Build the directed weighted graph adjacency list
-        graph = defaultdict(list)
-        for u, v, w in times:
-            graph[u].append((v, w)) # u -> (neighbor node v, travel time weight w)
-            
-        # Step 2: Initialize min-heap priority queue
-        # Format elements as: (accumulated_time, current_node)
-        # Starting point: 0 time elapsed to reach the source node k
-        min_heap = [(0, k)]
-        
-        # Track nodes that have permanently finalized their shortest signal paths
-        visited = set()
-        
-        # Step 3: Run the priority queue loop
-        while min_heap:
-            time, node = heapq.heappop(min_heap)
-            
-            # If this node was already visited, skip to avoid redundant processing
-            if node in visited:
-                continue
-                
-            # Mark the node as visited immediately upon popping
-            visited.add(node)
-            
-            # CRITICAL OPTIMIZATION: The exact moment our visited group hits size n,
-            # it means the signal has successfully saturated every node in the network!
-            if len(visited) == n:
-                return time
-                
-            # Explore all outgoing neighbors from the current node
-            for neighbor, weight in graph[node]:
-                if neighbor not in visited:
-                    # Calculate total time from source to neighbor and push to heap
-                    heapq.heappush(min_heap, (time + weight, neighbor))
-                    
-        # If the heap empties out but len(visited) < n, some nodes are unreachable!
-        return -1
 
 
 # V0 

@@ -692,25 +692,73 @@ public int networkDelayTime(int[][] times, int n, int k) {
 ```
 
 ```python
-# LC 743 Network Delay Time
-# V0 
-# IDEA : Dijkstra
-class Solution:
-    def networkDelayTime(self, times, N, K):
-        K -= 1
-        nodes = collections.defaultdict(list)
+# LC 743 - Network Delay Time
+# IDEA: Dijkstra (min-heap PQ + BFS)
+# time = O((V+E) log V), space = O(V+E)
+import heapq
+from collections import defaultdict
+
+class Solution(object):
+    def networkDelayTime(self, times, n, k):
+        graph = defaultdict(list)
         for u, v, w in times:
-            nodes[u - 1].append((v - 1, w))
-        dist = [float('inf')] * N
-        dist[K] = 0
-        done = set()
-        for _ in range(N):
-            smallest = min((d, i) for (i, d) in enumerate(dist) if i not in done)[1]
-            for v, w in nodes[smallest]:
-                if v not in done and dist[smallest] + w < dist[v]:
-                    dist[v] = dist[smallest] + w
-            done.add(smallest)
-        return -1 if float('inf') in dist else max(dist)
+            graph[u].append((v, w))
+
+        heap = [(0, k)]   # (accumulated_time, node); start at source k with cost 0
+        dist = {}         # dist[node] = finalized shortest time; acts as visited set
+
+        while heap:
+            time, node = heapq.heappop(heap)
+
+            if node in dist:   # already finalized — skip stale entry
+                continue
+
+            dist[node] = time  # first pop = shortest time (min-heap guarantee)
+
+            for nei, w in graph[node]:
+                if nei not in dist:
+                    # KEY INSIGHT: push (time + w, nei) — the ACCUMULATED path cost.
+                    # Because path cost is carried inside the heap entry itself,
+                    # we never need to separately check if nei is reachable;
+                    # the cost already reflects the full path from source.
+                    #
+                    # heapq.heappop always extracts the MINIMUM accumulated cost next,
+                    # so the first time we pop a node its distance is globally optimal
+                    # — that is the Dijkstra guarantee (min-heap + BFS).
+                    heapq.heappush(heap, (time + w, nei))
+
+        return max(dist.values()) if len(dist) == n else -1
+```
+
+```python
+# LC 743 - Network Delay Time (visited-set variant — equivalent, slightly more explicit)
+# IDEA: Dijkstra — same guarantee, uses an explicit visited set instead of dist-dict
+import heapq
+from collections import defaultdict
+
+class Solution(object):
+    def networkDelayTime(self, times, n, k):
+        graph = defaultdict(list)
+        for u, v, w in times:
+            graph[u].append((v, w))
+
+        min_heap = [(0, k)]
+        visited = set()
+
+        while min_heap:
+            time, node = heapq.heappop(min_heap)
+            if node in visited:
+                continue
+            visited.add(node)
+
+            if len(visited) == n:   # all nodes finalized — answer is current time
+                return time
+
+            for neighbor, weight in graph[node]:
+                if neighbor not in visited:
+                    heapq.heappush(min_heap, (time + weight, neighbor))
+
+        return -1
 ```
 
 ### 2-2) Cheapest Flights Within K Stops (LC 787) — Dijkstra with Stop Counter
