@@ -37,8 +37,94 @@ All the pairs [ai, bi] are distinct.
 """
 
 
-
 # V0
+# IDEA : topological sort
+from collections import deque
+
+class Solution(object):
+    def findOrder(self, numCourses, prerequisites):
+        """
+        :type numCourses: int
+        :type prerequisites: List[List[int]]
+        :rtype: List[int]
+        """
+
+        # --------------------------------------------------
+        # Step 1: Build graph + indegree array
+        #
+        # prerequisites[i] = [course, pre]
+        # means: pre -> course
+        # --------------------------------------------------
+
+        """
+        NOTE !!!!
+
+          graph: { pre: [next_1, next_2, ... ]}
+        """
+        graph = {i: [] for i in range(numCourses)}
+        indegree = [0] * numCourses
+
+        for course, pre in prerequisites:
+            """
+            NOTE !!!!
+
+            graph: { pre: [next_1, next_2, ... ]}
+
+            """
+            graph[pre].append(course)
+            """
+            NOTE !!!!
+
+            we update the `degree` of `next course`
+            
+            """
+            indegree[course] += 1
+
+        # --------------------------------------------------
+        # Step 2: Initialize queue with all nodes
+        # that have indegree == 0 (no prerequisites)
+        # --------------------------------------------------
+
+        q = deque()
+
+        for i in range(numCourses):
+            if indegree[i] == 0:
+                q.append(i)
+
+        # --------------------------------------------------
+        # Step 3: BFS Topological Sort
+        # --------------------------------------------------
+
+        order = []
+
+        while q:
+            cur = q.popleft()
+            order.append(cur)
+
+            # Remove cur and update its neighbors
+            for nxt in graph[cur]:
+                indegree[nxt] -= 1
+
+                # If nxt has no more prerequisites,
+                # it becomes available
+                """
+                NOTE !!!!
+                """
+                if indegree[nxt] == 0:
+                    q.append(nxt)
+
+        # --------------------------------------------------
+        # Step 4: Check if we were able to visit all nodes
+        # If not, there is a cycle
+        # --------------------------------------------------
+
+        if len(order) == numCourses:
+            return order
+
+        return []
+
+
+# V0-1
 # IDEA : topological sort
 from collections import deque
 
@@ -96,74 +182,6 @@ class Solution(object):
     def findOrder(self, numCourses, prerequisites):
         sorter = MyTopoSort(numCourses, prerequisites)
         return sorter.fun_sort()
-
-
-
-# V0-1
-# IDEA : topological sort
-from collections import deque
-
-class Solution(object):
-    def findOrder(self, numCourses, prerequisites):
-        """
-        :type numCourses: int
-        :type prerequisites: List[List[int]]
-        :rtype: List[int]
-        """
-
-        # --------------------------------------------------
-        # Step 1: Build graph + indegree array
-        #
-        # prerequisites[i] = [course, pre]
-        # means: pre -> course
-        # --------------------------------------------------
-
-        graph = {i: [] for i in range(numCourses)}
-        indegree = [0] * numCourses
-
-        for course, pre in prerequisites:
-            graph[pre].append(course)
-            indegree[course] += 1
-
-        # --------------------------------------------------
-        # Step 2: Initialize queue with all nodes
-        # that have indegree == 0 (no prerequisites)
-        # --------------------------------------------------
-
-        q = deque()
-
-        for i in range(numCourses):
-            if indegree[i] == 0:
-                q.append(i)
-
-        # --------------------------------------------------
-        # Step 3: BFS Topological Sort
-        # --------------------------------------------------
-
-        order = []
-
-        while q:
-            cur = q.popleft()
-            order.append(cur)
-
-            # Remove cur and update its neighbors
-            for nxt in graph[cur]:
-                indegree[nxt] -= 1
-
-                # If nxt has no more prerequisites,
-                # it becomes available
-                if indegree[nxt] == 0:
-                    q.append(nxt)
-
-        # --------------------------------------------------
-        # Step 4: Check if we were able to visit all nodes
-        # If not, there is a cycle
-        # --------------------------------------------------
-
-        if len(order) == numCourses:
-            return order
-
-        return []
 
 
 
