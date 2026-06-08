@@ -36,6 +36,137 @@ All the pairs [ai, bi] are distinct.
 
 """
 
+
+
+# V0
+# IDEA : topological sort
+from collections import deque
+
+class MyTopoSort(object):
+    def __init__(self, n, prerequisites):
+        self.sorted_arr = []
+        self.n = n
+        
+        # In-degree array (represents how many dependencies must be cleared first)
+        self.weight = [0] * n
+        
+        # Map out the adjacency graph: prerequisite -> [list of dependent downstream courses]
+        self.cur_pre = {i: [] for i in range(n)}
+        
+        # [a, b] means: course b -> course a (Must take b before taking a)
+        for a, b in prerequisites:
+            self.cur_pre[b].append(a) # Graph flows forward from prerequisite to child
+            self.weight[a] += 1       # Course 'a' has one more incoming dependency block
+
+    def fun_sort(self):
+        # CRITICAL FIX: Correct parenthesis syntax for deque instantiation
+        q = deque()
+        
+        # Step 1: Find all courses that have zero prerequisites and queue them up
+        # CRITICAL FIX: Add missing 'in' keyword to loop
+        for i in range(self.n):
+            if self.weight[i] == 0:
+                # CRITICAL FIX: Append the course index 'i', NOT the value self.weight[i]
+                q.append(i)
+                
+        # Step 2: Process the queue sequentially (BFS style)
+        while q:
+            # NOTE: An explicit 'size = len(q)' loop is NOT required here,
+            # because we only care about the final order, not batching layers by time.
+            cur = q.popleft()
+            
+            # Since this course has zero dependencies left, append it to our final order
+            self.sorted_arr.append(cur)
+            
+            # Step 3: Iterate through all downstream courses unlocked by this course
+            for downstream_course in self.cur_pre[cur]:
+                # Decrement the dependency count for the downstream course
+                self.weight[downstream_course] -= 1
+                
+                # If all dependencies for this course are cleared, it's safe to take!
+                if self.weight[downstream_course] == 0:
+                    q.append(downstream_course)
+                    
+        # If the sorted array matches 'n', return the order. Otherwise, a cycle exists!
+        return self.sorted_arr if len(self.sorted_arr) == self.n else []
+
+
+# Wrapper class required by LeetCode interface
+class Solution(object):
+    def findOrder(self, numCourses, prerequisites):
+        sorter = MyTopoSort(numCourses, prerequisites)
+        return sorter.fun_sort()
+
+
+
+# V0-1
+# IDEA : topological sort
+from collections import deque
+
+class Solution(object):
+    def findOrder(self, numCourses, prerequisites):
+        """
+        :type numCourses: int
+        :type prerequisites: List[List[int]]
+        :rtype: List[int]
+        """
+
+        # --------------------------------------------------
+        # Step 1: Build graph + indegree array
+        #
+        # prerequisites[i] = [course, pre]
+        # means: pre -> course
+        # --------------------------------------------------
+
+        graph = {i: [] for i in range(numCourses)}
+        indegree = [0] * numCourses
+
+        for course, pre in prerequisites:
+            graph[pre].append(course)
+            indegree[course] += 1
+
+        # --------------------------------------------------
+        # Step 2: Initialize queue with all nodes
+        # that have indegree == 0 (no prerequisites)
+        # --------------------------------------------------
+
+        q = deque()
+
+        for i in range(numCourses):
+            if indegree[i] == 0:
+                q.append(i)
+
+        # --------------------------------------------------
+        # Step 3: BFS Topological Sort
+        # --------------------------------------------------
+
+        order = []
+
+        while q:
+            cur = q.popleft()
+            order.append(cur)
+
+            # Remove cur and update its neighbors
+            for nxt in graph[cur]:
+                indegree[nxt] -= 1
+
+                # If nxt has no more prerequisites,
+                # it becomes available
+                if indegree[nxt] == 0:
+                    q.append(nxt)
+
+        # --------------------------------------------------
+        # Step 4: Check if we were able to visit all nodes
+        # If not, there is a cycle
+        # --------------------------------------------------
+
+        if len(order) == numCourses:
+            return order
+
+        return []
+
+
+
 # V0
 # IDEA : DFS + topological sort
 # SAME dfs logic as LC 207 (Course Schedule)
