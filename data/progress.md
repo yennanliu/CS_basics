@@ -1,6 +1,28 @@
 # Progress
 
 
+# 2026-06-09
+
+- linked_list.md
+	- todo: 1-1) Basic OP
+- backtrack.md
+- tries.md
+- graph.md
+
+- Blind 75
+	- advanced graph (pass)
+	- 1D DP (doing)
+	- 2D DP
+	- greedy
+
+- needcode 150
+
+	- 1D DP
+	- 2D DP
+	- greedy
+
+
+
 # 2026-06-08
 
 - linked_list.md
