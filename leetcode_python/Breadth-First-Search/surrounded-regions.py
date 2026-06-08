@@ -32,6 +32,172 @@ board[i][j] is 'X' or 'O'.
 """
 
 # V0
+# IDEA 1) 2 PASS DFS
+class Solution(object):
+    def solve(self, board):
+        """
+        Do not return anything, modify board in-place instead.
+        """
+
+        # Edge case: empty board
+        if not board or not board[0]:
+            return
+
+        # Number of rows and columns
+        rows = len(board)
+        cols = len(board[0])
+
+        # --------------------------------------------------
+        # Step 1:
+        # Mark all 'O' cells connected to the border as '#'
+        # These cells should NOT be flipped to 'X'
+        # --------------------------------------------------
+
+        # Left and right borders
+        for r in range(rows):
+            self.updater(board, 0, r, "O", "#")
+            self.updater(board, cols - 1, r, "O", "#")
+
+        # Top and bottom borders
+        for c in range(cols):
+            self.updater(board, c, 0, "O", "#")
+            self.updater(board, c, rows - 1, "O", "#")
+
+        # --------------------------------------------------
+        # Step 2:
+        # Any remaining 'O' is surrounded,
+        # so convert it to 'X'
+        # --------------------------------------------------
+        for r in range(rows):
+            for c in range(cols):
+                if board[r][c] == "O":
+                    board[r][c] = "X"
+
+        # --------------------------------------------------
+        # Step 3:
+        # Convert protected '#' cells back to 'O'
+        # --------------------------------------------------
+        for r in range(rows):
+            for c in range(cols):
+                if board[r][c] == "#":
+                    board[r][c] = "O"
+
+    def updater(self, board, x, y, old_state, new_state):
+        """
+        DFS flood-fill:
+        Convert all connected old_state cells
+        into new_state cells.
+        """
+
+        rows = len(board)
+        cols = len(board[0])
+
+        # Out of bounds
+        if x < 0 or x >= cols or y < 0 or y >= rows:
+            return
+
+        # Only continue if this cell matches old_state
+        if board[y][x] != old_state:
+            return
+
+        # Mark current cell
+        board[y][x] = new_state
+
+        # Explore 4 directions
+        dirs = [
+            (0, 1),   # down
+            (0, -1),  # up
+            (1, 0),   # right
+            (-1, 0)   # left
+        ]
+
+        for dx, dy in dirs:
+            self.updater(
+                board,
+                x + dx,
+                y + dy,
+                old_state,
+                new_state
+            )
+
+
+# V0-1
+# IDEA 1) 2 PASS DFS
+class Solution(object):
+    def solve(self, board):
+        """
+        Do not return anything, modify board in-place instead.
+        """
+        # Edge Case: If the grid is empty or has zero columns, exit immediately
+        if not board or not board[0]:
+            return
+            
+        # Get the total row height (l) and column width (w) of the board
+        l = len(board) 
+        w = len(board[0])
+        
+        # =========================================================================
+        # PHASE 1: Find all border-connected 'O's and temporarily mask them to '#'
+        # =========================================================================
+        
+        # Sweep through every row along the vertical borders
+        for y in range(l):
+            # Check the absolute left border (Column 0)
+            self.updater(board, 0, y, "O", "#")
+            # Check the absolute right border (Column w-1)
+            self.updater(board, w - 1, y, "O", "#")
+            
+        # Sweep through every column along the horizontal borders
+        for x in range(w):
+            # Check the absolute top border (Row 0)
+            self.updater(board, x, 0, "O", "#")
+            # Check the absolute bottom border (Row l-1)
+            self.updater(board, x, l - 1, "O", "#")
+            
+        # =========================================================================
+        # PHASE 2 & 3: Scan the interior to flip trapped cells and restore masked cells
+        # =========================================================================
+        for y in range(l):
+            for x in range(w):
+                # PHASE 2: If a cell is still 'O', it was never reached by the 
+                # border sweep. It is completely trapped! Flip it to uppercase 'X'.
+                if board[y][x] == "O":
+                    self.updater(board, x, y, "O", "X")
+                    
+                # PHASE 3: If a cell is marked '#', it belongs to a safe region 
+                # connected to the border. Revert it back to a standard 'O'.
+                elif board[y][x] == "#":
+                    self.updater(board, x, y, "#", "O")
+
+    def updater(self, board, x, y, old_state, new_state):
+        # Dynamically evaluate the boundaries inside the helper function
+        l = len(board) 
+        w = len(board[0])
+        
+        # BASE CASE / ENTRY GUARD: 
+        # 1. Check if x or y coordinates are out-of-bounds
+        # 2. Check if the cell's value matches the 'old_state' we want to modify.
+        # If any condition fails, stop and pop this frame off the call stack.
+        if x < 0 or x >= w or y < 0 or y >= l or board[y][x] != old_state:
+            return
+            
+        # ACTION: Safe validation passed. Overwrite the cell with the 'new_state' value.
+        board[y][x] = new_state
+        
+        # Map out the 4 directional offset movements: [right, left, down, up]
+        dirs = [[0, 1], [0, -1], [1, 0], [-1, 0]]
+        
+        # RECURSION: Radiate out to explore all 4 neighboring cardinal directions
+        for d in dirs:
+            x_ = x + d[0] # Calculate the adjacent target x coordinate
+            y_ = y + d[1] # Calculate the adjacent target y coordinate
+            
+            # Recursively call updater. The top guard will cleanly handle 
+            # any out-of-bounds or mismatch safety checks on entry!
+            self.updater(board, x_, y_, old_state, new_state)
+
+
+# V0
 # IDEA : BFS
 class Solution(object):
     def solve(self, board):
