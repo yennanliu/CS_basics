@@ -36,6 +36,98 @@ All the pairs (ui, vi) are unique. (i.e., no multiple edges.)
 
 """
 
+
+# V0
+# IDEA : Dijkstra (PQ + BFS)
+import heapq
+from collections import defaultdict
+
+class Solution(object):
+    def networkDelayTime(self, times, n, k):
+        graph = defaultdict(list)
+
+        # build adjacency list
+        for u, v, w in times:
+            graph[u].append((v, w))
+
+        # min heap: (time, node)
+        heap = [(0, k)]
+
+        # visited / shortest distance
+        dist = {}
+
+        while heap:
+            time, node = heapq.heappop(heap)
+
+            # already finalized
+            if node in dist:
+                continue
+
+            dist[node] = time
+
+            for nei, w in graph[node]:
+                if nei not in dist:
+                    heapq.heappush(heap, (time + w, nei))
+
+        # check if all nodes reached
+        if len(dist) != n:
+            return -1
+
+        return max(dist.values())
+
+
+# V0-1
+# IDEA : Dijkstra (PQ + BFS)
+import heapq
+from collections import defaultdict
+
+class Solution(object):
+    def networkDelayTime(self, times, n, k):
+        """
+        :type times: List[List[int]]
+        :type n: int
+        :type k: int
+        :type rtype: int
+        """
+        # Step 1: Build the directed weighted graph adjacency list
+        graph = defaultdict(list)
+        for u, v, w in times:
+            graph[u].append((v, w)) # u -> (neighbor node v, travel time weight w)
+            
+        # Step 2: Initialize min-heap priority queue
+        # Format elements as: (accumulated_time, current_node)
+        # Starting point: 0 time elapsed to reach the source node k
+        min_heap = [(0, k)]
+        
+        # Track nodes that have permanently finalized their shortest signal paths
+        visited = set()
+        
+        # Step 3: Run the priority queue loop
+        while min_heap:
+            time, node = heapq.heappop(min_heap)
+            
+            # If this node was already visited, skip to avoid redundant processing
+            if node in visited:
+                continue
+                
+            # Mark the node as visited immediately upon popping
+            visited.add(node)
+            
+            # CRITICAL OPTIMIZATION: The exact moment our visited group hits size n,
+            # it means the signal has successfully saturated every node in the network!
+            if len(visited) == n:
+                return time
+                
+            # Explore all outgoing neighbors from the current node
+            for neighbor, weight in graph[node]:
+                if neighbor not in visited:
+                    # Calculate total time from source to neighbor and push to heap
+                    heapq.heappush(min_heap, (time + weight, neighbor))
+                    
+        # If the heap empties out but len(visited) < n, some nodes are unreachable!
+        return -1
+
+
 # V0 
 # IDEA : Dijkstra
 class Solution:
