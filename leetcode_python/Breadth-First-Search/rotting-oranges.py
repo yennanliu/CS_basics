@@ -41,6 +41,133 @@ grid[i][j] is 0, 1, or 2.
 """
 
 # V0
+# IDEA: MULTI SRC BFS
+from collections import deque
+class Solution(object):
+    def orangesRotting(self, grid):
+        l = len(grid)
+        w = len(grid[0])
+
+        fresh = 0
+        q = deque()
+
+        for y in range(l):
+            for x in range(w):
+                if grid[y][x] == 1:
+                    fresh += 1
+                elif grid[y][x] == 2:
+                    q.append([x, y])
+
+        if fresh == 0:
+            return 0
+
+        if not q:
+            return -1
+
+        dirs = [[0, 1], [0, -1], [1, 0], [-1, 0]]
+
+        time = 0
+
+        while q and fresh > 0:
+            size = len(q)
+
+            for _ in range(size):
+                x, y = q.popleft()
+
+                for dx, dy in dirs:
+                    x_ = x + dx
+                    y_ = y + dy
+
+                    if (
+                        0 <= x_ < w and
+                        0 <= y_ < l and
+                        grid[y_][x_] == 1
+                    ):
+                        """
+                        NOTE !!!
+
+                        we need to update orange RIGHT AWAY
+                        -> to avoid `same fresh orange` being
+                           rotten several times
+
+
+                        ----
+
+                        # CRITICAL FIX: Mark it as rotten and decrement fresh IMMEDIATELY 
+                        # to prevent other nodes from re-queuing this same cell.
+
+
+                        """
+                        grid[y_][x_] = 2
+                        fresh -= 1
+                        q.append([x_, y_])
+
+            time += 1
+
+        return time if fresh == 0 else -1
+
+
+
+# V0-1
+# IDEA: BFS
+from collections import deque
+
+class Solution(object):
+    def orangesRotting(self, grid):
+        if not grid or not grid[0]:
+            return 0
+            
+        l = len(grid)
+        w = len(grid[0])
+        fresh = 0
+        q = deque() # CRITICAL FIX: Correct parenthesis syntax
+        
+        # Step 1: Initialize counters and load initial rotten oranges into our queue
+        for y in range(l):
+            for x in range(w):
+                if grid[y][x] == 1:
+                    fresh += 1
+                elif grid[y][x] == 2:
+                    q.append((x, y))
+                    
+        # Edge Case: If there are no fresh oranges to begin with, 0 minutes have passed
+        if fresh == 0: # CRITICAL FIX: Use comparison == instead of assignment =
+            return 0
+            
+        # Edge Case: If there are fresh oranges but no rotten ones to start the infection
+        if not q:
+            return -1
+            
+        dirs = [[0, 1], [0, -1], [1, 0], [-1, 0]]
+        time = 0
+        
+        # Step 2: Concurrently expand infection layers via BFS
+        while q and fresh > 0:
+            size = len(q)
+            for i in range(size):
+                x, y = q.popleft()
+                
+                for d in dirs:
+                    x_ = x + d[0]
+                    y_ = y + d[1]
+                    
+                    # Boundary check
+                    if 0 <= x_ < w and 0 <= y_ < l:
+                        # Only infect if the target cell is a fresh orange
+                        if grid[y_][x_] == 1:
+                            # CRITICAL FIX: Mark it as rotten and decrement fresh IMMEDIATELY 
+                            # to prevent other nodes from re-queuing this same cell.
+                            grid[y_][x_] = 2
+                            fresh -= 1
+                            q.append((x_, y_))
+            
+            # One complete level of the queue means 1 minute has elapsed
+            time += 1
+            
+        return time if fresh == 0 else -1
+
+
+# V0
 class Solution(object):
     def orangesRotting(self, grid):
         n = len(grid)

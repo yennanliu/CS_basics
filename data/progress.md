@@ -6,8 +6,7 @@
 - linked_list.md
 	- todo: 1-1) Basic OP
 - bst.md
-	- doing
-		- Universal BST Template
+	- OK
 - backtrack.md
 - tries.md
 - graph.md
