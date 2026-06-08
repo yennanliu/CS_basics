@@ -39,7 +39,52 @@ src != dst
 
 """
 
-# V0 
+# V0
+# IDEA :  Dijkstra
+import heapq
+from collections import defaultdict
+
+class Solution(object):
+    def findCheapestPrice(self, n, flights, src, dst, K):
+
+        graph = defaultdict(list)
+
+        # build graph
+        for s, e, c in flights:
+            graph[s].append((e, c))
+
+        # (cost, node, stops)
+        heap = [(0, src, 0)]
+
+        # best[(node, stops)] = cost
+        best = {}
+
+        while heap:
+            cost, node, stops = heapq.heappop(heap)
+
+            # reached destination
+            if node == dst:
+                return cost
+
+            # if exceeded stops limit, skip
+            if stops > K:
+                continue
+
+            # prune worse states
+            if (node, stops) in best and best[(node, stops)] <= cost:
+                continue
+
+            best[(node, stops)] = cost
+
+            for nei, price in graph[node]:
+                heapq.heappush(heap, (cost + price, nei, stops + 1))
+
+        return -1
+
+
+# V0-1
+
+
 
 # V1
 # https://leetcode.com/problems/cheapest-flights-within-k-stops/solution/
