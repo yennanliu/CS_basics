@@ -77,7 +77,7 @@ def backtrack(路徑, 選擇清單):
 These typically involve **combinations**, **subsets**, or **multi-use elements**, where:
 
 - Order doesn't matter (e.g., `[2,3]` is same as `[3,2]`)
-- You want to avoid revisiting earlier choices
+- You want to `AVOID` revisiting earlier choices
 - You may reuse elements **or** pick each element **once**
 
 #### 🔹 Examples:
@@ -280,8 +280,8 @@ See Quick Reference Table above.
             for i in range(start_idx, len(wordDict)):
                 cur.append(wordDict[i])
 
-                # NOTE !!! `start_idx + 1`
-                help(start_idx + 1, cur)
+                
+                help(i + 1, cur)
                 """
                 NOTE !!! pop(-1)
                 """
