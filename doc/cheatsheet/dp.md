@@ -1828,51 +1828,195 @@ def state_compression_dp(graph):
     return min(dp[(1 << n) - 1][i] + graph[i][0] for i in range(1, n))
 ```
 
-### Template 10: Palindrome DP
+### Template 10: Palindrome Substring DP ⭐⭐⭐⭐⭐
+
+**Problem archetype**: LC 647 (Count Palindromic Substrings), LC 5 (Longest Palindromic Substring)
+
+#### 🎯 Approach Comparison
+
+| Approach | Time | Space | When to Use |
+|---|---|---|---|
+| Brute Force | O(n³) | O(1) | Never in interviews |
+| 2D DP (length-based) | O(n²) | O(n²) | Need full dp table for other queries |
+| 2D DP (backward-i) | O(n²) | O(n²) | Same as above, slightly cleaner |
+| **Two Pointers (expand center)** ⭐ | O(n²) | **O(1)** | **Default — simpler, space-optimal** |
+| Manacher's Algorithm | O(n) | O(n) | Competitive programming / optimal |
+
+---
+
+#### 💡 Core DP Idea
+
+**State**: `dp[i][j] = True` if `s[i..j]` is a palindrome.
+
+**Transition** — a substring is palindrome if and only if:
+```
+dp[i][j] = True
+  when:  s[i] == s[j]
+  AND    (j - i <= 2   ← length ≤ 3, no inner to check)
+         OR dp[i+1][j-1]  ← inner substring is also palindrome
+```
+
+**Why `j - i <= 2` is the base case?**
+- Length 1 (`i == j`): always a palindrome — single char
+- Length 2 (`j - i == 1`): palindrome iff `s[i] == s[j]` — "aa"
+- Length 3 (`j - i == 2`): palindrome iff outer chars match — "aba"; inner is a single char, always valid
+
+---
+
+#### Approach 1: 2D DP — Length-based outer loop
+
 ```python
-def palindrome_dp(s):
-    """Check palindromic substrings"""
+# IDEA: build dp table by increasing substring length
+# dp[i][j] = True if s[i:j+1] is palindrome
+def countSubstrings_dp_length(s):
+    # time = O(n^2), space = O(n^2)
     n = len(s)
-    # dp[i][j] = True if s[i:j+1] is palindrome
     dp = [[False] * n for _ in range(n)]
+    count = 0
 
-    # Single characters are palindromes
-    for i in range(n):
-        dp[i][i] = True
+    for length in range(1, n + 1):          # outer: substring length
+        for i in range(n - length + 1):     # inner: start index
+            j = i + length - 1              # end index
 
-    # Check 2-character palindromes
-    for i in range(n - 1):
-        if s[i] == s[i + 1]:
-            dp[i][i + 1] = True
-
-    # Check longer palindromes
-    for length in range(3, n + 1):
-        for i in range(n - length + 1):
-            j = i + length - 1
-            if s[i] == s[j] and dp[i + 1][j - 1]:
+            if length == 1:
                 dp[i][j] = True
+            elif length == 2:
+                dp[i][j] = (s[i] == s[j])
+            else:
+                dp[i][j] = (s[i] == s[j] and dp[i+1][j-1])
 
-    return dp
+            if dp[i][j]:
+                count += 1
+
+    return count
 ```
 
-**Key Palindrome DP Pattern:**
-```
-Core Transition Equation:
-    dp[i][j] = true
-       if:
-           s[i] == s[j] AND
-           (j - i <= 2 OR dp[i + 1][j - 1])
+#### Approach 2: 2D DP — Backward-i + Forward-j ⭐ (see also Template 3-3)
 
-Explanation:
-    - dp[i][j] represents whether substring s[i...j] is a palindrome
-    - s[i] == s[j]: Characters at both ends must match
-    - j - i <= 2: Handles base cases (length 1, 2, or 3 substrings)
-    - dp[i + 1][j - 1]: Inner substring must also be a palindrome
+```python
+# IDEA: loop i backward so dp[i+1][...] is always ready when computing dp[i][...]
+def countSubstrings_dp_backward(s):
+    # time = O(n^2), space = O(n^2)
+    n = len(s)
+    dp = [[False] * n for _ in range(n)]
+    count = 0
 
-Example: For "babad"
-    - dp[0][2] = true because s[0]='b' == s[2]='b' AND j-i=2 (length 3)
-    - dp[1][3] = true because s[1]='a' == s[3]='a' AND dp[2][2]=true
+    for i in range(n - 1, -1, -1):   # i backward: ensures dp[i+1][j-1] is computed
+        for j in range(i, n):         # j forward:  ensures dp[i][j-1] is computed
+            if s[i] == s[j] and (j - i <= 2 or dp[i+1][j-1]):
+                dp[i][j] = True
+                count += 1
+
+    return count
 ```
+
+**Why backward-i?**
+`dp[i][j]` depends on `dp[i+1][j-1]` (the inner substring). To read row `i+1` when filling row `i`, iterate `i` from `n-1` down to `0`.
+
+---
+
+#### Approach 3: Two Pointers — Expand Around Center ⭐⭐ (Recommended)
+
+**Key insight**: every palindrome has a center. Expand outward from each possible center and count.
+- **Odd-length** palindrome: center is one character — expand from `(i, i)`
+- **Even-length** palindrome: center is between two characters — expand from `(i, i+1)`
+
+```python
+# IDEA: expand around center — O(1) space, no dp table needed
+def countSubstrings_two_pointers(s):
+    # time = O(n^2), space = O(1)
+    count = 0
+    n = len(s)
+
+    def expand(l, r):
+        cnt = 0
+        while l >= 0 and r < n and s[l] == s[r]:
+            cnt += 1
+            l -= 1
+            r += 1
+        return cnt
+
+    for i in range(n):
+        count += expand(i, i)      # odd-length  (center at i)
+        count += expand(i, i + 1)  # even-length (center between i and i+1)
+
+    return count
+```
+
+**Visual trace for `s = "aaa"`:**
+```
+Center i=0:
+  odd  (0,0): "a"          → count +1
+  even (0,1): "aa"         → count +1
+
+Center i=1:
+  odd  (1,1): "a"→(0,2)"aaa" → count +2  (expands to full string)
+  even (1,2): "aa"         → count +1
+
+Center i=2:
+  odd  (2,2): "a"          → count +1
+  even (2,3): out of bounds → count +0
+
+Total = 6  ✓
+```
+
+---
+
+#### Approach 4: Manacher's Algorithm — O(n)
+
+```python
+# IDEA: reuse previously computed palindrome radii to skip redundant checks
+def countSubstrings_manacher(s):
+    # time = O(n), space = O(n)
+    def manacher(s):
+        # transform: "abc" → "^#a#b#c#$"
+        t = '^#' + '#'.join(s) + '#$'
+        P = [0] * len(t)
+        C = R = 0
+        for i in range(1, len(t) - 1):
+            mirror = 2 * C - i
+            if R > i:
+                P[i] = min(R - i, P[mirror])
+            while t[i + 1 + P[i]] == t[i - 1 - P[i]]:
+                P[i] += 1
+            if i + P[i] > R:
+                C, R = i, i + P[i]
+        return P
+
+    return sum((r + 1) // 2 for r in manacher(s))
+```
+
+---
+
+#### Key Decision: DP vs Two Pointers
+
+```
+Need the full dp[i][j] table? (e.g., for partitioning / further DP)
+  YES → Use 2D DP (Approach 1 or 2)
+  NO  → Use Two Pointers (Approach 3) — simpler + O(1) space
+```
+
+---
+
+#### Similar LeetCode Problems
+
+| LC # | Problem | Approach | Key Difference |
+|------|---------|----------|----------------|
+| **647** | Palindromic Substrings | DP or Expand | Count all palindromes |
+| **5** | Longest Palindromic Substring | Expand or DP | Track max length instead of count |
+| **516** | Longest Palindromic Subsequence | 2D DP (backward-i) | Subsequence (not substring), use `dp[i+1][j-1]+2` |
+| **132** | Palindrome Partitioning II | DP + palindrome table | Min cuts; precompute `isPalin[i][j]` first |
+| **131** | Palindrome Partitioning | Backtracking + palindrome table | All partition ways |
+| **1312** | Min Insertions to Make Palindrome | 2D DP | `n - LPS(s)` |
+| **680** | Valid Palindrome II | Two pointers | At most 1 delete |
+
+---
+
+#### Common Mistakes
+
+1. **Checking `dp[i+1][j-1]` without the `j-i <= 2` guard**: When `j-i == 1`, `dp[i+1][j-1]` = `dp[i+1][i]` (invalid index). Always pair with `j - i <= 2` as base case.
+2. **Wrong loop direction in backward-i DP**: Forgetting that `i` must go from `n-1` to `0` so `dp[i+1][...]` is already filled.
+3. **Missing even-length center in expand**: Always call `expand(i, i)` AND `expand(i, i+1)` to cover both odd/even palindromes.
 
 ### Template 11: Fibonacci-like Patterns
 ```python

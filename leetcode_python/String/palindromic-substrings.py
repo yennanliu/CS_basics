@@ -75,6 +75,32 @@ class Solution(object):
 
         # Process substrings by increasing length
         # length = current substring length
+        """
+
+        NOTE !!!
+
+        we CAN'T swap the for loop order.
+
+        e.g. below is WRONG
+
+        ```
+        for i in range(n - length + 1):
+                for length in range(1, n + 1):
+        ```
+
+        Reason:
+
+        1. length used before definition
+        2. for this LC, DP deps on smaller DP
+            -> dp[i][j] depends on dp[i+1][j-1]
+                -> smaller substrings must be computed first,
+                   then larger ones
+
+
+        so, we CAN'T do `bigger DP` first, then 
+        do smaller DP, it's logically WRONG.
+
+        """
         for length in range(1, n + 1):
 
             # Try every possible starting index
@@ -110,6 +136,18 @@ class Solution(object):
 
                 # If current substring is palindrome,
                 # count it
+                """
+                NOTE !!!
+
+                above is because of `DP def`
+
+                  - dp[i][j] = True
+                  - The substring s[i:j+1] is a palindrome.
+
+                  -> if `dp[i][j] = True`
+                    -> s[i,j] is `palindrome`
+
+                """
                 if dp[i][j]:
                     count += 1
 
