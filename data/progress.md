@@ -1,5 +1,29 @@
 # Progress
 
+# 2026-06-10
+
+- linked_list.md
+	- todo: 1-1) Basic OP
+- backtrack.md
+	- todo: `Type 2) : Permutations (排列組合) (全排列)`
+- tries.md
+- graph.md
+
+- Blind 75
+
+	- 1D DP
+		- LC 300 Longest Increasing Subsequence 
+	- 2D DP (doing)
+	- greedy
+	- intervals
+
+- needcode 150
+
+	- 1D DP
+	- 2D DP
+	- greedy
+	- intervals
+
 
 # 2026-06-09
 
