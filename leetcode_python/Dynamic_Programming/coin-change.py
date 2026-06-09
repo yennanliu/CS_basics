@@ -28,6 +28,70 @@ Output: 0
 """
 
 # V0
+# IDEA: 1D DP
+"""
+
+
+ DP def:
+    - dp[i] = minimum coins needed to make amount i
+
+
+"""
+class Solution(object):
+    def coinChange(self, coins, amount):
+        # edge
+        if amount == 0:
+            return 0
+
+        if len(coins) == 1:
+            return -1 if amount % coins[0] != 0 else amount // coins[0]
+
+        dp = [10000] * (amount + 1)
+
+        # init
+        dp[0] = 0
+
+        # dp[i] = minimum coins needed to make amount i
+        for i in range(1, amount + 1):
+            for c in coins:
+                if i >= c:
+                    dp[i] = min(dp[i], dp[i - c] + 1)
+
+        return dp[amount] if dp[amount] < 10000 else -1
+
+
+
+# V0-1
+# IDEA: 1D DP
+class Solution(object):
+    def coinChange(self, coins, amount):
+        # Edge cases handled perfectly
+        if amount == 0:
+            return 0
+        if len(coins) == 1:
+            return -1 if amount % coins[0] != 0 else int(amount // coins[0])
+            
+        # Initialize the DP table. We will use 100000 as our infinity bound 
+        # just in case 'amount' itself is close to 10000!
+        INF = 100000
+        dp = [INF] * (amount + 1)
+        
+        # Base Case: 0 coins needed to make amount 0
+        dp[0] = 0
+        
+        # CRITICAL FIX 1: Change range boundary to (amount + 1) so it includes the target amount!
+        for i in range(1, amount + 1):
+            for c in coins:
+                # CRITICAL FIX 2: Look backward! We can only make amount 'i' using coin 'c'
+                # if the remainder (i - c) is a valid, non-negative sub-amount.
+                if i - c >= 0:
+                    dp[i] = min(dp[i], dp[i - c] + 1)
+                    
+        # Return the final amount if it was successfully reached
+        return dp[amount] if dp[amount] < INF else -1
+
+
+# V0
 # IDEA : BFS
 from collections import defaultdict
 class Solution(object):
