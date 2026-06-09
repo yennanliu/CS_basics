@@ -39,37 +39,44 @@ All the strings of wordDict are unique.
 # V0
 # IDEA: BFS
 from collections import deque
-
 class Solution(object):
     def wordBreak(self, s, wordDict):
-        q = deque()
-        visited = set()
+        # Convert list to set for O(1) lookup
+        wordSet = set(wordDict)
 
-        for w in wordDict:
-            if s.startswith(w):
-                q.append(w)
-                visited.add(len(w))
+        # NOTE !!!
+        # q: [idx_1, idx_2, ...]
+        # Queue stores indices in the string s
+        q = deque([0])
+
+        # NOTE !!!
+        # use `visited` to AVOID repeat processing
+        # visited[i] means we've already processed index i
+        visited = set([0])
 
         while q:
-            cur = q.popleft()
+            start = q.popleft()
 
-            if cur == s:
+            # If we reached the end of the string, success
+            if start == len(s):
                 return True
 
-            cur_len = len(cur)
+            # NOTE !!!
+            # -> ONLY loop from `start + 1` to `len(s) + 1`
+            # Try extending from 'start' to every possible end
+            for end in range(start + 1, len(s) + 1):
 
-            for w in wordDict:
-                if (cur_len + len(w) <= len(s)
-                    and s[cur_len : cur_len + len(w)] == w):
+                # If substring is a valid word AND not visited
+                if end not in visited and s[start:end] in wordSet:
 
-                    next_len = cur_len + len(w)
+                    # Mark as visited
+                    visited.add(end)
 
-                    if next_len not in visited:
-                        visited.add(next_len)
-                        q.append(cur + w)
+                    # Add new state to queue
+                    q.append(end)
 
+        # If BFS ends without reaching len(s)
         return False
-
 
 # V0-1
 # IDEA: BFS

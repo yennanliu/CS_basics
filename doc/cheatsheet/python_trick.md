@@ -1544,6 +1544,10 @@ def topKFrequent(nums, k):
 ```python
 from collections import deque
 
+# deque() vs deque([]) — both produce an empty deque, functionally identical
+q = deque()    # preferred: no unnecessary empty list created
+q = deque([])  # equivalent but verbose; the [] is an extra throwaway object
+
 # O(1) append/pop from BOTH ends (list.pop(0) is O(n))
 d = deque([1, 2, 3])
 
