@@ -137,6 +137,55 @@ class Solution(object):
 
 # V0-2
 # IDEA: 1D DP
+"""
+
+## 🧠 DP Definition
+
+```text
+dp[i] = `True` if and only if the substring s[0:i] 
+can be `segmented into one or more words from wordDict`
+```
+
+* `i` represents the **length of the prefix**
+* `dp[0] = True` means the empty string is valid
+
+---
+
+## 🔁 DP Equation (Transition)
+
+```text
+dp[i] = OR over all j < i of:
+        (dp[j] AND s[j:i] in wordDict)
+```
+
+---
+
+
+"""
+class Solution(object):
+    def wordBreak(self, s, wordDict):
+        wordSet = set(wordDict)
+
+        n = len(s)
+
+        # dp[i] = True means s[0:i] can be segmented
+        dp = [False] * (n + 1)
+
+        # empty string is always valid
+        dp[0] = True
+
+        for i in range(1, n + 1):
+            for j in range(i):
+                # if prefix dp[j] is valid AND s[j:i] is a word
+                if dp[j] and s[j:i] in wordSet:
+                    dp[i] = True
+                    break
+
+        return dp[n]
+
+
+# V0-3
+# IDEA: 1D DP
 class Solution(object):
     def wordBreak(self, s, wordDict):
         """
