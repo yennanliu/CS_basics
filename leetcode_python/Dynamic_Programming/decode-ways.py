@@ -46,6 +46,95 @@ s contains only digits and may contain leading zero(s).
 """
 
 # V0
+# IDEA: 1D DP
+class Solution(object):
+    def numDecodings(self, s):
+        n = len(s)
+
+        # If string starts with '0', no valid decoding
+        if not s or s[0] == '0':
+            return 0
+
+        # dp[i] = number of ways to decode first i characters
+        dp = [0] * (n + 1)
+
+        # Base case:
+        # Empty string has 1 way to decode (do nothing)
+        dp[0] = 1
+
+        # First character is guaranteed non-zero here
+        dp[1] = 1
+
+        # Build dp from left to right
+        for i in range(2, n + 1):
+
+            # -----------------------------
+            # Case 1: single digit decode
+            # -----------------------------
+            # If current char is not '0', it can be decoded alone
+            if s[i - 1] != '0':
+                dp[i] += dp[i - 1]
+
+            # -----------------------------
+            # Case 2: two digit decode
+            # -----------------------------
+            two_digit = int(s[i - 2:i])
+
+            # Valid range: 10 to 26
+            if 10 <= two_digit <= 26:
+                dp[i] += dp[i - 2]
+
+        return dp[n]
+
+
+# V0-1
+# IDEA: 1D DP
+class Solution(object):
+    def numDecodings(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        # Guard clause: An empty string cannot be decoded.
+        if not s:
+            return 0
+            
+        n = len(s)
+        
+        # Initialize a DP table of size n + 1.
+        # dp[i] represents the total ways to decode a prefix substring of length 'i'.
+        dp = [0] * (n + 1)
+        
+        # BASE CASE 1: An empty string (length 0) has exactly 1 valid empty decoding sequence.
+        dp[0] = 1
+        
+        # BASE CASE 2: A string of length 1 is valid if it doesn't start with a '0'.
+        dp[1] = 1 if s[0] != '0' else 0
+        
+        # Iterate through all string lengths from length 2 up to length n.
+        # Inside the loop, index 'i' acts as the CURRENT LENGTH of the prefix.
+        for i in range(2, n + 1):
+            
+            # --- CHOICE 1: Peek at the single character at the end of this prefix ---
+            # Since index is 0-based, the character extending a prefix of length 'i' sits at s[i-1].
+            single_digit = s[i - 1]
+            if single_digit != '0':
+                # If it's valid ('1'-'9'), it inherits all combination possibilities from length i-1
+                dp[i] += dp[i - 1]
+                
+            # --- CHOICE 2: Peek at the double character window at the end of this prefix ---
+            # The two-digit string extending a prefix of length 'i' sits from s[i-2] to s[i].
+            two_digits = s[i - 2 : i]
+            if "10" <= two_digits <= "26":
+                # If it's a valid letter code (10-26), it inherits all combinations from length i-2
+                dp[i] += dp[i - 2]
+                
+        # Return the accumulated combinations for the full length of the string
+        return dp[n]
+
+
+
+# V0
 # IDEA : DP
 # IDEA : 
 # dp[i]=⎧⎩⎨⎪⎪dp[i−1]+dp[i−2], 10 <=s[i-2:2]<=26 and s[i−2:2]!=[10 or 20]
