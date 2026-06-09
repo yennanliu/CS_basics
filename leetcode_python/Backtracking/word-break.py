@@ -37,6 +37,143 @@ All the strings of wordDict are unique.
 """
 
 # V0
+# IDEA: BFS
+from collections import deque
+
+class Solution(object):
+    def wordBreak(self, s, wordDict):
+        q = deque()
+        visited = set()
+
+        for w in wordDict:
+            if s.startswith(w):
+                q.append(w)
+                visited.add(len(w))
+
+        while q:
+            cur = q.popleft()
+
+            if cur == s:
+                return True
+
+            cur_len = len(cur)
+
+            for w in wordDict:
+                if (cur_len + len(w) <= len(s)
+                    and s[cur_len : cur_len + len(w)] == w):
+
+                    next_len = cur_len + len(w)
+
+                    if next_len not in visited:
+                        visited.add(next_len)
+                        q.append(cur + w)
+
+        return False
+
+
+# V0-1
+# IDEA: BFS
+from collections import deque
+
+class Solution(object):
+    def wordBreak(self, s, wordDict):
+        """
+        :type s: str
+        :type wordDict: List[str]
+        :rtype: bool
+        """
+        if not s:
+            return False
+            
+        # Convert dictionary to a set for instant O(1) loop evaluations
+        word_set = set(wordDict)
+        
+        # Initialize the BFS queue. We start at prefix index 0 (the empty string prefix).
+        q = deque([0])
+        
+        # CRITICAL FIX: Track visited index boundaries to avoid checking 
+        # the exact same split point multiple times.
+        visited = set([0])
+        
+        n = len(s)
+        
+        while q:
+            # Inside, 'start_idx' represents the beginning of our next search segment
+            start_idx = q.popleft()
+            
+            # SUCCESS CONDITION: If we have successfully traversed all indices up to n,
+            # the string can be perfectly segmented.
+            if start_idx == n:
+                return True
+                
+            # Iterate through all possible ending indices for the current word chunk
+            for end_idx in range(start_idx + 1, n + 1):
+                
+                # If we've already validated split combinations starting at 'end_idx', skip it
+                if end_idx in visited:
+                    continue
+                    
+                # CRITICAL FIX: Extract the slice starting directly from start_idx
+                # without any arbitrary +1 index shifts.
+                word_chunk = s[start_idx:end_idx]
+                
+                # If this substring chunk matches a word in our dictionary...
+                if word_chunk in word_set:
+                    # ...we mark this end boundary as a valid launching point for the next step,
+                    q.append(end_idx)
+                    # and register it to our visited history to prevent duplicate queue loops.
+                    visited.add(end_idx)
+                    
+        return False
+
+
+
+# V0-2
+# IDEA: 1D DP
+class Solution(object):
+    def wordBreak(self, s, wordDict):
+        """
+        :type s: str
+        :type wordDict: List[str]
+        :rtype: bool
+        """
+        # Step 1: Convert the word list into a set. 
+        # This optimizes our lookup time from O(W) down to O(1)!
+        word_set = set(wordDict)
+        
+        n = len(s)
+        
+        # Step 2: Initialize our DP array of size n + 1 filled with False.
+        # dp[i] represents whether a prefix of length 'i' can be successfully segmented.
+        dp = [False] * (n + 1)
+        
+        # BASE CASE: An empty string (length 0) can always be considered "segmented".
+        dp[0] = True
+        
+        # Step 3: Iterate through every prefix length from 1 up to the total length n.
+        # Inside this loop, 'i' represents the CURRENT END boundary of our prefix.
+        for i in range(1, n + 1):
+            
+            # Look backwards at all possible split points 'j' behind 'i'.
+            for j in range(i):
+                
+                # YOUR LOGIC TRANSITION: 
+                # If the string up to length 'j' is valid, AND the remaining chunk 
+                # from index 'j' to 'i' is a word inside our dictionary...
+                if dp[j] and s[j:i] in word_set:
+                    
+                    # ...then the prefix up to length 'i' is officially valid!
+                    dp[i] = True
+                    
+                    # Optimization: Since we found a valid split configuration for 'i',
+                    # we don't need to check other 'j' positions for this loop turn.
+                    break
+                    
+        # Return the final evaluation for the full length of the string
+        return dp[n]
+
+
+# V0
 # IDEA : BFS
 class Solution:
     def wordBreak(self, s, wordDict):
