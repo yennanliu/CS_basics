@@ -31,11 +31,12 @@ Output: 0
 # IDEA: 1D DP
 """
 
-
  DP def:
     - dp[i] = minimum coins needed to make amount i
 
 
+ DP eq:
+    -  dp[i] = Math.min(dp[i], dp[i - coin] + 1);
 """
 class Solution(object):
     def coinChange(self, coins, amount):
@@ -52,8 +53,29 @@ class Solution(object):
         dp[0] = 0
 
         # dp[i] = minimum coins needed to make amount i
+        """
+        NOTE !!!
+
+        -> loop over amount, then loop on coin.
+
+        for i in range(1, amount + 1):
+                ...
+            for c in coins:
+                    ...
+
+        """
         for i in range(1, amount + 1):
             for c in coins:
+                """
+                NOTE !!!
+
+                    the condition: `if i >= c` !!!
+                    this is the ONLY thing that
+                    decide if we should update the DP table or not.
+
+
+                    (`i + c <= amount` is the WRONG condition !!!)
+                """
                 if i >= c:
                     dp[i] = min(dp[i], dp[i - c] + 1)
 
@@ -63,6 +85,15 @@ class Solution(object):
 
 # V0-1
 # IDEA: 1D DP
+"""
+
+ DP def:
+    - dp[i] = minimum coins needed to make amount i
+
+
+ DP eq:
+    -  dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+"""
 class Solution(object):
     def coinChange(self, coins, amount):
         # Edge cases handled perfectly
@@ -80,10 +111,32 @@ class Solution(object):
         dp[0] = 0
         
         # CRITICAL FIX 1: Change range boundary to (amount + 1) so it includes the target amount!
+        """
+        NOTE !!!
+
+        -> loop over amount, then loop on coin.
+
+        for i in range(1, amount + 1):
+                ...
+            for c in coins:
+                    ...
+
+        """
+
         for i in range(1, amount + 1):
             for c in coins:
                 # CRITICAL FIX 2: Look backward! We can only make amount 'i' using coin 'c'
                 # if the remainder (i - c) is a valid, non-negative sub-amount.
+                """
+                NOTE !!!
+
+                    the condition: `if i >= c` !!!
+                    this is the ONLY thing that
+                    decide if we should update the DP table or not.
+
+
+                    (`i + c <= amount` is the WRONG condition !!!)
+                """
                 if i - c >= 0:
                     dp[i] = min(dp[i], dp[i - c] + 1)
                     
