@@ -47,6 +47,11 @@ s contains only digits and may contain leading zero(s).
 
 # V0
 # IDEA: 1D DP
+"""
+
+dp[i]: ways to decode a string of `length i.`
+
+"""
 class Solution(object):
     def numDecodings(self, s):
         n = len(s)
@@ -66,6 +71,14 @@ class Solution(object):
         dp[1] = 1
 
         # Build dp from left to right
+        """
+        NOTE !!!
+
+        -> need to loop till `n+1`
+           , so i=n case is included
+           -> so we are able to update the dp with `len=n`
+
+        """
         for i in range(2, n + 1):
 
             # -----------------------------
@@ -84,6 +97,20 @@ class Solution(object):
             if 10 <= two_digit <= 26:
                 dp[i] += dp[i - 2]
 
+        """
+
+        we return `dp[n]` but NOT ` dp[n+1]`
+
+        -> 
+
+        DP def:
+         dp[i]: ways to decode a string of `length i.`
+
+
+        -> so use dp[n] with # of decode ways
+           when len = n is the correct way to go
+
+        """               
         return dp[n]
 
 
