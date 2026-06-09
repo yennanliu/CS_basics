@@ -3053,6 +3053,107 @@ private boolean isPalindrome(String s, int l, int r) {
 - LC 132 Palindrome Partitioning II (DP + palindrome check)
 - LC 336 Palindrome Pairs (hash map + palindrome prefix/suffix)
 
+### 2-17) Encode and Decode Strings (Length-Prefixed Two Pointers)
+
+**Pattern: Parse a length header, then jump `i` forward by the declared length**
+
+The key idea: encode each string as `len(s) + "#" + s`. Decoding uses two pointers (`i`, `j`) where:
+- `i` points to the **start of the length header** at each iteration
+- `j` scans forward from `i` until it hits `"#"`, revealing the word length
+- After extracting the word, `i` jumps directly to `j + 1 + length` (the next header)
+
+This differs from normal two-pointer patterns because the jump distance is **variable** and **encoded in the string itself** — no fixed window size.
+
+```
+Pointer roles:
+  i  — "header start": marks the beginning of each encoded block
+  j  — "separator finder": scans forward until s[j] == "#"
+
+Per-iteration flow:
+  1. j starts at i, advances until s[j] == "#"
+  2. length = int(s[i:j])         ← word length from header
+  3. word   = s[j+1 : j+1+length] ← extract word
+  4. i      = j + 1 + length      ← jump to next block's header
+```
+
+```python
+# python
+# LC 271 - Encode and Decode Strings
+
+class Codec:
+
+    def encode(self, strs):
+        # time: O(N), space: O(N)
+        res = ""
+        for s in strs:
+            res += str(len(s)) + "#" + s
+        return res
+
+    def decode(self, s):
+        # time: O(N), space: O(N)
+        if not s:
+            return []
+
+        res = []
+        i = 0
+
+        while i < len(s):
+            j = i
+
+            # NOTE: j scans right until it hits "#"
+            while s[j] != "#":
+                j += 1
+
+            # NOTE: everything between i and j is the length header
+            length = int(s[i:j])
+
+            # NOTE: extract exactly `length` chars after the "#"
+            word = s[j + 1 : j + 1 + length]
+            res.append(word)
+
+            # NOTE: jump i to the start of the next block
+            i = j + 1 + length
+
+        return res
+```
+
+**Dry Run — `strs = ["Hello", "World"]`:**
+
+```
+encode → "5#Hello5#World"
+
+decode:
+  i=0: j scans → s[1]="#", length=5, word="Hello", i=7
+  i=7: j scans → s[8]="#", length=5, word="World", i=14
+  i=14: loop ends
+
+result: ["Hello", "World"]
+```
+
+**Why `#` as separator works safely:**
+- The length header tells exactly how many bytes to read — so even if the word contains `#`, `j+1+length` jumps past it correctly
+- The only `#` that matters is the **first** one after `i` (which `j` finds by scanning)
+
+**Alternative: `str.find("#", i)` — same O(N), slightly cleaner:**
+```python
+def decode(self, s):
+    res = []
+    i = 0
+    while i < len(s):
+        sep = s.find("#", i)        # find first "#" from position i
+        length = int(s[i:sep])
+        res.append(s[sep + 1 : sep + 1 + length])
+        i = sep + 1 + length
+    return res
+```
+
+**Similar Problems:**
+- LC 271 Encode and Decode Strings (this pattern)
+- LC 297 Serialize and Deserialize Binary Tree (variable-length encoding of tree nodes)
+- LC 449 Serialize and Deserialize BST
+
+---
+
 ## 3) Classic LC Problems Summary
 
 ### Easy:
@@ -3112,6 +3213,7 @@ private boolean isPalindrome(String s, int l, int r) {
 | **Subsequence Matching** | Check if one string is subsequence of another | LC 392, LC 524, LC 792 |
 | **Pattern Match with Constraints** | Subsequence + character type validation | LC 1023 |
 | **Longest Palindromic Prefix** | Find longest palindromic prefix, prepend reversed suffix | LC 214, LC 336 |
+| **Length-Prefixed (Encode/Decode)** | Parse `len#word` blocks; `i` jumps by declared length | LC 271, LC 297 |
 
 ---
 
@@ -3241,3 +3343,4 @@ def validPalindrome(s):
 | "merge sorted in-place" | Fill from back |
 | "palindrome check" | Pointers from both ends |
 | "maximum area / container" | Shrink shorter side |
+| "encode/decode variable-length fields" | Length-prefixed two pointers (`len#word`) |
