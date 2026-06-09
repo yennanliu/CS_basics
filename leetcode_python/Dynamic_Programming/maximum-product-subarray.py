@@ -32,6 +32,78 @@ The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit int
 """
 
 # V0
+# Kadane algo
+class Solution(object):
+    def maxProduct(self, nums):
+        if len(nums) == 1:
+            return nums[0]
+
+        local_min = 1
+        local_max = 1
+        global_max = max(nums)   # <-- fix
+
+        for x in nums:
+            # NOTE !!
+            # we cache local_max
+            prev_max = local_max
+
+            # NOTE !!
+            # local max is the max of 
+            # local_max * x, x, local_min * x
+            local_max = max(local_max * x,
+                            local_min * x,
+                            x)
+
+            # NOTE !!
+            # local_min max is the max of 
+            # prev_max * x, x, local_min * x
+            local_min = min(local_min * x,
+                            prev_max * x,
+                            x)
+
+            global_max = max(global_max, local_max)
+
+        return global_max
+
+
+# V0-1
+# Kadane algo
+class Solution(object):
+    def maxProduct(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        # Edge Case: If the array is empty, the max product is 0
+        if not nums:
+            return 0
+            
+        # CRITICAL FIX: Seed all tracking baselines with the absolute first element 
+        # instead of a hardcoded 1. This protects against purely negative arrays.
+        local_max = nums[0]
+        local_min = nums[0]
+        global_max = nums[0]
+        
+        # Iterate through the array starting from the second element (index 1)
+        for x in nums[1:]:
+            
+            # Cache the current local_max before it gets overwritten,
+            # ensuring local_min calculates its transition using the correct historical step.
+            _local_max = local_max
+            
+            # Calculate the new running max product boundary at this position
+            local_max = max(x, _local_max * x, local_min * x)
+            
+            # Calculate the new running min product boundary at this position
+            local_min = min(x, _local_max * x, local_min * x)
+            
+            # Update our global maximum choice seen across the entire timeline
+            global_max = max(global_max, local_max)
+            
+        return global_max
+
+
+# V0
 # IDEA : brute force + product
 class Solution(object):
     def maxProduct(self, A):
