@@ -71,6 +71,7 @@ https://leetcode.ca/2016-08-27-271-Encode-and-Decode-Strings/
 
 
 # V0
+# IDEA: 2 POINTERS + STR OP
 # Time: O(N)
 # Space: O(N)
 class Codec:
@@ -93,17 +94,36 @@ class Codec:
         res = []
         i = 0
 
+        """
+        2 POINTERS !!!
+
+        -> we use i, j as left, right pointers
+
+
+        steps:
+            1. init i = j
+            2. j move till == "#", and get the `len` of str
+            3. extract str via `len` (and append to res array)
+            4. move i
+
+            repeat the process...
+        """
         while i < len(s):
             j = i
 
+
+            # NOTE !!!
             while s[j] != "#":
                 j += 1
 
+            # NOTE !!!
             length = int(s[i:j])
 
+            # NOTE !!! extract str
             word = s[j + 1 : j + 1 + length]
             res.append(word)
 
+            # NOTE !!! move `i` to next `len` idx
             i = j + 1 + length
 
         return res
