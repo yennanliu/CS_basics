@@ -1,5 +1,27 @@
 # Progress
 
+# 2026-06-11
+
+- backtrack.md
+	- todo: `Type 2) : Permutations (排列組合) (全排列)`
+- tries.md
+- graph.md
+
+- Blind 75
+
+	- greedy
+	- intervals
+	- math & geometry
+
+- needcode 150
+
+	- 1D DP (doing)
+	- 2D DP
+	- greedy
+	- intervals
+	- math & geometry
+
+
 # 2026-06-10
 
 - linked_list.md
