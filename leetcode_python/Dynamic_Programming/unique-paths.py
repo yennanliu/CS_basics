@@ -33,6 +33,71 @@ Constraints:
 """
 
 # V0
+# IDEA: 2D DP
+"""
+DP def:
+ 
+ dp[i][j]: total path can reach (i, j)
+
+
+DP eq:
+
+ dp[i][j] = 
+      dp[i-1][j] + dp[i][j-1]
+"""
+class Solution(object):
+    def uniquePaths(self, m, n):
+        # edge
+        if m == 0 or n == 0:
+            return 0
+        if m == 1 or n == 1:
+            return 1
+
+        #dp = [ ([0] * m) for _ in range(n) ]
+        dp = [ ([0] * n) for _ in range(m) ]
+
+        # init ??
+        for x in range(n):
+            dp[0][x] = 1
+
+        for y in range(m):
+            dp[y][0] = 1
+
+        for y in range(1, m):
+            for x in range(1, n):
+                dp[y][x] = dp[y-1][x] + dp[y][x-1]
+
+        # ???
+        return dp[m-1][n-1] 
+
+
+# V0-1
+# IDEA: 2D DP
+class Solution(object):
+    def uniquePaths(self, m, n):
+        # edge cases
+        if m == 0 or n == 0:
+            return 0
+        if m == 1 or n == 1:
+            return 1
+
+        dp = [[0] * m for _ in range(n)]
+
+        # first row
+        for x in range(m):
+            dp[0][x] = 1
+
+        # first column
+        for y in range(n):
+            dp[y][0] = 1
+
+        for y in range(1, n):
+            for x in range(1, m):
+                dp[y][x] = dp[y - 1][x] + dp[y][x - 1]
+
+        return dp[n - 1][m - 1]
+
+# V0
 # IDEA : BFS + dp (memory)
 class Solution:
     def uniquePaths(self, m, n):
