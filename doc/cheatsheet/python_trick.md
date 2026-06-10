@@ -2108,7 +2108,63 @@ s[i:j+1]     # chars from i to j (inclusive)
 | `arr[:]` | full shallow copy |
 | `arr[::-1]` | reversed |
 
-### 1-50) Common LeetCode patterns cheatsheet
+### 1-52) Index distance vs element count (off-by-one)
+
+**Core rule:** distance between two indices ≠ number of elements between them.
+
+```python
+a = [1, 2, 3]
+#    0  1  2     ← indices
+
+# distance (span between indices, e.g. window width in pixels)
+# last_idx - first_idx  =  2 - 0  =  2
+
+# element count (how many items are IN the range [first_idx, last_idx] inclusive)
+# last_idx - first_idx + 1  =  2 - 0 + 1  =  3
+```
+
+| Expression | Value | Meaning |
+|-----------|-------|---------|
+| `last - first` | `2` | distance / span (fence gaps) |
+| `last - first + 1` | `3` | number of elements (fence posts) |
+
+**Visualisation — the "fence post" analogy:**
+```
+index:   0    1    2
+         |    |    |       ← 3 posts  (= last - first + 1 = 3)
+         +----+----+       ← 2 gaps   (= last - first     = 2)
+```
+
+**Common LC applications:**
+
+```python
+# 1. Sliding window length
+#    window covers indices [l, r] inclusive
+window_len = r - l + 1      # NOT r - l
+
+# 2. Substring / subarray length
+s = "abcde"
+# substring s[i:j] in Python has j - i characters (Python end is exclusive)
+# substring from index i to j INCLUSIVE has j - i + 1 characters
+length = j - i + 1
+
+# 3. Array midpoint (binary search)
+mid = (lo + hi) // 2        # mid is an index, not a count
+
+# 4. Difference array / prefix sum length
+#    to cover indices 0..n-1, need n+1 slots in prefix sum array
+prefix = [0] * (n + 1)
+
+# 5. Range check: does [l, r] contain at least k elements?
+if r - l + 1 >= k:          # NOT r - l >= k
+    ...
+```
+
+**Quick rule of thumb:**
+```
+result = right - left       → use when you need a GAP / DISTANCE
+result = right - left + 1  → use when you need an ELEMENT COUNT
+```
 ```python
 #-------------------------------
 # Sliding window template
