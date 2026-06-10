@@ -60,6 +60,40 @@ class Solution(object):
         return max_len
 
 
+# V0-0-1
+# IDEA: SORT + SET + SLIDE WINDOW
+# time: O(N log N)
+# space: O(N)
+class Solution(object):
+    def longestConsecutive(self, nums):
+        # edge
+        if not nums or len(nums) == 0:
+            return 0
+        if len(nums) == 1:
+            return 1
+        s = set(nums)
+        list = []
+        for x in s:
+            list.append(x)
+        list.sort() # default: small -> big??
+
+
+        max_len = 1
+        n = len(list)
+        l = 0
+        r = 1
+
+        while r < n:
+            if list[r] == list[r-1] + 1:
+                max_len = max(max_len, r - l + 1)
+            else:
+                l = r
+
+            r += 1
+
+
+        return max_len
+
 # V0-1
 # time: O(N) # NOTE !!!
 # space: O(N)

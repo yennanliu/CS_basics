@@ -3,7 +3,7 @@
 # 2026-06-10
 
 - linked_list.md
-	- todo: 1-1) Basic OP
+	- done
 - backtrack.md
 	- todo: `Type 2) : Permutations (排列組合) (全排列)`
 - tries.md

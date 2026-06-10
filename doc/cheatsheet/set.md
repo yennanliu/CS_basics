@@ -398,63 +398,105 @@ class Solution:
 ```
 
 ### 2-5) Longest Consecutive Sequence
-```python
-# LC 128. Longest Consecutive Sequence
-# V0
-# IDEA: Set for O(1) lookups
-# Time: O(n), Space: O(n)
-class Solution:
-    def longestConsecutive(self, nums):
-        if not nums:
-            return 0
 
+#### Core Idea
+
+**Set + "sequence start" gate — O(n) time**
+
+The key observation: a number `num` is the **start of a sequence** only if `num - 1` is NOT in the set. This gate prevents re-counting the same sequence from every element inside it.
+
+```
+Without the gate: starting from 2 in [1,2,3,4] would count [2,3,4] (length 3),
+                  double-counting work already done from 1.
+With the gate:    only 1 passes (1-1=0 not in set), so we count exactly once.
+```
+
+Once a sequence start is found, extend it by checking `num + length` in the set — each step is O(1). Every element is visited at most twice across all sequences → **total O(n)**.
+
+```
+Pointer role:
+  num    — sequence start (anchor): only enters if num-1 ∉ set
+  length — implicit "right pointer": increments while num+length ∈ set
+```
+
+```python
+# python
+# LC 128. Longest Consecutive Sequence
+# Time: O(n), Space: O(n)
+class Solution(object):
+    def longestConsecutive(self, nums):
         num_set = set(nums)
-        max_length = 0
+        longest = 0
 
         for num in num_set:
-            # Only start counting from sequence start
+            # Gate: only start counting from the sequence's first element
             if num - 1 not in num_set:
-                current = num
                 length = 1
 
-                while current + 1 in num_set:
-                    current += 1
+                # Extend right as long as the next consecutive number exists
+                while num + length in num_set:
                     length += 1
 
-                max_length = max(max_length, length)
+                longest = max(longest, length)
 
-        return max_length
+        return longest
+```
+
+**Dry run — `nums = [100, 4, 200, 1, 3, 2]`:**
+```
+num_set = {100, 4, 200, 1, 3, 2}
+
+num=100: 99 ∉ set → start, extend: 101 ∉ set → length=1
+num=4:    3 ∈ set → SKIP (not a start)
+num=200: 199 ∉ set → start, extend: 201 ∉ set → length=1
+num=1:    0 ∉ set → start, extend: 2∈,3∈,4∈,5∉ → length=4  ← winner
+num=3:    2 ∈ set → SKIP
+num=2:    1 ∈ set → SKIP
+
+return 4
 ```
 
 ```java
-// Java
-// LC 128
+// java
+// LC 128 - Longest Consecutive Sequence
+// time: O(n), space: O(n)
 public int longestConsecutive(int[] nums) {
     Set<Integer> numSet = new HashSet<>();
-    for (int num : nums) {
-        numSet.add(num);
-    }
+    for (int num : nums) numSet.add(num);
 
-    int maxLength = 0;
+    int longest = 0;
 
     for (int num : numSet) {
-        // Only start from sequence beginning
+        // Gate: only process sequence starts
         if (!numSet.contains(num - 1)) {
-            int current = num;
             int length = 1;
 
-            while (numSet.contains(current + 1)) {
-                current++;
+            while (numSet.contains(num + length)) {
                 length++;
             }
 
-            maxLength = Math.max(maxLength, length);
+            longest = Math.max(longest, length);
         }
     }
 
-    return maxLength;
+    return longest;
 }
 ```
+
+#### Why O(n) and not O(n²)?
+
+The inner `while` loop looks like it could be O(n) per outer iteration, but the **gate** ensures each number is the start of at most one sequence. Across all starts, the total steps in all inner loops equals exactly `len(nums)`. So the amortized cost is O(1) per element → **O(n) total**.
+
+#### Similar Problems
+
+| Problem | LC# | Difference | Key Trick |
+|---------|-----|------------|-----------|
+| Longest Consecutive Sequence | 128 | Unsorted array | Set + sequence-start gate |
+| Arithmetic Slices | 413 | Sorted, fixed diff=1 | DP / sliding window |
+| Missing Ranges | 163 | Find gaps in range | Iterate expected vs actual |
+| Find All Numbers Disappeared | 448 | 1..n range, find missing | In-place marking or set |
+| Longest Arithmetic Subsequence | 1027 | Any common diff, not just 1 | DP + hashmap |
+| Contains Duplicate | 217 | Just detect any duplicate | Set size check |
 
 ### 2-6) Single Number
 ```python
