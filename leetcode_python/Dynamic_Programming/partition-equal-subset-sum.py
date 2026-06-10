@@ -26,7 +26,149 @@ Constraints:
 
 """
 
-# VO 
+
+
+# VO
+# IDEA: 1D DP
+"""
+
+DP def:
+
+dp[s]:
+    Whether it is `possible` to `pick` some numbers 
+    from the processed elements 
+    so that their `sum` equals s.
+
+
+DP eq:
+   
+    dp[s] = dp[s] or dp[s - num]
+
+
+
+    ->
+
+    Don't take num
+         - dp[s] remains what it was.
+    Take num
+         - If we could previously make s - num,
+           then we can now make s.
+
+
+"""
+class Solution(object):
+    def canPartition(self, nums):
+        # Calculate the total sum of all numbers.
+        total = sum(nums)
+
+        # If total is odd, it cannot be split into two equal integers.
+        # Example:
+        # total = 11
+        # 11 / 2 = 5.5
+        # Impossible to partition into two subsets with equal sum.
+        if total % 2:
+            return False
+
+        # We only need to find a subset whose sum is half of total.
+        # If one subset is target, the remaining numbers automatically
+        # sum to target as well.
+        target = total // 2
+
+        # dp[s] means:
+        # "Can we form sum s using some of the numbers processed so far?"
+        #
+        # Example:
+        # dp[5] == True
+        # => there exists a subset with sum = 5
+        dp = [False] * (target + 1)
+
+        # Base case:
+        # Sum 0 is always achievable by choosing nothing.
+        dp[0] = True
+
+        # Process each number one by one.
+        for num in nums:
+
+            # Traverse backward to ensure each number is used at most once.
+            #
+            # Why backward?
+            #
+            # Suppose num = 3
+            #
+            # If we go forward:
+            #   dp[3] becomes True from dp[0]
+            #   then dp[6] may immediately use the updated dp[3]
+            #
+            # This would effectively use the same 3 twice.
+            #
+            # Going backward prevents this problem.
+            for s in range(target, num - 1, -1):
+
+                # Two choices:
+                #
+                # 1. Don't take num
+                #    dp[s]
+                #
+                # 2. Take num
+                #    Need a previous subset that formed (s - num)
+                #    => dp[s - num]
+                #
+                # Transition:
+                # dp[s] = dp[s] OR dp[s - num]
+                #
+                # Example:
+                # num = 5
+                # s = 11
+                #
+                # If dp[6] is True,
+                # then adding 5 gives sum 11,
+                # so dp[11] becomes True.
+                dp[s] = dp[s] or dp[s - num]
+
+        # If target is achievable,
+        # we can split the array into two equal-sum subsets.
+        return dp[target]
+
+
+# V0-1
+# IDEA: 1D DP
+class Solution(object):
+    def canPartition(self, nums):
+        # Calculate the grand total of all integers within the input array.
+        total = sum(nums)
+        
+        # ODD CHECK: In Python, non-zero integers evaluate to True. If 'total % 2' is 1,
+        # it means the total sum is odd. An odd sum cannot be divided into two equal integer halves.
+        if total % 2:
+            return False
+            
+        # Define the exact target subset sum value we need to find (half of the total).
+        target = total // 2
+        
+        # Initialize a 1D DP table of size (target + 1) filled with False.
+        # dp[s] will represent whether a subset sum of exactly 's' can be formed.
+        dp = [False] * (target + 1)
+        
+        # BASE CASE: A subset sum of 0 is always possible by choosing an empty subset.
+        dp[0] = True
+        
+        # Loop through each individual number in our input list.
+        for num in nums:
+            
+            # CRITICAL LOOP: Scan BACKWARDS from 'target' down to the value of 'num'.
+            # We must go backwards to prevent using the current 'num' multiple times 
+            # in the same iteration (which would accidentally mimic an infinite-item Unbounded Knapsack).
+            for s in range(target, num - 1, -1):
+                
+                # TRANSITION EQUATION: A sum of 's' can be formed if:
+                # 1. It was ALREADY possible to form 's' without this number (dp[s] is already True), OR
+                # 2. It was possible to form the remainder sum 's - num' before introducing this number.
+                dp[s] = dp[s] or dp[s - num]
+                
+        # Return the final boolean state tracking whether the exact target half sum was achieved.
+        return dp[target]
+
+
 
 # V1
 # IDEA : brute force (TLE)

@@ -15,7 +15,7 @@
 
 - needcode 150
 
-	- 1D DP (doing)
+	- 1D DP (done)
 	- 2D DP
 	- greedy
 	- intervals
