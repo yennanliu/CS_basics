@@ -3,20 +3,56 @@
 ## 1) Examples
 
 ### 0-1) inverse looping elements in string
+
+**Key difference: stop value is EXCLUSIVE in `range()`**
+
 ```python
-In [5]: def check(x):
-            #### note here : range(len(x)-1,-1, -1
-            # (end at idx = -1)
-   ...:     for i in range(len(x)-1,-1, -1):
-   ...:         #print (x[i])
-   ...:         print (i)
-   ...:
-   ...:
-   ...: x = "332"
-   ...: check(x)
-2
-1
-0
+x = "332"   # indices: 0, 1, 2
+
+# ── Form 1: range(len(x)-1, -1, -1)  → stop = -1 (exclusive) → covers 2, 1, 0 (ALL indices)
+for i in range(len(x)-1, -1, -1):
+    print(i)
+# 2
+# 1
+# 0   ← index 0 IS included
+
+# ── Form 2: range(len(x)-1, 0, -1)   → stop = 0 (exclusive) → covers 2, 1 (MISSES index 0)
+for i in range(len(x)-1, 0, -1):
+    print(i)
+# 2
+# 1   ← index 0 is NOT included
+```
+
+| Form | Stop value | Indices visited | Includes index 0? |
+|------|-----------|-----------------|-------------------|
+| `range(len(x)-1, -1, -1)` | `-1` (exclusive) | `len-1 … 0` | **Yes** |
+| `range(len(x)-1,  0, -1)` | ` 0` (exclusive) | `len-1 … 1` | **No** |
+
+**Rule of thumb:** to loop ALL indices in reverse, always use `-1` as the stop value.
+
+```python
+# Equivalent ways to iterate a string/array in reverse (all indices)
+x = "abc"
+
+# Form A: range
+for i in range(len(x) - 1, -1, -1):
+    print(x[i])
+
+# Form B: reversed() — cleaner, no index needed
+for ch in reversed(x):
+    print(ch)
+
+# Form C: slice — creates a reversed copy
+for ch in x[::-1]:
+    print(ch)
+```
+
+**When you DO want to skip index 0** (e.g. comparing `x[i]` with `x[i-1]`):
+```python
+# Safe to start from index 1 in forward loops, or stop before 0 in reverse loops
+for i in range(len(x) - 1, 0, -1):   # compares x[i] vs x[i-1]; never i-1 = -1
+    if x[i] == x[i - 1]:
+        print(f"duplicate at {i}")
 ```
 
 ### 0-2) assignment VS shallow copy VS deep copy

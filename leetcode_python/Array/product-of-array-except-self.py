@@ -31,24 +31,228 @@ Follow up: Can you solve the problem in O(1) extra space complexity? (The output
 
 # V0
 # IDEA: prefix,  suffix
+"""
+Dry run: (input = [-1, 1, 0, -3, 3])
+
+
+Let's dry-run the standard prefix/suffix solution on:
+
+```python
+nums = [-1, 1, 0, -3, 3]
+```
+
+### Step 1: Build prefix array
+
+Definition:
+
+```python
+prefix[i] = product of all elements before i
+```
+
+Initialize:
+
+```python
+prefix = [1, 1, 1, 1, 1]
+```
+
+Fill it:
+
+| i | Calculation                    | prefix            |
+| - | ------------------------------ | ----------------- |
+| 1 | prefix[0] * nums[0] = 1 * (-1) | [1, -1, 1, 1, 1]  |
+| 2 | prefix[1] * nums[1] = -1 * 1   | [1, -1, -1, 1, 1] |
+| 3 | prefix[2] * nums[2] = -1 * 0   | [1, -1, -1, 0, 1] |
+| 4 | prefix[3] * nums[3] = 0 * (-3) | [1, -1, -1, 0, 0] |
+
+Final:
+
+```python
+prefix = [1, -1, -1, 0, 0]
+```
+
+---
+
+### Step 2: Build suffix array
+
+Definition:
+
+```python
+suffix[i] = product of all elements after i
+```
+
+Initialize:
+
+```python
+suffix = [1, 1, 1, 1, 1]
+```
+
+Fill from right to left:
+
+| i | Calculation                    | suffix       |
+| - | ------------------------------ | ------------ |
+| 3 | suffix[4] * nums[4] = 1 * 3    | [1,1,1,3,1]  |
+| 2 | suffix[3] * nums[3] = 3 * (-3) | [1,1,-9,3,1] |
+| 1 | suffix[2] * nums[2] = -9 * 0   | [1,0,-9,3,1] |
+| 0 | suffix[1] * nums[1] = 0 * 1    | [0,0,-9,3,1] |
+
+Final:
+
+```python
+suffix = [0, 0, -9, 3, 1]
+```
+
+---
+
+### Step 3: Compute answer
+
+Formula:
+
+```python
+res[i] = prefix[i] * suffix[i]
+```
+
+| i | prefix[i] | suffix[i] | result |
+| - | --------- | --------- | ------ |
+| 0 | 1         | 0         | 0      |
+| 1 | -1        | 0         | 0      |
+| 2 | -1        | -9        | 9      |
+| 3 | 0         | 3         | 0      |
+| 4 | 0         | 1         | 0      |
+
+Result:
+
+```python
+res = [0, 0, 9, 0, 0]
+```
+
+### Why does the zero work automatically?
+
+At index `2` (where the zero is):
+
+```python
+product_except_self =
+(-1) * 1 * (-3) * 3
+= 9
+```
+
+For every other index, the multiplication includes the original zero, so the result becomes:
+
+```python
+0
+```
+
+That's why the final answer is:
+
+```python
+[0, 0, 9, 0, 0]
+```
+
+"""
 class Solution(object):
     def productExceptSelf(self, nums):
-        if nums is None:
-            return []
-
+        # Number of elements in the input array
         n = len(nums)
 
+        """
+        NOTE !!!
+
+        
+        1. prefix[i]: save product of all element BEFORE cur idx
+
+        2. prefix[0] = 1 !!!
+            -> since there NO any element BEFORE idx = 0
+        """
+        # prefix[i] will store the product of all elements
+        # to the LEFT of index i
         prefix = [1] * n
+
+        
+        """
+        NOTE !!!
+
+        
+        1. suffix[i]: save product of all element AFTER cur idx
+
+        2. prefix[n-1] = 1 !!!
+            -> since there NO any element AFTER idx = 0
+        """
+
+        # suffix[i] will store the product of all elements
+        # to the RIGHT of index i
         suffix = [1] * n
 
+        # Build prefix products
+        #
+        # Example:
+        # nums = [-1, 1, 0, -3, 3]
+        #
+        # prefix[0] = 1
+        # prefix[1] = -1
+        # prefix[2] = -1
+        # prefix[3] = 0
+        # prefix[4] = 0
+        #
+        # Result:
+        # prefix = [1, -1, -1, 0, 0]
+        # NOTE !!! start from i = 1
         for i in range(1, n):
+            # Product of everything before i
             prefix[i] = prefix[i - 1] * nums[i - 1]
 
+        # Build suffix products
+        #
+        # Example:
+        # nums = [-1, 1, 0, -3, 3]
+        #
+        # suffix[4] = 1
+        # suffix[3] = 3
+        # suffix[2] = -9
+        # suffix[1] = 0
+        # suffix[0] = 0
+        #
+        # Result:
+        # suffix = [0, 0, -9, 3, 1]
+        """
+
+        # NOTE !!! end at i = -1
+        # so the reverse loop can cover idx=0
+        # doc/cheatsheet/python_trick.md
+
+        ->
+
+        >>> x = [1,2,3]
+        >>> for i in range(len(x)-1, -1, -1):
+        ...     print (x[i])
+        ...
+        3
+        2
+        1
+        >>>
+        >>>
+        >>> for i in range(len(x)-1, 0, -1):
+        ...     print (x[i])
+        ...
+        3
+        2
+        """
         for i in range(n - 2, -1, -1):
+            # Product of everything after i
             suffix[i] = suffix[i + 1] * nums[i + 1]
 
+        # Allocate result array
         res = [1] * n
 
+        # For each position:
+        #
+        # product_except_self =
+        # (product of left side) *
+        # (product of right side)
+        #
+        # Example:
+        # i = 2
+        # prefix[2] = -1
+        # suffix[2] = -9
+        # res[2] = (-1) * (-9) = 9
         for i in range(n):
             res[i] = prefix[i] * suffix[i]
 
