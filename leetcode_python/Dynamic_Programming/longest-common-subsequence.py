@@ -37,6 +37,121 @@ text1 and text2 consist of only lowercase English characters.
 """
 
 # V0
+# IDEA: 2D DP
+"""
+
+DP def
+    dp[i][j]: max common subseq
+
+              for text1[0, i] and text2[0, j]
+
+              -> e.g. length of the Longest Common Subsequence (LCS) 
+                       between text1[0, i] and text2[0, j]
+
+DP eq
+
+     if text1[i] == text2[j]:
+
+        dp[i][j] = dp[i-1][j-1] + 1
+
+     else:
+
+        dp[i]][j] = max(dp[i-1]][j], dp[i]][j-1])
+
+
+    -> e.g.
+         dp[i][j] = max(
+            dp[i-1][j],   # skip text1[i]
+            dp[i][j-1]    # skip text2[j]
+        )
+
+"""
+class Solution(object):
+    def longestCommonSubsequence(self, text1, text2):
+        # edge
+        if not text1 or not text2:
+            return 0
+
+        if text1 == text2:
+            return len(text1)
+
+        n1 = len(text1)
+        n2 = len(text2)
+
+        dp = [[0] * n2 for _ in range(n1)]
+
+        # init
+        # NOTE !!! how we init dp[0][0]
+        dp[0][0] = 1 if text1[0] == text2[0] else 0
+
+        # first column
+        # NOTE !!! how we init dp[i][0]
+        for i in range(1, n1):
+            dp[i][0] = max(
+                dp[i - 1][0],
+                1 if text1[i] == text2[0] else 0
+            )
+
+        # first row
+        # NOTE !!! how we init dp[0][j]
+        for j in range(1, n2):
+            dp[0][j] = max(
+                dp[0][j - 1],
+                1 if text1[0] == text2[j] else 0
+            )
+
+        # DP
+        for i in range(1, n1):
+            for j in range(1, n2):
+                if text1[i] == text2[j]:
+                    dp[i][j] = dp[i - 1][j - 1] + 1
+                else:
+                    dp[i][j] = max(
+                        dp[i - 1][j],
+                        dp[i][j - 1]
+                    )
+
+        # NOTE !!!
+        return dp[n1 - 1][n2 - 1]
+
+
+
+# V0-1
+# IDEA: 2D DP
+class Solution(object):
+    def longestCommonSubsequence(self, text1, text2):
+        """
+        :type text1: str
+        :type text2: str
+        :rtype: int
+        """
+        # Edge Case: If either string is empty, the subsequence length is 0.
+        if not text1 or not text2:
+            return 0
+            
+        n1 = len(text1)
+        n2 = len(text2)
+        
+        # CRITICAL FIX: Create a grid of size (n1 + 1) x (n2 + 1).
+        # Row 0 and Column 0 represent empty strings, acting as a natural guard rail!
+        dp = [[0] * (n2 + 1) for _ in range(n1 + 1)]
+        
+        # Iterate over all characters using 1-based indexing for our DP table.
+        for i in range(1, n1 + 1):
+            for j in range(1, n2 + 1):
+                
+                # CRITICAL FIX: Map back to the 0-indexed strings using i - 1 and j - 1.
+                if text1[i - 1] == text2[j - 1]:
+                    # Characters match! Take the diagonal result and add 1.
+                    dp[i][j] = dp[i - 1][j - 1] + 1
+                else:
+                    # No match. Take the maximum possibility by dropping a character 
+                    # from either text1 (dp[i-1][j]) or text2 (dp[i][j-1]).
+                    dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
+                    
+        # Return the bottom-right corner of the padded matrix
+        return dp[n1][n2]
+
 
 # V1
 # IDEA : DP
