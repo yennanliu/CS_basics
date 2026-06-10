@@ -28,6 +28,93 @@ s1 and s2 consist of lowercase English letters.
 """
 
 # V0
+# IDEA: HASHMAP + SLIDE WINDOW
+from collections import Counter
+
+class Solution(object):
+    def checkInclusion(self, s1, s2):
+        if len(s1) > len(s2):
+            return False
+
+        cnt_map_1 = Counter(s1)
+        cnt_map_2 = Counter()
+
+        l = 0
+
+        for r in range(len(s2)):
+            # NOTE !!!
+            # we `expand` the right boundary ANYWAY !!
+            # e.g. NO matter if s2[r] is in cnt_map_1 or not
+            #      -> we will validate above later
+            #      -> in the `left boundary` shrink
+            #      -> e.g. `while r - l + 1 > len(s1):` ...
+            cnt_map_2[s2[r]] += 1
+
+            # keep window size <= len(s1)
+            while r - l + 1 > len(s1):
+                cnt_map_2[s2[l]] -= 1
+
+                if cnt_map_2[s2[l]] == 0:
+                    del cnt_map_2[s2[l]]
+
+                l += 1
+
+            # NOTE !!! how we check if the permutations sub str is found
+            # window size == len(s1)
+            if cnt_map_2 == cnt_map_1:
+                return True
+
+        return False
+
+
+# V0-1
+# IDEA: HASHMAP + SLIDE WINDOW
+from collections import Counter
+
+class Solution(object):
+    def checkInclusion(self, s1, s2):
+        """
+        :type s1: str
+        :type s2: str
+        :rtype: bool
+        """
+        # Edge Case: If s1 is longer than s2, s2 cannot contain a permutation of s1.
+        if len(s1) > len(s2):
+            return False
+            
+        # Frequency map for the target string we are looking for
+        cnt_map_1 = Counter(s1)
+        
+        # Dynamic frequency map tracking our current sliding window in s2
+        cnt_map_2 = Counter()
+        
+        l = 0
+        for r in range(len(s2)):
+            # 1. Expand the window 
+            # by adding the incoming character on the right
+            cnt_map_2[s2[r]] += 1
+            
+            # 2. Maintain fixed window size: If the window length exceeds len(s1),
+            # pop the leftmost character out of our count map.
+            if (r - l + 1) > len(s1):
+                left_char = s2[l]
+                cnt_map_2[left_char] -= 1
+                
+                # Clean up zero counts so map comparisons (==) match perfectly
+                if cnt_map_2[left_char] == 0:
+                    del cnt_map_2[left_char]
+                    
+                l += 1 # Slide the left pointer forward
+                
+            # 3. Match Check: Because we maintain an exact window size of len(s1), 
+            # if the character frequencies match perfectly, a permutation is found!
+            if cnt_map_2 == cnt_map_1:
+                return True
+                
+        return False
+
+
+# V0
 # IDEA : SORTRD + ARRAY INDEX
 class Solution(object):
     def checkInclusion(self, s1, s2):
