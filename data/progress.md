@@ -11,15 +11,14 @@
 
 - Blind 75
 
-	- 1D DP
-		- LC 300 Longest Increasing Subsequence 
-	- 2D DP (doing)
+	- 1D DP (OK)
+	- 2D DP (OK)
 	- greedy
 	- intervals
 
 - needcode 150
 
-	- 1D DP
+	- 1D DP (doing)
 	- 2D DP
 	- greedy
 	- intervals

@@ -36,6 +36,100 @@ Follow up: Can you come up with an algorithm that runs in O(n log(n)) time compl
 
 """
 
+
+# V0
+# IDEA: 1D DP
+class Solution(object):
+    def lengthOfLIS(self, nums):
+        # Edge case:
+        # Empty array has LIS length 0
+        if not nums:
+            return 0
+
+        # Number of elements
+        n = len(nums)
+
+        # DP definition:
+        # dp[i] = length of the longest increasing subsequence
+        #         that MUST end at nums[i]
+        #
+        # Every element alone forms a subsequence of length 1.
+        dp = [1] * n
+
+        # Track global answer
+        ans = 1
+
+        """
+        1. What are i and j?
+
+            They are indices (pointers) into the array.
+
+            nums = [10, 9, 2, 5, 3, 7, 101, 18]
+                     0  1  2  3  4  5   6   7
+            i = current position we're computing the LIS for.
+            j = a previous position that we try to connect to i.
+
+        """
+        # Compute dp[i] for every position
+        for i in range(n):
+
+            # Look at every previous position
+            for j in range(i):
+
+                # If nums[j] can be placed before nums[i]
+                # in an increasing subsequence
+                if nums[j] < nums[i]:
+
+                    # Option:
+                    # Take the LIS ending at j
+                    # and append nums[i]
+                    dp[i] = max(
+                        dp[i],      # current best
+                        dp[j] + 1   # extend subsequence ending at j
+                    )
+
+            # Update global maximum LIS length
+            ans = max(ans, dp[i])
+
+        return ans
+
+
+
+# V0-1
+# IDEA: 1D DP
+class Solution(object):
+    def lengthOfLIS(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        # Edge Case: An empty array has a sequence length of 0
+        if not nums:
+            return 0
+            
+        n = len(nums)
+        
+        # CRITICAL FIX: Make the size exactly 'n'. 
+        # dp[i] represents the length of the longest increasing subsequence ending EXACTLY at index i.
+        dp = [1] * n
+        
+        # Outer loop: 'i' chooses the current number we want to append to an existing sequence
+        for i in range(1, n):
+            # Inner loop: 'j' scans all previous numbers strictly to the left of 'i'
+            for j in range(i):
+                
+                # If the current number is strictly greater than the previous number...
+                if nums[i] > nums[j]:
+                    
+                    # ...we can append nums[i] to the sequence ending at 'j'.
+                    # We check if this creates a longer path than what dp[i] already found.
+                    dp[i] = max(dp[i], dp[j] + 1)
+                    
+        # The answer is the maximum value found anywhere inside our DP array
+        return max(dp)
+
+
+
 # V0
 # IDEA : DP 
 # DP equation : 
