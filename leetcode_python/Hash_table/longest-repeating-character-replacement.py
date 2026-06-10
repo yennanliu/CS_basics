@@ -107,6 +107,48 @@ class Solution(object):
         return max_len
 
 
+# V0-0-1
+# IDEA : SLIDING WINDOW + MAP + MAX_FREQ_CNT
+from collections import Counter
+
+class Solution(object):
+    def characterReplacement(self, s, k):
+        # NOTE !!!
+        # the counter (map) is tracking the `slide window`,
+        # NOT whole string
+        cnt_map = Counter()
+
+        max_len = 0
+        l = 0
+        r = 0
+
+        while r < len(s):
+            cnt_map[s[r]] += 1
+
+            # NOTE !!!
+            # the check:
+            #    -> if the total element - cnt (except MOST freq) > k
+            #    -> so, what we need is `most count`
+            #    -> so it's `max(cnt_map.values())`
+            while (r - l + 1) - max(cnt_map.values()) > k:
+                cnt_map[s[l]] -= 1
+
+                if cnt_map[s[l]] == 0:
+                    del cnt_map[s[l]]
+
+                # NOTE !!
+                # DON'T forget to update left pointer
+                l += 1
+
+            max_len = max(max_len, r - l + 1)
+
+            # NOTE !!
+            # DON'T forget to update right pointer
+            r += 1
+
+        return max_len
+
+
 # V0
 # IDEA : SLIDING WINDOW + DICT + 2 POINTERS
 from collections import Counter
