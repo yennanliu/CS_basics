@@ -1014,23 +1014,201 @@ The length-based loop (Template 3) also works, but the backward-i + forward-j ap
 
 ---
 
-### Template 4: 0/1 Knapsack
+### Template 4: 0/1 Knapsack ⭐⭐⭐⭐⭐
+
+#### 🎯 Core Idea
+
+**0/1 Knapsack** = each item may be taken **at most once** (0 or 1 time).
+
+> Given a set of items (each with weight and value) and a capacity, find the maximum value you can pack **without exceeding the capacity** and **using each item at most once**.
+
+| Aspect | Detail |
+|--------|--------|
+| **State** | `dp[w]` = best value achievable with capacity exactly `w` |
+| **Transition** | `dp[w] = max(dp[w], dp[w - weight[i]] + value[i])` |
+| **Loop order** | Outer: items; Inner: capacity **backward** (`W → weight[i]`) |
+| **Why backward** | Prevents using the same item twice in one pass |
+| **Time** | O(n × W) |
+| **Space** | O(W) with 1-D optimization |
+
+---
+
+#### 💡 Why Must the Inner Loop Go Backward?
+
+This is **the most critical detail** in 0/1 Knapsack.
+
+**Intuition**: in a 1-D DP array, when we process item `i` we need `dp[w - weight[i]]` to still reflect the state **before** item `i` was considered. If we iterate forward, the update to a smaller index `dp[w - weight[i]]` happens earlier in the same pass, so a later index `dp[w]` would pick it up — effectively using item `i` twice.
+
+**Concrete trace — LC 416, `nums = [3]`, `target = 6`:**
+
+```
+# Goal: can we pick some numbers that sum to 6?
+# Only num = 3 is available, so the answer should be False.
+
+dp = [True, False, False, False, False, False, False]
+        0      1      2      3      4      5      6
+
+❌ Forward iteration (WRONG):
+   for s in range(3, 7):       # 3, 4, 5, 6
+       dp[s] = dp[s] or dp[s - 3]
+
+   s=3: dp[3] = dp[0] = True   ← 3 used once (ok so far)
+   s=6: dp[6] = dp[3] = True   ← dp[3] was just SET by the same num!
+                                   This counts 3 twice: 3 + 3 = 6 ❌
+
+✅ Backward iteration (CORRECT):
+   for s in range(6, 2, -1):   # 6, 5, 4, 3
+       dp[s] = dp[s] or dp[s - 3]
+
+   s=6: dp[6] = dp[3] = False  ← dp[3] is still its OLD value ✓
+   s=5: dp[5] = dp[2] = False
+   s=4: dp[4] = dp[1] = False
+   s=3: dp[3] = dp[0] = True   ← 3 used once ✓
+
+   Result: dp[6] = False  ✓ Correct!
+```
+
+**Key invariant**: when computing `dp[s]` in the backward pass, `dp[s - num]` has not been touched yet in this iteration, so it still holds the "pre-item-i" value. This guarantees each item is used **at most once**.
+
+---
+
+#### Pattern: 2-D → 1-D Derivation
+
+```
+2-D (classic):
+  dp[i][w] = max value using first i items with capacity w
+
+  dp[i][w] = dp[i-1][w]                              # skip item i
+  if w >= weight[i]:
+      dp[i][w] = max(dp[i][w], dp[i-1][w-weight[i]] + value[i])   # take item i
+
+1-D (space-optimized):
+  Observe that dp[i][...] depends ONLY on dp[i-1][...].
+  Collapse to one array, iterate w BACKWARD so dp[w-weight[i]]
+  still holds dp[i-1][w-weight[i]] when we need it.
+
+  dp[w] = max(dp[w], dp[w - weight[i]] + value[i])
+  (backward w: W → weight[i])
+```
+
+---
+
+#### Code Templates
+
+```python
+# python — general 0/1 Knapsack (max value)
+# time = O(n * W), space = O(W)
+def knapsack_01(weights, values, capacity):
+    dp = [0] * (capacity + 1)
+    for i in range(len(weights)):
+        for w in range(capacity, weights[i] - 1, -1):   # backward!
+            dp[w] = max(dp[w], dp[w - weights[i]] + values[i])
+    return dp[capacity]
+
+
+# python — LC 416 (boolean variant: can we reach sum target?)
+# time = O(n * target), space = O(target)
+def canPartition(nums):
+    total = sum(nums)
+    if total % 2:
+        return False
+    target = total // 2
+
+    dp = [False] * (target + 1)
+    dp[0] = True                             # empty subset sums to 0
+
+    for num in nums:
+        for s in range(target, num - 1, -1): # backward!
+            dp[s] = dp[s] or dp[s - num]
+
+    return dp[target]
+```
+
+```java
+// java — general 0/1 Knapsack (max value)
+// time = O(n * W), space = O(W)
+public int knapsack01(int[] weights, int[] values, int W) {
+    int[] dp = new int[W + 1];
+    for (int i = 0; i < weights.length; i++) {
+        for (int w = W; w >= weights[i]; w--) {   // backward!
+            dp[w] = Math.max(dp[w], dp[w - weights[i]] + values[i]);
+        }
+    }
+    return dp[W];
+}
+
+// java — LC 416 (boolean variant)
+public boolean canPartition(int[] nums) {
+    int total = 0;
+    for (int n : nums) total += n;
+    if (total % 2 != 0) return false;
+    int target = total / 2;
+
+    boolean[] dp = new boolean[target + 1];
+    dp[0] = true;
+
+    for (int num : nums) {
+        for (int s = target; s >= num; s--) {     // backward!
+            dp[s] = dp[s] || dp[s - num];
+        }
+    }
+    return dp[target];
+}
+```
+
+---
+
+#### When to Use 0/1 Knapsack
+
+| Signal in problem | Why it implies 0/1 Knapsack |
+|-------------------|-----------------------------|
+| "each element used **at most once**" | Defines the 0/1 constraint |
+| "partition array into two subsets" | Reduce to: can subset sum = total/2? |
+| "minimize / maximize difference between two groups" | Partition → knapsack |
+| "assign + or − to reach target" | LC 494 hidden knapsack |
+| "choose items within a budget" | Classic knapsack framing |
+
+**Quick rule**: if items cannot be reused → 0/1 Knapsack with **backward** inner loop.
+
+---
+
+#### 0/1 Knapsack vs Unbounded Knapsack
+
+| | **0/1 Knapsack** | **Unbounded Knapsack** |
+|---|---|---|
+| **Reuse** | Each item at most once | Each item unlimited times |
+| **Inner loop direction** | **Backward** (`W → weight`) | Forward (`weight → W`) |
+| **Example** | LC 416, 494, 1049 | LC 322, 518 |
+| **Why direction differs** | Backward reads OLD dp[w-weight] | Forward reads NEW dp[w-weight] (allows reuse) |
+
+---
+
+#### Similar LeetCode Problems
+
+| LC # | Problem | Variant | Key Transformation |
+|------|---------|---------|-------------------|
+| **416** | Partition Equal Subset Sum | Boolean | `dp[s]` = can we reach sum s? |
+| **494** | Target Sum | Count ways | `sum1 = (total + target) / 2`; count subsets |
+| **1049** | Last Stone Weight II | Integer | Maximize subset sum ≤ total/2 |
+| **474** | Ones and Zeroes | 2-D capacity | dp[i][j] = max strings using ≤ i zeros, ≤ j ones |
+| **879** | Profitable Schemes | 2-D capacity | dp[profit][members] counting |
+| **2915** | Length of Longest Subsequence | Boolean | Same backward pattern |
+
+---
+
+#### 2-D 0/1 Knapsack (Classic, for reference)
+
 ```python
 def knapsack_01(weights, values, capacity):
-    """0/1 Knapsack problem"""
+    # time = O(n * W), space = O(n * W)
     n = len(weights)
-    # dp[i][w] = max value with first i items, capacity w
     dp = [[0] * (capacity + 1) for _ in range(n + 1)]
-    
     for i in range(1, n + 1):
         for w in range(capacity + 1):
-            # Don't take item i-1
-            dp[i][w] = dp[i-1][w]
-            # Take item i-1 if possible
+            dp[i][w] = dp[i-1][w]                                    # skip
             if weights[i-1] <= w:
-                dp[i][w] = max(dp[i][w], 
-                              dp[i-1][w-weights[i-1]] + values[i-1])
-    
+                dp[i][w] = max(dp[i][w],
+                               dp[i-1][w - weights[i-1]] + values[i-1])  # take
     return dp[n][capacity]
 ```
 
