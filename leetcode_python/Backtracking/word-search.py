@@ -40,6 +40,88 @@ Follow up: Could you use search pruning to make your solution faster with a larg
 
 """
 
+# V0
+# IDEA : DFS + backtracking
+class Solution(object):
+    def exist(self, board, word):
+        # Edge case
+        if not board or not board[0]:
+            return False
+
+        self.rows = len(board)
+        self.cols = len(board[0])
+
+        # Try every cell as a starting point
+        for r in range(self.rows):
+            for c in range(self.cols):
+                if self.dfs(board, word, r, c, 0):
+                    return True
+
+        return False
+
+    def dfs(self, board, word, r, c, idx):
+        # Out of bounds
+        if (
+            r < 0 or r >= self.rows or
+            c < 0 or c >= self.cols
+        ):
+            return False
+
+        # Current cell does not match current character
+        if board[r][c] != word[idx]:
+            return False
+
+        # We matched the last character of the word
+        if idx == len(word) - 1:
+            return True
+
+        # Mark current cell as visited
+        temp = board[r][c]
+        board[r][c] = "#"
+
+        # Explore 4 directions
+        found = (
+            self.dfs(board, word, r + 1, c, idx + 1) or
+            self.dfs(board, word, r - 1, c, idx + 1) or
+            self.dfs(board, word, r, c + 1, idx + 1) or
+            self.dfs(board, word, r, c - 1, idx + 1)
+        )
+
+        """
+        NOTE !!!
+
+         -> need `undo` the change on martrix val
+         (Backtrack)
+        """
+        # Backtrack: restore original value
+        board[r][c] = temp
+
+        """
+        NOTE !!!
+
+         -> return the state here !!!
+         (but NOT not above, since we still need `backtrack` the state)
+
+
+
+        -> e.g.  (below is WRONG)
+
+        board[r][c] = "#"
+
+        return (
+            self.dfs(...) or
+            self.dfs(...) or
+            self.dfs(...) or
+            self.dfs(...)
+        )
+
+        board[r][c] = temp   # NEVER REACHED
+
+
+        """
+        return found
+
+
 
 # V0
 # IDEA : DFS + backtracking
