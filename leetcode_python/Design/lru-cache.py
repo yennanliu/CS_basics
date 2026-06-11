@@ -46,6 +46,41 @@ At most 2 * 105 calls will be made to get and put.
 
 
 # V0
+# IDEA: OrderedDict
+from collections import OrderedDict
+
+class LRUCache(object):
+
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.cache = OrderedDict()
+
+    def get(self, key):
+        if key not in self.cache:
+            return -1
+
+        value = self.cache[key]
+
+        # remove and reinsert to mark as most recently used
+        del self.cache[key]
+        self.cache[key] = value
+
+        return value
+
+    def put(self, key, value):
+        if key in self.cache:
+            del self.cache[key]
+
+        self.cache[key] = value
+
+        if len(self.cache) > self.capacity:
+            # NOTE !!!
+            # -> the `popitem` API
+            # pop least recently used (first inserted)
+            self.cache.popitem(last=False)
+
+
+# V0
 # IDEA:  HASHMAP + doubly linked list( most recent used + least recent used )
 """
 
