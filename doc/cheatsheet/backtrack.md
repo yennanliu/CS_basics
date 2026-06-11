@@ -1414,6 +1414,64 @@ class Solution(object):
 # V0
 # IDEA : DFS + backtracking
 class Solution(object):
+    def exist(self, board, word):
+        if not board or not board[0]:
+            return False
+
+        self.rows = len(board)
+        self.cols = len(board[0])
+
+        for r in range(self.rows):
+            for c in range(self.cols):
+                if self.dfs(board, word, r, c, 0):
+                    return True
+
+        return False
+
+    def dfs(self, board, word, r, c, idx):
+        if r < 0 or r >= self.rows or c < 0 or c >= self.cols:
+            return False
+        if board[r][c] != word[idx]:
+            return False
+        if idx == len(word) - 1:
+            return True
+
+        # Mark current cell as visited
+        temp = board[r][c]
+        board[r][c] = "#"
+
+        # Explore 4 directions
+        found = (
+            self.dfs(board, word, r + 1, c, idx + 1) or
+            self.dfs(board, word, r - 1, c, idx + 1) or
+            self.dfs(board, word, r, c + 1, idx + 1) or
+            self.dfs(board, word, r, c - 1, idx + 1)
+        )
+
+        # NOTE !!! MUST save `found` first, THEN backtrack, THEN return found.
+        # -> The restore (backtrack) must happen before return.
+        # -> Returning directly from the recursive call skips the restore:
+        #
+        #   WRONG pattern:
+        #     board[r][c] = "#"
+        #     return (self.dfs(...) or self.dfs(...) or ...)
+        #     board[r][c] = temp   # NEVER REACHED
+        #
+        #   CORRECT pattern:
+        #     board[r][c] = "#"
+        #     found = (self.dfs(...) or ...)   # collect result
+        #     board[r][c] = temp               # backtrack (restore)
+        #     return found                     # return after restore
+
+        # Backtrack: restore original value
+        board[r][c] = temp
+
+        return found
+
+
+# V0' (visited matrix variant)
+# IDEA : DFS + backtracking
+class Solution(object):
  
     def exist(self, board, word):
         ### NOTE : construct the visited matrix
