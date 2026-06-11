@@ -383,150 +383,171 @@ class BinaryTrie {
 ```
 
 ### Template 6: Trie with Delete Operation
-```java
-// java
-// LC 208 (Modified)
-    // V0
-    // IDEA : https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Tree/implement-trie-prefix-tree.py#L49
-    // modified by GPT
-    class TrieNode {
 
-        /** NOTE !!!!
-         *
-         *  Define children as map structure:
-         *
-         *   Map<String, TrieNode>
-         *
-         *  -> string : current "element"
-         *  -> TrieNode : the child object
-         *
-         */
-        Map<String, TrieNode> children;
-        boolean isWord;
+**Delete algorithm — 3-step recursive logic:**
+1. Navigate to the end of the word; if the word doesn't exist, return `False`.
+2. Unmark `is_end` at the terminal node.
+3. During backtracking, remove any child node that is now both a non-terminal leaf (no children, not end of another word) — this cleans up dangling nodes.
 
-        public TrieNode() {
-            children = new HashMap<>();
-            isWord = false;
-        }
-    }
+**Key invariant**: only delete a node if it has no remaining children AND is not the end of a different word. Shared prefixes must be preserved.
 
-    /**
-     *  NOTE !!!
-     *
-     *  Define 2 classes
-     *
-     *   1) TrieNode
-     *   2) Trie
-     *
-     */
-    class Trie {
-        TrieNode root;
+```
+Example: trie contains "apple" and "app"
 
-        public Trie() {
+delete("apple"):
+  Unmark 'e'.is_end  →  'e' has no children, not is_end → delete 'e'
+                         'l' now has no children, not is_end → delete 'l'
+                         second 'p' now has no children BUT is_end ("app" ends here) → STOP
 
-            root = new TrieNode();
-        }
-
-        public void insert(String word) {
-            /**
-             *  NOTE !!! get current node first
-             */
-            TrieNode cur = root;
-            for (String c : word.split("")) {
-                cur.children.putIfAbsent(c, new TrieNode());
-                // move node to its child
-                cur = cur.children.get(c);
-            }
-            cur.isWord = true;
-        }
-
-        public boolean search(String word) {
-            /**
-             *  NOTE !!! get current node first
-             */
-            TrieNode cur = root;
-            for (String c : word.split("")) {
-                cur = cur.children.get(c);
-                if (cur == null) {
-                    return false;
-                }
-            }
-            return cur.isWord;
-        }
-
-        public boolean startsWith(String prefix) {
-            /**
-             *  NOTE !!! get current node first
-             */
-            TrieNode cur = root;
-            for (String c : prefix.split("")) {
-                cur = cur.children.get(c);
-                if (cur == null) {
-                    return false;
-                }
-            }
-            return true;
-        }
-    }
+  Result: "app" is still intact.
 ```
 
 ```python
-# python
-
-#--------------------------
-# V1
-#--------------------------
-
-from collections import defaultdict
-### NOTE : need to define our Node
-class Node():
-
+# python — complete Trie with delete
+class TrieNode:
     def __init__(self):
-        """
-        NOTE : we use defaultdict(Node) as our trie data structure
+        self.children = {}
+        self.is_end = False
 
-        -> use defaultdict
-            - key : every character from word
-            - value : Node (Node type)
-
-        and link children with parent Node via defaultdict
-        """
-        self.children = defaultdict(Node)
-        self.isword = False
-
-# implement basic methods
-class Trie():
-
+class Trie:
     def __init__(self):
-        self.root = Node()
+        self.root = TrieNode()
 
-    def insert(self, word):
-        ### NOTE : we always start from below
-        cur = self.root
-        for w in word:
-            cur = cur.children[w] # same as self.root.defaultdict[w]
-        cur.isword = True
+    def insert(self, word: str) -> None:
+        node = self.root
+        for ch in word:
+            if ch not in node.children:
+                node.children[ch] = TrieNode()
+            node = node.children[ch]
+        node.is_end = True
 
-    def search(self, word):
-        ### NOTE : we always start from below
-        cur = self.root
-        for w in word:
-            cur = cur.children.get(w)
-            if not cur:
+    def search(self, word: str) -> bool:
+        node = self.root
+        for ch in word:
+            if ch not in node.children:
                 return False
-        ### NOTE : need to check if isword
-        return cur.isword
+            node = node.children[ch]
+        return node.is_end
 
-    def startsWith(self, prefix):
-        ### NOTE : we always start from below
-        cur = self.root
-        for p in prefix:
-            cur = cur.children.get(p)
-            if not cur:
+    def startsWith(self, prefix: str) -> bool:
+        node = self.root
+        for ch in prefix:
+            if ch not in node.children:
                 return False
+            node = node.children[ch]
         return True
+
+    def delete(self, word: str) -> bool:
+        """
+        Delete word from trie. Returns True if word existed and was deleted.
+        Cleans up leaf nodes that are no longer needed.
+        """
+        def _delete(node: TrieNode, word: str, depth: int) -> bool:
+            if depth == len(word):
+                if not node.is_end:
+                    return False          # word not in trie
+                node.is_end = False
+                # This node can be removed if it has no children
+                return len(node.children) == 0
+
+            ch = word[depth]
+            if ch not in node.children:
+                return False              # word not in trie
+
+            should_delete_child = _delete(node.children[ch], word, depth + 1)
+
+            if should_delete_child:
+                del node.children[ch]
+                # Propagate deletion upward only if this node is also a bare leaf
+                return len(node.children) == 0 and not node.is_end
+
+            return False
+
+        return _delete(self.root, word, 0)
 ```
 
+```java
+// java — complete Trie with delete
+class TrieNode {
+    Map<Character, TrieNode> children = new HashMap<>();
+    boolean isEnd = false;
+}
+
+class Trie {
+    private TrieNode root = new TrieNode();
+
+    public void insert(String word) {
+        TrieNode node = root;
+        for (char c : word.toCharArray()) {
+            node.children.putIfAbsent(c, new TrieNode());
+            node = node.children.get(c);
+        }
+        node.isEnd = true;
+    }
+
+    public boolean search(String word) {
+        TrieNode node = root;
+        for (char c : word.toCharArray()) {
+            if (!node.children.containsKey(c)) return false;
+            node = node.children.get(c);
+        }
+        return node.isEnd;
+    }
+
+    public boolean startsWith(String prefix) {
+        TrieNode node = root;
+        for (char c : prefix.toCharArray()) {
+            if (!node.children.containsKey(c)) return false;
+            node = node.children.get(c);
+        }
+        return true;
+    }
+
+    public boolean delete(String word) {
+        return _delete(root, word, 0);
+    }
+
+    // Returns true if the current node can be safely removed by its parent.
+    private boolean _delete(TrieNode node, String word, int depth) {
+        if (depth == word.length()) {
+            if (!node.isEnd) return false;   // word not in trie
+            node.isEnd = false;
+            // Safe to delete this node if it has no children
+            return node.children.isEmpty();
+        }
+
+        char ch = word.charAt(depth);
+        TrieNode child = node.children.get(ch);
+        if (child == null) return false;     // word not in trie
+
+        boolean shouldDeleteChild = _delete(child, word, depth + 1);
+
+        if (shouldDeleteChild) {
+            node.children.remove(ch);
+            // Propagate upward only if this node is also a bare leaf
+            return node.children.isEmpty() && !node.isEnd;
+        }
+
+        return false;
+    }
+}
+```
+
+**Trace — `delete("apple")` when trie also contains `"app"`:**
+```
+depth=0  ch='a'  → recurse
+depth=1  ch='p'  → recurse
+depth=2  ch='p'  → recurse
+depth=3  ch='l'  → recurse
+depth=4  ch='e'  → recurse
+depth=5  (end)   isEnd=true → set isEnd=false, children={} → return true (delete 'e')
+depth=4  remove 'e', children={}, isEnd=false             → return true (delete 'l')
+depth=3  remove 'l', children={}, isEnd=false             → return true (delete 2nd 'p')
+depth=2  remove 2nd 'p', children={}, BUT isEnd=true ("app" ends here) → return false ✓
+depth=1,0  no deletion propagated upward
+
+Result: "app" intact, "apple" gone ✓
+```
 
 ## 1) General form
 

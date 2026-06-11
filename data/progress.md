@@ -5,6 +5,7 @@
 - backtrack.md
 	- todo: `Type 2) : Permutations (排列組合) (全排列)`
 - tries.md
+	- done
 - graph.md
 
 - Blind 75
@@ -23,6 +24,7 @@
 
 - Others
 	- DP - `0/1 Knapsack and` -> revisit
+	- recent updated cheatsheet
 
 # 2026-06-10
 
