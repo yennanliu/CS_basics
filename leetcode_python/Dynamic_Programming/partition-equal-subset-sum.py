@@ -89,7 +89,15 @@ class Solution(object):
         # Process each number one by one.
         for num in nums:
 
-            # Traverse backward to ensure each number is used at most once.
+            # NOTE !!! move `backward`
+            # it's the standard setting of `0/1 Knapsack`
+            # to avoid `duplicated pick up`
+            # example:
+            # nums = [3]
+            # target = 6
+
+
+            # Traverse `backward` to ensure each number is used at MOST once.
             #
             # Why backward?
             #
@@ -126,7 +134,8 @@ class Solution(object):
                 dp[s] = dp[s] or dp[s - num]
 
         # If target is achievable,
-        # we can split the array into two equal-sum subsets.
+        # we can split the array into 
+        # two equal-sum subsets.
         return dp[target]
 
 

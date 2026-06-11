@@ -21,6 +21,8 @@
 	- intervals
 	- math & geometry
 
+- Others
+	- DP - `0/1 Knapsack and` -> revisit
 
 # 2026-06-10
 
