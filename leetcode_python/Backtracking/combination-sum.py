@@ -86,6 +86,14 @@ class Solution(object):
             
             # Recurse: Pass 'i' as the next start index so the same 
             # number can be reused, but numbers before 'i' are ignored.
+            """
+            NOTE !!!
+
+             -> we pass `i` to helper func (but NOT `i+1`)
+             -> reason:
+                -> we want to reuse `same` char in some of
+                    the next recursion calls
+            """
             self.helper(candidates, target - val, cur, i)
             
             # Backtrack
