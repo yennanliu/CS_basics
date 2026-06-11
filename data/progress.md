@@ -7,6 +7,9 @@
 - tries.md
 	- done
 - graph.md
+- dp.md
+- greedy.md
+
 
 - Blind 75
 
