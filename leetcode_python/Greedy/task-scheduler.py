@@ -1,34 +1,140 @@
 """
 
-Given a char array representing tasks CPU need to do. 
+621. Task Scheduler
+Solved
+Medium
+Topics
+premium lock icon
+Companies
+Hint
+You are given an array of CPU tasks, each labeled with a letter from A to Z, and a number n. Each CPU interval can be idle or allow the completion of one task. Tasks can be completed in any order, but there's a constraint: there has to be a gap of at least n intervals between two tasks with the same label.
 
-It contains capital letters A to Z where different letters represent different tasks.
+Return the minimum number of CPU intervals required to complete all tasks.
 
-Tasks could be done without original order. Each task could be done in one interval.
-
-For each interval, CPU could finish one task or just be idle.
-
-However, there is a non-negative cooling interval n that means between two same tasks, 
-
-there must be at least n intervals that CPU are doing different tasks or just be idle.
-
-You need to return the least number of intervals the CPU will take to finish all the given tasks.
+ 
 
 Example 1:
 
 Input: tasks = ["A","A","A","B","B","B"], n = 2
+
 Output: 8
-Explanation: A -> B -> idle -> A -> B -> idle -> A -> B.
 
-1
-2
-3
-Note:
+Explanation: A possible sequence is: A -> B -> idle -> A -> B -> idle -> A -> B.
 
-The number of tasks is in the range [1, 10000].
-The integer n is in the range [0, 100].
+After completing task A, you must wait two intervals before doing A again. The same applies to task B. In the 3rd interval, neither A nor B can be done, so you idle. By the 4th interval, you can do A again as 2 intervals have passed.
+
+Example 2:
+
+Input: tasks = ["A","C","A","B","D","B"], n = 1
+
+Output: 6
+
+Explanation: A possible sequence is: A -> B -> C -> D -> A -> B.
+
+With a cooling interval of 1, you can repeat a task after just one other task.
+
+Example 3:
+
+Input: tasks = ["A","A","A", "B","B","B"], n = 3
+
+Output: 10
+
+Explanation: A possible sequence is: A -> B -> idle -> idle -> A -> B -> idle -> idle -> A -> B.
+
+There are only two types of tasks, A and B, which need to be separated by 3 intervals. This leads to idling twice between repetitions of these tasks.
+
+ 
+
+Constraints:
+
+1 <= tasks.length <= 104
+tasks[i] is an uppercase English letter.
+0 <= n <= 100
+
+
 
 """
+
+
+# V0
+# IDEA: BIG PQ + QUEUE + counter (map)
+import heapq
+from collections import Counter, deque
+
+class Solution(object):
+    def leastInterval(self, tasks, n):
+        """
+        :type tasks: List[str]
+        :type n: int
+        :rtype: int
+        """
+        if n == 0:
+            return len(tasks)
+            
+        counts = Counter(tasks)
+        
+        """
+        NOTE !!
+
+
+        
+        1) Py has NO big PQ, so we nned to `negative values`
+           to arrive the `same effect`
+
+        2) ready_pq is Big PQ
+           [cnt_1, cnt_2, ....]
+        """
+        # Build max-heap using negative values
+        ready_pq = [-cnt for cnt in counts.values()]
+        heapq.heapify(ready_pq)
+        
+        """
+        NOTE !!
+
+
+        cool_down_queue: [remain_cnt, ok_time]
+        """
+        # Deque tracks: (remaining_negative_count, available_time)
+        cool_down_queue = deque()
+        
+        time = 0
+        
+        """
+        NOTE !!!
+
+
+        1) either ready_pq or cool_down_q is NOT null
+        -> we cotinue the process
+
+        (e.g.  while ready_pq or cool_down_queue) 
+
+
+        2) ONLY 2 steps
+
+         step 1) release (put ready task from cool_down_queue to heapq)
+
+         step 2) execute (pull from heapq and process)
+        """
+        while ready_pq or cool_down_queue:
+            time += 1
+            
+
+            # 1. Release: Check if any task finished cooling down at this timestamp
+            if cool_down_queue and cool_down_queue[0][1] == time:
+                task_cnt, _ = cool_down_queue.popleft()
+                heapq.heappush(ready_pq, task_cnt)
+                
+            # 2. Execute: Pull from our greedy ready pool
+            if ready_pq:
+                current_cnt = heapq.heappop(ready_pq)
+                current_cnt += 1 # Decrement the remaining count
+                
+                # 3. Lock: If instances remain, lock it until (time + n + 1)
+                if current_cnt < 0:
+                    # CRITICAL FIX: The next valid cycle is current_time + cooldown + 1
+                    cool_down_queue.append((current_cnt, time + n + 1))
+                    
+        return time
 
 
 # V0
