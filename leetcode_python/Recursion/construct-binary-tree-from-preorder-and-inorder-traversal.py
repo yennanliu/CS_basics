@@ -48,9 +48,37 @@ class Solution(object):
         idx = inorder.index(root_val)
 
         # Left subtree
+        """
+
+        # NOTE !!!
+
+             ->  `inorder[:idx]`
+             -> we DON'T want to include `root`
+             -> so it should be `inorder[:idx]` ; but NOT `inorder[:idx+1]`
+
+
+        -> example:
+            inorder = [9, 3, 15],
+
+            root = 3
+            (idx=1)
+
+            -> left sould be [9] (inorder[:1])
+
+
+
+        -> 
+           x = [1,3,2]
+
+           x[i:j+1]
+           -> `j` index is included
+
+           x[i:j]
+           -> `j` index is NOT included
+        """
         root.left = self.buildTree(
             preorder[1:1 + idx],
-            inorder[:idx]
+            inorder[:idx] # NOTE !!! `inorder[:idx]`
         )
 
         # Right subtree

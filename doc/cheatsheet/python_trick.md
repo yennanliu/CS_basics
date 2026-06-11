@@ -2108,6 +2108,62 @@ s[i:j+1]     # chars from i to j (inclusive)
 | `arr[:]` | full shallow copy |
 | `arr[::-1]` | reversed |
 
+#### `x[i:j+1]` vs `x[i:j]` — include or exclude index `j`?
+
+```python
+x = [1, 3, 2]
+#    0  1  2   ← indices
+
+x[0:2]   # [1, 3]  → j=2 is NOT included  (indices 0, 1)
+x[0:3]   # [1, 3, 2] → j=3 is NOT included, but covers all (indices 0, 1, 2)
+
+# To include index j, use j+1 as the stop:
+x[0:1+1]  # [1, 3]  → includes index j=1
+x[0:2+1]  # [1, 3, 2] → includes index j=2
+```
+
+**Rule**:
+```
+x[i:j]   → j index is NOT included  (standard Python — end is exclusive)
+x[i:j+1] → j index IS included      (add +1 to make end inclusive)
+```
+
+#### Concrete example — LC 105 (Construct Binary Tree from Preorder + Inorder)
+
+```python
+# preorder = [3, 9, 20, 15, 7]
+# inorder  = [9, 3, 15, 20,  7]
+#
+# root = preorder[0] = 3
+# idx  = inorder.index(3) = 1   ← root sits at index 1 in inorder
+#
+# inorder layout:
+#   index:   0   1   2   3   4
+#   value:  [9,  3, 15, 20,  7]
+#             ^   ^
+#           left root  right subtree starts at idx+1=2
+#
+# Left subtree of inorder  = elements BEFORE root  = inorder[:idx]
+# Right subtree of inorder = elements AFTER  root  = inorder[idx+1:]
+
+# ✅ CORRECT: inorder[:idx]   → [9]           (excludes root at idx=1)
+# ❌ WRONG:   inorder[:idx+1] → [9, 3]        (includes root — builds wrong tree)
+
+root.left = self.buildTree(
+    preorder[1 : 1 + idx],   # left subtree has `idx` nodes
+    inorder[:idx]             # everything LEFT of root (exclusive stop = idx)
+)
+root.right = self.buildTree(
+    preorder[1 + idx:],       # remaining nodes after left subtree
+    inorder[idx + 1:]         # everything RIGHT of root (skip root at idx)
+)
+
+# Why inorder[:idx] and NOT inorder[:idx+1]?
+#   Python slice stop is EXCLUSIVE, so inorder[:idx] gives indices 0..idx-1,
+#   which is exactly the elements to the LEFT of root (root at idx is excluded).
+#   Using inorder[:idx+1] would mistakenly include the root itself in the left subtree.
+```
+
 ### 1-52) Index distance vs element count (off-by-one)
 
 **Core rule:** distance between two indices ≠ number of elements between them.
