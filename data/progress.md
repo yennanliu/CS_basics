@@ -25,6 +25,8 @@
 - Others
 	- DP - `0/1 Knapsack and` -> revisit
 	- recent updated cheatsheet
+	- TODO LC:
+		- 1209(todo),1963(todo),227(todo),394(todo),34(todo),875(todo),81(todo)
 
 # 2026-06-10
 

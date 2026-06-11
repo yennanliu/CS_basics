@@ -70,6 +70,13 @@ class MinStack(object):
 
     def __init__(self):
         self.stack = []
+        """
+        NOTE !!!
+
+        # min_stack[i] stores the minimum value (state)
+        # among st[0...i]
+
+        """
         self.minStack = []
 
     def push(self, val):
@@ -89,7 +96,13 @@ class MinStack(object):
         """
         NOTE !!!
 
-        below
+        since min_stack[i] stores the cur minimum value (state),
+        -> so we DON'T need to check if minStack pop element
+           is `same` as the one pop from stack
+
+           -> since  `self.minStack` is saving STATE,
+              not the actual element
+
         """
         self.minStack.pop()
         return self.stack.pop()
