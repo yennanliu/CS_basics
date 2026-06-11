@@ -1,3 +1,159 @@
+"""
+
+494. Target Sum
+Solved
+Medium
+Topics
+premium lock icon
+Companies
+You are given an integer array nums and an integer target.
+
+You want to build an expression out of nums by adding one of the symbols '+' and '-' before each integer in nums and then concatenate all the integers.
+
+For example, if nums = [2, 1], you can add a '+' before 2 and a '-' before 1 and concatenate them to build the expression "+2-1".
+Return the number of different expressions that you can build, which evaluates to target.
+
+ 
+
+Example 1:
+
+Input: nums = [1,1,1,1,1], target = 3
+Output: 5
+Explanation: There are 5 ways to assign symbols to make the sum of nums be target 3.
+-1 + 1 + 1 + 1 + 1 = 3
++1 - 1 + 1 + 1 + 1 = 3
++1 + 1 - 1 + 1 + 1 = 3
++1 + 1 + 1 - 1 + 1 = 3
++1 + 1 + 1 + 1 - 1 = 3
+Example 2:
+
+Input: nums = [1], target = 1
+Output: 1
+ 
+
+Constraints:
+
+1 <= nums.length <= 20
+0 <= nums[i] <= 1000
+0 <= sum(nums[i]) <= 1000
+-1000 <= target <= 1000
+ 
+
+"""
+
+# V0
+# IDEA: 1D DP (0/1 knapsack), LC 416
+"""
+NOTE !!!
+
+
+Let:
+
+P = numbers assigned +
+N = numbers assigned -
+
+Then:
+
+P−N=target
+
+and
+
+P+N=total
+
+Adding them:
+
+2P=total+target
+
+Therefore:
+
+P= (total+target) / 2
+
+
+"""
+class Solution(object):
+    def findTargetSumWays(self, nums, target):
+        total = sum(nums)
+
+        # Impossible cases
+        if abs(target) > total:
+            return 0
+
+        if (total + target) % 2 != 0:
+            return 0
+
+        subset_target = (total + target) // 2
+
+        # dp[s] = number of ways to make sum s
+        dp = [0] * (subset_target + 1)
+
+        # One way to make sum 0
+        dp[0] = 1
+
+        """
+        NOTE !!!
+
+
+        for DP (0/1 knapsack)
+        -> we loop
+           `num`, then `target`
+
+        -> 
+
+           for num in nums:
+                for x in range(target, num - 1, -1):
+                        ...
+        """
+        for num in nums:
+            # backward because each number can be used once
+            for s in range(subset_target, num - 1, -1):
+                dp[s] += dp[s - num]
+
+        return dp[subset_target]
+
+
+# V0-1
+# IDEA: 1D DP (0/1 knapsack), LC 416
+class Solution(object):
+    def findTargetSumWays(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: int
+        """
+        total_sum = sum(nums)
+        
+        # ABSOLUTE BOUNDS GUARD: If the target is physically out of reach 
+        # even if all numbers were positive, return 0.
+        if abs(target) > total_sum:
+            return 0
+            
+        # PARITY GUARD: (target + total_sum) must be even and non-negative.
+        if (target + total_sum) % 2 == 1 or (target + total_sum) < 0:
+            return 0
+            
+        # CRITICAL FIX: Calculate the accurate modified subset sum target
+        subset_target = (target + total_sum) // 2
+        
+        # CRITICAL FIX: Initialize a 1D DP counting table of size (subset_target + 1).
+        # dp[s] stores the total number of unique ways to form a subset sum equal to 's'.
+        dp = [0] * (subset_target + 1)
+        
+        # BASE CASE: There is exactly 1 way to form a subset sum of 0 (using an empty subset).
+        dp[0] = 1
+        
+        # Outer loop: Evaluate each number in the array one by one
+        for num in nums:
+            # Inner loop: Scan BACKWARDS from our subset_target down to 'num'.
+            # Moving backward prevents the same number from being reused multiple times.
+            for s in range(subset_target, num - 1, -1):
+                # Accumulate the total pathways. The number of ways to reach sum 's' 
+                # increases by the number of ways we could reach the remainder 's - num'.
+                dp[s] += dp[s - num]
+                
+        # Return the total ways recorded at our exact target location
+        return dp[subset_target]
+
+
 # V0 
 # IDEA : DP 
 # IDEA :
