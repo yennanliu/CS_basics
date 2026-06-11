@@ -1,5 +1,34 @@
 # Progress
 
+# 2026-06-12
+
+- backtrack.md
+	- todo: `Type 2) : Permutations (排列組合) (全排列)`
+- graph.md
+- dp.md
+- greedy.md
+
+
+- Blind 75
+
+	- greedy
+	- intervals
+	- math & geometry
+
+- needcode 150
+
+	- 2D DP
+	- greedy
+	- intervals
+	- math & geometry
+
+- Others
+	- DP - `0/1 Knapsack and` -> revisit
+	- recent updated cheatsheet
+	- TODO LC:
+		- 1209(todo),1963(todo),227(todo),394(todo),34(todo),875(todo),81(todo)
+
+
 # 2026-06-11
 
 - backtrack.md
@@ -30,6 +59,7 @@
 	- recent updated cheatsheet
 	- TODO LC:
 		- 1209(todo),1963(todo),227(todo),394(todo),34(todo),875(todo),81(todo)
+
 
 # 2026-06-10
 
