@@ -118,6 +118,71 @@ class Solution(object):
 
 
 
+# V0-0-1
+# IDEA : Dijkstra (PQ + BFS)
+from heapq import heappush, heappop
+
+class Solution(object):
+    def networkDelayTime(self, times, n, k):
+
+        graph = {}
+
+        for u, v, w in times:
+            if u not in graph:
+                graph[u] = []
+            graph[u].append((v, w))
+
+        """
+        NOTE !!!
+
+         PQ: [(time, node)]
+        """
+        pq = [(0, k)]          # (time, node)
+        visited = set()
+
+        max_time = 0
+
+        while pq:
+            """
+            NOTE !!!
+
+            
+            in `Dijkstra`, we do `heappop`,
+            pop the min cost as next move,
+
+            but NOT doing `standard BFS way`
+            
+            -> e.g.  below is WRONG
+
+            ```
+
+              while q:
+                # ...
+                for loop
+                # ...
+            ```
+
+            """
+            cur_time, node = heappop(pq)
+
+            if node in visited:
+                continue
+
+            visited.add(node)
+            max_time = max(max_time, cur_time)
+
+            if node in graph:
+                for nei, weight in graph[node]:
+                    if nei not in visited:
+                        heappush(
+                            pq,
+                            (cur_time + weight, nei)
+                        )
+
+        return max_time if len(visited) == n else -1
+
+
+
 # V0-1
 # IDEA : Dijkstra (PQ + BFS)
 import heapq
