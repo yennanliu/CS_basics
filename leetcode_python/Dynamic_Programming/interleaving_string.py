@@ -61,4 +61,147 @@ Follow up: Could you solve it using only O(s2.length) additional memory space?
         
 
 
+
+# V0
+# IDEA 1) 2D DP
+"""
+DP def:
+
+	dp[i][j] = whether
+	s3[0 : i+j]
+	can be formed by interleaving
+
+	s1[0 : i]
+	and
+	s2[0 : j]
+
+	where
+
+	i chars are taken from s1
+	j chars are taken from s2
+
+
+
+
+DP eq:
+
+ The last character of s3[:i+j] must come from either:
+
+
+ Case 1: last char comes from s1
+
+	dp[i-1][j] == True
+	and
+	s1[i-1] == s3[i+j-1]
+
+
+Case 2: last char comes from s2
+
+	dp[i][j-1] == True
+	and
+	s2[j-1] == s3[i+j-1]
+
+
+
+  
+   -> so,
+
+
+	   dp[i][j] =
+	(
+	    dp[i-1][j]
+	    and
+	    s1[i-1] == s3[i+j-1]
+	)
+	or
+	(
+	    dp[i][j-1]
+	    and
+	    s2[j-1] == s3[i+j-1]
+	)
+
+"""
+class Solution(object):
+    def isInterleave(self, s1, s2, s3):
+        m, n = len(s1), len(s2)
+
+        if m + n != len(s3):
+            return False
+
+        dp = [[False] * (n + 1) for _ in range(m + 1)]
+
+        dp[0][0] = True
+
+        for i in range(1, m + 1):
+            dp[i][0] = (
+                dp[i - 1][0]
+                and s1[i - 1] == s3[i - 1]
+            )
+
+        for j in range(1, n + 1):
+            dp[0][j] = (
+                dp[0][j - 1]
+                and s2[j - 1] == s3[j - 1]
+            )
+
+        for i in range(1, m + 1):
+            for j in range(1, n + 1):
+
+                dp[i][j] = (
+                    dp[i - 1][j]
+                    and s1[i - 1] == s3[i + j - 1]
+                ) or (
+                    dp[i][j - 1]
+                    and s2[j - 1] == s3[i + j - 1]
+                )
+
+        return dp[m][n]
+
+
+# V0-1
+# IDEA 1) 2D DP 
+class Solution(object):
+    def isInterleave(self, s1, s2, s3):
+        """
+        :type s1: str
+        :type s2: str
+        :type s3: str
+        :rtype: bool
+        """
+        # EDGE CASE CHECK: If the combined lengths don't match s3, 
+        # it is mathematically impossible to interleave them.
+        if len(s1) + len(s2) != len(s3):
+            return False
+            
+        m, n = len(s1), len(s2)
         
+        # Initialize an (m + 1) x (n + 1) DP grid with False values
+        dp = [[False] * (n + 1) for _ in range(m + 1)]
+        
+        # BASE CASE: Two empty strings can always interleave to form an empty s3
+        dp[0][0] = True
+        
+        # 1. Initialize the first column: Using ONLY characters from s1 (s2 is empty)
+        for i in range(1, m + 1):
+            dp[i][0] = dp[i-1][0] and s1[i-1] == s3[i-1]
+            
+        # 2. Initialize the first row: Using ONLY characters from s2 (s1 is empty)
+        for j in range(1, n + 1):
+            dp[0][j] = dp[0][j-1] and s2[j-1] == s3[j-1]
+            
+        # 3. Fill the rest of the DP table grid
+        for i in range(1, m + 1):
+            for j in range(1, n + 1):
+                # We can form s3 up to here if:
+                # - The previous char came from s1 AND s1's current char matches s3's current char
+                # OR
+                # - The previous char came from s2 AND s2's current char matches s3's current char
+                dp[i][j] = (dp[i-1][j] and s1[i-1] == s3[i+j-1]) or \
+                           (dp[i][j-1] and s2[j-1] == s3[i+j-1])
+                           
+        # The final bottom-right cell holds whether the full strings match completely
+        return dp[m][n]
+
+
+
+
