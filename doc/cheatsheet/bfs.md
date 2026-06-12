@@ -1814,6 +1814,7 @@ def bfs_analysis(graph, start):
 3. Check boundaries before adding to queue in grid problems
 4. Consider multi-source BFS for optimization
 5. Track level/distance when needed for shortest path
+6. **Mark state BEFORE enqueue, not after dequeue** — update grid/visited/counters the moment you decide to enqueue a neighbor; deferring until dequeue lets multiple neighbors re-enqueue the same cell (see "When to Update Grid Status & Count" section below)
 
 ### When to Update Grid Status & Count (Mark Before vs After Enqueue)
 
@@ -1825,15 +1826,41 @@ A critical BFS implementation detail: **always mark a cell as visited (update gr
 Mark visited + update count → THEN add to queue
 ```
 
+**General BFS template (canonical form):**
+```python
+visited = {start}
+q.append(start)
+
+while q:
+    node = q.popleft()
+
+    for nei in neighbors(node):
+        if nei not in visited:
+            visited.add(nei)    # <-- before enqueue
+            q.append(nei)
+```
+
+**3-step pattern when state update is non-trivial (grid mutation, counters):**
+```python
+# 1. Validate the neighbor
+if neighbor_is_valid and neighbor_not_visited:
+
+    # 2. Update state IMMEDIATELY (mark visited / mutate grid / decrement counter)
+    mark_as_visited(neighbor)
+
+    # 3. Enqueue the neighbor
+    queue.append(neighbor)
+```
+
 ```java
-// CORRECT: Mark BEFORE enqueue
+// ✅ CORRECT: Mark BEFORE enqueue
 if (grid[nr][nc] == 1) {
     grid[nr][nc] = 2;       // mark immediately
     freshOrange--;           // update count immediately
     q.add(new int[]{nr, nc});
 }
 
-// WRONG: Mark AFTER dequeue
+// ❌ WRONG: Mark AFTER dequeue
 int[] cur = q.poll();
 grid[cur[0]][cur[1]] = 2;   // too late! duplicates already in queue
 ```
