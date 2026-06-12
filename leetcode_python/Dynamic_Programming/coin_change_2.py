@@ -120,6 +120,23 @@ class Solution(object):
             ```
 
 
+        ->
+
+         The core distinction explained:
+
+          ┌───────────────────────┬───────────────┬────────────────────────────────────────────────────────────────────────┐
+          │      Outer loop       │   What it     │                                  Why                                   │
+          │                       │    counts     │                                                                        │
+          ├───────────────────────┼───────────────┼────────────────────────────────────────────────────────────────────────┤
+          │ for coin in coins     │ Combinations  │ Coin-1 pass happens globally before coin-2 is introduced — [2,1] can   │
+          │                       │               │ never appear as a separate path                                        │
+          ├───────────────────────┼───────────────┼────────────────────────────────────────────────────────────────────────┤
+          │ for i in range(1,     │ Permutations  │ For each amount, asks "what was the last coin placed?" — every         │
+          │ amount+1)             │               │ ordering is a distinct path                                            │
+          └───────────────────────┴───────────────┴────────────────────────────────────────────────────────────────────────┘
+
+          
+
         """
         for c in coins:
             for i in range(c, amount + 1):
