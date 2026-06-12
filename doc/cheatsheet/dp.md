@@ -385,6 +385,98 @@ public int coinChange(int[] coins, int amount) {
 }
 ```
 
+---
+
+#### **⭐⭐⭐⭐⭐ Loop Order: Combinations vs Permutations**
+
+This is one of the most common interview traps in unbounded knapsack / coin change problems.
+
+**The Rule:**
+
+| Outer Loop | Inner Loop | Counts | Example |
+|------------|-----------|--------|---------|
+| `for coin in coins` | `for i in range(coin, amount+1)` | **Combinations** (order doesn't matter) | LC 518 |
+| `for i in range(1, amount+1)` | `for coin in coins` | **Permutations** (order matters) | LC 377 |
+
+**Why Coins-Outer → Combinations:**
+
+When `coins` is the outer loop, each coin is processed completely before the next coin is introduced. This means `[1, 2]` and `[2, 1]` are never both counted — the coin-1 pass "happened first" globally, so `[2, 1]` has no way to appear as a separate path.
+
+**Why Amount-Outer → Permutations:**
+
+When `amount` is the outer loop, for each target `i` we ask *"what was the last coin placed?"* and try every coin. So reaching `i=3` via last-coin=2 (from `dp[1]` built with coin 1) is a separate path from last-coin=1 (from `dp[2]` built with coin 2). Every ordering is counted.
+
+**Concrete Trace: `coins = [1, 2], amount = 3`**
+
+```
+# Combinations (coins outer):
+Initial:           dp = [1, 0, 0, 0]
+After coin=1:      dp = [1, 1, 1, 1]   ← all amounts built from 1s only
+After coin=2:      dp = [1, 1, 2, 2]   ← can now use 2s on top of 1s
+
+→ dp[3] = 2 : {1,1,1}, {1,2}           ← {2,1} NOT separately counted ✓
+
+
+# Permutations (amount outer):
+Initial:           dp = [1, 0, 0, 0]
+i=1: coin=1 → dp[1]+=dp[0]=1          dp = [1, 1, 0, 0]
+i=2: coin=1 → dp[2]+=dp[1]=1
+     coin=2 → dp[2]+=dp[0]=1          dp = [1, 1, 2, 0]
+i=3: coin=1 → dp[3]+=dp[2]=2
+     coin=2 → dp[3]+=dp[1]=1          dp = [1, 1, 2, 3]
+
+→ dp[3] = 3 : {1,1,1}, {1,2}, {2,1}   ← {2,1} counted separately ✓
+```
+
+**Code Side-by-Side:**
+
+```python
+# python — Combinations (LC 518): coins outer
+def change(amount, coins):
+    dp = [0] * (amount + 1)
+    dp[0] = 1
+    for coin in coins:                    # coin fixed first → combinations
+        for i in range(coin, amount + 1):
+            dp[i] += dp[i - coin]
+    return dp[amount]
+
+# python — Permutations (LC 377): amount outer
+def combinationSum4(nums, target):
+    dp = [0] * (target + 1)
+    dp[0] = 1
+    for i in range(1, target + 1):        # amount first → permutations
+        for num in nums:
+            if i >= num:
+                dp[i] += dp[i - num]
+    return dp[target]
+```
+
+**Key Intuition — mental model:**
+
+```
+Coins outer: "I decide to use coin-1 first, then optionally add coin-2 on top."
+             → Sequence is forced: coin-1 always before coin-2 → no duplicates.
+
+Amount outer: "To reach amount i, which coin did I place LAST?"
+             → Each last-coin choice is a distinct path → all orderings counted.
+```
+
+**What about LC 322 (min coins)?**
+
+LC 322 asks for the *minimum count*, not *how many ways* — so whether you count `[1,2]` and `[2,1]` separately doesn't matter; the minimum stays the same either way. Both loop orders are correct for LC 322.
+
+**LeetCode Problem Map:**
+
+| LC # | Problem | Loop Order | Reason |
+|------|---------|-----------|--------|
+| **518** | Coin Change II | coins outer | Count combinations |
+| **377** | Combination Sum IV | amount outer | Count permutations |
+| **322** | Coin Change | either | Minimize — order irrelevant |
+| **39** | Combination Sum | backtracking | Combinations with arbitrary coins |
+| **40** | Combination Sum II | backtracking | Combinations, each used once |
+
+---
+
 #### **💡 Pro Tips**
 
 1. **Struggling with off-by-one errors?** Try the `n+1` approach

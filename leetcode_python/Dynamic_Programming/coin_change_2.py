@@ -100,6 +100,27 @@ class Solution(object):
 
         dp[0] = 1
 
+        """
+        NOTE !!!
+
+
+        https://yennj12.js.org/CS_basics/cheatsheets/dp.html#critical-pattern-loop-order-in-unbounded-knapsack-combinations-vs-permutations
+
+
+        Combinations (組合) VS Permutations (排列) in DP
+
+        -> the `loop ordering`
+
+        -> LC 518, is `combination`(組合)
+
+        -> so what we need at outer loop is
+
+            ```
+            for coin in coins
+            ```
+
+
+        """
         for c in coins:
             for i in range(c, amount + 1):
                 dp[i] += dp[i - c]
