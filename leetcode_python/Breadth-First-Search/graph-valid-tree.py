@@ -77,6 +77,18 @@ class UnionFind(object):
         #
         self.parent = [i for i in range(n)]
 
+
+    """
+    NOTE !!!
+
+    the pattern:
+
+
+    if self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])
+
+    return self.parent[x]
+    """
     def find(self, x):
 
         # If x is not the root,
@@ -131,6 +143,52 @@ class UnionFind(object):
 
         return True
 
+
+# V0-1
+# IDEA: UNION FIND
+class Solution(object):
+    def validTree(self, n, edges):
+        # A tree must have exactly n - 1 edges
+        if len(edges) != n - 1:
+            return False
+
+        uf = UnionFind(n)
+
+        for a, b in edges:
+            if not uf.union(a, b):
+                return False  # cycle detected
+
+        return True
+
+
+class UnionFind(object):
+    def __init__(self, n):
+        self.parent = [i for i in range(n)]
+        self.rank = [1] * n
+
+    def find(self, x):
+        # path compression
+        if self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])
+        return self.parent[x]
+
+    def union(self, a, b):
+        pa = self.find(a)
+        pb = self.find(b)
+
+        if pa == pb:
+            return False  # cycle detected
+
+        # union by rank
+        if self.rank[pa] < self.rank[pb]:
+            self.parent[pa] = pb
+        elif self.rank[pa] > self.rank[pb]:
+            self.parent[pb] = pa
+        else:
+            self.parent[pb] = pa
+            self.rank[pa] += 1
+
+        return True
 
 
 # V0-1
