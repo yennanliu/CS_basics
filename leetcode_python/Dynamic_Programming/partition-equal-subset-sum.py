@@ -40,6 +40,9 @@ dp[s]:
     so that their `sum` equals s.
 
 
+     -> dp[s] = True if we can form sum s
+
+
 DP eq:
    
     dp[s] = dp[s] or dp[s - num]
