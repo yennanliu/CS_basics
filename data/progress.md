@@ -17,7 +17,7 @@
 
 - needcode 150
 
-	- 2D DP
+	- 2D DP (doing)
 	- greedy
 	- intervals
 	- math & geometry
