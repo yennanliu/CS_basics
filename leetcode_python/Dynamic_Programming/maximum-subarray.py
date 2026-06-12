@@ -36,6 +36,23 @@ Follow up: If you have figured out the O(n) solution, try coding another solutio
 
 # V0
 # IDEA : DP (Kadane’s algo)
+class Solution(object):
+    def maxSubArray(self, nums):
+        max_sum = nums[0]
+        cur = 0
+
+        for num in nums:
+            cur += num
+            max_sum = max(max_sum, cur)
+
+            if cur < 0:
+                cur = 0
+
+        return max_sum
+
+
+# V0
+# IDEA : DP (Kadane’s algo)
 # DP EQUATION :
 # -> dp[i+1] = dp[i] + s[i+1] (if dp[i] >= 0 )
 # -> dp[i+1] = s[i]           (if dp[i] < 0 )
