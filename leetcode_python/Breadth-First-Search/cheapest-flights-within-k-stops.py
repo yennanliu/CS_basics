@@ -39,6 +39,67 @@ src != dst
 
 """
 
+
+# V0
+# IDEA :  Dijkstra
+import heapq
+from collections import defaultdict
+
+class Solution(object):
+    def findCheapestPrice(self, n, flights, src, dst, K):
+
+        # Create adjacency list representation of the graph
+        # graph[u] = [(v, cost), ...]
+        graph = defaultdict(list)
+
+        # Build the graph from flight edges
+        # Each flight is (start, end, price)
+        for s, e, c in flights:
+            graph[s].append((e, c))
+
+        # Min-heap priority queue
+        # Each state is (current_total_cost, current_node, number_of_stops_used)
+        heap = [(0, src, 0)]
+
+        # best[(node, stops)] = minimum cost to reach node using exactly 'stops' edges
+        # Used to prune worse paths
+        best = {}
+
+        # Process states in increasing order of cost
+        while heap:
+
+            # Pop the state with the smallest cost so far
+            cost, node, stops = heapq.heappop(heap)
+
+            # If we reached the destination, return the cost immediately
+            # Because heap guarantees this is the cheapest possible
+            if node == dst:
+                return cost
+
+            # If we exceeded allowed number of stops (K), skip this path
+            # Note: K stops means at most K+1 edges, but this implementation treats stops as edges used
+            if stops > K:
+                continue
+
+            # If we have already found a better (or equal) way to reach this
+            # (node, stops), we can skip processing this state
+            if (node, stops) in best and best[(node, stops)] <= cost:
+                continue
+
+            # Record the best cost for this (node, stops) state
+            best[(node, stops)] = cost
+
+            # Explore all neighbors of the current node
+            for nei, price in graph[node]:
+
+                # Push new state into heap:
+                # updated cost, neighbor node, and incremented stops
+                heapq.heappush(heap, (cost + price, nei, stops + 1))
+
+        # If destination is not reachable within K stops, return -1
+        return -1
+
+
 # V0
 # IDEA :  Dijkstra
 import heapq
