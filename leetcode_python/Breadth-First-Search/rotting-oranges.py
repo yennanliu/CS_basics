@@ -41,7 +41,7 @@ grid[i][j] is 0, 1, or 2.
 """
 
 # V0
-# IDEA: MULTI SRC BFS
+# IDEA: MULTI-SOURCE BFS
 from collections import deque
 class Solution(object):
     def orangesRotting(self, grid):
@@ -81,6 +81,7 @@ class Solution(object):
                     if (
                         0 <= x_ < w and
                         0 <= y_ < l and
+                        # NOTE !!! only add `fresh` orange to queue
                         grid[y_][x_] == 1
                     ):
                         """
@@ -102,6 +103,9 @@ class Solution(object):
                         fresh -= 1
                         q.append([x_, y_])
 
+            # NOTE !!
+            # -> we update time at here
+            #    after `for loop`
             time += 1
 
         return time if fresh == 0 else -1
