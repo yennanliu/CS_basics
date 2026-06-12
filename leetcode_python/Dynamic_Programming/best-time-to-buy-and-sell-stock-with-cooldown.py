@@ -37,6 +37,46 @@ Constraints:
 
 # V0:
 # IDEA: 2D DP + STATE FUNC
+"""
+
+DP def:
+
+
+        dp[i][0] = max profit at day i, 
+                   `holding` a stock
+
+        dp[i][1] = max profit at day i, 
+                   just `sold` a stock today
+
+        dp[i][2] = max profit at day i, 
+                   NOT holding a stock NOT not in cooldown (rest)
+
+
+        # dp[i][0] = hold
+        # dp[i][1] = sold
+        # dp[i][2] = rest (NOT holding a stock and NOT cooldown)
+
+
+DP eq:
+
+      (split by state)
+
+
+      dp[i][0] = max(
+                dp[i - 1][0],              # keep holding
+                dp[i - 1][2] - prices[i]   # buy today
+            )
+
+      
+      dp[i][1] = dp[i - 1][0] + prices[i]  # sell today
+
+      
+      dp[i][2] = max(
+                dp[i - 1][2],  # keep resting
+                dp[i - 1][1]   # cooldown finished
+            )
+
+"""
 class Solution(object):
     def maxProfit(self, prices):
         if not prices:
@@ -47,6 +87,7 @@ class Solution(object):
         # dp[i][0] = hold
         # dp[i][1] = sold
         # dp[i][2] = rest
+        # NOTE !!! row size is n
         dp = [[0] * 3 for _ in range(n)]
 
         dp[0][0] = -prices[0]   # buy
