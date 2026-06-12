@@ -30,10 +30,12 @@
 - **Examples**: LC 743 (Network Delay), LC 1514 (Path with Max Probability)
 - **Pattern**: Direct application of Dijkstra's algorithm
 
-### **Category 2: Shortest Path with Constraints**
-- **Description**: Shortest path with additional restrictions (stops, cost limits)
-- **Examples**: LC 787 (Cheapest Flights K Stops), LC 1928 (Minimum Cost K Waypoints)
-- **Pattern**: Modified Dijkstra with state tracking
+### **Category 2: Shortest Path with Constraints** ⚠️ Dijkstra VARIANT
+- **Description**: Shortest path with an extra constraint dimension (stops, obstacles, keys, time)
+- **Examples**: LC 787 (Cheapest Flights K Stops), LC 1293 (Shortest Path K Obstacle Removal), LC 864 (Get All Keys), LC 1928 (Minimum Cost K Waypoints)
+- **Pattern**: 2D-state Dijkstra — state is `(cost, node, constraint)` instead of `(cost, node)`
+- **Why it's a variant**: Same node at different constraint values = **different states**. Standard `visited[node]` or `dist[node]` pruning is WRONG here — it would discard valid paths that reach the same node with a different remaining budget.
+- **Pruning rule**: `best[(node, constraint)] <= cost` (2D best-map, not 1D dist array)
 
 ### **Category 3: Grid-based Shortest Path**
 - **Description**: Finding optimal paths in 2D grids
@@ -477,36 +479,96 @@ def dijkstra_basic(n, edges, src):
     return dist
 ```
 
-### Template 2: Dijkstra with Constraints
+### Template 2: Dijkstra with Constraints (2D-State Variant)
+
+**Core idea — why this is NOT standard Dijkstra:**
+
+| | Standard Dijkstra | Constrained Dijkstra |
+|---|---|---|
+| **State** | `(cost, node)` | `(cost, node, constraint)` |
+| **State space** | 1D — one entry per node | 2D — one entry per `(node, constraint)` pair |
+| **Pruning** | `dist[node] <= cost` | `best[(node, stops)] <= cost` |
+| **First-pop invariant** | First pop of `node` = globally optimal | First pop of `(node, stops)` = optimal for that stops value |
+| **visited[node] works?** | ✅ Yes | ❌ No — same node valid at different stop counts |
+
+**Why `visited[node]` / `dist[node]` breaks:**
+```
+Example: src=0, dst=3, K=2
+  Path A: 0→1→3  cost=900  stops=1  ← fewer stops but more expensive
+  Path B: 0→1→2→3  cost=210  stops=2  ← more stops but cheaper
+
+Standard dist[1] would be finalized at first pop (cost=100).
+Path B would try to re-expand node 1 at stops=1, but dist[1] check blocks it.
+→ Wrong: path B never explored, answer is incorrect.
+
+With best[(node, stops)]: (node=1, stops=0) and (node=1, stops=1) are DIFFERENT states.
+Both get explored independently. Correct answer found.
+```
+
 ```python
 def dijkstra_constrained(n, edges, src, dst, k):
-    """Shortest path with at most k stops/constraints"""
     graph = collections.defaultdict(list)
     for u, v, w in edges:
         graph[u].append((v, w))
-    
-    # (cost, node, stops_left)
-    pq = [(0, src, k + 1)]
-    # Track best stops count for each node
+
+    # (cost, node, stops_used)
+    pq = [(0, src, 0)]
+
+    # KEY: 2D best-map — best[(node, stops)] = min cost to reach node using exactly 'stops' edges
+    # This replaces the 1D dist[] array used in standard Dijkstra
     best = {}
-    
+
     while pq:
         cost, u, stops = heapq.heappop(pq)
-        
+
+        # First pop of (u, dst) is optimal (min-heap guarantee for this state)
         if u == dst:
             return cost
-        
-        # Prune if we've seen this node with more stops
-        if u in best and best[u] >= stops:
+
+        # Constraint exceeded — prune this branch
+        if stops > k:
             continue
-        best[u] = stops
-        
-        if stops > 0:
-            for v, w in graph[u]:
-                heapq.heappush(pq, (cost + w, v, stops - 1))
-    
+
+        # 2D pruning: skip if we've already reached (node, stops) cheaper
+        if (u, stops) in best and best[(u, stops)] <= cost:
+            continue
+        best[(u, stops)] = cost
+
+        for v, w in graph[u]:
+            heapq.heappush(pq, (cost + w, v, stops + 1))
+
     return -1
 ```
+
+**General constrained Dijkstra skeleton:**
+```python
+# Replace 'stops' with whatever constraint your problem has:
+# - stops remaining (LC 787)
+# - obstacles budget (LC 1293)
+# - keys bitmask (LC 864)
+# - discount count (LC 2093)
+
+pq = [(0, src, initial_constraint)]
+best = {}   # best[(node, constraint)] = min cost
+
+while pq:
+    cost, node, constraint = heapq.heappop(pq)
+    if node == dst: return cost
+    if constraint is exhausted: continue
+    if (node, constraint) in best and best[(node, constraint)] <= cost: continue
+    best[(node, constraint)] = cost
+    for nei, w in graph[node]:
+        heapq.heappush(pq, (cost + w, nei, updated_constraint))
+```
+
+**Similar Problems (same 2D-state pattern):**
+| LC # | Problem | Constraint Dimension | State |
+|------|---------|---------------------|-------|
+| **787** | Cheapest Flights K Stops | stops used (0..K) | `(node, stops)` |
+| **1293** | Shortest Path K Obstacle Removal | obstacles removed (0..K) | `(node, obstacles)` |
+| **864** | Shortest Path to Get All Keys | keys collected (bitmask) | `(node, keys)` |
+| **2093** | Minimum Cost to Reach City With Discounts | discounts used (0..K) | `(node, discounts)` |
+| **1928** | Min Cost to Reach Destination in Time | time remaining | `(node, time)` |
 
 ### Template 3: Grid-based Dijkstra
 ```python
@@ -761,61 +823,112 @@ class Solution(object):
         return -1
 ```
 
-### 2-2) Cheapest Flights Within K Stops (LC 787) — Dijkstra with Stop Counter
-> State = (cost, node, stops); skip if stops > k; don't use visited set (stops matter).
+### 2-2) Cheapest Flights Within K Stops (LC 787) — Constrained Dijkstra (2D State)
+
+> ⚠️ This is NOT standard Dijkstra. The constraint (K stops) adds a second dimension to the state.
+> Standard `dist[node]` pruning is WRONG here — same node reached with different stops = different valid states.
+
+**Core Idea:**
+- State: `(cost, node, stops_used)` — stops_used is part of the identity
+- Pruning: `best[(node, stops)] <= cost` replaces `dist[node] <= cost`
+- Why: Node A reached in 1 stop at cost 900 vs 2 stops at cost 100 are BOTH valid; discarding either gives wrong answer
+
+```python
+# LC 787 - Cheapest Flights Within K Stops
+# IDEA: Constrained Dijkstra — 2D state (node, stops)
+# time = O(E * K * log(E * K)), space = O(E * K)
+import heapq
+from collections import defaultdict
+
+class Solution(object):
+    def findCheapestPrice(self, n, flights, src, dst, K):
+        graph = defaultdict(list)
+        for s, e, c in flights:
+            graph[s].append((e, c))
+
+        # (cost, node, stops_used)
+        heap = [(0, src, 0)]
+
+        # KEY: best[(node, stops)] = min cost to reach node using exactly 'stops' edges
+        # This is a 2D map, NOT a 1D dist[] array
+        # Reason: same node at different stop counts are DIFFERENT states
+        best = {}
+
+        while heap:
+            cost, node, stops = heapq.heappop(heap)
+
+            # First pop of destination is optimal (min-heap guarantee)
+            if node == dst:
+                return cost
+
+            # Constraint exceeded — prune
+            if stops > K:
+                continue
+
+            # 2D pruning: skip if (node, stops) already seen cheaper
+            if (node, stops) in best and best[(node, stops)] <= cost:
+                continue
+            best[(node, stops)] = cost
+
+            for nei, price in graph[node]:
+                heapq.heappush(heap, (cost + price, nei, stops + 1))
+
+        return -1
+```
 
 ```java
 // LC 787 - Cheapest Flights Within K Stops
-// IDEA: Dijkstra with state (cost, node, stops); stop expanding when stops > k
-// time = O(E * K log(E*K)), space = O(E*K)
+// IDEA: Constrained Dijkstra with 2D state (node, stops)
+// time = O(E * K * log(E * K)), space = O(E * K)
 public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
     Map<Integer, List<int[]>> graph = new HashMap<>();
-    for (int[] f : flights) graph.computeIfAbsent(f[0], x -> new ArrayList<>()).add(new int[]{f[1], f[2]});
-    int[] dist = new int[n];
-    Arrays.fill(dist, Integer.MAX_VALUE);
-    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[0] - b[0]); // [cost, node, stops]
+    for (int[] f : flights)
+        graph.computeIfAbsent(f[0], x -> new ArrayList<>()).add(new int[]{f[1], f[2]});
+
+    // [cost, node, stops_used]
+    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[0] - b[0]);
     pq.offer(new int[]{0, src, 0});
+
+    // best[node][stops] = min cost to reach node using exactly 'stops' edges
+    // 2D array replaces the 1D dist[] used in standard Dijkstra
+    int[][] best = new int[n][k + 2];
+    for (int[] row : best) Arrays.fill(row, Integer.MAX_VALUE);
+    best[src][0] = 0;
+
     while (!pq.isEmpty()) {
         int[] cur = pq.poll();
         int cost = cur[0], u = cur[1], stops = cur[2];
         if (u == dst) return cost;
         if (stops > k) continue;
-        for (int[] e : graph.getOrDefault(u, new ArrayList<>()))
-            if (cost + e[1] < dist[e[0]]) { dist[e[0]] = cost + e[1]; pq.offer(new int[]{dist[e[0]], e[0], stops + 1}); }
+        for (int[] e : graph.getOrDefault(u, new ArrayList<>())) {
+            int newCost = cost + e[1];
+            if (newCost < best[e[0]][stops + 1]) {
+                best[e[0]][stops + 1] = newCost;
+                pq.offer(new int[]{newCost, e[0], stops + 1});
+            }
+        }
     }
     return -1;
 }
 ```
 
-```python
-# LC 787 Cheapest Flights Within K Stops
-# V1
-# IDEA : Dijkstra
-# https://leetcode.com/problems/cheapest-flights-within-k-stops/discuss/267200/Python-Dijkstra
-# IDEA
-# -> To implement Dijkstra, we need a priority queue to pop out the lowest weight node for next search. In this case, the weight would be the accumulated flight cost. So my node takes a form of (cost, src, k). cost is the accumulated cost, src is the current node's location, k is stop times we left as we only have at most K stops. I also convert edges to an adjacent list based graph g.
-# -> Use a vis array to maintain visited nodes to avoid loop. vis[x] record the remaining steps to reach x with the lowest cost. If vis[x] >= k, then no need to visit that case (start from x with k steps left) as a better solution has been visited before (more remaining step and lower cost as heappopped beforehand). And we should initialize vis[x] to 0 to ensure visit always stop at a negative k.
-# -> Once k is used up (k == 0) or vis[x] >= k, we no longer push that node x to our queue. Once a popped cost is our destination, we get our lowest valid cost.
-# -> For Dijkstra, there is not need to maintain a best cost for each node since it's kind of greedy search. It always chooses the lowest cost node for next search. So the previous searched node always has a lower cost and has no chance to be updated. The first time we pop our destination from our queue, we have found the lowest cost to our destination.
-import collections
-import math
-class Solution:
-    def findCheapestPrice(self, n, flights, src, dst, K):
-        graph = collections.defaultdict(dict)
-        for s, d, w in flights:
-            graph[s][d] = w
-        pq = [(0, src, K+1)]
-        vis = [0] * n
-        while pq:
-            w, x, k = heapq.heappop(pq)
-            if x == dst:
-                return w
-            if vis[x] >= k:
-                continue
-            vis[x] = k
-            for y, dw in graph[x].items():
-                heapq.heappush(pq, (w+dw, y, k-1))
-        return -1
+**Why `dist[node]` pruning fails (concrete trace):**
+```
+n=4, flights: 0→1(100), 0→2(500), 1→2(100), 2→3(10), 1→3(800), src=0, dst=3, K=2
+
+Standard dist[] approach:
+  Pop (0, node=0, stops=0) → expand neighbors
+  Pop (100, node=1, stops=1) → dist[1]=100, expand neighbors
+  Push (900, node=3, stops=2) and (200, node=2, stops=2)
+  Pop (200, node=2, stops=2) → dist[2]=200, expand neighbors
+  Push (210, node=3, stops=3)  ← stops=3 > K=2, pruned!
+  Pop (500, node=2, stops=1) → dist[2]=200 < 500 → SKIP ← standard pruning fires
+  ...but we needed to reach node=2 at stops=1 to then reach node=3 at stops=2!
+
+With best[(node, stops)]:
+  best[(1,1)]=100, best[(2,2)]=200, best[(2,1)]=500 are all DIFFERENT states
+  Path 0→2→3 = 500+10=510 at stops=2 is correctly explored
+  Answer: 510 (not 210 since that needs 3 stops)
 ```
 
 ### 2-3) Path With Minimum Effort (LC 1631) — Dijkstra Min Effort on Grid
