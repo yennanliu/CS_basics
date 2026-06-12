@@ -12,13 +12,13 @@
 
 - Blind 75
 
-	- greedy
+	- greedy (doing)
 	- intervals
 	- math & geometry
 
 - needcode 150
 
-	- 2D DP (doing)
+	- 2D DP (done)
 	- greedy
 	- intervals
 	- math & geometry

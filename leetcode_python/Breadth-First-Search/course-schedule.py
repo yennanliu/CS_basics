@@ -35,6 +35,67 @@ All the pairs prerequisites[i] are unique.
 
 """
 
+
+# V0
+# IDEA 1) TOPO SORT
+from collections import deque
+
+class Solution(object):
+    def canFinish(self, numCourses, prerequisites):
+
+        # adjacency list: prereq -> courses that depend on it
+        """
+        NOTE !!!
+
+
+        graph: {pre: [next_1, next_2, ....]}
+
+
+        https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/BFS/CourseSchedule2.java#L107
+        
+        """
+        graph = {i: [] for i in range(numCourses)}
+
+        indegree = [0] * numCourses
+
+        # build graph
+        for cur, pre in prerequisites:
+            graph[pre].append(cur)
+            # NOTE !!!
+            # we update `degree` on `next` course
+            indegree[cur] += 1
+
+        # start with all courses that have no prerequisites
+        q = deque()
+
+        for i in range(numCourses):
+            if indegree[i] == 0:
+                q.append(i)
+
+        count = 0
+
+        while q:
+            # NOTE !!!
+            # use `popleft()` in BFS in py
+            cur = q.popleft()
+            count += 1
+
+            # unlock next courses
+            for nxt in graph[cur]:
+                """
+                NOTE !!!
+
+                -> we update degree on `next` course
+                -> if any `next` course has `0` degree
+                    -> add to queue (BFS)
+                """
+                indegree[nxt] -= 1
+                if indegree[nxt] == 0:
+                    q.append(nxt)
+
+        return count == numCourses
+
+
 # V0
 # IDEA: DFS + STATUS CHECK
 class Solution(object):
