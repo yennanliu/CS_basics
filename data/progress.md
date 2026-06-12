@@ -5,6 +5,7 @@
 - backtrack.md
 	- todo: `Type 2) : Permutations (排列組合) (全排列)`
 - graph.md
+	- todo: `2) LC Example`
 - dp.md
 - greedy.md
 
