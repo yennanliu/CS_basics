@@ -156,6 +156,97 @@ class Solution(object):
         return res
 
 
+words = ["aba","bcb","ece","aa","e"]
+
+cnt = [1,0,1,1,1]
+
+prefix = [0] * (len(cnt) + 1)
+
+#[0,0,0,0,0,0]
+
+
+
+for i in range(len(cnt)):
+    prefix[i+1] = prefix[i] + cnt[i]
+
+prefix
+
+
+-> prefix = [0, 1,1,2,3,4]
+
+
+
+-> [0,2] = prefix[2+1] - prefix[0] = 2 - 0 = 2
+-> [1,4] =  prefix[4+1] - prefix[1] = 4 - 1 = 3
+-> [1,1] = prefix[1+1] - prefix[1] = 1 - 1 = 0
+
+
+# V2
+# IDEA: PREFIX SUM
+class Solution(object):
+    def vowelStrings(self, words, queries):
+        # edge
+
+        # ??
+        vowel = "aeiou"
+        prefix = [0 for i in range(len(words) + 1)]
+        
+        for i in range(1, len(words)):
+            word = words[i]
+           is_vowel_word = (
+                    word[0] in vowel and word[-1] in vowel
+                )
+            #if word[0] in vowel and word[-1] in vowel:
+            #    prefix[i] = (prefix[i-1] + 1)
+            is_vowel_word:
+                prefix[i] = (prefix[i-1] + 1)
+
+        res = []        
+        for q in queries:
+            start = q[0]
+            end = q[1]
+            res.append(prefix[end + 1] - prefix[start])
+
+        return res
+
+
+--------------- (fixed)
+
+class Solution(object):
+    def vowelStrings(self, words, queries):
+        """
+        :type words: List[str]
+        :type queries: List[List[int]]
+        :rtype: List[int]
+        """
+        vowel = "aeiou"
+        # Create a prefix sum array padded with an extra leading zero slot
+        prefix = [0 for i in range(len(words) + 1)]
+        
+        # CRITICAL FIX: Wrap words in len() to get the proper integer range
+        for i in range(len(words)):
+            word = words[i]
+            
+            # Check if the word starts and ends with a vowel
+            if word[0] in vowel and word[-1] in vowel:
+                # CRITICAL FIX: Assign to prefix[i + 1] using prefix[i] as the history source
+                prefix[i + 1] = prefix[i] + 1
+            else:
+                # CRITICAL FIX: If not a vowel string, carry the previous count forward unchanged
+                prefix[i + 1] = prefix[i]
+                
+        res = []        
+        for q in queries:
+            start = q[0]
+            end = q[1]
+            # This is 100% correct! Constant-time slice calculation.
+            res.append(prefix[end + 1] - prefix[start])
+            
+        return res
+        
+
+
+
 
 # LC 2560
 https://leetcode.com/problems/house-robber-iv/description/
