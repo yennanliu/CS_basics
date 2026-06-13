@@ -36,14 +36,38 @@ class Solution(object):
         farthest = 0
 
         for i in range(len(nums)):
+            """
+            NOTE !!!
+
+            -> if we failed to reach any i
+                -> return false directly
+            """
             if i > farthest:
                 return False
 
+            """
+            NOTE !!!
+
+            -> keep tracking `the farest idx` can reach
+                -> farthest = max(farthest, i + nums[i])
+            """
             farthest = max(farthest, i + nums[i])
 
+
+            """
+            NOTE !!!
+
+            -> if can reach destination at any point
+                -> return true directly
+            """
             if farthest >= len(nums) - 1:
                 return True
 
+            """
+            NOTE !!!
+
+            return true if can reach final stage
+            """
         return True
 
 
