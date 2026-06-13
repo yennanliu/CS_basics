@@ -77,12 +77,174 @@ class Solution(object):
 https://leetcode.com/problems/count-vowel-strings-in-ranges/
 
 
+-> Return an array ans of size `queries.length`, 
+where `ans[i]` is the 
+answer to the `ith query.`
+
+
+ueries[i] = [li, ri]
+-> # of strs in [li, ri] that
+START and END with a vowel
+
+
+# ???
+
+# 1) brute force
+
+# 2) hashmap record first, last idx of vowel
+
+Input: words = ["aba","bcb","ece","aa","e"],
+ queries = [[0,2],[1,4],[1,1]]
+
+
+map: {0: [0,2], 1: [-1,-1], 2: [0, 2], 3:[0,1], 4: [0,0]}
+
+
+ 
+# 3) hashmap record first, last idx of vowel V2
+
+
+map: {start: [end_1, end_2, ...]}
+
+map: {0 : [2, 2, 1, 0] }
+
+
 
 
 class Solution(object):
     def vowelStrings(self, words, queries):
-        pass
-        
+        # edge
+
+        # ??
+        # map: {start: [end_1, end_2, ...]}
+        idx_map = {}
+        for i in range(len(words)):
+            start = words[i][0]
+            end = words[i][1]
+            if start not in idx_map:
+                idx_map[start] = []
+
+            #idx_map[get_vowel_start_end(words[i])]
+            idx_map.append(end)
+
+        res = []
+        for i in range(queries):
+            start = queries[i][0]
+            end = queries[i][1]
+            cnt = 0
+            for val in idx_map.get(start):
+                if end == val:
+                    cnt += 1
+                # other cases
+            res[i] = cnt
+
+        return res
+
+
+
+# LC 2560
+https://leetcode.com/problems/house-robber-iv/description/
+
+
+
+-> Return the `minimum` capability 
+of the robber out of all 
+the possible ways to steal
+ `at least k houses.`
+
+
+-> CAN'T steal adjacent homes.
+
+
+nums[i]: money at i idx
+
+
+The capability of the robber is 
+the `maximum` amount of money 
+he steals from one house of 
+all the houses he robbed.
+
+at least k houses
+
+-> skip n - k
+
+
+
+# idea 1) brute force ??
+
+-> time: (k * k...) -> k ^ n
+
+# idea 2) greedy ??
+
+
+# ??
+# idea 3) dp ??
+
+
+DP def
+
+ dp[i] =  capability of robber at idx = i ??
+
+DP eq
+
+
+# idea 4) backtrack + dfs ???
+
+
+class Solution(object):
+    def minCapability(self, nums, k):
+        # edge
+        # ??
+        cache = []
+        for i in range(len(nums)):
+            cache.append(helper(nums, k, cache, i, i))
+
+        return min(cache)
+
+
+    # ??
+    def helper(self, nums, k, cache, start_idx, prev_idx):
+        if k == 0:
+            return min(cache)
+        if k < 0:
+            return
+        for i in range(start_idx, len(nums)):
+            if i - prev_idx > 1:
+                cache.append(nums[i])
+                # ??
+                helper(nums, k-1, cache, i+1, i)
+
+                # undo (backtrack)
+                cache.popleft()
+
+
+
+
+
+
+
+
+
+
+# idea 1) brute force ??
+class Solution(object):
+    def minCapability(self, nums, k):
+        # edge
+
+        cache = []
+
+        for i in range(len(nums)):
+            #cnt = 0
+            tmp = []
+            for j in range(i, len(nums), 2):
+                tmp.append(nums[j])
+
+
+
+
+
+
+
 
 
 
