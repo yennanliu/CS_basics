@@ -25,6 +25,35 @@ Constraints:
 """
 
 # V0
+# IDEA : SCANNING LINE
+class Solution:
+    def minMeetingRooms(self, intervals):
+        event_list = []
+
+        for start, end in intervals:
+            event_list.append((start, 1))
+            event_list.append((end, -1))
+
+        """
+        NOTE !!!
+
+         sort 
+          - time
+          - state (close -> open)
+        """
+        event_list.sort(key=lambda x: (x[0], x[1]))
+
+        cur_room = 0
+        max_room = 0
+
+        for _, delta in event_list:
+            cur_room += delta
+            max_room = max(max_room, cur_room)
+
+        return max_room
+
+
+# V0
 # IDEA : SCANNING LINE : Sort all time points and label the start and end points. Move a vertical line from left to right.
 class Solution:
      def minMeetingRooms(self, intervals):
