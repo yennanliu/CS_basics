@@ -71,6 +71,21 @@ class Solution(object):
             res += (-1 * val)
         return res
         
+#----------------- (fixed)
+
+import heapq
+import math
+
+class Solution(object):
+    def pickGifts(self, gifts, k):
+        heap = [-g for g in gifts]
+        heapq.heapify(heap)
+
+        for _ in range(k):
+            g = -heapq.heappop(heap)
+            heapq.heappush(heap, -int(math.sqrt(g)))
+
+        return -sum(heap)
 
 
 # LC 2559
