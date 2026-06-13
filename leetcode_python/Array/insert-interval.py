@@ -46,6 +46,67 @@ newInterval.length == 2
 """
 
 # V0
+# IDEA: INTERVAL OP + SORTING
+class Solution(object):
+    def insert(self, intervals, newInterval):
+        intervals.append(newInterval)
+
+        intervals.sort(key=lambda x: x[0])
+
+        res = [intervals[0]]
+
+        for i in range(1, len(intervals)):
+            new = intervals[i]
+
+            if res[-1][1] >= new[0]:
+                prev = res.pop()
+
+                res.append([
+                    min(prev[0], new[0]),
+                    max(prev[1], new[1])
+                ])
+            else:
+                res.append(new)
+
+        return res
+
+
+# V0-1
+# IDEA: INTERVAL OP + SORTING
+class Solution(object):
+    def insert(self, intervals, newInterval):
+        """
+        :type intervals: List[List[int]]
+        :type newInterval: List[int]
+        :rtype: List[List[int]]
+        """
+        res = []
+        i = 0
+        n = len(intervals)
+        
+        # Stage 1: Add all intervals that end BEFORE the new interval starts
+        while i < n and intervals[i][1] < newInterval[0]:
+            res.append(intervals[i])
+            i += 1
+            
+        # Stage 2: Merge all intervals that overlap with the new interval
+        # An interval overlaps if its start position is less than or equal to the new interval's end
+        while i < n and intervals[i][0] <= newInterval[1]:
+            newInterval[0] = min(newInterval[0], intervals[i][0])
+            newInterval[1] = max(newInterval[1], intervals[i][1])
+            i += 1
+        # Append the completely merged new interval
+        res.append(newInterval)
+        
+        # Stage 3: Add all remaining intervals that start AFTER the new interval ends
+        while i < n:
+            res.append(intervals[i])
+            i += 1
+            
+        return res
+
+
+# V0
 # IDEA : compare merged[-1][1]. interval[0]
 # https://leetcode.com/problems/insert-interval/discuss/1236101/Python3-Easy-to-Understand-Solution
 ### NOTE : there are only 2 cases
