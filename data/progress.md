@@ -7,7 +7,7 @@
 - graph.md
 	- todo: `2) LC Example`
 - dp.md
-	- todo: `Problem Categories`
+	- todo: `Universal DP Template`
 - greedy.md
 - intervals.md
 - tree.md
@@ -24,6 +24,11 @@
 	- greedy
 	- intervals
 	- math & geometry
+
+- LC weekly
+	- `lc_weekly_gemini.md`
+	- Weekly Contest 331
+		- https://leetcode.com/contest/weekly-contest-331/
 
 - Others
 	- DP - `0/1 Knapsack and` -> revisit
