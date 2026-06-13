@@ -34,6 +34,82 @@ intervals[i].length == 2
 """
 
 # V0
+# IDEA: GREEDY + SORT ON END + max_end
+class Solution(object):
+    def eraseOverlapIntervals(self, intervals):
+        if len(intervals) <= 1:
+            return 0
+
+        """
+        NOTE !!!
+
+         greedy idea,
+         -> sort on `end` (min -> big)
+        """
+        intervals.sort(key=lambda x: x[1])
+
+        count = 0
+        """
+        NOTE !!!
+
+        maintain the `prev_end`,
+        to check if there is an overlapping
+        """
+        prev_end = intervals[0][1]
+
+        for i in range(1, len(intervals)):
+            start, end = intervals[i]
+
+            """
+            NOTE !!!
+
+            check if there is an overlapping
+            """
+            if start < prev_end:
+                count += 1
+            else:
+                prev_end = end
+
+        return count
+
+
+# V0-1
+# IDEA: GREEDY + SORT ON END + max_end
+class Solution(object):
+    def eraseOverlapIntervals(self, intervals):
+        """
+        :type intervals: List[List[int]]
+        :rtype: int
+        """
+        if not intervals:
+            return 0
+            
+        # CRITICAL GREEDY FIX: Sort strictly by END times (x[1]).
+        # If end times match, Python naturally falls back to sorting by start times (x[0]).
+        intervals.sort(key=lambda x: x[1])
+        
+        # Track the end time of the last non-overlapping interval we successfully kept
+        prev_end = intervals[0][1]
+        deletions = 0
+        
+        # Walk through the intervals starting from the second one
+        for i in range(1, len(intervals)):
+            current_start = intervals[i][0]
+            current_end = intervals[i][1]
+            
+            # CRITICAL FIX: If the current interval starts BEFORE the previous one ends,
+            # we have an overlap! Because we sorted by end times, the current interval
+            # is guaranteed to end later than prev_end, so we greedily erase it.
+            if current_start < prev_end:
+                deletions += 1
+            else:
+                # No overlap! We safely keep this interval and update our end-marker boundary
+                prev_end = current_end
+                
+        return deletions
+
+
+# V0
 # IDEA : 2 POINTERS + sorting + intervals
 # TODO : make it general : (sort by x[0] or x[1] and the op)
 class Solution(object):
