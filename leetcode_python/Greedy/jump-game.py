@@ -29,6 +29,54 @@ Constraints:
 """
 
 # V0
+# IDEA: GREEDY
+# -> keep tracking `farthest`
+class Solution(object):
+    def canJump(self, nums):
+        farthest = 0
+
+        for i in range(len(nums)):
+            if i > farthest:
+                return False
+
+            farthest = max(farthest, i + nums[i])
+
+            if farthest >= len(nums) - 1:
+                return True
+
+        return True
+
+
+# V0-1
+# IDEA: GREEDY
+# -> keep tracking `farthest`
+class Solution(object):
+    def canJump(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: bool
+        """
+        # The furthest index we can currently reach
+        max_reachable = 0
+        target = len(nums) - 1
+        
+        for i in range(len(nums)):
+            # CRITICAL FIX: If our current index is beyond what we can reach,
+            # it means we hit a 0 somewhere earlier and are completely stuck.
+            if i > max_reachable:
+                return False
+                
+            # CRITICAL FIX: Dynamically update the furthest index reachable
+            max_reachable = max(max_reachable, i + nums[i])
+            
+            # Short-circuit optimization: If we can already reach the end, stop early!
+            if max_reachable >= target:
+                return True
+                
+        return max_reachable >= target
+
+
+# V0
 class Solution(object):
     def canJump(self, nums):
         # edge case
