@@ -37,6 +37,8 @@
 		- 1209(todo),1963(todo),227(todo),394(todo),34(todo),875(todo),81(todo)
 		- 377(todo, Permutations DP),210
 		- 0/1 knapsack DP
+		- `Combinations VS Permutations` in DP
+			- https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Dynamic_Programming/coin_change_2.py#L125
 
 
 # 2026-06-12
