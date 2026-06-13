@@ -8,9 +8,9 @@
 # https://leetcode.com/contest/weekly-contest-331/
 
 
+#--------------------------------------------------
 # LC 2558
 1) https://leetcode.com/problems/take-gifts-from-the-richest-pile/
-
 
 
 gists: arr, # of gift in piles
@@ -88,6 +88,7 @@ class Solution(object):
         return -sum(heap)
 
 
+#--------------------------------------------------
 # LC 2559
 https://leetcode.com/problems/count-vowel-strings-in-ranges/
 
@@ -243,11 +244,11 @@ class Solution(object):
             res.append(prefix[end + 1] - prefix[start])
             
         return res
-        
 
 
 
 
+#--------------------------------------------------
 # LC 2560
 https://leetcode.com/problems/house-robber-iv/description/
 
@@ -348,8 +349,34 @@ class Solution(object):
 
 
 
+# IDEA 3) binary search (fixed)
+class Solution(object):
+    def minCapability(self, nums, k):
 
+        def can_take(cap):
+            count = 0
+            i = 0
 
+            while i < len(nums):
+                if nums[i] <= cap:
+                    count += 1
+                    i += 2  # skip adjacent
+                else:
+                    i += 1
+
+            return count >= k
+
+        left, right = min(nums), max(nums)
+
+        while left < right:
+            mid = (left + right) // 2
+
+            if can_take(mid):
+                right = mid
+            else:
+                left = mid + 1
+
+        return left
 
 
 
