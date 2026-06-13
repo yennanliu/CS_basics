@@ -7,7 +7,7 @@
 - graph.md
 	- todo: `2) LC Example`
 - dp.md
-	- todo: `Universal DP Template`
+	- todo: `3. Handling the “Empty” Base Case`
 - greedy.md
 - intervals.md
 - tree.md
