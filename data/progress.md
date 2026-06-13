@@ -1,5 +1,45 @@
 # Progress
 
+
+# 2026-06-14
+
+- backtrack.md
+	- todo: `Type 2) : Permutations (排列組合) (全排列)`
+- graph.md
+	- todo: `2) LC Example`
+- dp.md
+	- todo: `3. Handling the “Empty” Base Case`
+- greedy.md
+- intervals.md
+- tree.md
+
+
+- Blind 75
+
+	- math & geometry (doing)
+
+- needcode 150
+
+	- greedy
+	- intervals
+	- math & geometry
+
+- LC weekly
+	- `lc_weekly_gemini.md`
+	- Weekly Contest 331
+		- https://leetcode.com/contest/weekly-contest-331/
+
+- Others
+	- DP - `0/1 Knapsack and` -> revisit
+	- recent updated cheatsheet
+	- TODO LC:
+		- 1209(todo),1963(todo),227(todo),394(todo),34(todo),875(todo),81(todo)
+		- 377(todo, Permutations DP),210
+		- 0/1 knapsack DP
+		- `Combinations VS Permutations` in DP
+			- https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Dynamic_Programming/coin_change_2.py#L125
+
+
 # 2026-06-13
 
 - backtrack.md
