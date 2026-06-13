@@ -78,6 +78,61 @@
 
 ## 0) Concept
 
+### How to Build the Prefix Sum Array (核心)
+
+The whole technique rests on **one core line**. Memorize this and the rest follows:
+
+```python
+for i in range(len(cnt)):
+    prefix[i + 1] = prefix[i] + cnt[i]
+```
+
+**Step-by-step:**
+
+```python
+cnt = [1, 0, 1, 1, 1]
+
+# Step 1: allocate size n+1, fill with 0
+#   the leading prefix[0] = 0 is the "empty sum" sentinel
+#   -> lets sum(0, r) work without a special case
+prefix = [0] * (len(cnt) + 1)
+# prefix = [0, 0, 0, 0, 0, 0]
+
+# Step 2: each prefix[i+1] = running total up to (and including) cnt[i]
+for i in range(len(cnt)):
+    prefix[i + 1] = prefix[i] + cnt[i]
+
+# prefix = [0, 1, 1, 2, 3, 4]
+```
+
+**Trace (why the index is `i + 1`, not `i`):**
+
+```
+cnt:        [ 1,  0,  1,  1,  1 ]
+index i:      0   1   2   3   4
+
+prefix[0] = 0                 ← sentinel (empty prefix)
+prefix[1] = prefix[0] + cnt[0] = 0 + 1 = 1
+prefix[2] = prefix[1] + cnt[1] = 1 + 0 = 1
+prefix[3] = prefix[2] + cnt[2] = 1 + 1 = 2
+prefix[4] = prefix[3] + cnt[3] = 2 + 1 = 3
+prefix[5] = prefix[4] + cnt[4] = 3 + 1 = 4
+
+prefix = [0, 1, 1, 2, 3, 4]
+          ↑                 ↑
+       empty sum        sum of ALL cnt
+```
+
+> **Key:** `prefix` is one element LONGER than `cnt`. `prefix[i+1]` answers
+> "sum of the first `i+1` elements" = `cnt[0] + ... + cnt[i]`.
+
+**One-liner alternative** (`itertools.accumulate` with a leading 0):
+
+```python
+from itertools import accumulate
+prefix = list(accumulate(cnt, initial=0))   # [0, 1, 1, 2, 3, 4]
+```
+
 ### Why `sum(l, r) = prefix[r+1] - prefix[l]`
 
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/prefix_sum_2.png"></p>

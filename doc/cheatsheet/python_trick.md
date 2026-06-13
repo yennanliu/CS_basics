@@ -2389,3 +2389,69 @@ class Trie:
             node = node.children[ch]
         return True
 ```
+
+### 1-53) Build a `prefix sum` array
+
+The cumulative-sum idiom: precompute running totals so any range sum becomes O(1).
+See [`prefix_sum.md`](./prefix_sum.md) for the full cheatsheet.
+
+```python
+cnt = [1, 0, 1, 1, 1]
+
+# Step 1: allocate size n+1, fill with 0
+#   prefix[0] = 0 is the "empty sum" sentinel
+#   -> makes sum starting at index 0 work without a special case
+prefix = [0] * (len(cnt) + 1)
+# prefix = [0, 0, 0, 0, 0, 0]
+
+# Step 2 (CORE) : prefix[i+1] = running total up to (and including) cnt[i]
+for i in range(len(cnt)):
+    prefix[i + 1] = prefix[i] + cnt[i]
+
+# prefix = [0, 1, 1, 2, 3, 4]
+```
+
+**The one line to memorize:**
+```python
+for i in range(len(cnt)):
+    prefix[i + 1] = prefix[i] + cnt[i]
+```
+
+**Trace (note the result is ONE element longer than `cnt`):**
+```
+cnt:        [ 1,  0,  1,  1,  1 ]
+index i:      0   1   2   3   4
+
+prefix[0] = 0                            ← sentinel (empty prefix)
+prefix[1] = prefix[0] + cnt[0] = 0 + 1 = 1
+prefix[2] = prefix[1] + cnt[1] = 1 + 0 = 1
+prefix[3] = prefix[2] + cnt[2] = 1 + 1 = 2
+prefix[4] = prefix[3] + cnt[3] = 2 + 1 = 3
+prefix[5] = prefix[4] + cnt[4] = 3 + 1 = 4
+
+prefix = [0, 1, 1, 2, 3, 4]
+          ↑                 ↑
+       empty sum        sum of ALL cnt
+```
+
+**Why index `i + 1` (not `i`)?** `prefix` has size `n+1` and `prefix[k]` = "sum of
+the first `k` elements". So writing into `prefix[i+1]` keeps the leading `prefix[0]=0`
+intact — which lets you query `sum(l, r) = prefix[r+1] - prefix[l]` with no edge case.
+
+**One-liner alternative** — `itertools.accumulate` with `initial=0`:
+```python
+from itertools import accumulate
+prefix = list(accumulate(cnt, initial=0))   # [0, 1, 1, 2, 3, 4]
+
+# without initial=0 -> same length as cnt, no leading sentinel
+list(accumulate(cnt))                        # [1, 1, 2, 3, 4]
+```
+
+**Range sum query (O(1) after the O(n) build):**
+```python
+# sum of cnt[l .. r] inclusive
+def range_sum(l, r):
+    return prefix[r + 1] - prefix[l]
+
+range_sum(1, 3)   # cnt[1]+cnt[2]+cnt[3] = 0+1+1 = 2  -> prefix[4]-prefix[1] = 3-1 = 2
+```
