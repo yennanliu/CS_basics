@@ -1,0 +1,91 @@
+# LC Weekly 331
+
+(90 min)
+
+4.12 pm - 5.42 pm
+
+
+# https://leetcode.com/contest/weekly-contest-331/
+
+
+# LC 2558
+1) https://leetcode.com/problems/take-gifts-from-the-richest-pile/
+
+
+
+gists: arr, # of gift in piles
+every sec, can do below op:
+
+1. choose pile with max number
+2. if more thant one, choose any
+3.  n -> sqrt(n)
+
+
+
+-> Return the number of gifts
+ remaining after k seconds.
+
+
+gifts = [25,64,9,4,100], k = 4
+
+[25,64,9,4,10]
+[25,8,9,4,10]
+[5,8,9,4,10]
+[5,8,9,4,3]
+
+
+ gifts = [1,1,1,1], k = 4
+[1,1,1,1]
+
+
+idea 1) brute force (similuation)
+
+
+idea 2) big PQ
+
+
+# dry run
+
+gifts = [25,64,9,4,100], k = 4
+
+max_pq = [-25,-64,-9,-4,-100]
+
+k = 0, cur=-100, max_pq = [-25,-64,-9,-4,-10]
+k = 1, cur=-64, max_pq = [-25,-8,-9,-4,-10]
+[-5,-8,-9,-4,-10]
+[-5,-8,-9,-4,-3]
+
+# time: O(NlogN) (heapfify ??) + O(N)
+# space: O(N)
+
+# idea 2) big PQ
+class Solution(object):
+    def pickGifts(self, gifts, k):
+        # edge
+        big_pq = heapify([-1 * x for x in gifts])
+        for i in range(k):
+            cur = big_pq.heappop()
+            big_pq.add(-1 * math.sqrt(math.abs(cur)))
+        res = 0
+        for val in big_pq:
+            res += (-1 * val)
+        return res
+        
+
+
+# LC 2559
+https://leetcode.com/problems/count-vowel-strings-in-ranges/
+
+
+
+
+class Solution(object):
+    def vowelStrings(self, words, queries):
+        pass
+        
+
+
+
+
+
+
