@@ -16,8 +16,8 @@
 - Blind 75
 
 	- greedy (done)
-	- intervals (doing)
-	- math & geometry
+	- intervals (done)
+	- math & geometry (doing)
 
 - needcode 150
 
