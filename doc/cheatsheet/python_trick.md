@@ -453,6 +453,46 @@ for time in reversed(times):    # same effect, no extra list copy
 data.sort(key=lambda x: (-x[0], x[1]))
 ```
 
+### 1-11'') Multi-key tuple sort: `key=lambda x: (x[0], x[1])`
+
+Sort by multiple fields using a tuple key — Python compares tuples element-by-element (left to right), so the first key is primary, second is tiebreaker, and so on.
+
+```python
+# ── Syntax ──
+event_list.sort(key=lambda x: (x[0], x[1]))
+# Primary sort: x[0] ASC; tiebreaker: x[1] ASC
+
+# ── Common LC patterns ──
+
+# 1. Sort intervals by start time, then by end time (LC 56 Merge Intervals, LC 252/253 Meeting Rooms)
+intervals.sort(key=lambda x: (x[0], x[1]))
+
+# 2. Sort by one field ASC, another DESC  (use negation for DESC)
+events.sort(key=lambda x: (x[0], -x[1]))   # primary ASC, secondary DESC
+
+# 3. Three-key sort
+tasks.sort(key=lambda x: (x[0], x[1], x[2]))
+
+# 4. Sort list of dicts
+people.sort(key=lambda x: (x['age'], x['name']))
+
+# ── Why tuple sorting works ──
+# Python tuple comparison:  (a0, a1) < (b0, b1)
+#   → True if a0 < b0, OR (a0 == b0 AND a1 < b1)
+# This is exactly "sort by a0 first; break ties by a1".
+
+# ── sorted() variant (returns new list) ──
+sorted_events = sorted(event_list, key=lambda x: (x[0], x[1]))
+
+# ── Quick comparison table ──
+# Goal                          | Key
+# -----------------------------|----------------------------------
+# Primary ASC, tiebreak ASC    | (x[0], x[1])
+# Primary ASC, tiebreak DESC   | (x[0], -x[1])
+# Primary DESC, tiebreak ASC   | (-x[0], x[1])
+# Primary DESC, tiebreak DESC  | (-x[0], -x[1])
+```
+
 ### 1-12) get remainder (residual) when divided by a number
 ```python
 #-----------------
