@@ -7,3 +7,294 @@
 2.11 - 3.41
 
 # https://leetcode.com/contest/weekly-contest-238/
+
+
+
+# LC 1837
+# https://leetcode.com/problems/sum-of-digits-in-base-k/
+
+
+# idea 1) math + brute force ???
+
+
+Input: n = 34, k = 6
+Output: 9
+
+->  34 (base 10)
+
+-> 5 + (4)* 6 = 34 
+
+-> so it's like change the base to k
+
+-> a * 1 + b * (k) + c * (k^2) + .....
+
+
+-> 34 / 6 = 5 + 4
+-> 54
+
+-> 100
+-> 100 / 6 = 16 * 6 + 4
+-> 16 / 6 = 2 * 6 + 4
+
+-> 16 + 2 + 4
+
+
+
+time: O(N / K)
+space: O(1)
+
+class Solution(object):
+    def sumBase(self, n, k):
+    	# edge
+    	if n == k:
+    		res = 0
+    		for x in str(n):
+    			res += int(x)
+    		return res
+
+
+    	#list = []
+    	res = 0
+    	while n // k > k:
+    		#list.append(n // k)
+    		res += (n // k)
+    		n = (n // k)
+
+    	return res
+
+
+
+
+
+# LC 1838
+# https://leetcode.com/problems/frequency-of-the-most-frequent-element/description/
+
+
+
+-> Return the `maximum` possible `frequency `
+of an element 
+after performing `at most k op.`
+
+
+
+# idea 1) brute force
+
+
+Input: nums = [1,2,4], k = 5
+Output: 3
+
+
+# idea 1) binary search
+
+
+[1,2,4]
+
+-> try a `final val` (by binary search)
+   in l, r.
+   if the op of tranform to `final val` <= k
+   -> it's a  good choice
+   -> cnt the max freq accordingly
+
+
+
+[1,2,4]
+
+-> l = 1, r = 4
+
+if dest = 1, op=[0,0,0] -> freq = 1
+if dest = 2, op=[1,0,0] -> freq = 2
+if dest = 3, op=[2,1,0] -> freq = 3
+if dest = 4, op=[3,2,0] -> freq = 3
+
+
+
+Input: nums = [1,4,8,13], k = 5
+Output: 2
+
+-> l = 1, r = 13
+
+if dest = 1 ... freq =1 
+if dest = 2...
+...
+..
+if dest = 4, op=[3,0,0,0] -> freq=2
+if dest = 5, op=[4,1,0,0] -> freq=2
+
+
+....
+
+
+
+Input: nums = [3,9,6], k = 2
+Output: 1
+
+l=3, r = 9
+
+if dest=3, freq=1
+...
+if dest=6 , op=[3,0.0]
+
+
+# idea 1) binary search
+
+class Solution(object):
+    def maxFrequency(self, nums, k):
+    	# edge
+    	l = min(nums)
+    	r = max(nums)
+
+    	max_freq=1
+
+    	while r >= l:
+
+    		mid = l + (r - l) // 2
+
+    		freq = get_most_freq(nums, k, mid)
+
+    		# double check ????
+    		# ???
+    		if freq == 1:
+    			# try bigger x ?
+    			l = mid + 1
+    		elif freq > 0:
+    			max_freq = max(max_freq, freq)
+    			# try bigger x ?
+    			l = mid + 1
+    		# freq < 0
+    		else:
+    			# try smaller ??
+    			r = mid - 1 
+
+
+    	return max_freq
+
+
+    def can_finish(nums, k, x):
+    	freq=0
+    	for val in nums:
+    		if val == x:
+    			freq += 1
+    		elif val < x:
+    			k -= (x - val)
+    			freq += 1
+    			# ????
+    			if k < 0:
+    				return -1
+
+    	return freq
+
+
+
+
+
+
+# LC 1839
+# https://leetcode.com/problems/longest-substring-of-all-vowels-in-order/
+
+
+
+
+-> return the `length `of the 
+`longest` `beautiful` substring of word
+	-> if no, return 0
+
+
+str in `beautiful` if below:
+
+1.  5 English vowels ('a', 'e', 'i', 'o', 'u')
+    exists at lease ONCE
+
+2. The letters must be sorted in alphabetical order 
+
+   e.g.  all a ->  all e -> all i -> ...
+
+
+
+
+A substring is a `contiguous`
+sequence of characters in a string.
+
+
+
+# idea 1) brute force
+
+
+# idea 2) slide window + hashmap
+
+{ str: last_existed_idx }
+
+
+
+
+"aeiaaioaaaaeiiiiouuuooaauuaeiu"
+
+
+->
+
+`aei`
+
+"aeiaaioaaaaeiiiiouuuooaauuaeiu"
+    r
+ l
+    i
+
+
+aei
+aaaa
+aaaaeiiiiouuu
+
+
+
+Input: word = "aeeeiiiioooauuuaeiou"
+Output: 5
+
+
+
+"aeeeiiiioooauuuaeiou"
+
+
+# slide window
+
+from collections import Counter
+
+class Solution(object):
+    def longestBeautifulSubstring(self, word):
+    	# edge
+    	if len(word) < 5:
+    		return 0
+
+    	max_len = 0
+    	l = 0
+    	vowel = "aeiou"
+    	latest_prev_vow = None
+    	cnt_map = {}
+    	for r in range(len(word)):
+    		val = word[r]
+    		# ??
+    		if len(visited) == 5:
+    			max_len = max(max_len, r - l + 1)
+
+    		if not latest_prev_vow:
+    			latest_prev_vow = val
+    			visited.append(val)
+    		else:
+    			# reset
+    			if val - latest_prev_vow < 0:
+    				latest_prev_vow = val
+    				l = r
+    				cnt_map = Counter(s[l: r+1])
+
+    			cnt_map = Counter(s[l: r+1])
+
+
+
+    	return max_len
+
+
+
+
+
+
+
+
+
