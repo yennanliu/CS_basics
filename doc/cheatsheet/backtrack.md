@@ -1,5 +1,20 @@
 # Bracktrack 
 
+## Time Complexity
+
+> Backtracking is an **algorithm** (brute-force search over a decision tree), not a data structure — so the per-operation table used for data structures doesn't apply. Complexity is summarized **by problem type** instead.
+
+| Problem type      | Typical Time      | Space (excl. output) | Example      |
+| ----------------- | ----------------- | -------------------- | ------------ |
+| Subsets           | O(2^n · n)        | O(n)                 | LC 78, 90    |
+| Permutations      | O(n! · n)         | O(n)                 | LC 46, 47    |
+| Combinations      | O(C(n,k) · k)     | O(k)                 | LC 77        |
+| Combination Sum   | exponential       | O(target / min)      | LC 39, 40    |
+| Partitioning      | O(2^n · n)        | O(n)                 | LC 131       |
+| N-Queens          | O(n!)             | O(n)                 | LC 51        |
+
+> Time is generally **exponential** — `O(b^d)`, where `b` = branching factor and `d` = decision-tree depth. The trailing `· n` / `· k` is the cost of copying each valid path into the result. Space (excluding the output list) is the recursion depth ≈ O(n). **Pruning** trims branches and the constant factor but does not change the worst-case class.
+
 > Brute force via  `decision tree process`
 
 - [Algorithm ref : BackTrack](https://labuladong.online/algo/essential-technique/backtrack-framework/#%E4%B8%80%E3%80%81%E5%85%A8%E6%8E%92%E5%88%97%E9%97%AE%E9%A2%98)
