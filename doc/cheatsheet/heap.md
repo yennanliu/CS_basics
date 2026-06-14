@@ -1,5 +1,13 @@
 # Heap Data Structure
 
+## Time Complexity
+
+| Data structure | Search   | Insert   | Delete   | Min/Max  |
+| -------------- | -------- | -------- | -------- | -------- |
+| Heap           | O(n)     | O(log n) | O(log n) | O(1)     |
+
+> Peek of the top element (min for a min-heap / max for a max-heap) is **O(1)**; finding the *opposite* extreme is **O(n)**.
+
 ## Overview
 **Heap** is a complete binary tree that satisfies the heap property, making it ideal for efficient access to the largest or smallest element in a dataset. It's the foundation for priority queues and heap sort algorithms.
 

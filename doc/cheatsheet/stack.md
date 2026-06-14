@@ -1,5 +1,13 @@
 # Stack
 
+## Time Complexity
+
+| Data structure | Search   | Insert   | Delete   | Min/Max  |
+| -------------- | -------- | -------- | -------- | -------- |
+| Stack          | O(n)     | O(1)     | O(1)     | O(n)     |
+
+> Insert = push, Delete = pop (both at the top, **O(1)**). Min/Max can be made **O(1)** with an auxiliary min/max-stack ([monotonic_stack.md](./monotonic_stack.md)).
+
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/stack.jpeg"></p>
 
 **Stack** is a data structure with Last-In-First-Out (LIFO) property. Each operation adds/removes from the top of the stack.

@@ -1,5 +1,13 @@
 # BST (Binary Search Tree)
 
+## Time Complexity
+
+| Data structure | Search   | Insert   | Delete   | Min/Max  |
+| -------------- | -------- | -------- | -------- | -------- |
+| BST (average)  | O(log n) | O(log n) | O(log n) | O(log n) |
+
+> Average case shown (reasonably balanced tree). **Worst case (unbalanced / skewed): all operations O(n).** Min/Max = leftmost / rightmost node, i.e. O(h).
+
 ## Overview
 **Binary Search Tree (BST)** is a binary tree data structure where each node follows the ordering property: left child < parent < right child. This property enables efficient searching, insertion, and deletion operations.
 

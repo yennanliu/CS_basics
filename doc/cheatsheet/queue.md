@@ -1,5 +1,13 @@
 # Queue Data Structure
 
+## Time Complexity
+
+| Data structure | Search   | Insert   | Delete   | Min/Max  |
+| -------------- | -------- | -------- | -------- | -------- |
+| Queue          | O(n)     | O(1)     | O(1)     | O(n)     |
+
+> Insert = enqueue (rear), Delete = dequeue (front), both **O(1)**. Min/Max over a sliding window can be made **O(1)** amortized with a monotonic deque ([monotonic_queue.md](./monotonic_queue.md)).
+
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/queue2.png"></p>
 
 <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/stack_vs_queue.png"></p>

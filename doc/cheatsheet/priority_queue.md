@@ -1,5 +1,13 @@
 # Priority Queue (PQ) Data Structure 
 
+## Time Complexity
+
+| Data structure | Search   | Insert   | Delete   | Min/Max  |
+| -------------- | -------- | -------- | -------- | -------- |
+| Priority Queue | O(n)     | O(log n) | O(log n) | O(1)     |
+
+> Binary-heap backed — same complexities as [heap.md](./heap.md). "Min/Max" = peek the highest-priority element (**O(1)**).
+
 ## Overview
 **Priority Queue** is an abstract data type that operates similar to a regular queue but with an added priority element. Elements are served based on their priority rather than the order they were added.
 

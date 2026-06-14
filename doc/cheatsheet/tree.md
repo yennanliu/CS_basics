@@ -1,5 +1,13 @@
 # Tree Data Structure - Concepts & Patterns
 
+## Time Complexity
+
+| Data structure | Search   | Insert   | Delete   | Min/Max  |
+| -------------- | -------- | -------- | -------- | -------- |
+| Tree (general) | O(n)     | O(n)     | O(n)     | O(n)     |
+
+> General tree (no ordering guarantee) — every operation may visit all nodes. For an **ordered** tree with O(log n) operations see [bst.md](./bst.md).
+
 > **Note:** This file covers tree concepts, types, and algorithm patterns. For detailed traversal templates and code examples, see [tree2.md](./tree2.md).
 
 ## Overview

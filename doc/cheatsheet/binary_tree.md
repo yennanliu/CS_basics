@@ -1,5 +1,13 @@
 # Binary Tree
 
+## Time Complexity
+
+| Data structure | Search   | Insert   | Delete   | Min/Max  |
+| -------------- | -------- | -------- | -------- | -------- |
+| Binary Tree    | O(n)     | O(n)     | O(n)     | O(n)     |
+
+> General (unsorted) binary tree — no ordering, so every operation may visit all nodes. For an ordered variant see [bst.md](./bst.md).
+
 ## Overview
 **Binary Tree** is a hierarchical data structure where each node has at most two children (left and right). It forms the foundation for many advanced data structures like BST, Heap, and is crucial for understanding tree-based algorithms.
 

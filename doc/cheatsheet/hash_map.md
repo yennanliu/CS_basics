@@ -1,5 +1,13 @@
 # Hash Map Cheatsheet
 
+## Time Complexity
+
+| Data structure | Search   | Insert   | Delete   | Min/Max  |
+| -------------- | -------- | -------- | -------- | -------- |
+| Hash Map (avg) | O(1)     | O(1)     | O(1)     | O(n)     |
+
+> Average case shown. **Worst case (all keys collide): O(n).** Min/Max requires a full scan since hashing imposes no ordering.
+
 ## Overview
 Hash Map (Hash Table/Dictionary) is a fundamental data structure that provides efficient key-value storage and retrieval operations.
 

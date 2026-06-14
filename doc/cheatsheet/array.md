@@ -1,6 +1,14 @@
 # Array
 > Basic linear data structure
 
+## Time Complexity
+
+| Data structure | Search   | Insert   | Delete   | Min/Max  |
+| -------------- | -------- | -------- | -------- | -------- |
+| Array          | O(n)     | O(n)     | O(n)     | O(n)     |
+
+> Unsorted dynamic array. Index access is **O(1)**; append is **O(1)** amortized; arbitrary Insert/Delete is **O(n)** (shifting). Search drops to **O(log n)** if the array is sorted (binary search).
+
 ## 0) Concept
 
 - [Java Array](https://cloud.tencent.com/developer/article/1672332)

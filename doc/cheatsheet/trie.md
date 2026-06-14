@@ -2,6 +2,14 @@
 > Whenever we come across questions with multiple strings, it is best to think if Trie can help us.
 - https://leetcode.com/problems/search-suggestions-system/solution/
 
+## Time Complexity
+
+| Data structure | Search   | Insert   | Delete   | Min/Max  |
+| -------------- | -------- | -------- | -------- | -------- |
+| Trie           | O(L)     | O(L)     | O(L)     | O(L)     |
+
+> **L = length of the key (word)** — complexities are independent of the number of stored keys. Min/Max = lexicographically smallest / largest key.
+
 ## 0) Concept 
 - https://blog.csdn.net/fuxuemingzhu/article/details/79388432
 - tree + dict
