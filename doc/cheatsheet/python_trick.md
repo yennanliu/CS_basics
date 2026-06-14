@@ -2455,3 +2455,87 @@ def range_sum(l, r):
 
 range_sum(1, 3)   # cnt[1]+cnt[2]+cnt[3] = 0+1+1 = 2  -> prefix[4]-prefix[1] = 3-1 = 2
 ```
+
+### 1-54) DFS path: `str` (immutable, NO backtrack) vs `array` (mutable, NEEDS backtrack) ⭐⭐⭐⭐⭐
+
+When carrying a `path` down a DFS/backtracking recursion, **the data type decides whether you must undo (backtrack)**:
+
+```
+- if path is `str` type, we DON'T need to undo (backtrack)
+     -> since it's IMMUTABLE.
+
+- if path is `array` ([]) type, we NEED to undo (backtrack)
+     -> since it's MUTABLE.
+```
+
+**Why?**
+- A **`str`** is immutable: `path + "->" + str(node.val)` creates a **brand-new string** every call. The parent's `path` is never touched, so each branch automatically gets its own independent copy — nothing to undo.
+- A **`list`** is mutable: `path.append(...)` modifies the **same shared object** across all recursive calls. After exploring a branch you must `path.pop()` to restore state for the sibling branch — otherwise leftovers leak across branches.
+
+```python
+# LC 257 - Binary Tree Paths
+# https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Depth-First-Search/binary-tree-paths.py
+
+#-------------------------------------------------
+# CASE 1) path as ARRAY (mutable) -> MUST backtrack (path.pop())
+#-------------------------------------------------
+class Solution(object):
+    def binaryTreePaths(self, root):
+        self.res = []
+        self.helper(root, [])      # use array ([]) as tmp cache
+        return self.res
+
+    def helper(self, root, path):
+        if not root:
+            return
+        path.append(str(root.val))            # mutate shared list
+        # leaf node
+        if not root.left and not root.right:
+            self.res.append("->".join(path))
+        else:
+            self.helper(root.left, path)
+            self.helper(root.right, path)
+        # NOTE !!! backtrack at the final stage (undo the append)
+        path.pop()
+
+#-------------------------------------------------
+# CASE 2) path as STRING (immutable) -> NO backtrack needed
+#-------------------------------------------------
+class Solution(object):
+    def binaryTreePaths(self, root):
+        res = []
+        def dfs(node, cur):
+            if not node:
+                return
+            cur = str(node.val) if cur == "" else cur + "->" + str(node.val)  # new string each call
+            if not node.left and not node.right:
+                res.append(cur)
+                return
+            # NOTE !!! no path.pop() — each branch got its own string copy
+            dfs(node.left, cur)
+            dfs(node.right, cur)
+        dfs(root, "")
+        return res
+```
+
+**Same idea, other immutable carriers** — tuples and "pass a new list" also skip the explicit pop, because they hand each child a fresh object instead of sharing one:
+
+```python
+# trick: build a NEW list per call (tmp + [x]) instead of append+pop
+def dfs(r, tmp):
+    if not r.left and not r.right:
+        ans.append("->".join(tmp))
+    if r.left:
+        dfs(r.left, tmp + [str(r.left.val)])    # tmp + [..] -> new list, no pop
+    if r.right:
+        dfs(r.right, tmp + [str(r.right.val)])
+```
+
+| `path` type | Mutable? | New object per call? | Need backtrack (`pop`)? |
+|-------------|----------|----------------------|-------------------------|
+| `str`       | No       | Yes (`s + x`)        | **No**                  |
+| `tuple`     | No       | Yes (`t + (x,)`)     | **No**                  |
+| `list` + `tmp + [x]` | No (rebound) | Yes | **No** |
+| `list` + `append` | **Yes** | No (shared)     | **Yes — `path.pop()`**  |
+
+> **Rule of thumb:** if you *mutate* a shared container (`append`/`add`), you must undo it (`pop`/`remove`). If you create a *new* object each call (string concat, `tmp + [x]`, tuple), the copy IS the backtrack — there's nothing to undo. See also [1-1) assignment vs shallow/deep copy](#0-2-assignment-vs-shallow-copy-vs-deep-copy).
