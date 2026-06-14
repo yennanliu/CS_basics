@@ -1,6 +1,57 @@
 # Progress
 
 
+# 2026-06-15
+
+- backtrack.md
+	- todo: `Type 2) : Permutations (排列組合) (全排列)`
+- graph.md
+	- todo: `2) LC Example`
+- dp.md
+	- todo: `Template 7-1: One Edit Distance (LC 161) — Exactly-1-Edit Variant`
+- greedy.md
+- intervals.md
+- tree.md
+- python_trick.md
+- dfs.md
+
+
+- complexity_drills.html (doing)
+
+
+- Blind 75
+
+	- math & geometry (doing)
+
+- needcode 150
+
+	- greedy
+	- intervals
+	- math & geometry
+
+- LC weekly
+	- `data/lc_weekly_gemini.md`
+	- Weekly Contest 238 (OK)
+		- https://leetcode.com/contest/weekly-contest-238/
+	- Weekly Contest 341 (todo)
+
+- Others
+	- DP - `0/1 Knapsack and` -> revisit
+	- recent updated cheatsheet
+	- TODO LC:
+		- 1209(todo),1963(todo),227(todo),394(todo),34(todo),875(todo),81(todo)
+		- 377(todo, Permutations DP),210
+		- 312
+		- 416,494 (0/1 Knapsack)
+			- 0/1 knapsack DP
+		- 1143, 72
+		- 1905
+		- lazy_bst_in_order(todo),173(todo),2616(todo, compare PQ)
+		- topo_sort,257(todo)
+		- `Combinations VS Permutations` in DP
+			- https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Dynamic_Programming/coin_change_2.py#L125
+
+
 # 2026-06-14
 
 - backtrack.md
