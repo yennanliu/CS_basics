@@ -30,9 +30,10 @@
 	- math & geometry
 
 - LC weekly
-	- `lc_weekly_gemini.md`
-	- Weekly Contest 331
-		- https://leetcode.com/contest/weekly-contest-331/
+	- `data/lc_weekly_gemini.md`
+	- Weekly Contest 238 (doing)
+		- https://leetcode.com/contest/weekly-contest-238/
+	- Weekly Contest 341 (todo)
 
 - Others
 	- DP - `0/1 Knapsack and` -> revisit
