@@ -31,7 +31,7 @@
 
 - LC weekly
 	- `data/lc_weekly_gemini.md`
-	- Weekly Contest 238 (doing)
+	- Weekly Contest 238 (OK)
 		- https://leetcode.com/contest/weekly-contest-238/
 	- Weekly Contest 341 (todo)
 

@@ -297,6 +297,9 @@ class Solution(object):
         vowel = "aeiou"
         latest_prev_vow = None
         cnt_map = Counter()
+
+        distinct = 1
+        cur_len = 1
         
         for r in range(len(word)):
             val = word[r]
