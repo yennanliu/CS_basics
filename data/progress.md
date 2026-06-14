@@ -8,10 +8,13 @@
 - graph.md
 	- todo: `2) LC Example`
 - dp.md
-	- todo: `3. Handling the “Empty” Base Case`
+	- todo: `Template 7-1: One Edit Distance (LC 161) — Exactly-1-Edit Variant`
 - greedy.md
 - intervals.md
 - tree.md
+- python_trick.md
+- dfs.md
+
 
 
 - Blind 75
@@ -35,7 +38,10 @@
 	- TODO LC:
 		- 1209(todo),1963(todo),227(todo),394(todo),34(todo),875(todo),81(todo)
 		- 377(todo, Permutations DP),210
-		- 0/1 knapsack DP
+		- 312
+		- 416,494 (0/1 Knapsack)
+			- 0/1 knapsack DP
+		- 1143, 72
 		- `Combinations VS Permutations` in DP
 			- https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Dynamic_Programming/coin_change_2.py#L125
 
