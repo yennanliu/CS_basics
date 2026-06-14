@@ -36,6 +36,125 @@ All the strings of wordDict are unique.
 
 """
 
+
+# V0
+# IDEA: BFS
+from collections import deque
+
+class Solution(object):
+    def wordBreak(self, s, wordDict):
+        if s == "":
+            return True
+
+        words = set(wordDict)
+
+        """
+        NOTE !!!
+
+        q: [end_idx_1, end_idx_2, ...]
+
+
+        -> 
+        the queue stores `positions` (idx)
+        in the string that have 
+        already been `successfully` reached.
+
+
+        ->
+        # The queue will track the `starting index`
+         positions we need to explore from
+
+
+        """
+        q = deque([0])
+
+        # NOTE !!!
+        # use `visited` to avoid duplicated processing
+        visited = set([0])
+
+        while q:
+            idx = q.popleft()
+
+            """
+            NOTE !!!
+
+
+            -> `idx == len(s)` (but NOT `idx == len(s) - 1`)
+
+            ->
+             In this algorithm, 
+             idx doesn't represent the character
+             you are currently standing on. 
+             Instead, it represents the 
+             `frontier` line between 
+             characters where the previous
+              word finished and the next word must start.
+
+
+            -> when we success the `last` word paste,
+               the idx move to the next `new frontier` place,
+               which is `max(idx) + 1`, e.g. len(s)
+
+            """
+            if idx == len(s):
+                return True
+
+            for w in words:
+                nxt = idx + len(w)
+
+                if nxt <= len(s) and s[idx:nxt] == w:
+                    if nxt not in visited:
+                        visited.add(nxt)
+                        q.append(nxt)
+
+        return False
+
+
+
+# V0-1
+# IDEA: BFS
+from collections import deque
+
+class Solution(object):
+    def wordBreak(self, s, wordDict):
+        """
+        :type s: str
+        :type wordDict: List[str]
+        :rtype: bool
+        """
+        # Convert wordDict to a set for O(1) instant lookups
+        word_set = set(wordDict)
+        
+        # The queue will track the starting index positions we need to explore from
+        q = deque([0])
+        
+        # CRITICAL FIX: Track processed indices to avoid redundant duplicate paths (prevents TLE)
+        visited = set()
+        
+        while q:
+            idx = q.popleft()
+            
+            # CRITICAL FIX: If we successfully reached the exact end of the string, 
+            # it means the entire string has been perfectly segmented.
+            if idx == len(s):
+                return True
+                
+            # If we've already explored branches starting from this index, skip it
+            if idx in visited:
+                continue
+            visited.add(idx)
+            
+            # Scan ahead from our current position to find matching words
+            for w in word_set:
+                # CRITICAL FIX: Slice string correctly from idx up to idx + len(w)
+                if s[idx : idx + len(w)] == w:
+                    # If it matches, push the new target start index onto the queue
+                    q.append(idx + len(w))
+                    
+        return False
+
+
+
 # V0
 # IDEA: BFS
 from collections import deque
