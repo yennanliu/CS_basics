@@ -25,6 +25,155 @@ Constraints:
 """
 
 # V0
+# IDEA: RECURSION
+class Solution(object):
+    def generateTrees(self, n):
+        """
+        :type n: int
+        :rtype: List[TreeNode]
+        """
+
+        # LC guarantees n >= 1, but handling n == 0
+        # makes the function more complete.
+        if n == 0:
+            return []
+
+        # Build all BSTs using values 1..n.
+        return self.build(1, n)
+
+    def build(self, lo, hi):
+        """
+        Return ALL valid BST roots that can be built
+        using values in the range [lo, hi].
+
+        Example:
+            build(1, 3)
+
+        returns a list of TreeNode roots,
+        where each root represents one unique BST.
+        """
+
+        # Base case:
+        #
+        # No numbers available.
+        #
+        # We return [None] instead of [] because
+        # when combining left and right subtrees,
+        # an empty subtree is still a valid choice.
+        #
+        # Example:
+        # root = 1
+        # left subtree = None
+        # right subtree = some tree
+        #
+        if lo > hi:
+            return [None]
+
+        # Store all BST roots for this range.
+        res = []
+
+        # Try every value in [lo, hi]
+        # as the root of the BST.
+        for root_val in range(lo, hi + 1):
+
+            # -------------------------------------------------
+            # Build ALL possible left subtrees.
+            #
+            # Since BST property requires:
+            #     left values < root value
+            #
+            # left subtree can only use:
+            #     [lo, root_val - 1]
+            # -------------------------------------------------
+            left_trees = self.build(lo, root_val - 1)
+
+            # -------------------------------------------------
+            # Build ALL possible right subtrees.
+            #
+            # Since BST property requires:
+            #     right values > root value
+            #
+            # right subtree can only use:
+            #     [root_val + 1, hi]
+            # -------------------------------------------------
+            right_trees = self.build(root_val + 1, hi)
+
+            # -------------------------------------------------
+            # Combine every left possibility with
+            # every right possibility.
+            #
+            # Cartesian product:
+            #
+            # left1 x right1
+            # left1 x right2
+            # left2 x right1
+            # left2 x right2
+            # ...
+            # -------------------------------------------------
+            for left_root in left_trees:
+                for right_root in right_trees:
+
+                    # Create a new root.
+                    root = TreeNode(root_val)
+
+                    # Attach one left subtree choice.
+                    root.left = left_root
+
+                    # Attach one right subtree choice.
+                    root.right = right_root
+
+                    # This forms one unique BST.
+                    res.append(root)
+
+        # Return all BSTs built from [lo, hi].
+        return res
+
+
+
+
+# V0-1
+# IDEA: RECURSION
+class Solution(object):
+    def generateTrees(self, n):
+        """
+        :type n: int
+        :rtype: List[TreeNode]
+        """
+        if n == 0:
+            return []
+            
+        # Recursive helper to build all unique BSTs from numbers within range [start, end]
+        def dfs_build_tree(start, end):
+            # BASE CASE: If start is greater than end, there are no valid numbers
+            # left to make a subtree. We return a list containing [None].
+            if start > end:
+                return [None]
+                
+            sub_paths = []
+            
+            # Step 1: Pick every possible number 'i' in the current range to act as the root
+            for i in range(start, end + 1):
+                
+                # Step 2: Divide the range. 
+                # All values smaller than 'i' go left; all values larger go right.
+                left_subtrees = dfs_build_tree(start, i - 1)
+                right_subtrees = dfs_build_tree(i + 1, end)
+                
+                # Step 3: Combine every left subtree choice with every right subtree choice
+                for left_node in left_subtrees:
+                    for right_node in right_subtrees:
+                        # Construct a unique root node for this specific structural combination
+                        root = TreeNode(i)
+                        root.left = left_node
+                        root.right = right_node
+                        
+                        sub_paths.append(root)
+                        
+            return sub_paths
+
+        # Generate all valid trees using the full scale of numbers from 1 to n
+        return dfs_build_tree(1, n)
+
 
 # V1
 # IDEA : RECURSION
