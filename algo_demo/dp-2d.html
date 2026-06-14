@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2D DP (Unique Paths / LCS) - Algorithm Visualizer</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="common.js"></script>
+</head>
+<body>
+  <nav class="topbar">
+    <a href="../index.html" class="home-link">&larr; CS_basics</a>
+    <a href="index.html">Visualizer</a> <span class="sep">/</span>
+    <span class="title">2D Dynamic Programming</span>
+    <button id="theme-toggle">&#127769;</button>
+  </nav>
+  <div class="container">
+    <h1>2D Dynamic Programming</h1>
+    <p>Fill a 2D table where each cell depends on adjacent cells.<br>
+       LC 62 (Unique Paths), LC 64 (Min Path Sum), LC 1143 (LCS).</p>
+
+    <div class="explanation-box" style="margin-bottom:16px">
+      <strong>Unique Paths:</strong> <code>dp[i][j] = dp[i-1][j] + dp[i][j-1]</code>
+      — ways to reach (i,j) = ways from above + ways from left.<br>
+      <strong>LCS (Longest Common Subsequence):</strong><br>
+      &nbsp;&nbsp;If <code>A[i] == B[j]</code>: <code>dp[i][j] = dp[i-1][j-1] + 1</code><br>
+      &nbsp;&nbsp;Else: <code>dp[i][j] = max(dp[i-1][j], dp[i][j-1])</code><br>
+      <strong>Reading direction:</strong> Always fill row-by-row, left-to-right, so sources are already computed.
+    </div>
+
+    <div class="viz-wrapper">
+      <div>
+        <div class="viz-canvas-area"><canvas id="canvas"></canvas></div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#4361ee"></div> Filled</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div> Current</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#f39c12"></div> Sources</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div> Match (LCS)</div>
+        </div>
+      </div>
+      <div class="viz-controls">
+        <h3>Controls</h3>
+        <label>Problem:
+          <select id="problem-select" style="width:100%;margin-top:4px">
+            <option value="paths">Unique Paths (LC 62)</option>
+            <option value="lcs">LCS (LC 1143)</option>
+            <option value="minpath">Min Path Sum (LC 64)</option>
+          </select>
+        </label>
+        <label>Grid size: <span id="size-val">5</span></label>
+        <input type="range" id="size-range" min="3" max="7" value="5">
+        <label>Speed</label>
+        <input type="range" id="speed" min="1" max="10" value="6">
+        <div class="btn-row">
+          <button class="btn btn-primary" id="run-btn">Run</button>
+          <button class="btn btn-secondary" id="reset-btn">Reset</button>
+        </div>
+        <div class="complexity">Time: O(m·n) | Space: O(m·n)</div>
+        <h3>Steps</h3>
+        <div class="viz-log" id="log"></div>
+      </div>
+    </div>
+  </div>
+<script>
+(function() {
+  var canvas = document.getElementById('canvas'), ctx = canvas.getContext('2d');
+  var running = false, stopped = false;
+  var logger = createLogger('log');
+  var dp = [], grid = [], strA = [], strB = [], m = 5, n = 5, problem = 'paths';
+
+  var ALPHA = 'ABCDE FGHIJ'.split('').filter(function(c) { return c !== ' '; });
+
+  function getProblem() { return document.getElementById('problem-select').value; }
+  function getSize() { return +document.getElementById('size-range').value; }
+
+  function init() {
+    problem = getProblem();
+    var sz = getSize();
+    m = sz; n = sz;
+    dp = [];
+    grid = [];
+    for (var i = 0; i < m; i++) {
+      dp.push(new Array(n).fill(undefined));
+      grid.push([]);
+      for (var j = 0; j < n; j++) grid[i].push(Math.floor(Math.random() * 9) + 1);
+    }
+    // LCS strings
+    strA = []; strB = [];
+    for (var i = 0; i < m - 1; i++) strA.push(ALPHA[Math.floor(Math.random() * 6)]);
+    for (var j = 0; j < n - 1; j++) strB.push(ALPHA[Math.floor(Math.random() * 6)]);
+    logger.clear();
+    draw(-1, -1, []);
+  }
+
+  function resize() {
+    var r = canvas.parentElement.getBoundingClientRect();
+    canvas.width = r.width - 32;
+    canvas.height = Math.max(r.height - 32, 300);
+  }
+
+  function draw(curR, curC, srcs, matchRC) {
+    resize();
+    var w = canvas.width, h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+    var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    var textColor = isDark ? '#ccc' : '#333';
+
+    var cellW = Math.min(52, (w - 60) / n);
+    var cellH = Math.min(46, (h - 60) / m);
+    var startX = (w - n * cellW) / 2;
+    var startY = 40;
+
+    // Header labels
+    ctx.fillStyle = textColor; ctx.font = 'bold 12px sans-serif'; ctx.textAlign = 'center';
+    if (problem === 'lcs') {
+      ctx.fillText('↓A\\B→', startX - 20, startY - 8);
+      for (var j = 0; j < n; j++) {
+        ctx.fillText(j === 0 ? '' : strB[j - 1], startX + j * cellW + cellW / 2, startY - 8);
+      }
+    }
+
+    for (var i = 0; i < m; i++) {
+      if (problem === 'lcs') {
+        ctx.fillStyle = textColor; ctx.font = 'bold 12px sans-serif'; ctx.textAlign = 'right';
+        ctx.fillText(i === 0 ? '' : strA[i - 1], startX - 4, startY + i * cellH + cellH / 2 + 4);
+      }
+      for (var j = 0; j < n; j++) {
+        var x = startX + j * cellW, y = startY + i * cellH;
+        var color = '#aaa';
+        if (dp[i][j] !== undefined) color = '#4361ee';
+
+        // Source highlight
+        if (srcs) srcs.forEach(function(s) { if (s[0] === i && s[1] === j) color = '#f39c12'; });
+        if (matchRC && matchRC[0] === i && matchRC[1] === j) color = '#2ecc71';
+        if (i === curR && j === curC) color = '#e74c3c';
+
+        ctx.fillStyle = color;
+        ctx.beginPath(); ctx.roundRect(x + 2, y + 2, cellW - 4, cellH - 4, 4); ctx.fill();
+
+        // Grid cost (minpath)
+        if (problem === 'minpath') {
+          ctx.fillStyle = 'rgba(255,255,255,0.4)'; ctx.font = '10px sans-serif'; ctx.textAlign = 'center';
+          ctx.fillText(grid[i][j], x + cellW / 2, y + 14);
+        }
+
+        ctx.fillStyle = '#fff'; ctx.font = 'bold 12px sans-serif'; ctx.textAlign = 'center';
+        ctx.fillText(dp[i][j] !== undefined ? dp[i][j] : '?', x + cellW / 2, y + cellH / 2 + 5);
+      }
+    }
+
+    // Recurrence at top
+    ctx.fillStyle = textColor; ctx.font = '11px monospace'; ctx.textAlign = 'center';
+    var rec = '';
+    if (problem === 'paths') rec = 'dp[i][j] = dp[i-1][j] + dp[i][j-1]';
+    else if (problem === 'lcs') rec = 'match→dp[i-1][j-1]+1  else→max(dp[i-1][j], dp[i][j-1])';
+    else if (problem === 'minpath') rec = 'dp[i][j] = grid[i][j] + min(dp[i-1][j], dp[i][j-1])';
+    ctx.fillText(rec, w / 2, 18);
+  }
+
+  async function run() {
+    if (running) return;
+    running = true; stopped = false;
+    init();
+    var delay = (11 - document.getElementById('speed').value) * 100;
+    logger.log('Filling dp table row by row...');
+
+    for (var i = 0; i < m && !stopped; i++) {
+      for (var j = 0; j < n && !stopped; j++) {
+        var srcs = [], matchRC = null;
+        if (problem === 'paths') {
+          if (i === 0 && j === 0) { dp[i][j] = 1; logger.log('dp[0][0] = 1 (start)'); }
+          else if (i === 0) { dp[i][j] = dp[i][j - 1]; srcs = [[i, j - 1]]; logger.log('dp[' + i + '][' + j + '] = dp[0][' + (j-1) + '] = ' + dp[i][j]); }
+          else if (j === 0) { dp[i][j] = dp[i - 1][j]; srcs = [[i - 1, j]]; logger.log('dp[' + i + '][' + j + '] = dp[' + (i-1) + '][0] = ' + dp[i][j]); }
+          else {
+            dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+            srcs = [[i - 1, j], [i, j - 1]];
+            logger.log('dp[' + i + '][' + j + '] = ' + dp[i-1][j] + '+' + dp[i][j-1] + ' = <b>' + dp[i][j] + '</b>');
+          }
+        } else if (problem === 'lcs') {
+          if (i === 0 || j === 0) { dp[i][j] = 0; }
+          else if (strA[i - 1] === strB[j - 1]) {
+            dp[i][j] = (dp[i - 1][j - 1] || 0) + 1;
+            matchRC = [i - 1, j - 1]; srcs = [[i - 1, j - 1]];
+            logger.log('A[' + (i-1) + ']=B[' + (j-1) + ']=' + strA[i-1] + ' → dp[' + i + '][' + j + ']=' + dp[i-1][j-1] + '+1=<b>' + dp[i][j] + '</b>');
+          } else {
+            dp[i][j] = Math.max(dp[i - 1][j] || 0, dp[i][j - 1] || 0);
+            srcs = [[i - 1, j], [i, j - 1]];
+            logger.log('dp[' + i + '][' + j + '] = max(' + (dp[i-1][j]||0) + ',' + (dp[i][j-1]||0) + ')=<b>' + dp[i][j] + '</b>');
+          }
+        } else if (problem === 'minpath') {
+          if (i === 0 && j === 0) { dp[i][j] = grid[0][0]; }
+          else if (i === 0) { dp[i][j] = dp[i][j - 1] + grid[i][j]; srcs = [[i, j - 1]]; }
+          else if (j === 0) { dp[i][j] = dp[i - 1][j] + grid[i][j]; srcs = [[i - 1, j]]; }
+          else {
+            var best = Math.min(dp[i - 1][j], dp[i][j - 1]);
+            dp[i][j] = best + grid[i][j];
+            srcs = [[i - 1, j], [i, j - 1]];
+            logger.log('dp[' + i + '][' + j + '] = ' + grid[i][j] + '+min(' + dp[i-1][j] + ',' + dp[i][j-1] + ')=<b>' + dp[i][j] + '</b>');
+          }
+        }
+        draw(i, j, srcs, matchRC);
+        await sleep(delay);
+      }
+    }
+
+    if (!stopped) {
+      var ans = dp[m - 1][n - 1];
+      logger.log('<span class="highlight">Answer = dp[' + (m-1) + '][' + (n-1) + '] = ' + ans + '</span>');
+      draw(-1, -1, [], null);
+    }
+    running = false;
+  }
+
+  document.getElementById('run-btn').addEventListener('click', run);
+  document.getElementById('reset-btn').addEventListener('click', function() { stopped = true; running = false; init(); });
+  document.getElementById('size-range').addEventListener('input', function() {
+    document.getElementById('size-val').textContent = this.value; stopped = true; running = false; init();
+  });
+  document.getElementById('problem-select').addEventListener('change', function() { stopped = true; running = false; init(); });
+  init();
+  window.addEventListener('resize', function() { draw(-1, -1, [], null); });
+})();
+</script>
+</body>
+</html>

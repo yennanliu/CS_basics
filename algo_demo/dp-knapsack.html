@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>0/1 Knapsack DP - Algorithm Visualizer</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="common.js"></script>
+</head>
+<body>
+  <nav class="topbar">
+    <a href="../index.html" class="home-link">&larr; CS_basics</a>
+    <a href="index.html">Visualizer</a> <span class="sep">/</span>
+    <span class="title">0/1 Knapsack DP</span>
+    <button id="theme-toggle">&#127769;</button>
+  </nav>
+  <div class="container">
+    <h1>0/1 Knapsack — 2D DP Table</h1>
+    <p>Each item is either taken (1) or not (0). Fill a 2D table row-by-row.<br>
+       <strong>Recurrence:</strong> <code>dp[i][w] = max(dp[i-1][w], dp[i-1][w-wt[i]] + val[i])</code><br>
+       LC 416 (Partition Equal Subset Sum), LC 494 (Target Sum), LC 1049.</p>
+
+    <div class="explanation-box" style="margin-bottom:16px">
+      <strong>State:</strong> <code>dp[i][w]</code> = max value using items 0…i with capacity w.<br>
+      <strong>Choice at each item:</strong>
+      <ul style="margin:4px 0 0 16px">
+        <li><em>Skip item i:</em> <code>dp[i-1][w]</code> — same capacity, one fewer item.</li>
+        <li><em>Take item i (if w &ge; wt[i]):</em> <code>dp[i-1][w-wt[i]] + val[i]</code> — use remaining capacity and add value.</li>
+      </ul>
+      <strong>Key constraint:</strong> Each item can only be taken once (0/1), so we look at the <em>previous</em> row <code>dp[i-1]</code>, never the same row.
+    </div>
+
+    <div class="viz-wrapper">
+      <div>
+        <div class="viz-canvas-area"><canvas id="canvas"></canvas></div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#4361ee"></div> Filled cell</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div> Current cell</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#f39c12"></div> Source cells</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div> Optimal path</div>
+        </div>
+      </div>
+      <div class="viz-controls">
+        <h3>Controls</h3>
+        <label>Items (random)</label>
+        <div id="item-list" style="font-size:12px;margin:4px 0;min-height:24px"></div>
+        <label>Capacity: <span id="cap-val">8</span></label>
+        <input type="range" id="cap-range" min="5" max="12" value="8">
+        <label>Speed</label>
+        <input type="range" id="speed" min="1" max="10" value="5">
+        <div class="btn-row">
+          <button class="btn btn-primary" id="run-btn">Run</button>
+          <button class="btn btn-secondary" id="reset-btn">New Items</button>
+        </div>
+        <div class="complexity">Time: O(n·W) | Space: O(n·W)</div>
+        <h3>Steps</h3>
+        <div class="viz-log" id="log"></div>
+      </div>
+    </div>
+  </div>
+<script>
+(function() {
+  var canvas = document.getElementById('canvas'), ctx = canvas.getContext('2d');
+  var running = false, stopped = false;
+  var logger = createLogger('log');
+  var items = [], W = 8, dp = [], n;
+
+  function getW() { return +document.getElementById('cap-range').value; }
+
+  function genItems() {
+    W = getW(); n = 4;
+    items = [];
+    for (var i = 0; i < n; i++) {
+      items.push({ w: Math.floor(Math.random() * (W - 1)) + 1, v: Math.floor(Math.random() * 9) + 1 });
+    }
+    dp = [];
+    for (var i = 0; i <= n; i++) dp.push(new Array(W + 1).fill(0));
+    document.getElementById('item-list').innerHTML = items.map(function(it, i) {
+      return 'Item ' + (i + 1) + ': wt=' + it.w + ' val=' + it.v;
+    }).join('<br>');
+    logger.clear();
+    draw(-1, -1);
+  }
+
+  function resize() {
+    var r = canvas.parentElement.getBoundingClientRect();
+    canvas.width = r.width - 32;
+    canvas.height = Math.max(r.height - 32, 300);
+  }
+
+  function draw(curRow, curCol, srcCells) {
+    resize();
+    var w = canvas.width, h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+    var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    var textColor = isDark ? '#ccc' : '#333';
+
+    var rows = n + 1, cols = W + 1;
+    var cellW = Math.min(44, (w - 80) / cols);
+    var cellH = Math.min(36, (h - 60) / rows);
+    var startX = (w - cols * cellW) / 2;
+    var startY = 40;
+
+    // Column headers (capacity 0..W)
+    ctx.fillStyle = textColor; ctx.font = 'bold 11px sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText('item \\ cap', startX - 28, startY + cellH / 2 + 4);
+    for (var c = 0; c <= W; c++) {
+      ctx.fillStyle = textColor;
+      ctx.fillText(c, startX + c * cellW + cellW / 2, startY - 6);
+    }
+
+    for (var i = 0; i <= n; i++) {
+      // Row header
+      ctx.fillStyle = textColor; ctx.font = '11px sans-serif'; ctx.textAlign = 'right';
+      ctx.fillText(i === 0 ? 'none' : 'i' + i + '(w=' + items[i-1].w + ',v=' + items[i-1].v + ')',
+        startX - 4, startY + i * cellH + cellH / 2 + 4);
+
+      for (var j = 0; j <= W; j++) {
+        var x = startX + j * cellW, y = startY + i * cellH;
+        var color = '#888';
+        if (dp[i][j] !== undefined && dp[i][j] > 0) color = '#4361ee';
+        else if (dp[i][j] === 0 && i <= (curRow >= 0 ? curRow : 0)) color = '#4361ee';
+
+        // Highlight sources
+        if (srcCells) {
+          srcCells.forEach(function(sc) {
+            if (sc[0] === i && sc[1] === j) color = '#f39c12';
+          });
+        }
+        if (i === curRow && j === curCol) color = '#e74c3c';
+
+        ctx.fillStyle = color;
+        ctx.beginPath(); ctx.roundRect(x + 2, y + 2, cellW - 4, cellH - 4, 3); ctx.fill();
+
+        ctx.fillStyle = '#fff'; ctx.font = 'bold 11px sans-serif'; ctx.textAlign = 'center';
+        ctx.fillText(dp[i][j] !== undefined ? dp[i][j] : '', x + cellW / 2, y + cellH / 2 + 4);
+      }
+    }
+  }
+
+  async function run() {
+    if (running) return;
+    running = true; stopped = false;
+    logger.clear();
+    var delay = (11 - document.getElementById('speed').value) * 120;
+
+    // Fill row 0 (no items) already 0
+    logger.log('Base case: dp[0][*] = 0 (no items, no value)');
+    draw(0, -1, null);
+    await sleep(delay);
+
+    for (var i = 1; i <= n && !stopped; i++) {
+      var item = items[i - 1];
+      for (var j = 0; j <= W && !stopped; j++) {
+        var src = [[i - 1, j]];
+        var skipVal = dp[i - 1][j];
+        var takeVal = (j >= item.w) ? dp[i - 1][j - item.w] + item.v : -Infinity;
+
+        if (j >= item.w) src.push([i - 1, j - item.w]);
+
+        dp[i][j] = Math.max(skipVal, takeVal === -Infinity ? skipVal : takeVal);
+        var msg = 'dp[' + i + '][' + j + ']: skip=' + skipVal;
+        if (j >= item.w) msg += ', take=' + takeVal + ' → <b>' + dp[i][j] + '</b>';
+        else msg += ' (can\'t take, wt=' + item.w + '>cap=' + j + ') → <b>' + dp[i][j] + '</b>';
+        logger.log(msg);
+
+        draw(i, j, src);
+        await sleep(delay);
+      }
+    }
+
+    if (!stopped) {
+      logger.log('<span class="highlight">Max value = dp[' + n + '][' + W + '] = ' + dp[n][W] + '</span>');
+      draw(-1, -1, null);
+    }
+    running = false;
+  }
+
+  document.getElementById('run-btn').addEventListener('click', run);
+  document.getElementById('reset-btn').addEventListener('click', function() { stopped = true; running = false; genItems(); });
+  document.getElementById('cap-range').addEventListener('input', function() {
+    document.getElementById('cap-val').textContent = this.value;
+    stopped = true; running = false; genItems();
+  });
+  genItems();
+  window.addEventListener('resize', function() { draw(-1, -1, null); });
+})();
+</script>
+</body>
+</html>

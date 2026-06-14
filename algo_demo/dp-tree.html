@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tree DP - Algorithm Visualizer</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="common.js"></script>
+</head>
+<body>
+  <nav class="topbar">
+    <a href="../index.html" class="home-link">&larr; CS_basics</a>
+    <a href="index.html">Visualizer</a> <span class="sep">/</span>
+    <span class="title">Tree DP</span>
+    <button id="theme-toggle">&#127769;</button>
+  </nav>
+  <div class="container">
+    <h1>Tree Dynamic Programming</h1>
+    <p>Post-order DFS: compute answers bottom-up from leaves to root.<br>
+       LC 337 (House Robber III), LC 124 (Binary Tree Max Path Sum), LC 543 (Diameter).</p>
+
+    <div class="explanation-box" style="margin-bottom:16px">
+      <strong>Key Insight:</strong> In tree DP we don't have a 1D/2D table.
+      Instead each <em>node</em> stores a small tuple of DP states.<br><br>
+      <strong>House Robber III</strong> — for each node keep two values:<br>
+      &nbsp;&nbsp;<code>rob</code> = max if we rob this node (cannot rob its children)<br>
+      &nbsp;&nbsp;<code>skip</code> = max if we skip this node (children may or may not be robbed)<br>
+      <code>rob(v) = v.val + skip(L) + skip(R)</code><br>
+      <code>skip(v) = max(rob(L),skip(L)) + max(rob(R),skip(R))</code><br><br>
+      Processing order is <strong>post-order</strong>: children are fully solved before the parent.
+    </div>
+
+    <div class="viz-wrapper">
+      <div>
+        <div class="viz-canvas-area"><canvas id="canvas"></canvas></div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#aaa"></div> Not visited</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div> Active (DFS)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#4361ee"></div> Solved</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div> Chosen (robbed)</div>
+        </div>
+      </div>
+      <div class="viz-controls">
+        <h3>Controls</h3>
+        <label>Problem:
+          <select id="problem-select" style="width:100%;margin-top:4px">
+            <option value="robber">House Robber III (LC 337)</option>
+            <option value="diameter">Tree Diameter (LC 543)</option>
+            <option value="maxpath">Max Path Sum (LC 124)</option>
+          </select>
+        </label>
+        <label>Speed</label>
+        <input type="range" id="speed" min="1" max="10" value="5">
+        <div class="btn-row">
+          <button class="btn btn-primary" id="run-btn">Run</button>
+          <button class="btn btn-secondary" id="reset-btn">New Tree</button>
+        </div>
+        <div class="complexity">Time: O(n) | Space: O(h)</div>
+        <h3>Steps</h3>
+        <div class="viz-log" id="log"></div>
+      </div>
+    </div>
+  </div>
+<script>
+(function() {
+  var canvas = document.getElementById('canvas'), ctx = canvas.getContext('2d');
+  var running = false, stopped = false;
+  var logger = createLogger('log');
+  var nodes = [], problem = 'robber', globalAns = 0;
+
+  // Tree node: {id, val, left, right, x, y, state, rob, skip, depth, diam}
+  function buildTree() {
+    nodes = [];
+    var id = 0;
+    function make(depth) {
+      if (depth > 3 || Math.random() < 0.3 * depth) return null;
+      var n = { id: id++, val: Math.floor(Math.random() * 9) + 1, left: null, right: null, state: 'unvisited', x: 0, y: 0 };
+      n.left = make(depth + 1);
+      n.right = make(depth + 1);
+      nodes.push(n);
+      return n;
+    }
+    return make(0);
+  }
+
+  var root = null;
+
+  function layoutTree(node, depth, counter) {
+    if (!node) return;
+    layoutTree(node.left, depth + 1, counter);
+    node.x = counter.val++;
+    node.y = depth;
+    layoutTree(node.right, depth + 1, counter);
+  }
+
+  function resize() {
+    var r = canvas.parentElement.getBoundingClientRect();
+    canvas.width = r.width - 32;
+    canvas.height = Math.max(r.height - 32, 320);
+  }
+
+  function drawTree(node, highlight, chosen) {
+    if (!node) return;
+    resize();
+  }
+
+  function draw(highlight, chosen) {
+    resize();
+    var w = canvas.width, h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+    if (!root) return;
+    var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    var textColor = isDark ? '#ccc' : '#333';
+
+    // layout
+    var ctr = { val: 0 };
+    layoutTree(root, 0, ctr);
+    var maxX = ctr.val, maxD = 0;
+    nodes.forEach(function(n) { if (n.y > maxD) maxD = n.y; });
+
+    var padX = 40, padY = 40;
+    var cellW = Math.max(36, (w - 2 * padX) / (maxX + 1));
+    var cellH = Math.max(50, (h - 2 * padY) / (maxD + 2));
+
+    function nodeX(n) { return padX + n.x * cellW + cellW / 2; }
+    function nodeY(n) { return padY + n.y * cellH + 24; }
+    var R = Math.min(20, cellW / 2 - 4);
+
+    // Draw edges first
+    function drawEdges(node) {
+      if (!node) return;
+      ctx.strokeStyle = isDark ? '#555' : '#bbb'; ctx.lineWidth = 1.5;
+      if (node.left) {
+        ctx.beginPath();
+        ctx.moveTo(nodeX(node), nodeY(node));
+        ctx.lineTo(nodeX(node.left), nodeY(node.left));
+        ctx.stroke();
+      }
+      if (node.right) {
+        ctx.beginPath();
+        ctx.moveTo(nodeX(node), nodeY(node));
+        ctx.lineTo(nodeX(node.right), nodeY(node.right));
+        ctx.stroke();
+      }
+      drawEdges(node.left);
+      drawEdges(node.right);
+    }
+    drawEdges(root);
+
+    // Draw nodes
+    function drawNode(node) {
+      if (!node) return;
+      var x = nodeX(node), y = nodeY(node);
+      var color = '#aaa';
+      if (node.state === 'solved') color = '#4361ee';
+      if (node === highlight) color = '#e74c3c';
+      if (chosen && chosen.has(node.id)) color = '#2ecc71';
+
+      ctx.fillStyle = color;
+      ctx.beginPath(); ctx.arc(x, y, R, 0, 2 * Math.PI); ctx.fill();
+
+      ctx.fillStyle = '#fff'; ctx.font = 'bold 12px sans-serif'; ctx.textAlign = 'center';
+      ctx.fillText(node.val, x, y + 4);
+
+      // Show dp values below node
+      if (node.state === 'solved') {
+        ctx.fillStyle = textColor; ctx.font = '9px sans-serif';
+        if (problem === 'robber') {
+          ctx.fillText('r:' + node.rob + ' s:' + node.skip, x, y + R + 12);
+        } else if (problem === 'diameter') {
+          ctx.fillText('d:' + node.depth, x, y + R + 12);
+        } else if (problem === 'maxpath') {
+          ctx.fillText('g:' + node.gain, x, y + R + 12);
+        }
+      }
+
+      drawNode(node.left);
+      drawNode(node.right);
+    }
+    drawNode(root);
+
+    // Global answer
+    ctx.fillStyle = textColor; ctx.font = 'bold 13px sans-serif'; ctx.textAlign = 'left';
+    ctx.fillText('Answer: ' + globalAns, 10, 20);
+  }
+
+  async function runRobber() {
+    globalAns = 0;
+    var chosen = new Set();
+    var delay = (11 - document.getElementById('speed').value) * 200;
+
+    async function dfs(node) {
+      if (!node) return { rob: 0, skip: 0 };
+      draw(node, chosen);
+      await sleep(delay);
+
+      var L = await dfs(node.left);
+      var R = await dfs(node.right);
+
+      node.rob = node.val + L.skip + R.skip;
+      node.skip = Math.max(L.rob, L.skip) + Math.max(R.rob, R.skip);
+      node.state = 'solved';
+      logger.log('Node ' + node.val + ': rob=' + node.rob + ' skip=' + node.skip);
+      draw(node, chosen);
+      await sleep(delay);
+      return { rob: node.rob, skip: node.skip };
+    }
+
+    var result = await dfs(root);
+    globalAns = Math.max(result.rob, result.skip);
+    logger.log('<span class="highlight">Max = ' + globalAns + '</span>');
+    draw(null, chosen);
+  }
+
+  async function runDiameter() {
+    globalAns = 0;
+    var delay = (11 - document.getElementById('speed').value) * 200;
+
+    async function dfs(node) {
+      if (!node) return 0;
+      draw(node, null);
+      await sleep(delay);
+
+      var L = await dfs(node.left);
+      var R = await dfs(node.right);
+      var diam = L + R;
+      if (diam > globalAns) globalAns = diam;
+      node.depth = Math.max(L, R) + 1;
+      node.gain = node.depth;
+      node.state = 'solved';
+      logger.log('Node ' + node.val + ': depth=' + node.depth + ' diam_thru=' + diam);
+      draw(node, null);
+      await sleep(delay);
+      return node.depth;
+    }
+
+    await dfs(root);
+    logger.log('<span class="highlight">Diameter = ' + globalAns + '</span>');
+    draw(null, null);
+  }
+
+  async function runMaxPath() {
+    globalAns = -Infinity;
+    var delay = (11 - document.getElementById('speed').value) * 200;
+
+    async function dfs(node) {
+      if (!node) return 0;
+      draw(node, null);
+      await sleep(delay);
+
+      var L = Math.max(0, await dfs(node.left));
+      var R = Math.max(0, await dfs(node.right));
+      var path = node.val + L + R;
+      if (path > globalAns) globalAns = path;
+      node.gain = node.val + Math.max(L, R);
+      node.depth = node.gain;
+      node.state = 'solved';
+      logger.log('Node ' + node.val + ': gain=' + node.gain + ' path_thru=' + path);
+      draw(node, null);
+      await sleep(delay);
+      return node.gain;
+    }
+
+    await dfs(root);
+    logger.log('<span class="highlight">Max Path Sum = ' + globalAns + '</span>');
+    draw(null, null);
+  }
+
+  async function run() {
+    if (running) return;
+    running = true; stopped = false;
+    logger.clear(); globalAns = 0;
+    problem = document.getElementById('problem-select').value;
+    nodes.forEach(function(n) { n.state = 'unvisited'; n.rob = 0; n.skip = 0; n.depth = 0; n.gain = 0; });
+    draw(null, null);
+
+    if (problem === 'robber') await runRobber();
+    else if (problem === 'diameter') await runDiameter();
+    else await runMaxPath();
+    running = false;
+  }
+
+  function reset() {
+    stopped = true; running = false;
+    root = buildTree();
+    globalAns = 0;
+    logger.clear();
+    draw(null, null);
+  }
+
+  document.getElementById('run-btn').addEventListener('click', run);
+  document.getElementById('reset-btn').addEventListener('click', reset);
+  document.getElementById('problem-select').addEventListener('change', function() { stopped = true; running = false; logger.clear(); draw(null, null); });
+  reset();
+  window.addEventListener('resize', function() { draw(null, null); });
+})();
+</script>
+</body>
+</html>

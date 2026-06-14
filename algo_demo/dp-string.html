@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>String DP (Edit Distance) - Algorithm Visualizer</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="common.js"></script>
+</head>
+<body>
+  <nav class="topbar">
+    <a href="../index.html" class="home-link">&larr; CS_basics</a>
+    <a href="index.html">Visualizer</a> <span class="sep">/</span>
+    <span class="title">String DP</span>
+    <button id="theme-toggle">&#127769;</button>
+  </nav>
+  <div class="container">
+    <h1>String DP — Edit Distance &amp; Palindromes</h1>
+    <p>Classic string DP: transform one string into another using min operations.<br>
+       LC 72 (Edit Distance), LC 5 (Longest Palindromic Substring), LC 516 (Longest Palindromic Subsequence).</p>
+
+    <div class="explanation-box" style="margin-bottom:16px">
+      <strong>Edit Distance</strong> — 3 operations: insert, delete, replace.<br>
+      <code>dp[i][j]</code> = min edits to convert <code>A[0..i-1]</code> → <code>B[0..j-1]</code>:<br>
+      <ul style="margin:4px 0 0 16px">
+        <li>If <code>A[i-1] == B[j-1]</code>: <code>dp[i][j] = dp[i-1][j-1]</code> (no cost)</li>
+        <li>Else: <code>dp[i][j] = 1 + min(dp[i-1][j-1], dp[i-1][j], dp[i][j-1])</code><br>
+            → replace, delete, insert</li>
+      </ul>
+      <strong>Longest Palindromic Subsequence:</strong><br>
+      <code>dp[i][j]</code> = LPS length of <code>s[i..j]</code>:<br>
+      &nbsp;&nbsp;If <code>s[i]==s[j]</code>: <code>dp[i][j] = dp[i+1][j-1] + 2</code><br>
+      &nbsp;&nbsp;Else: <code>dp[i][j] = max(dp[i+1][j], dp[i][j-1])</code>
+    </div>
+
+    <div class="viz-wrapper">
+      <div>
+        <div class="viz-canvas-area"><canvas id="canvas"></canvas></div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#4361ee"></div> Filled</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div> Current</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#f39c12"></div> Sources</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#2ecc71"></div> Match / Optimal</div>
+        </div>
+      </div>
+      <div class="viz-controls">
+        <h3>Controls</h3>
+        <label>Problem:
+          <select id="problem-select" style="width:100%;margin-top:4px">
+            <option value="edit">Edit Distance (LC 72)</option>
+            <option value="lps">Longest Palindromic Subseq (LC 516)</option>
+          </select>
+        </label>
+        <div style="margin:6px 0">
+          <label>String A: <input id="str-a" type="text" value="horse" style="width:80px;padding:2px 4px;border-radius:4px;border:1px solid #aaa"></label><br>
+          <label>String B: <input id="str-b" type="text" value="ros" style="width:80px;padding:2px 4px;border-radius:4px;border:1px solid #aaa"></label>
+          <div id="str-b-row" style="display:none">
+            <span style="font-size:11px;color:#888">(B used for Edit Distance only)</span>
+          </div>
+        </div>
+        <label>Speed</label>
+        <input type="range" id="speed" min="1" max="10" value="5">
+        <div class="btn-row">
+          <button class="btn btn-primary" id="run-btn">Run</button>
+          <button class="btn btn-secondary" id="reset-btn">Reset</button>
+        </div>
+        <div class="complexity">Time: O(m·n) | Space: O(m·n)</div>
+        <h3>Steps</h3>
+        <div class="viz-log" id="log"></div>
+      </div>
+    </div>
+  </div>
+<script>
+(function() {
+  var canvas = document.getElementById('canvas'), ctx = canvas.getContext('2d');
+  var running = false, stopped = false;
+  var logger = createLogger('log');
+  var dp = [], strA = 'horse', strB = 'ros', problem = 'edit';
+
+  function getProblem() { return document.getElementById('problem-select').value; }
+  function getStrA() { return (document.getElementById('str-a').value || 'horse').slice(0, 8); }
+  function getStrB() { return (document.getElementById('str-b').value || 'ros').slice(0, 8); }
+
+  function init() {
+    problem = getProblem();
+    strA = getStrA(); strB = getStrB();
+    dp = [];
+    logger.clear();
+    draw(-1, -1, [], false);
+  }
+
+  function resize() {
+    var r = canvas.parentElement.getBoundingClientRect();
+    canvas.width = r.width - 32;
+    canvas.height = Math.max(r.height - 32, 300);
+  }
+
+  function drawEdit(curR, curC, srcs, isMatch) {
+    resize();
+    var w = canvas.width, h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+    var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    var textColor = isDark ? '#ccc' : '#333';
+
+    var rows = strA.length + 1, cols = strB.length + 1;
+    var cellW = Math.min(48, (w - 70) / cols);
+    var cellH = Math.min(40, (h - 60) / rows);
+    var startX = (w - cols * cellW) / 2;
+    var startY = 44;
+
+    ctx.fillStyle = textColor; ctx.font = 'bold 11px sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText('A\\B', startX - 22, startY - 10);
+    for (var j = 0; j <= strB.length; j++) {
+      ctx.fillText(j === 0 ? '' : strB[j - 1], startX + j * cellW + cellW / 2, startY - 10);
+    }
+
+    for (var i = 0; i <= strA.length; i++) {
+      ctx.fillStyle = textColor; ctx.font = 'bold 12px sans-serif'; ctx.textAlign = 'right';
+      ctx.fillText(i === 0 ? '' : strA[i - 1], startX - 4, startY + i * cellH + cellH / 2 + 4);
+
+      for (var j = 0; j <= strB.length; j++) {
+        var x = startX + j * cellW, y = startY + i * cellH;
+        var color = '#aaa';
+        if (dp[i] && dp[i][j] !== undefined) {
+          color = isMatch && i === curR && j === curC ? '#2ecc71' : '#4361ee';
+        }
+        if (srcs) srcs.forEach(function(s) { if (s[0] === i && s[1] === j) color = '#f39c12'; });
+        if (i === curR && j === curC) color = isMatch ? '#2ecc71' : '#e74c3c';
+
+        ctx.fillStyle = color;
+        ctx.beginPath(); ctx.roundRect(x + 2, y + 2, cellW - 4, cellH - 4, 3); ctx.fill();
+        ctx.fillStyle = '#fff'; ctx.font = 'bold 12px sans-serif'; ctx.textAlign = 'center';
+        ctx.fillText(dp[i] && dp[i][j] !== undefined ? dp[i][j] : '', x + cellW / 2, y + cellH / 2 + 4);
+      }
+    }
+
+    ctx.fillStyle = textColor; ctx.font = '11px monospace'; ctx.textAlign = 'center';
+    ctx.fillText("dp[i][j]: match→dp[i-1][j-1]  else→1+min(replace, delete, insert)", w / 2, 18);
+  }
+
+  function drawLPS(curI, curJ, srcs, isMatch) {
+    resize();
+    var w = canvas.width, h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+    var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    var textColor = isDark ? '#ccc' : '#333';
+    var s = strA;
+    var n = s.length;
+    var cellW = Math.min(48, (w - 60) / n);
+    var cellH = Math.min(40, (h - 60) / n);
+    var startX = (w - n * cellW) / 2;
+    var startY = 44;
+
+    ctx.fillStyle = textColor; ctx.font = 'bold 11px sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText('i\\j', startX - 20, startY - 10);
+    for (var j = 0; j < n; j++) {
+      ctx.fillText(s[j], startX + j * cellW + cellW / 2, startY - 10);
+      ctx.fillStyle = textColor; ctx.font = '10px sans-serif'; ctx.textAlign = 'right';
+      ctx.fillText(s[j], startX - 4, startY + j * cellH + cellH / 2 + 4);
+    }
+
+    for (var i = 0; i < n; i++) {
+      for (var j = 0; j < n; j++) {
+        var x = startX + j * cellW, y = startY + i * cellH;
+        var color = '#aaa';
+        if (dp[i] && dp[i][j] !== undefined) color = '#4361ee';
+        if (srcs) srcs.forEach(function(s2) { if (s2[0] === i && s2[1] === j) color = '#f39c12'; });
+        if (isMatch && i === curI && j === curJ) color = '#2ecc71';
+        if (i === curI && j === curJ && !isMatch) color = '#e74c3c';
+        // upper triangle unused
+        if (i > j) color = '#555';
+
+        ctx.fillStyle = color;
+        ctx.beginPath(); ctx.roundRect(x + 2, y + 2, cellW - 4, cellH - 4, 3); ctx.fill();
+        if (i <= j) {
+          ctx.fillStyle = '#fff'; ctx.font = 'bold 12px sans-serif'; ctx.textAlign = 'center';
+          ctx.fillText(dp[i] && dp[i][j] !== undefined ? dp[i][j] : (i === j ? '1' : ''), x + cellW / 2, y + cellH / 2 + 4);
+        }
+      }
+    }
+    ctx.fillStyle = textColor; ctx.font = '11px monospace'; ctx.textAlign = 'center';
+    ctx.fillText("match→dp[i+1][j-1]+2  else→max(dp[i+1][j], dp[i][j-1])", w / 2, 18);
+  }
+
+  async function runEdit() {
+    var m = strA.length, n = strB.length;
+    dp = [];
+    for (var i = 0; i <= m; i++) dp.push(new Array(n + 1).fill(undefined));
+    var delay = (11 - document.getElementById('speed').value) * 120;
+
+    // Base cases
+    for (var i = 0; i <= m; i++) dp[i][0] = i;
+    for (var j = 0; j <= n; j++) dp[0][j] = j;
+    drawEdit(0, 0, [], false); await sleep(delay);
+    logger.log('Base: dp[i][0]=i (delete all), dp[0][j]=j (insert all)');
+
+    for (var i = 1; i <= m && !stopped; i++) {
+      for (var j = 1; j <= n && !stopped; j++) {
+        var match = strA[i - 1] === strB[j - 1];
+        var srcs;
+        if (match) {
+          dp[i][j] = dp[i - 1][j - 1];
+          srcs = [[i - 1, j - 1]];
+          logger.log('A[' + (i-1) + ']=B[' + (j-1) + ']=' + strA[i-1] + ' → no cost → dp[' + i + '][' + j + ']=<b>' + dp[i][j] + '</b>');
+        } else {
+          var rep = dp[i - 1][j - 1], del = dp[i - 1][j], ins = dp[i][j - 1];
+          dp[i][j] = 1 + Math.min(rep, del, ins);
+          srcs = [[i - 1, j - 1], [i - 1, j], [i, j - 1]];
+          var op = rep <= del && rep <= ins ? 'replace' : (del <= ins ? 'delete' : 'insert');
+          logger.log('dp[' + i + '][' + j + ']=1+min(rep=' + rep + ',del=' + del + ',ins=' + ins + ')=<b>' + dp[i][j] + '</b> (' + op + ')');
+        }
+        drawEdit(i, j, srcs, match); await sleep(delay);
+      }
+    }
+    if (!stopped) {
+      logger.log('<span class="highlight">Edit distance = ' + dp[m][n] + '</span>');
+      drawEdit(-1, -1, [], false);
+    }
+  }
+
+  async function runLPS() {
+    var s = strA, n = s.length;
+    dp = [];
+    for (var i = 0; i < n; i++) { dp.push(new Array(n).fill(undefined)); dp[i][i] = 1; }
+    var delay = (11 - document.getElementById('speed').value) * 120;
+    logger.log('Base: dp[i][i]=1 (single char is palindrome)');
+    drawLPS(-1, -1, [], false); await sleep(delay);
+
+    // Fill diagonals: length 2, 3, ...
+    for (var len = 2; len <= n && !stopped; len++) {
+      for (var i = 0; i <= n - len && !stopped; i++) {
+        var j = i + len - 1;
+        var srcs = [], isMatch = false;
+        if (s[i] === s[j]) {
+          dp[i][j] = (len === 2 ? 0 : (dp[i + 1][j - 1] || 0)) + 2;
+          srcs = len > 2 ? [[i + 1, j - 1]] : [];
+          isMatch = true;
+          logger.log('s[' + i + ']=s[' + j + ']=' + s[i] + ' → dp[' + i + '][' + j + ']=' + (len>2?dp[i+1][j-1]||0:0) + '+2=<b>' + dp[i][j] + '</b>');
+        } else {
+          dp[i][j] = Math.max(dp[i + 1][j] || 0, dp[i][j - 1] || 0);
+          srcs = [[i + 1, j], [i, j - 1]];
+          logger.log('dp[' + i + '][' + j + ']=max(' + (dp[i+1][j]||0) + ',' + (dp[i][j-1]||0) + ')=<b>' + dp[i][j] + '</b>');
+        }
+        drawLPS(i, j, srcs, isMatch); await sleep(delay);
+      }
+    }
+    if (!stopped) {
+      logger.log('<span class="highlight">LPS = dp[0][' + (n-1) + '] = ' + dp[0][n - 1] + '</span>');
+      drawLPS(-1, -1, [], false);
+    }
+  }
+
+  async function run() {
+    if (running) return;
+    running = true; stopped = false;
+    init();
+    if (problem === 'edit') await runEdit();
+    else await runLPS();
+    running = false;
+  }
+
+  document.getElementById('run-btn').addEventListener('click', run);
+  document.getElementById('reset-btn').addEventListener('click', function() { stopped = true; running = false; init(); });
+  document.getElementById('problem-select').addEventListener('change', function() {
+    stopped = true; running = false;
+    var p = this.value;
+    document.getElementById('str-b-row').style.display = p === 'edit' ? 'block' : 'none';
+    document.getElementById('str-b').parentElement.style.display = p === 'edit' ? '' : 'none';
+    init();
+  });
+  ['str-a', 'str-b'].forEach(function(id) {
+    document.getElementById(id).addEventListener('input', function() { stopped = true; running = false; init(); });
+  });
+  init();
+  window.addEventListener('resize', function() { draw(-1, -1, [], false); });
+
+  function draw(a, b, c, d) {
+    if (problem === 'edit') drawEdit(a, b, c, d);
+    else drawLPS(a, b, c, d);
+  }
+})();
+</script>
+</body>
+</html>

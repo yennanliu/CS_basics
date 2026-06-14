@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>1D DP (Fibonacci / Climbing Stairs) - Algorithm Visualizer</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="common.js"></script>
+</head>
+<body>
+  <nav class="topbar">
+    <a href="../index.html" class="home-link">&larr; CS_basics</a>
+    <a href="index.html">Visualizer</a> <span class="sep">/</span>
+    <span class="title">1D Dynamic Programming</span>
+    <button id="theme-toggle">&#127769;</button>
+  </nav>
+  <div class="container">
+    <h1>1D Dynamic Programming</h1>
+    <p>Build a 1D table bottom-up so each cell reuses already-computed results. <br>
+       <strong>Pattern:</strong> <code>dp[i] = f(dp[i-1], dp[i-2], ...)</code><br>
+       LC 70 (Climbing Stairs), LC 198 (House Robber), LC 509 (Fibonacci).</p>
+
+    <div class="explanation-box" style="margin-bottom:16px">
+      <strong>Core Idea:</strong> Instead of re-computing overlapping subproblems recursively,
+      we fill a table left-to-right. Each cell depends only on cells to its left —
+      so by the time we reach cell <em>i</em> the values we need are already final.
+      <br><br>
+      <strong>Climbing Stairs recurrence:</strong> To reach stair <em>i</em> you can come from
+      stair <em>i-1</em> (one step) or stair <em>i-2</em> (two steps), so
+      <code>dp[i] = dp[i-1] + dp[i-2]</code>.
+    </div>
+
+    <div class="viz-wrapper">
+      <div>
+        <div class="viz-canvas-area"><canvas id="canvas"></canvas></div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot" style="background:#4361ee"></div> Computed</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div> Current cell</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#f39c12"></div> Source cells (i-1, i-2)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#aaa"></div> Not yet computed</div>
+        </div>
+      </div>
+      <div class="viz-controls">
+        <h3>Controls</h3>
+        <label>Problem:
+          <select id="problem-select" style="width:100%;margin-top:4px">
+            <option value="stairs">Climbing Stairs (LC 70)</option>
+            <option value="robber">House Robber (LC 198)</option>
+            <option value="fib">Fibonacci (LC 509)</option>
+          </select>
+        </label>
+        <label>n = <span id="n-val">10</span></label>
+        <input type="range" id="n-range" min="5" max="18" value="10">
+        <label>Speed</label>
+        <input type="range" id="speed" min="1" max="10" value="5">
+        <div class="btn-row">
+          <button class="btn btn-primary" id="run-btn">Run</button>
+          <button class="btn btn-secondary" id="reset-btn">Reset</button>
+        </div>
+        <div class="complexity">Time: O(n) | Space: O(n)</div>
+        <h3>Steps</h3>
+        <div class="viz-log" id="log"></div>
+      </div>
+    </div>
+  </div>
+<script>
+(function() {
+  var canvas = document.getElementById('canvas'), ctx = canvas.getContext('2d');
+  var running = false, stopped = false;
+  var logger = createLogger('log');
+  var dp = [], houses = [], n = 10, problem = 'stairs';
+
+  function getN() { return +document.getElementById('n-range').value; }
+  function getProblem() { return document.getElementById('problem-select').value; }
+
+  function init() {
+    n = getN(); problem = getProblem();
+    dp = new Array(n + 1).fill(undefined);
+    houses = [];
+    if (problem === 'robber') {
+      for (var i = 0; i <= n; i++) houses.push(Math.floor(Math.random() * 10) + 1);
+    }
+    logger.clear();
+    draw(-1, -1, -1);
+  }
+
+  function resize() {
+    var r = canvas.parentElement.getBoundingClientRect();
+    canvas.width = r.width - 32;
+    canvas.height = Math.max(r.height - 32, 260);
+  }
+
+  function draw(cur, src1, src2) {
+    resize();
+    var w = canvas.width, h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+    var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    var textColor = isDark ? '#ccc' : '#333';
+    var cellCount = n + 1;
+    var cellW = Math.min(60, (w - 40) / cellCount);
+    var cellH = 48, startX = (w - cellCount * cellW) / 2, startY = h / 2 - cellH / 2 - 20;
+
+    // Draw cells
+    for (var i = 0; i <= n; i++) {
+      var x = startX + i * cellW;
+      var color = '#aaa';
+      if (dp[i] !== undefined) color = '#4361ee';
+      if (i === src1 || i === src2) color = '#f39c12';
+      if (i === cur) color = '#e74c3c';
+
+      ctx.fillStyle = color;
+      ctx.beginPath(); ctx.roundRect(x + 2, startY, cellW - 4, cellH, 4); ctx.fill();
+
+      // Index label above
+      ctx.fillStyle = textColor;
+      ctx.font = '11px sans-serif'; ctx.textAlign = 'center';
+      ctx.fillText('dp[' + i + ']', x + cellW / 2, startY - 6);
+
+      // Value inside cell
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 13px sans-serif';
+      if (dp[i] !== undefined) {
+        ctx.fillText(dp[i], x + cellW / 2, startY + cellH / 2 + 5);
+      } else {
+        ctx.fillText('?', x + cellW / 2, startY + cellH / 2 + 5);
+      }
+
+      // House values for robber
+      if (problem === 'robber' && i > 0) {
+        ctx.fillStyle = textColor;
+        ctx.font = '11px sans-serif';
+        ctx.fillText('h:' + houses[i], x + cellW / 2, startY + cellH + 18);
+      }
+    }
+
+    // Arrow from sources to current
+    if (cur >= 0 && (src1 >= 0 || src2 >= 0)) {
+      ctx.strokeStyle = '#2ecc71'; ctx.lineWidth = 2;
+      [src1, src2].forEach(function(s) {
+        if (s < 0) return;
+        var sx = startX + s * cellW + cellW / 2, sy = startY + cellH;
+        var ex = startX + cur * cellW + cellW / 2, ey = startY + cellH;
+        ctx.beginPath();
+        ctx.moveTo(sx, sy + 10); ctx.lineTo(ex, ey + 10);
+        ctx.stroke();
+        // Arrow head
+        ctx.beginPath();
+        ctx.moveTo(ex, ey + 10);
+        ctx.lineTo(ex - 6, ey + 4); ctx.lineTo(ex + 6, ey + 4);
+        ctx.closePath(); ctx.fillStyle = '#2ecc71'; ctx.fill();
+      });
+    }
+
+    // Recurrence label
+    ctx.fillStyle = textColor; ctx.font = '12px monospace'; ctx.textAlign = 'center';
+    var rec = '';
+    if (problem === 'stairs') rec = 'dp[i] = dp[i-1] + dp[i-2]';
+    else if (problem === 'robber') rec = 'dp[i] = max(dp[i-1], dp[i-2] + house[i])';
+    else rec = 'dp[i] = dp[i-1] + dp[i-2]';
+    ctx.fillText(rec, w / 2, 24);
+  }
+
+  async function run() {
+    if (running) return;
+    running = true; stopped = false;
+    init();
+    var delay = (11 - document.getElementById('speed').value) * 120;
+
+    if (problem === 'stairs' || problem === 'fib') {
+      dp[0] = 1; dp[1] = 1;
+      draw(0, -1, -1); await sleep(delay);
+      draw(1, -1, -1); await sleep(delay);
+      logger.log('Base: dp[0]=1, dp[1]=1');
+      for (var i = 2; i <= n && !stopped; i++) {
+        dp[i] = dp[i - 1] + dp[i - 2];
+        logger.log('dp[' + i + '] = dp[' + (i-1) + '] + dp[' + (i-2) + '] = ' + dp[i - 1] + ' + ' + dp[i - 2] + ' = <b>' + dp[i] + '</b>');
+        draw(i, i - 1, i - 2);
+        await sleep(delay);
+      }
+    } else if (problem === 'robber') {
+      dp[0] = 0; dp[1] = houses[1];
+      draw(0, -1, -1); await sleep(delay);
+      draw(1, -1, -1); await sleep(delay);
+      logger.log('Base: dp[0]=0, dp[1]=' + houses[1]);
+      for (var i = 2; i <= n && !stopped; i++) {
+        var skip = dp[i - 1], rob = dp[i - 2] + houses[i];
+        dp[i] = Math.max(skip, rob);
+        logger.log('dp[' + i + '] = max(dp[' + (i-1) + ']=' + skip + ', dp[' + (i-2) + ']+h[' + i + ']=' + rob + ') = <b>' + dp[i] + '</b>');
+        draw(i, i - 1, i - 2);
+        await sleep(delay);
+      }
+    }
+
+    if (!stopped) {
+      draw(-1, -1, -1);
+      logger.log('<span class="highlight">Answer = dp[' + n + '] = ' + dp[n] + '</span>');
+    }
+    running = false;
+  }
+
+  document.getElementById('run-btn').addEventListener('click', run);
+  document.getElementById('reset-btn').addEventListener('click', function() { stopped = true; running = false; init(); });
+  document.getElementById('n-range').addEventListener('input', function() { document.getElementById('n-val').textContent = this.value; init(); });
+  document.getElementById('problem-select').addEventListener('change', init);
+  init();
+  window.addEventListener('resize', function() { draw(-1, -1, -1); });
+})();
+</script>
+</body>
+</html>
