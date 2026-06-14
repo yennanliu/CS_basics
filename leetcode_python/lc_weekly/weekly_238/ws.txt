@@ -267,26 +267,28 @@ class Solution(object):
     	l = 0
     	vowel = "aeiou"
     	latest_prev_vow = None
-    	cnt_map = {}
+    	cnt_map = Counter()
+    	
     	for r in range(len(word)):
     		val = word[r]
+
+    		#if not latest_prev_vow:
+    		latest_prev_vow = val
+    		#visited.append(val)
+    		cnt_map[val] += 1
+    		
+			# reset
+			if val - latest_prev_vow < 0:
+				latest_prev_vow = val
+				l = r
+				cnt_map = Counter(s[l: r+1])
+
+			cnt_map = Counter(s[l: r+1])
+
+
     		# ??
     		if len(visited) == 5:
     			max_len = max(max_len, r - l + 1)
-
-    		if not latest_prev_vow:
-    			latest_prev_vow = val
-    			visited.append(val)
-    		else:
-    			# reset
-    			if val - latest_prev_vow < 0:
-    				latest_prev_vow = val
-    				l = r
-    				cnt_map = Counter(s[l: r+1])
-
-    			cnt_map = Counter(s[l: r+1])
-
-
 
     	return max_len
 
