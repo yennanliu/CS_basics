@@ -27,6 +27,101 @@ The number of nodes in the tree is in the range [1, 100].
 
 """
 
+
+"""
+NOTE !!!
+
+- if path is `str` type, we DON'T need to undo (backtrack),
+     -> since it's immutable.
+
+- if path is `array` ([]) type, we need to undo (backtrack),
+     -> since it's mutable.
+
+"""
+
+# V0
+# IDEA: DFS
+class Solution(object):
+    def binaryTreePaths(self, root):
+        self.res = []
+
+        # NOTE !!!
+        # we use array ([]) as tmp cache
+        self.helper(root, [])
+
+        return self.res
+
+    def helper(self, root, path):
+        if not root:
+            return
+
+        path.append(str(root.val))
+
+
+        """
+        NOTE !!!
+
+         how we check `leaf` node
+        """
+        # leaf node
+        if not root.left and not root.right:
+            self.res.append("->".join(path))
+        else:
+            self.helper(root.left, path)
+            self.helper(root.right, path)
+
+        # NOTE !!!
+        # we do `backtrack` at final stage
+        # backtrack
+        path.pop()
+
+
+# V0-1
+# IDEA: DFS
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+class Solution(object):
+    def binaryTreePaths(self, root):
+        """
+        :type root: TreeNode
+        :rtype: List[str]
+        """
+        res = []
+        
+        def dfs(node, current_path):
+            if not node:
+                return
+                
+            # Construct the path string up to the current node
+            if current_path == "":
+                current_path = str(node.val)
+            else:
+                current_path += "->" + str(node.val)
+                
+            # CRITICAL FIX: Only record the path if we have reached a true LEAF node
+            if not node.left and not node.right:
+                res.append(current_path)
+                return # No need to look further down this branch
+                
+            # CRITICAL FIX: Pass the path down. 
+            # Because strings are immutable, Python naturally passes a unique copy 
+            # to the left and right branches, handling backtracking automatically!
+
+            # NOTE !!!
+            # is path is `str` type, we DON'T need to undo (backtrack),
+            # since it's immutable.
+            dfs(node.left, current_path)
+            dfs(node.right, current_path)
+            
+        dfs(root, "")
+        return res
+
+
 # V0
 # IDEA : BFS
 class Solution(object):
