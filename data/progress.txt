@@ -1,16 +1,17 @@
-20250614: 72(again),5,139,257(again),257,95(check)
+20250614: 72(again),5,139,257(again),257,95(check),647(todo),91(todo),322(todo),139(todo)
 20250613: 53,55,57,435,252,253,309,518(again),97,weekly_331
 20250612: 309(again),518(again),97(again),72(again),207,261,994,210(todo),743(again),787(again),416,494
 20250611: 416(again),494(again),153,155,105,138(again),146,621(again),39(again),79(again)
 20250610: 271,238(again),128,525,15(again, 2 pointers),424(again?),567(again)
 ,53(again),62,1143(ok, review),300(again)
-20250609: 198,213,5(dp again),647(again!!),91(again),322(again),152,139(again),topo_sort,257(todo),95(todo),lazy_bst_in_order(todo),173(todo),2616(todo, compare PQ)
+
 
 ------ review
 20250609: 198,213,5(dp again),647(again!!),91(again),322(again),152,139(again),topo_sort,257(todo),95(todo),lazy_bst_in_order(todo),173(todo),2616(todo, compare PQ)
 
 
 
+20250609: 198,213,5(dp again),647(again!!),91(again),322(again),152,139(again),topo_sort,257(todo),95(todo)
 20250608: 695,286,994(again),130,210(again!!),684,743(again!!),1584(pass),787(again)
 20250607: 39(again),79(again),200,133,417,207(again),261(again),323
 20250606: 105(again),138(again),2,146(again),199,1448,973,621(again!!),355

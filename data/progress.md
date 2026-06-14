@@ -42,6 +42,8 @@
 		- 416,494 (0/1 Knapsack)
 			- 0/1 knapsack DP
 		- 1143, 72
+		- lazy_bst_in_order(todo),173(todo),2616(todo, compare PQ)
+		- topo_sort,257(todo)
 		- `Combinations VS Permutations` in DP
 			- https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Dynamic_Programming/coin_change_2.py#L125
 
