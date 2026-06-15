@@ -14,7 +14,8 @@
 - tree.md
 - python_trick.md
 - dfs.md
-	- `1-1-9) find longest distance between nodes`
+	- `2) LC Example`
+		- 2-4) Find Duplicate Subtrees
 
 
 - complexity_drills.html (doing)
@@ -49,6 +50,7 @@
 		- 1905,399
 		- 323,2316
 		- 663,508
+		- 701,450
 		- lazy_bst_in_order(todo),173(todo),2616(todo, compare PQ)
 		- topo_sort,257(todo)
 		- `Combinations VS Permutations` in DP
