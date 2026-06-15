@@ -1,6 +1,91 @@
 # Progress
 
 
+# 2026-06-16
+
+- backtrack.md
+	- todo: `Type 2) : Permutations (排列組合) (全排列)`
+- dp.md
+	- todo: `Template 7-1: One Edit Distance (LC 161) — Exactly-1-Edit Variant`
+- greedy.md
+- intervals.md
+- tree2.md
+	- doing
+		- `4) Distance and LCA Templates`
+- tree.md
+	- doing
+- python_trick.md
+	- 2) LC Example
+- BST.md
+- String.md
+	- 2-15) Verifying an Alien Dictionary
+- Difference Array.md
+- Hash Map.md
+	- LC example
+- heap
+	- LC example
+- Monotonic Queue
+- Priority Queue
+- set.md
+- stack.md
+- sort.md
+- pointer.md
+- Union Find
+- Dijkstra
+- Queue
+- complexity_drills.html (doing)
+
+
+- OK:
+  - graph.md
+  - dfs.md
+
+
+- Blind 75
+
+	- math & geometry (doing)
+
+- needcode 150
+
+	- greedy
+	- intervals
+	- math & geometry
+
+- LC weekly
+	- `data/lc_weekly/lc_weekly_gemini.md`
+		- Weekly Contest 341 (todo)
+	- `data/lc_weekly/lc_weekly_gpt.md`
+		- Weekly Contest 266 (DONE)
+			- https://leetcode.com/contest/weekly-contest-266/
+
+- Others
+	- DP - `0/1 Knapsack and` -> revisit
+	- recent updated cheatsheet
+	- TODO LC:
+		- 1209(todo),1963(todo),227(todo),394(todo),34(todo),875(todo),81(todo)
+		- 377(todo, Permutations DP),210
+		- 312
+		- 416,494 (0/1 Knapsack)
+			- 0/1 knapsack DP
+		- 1143, 72
+		- 1905,399
+		- 323,2316
+		- 663,508
+		- 701,450
+		- 652,662
+		- 776,399
+		- 112,113,437
+		- 737
+		- 742
+		- graph bipartite
+			- 785
+		- lazy_bst_in_order(todo),173(todo),2616(todo, compare PQ)
+		- topo_sort,257(todo)
+		- `Combinations VS Permutations` in DP
+			- https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Dynamic_Programming/coin_change_2.py#L125
+
+
+
 # 2026-06-15
 
 - backtrack.md
@@ -43,10 +128,7 @@
 - Union Find
 - Dijkstra
 
-
-
-
-Queue
+- Queue
 
 
 
