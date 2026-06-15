@@ -5,3 +5,139 @@
 5.07 - 6.37 pm
 
 (90 mins)
+
+
+# LC 2062
+# https://leetcode.com/problems/count-vowel-substrings-of-a-string/description/
+
+
+
+-> Given a string word, 
+return the `number` of `vowel substrings` in word.
+
+
+NOTE:
+
+A vowel substring is a substring that only consists
+ of vowels ('a', 'e', 'i', 'o', and 'u')
+  and has `all five vowels` present in it.
+
+
+
+A substring is a contiguous (non-empty)
+ sequence of characters within a string.
+
+
+
+# IDEA 1) `vowel idx` +  slide window + hashset
+
+
+Input: word = "aeiouu"
+Output: 2
+Explanation: The vowel substrings of word are as follows (underlined):
+- "aeiouu"
+- "aeiouu"
+
+
+ "aeiouu"
+      r      cnt=1
+  l
+
+ "aeiouu"
+       r      cnt=2
+  l
+
+
+Input: word = "unicornarihan"
+Output: 0
+
+
+v_idx = [0,2,4,7,9]
+
+"unicornarihan"
+     r
+     l 
+
+
+
+"unicornarihan"
+      r
+     l
+
+
+
+Input: word = "cuaieuouac"
+Output: 7
+
+
+ "cuaieuouac"
+           r
+   l
+
+
+
+time:  O(N)
+space: O(1) # hashmap for only vowel as key
+
+
+# IDEA 2) hashmap +  slide window 
+
+class Solution(object):
+    def countVowelSubstrings(self, word):
+        # edge
+
+
+        cnt_map = {}
+        l = 0
+        n = len(word)
+
+        cnt = 0
+
+        vowel = "aeiou"
+
+        for r in range(n):
+            l_val = word[l]
+            r_val = word[r]
+
+            # if in vowel
+            if r_val in vowel:
+                cnt_map[r_val] = cnt_map.get(r_val, 0) + 1
+
+            # ??
+            else:
+                #l += 1
+                if l + 1 < n:
+                    l = r + 1 # ???
+
+                # shrink left pointer
+                while l < r and r - l + 1 >= 5:
+                    if l_val in vowel:
+                        cnt_map[l_val] = cnt_map.get(l_val, 0) - 1
+                            if cnt_map[l_val] == 0:
+                                del cnt_map[l_val]
+                    if cnt_map.size() == 5:
+                        cnt += 1
+                    l += 1
+
+
+            # ??
+            if cnt_map.size() == 5:
+                cnt += 1
+
+
+
+
+
+        return cnt
+
+
+
+
+
+
+
+
+
+
+
+
