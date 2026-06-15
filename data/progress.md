@@ -17,6 +17,34 @@
 	- doing
 - dfs.md
 	- OK
+- BST.md
+- String.md
+
+
+- Difference Array.md
+- Hash Map.md
+	- LC example
+
+- heap
+	- LC example
+
+- Monotonic Queue
+
+- Priority Queue
+
+- set.md
+- stack.md
+- sort.md
+- pointer.md
+- Union Find
+- Dijkstra
+
+
+
+
+Queue
+
+
 
 - complexity_drills.html (doing)
 
