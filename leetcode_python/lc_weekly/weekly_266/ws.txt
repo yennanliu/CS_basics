@@ -176,6 +176,21 @@ prefix sum ??
 
 
 
+Input: word = "aba"
+Output: 6
+Explanation: 
+All possible substrings are: 
+
+"a", "ab", "aba", "b", "ba", and "a".
+
+
+aba
+
+-> get sum 
+
+
+
+
 
 # idea 1) brute force
 
@@ -209,6 +224,40 @@ class Solution(object):
             self.helper(word, start_idx + 1, cur)
             # undo (backtrack)
             cur.pop() # ??
+
+
+
+# idea 3) brute force + prefix sum
+
+
+time: O(N ^ 2)
+space: O(N)
+class Solution(object):
+    def countVowels(self, word):
+        # edge
+
+        res = 0
+
+        vowel = "aeiou"
+
+        n = len(word)
+        cnt = [0] * n
+        for i in range(n):
+            if word[i] in vowel:
+                cnt[i] = 1 
+
+        res = 0
+
+        prefix = [0] * (n+1)
+        for i in range(n):
+            prefix[i+1] = prefix[i] + cnt[i]
+
+        # do better ??
+        for i in range(len(word)):
+            for j in range(i, len(word)):
+                #sub = word[i: j+1]
+                res += (prefix[j+1] - prefix[i])
+        return res
 
 
 
