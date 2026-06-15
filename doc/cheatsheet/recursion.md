@@ -317,7 +317,7 @@ private int processSubtree(TreeNode subtree, boolean isLeft) {
 
 ---
 
-### 2-5) Any-True Status in Recursion
+### 2-5) Any-True Status in Recursion — LC 572
 
 When you need to find ANY true result among recursive calls, use OR logic. Stop early if any recursive call returns true.
 
@@ -347,7 +347,7 @@ private boolean isSameTree(TreeNode node1, TreeNode node2) {
 
 ---
 
-### 2-6) Cartesian Product Construction
+### 2-6) Cartesian Product Construction — LC 95
 
 **Definition**: Recursively generate all possible structures by dividing a range, building all sub-results for each partition, and combining them via Cartesian product. This is a form of **Divide & Conquer** where the "combine" step enumerates all left × right combinations.
 
@@ -422,7 +422,7 @@ def generateTrees(n):
 
 ## 3) Advanced Techniques
 
-### 3-1) Memoization
+### 3-1) Memoization — LC 70
 
 **Idea**: Cache results of recursive calls to avoid redundant work when the same subproblem is encountered multiple times.
 
@@ -485,7 +485,7 @@ class Solution:
 
 ---
 
-### 3-2) Divide & Conquer
+### 3-2) Divide & Conquer — LC 23
 
 **Template**:
 ```

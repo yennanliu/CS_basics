@@ -2011,7 +2011,7 @@ public List<Integer> partitionLabels_0_2(String s) {
 }
 ```
 
-### LC 1838 Frequency of the Most Frequent Element
+### LC 1838 Frequency of the Most Frequent Element — LC 1838
 
 ```java
     public int maxFrequency_0_1(int[] nums, int k) {

@@ -1263,7 +1263,7 @@ public int maxChunksToSorted_1_1(int[] arr) {
 }
 ```
 
-### 2-8) Maximum Sum of Two Non-Overlapping Subarrays
+### 2-8) Maximum Sum of Two Non-Overlapping Subarrays — LC 1031
 
 **Core Idea (LC 1031):**
 ```
@@ -1492,7 +1492,7 @@ public int longestWPI(int[] hours) {
 | Subarray Sum Equals K | 560 | Count variant (store count, not index) |
 | Binary Subarrays With Sum | 930 | Count subarrays with binary-transformed sum = k |
 
-### 2-11) Sum of Distances (Pattern 7)
+### 2-11) Sum of Distances (Pattern 7) — LC 2615
 
 ```java
 // java

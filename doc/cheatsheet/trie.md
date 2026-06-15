@@ -564,7 +564,7 @@ Result: "app" intact, "apple" gone ✓
 
 ## 2) LC Example
 
-### 2-1) Implement Trie (Prefix Tree)
+### 2-1) Implement Trie (Prefix Tree) — LC 208
 ```python
 # 208. Implement Trie (Prefix Tree)
 # V0
