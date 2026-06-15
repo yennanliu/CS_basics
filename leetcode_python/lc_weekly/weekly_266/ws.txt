@@ -221,7 +221,116 @@ class Solution(object):
 
 
 
+n: retail store
 
+m products
+
+quantities[i]: # of prod with i prod type
+
+
+-> distribute all products to the retail stores
+on below:
+
+1.
+ 
+store can be given at most `one product type `
+but with any amount of prod
+
+2. 
+
+x : smallest as possible
+
+->  you want to `minimize` the `maximum` number
+ of products that are given to any store.
+
+
+
+x represent the `maximum number` of 
+`products` given to any `store`
+
+
+-> Return the minimum possible x.
+
+
+
+# idea 1) greedy ??
+
+
+# idea 2) binary search ?
+
+-> set the max product cnt
+each store, and try if can success distribute
+all prod to the stores
+
+
+
+
+
+# idea 2) binary search ?
+
+class Solution(object):
+    def minimizedMaximum(self, n, quantities):
+        # edge
+        if n == 1:
+            return quantities[0]
+
+        #min(quantities)
+        # ??
+        l = 1
+        r = sum(quantities) // n # ??
+
+        ans = r # ??
+
+        while r >= l:
+            mid = l + (r - l) // 2
+            if can_dist(n, quantities, amt_per_store):
+                ans = min(ans, mid)
+                # try smaller candidates
+                r = mid - 1
+            else:
+                l = mid + 1
+
+        retunr ans
+
+
+    """
+     n = 6, quantities = [11,6]
+
+     if amt_per_store = 3
+
+     q = 11
+
+     a = 3
+     b = 2
+
+
+     q = 6
+
+     a = 2
+     b = 0
+
+
+
+    if amt_per_store = 5
+     q = 15
+
+     a = 
+
+
+
+    """
+    def can_dist(self, n, quantities, max_amt_store):
+        cnt = 0
+        for q in quantities:
+            a = q / max_amt_store
+            b = q % max_amt_store
+
+            if b > 0:
+                a += 1
+            cnt -= a
+            if cnt < 0:
+                return False
+        return True
 
 
 
