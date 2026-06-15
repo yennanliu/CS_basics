@@ -848,7 +848,7 @@ class LinkedList:
 ### 1-1) Basic OP
 
 
-#### 1-1-0) Remove Nth node from end
+#### 1-1-0) Remove Nth node from end — LC 19
 ```java
 // java
 // LC 19
@@ -877,9 +877,9 @@ slow.next = slow.next.next;
 
 #### 1-1-1) transversal linked list
 
-#### 1-1-2) plus one on linked list
+#### 1-1-2) plus one on linked list — LC 369
 
-#### 1-1-3) Reverse linked list (iteration)
+#### 1-1-3) Reverse linked list (iteration) — LC 206
 ```python
 # python
 #-------------------------
@@ -953,7 +953,7 @@ public ListNode reverseList(ListNode head) {
 }
 ```
 
-#### 1-1-4) Reverse linked list (recursion)
+#### 1-1-4) Reverse linked list (recursion) — LC 206
 ```java
 // java
 //---------------------------
@@ -967,7 +967,7 @@ public ListNode reverseList(ListNode head) {
 // same as above 
 ```
 
-#### 1-1-5) Reverse *nodes in [a,b]*  linked list (iteration)
+#### 1-1-5) Reverse *nodes in [a,b]*  linked list (iteration) — LC 92
 ```java
 // java
 //---------------------------
@@ -994,7 +994,7 @@ ListNode reverse(ListNode a, Listnode b){
 }
 ```
 
-#### 1-1-6) Reverse *nodes in k group*  linked list (iteration)
+#### 1-1-6) Reverse *nodes in k group*  linked list (iteration) — LC 25
 ```java
 // java
 //---------------------------
@@ -1104,7 +1104,7 @@ ListNode reverseN(ListNode head, int n){
 }
 ```
 
-#### 1-1-8) Reverse *middle N nodes* in linked list (*start, end* as interval) (recursion)
+#### 1-1-8) Reverse *middle N nodes* in linked list (*start, end* as interval) (recursion) — LC 92
 ```java
 // java
 //---------------------------
@@ -1140,7 +1140,7 @@ ListNode reverseBetween(ListNode head, int m, int n){
 
 #### 1-1-10) swap node
 
-#### 1-1-11) add 2 linked list
+#### 1-1-11) add 2 linked list — LC 2
 ```python
 # LC 002
 class Solution(object):
@@ -1223,7 +1223,7 @@ class Solution:
         return head.next
 ```
 
-#### 1-1-12) Find linked list middle point
+#### 1-1-12) Find linked list middle point — LC 876
 ```java
 // algorithm book p. 286
 // java
@@ -1285,7 +1285,7 @@ class Solution(object):
         return r == r[::-1]
 ```
 
-### 2-2) Merge Two Sorted Lists
+### 2-2) Merge Two Sorted Lists — LC 21
 ```python
 # LC 021
 # V0
@@ -1324,7 +1324,7 @@ class Solution(object):
         return head.next
 ```
 
-### 2-2') Merge K Sorted Lists
+### 2-2') Merge K Sorted Lists — LC 23
 ```python
 # LC 023 Merge k sorted lists
 # V0
@@ -1365,7 +1365,7 @@ class Solution(object):
         return head.next
 ```
 
-### 2-3) Reverse Linked List
+### 2-3) Reverse Linked List — LC 206
 ```python
 # LC 206
 class Solution(object):
@@ -1386,7 +1386,7 @@ class Solution(object):
         return prev
 ```
 
-### 2-4) Reverse Linked List II
+### 2-4) Reverse Linked List II — LC 92
 
 ```java
 // java
@@ -1460,7 +1460,7 @@ class Solution:
         return head
 ```
 
-### 2-5) Copy List with Random Pointer
+### 2-5) Copy List with Random Pointer — LC 138
 ```python
 # LC 138. Copy List with Random Pointer
 # V0
@@ -1542,7 +1542,7 @@ public Node copyRandomList_3(Node head) {
 }
 ```
 
-### 2-6) Intersection of Two Linked Lists
+### 2-6) Intersection of Two Linked Lists — LC 160
 ```python
 # LC 160 Intersection of Two Linked Lists
 # V0
@@ -1569,7 +1569,7 @@ class Solution(object):
         return p
 ```
 
-### 2-7) Split Linked List in Parts
+### 2-7) Split Linked List in Parts — LC 725
 ```python
 # LC 725. Split Linked List in Parts
 # V0
@@ -1626,7 +1626,7 @@ class Solution(object):
         return res
 ```
 
-### 2-7) Remove Nth Node From End of List
+### 2-7) Remove Nth Node From End of List — LC 19
 ```python
 # LC 19. Remove Nth Node From End of List
 # NOTE : there is (two pass algorithm) approach
@@ -1785,7 +1785,7 @@ class Solution(object):
     }
 ```
 
-### 2-8) Reorder List
+### 2-8) Reorder List — LC 143
 
 ```java
 // java
@@ -1957,7 +1957,7 @@ class Solution:
         return head
 ```
 
-### 2-9) Swap Nodes in Pairs
+### 2-9) Swap Nodes in Pairs — LC 24
 ```python
 # LC 24. Swap Nodes in Pairs
 # V0 
@@ -1983,7 +1983,7 @@ class Solution:
         return dummy.next
 ```
 
-### 2-10) Plus One Linked List
+### 2-10) Plus One Linked List — LC 369
 ```java
 // java
 // LC 369
@@ -2035,7 +2035,7 @@ return prev;
 }
 ```
 
-### 2-11) Linked List Components
+### 2-11) Linked List Components — LC 817
 
 ```java
 // java

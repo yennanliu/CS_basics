@@ -291,7 +291,7 @@ Index | nums[i] | maxProd              | minProd              | result
 
 ---
 
-### 1-4) Circular Maximum Subarray (LC 918)
+### 1-4) Circular Maximum Subarray (LC 918) — LC 918
 
 **Key Insight:** Maximum can occur in two scenarios:
 1. **Normal**: Maximum subarray doesn't wrap around
@@ -376,7 +376,7 @@ public int maxSubarraySumCircular(int[] nums) {
 
 ---
 
-### 1-5) Maximum Subarray Sum with One Deletion (LC 1186)
+### 1-5) Maximum Subarray Sum with One Deletion (LC 1186) — LC 1186
 
 **Problem:** You can delete at most one element to maximize subarray sum.
 

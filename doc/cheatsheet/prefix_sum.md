@@ -949,7 +949,7 @@ for (int i = 1; i < prefixSum.length; i++) {
 
 ## 2) LC Example
 
-### 2-1) Flip String to Monotone Increasing
+### 2-1) Flip String to Monotone Increasing — LC 926
 
 ```python
 # LC 926. Flip String to Monotone Increasing
@@ -982,7 +982,7 @@ class Solution(object):
                    for j in range(len(P)))
 ```
 
-### 2-2) Range Addition
+### 2-2) Range Addition — LC 370
 ```python
 # LC 370. Range Addition
 # V0
@@ -1053,7 +1053,7 @@ class Solution(object):
         return ret[0:-1]
 ```
 
-### 2-3) Count Number of Nice Subarrays
+### 2-3) Count Number of Nice Subarrays — LC 1248
 ```python
 # 1248. Count Number of Nice Subarrays
 # NOTE : there are also array, window, deque.. approaches
@@ -1092,7 +1092,7 @@ class Solution:
         return res
 ```
 
-### 2-4) Maximum Size Subarray Sum Equals k
+### 2-4) Maximum Size Subarray Sum Equals k — LC 325
 ```python
 # LC 325. Maximum Size Subarray Sum Equals k
 # V0 
@@ -1124,7 +1124,7 @@ class Solution(object):
         return result
 ```
 
-### 2-5) Subarray Sum Equals K
+### 2-5) Subarray Sum Equals K — LC 560
 
 ```java
 // java
@@ -1168,7 +1168,7 @@ public int subarraySum(int[] nums, int k) {
 }
 ```
 
-### 2-6) Continuous Subarray Sum
+### 2-6) Continuous Subarray Sum — LC 523
 
 ```java
 // java
@@ -1203,7 +1203,7 @@ public boolean checkSubarraySum_1(int[] nums, int k) {
 }
 ```
 
-### 2-7) Max Chunks To Make Sorted
+### 2-7) Max Chunks To Make Sorted — LC 769
 
 ```java
 // java

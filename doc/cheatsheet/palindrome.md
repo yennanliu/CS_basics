@@ -304,7 +304,7 @@ def palindrome_partitioning_memo(s):
     return result
 ```
 
-### Template 5: Longest Palindromic Subsequence (DP)
+### Template 5: Longest Palindromic Subsequence (DP) — LC 516
 ```python
 def longest_palindromic_subsequence(s):
     """

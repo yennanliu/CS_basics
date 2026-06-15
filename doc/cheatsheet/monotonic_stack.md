@@ -132,7 +132,7 @@ private boolean shouldPop(Stack<Integer> stack, int[] arr, int currentIdx) {
 }
 ```
 
-### Template 1: Next Greater Element (Decreasing Stack)
+### Template 1: Next Greater Element (Decreasing Stack) — LC 496
 
 ```python
 def next_greater_element(nums):
@@ -174,7 +174,7 @@ public int[] nextGreaterElement(int[] nums) {
 }
 ```
 
-### Template 2: Next Smaller Element (Increasing Stack)
+### Template 2: Next Smaller Element (Increasing Stack) — LC 84
 
 ```python
 def next_smaller_element(nums):
@@ -197,7 +197,7 @@ def next_smaller_element(nums):
     return result
 ```
 
-### Template 3: Largest Rectangle in Histogram
+### Template 3: Largest Rectangle in Histogram — LC 84
 
 ```python
 def largest_rectangle_area(heights):
@@ -244,7 +244,7 @@ public int largestRectangleArea(int[] heights) {
 }
 ```
 
-### Template 4: Circular Array Processing
+### Template 4: Circular Array Processing — LC 503
 
 ```python
 def next_greater_circular(nums):
@@ -294,7 +294,7 @@ def monotonic_stack_with_info(nums):
     return result
 ```
 
-### Template 6: Pattern Validation (132 Pattern)
+### Template 6: Pattern Validation (132 Pattern) — LC 456
 
 ```python
 def find_132_pattern(nums):

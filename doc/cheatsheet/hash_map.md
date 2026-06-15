@@ -2167,7 +2167,7 @@ class Solution(object):
         return len(wall) - count
 ```
 
-### 2-13) Maximum Size Subarray Sum Equals k — LC 325 — LC 325
+### 2-13) Maximum Size Subarray Sum Equals k — LC 325
 
 ```java
 // LC 325 — prefix sum + hashmap, store FIRST occurrence (max length variant)
@@ -2242,7 +2242,7 @@ public String findSmallestRegion_0_1(List<List<String>> regions, String region1,
 
 ---
 
-### 2-15) Tuple with Same Product (LC 1726)
+### 2-15) Tuple with Same Product (LC 1726) — LC 1726
 
 **Core Idea: Pair Product Frequency → Combination Counting**
 

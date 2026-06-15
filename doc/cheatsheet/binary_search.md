@@ -213,12 +213,12 @@ while (l <= r) {
 
 ## 1) Binary Search Types & Patterns
 
-### 1.1) Basic Binary Search
+### 1.1) Basic Binary Search — LC 704
 - **Purpose**: Find exact target value in sorted array
 - **Return**: Index of target, or -1 if not found
 - **Complexity**: O(log n)
 
-### 1.2) Search in Rotated Array
+### 1.2) Search in Rotated Array — LC 33
 - **Key Concept**: Determine which half is sorted, then decide search direction
 - **Applications**: Find target, find minimum element
 
@@ -366,7 +366,7 @@ while (r >= l) {
 - **LC 153** (Find Min): Only needs to determine which side to search
 - **LC 33/81** (Find Target): Must check target location within sorted half
 
-### 1.3) Recursive Binary Search
+### 1.3) Recursive Binary Search — LC 704
 - **Use Cases**: When recursive approach is more intuitive
 - **Space**: O(log n) due to call stack
 
@@ -433,7 +433,7 @@ while (r >= l) {
 // Result is typically at index 'l'
 ```
 
-### 1.7) Right Boundary Search
+### 1.7) Right Boundary Search — LC 34
 **Purpose**: Find the rightmost occurrence of target
 
 ```python
@@ -455,7 +455,7 @@ def find_right_boundary(nums, target):
     return r
 ```
 
-### 1.8) Binary Search on Answer Space ⭐⭐⭐⭐⭐
+### 1.8) Binary Search on Answer Space ⭐⭐⭐⭐⭐ — LC 875
 
 **Critical Pattern** - One of the most important and frequently tested binary search applications in FAANG interviews.
 
@@ -1539,7 +1539,7 @@ while (l < r - 1) {
 - LC 1060: Missing Element in Sorted Array
 - LC 1482: Minimum Number of Days to Make m Bouquets
 
-### 2.1) Standard Binary Search Template
+### 2.1) Standard Binary Search Template — LC 704
 
 **Key Principles**:
 - **Initialization**: `left = 0, right = nums.length - 1` (closed interval)
@@ -1590,7 +1590,7 @@ def binary_search(nums, target):
     return -1  # Target not found
 ```
 
-### 2.2) Left Boundary Template
+### 2.2) Left Boundary Template — LC 34
 
 **Use Cases**: Find leftmost occurrence, insertion point, first valid solution
 
@@ -1647,7 +1647,7 @@ def find_left_boundary(nums, target):
     return left
 ```
 
-### 2.3) Right Boundary Template
+### 2.3) Right Boundary Template — LC 34
 
 **Use Cases**: Find rightmost occurrence, last valid solution
 
@@ -2728,7 +2728,7 @@ public boolean searchMatrix_2(int[][] matrix, int target) {
     }
 ```
 
-### 4.17) Find Smallest Letter Greater Than Target (LC 744)
+### 4.17) Find Smallest Letter Greater Than Target (LC 744) — LC 744
 **Pattern**: `while (l < r)` - Finding insertion position
 ```python
 # LC 744 Find Smallest Letter Greater Than Target
@@ -2748,7 +2748,7 @@ class Solution(object):
         return letters[l % len(letters)]
 ```
 
-### 4.18) Arranging Coins (LC 441)
+### 4.18) Arranging Coins (LC 441) — LC 441
 **Pattern**: `while (l <= r)` - Finding exact value with mathematical property
 ```java
 // LC 441 Arranging Coins
@@ -2772,7 +2772,7 @@ public int arrangeCoins(int n) {
 }
 ```
 
-### 4.19) Minimum Number of Days to Make m Bouquets (LC 1482)
+### 4.19) Minimum Number of Days to Make m Bouquets (LC 1482) — LC 1482
 **Pattern**: `while (l < r - 1)` - Complex validation with helper function
 ```python
 # LC 1482 Minimum Number of Days to Make m Bouquets
@@ -2805,7 +2805,7 @@ class Solution(object):
         return l
 ```
 
-### 4.20) Search a 2D Matrix II (LC 240)
+### 4.20) Search a 2D Matrix II (LC 240) — LC 240
 **Pattern**: `while (l <= r)` - Search with elimination technique
 ```python
 # LC 240 Search a 2D Matrix II
@@ -2828,7 +2828,7 @@ class Solution(object):
         return False
 ```
 
-### 4.21) Find Minimum in Rotated Sorted Array II (LC 154)
+### 4.21) Find Minimum in Rotated Sorted Array II (LC 154) — LC 154
 **Pattern**: `while (l < r)` - Handling duplicates in rotated array
 ```java
 // LC 154 Find Minimum in Rotated Sorted Array II (with duplicates)
@@ -2855,7 +2855,7 @@ public int findMin(int[] nums) {
 }
 ```
 
-### 4.22) Missing Element in Sorted Array (LC 1060)
+### 4.22) Missing Element in Sorted Array (LC 1060) — LC 1060
 **Pattern**: `while (l < r - 1)` - Finding missing elements with gap calculation
 ```python
 # LC 1060 Missing Element in Sorted Array
@@ -3277,7 +3277,7 @@ private boolean canSplit(int[] sweetness, int people, int minTarget) {
 }
 ---
 
-### 4.X) Check If a Number Is Majority Element in a Sorted Array (LC 1150)
+### 4.X) Check If a Number Is Majority Element in a Sorted Array (LC 1150) — LC 1150
 
 #### Core Idea
 
@@ -3510,7 +3510,7 @@ def minimize_real(lo: float, hi: float, iterations=100) -> float:
     return (lo + hi) / 2
 ```
 
-### Search in 2D Matrix — Two Different Problems
+### Search in 2D Matrix — Two Different Problems — LC 74
 
 **LC 74** (matrix rows and columns both sorted, values increase left-to-right, top-to-bottom):
 ```python
@@ -3538,7 +3538,7 @@ def searchMatrix(matrix, target):
 ```
 **Key insight**: Staircase Search on LC 240 eliminates one row or column per step → O(m+n). Do NOT treat LC 240 as a flat binary search — the matrix is NOT globally sorted.
 
-### Binary Search on Answer (Classic Google Patterns)
+### Binary Search on Answer (Classic Google Patterns) — LC 875
 
 ```python
 # LC 875 Koko Eating Bananas

@@ -153,7 +153,7 @@ public ResultType slidingWindow(String s) {
 }
 ```
 
-### 1.3) Template 1: Fixed Size Window
+### 1.3) Template 1: Fixed Size Window — LC 643
 
 **Use Cases**: Anagrams, permutations, k-length substrings
 **Pattern**: Maintain exact window size, slide one position at a time
@@ -213,7 +213,7 @@ public List<Integer> fixedWindow(String s, int k) {
 }
 ```
 
-### 1.4) Template 2: Variable Size Window (Maximum Length)
+### 1.4) Template 2: Variable Size Window (Maximum Length) — LC 3
 
 **Use Cases**: Longest substring problems, maximum valid window
 **Pattern**: Expand until invalid, record max, then contract
@@ -242,7 +242,7 @@ def max_window(s):
     return max_len
 ```
 
-### 1.5) Template 3: Variable Size Window (Minimum Length)
+### 1.5) Template 3: Variable Size Window (Minimum Length) — LC 209
 
 **Use Cases**: Minimum window substring, smallest valid window
 **Pattern**: Expand until valid, record min, then try to contract
@@ -276,7 +276,7 @@ def min_window(s, target):
     return result if min_len != float('inf') else ""
 ```
 
-### 1.6) Template 4: Counting Subarrays
+### 1.6) Template 4: Counting Subarrays — LC 992
 
 **Use Cases**: Count subarrays meeting criteria
 **Pattern**: For each right position, count valid left positions
@@ -303,7 +303,7 @@ def count_subarrays(nums, condition):
     return count
 ```
 
-### 1.7) Technique: Exactly K Problems (At Most K Transformation)
+### 1.7) Technique: Exactly K Problems (At Most K Transformation) — LC 992
 
 **Core Insight:**
 "Exactly K" problems are often difficult to solve directly, but can be transformed using the powerful formula:
@@ -1168,7 +1168,7 @@ Answer: 3 ✅ — the three subarrays `[1,2,1]`, `[2,1,2,1]`, `[2,2,1,2,1]`
 
 ---
 
-### 1.10) Two Pointers on Sorted Intervals
+### 1.10) Two Pointers on Sorted Intervals — LC 56
 
 **When to use:** Two sorted interval arrays; find the first (or all) overlapping interval(s) that satisfy a duration/length requirement.
 

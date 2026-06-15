@@ -2034,7 +2034,7 @@ class Solution(object):
             return res % (10**9 + 7)
 ```
 
-### 2-12) Palindromic Substrings
+### 2-12) Palindromic Substrings — LC 647
 ```python
 # LC 647. Palindromic Substrings
 # V0
@@ -2051,7 +2051,7 @@ class Solution(object):
         return count
 ```
 
-### 2-13) Repeated Substring Pattern
+### 2-13) Repeated Substring Pattern — LC 459
 ```python
 # LC 459. Repeated Substring Pattern
 # V0
@@ -2075,7 +2075,7 @@ class Solution(object):
         return False
 ```
 
-### 2-14) Reverse Only Letters
+### 2-14) Reverse Only Letters — LC 917
 
 **Pattern: Selective Character Reversal**
 - Reverse only alphabetic characters

@@ -1756,7 +1756,7 @@ class Solution(object):
     }
 ```
 
-### 2-7) Parallel Courses
+### 2-7) Parallel Courses — LC 1136
 ```python
 # LC 1136
 def minimumSemesters(n, relations):
@@ -1796,7 +1796,7 @@ def minimumSemesters(n, relations):
     return semesters if studied == n else -1
 ```
 
-### 2-8) Find Eventual Safe States
+### 2-8) Find Eventual Safe States — LC 802
 ```python
 # LC 802
 def eventualSafeNodes(graph):

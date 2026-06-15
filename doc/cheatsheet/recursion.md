@@ -99,7 +99,7 @@ for x in _list:
 
 ---
 
-### 2-2) Top-Down Recursion
+### 2-2) Top-Down Recursion — LC 112
 
 **Definition**: Start from the root and make decisions at each node based on information passed down from parent nodes. Also known as "preorder" approach.
 
@@ -176,7 +176,7 @@ def hasPathSum(self, root, targetSum):
     return topDown(root, 0)
 ```
 
-### 2-3) Bottom-Up Recursion
+### 2-3) Bottom-Up Recursion — LC 104
 
 **Definition**: Start from leaf nodes and build up the solution by combining results from child nodes. Also known as "postorder" approach.
 
@@ -289,7 +289,7 @@ def isBalanced(self, root):
 
 ---
 
-### 2-4) Pass State to Next Recursion
+### 2-4) Pass State to Next Recursion — LC 404
 
 Pass accumulated state/context as parameters to child recursive calls. Useful when you need to track information from parent nodes.
 

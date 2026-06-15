@@ -162,7 +162,7 @@ class Solution(object):
         return n & (n - 1) == 0
 ```
 
-### 2-4) Add Binary — LC 67 — LC 67
+### 2-4) Add Binary — LC 67
 ```python
 # LC 67. Add Binary
 # V0

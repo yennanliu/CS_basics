@@ -3137,7 +3137,7 @@ class Codec:
             return None
 ```
 
-### 2-12) Serialize and Deserialize BST
+### 2-12) Serialize and Deserialize BST — LC 449
 ```python
 # LC 449. Serialize and Deserialize BST
 # V0
@@ -3230,7 +3230,7 @@ class Codec:
             return None
 ```
 
-### 2-12) Number of Closed Islands (2-Pass DFS)
+### 2-12) Number of Closed Islands (2-Pass DFS) — LC 1254
 ```java
 // java
 // LC 1254
@@ -3339,7 +3339,7 @@ def closedIsland(grid):
     return count
 ```
 
-### 2-13) Pacific Atlantic Water Flow
+### 2-13) Pacific Atlantic Water Flow — LC 417
 
 ```java
 // java
@@ -3480,7 +3480,7 @@ private void dfs(int[][] heights, boolean[][] reachable, int y, int x) {
 } 
 ```
 
-### 2-12) Minesweeper
+### 2-12) Minesweeper — LC 529
 
 ```java
 // java
@@ -3593,7 +3593,7 @@ if (x < 0 || x >= rows || y < 0 || y >= cols || board[x][y] != 'E') {
 }
 ```
 
-### 2-13) K-th Largest Perfect Subtree Size in Binary Tree
+### 2-13) K-th Largest Perfect Subtree Size in Binary Tree — LC 3319
 
 ```java
 // java
@@ -4082,7 +4082,7 @@ private boolean dfsPathVisitor(int node, int destination,
 - **Union Find**: Alternative for connectivity
 - **Topological Sort**: DFS application for dependencies
 
-### 2-14) Number of Distinct Islands
+### 2-14) Number of Distinct Islands — LC 694
 
 ```java
 // java

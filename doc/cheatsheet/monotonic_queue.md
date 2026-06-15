@@ -43,7 +43,7 @@
 
 ## Templates & Algorithms
 
-### Template 1: Sliding Window Maximum (Decreasing Deque)
+### Template 1: Sliding Window Maximum (Decreasing Deque) — LC 239
 
 ```java
 // Java — LC 239 Sliding Window Maximum

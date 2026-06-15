@@ -67,7 +67,7 @@
 
 ### 0-2) Pattern
 
-### 0-2-0) Remove Duplicates from Sorted Array
+### 0-2-0) Remove Duplicates from Sorted Array — LC 26
 
 #### Core Idea
 
@@ -1292,7 +1292,7 @@ private boolean isStretchy(String s, String word) {
 | Consecutive Characters | 1446 | Find longest single-char run |
 | Run-Length Encoding | — | Encode/decode character groups |
 
-### 0-2-3) QuickSelect (Partition Algorithm for Kth Element)
+### 0-2-3) QuickSelect (Partition Algorithm for Kth Element) — LC 215
 
 **Pattern Overview:**
 QuickSelect is a selection algorithm to find the Kth smallest/largest element in an unordered list. It's related to QuickSort but only recurses into one side of the partition. This makes it **O(n) average time** instead of O(n log n).

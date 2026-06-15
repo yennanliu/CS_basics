@@ -783,7 +783,7 @@ Matrix Problem Analysis Flowchart:
 
 ## Code Examples & Implementations
 
-### Advanced Example 1: Set Matrix Zeroes (LC 73)
+### Advanced Example 1: Set Matrix Zeroes (LC 73) — LC 73
 ```python
 def setZeroes(matrix):
     """
@@ -821,7 +821,7 @@ def setZeroes(matrix):
             matrix[i][0] = 0
 ```
 
-### Advanced Example 2: Search 2D Matrix II (LC 240)
+### Advanced Example 2: Search 2D Matrix II (LC 240) — LC 240
 ```python
 def searchMatrix(matrix, target):
     """
@@ -846,7 +846,7 @@ def searchMatrix(matrix, target):
     return False
 ```
 
-### Advanced Example 3: Image Smoother (LC 661)
+### Advanced Example 3: Image Smoother (LC 661) — LC 661
 ```python
 def imageSmoother(M):
     """

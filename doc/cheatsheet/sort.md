@@ -486,7 +486,7 @@ def stableCountingSort(arr):
     return output
 ```
 
-### Template 6: Topological Sort
+### Template 6: Topological Sort — LC 207
 ```python
 # Python - Topological Sort (Kahn's Algorithm)
 def topologicalSort(numNodes, edges):
@@ -790,7 +790,7 @@ Arrays.sort(arr, Collections.reverseOrder());
 
 ## LC Example
 
-### 2-1) Pancake Sorting
+### 2-1) Pancake Sorting — LC 969
 ```python
 # python
 # LC 969 Pancake Sorting
@@ -955,7 +955,7 @@ void reverse(int[] arr, int i, int j){
 }
 ```
 
-### 2-1) Reorder Data in Log Files
+### 2-1) Reorder Data in Log Files — LC 937
 ```python
 # LC 937. Reorder Data in Log Files
 # V0
@@ -1002,7 +1002,7 @@ class Solution:
         return sorted(logs, key=get_key)
 ```
 
-### 2-2) Meeting Rooms
+### 2-2) Meeting Rooms — LC 252
 ```python
 # LC 252. Meeting Rooms
 # V0
@@ -1022,7 +1022,7 @@ class Solution:
         return True
 ```
 
-### 2-3) Custom Sort String
+### 2-3) Custom Sort String — LC 791
 ```python
 # LC 791. Custom Sort String
 # V0
@@ -1041,7 +1041,7 @@ class Solution(object):
         return res
 ```
 
-### 2-4) Find K Closest Elements
+### 2-4) Find K Closest Elements — LC 658
 ```python
 # LC 658. Find K Closest Elements
 # NOTE : there is also stack, binary search.. approaches
@@ -1061,7 +1061,7 @@ class Solution:
         return sorted(result)
 ```
 
-### 2-5) Largest Number
+### 2-5) Largest Number — LC 179
 ```python
 # LC 179. Largest Number
 # V0
@@ -1079,7 +1079,7 @@ class Solution:
 ```
 
 
-### 2-6) Permutation in String
+### 2-6) Permutation in String — LC 567
 ```python
 # LC 567 
 # V0
@@ -1129,7 +1129,7 @@ public String sort(String s) {
 } 
 ```
 
-### 2-7) Car Fleet
+### 2-7) Car Fleet — LC 853
 
 ```java
 // java
@@ -1211,7 +1211,7 @@ public String sort(String s) {
 ```
 
 
-### 2-8) Minimize Maximum Pair Sum in Array
+### 2-8) Minimize Maximum Pair Sum in Array — LC 1877
 
 ```java
 // java
@@ -1246,7 +1246,7 @@ public int minPairSum(int[] nums) {
 | Boats to Save People | 881 | Minimize boats → greedy two pointers with weight limit |
 | Divide Players Into Teams | 2491 | Equal skill sum → pair 1st with last |
 
-### 2-7)  TopK Frequent Words
+### 2-7) TopK Frequent Words — LC 692
 
 ```java
 // java

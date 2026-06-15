@@ -311,7 +311,7 @@ class Solution:
         return res
 ```
 
-### 2-2) Solve the Equation
+### 2-2) Solve the Equation — LC 640
 
 ```python
 # LC 640. Solve the Equation
@@ -331,7 +331,7 @@ class Solution(object):
         return 'x=%d' % (a / x) if x else 'No solution' if a else 'Infinite solutions'
 ```
 
-### 2-3) Roman to Integer
+### 2-3) Roman to Integer — LC 13
 
 ```java
 // java

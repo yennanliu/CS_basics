@@ -68,7 +68,7 @@ Space-Optimized DP
 
 ## 1) Complete Examples: Recursion → DP
 
-### 1-1) Fibonacci Sequence
+### 1-1) Fibonacci Sequence — LC 509
 
 **Problem:** Compute the nth Fibonacci number where F(n) = F(n-1) + F(n-2), F(0)=0, F(1)=1.
 
