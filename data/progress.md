@@ -14,9 +14,7 @@
 - tree.md
 - python_trick.md
 - dfs.md
-	- `2) LC Example`
-		- 2-4) Find Duplicate Subtrees
-
+	- OK
 
 - complexity_drills.html (doing)
 
@@ -51,6 +49,10 @@
 		- 323,2316
 		- 663,508
 		- 701,450
+		- 652,662
+		- 776,399
+		- 112,113
+		- 737
 		- lazy_bst_in_order(todo),173(todo),2616(todo, compare PQ)
 		- topo_sort,257(todo)
 		- `Combinations VS Permutations` in DP

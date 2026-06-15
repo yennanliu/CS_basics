@@ -2538,4 +2538,102 @@ def dfs(r, tmp):
 | `list` + `tmp + [x]` | No (rebound) | Yes | **No** |
 | `list` + `append` | **Yes** | No (shared)     | **Yes — `path.pop()`**  |
 
+### 1-55) Custom class to carry multiple return values (Java `private static class` → Python)
+
+When a DFS / recursion needs to **return several values at once** (e.g. height + size + a flag), the Java idiom is a small `private static class SubtreeInfo`. In Python the closest equivalents are a `@dataclass`, a plain class, or a `NamedTuple`.
+
+```java
+// java — the pattern we want to port
+private static class SubtreeInfo {
+    int height;
+    int size;
+    boolean isPerfect;
+}
+```
+
+#### **Option 1: `@dataclass` (recommended)**
+
+`@dataclass` auto-generates `__init__`, `__repr__`, `__eq__` — least boilerplate, most readable.
+
+```python
+# python
+from dataclasses import dataclass
+
+@dataclass
+class SubtreeInfo:
+    height: int
+    size: int
+    is_perfect: bool
+
+
+def dfs(node):
+    # returns SubtreeInfo carrying 3 values up the recursion
+    if node is None:
+        return SubtreeInfo(0, 0, True)
+
+    left = dfs(node.left)
+    right = dfs(node.right)
+
+    is_perfect = (
+        left.is_perfect
+        and right.is_perfect
+        and left.height == right.height
+    )
+
+    size = left.size + right.size + 1
+    height = max(left.height, right.height) + 1
+
+    if is_perfect:
+        perfect_sizes.append(size)
+
+    return SubtreeInfo(height, size, is_perfect)
+
+# usage
+info = dfs(root)
+print(info.height, info.size, info.is_perfect)
+```
+
+#### **Option 2: Traditional class (no imports)**
+
+```python
+# python
+class SubtreeInfo:
+    def __init__(self, height, size, is_perfect):
+        self.height = height
+        self.size = size
+        self.is_perfect = is_perfect
+
+# usage is identical
+info = dfs(root)
+print(info.height)
+```
+
+#### **Option 3: `NamedTuple` (lightweight + immutable)**
+
+Use when the bundle should be **read-only** (also unpackable like a tuple).
+
+```python
+# python
+from typing import NamedTuple
+
+class SubtreeInfo(NamedTuple):
+    height: int
+    size: int
+    is_perfect: bool
+
+info = dfs(root)
+print(info.height)          # attribute access
+h, s, p = info              # tuple unpacking also works
+```
+
+#### **Quick comparison**
+
+| Option | Boilerplate | Mutable? | Best for |
+|--------|-------------|----------|----------|
+| `@dataclass`   | low  | yes (`frozen=True` for immutable) | **default choice** — clean & readable |
+| plain class    | high | yes  | no imports allowed / very old Python |
+| `NamedTuple`   | low  | **no** | immutable bundle, also tuple-unpackable |
+
+> **Quick & dirty alternative**: for one-off DFS you can just `return (height, size, is_perfect)` and unpack — but a named class/`NamedTuple` is far more readable once you have 3+ fields. For LeetCode-style solutions, `@dataclass` is usually the cleanest replacement for a Java `private static class`.
+
 > **Rule of thumb:** if you *mutate* a shared container (`append`/`add`), you must undo it (`pop`/`remove`). If you create a *new* object each call (string concat, `tmp + [x]`, tuple), the copy IS the backtrack — there's nothing to undo. See also [1-1) assignment vs shallow/deep copy](#0-2-assignment-vs-shallow-copy-vs-deep-copy).
