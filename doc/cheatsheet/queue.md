@@ -509,7 +509,7 @@ class MyQueue {
 }
 ```
 
-### Template 6: Stream Processing Pattern
+### Template 6: Stream Processing Pattern — LC 346
 ```python
 # Python - Moving average from data stream
 class MovingAverage:
@@ -903,7 +903,7 @@ if not out_stack:
 
 ## LC Examples
 
-### 2-1) Sliding Window Maximum (LC 239) — Monotonic Deque
+### 2-1) Sliding Window Maximum — LC 239
 > Maintain a decreasing deque of indices; front is always the current window maximum.
 
 ```java
@@ -924,7 +924,7 @@ public int[] maxSlidingWindow(int[] nums, int k) {
 }
 ```
 
-### 2-2) Design Circular Queue (LC 622) — Array with Head/Count
+### 2-2) Design Circular Queue — LC 622
 > Fixed-size array; track head index and count; use modular arithmetic for wrap-around.
 
 ```java

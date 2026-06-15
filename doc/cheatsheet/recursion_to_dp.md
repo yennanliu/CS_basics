@@ -256,7 +256,7 @@ public int fibOptimized(int n) {
 
 ---
 
-### 1-2) Climbing Stairs (LC 70)
+### 1-2) Climbing Stairs (LC 70) — LC 70
 
 **Problem:** Climbing n stairs, can climb 1 or 2 steps. How many distinct ways?
 
@@ -335,7 +335,7 @@ public int climbStairsOptimized(int n) {
 
 ---
 
-### 1-3) House Robber (LC 198)
+### 1-3) House Robber (LC 198) — LC 198
 
 **Problem:** Array of house values. Can't rob adjacent houses. Maximum robbery amount?
 

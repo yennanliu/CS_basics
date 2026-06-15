@@ -178,7 +178,7 @@ sum(0, 2) = prefix[3] - prefix[0]
 ```
 Without it, we'd need special `if (left == 0)` checks (see V0 in LC 303).
 
-### Concrete Example (LC 303)
+### Concrete Example — LC 303
 
 ```
 nums = [-2, 0, 3, -5, 2, -1]
@@ -1053,7 +1053,7 @@ class Solution(object):
         return ret[0:-1]
 ```
 
-### 2-3) Count Number of Nice Subarrays — LC 1248
+### 2-3) Count Number of Nice Subarrays — LC 1248 — LC 1248
 ```python
 # 1248. Count Number of Nice Subarrays
 # NOTE : there are also array, window, deque.. approaches
@@ -1092,7 +1092,7 @@ class Solution:
         return res
 ```
 
-### 2-4) Maximum Size Subarray Sum Equals k — LC 325
+### 2-4) Maximum Size Subarray Sum Equals k — LC 325 — LC 325
 ```python
 # LC 325. Maximum Size Subarray Sum Equals k
 # V0 
@@ -1124,7 +1124,7 @@ class Solution(object):
         return result
 ```
 
-### 2-5) Subarray Sum Equals K — LC 560
+### 2-5) Subarray Sum Equals K — LC 560 — LC 560
 
 ```java
 // java
@@ -1168,7 +1168,7 @@ public int subarraySum(int[] nums, int k) {
 }
 ```
 
-### 2-6) Continuous Subarray Sum — LC 523
+### 2-6) Continuous Subarray Sum — LC 523 — LC 523
 
 ```java
 // java
@@ -1203,7 +1203,7 @@ public boolean checkSubarraySum_1(int[] nums, int k) {
 }
 ```
 
-### 2-7) Max Chunks To Make Sorted — LC 769
+### 2-7) Max Chunks To Make Sorted — LC 769 — LC 769
 
 ```java
 // java
@@ -1263,7 +1263,7 @@ public int maxChunksToSorted_1_1(int[] arr) {
 }
 ```
 
-### 2-8) Maximum Sum of Two Non-Overlapping Subarrays — LC 1031
+### 2-8) Maximum Sum of Two Non-Overlapping Subarrays — LC 1031 — LC 1031
 
 **Core Idea (LC 1031):**
 ```
@@ -1355,7 +1355,7 @@ private int helper(int[] prefix, int L, int M) {
 | Subarray Sum Equals K | 560 | Prefix sum + HashMap |
 | Maximum Average Subarray II | 644 | Fixed/variable window with prefix sum |
 
-### 2-9) Maximum Side Length of a Square with Sum ≤ Threshold (LC 1292)
+### 2-9) Maximum Side Length of a Square with Sum ≤ Threshold — LC 1292
 
 **Pattern:** 2D Prefix Sum + Binary Search **or** 2D Prefix Sum + Greedy
 
@@ -1432,7 +1432,7 @@ public int maxSideLength(int[][] mat, int threshold) {
 | Maximal Square | 221 | Max square in matrix (DP approach) |
 | Largest 1-Bordered Square | 1139 | Max square with border condition |
 
-### 2-10) Longest Well-Performing Interval (LC 1124)
+### 2-10) Longest Well-Performing Interval — LC 1124
 
 **Pattern:** HashMap + Prefix Sum — Longest Subarray with Positive Sum
 

@@ -220,7 +220,7 @@ class LazySegmentTree:
         return self.query_range(1, 0, self.n - 1, left, right)
 ```
 
-### Template 4: 2D Binary Indexed Tree
+### Template 4: 2D Binary Indexed Tree — LC 308
 ```python
 class BIT2D:
     """2D Binary Indexed Tree for 2D range sum queries"""
@@ -277,7 +277,7 @@ class BIT2D:
 | Reverse Pairs | 493 | BIT/Merge Sort | Hard | Count inversions |
 | Count of Range Sum | 327 | BIT + Prefix Sum | Hard | Coordinate compression |
 
-### LC 307: Range Sum Query - Mutable
+### LC 307: Range Sum Query - Mutable — LC 307
 ```python
 class NumArray:
     """Range Sum Query with updates using BIT"""
@@ -315,7 +315,7 @@ class NumArraySegTree:
         return self.seg_tree.range_sum(left, right)
 ```
 
-### LC 315: Count of Smaller Numbers After Self
+### LC 315: Count of Smaller Numbers After Self — LC 315
 ```python
 def countSmaller(nums):
     """Count smaller numbers after self using BIT"""
@@ -381,7 +381,7 @@ def countSmallerMergeSort(nums):
     return counts
 ```
 
-### LC 493: Reverse Pairs
+### LC 493: Reverse Pairs — LC 493
 ```python
 def reversePairs(nums):
     """Count reverse pairs using BIT and coordinate compression"""
@@ -435,7 +435,7 @@ def reversePairsMergeSort(nums):
     return mergeSort(nums, 0, len(nums) - 1)
 ```
 
-### LC 327: Count of Range Sum
+### LC 327: Count of Range Sum — LC 327
 ```python
 def countRangeSum(nums, lower, upper):
     """Count range sums in [lower, upper] using BIT"""

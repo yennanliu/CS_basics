@@ -701,7 +701,7 @@ class Trie2 {
 }
 ```
 
-### 2-2) Add and Search Word - Data structure design
+### 2-2) Add and Search Word - Data structure design — LC 211
 ```python
 # LC 211 Add and Search Word - Data structure design
 # V0
@@ -823,7 +823,7 @@ class WordDictionary2 {
 }
 ```
 
-### 2-3) Search Suggestions System
+### 2-3) Search Suggestions System — LC 1268
 ```python
 # LC 1268. Search Suggestions System
 # V1
@@ -945,7 +945,7 @@ class Solution {
 };
 ```
 
-### 2-4) Word Search
+### 2-4) Word Search — LC 79
 ```python
 # LC 79. Word Search
 # V0
@@ -991,7 +991,7 @@ class Solution(object):
         return result
 ```
 
-### 2-5) Word Search II
+### 2-5) Word Search II — LC 212
 ```python
 # LC 212. Word Search II
 

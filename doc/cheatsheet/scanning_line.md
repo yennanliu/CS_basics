@@ -75,7 +75,7 @@ Key: transform `change` to `event`, so we can handle the `changed state` via pro
 | **Interval Merge** | Combine intervals | Start/End | O(n log n) | Free time, union |
 | **2D Sweep** | Rectangle area | X and Y events | O(n² log n) | Area calculation |
 
-### Template 1: Basic Interval Overlap
+### Template 1: Basic Interval Overlap — LC 253
 ```python
 # Python - Count maximum overlapping intervals
 def maxOverlap(intervals):
@@ -151,7 +151,7 @@ public int maxOverlap(int[][] intervals) {
 }
 ```
 
-### Template 2: Weighted Interval Overlap
+### Template 2: Weighted Interval Overlap — LC 2021
 ```python
 # Python - Sum of overlapping values (e.g., brightness)
 def maxWeightedOverlap(weighted_intervals):
@@ -221,7 +221,7 @@ public int maxWeightedOverlap(int[][] weightedIntervals) {
 }
 ```
 
-### Template 3: Skyline Problem
+### Template 3: Skyline Problem — LC 218
 ```python
 # Python - Building skyline
 def getSkyline(buildings):
@@ -296,7 +296,7 @@ public List<List<Integer>> getSkyline(int[][] buildings) {
 }
 ```
 
-### Template 4: Calendar Booking
+### Template 4: Calendar Booking — LC 731
 ```python
 # Python - Calendar with multiple bookings
 class MyCalendarTwo:
@@ -355,7 +355,7 @@ class MyCalendarTwo {
 }
 ```
 
-### Template 5: Difference Array Pattern
+### Template 5: Difference Array Pattern — LC 370
 ```python
 # Python - Range addition using sweep line
 def rangeAddition(length, updates):
@@ -400,7 +400,7 @@ def rangeAddition2D(m, n, updates):
     return result
 ```
 
-### Template 6: Interval Merge with Sweep
+### Template 6: Interval Merge with Sweep — LC 56
 ```python
 # Python - Merge overlapping intervals using sweep
 def mergeIntervals(intervals):
@@ -430,7 +430,7 @@ def mergeIntervals(intervals):
     return merged
 ```
 
-### Template 7: Prefix Sum — Longest Positive-Sum Subarray
+### Template 7: Prefix Sum — Longest Positive-Sum Subarray — LC 1124
 ```python
 # Python - Longest subarray with sum > 0 after +1/-1 transform
 def longestWPI(hours):

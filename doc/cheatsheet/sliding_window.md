@@ -813,7 +813,7 @@ Generalized: S(k) \ S(k-1) = subarrays with exactly k distinct
 
 ---
 
-### 1.7b) Transformation: Min Operations → Max Subarray Length
+### 1.7b) Transformation: Min Operations → Max Subarray Length — LC 1658
 
 #### Core Idea
 

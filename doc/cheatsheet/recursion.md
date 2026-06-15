@@ -543,7 +543,7 @@ def divide_and_conquer(problem):
 
 ## 4) Complete LeetCode Examples
 
-### 4-1) Symmetric Tree (LC 101)
+### 4-1) Symmetric Tree (LC 101) — LC 101
 
 **Pattern**: Bottom-up recursion, comparing two subtrees in parallel.
 
@@ -564,7 +564,7 @@ class Solution:
 
 ---
 
-### 4-2) One Edit Distance (LC 161)
+### 4-2) One Edit Distance (LC 161) — LC 161
 
 **Pattern**: Pruning branches early (abs difference > 1), then checking each position.
 
@@ -586,7 +586,7 @@ class Solution:
 
 ---
 
-### 4-3) Merge Two Sorted Lists (LC 21)
+### 4-3) Merge Two Sorted Lists (LC 21) — LC 21
 
 **Pattern**: Simple recursion with local state update.
 
@@ -605,7 +605,7 @@ class Solution:
 
 ---
 
-### 4-4) Subtree of Another Tree (LC 572)
+### 4-4) Subtree of Another Tree (LC 572) — LC 572
 
 **Pattern**: Any-true status with recursive helper.
 

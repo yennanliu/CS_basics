@@ -2557,7 +2557,7 @@ public class Codec{
 }
 ```
 
-### 1-1-15) Invert Binary Tree
+### 1-1-15) Invert Binary Tree — LC 226
 ```python
 # LC 226 Invert Binary Tree
 
@@ -2841,7 +2841,7 @@ def distanceK(root, target, k):
 3. ❌ Using DFS instead of BFS for distance → incorrect results
 4. ❌ Building graph with values instead of node references → fails with duplicate values
 
-### 1-1-17) check Symmetric Tree
+### 1-1-17) check Symmetric Tree — LC 101
 ```python
 # LC 101
 class Solution(object):
@@ -3582,7 +3582,7 @@ def isSubtree_v2(root, subRoot):
 
 ## 2) LC Example
 
-### 2-1) Binary Tree Right Side View
+### 2-1) Binary Tree Right Side View — LC 199
 ```python 
 # LC 199 Binary Tree Right Side View
 # V0
@@ -3608,7 +3608,7 @@ class Solution(object):
         return [x[0] for x in res if len(x) > 0]
 ```
 
-### 2-2) Construct String from Binary Tree
+### 2-2) Construct String from Binary Tree — LC 606
 ```python
 # LC 606. Construct String from Binary Tree
 # V0

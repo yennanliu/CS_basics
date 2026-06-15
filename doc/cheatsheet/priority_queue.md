@@ -960,7 +960,7 @@ if len(large) > len(small) + 1:
 
 ## Classic LC Problems with Java Solutions
 
-### 2-1) Kth Largest Element in an Array (LC 215)
+### 2-1) Kth Largest Element in an Array (LC 215) — LC 215
 ```java
 // Java
 // LC 215 - Find the kth largest element in an unsorted array
@@ -1024,7 +1024,7 @@ private void swap(int[] nums, int i, int j) {
 }
 ```
 
-### 2-2) Top K Frequent Elements (LC 347)
+### 2-2) Top K Frequent Elements (LC 347) — LC 347
 ```java
 // Java
 // LC 347 - Return the k most frequent elements
@@ -1090,7 +1090,7 @@ public int[] topKFrequent_BucketSort(int[] nums, int k) {
 }
 ```
 
-### 2-3) Merge K Sorted Lists (LC 23)
+### 2-3) Merge K Sorted Lists (LC 23) — LC 23
 ```java
 // Java
 // LC 23 - Merge k sorted linked lists
@@ -1170,7 +1170,7 @@ private ListNode mergeTwoLists(ListNode l1, ListNode l2) {
 }
 ```
 
-### 2-4) Find Median from Data Stream (LC 295)
+### 2-4) Find Median from Data Stream (LC 295) — LC 295
 ```java
 // Java
 // LC 295 - Design a data structure to find median from a stream
@@ -1229,7 +1229,7 @@ class MedianFinder {
  */
 ```
 
-### 2-5) Meeting Rooms II (LC 253)
+### 2-5) Meeting Rooms II (LC 253) — LC 253
 ```java
 // Java
 // LC 253 - Find minimum number of conference rooms required
@@ -1297,7 +1297,7 @@ public int minMeetingRooms_TwoArrays(int[][] intervals) {
 }
 ```
 
-### 2-6) Kth Largest Element in a Stream (LC 703)
+### 2-6) Kth Largest Element in a Stream (LC 703) — LC 703
 ```java
 // Java
 // LC 703 - Design a class to find kth largest element in a stream
@@ -1343,7 +1343,7 @@ class KthLargest {
  */
 ```
 
-### 2-7) K Closest Points to Origin (LC 973)
+### 2-7) K Closest Points to Origin (LC 973) — LC 973
 ```java
 // Java
 // LC 973 - Find K closest points to origin (0,0)
