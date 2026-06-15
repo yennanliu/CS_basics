@@ -812,7 +812,7 @@ class Twitter(object):
 
 ## 2) LC Example
 
-### 2-0) Top K Frequent Elements
+### 2-0) Top K Frequent Elements — LC 347
 ```java
 // java
 // LC 347
@@ -853,7 +853,7 @@ public int[] topKFrequent_2(int[] nums, int k) {
 }
 ```
 
-### 2-1) Kth Largest Element in a Stream
+### 2-1) Kth Largest Element in a Stream — LC 703
 ```python
 # 703 Kth Largest Element in a Stream
 
@@ -907,7 +907,7 @@ class KthLargest(object):
         return self.pool[0]
 ```
 
-### 2-2) Ugly Number II
+### 2-2) Ugly Number II — LC 264
 ```python
 # 264 Ugly Number II
 # V0 
@@ -950,7 +950,7 @@ class Solution(object):
         return ugly_number
 ```
 
-### 2-3) Find Median from Data Stream
+### 2-3) Find Median from Data Stream — LC 295
 ```python
 # 295 Find Median from Data Stream
 # V0
@@ -1012,7 +1012,7 @@ class MedianFinder:
             return float(self.large[0])
 ```
 
-### 2-4) Minimum Cost to Connect Sticks
+### 2-4) Minimum Cost to Connect Sticks — LC 1167
 ```python
 # LC 1167 Minimum Cost to Connect Sticks
 # V0
@@ -1030,7 +1030,7 @@ class Solution(object):
         return res 
 ```
 
-### 2-5) The kth Factor of n
+### 2-5) The kth Factor of n — LC 1492
 ```python
 # LC 1492  The kth Factor of n
 # note : there is also brute force, math approaches
@@ -1061,7 +1061,7 @@ class Solution:
         return -heappop(heap) if k == len(heap) else -1
 ```
 
-### 2-6) Least Number of Unique Integers after K Removals
+### 2-6) Least Number of Unique Integers after K Removals — LC 1481
 ```python
 # LC 1481. Least Number of Unique Integers after K Removals
 # NOTE : there's also Counter approaches
@@ -1137,7 +1137,7 @@ class Solution:
         return len(minHeap)
 ```
 
-### 2-7) Maximum Number of Events That Can Be Attended
+### 2-7) Maximum Number of Events That Can Be Attended — LC 1353
 ```python
 # LC 1353. Maximum Number of Events That Can Be Attended
 # V0
@@ -1199,7 +1199,7 @@ class Solution:
         return  ans
 ```
 
-### 2-8) Maximum Frequency Stack
+### 2-8) Maximum Frequency Stack — LC 895
 ```python
 # LC 895. Maximum Frequency Stack
 # V1'
@@ -1228,7 +1228,7 @@ class FreqStack(object):
         return x
 ```
 
-### 2-9) Ugly Number II
+### 2-9) Ugly Number II (v2) — LC 264
 ```python
 # LC 264 Ugly Number II
 # V0 
@@ -1254,7 +1254,7 @@ class Solution(object):
 ```
 
 
-### 2-10) Find K Pairs with Smallest Sums
+### 2-10) Find K Pairs with Smallest Sums — LC 373
 
 ```java
 // java
@@ -1353,7 +1353,7 @@ public List<List<Integer>> kSmallestPairs_0_1(int[] nums1, int[] nums2, int k) {
 }
 ```
 
-### 2-11) Kth Smallest Element in a Sorted Matrix
+### 2-11) Kth Smallest Element in a Sorted Matrix — LC 378
 
 ```java
 // java
@@ -1415,7 +1415,7 @@ public int kthSmallest_0_1(int[][] matrix, int k) {
 }
 ```
 
-### 2-12) Minimum Deletions to Make Character Frequencies Unique
+### 2-12) Minimum Deletions to Make Character Frequencies Unique — LC 1647
 
 ```java
 // java
@@ -1553,7 +1553,7 @@ public int minDeletions_hashset(String s) {
  */
 ```
 
-### 2-13) Maximum Performance of a Team
+### 2-13) Maximum Performance of a Team — LC 1383
 
 ```java
 // java
@@ -1700,7 +1700,7 @@ public int maxPerformance(int n, int[] speed, int[] efficiency, int k) {
  */
 ```
 
-### 2-14) Minimum Number of Refueling Stops
+### 2-14) Minimum Number of Refueling Stops — LC 871
 
 ```java
 // java
@@ -1849,7 +1849,7 @@ public int minRefuelStops_dp(int target, int startFuel, int[][] stations) {
  */
 ```
 
-### 2-15) Minimum Number of Visited Cells in a Grid
+### 2-15) Minimum Number of Visited Cells in a Grid — LC 2617
 
 ```java
 // java
@@ -2001,7 +2001,7 @@ public int minimumVisitedCells(int[][] grid) {
  */
 ```
 
-### 2-16) Divide Intervals Into Minimum Number of Groups
+### 2-16) Divide Intervals Into Minimum Number of Groups — LC 2406
 
 ```java
 // java
@@ -2103,7 +2103,7 @@ public int minGroups_v2(int[][] intervals) {
  */
 ```
 
-### 2-17) Minimize Deviation in Array
+### 2-17) Minimize Deviation in Array — LC 1675
 
 ```java
 // java
@@ -2202,7 +2202,7 @@ public int minimumDeviation(int[] nums) {
  */
 ```
 
-### 2-18) Task Scheduler
+### 2-18) Task Scheduler — LC 621
 
 ```python
 # python

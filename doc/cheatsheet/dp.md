@@ -139,7 +139,7 @@ def dp_solution(input_data):
     return dp[n-1]
 ```
 
-### Template 1: 1D Linear DP
+### Template 1: 1D Linear DP — LC 53
 ```python
 def linear_dp(nums):
     """Classic 1D DP for sequence problems"""
@@ -529,7 +529,7 @@ def climbStairs_v2(n):
 - Step `n` is the goal, so `dp[n]` is the answer
 - Avoids the mental overhead of mapping "step i" to "index i-1"
 
-### Template 2: 2D Grid DP
+### Template 2: 2D Grid DP — LC 62
 
 #### 🎯 Pattern (LC 64 — Minimum Path Sum)
 
@@ -736,7 +736,7 @@ def grid_dp(grid):
 
 **File Reference**: `leetcode_java/src/main/java/LeetCodeJava/DynamicProgramming/MinimumPathSum.java`
 
-### Template 3: Interval DP
+### Template 3: Interval DP — LC 516
 ```python
 def interval_dp(arr):
     """DP for interval/subarray problems"""
@@ -1106,7 +1106,7 @@ The length-based loop (Template 3) also works, but the backward-i + forward-j ap
 
 ---
 
-### Template 4: 0/1 Knapsack ⭐⭐⭐⭐⭐
+### Template 4: 0/1 Knapsack ⭐⭐⭐⭐⭐ — LC 416
 
 #### 🎯 Core Idea
 
@@ -1304,7 +1304,7 @@ def knapsack_01(weights, values, capacity):
     return dp[n][capacity]
 ```
 
-### Template 5: State Machine DP
+### Template 5: State Machine DP — LC 121
 ```python
 def state_machine_dp(prices, fee=0):
     """DP with multiple states (stock problems)"""
@@ -1388,7 +1388,7 @@ def state_machine_with_cooldown(prices):
 - **Space Optimization**: Can use O(1) space with 3 variables instead of 2D array
 - **Critical Transition**: `hold = max(hold, rest - prices[i])` - can only buy after rest, not after sold
 
-### Template 6: Top-Down Memoization
+### Template 6: Top-Down Memoization — LC 70
 ```python
 def top_down_dp(nums):
     """Top-down DP with memoization"""
@@ -1586,7 +1586,7 @@ Use this pattern when:
 
 ---
 
-### Template 7: String DP (Edit Distance / Levenshtein Distance)
+### Template 7: String DP (Edit Distance / Levenshtein Distance) — LC 72
 
 #### 🎯 **Pattern Recognition**
 
@@ -2054,7 +2054,7 @@ For LC 161 specifically: after filling the table, `dp[ns][nt] == 1` means exactl
 
 ---
 
-### Template 8: Longest Common Subsequence (LCS)
+### Template 8: Longest Common Subsequence (LCS) — LC 1143
 ```python
 def lcs_dp(text1, text2):
     """LCS pattern for string matching"""
@@ -2072,7 +2072,7 @@ def lcs_dp(text1, text2):
     return dp[m][n]
 ```
 
-### Template 9: State Compression (Bitmask DP)
+### Template 9: State Compression (Bitmask DP) — LC 847
 ```python
 def state_compression_dp(graph):
     """Traveling Salesman Problem using bitmask DP"""
@@ -2098,7 +2098,7 @@ def state_compression_dp(graph):
     return min(dp[(1 << n) - 1][i] + graph[i][0] for i in range(1, n))
 ```
 
-### Template 10: Palindrome Substring DP ⭐⭐⭐⭐⭐
+### Template 10: Palindrome Substring DP ⭐⭐⭐⭐⭐ — LC 5
 
 **Problem archetype**: LC 647 (Count Palindromic Substrings), LC 5 (Longest Palindromic Substring)
 
@@ -2288,7 +2288,7 @@ Need the full dp[i][j] table? (e.g., for partitioning / further DP)
 2. **Wrong loop direction in backward-i DP**: Forgetting that `i` must go from `n-1` to `0` so `dp[i+1][...]` is already filled.
 3. **Missing even-length center in expand**: Always call `expand(i, i)` AND `expand(i, i+1)` to cover both odd/even palindromes.
 
-### Template 11: Fibonacci-like Patterns
+### Template 11: Fibonacci-like Patterns — LC 70
 ```python
 def fibonacci_variants():
     """Common Fibonacci-like patterns"""
@@ -4402,7 +4402,7 @@ public boolean predictTheWinner(int[] nums) {
 
 ---
 
-### Template 12: Digit DP (Counting Numbers with Constraints)
+### Template 12: Digit DP (Counting Numbers with Constraints) — LC 233
 
 **Core Concept:**
 Digit DP is a technique for counting numbers in range [L, R] that satisfy certain digit-based constraints. It builds numbers digit-by-digit using DP with states tracking:

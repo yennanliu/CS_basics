@@ -2622,12 +2622,12 @@ return root;
 - LC 98 Validate Binary Search Tree (same BST property reasoning)
 - LC 938 Range Sum of BST (same "skip subtree" optimization using BST property)
 
-### 2-10-1) Convert BST to Greater Tree
+### 2-10-1) Convert BST to Greater Tree — LC 538
 ```python
 # LC 538
 ```
 
-### 2-11) Binary Search Tree to Greater Sum Tree
+### 2-11) Binary Search Tree to Greater Sum Tree — LC 1038
 ```python
 # LC 1038
 # Similar to LC 538 - Convert BST to Greater Tree

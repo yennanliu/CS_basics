@@ -153,7 +153,7 @@ So `l` is either:
 | **Loop ends** | First element >= target | Last element < target | `l` is insertion point |
 | **Visual** | `... r \| l ...` | No gap between them | `l = r + 1` |
 
-### Application: Search Insert Position (LC 35)
+### Application: Search Insert Position (LC 35) — LC 35
 
 ```java
 // LC 35 - The cleanest solution using pointer behavior
@@ -1839,7 +1839,7 @@ public int search_4(int[] nums, int target) {
 }
 ```
 
-### 4.2) Two Sum II - Input Array is Sorted (LC 167)
+### 4.2) Two Sum II - Input Array is Sorted (LC 167) — LC 167
 **Approach**: Binary search for each element's complement
 ```python
 # 167 Two Sum II - Input array is sorted
@@ -2095,7 +2095,7 @@ public boolean isPerfectSquare(int num) {
 }
 ```
 
-### 4.5) Minimum Size Subarray Sum (LC 209)
+### 4.5) Minimum Size Subarray Sum (LC 209) — LC 209
 **Approach**: Binary search on possible subarray lengths + sliding window validation
 ```python
 # LC 209 Minimum Size Subarray Sum
@@ -2128,7 +2128,7 @@ class Solution:
         return False
 ```
 
-### 4.6) First Bad Version (LC 278)
+### 4.6) First Bad Version (LC 278) — LC 278
 **Approach**: Binary search to find the first occurrence where isBadVersion() returns true
 ```python
 # LC 278
@@ -2149,7 +2149,7 @@ class Solution(object):
         return right 
 ```
 
-### 4.7) Search Insert Position (LC 35)
+### 4.7) Search Insert Position (LC 35) — LC 35
 
 **Problem**: Find index of target in sorted array. If not found, return the index where it should be inserted.
 
@@ -2329,7 +2329,7 @@ def searchRange(nums, target):
     return [left, right]
 ```
 
-### 4.8) Capacity To Ship Packages Within D Days (LC 1011)
+### 4.8) Capacity To Ship Packages Within D Days (LC 1011) — LC 1011
 **Approach**: Binary search on capacity + greedy validation
 ```python
 # LC 1011
@@ -2373,13 +2373,13 @@ class Solution(object):
             return l
 ```
 
-### 4.9) Split Array Largest Sum (LC 410) [Hard]
+### 4.9) Split Array Largest Sum (LC 410) [Hard] — LC 410
 **Approach**: Binary search on the maximum sum + greedy partitioning
 ```python
 # LC 410 Split Array Largest Sum [Hard]
 ```
 
-### 4.10) Koko Eating Bananas (LC 875)
+### 4.10) Koko Eating Bananas (LC 875) — LC 875
 **Approach**: Binary search on eating speed + time calculation validation
 
 ```java
@@ -2417,7 +2417,7 @@ public int minEatingSpeed(int[] piles, int h) {
 }
 ```
 
-### 4.11) Find K Closest Elements (LC 658)
+### 4.11) Find K Closest Elements (LC 658) — LC 658
 **Approach**: Two pointers approach to shrink array to k elements
 ```python
 # LC 658. Find K Closest Elements
@@ -2439,7 +2439,7 @@ class Solution(object):
         return arr
 ```
 
-### 4.12) Sqrt(x) (LC 69) - Alternative Implementation
+### 4.12) Sqrt(x) (LC 69) - Alternative Implementation — LC 69
 **Approach**: Binary search with careful boundary handling
 ```python
 # LC 069 Sqrt(x)
@@ -2486,7 +2486,7 @@ class Solution(object):
         return l if l * l < num else l - 1
 ```
 
-### 4.13) Find First and Last Position of Element in Sorted Array (LC 34)
+### 4.13) Find First and Last Position of Element in Sorted Array (LC 34) — LC 34
 **Approach**: Use left and right boundary search templates
 ```python
 # 34. Find First and Last Position of Element in Sorted Array
@@ -2565,7 +2565,7 @@ private int findBound(int[] nums, int target, boolean isFirst) {
 ```
 
 
-### 4.14) Search a 2D Matrix (LC 74)
+### 4.14) Search a 2D Matrix (LC 74) — LC 74
 **Approach**: Flatten 2D matrix to 1D using index conversion
 ```java
 // java
@@ -2604,7 +2604,7 @@ public boolean searchMatrix_2(int[][] matrix, int target) {
 }
 ```
 
-### 4.15) Find Minimum in Rotated Sorted Array (LC 153)
+### 4.15) Find Minimum in Rotated Sorted Array (LC 153) — LC 153
 **Approach**: Compare mid with boundaries to find rotation point
 
 **Pattern**: Rotated Sorted Array — Binary Search on Sorted Half
@@ -2669,7 +2669,7 @@ public boolean searchMatrix_2(int[][] matrix, int target) {
 
 **Reference**: See `leetcode_java/src/main/java/LeetCodeJava/BinarySearch/FindMinimumInRotatedSortedArray.java` for multiple approaches.
 
-### 4.16) Find First and Last Position - Alternative Implementation — LC 34
+### 4.16) Find First and Last Position - Alternative Implementation — LC 34 — LC 34
 **Approach**: Separate functions for finding first and last occurrences
 
 ```java

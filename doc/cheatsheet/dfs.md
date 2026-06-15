@@ -48,7 +48,7 @@
 - **Examples**: LC 450, LC 701, LC 669, LC 538
 - **Template**: Use Modification Template
 
-### **Pattern 6: Subtree Problems & LCA (Lowest Common Ancestor)**
+### **Pattern 6: Subtree Problems & LCA (Lowest Common Ancestor)** — LC 236
 - **Description**: Process subtrees and aggregate results bottom-up; find the lowest common ancestor of target nodes
 - **Recognition**: "Subtree sum", "duplicate subtrees", "LCA", "smallest subtree containing", "lowest common ancestor", "deepest leaves"
 - **Examples**: LC 508, LC 652, LC 236, LC 663, LC 865, LC 1123
@@ -358,7 +358,7 @@ def backtrack_template(candidates, target):
     return result
 ```
 
-### Template 5: Tree Modification
+### Template 5: Tree Modification — LC 450
 ```python
 def modify_tree(root, condition):
     """
@@ -2940,7 +2940,7 @@ public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
 }
 ```
 
-### 2-7) Clone graph — LC 133
+### 2-7) Clone graph — LC 133 — LC 133
 ```python
 # 133 Clone graph
 # note : there is also a BFS solution
@@ -2970,7 +2970,7 @@ class Solution(object):
         return node_copy
 ```
 
-### 2-8) Sentence Similarity II
+### 2-8) Sentence Similarity II — LC 737
 ```python
 # LC 737. Sentence Similarity II
 # NOTE : there is also union-find solution
@@ -3006,7 +3006,7 @@ class Solution(object):
         return True
 ```
 
-### 2-9) Concatenated Words
+### 2-9) Concatenated Words — LC 472
 ```python
 # LC 472. Concatenated Words
 # V1
@@ -3036,7 +3036,7 @@ class Solution(object):
         return False
 ```
 
-### 2-10) Maximum Product of Splitted Binary Tree
+### 2-10) Maximum Product of Splitted Binary Tree — LC 1339
 ```python
 # LC 1339. Maximum Product of Splitted Binary Tree
 # V0
@@ -3060,7 +3060,7 @@ class Solution(object):
         return best % (10 ** 9 + 7)
 ```
 
-### 2-11) Serialize and Deserialize Binary Tree
+### 2-11) Serialize and Deserialize Binary Tree — LC 297
 ```python
 # LC 297. Serialize and Deserialize Binary Tree
 # V0

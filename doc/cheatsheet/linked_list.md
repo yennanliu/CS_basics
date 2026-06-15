@@ -1261,7 +1261,7 @@ class Solution(object):
 
 ## 2) LC Example
 
-### 2-1) palindrome-linked-list
+### 2-1) palindrome-linked-list — LC 234
 ```python
 # LC 234 : palindrome-linked-list
 # V0

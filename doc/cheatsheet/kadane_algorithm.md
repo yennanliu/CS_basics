@@ -83,7 +83,7 @@ public int kadane(int[] nums) {
 
 ## 1) Pattern-Specific Implementations
 
-### 1-1) Classic Maximum Subarray Sum (LC 53)
+### 1-1) Classic Maximum Subarray Sum (LC 53) — LC 53
 
 **Problem:** Find the contiguous subarray with the largest sum.
 
@@ -200,7 +200,7 @@ public SubarrayResult maxSubArrayWithIndices(int[] nums) {
 
 ---
 
-### 1-3) Maximum Product Subarray (LC 152)
+### 1-3) Maximum Product Subarray (LC 152) — LC 152
 
 **Key Insight:** Track both maximum and minimum products because negative × negative = positive.
 

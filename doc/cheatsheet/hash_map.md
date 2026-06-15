@@ -1080,7 +1080,7 @@ for r in range(len(s)):
 
 ## 2) LC Example
 
-### 2-1) Contiguous Array (LC 525)
+### 2-1) Contiguous Array (LC 525) — LC 525
 
 **Core Pattern: Transform + Prefix Sum + HashMap**
 
@@ -1302,7 +1302,7 @@ class Solution(object):
         return r
 ```
 
-### 2-1-1) Subarray Sums Divisible by K (LC 974)
+### 2-1-1) Subarray Sums Divisible by K (LC 974) — LC 974
 
 **Core Pattern: Prefix Sum + Modular Arithmetic + HashMap**
 
@@ -1525,7 +1525,7 @@ Now remainders 4 match → subarray `[-1]` and `[-2, -3]` have the same remainde
 
 ---
 
-### 2-1-2) Count Number of Nice Subarrays (LC 1248)
+### 2-1-2) Count Number of Nice Subarrays (LC 1248) — LC 1248
 
 **Core Pattern: Transform Odd Numbers → Prefix Sum Count (same as LC 560)**
 
@@ -2145,7 +2145,7 @@ class Solution(object):
         return ans
 ```
 
-### 2-12) Brick Wall
+### 2-12) Brick Wall — LC 554
 ```python
 # LC 554. Brick Wall
 # V0
@@ -2167,7 +2167,7 @@ class Solution(object):
         return len(wall) - count
 ```
 
-### 2-13) Maximum Size Subarray Sum Equals k
+### 2-13) Maximum Size Subarray Sum Equals k — LC 325 — LC 325
 
 ```java
 // LC 325 — prefix sum + hashmap, store FIRST occurrence (max length variant)
@@ -2188,7 +2188,7 @@ public int maxSubArrayLen(int[] nums, int k) {
 }
 ```
 
-### 2-14)  Smallest Common Region
+### 2-14) Smallest Common Region — LC 1257
 
 ```java
 // java

@@ -1552,7 +1552,7 @@ for i in range(len(s)):
 
 ## 2) LC Example
 
-### 2-1) Compare Version Number
+### 2-1) Compare Version Number — LC 165
 - go through 2 string, keep comparing digits in eash string
 ```python
 # 165 Compare Version Number
@@ -1651,7 +1651,7 @@ In [65]: ans
 Out[65]: 5634
 ```
 
-### 2-3) Count and say
+### 2-3) Count and say — LC 38
 ```python
 # LC 038 Count and say
 # V0
@@ -1676,7 +1676,7 @@ class Solution:
         return res
 ```
 
-### 2-4) Monotone Increasing Digits
+### 2-4) Monotone Increasing Digits — LC 738
 ```python
 # LC 738 Monotone Increasing Digits
 class Solution:
@@ -1697,7 +1697,7 @@ class Solution:
         return int(s) 
 ```
 
-### 2-5) Validate IP Address
+### 2-5) Validate IP Address — LC 468
 ```python
 # LC 468. Validate IP Address
 # V0
@@ -1737,7 +1737,7 @@ class Solution:
             return "Neither"
 ```
 
-### 2-6) String to Integer (atoi)
+### 2-6) String to Integer (atoi) — LC 8
 ```python
 # LC 008
 # V0'
@@ -1800,7 +1800,7 @@ class Solution(object):
         return res
 ```
 
-### 2-7) License Key Formatting
+### 2-7) License Key Formatting — LC 482
 ```python
 # LC 482. License Key Formatting
 # ref : LC 725. Split Linked List in Parts
@@ -1854,7 +1854,7 @@ class Solution(object):
         return res.strip("-")
 ```
 
-### 2-8) Repeated String Match
+### 2-8) Repeated String Match — LC 686
 ```python
 # LC 686. Repeated String Match
 # V0
@@ -1900,7 +1900,7 @@ class Solution(object):
         return -1
 ```
 
-### 2-9) Count Binary Substrings
+### 2-9) Count Binary Substrings — LC 696
 ```python
 # LC 696. Count Binary Substrings
 # V0 
@@ -1961,7 +1961,7 @@ class Solution(object):
         return ans + min(prev, cur)
 ```
 
-### 2-10) Roman to Integer
+### 2-10) Roman to Integer — LC 13
 ```python
 # LC 13. Roman to Integer
 # V0
@@ -1987,7 +1987,7 @@ class Solution(object):
         return res
 ```
 
-### 2-11) ount Unique Characters of All Substrings of a Given String
+### 2-11) Count Unique Characters of All Substrings of a Given String — LC 828
 ```python
 # LC 828. Count Unique Characters of All Substrings of a Given String
 # V0

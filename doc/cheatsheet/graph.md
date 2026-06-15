@@ -89,7 +89,7 @@ def graph_algorithm(n, edges):
     return result
 ```
 
-### Template 1: BFS Traversal
+### Template 1: BFS Traversal — LC 102
 ```python
 def bfs_template(graph, start):
     """Breadth-first search template"""
@@ -115,7 +115,7 @@ def bfs_template(graph, start):
     return level
 ```
 
-### Template 2: DFS Traversal
+### Template 2: DFS Traversal — LC 200
 ```python
 def dfs_template(graph, start):
     """Depth-first search template"""
@@ -137,7 +137,7 @@ def dfs_template(graph, start):
     return visited
 ```
 
-### Template 3: Union-Find (DSU)
+### Template 3: Union-Find (DSU) — LC 684
 ```python
 class UnionFind:
     def __init__(self, n):
@@ -170,7 +170,7 @@ class UnionFind:
         return self.find(x) == self.find(y)
 ```
 
-### Template 4: Topological Sort (DFS)
+### Template 4: Topological Sort (DFS) — LC 207
 ```python
 def topological_sort_dfs(n, edges):
     """Topological sort using DFS"""
@@ -205,7 +205,7 @@ def topological_sort_dfs(n, edges):
     return result[::-1]
 ```
 
-### Template 5: Topological Sort (BFS/Kahn's)
+### Template 5: Topological Sort (BFS/Kahn's) — LC 207
 ```python
 def topological_sort_bfs(n, edges):
     """Kahn's algorithm for topological sort"""
@@ -233,7 +233,7 @@ def topological_sort_bfs(n, edges):
     return result if len(result) == n else []
 ```
 
-### Template 6: Bipartite Graph Checking
+### Template 6: Bipartite Graph Checking — LC 785
 
 **Definition**: A graph is bipartite if its vertices can be colored using only two colors such that no two adjacent vertices have the same color. Equivalent to checking if the graph has no odd-length cycles.
 
@@ -514,7 +514,7 @@ def validate_bipartite_assignment(assignments, conflicts):
 
 ---
 
-### Template 7: Shortest Path Algorithms
+### Template 7: Shortest Path Algorithms — LC 743
 
 #### Overview: Shortest Path Algorithm Comparison
 
@@ -1052,7 +1052,7 @@ if dist[i][k] + dist[k][j] < dist[i][j]:
 
 ---
 
-### Template 8: Tarjan's Algorithm (Graph Connectivity)
+### Template 8: Tarjan's Algorithm (Graph Connectivity) — LC 1192
 
 **Overview:**
 Tarjan's algorithm is a DFS-based technique for finding critical graph structures:
@@ -1817,7 +1817,7 @@ public int maxAreaOfIsland_1(int[][] grid) {
 
 ## 2) LC Example
 
-### 2-1) Closest Leaf in a Binary Tree
+### 2-1) Closest Leaf in a Binary Tree — LC 742
 ```python 
 # 742 Closest Leaf in a Binary Tree
 import collections
@@ -1863,7 +1863,7 @@ class Solution:
 
 ```
 
-### 2-2) Number of Connected Components in an Undirected Graph
+### 2-2) Number of Connected Components in an Undirected Graph — LC 323
 ```python
 # LC 323 Number of Connected Components in an Undirected Graph
 # V0
@@ -1890,7 +1890,7 @@ class Solution:
         return count
 ```
 
-### 2-3) Clone Graph
+### 2-3) Clone Graph — LC 133
 ```python
 # LC 133. Clone Graph
 
@@ -1965,7 +1965,7 @@ class Solution(object):
 ```
 
 
-### 2-4) Bus Routes
+### 2-4) Bus Routes — LC 815
 ```python
 # LC 815. Bus Routes
 # V0
@@ -1993,7 +1993,7 @@ class Solution(object):
         return -1
 ```
 
-### 2-5) Course Schedule
+### 2-5) Course Schedule — LC 207
 ```java
 // java
 // V0
@@ -2281,7 +2281,7 @@ def has_cycle_undirected(edges):
 - **Heap/Priority Queue**: Used in Dijkstra, Prim's
 - **Recursion/Backtracking**: DFS implementation
 
-### 2-6) Find Eventual Safe States
+### 2-6) Find Eventual Safe States — LC 802
 ```java
 // java
 // LC 802
@@ -2363,7 +2363,7 @@ private State dfs(int[][] graph, int node, State[] states) {
 
 ## Missing Google Patterns
 
-### Dijkstra — Shortest Path with Priority Queue
+### Dijkstra — Shortest Path with Priority Queue — LC 743
 
 ```python
 import heapq
@@ -2399,7 +2399,7 @@ def networkDelayTime(times, n, k):
 **Time**: O((V + E) log V), **Space**: O(V + E)
 **Use when**: Non-negative edge weights. For negative weights → Bellman-Ford.
 
-### Negative Cycle Detection — Bellman-Ford
+### Negative Cycle Detection — Bellman-Ford — LC 787
 After V-1 relaxations, if any edge can still be relaxed, a negative cycle exists.
 
 ```python
@@ -2462,7 +2462,7 @@ def find_bridges(n, edges):
 | Condition | `low[v] >= disc[u]` (for non-root) | `low[v] > disc[u]` |
 | LC | 1192 (Critical Connections = bridges) | 1192 |
 
-### Topological Sort — Kahn's Algorithm (BFS)
+### Topological Sort — Kahn's Algorithm (BFS) — LC 207
 
 ```python
 from collections import defaultdict, deque

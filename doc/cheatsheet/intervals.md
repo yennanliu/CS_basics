@@ -35,31 +35,31 @@
 - **Recognition**: "Merge", "combine", "overlapping intervals"
 - **Sorting**: By start time (ascending)
 
-### **Pattern 2: Interval Scheduling (Greedy)**
+### **Pattern 2: Interval Scheduling (Greedy)** — LC 435
 - **Description**: Find maximum non-overlapping intervals or minimum intervals to remove
 - **Examples**: LC 435 (Non-overlapping Intervals), LC 452 (Minimum Arrows)
 - **Recognition**: "Maximum", "minimum", "non-overlapping", "remove"
 - **Sorting**: By end time (ascending) for greedy approach
 
-### **Pattern 3: Interval Intersection**
+### **Pattern 3: Interval Intersection** — LC 986
 - **Description**: Find common time slots or overlapping regions between interval lists
 - **Examples**: LC 986 (Interval List Intersections), LC 1288 (Remove Covered Intervals)
 - **Recognition**: "Intersection", "overlap", "common", "covered"
 - **Sorting**: By start time, process two pointers
 
-### **Pattern 4: Interval Point Coverage**
+### **Pattern 4: Interval Point Coverage** — LC 452
 - **Description**: Determine points that can cover multiple intervals or find gaps
 - **Examples**: LC 452 (Minimum Arrows), LC 1024 (Video Stitching)
 - **Recognition**: "Cover", "points", "arrows", "minimum coverage"
 - **Sorting**: By start or end time depending on strategy
 
-### **Pattern 5: Meeting Room Scheduling**
+### **Pattern 5: Meeting Room Scheduling** — LC 253
 - **Description**: Determine meeting room requirements or check scheduling conflicts
 - **Examples**: LC 252 (Meeting Rooms), LC 253 (Meeting Rooms II)
 - **Recognition**: "Meeting", "conference", "rooms", "schedule conflicts"
 - **Sorting**: By start time, use priority queue for room management
 
-### **Pattern 6: Calendar and Booking**
+### **Pattern 6: Calendar and Booking** — LC 729
 - **Description**: Handle calendar bookings with conflict detection and resolution
 - **Examples**: LC 729 (My Calendar I), LC 731 (My Calendar II), LC 732 (My Calendar III)
 - **Recognition**: "Calendar", "booking", "double booking", "k-booking"

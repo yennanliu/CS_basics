@@ -266,7 +266,7 @@ public int smallestRepunitDivByK(int k) {
 
 ## 2) LC Example
 
-### 2-1) Excel Sheet Column Title
+### 2-1) Excel Sheet Column Title — LC 168
 
 ```python
 # 168 Excel Sheet Column Title

@@ -39,37 +39,37 @@
 
 ## Problem Categories
 
-### **Pattern 1: Custom Comparator Sorting**
+### **Pattern 1: Custom Comparator Sorting** — LC 179
 - **Description**: Sort with custom rules or multiple criteria
 - **Examples**: LC 179, 791, 937, 1029, 1366
 - **Pattern**: Define comparison function for complex ordering
 
-### **Pattern 2: Topological Sorting**
+### **Pattern 2: Topological Sorting** — LC 207
 - **Description**: Order elements based on dependencies
 - **Examples**: LC 207, 210, 269, 310, 1136
 - **Pattern**: DFS/BFS with in-degree tracking
 
-### **Pattern 3: Interval Sorting**
+### **Pattern 3: Interval Sorting** — LC 56
 - **Description**: Sort intervals for merging/processing
 - **Examples**: LC 56, 57, 252, 253, 435
 - **Pattern**: Sort by start, then process
 
-### **Pattern 4: K-th Element**
+### **Pattern 4: K-th Element** — LC 215
 - **Description**: Find k-th smallest/largest efficiently
 - **Examples**: LC 215, 347, 378, 658, 973
 - **Pattern**: Quick Select or Heap
 
-### **Pattern 5: Bucket/Counting Sort**
+### **Pattern 5: Bucket/Counting Sort** — LC 164
 - **Description**: Sort with limited value range
 - **Examples**: LC 164, 274, 451, 1122, 1636
 - **Pattern**: Use value as index
 
-### **Pattern 6: Merge Sort Applications**
+### **Pattern 6: Merge Sort Applications** — LC 148
 - **Description**: Divide-and-conquer with sorting
 - **Examples**: LC 23, 148, 315, 327, 493
 - **Pattern**: Merge sorted sequences
 
-### **Pattern 7: Greedy Pairing (Sort + Two Pointers)**
+### **Pattern 7: Greedy Pairing (Sort + Two Pointers)** — LC 1877
 - **Description**: Sort then pair smallest with largest to balance pair sums and minimize the maximum
 - **Core idea**: Pairing large numbers together creates unnecessarily large sums; pairing extremes (min+max) distributes weight evenly
 - **Examples**: LC 1877, 561, 881, 2491
@@ -297,7 +297,7 @@ private void merge(int[] arr, int left, int mid, int right) {
 }
 ```
 
-### Template 3: Custom Comparator Sorting
+### Template 3: Custom Comparator Sorting — LC 179
 ```python
 # Python - Custom sorting
 class Solution:
@@ -390,7 +390,7 @@ class Item implements Comparable<Item> {
 }
 ```
 
-### Template 4: Quick Select (K-th Element)
+### Template 4: Quick Select (K-th Element) — LC 215
 ```python
 # Python - Quick Select for k-th smallest
 def quickSelect(arr, k):
