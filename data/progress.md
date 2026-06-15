@@ -14,6 +14,7 @@
 - tree.md
 - python_trick.md
 - dfs.md
+	- `1-1-9) find longest distance between nodes`
 
 
 - complexity_drills.html (doing)
@@ -45,7 +46,9 @@
 		- 416,494 (0/1 Knapsack)
 			- 0/1 knapsack DP
 		- 1143, 72
-		- 1905
+		- 1905,399
+		- 323,2316
+		- 663,508
 		- lazy_bst_in_order(todo),173(todo),2616(todo, compare PQ)
 		- topo_sort,257(todo)
 		- `Combinations VS Permutations` in DP
