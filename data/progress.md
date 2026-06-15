@@ -6,7 +6,7 @@
 - backtrack.md
 	- todo: `Type 2) : Permutations (排列組合) (全排列)`
 - graph.md
-	- todo: `2) LC Example`
+	- OK
 - dp.md
 	- todo: `Template 7-1: One Edit Distance (LC 161) — Exactly-1-Edit Variant`
 - greedy.md
@@ -53,6 +53,9 @@
 		- 776,399
 		- 112,113
 		- 737
+		- 742
+		- graph bipartite
+			- 785
 		- lazy_bst_in_order(todo),173(todo),2616(todo, compare PQ)
 		- topo_sort,257(todo)
 		- `Combinations VS Permutations` in DP
