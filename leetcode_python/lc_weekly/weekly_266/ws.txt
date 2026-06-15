@@ -347,6 +347,75 @@ class Solution(object):
 
 
 
+# idea 3) math ??
+
+Let's look at an example string: _ _ _ [v] _ _ 
+where a vowel v sits at index i.
+
+
+ _ _ _ [v] _ _ 
+        i
+
+i + 1 choices that we can start on the left of `i` idx
+(0 to i)
+
+n - i choices that we can start on the right of `i` idx
+(i to n-1)
+
+
+
+-> (i+1) * (n-i)
+
+
+
+class Solution(object):
+    def countVowels(self, word):
+        # edge
+        vowel = set("aeiou")
+        cnt = 0
+        n = len(word)
+        list = [0] * n
+        
+        for i in range(n):
+            if word[i] in vowel:
+                list[i] = 1
+        
+        for i in range(n):
+            # ??
+            if word[i] in vowel:
+                cnt += ((i+1) * (n-i))
+
+        return cnt
+
+        
+
+#------------------ (fixed)
+
+# idea: observation, choice
+
+class Solution(object):
+    def countVowels(self, word):
+        """
+        :type word: str
+        :rtype: int
+        """
+        total_vowel_count = 0
+        vowels = set("aeiou")
+        n = len(word)
+        
+        # Scan through the string in a single pass
+        for i in range(n):
+            if word[i] in vowels:
+                # CRITICAL FIX: Calculate the exact number of substrings 
+                # that include the vowel at index 'i'
+                starting_choices = i + 1
+                ending_choices = n - i
+                
+                total_vowel_count += starting_choices * ending_choices
+                
+        return total_vowel_count
+
+
 
 
 #----------------------------------------------------

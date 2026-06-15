@@ -1023,6 +1023,187 @@ public void frequencyThresholdPattern(int[] arr1, int[] arr2, int maxVal, int th
 
 ---
 
+#### 1-2-3) Index Contribution Counting (Count Each Element's Appearances Across All Subarrays)
+
+**Concept:**
+- Instead of enumerating every subarray (O(n²) or worse), ask:
+  > "For a single element at index `i`, **how many subarrays contain it?**"
+- Then sum that contribution over all relevant elements in **one pass — O(n)**.
+- **Key Formula** (for an array/string of length `n`, element at index `i`):
+
+```
+# subarrays containing index i
+   = (choices for LEFT boundary) × (choices for RIGHT boundary)
+   = (i + 1) × (n - i)
+
+   where:
+     left  boundary ∈ {0, 1, ..., i}     → (i + 1) choices
+     right boundary ∈ {i, i+1, ..., n-1} → (n - i) choices
+```
+
+**Why This Works:**
+- A subarray is fully determined by its `(left, right)` pair with `left <= i <= right`.
+- The left end can start at any index from `0` to `i` → `i + 1` options.
+- The right end can finish at any index from `i` to `n - 1` → `n - i` options.
+- Every combination is a distinct subarray that contains index `i`, so the product counts them all.
+
+**When to Use:**
+- "Sum / count of X **over all substrings/subarrays**" where each element contributes independently
+- The per-element contribution does **not** depend on which subarray it sits in (e.g. counting vowels, summing values, counting matches)
+- You want to avoid generating all O(n²) subarrays explicitly
+
+---
+
+##### **Pattern: LC 2063 - Vowels of All Substrings**
+
+**Problem:** Sum the number of vowels in **every** substring of `word`.
+
+**Insight:** Each vowel at index `i` is counted once per substring that contains it. That count is exactly `(i + 1) * (n - i)`. So just sum that product over all vowel positions.
+
+```python
+# Python - LC 2063 Vowels of All Substrings
+# IDEA: each vowel at index i appears in (i+1)*(n-i) substrings
+class Solution(object):
+    def countVowels(self, word):
+        # time = O(n), space = O(1)
+        total_vowel_count = 0
+        vowels = set("aeiou")
+        n = len(word)
+
+        # single pass: accumulate each vowel's contribution
+        for i in range(n):
+            if word[i] in vowels:
+                starting_choices = i + 1      # left boundary: 0..i
+                ending_choices = n - i        # right boundary: i..n-1
+                total_vowel_count += starting_choices * ending_choices
+
+        return total_vowel_count
+```
+
+```java
+// Java - LC 2063 Vowels of All Substrings
+// IDEA: each vowel at index i appears in (i+1)*(n-i) substrings
+class Solution {
+    /**
+     * time = O(n), space = O(1)
+     *
+     * Each vowel at index i is contained in (i+1)*(n-i) substrings:
+     *   - left  boundary can be any of 0..i      → (i+1) choices
+     *   - right boundary can be any of i..n-1     → (n-i) choices
+     * Use `long` for the running total — it can exceed int range.
+     */
+    public long countVowels(String word) {
+        long total = 0;
+        int n = word.length();
+        String vowels = "aeiou";
+
+        for (int i = 0; i < n; i++) {
+            if (vowels.indexOf(word.charAt(i)) >= 0) {
+                long startingChoices = i + 1;   // left boundary: 0..i
+                long endingChoices = n - i;     // right boundary: i..n-1
+                total += startingChoices * endingChoices;
+            }
+        }
+
+        return total;
+    }
+}
+```
+
+**Example Trace:** `word = "aba"` (n = 3)
+
+```
+Index | char | vowel? | (i+1) | (n-i) | contribution
+---------------------------------------------------------
+  0   |  a   |  yes   |   1   |   3   |   1 * 3 = 3
+  1   |  b   |  no    |   -   |   -   |   0
+  2   |  a   |  yes   |   3   |   1   |   3 * 1 = 3
+
+Total = 3 + 0 + 3 = 6
+
+Verify by listing all substrings & their vowel counts:
+  "a"   → 1     "ab"  → 1     "aba" → 2
+  "b"   → 0     "ba"  → 1
+  "a"   → 1
+  sum = 1+1+2+0+1+1 = 6 ✓
+```
+
+---
+
+##### **Generalized Pattern: Per-Element Contribution**
+
+```java
+// Generic "sum a per-element value over all subarrays" template
+// time = O(n), space = O(1)
+public long sumOverAllSubarrays(int[] arr) {
+    long total = 0;
+    int n = arr.length;
+    for (int i = 0; i < n; i++) {
+        long subarraysContainingI = (long) (i + 1) * (n - i);
+        total += arr[i] * subarraysContainingI;   // arr[i]'s total contribution
+    }
+    return total;
+}
+```
+
+> **Note:** This works whenever an element's contribution is **independent of the subarray boundaries** (counting, summing). When the contribution depends on the element being a min/max within the subarray, use the **Monotonic Stack "Sum of Subarray Minimums" (LC 907)** variant, which computes per-element span via `(left span) * (right span)` instead.
+
+---
+
+#### **Index Contribution Counting: Common Mistakes & Tips**
+
+**🚫 Common Mistakes:**
+
+1. **Off-by-one in the boundary counts**
+   ```text
+   ❌ left choices = i        (forgets index 0..i is i+1 values)
+   ✅ left choices = i + 1
+   ❌ right choices = n - i - 1
+   ✅ right choices = n - i
+   ```
+
+2. **Integer overflow**
+   ```java
+   // ❌ WRONG: (i+1)*(n-i) can overflow int for large n
+   int total = 0; total += (i + 1) * (n - i);
+
+   // ✅ CORRECT: use long
+   long total = 0; total += (long) (i + 1) * (n - i);
+   ```
+
+3. **Confusing "contains index i" with "starts/ends at i"**
+   - Subarrays *containing* i: `(i+1) * (n-i)`
+   - Subarrays *starting* at i: `n - i`
+   - Subarrays *ending* at i: `i + 1`
+
+**💡 Interview Tips:**
+- Recognize the phrase **"over all substrings/subarrays"** + an independent per-element value → contribution counting.
+- State it as: "Rather than O(n²) subarrays, I count how many subarrays each element joins — `(i+1)*(n-i)` — and sum."
+- Mention `long` for overflow safety up front.
+
+---
+
+#### **Related LeetCode Problems:**
+
+| Problem | LC# | Difficulty | Contribution Idea |
+|---------|-----|------------|-------------------|
+| **Vowels of All Substrings** | **2063** | **Medium** | Each vowel adds `(i+1)*(n-i)` |
+| Sum of All Subarray Minimums | 907 | Medium | Monotonic-stack span: `left * right` |
+| Sum of Subarray Ranges | 2104 | Medium | Sum of (max contrib − min contrib) per element |
+| Sum of Total Strength of Wizards | 2281 | Hard | Contribution + prefix-of-prefix sums |
+| Number of Substrings Containing All Three Characters | 1358 | Medium | Count valid left boundaries per right |
+
+---
+
+**Summary:**
+- ✅ Each index `i` is contained in `(i + 1) * (n - i)` subarrays
+- ✅ Turns an O(n²) "over all subarrays" sum into a single O(n) pass
+- ✅ Works when per-element contribution is independent of subarray bounds
+- ✅ Watch for `long` overflow on the product
+- ✅ For min/max-dependent contributions → monotonic stack span counting (LC 907)
+
+---
+
 ## 2) LC Example
 
 ### 2-1) Queue Reconstruction by Height
