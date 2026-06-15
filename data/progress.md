@@ -7,16 +7,19 @@
 	- todo: `Type 2) : Permutations (排列組合) (全排列)`
 - graph.md
 	- OK
+- dfs.md
+	- OK
 - dp.md
 	- todo: `Template 7-1: One Edit Distance (LC 161) — Exactly-1-Edit Variant`
 - greedy.md
 - intervals.md
+- tree2.md
+	- doing
+		- 3.5) Path Value Building Template
 - tree.md
 	- doing
 - python_trick.md
 	- doing
-- dfs.md
-	- OK
 - BST.md
 - String.md
 
@@ -82,7 +85,7 @@ Queue
 		- 701,450
 		- 652,662
 		- 776,399
-		- 112,113
+		- 112,113,437
 		- 737
 		- 742
 		- graph bipartite
