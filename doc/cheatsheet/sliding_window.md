@@ -518,11 +518,127 @@ The 4 subarrays with exactly 2 distinct:
 
 ---
 
+#### Full Example: LC 2062 - Count Vowel Substrings of a String
+
+**Problem:** Count substrings that consist **only of vowels** (`a, e, i, o, u`) AND contain **all 5** distinct vowels.
+
+**Key Idea:** `EXACTLY 5 distinct vowels = atMost(5) - atMost(4)`
+
+This is the same `atMost(k) - atMost(k-1)` transformation as LC 992, but with **one extra twist for strings**:
+
+> **The vowels-only constraint.** A substring must contain *no consonants*. So the moment `atMost` hits a consonant, the window is **instantly ruined** — clear the frequency map and jump `left` past the consonant (`left = right + 1`). This guarantees every window we count contains only vowels.
+
+```
+"EXACTLY 5 distinct vowels"  →  atMost(5) - atMost(4)
+       └── only counts vowel-only windows (consonant resets window)
+```
+
+```python
+# Python - LC 2062 Count Vowel Substrings of a String
+# IDEA: atMost(5) - atMost(4), with consonant resetting the window
+class Solution(object):
+    def countVowelSubstrings(self, word):
+        # time = O(n) (atMost called twice), space = O(1) (≤ 5 vowels tracked)
+        def countAtMost(max_unique):
+            vowels = set("aeiou")
+            cnt_map = {}
+            l = 0
+            ans = 0
+
+            for r in range(len(word)):
+                # CRITICAL: a consonant ruins the vowel-only window
+                # → clear map and jump left past the consonant
+                if word[r] not in vowels:
+                    cnt_map.clear()
+                    l = r + 1
+                    continue
+
+                cnt_map[word[r]] = cnt_map.get(word[r], 0) + 1
+
+                # shrink from left while too many distinct vowels
+                while len(cnt_map) > max_unique:
+                    cnt_map[word[l]] -= 1
+                    if cnt_map[word[l]] == 0:
+                        del cnt_map[word[l]]
+                    l += 1
+
+                # # of valid vowel-only substrings ending at r = window length
+                ans += (r - l + 1)
+
+            return ans
+
+        # EXACTLY 5 distinct vowels = atMost(5) - atMost(4)
+        return countAtMost(5) - countAtMost(4)
+```
+
+```java
+// Java - LC 2062 Count Vowel Substrings of a String
+// IDEA: atMost(5) - atMost(4), with consonant resetting the window
+class Solution {
+    /**
+     * time = O(n) (atMost called twice), space = O(1) (≤ 5 vowels tracked)
+     */
+    public int countVowelSubstrings(String word) {
+        // EXACTLY 5 distinct vowels = atMost(5) - atMost(4)
+        return countAtMost(word, 5) - countAtMost(word, 4);
+    }
+
+    private int countAtMost(String word, int maxUnique) {
+        Set<Character> vowels = new HashSet<>(Arrays.asList('a', 'e', 'i', 'o', 'u'));
+        Map<Character, Integer> cntMap = new HashMap<>();
+        int l = 0, ans = 0;
+
+        for (int r = 0; r < word.length(); r++) {
+            char c = word.charAt(r);
+
+            // CRITICAL: a consonant ruins the vowel-only window
+            // → clear map and jump left past the consonant
+            if (!vowels.contains(c)) {
+                cntMap.clear();
+                l = r + 1;
+                continue;
+            }
+
+            cntMap.put(c, cntMap.getOrDefault(c, 0) + 1);
+
+            // shrink from left while too many distinct vowels
+            while (cntMap.size() > maxUnique) {
+                char leftChar = word.charAt(l);
+                cntMap.put(leftChar, cntMap.get(leftChar) - 1);
+                if (cntMap.get(leftChar) == 0) {
+                    cntMap.remove(leftChar);
+                }
+                l++;
+            }
+
+            // # of valid vowel-only substrings ending at r = window length
+            ans += (r - l + 1);
+        }
+
+        return ans;
+    }
+}
+```
+
+**Why the consonant reset is the only difference from LC 992:**
+
+| | LC 992 (K distinct integers) | LC 2062 (5 distinct vowels) |
+|---|---|---|
+| Allowed elements | any integer | **vowels only** |
+| Invalid element | (none — all allowed) | **consonant → reset window** |
+| Transformation | `atMost(k) - atMost(k-1)` | `atMost(5) - atMost(4)` |
+| Window count | `ans += r - l + 1` | `ans += r - l + 1` |
+
+> **Takeaway:** when a "count substrings with exactly K distinct" problem also restricts *which characters are allowed*, keep the `atMost` subtraction and just add a reset (`map.clear(); l = r + 1`) whenever a forbidden character appears.
+
+---
+
 #### Classic Problems Using This Technique
 
 | Problem | LC# | Difficulty | Transformation | Key Insight |
 |---------|-----|------------|----------------|-------------|
 | **Subarrays with K Different Integers** | **992** | **Hard** | Exactly K distinct = atMost(K) - atMost(K-1) | Core example |
+| Count Vowel Substrings of a String | 2062 | Medium | Exactly 5 vowels = atMost(5) - atMost(4) | Consonant resets window (vowels-only) |
 | Count Nice Subarrays | 1248 | Medium | Exactly K odds = atMost(K) - atMost(K-1) | Transform odd→1, even→0 |
 | Binary Subarrays With Sum | 930 | Medium | Exactly sum K = atMost(K) - atMost(K-1) | Subarray sum |
 | Longest Substring with At Most K Distinct | 340 | Medium | Direct atMost(K) for max length | No subtraction needed |
@@ -1193,6 +1309,7 @@ i  j  overlapStart  overlapEnd  length  action
 |---------|------|---------------|------------|
 | Subarray Product Less Than K | 713 | Product constraint | Medium |
 | Subarrays with K Different Integers | 992 | Exactly K = At most K - At most (K-1) | Hard |
+| Count Vowel Substrings of a String | 2062 | Exactly 5 vowels = atMost(5) - atMost(4) (consonant resets) | Medium |
 | Number of Subarrays with Bounded Maximum | 795 | Bounded value constraint | Medium |
 | Count Number of Nice Subarrays | 1248 | Odd number counting | Medium |
 

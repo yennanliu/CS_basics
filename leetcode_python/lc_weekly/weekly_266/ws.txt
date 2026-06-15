@@ -170,6 +170,53 @@ class Solution(object):
         return total_count
 
 
+#------------------------ (fixed)
+
+# slide window
+
+
+
+class Solution(object):
+    def countVowelSubstrings(self, word):
+        """
+        :type word: str
+        :rtype: int
+        """
+        # Helper function: Counts all substrings consisting ONLY of vowels 
+        # that contain AT MOST 'max_unique' distinct vowel characters.
+        def countAtMost(max_unique):
+            vowels = set("aeiou")
+            cnt_map = {}
+            l = 0
+            ans = 0
+            
+            for r in range(len(word)):
+                # CRITICAL STEP: If we hit a consonant, the window is instantly ruined.
+                # Clear the tracking map and shift the left pointer past the consonant.
+                if word[r] not in vowels:
+                    cnt_map.clear()
+                    l = r + 1
+                    continue
+                
+                # Add the valid vowel to our sliding window frequency map
+                cnt_map[word[r]] = cnt_map.get(word[r], 0) + 1
+                
+                # If we exceed our allowed unique vowel limit, shrink window from left
+                while len(cnt_map) > max_unique:
+                    cnt_map[word[l]] -= 1
+                    if cnt_map[word[l]] == 0:
+                        del cnt_map[word[l]]
+                    l += 1
+                
+                # MATHEMATICAL INSIGHT: The number of valid substrings ending at index 'r'
+                # is exactly equal to the length of the current window: (r - l + 1)
+                ans += (r - l + 1)
+                
+            return ans
+
+        # Substrings with EXACTLY 5 unique vowels = (At Most 5) - (At Most 4)
+        return countAtMost(5) - countAtMost(4)
+
 
 #----------------------------------------------------
 # LC 2063
