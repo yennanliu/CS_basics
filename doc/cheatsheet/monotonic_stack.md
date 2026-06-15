@@ -20,7 +20,7 @@
 - **Examples**: LC 496 (Next Greater Element I), LC 503 (Next Greater Element II), LC 739 (Daily Temperatures)
 - **Pattern**: Use decreasing monotonic stack, pop when finding greater element
 
-### **Pattern 2: Next/Previous Smaller Element** 
+### **Pattern 2: Next/Previous Smaller Element** — LC 84
 - **Description**: Find the next or previous element that is smaller than current element
 - **Examples**: LC 84 (Largest Rectangle), LC 42 (Trapping Rain Water), LC 907 (Sum of Subarray Minimums)
 - **Pattern**: Use increasing monotonic stack, pop when finding smaller element
