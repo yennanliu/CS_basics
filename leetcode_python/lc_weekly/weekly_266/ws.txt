@@ -133,6 +133,94 @@ class Solution(object):
 
 
 
+# LC 2063
+
+# https://leetcode.com/problems/vowels-of-all-substrings/description/
+
+
+
+->
+
+Input: word = "aba"
+Output: 6
+Explanation: 
+All possible substrings are: 
+
+
+"a", "ab", "aba", "b", "ba", and "a".
+
+
+slide window ??
+
+aba
+i
+
+a ab aba b ba a
+
+
+aba
+
+prefix sum ??
+
+[0,1,1,2]
+
+sum[i, j] = prefix[j+1] - prefix[i]
+
+
+
+abc
+
+prefix sum ??
+
+[0,1,1,1]
+
+
+
+
+# idea 1) brute force
+
+# idea 2) backtrack ??
+
+# idea 3) dfs  ??
+
+
+# idea 2) backtrack ??
+
+class Solution(object):
+    def countVowels(self, word):
+        self.cache = []
+        vowel = "aeiou"
+        res = 0
+        for word in self.cache:
+            # ??
+            for x in word:
+                if x in vowel:
+                    res += 1
+
+        return res
+
+
+    # backtrack
+    def helper(self, word, start_idx, cur):
+        # ??
+        self.cache.append(''.join(cur[:]))
+        for i in range(start_idx, len(word)):
+            cur.append(word[i])
+            self.helper(word, start_idx + 1, cur)
+            # undo (backtrack)
+            cur.pop() # ??
+
+
+
+
+
+
+
+# LC 2064
+# https://leetcode.com/problems/minimized-maximum-of-products-distributed-to-any-store/description/
+
+
+
 
 
 
