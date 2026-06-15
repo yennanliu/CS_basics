@@ -15,13 +15,14 @@
 - intervals.md
 - tree2.md
 	- doing
-		- 3.5) Path Value Building Template
+		- `4) Distance and LCA Templates`
 - tree.md
 	- doing
 - python_trick.md
-	- doing
+	- 2) LC Example
 - BST.md
 - String.md
+	- 2-15) Verifying an Alien Dictionary
 
 
 - Difference Array.md
