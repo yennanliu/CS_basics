@@ -25,22 +25,22 @@
 - **Examples**: LC 84 (Largest Rectangle), LC 42 (Trapping Rain Water), LC 907 (Sum of Subarray Minimums)
 - **Pattern**: Use increasing monotonic stack, pop when finding smaller element
 
-### **Pattern 3: Histogram and Area Problems**
+### **Pattern 3: Histogram and Area Problems** — LC 84
 - **Description**: Calculate areas, rectangles, or volumes using height information
 - **Examples**: LC 84 (Largest Rectangle in Histogram), LC 42 (Trapping Rain Water), LC 85 (Maximal Rectangle)
 - **Pattern**: Find boundaries using monotonic stack, calculate areas between boundaries
 
-### **Pattern 4: Sequence Order and Validation**
+### **Pattern 4: Sequence Order and Validation** — LC 456
 - **Description**: Validate sequences, find patterns, or maintain order constraints
 - **Examples**: LC 456 (132 Pattern), LC 901 (Online Stock Span), LC 1856 (Maximum Subarray Min-Product)
 - **Pattern**: Use stack to maintain sequence properties and validate patterns
 
-### **Pattern 5: Optimization and Maximum/Minimum**
+### **Pattern 5: Optimization and Maximum/Minimum** — LC 1793
 - **Description**: Find optimal solutions involving maximum or minimum constraints
 - **Examples**: LC 1944 (Number of Visible People), LC 2104 (Sum of Subarray Ranges), LC 1793 (Maximum Score)
 - **Pattern**: Use monotonic properties to maintain optimal candidates
 
-### **Pattern 6: Circular Arrays**
+### **Pattern 6: Circular Arrays** — LC 503
 - **Description**: Handle circular or cyclic array problems
 - **Examples**: LC 503 (Next Greater Element II), LC 853 (Car Fleet II)
 - **Pattern**: Process array twice or use modular arithmetic with monotonic stack

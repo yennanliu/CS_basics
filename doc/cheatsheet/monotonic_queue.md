@@ -21,22 +21,22 @@
 
 ## Problem Categories
 
-### **Pattern 1: Sliding Window Maximum/Minimum**
+### **Pattern 1: Sliding Window Maximum/Minimum** — LC 239
 - **Description**: Find max or min in every window of size K
 - **Examples**: LC 239 (Sliding Window Maximum), LC 1438 (Longest Subarray with Abs Diff ≤ Limit)
 - **Pattern**: Decreasing deque for max, increasing deque for min; pop front when out of window
 
-### **Pattern 2: DP Optimization with Bounded Range**
+### **Pattern 2: DP Optimization with Bounded Range** — LC 1696
 - **Description**: Optimize DP transitions where you pick the best value from a sliding range
 - **Examples**: LC 1425 (Constrained Subsequence Sum), LC 1696 (Jump Game VI)
 - **Pattern**: dp[i] = max(dp[j]) + val[i] for j in [i-K, i-1] → use monotonic deque for the max
 
-### **Pattern 3: Shortest Subarray with Sum Constraint**
+### **Pattern 3: Shortest Subarray with Sum Constraint** — LC 862
 - **Description**: Find shortest/longest subarray meeting a sum condition
 - **Examples**: LC 862 (Shortest Subarray with Sum ≥ K), LC 1499 (Max Value of Equation)
 - **Pattern**: Monotonic deque on prefix sums
 
-### **Pattern 4: Multi-Queue (Min + Max simultaneously)**
+### **Pattern 4: Multi-Queue (Min + Max simultaneously)** — LC 1438
 - **Description**: Maintain both min and max in a sliding window
 - **Examples**: LC 1438 (Longest Subarray with Abs Diff ≤ Limit)
 - **Pattern**: Two deques — one increasing (min), one decreasing (max)

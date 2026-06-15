@@ -34,37 +34,37 @@
 
 ## Problem Categories
 
-### **Pattern 1: Top K Elements**
+### **Pattern 1: Top K Elements** — LC 215
 - **Description**: Finding K largest/smallest elements efficiently
 - **Examples**: LC 215, 347, 692, 973, 1985
 - **Pattern**: Use min-heap for K largest, max-heap for K smallest
 
-### **Pattern 2: Merge K Sorted**
+### **Pattern 2: Merge K Sorted** — LC 23
 - **Description**: Merging multiple sorted sequences
 - **Examples**: LC 23, 88, 313, 373, 786
 - **Pattern**: Use PQ to track current smallest/largest from each sequence
 
-### **Pattern 3: Scheduling & Intervals**
+### **Pattern 3: Scheduling & Intervals** — LC 253
 - **Description**: Task scheduling and interval processing
 - **Examples**: LC 253, 1094, 1353, 1834, 2402
 - **Pattern**: Sort by start time, use PQ for end times or priorities
 
-### **Pattern 4: Sliding Window with Order**
+### **Pattern 4: Sliding Window with Order** — LC 239
 - **Description**: Maintaining order statistics in sliding windows
 - **Examples**: LC 239, 480, 703, 1438, 2542
 - **Pattern**: Use PQ to track min/max in current window
 
-### **Pattern 5: Graph Algorithms**
+### **Pattern 5: Graph Algorithms** — LC 743
 - **Description**: Shortest path and MST algorithms
 - **Examples**: LC 743, 787, 1514, 1584, 1631
 - **Pattern**: Dijkstra's algorithm, Prim's algorithm
 
-### **Pattern 6: Data Stream & Median**
+### **Pattern 6: Data Stream & Median** — LC 295
 - **Description**: Processing continuous data streams
 - **Examples**: LC 295, 346, 352, 703, 1825
 - **Pattern**: Two-heap technique for median, PQ for percentiles
 
-### **Pattern 7: Greedy String/Sequence Building with Constraint**
+### **Pattern 7: Greedy String/Sequence Building with Constraint** — LC 1405
 - **Description**: Build a string/sequence greedily using the most frequent element, but skip it when adding it would violate a constraint (e.g., 3 consecutive same chars). Use a max-heap to always have the current most frequent element ready.
 - **Examples**: LC 1405 (Longest Happy String), LC 767 (Reorganize String), LC 621 (Task Scheduler), LC 358 (Rearrange String k Distance Apart)
 - **Pattern**: Max-heap ordered by count; on each step try the top element — if it violates the constraint, temporarily use the 2nd element, then put the 1st back
@@ -72,7 +72,7 @@
   1. **Case 1 — constraint violated**: poll `second`, append it, decrement, re-add if > 0; then re-add `first` (it was NOT consumed)
   2. **Case 2 — safe**: append `first`, decrement, re-add if > 0
 
-### **Pattern 8: PQ + Cooldown Queue (k-Distance Scheduling)**
+### **Pattern 8: PQ + Cooldown Queue (k-Distance Scheduling)** — LC 358
 - **Description**: Greedily pick the most frequent element from a max-heap, then lock it in a cooldown queue for k steps before it can be reused. This is the canonical pattern for "same element must be at least k distance apart" problems.
 - **Examples**: LC 358 (Rearrange String k Distance Apart), LC 621 (Task Scheduler), LC 767 (Reorganize String — k=2 special case)
 - **Pattern**: Max-heap picks next element; after use, element enters a cooldown queue with `releaseTime = time + k`; when `time == releaseTime`, element is moved back to the heap
@@ -97,7 +97,7 @@
 | **Greedy + Constraint** | Build string avoiding consecutive repeats | Max heap | O(n log k) | Reorganize/happy string |
 | **PQ + Cooldown Queue** | k-distance apart scheduling | Max heap + Queue | O(n log k) | Rearrange k-dist, task scheduler |
 
-### Template 1: Top K Elements Pattern
+### Template 1: Top K Elements Pattern — LC 215
 ```python
 # Python - Find K largest elements
 def topKElements(nums, k):
