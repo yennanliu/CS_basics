@@ -7,6 +7,7 @@
 (90 mins)
 
 
+#----------------------------------------------------
 # LC 2062
 # https://leetcode.com/problems/count-vowel-substrings-of-a-string/description/
 
@@ -93,10 +94,11 @@ class Solution(object):
 
         cnt = 0
 
-        vowel = "aeiou"
+        #vowel = "aeiou"
+        vowels = set("aeiou")
 
         for r in range(n):
-            l_val = word[l]
+            #l_val = word[l]
             r_val = word[r]
 
             # if in vowel
@@ -109,6 +111,7 @@ class Solution(object):
                 if l + 1 < n:
                     l = r + 1 # ???
 
+                l_val = word[l]
                 # shrink left pointer
                 while l < r and r - l + 1 >= 5:
                     if l_val in vowel:
@@ -121,20 +124,55 @@ class Solution(object):
 
 
             # ??
-            if cnt_map.size() == 5:
+            if len(cnt_map) == 5:
                 cnt += 1
-
-
-
 
 
         return cnt
 
 
+#------------------------ (fixed)
+
+# brute force (O(N^2))
+
+class Solution(object):
+    def countVowelSubstrings(self, word):
+        """
+        :type word: str
+        :rtype: int
+        """
+        n = len(word)
+        total_count = 0
+        vowels = set("aeiou")
+        
+        # Step 1: Pick the starting index 'i' of the substring
+        for i in range(n):
+            # A set to keep track of unique vowels found in the current substring
+            seen_vowels = set()
+            
+            # Step 2: Expand the substring forward using ending index 'j'
+            for j in range(i, n):
+                char = word[j]
+                
+                # If we encounter a consonant, the substring becomes invalid.
+                # Any further expansion from this 'i' is ruined, so we break early!
+                if char not in vowels:
+                    break
+                    
+                # Otherwise, it's a valid vowel. Add it to our unique tracking set.
+                seen_vowels.add(char)
+                
+                # If our current substring contains exactly all 5 unique vowels, 
+                # we increment our valid substring counter.
+                if len(seen_vowels) == 5:
+                    total_count += 1
+                    
+        return total_count
 
 
+
+#----------------------------------------------------
 # LC 2063
-
 # https://leetcode.com/problems/vowels-of-all-substrings/description/
 
 
@@ -264,7 +302,7 @@ class Solution(object):
 
 
 
-
+#----------------------------------------------------
 # LC 2064
 # https://leetcode.com/problems/minimized-maximum-of-products-distributed-to-any-store/description/
 
