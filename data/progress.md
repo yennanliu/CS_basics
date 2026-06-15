@@ -12,7 +12,9 @@
 - greedy.md
 - intervals.md
 - tree.md
+	- doing
 - python_trick.md
+	- doing
 - dfs.md
 	- OK
 
