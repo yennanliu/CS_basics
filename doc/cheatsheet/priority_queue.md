@@ -151,7 +151,7 @@ public int[] topKFrequent(int[] nums, int k) {
 }
 ```
 
-### Template 2: K-Way Merge Pattern
+### Template 2: K-Way Merge Pattern — LC 23
 ```python
 # Python - Merge K sorted lists
 def mergeKSortedLists(lists):
@@ -216,7 +216,7 @@ public int[] mergeKSortedArrays(int[][] arrays) {
 }
 ```
 
-### Template 3: Two Heaps Pattern (Median Finding)
+### Template 3: Two Heaps Pattern (Median Finding) — LC 295
 ```python
 # Python - Find median from data stream
 class MedianFinder:
@@ -292,7 +292,7 @@ class MedianFinder {
 }
 ```
 
-### Template 4: Interval Scheduling Pattern
+### Template 4: Interval Scheduling Pattern — LC 253
 ```python
 # Python - Meeting rooms (minimum rooms needed)
 def minMeetingRooms(intervals):
@@ -343,7 +343,7 @@ public int minMeetingRooms(int[][] intervals) {
 }
 ```
 
-### Template 5: Graph Shortest Path (Dijkstra)
+### Template 5: Graph Shortest Path (Dijkstra) — LC 743
 ```python
 # Python - Dijkstra's algorithm with PQ
 def dijkstra(graph, start, end):
@@ -486,7 +486,7 @@ public List<String> processTasks(List<Task> tasks) {
 }
 ```
 
-### Template 7: Greedy String Building with Consecutive Constraint
+### Template 7: Greedy String Building with Consecutive Constraint — LC 1405
 ```java
 // Java - Longest Happy String (LC 1405) / Reorganize String (LC 767)
 // IDEA: Max-heap by count; two-case loop:
@@ -550,7 +550,7 @@ public String longestDiverseString(int a, int b, int c) {
 // Everything else is identical to the template above.
 ```
 
-### Template 8: PQ + Cooldown Queue (k-Distance Scheduling)
+### Template 8: PQ + Cooldown Queue (k-Distance Scheduling) — LC 358
 ```java
 // Java - Rearrange String k Distance Apart (LC 358)
 // IDEA: Max-heap picks most frequent available char;

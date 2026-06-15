@@ -38,32 +38,32 @@
 
 ## Problem Categories
 
-### **Pattern 1: BFS & Level-Order Traversal**
+### **Pattern 1: BFS & Level-Order Traversal** — LC 102
 - **Description**: Layer-by-layer processing in trees and graphs
 - **Examples**: LC 102, 103, 107, 199, 513, 515, 637
 - **Pattern**: Process all nodes at current level before next level
 
-### **Pattern 2: Sliding Window with Queue**
+### **Pattern 2: Sliding Window with Queue** — LC 239
 - **Description**: Maintaining window state with FIFO ordering
 - **Examples**: LC 239, 346, 362, 933, 1438
 - **Pattern**: Use deque for O(1) operations at both ends
 
-### **Pattern 3: Design Queue Variants**
+### **Pattern 3: Design Queue Variants** — LC 232
 - **Description**: Implementing queue with constraints or special features
 - **Examples**: LC 225, 232, 622, 641, 1670
 - **Pattern**: Use stacks, arrays, or linked lists with specific logic
 
-### **Pattern 4: Monotonic Queue**
+### **Pattern 4: Monotonic Queue** — LC 239
 - **Description**: Maintaining increasing/decreasing order in queue
 - **Examples**: LC 239, 862, 907, 1425, 1696
 - **Pattern**: Remove elements that break monotonic property
 
-### **Pattern 5: Stream Processing**
+### **Pattern 5: Stream Processing** — LC 346
 - **Description**: Processing continuous data streams
 - **Examples**: LC 346, 352, 362, 703, 933
 - **Pattern**: Fixed-size window or time-based eviction
 
-### **Pattern 6: Task Scheduling & Simulation**
+### **Pattern 6: Task Scheduling & Simulation** — LC 621
 - **Description**: Simulating real-world queuing systems
 - **Examples**: LC 621, 1429, 1834, 2073
 - **Pattern**: Process tasks in order with constraints
