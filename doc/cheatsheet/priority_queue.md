@@ -1391,7 +1391,7 @@ public int[][] kClosest_MinHeap(int[][] points, int k) {
 }
 ```
 
-### 2-8) Kth Smallest Element in a Sorted Matrix (LC 378)
+### 2-8) Kth Smallest Element in a Sorted Matrix (LC 378) — LC 378
 ```java
 // Java
 // LC 378 - Find kth smallest element in n x n sorted matrix
@@ -1468,7 +1468,7 @@ private int countLessOrEqual(int[][] matrix, int target) {
 }
 ```
 
-### 2-9) Task Scheduler (LC 621)
+### 2-9) Task Scheduler (LC 621) — LC 621
 ```java
 // Java
 // LC 621 - Return minimum intervals to finish all tasks with cooldown
@@ -1544,7 +1544,7 @@ public int leastInterval_Math(char[] tasks, int n) {
 }
 ```
 
-### 2-10) Reorganize String (LC 767)
+### 2-10) Reorganize String (LC 767) — LC 767
 ```java
 // Java
 // LC 767 - Rearrange string so no adjacent characters are same
@@ -1601,7 +1601,7 @@ public String reorganizeString(String s) {
 }
 ```
 
-### 2-10-1) Rearrange String k Distance Apart (LC 358) — PQ + Cooldown Queue
+### 2-10-1) Rearrange String k Distance Apart (LC 358) — LC 358 — PQ + Cooldown Queue
 ```java
 // Java
 // LC 358 - Rearrange string so same chars are at least k distance apart
@@ -1663,7 +1663,7 @@ t=5: pick 'c'(1), cooldown size=3=k → release 'a'(0) → don't re-add
                                              → "abcabc" ✓
 ```
 
-### 2-11) Sliding Window Median (LC 480)
+### 2-11) Sliding Window Median (LC 480) — LC 480
 ```java
 // Java
 // LC 480 - Return median of each sliding window of size k
@@ -1742,7 +1742,7 @@ private void remove(TreeMap<Integer, Integer> map, int val) {
 }
 ```
 
-### 2-12) Ugly Number II (LC 264)
+### 2-12) Ugly Number II (LC 264) — LC 264
 ```java
 // Java
 // LC 264 - Find nth ugly number (only prime factors 2, 3, 5)
@@ -1799,7 +1799,7 @@ public int nthUglyNumber_ThreePointers(int n) {
 }
 ```
 
-### 2-13) Network Delay Time (LC 743 - Dijkstra)
+### 2-13) Network Delay Time (LC 743 - Dijkstra) — LC 743
 ```java
 // Java
 // LC 743 - Find time for all nodes to receive signal
@@ -1860,7 +1860,7 @@ public int networkDelayTime(int[][] times, int n, int k) {
 }
 ```
 
-### 2-14) Sort Characters By Frequency (LC 451)
+### 2-14) Sort Characters By Frequency (LC 451) — LC 451
 ```java
 // Java
 // LC 451 - Sort characters in string by frequency (descending)
@@ -1924,7 +1924,7 @@ public String frequencySort_Bucket(String s) {
 }
 ```
 
-### 2-15) Last Stone Weight (LC 1046)
+### 2-15) Last Stone Weight (LC 1046) — LC 1046
 ```java
 // Java
 // LC 1046 - Smash two heaviest stones, return remaining weight
@@ -1972,7 +1972,7 @@ public int lastStoneWeight(int[] stones) {
 
 ## LC Examples
 
-### 2-1) Kth Largest Element in a Stream (LC 703) — Min-Heap of Size K
+### 2-1) Kth Largest Element in a Stream (LC 703) — LC 703 — Min-Heap of Size K
 > Maintain a min-heap of size k; the top is always the kth largest element.
 
 ```java
@@ -1995,7 +1995,7 @@ class KthLargest {
 }
 ```
 
-### 2-2) Top K Frequent Elements (LC 347) — Min-Heap with Frequency
+### 2-2) Top K Frequent Elements (LC 347) — LC 347 — Min-Heap with Frequency
 > Count frequencies with HashMap, then maintain min-heap of size k by frequency.
 
 ```java
@@ -2016,7 +2016,7 @@ public int[] topKFrequent(int[] nums, int k) {
 }
 ```
 
-### 2-3) Merge K Sorted Lists (LC 23) — Min-Heap
+### 2-3) Merge K Sorted Lists (LC 23) — LC 23 — Min-Heap
 > Use min-heap to always extract the global minimum node across all lists.
 
 ```java

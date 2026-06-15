@@ -15,7 +15,7 @@
 
 ## Problem Categories
 
-### **Pattern 1: Next/Previous Greater Element**
+### **Pattern 1: Next/Previous Greater Element** — LC 739
 - **Description**: Find the next or previous element that is greater than current element
 - **Examples**: LC 496 (Next Greater Element I), LC 503 (Next Greater Element II), LC 739 (Daily Temperatures)
 - **Pattern**: Use decreasing monotonic stack, pop when finding greater element

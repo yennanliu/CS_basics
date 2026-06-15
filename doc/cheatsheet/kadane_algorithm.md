@@ -733,7 +733,7 @@ public int maximumSum(int[] arr) {
 }
 ```
 
-### 2-6) Longest Turbulent Subarray (LC 978) — Kadane Variant
+### 2-6) Longest Turbulent Subarray (LC 978) — Kadane Variant — LC 978
 > Track lengths of increasing and decreasing alternating windows; reset on equality.
 
 ```java
@@ -752,7 +752,7 @@ public int maxTurbulenceSize(int[] arr) {
 }
 ```
 
-### 2-7) Gas Station (LC 134) — Greedy / Kadane on Circular
+### 2-7) Gas Station (LC 134) — Greedy / Kadane on Circular — LC 134
 > If total gas >= total cost, a solution exists; start from the first surplus reset point.
 
 ```java
@@ -771,7 +771,7 @@ public int canCompleteCircuit(int[] gas, int[] cost) {
 }
 ```
 
-### 2-8) Maximum Length of Subarray with Positive Product (LC 1567) — Track Pos/Neg Product Lengths
+### 2-8) Maximum Length of Subarray with Positive Product (LC 1567) — Track Pos/Neg Product Lengths — LC 1567
 > Track lengths with positive and negative product separately; swap on negative number.
 
 ```java
@@ -790,7 +790,7 @@ public int getMaxLen(int[] nums) {
 }
 ```
 
-### 2-9) Maximum Score of Spliced Array (LC 2321) — Kadane on Difference
+### 2-9) Maximum Score of Spliced Array (LC 2321) — Kadane on Difference — LC 2321
 > Max gain from swapping subarray = max subarray sum of (nums2[i] - nums1[i]).
 
 ```java
@@ -812,7 +812,7 @@ private int maxGain(int[] a, int[] b) {  // max(b[i]-a[i]) subarray sum
 }
 ```
 
-### 2-10) K-Concatenation Maximum Sum (LC 1191) — Kadane + Math
+### 2-10) K-Concatenation Maximum Sum (LC 1191) — Kadane + Math — LC 1191
 > For k >= 2: answer = maxSubarray(2 copies) + max(0, totalSum) × (k − 2).
 
 ```java
@@ -835,7 +835,7 @@ private long kadane(int[] arr, int repeat) {
 }
 ```
 
-### 2-11) Find Maximum Sum of Almost Unique Subarray (LC 2841) — Sliding Window Kadane
+### 2-11) Find Maximum Sum of Almost Unique Subarray (LC 2841) — Sliding Window Kadane — LC 2841
 > Fixed-size window of length k; count distinct elements using HashMap; maximize sum.
 
 ```java

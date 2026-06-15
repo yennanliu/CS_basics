@@ -589,7 +589,7 @@ if stack:
 ```
 
 
-### 1-1-2-2) next greater element 2
+### 1-1-2-2) next greater element 2 — LC 503
 
 ```python
 # V0
@@ -618,7 +618,7 @@ class Solution(object):
         return res
 ```
 
-### 1-1-3) get `non balanced` String
+### 1-1-3) get `non balanced` String — LC 1963
 ```python
 # LC 1963. Minimum Number of Swaps to Make the String Balanced
 
@@ -636,7 +636,7 @@ for i in range(len(s)):
 print (stack)
 ```
 
-### 1-1-4) deal with `pre num, pre string`
+### 1-1-4) deal with `pre num, pre string` — LC 227
 ```python
 # LC 227, 394
 # ...
@@ -1398,7 +1398,7 @@ class Solution:
         return sum(stack)
 ```
 
-### 2-5) Sum of Subarray Minimums
+### 2-5) Sum of Subarray Minimums — LC 907
 ```python
 # LC 907. Sum of Subarray Minimums
 # V0
@@ -1880,7 +1880,7 @@ class MinStack(object):
         return self.stack[-1][1]
 ```
 
-### 2-11) Sum of Subarray Ranges
+### 2-11) Sum of Subarray Ranges — LC 2104
 ```python
 # LC 2104. Sum of Subarray Ranges
 # NOTE : there are also brute force, 2 pointers ... approaches
@@ -1904,7 +1904,7 @@ class Solution:
         return res 
 ```
 
-### 2-11) Largest Rectangle in Histogram
+### 2-11) Largest Rectangle in Histogram — LC 84
 
 ```python
 # LC 84. Largest Rectangle in Histogram

@@ -429,7 +429,7 @@ public int robOptimized(int[] nums) {
 
 ---
 
-### 1-4) Coin Change (LC 322)
+### 1-4) Coin Change (LC 322) — LC 322
 
 **Problem:** Array of coin denominations, target amount. Minimum coins needed?
 

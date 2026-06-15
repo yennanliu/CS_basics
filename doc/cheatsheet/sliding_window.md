@@ -1076,7 +1076,7 @@ Pure sliding window can only track one left boundary (the smallest valid window)
 
 ---
 
-### 1.9) Prefix Trick + Sliding Window (for "Exactly K" Counting)
+### 1.9) Prefix Trick + Sliding Window (for "Exactly K" Counting) — LC 1248
 
 **When to use:** Count subarrays with **exactly k** of some element, where you want a single-pass O(n) solution without calling `atMost` twice.
 

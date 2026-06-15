@@ -166,7 +166,7 @@ class TrieNode {
 }
 ```
 
-### Template 3: Trie with Wildcard Support
+### Template 3: Trie with Wildcard Support — LC 211
 ```python
 class WildcardTrie:
     def __init__(self):
@@ -229,7 +229,7 @@ private boolean dfsSearch(String word, int index, TrieNode node) {
 }
 ```
 
-### Template 4: Autocomplete Trie
+### Template 4: Autocomplete Trie — LC 1268
 ```python
 class AutocompleteTrie:
     def __init__(self):
@@ -301,7 +301,7 @@ class AutocompleteTrie {
 }
 ```
 
-### Template 5: Binary Trie (XOR Problems)
+### Template 5: Binary Trie (XOR Problems) — LC 421
 ```python
 class BinaryTrie:
     class Node:

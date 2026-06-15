@@ -28,49 +28,49 @@
 
 ## Problem Categories
 
-### **Pattern 1: Basic Range Sum**
+### **Pattern 1: Basic Range Sum** — LC 303
 - **Description**: Calculate sum of elements in any given range [i, j]
 - **Examples**: LC 303 - Range Sum Query, LC 304 - Range Sum Query 2D
 - **Pattern**: Direct application of prefix sum formula
 - **Key Insight**: `sum[i:j] = prefixSum[j+1] - prefixSum[i]`
 
-### **Pattern 2: Subarray Sum Equals Target**
+### **Pattern 2: Subarray Sum Equals Target** — LC 560
 - **Description**: Find/count subarrays with sum equal to target value
 - **Examples**: LC 560 - Subarray Sum Equals K, LC 325 - Maximum Size Subarray Sum Equals k
 - **Pattern**: Use HashMap to store prefix sums and check if `(current_sum - target)` exists
 - **Key Insight**: If `prefixSum[j] - prefixSum[i] = k`, then `prefixSum[i] = prefixSum[j] - k`
 
-### **Pattern 3: Subarray with Divisibility/Modulo**
+### **Pattern 3: Subarray with Divisibility/Modulo** — LC 523
 - **Description**: Problems involving divisibility, remainders, or modulo operations
 - **Examples**: LC 523 - Continuous Subarray Sum, LC 974 - Subarray Sums Divisible by K
 - **Pattern**: Store remainders instead of actual sums in HashMap
 - **Key Insight**: If `(prefixSum[j] - prefixSum[i]) % k = 0`, then `prefixSum[j] % k = prefixSum[i] % k`
 
-### **Pattern 4: Range Addition/Difference Array**
+### **Pattern 4: Range Addition/Difference Array** — LC 370
 - **Description**: Efficiently apply range updates to arrays
 - **Examples**: LC 370 - Range Addition, LC 1094 - Car Pooling
 - **Pattern**: Use difference array technique with prefix sum
 - **Key Insight**: Add at start, subtract at end+1, then compute prefix sum
 
-### **Pattern 5: 2D Prefix Sum**
+### **Pattern 5: 2D Prefix Sum** — LC 304
 - **Description**: Calculate sum of any rectangular region in 2D matrix
 - **Examples**: LC 304 - Range Sum Query 2D, LC 1314 - Matrix Block Sum
 - **Pattern**: Build 2D prefix sum matrix, use inclusion-exclusion principle
 - **Key Insight**: `sum = total - left - top + topleft`
 
-### **Pattern 6: Transform and Count**
+### **Pattern 6: Transform and Count** — LC 1248
 - **Description**: Transform array elements and use prefix sum for counting
 - **Examples**: LC 1248 - Count Nice Subarrays, LC 926 - Flip String to Monotone
 - **Pattern**: Convert elements to 0/1, then apply prefix sum with conditions
 - **Key Insight**: Transform problem to simpler prefix sum problem
 
-### **Pattern 8: Prefix Maximum (Greedy Chunk / Partition)**
+### **Pattern 8: Prefix Maximum (Greedy Chunk / Partition)** — LC 769
 - **Description**: Track the running maximum of the array. When `maxSoFar == i`, the prefix `[0..i]` contains exactly the elements `{0, 1, ..., i}` and can form an independent sorted chunk.
 - **Examples**: LC 769 - Max Chunks To Make Sorted, LC 768 - Max Chunks To Make Sorted II
 - **Pattern**: Single pass with a `maxSoFar` variable; increment chunk count whenever `maxSoFar == currentIndex`
 - **Key Insight**: Because the array is a permutation of `[0, n-1]`, if the max value seen so far equals the current index, all values needed for positions `0..i` are already present in `arr[0..i]`
 
-### **Pattern 7: Sum of Distances (Left-Right Split)**
+### **Pattern 7: Sum of Distances (Left-Right Split)** — LC 2615
 - **Description**: Calculate sum of absolute differences between indices efficiently
 - **Examples**: LC 2615 - Sum of Distances, LC 2121 - Intervals Between Identical Elements, LC 1685 - Sum of Absolute Differences
 - **Pattern**: Split into left/right parts, use `count * value - sum` formula
@@ -243,7 +243,7 @@ def prefix_sum_solve(nums, target):
     return result
 ```
 
-### Template 1: Basic Prefix Sum (Range Queries)
+### Template 1: Basic Prefix Sum (Range Queries) — LC 303
 
 ```python
 class PrefixSum:
@@ -276,7 +276,7 @@ class PrefixSum {
 }
 ```
 
-### Template 2: HashMap + Prefix Sum (Subarray Target Sum)
+### Template 2: HashMap + Prefix Sum (Subarray Target Sum) — LC 560
 
 ```python
 def subarray_sum_equals_k(nums, k):
@@ -319,7 +319,7 @@ public int subarraySum(int[] nums, int k) {
 }
 ```
 
-### Template 3: Modulo Prefix Sum (Divisibility Problems)
+### Template 3: Modulo Prefix Sum (Divisibility Problems) — LC 974
 
 **Core Mathematical Insight:**
 ```
@@ -363,7 +363,7 @@ def subarray_divisible_by_k(nums, k):
     return count
 ```
 
-### Template 4: Difference Array (Range Updates)
+### Template 4: Difference Array (Range Updates) — LC 370
 
 ```python
 def range_addition(length, updates):
@@ -386,7 +386,7 @@ def range_addition(length, updates):
     return result
 ```
 
-### Template 5: 2D Prefix Sum
+### Template 5: 2D Prefix Sum — LC 304
 
 ```python
 class NumMatrix:
@@ -413,7 +413,7 @@ class NumMatrix:
                 self.prefix[row1][col1])
 ```
 
-### Template 6: Transform and Count
+### Template 6: Transform and Count — LC 1248
 
 ```python
 def count_nice_subarrays(nums, k):
@@ -437,7 +437,7 @@ def count_nice_subarrays(nums, k):
     return count
 ```
 
-### Template 7: Sum of Distances (Left-Right Split)
+### Template 7: Sum of Distances (Left-Right Split) — LC 2615
 
 This pattern efficiently calculates sum of absolute differences `|i - j|` between indices.
 
@@ -566,7 +566,7 @@ public long[] distance(int[] nums) {
 }
 ```
 
-### Template 8: Prefix Maximum (Greedy Chunk / Partition)
+### Template 8: Prefix Maximum (Greedy Chunk / Partition) — LC 769
 
 **Core Idea:** For a permutation of `[0, n-1]`, the prefix `arr[0..i]` can be an independent sorted chunk if and only if `max(arr[0..i]) == i`. Track this with a single `maxSoFar` variable.
 
@@ -1492,7 +1492,7 @@ public int longestWPI(int[] hours) {
 | Subarray Sum Equals K | 560 | Count variant (store count, not index) |
 | Binary Subarrays With Sum | 930 | Count subarrays with binary-transformed sum = k |
 
-### 2-11) Sum of Distances (Pattern 7) — LC 2615
+### 2-11) Sum of Distances — LC 2615 — LC 2615
 
 ```java
 // java

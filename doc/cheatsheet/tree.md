@@ -1673,7 +1673,7 @@ Problem Analysis Decision Tree:
 
 ## 3) Classic Tree Algorithms
 
-### 3.1) Tree Right Side View (LC 199)
+### 3.1) Tree Right Side View — LC 199
 
 ```java
 // java
@@ -1716,7 +1716,7 @@ while (!q.isEmpty()) {
 }
 ```
 
-### 3.2) Node Count Algorithms
+### 3.2) Node Count Algorithms — LC 222
 ```java
 // get nodes count of binary tree
 
@@ -1770,7 +1770,7 @@ public int countNodes_2(TreeNode root) {
 }
 ```
 
-### 3.3) Delete Nodes And Return Forest (LC 1110)
+### 3.3) Delete Nodes And Return Forest — LC 1110
 
 **Problem**: Given a binary tree root and an array of values to delete, remove those nodes and return a list of the roots of the remaining trees (forest).
 
@@ -2858,7 +2858,7 @@ class Solution(object):
         return self.mirror(left.left, right.right) and self.mirror(left.right, right.left)
 ```
 
-### 1-1-18) Distance Between Nodes
+### 1-1-18) Distance Between Nodes — LC 1740
 
 
 ```java
@@ -3656,7 +3656,7 @@ class Solution(object):
         return s
 ```
 
-### 2-3) Maximum Width of Binary Tree
+### 2-3) Maximum Width of Binary Tree — LC 662
 ```python
 # LC 662 Maximum Width of Binary Tree
 # V0
@@ -3703,7 +3703,7 @@ class Solution(object):
         return max(_res)
 ```
 
-### 2-4) Construct String from Binary Tree
+### 2-4) Construct String from Binary Tree — LC 606
 ```python
 # LC 606 Construct String from Binary Tree
 # V0
@@ -3732,7 +3732,7 @@ class Solution(object):
         return res
 ```
 
-### 2-5) Closest Leaf in a Binary Tree (Move Parent Pattern)
+### 2-5) Closest Leaf in a Binary Tree (Move Parent Pattern) — LC 742
 ```python
 # LeetCode 742. Closest Leaf in a Binary Tree
 # V0
@@ -3788,7 +3788,7 @@ class Solution:
                         q.append(node)
 ```
 
-### 2-7) Same Tree
+### 2-7) Same Tree — LC 100
 ```python
 # LC 100 Same tree
 # V0
@@ -3812,7 +3812,7 @@ class Solution(object):
         return res
 ```
 
-### 2-9) Validate Binary Search Tree
+### 2-9) Validate Binary Search Tree — LC 98
 ```python
 # 98. Validate Binary Search Tree
 # V0
@@ -3863,7 +3863,7 @@ class Solution(object):
         return self.valid(root.left, min_, root.val) and self.valid(root.right, root.val, max_)
 ```
 
-### 2-10) Construct Binary Tree from Preorder and Inorder Traversal
+### 2-10) Construct Binary Tree from Preorder and Inorder Traversal — LC 105
 ```python
 #  Construct Binary Tree from Preorder and Inorder Traversal
 # V0
@@ -3886,7 +3886,7 @@ class Solution(object):
         return root
 ```
 
-### 2-11) Construct Binary Tree from String
+### 2-11) Construct Binary Tree from String — LC 536
 ```python
 # LC 536 Construct Binary Tree from String
 # V0
@@ -3960,7 +3960,7 @@ class Solution(object):
         return str2treeHelper(s, 0)[0] if s else None
 ```
 
-### 2-12) Minimum Depth of Binary Tree
+### 2-12) Minimum Depth of Binary Tree — LC 111
 ```python
 # LC 111 Minimum Depth of Binary Tree
 
@@ -4009,7 +4009,7 @@ class Solution(object):
             return 1 + min(self.minDepth(root.left), self.minDepth(root.right))
 ```
 
-### 2-13) Maximum Depth of Binary Tree
+### 2-13) Maximum Depth of Binary Tree — LC 104
 ```python
 # LC 104 Maximum Depth of Binary Tree
 # V0
@@ -4042,7 +4042,7 @@ class Solution(object):
         return res + 1
 ```
 
-### 2-14) All Nodes Distance K in Binary Tree
+### 2-14) All Nodes Distance K in Binary Tree — LC 863
 
 ```java
 // java
@@ -4165,7 +4165,7 @@ private void buildParentMap(TreeNode node, TreeNode parent) {
 }
 ```
 
-### 2-15) Boundary of Binary Tree
+### 2-15) Boundary of Binary Tree — LC 545
 ```python
 # LC 545. Boundary of Binary Tree
 # V0
@@ -4262,7 +4262,7 @@ class Solution(object):
         return ans
 ```
 
-### 2-16) Binary Tree Maximum Path Sum
+### 2-16) Binary Tree Maximum Path Sum — LC 124
 
 ```java
 // java
@@ -4370,7 +4370,7 @@ class Solution(object):
         return self.maximum
 ```
 
-### 2-17) Build Binary Expression Tree From Infix Expression
+### 2-17) Build Binary Expression Tree From Infix Expression — LC 1597
 ```python
 # LC 1597 Build Binary Expression Tree From Infix Expression
 # V0
@@ -4439,7 +4439,7 @@ class Solution:
         return rtNd
 ```
 
-### 2-18) Count Good Nodes in Binary Tree
+### 2-18) Count Good Nodes in Binary Tree — LC 1448
 ```java
 // java
 // LC 1448
@@ -4506,7 +4506,7 @@ class Solution:
     }
 ```
 
-### 2-19) Balanced Binary Tree
+### 2-19) Balanced Binary Tree — LC 110
 ```java
 // java
 // LC 110
@@ -4572,7 +4572,7 @@ public boolean isBalanced(TreeNode root) {
 }
 ```
 
-### 2-20) Reverse Odd Levels of Binary Tree
+### 2-20) Reverse Odd Levels of Binary Tree — LC 2415
 
 ```java
 // java

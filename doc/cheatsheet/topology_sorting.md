@@ -1304,7 +1304,7 @@ class Solution:
         return len(stack) == numCourses
 ```
 
-### 2-3) Number of Provinces (LC 547)
+### 2-3) Number of Provinces (LC 547) — LC 547
 
 ```java
 // java
@@ -1831,7 +1831,7 @@ def eventualSafeNodes(graph):
     return sorted(safe)
 ```
 
-### 2-9) Minimum Height Trees (LC 310)
+### 2-9) Minimum Height Trees (LC 310) — LC 310
 
 ```java
 // java

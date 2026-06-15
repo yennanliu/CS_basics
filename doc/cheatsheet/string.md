@@ -2309,7 +2309,7 @@ Final: "Qedo1ct-eeLg=ntse-T!"
 - LC 541 Reverse String II (selective ranges)
 - LC 151 Reverse Words in a String (word-level reversal)
 
-### 2-15) Verifying an Alien Dictionary
+### 2-15) Verifying an Alien Dictionary — LC 953
 
 **Pattern: Custom Lexicographic Order Comparison**
 - Map each character to its rank in the alien order
@@ -2410,7 +2410,7 @@ Why return len1 <= len2 at the end?
 - LC 269 Alien Dictionary (topological sort, harder)
 - LC 242 Valid Anagram (character frequency mapping)
 
-### 2-16) Longest Word in Dictionary through Deleting
+### 2-16) Longest Word in Dictionary through Deleting — LC 524
 
 **Pattern: Subsequence Check + Best Candidate Tracking**
 - Check if a dictionary word can be formed by deleting characters from `s` (i.e., is a subsequence of `s`)
@@ -2547,7 +2547,7 @@ Sorting approach trade-off:
 - LC 720 Longest Word in Dictionary (prefix-based, different pattern)
 - LC 1055 Shortest Way to Form String (subsequence with multiple passes)
 
-### 2-17) Count Pairs of Equal Substrings With Minimum Difference
+### 2-17) Count Pairs of Equal Substrings With Minimum Difference — LC 1794
 
 **Pattern: First/Last Character Occurrence + Minimum Difference Counting**
 - LC 1794. Count Pairs of Equal Substrings With Minimum Difference (Medium)
