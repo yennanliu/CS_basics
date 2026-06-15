@@ -9,7 +9,7 @@ Google sometimes asks concurrency/threading problems at L4+. These test understa
 
 ## Pattern 1: Print in Order / Sequence Control
 
-### Using CountDownLatch
+### Using CountDownLatch — LC 1114
 ```java
 // LC 1114 — Print in Order
 class Foo {
@@ -34,7 +34,7 @@ class Foo {
 }
 ```
 
-### Using Semaphore
+### Using Semaphore — LC 1115
 ```java
 // LC 1115 — Print FooBar Alternately
 class FooBar {

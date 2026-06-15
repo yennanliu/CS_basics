@@ -4,7 +4,7 @@
 
 ## 🔹 1. Arrays & Strings
 
-### **Two Pointers**
+### **Two Pointers** — LC 167
 - **Opposite Ends**: Move from both ends toward center
   - LC 1: Two Sum (sorted), LC 15: 3Sum, LC 42: Trapping Rain Water
   - LC 125: Valid Palindrome, LC 167: Two Sum II
@@ -14,7 +14,7 @@
 - **Same Direction**: Both pointers move in same direction
   - LC 283: Move Zeros, LC 75: Sort Colors, LC 11: Container With Water
 
-### **Sliding Window**
+### **Sliding Window** — LC 3
 - **Fixed Size Window**: Constant window size
   - LC 643: Max Average Subarray, LC 1456: Max Vowels in Substring
   - LC 424: Longest Repeating Character Replacement
@@ -23,7 +23,7 @@
   - LC 209: Minimum Size Subarray Sum, LC 904: Fruit Into Baskets
 - **Template**: Expand right, shrink left when invalid
 
-### **Prefix Sum & Difference Array**
+### **Prefix Sum & Difference Array** — LC 560
 - **Prefix Sum**: Efficient subarray sum calculations
   - LC 560: Subarray Sum Equals K, LC 523: Continuous Subarray Sum
   - LC 325: Maximum Size Subarray Sum Equals K
@@ -32,7 +32,7 @@
 - **Difference Array**: Range updates in O(1)
   - LC 1109: Corporate Flight Bookings, LC 370: Range Addition
 
-### **Binary Search**
+### **Binary Search** — LC 704
 - **Classic Search**: Find target in sorted array
   - LC 704: Binary Search, LC 35: Search Insert Position
   - LC 34: Find First/Last Position, LC 33: Search in Rotated Array
@@ -42,7 +42,7 @@
 - **Matrix Binary Search**: 2D sorted matrix
   - LC 74: Search 2D Matrix, LC 240: Search 2D Matrix II
 
-### **Sorting + Greedy**
+### **Sorting + Greedy** — LC 56
 - **Intervals**: Merge, schedule, non-overlapping
   - LC 56: Merge Intervals, LC 57: Insert Interval
   - LC 435: Non-overlapping Intervals, LC 252: Meeting Rooms
@@ -50,7 +50,7 @@
   - LC 455: Assign Cookies, LC 881: Boats to Save People
   - LC 870: Advantage Shuffle, LC 976: Largest Perimeter Triangle
 
-### **String Algorithms**
+### **String Algorithms** — LC 28
 - **Pattern Matching**: KMP, Rabin-Karp, Z-algorithm
   - LC 28: Implement strStr(), LC 214: Shortest Palindrome
 - **Palindromes**: Center expansion, Manacher's algorithm
@@ -60,7 +60,7 @@
 
 ## 🔹 2. Linked List
 
-### **Reversal Patterns**
+### **Reversal Patterns** — LC 206
 - **Basic Reversal**: Iterative and recursive approaches
   - LC 206: Reverse Linked List, LC 92: Reverse Linked List II
 - **Group Reversal**: Reverse in groups of k
@@ -68,7 +68,7 @@
 - **Conditional Reversal**: Reverse based on conditions
   - LC 2130: Maximum Twin Sum, LC 143: Reorder List
 
-### **Cycle Detection & Fast/Slow Pointers**
+### **Cycle Detection & Fast/Slow Pointers** — LC 141
 - **Floyd's Algorithm**: Detect cycle and find cycle start
   - LC 141: Linked List Cycle, LC 142: Linked List Cycle II
 - **Middle Element**: Find middle using fast/slow pointers
@@ -76,7 +76,7 @@
 - **Remove Nth Node**: Use gap between fast/slow pointers
   - LC 19: Remove Nth Node from End
 
-### **Merge & Sort**
+### **Merge & Sort** — LC 21
 - **Two List Merge**: Merge two sorted lists
   - LC 21: Merge Two Sorted Lists, LC 1669: Merge In Between
 - **Multiple List Merge**: Use heap or divide & conquer
@@ -84,7 +84,7 @@
 - **List Sorting**: Sort linked list efficiently
   - LC 148: Sort List (merge sort), LC 147: Insertion Sort List
 
-### **Dummy Head Technique**
+### **Dummy Head Technique** — LC 203
 - **Node Removal**: Easier deletion with dummy head
   - LC 203: Remove Linked List Elements, LC 83: Remove Duplicates
 - **List Construction**: Build result list with dummy head
@@ -92,7 +92,7 @@
 - **Partition**: Split list based on criteria
   - LC 86: Partition List, LC 725: Split Linked List in Parts
 
-### **Advanced Operations**
+### **Advanced Operations** — LC 138
 - **Deep Copy**: Clone complex linked structures
   - LC 138: Copy List with Random Pointer
 - **Intersection**: Find intersection of two lists
@@ -104,7 +104,7 @@
 
 ## 🔹 3. Binary Trees
 
-### **DFS Traversal Patterns**
+### **DFS Traversal Patterns** — LC 94
 - **Preorder**: Root → Left → Right (top-down)
   - LC 144: Binary Tree Preorder, LC 257: Binary Tree Paths
   - LC 112: Path Sum, LC 113: Path Sum II
@@ -115,7 +115,7 @@
   - LC 145: Binary Tree Postorder, LC 543: Diameter of Tree
   - LC 124: Binary Tree Maximum Path Sum
 
-### **BFS / Level Order Patterns**
+### **BFS / Level Order Patterns** — LC 102
 - **Level-by-Level**: Process nodes level by level
   - LC 102: Level Order Traversal, LC 107: Level Order II
   - LC 199: Right Side View, LC 515: Find Largest Value
@@ -124,7 +124,7 @@
 - **Connect Pointers**: Link nodes at same level
   - LC 116: Populating Next Right Pointers, LC 117: Populating Next Right II
 
-### **Tree Construction (Divide & Conquer)**
+### **Tree Construction (Divide & Conquer)** — LC 105
 - **From Traversals**: Build tree from inorder/preorder/postorder
   - LC 105: Construct from Preorder/Inorder, LC 106: Construct from Inorder/Postorder
   - LC 889: Construct from Preorder/Postorder
@@ -132,7 +132,7 @@
   - LC 108: Convert Sorted Array to BST, LC 109: Convert Sorted List to BST
   - LC 297: Serialize/Deserialize Binary Tree
 
-### **Binary Search Tree Patterns**
+### **Binary Search Tree Patterns** — LC 98
 - **BST Validation**: Check BST property
   - LC 98: Validate BST, LC 99: Recover BST
 - **BST Search & Insert**: Utilize BST property
@@ -143,7 +143,7 @@
 - **LCA in BST**: Leverage BST ordering
   - LC 235: LCA in BST, LC 270: Closest BST Value
 
-### **Tree DP (Bottom-Up)**
+### **Tree DP (Bottom-Up)** — LC 543
 - **Subtree Properties**: Calculate properties from children
   - LC 543: Diameter of Tree, LC 124: Maximum Path Sum
   - LC 687: Longest Univalue Path, LC 968: Binary Tree Cameras
@@ -152,7 +152,7 @@
 - **Tree Coloring**: Assign colors/states optimally
   - LC 979: Distribute Coins, LC 1145: Binary Tree Coloring Game
 
-### **Path & Ancestor Problems**
+### **Path & Ancestor Problems** — LC 236
 - **Root to Leaf Paths**: All paths from root to leaves
   - LC 257: Binary Tree Paths, LC 113: Path Sum II
 - **Any Path**: Paths between any two nodes
@@ -160,7 +160,7 @@
 - **Lowest Common Ancestor**: Find LCA of two nodes
   - LC 236: LCA of Binary Tree, LC 1644: LCA II, LC 1650: LCA III
 
-### **Tree Modification**
+### **Tree Modification** — LC 226
 - **Tree Flattening**: Convert tree to linked list structure
   - LC 114: Flatten Binary Tree, LC 430: Flatten Multilevel List
 - **Tree Mirroring**: Mirror or invert tree
@@ -172,7 +172,7 @@
 
 ## 🔹 4. Graphs
 
-### **Graph Traversal**
+### **Graph Traversal** — LC 200
 - **BFS (Breadth-First Search)**: Level-by-level exploration
   - LC 200: Number of Islands, LC 994: Rotting Oranges
   - LC 127: Word Ladder, LC 815: Bus Routes
@@ -182,7 +182,7 @@
   - LC 417: Pacific Atlantic Water Flow, LC 79: Word Search
   - **Connected Components**: LC 323: Number of Connected Components
 
-### **Union-Find (Disjoint Set Union)**
+### **Union-Find (Disjoint Set Union)** — LC 547
 - **Basic Union-Find**: Connect components dynamically
   - LC 200: Number of Islands, LC 547: Number of Provinces
   - LC 684: Redundant Connection, LC 685: Redundant Connection II
@@ -191,7 +191,7 @@
 - **Applications**: Minimum Spanning Tree, cycle detection
   - LC 1135: Connecting Cities, LC 1584: Min Cost to Connect Points
 
-### **Topological Sort**
+### **Topological Sort** — LC 207
 - **Kahn's Algorithm (BFS)**: Indegree-based approach
   - LC 207: Course Schedule, LC 210: Course Schedule II
   - LC 269: Alien Dictionary, LC 1136: Parallel Courses
@@ -199,7 +199,7 @@
   - LC 802: Find Eventual Safe States
 - **Applications**: Task scheduling, dependency resolution
 
-### **Shortest Path Algorithms**
+### **Shortest Path Algorithms** — LC 743
 - **Dijkstra's Algorithm**: Single-source shortest path (non-negative weights)
   - LC 743: Network Delay Time, LC 787: Cheapest Flights Within K Stops
   - LC 1631: Path With Minimum Effort, LC 1514: Path with Maximum Probability
@@ -208,7 +208,7 @@
 - **Floyd-Warshall**: All-pairs shortest paths
   - LC 1334: Find City With Smallest Number of Neighbors
 
-### **Advanced Graph Patterns**
+### **Advanced Graph Patterns** — LC 785
 - **Bipartite Graph**: Two-coloring using BFS/DFS
   - LC 785: Is Graph Bipartite, LC 886: Possible Bipartition
 - **Minimum Spanning Tree**: Kruskal's and Prim's algorithms
@@ -218,7 +218,7 @@
 - **Maximum Flow**: Ford-Fulkerson, Edmonds-Karp
   - Network flow problems, bipartite matching
 
-### **Grid-Based Graph Problems**
+### **Grid-Based Graph Problems** — LC 200
 - **Island Problems**: Connected components in 2D grid
   - LC 200: Number of Islands, LC 695: Max Area of Island
   - LC 305: Number of Islands II (Union-Find)
@@ -226,7 +226,7 @@
   - LC 1091: Shortest Path in Binary Matrix, LC 542: 01 Matrix
   - LC 934: Shortest Bridge, LC 1293: Shortest Path in Grid with Obstacles
 
-### **Special Graph Types**
+### **Special Graph Types** — LC 310
 - **Tree Graphs**: No cycles, n-1 edges for n nodes
   - LC 310: Minimum Height Trees, LC 1245: Tree Diameter
 - **DAG (Directed Acyclic Graph)**: Topological sort possible
@@ -238,7 +238,7 @@
 
 ## 🔹 5. Dynamic Programming (DP)
 
-### **1D Linear DP**
+### **1D Linear DP** — LC 70
 - **Fibonacci Variants**: Classic sequence problems
   - LC 70: Climbing Stairs, LC 198: House Robber, LC 213: House Robber II
   - LC 91: Decode Ways, LC 264: Ugly Number II
@@ -248,7 +248,7 @@
 - **Counting DP**: Count ways to achieve target
   - LC 62: Unique Paths, LC 70: Climbing Stairs, LC 96: Unique BSTs
 
-### **2D Grid DP**
+### **2D Grid DP** — LC 62
 - **Path Counting**: Count paths in matrix
   - LC 62: Unique Paths, LC 63: Unique Paths II
   - LC 64: Minimum Path Sum, LC 120: Triangle
@@ -258,7 +258,7 @@
 - **2D Decision**: DP on 2D state space
   - LC 174: Dungeon Game, LC 741: Cherry Pickup
 
-### **Knapsack Patterns**
+### **Knapsack Patterns** — LC 416
 - **0/1 Knapsack**: Each item used once
   - LC 416: Partition Equal Subset Sum, LC 494: Target Sum
   - LC 1049: Last Stone Weight II
@@ -268,7 +268,7 @@
 - **Multi-dimensional Knapsack**: Multiple constraints
   - LC 474: Ones and Zeroes, LC 879: Profitable Schemes
 
-### **String DP**
+### **String DP** — LC 72
 - **Edit Distance**: String transformation
   - LC 72: Edit Distance, LC 583: Delete Operation for Two Strings
   - LC 712: Minimum ASCII Delete Sum, LC 97: Interleaving String
@@ -281,7 +281,7 @@
 - **Word Break**: String segmentation
   - LC 139: Word Break, LC 140: Word Break II
 
-### **Interval DP**
+### **Interval DP** — LC 312
 - **Matrix Chain**: Optimal parenthesization
   - LC 312: Burst Balloons, LC 1000: Minimum Cost to Merge Stones
 - **Range Queries**: Optimize over intervals
@@ -289,7 +289,7 @@
 - **Palindromic Ranges**: Check palindromes in ranges
   - LC 1312: Minimum Insertion Steps to Make String Palindrome
 
-### **State Compression DP (Bitmask)**
+### **State Compression DP (Bitmask)** — LC 847
 - **Traveling Salesman**: Visit all states
   - LC 943: Find Shortest Superstring, LC 980: Unique Paths III
 - **Subset DP**: Track which elements are used
@@ -297,7 +297,7 @@
 - **Graph State**: Track visited nodes
   - LC 847: Shortest Path Visiting All Nodes
 
-### **Advanced DP Patterns**
+### **Advanced DP Patterns** — LC 337
 - **Tree DP**: DP on tree structures
   - LC 337: House Robber III, LC 968: Binary Tree Cameras
   - LC 124: Binary Tree Maximum Path Sum
@@ -320,7 +320,7 @@
 
 ## 🔹 6. Backtracking
 
-### **Subsets & Combinations**
+### **Subsets & Combinations** — LC 78
 - **Subsets**: Generate all possible subsets
   - LC 78: Subsets, LC 90: Subsets II (with duplicates)
   - LC 320: Generalized Abbreviation
@@ -329,7 +329,7 @@
   - LC 40: Combination Sum II, LC 216: Combination Sum III
 - **Template**: Use start index to avoid duplicates
 
-### **Permutations**
+### **Permutations** — LC 46
 - **Basic Permutations**: All arrangements
   - LC 46: Permutations, LC 47: Permutations II (with duplicates)
   - LC 31: Next Permutation, LC 60: Permutation Sequence
@@ -337,7 +337,7 @@
   - LC 996: Number of Squareful Arrays
 - **No start index needed** - use visited array
 
-### **Grid & Board Problems**
+### **Grid & Board Problems** — LC 51
 - **N-Queens**: Place queens without conflicts
   - LC 51: N-Queens, LC 52: N-Queens II
 - **Word Search**: Find words in grid
@@ -345,7 +345,7 @@
 - **Path Finding**: Explore all paths
   - LC 980: Unique Paths III, LC 1219: Path with Maximum Gold
 
-### **String Partitioning**
+### **String Partitioning** — LC 131
 - **Palindrome Partitioning**: Split into palindromes
   - LC 131: Palindrome Partitioning, LC 132: Palindrome Partitioning II
 - **IP Address**: Generate valid IP addresses
@@ -353,7 +353,7 @@
 - **Word Break**: Split string using dictionary
   - LC 140: Word Break II
 
-### **Constraint Satisfaction**
+### **Constraint Satisfaction** — LC 37
 - **Sudoku**: Fill grid with constraints
   - LC 37: Sudoku Solver
 - **Expression**: Generate target expressions
@@ -361,7 +361,7 @@
 - **Parentheses**: Generate valid combinations
   - LC 22: Generate Parentheses
 
-### **Advanced Backtracking**
+### **Advanced Backtracking** — LC 698
 - **Game Playing**: Optimal strategy
   - LC 464: Can I Win, LC 294: Flip Game II
 - **Scheduling**: Assign tasks optimally
@@ -388,7 +388,7 @@
 
 ## 🔹 7. Heaps & Priority Queues
 
-### **Top-K Problems**
+### **Top-K Problems** — LC 215
 - **Kth Largest/Smallest**: Use heap to maintain k elements
   - LC 215: Kth Largest Element, LC 703: Kth Largest in Stream
   - LC 973: K Closest Points to Origin, LC 692: Top K Frequent Words
@@ -396,7 +396,7 @@
   - LC 347: Top K Frequent Elements, LC 451: Sort Characters by Frequency
 - **Min-heap for largest, max-heap for smallest**
 
-### **Merge Multiple Sorted Structures**
+### **Merge Multiple Sorted Structures** — LC 23
 - **Merge k Sorted Lists**: Use heap to track current minimums
   - LC 23: Merge k Sorted Lists, LC 378: Kth Smallest in Sorted Matrix
 - **Merge Intervals**: Sort + heap for overlapping intervals
@@ -404,7 +404,7 @@
 - **Merge k Arrays**: Extension of merge k lists
   - LC 632: Smallest Range Covering Elements
 
-### **Data Stream & Online Algorithms**
+### **Data Stream & Online Algorithms** — LC 295
 - **Median Maintenance**: Two heaps (max-heap + min-heap)
   - LC 295: Find Median from Data Stream
   - LC 480: Sliding Window Median
@@ -412,7 +412,7 @@
   - Running kth largest, running average
 - **Stream Processing**: Handle infinite data streams
 
-### **Scheduling & Intervals**
+### **Scheduling & Intervals** — LC 621
 - **Task Scheduling**: Optimize task execution
   - LC 621: Task Scheduler, LC 358: Rearrange String k Distance Apart
 - **Meeting Rooms**: Schedule meetings optimally
@@ -420,7 +420,7 @@
 - **CPU Scheduling**: Process scheduling algorithms
   - LC 1834: Single-Threaded CPU
 
-### **Graph Algorithms with Heaps**
+### **Graph Algorithms with Heaps** — LC 743
 - **Dijkstra's Algorithm**: Shortest path using min-heap
   - LC 743: Network Delay Time, LC 787: Cheapest Flights
 - **A* Search**: Heuristic search with priority queue
@@ -439,7 +439,7 @@
 
 ## 🔹 8. Hashing & Counting
 
-### **Frequency Maps**
+### **Frequency Maps** — LC 242
 - **Character/Element Counting**: Count occurrences for analysis
   - LC 242: Valid Anagram, LC 383: Ransom Note, LC 387: First Unique Character
   - LC 169: Majority Element, LC 229: Majority Element II
@@ -450,7 +450,7 @@
   - LC 438: Find All Anagrams in a String, LC 567: Permutation in String
 - **Template**: `Counter()` or manual dictionary counting
 
-### **Prefix Hash / Rolling Hash**
+### **Prefix Hash / Rolling Hash** — LC 28
 - **String Pattern Matching**: Rabin-Karp algorithm
   - LC 28: Find the Index of First Occurrence, LC 459: Repeated Substring Pattern
 - **Substring Problems**: Efficient hash-based comparison
@@ -460,7 +460,7 @@
 - **Polynomial Hash**: Base-power hashing for strings
   - Use prime modulus to reduce collisions
 
-### **HashSet for Seen States**
+### **HashSet for Seen States** — LC 217
 - **Cycle Detection**: Track visited states
   - LC 202: Happy Number, LC 141: Linked List Cycle
   - LC 287: Find the Duplicate Number
@@ -472,7 +472,7 @@
 - **State Space Search**: Avoid revisiting states
   - LC 127: Word Ladder, LC 752: Open the Lock
 
-### **Hash-based Data Structures**
+### **Hash-based Data Structures** — LC 1
 - **HashMap for Relationships**: Key-value mappings
   - LC 1: Two Sum, LC 454: 4Sum II, LC 525: Contiguous Array
   - LC 560: Subarray Sum Equals K, LC 523: Continuous Subarray Sum
@@ -495,7 +495,7 @@
 
 ## 🔹 9. Advanced Patterns
 
-### **Monotonic Stack / Queue**
+### **Monotonic Stack / Queue** — LC 496
 - **Next Greater/Smaller Element**: Stack-based pattern
   - LC 496: Next Greater Element I, LC 503: Next Greater Element II
   - LC 739: Daily Temperatures, LC 901: Online Stock Span
@@ -506,7 +506,7 @@
 - **Monotonic Property**: Maintain increasing/decreasing order
   - LC 402: Remove K Digits, LC 321: Create Maximum Number
 
-### **Greedy Algorithms with Sorting**
+### **Greedy Algorithms with Sorting** — LC 435
 - **Interval Scheduling**: Sort by end time for optimal selection
   - LC 435: Non-overlapping Intervals, LC 452: Minimum Number of Arrows
   - LC 253: Meeting Rooms II, LC 1024: Video Stitching
@@ -517,7 +517,7 @@
 - **Lexicographic Ordering**: String/array construction
   - LC 316: Remove Duplicate Letters, LC 1081: Smallest Subsequence
 
-### **Binary Indexed Tree (BIT) / Segment Tree**
+### **Binary Indexed Tree (BIT) / Segment Tree** — LC 307
 - **Range Sum Queries**: Efficient prefix sums
   - LC 307: Range Sum Query - Mutable, LC 308: Range Sum Query 2D
 - **Inversion Count**: Count inversions in array
@@ -528,7 +528,7 @@
 - **Range Updates**: Lazy propagation for updates
   - Segment tree with range increment/decrement
 
-### **Union-Find (Disjoint Set Union)**
+### **Union-Find (Disjoint Set Union)** — LC 200
 - **Connected Components**: Group elements into components
   - LC 200: Number of Islands, LC 305: Number of Islands II
   - LC 547: Number of Provinces, LC 684: Redundant Connection
@@ -539,7 +539,7 @@
 - **Minimum Spanning Tree**: Kruskal's algorithm
   - LC 1135: Connecting Cities, LC 1584: Min Cost to Connect All Points
 
-### **Trie (Prefix Tree)**
+### **Trie (Prefix Tree)** — LC 208
 - **Word Search & Storage**: Efficient prefix operations
   - LC 208: Implement Trie, LC 211: Design Add and Search Words
   - LC 212: Word Search II, LC 472: Concatenated Words
@@ -551,7 +551,7 @@
   - LC 421: Maximum XOR of Two Numbers
   - LC 1707: Maximum XOR With an Element From Array
 
-### **Advanced Graph Algorithms**
+### **Advanced Graph Algorithms** — LC 207
 - **Topological Sort**: Order nodes in DAG
   - LC 207: Course Schedule, LC 210: Course Schedule II
   - LC 269: Alien Dictionary, LC 329: Longest Increasing Path
@@ -562,7 +562,7 @@
 - **Network Flow**: Max flow min cut problems
   - Ford-Fulkerson, Edmonds-Karp algorithms
 
-### **String Algorithms**
+### **String Algorithms** — LC 28
 - **KMP (Knuth-Morris-Pratt)**: Pattern matching with failure function
   - LC 28: Find Index of First Occurrence
 - **Manacher's Algorithm**: Find all palindromes in O(n)
@@ -572,7 +572,7 @@
 - **Suffix Arrays**: Advanced string processing
   - LC 1044: Longest Duplicate Substring (advanced approach)
 
-### **Mathematical & Number Theory**
+### **Mathematical & Number Theory** — LC 204
 - **Fast Exponentiation**: Compute powers efficiently
   - LC 50: Pow(x, n), LC 372: Super Pow
 - **Extended Euclidean Algorithm**: Solve Diophantine equations
@@ -582,7 +582,7 @@
 - **Matrix Exponentiation**: Fast computation of recurrences
   - Fibonacci sequence, linear recurrence relations
 
-### **Game Theory**
+### **Game Theory** — LC 292
 - **Minimax Algorithm**: Optimal strategy in zero-sum games
   - LC 464: Can I Win, LC 486: Predict the Winner
 - **Nim Game**: XOR-based winning strategy

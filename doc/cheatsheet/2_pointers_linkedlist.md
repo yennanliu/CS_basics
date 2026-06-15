@@ -146,7 +146,7 @@ return slow;
 ## 2) LC Example
 
 
-### 2-1) Remove Duplicates from Sorted List
+### 2-1) Remove Duplicates from Sorted List — LC 83
 ```java
 // LC 83 (LC 26)
 // https://labuladong.online/algo/essential-technique/array-two-pointers-summary/#%E5%8E%9F%E5%9C%B0%E4%BF%AE%E6%94%B9

@@ -35,7 +35,7 @@
 
 ## 2) LC Example
 
-### 2-1) Gray Code
+### 2-1) Gray Code — LC 89
 ```python
 # LC 89 Gray Code
 # V0
@@ -114,7 +114,7 @@ class Solution:
         return res
 ```
 
-### 2-2) Reverse Bits
+### 2-2) Reverse Bits — LC 190
 ```python
 # 190. Reverse Bits
 # V0
@@ -147,7 +147,7 @@ class Solution(object):
         return int(b + '0'*(32-len(b)), 2)
 ```
 
-### 2-3) Power of Two
+### 2-3) Power of Two — LC 231
 ```python
 # LC 231. Power of Two
 # NOTE : there is also brute force approach
@@ -162,7 +162,7 @@ class Solution(object):
         return n & (n - 1) == 0
 ```
 
-### 2-4) Add Binary
+### 2-4) Add Binary — LC 67 — LC 67
 ```python
 # LC 67. Add Binary
 # V0
@@ -230,7 +230,7 @@ class Solution:
         return bin(x)[2:]
 ```
 
-### 2-5) Sum of Two Integers
+### 2-5) Sum of Two Integers — LC 371
 ```python
 # 371. Sum of Two Integers
 # V0'

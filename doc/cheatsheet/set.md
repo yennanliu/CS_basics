@@ -284,7 +284,7 @@ Set<Integer> set2 = new HashSet<>(list);
 
 ## 2) LC Example
 
-### 2-1) Lowest Common Ancestor of a Binary Tree III
+### 2-1) Lowest Common Ancestor of a Binary Tree III — LC 1650
 ```python
 # LC 1650. Lowest Common Ancestor of a Binary Tree III
 # NOTE : there are also dict, recursive.. approaches
@@ -308,7 +308,7 @@ class Solution:
             q = q.parent
 ```
 
-### 2-2) Contains Duplicate
+### 2-2) Contains Duplicate — LC 217
 ```python
 # LC 217. Contains Duplicate
 # V0
@@ -344,7 +344,7 @@ public boolean containsDuplicate(int[] nums) {
 }
 ```
 
-### 2-3) Intersection of Two Arrays
+### 2-3) Intersection of Two Arrays — LC 349
 ```python
 # LC 349. Intersection of Two Arrays
 # V0
@@ -382,7 +382,7 @@ public int[] intersection(int[] nums1, int[] nums2) {
 }
 ```
 
-### 2-4) Happy Number
+### 2-4) Happy Number — LC 202
 ```python
 # LC 202. Happy Number
 # V0
@@ -405,7 +405,7 @@ class Solution:
         return n == 1
 ```
 
-### 2-5) Longest Consecutive Sequence
+### 2-5) Longest Consecutive Sequence — LC 128
 
 #### Core Idea
 
@@ -506,7 +506,7 @@ The inner `while` loop looks like it could be O(n) per outer iteration, but the 
 | Longest Arithmetic Subsequence | 1027 | Any common diff, not just 1 | DP + hashmap |
 | Contains Duplicate | 217 | Just detect any duplicate | Set size check |
 
-### 2-6) Single Number
+### 2-6) Single Number — LC 136
 ```python
 # LC 136. Single Number
 # V0
@@ -525,7 +525,7 @@ class Solution:
         return 2 * sum(set(nums)) - sum(nums)
 ```
 
-### 2-7) Valid Sudoku
+### 2-7) Valid Sudoku — LC 36
 ```python
 # LC 36. Valid Sudoku
 # V0
@@ -556,7 +556,7 @@ class Solution:
         return True
 ```
 
-### 2-8) Number of Distinct Islands
+### 2-8) Number of Distinct Islands — LC 694
 ```python
 # LC 694. Number of Distinct Islands
 # V0
@@ -589,7 +589,7 @@ class Solution:
         return len(shapes)
 ```
 
-### 2-9) Linked List Cycle Detection
+### 2-9) Linked List Cycle Detection — LC 141
 ```python
 # LC 141. Linked List Cycle
 # V0
@@ -626,7 +626,7 @@ class Solution:
         return True
 ```
 
-### 2-10) Word Pattern
+### 2-10) Word Pattern — LC 290
 ```python
 # LC 290. Word Pattern
 # V0

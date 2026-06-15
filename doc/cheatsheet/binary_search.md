@@ -2669,7 +2669,7 @@ public boolean searchMatrix_2(int[][] matrix, int target) {
 
 **Reference**: See `leetcode_java/src/main/java/LeetCodeJava/BinarySearch/FindMinimumInRotatedSortedArray.java` for multiple approaches.
 
-### 4.16) Find First and Last Position - Alternative Implementation
+### 4.16) Find First and Last Position - Alternative Implementation — LC 34
 **Approach**: Separate functions for finding first and last occurrences
 
 ```java

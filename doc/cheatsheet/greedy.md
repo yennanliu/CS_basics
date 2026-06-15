@@ -51,7 +51,7 @@ def greedy_solution(items):
     return result
 ```
 
-### Template 1: Interval Scheduling
+### Template 1: Interval Scheduling — LC 435
 ```python
 def interval_scheduling(intervals):
     """Select maximum non-overlapping intervals"""
@@ -72,7 +72,7 @@ def interval_scheduling(intervals):
     return count
 ```
 
-### Template 2: Activity Selection with Heap
+### Template 2: Activity Selection with Heap — LC 621
 ```python
 import heapq
 
@@ -103,7 +103,7 @@ def activity_selection_heap(tasks):
     return result
 ```
 
-### Template 3: Greedy Accumulation
+### Template 3: Greedy Accumulation — LC 122
 ```python
 def greedy_accumulation(prices):
     """Accumulate positive differences (stock trading)"""
@@ -117,7 +117,7 @@ def greedy_accumulation(prices):
     return profit
 ```
 
-### Template 4: Jump Game Pattern
+### Template 4: Jump Game Pattern — LC 55
 ```python
 def jump_game(nums):
     """Check if can reach end"""
@@ -148,7 +148,7 @@ def jump_game_min_jumps(nums):
     return jumps
 ```
 
-### Template 5: String Reorganization
+### Template 5: String Reorganization — LC 767
 ```python
 def reorganize_string(s):
     """Reorganize string so no adjacent chars are same"""

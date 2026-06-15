@@ -12,12 +12,12 @@
 
 ## 2) LC Example
 
-### 2-1) Peeking Iterator
+### 2-1) Peeking Iterator — LC 284
 ```python
 # LC 284. Peeking Iterator
 ```
 
-### 2-2) Flatten Nested List Iterator
+### 2-2) Flatten Nested List Iterator — LC 341
 ```python
 # LC 341. Flatten Nested List Iterator
 ```

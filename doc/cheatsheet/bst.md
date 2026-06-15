@@ -1854,7 +1854,7 @@ class Solution(object):
 
 ## 2) LC Example
 
-### 2-1) Serialize and Deserialize BST
+### 2-1) Serialize and Deserialize BST — LC 449
 ```python
 # LC 449 Serialize and Deserialize BST
 # V0
@@ -1947,7 +1947,7 @@ class Codec:
             return None
 ```
 
-### 2-2) Kth Smallest Element in a BST
+### 2-2) Kth Smallest Element in a BST — LC 230
 
 ```python
 # LC 230
@@ -1970,7 +1970,7 @@ class Solution:
             root = root.right
 ```
 
-### 2-3) Lowest Common Ancestor of a Binary Search Tree
+### 2-3) Lowest Common Ancestor of a Binary Search Tree — LC 235
 ```python
 # LC 235 Lowest Common Ancestor of a Binary Search Tree
 # V0
@@ -2173,7 +2173,7 @@ public TreeNode[] splitBST(TreeNode root, int target) {
 - **Time**: O(H) — only visits nodes along one root-to-leaf path
 - **Space**: O(H) — recursion stack depth = tree height
 
-### 2-5) Binary Search Tree Iterator
+### 2-5) Binary Search Tree Iterator — LC 173
 ```python
 # LC 173. Binary Search Tree Iterator
 # V0
@@ -2274,7 +2274,7 @@ public class BSTIterator_1 {
 }
 ```
 
-### 2-6) Search in a Binary Search Tree
+### 2-6) Search in a Binary Search Tree — LC 700
 ```python
 # LC 700 Search in a Binary Search Tree
 # V1
@@ -2298,7 +2298,7 @@ class Solution:
         return root
 ```
 
-### 2-7) Unique Binary Search Trees II
+### 2-7) Unique Binary Search Trees II — LC 95
 > See also: **Pattern 6.5** above for core idea, multiple approaches, and similar problems.
 
 ```python
@@ -2370,7 +2370,7 @@ private List<TreeNode> buildTrees(int start, int end) {
 }
 ```
 
-### 2-8) Insert into a Binary Search Tree
+### 2-8) Insert into a Binary Search Tree — LC 701
 ```python
 # LC 701 Insert into a Binary Search Tree
 # VO : recursion + dfs
@@ -2385,7 +2385,7 @@ class Solution(object):
         return(root)
 ```
 
-### 2-9) Validate Binary Search Tree
+### 2-9) Validate Binary Search Tree — LC 98
 ```python
 # LC 98 Validate Binary Search Tree
 # V0

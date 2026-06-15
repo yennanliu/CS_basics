@@ -331,7 +331,7 @@ class GridWorldSimulation:
 
 ## LC Examples
 
-### 2-1) Walking Robot Simulation II (LC 2069) — Circular Perimeter State Machine
+### 2-1) Walking Robot Simulation II — LC 2069
 > Map position to perimeter index (mod perimeter); track direction at each corner.
 
 ```java
@@ -417,7 +417,7 @@ class Robot:
         return self.dir_names[self.direction]
 ```
 
-### 2-2) Time to Cross a Bridge (LC 2532) — Multi-Queue Simulation
+### 2-2) Time to Cross a Bridge — LC 2532
 > Four priority queues: waiting left/right + working left/right; simulate worker assignments by time.
 
 ```java
@@ -528,7 +528,7 @@ def findCrossingTime(n, k, time):
     return current_time
 ```
 
-### 2-3) Number of Spaces Cleaning Robot Cleaned (LC 2061) — DFS Simulation with State
+### 2-3) Number of Spaces Cleaning Robot Cleaned — LC 2061
 > DFS from (0,0) facing East; stop when revisiting the same (row, col, direction) state.
 
 ```java

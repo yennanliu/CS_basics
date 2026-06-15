@@ -1619,7 +1619,7 @@ private int atMost(int[] nums, int k) {
 
 ---
 
-### 2-2) Continuous Subarray Sum
+### 2-2) Continuous Subarray Sum — LC 523
 - Similar concept as Contiguous Array (LC 525)
 
 ```python
@@ -1666,7 +1666,7 @@ class Solution(object):
         return False
 ```
 
-### 2-3) Group Anagrams
+### 2-3) Group Anagrams — LC 49
 ```python
 # 049 Group Anagrams
 # V0
@@ -1683,7 +1683,7 @@ class Solution:
 
 ```
 
-### 2-3') Longest Substring Without Repeating Characters
+### 2-3') Longest Substring Without Repeating Characters — LC 3
 ```python
 # LC 003
 # V0'
@@ -1722,7 +1722,7 @@ class Solution(object):
         return res
 ```
 
-### 2-4) Count Primes
+### 2-4) Count Primes — LC 204
 ```python
 # LC 204 Count Primes
 # V0
@@ -1748,7 +1748,7 @@ class Solution:
         return n - len(nonprimes) - 2  # remove prime(1), prime(2)
 ```
 
-### 2-5) Valid Sudoku
+### 2-5) Valid Sudoku — LC 36
 ```python
 # python
 # LC 036 Valid Sudoku
@@ -1850,7 +1850,7 @@ bollean isValid(char[][] board, int r, int c, char n){
 }  
 ```
 
-### 2-6) Pairs of Songs With Total Durations Divisible by 60
+### 2-6) Pairs of Songs With Total Durations Divisible by 60 — LC 1010
 ```python
 # LC 1010. Pairs of Songs With Total Durations Divisible by 60
 # V0
@@ -1877,7 +1877,7 @@ class Solution(object):
         return pairs
 ```
 
-### 2-7) Subarray Sum Equals K
+### 2-7) Subarray Sum Equals K — LC 560
 ```python
 # LC 560 : Subarray Sum Equals K
 
@@ -1977,7 +1977,7 @@ int subarraySum(int[] nums, int k){
 }
 ```
 
-### 2-8) K-diff Pairs in an Array
+### 2-8) K-diff Pairs in an Array — LC 532
 ```python
 # LC 532 K-diff Pairs in an Array
 # V0
@@ -2030,7 +2030,7 @@ class Solution(object):
         return res
 ```
 
-### 2-9) Sentence Similarity
+### 2-9) Sentence Similarity — LC 734
 ```python
 # LC 734. Sentence Similarity
 # V0'
@@ -2078,7 +2078,7 @@ class Solution(object):
         return True
 ```
 
-### 2-10) LRU Cache
+### 2-10) LRU Cache — LC 146
 ```python
 # LC 146 LRU Cache
 # note : there is also array/queue approach
@@ -2122,7 +2122,7 @@ class LRUCache(OrderedDict):
             self.popitem(last = False)
 ```
 
-### 2-11) Find All Anagrams in a String
+### 2-11) Find All Anagrams in a String — LC 438
 ```python
 # LC 438. Find All Anagrams in a String
 # V0

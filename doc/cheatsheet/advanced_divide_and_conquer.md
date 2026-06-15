@@ -44,7 +44,7 @@
 | **Range Query D&C** | Range sum counting | O(n log n) | Subarray sum problems |
 | **Reconstruction D&C** | Build sorted arrays | O(n log n) | Array construction problems |
 
-### Template 1: Basic Inversion Counting
+### Template 1: Basic Inversion Counting — LC 315
 ```python
 def count_inversions(arr):
     """Count total number of inversions using merge sort"""
@@ -93,7 +93,7 @@ def count_inversions(arr):
     return merge_sort_and_count(arr[:], temp, 0, len(arr) - 1)
 ```
 
-### Template 2: Conditional Inversion Counting
+### Template 2: Conditional Inversion Counting — LC 493
 ```python
 def count_reverse_pairs(nums):
     """Count pairs where nums[i] > 2 * nums[j] for i < j"""
@@ -144,7 +144,7 @@ def count_reverse_pairs(nums):
     return merge_sort_and_count(nums[:], temp, 0, len(nums) - 1)
 ```
 
-### Template 3: Range Sum Divide and Conquer
+### Template 3: Range Sum Divide and Conquer — LC 327
 ```python
 def count_range_sum(nums, lower, upper):
     """Count subarrays with sum in [lower, upper]"""
@@ -205,7 +205,7 @@ def count_range_sum(nums, lower, upper):
     return divide_and_conquer(prefix_sums, temp, 0, len(prefix_sums) - 1)
 ```
 
-### Template 4: Array Reconstruction
+### Template 4: Array Reconstruction — LC 1649
 ```python
 def create_sorted_array(instructions):
     """Create sorted array with minimum cost"""

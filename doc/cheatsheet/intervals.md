@@ -29,7 +29,7 @@
 
 ## 1) Problem Categories
 
-### **Pattern 1: Interval Merging**
+### **Pattern 1: Interval Merging** — LC 56
 - **Description**: Combine overlapping intervals into single merged intervals
 - **Examples**: LC 56 (Merge Intervals), LC 57 (Insert Interval)
 - **Recognition**: "Merge", "combine", "overlapping intervals"

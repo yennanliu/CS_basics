@@ -49,7 +49,7 @@
 | **Z-Algorithm** | String matching | O(n) | O(n) | Pattern matching variants |
 | **Rolling Hash** | Substring comparison | O(n) | O(1) | Multiple pattern search |
 
-### Template 1: KMP (Knuth-Morris-Pratt) Algorithm
+### Template 1: KMP (Knuth-Morris-Pratt) Algorithm — LC 28
 ```python
 def kmp_search(text, pattern):
     """KMP algorithm for pattern matching"""
@@ -124,7 +124,7 @@ def kmp_pattern_matching_template():
     }
 ```
 
-### Template 2: Manacher's Algorithm
+### Template 2: Manacher's Algorithm — LC 5
 ```python
 def manacher_algorithm(s):
     """Manacher's algorithm to find all palindromes in O(n)"""
@@ -229,7 +229,7 @@ def manacher_applications():
     }
 ```
 
-### Template 3: Z-Algorithm
+### Template 3: Z-Algorithm — LC 459
 ```python
 def z_algorithm(s):
     """Z-algorithm: compute Z array where Z[i] = length of longest substring
@@ -304,7 +304,7 @@ def z_algorithm_applications():
     }
 ```
 
-### Template 4: Advanced Rolling Hash
+### Template 4: Advanced Rolling Hash — LC 1044
 ```python
 class RollingHash:
     """Advanced rolling hash for string problems"""
@@ -379,7 +379,7 @@ class RollingHash:
         return count
 ```
 
-### Template 5: Suffix Array Construction
+### Template 5: Suffix Array Construction — LC 1044
 ```python
 def suffix_array_construction(s):
     """Construct suffix array using counting sort (O(n log n))"""

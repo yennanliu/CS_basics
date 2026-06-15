@@ -18,31 +18,31 @@
 
 ## Problem Categories
 
-### **Pattern 1: Tree Traversal**
+### **Pattern 1: Tree Traversal** — LC 94
 - **Description**: Visit all nodes in specific order (preorder, inorder, postorder)
 - **Recognition**: "Traverse", "visit all", "print tree", "serialize"
 - **Examples**: LC 94, LC 144, LC 145, LC 297, LC 449
 - **Template**: Use Tree Traversal Template
 
-### **Pattern 2: Path Problems**
+### **Pattern 2: Path Problems** — LC 112
 - **Description**: Find paths with specific properties in trees/graphs
 - **Recognition**: "Path sum", "root to leaf", "all paths", "longest path"
 - **Examples**: LC 112, LC 113, LC 257, LC 124, LC 543
 - **Template**: Use Path Template with backtracking
 
-### **Pattern 3: Graph Traversal**
+### **Pattern 3: Graph Traversal** — LC 200
 - **Description**: Explore graphs, find components, detect cycles
 - **Recognition**: "Connected components", "islands", "cycle detection"
 - **Examples**: LC 200, LC 695, LC 133, LC 207, LC 210
 - **Template**: Use Graph DFS Template
 
-### **Pattern 4: Backtracking**
+### **Pattern 4: Backtracking** — LC 46
 - **Description**: Try all possibilities, undo choices
 - **Recognition**: "All combinations", "permutations", "subsets"
 - **Examples**: LC 46, LC 78, LC 39, LC 17
 - **Template**: Use Backtracking Template
 
-### **Pattern 5: Tree Modification**
+### **Pattern 5: Tree Modification** — LC 450
 - **Description**: Modify tree structure or values during traversal
 - **Recognition**: "Delete", "insert", "trim", "convert"
 - **Examples**: LC 450, LC 701, LC 669, LC 538
@@ -79,13 +79,13 @@
   - LC 1650 - Lowest Common Ancestor of a Binary Tree III (with parent pointers)
   - LC 1676 - Lowest Common Ancestor of a Binary Tree IV (multiple target nodes)
 
-### **Pattern 7: Boundary Elimination (2-Pass DFS)**
+### **Pattern 7: Boundary Elimination (2-Pass DFS)** — LC 1254
 - **Description**: Eliminate boundary-connected cells first, then process interior
 - **Recognition**: "Closed islands", "surrounded regions", "captured pieces"
 - **Examples**: LC 1254, LC 130, LC 417
 - **Template**: Use 2-Pass DFS Template
 
-### **Pattern 8: Path Signatures (Shape Encoding)**
+### **Pattern 8: Path Signatures (Shape Encoding)** — LC 694
 - **Description**: Encode the shape/structure of islands or subtrees using unique path signatures
 - **Recognition**: "Distinct islands", "unique shapes", "count different structures", "same shape after translation"
 - **Key Technique**: Record directional movements during DFS traversal to create a canonical signature
@@ -97,7 +97,7 @@
   - **Delimiter Usage**: Use delimiters (like 'O' for "Out") when backtracking to distinguish different shapes
   - **Relative Encoding**: Record relative positions or directional movements, not absolute coordinates
 
-### **Pattern 9: DFS with Validation (Sub-Component Detection)**
+### **Pattern 9: DFS with Validation (Sub-Component Detection)** — LC 1905
 - **Description**: Traverse one grid/graph structure while validating against another reference structure
 - **Recognition**: "Sub-islands", "subset validation", "component matching", "inclusion checking"
 - **Key Technique**: DFS traversal with boolean flag that tracks whether ALL cells satisfy a condition
@@ -109,7 +109,7 @@
   - **Short-circuit Optimization**: Can optimize by returning early if validation fails
   - **Two-Grid Comparison**: One grid for traversal structure, another for validation condition
 
-### **Pattern 10: Bidirectional Graph with Direction Tracking**
+### **Pattern 10: Bidirectional Graph with Direction Tracking** — LC 1466
 - **Description**: Build undirected graph representation of a directed graph, track original edge directions during DFS traversal
 - **Recognition**: "Reorder edges", "reverse routes", "make paths lead to", "minimum edge reversals", "orient edges"
 - **Key Technique**: Store direction metadata (flag) for each edge in bidirectional adjacency list, count edges needing reversal during DFS
@@ -122,7 +122,7 @@
   - **Tree Property**: Works well with tree structures (n-1 edges for n nodes)
   - **From Root**: Always start DFS from the target node (the node all paths should lead to)
 
-### **Pattern 11: Component Pair Counting (Unreachable Pairs)**
+### **Pattern 11: Component Pair Counting (Unreachable Pairs)** — LC 2316
 - **Description**: Count pairs of nodes that cannot reach each other in a graph with multiple disconnected components
 - **Recognition**: "Unreachable pairs", "count disconnected pairs", "pairs in different components", "isolated node pairs"
 - **Key Technique**: Find all components using DFS/Union-Find, then count pairs between different components using cumulative multiplication
@@ -137,7 +137,7 @@
   - **Component Discovery**: Use DFS or Union-Find to identify all components
   - **Cumulative Tracking**: Keep running sum of processed nodes to calculate pairs efficiently
 
-### **Pattern 12: Weighted Graph DFS (Division/Ratio Queries)**
+### **Pattern 12: Weighted Graph DFS (Division/Ratio Queries)** — LC 399
 - **Description**: Build a weighted directed graph where edge weights represent ratios/division results, then DFS to compute transitive ratios between any two connected nodes
 - **Recognition**: "Evaluate division", "exchange rates", "currency conversion", "ratio queries", "transitive relationships with weights"
 - **Key Technique**: Model equations as a bidirectional weighted graph (`Map<String, Map<String, Double>>`), DFS with accumulated product along the path
@@ -205,7 +205,7 @@ def dfs(node, visited=None):
     # process_after(node)
 ```
 
-### Template 1: Tree Traversal
+### Template 1: Tree Traversal — LC 94
 ```python
 # Preorder: Root -> Left -> Right
 def preorder(root):
@@ -245,7 +245,7 @@ def dfs_iterative(root):
     return result
 ```
 
-### Template 2: Graph DFS
+### Template 2: Graph DFS — LC 200
 ```python
 def dfs_graph(graph, start):
     """
@@ -293,7 +293,7 @@ def has_cycle(graph):
     return False
 ```
 
-### Template 3: Path Finding
+### Template 3: Path Finding — LC 112
 
 **📚 Related Patterns**: For comprehensive path problem patterns with multiple variations (path sum, max path, consecutive sequences, prefix sum technique), see **bst.md Template 7 (Path Problems)** which provides 7 detailed path patterns with full implementations.
 
@@ -327,7 +327,7 @@ def find_paths(root, target):
     return result
 ```
 
-### Template 4: Backtracking
+### Template 4: Backtracking — LC 46
 ```python
 def backtrack_template(candidates, target):
     """
@@ -384,7 +384,7 @@ def modify_tree(root, condition):
     return root
 ```
 
-### Template 6: Bottom-up DFS
+### Template 6: Bottom-up DFS — LC 543
 ```python
 def bottom_up_dfs(root):
     """
@@ -412,7 +412,7 @@ def bottom_up_dfs(root):
     return self.global_result
 ```
 
-### Template 7: 2-Pass DFS (Boundary Elimination)
+### Template 7: 2-Pass DFS (Boundary Elimination) — LC 1254
 ```python
 def two_pass_dfs(grid):
     """
@@ -512,7 +512,7 @@ private void flood(int[][] grid, int r, int c) {
 }
 ```
 
-### Template 8: Path Signature (Shape Encoding)
+### Template 8: Path Signature (Shape Encoding) — LC 694
 ```python
 def count_distinct_shapes(grid):
     """
@@ -794,7 +794,7 @@ private void dfs(int[][] grid, boolean[][] seen, int r0, int c0, int r, int c, S
    | `int` / `long` (primitives) | ❌ No | Only pass-by-value |
    | `String` | ❌ No (immutable) | Use StringBuilder instead |
 
-### Template 9: DFS with Validation (Sub-Component Detection)
+### Template 9: DFS with Validation (Sub-Component Detection) — LC 1905
 ```java
 /**
  * Pattern: DFS traversal on one grid while validating against another grid
@@ -986,7 +986,7 @@ if (!dfs(r - 1, c)) return false;  // Stops early, leaves cells unvisited!
 - LC 463: Island Perimeter (single grid, count edges)
 - LC 827: Making A Large Island (grid modification, max area)
 
-### Template 10: Bidirectional Graph with Direction Tracking
+### Template 10: Bidirectional Graph with Direction Tracking — LC 1466
 ```java
 /**
  * Pattern: Build bidirectional graph with direction flags, count edge reversals via DFS
@@ -1142,7 +1142,7 @@ def min_reorder(n, connections):
 - LC 1568: Minimum Number of Days to Disconnect Island (related graph modification)
 - LC 1579: Remove Max Number of Edges to Keep Graph Fully Traversable (edge orientation)
 
-### Template 11: Component Pair Counting (Unreachable Pairs)
+### Template 11: Component Pair Counting (Unreachable Pairs) — LC 2316
 
 ```java
 /**
@@ -2148,7 +2148,7 @@ private void dfsCheckGoodNode(TreeNode node, int maxSoFar) {
 
 ## 2) LC Example
 
-### 2-1) Validate Binary Search Tree
+### 2-1) Validate Binary Search Tree — LC 98
 ```python
 # 098 Validate Binary Search Tree
 ### NOTE : there is also bfs solution
@@ -2164,7 +2164,7 @@ class Solution(object):
         return self.valid(root.left, min_, root.val) and self.valid(root.right, root.val, max_)
 ```
 
-### 2-2) Insert into a Binary Search Tree
+### 2-2) Insert into a Binary Search Tree — LC 701
 
 
 ```java
@@ -2230,7 +2230,7 @@ class Solution(object):
 ```
 `
 
-### 2-3) Delete Node in a BST
+### 2-3) Delete Node in a BST — LC 450
 ```python
 # 450 Delete Node in a BST
 # V0
@@ -2384,7 +2384,7 @@ private TreeNode findMin_0(TreeNode node) {
 }
 ```
 
-### 2-4) Find Duplicate Subtrees
+### 2-4) Find Duplicate Subtrees — LC 652
 ```python
 # 652 Find Duplicate Subtrees
 import collections
@@ -2405,7 +2405,7 @@ class Solution(object):
         return path
 ```
 
-### 2-5) Trim a BST
+### 2-5) Trim a BST — LC 669
 ```python
 # 669 Trim a Binary Search Tree
 class Solution:
@@ -2422,7 +2422,7 @@ class Solution:
             return root
 ```
 
-### 2-6) Maximum Width of Binary Tree
+### 2-6) Maximum Width of Binary Tree — LC 662
 ```python
 # 662 Maximum Width of Binary Tree
 class Solution(object):
@@ -2440,7 +2440,7 @@ class Solution(object):
         return self.ans
 ```
 
-### 2-7) Equal Tree Partition
+### 2-7) Equal Tree Partition — LC 663
 ```python
 # 663 Equal Tree Partition
 # V0
@@ -2473,7 +2473,7 @@ class Solution(object):
         return total / 2.0 in seen
 ```
 
-### 2-8) Split BST
+### 2-8) Split BST — LC 776
 ```python
 # 776 Split BST
 # V0
@@ -2504,7 +2504,7 @@ class Solution(object):
             return [root, right]
 ```
 
-### 2-9) Evaluate Division
+### 2-9) Evaluate Division — LC 399
 ```python
 # 399 Evaluate Division
 # there is also an "union find" solution
@@ -2626,7 +2626,7 @@ public HashMap<String, HashMap<String, Double>> buildGraph(List<List<String>> eq
 }
 ```
 
-### 2-10) Most Frequent Subtree Sum
+### 2-10) Most Frequent Subtree Sum — LC 508
 ```python
 # LC 508 Most Frequent Subtree Sum
 # V0
@@ -2675,7 +2675,7 @@ class Solution(object):
         return [x for x in d if d[x] == _max_cnt]
 ```
 
-### 2-11) Convert BST to Greater Tree
+### 2-11) Convert BST to Greater Tree — LC 538
 ```python
 # LC 538 Convert BST to Greater Tree
 # V0
@@ -2726,7 +2726,7 @@ class Solution(object):
         return root
 ```
 
-### 2-12) Number of Islands
+### 2-12) Number of Islands — LC 200
 ```python
 # LC 200 Number of Islands, check LC 694, 711 as well
 # V0 
@@ -2764,7 +2764,7 @@ class Solution(object):
 ```
 
 
-### 2-13) Max Area of Island
+### 2-13) Max Area of Island — LC 695
 ```python
 # LC 695. Max Area of Island
 # V1
@@ -2800,7 +2800,7 @@ class Solution(object):
                 self.dfs(grid, x, y)
 ```
 
-### 2-14) Binary Tree Paths
+### 2-14) Binary Tree Paths — LC 257
 ```python
 # LC 257. Binary Tree Paths
 # V0 
@@ -2826,7 +2826,7 @@ class Solution:
         path_list.pop()
 ```
 
-### 2-15) Lowest Common Ancestor of a Binary Tree
+### 2-15) Lowest Common Ancestor of a Binary Tree — LC 236
 ```python
 # LC 236 Lowest Common Ancestor of a Binary Tree
 # V0
@@ -2858,7 +2858,7 @@ class Solution(object):
         return left if left else right
 ```
 
-### 2-16) Path Sum
+### 2-16) Path Sum — LC 112
 ```python
 # LC 112 Path Sum
 # V0
@@ -2873,7 +2873,7 @@ class Solution(object):
             return self.hasPathSum(root.left, sum-root.val) or self.hasPathSum(root.right, sum-root.val)
 ```
 
-### 2-17) Path Sum II
+### 2-17) Path Sum II — LC 113
 ```python
 # LC 113 Path Sum II
 # V0
@@ -2940,7 +2940,7 @@ public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
 }
 ```
 
-### 2-7) Clone graph
+### 2-7) Clone graph — LC 133
 ```python
 # 133 Clone graph
 # note : there is also a BFS solution

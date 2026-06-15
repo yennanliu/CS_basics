@@ -113,7 +113,7 @@ In [94]: _counter
 Out[94]: Counter({1: 2, 2: 1})
 ```
 
-### 1-4) `OrderedDict ` ( hashmap + linked list)
+### 1-4) `OrderedDict ` ( hashmap + linked list) — LC 146
 ```python
 # LC 146 LRU Cache
 
@@ -239,7 +239,7 @@ class TimeBoundedLRU:
 
 ## 2) LC Example
 
-### 2-1) Custom Sort String
+### 2-1) Custom Sort String — LC 791
 ```python
 # LC 791. Custom Sort String
 # V0

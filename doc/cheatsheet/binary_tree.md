@@ -523,7 +523,7 @@ def count_complete_tree_nodes(root):
 
 ## 2) LC Example
 
-### 2-1) Construct Binary Tree from Preorder and Inorder Traversal
+### 2-1) Construct Binary Tree from Preorder and Inorder Traversal — LC 105
 ```python
 # python
 # LC 105. Construct Binary Tree from Preorder and Inorder Traversal
@@ -552,7 +552,7 @@ class Solution(object):
         return root
 ```
 
-### 2-2) Construct Binary Tree from Inorder and Postorder Traversal
+### 2-2) Construct Binary Tree from Inorder and Postorder Traversal — LC 106
 ```python
 # python
 # LC 106 Construct Binary Tree from Inorder and Postorder Traversal
@@ -580,7 +580,7 @@ class Solution(object):
 ```
 
 
-### 2-3) Binary Tree Paths
+### 2-3) Binary Tree Paths — LC 257
 ```python
 # LC 257 Binary Tree Paths
 
@@ -626,7 +626,7 @@ class Solution:
         return ans
 ```
 
-### 2-4) Binary Tree Longest Consecutive Sequence
+### 2-4) Binary Tree Longest Consecutive Sequence — LC 298
 ```python
 # LC 298 Binary Tree Longest Consecutive Sequence
 # V0
@@ -682,7 +682,7 @@ class Solution(object):
         return maxLen
 ```
 
-### 2-5) Binary Search Tree Iterator
+### 2-5) Binary Search Tree Iterator — LC 173
 ```python
 # LC 173. Binary Search Tree Iterator
 
@@ -716,7 +716,7 @@ class BSTIterator(object):
         return self.stack.pop()
 ```
 
-### 2-6) Count Complete Tree Nodes (Binary Search on Trees)
+### 2-6) Count Complete Tree Nodes (Binary Search on Trees) — LC 222
 ```java
 // LC 222. Count Complete Tree Nodes
 // Java Implementation

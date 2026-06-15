@@ -207,7 +207,7 @@ class Solution {
 | Move Zeroes | 283 | Move zeros to end, preserve order | Swap when `nums[fast] != 0` |
 | Remove Duplicates from Sorted List | 83 | Linked list version of LC 26 | `node.next = node.next.next` on duplicate |
 | Remove Duplicates from Sorted List II | 82 | Delete ALL nodes with duplicate values | Extra sentinel node + skip entire duplicate group |
-### 0-2-0b) Remove Duplicates from Sorted Array II (LC 80)
+### 0-2-0b) Remove Duplicates from Sorted Array II (LC 80) — LC 80
 
 #### Core Idea
 
@@ -334,7 +334,7 @@ public int removeDuplicatesAtMostK(int[] nums, int k) {
 | Remove Element | 27 | Remove all of a specific value |
 | Move Zeroes | 283 | Keep zeros, move to end |
 
-### 0-2-1) Remove Element
+### 0-2-1) Remove Element — LC 27
 ```java
 // java
 // LC 27
@@ -417,7 +417,7 @@ class Solution {
 }
 ```
 
-### 0-2-1b) Remove Element (Bidirectional Two Pointers)
+### 0-2-1b) Remove Element (Bidirectional Two Pointers) — LC 27
 
 **Pattern: Left-Right pointers, shrink from both ends**
 
@@ -526,7 +526,7 @@ public int removeElement(int[] nums, int val) {
 - LC 26 Remove Duplicates from Sorted Array — order matters, use fast-slow instead
 - LC 80 Remove Duplicates from Sorted Array II — order matters, use fast-slow instead
 
-### 0-2-2) Move Zeros to End
+### 0-2-2) Move Zeros to End — LC 283
 ```java
 // java
 // LC 283 Move Zeroes
@@ -1203,7 +1203,7 @@ Query 2: "FooBarTest"
 - LC 524 Longest Word in Dictionary through Deleting
 - LC 792 Number of Matching Subsequences
 
-### 0-2-7) Group-by-Group String Comparison (Expressive Words)
+### 0-2-7) Group-by-Group String Comparison (Expressive Words) — LC 809
 
 #### Core Idea
 
@@ -1825,7 +1825,7 @@ void reverse(int[] nums){
 
 ## 2) LC Example
 
-### 2-1) Remove Element
+### 2-1) Remove Element — LC 27
 ```python
 # python
 # basic
@@ -1986,7 +1986,7 @@ class Solution:
         return slow
 ```
 
-### 2-2) Longest Palindromic Substring
+### 2-2) Longest Palindromic Substring — LC 5
 ```python
 # LC 005 Longest Palindromic Substring
 # V0
@@ -2065,7 +2065,7 @@ class Solution:
         return res
 ```
 
-### 2-3) Container With Most Water
+### 2-3) Container With Most Water — LC 11
 ```python
 # LC 11 Container With Most Water
 # V0 
@@ -2084,7 +2084,7 @@ class Solution(object):
         return ans
 ```
 
-### 2-4) Longest Consecutive Sequence
+### 2-4) Longest Consecutive Sequence — LC 128
 ```python
 # LC 128 Longest Consecutive Sequence
 
@@ -2158,7 +2158,7 @@ class Solution(object):
         return max(max_len, cur_len)
 ```
 
-### 2-6) Palindromic Substrings
+### 2-6) Palindromic Substrings — LC 647
 ```python
 # LC 647. Palindromic Substrings
 # V0'
@@ -2224,7 +2224,7 @@ class Solution(object):
         return count
 ```
 
-### 2-7) Sum of Subarray Ranges
+### 2-7) Sum of Subarray Ranges — LC 2104
 ```python
 # LC 2104. Sum of Subarray Ranges
 # V0
@@ -2267,7 +2267,7 @@ class Solution:
         return res
 ```
 
-### 2-8) Trapping Rain Water
+### 2-8) Trapping Rain Water — LC 42
 ```python
 # LC 42. Trapping Rain Water
 # NOTE : there is also 2 scan, dp approaches
@@ -2308,7 +2308,7 @@ class Solution:
         return res
 ```
 
-### 2-9) Next Permutation
+### 2-9) Next Permutation — LC 31
 ```python
 # LC 31. Next Permutation
 # V0
@@ -2349,7 +2349,7 @@ class Solution(object):
         num[k + 1:] = num[:k:-1] ### dounle check here ###
 ```
 
-### 2-10) Valid Palindrome II (Palindrome with One Deletion)
+### 2-10) Valid Palindrome II (Palindrome with One Deletion) — LC 680
 
 **Pattern: Two Pointers with Mismatch Handling**
 - Check palindrome from both ends
@@ -2468,7 +2468,7 @@ class Solution:
 - LC 1216 Valid Palindrome III (k deletions allowed - DP)
 - LC 234 Palindrome Linked List
 
-### 2-11) Merge Sorted Array
+### 2-11) Merge Sorted Array — LC 88
 ```python
 # LC 88. Merge Sorted Array
 # V0
@@ -2494,7 +2494,7 @@ class Solution(object):
         nums1[:q+1] = nums2[:q+1]
 ```
 
-### 2-12) Interval List Intersections
+### 2-12) Interval List Intersections — LC 986
 
 ```java
 // java
@@ -2565,7 +2565,7 @@ class Solution(object):
     }
 ```
 
-### 2-13) Sort Colors (Dutch National Flag)
+### 2-13) Sort Colors (Dutch National Flag) — LC 75
 
 **Pattern: Three-Way Partitioning with Two Pointers**
 - Use three pointers: left (0s), mid (current), right (2s)
@@ -2652,7 +2652,7 @@ private void swap(int[] nums, int i, int j) {
 - LC 80 Remove Duplicates from Sorted Array II
 - LC 283 Move Zeroes
 
-### 2-14) 3Sum
+### 2-14) 3Sum — LC 15
 
 **Pattern: Two Pointers with Fixed First Element**
 - Fix first element, use two pointers for remaining two
@@ -2739,7 +2739,7 @@ public List<List<Integer>> threeSum(int[] nums) {
 - LC 259 3Sum Smaller
 - LC 1 Two Sum
 
-### 2-14b) 3Sum Closest (LC 16)
+### 2-14b) 3Sum Closest (LC 16) — LC 16
 
 #### Core Idea
 
@@ -2846,7 +2846,7 @@ public int threeSumClosest(int[] nums, int target) {
 | Two Sum II | 167 | Two elements, sorted array |
 | Two Sum (closest) | — | Two-pointer variant of this pattern |
 
-### 2-15) Reverse String / Reverse Words
+### 2-15) Reverse String / Reverse Words — LC 344
 
 **Pattern: In-place Reversal with Two Pointers**
 
@@ -2891,7 +2891,7 @@ public void reverseString(char[] s) {
 - LC 186 Reverse Words in a String II
 - LC 151 Reverse Words in a String
 
-### 2-16) Shortest Palindrome (Find Longest Palindromic Prefix)
+### 2-16) Shortest Palindrome (Find Longest Palindromic Prefix) — LC 214
 
 **Pattern: Scan from right, track left pointer to find longest palindromic prefix**
 
@@ -3053,7 +3053,7 @@ private boolean isPalindrome(String s, int l, int r) {
 - LC 132 Palindrome Partitioning II (DP + palindrome check)
 - LC 336 Palindrome Pairs (hash map + palindrome prefix/suffix)
 
-### 2-17) Encode and Decode Strings (Length-Prefixed Two Pointers)
+### 2-17) Encode and Decode Strings (Length-Prefixed Two Pointers) — LC 271
 
 **Pattern: Parse a length header, then jump `i` forward by the declared length**
 

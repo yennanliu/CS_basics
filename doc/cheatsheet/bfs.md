@@ -47,7 +47,7 @@ Breadth-First Search is a graph traversal algorithm that explores nodes level by
 
 ## Implementation Patterns
 
-### Pattern 1: Basic Tree BFS
+### Pattern 1: Basic Tree BFS — LC 102
 ```python
 from collections import deque
 
@@ -70,7 +70,7 @@ def bfs_tree(root):
     return result
 ```
 
-### Pattern 2: Level-by-Level BFS
+### Pattern 2: Level-by-Level BFS — LC 102
 ```python
 def bfs_levels(root):
     if not root:
@@ -97,7 +97,7 @@ def bfs_levels(root):
     return levels
 ```
 
-### Pattern 3: Graph BFS with Visited Set
+### Pattern 3: Graph BFS with Visited Set — LC 200
 ```python
 def bfs_graph(start, graph):
     queue = deque([start])
@@ -116,7 +116,7 @@ def bfs_graph(start, graph):
     return result
 ```
 
-### Pattern 4: Multi-Source BFS (Distance Calculation)
+### Pattern 4: Multi-Source BFS (Distance Calculation) — LC 542
 ```python
 def multi_source_bfs(grid, sources):
     """Start BFS from multiple sources simultaneously"""
@@ -297,7 +297,7 @@ Step 3 - BFS Layer 2 (distance = 2):
 - ✅ Starting from all 0s → Single BFS pass → O(m×n) total time
 - **Principle**: Flip the problem - instead of "how far is this 1 from any 0?", ask "how far can all 0s reach?"
 
-### Pattern 4.5: DFS + Multi-Source BFS (Island Expansion)
+### Pattern 4.5: DFS + Multi-Source BFS (Island Expansion) — LC 934
 ```java
 /**
  * Pattern: DFS to identify first component, then Multi-Source BFS to find shortest distance to second component
@@ -705,7 +705,7 @@ Building 3 BFS:
 | "all friends can reach in **minimum total** time" | Independent BFS Runs |
 | "find the cell **closest** to any land" | Simultaneous Multi-Source |
 
-### Pattern 5: BFS with Path Tracking
+### Pattern 5: BFS with Path Tracking — LC 127
 ```python
 def bfs_with_path(start, target):
     queue = deque([(start, [start])])
@@ -725,7 +725,7 @@ def bfs_with_path(start, target):
     return None
 ```
 
-### Pattern 6: Sort + Repeated BFS (Sequential Shortest Paths)
+### Pattern 6: Sort + Repeated BFS (Sequential Shortest Paths) — LC 675
 ```java
 /**
  * Pattern: Sort targets by priority, then repeatedly call BFS to find shortest paths
@@ -873,7 +873,7 @@ Key insight: Must cut in sorted order, BFS finds shortest path between each pair
 - LC 1091: Shortest Path in Binary Matrix (basic BFS shortest path)
 - LC 317: Shortest Distance from All Buildings (multi-source BFS)
 
-### Pattern 7: BFS + Backtracking (State Space Exploration)
+### Pattern 7: BFS + Backtracking (State Space Exploration) — LC 127
 ```java
 /**
  * Pattern: BFS + Backtracking for exploring transformations
@@ -1096,7 +1096,7 @@ Layer 4: Queue = [cog], steps = 5
 - LC 752: Open the Lock (similar BFS pattern on digit combinations)
 - LC 1008: Construct Binary Search Tree from Preorder Traversal (different pattern)
 
-### Pattern 8: BFS on Abstract Graph (Route-Level BFS)
+### Pattern 8: BFS on Abstract Graph (Route-Level BFS) — LC 815
 ```java
 /**
  * Pattern: BFS where nodes are ROUTES (buses/lines), not physical locations
@@ -1229,7 +1229,7 @@ Without visitedStops: Every stop would re-check all its routes
 
 ---
 
-### Pattern 8: BFS + DFS (Find All Shortest Paths - DAG Enumeration)
+### Pattern 8: BFS + DFS (Find All Shortest Paths - DAG Enumeration) — LC 126
 ```java
 /**
  * Pattern: BFS to build shortest-path DAG, then DFS to enumerate all paths
@@ -1556,7 +1556,7 @@ Final result: 2 paths found ✓
 
 ---
 
-### Pattern 9: BFS-Style Cartesian Product Generation (Level-by-Level Combination Building)
+### Pattern 9: BFS-Style Cartesian Product Generation (Level-by-Level Combination Building) — LC 1087
 
 **Core idea:** Use a queue of partial strings (prefixes). Each independent "group" of options maps to one BFS depth level. For every level, drain the current queue and expand every prefix with every option in that group — producing the full Cartesian product one layer at a time.
 

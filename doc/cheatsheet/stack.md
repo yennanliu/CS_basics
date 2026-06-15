@@ -488,7 +488,7 @@ if stack:
 
 ---
 
-### 1-2) Monotonic Stack: Next Greater Element
+### 1-2) Monotonic Stack: Next Greater Element — LC 496
 
 ```java
 // java
@@ -661,7 +661,7 @@ for i, each in enumerate(s):
 
 ## 2) LeetCode Examples
 
-### 2-1) Decode String
+### 2-1) Decode String — LC 394
 ```python
 # LC 394 Decode String
 # V0
@@ -943,7 +943,7 @@ public String decodeString_v1(String s) {
  */
 ```
 
-### 2-2) Next Greater Element I
+### 2-2) Next Greater Element I — LC 496
 ```python
 # 496. Next Greater Element I
 
@@ -1063,7 +1063,7 @@ public int[] nextGreaterElement(int[] nums1, int[] nums2) {
 }
 ```
 
-### 2-3) Next Greater Element II
+### 2-3) Next Greater Element II — LC 503
 ```python
 # LC 503. Next Greater Element II
 
@@ -1116,7 +1116,7 @@ class Solution:
         return res
 ```
 
-### 2-4) Daily Temperatures
+### 2-4) Daily Temperatures — LC 739
 ```python
 # LC 739. Daily Temperatures
 # V0
@@ -1217,7 +1217,7 @@ public int[] dailyTemperatures(int[] temperatures) {
 }
 ```
 
-### 2-5) Basic Calculator I
+### 2-5) Basic Calculator I — LC 224
 ```python
 # LC 224 Basic Calculator
 # V0'
@@ -1288,7 +1288,7 @@ class Solution:
         return res + sign * operand
 ```
 
-### 2-5') Basic Calculator II
+### 2-5') Basic Calculator II — LC 227
 ```python
 # python
 # LC 227. Basic Calculator II, LC 224. Basic Calculator
@@ -1424,7 +1424,7 @@ class Solution:
         return sum(a * l * r for a, l, r in zip(A, left, right)) % mod
 ```
 
-### 2-6) Asteroid Collision
+### 2-6) Asteroid Collision — LC 735
 ```python
 # LC 735. Asteroid Collision
 # V0
@@ -1444,7 +1444,7 @@ class Solution(object):
         return ans
 ```
 
-### 2-7) Remove All Adjacent Duplicates in String
+### 2-7) Remove All Adjacent Duplicates in String — LC 1047
 ```python
 # LC 1047. Remove All Adjacent Duplicates In String
 # V0
@@ -1486,7 +1486,7 @@ class Solution:
             return ''.join(a[: end + 1])
 ```
 
-### 2-8) Remove All Adjacent Duplicates in String II
+### 2-8) Remove All Adjacent Duplicates in String II — LC 1209
 
 **Pattern: Stack with Character-Count Pairs**
 
@@ -1779,7 +1779,7 @@ public String removeDuplicates_v1(String s, int k) {
  */
 ```
 
-### 2-9) Simplify Path
+### 2-9) Simplify Path — LC 71
 ```python
 # LC 71. Simplify Path
 
@@ -1799,7 +1799,7 @@ class Solution:
         return "/"+"/".join(result)
 ```
 
-### 2-10) Min Stack
+### 2-10) Min Stack — LC 155
 
 **Pattern: 2 Stacks (main stack + min-tracking stack)**
 
@@ -1930,7 +1930,7 @@ class Solution:
         return max_area
 ```
 
-### 2-12) Remove Duplicate Letters
+### 2-12) Remove Duplicate Letters — LC 316
 
 ```java
 // java
@@ -2075,7 +2075,7 @@ for (char c : s.toCharArray()) {
 }
 ```
 
-### 2-13) Remove K Digits
+### 2-13) Remove K Digits — LC 402
 
 ```java
 // java
@@ -2167,7 +2167,7 @@ public String removeKdigits(String num, int k) {
  */
 ```
 
-### 2-14) Online Stock Span
+### 2-14) Online Stock Span — LC 901
 
 ```java
 // java

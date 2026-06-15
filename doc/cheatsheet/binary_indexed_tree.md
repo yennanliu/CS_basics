@@ -37,7 +37,7 @@ Prefix Sum Query: To find the sum from index 1 to i, you sum the relevant BIT va
 
 ## LC Examples
 
-### 2-1) Range Sum Query - Mutable (LC 307) — BIT Point Update + Prefix Sum
+### 2-1) Range Sum Query - Mutable (LC 307) — BIT Point Update + Prefix Sum — LC 307
 > BIT supports O(log N) point update and prefix sum query.
 
 ```java
@@ -69,7 +69,7 @@ class NumArray {
 }
 ```
 
-### 2-2) Count of Smaller Numbers After Self (LC 315) — BIT with Coordinate Compression
+### 2-2) Count of Smaller Numbers After Self (LC 315) — BIT with Coordinate Compression — LC 315
 > Map values to ranks; for each element query how many smaller are already inserted.
 
 ```java
@@ -124,7 +124,7 @@ class BIT {
 }
 ```
 
-### 2-4) Reverse Pairs (LC 493) — BIT with Coordinate Compression
+### 2-4) Reverse Pairs (LC 493) — BIT with Coordinate Compression — LC 493
 > For each nums[i] (right to left), count previously inserted values < nums[i]; then insert 2*nums[i].
 
 ```java
@@ -151,7 +151,7 @@ private void updateBIT(int[] b, int i, int n) { for (; i <= n; i += i&-i) b[i]++
 private int  queryBIT(int[] b, int i)         { int s=0; for(;i>0;i-=i&-i) s+=b[i]; return s; }
 ```
 
-### 2-5) Count of Range Sum (LC 327) — BIT / Merge Sort
+### 2-5) Count of Range Sum (LC 327) — BIT / Merge Sort — LC 327
 > For each prefix sum, count how many previous prefix sums fall in [prefixSum-upper, prefixSum-lower].
 
 ```java
@@ -181,7 +181,7 @@ private int mergeCount(long[] arr, int l, int r, int lo, int hi) {
 }
 ```
 
-### 2-6) Queue Reconstruction by Height (LC 406) — Greedy Insertion
+### 2-6) Queue Reconstruction by Height (LC 406) — Greedy Insertion — LC 406
 > Sort by height DESC (k ASC for ties); insert each person at index k — taller already placed.
 
 ```java
@@ -196,7 +196,7 @@ public int[][] reconstructQueue(int[][] people) {
 }
 ```
 
-### 2-7) Range Sum Query Mutable — BIT vs Segment Tree Comparison
+### 2-7) Range Sum Query Mutable — BIT vs Segment Tree Comparison — LC 307
 > BIT for point update + prefix query; Segment Tree for arbitrary range query/update.
 
 ```java
@@ -222,7 +222,7 @@ class NumArray {
 }
 ```
 
-### 2-8) Range Sum Query 2D - Mutable (LC 308) — 2D BIT
+### 2-8) Range Sum Query 2D - Mutable (LC 308) — 2D BIT — LC 308
 > Extend BIT to 2D: O(log M * log N) per update/query on a matrix.
 
 #### 1D BIT vs 2D BIT
@@ -363,7 +363,7 @@ class NumMatrix_RowBIT {
 | Count of Smaller Numbers After Self | 315 | BIT with coordinate compression |
 | Count of Range Sum | 327 | BIT/merge sort for range counting |
 
-### 2-8) Number of Longest Increasing Subsequences (LC 673) — DP
+### 2-8) Number of Longest Increasing Subsequences (LC 673) — DP — LC 673
 > Track both length and count at each position; update count when equal-length path found.
 
 ```java
@@ -388,7 +388,7 @@ public int findNumberOfLIS(int[] nums) {
 }
 ```
 
-### 2-9) Create Sorted Array through Instructions (LC 1649) — BIT
+### 2-9) Create Sorted Array through Instructions (LC 1649) — BIT — LC 1649
 > For each instruction, cost = min(count smaller, count larger) already inserted; use BIT.
 
 ```java
@@ -412,7 +412,7 @@ private void update(int[] b, int i, int n) { for (; i <= n; i += i&-i) b[i]++; }
 private int  query(int[] b, int i)         { int s=0; for(;i>0;i-=i&-i) s+=b[i]; return s; }
 ```
 
-### 2-10) Global and Local Inversions (LC 775) — BIT
+### 2-10) Global and Local Inversions (LC 775) — BIT — LC 775
 > Global inversions >= local inversions always; equal iff no non-adjacent inversion exists.
 
 ```java

@@ -181,7 +181,7 @@ See Quick Reference Table below.
 
 ## 🔧 Quick Example
 
-### Example 1: **Coin Change II** (518)
+### Example 1: **Coin Change II** (518) — LC 518
 
 ```java
 // Unlimited coin usage
@@ -190,7 +190,7 @@ for (int i = start; i < coins.length; i++) {
 }
 ```
 
-### Example 2: **Combination Sum II** (40)
+### Example 2: **Combination Sum II** (40) — LC 40
 
 ```java
 // Use each number at most once
@@ -1229,7 +1229,7 @@ if (backtrack_(nums, j + 1, k, subsetSum + nums[j], used)){
 
 ## 2) LC Example
 
-### 2-1) Letter Combinations of a Phone Number 
+### 2-1) Letter Combinations of a Phone Number — LC 17
 
 ```java
 // java
@@ -1397,7 +1397,7 @@ class Solution(object):
         return res
 ```
 
-### 2-2) combination-sum
+### 2-2) combination-sum — LC 39
 ```python
 # LC 039, LC 040 combination-sum
 # V0
@@ -1422,7 +1422,7 @@ class Solution(object):
         return res
 ``` 
 
-### 2-3) Word Search
+### 2-3) Word Search — LC 79
 ```python
 # LC 079 Word Search
 
@@ -1601,7 +1601,7 @@ private boolean dfs_(char[][] board, int y, int x, int idx, String word, boolean
 }
 ```
 
-### 2-4) Subsets
+### 2-4) Subsets — LC 78
 ```python
 # LC 078 Subsets
 # V0
@@ -1780,7 +1780,7 @@ void backtrack(vector<int> & nums, int start, vector<int> & track){
 }
 ```
 
-### 2-4') Subsets II
+### 2-4') Subsets II — LC 90
 ```python
 # LC 90 Subsets II
 # V0
@@ -1837,7 +1837,7 @@ class Solution:
 
 ```
 
-### 2-5) Combinations
+### 2-5) Combinations — LC 77
 ```python
 # LC 77. Combinations
 # V0
@@ -1918,7 +1918,7 @@ void backtrack(int n, int k, int start, vector<int> & track){
 }
 ```
 
-### 2-6) Permutations
+### 2-6) Permutations — LC 46
 ```python
 # LC 46. Permutations
 # V0
@@ -2018,7 +2018,7 @@ class Solution(object):
     }
 ```
 
-### 2-7) Generate Parentheses
+### 2-7) Generate Parentheses — LC 22
 ```python
 # python
 # LC 022 Generate Parentheses
@@ -2153,7 +2153,7 @@ private void backtracking(List<String> answer, StringBuilder curString, int left
 }
 ```
 
-### 2-8) Palindrome Partitioning
+### 2-8) Palindrome Partitioning — LC 131
 
 ```java
 // java
@@ -2285,7 +2285,7 @@ class Solution(object):
         return x == x[::-1]
 ```
 
-### 2-9) Restore IP Addresses
+### 2-9) Restore IP Addresses — LC 93
 ```python
 # 093 Restore IP Addresses
 # V0 
@@ -2315,7 +2315,7 @@ class Solution(object):
                 self.dfs(s[i:], path + [s[:i]], res)
 ```
 
-### 2-9) Word Break
+### 2-9) Word Break — LC 139
 ```python
 # LC 139 Word Break
 # V0
@@ -2338,7 +2338,7 @@ class Solution:
                 visited[i]=True
 ```
 
-### 2-10) Word Break II
+### 2-10) Word Break II — LC 140
 ```python
 # LC 140 Word Break II
 # NOTE : there is also dfs, dp approaches
@@ -2416,7 +2416,7 @@ class Solution:
         return res
 ```
 
-### 2-11) Course Schedule
+### 2-11) Course Schedule — LC 207
 ```java
 // java
 // LC 207

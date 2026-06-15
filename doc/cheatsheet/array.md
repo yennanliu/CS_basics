@@ -1206,7 +1206,7 @@ public long sumOverAllSubarrays(int[] arr) {
 
 ## 2) LC Example
 
-### 2-1) Queue Reconstruction by Height
+### 2-1) Queue Reconstruction by Height — LC 406
 ```python
 # LC 406 Queue Reconstruction by Height
 class Solution(object):
@@ -1225,7 +1225,7 @@ class Solution(object):
         return res
 ```
 
-### 2-2) Product of Array Except Self
+### 2-2) Product of Array Except Self — LC 238
 ```python
 # 238 Product of Array Except Self
 # IDEA : 
@@ -1255,7 +1255,7 @@ class Solution:
         return output
 ```
 
-### 2-3) Maximum Swap
+### 2-3) Maximum Swap — LC 670
 ```python
 # 670 Maximum Swap
 class Solution(object):
@@ -1280,7 +1280,7 @@ class Solution(object):
         return int("".join(digits))
 ```
 
-### 2-7) Best Time to Buy and Sell Stock
+### 2-7) Best Time to Buy and Sell Stock — LC 121
 ```python
 # LC 121 Best Time to Buy and Sell Stock
 # V0
@@ -1303,7 +1303,7 @@ class Solution(object):
         return maxProfit
 ```
 
-### 2-8) Bulb Switcher III
+### 2-8) Bulb Switcher III — LC 1375
 ```python
 # LC 1375. Bulb Switcher III
 # V0
@@ -1322,7 +1322,7 @@ class Solution:
         return count
 ```
 
-### 2-9) Robot Bounded In Circle
+### 2-9) Robot Bounded In Circle — LC 1041
 ```python
 # LC 1041. Robot Bounded In Circle
 # V0
@@ -1355,7 +1355,7 @@ class Solution:
         return (x == 0 and y ==0) or idx !=0
 ```
 
-### 2-10) Maximum Length of Subarray With Positive Product
+### 2-10) Maximum Length of Subarray With Positive Product — LC 1567
 ```python
 # LC 1567 Maximum Length of Subarray With Positive Product
 
@@ -1406,7 +1406,7 @@ class Solution:
         return res
 ```
 
-### 2-11) Corporate Flight Bookings
+### 2-11) Corporate Flight Bookings — LC 1109
 ```python
 # LC 1109. Corporate Flight Bookings
 # V1
@@ -1453,7 +1453,7 @@ class Solution:
         return ret
 ```
 
-### 2-12) First Missing Positive
+### 2-12) First Missing Positive — LC 41
 ```python
 # LC 41. First Missing Positive
 # V1'
@@ -1555,7 +1555,7 @@ public int firstMissingPositive(int[] nums) {
 }
 ```
 
-### 2-13) Increasing Triplet Subsequence
+### 2-13) Increasing Triplet Subsequence — LC 334
 ```python
 # LC 334 Increasing Triplet Subsequence
 # V0
@@ -1580,7 +1580,7 @@ class Solution(object):
         return False
 ```
 
-### 2-14) First Missing Positive
+### 2-14) First Missing Positive — LC 41
 ```python
 # LC 41. First Missing Positive
 # V0
@@ -1602,7 +1602,7 @@ class Solution:
         return len(nums)+1
 ```
 
-### 2-15) Rotate Array
+### 2-15) Rotate Array — LC 189
 ```python
 # LC 189. Rotate Array
 # V0
@@ -1683,7 +1683,7 @@ private void reverse(int[] nums, int start, int end) {
 }
 ```
 
-### 2-16) Flatten 2D Vector
+### 2-16) Flatten 2D Vector — LC 251
 ```python
 # LC 251. Flatten 2D Vector
 # V0
@@ -1710,7 +1710,7 @@ class Vector2D:
         return self.position + 1 < len(self.nums)
 ```
 
-### 2-17) Maximize Distance to Closest Person
+### 2-17) Maximize Distance to Closest Person — LC 849
 
 ```java
 // java

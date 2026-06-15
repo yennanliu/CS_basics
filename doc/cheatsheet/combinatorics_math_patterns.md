@@ -18,7 +18,7 @@ Google interviews frequently test math/combinatorics reasoning — more than oth
 Division: (a / b) % m = (a * b^(-1)) % m  where b^(-1) = modular inverse
 ```
 
-### Modular Exponentiation (Fast Power)
+### Modular Exponentiation (Fast Power) — LC 50
 ```java
 // Time: O(log exp), Space: O(1)
 long modPow(long base, long exp, long mod) {
@@ -64,7 +64,7 @@ lcm = a * b // gcd(a, b)
 
 ## Pattern 3: Prime Numbers & Sieve
 
-### Sieve of Eratosthenes
+### Sieve of Eratosthenes — LC 204
 ```java
 // Time: O(N log log N), Space: O(N)
 boolean[] sieve(int n) {
@@ -129,7 +129,7 @@ def nCr(n, r):
     return num * pow(den, MOD - 2, MOD) % MOD
 ```
 
-### Catalan Numbers
+### Catalan Numbers — LC 96
 ```
 C(n) = C(2n, n) / (n+1) = (2n)! / ((n+1)! * n!)
 
@@ -145,7 +145,7 @@ Applications:
 
 ## Pattern 5: Reservoir Sampling & Random
 
-### Reservoir Sampling (K=1)
+### Reservoir Sampling (K=1) — LC 382
 ```java
 // Select 1 random element from stream of unknown length
 // Each element has 1/n probability of being chosen
@@ -163,7 +163,7 @@ for (int val : stream) {
 
 **Classic LC:** LC 382 (Linked List Random Node), LC 398 (Random Pick Index)
 
-### Fisher-Yates Shuffle
+### Fisher-Yates Shuffle — LC 384
 ```java
 // Time: O(N), Space: O(1) extra
 void shuffle(int[] arr) {
@@ -177,7 +177,7 @@ void shuffle(int[] arr) {
 
 **Classic LC:** LC 384 (Shuffle an Array)
 
-### Weighted Random / Binary Search on Prefix Sum
+### Weighted Random / Binary Search on Prefix Sum — LC 528
 **Classic LC:** LC 528 (Random Pick with Weight) — O(log N) per pick
 
 ## Pattern 6: Geometry / Computational Geometry
@@ -191,7 +191,7 @@ long cross(int[] O, int[] A, int[] B) {
 }
 ```
 
-### Convex Hull (Andrew's Monotone Chain)
+### Convex Hull (Andrew's Monotone Chain) — LC 587
 ```python
 # Time: O(N log N), Space: O(N)
 def convex_hull(points):
@@ -242,7 +242,7 @@ Example: 12 = 2² × 3¹ → (2+1)(1+1) = 6 divisors
 φ(p^k) = p^k - p^(k-1)
 ```
 
-### Sum of Digits / Digital Root
+### Sum of Digits / Digital Root — LC 258
 ```
 Digital root of n = 1 + (n-1) % 9  (for n > 0)
 ```

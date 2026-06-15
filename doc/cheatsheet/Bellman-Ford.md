@@ -627,7 +627,7 @@ def find_arbitrage_path(rates):
     return path
 ```
 
-### 2-4) Minimum Cost to Reach Destination — Custom Bellman-Ford Variant
+### 2-4) Minimum Cost to Reach Destination — Custom Bellman-Ford Variant — LC 1928
 
 ```python
 def min_cost_with_discounts(n, roads, src, dst, discounts):

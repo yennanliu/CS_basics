@@ -32,7 +32,7 @@
 
 ## 2) LC Example
 
-### 2-1) Add Binary
+### 2-1) Add Binary — LC 67
 ```python
 # LC 067 Add Binary: sum two binary strings.
 # V0
@@ -83,7 +83,7 @@ class Solution(object):
         return res
 ```
 
-### 2-2) Add Strings
+### 2-2) Add Strings — LC 415
 
 ```java
 // java
@@ -202,7 +202,7 @@ class Solution(object):
         return ''.join(result[::-1]) 
 ```
 
-### 2-3) Sum of Two Integers
+### 2-3) Sum of Two Integers — LC 371
 ```python
 # LC 371 : Sum of Two Integers
 # V0
@@ -214,7 +214,7 @@ class Souluton:
         return r
 ```
 
-### 2-4) Add to Array Form of Integer
+### 2-4) Add to Array Form of Integer — LC 989
 ```python
 # LC 989 Add to Array Form of Integer
 # V0
@@ -228,7 +228,7 @@ class Solution:
         return  list("".join(str(answer)))
 ```
 
-### 2-5) Plus One
+### 2-5) Plus One — LC 66
 ```python
 # LC 66 Plus One
 # V0
@@ -258,7 +258,7 @@ class Solution(object):
         return digits
 ```
 
-### 2-6) Add Two Numbers
+### 2-6) Add Two Numbers — LC 2
 ```python
 # LC 002 Add Two Numbers
 # V0
@@ -297,7 +297,7 @@ class Solution(object):
         return head.next
 ```
 
-### 2-7) Add Two Numbers II
+### 2-7) Add Two Numbers II — LC 445
 ```python
 # LC 445 Add Two Numbers II
 # V0

@@ -817,7 +817,7 @@ START: Topological Sort Problem
 
 ## 2) LC Example
 
-### 2-2) Course Schedule II
+### 2-2) Course Schedule II — LC 210
 
 ```java
 // java
@@ -1074,7 +1074,7 @@ class Solution(object):
         return True
 ```
 
-### 2-2) Course Schedule
+### 2-2) Course Schedule — LC 207
 
 ```java
 // java
@@ -1478,7 +1478,7 @@ class Solution:
         return provinces
 ```
 
-### 2-5) Alien Dictionary
+### 2-5) Alien Dictionary — LC 269
 
 ```java
 // java
@@ -1687,7 +1687,7 @@ class Solution(object):
                 break　　
 ```
 
-### 2-6) Sequence Reconstruction
+### 2-6) Sequence Reconstruction — LC 444
 
 ```java
 // java

@@ -179,7 +179,7 @@ vector<vector<int>> nSumTarget(vector<int> & nums, int n, int start, int target)
 
 ## 2) LC Example
 
-### 2-1) 2 Sum
+### 2-1) 2 Sum — LC 1
 ```python
 # LC 001
 class Solution(object):
@@ -192,7 +192,7 @@ class Solution(object):
         return [-1, -1]
 ```
 
-### 2-1') 2 Sum II
+### 2-1') 2 Sum II — LC 167
 ```python
 # LC 167 Two Sum II - Input Array Is Sorted
 # NOTE : we can also use "2 sum" dict approach
@@ -219,7 +219,7 @@ class Solution(object):
         return [-1, -1]
 ```
 
-### 2-2) 3 Sum
+### 2-2) 3 Sum — LC 15
 ```python
 # LC 015
 # V0
@@ -321,7 +321,7 @@ class Solution(object):
         return res
 ```
 
-### 2-3) 4 Sum
+### 2-3) 4 Sum — LC 18
 ```python
 # LC 018
 # V0 
@@ -346,7 +346,7 @@ class Solution(object):
                         num3 += 1
         return resultList
 ```
-### 2-4) Two Sum Less Than K
+### 2-4) Two Sum Less Than K — LC 1099
 ```python
 # LC 1099 Two Sum Less Than K
 # V1
