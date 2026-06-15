@@ -10,7 +10,7 @@ This document provides detailed templates for all tree problem patterns, organiz
 
 ## 1) Tree Traversal Templates
 
-### 1.1) Preorder Template
+### 1.1) Preorder Template — LC 144
 
 **Pattern**: Root → Left → Right
 **Use Case**: When you need parent data before processing children
@@ -97,7 +97,7 @@ public List<Integer> preorderIterative(TreeNode root) {
 
 ---
 
-### 1.2) Inorder Template
+### 1.2) Inorder Template — LC 94
 
 **Pattern**: Left → Root → Right
 **Use Case**: BST sorted order, tree validation
@@ -187,7 +187,7 @@ public List<Integer> inorderIterative(TreeNode root) {
 
 ---
 
-### 1.3) Postorder Template
+### 1.3) Postorder Template — LC 145
 
 **Pattern**: Left → Right → Root
 **Use Case**: Need children data before parent processing
@@ -260,7 +260,7 @@ public void postorderTraversal(TreeNode root, List<Integer> result) {
 
 ---
 
-### 1.4) BFS Template (Level-order)
+### 1.4) BFS Template (Level-order) — LC 102
 
 **Pattern**: Process nodes level by level
 **Use Case**: Shortest path, level-based problems
@@ -353,7 +353,7 @@ public List<List<Integer>> levelOrder(TreeNode root) {
 
 ---
 
-### 1.5) BFS + Direction Template
+### 1.5) BFS + Direction Template — LC 103
 
 **Pattern**: Alternating direction per level
 **Use Case**: Zigzag traversal
@@ -440,7 +440,7 @@ public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
 
 ## 2) Tree Property Templates
 
-### 2.1) Postorder Height Template
+### 2.1) Postorder Height Template — LC 104
 
 **Pattern**: Calculate height bottom-up
 **Use Case**: Tree height/depth calculation
@@ -480,7 +480,7 @@ public int maxDepth(TreeNode root) {
 
 ---
 
-### 2.2) BFS Early Stop Template
+### 2.2) BFS Early Stop Template — LC 111
 
 **Pattern**: Stop when condition met
 **Use Case**: Minimum depth to leaf
@@ -549,7 +549,7 @@ public int minDepth(TreeNode root) {
 
 ---
 
-### 2.3) Height Validation Template
+### 2.3) Height Validation Template — LC 110
 
 **Pattern**: Validate tree properties during height calculation
 **Use Case**: Check if tree is balanced
@@ -612,7 +612,7 @@ private int checkHeight(TreeNode node) {
 
 ---
 
-### 2.4) Mirror Validation Template
+### 2.4) Mirror Validation Template — LC 101
 
 **Pattern**: Compare symmetric subtrees
 **Use Case**: Check if tree is symmetric
@@ -661,7 +661,7 @@ private boolean isMirror(TreeNode left, TreeNode right) {
 
 ---
 
-### 2.5) Tree Comparison Template
+### 2.5) Tree Comparison Template — LC 100
 
 **Pattern**: Compare two trees node by node
 **Use Case**: Check if two trees are identical
@@ -703,7 +703,7 @@ public boolean isSameTree(TreeNode p, TreeNode q) {
 
 ## 3) Path-Based Templates
 
-### 3.1) Global Max Update Template
+### 3.1) Global Max Update Template — LC 124
 
 **Pattern**: Track global maximum during traversal
 **Use Case**: Maximum path sum problems
@@ -765,7 +765,7 @@ private int maxGain(TreeNode node) {
 
 ---
 
-### 3.2) Path Accumulation Template
+### 3.2) Path Accumulation Template — LC 112
 
 **Pattern**: Track sum along path
 **Use Case**: Check if path sum exists
@@ -812,7 +812,7 @@ public boolean hasPathSum(TreeNode root, int targetSum) {
 
 ---
 
-### 3.3) Path + Backtrack Template
+### 3.3) Path + Backtrack Template — LC 113
 
 **Pattern**: Collect all paths with backtracking
 **Use Case**: Find all paths matching criteria
@@ -876,7 +876,7 @@ private void dfs(TreeNode node, int remaining, List<Integer> path,
 
 ---
 
-### 3.4) Path Count Tracking Template
+### 3.4) Path Count Tracking Template — LC 437
 
 **Pattern**: Count paths using prefix sum
 **Use Case**: Paths with target sum (any start/end)
@@ -946,7 +946,7 @@ private void dfs(TreeNode node, long currentSum, int targetSum,
 
 ---
 
-### 3.5) Path Value Building Template
+### 3.5) Path Value Building Template — LC 129
 
 **Pattern**: Build value from root to leaf
 **Use Case**: Calculate number from root-to-leaf path
@@ -998,7 +998,7 @@ private int dfs(TreeNode node, int currentNumber) {
 
 ---
 
-### 3.6) Path State Tracking Template
+### 3.6) Path State Tracking Template — LC 1448
 
 **Pattern**: Track maximum value along path
 **Use Case**: Count good nodes (nodes >= max in path)
@@ -1049,7 +1049,7 @@ private int dfs(TreeNode node, int maxSoFar) {
 
 ---
 
-### 3.7) Longest Path Template
+### 3.7) Longest Path Template — LC 543
 
 **Pattern**: Find longest path between any two nodes
 **Use Case**: Diameter of tree
@@ -1107,7 +1107,7 @@ private int depth(TreeNode node) {
 
 ---
 
-### 3.8) Same Value Path Template
+### 3.8) Same Value Path Template — LC 687
 
 **Pattern**: Find longest path with same values
 **Use Case**: Longest univalue path
@@ -1178,7 +1178,7 @@ private int dfs(TreeNode node) {
 
 ## 4) Distance and LCA Templates
 
-### 4.1) LCA Standard Template
+### 4.1) LCA Standard Template — LC 236
 
 **Pattern**: Find lowest common ancestor using postorder
 **Use Case**: Find LCA in binary tree
@@ -1227,7 +1227,7 @@ public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
 
 ---
 
-### 4.2) Value Comparison Template
+### 4.2) Value Comparison Template — LC 235
 
 **Pattern**: Use BST property for LCA
 **Use Case**: Find LCA in BST
@@ -1275,7 +1275,7 @@ public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
 
 ---
 
-### 4.3) Path Distance Template
+### 4.3) Path Distance Template — LC 1740
 
 **Pattern**: Find distance using LCA
 **Use Case**: Distance between two nodes
@@ -1354,7 +1354,7 @@ private int getDistance(TreeNode node, int target) {
 
 ---
 
-### 4.4) Tree to Graph Template
+### 4.4) Tree to Graph Template — LC 863
 
 **Pattern**: Convert tree to graph for distance queries
 **Use Case**: Find nodes at distance K
@@ -1458,7 +1458,7 @@ private void buildGraph(TreeNode parent, TreeNode child) {
 
 ## 5) Height and Depth Templates
 
-### 5.1) Height Calculation Template
+### 5.1) Height Calculation Template — LC 104
 
 **Pattern**: Bottom-up height calculation
 **Use Case**: Get tree height
@@ -1492,7 +1492,7 @@ public int height(TreeNode root) {
 
 ---
 
-### 5.2) Depth to Leaf Template
+### 5.2) Depth to Leaf Template — LC 111
 
 **Pattern**: Find minimum depth to leaf
 **Use Case**: Shortest path to leaf
@@ -1537,7 +1537,7 @@ public int minDepth(TreeNode root) {
 
 ---
 
-### 5.3) Balance Check Template
+### 5.3) Balance Check Template — LC 110
 
 **Pattern**: Check balance during height calculation
 **Use Case**: Validate tree balance
@@ -1597,7 +1597,7 @@ private int checkHeight(TreeNode node) {
 
 ---
 
-### 5.4) Leftmost at Depth Template
+### 5.4) Leftmost at Depth Template — LC 513
 
 **Pattern**: Find leftmost node at maximum depth
 **Use Case**: Bottom-left tree value
@@ -1665,7 +1665,7 @@ public int findBottomLeftValue(TreeNode root) {
 
 ## 6) Tree Construction Templates
 
-### 6.1) Tree Building Template
+### 6.1) Tree Building Template — LC 105
 
 **Pattern**: Build tree from traversal arrays
 **Use Case**: Construct from preorder/inorder or inorder/postorder
@@ -1743,7 +1743,7 @@ private TreeNode build(int[] preorder, int left, int right) {
 
 ---
 
-### 6.2) String Conversion Template
+### 6.2) String Conversion Template — LC 297
 
 **Pattern**: Serialize/deserialize tree
 **Use Case**: Tree persistence, transmission
@@ -1812,7 +1812,7 @@ public class Codec {
 
 ---
 
-### 6.3) String Construction Template
+### 6.3) String Construction Template — LC 606
 
 **Pattern**: Build string representation
 **Use Case**: Tree to string conversion
@@ -1860,7 +1860,7 @@ public String tree2str(TreeNode root) {
 
 ## 7) Tree Modification Templates
 
-### 7.1) Tree Inversion Template
+### 7.1) Tree Inversion Template — LC 226
 
 **Pattern**: Swap left and right subtrees
 **Use Case**: Mirror/invert tree
@@ -1907,7 +1907,7 @@ public TreeNode invertTree(TreeNode root) {
 
 ---
 
-### 7.2) Tree Flattening Template
+### 7.2) Tree Flattening Template — LC 114
 
 **Pattern**: Flatten tree to linked list
 **Use Case**: Convert to right-skewed tree
@@ -1965,7 +1965,7 @@ public void flatten(TreeNode root) {
 
 ---
 
-### 7.3) Tree Merging Template
+### 7.3) Tree Merging Template — LC 617
 
 **Pattern**: Merge two trees node by node
 **Use Case**: Combine two trees
