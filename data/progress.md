@@ -7,6 +7,9 @@
 - hash_map.md
 	- 2-12) Brick Wall — LC 554
 
+- set.md
+	- 2-5) Longest Consecutive Sequence — LC 128
+
 	
 - backtrack.md
 	- todo: `Type 2) : Permutations (排列組合) (全排列)`
@@ -22,7 +25,6 @@
 - Difference Array.md
 - heap
 	- LC example
-- set.md
 - stack.md
 - 2 pointer.md
 - Union Find
@@ -97,6 +99,8 @@
 			-	1087
 		- hashmap
 			- 525
+		- set
+			- 128**
 		- lazy_bst_in_order(todo),173(todo),2616(todo, compare PQ)
 		- topo_sort,257(todo)
 		- `Combinations VS Permutations` in DP
