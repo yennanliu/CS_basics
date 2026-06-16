@@ -1,8 +1,186 @@
-# LC 319
+# Weekly 319
 
 https://leetcode.com/contest/weekly-contest-319/
 
 
+
+4.38 pm -  6.08 pm
+
 # LC 2469
 # https://leetcode.com/problems/convert-the-temperature/description/
+
+
+c -> [k, f]
+
+e.g. ans = [kelvin, fahrenheit].
+
+
+-> Return the array ans. 
+Answers within 10 ^(-5) of the
+ actual answer will be accepted.
+
+
+NOTE:
+
+Kelvin = Celsius + 273.15
+Fahrenheit = Celsius * 1.80 + 32.00
+
+
+IDEA 1) MATH
+
+
+class Solution(object):
+    def convertTemperature(self, celsius):
+        # edge
+        #res = []
+        k = c + 273.15
+        f = c * 1.80 + 32.00
+
+        return [k, f]
+
+
+
+
+
+
+
+# LC 2470
+# https://leetcode.com/problems/number-of-subarrays-with-lcm-equal-to-k/description/
+
+
+
+-> Return the `number` of  `subarrays` of nums 
+where the least common multiple of 
+the subarray's elements is k.
+
+
+
+
+NOTE:
+
+ least common multiple:
+     the `smallest positive integer` 
+     that is `divisible` by `all the array elements.`
+
+
+
+ex 1)
+
+Input: nums = [3,6,2,7,1], k = 6
+Output: 4
+Explanation: The subarrays of nums where 6 is the least common multiple of all the subarray's elements are:
+- [3,6,2,7,1]
+   x x
+
+- [3,6,2,7,1]
+   x   x
+
+- [3,6,2,7,1]
+     x
+
+- [3,6,2,7,1]
+     x x
+
+
+  [3,6], [3,6,2], [6,2]
+  6(k=6) is the min val that 
+  is DIVISIBLE by every element in above sub array
+
+  -> res = 4 (4 sub array)
+
+
+
+ [3,6,2,7,1]
+  l           min lcm is 3
+
+ [3,6,2,7,1]
+  l r         min lcm is 6
+  
+ [3,6,2,7,1]  min lcm is 6
+  l   r
+
+[3,6,2,7,1]  min lcm is 6
+         r
+         l
+
+
+# idea 1) brute force (simulation)
+
+# idea 2) slide window
+
+# idea 3) DIVISIBLE -> track the `remaining`
+         -> remaining == k
+         -> the sum can be divisible
+
+         -> prefix sum ????
+
+
+# idea 2) slide window
+
+
+[3,6,2,7,1]
+       r
+       l
+
+
+# idea 2) slide window
+
+
+class Solution(object):
+    def subarrayLCM(self, nums, k):
+        # edge
+        if len(nums) == 1:
+            a = val // k
+            b = val % k
+            return b == 0 and a > 0
+
+        l = 0
+        cnt = 0
+        n = len(nums)
+
+        lcm_cnt = 0
+
+        """
+        # dry run
+
+        [3,6,2,7,1]
+               r
+               l
+        """
+        
+        for r in range(n):
+            val = nums[r]
+
+            a = val // k
+            b = val % k
+
+            if b == 0:
+                # it's LCM
+                if val >= k:
+                    lcm_cnt += 1
+                    cnt += 1
+
+            # not divisible
+            else:
+                # shrink left pointer
+                while l < r:
+                    left_val = nums[l]
+                    a = val // k
+                    b = val % k 
+                    if a > 0 and b == 0 and left_val >= k: 
+                        lcm_cnt -= 1                 
+                        l -= 1
+                        if lcm_cnt > 0:
+                            cnt += 1
+
+
+        return cnt
+
+
+
+
+
+
+
+
 
