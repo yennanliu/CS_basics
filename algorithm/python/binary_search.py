@@ -1,62 +1,50 @@
 #---------------------------------------------------------------
-#  BINARY SEARCH 
+#  BINARY SEARCH
 #---------------------------------------------------------------
+#
+# Search a value in a SORTED array in O(log N) time by repeatedly
+# halving the search range.
+#
+# Time  : Best O(1), Avg/Worst O(log N)
+# Space : iterative O(1), recursive O(log N) (call stack)
+#
+# References:
+#   - http://kuanghy.github.io/2016/06/14/python-bisect
+#   - https://www.geeksforgeeks.org/complexity-analysis-of-binary-search/
 
-# V0  
 
-# V1 
-# http://kuanghy.github.io/2016/06/14/python-bisect
-# Binary search via recursion 
-def binary_search_recursion(lst, value, low, high):
-    if high < low:
-        return None
-    # better to use mid = low + (high - low) / 2 then mid = (low + high) / 2
-    # since "low + high" may cause "stack overflow" issue when low, high are some big number
-    mid = low + (high - low) / 2
-    if lst[mid] > value:
-        return binary_search_recursion(lst, value, low, mid-1)
-    elif lst[mid] < value:
-        return binary_search_recursion(lst, value, mid+1, high)
-    else:
-        return mid
-
-# Binary search via for loop 
-def binary_search_loop(lst,value):
-    low, high = 0, len(lst)-1
-    while low <= high:
-        mid = (low + high) / 2
-        if lst[mid] < value:
-            low = mid + 1
-        elif lst[mid] > value:
-            high = mid - 1
-        else:
-            return mid
-    return None
-
-# V2 
-# https://github.com/yennanliu/algorithms/blob/master/algorithms/search/binary_search.py
-# Binary search via for loop
-def binary_search(array, query):
+# V0 : iterative
+def binary_search(array, target):
     lo, hi = 0, len(array) - 1
     while lo <= hi:
-        mid = (hi + lo) // 2
-        val = array[mid]
-        if val == query:
+        # use lo + (hi - lo) // 2 (not (lo + hi) // 2) to avoid overflow
+        # in languages with fixed-width integers
+        mid = lo + (hi - lo) // 2
+        if array[mid] == target:
             return mid
-        elif val < query:
+        elif array[mid] < target:
             lo = mid + 1
         else:
             hi = mid - 1
     return None
 
-#  Binary search via recursion
-def binary_search_recur(array, low, high, val):
-    if low > high:       # error case
-        return -1
-    mid = (low + high) // 2
-    if val < array[mid]:
-        return binary_search_recur(array, low, mid - 1, val)
-    elif val > array[mid]:
-        return binary_search_recur(array, mid + 1, high, val)
-    else:
+
+# V1 : recursive
+def binary_search_recursive(array, target, lo, hi):
+    if lo > hi:                      # base case: not found
+        return None
+    mid = lo + (hi - lo) // 2
+    if array[mid] == target:
         return mid
+    elif array[mid] < target:
+        return binary_search_recursive(array, target, mid + 1, hi)
+    else:
+        return binary_search_recursive(array, target, lo, mid - 1)
+
+
+if __name__ == "__main__":
+    arr = [0, 5, 7, 10, 15]
+    assert binary_search(arr, 7) == 2
+    assert binary_search(arr, 6) is None
+    assert binary_search_recursive(arr, 15, 0, len(arr) - 1) == 4
+    print("Success.")

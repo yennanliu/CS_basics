@@ -1,49 +1,44 @@
 #---------------------------------------------------------------
-# Merge sort - top down
+# MERGE SORT - TOP DOWN
 #---------------------------------------------------------------
+#
+# Recursively split the list down to single elements, then merge back
+# up. Returns a new sorted list.
+#
+# Time  : O(N log N)
+# Space : O(N)
+#
+# References:
+#   - https://leetcode.com/explore/learn/card/recursion-ii/470/divide-and-conquer/2868/
+#   - https://rust-algo.club/sorting/mergesort/
 
-# https://leetcode.com/explore/learn/card/recursion-ii/470/divide-and-conquer/2868/
-# https://rust-algo.club/sorting/mergesort/
-
-"""
-
-Time complexity
-
-    Best : O(N Log N)
-    Avg : O(N Log N)
-    Worst : O(N Log N)`
-
-
-Space complexity
-
-    O(N)
-
-"""
 
 def merge_sort(nums):
-    # bottom cases: empty or list of a single element.
+    # base case: empty or single-element list is already sorted
     if len(nums) <= 1:
         return nums
+    mid = len(nums) // 2
+    left = merge_sort(nums[:mid])
+    right = merge_sort(nums[mid:])
+    return merge(left, right)
 
-    pivot = int(len(nums) / 2)
-    left_list = merge_sort(nums[0:pivot])
-    right_list = merge_sort(nums[pivot:])
-    return merge(left_list, right_list)
 
-
-def merge(left_list, right_list):
-    left_cursor = right_cursor = 0
-    ret = []
-    while left_cursor < len(left_list) and right_cursor < len(right_list):
-        if left_list[left_cursor] < right_list[right_cursor]:
-            ret.append(left_list[left_cursor])
-            left_cursor += 1
+def merge(left, right):
+    res = []
+    i = j = 0
+    while i < len(left) and j < len(right):
+        if left[i] < right[j]:
+            res.append(left[i])
+            i += 1
         else:
-            ret.append(right_list[right_cursor])
-            right_cursor += 1
-    
-    # append what is remained in either of the lists
-    ret.extend(left_list[left_cursor:])
-    ret.extend(right_list[right_cursor:])
-    
-    return ret
+            res.append(right[j])
+            j += 1
+    # append whatever remains in either list
+    res.extend(left[i:])
+    res.extend(right[j:])
+    return res
+
+
+if __name__ == "__main__":
+    assert merge_sort([5, 2, 9, 1, 5, 6]) == [1, 2, 5, 5, 6, 9]
+    print("Success.")
