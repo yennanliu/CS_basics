@@ -1,52 +1,32 @@
 #---------------------------------------------------------------
-# QUICK SORT V2
+# QUICK SORT V2 (separate partition helper)
 #---------------------------------------------------------------
+#
+# Same algorithm as quick_sort.py, written as quicksort -> qsort ->
+# partition helpers (Lomuto scheme, pivot = last element). In place.
+#
+# Time  : Best/Avg O(N log N), Worst O(N^2)
+# Space : O(log N) average (recursion)
+#
+# References:
+#   - https://leetcode.com/explore/learn/card/recursion-ii/470/divide-and-conquer/2870/
 
-# https://leetcode.com/explore/learn/card/recursion-ii/470/divide-and-conquer/2870/
-# https://rust-algo.club/sorting/quicksort/index.html
-
-"""
-
-Time complexity
-
-    Best : O(N Log N)
-    Avg : O(N Log N)
-    Worst : O(N Log N)`
-
-
-Space complexity
-
-    O(N)
-
-"""
 
 def quicksort(lst):
-    """
-    Sorts an array in the ascending order in O(n log n) time
-    :param nums: a list of numbers
-    :return: the sorted list
-    """
-    n = len(lst)
-    qsort(lst, 0, n - 1)
+    """Sort lst in place (ascending) and return it."""
+    qsort(lst, 0, len(lst) - 1)
+    return lst
+
 
 def qsort(lst, lo, hi):
-    """
-    Helper
-    :param lst: the list to sort
-    :param lo:  the index of the first element in the list
-    :param hi:  the index of the last element in the list
-    :return: the sorted list
-    """
     if lo < hi:
         p = partition(lst, lo, hi)
         qsort(lst, lo, p - 1)
         qsort(lst, p + 1, hi)
 
+
 def partition(lst, lo, hi):
-    """
-    Picks the last element hi as a pivot
-     and returns the index of pivot value in the sorted array
-    """
+    """Lomuto partition: pick lst[hi] as pivot, return its final index."""
     pivot = lst[hi]
     i = lo
     for j in range(lo, hi):
@@ -55,3 +35,8 @@ def partition(lst, lo, hi):
             i += 1
     lst[i], lst[hi] = lst[hi], lst[i]
     return i
+
+
+if __name__ == "__main__":
+    assert quicksort([5, 2, 9, 1, 5, 6]) == [1, 2, 5, 5, 6, 9]
+    print("Success.")

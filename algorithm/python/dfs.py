@@ -1,62 +1,52 @@
 #---------------------------------------------------------------
-#  DFS
+# DFS (Depth-First Search)
 #---------------------------------------------------------------
+#
+# Explore a graph as deep as possible before backtracking. Good for
+# checking reachability / whether something exists.
+#
+# Time  : O(V + E)
+# Space : O(V)
+#
+# References:
+#   - https://www.jianshu.com/p/66508acedd79
 
-# BFS VS DFS 
-# https://cuijiahua.com/blog/2018/01/alogrithm_10.html
 
-# V0 : DEV 
-
-# V1 
-# DFS in recursion version 
-# https://www.jianshu.com/p/66508acedd79
-def dfs_recursion(G,s,S=None,res=None):
-    if S is None:
-        # save visited nodes  
-        S=set()
+# V0 : recursion
+def dfs_recursion(graph, s, visited=None, res=None):
+    if visited is None:
+        visited = set()
     if res is None:
-        res=[]
+        res = []
     res.append(s)
-    S.add(s)
-    for u in G[s]:
-        if u in S:
-            continue
-        S.add(u)
-        dfs_recursion(G,u,S,res)
+    visited.add(s)
+    for u in graph[s]:
+        if u not in visited:
+            dfs_recursion(graph, u, visited, res)
     return res
 
-# G={
-#     'a':{'b','f'},
-#     'b':{'c','d','f'},
-#     'c':{'d'},
-#     'd':{'e','f'},
-#     'e':{'f'},
-#     'f':{}
-# }
-# res=dfs(G,'a')
-# print(res)
 
-# DFS in Iteration verison 
-def dfs_iteration(G,s):
-    Q=[]
-    S=set()
-    Q.append(s)
-    while Q:
-        u=Q.pop()
-        if u in S:
+# V1 : iteration (explicit stack)
+def dfs_iteration(graph, s):
+    stack = [s]
+    visited = set()
+    while stack:
+        u = stack.pop()
+        if u in visited:
             continue
-        S.add(u)
-        Q.extend(G[u])
+        visited.add(u)
+        stack.extend(graph[u])
         yield u
 
-# G={
-#     'a':{'b','f'},
-#     'b':{'c','d','f'},
-#     'c':{'d'},
-#     'd':{'e','f'},
-#     'e':{'f'},
-#     'f':{}
-# }
 
-# res=list(dfs(G,'a'))
-# print(res) 
+if __name__ == "__main__":
+    graph = {
+        "a": {"b", "f"},
+        "b": {"c", "d", "f"},
+        "c": {"d"},
+        "d": {"e", "f"},
+        "e": {"f"},
+        "f": set(),
+    }
+    print("dfs_recursion :", dfs_recursion(graph, "a"))
+    print("dfs_iteration :", list(dfs_iteration(graph, "a")))
