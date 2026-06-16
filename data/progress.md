@@ -21,15 +21,15 @@
 	- LC example
 - heap
 	- LC example
-- monotonic_stack.md
- 	- doing
 - set.md
 - stack.md
 - sort.md
-- pointer.md
+- 2 pointer.md
 - Union Find
 - Dijkstra
 - Queue
+- bfs.md
+	- doing
 - complexity_drills.html (doing)
 
 
@@ -38,6 +38,7 @@
   - dfs.md
   - tree2.md
   - priority_queue.md
+  - monotonic_stack.md
 
 
 - `MUST LC problems`
@@ -89,7 +90,7 @@
 		- Flatten Binary Tree to Linked List
 			- 114
 		- mono stack
-			- 907**
+			- 907**, 853
 		- lazy_bst_in_order(todo),173(todo),2616(todo, compare PQ)
 		- topo_sort,257(todo)
 		- `Combinations VS Permutations` in DP
