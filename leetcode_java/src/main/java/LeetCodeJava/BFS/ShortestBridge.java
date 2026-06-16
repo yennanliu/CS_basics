@@ -88,6 +88,25 @@ public class ShortestBridge {
 //
 //    }
 
+    /** NOTE !!
+     *
+     *
+     *  there are ONLY 2 island in given grid
+     *
+     *
+     *  -> There are exactly two islands in grid.
+     *
+     *
+     *  -> so that's why
+     *   the dfs - bfs approach works
+     *
+     *    dfs: find 1st island
+     *    bfs: multi source bfs, fins the min dist (flip cnt)
+     *         between first, 2nd island
+     *
+     */
+
+
 
     // V0-1
     // IDEA: DFS + BFS (gpt)
