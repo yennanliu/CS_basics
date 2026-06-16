@@ -3,6 +3,12 @@
 
 # 2026-06-16
 
+
+- hash_map.md
+	- Template 10: Hash Map + Memoization / DP
+	- LC example
+
+	
 - backtrack.md
 	- todo: `Type 2) : Permutations (排列組合) (全排列)`
 - dp.md
@@ -15,8 +21,6 @@
 	- 2) LC Example
 - BST.md
 - Difference Array.md
-- Hash Map.md
-	- LC example
 - heap
 	- LC example
 - set.md
