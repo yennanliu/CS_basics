@@ -365,25 +365,34 @@ idea 1) # bfs + loop layer by layer + cnt `op cnt`
 # space: O(N) + O(N) ~= O(N)
 
 
+from collections import deque
+
+
 class Solution(object):
     def minimumOperations(self, root):
         # edge
 
-        q = []
-        q.appen(root)
+        #q = []
+        #q = deque()
+        #q.append(root)
+        q = deque([root])
 
         op = 0
 
         while q:
             size = len(q)
             tmp = []
+            
             for i in range(size)
                 cur = q.popleft()
                 tmp.append(cur.val)
+                
                 if cur.left:
                     q.append(cur.left)
+                
                 if cur.right:
                     q.append(cur.right)
+            
             op += self.count_swap(tmp)
 
             return op
@@ -413,7 +422,35 @@ class Solution(object):
 
 
 
+        def min_swaps(self, arr):
+            sorted_arr  = sorted(array)
+            op = 0
+            # ??
 
+            idx_map = { val: idx for idx, val in enumerate(arr) }
+
+            for i in range(len(arr)):
+                
+                val = arr[i]
+                
+                if arr[i] != sorted_arr[i]
+                    # swap
+                    # cache
+                    idx = idx_map[val]
+
+                    # update map
+                    idx_map[val] = i
+                    idx_map[sorted_arr[i]] = idx
+
+
+                    # swap
+                    arr[i], arr[idx] = arr[idx], arr[i]
+
+
+                    op += 1
+
+
+            return op
 
 
 
