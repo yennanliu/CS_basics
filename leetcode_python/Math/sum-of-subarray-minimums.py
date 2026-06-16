@@ -29,6 +29,127 @@ Constraints:
 """
 
 # V0
+# IDEA: MONO STACK (INCREASING)
+class Solution(object):
+    def sumSubarrayMins(self, arr):
+        """
+        :type arr: List[int]
+        :rtype: int
+        """
+        MOD = 10**9 + 7
+        n = len(arr)
+
+        # left[i]:
+        # number of consecutive elements to the left
+        # (including itself)
+        # where arr[i] remains the minimum
+        left = [0] * n
+
+        # right[i]:
+        # number of consecutive elements to the right
+        # (including itself)
+        # where arr[i] remains the minimum
+        right = [0] * n
+
+        stack = []
+
+        # ----------------------------------------
+        # Previous Less Element
+        #
+        # Use >
+        #
+        # Example:
+        # arr = [3,1,2,4]
+        #
+        # left = [1,2,1,1]
+        # ----------------------------------------
+        for i in range(n):
+
+            while stack and arr[stack[-1]] > arr[i]:
+                stack.pop()
+
+            if not stack:
+                left[i] = i + 1
+            else:
+                left[i] = i - stack[-1]
+
+            stack.append(i)
+
+        stack = []
+
+        # ----------------------------------------
+        # Next Less Or Equal Element
+        #
+        # Use >=
+        #
+        # This avoids double counting duplicates.
+        # ----------------------------------------
+        for i in range(n - 1, -1, -1):
+
+            while stack and arr[stack[-1]] >= arr[i]:
+                stack.pop()
+
+            if not stack:
+                right[i] = n - i
+            else:
+                right[i] = stack[-1] - i
+
+            stack.append(i)
+
+        ans = 0
+
+        # contribution of each element
+        for i in range(n):
+            ans += arr[i] * left[i] * right[i]
+            ans %= MOD
+
+        return ans
+
+
+
+
+# V0-1
+# IDEA: MONO STACK (INCREASING)
+class Solution(object):
+    def sumSubarrayMins(self, arr):
+        """
+        :type arr: List[int]
+        :rtype: int
+        """
+        MOD = 10**9 + 7
+        # Append a sentinel value -1 to flush out remaining elements in the stack at the end
+        arr.append(-1)
+        
+        stack = []  # Stores indices of elements in a monotonic increasing order
+        total_sum = 0
+        
+        for i in range(len(arr)):
+            # While the stack is not empty and the current element is smaller than 
+            # the element at the top of the stack, we found the right boundary for stack[-1].
+            while stack and arr[i] < arr[stack[-1]]:
+                mid = stack.pop()
+                
+                # Right boundary distance (how far it can expand right)
+                R = i - mid
+                
+                # Left boundary distance (how far it can expand left)
+                # If stack is empty, it means mid was the smallest element seen so far
+                L = mid - stack[-1] if stack else mid + 1
+                
+                # Contribution calculation: element * Left choices * Right choices
+                total_sum += arr[mid] * L * R
+                total_sum %= MOD
+                
+            stack.append(i)
+            
+        # Pop the sentinel -1 to restore the original array structure (good practice)
+        arr.pop()
+        
+        return total_sum
+
+
+
+# V0
 # IDEA :  increasing stacks
 class Solution:
     def sumSubarrayMins(self, A):

@@ -21,9 +21,8 @@
 	- LC example
 - heap
 	- LC example
-- Monotonic Queue
-- Priority Queue
-	- Template 1: Top K Elements Pattern — LC 215
+- monotonic_stack.md
+ 	- doing
 - set.md
 - stack.md
 - sort.md
@@ -38,6 +37,7 @@
   - graph.md
   - dfs.md
   - tree2.md
+  - priority_queue.md
 
 
 - `MUST LC problems`
@@ -88,6 +88,8 @@
 			- 863
 		- Flatten Binary Tree to Linked List
 			- 114
+		- mono stack
+			- 907
 		- lazy_bst_in_order(todo),173(todo),2616(todo, compare PQ)
 		- topo_sort,257(todo)
 		- `Combinations VS Permutations` in DP
@@ -129,6 +131,7 @@
 - Monotonic Queue
 
 - Priority Queue
+	- Classic LC Problems with Java Solutions
 
 - set.md
 - stack.md
