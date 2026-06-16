@@ -104,6 +104,30 @@ Explanation: The subarrays of nums where 6 is the least common multiple of all t
          l
 
 
+
+nums = [3,6,2,7,1], k = 6
+
+
+
+-> find `LCM` , if LCM in subarray -> valid -> cnt
+
+-> lcm_ = [0,]
+
+[3,6,2]
+   i
+
+
+x, x, lcm, x, x, x
+
+-> combinations
+= (left_cnt) * (right_cnt)
+= (1 + i) * (n - i)
+
+= (2) * (2)
+
+
+
+
 # idea 1) brute force (simulation)
 
 # idea 2) slide window
@@ -123,8 +147,61 @@ Explanation: The subarrays of nums where 6 is the least common multiple of all t
        l
 
 
-# idea 2) slide window
+# idea:
+-> combinations
+= (left_cnt) * (right_cnt)
+= (1 + i) * (n - i)
 
+
+nums = [3,6,2,7,1]
+
+-> lcm_list = [0,1,0,-1,0]
+
+
+
+class Solution(object):
+    def subarrayLCM(self, nums, k):
+        # edge
+        lcm_list = []
+        for i in range(len(nums)):
+            val = nums[i]
+            a = val // k
+            b = val % k
+            if b == 0 and a > 0:
+                if val >= k:
+                    lcm_list[i] = 1
+                else:
+                    lcm_list[i] = 0
+            else:
+                lcm_list[i] = -1
+
+
+        res = 0
+
+        # ??
+        for i in range(len(lcm_list)):
+            if lcm_list[i] == 1:
+                # expand
+                l = i - 1
+                r = i + 1
+                while l >= 0 lcm_listp[l] != -1:
+                    l -= 1
+                while r < len(lcm_list) and lcm_listp[r] != -1:
+                    r += 1
+                res +=  ( (i - l + 1) * (len(lcm_list) - i + 1) )
+
+
+
+        return res
+
+
+
+
+
+
+
+
+# idea 2) slide window
 
 class Solution(object):
     def subarrayLCM(self, nums, k):
