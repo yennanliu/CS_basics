@@ -26,7 +26,6 @@
 - Union Find
 - Dijkstra
 - Queue
-- bfs.md
 	- doing
 	- Type 2: Independent BFS Runs (One BFS per source)
 
@@ -39,6 +38,7 @@
   - monotonic_stack.md
   - complexity_drills.html
   - String.md
+  - bfs.md
 
 
 - `MUST LC problems`
@@ -91,6 +91,7 @@
 			- 907**, 853
 		- BFS
 			- 542
+			-	1087
 		- lazy_bst_in_order(todo),173(todo),2616(todo, compare PQ)
 		- topo_sort,257(todo)
 		- `Combinations VS Permutations` in DP
