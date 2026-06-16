@@ -182,6 +182,11 @@
 		- 742
 		- graph bipartite
 			- 785
+		- Dijkstra
+			- core algo, classics LC
+		- PQ:
+			- 1405, 767
+			- 621, 358 (cooldown)
 		- lazy_bst_in_order(todo),173(todo),2616(todo, compare PQ)
 		- topo_sort,257(todo)
 		- `Combinations VS Permutations` in DP
