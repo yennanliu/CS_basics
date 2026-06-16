@@ -5,8 +5,7 @@
 
 
 - hash_map.md
-	- Template 10: Hash Map + Memoization / DP
-	- LC example
+	- 2-12) Brick Wall — LC 554
 
 	
 - backtrack.md
@@ -96,6 +95,8 @@
 		- BFS
 			- 542
 			-	1087
+		- hashmap
+			- 525
 		- lazy_bst_in_order(todo),173(todo),2616(todo, compare PQ)
 		- topo_sort,257(todo)
 		- `Combinations VS Permutations` in DP
