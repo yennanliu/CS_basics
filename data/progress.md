@@ -9,9 +9,6 @@
 	- todo: `Template 7-1: One Edit Distance (LC 161) — Exactly-1-Edit Variant`
 - greedy.md
 - intervals.md
-- tree2.md
-	- doing
-		- `4) Distance and LCA Templates`
 - tree.md
 	- doing
 - python_trick.md
@@ -26,6 +23,7 @@
 	- LC example
 - Monotonic Queue
 - Priority Queue
+	- Template 1: Top K Elements Pattern — LC 215
 - set.md
 - stack.md
 - sort.md
@@ -39,6 +37,7 @@
 - OK:
   - graph.md
   - dfs.md
+  - tree2.md
 
 
 - `MUST LC problems`
