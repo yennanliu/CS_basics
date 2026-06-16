@@ -1532,6 +1532,146 @@ heapq.heappush(pq, (-dist, name))
 
 > **Rule of thumb**: negate whichever field(s) you want in descending order; leave the rest unchanged.
 
+### 1-27-3) `SortedDict` / `SortedList` — Python's TreeMap (ordered map)
+
+**Idea**
+
+Python has **no built-in `TreeMap`** (Java's `java.util.TreeMap`). The standard
+replacement is **`sortedcontainers`** — a pure-Python library that keeps keys in
+**sorted order** while supporting `O(log n)` insert / delete / lookup and `O(log n)`
+floor / ceiling / range queries. Internally it's a list-of-lists (not a tree), but the
+**API and Big-O behave like a balanced BST**, so it's the go-to "TreeMap" for LC.
+
+- `SortedDict` ↔ Java `TreeMap` (sorted **key → value** map)
+- `SortedList` ↔ Java `TreeSet` / multiset (sorted values; duplicates allowed)
+- Keys/values stay sorted automatically — **no re-sorting on every insert** (the win
+  over `list.sort()`), unlike `bisect` on a plain list where `insert` is `O(n)`.
+
+**Core API**
+
+```python
+from sortedcontainers import SortedDict, SortedList
+
+# ---------------- SortedDict (TreeMap) ----------------
+sd = SortedDict()
+
+# O(log n) basic ops
+sd[key] = value          # insert / update
+v = sd.get(key)          # lookup (None if missing)
+del sd[key]              # delete
+key in sd                # membership
+
+# Ordered access — keys() is an indexable sorted view
+sd.keys()[0]             # min key
+sd.keys()[-1]            # max key
+sd.peekitem(0)           # (min_key, val)
+sd.peekitem(-1)          # (max_key, val)
+
+# Floor / Ceiling via bisect methods on the keys (THE TreeMap superpower)
+keys = sd.keys()
+i = sd.bisect_left(target)    # first index with key >= target
+j = sd.bisect_right(target)   # first index with key >  target
+#   ceiling(target) = keys[i]      if i < len(sd)      (smallest key >= target)
+#   floor(target)   = keys[j - 1]  if j > 0            (largest  key <= target)
+
+# Range query: iterate keys in [lo, hi)
+lo_i = sd.bisect_left(lo)
+hi_i = sd.bisect_left(hi)
+for k in sd.keys()[lo_i:hi_i]:
+    process(k, sd[k])
+
+# ---------------- SortedList (TreeSet / multiset) ----------------
+sl = SortedList()
+sl.add(x)                # O(log n) insert, stays sorted
+sl.remove(x)             # O(log n) delete one occurrence
+sl[0], sl[-1]            # min / max
+i = sl.bisect_left(x)    # floor/ceiling index, same idea as above
+```
+
+**When to use**
+
+| Need | Use |
+|------|-----|
+| Fast `O(1)` lookup, **no ordering** | plain `dict` / `set` |
+| Sorted, but **inserted once then read** | sort a `list` (`O(n log n)` once) |
+| **Repeated inserts/deletes** + need order / floor / ceiling / range | **`SortedDict` / `SortedList`** |
+| Sorted **values with duplicates** (multiset) | **`SortedList`** |
+| Only need min/max (no ordering between) | `heapq` |
+
+> Reach for `SortedContainers` the moment the data **mutates over time** *and* you need
+> "closest key", "next greater key", or "all keys in `[a, b]`". If the array is static,
+> a one-time sort + `bisect` is simpler and faster.
+
+**Use example — LC 729 My Calendar I (floor/ceiling overlap check)**
+
+```python
+from sortedcontainers import SortedDict
+
+class MyCalendar:
+    """
+    Book [start, end). Reject if it overlaps an existing event.
+    time  = O(log N) per booking
+    space = O(N)
+    """
+    def __init__(self):
+        self.calendar = SortedDict()   # {start: end}
+
+    def book(self, start: int, end: int) -> bool:
+        idx = self.calendar.bisect_right(start)   # first event starting > start
+
+        # check the PREVIOUS event (floor): its end must not spill into us
+        if idx > 0:
+            prev_start = self.calendar.keys()[idx - 1]
+            if self.calendar[prev_start] > start:
+                return False
+
+        # check the NEXT event (ceiling): it must start at/after our end
+        if idx < len(self.calendar):
+            next_start = self.calendar.keys()[idx]
+            if next_start < end:
+                return False
+
+        self.calendar[start] = end
+        return True
+```
+
+**Use example — LC 220 Contains Duplicate III (range query via `SortedList`)**
+
+```python
+from sortedcontainers import SortedList
+
+def containsNearbyAlmostDuplicate(nums, indexDiff, valueDiff):
+    # keep a sliding window of the last `indexDiff` values, kept sorted
+    window = SortedList()
+    for i, num in enumerate(nums):
+        # ceiling: smallest value >= num - valueDiff
+        pos = window.bisect_left(num - valueDiff)
+        if pos < len(window) and window[pos] <= num + valueDiff:
+            return True
+        window.add(num)
+        if len(window) > indexDiff:        # evict the value that falls out of window
+            window.remove(nums[i - indexDiff])
+    return False
+```
+
+**Relative LeetCode problems**
+
+| Problem | LC# | TreeMap operation |
+|---------|-----|-------------------|
+| My Calendar I | 729 | floor/ceiling for overlap check |
+| My Calendar II | 731 | count overlaps with ordered map |
+| My Calendar III | 732 | max overlapping (diff array on ordered keys) |
+| Contains Duplicate III | 220 | ceiling + range check in sliding window |
+| Time Based Key-Value Store | 981 | floor on timestamp |
+| Data Stream as Disjoint Intervals | 352 | merge intervals via floor/ceiling |
+| Count of Smaller Numbers After Self | 315 | `SortedList` + `bisect` while scanning right→left |
+| Sliding Window Median | 480 | `SortedList` add/remove, index middle |
+| The Skyline Problem | 218 | multiset of heights (`SortedList`) |
+
+> See the **TreeMap Pattern (Template 7)** in
+> [hash_map.md](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/hash_map.md)
+> for the Java `TreeMap` side-by-side comparison.
+
 ### 1-28) useful `functools` modules
 - functools.lru_cache
     - implement cache via LRU (Least Recently Used (LRU) cache) in py
