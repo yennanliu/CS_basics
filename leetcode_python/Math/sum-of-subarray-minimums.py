@@ -30,6 +30,26 @@ Constraints:
 
 # V0
 # IDEA: MONO STACK (INCREASING)
+"""
+
+CORE IDEA:
+
+For each element arr[i], count:
+
+  - how many subarrays choose arr[i] as 
+    their `minimum` extending to the `left`
+
+  - how many subarrays choose arr[i] as 
+    their `minimum` extending to the `right`
+
+
+
+-> Then its contribution is:
+
+     -> arr[i] * left_count * right_count
+
+
+"""
 class Solution(object):
     def sumSubarrayMins(self, arr):
         """
