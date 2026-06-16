@@ -56,11 +56,9 @@
 	- math & geometry
 
 - LC weekly
-	- `data/lc_weekly/lc_weekly_gemini.md`
-		- Weekly Contest 341 (todo)
 	- `data/lc_weekly/lc_weekly_gpt.md`
-		- Weekly Contest 266 (DONE)
-			- https://leetcode.com/contest/weekly-contest-266/
+		- Weekly Contest 319 (doing)
+			- https://leetcode.com/contest/weekly-contest-319/
 
 - Others
 	- DP - `0/1 Knapsack and` -> revisit
