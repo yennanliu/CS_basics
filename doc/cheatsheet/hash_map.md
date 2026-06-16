@@ -2328,6 +2328,200 @@ Both forms are correct. The `4 * count * (count - 1)` form avoids integer divisi
 
 ---
 
+### 2-16) Minimum Operations to Sort Binary Tree by Level (LC 2471) — LC 2471
+
+**Core Pattern: BFS per level + Minimum Swaps to Sort via `{value: index}` HashMap**
+
+> LC 2471 - Minimum Number of Operations to Sort a Binary Tree by Level
+> https://leetcode.com/problems/minimum-number-of-operations-to-sort-a-binary-tree-by-level/
+
+#### Key Concept
+
+Each operation swaps **any two nodes' values within the same level**. To sort the
+whole tree level-by-level, the answer is simply the **sum, over every level, of the
+minimum number of swaps needed to sort that level's value array**.
+
+So the problem decomposes into two independent pieces:
+1. **BFS** to collect each level's values into an array.
+2. **Min-swaps-to-sort** each array — this is where the hashmap shines.
+
+#### The HashMap Trick: Minimum Swaps to Sort an Array
+
+**Key Idea**: To sort an array using the *fewest* swaps, repeatedly place the
+**correct value at each index in one swap**. To do an O(1) swap, we must know
+**where each value currently lives** → that's the `{value: index}` hashmap.
+
+```
+pos = {value: current_index}   # O(1) lookup of "where is value v right now?"
+
+For each index i (left → right):
+  correct_val = sorted_arr[i]            # what SHOULD be at index i
+  if arr[i] != correct_val:
+     swap_idx = pos[correct_val]         # where correct_val currently is
+     # 1) UPDATE the map BEFORE swapping (critical!)
+     pos[arr[i]]      = swap_idx         # the value we move away keeps its new home
+     pos[correct_val] = i                # correct_val is now at i
+     # 2) swap in the array
+     arr[i], arr[swap_idx] = arr[swap_idx], arr[i]
+     swaps += 1
+```
+
+**⚠️ Critical: update the map BEFORE the swap.** After swapping, `arr[i]` no longer
+holds the displaced value, so you can't recover its old key. Record both new
+positions in the map first, then mutate the array.
+
+**Why this is minimal**: every successful swap puts at least one element into its
+final sorted position, so we never "waste" a swap. (This is the cycle-decomposition
+result: an array needs `n - (#cycles)` swaps; the greedy index pass realizes exactly
+that count.)
+
+#### Implementation
+
+```python
+# python - LC 2471
+from collections import deque
+
+class Solution(object):
+    def minimumOperations(self, root):
+        # time  = O(N log M)  (M = widest level; sorting dominates per level)
+        # space = O(M)
+        q = deque([root])
+        ops = 0
+
+        while q:
+            size = len(q)
+            level = []
+            for _ in range(size):
+                node = q.popleft()
+                level.append(node.val)
+                if node.left:
+                    q.append(node.left)
+                if node.right:
+                    q.append(node.right)
+
+            ops += self.min_swaps(level)   # add this level's cost
+
+        return ops
+
+    def min_swaps(self, arr):
+        # min swaps to sort `arr` via {value: index} hashmap
+        n = len(arr)
+        sorted_arr = sorted(arr)
+        pos = {v: i for i, v in enumerate(arr)}   # {value: current index}
+        swaps = 0
+
+        for i in range(n):
+            correct_val = sorted_arr[i]
+            if arr[i] != correct_val:
+                swap_idx = pos[correct_val]
+
+                # update map BEFORE swapping (so we don't lose arr[i]'s key)
+                pos[arr[i]] = swap_idx
+                pos[correct_val] = i
+
+                # swap
+                arr[i], arr[swap_idx] = arr[swap_idx], arr[i]
+                swaps += 1
+
+        return swaps
+```
+
+```java
+// java - LC 2471
+/**
+ * time  = O(N log M)   // M = widest level; sorting dominates
+ * space = O(M)
+ */
+public int minimumOperations(TreeNode root) {
+    Queue<TreeNode> q = new LinkedList<>();
+    q.offer(root);
+    int ops = 0;
+
+    while (!q.isEmpty()) {
+        int size = q.size();
+        List<Integer> level = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            TreeNode node = q.poll();
+            level.add(node.val);
+            if (node.left != null)  q.offer(node.left);
+            if (node.right != null) q.offer(node.right);
+        }
+        ops += minSwaps(level);
+    }
+    return ops;
+}
+
+// min swaps to sort via {value: index} map
+private int minSwaps(List<Integer> arr) {
+    int n = arr.size();
+    Integer[] sorted = arr.toArray(new Integer[0]);
+    Arrays.sort(sorted);
+
+    Map<Integer, Integer> pos = new HashMap<>();   // {value: current index}
+    for (int i = 0; i < n; i++) pos.put(arr.get(i), i);
+
+    int swaps = 0;
+    for (int i = 0; i < n; i++) {
+        int correctVal = sorted[i];
+        if (!arr.get(i).equals(correctVal)) {
+            int swapIdx = pos.get(correctVal);
+
+            // update map BEFORE swapping
+            pos.put(arr.get(i), swapIdx);
+            pos.put(correctVal, i);
+
+            // swap
+            int tmp = arr.get(i);
+            arr.set(i, arr.get(swapIdx));
+            arr.set(swapIdx, tmp);
+            swaps++;
+        }
+    }
+    return swaps;
+}
+```
+
+#### Visual Trace — `min_swaps([3, 1, 2])`
+
+```
+sorted = [1, 2, 3]
+pos    = {3:0, 1:1, 2:2}
+
+i=0: correct=1, arr[0]=3 (mismatch)
+     swap_idx = pos[1] = 1
+     update map: pos[3]=1, pos[1]=0  → pos = {3:1, 1:0, 2:2}
+     swap arr[0],arr[1] → arr = [1, 3, 2]   swaps=1
+
+i=1: correct=2, arr[1]=3 (mismatch)
+     swap_idx = pos[2] = 2
+     update map: pos[3]=2, pos[2]=1  → pos = {3:2, 1:0, 2:1}
+     swap arr[1],arr[2] → arr = [1, 2, 3]   swaps=2
+
+i=2: correct=3, arr[2]=3 (match) → skip
+
+Result: 2 swaps
+```
+
+#### Why a HashMap (not a linear scan)?
+
+Without the map, finding `swap_idx` (where `correct_val` lives) is an O(n) scan,
+making `min_swaps` O(n²). The `{value: index}` map turns that lookup into O(1), so
+each level costs O(n log n) (sorting) instead of O(n²).
+
+| Approach | Find swap target | min_swaps total |
+|----------|------------------|-----------------|
+| Linear scan each step | O(n) | O(n²) |
+| **`{value: index}` hashmap** | **O(1)** | **O(n log n)** |
+
+#### Related Problems (Same "Min Swaps to Sort" Idea)
+
+| Problem | LC# | Notes |
+|---------|-----|-------|
+| Min Operations to Sort Tree by Level | 2471 | BFS level + min swaps per level |
+| Minimum Swaps to Group All 1's Together | 1151 / 2134 | Sliding window variant |
+| Couples Holding Hands | 765 | Cycle/union-find min swaps |
+| First Missing Positive | 41 | Index-placement swap idea |
+
 ---
 
 ## Template 8: Bijection (Two-Way Mapping)

@@ -457,6 +457,56 @@ class Solution(object):
 
 
 
+#-------------- (fixed)
+
+from collections import deque
+
+class Solution(object):
+    def minimumOperations(self, root):
+        q = deque([root])
+        ops = 0
+
+        while q:
+            size = len(q)
+            level = []
+
+            for _ in range(size):
+                node = q.popleft()
+                level.append(node.val)
+
+                if node.left:
+                    q.append(node.left)
+                if node.right:
+                    q.append(node.right)
+
+            ops += self.min_swaps(level)
+
+        return ops
+
+    def min_swaps(self, arr):
+        n = len(arr)
+        sorted_arr = sorted(arr)
+
+        pos = {v: i for i, v in enumerate(arr)}
+        swaps = 0
+
+        for i in range(n):
+            correct_val = sorted_arr[i]
+
+            if arr[i] != correct_val:
+                swap_idx = pos[correct_val]
+
+                # update map BEFORE swapping
+                pos[arr[i]] = swap_idx
+                pos[correct_val] = i
+
+                # swap
+                arr[i], arr[swap_idx] = arr[swap_idx], arr[i]
+
+                swaps += 1
+
+        return swaps
+        
 
 
 
