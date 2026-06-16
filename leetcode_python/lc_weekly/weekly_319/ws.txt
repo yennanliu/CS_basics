@@ -178,6 +178,138 @@ class Solution(object):
 
 
 
+# LC 2471
+# https://leetcode.com/problems/minimum-number-of-operations-to-sort-a-binary-tree-by-level/description/
+
+
+
+root: binary tree (UNIQUE val)
+
+op:
+ - choose 2 nodes (SAME LEVEL),
+    swap their vals
+
+
+
+-> return `min` op to make
+   nodes in EACH LEVEL
+   `increasing` order
+
+
+level: # of edges of the path from
+        root -> node
+
+
+
+# go through lever by later
+# (check if sorted)
+# cnt the op -> 2 pointers ??
+
+
+[7,6,5,4]
+ l     r
+
+[4,6,5,7]
+   l r
+
+[4,5,6,7]
+
+
+----
+
+
+[4,2,6,1]
+
+[4,2,6,1]
+ l     r
+
+
+[4,2,6,1]
+ l     r
+
+[1,2,6,4]
+     l r
+
+
+pq: [1,3,8,9]
+# {val : idx}
+map: { 1: 2, 3: 1: 9: 0, 8: 3 }
+
+map: { 1: 0, 3: 1: 9: 2, 8: 3 }
+
+
+[1,3,9,8]
+     l
+ 
+
+
+[8,3,1,9]
+     l r
+
+
+idea 1) # bfs + loop layer by layer + cnt `op cnt`
+
+
+# time: O( (V+E) * N )
+# space: O(N) + O(N) ~= O(N)
+
+
+class Solution(object):
+    def minimumOperations(self, root):
+        # edge
+
+        q = []
+        q.appen(root)
+
+        op = 0
+
+        while q:
+            size = len(q)
+            tmp = []
+            for i in range(size)
+                cur = q.popleft()
+                tmp.append(cur.val)
+                if cur.left:
+                    q.append(cur.left)
+                if cur.right:
+                    q.append(cur.right)
+            op += self.count_swap(tmp)
+
+            return op
+
+
+
+    def count_swap(self, array):
+        # tree map
+        # ??
+        tree_map = treemap(array)
+        op = 0
+        for i in range(len(array)):
+            cur = array[i]
+            smallest_key = tree_map.floor()
+            if smallest_key == cur:
+                continue
+            else:
+                # cache
+                idx_cache = tree_map[smallest_key]
+                # swap
+                tree_map[cur] = idx_cache
+                tree_map[smallest_key] = i
+                op += 1
+
+        return op
+        
+
+
+
+
+
+
+
+
+
+
+
 
 
 
