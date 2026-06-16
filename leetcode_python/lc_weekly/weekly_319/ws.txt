@@ -197,9 +197,11 @@ class Solution(object):
         return res
 
 
+# NOTE !!!
+# CAN'T use slide window for this LC:
 
-
-
+🚫 Why Sliding Window Fails for LCM
+Sliding window algorithms require a property called monotonicity or invertibility. If you shrink the left pointer, you must be able to cleanly "undo" or subtract the left element's contribution (like subtracting a number from a running sum, or decrementing a character's count in a hashmap).
 
 
 
