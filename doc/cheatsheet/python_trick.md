@@ -493,6 +493,60 @@ sorted_events = sorted(event_list, key=lambda x: (x[0], x[1]))
 # Primary DESC, tiebreak DESC  | (-x[0], -x[1])
 ```
 
+### 1-11''') Custom comparison via a named `key` function (conditional tuple keys)
+
+When the sort key depends on a **condition** (group A vs group B, valid vs invalid,
+etc.), a one-line lambda gets unreadable. Write a **named `key` function that returns
+a tuple** — the tuple is still compared element-by-element (left → right), so the
+first field becomes the primary sort, the next the tiebreaker, and so on.
+
+**Pattern: leading "group tag" + per-group ordering**
+
+```python
+# Return a tuple of sort keys; the FIRST element groups items,
+# the rest order items WITHIN each group.
+def compare(item):
+    if condition:
+        return (0, item.value, item.name)   # group 0 first; ASC by value, then name
+    else:
+        return (1, -item.priority, item.id)  # group 1 next; DESC by priority, ASC by id
+
+items.sort(key=compare)        # in-place
+# items = sorted(items, key=compare)   # or build a new list
+```
+
+**Why the leading `0` / `1`?** It is a **group tag** — every group-0 item sorts before
+every group-1 item (because tuple comparison checks the first element first). The
+remaining tuple fields only matter *within* the same group, so each group can use its
+own ordering rules (ASC, DESC via negation, different fields entirely).
+
+**Key rules**
+- All branches must return a tuple of the **same length** with **comparable types**
+  position-by-position (don't mix `str` and `int` in the same slot).
+- Negate a numeric field (`-item.priority`) to sort that field DESC while keeping the
+  rest ASC — same trick as section [1-11'].
+- The `key` function is called **once per element** (Schwartzian transform), so it's
+  efficient even with heavier logic inside.
+
+**Classic LC use — LC 937 Reorder Data in Log Files** (letter-logs grouped before
+digit-logs, letter-logs sorted by content then id):
+
+```python
+class Solution:
+    def reorderLogFiles(self, logs):
+        def compare(log):
+            id_, rest = log.split(" ", 1)
+            if rest[0].isalpha():
+                return (0, rest, id_)   # letter-logs: group 0, by content, then id
+            else:
+                return (1,)             # digit-logs: group 1, keep original order
+
+        return sorted(logs, key=compare)
+```
+
+> **Rule of thumb**: reach for a named tuple-returning `key` function the moment the
+> ordering has *branches* — it reads far better than cramming `if/else` into a lambda.
+
 ### 1-12) get remainder (residual) when divided by a number
 ```python
 #-----------------
