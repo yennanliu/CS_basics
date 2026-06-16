@@ -41,6 +41,10 @@
   - dfs.md
 
 
+- `MUST LC problems`
+	- todo
+
+
 - Blind 75
 
 	- math & geometry (doing)
@@ -79,6 +83,12 @@
 		- 742
 		- graph bipartite
 			- 785
+		- dist in LCA
+			- 1740
+		- tree -> graph
+			- 863
+		- Flatten Binary Tree to Linked List
+			- 114
 		- lazy_bst_in_order(todo),173(todo),2616(todo, compare PQ)
 		- topo_sort,257(todo)
 		- `Combinations VS Permutations` in DP

@@ -1,4 +1,104 @@
-# V0  
+"""
+114. Flatten Binary Tree to Linked List
+Solved
+Medium
+Topics
+premium lock icon
+Companies
+Hint
+Given the root of a binary tree, flatten the tree into a "linked list":
+
+The "linked list" should use the same TreeNode class where the right child pointer points to the next node in the list and the left child pointer is always null.
+The "linked list" should be in the same order as a pre-order traversal of the binary tree.
+ 
+
+Example 1:
+
+
+Input: root = [1,2,5,3,4,null,6]
+Output: [1,null,2,null,3,null,4,null,5,null,6]
+Example 2:
+
+Input: root = []
+Output: []
+Example 3:
+
+Input: root = [0]
+Output: [0]
+ 
+
+Constraints:
+
+The number of nodes in the tree is in the range [0, 2000].
+-100 <= Node.val <= 100
+ 
+
+Follow up: Can you flatten the tree in-place (with O(1) extra space)?
+"""
+# V0
+# IDEA: DFS + PREORDER
+# https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Recursion/FlattenBinaryTreeToLinkedList.java#L73
+class Solution:
+    def flatten(self, root):
+        """
+        Do not return anything, modify root in-place instead.
+        """
+        nodes = []
+
+        def preorder(node):
+            if not node:
+                return
+
+            nodes.append(node)
+            preorder(node.left)
+            preorder(node.right)
+
+        preorder(root)
+
+        for i in range(len(nodes) - 1):
+            curr = nodes[i]
+            nxt = nodes[i + 1]
+
+            curr.left = None
+            curr.right = nxt
+
+        if nodes:
+            nodes[-1].left = None
+            nodes[-1].right = None
+
+
+# V0-1
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+class Solution(object):
+    def flatten(self, root):
+        """
+        :type root: TreeNode
+        :rtype: None Do not return anything, modify root in-place instead.
+        """
+        curr = root
+        while curr:
+            if curr.left:
+                # Find the rightmost node of the left subtree
+                rightmost = curr.left
+                while rightmost.right:
+                    rightmost = rightmost.right
+                
+                # Rewire: connect the original right subtree to the rightmost node
+                rightmost.right = curr.right
+                
+                # Move the left subtree over to the right side
+                curr.right = curr.left
+                curr.left = None
+                
+            # Move down the flattened right path
+            curr = curr.right
+
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/70241424
