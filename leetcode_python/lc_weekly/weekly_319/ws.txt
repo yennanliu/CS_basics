@@ -6,6 +6,8 @@ https://leetcode.com/contest/weekly-contest-319/
 
 4.38 pm -  6.08 pm
 
+
+#------------------------------------------------
 # LC 2469
 # https://leetcode.com/problems/convert-the-temperature/description/
 
@@ -43,7 +45,7 @@ class Solution(object):
 
 
 
-
+#------------------------------------------------
 # LC 2470
 # https://leetcode.com/problems/number-of-subarrays-with-lcm-equal-to-k/description/
 
@@ -254,7 +256,37 @@ class Solution(object):
         return cnt
 
 
+#------------------- (fixed)
 
+class Solution(object):
+    def subarrayLCM(self, nums, k):
+        n = len(nums)
+        res = 0
+
+        for i in range(n):
+            cur_lcm = 1
+
+            for j in range(i, n):
+                cur_lcm = self.lcm(cur_lcm, nums[j])
+
+                if cur_lcm == k:
+                    res += 1
+                elif cur_lcm > k or k % cur_lcm != 0:
+                    break
+
+        return res
+
+    def gcd(self, a, b):
+        while b:
+            a, b = b, a % b
+        return a
+
+    def lcm(self, a, b):
+        return a * b // self.gcd(a, b)
+
+
+
+#------------------------------------------------
 # LC 2471
 # https://leetcode.com/problems/minimum-number-of-operations-to-sort-a-binary-tree-by-level/description/
 
