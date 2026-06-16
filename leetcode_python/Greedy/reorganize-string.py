@@ -26,6 +26,139 @@ s consists of lowercase English letters.
 
 """
 
+
+# V0
+# IDEA: PQ + HASHMAP
+# https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Greedy/ReorganizeString.java#L40
+from collections import Counter
+import heapq
+
+class Solution(object):
+    def reorganizeString(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+        if not s:
+            return ""
+
+        if len(s) <= 2:
+            return s
+
+        # frequency map
+        freq = Counter(s)
+
+        # max heap: (-count, char)
+        pq = [(-cnt, ch) for ch, cnt in freq.items()]
+        heapq.heapify(pq)
+
+        res = []
+        prev = None
+
+        while pq:
+
+            # poll current candidate
+            cnt, cur = heapq.heappop(pq)
+
+            # prev == cur
+            if prev is not None and prev == cur:
+
+                if not pq:
+                    return ""
+
+                # poll next candidate
+                next_cnt, next_ch = heapq.heappop(pq)
+
+                res.append(next_ch)
+
+                next_cnt += 1
+                if next_cnt < 0:
+                    heapq.heappush(pq, (next_cnt, next_ch))
+
+                # DON'T forget to push cur back
+                heapq.heappush(pq, (cnt, cur))
+
+                prev = next_ch
+
+            else:
+                res.append(cur)
+
+                cnt += 1
+                if cnt < 0:
+                    heapq.heappush(pq, (cnt, cur))
+
+                prev = cur
+
+        return "".join(res)
+
+
+
+# V0-1
+# IDEA: PQ + HASHMAP
+# https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Greedy/ReorganizeString.java#L40
+import heapq
+from collections import Counter
+
+class Solution(object):
+    def reorganizeString(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+        if not s:
+            return ""
+        if len(s) <= 2:
+            return s
+            
+        # Count frequency of each character
+        freqMap = Counter(s)
+        
+        # Max-heap: store (-frequency, char) to sort descending
+        pq = []
+        for char, freq in freqMap.items():
+            heapq.heappush(pq, (-freq, char))
+            
+        res = []
+        prev = None
+        
+        # while !pq.isEmpty()
+        while pq:
+            # NOTE !!! we `poll` to-add element
+            neg_freq, cur = heapq.heappop(pq)
+            freq = -neg_freq
+            
+            # NOTE !!! Handles when prev element equals the to-add element
+            if prev is not None and prev == cur:
+                # edge case
+                if not pq:
+                    return ""  # cannot reorganize
+                    
+                # Poll the next element from PQ and try to add it to res instead
+                neg_freq_next, next_char = heapq.heappop(pq)
+                freq_next = -neg_freq_next
+                
+                res.append(next_char)
+                freq_next -= 1
+                
+                if freq_next > 0:
+                    heapq.heappush(pq, (-freq_next, next_char))
+                    
+                # NOTE !!! DON'T forget to add `cur` back to PQ
+                heapq.heappush(pq, (-freq, cur))
+                prev = next_char
+                
+            # NOTE !!! Handles when prev is None OR cur != prev
+            else:
+                res.append(cur)
+                freq -= 1
+                
+                if freq > 0:
+                    heapq.heappush(pq, (-freq, cur))
+                prev = cur
+                
+        return "".join(res)
+
+
 # V0 
 # IDEA : GREEDY + COUNTER
 # IDEA : 
