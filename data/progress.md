@@ -1,6 +1,112 @@
 # Progress
 
 
+# 2026-06-17
+
+
+- hash_map.md
+	- 2-12) Brick Wall — LC 554
+
+- set.md
+	- 2-5) Longest Consecutive Sequence — LC 128
+
+	
+- backtrack.md
+	- todo: `Type 2) : Permutations (排列組合) (全排列)`
+- dp.md
+	- todo: `Template 7-1: One Edit Distance (LC 161) — Exactly-1-Edit Variant`
+- greedy.md
+- intervals.md
+- tree.md
+	- doing
+- python_trick.md
+	- 2) LC Example
+- BST.md
+- Difference Array.md
+- heap
+	- LC example
+- stack.md
+- 2 pointer.md
+- Union Find
+- Dijkstra
+- Queue
+	- doing
+	- Type 2: Independent BFS Runs (One BFS per source)
+
+
+- OK:
+  - graph.md
+  - dfs.md
+  - tree2.md
+  - priority_queue.md
+  - monotonic_stack.md
+  - complexity_drills.html
+  - String.md
+  - bfs.md
+  - sort.md
+
+
+- `MUST LC problems`
+	- todo
+
+
+- Blind 75
+
+	- math & geometry (doing)
+
+- needcode 150
+
+	- greedy
+	- intervals
+	- math & geometry
+
+- LC weekly
+	- `data/lc_weekly/lc_weekly_gpt.md`
+		- Weekly Contest 319 (doing)
+			- https://leetcode.com/contest/weekly-contest-319/
+
+- Others
+	- DP - `0/1 Knapsack and` -> revisit
+	- recent updated cheatsheet
+	- TODO LC:
+		- 1209(todo),1963(todo),227(todo),394(todo),34(todo),875(todo),81(todo)
+		- 377(todo, Permutations DP),210
+		- 312
+		- 416,494 (0/1 Knapsack)
+			- 0/1 knapsack DP
+		- 1143, 72
+		- 1905,399
+		- 323,2316
+		- 663,508
+		- 701,450
+		- 652,662
+		- 776,399
+		- 112,113,437
+		- 737
+		- 742
+		- graph bipartite
+			- 785
+		- dist in LCA
+			- 1740
+		- tree -> graph
+			- 863
+		- Flatten Binary Tree to Linked List
+			- 114
+		- mono stack
+			- 907**, 853
+		- BFS
+			- 542
+			-	1087
+		- hashmap
+			- 525
+		- set
+			- 128**
+		- lazy_bst_in_order(todo),173(todo),2616(todo, compare PQ)
+		- topo_sort,257(todo)
+		- `Combinations VS Permutations` in DP
+			- https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Dynamic_Programming/coin_change_2.py#L125
+
+
 # 2026-06-16
 
 
