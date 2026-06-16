@@ -615,6 +615,292 @@ class MyCalendar:
    - Duplicate keys (TreeMap doesn't allow, use value as counter)
    - Reverse order iteration (use descendingMap() in Java)
 
+### Template 8: Bijection (Two-Way Mapping)
+
+**Pattern**: Maintain two maps (`x→y` and `y→x`) and check consistency in **both directions**. Required any time the mapping must be one-to-one (LC 205 Isomorphic Strings, LC 290 Word Pattern).
+
+**Why two maps?** One map catches `a→b` conflicts; the second catches `b→a` conflicts (two different `x` values mapping to the same `y`).
+
+```python
+# LC 205 Isomorphic Strings
+def isIsomorphic(s: str, t: str) -> bool:
+    s2t, t2s = {}, {}
+    for a, b in zip(s, t):
+        if s2t.get(a, b) != b or t2s.get(b, a) != a:
+            return False
+        s2t[a] = b
+        t2s[b] = a
+    return True
+
+# LC 290 Word Pattern
+def wordPattern(pattern: str, s: str) -> bool:
+    words = s.split()
+    if len(pattern) != len(words):
+        return False
+    p2w, w2p = {}, {}
+    for p, w in zip(pattern, words):
+        if p2w.get(p, w) != w or w2p.get(w, p) != p:
+            return False
+        p2w[p] = w
+        w2p[w] = p
+    return True
+```
+
+**Common mistake**: Using only one map — fails when two keys map to the same value (`"aa"` vs `"ab"`).
+
+---
+
+### Template 9: Bucket Sort via Hash Map (Top-K Frequency, O(n))
+
+**When asked for top-K frequent, ask: "Can you do O(n)?"** — The bucket trick avoids a heap.
+
+**Idea**: Create buckets where `bucket[freq]` holds all elements with that frequency. Scan buckets from highest freq down to collect top-K.
+
+```python
+# LC 347 Top K Frequent Elements — O(n) bucket approach
+from collections import Counter
+
+def topKFrequent(nums: list, k: int) -> list:
+    count = Counter(nums)
+    # bucket[i] = list of numbers that appear exactly i times
+    bucket = [[] for _ in range(len(nums) + 1)]
+    for num, freq in count.items():
+        bucket[freq].append(num)
+
+    result = []
+    for freq in range(len(bucket) - 1, 0, -1):
+        result.extend(bucket[freq])
+        if len(result) >= k:
+            return result[:k]
+    return result
+
+# LC 692 Top K Frequent Words — bucket + sort within bucket
+from collections import Counter
+
+def topKFrequent_words(words: list, k: int) -> list:
+    count = Counter(words)
+    bucket = [[] for _ in range(len(words) + 1)]
+    for word, freq in count.items():
+        bucket[freq].append(word)
+
+    result = []
+    for freq in range(len(bucket) - 1, 0, -1):
+        bucket[freq].sort()          # alphabetical within same frequency
+        result.extend(bucket[freq])
+        if len(result) >= k:
+            return result[:k]
+    return result
+```
+
+| Approach | Time | Space | When |
+|----------|------|-------|------|
+| Heap (nlargest) | O(n log k) | O(n) | Default |
+| Bucket sort | O(n) | O(n) | When O(n) is explicitly required |
+
+---
+
+### Template 10: Hash Map + Memoization / DP
+
+**Pattern**: Use a dict as a top-down DP cache (memoization). The key is the subproblem state (index, remaining target, visited set, etc.).
+
+```python
+# LC 139 Word Break — {index: bool}
+def wordBreak(s: str, wordDict: list) -> bool:
+    word_set = set(wordDict)
+    memo = {}
+
+    def dp(i):
+        if i == len(s):
+            return True
+        if i in memo:
+            return memo[i]
+        for j in range(i + 1, len(s) + 1):
+            if s[i:j] in word_set and dp(j):
+                memo[i] = True
+                return True
+        memo[i] = False
+        return False
+
+    return dp(0)
+
+# LC 1048 Longest String Chain — {word: longest_chain_ending_here}
+def longestStrChain(words: list) -> int:
+    words.sort(key=len)
+    dp = {}   # word -> longest chain ending at this word
+    best = 1
+    for word in words:
+        dp[word] = 1
+        for i in range(len(word)):
+            prev = word[:i] + word[i+1:]   # remove one character
+            if prev in dp:
+                dp[word] = max(dp[word], dp[prev] + 1)
+        best = max(best, dp[word])
+    return best
+
+# LC 322 Coin Change — classic DP, memo keyed by amount
+def coinChange(coins: list, amount: int) -> int:
+    memo = {}
+    def dp(rem):
+        if rem < 0: return float('inf')
+        if rem == 0: return 0
+        if rem in memo: return memo[rem]
+        memo[rem] = min(dp(rem - c) + 1 for c in coins)
+        return memo[rem]
+    res = dp(amount)
+    return res if res != float('inf') else -1
+```
+
+**Key rule**: Always check `if state in memo: return memo[state]` **before** computing. Store result **before** returning.
+
+---
+
+### Template 11: Monotonic Stack + Hash Map
+
+**Pattern**: Use a stack to process elements in a monotonic order; use a hash map to record the answer for each element by index or value.
+
+```python
+# LC 496 Next Greater Element I
+# map each element of nums1 to its next-greater in nums2
+def nextGreaterElement(nums1: list, nums2: list) -> list:
+    next_greater = {}   # val -> next greater val in nums2
+    stack = []          # monotonic decreasing stack
+
+    for num in nums2:
+        # pop all elements smaller than current — current is their next greater
+        while stack and stack[-1] < num:
+            next_greater[stack.pop()] = num
+        stack.append(num)
+
+    return [next_greater.get(n, -1) for n in nums1]
+
+# LC 503 Next Greater Element II (circular array)
+def nextGreaterElements(nums: list) -> list:
+    n = len(nums)
+    result = [-1] * n
+    stack = []  # stores indices
+
+    for i in range(2 * n):   # traverse twice for circular
+        while stack and nums[stack[-1]] < nums[i % n]:
+            result[stack.pop()] = nums[i % n]
+        if i < n:
+            stack.append(i)
+    return result
+
+# LC 739 Daily Temperatures — index-based answer map
+def dailyTemperatures(temps: list) -> list:
+    result = [0] * len(temps)
+    stack = []  # monotonic decreasing stack of indices
+
+    for i, t in enumerate(temps):
+        while stack and temps[stack[-1]] < t:
+            j = stack.pop()
+            result[j] = i - j
+        stack.append(i)
+    return result
+```
+
+**Recognition cues**: "next greater/smaller", "how many days until warmer", "span of prices", "largest rectangle".
+
+---
+
+### Template 12: Rolling Hash (Rabin-Karp)
+
+**When**: Find duplicate/matching substrings in O(n) expected time. Better than O(n²) naive substring comparison.
+
+**Idea**: Hash each window using polynomial rolling hash. Slide the window by removing the leftmost character and adding the new rightmost one in O(1).
+
+```python
+# LC 187 Repeated DNA Sequences — find all length-10 substrings appearing ≥ 2 times
+def findRepeatedDnaSequences(s: str) -> list:
+    if len(s) <= 10:
+        return []
+    seen, repeated = set(), set()
+    for i in range(len(s) - 9):
+        sub = s[i:i+10]
+        if sub in seen:
+            repeated.add(sub)
+        seen.add(sub)
+    return list(repeated)
+
+# General Rabin-Karp rolling hash template
+def rabin_karp(s: str, pattern: str) -> list:
+    """Return all start indices where pattern occurs in s."""
+    n, m = len(s), len(pattern)
+    if m > n:
+        return []
+
+    BASE = 26
+    MOD = (1 << 61) - 1   # Mersenne prime — minimises collisions
+
+    def char_val(c):
+        return ord(c) - ord('a')
+
+    # Precompute BASE^(m-1) mod MOD
+    power = pow(BASE, m - 1, MOD)
+
+    # Hash of pattern and first window
+    p_hash = 0
+    w_hash = 0
+    for i in range(m):
+        p_hash = (p_hash * BASE + char_val(pattern[i])) % MOD
+        w_hash = (w_hash * BASE + char_val(s[i])) % MOD
+
+    result = []
+    for i in range(n - m + 1):
+        if w_hash == p_hash and s[i:i+m] == pattern:  # verify on hash match
+            result.append(i)
+        if i < n - m:
+            # Roll: remove leftmost, add new rightmost
+            w_hash = (w_hash - char_val(s[i]) * power) % MOD
+            w_hash = (w_hash * BASE + char_val(s[i + m])) % MOD
+
+    return result
+
+# LC 1044 Longest Duplicate Substring — binary search + rolling hash
+def longestDupSubstring(s: str) -> str:
+    BASE, MOD = 31, (1 << 61) - 1
+
+    def has_dup(length):
+        if length == 0:
+            return ""
+        power = pow(BASE, length - 1, MOD)
+        h = 0
+        for c in s[:length]:
+            h = (h * BASE + ord(c) - ord('a')) % MOD
+        seen = {h: 0}
+        for i in range(1, len(s) - length + 1):
+            h = (h - (ord(s[i-1]) - ord('a')) * power) % MOD
+            h = (h * BASE + ord(s[i+length-1]) - ord('a')) % MOD
+            if h in seen:
+                # verify (collision guard)
+                start = seen[h]
+                if s[start:start+length] == s[i:i+length]:
+                    return s[i:i+length]
+            seen[h] = i
+        return ""
+
+    lo, hi, ans = 0, len(s) - 1, ""
+    while lo <= hi:
+        mid = (lo + hi) // 2
+        dup = has_dup(mid)
+        if dup:
+            ans = dup
+            lo = mid + 1
+        else:
+            hi = mid - 1
+    return ans
+```
+
+**Collision guard**: Always verify with `s[i:i+m] == pattern` when hashes match — hash collisions are rare but possible.
+
+| Problem | LC# | Difficulty | Technique |
+|---------|-----|------------|-----------|
+| Repeated DNA Sequences | 187 | Medium | Set of substrings / rolling hash |
+| Longest Duplicate Substring | 1044 | Hard | Binary search + rolling hash |
+| Rabin-Karp string match | - | - | Template above |
+
+---
+
 ## 0) Concept
 
 - [Java HashMap](https://bbs.huaweicloud.com/blogs/276884?utm_source=juejin&utm_medium=bbs-ex&utm_campaign=other&utm_content=content)
@@ -2521,292 +2807,6 @@ each level costs O(n log n) (sorting) instead of O(n²).
 | Minimum Swaps to Group All 1's Together | 1151 / 2134 | Sliding window variant |
 | Couples Holding Hands | 765 | Cycle/union-find min swaps |
 | First Missing Positive | 41 | Index-placement swap idea |
-
----
-
-## Template 8: Bijection (Two-Way Mapping)
-
-**Pattern**: Maintain two maps (`x→y` and `y→x`) and check consistency in **both directions**. Required any time the mapping must be one-to-one (LC 205 Isomorphic Strings, LC 290 Word Pattern).
-
-**Why two maps?** One map catches `a→b` conflicts; the second catches `b→a` conflicts (two different `x` values mapping to the same `y`).
-
-```python
-# LC 205 Isomorphic Strings
-def isIsomorphic(s: str, t: str) -> bool:
-    s2t, t2s = {}, {}
-    for a, b in zip(s, t):
-        if s2t.get(a, b) != b or t2s.get(b, a) != a:
-            return False
-        s2t[a] = b
-        t2s[b] = a
-    return True
-
-# LC 290 Word Pattern
-def wordPattern(pattern: str, s: str) -> bool:
-    words = s.split()
-    if len(pattern) != len(words):
-        return False
-    p2w, w2p = {}, {}
-    for p, w in zip(pattern, words):
-        if p2w.get(p, w) != w or w2p.get(w, p) != p:
-            return False
-        p2w[p] = w
-        w2p[w] = p
-    return True
-```
-
-**Common mistake**: Using only one map — fails when two keys map to the same value (`"aa"` vs `"ab"`).
-
----
-
-## Template 9: Bucket Sort via Hash Map (Top-K Frequency, O(n))
-
-**When asked for top-K frequent, ask: "Can you do O(n)?"** — The bucket trick avoids a heap.
-
-**Idea**: Create buckets where `bucket[freq]` holds all elements with that frequency. Scan buckets from highest freq down to collect top-K.
-
-```python
-# LC 347 Top K Frequent Elements — O(n) bucket approach
-from collections import Counter
-
-def topKFrequent(nums: list, k: int) -> list:
-    count = Counter(nums)
-    # bucket[i] = list of numbers that appear exactly i times
-    bucket = [[] for _ in range(len(nums) + 1)]
-    for num, freq in count.items():
-        bucket[freq].append(num)
-
-    result = []
-    for freq in range(len(bucket) - 1, 0, -1):
-        result.extend(bucket[freq])
-        if len(result) >= k:
-            return result[:k]
-    return result
-
-# LC 692 Top K Frequent Words — bucket + sort within bucket
-from collections import Counter
-
-def topKFrequent_words(words: list, k: int) -> list:
-    count = Counter(words)
-    bucket = [[] for _ in range(len(words) + 1)]
-    for word, freq in count.items():
-        bucket[freq].append(word)
-
-    result = []
-    for freq in range(len(bucket) - 1, 0, -1):
-        bucket[freq].sort()          # alphabetical within same frequency
-        result.extend(bucket[freq])
-        if len(result) >= k:
-            return result[:k]
-    return result
-```
-
-| Approach | Time | Space | When |
-|----------|------|-------|------|
-| Heap (nlargest) | O(n log k) | O(n) | Default |
-| Bucket sort | O(n) | O(n) | When O(n) is explicitly required |
-
----
-
-## Template 10: Hash Map + Memoization / DP
-
-**Pattern**: Use a dict as a top-down DP cache (memoization). The key is the subproblem state (index, remaining target, visited set, etc.).
-
-```python
-# LC 139 Word Break — {index: bool}
-def wordBreak(s: str, wordDict: list) -> bool:
-    word_set = set(wordDict)
-    memo = {}
-
-    def dp(i):
-        if i == len(s):
-            return True
-        if i in memo:
-            return memo[i]
-        for j in range(i + 1, len(s) + 1):
-            if s[i:j] in word_set and dp(j):
-                memo[i] = True
-                return True
-        memo[i] = False
-        return False
-
-    return dp(0)
-
-# LC 1048 Longest String Chain — {word: longest_chain_ending_here}
-def longestStrChain(words: list) -> int:
-    words.sort(key=len)
-    dp = {}   # word -> longest chain ending at this word
-    best = 1
-    for word in words:
-        dp[word] = 1
-        for i in range(len(word)):
-            prev = word[:i] + word[i+1:]   # remove one character
-            if prev in dp:
-                dp[word] = max(dp[word], dp[prev] + 1)
-        best = max(best, dp[word])
-    return best
-
-# LC 322 Coin Change — classic DP, memo keyed by amount
-def coinChange(coins: list, amount: int) -> int:
-    memo = {}
-    def dp(rem):
-        if rem < 0: return float('inf')
-        if rem == 0: return 0
-        if rem in memo: return memo[rem]
-        memo[rem] = min(dp(rem - c) + 1 for c in coins)
-        return memo[rem]
-    res = dp(amount)
-    return res if res != float('inf') else -1
-```
-
-**Key rule**: Always check `if state in memo: return memo[state]` **before** computing. Store result **before** returning.
-
----
-
-## Template 11: Monotonic Stack + Hash Map
-
-**Pattern**: Use a stack to process elements in a monotonic order; use a hash map to record the answer for each element by index or value.
-
-```python
-# LC 496 Next Greater Element I
-# map each element of nums1 to its next-greater in nums2
-def nextGreaterElement(nums1: list, nums2: list) -> list:
-    next_greater = {}   # val -> next greater val in nums2
-    stack = []          # monotonic decreasing stack
-
-    for num in nums2:
-        # pop all elements smaller than current — current is their next greater
-        while stack and stack[-1] < num:
-            next_greater[stack.pop()] = num
-        stack.append(num)
-
-    return [next_greater.get(n, -1) for n in nums1]
-
-# LC 503 Next Greater Element II (circular array)
-def nextGreaterElements(nums: list) -> list:
-    n = len(nums)
-    result = [-1] * n
-    stack = []  # stores indices
-
-    for i in range(2 * n):   # traverse twice for circular
-        while stack and nums[stack[-1]] < nums[i % n]:
-            result[stack.pop()] = nums[i % n]
-        if i < n:
-            stack.append(i)
-    return result
-
-# LC 739 Daily Temperatures — index-based answer map
-def dailyTemperatures(temps: list) -> list:
-    result = [0] * len(temps)
-    stack = []  # monotonic decreasing stack of indices
-
-    for i, t in enumerate(temps):
-        while stack and temps[stack[-1]] < t:
-            j = stack.pop()
-            result[j] = i - j
-        stack.append(i)
-    return result
-```
-
-**Recognition cues**: "next greater/smaller", "how many days until warmer", "span of prices", "largest rectangle".
-
----
-
-## Template 12: Rolling Hash (Rabin-Karp)
-
-**When**: Find duplicate/matching substrings in O(n) expected time. Better than O(n²) naive substring comparison.
-
-**Idea**: Hash each window using polynomial rolling hash. Slide the window by removing the leftmost character and adding the new rightmost one in O(1).
-
-```python
-# LC 187 Repeated DNA Sequences — find all length-10 substrings appearing ≥ 2 times
-def findRepeatedDnaSequences(s: str) -> list:
-    if len(s) <= 10:
-        return []
-    seen, repeated = set(), set()
-    for i in range(len(s) - 9):
-        sub = s[i:i+10]
-        if sub in seen:
-            repeated.add(sub)
-        seen.add(sub)
-    return list(repeated)
-
-# General Rabin-Karp rolling hash template
-def rabin_karp(s: str, pattern: str) -> list:
-    """Return all start indices where pattern occurs in s."""
-    n, m = len(s), len(pattern)
-    if m > n:
-        return []
-
-    BASE = 26
-    MOD = (1 << 61) - 1   # Mersenne prime — minimises collisions
-
-    def char_val(c):
-        return ord(c) - ord('a')
-
-    # Precompute BASE^(m-1) mod MOD
-    power = pow(BASE, m - 1, MOD)
-
-    # Hash of pattern and first window
-    p_hash = 0
-    w_hash = 0
-    for i in range(m):
-        p_hash = (p_hash * BASE + char_val(pattern[i])) % MOD
-        w_hash = (w_hash * BASE + char_val(s[i])) % MOD
-
-    result = []
-    for i in range(n - m + 1):
-        if w_hash == p_hash and s[i:i+m] == pattern:  # verify on hash match
-            result.append(i)
-        if i < n - m:
-            # Roll: remove leftmost, add new rightmost
-            w_hash = (w_hash - char_val(s[i]) * power) % MOD
-            w_hash = (w_hash * BASE + char_val(s[i + m])) % MOD
-
-    return result
-
-# LC 1044 Longest Duplicate Substring — binary search + rolling hash
-def longestDupSubstring(s: str) -> str:
-    BASE, MOD = 31, (1 << 61) - 1
-
-    def has_dup(length):
-        if length == 0:
-            return ""
-        power = pow(BASE, length - 1, MOD)
-        h = 0
-        for c in s[:length]:
-            h = (h * BASE + ord(c) - ord('a')) % MOD
-        seen = {h: 0}
-        for i in range(1, len(s) - length + 1):
-            h = (h - (ord(s[i-1]) - ord('a')) * power) % MOD
-            h = (h * BASE + ord(s[i+length-1]) - ord('a')) % MOD
-            if h in seen:
-                # verify (collision guard)
-                start = seen[h]
-                if s[start:start+length] == s[i:i+length]:
-                    return s[i:i+length]
-            seen[h] = i
-        return ""
-
-    lo, hi, ans = 0, len(s) - 1, ""
-    while lo <= hi:
-        mid = (lo + hi) // 2
-        dup = has_dup(mid)
-        if dup:
-            ans = dup
-            lo = mid + 1
-        else:
-            hi = mid - 1
-    return ans
-```
-
-**Collision guard**: Always verify with `s[i:i+m] == pattern` when hashes match — hash collisions are rare but possible.
-
-| Problem | LC# | Difficulty | Technique |
-|---------|-----|------------|-----------|
-| Repeated DNA Sequences | 187 | Medium | Set of substrings / rolling hash |
-| Longest Duplicate Substring | 1044 | Hard | Binary search + rolling hash |
-| Rabin-Karp string match | - | - | Template above |
 
 ---
 

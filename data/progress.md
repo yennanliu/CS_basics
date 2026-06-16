@@ -21,7 +21,6 @@
 	- LC example
 - set.md
 - stack.md
-- sort.md
 - 2 pointer.md
 - Union Find
 - Dijkstra
@@ -39,6 +38,7 @@
   - complexity_drills.html
   - String.md
   - bfs.md
+  - sort.md
 
 
 - `MUST LC problems`
