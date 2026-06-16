@@ -14,8 +14,6 @@
 - python_trick.md
 	- 2) LC Example
 - BST.md
-- String.md
-	- 2-15) Verifying an Alien Dictionary
 - Difference Array.md
 - Hash Map.md
 	- LC example
@@ -31,7 +29,6 @@
 - bfs.md
 	- doing
 	- Type 2: Independent BFS Runs (One BFS per source)
-- complexity_drills.html (doing)
 
 
 - OK:
@@ -40,6 +37,8 @@
   - tree2.md
   - priority_queue.md
   - monotonic_stack.md
+  - complexity_drills.html
+  - String.md
 
 
 - `MUST LC problems`
