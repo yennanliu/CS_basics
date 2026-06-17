@@ -7,8 +7,10 @@
 - hash_map.md
 	- 2-12) Brick Wall — LC 554
 
-- set.md
-	- 2-5) Longest Consecutive Sequence — LC 128
+
+
+- intervals.md
+
 
 	
 - backtrack.md
@@ -16,7 +18,6 @@
 - dp.md
 	- todo: `Template 7-1: One Edit Distance (LC 161) — Exactly-1-Edit Variant`
 - greedy.md
-- intervals.md
 - tree.md
 	- doing
 - python_trick.md
@@ -26,7 +27,6 @@
 - heap
 	- LC example
 - stack.md
-- 2 pointer.md
 - Union Find
 - Dijkstra
 - Queue
@@ -44,6 +44,9 @@
   - String.md
   - bfs.md
   - sort.md
+  - set.md
+  - 2 pointer.md
+
 
 
 - `MUST LC problems`
@@ -101,6 +104,9 @@
 			- 525
 		- set
 			- 128**
+			- 2104
+		- 2 pointers
+			- 31
 		- lazy_bst_in_order(todo),173(todo),2616(todo, compare PQ)
 		- topo_sort,257(todo)
 		- `Combinations VS Permutations` in DP
