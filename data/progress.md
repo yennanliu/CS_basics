@@ -3,13 +3,10 @@
 
 # 2026-06-17
 
-- tree.md
-	- 3.1) Tree Right Side View — LC 199
-
 
 - intervals.md
 
-
+- Union Find.md
 	
 - backtrack.md
 	- todo: `Type 2) : Permutations (排列組合) (全排列)`
@@ -23,7 +20,6 @@
 - heap
 	- LC example
 - stack.md
-- Union Find
 - Dijkstra
 - Queue
 	- doing
@@ -43,6 +39,7 @@
   - set.md
   - 2 pointer.md
   - hash_map.md
+  - tree.md
 
 
 
@@ -105,7 +102,7 @@
 		- 2 pointers
 			- 31
 		- tree
-			- 1110,652
+			- 1110,652,742,863
 		- lazy_bst_in_order(todo),173(todo),2616(todo, compare PQ)
 		- topo_sort,257(todo)
 		- `Combinations VS Permutations` in DP
