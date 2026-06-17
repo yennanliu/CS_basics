@@ -6,16 +6,18 @@
 
 - intervals.md
 
-- Union Find.md
-	
+
+- python_trick.md
+	- 2) LC Example
+
+- stack.md
+
+
 - backtrack.md
 	- todo: `Type 2) : Permutations (排列組合) (全排列)`
 - dp.md
 	- todo: `Template 7-1: One Edit Distance (LC 161) — Exactly-1-Edit Variant`
 - greedy.md
-- python_trick.md
-	- 2) LC Example
-- BST.md
 - Difference Array.md
 - heap
 	- LC example
@@ -40,6 +42,8 @@
   - 2 pointer.md
   - hash_map.md
   - tree.md
+  - union_find
+  - BST.md
 
 
 
@@ -103,6 +107,8 @@
 			- 31
 		- tree
 			- 1110,652,742,863
+		- bst
+			- 1382
 		- lazy_bst_in_order(todo),173(todo),2616(todo, compare PQ)
 		- topo_sort,257(todo)
 		- `Combinations VS Permutations` in DP
