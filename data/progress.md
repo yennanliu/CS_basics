@@ -3,10 +3,8 @@
 
 # 2026-06-17
 
-
-- hash_map.md
-	- 2-12) Brick Wall — LC 554
-
+- tree.md
+	- doing
 
 
 - intervals.md
@@ -18,8 +16,6 @@
 - dp.md
 	- todo: `Template 7-1: One Edit Distance (LC 161) — Exactly-1-Edit Variant`
 - greedy.md
-- tree.md
-	- doing
 - python_trick.md
 	- 2) LC Example
 - BST.md
@@ -46,6 +42,7 @@
   - sort.md
   - set.md
   - 2 pointer.md
+  - hash_map.md
 
 
 
@@ -107,6 +104,8 @@
 			- 2104
 		- 2 pointers
 			- 31
+		- tree
+			- 1110,652
 		- lazy_bst_in_order(todo),173(todo),2616(todo, compare PQ)
 		- topo_sort,257(todo)
 		- `Combinations VS Permutations` in DP
