@@ -36,6 +36,96 @@ Medium
 
 
 # V1
+from typing import List
+
+class LogSystem:
+
+    def __init__(self):
+        self.logs = []
+
+        self.idx = {
+            "Year": 4,
+            "Month": 7,
+            "Day": 10,
+            "Hour": 13,
+            "Minute": 16,
+            "Second": 19
+        }
+
+    def put(self, id: int, timestamp: str) -> None:
+        self.logs.append((id, timestamp))
+
+    def retrieve(self, start: str, end: str, granularity: str) -> List[int]:
+
+        k = self.idx[granularity]
+
+        start = start[:k]
+        end = end[:k]
+
+        res = []
+
+        for log_id, ts in self.logs:
+            cur = ts[:k]
+
+            if start <= cur <= end:
+                res.append(log_id)
+
+        return res
+
+
+
+# V1-2
+class LogSystem(object):
+
+    def __init__(self):
+        # A simple list storage is ideal because we need to scan logs without destroying a heap
+        self.logs = []
+        
+        # Maps the granularity keyword to its truncation slicing index position in the timestamp string
+        # "2017:01:01:23:59:59"
+        #  Y    M  D  H  M  S
+        self.granularity_map = {
+            "Year": 4,      # "2017"
+            "Month": 7,     # "2017:01"
+            "Day": 10,     # "2017:01:01"
+            "Hour": 13,    # "2017:01:01:23"
+            "Minute": 16,  # "2017:01:01:23:59"
+            "Second": 19   # Full string matching
+        }
+        
+        # Suffixes used to fill out the remaining string safely for inclusive comparisons
+        self.min_suffix = ":01:01:00:00:00"
+        self.max_suffix = ":12:31:23:59:59"
+
+    def put(self, id, timestamp):
+        """
+        :type id: int
+        :type timestamp: str
+        :rtype: None
+        """
+        self.logs.append((id, timestamp))
+
+    def retrieve(self, start, end, granularity):
+        """
+        :type start: str
+        :type end: str
+        :type granularity: str
+        :rtype: List[int]
+        """
+        # Determine how many characters we need to look at based on granularity
+        idx = self.granularity_map[granularity]
+        
+        # Crop the timestamps to the granularity level and complete them with boundaries
+        truncated_start = start[:idx] + self.min_suffix[idx:]
+        truncated_end = end[:idx] + self.max_suffix[idx:]
+        
+        res = []
+        for log_id, log_time in self.logs:
+            # Lexicographical string comparisons operate perfectly on standard time formats!
+            if truncated_start <= log_time <= truncated_end:
+                res.append(log_id)
+                
+        return res
 
 
 # V2-1
@@ -98,12 +188,5 @@ class LogSystem:
                 break
             result.extend(self.logs[timestamp])
         return result
-
-
-
-
-
-
-
 
 
