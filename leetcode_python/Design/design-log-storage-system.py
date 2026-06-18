@@ -67,6 +67,25 @@ class LogSystem:
         for log_id, ts in self.logs:
             cur = ts[:k]
 
+            """
+            NOTE !!!
+
+            -> 
+
+            Lexicographical str comparisons op is 
+            working on standard time formats!
+
+
+            ->
+
+            If the years match, 
+                -> it checks the months: "2017:01..." is smaller than "2017:05...".
+
+            If those match, 
+                -> it checks the days: "2017:01:02..." is smaller than "2017:01:15...".
+
+            """
+            # Lexicographical string comparisons operate perfectly on standard time formats!
             if start <= cur <= end:
                 res.append(log_id)
 
@@ -121,6 +140,14 @@ class LogSystem(object):
         
         res = []
         for log_id, log_time in self.logs:
+            """
+            NOTE !!!
+
+            -> 
+
+            Lexicographical str comparisons op is 
+            working on standard time formats!
+            """
             # Lexicographical string comparisons operate perfectly on standard time formats!
             if truncated_start <= log_time <= truncated_end:
                 res.append(log_id)
