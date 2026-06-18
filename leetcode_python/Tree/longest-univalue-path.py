@@ -52,6 +52,37 @@ class Solution(object):
         # longest path passing through current node
         self.longest = max(self.longest, left + right)
 
+        """
+        NOTE !!! 
+
+        A path going `upward` can only choose ONE direction.
+
+        e.g.
+
+                  5
+                 / \
+                5   5
+               /
+              5
+
+
+        for above, we can either move right or right
+        e.g.
+
+                 /   or   \
+                5          5
+               /
+              5
+
+        1. ONLY below condition met,
+           then we update the path
+
+
+        2. root -> sub tree  CAN only move forward in 1 path.
+           e.g. we CAN'T move both sub left and sub right on the same time
+           -> so that's why we need  `max(left, right)`
+               -> to decide which path to move (e.g. left or right)
+        """
         # can this path continue upward?
         if prev_node and node.val == prev_node.val:
             return max(left, right) + 1
