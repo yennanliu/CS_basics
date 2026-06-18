@@ -33,6 +33,64 @@ The depth of the tree will not exceed 1000.
 
 """
 
+
+# V0
+# IDEA: DFS + PRE NODE
+class Solution(object):
+    def longestUnivaluePath(self, root):
+        self.longest = 0
+        self.helper(None, root)
+        return self.longest
+
+    def helper(self, prev_node, node):
+        if not node:
+            return 0
+
+        left = self.helper(node, node.left)
+        right = self.helper(node, node.right)
+
+        # longest path passing through current node
+        self.longest = max(self.longest, left + right)
+
+        # can this path continue upward?
+        if prev_node and node.val == prev_node.val:
+            return max(left, right) + 1
+
+        return 0
+
+
+
+# V0-1
+# IDEA: DFS
+class Solution(object):
+    def longestUnivaluePath(self, root):
+        self.longest = 0
+
+        def dfs(node):
+            if not node:
+                return 0
+
+            left = dfs(node.left)
+            right = dfs(node.right)
+
+            left_path = 0
+            right_path = 0
+
+            if node.left and node.left.val == node.val:
+                left_path = left + 1
+
+            if node.right and node.right.val == node.val:
+                right_path = right + 1
+
+            self.longest = max(self.longest, left_path + right_path)
+
+            return max(left_path, right_path)
+
+        dfs(root)
+        return self.longest
+
+
+
 # V0
 class Solution(object):
     def longestUnivaluePath(self, root):
