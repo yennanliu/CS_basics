@@ -23,10 +23,6 @@
 	- LC example
 - stack.md
 - Dijkstra
-- Queue
-	- doing
-	- Type 2: Independent BFS Runs (One BFS per source)
-
 
 - OK:
   - graph.md
@@ -44,6 +40,7 @@
   - tree.md
   - union_find
   - BST.md
+  - Queue.md
 
 
 
