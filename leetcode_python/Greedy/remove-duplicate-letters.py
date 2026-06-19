@@ -46,6 +46,14 @@ class Solution(object):
             return ""
 
         # last occurrence index of each character
+        """
+        NOTE !!!
+
+        use `last occurrence index ` 
+        to assure thaat we still `can meet`
+        the plan-to-remove element
+        later when decide whether to delete the element now
+        """
         last_idx = {}
 
         for i in range(len(s)):
@@ -66,6 +74,7 @@ class Solution(object):
             ch = s[i]
 
             # skip duplicates
+            # NOTE !!! below
             if ch in seen:
                 continue
 
@@ -76,6 +85,7 @@ class Solution(object):
                 removed = res.pop()
                 seen.remove(removed)
 
+            # don't forget to update `seen`
             res.append(ch)
             seen.add(ch)
 
