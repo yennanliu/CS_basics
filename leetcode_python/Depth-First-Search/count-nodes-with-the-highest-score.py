@@ -50,14 +50,172 @@ parents represents a valid binary tree.
 """
 
 # V0
+# class Solution(object):
+#     def countHighestScoreNodes(self, parents):
+#         """
+#         :type parents: List[int]
+#         :rtype: int
+#         """
+
+# V1-1
+# IDEA: DFS (gpt)
 class Solution(object):
     def countHighestScoreNodes(self, parents):
         """
         :type parents: List[int]
         :rtype: int
         """
+        n = len(parents)
 
-# V1
+        children = [[] for _ in range(n)]
+        root = 0
+
+        for i in range(n):
+            if parents[i] == -1:
+                root = i
+            else:
+                children[parents[i]].append(i)
+
+        max_score = [0]
+        count = [0]
+
+        def dfs(node):
+            subtree_size = 1
+            score = 1
+
+            for child in children[node]:
+                child_size = dfs(child)
+                subtree_size += child_size
+                score *= child_size
+
+            remaining = n - subtree_size
+            if remaining > 0:
+                score *= remaining
+
+            if score > max_score[0]:
+                max_score[0] = score
+                count[0] = 1
+            elif score == max_score[0]:
+                count[0] += 1
+
+            return subtree_size
+
+        dfs(root)
+        return count[0]
+
+
+# V1-2
+# IDEA: DFS (gemini)
+class Solution(object):
+    def countHighestScoreNodes(self, parents):
+        """
+        :type parents: List[int]
+        :rtype: int
+        """
+        n = len(parents)
+        
+        # 1. Build an adjacency tree mapping (parent -> list of children)
+        tree = [[] for _ in range(n)]
+        for child_idx, parent_idx in enumerate(parents):
+            if parent_idx != -1:
+                tree[parent_idx].append(child_idx)
+                
+        # Array to store the pre-calculated subtree size for each node
+        subtree_size = [0] * n
+        
+        # --- STAGE 1: Pure Subtree Size Calculator ---
+        def calculate_sizes(node):
+            size = 1
+            for child in tree[node]:
+                size += calculate_sizes(child)
+            subtree_size[node] = size
+            return size
+            
+        # Run size calculations starting from the root (0)
+        calculate_sizes(0)
+        
+        # --- STAGE 2: Pure Sequential Score Evaluation Loop ---
+        max_score = 0
+        max_score_count = 0
+        
+        for i in range(n):
+            current_score = 1
+            total_children_size = 0
+            
+            # Multiply the size of each child's subtree
+            for child in tree[i]:
+                child_size = subtree_size[child]
+                current_score *= child_size
+                total_children_size += child_size
+                
+            # The size of the parent/above component left over
+            above_size = n - 1 - total_children_size
+            if above_size > 0:
+                current_score *= above_size
+                
+            # Update running maxima benchmarks
+            if current_score > max_score:
+                max_score = current_score
+                max_score_count = 1
+            elif current_score == max_score:
+                max_score_count += 1
+                
+        return max_score_count
+
+
+# V1-3
+# IDEA: TREE DP (gemini)
+class Solution(object):
+    def countHighestScoreNodes(self, parents):
+        """
+        :type parents: List[int]
+        :rtype: int
+        """
+        n = len(parents)
+        
+        # Step 1: Reconstruct the tree layout as an adjacency list mapping: parent -> [children]
+        tree = [[] for _ in range(n)]
+        for child_idx, parent_idx in enumerate(parents):
+            if parent_idx != -1:
+                tree[parent_idx].append(child_idx)
+                
+        # State variables to keep track of highest score benchmarks
+        self.max_score = 0
+        self.max_score_count = 0
+        
+        # Step 2: Define a post-order traversal function that computes subtree node counts
+        def dfs(node):
+            total_subtree_nodes = 1
+            current_node_score = 1
+            
+            # Look at all children of the current node
+            for child in tree[node]:
+                child_subtree_size = dfs(child)
+                # Add child subtree size to current node's total size accumulation
+                total_subtree_nodes += child_subtree_size
+                # Multiply component sizes for the score tracking
+                current_node_score *= child_subtree_size
+                
+            # Step 3: Compute the "above/parent" component size (everything outside this subtree)
+            above_component_size = n - total_subtree_nodes
+            if above_component_size > 0:
+                current_node_score *= above_component_size
+                
+            # Step 4: Compare results against global benchmarks
+            if current_node_score > self.max_score:
+                self.max_score = current_node_score
+                self.max_score_count = 1
+            elif current_node_score == self.max_score:
+                self.max_score_count += 1
+                
+            # Return total node size of this subtree back to its parent caller
+            return total_subtree_nodes
+
+        # Kick off DFS starting at the root node (0)
+        dfs(0)
+        
+        return self.max_score_count
+
 
 
 # V2
