@@ -161,6 +161,33 @@
   - LC 743 - Network Delay Time (weighted graph exploration)
   - LC 1334 - Find the City With the Smallest Number of Neighbors at a Threshold Distance
 
+### **Pattern 13: Subtree Size Aggregation (Remove-Node Scoring)** — LC 2049
+- **Description**: Post-order DFS that returns each node's **subtree size**, while simultaneously computing a per-node value (score) derived from the sizes of the components formed when that node is removed
+- **Recognition**: "remove node and edges → tree splits into subtrees", "product/sum of component sizes", "score of a node", "tree given as `parents[]` array"
+- **Key Technique**: One DFS returns `subtree_size = 1 + Σ child_subtree_size`. When node is removed, the components are (a) each child's subtree, and (b) the **parent side** = `n - subtree_size`. Aggregate these on the fly.
+- **Examples**: LC 2049 (Count Nodes With the Highest Score)
+- **Template**: Use Bottom-up DFS (Template 6) — return subtree size, aggregate at each node
+- **Core Idea** (⭐⭐⭐⭐⭐):
+  - Removing node `x` cuts it into `len(children[x])` child components **plus** the "above" component (everything outside x's subtree).
+  - `child component size` = subtree size of each child (returned by DFS).
+  - `parent / above component size` = `n - subtree_size(x)` (only counts if `> 0`, i.e. x is not the root).
+  - `score(x) = Π(child subtree sizes) × max(1, n - subtree_size(x))` — every subtree size is computed exactly **once**, giving O(n) time / O(n) space (needed since n ≤ 10^5).
+- **Build the tree from `parents[]`**: `children[parents[i]].append(i)` for `i != root`; root is the index where `parents[i] == -1` (usually node 0).
+- **Pattern variants**:
+  - **One-pass DFS** (return size + multiply/track max inline) — most concise
+  - **Two-pass** (pass 1: precompute `subtree_size[]` array; pass 2: iterate nodes computing scores) — decouples size calc from scoring, easier to reason about
+- **Important Notes**:
+  - Guard the parent component with `max(1, ...)` or `if remaining > 0` — root has no "above" component.
+  - Use a `Counter`/dict keyed by score to count how many nodes hit the max, or track `(max_score, count)` running maxima.
+  - Generalizes beyond binary trees — the same DFS works for any tree given via `parents[]`/adjacency list.
+- **Similar Classic LC Problems**:
+  - LC 2049 - Count Nodes With the Highest Score (canonical remove-node scoring)
+  - LC 1519 - Number of Nodes in the Sub-Tree With the Same Label (subtree aggregation via DFS)
+  - LC 508 - Most Frequent Subtree Sum (per-subtree value + frequency count)
+  - LC 543 - Diameter of Binary Tree (bottom-up subtree metric)
+  - LC 124 - Binary Tree Maximum Path Sum (return subtree value, aggregate global max)
+  - LC 834 - Sum of Distances in Tree (subtree size + reroot DP, advanced follow-up)
+
 ## Templates & Algorithms
 
 ### Template Comparison Table
