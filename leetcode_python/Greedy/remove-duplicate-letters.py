@@ -34,13 +34,52 @@ Note: This question is the same as 1081: https://leetcode.com/problems/smallest-
 """
 
 # V0
-# class Solution(object):
-#     def removeDuplicateLetters(self, s):
-#         """
-#         :type s: str
-#         :rtype: str
-#         """
-        
+# IDEA: MONO STACK (GPT)
+class Solution(object):
+    def removeDuplicateLetters(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+
+        if not s:
+            return ""
+
+        # last occurrence index of each character
+        last_idx = {}
+
+        for i in range(len(s)):
+            last_idx[s[i]] = i
+
+        # monotonic stack
+        res = []
+
+        """
+        NOTE !!!
+
+        use `seen` to avoid duplicated append
+        """
+        # characters already in stack
+        seen = set()
+
+        for i in range(len(s)):
+            ch = s[i]
+
+            # skip duplicates
+            if ch in seen:
+                continue
+
+            # pop larger chars if they appear later again
+            while (res and
+                   ch < res[-1] and
+                   last_idx[res[-1]] > i):
+                removed = res.pop()
+                seen.remove(removed)
+
+            res.append(ch)
+            seen.add(ch)
+
+        return "".join(res)
 
 
 # V1
