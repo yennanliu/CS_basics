@@ -73,8 +73,8 @@ For each node:
 
    * One component for each child subtree.
    * One component containing the parent side 
-   	 (everything outside the node's subtree).
-   	 
+     (everything outside the node's subtree).
+
 3. The node's **score** is:
 
 ```text
@@ -128,6 +128,116 @@ class Solution(object):
 
         # Build adjacency list:
         # children[i] will contain all direct children of node i
+        """
+        NOTE !!!
+
+
+        why `children = [[] for _ in range(n)]` ?
+
+
+        ->
+
+        
+        children = [
+            [],  # children of node 0
+            [],  # children of node 1
+            [],  # children of node 2
+            [],  # children of node 3
+            []   # children of node 4
+        ]
+
+
+        ->
+
+        children[node] = list of node's direct children
+
+
+        ## Iteration 1
+
+            ```python
+            i = 0
+            parents[0] = -1
+            ```
+
+            ```python
+            if parents[i] == -1:
+                root = i
+            ```
+
+            So:
+
+            ```python
+            root = 0
+            ```
+
+            Meaning node 0 is the root.
+
+            Current state:
+
+            ```python
+            children = [[], [], [], [], []]
+            ```
+
+            ---
+
+            ## Iteration 2
+
+            ```python
+            i = 1
+            parents[1] = 2
+            ```
+
+            This means:
+
+            ```text
+            2 --> 1
+            ```
+
+            Node 1 is a child of node 2.
+
+            ```python
+            children[2].append(1)
+            ```
+
+            Now:
+
+            ```python
+            children = [
+                [],
+                [],
+                [1],
+                [],
+                []
+            ]
+            ```
+
+
+
+
+        ....
+
+
+        ->
+
+        Final result:
+
+        ```python
+        children = [
+            [2, 4],
+            [],
+            [1, 3],
+            [],
+            []
+        ]
+        ```
+
+
+        -> so we can use the `parent-children` in below DFS
+
+        (children[node] = list of node's direct children)
+        
+
+        """
         children = [[] for _ in range(n)]
 
         # Find root and build child relationships
