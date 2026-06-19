@@ -59,49 +59,148 @@ parents represents a valid binary tree.
 
 # V1-1
 # IDEA: DFS (gpt)
+"""
+
+NOTE !!! core idea
+
+
+### Intuition
+
+For each node:
+
+1. Pretend we remove that node.
+2. The tree splits into:
+
+   * One component for each child subtree.
+   * One component containing the parent side 
+   	 (everything outside the node's subtree).
+   	 
+3. The node's **score** is:
+
+```text
+(child subtree size 1)
+× (child subtree size 2)
+× ...
+× (remaining nodes outside subtree)
+```
+
+Example:
+
+```text
+parents = [-1, 2, 0, 2, 0]
+
+Tree:
+
+      0
+     / \
+    2   4
+   / \
+  1   3
+```
+
+For node `2`:
+
+```text
+child subtree sizes = 1 (node 1), 1 (node 3)
+remaining nodes = 2 (nodes 0 and 4)
+
+score = 1 × 1 × 2 = 2
+```
+
+The DFS computes every subtree size exactly once, giving:
+
+* **Time:** O(n)
+* **Space:** O(n)
+
+which is required since `n` can be up to `10^5`.
+
+
+"""
 class Solution(object):
     def countHighestScoreNodes(self, parents):
         """
         :type parents: List[int]
         :rtype: int
         """
+
+        # Total number of nodes in the tree
         n = len(parents)
 
+        # Build adjacency list:
+        # children[i] will contain all direct children of node i
         children = [[] for _ in range(n)]
+
+        # Find root and build child relationships
         root = 0
 
         for i in range(n):
             if parents[i] == -1:
+                # Root node has no parent
                 root = i
             else:
+                # Add i as a child of its parent
                 children[parents[i]].append(i)
 
+        # max_score[0] stores the highest score seen so far
+        # Use a list so nested dfs() can modify it
         max_score = [0]
+
+        # count[0] stores how many nodes achieve max_score
         count = [0]
 
         def dfs(node):
+            """
+            Returns the size of the subtree rooted at 'node'.
+
+            While returning subtree sizes, also computes the score
+            for the current node.
+            """
+
+            # Every subtree includes itself
             subtree_size = 1
+
+            # Score starts at 1 because we'll multiply component sizes
             score = 1
 
+            # Process all children
             for child in children[node]:
+
+                # Get size of child's subtree
                 child_size = dfs(child)
+
+                # Add child subtree to current subtree
                 subtree_size += child_size
+
+                # If current node is removed,
+                # this child subtree becomes one component
                 score *= child_size
 
+            # Size of the "parent side" component
+            # (all nodes outside current subtree)
             remaining = n - subtree_size
+
+            # Only multiply if such component exists
             if remaining > 0:
                 score *= remaining
 
+            # Update global maximum score
             if score > max_score[0]:
                 max_score[0] = score
                 count[0] = 1
+
+            # Another node achieves the same max score
             elif score == max_score[0]:
                 count[0] += 1
 
+            # Return subtree size to parent
             return subtree_size
 
+        # Start DFS from root
         dfs(root)
+
+        # Return number of nodes having highest score
         return count[0]
+
 
 
 # V1-2
