@@ -52,7 +52,106 @@ class Solution(object):
         :type s: str
         :rtype: List[str]
         """
+
+
+# V0-1
+# IDEA: GPT
+class Solution(object):
+    def ambiguousCoordinates(self, s):
+        digits = s[1:-1]  # remove outer parentheses
+        res = []
+
+        def generate(part):
+            n = len(part)
+
+            # no decimal
+            if n == 1 or part[0] != '0':
+                yield part
+
+            # decimal versions
+            for i in range(1, n):
+                left = part[:i]
+                right = part[i:]
+
+                # left side can't have leading zeros unless exactly "0"
+                if len(left) > 1 and left[0] == '0':
+                    continue
+
+                # right side can't end with zero
+                if right[-1] == '0':
+                    continue
+
+                yield left + "." + right
+
+        for i in range(1, len(digits)):
+            left = digits[:i]
+            right = digits[i:]
+
+            for l in generate(left):
+                for r in generate(right):
+                    res.append("(" + l + ", " + r + ")")
+
+        return res
+
+
+# V0-2
+# IDEA: GEMINI
+class Solution(object):
+    def ambiguousCoordinates(self, s):
+        """
+        :type s: str
+        :rtype: List[str]
+        """
+        # Step 1: Strip the outer parenthesis characters '(' and ')'
+        digits = s[1:-1]
+        res = []
         
+        # Step 2: Try every possible split position to divide the digits into left and right halves
+        # The left part needs at least 1 character, and the right part needs at least 1 character.
+        for i in range(1, len(digits)):
+            left_part = digits[:i]
+            right_part = digits[i:]
+            
+            # Generate all legal number variations for both segments
+            valid_lefts = self.get_valid_formats(left_part)
+            valid_rights = self.get_valid_formats(right_part)
+            
+            # Step 4: Cross multiply the valid choices together
+            for left in valid_lefts:
+                for right in valid_rights:
+                    res.append("({}, {})".format(left, right))
+                    
+        return res
+
+    def get_valid_formats(self, sub_str):
+        """
+        Helper method that returns a list of all mathematically valid representations 
+        of a string segment (either as a valid integer or a valid decimal).
+        """
+        ans = []
+        n = len(sub_str)
+        
+        # Scenario A: Try treating the entire string slice as a whole integer (no decimal point)
+        # Rule: It cannot have leading zeros unless the string is exactly "0"
+        if n == 1 or not sub_str.startswith('0'):
+            ans.append(sub_str)
+            
+        # Scenario B: Inject a decimal point at every possible interior position
+        for i in range(1, n):
+            integer_part = sub_str[:i]
+            decimal_part = sub_str[i:]
+            
+            # Rule 1: Integer part cannot have leading zeros unless it is exactly "0"
+            if len(integer_part) > 1 and integer_part.startswith('0'):
+                continue
+            # Rule 2: Decimal part cannot have trailing zeros at the very end
+            if decimal_part.endswith('0'):
+                continue
+                
+            ans.append(integer_part + "." + decimal_part)
+            
+        return ans
+
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/80677194
