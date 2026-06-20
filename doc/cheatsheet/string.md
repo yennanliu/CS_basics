@@ -2630,6 +2630,139 @@ Why FIRST in firstString + LAST in secondString:
 
 ---
 
+### 2-18) Ambiguous Coordinates — LC 816
+
+**Pattern: Enumerate Splits + Generate Valid Number Formats**
+- LC 816. Ambiguous Coordinates (Medium)
+- Given digits like `"(123)"`, restore all possible `"(x, y)"` coordinates by inserting a comma and (optionally) decimal points.
+
+#### Core Idea
+```
+2 nested decisions:
+  1) WHERE to split the digit string into left / right (the comma position)
+  2) HOW to format each half as a valid number (integer or decimal)
+
+For each split position i (1 <= i < len):
+  left  = digits[:i]
+  right = digits[i:]
+  -> enumerate valid formats of left  x valid formats of right
+  -> combine into "(left, right)"
+
+A half can be either:
+  (A) a whole integer (no decimal point)
+  (B) a decimal: insert '.' at every interior position
+```
+
+#### Validity Rules (the tricky part)
+```
+Whole integer  s:
+  - valid only if s == single digit, OR s does NOT start with '0'
+  - "0" ok, "10" ok, "01" / "00" invalid
+
+Decimal  int_part . dec_part:
+  - int_part: no leading zero unless it is exactly "0"
+      -> "0.5" ok, "05.1" invalid
+  - dec_part: cannot end with '0' (no trailing zero)
+      -> "1.5" ok, "1.50" invalid, "1.0" invalid
+```
+
+#### Python (V0 — explicit helper)
+```python
+# LC 816 - Ambiguous Coordinates
+class Solution(object):
+    def ambiguousCoordinates(self, s):
+        # time  = O(n^4) : O(n) splits * O(n) decimal pos * O(n) string build
+        # space = O(n^2) for results
+        digits = s[1:-1]            # strip outer parentheses
+        res = []
+        for i in range(1, len(digits)):
+            lefts  = self.get_valid_formats(digits[:i])
+            rights = self.get_valid_formats(digits[i:])
+            for l in lefts:
+                for r in rights:
+                    res.append("({}, {})".format(l, r))
+        return res
+
+    def get_valid_formats(self, sub):
+        ans = []
+        n = len(sub)
+        # (A) whole integer: no leading zero unless single char
+        if n == 1 or not sub.startswith('0'):
+            ans.append(sub)
+        # (B) decimal: insert '.' at every interior position
+        for i in range(1, n):
+            int_part, dec_part = sub[:i], sub[i:]
+            if len(int_part) > 1 and int_part.startswith('0'):
+                continue            # leading zero in integer part
+            if dec_part.endswith('0'):
+                continue            # trailing zero in decimal part
+            ans.append(int_part + "." + dec_part)
+        return ans
+```
+
+#### Python (concise — generator)
+```python
+class Solution(object):
+    def ambiguousCoordinates(self, s):
+        digits = s[1:-1]
+        res = []
+
+        def generate(part):
+            n = len(part)
+            if n == 1 or part[0] != '0':   # whole integer
+                yield part
+            for i in range(1, n):          # decimal versions
+                left, right = part[:i], part[i:]
+                if len(left) > 1 and left[0] == '0':
+                    continue
+                if right[-1] == '0':
+                    continue
+                yield left + "." + right
+
+        for i in range(1, len(digits)):
+            for l in generate(digits[:i]):
+                for r in generate(digits[i:]):
+                    res.append("(" + l + ", " + r + ")")
+        return res
+```
+
+**Worked Example:**
+```
+s = "(0123)"  ->  digits = "0123"
+
+split "0" | "123":
+  "0" valid formats     -> ["0"]
+  "123" valid formats   -> ["123", "1.23", "12.3"]
+  -> (0, 123), (0, 1.23), (0, 12.3)
+
+split "01" | "23":
+  "01" -> invalid as integer (leading zero), "0.1" ok
+  "23" -> ["23", "2.3"]
+  -> (0.1, 23), (0.1, 2.3)
+
+split "012" | "3":
+  "012" -> "0.12" ok (only)
+  "3"   -> ["3"]
+  -> (0.12, 3)
+
+Final: 6 coordinates
+```
+
+**Key Tricks:**
+```
+- "0" alone is always a valid integer; "00", "01" never are.
+- Decimal: a digit sequence is invalid if it ends in '0' (else two
+  representations collide, e.g. "1.50" == "1.5").
+- Two independent halves -> cross-product (left choices x right choices).
+```
+
+**Similar Problems:**
+- LC 93 Restore IP Addresses (enumerate split positions + segment validity)
+- LC 468 Validate IP Address (per-segment leading-zero / range rules)
+- LC 282 Expression Add Operators (insert operators between digits)
+
+---
+
 ## Missing Google Patterns
 
 ### Z-Algorithm — O(n) Pattern Matching (Alternative to KMP)

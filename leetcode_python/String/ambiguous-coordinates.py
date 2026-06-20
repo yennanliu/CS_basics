@@ -83,6 +83,42 @@ class Solution(object):
         
         # Scenario A: Try treating the entire string slice as a whole integer (no decimal point)
         # Rule: It cannot have leading zeros unless the string is exactly "0"
+        """
+        NOTE !!!
+
+
+        -> 
+
+
+        When we look at strings like `"011"` or `"00011"`, 
+        **any** string that has a length greater 
+        than 1 (`len(integer_part) > 1`) and 
+        starts with the character zero (`integer_part.startswith('0')`)
+         is mathematically an `ILLEGAL` integer representation.
+
+
+
+        By writing len(integer_part) > 1 and integer_part.startswith('0'),
+        we are saying: "If you start with a zero,
+        the only way you are allowed to survive is
+        if you are exactly one character long (just '0').
+        If you have any extra digits trailing after that leading zero, 
+        you are illegal."
+
+
+
+        =======================================================================
+        | Integer Part | len > 1? | startswith('0')? | Combined Result | Status   |
+        =======================================================================
+        | "0"          | False    | True             | False           | ALLOWED  |
+        | "01"         | True     | True             | True            | BLOCKED  |
+        | "000"        | True     | True             | True            | BLOCKED  |
+        | "105"        | True     | False            | False           | ALLOWED  |
+        =======================================================================
+
+
+
+        """
         if n == 1 or not sub_str.startswith('0'):
             ans.append(sub_str)
             
