@@ -66,14 +66,37 @@ The maze contains at least 2 empty spaces, and both the width and height of the 
 NOTE !!!
 
 
-keeps rolling until it hits a wall
-each move can travel multiple cells
-edge weights are not uniform
+he Maze II (LC 505) introduces a physics mechanic: 
+
+the ball does not stop moving step-by-step; 
+it must roll in a continuous direction until 
+it physically collides with a wall.  
+
+Because a path can take a long, 
+winding loop but still reach a cell
+faster than a shorter looking path that got stopped early,
+standard BFS step-by-step tracking fails. 
+
+-> Instead, you need Dijkstra's Algorithm 
+via a Min-Heap (Priority Queue) 
+to always process the globally shortest path first.
+
+
 
 
 -> 
 
 Therefore you need `Dijkstra's` algorithm, not BFS.
+
+
+
+->
+
+What LC 505 actually does
+
+The ball doesn't move one cell.
+
+It rolls until hitting a wall.
 
 """
 
@@ -138,8 +161,15 @@ class Solution:
 
                 new_dist = cur_dist + steps
 
+                """
+                # NOTE !!! below
+                """
                 if new_dist < dist[nx][ny]:
+
+                    # update dist with smaller one
                     dist[nx][ny] = new_dist
+
+                    # push (insert) the smaller dist and its x, y to PQ
                     heapq.heappush(
                         pq,
                         (new_dist, nx, ny)
