@@ -1,3 +1,5 @@
+# https://leetcode.ca/all/505.html
+
 """
 
 [LeetCode] 505. The Maze II
@@ -61,6 +63,42 @@ The maze contains at least 2 empty spaces, and both the width and height of the 
 """
 
 # V0 
+class Solution:
+    def shortestDistance(self, maze, start, destination):
+        pass
+
+
+# V0-1
+
+# V0-2
+
+
+# V1
+# https://leetcode.ca/2017-04-18-505-The-Maze-II/
+# IDEA: BFS
+class Solution:
+    def shortestDistance(
+        self, maze: List[List[int]], start: List[int], destination: List[int]
+    ) -> int:
+        m, n = len(maze), len(maze[0])
+        dirs = (-1, 0, 1, 0, -1)
+        si, sj = start
+        di, dj = destination
+        q = deque([(si, sj)])
+        dist = [[inf] * n for _ in range(m)]
+        dist[si][sj] = 0
+        while q:
+            i, j = q.popleft()
+            for a, b in pairwise(dirs):
+                x, y, k = i, j, dist[i][j]
+                while 0 <= x + a < m and 0 <= y + b < n and maze[x + a][y + b] == 0:
+                    x, y, k = x + a, y + b, k + 1
+                if k < dist[x][y]:
+                    dist[x][y] = k
+                    q.append((x, y))
+        return -1 if dist[di][dj] == inf else dist[di][dj]
+
+
 
 # V1
 # https://www.jiuzhang.com/solution/the-maze-ii/#tag-other-lang-python
