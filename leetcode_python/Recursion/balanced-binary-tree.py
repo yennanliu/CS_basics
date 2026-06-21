@@ -34,6 +34,97 @@ The number of nodes in the tree is in the range [0, 5000].
 
 """
 
+
+# V0
+# IDEA: DFS (post order) + helper func
+class Solution(object):
+    def isBalanced(self, root):
+        # edge
+        if not root:
+            return True # ??
+        # ???
+        _left = self.helper(root.left)
+        _right = self.helper(root.right)
+        if abs(_left - _right) > 1:
+            return False
+        
+        return self.isBalanced(root.left) and \
+               self.isBalanced(root.right)
+
+    def helper(self, root):
+        # NOTE !!! below
+        if not root:
+            return 0 # ??
+
+        return 1 + max(
+            self.helper(root.left), 
+            self.helper(root.right)
+        )
+
+
+# V0-1
+class Solution(object):
+    def isBalanced(self, root):
+        if not root:
+            return True
+
+        left_height = self.helper(root.left)
+        right_height = self.helper(root.right)
+
+        if abs(left_height - right_height) > 1:
+            return False
+
+        return (
+            self.isBalanced(root.left)
+            and
+            self.isBalanced(root.right)
+        )
+
+    def helper(self, root):
+        if not root:
+            return 0
+
+        return 1 + max(
+            self.helper(root.left),
+            self.helper(root.right)
+        )
+
+
+# V0-2
+class Solution(object):
+    def isBalanced(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: bool
+        """
+        # Base case: An empty tree is always balanced
+        if not root:
+            return True 
+            
+        # 1. Use the helper to calculate the heights of the left and right subtrees
+        left_height = self.get_height(root.left)
+        right_height = self.get_height(root.right)
+        
+        # 2. Check if the current node violates the balance rule
+        if abs(left_height - right_height) > 1:
+            return False
+        
+        # 3. Recursively confirm that BOTH the left and right subtrees are also balanced
+        return self.isBalanced(root.left) and self.isBalanced(root.right)
+
+    def get_height(self, root):
+        """
+        Helper function to calculate the max depth/height of a tree.
+        """
+        # CRITICAL FIX: The height of an empty tree is the integer 0, not True!
+        if not root:
+            return 0
+            
+        return 1 + max(
+            self.get_height(root.left), 
+            self.get_height(root.right)
+        )
+
 # V0
 # https://blog.csdn.net/coder_orz/article/details/51335758
 class Solution(object):
