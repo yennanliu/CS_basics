@@ -159,6 +159,90 @@ class Solution(object):
         return "".join(res)
 
 
+# V0-3
+# IDEA: prev char, cnt, PQ, hashmap
+import heapq
+from collections import Counter
+
+class Solution(object):
+    def reorganizeString(self, s):
+        freq = Counter(s)
+
+        # max heap
+        pq = [(-cnt, ch) for ch, cnt in freq.items()]
+        heapq.heapify(pq)
+
+        res = []
+
+        prev_cnt = 0
+        prev_char = ""
+
+        while pq:
+            cnt, ch = heapq.heappop(pq)
+
+            res.append(ch)
+
+            # put previous character back
+            if prev_cnt < 0:
+                heapq.heappush(pq, (prev_cnt, prev_char))
+
+            # use one occurrence
+            cnt += 1
+
+            prev_cnt = cnt
+            prev_char = ch
+
+        ans = "".join(res)
+
+        return ans if len(ans) == len(s) else ""
+
+
+# V0-4
+import heapq
+from collections import Counter
+
+class Solution(object):
+    def reorganizeString(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+        # Step 1: Count letter frequencies
+        freq_map = Counter(s)
+        
+        # Step 2: Build a Max-Heap using negative counts (-count, character)
+        pq = [(-count, char) for char, count in freq_map.items()]
+        heapq.heapify(pq)
+        
+        # Guardrail: If the most frequent character takes up more than half the string,
+        # it is mathematically impossible to rearrange without adjacent collisions.
+        # Max permitted count for a string of length N is: (N + 1) // 2
+        if -pq[0][0] > (len(s) + 1) // 2:
+            return ""
+            
+        res = []
+        
+        # Variables to temporarily hold the previously used character 
+        # so it isn't picked twice in a row
+        prev_count, prev_char = 0, ""
+        
+        # Step 3: Interleave characters using the heap
+        while pq:
+            # Pop the most frequent character currently available
+            neg_count, char = heapq.heappop(pq)
+            res.append(char)
+            
+            # If a previous character was kept on hold, push it back now that the coast is clear
+            if prev_count < 0:
+                heapq.heappush(pq, (prev_count, prev_char))
+                
+            # Decrement the current character's count (add 1 because counts are negative numbers)
+            # Put this current character on hold until the next round
+            prev_count = neg_count + 1
+            prev_char = char
+            
+        return "".join(res)
+
 # V0 
 # IDEA : GREEDY + COUNTER
 # IDEA : 
