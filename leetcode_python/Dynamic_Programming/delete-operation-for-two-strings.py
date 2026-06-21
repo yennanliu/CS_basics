@@ -32,6 +32,30 @@ word1 and word2 consist of only lowercase English letters.
 
 # V0
 # IDEA: DP
+"""
+NOTE !!!
+
+
+DP def:
+
+dp[i][j] = min deletions needed to make
+           word1[:i], word2[:j] equal
+
+
+DP eq:
+
+
+dp[i][j] =
+     if word1[i - 1] == word2[j - 1]:
+         dp[i][j] = dp[i-1][j-1]
+     else:
+         1 + min(
+           dp[i-1][j],   # delete word1[i-1]
+           dp[i][j-1]    # delete word2[j-1]
+        )
+
+
+"""
 class Solution(object):
     def minDistance(self, word1, word2):
         n1 = len(word1)
@@ -44,13 +68,13 @@ class Solution(object):
 
         # Base Case 1:
         # word2 is empty.
-        # Need to delete all characters from word1[:i].
+        # Need to delete `all` characters from `word1[:i].`
         for i in range(n1 + 1):
             dp[i][0] = i
 
         # Base Case 2:
         # word1 is empty.
-        # Need to delete all characters from word2[:j].
+        # Need to delete `all` characters from `word2[:j].`
         for j in range(n2 + 1):
             dp[0][j] = j
 
@@ -58,10 +82,12 @@ class Solution(object):
         for i in range(1, n1 + 1):
             for j in range(1, n2 + 1):
 
+                # case 1) word1[i - 1] == word2[j - 1]
                 # Current characters match
                 if word1[i - 1] == word2[j - 1]:
                     dp[i][j] = dp[i - 1][j - 1]
 
+                # case 2) word1[i - 1] != word2[j - 1]
                 # Characters differ
                 else:
                     dp[i][j] = 1 + min(
