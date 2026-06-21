@@ -62,6 +62,23 @@ The maze contains at least 2 empty spaces, and both the width and height of the 
 
 """
 
+"""
+NOTE !!!
+
+
+keeps rolling until it hits a wall
+each move can travel multiple cells
+edge weights are not uniform
+
+
+-> 
+
+Therefore you need `Dijkstra's` algorithm, not BFS.
+
+"""
+
+
+
 # V0 
 class Solution:
     def shortestDistance(self, maze, start, destination):
@@ -69,8 +86,121 @@ class Solution:
 
 
 # V0-1
+# IDEA: Dijkstra (GPT)
+# TODO: validate
+import heapq
+
+class Solution:
+    def shortestDistance(self, maze, start, destination):
+
+        m = len(maze)
+        n = len(maze[0])
+
+        dist = [[float("inf")] * n for _ in range(m)]
+
+        sx, sy = start
+        dx, dy = destination
+
+        dist[sx][sy] = 0
+
+        pq = [(0, sx, sy)]
+
+        directions = [
+            (1, 0),
+            (-1, 0),
+            (0, 1),
+            (0, -1)
+        ]
+
+        while pq:
+            cur_dist, x, y = heapq.heappop(pq)
+
+            if (x, y) == (dx, dy):
+                return cur_dist
+
+            if cur_dist > dist[x][y]:
+                continue
+
+            for dx_dir, dy_dir in directions:
+
+                nx = x
+                ny = y
+                steps = 0
+
+                while (
+                    0 <= nx + dx_dir < m and
+                    0 <= ny + dy_dir < n and
+                    maze[nx + dx_dir][ny + dy_dir] == 0
+                ):
+                    nx += dx_dir
+                    ny += dy_dir
+                    steps += 1
+
+                new_dist = cur_dist + steps
+
+                if new_dist < dist[nx][ny]:
+                    dist[nx][ny] = new_dist
+                    heapq.heappush(
+                        pq,
+                        (new_dist, nx, ny)
+                    )
+
+        return -1
+
 
 # V0-2
+# IDEA: Dijkstra (GEMINI)
+# TODO: validate
+import heapq
+
+class Solution(object):
+    def shortestDistance(self, maze, start, destination):
+        """
+        :type maze: List[List[int]]
+        :type start: List[int]
+        :type destination: List[int]
+        :rtype: int
+        """
+        rows = len(maze)
+        cols = len(maze[0])
+        
+        # Matrix to store the minimum distance required to STOP at maze[r][c]
+        distance = [[float('inf')] * cols for _ in range(rows)]
+        distance[start[0]][start[1]] = 0
+        
+        # Priority Queue (Min-Heap): stores elements as (dist_traveled, current_r, current_c)
+        pq = [(0, start[0], start[1])]
+        
+        # Direction shifting offsets: Up, Down, Left, Right
+        directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+        
+        while pq:
+            curr_dist, r, c = heapq.heappop(pq)
+            
+            # Optimization: If we found a longer path to an already well-optimized spot, skip it
+            if curr_dist > distance[r][c]:
+                continue
+                
+            # If the globally shortest path popped from the heap reaches the target, we are done!
+            if r == destination[0] and c == destination[1]:
+                return curr_dist
+                
+            for dr, dc in directions:
+                new_r, new_c = r, c
+                steps = 0
+                
+                # CRITICAL FIX: The ball rolls continuously until it strikes a wall (1) or a border
+                while 0 <= new_r + dr < rows and 0 <= new_c + dc < cols and maze[new_r + dr][new_c + dc] == 0:
+                    new_r += dr
+                    new_c += dc
+                    steps += 1
+                
+                # Evaluate if this landing spot provides a shorter path than previously recorded
+                if distance[r][c] + steps < distance[new_r][new_c]:
+                    distance[new_r][new_c] = distance[r][c] + steps
+                    heapq.heappush(pq, (distance[new_r][new_c], new_r, new_c))
+                    
+        return -1
 
 
 # V1
