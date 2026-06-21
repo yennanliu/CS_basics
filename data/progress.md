@@ -9,12 +9,12 @@
 
 - stack.md
 
+- Difference Array.md
+
 - backtrack.md
 	- todo: `Type 2) : Permutations (排列組合) (全排列)`
 - dp.md
 	- todo: `Template 7-1: One Edit Distance (LC 161) — Exactly-1-Edit Variant`
-- greedy.md
-- Difference Array.md
 - heap
 	- LC example
 - stack.md
@@ -37,6 +37,7 @@
   - union_find
   - BST.md
   - Queue.md
+  - greedy.md
 
 
 
@@ -102,6 +103,8 @@
 			- 1110,652,742,863
 		- bst
 			- 1382
+		- greedy
+			- 984
 		- lazy_bst_in_order(todo),173(todo),2616(todo, compare PQ)
 		- topo_sort,257(todo)
 		- `Combinations VS Permutations` in DP
