@@ -3,6 +3,7 @@
 # 2026-06-22
 
 - Dijkstra.md
+	- Problem Categories
 
 
 - intervals.md
@@ -19,6 +20,7 @@
 - heap
 	- LC example
 - stack.md
+- trie.md
 
 - OK:
   - graph.md
