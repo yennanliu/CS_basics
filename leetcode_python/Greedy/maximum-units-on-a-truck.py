@@ -38,6 +38,58 @@ Constraints:
 """
 
 # V0
+# IDEA: GREEDY (GEMINI)
+class Solution(object):
+    def maximumUnits(self, boxTypes, truckSize):
+        """
+        :type boxTypes: List[List[int]]
+        :type truckSize: int
+        :rtype: int
+        """
+        # Step 1: Sort the boxes greedily by units per box in descending order
+        # boxTypes[i] = [numberOfBoxes, unitsPerBox] -> sort by index 1
+        boxTypes.sort(key=lambda x: x[1], reverse=True)
+        
+        total_units = 0
+        
+        # Step 2: Iterate through the sorted boxes
+        for num_boxes, units_per_box in boxTypes:
+            if truckSize <= 0:
+                break  # The truck is fully loaded
+                
+            # Take either all available boxes of this type, or whatever fits remaining
+            boxes_to_take = min(num_boxes, truckSize)
+            
+            # Update running calculations
+            total_units += boxes_to_take * units_per_box
+            truckSize -= boxes_to_take
+            
+        return total_units
+
+
+# V0-1
+# IDEA: GREEDY (GPT)
+from typing import List
+
+class Solution:
+    def maximumUnits(self, boxTypes: List[List[int]], truckSize: int) -> int:
+        # Sort by units per box descending
+        boxTypes.sort(key=lambda x: x[1], reverse=True)
+
+        total_units = 0
+
+        for boxes, units in boxTypes:
+            take = min(boxes, truckSize)
+            total_units += take * units
+            truckSize -= take
+
+            if truckSize == 0:
+                break
+
+        return total_units
+
+
+# V0
 # IDEA : GREEDY + sorting
 class Solution(object):
     def maximumUnits(self, boxTypes, truckSize):
