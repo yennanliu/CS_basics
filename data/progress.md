@@ -3,7 +3,7 @@
 # 2026-06-22
 
 - Dijkstra.md
-	- Problem Categories
+	- Template 1: Basic Dijkstra
 
 
 - intervals.md
@@ -110,6 +110,8 @@
 			- 984
 		- diff array
 			- 370,1109
+		- Dijkstra
+			- 1631
 		- lazy_bst_in_order(todo),173(todo),2616(todo, compare PQ)
 		- topo_sort,257(todo)
 		- `Combinations VS Permutations` in DP
