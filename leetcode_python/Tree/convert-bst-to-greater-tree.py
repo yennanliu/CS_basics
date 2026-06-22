@@ -43,6 +43,50 @@ Note: This question is the same as 1038: https://leetcode.com/problems/binary-se
 """
 
 # V0
+# IDEA: BST PROPERTY + DFS (gemini)
+class Solution(object):
+    def convertBST(self, root):
+        """
+        NOTE !!!
+
+        we define global var (self.running_sum)
+        for easily tracking the cum sum root val
+        """
+        # Global tracking variable to maintain the running sum across all recursive frames
+        self.running_sum = 0
+        
+        # Start the global reverse in-order traversal
+        self.traverse(root)
+        
+        return root
+
+    def traverse(self, node):
+        if not node:
+            return
+            
+        """
+        NOTE !!!
+
+
+        the traverse order:
+
+        right -> root -> left
+        
+        """    
+        # 1. Visit the RIGHT subtree first (contains all elements larger than the current node)
+        self.traverse(node.right)
+        
+        # 2. Process the ROOT node: add its current value to our cumulative tracker
+        self.running_sum += node.val
+        # Update the node's value to the accumulated total
+        node.val = self.running_sum
+        
+        # 3. Visit the LEFT subtree last (contains elements smaller than the current node)
+        self.traverse(node.left)
+
+
+
+# V0
 # IDEA : DFS + recursion
 #      -> NOTE : via DFS, the op will being executed in `INVERSE` order (last visit will be run first, then previous, then ...)
 #      -> e.g. node1 -> node2 -> ... nodeN

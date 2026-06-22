@@ -183,6 +183,118 @@ def find_min(node):
     return node
 ```
 
+### Template 3b: Trim BST (Range Pruning) ⭐
+
+#### **Core Idea**
+
+```
+Goal: keep ONLY nodes whose value lies in [low, high],
+      WITHOUT changing the relative structure of the survivors.
+
+Key insight — exploit BST property (left < root < right):
+  - If root.val < low  → the ENTIRE left subtree is also < low.
+                         Discard root AND its left subtree.
+                         The answer must come from the RIGHT subtree.
+  - If root.val > high → the ENTIRE right subtree is also > high.
+                         Discard root AND its right subtree.
+                         The answer must come from the LEFT subtree.
+  - If low <= root.val <= high → keep root, recursively trim BOTH children.
+
+Why return the recursive call (not None)?
+  When a node is out of range we don't just delete it — its valid
+  descendants must be "promoted" to take its place. Returning
+  trimBST(child, ...) reconnects the next valid node to the parent.
+```
+
+```
+Visual (low=1, high=3):
+
+        3                 3
+       / \               /
+      0   4    trim →   2
+       \               /
+        2             1
+       /
+      1
+
+  - root 3 in range → keep, trim children
+  - left child 0 < low(1) → drop 0 AND its (empty) left, recurse right → 2
+  - 2 in range → keep, trim children
+  - 1 in range → keep (leaf)
+  - right child 4 > high(3) → drop 4 AND its (empty) right → None
+```
+
+#### **Pattern**
+
+```python
+# LC 669 - Trim a Binary Search Tree
+# IDEA: BST PROPERTY + DFS (post-order reconnect)
+# Time: O(n), Space: O(h)
+class Solution(object):
+    def trimBST(self, root, low, high):
+        # Base case: empty tree needs no trimming
+        if not root:
+            return None
+
+        # root too small → left subtree all < low too.
+        # Drop root + left, answer is in the trimmed right subtree.
+        if root.val < low:
+            return self.trimBST(root.right, low, high)
+
+        # root too large → right subtree all > high too.
+        # Drop root + right, answer is in the trimmed left subtree.
+        if root.val > high:
+            return self.trimBST(root.left, low, high)
+
+        # root in range → keep it, trim & reconnect both children.
+        root.left = self.trimBST(root.left, low, high)
+        root.right = self.trimBST(root.right, low, high)
+        return root
+```
+
+```java
+// java - LC 669
+// Time: O(n), Space: O(h)
+public TreeNode trimBST(TreeNode root, int low, int high) {
+    if (root == null) return null;
+
+    // root too small → promote trimmed right subtree
+    if (root.val < low) return trimBST(root.right, low, high);
+
+    // root too large → promote trimmed left subtree
+    if (root.val > high) return trimBST(root.left, low, high);
+
+    // in range → keep node, trim both children
+    root.left = trimBST(root.left, low, high);
+    root.right = trimBST(root.right, low, high);
+    return root;
+}
+```
+
+**🚫 Common Mistake**: returning `None` for an out-of-range node deletes its
+**valid descendants** too. You must return the *trimmed surviving subtree* so
+the next valid node gets reconnected to the parent.
+
+```python
+# BAD: drops valid descendants of an out-of-range node
+if root.val < low or root.val > high:
+    return None   # loses the in-range nodes hanging below!
+
+# GOOD: promote the side that may still contain valid nodes
+if root.val < low:  return self.trimBST(root.right, low, high)
+if root.val > high: return self.trimBST(root.left,  low, high)
+```
+
+#### **Similar LeetCode Problems**
+| Problem | LC # | Difficulty | Relation to Trim |
+|---------|------|------------|------------------|
+| Trim a Binary Search Tree | 669 | Medium | Core problem — prune nodes outside `[low, high]` |
+| Delete Node in a BST | 450 | Medium | Same "recurse + reconnect via return value" pattern |
+| Range Sum of BST | 938 | Easy | Same BST pruning logic, but sum instead of restructure |
+| Split BST | 776 | Medium | Partition into two trees by value (mirror of trimming) |
+| Convert Sorted Array to BST | 108 | Easy | Recursive build returning subtree roots (same reconnect idiom) |
+| Insert into a BST | 701 | Medium | Recurse + return reconnected child pointer |
+
 ### Template 4: BST Validation
 ```python
 def validate_bst(root):
