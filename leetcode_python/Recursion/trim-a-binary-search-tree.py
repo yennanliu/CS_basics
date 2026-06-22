@@ -44,6 +44,97 @@ root is guaranteed to be a valid binary search tree.
 """
 
 # V0
+# IDEA: BST PROPERTY + DFS (POST ORDER) (GEMINI)
+class Solution(object):
+    def trimBST(self, root, low, high):
+        """
+        :type root: Optional[TreeNode]
+        :type low: int
+        :type high: int
+        :rtype: Optional[TreeNode]
+        """
+        # Base Case: An empty tree needs no trimming
+        if not root:
+            return None
+            
+        # Scenario 1: The current root value is too small.
+        # Everything in the left subtree is guaranteed to be even smaller, so discard it entirely.
+        # The new root for this position will be the trimmed version of the right subtree.
+        if root.val < low:
+            return self.trimBST(root.right, low, high)
+            
+        # Scenario 2: The current root value is too large.
+        # Everything in the right subtree is guaranteed to be even larger, so discard it entirely.
+        # The new root for this position will be the trimmed version of the left subtree.
+        if root.val > high:
+            return self.trimBST(root.left, low, high)
+            
+        # Scenario 3: The current root value is perfectly within bounds [low, high].
+        # Keep this node, but recursively trim both its left and right subtrees.
+        root.left = self.trimBST(root.left, low, high)
+        root.right = self.trimBST(root.right, low, high)
+        
+        # Return the safely modified node back up to its parent
+        return root
+
+
+# V0-1
+# IDEA: BST PROPERTY + DFS (POST ORDER) (GPT)
+class Solution(object):
+    def trimBST(self, root, low, high):
+        # Base case:
+        # If the current node is None, there is nothing to trim.
+        if not root:
+            return None
+
+        # Case 1:
+        # Current node's value is smaller than the allowed range.
+        #
+        # BST property:
+        #   root.left  < root.val < root.right
+        #
+        # Since root.val < low, every node in the LEFT subtree
+        # must also be < low.
+        #
+        # Therefore:
+        #   - root is invalid
+        #   - entire left subtree is invalid
+        # We can safely discard both and continue trimming
+        # only the right subtree.
+        if root.val < low:
+            return self.trimBST(root.right, low, high)
+
+        # Case 2:
+        # Current node's value is larger than the allowed range.
+        #
+        # Since root.val > high, every node in the RIGHT subtree
+        # must also be > high.
+        #
+        # Therefore:
+        #   - root is invalid
+        #   - entire right subtree is invalid
+        # We can safely discard both and continue trimming
+        # only the left subtree.
+        if root.val > high:
+            return self.trimBST(root.left, low, high)
+
+        # Case 3:
+        # Current node is inside [low, high].
+        #
+        # We keep the current node, but its children may still
+        # contain invalid nodes, so recursively trim them.
+        #
+        # The returned subtree root becomes the new left child.
+        root.left = self.trimBST(root.left, low, high)
+
+        # Similarly trim the right subtree and reconnect it.
+        root.right = self.trimBST(root.right, low, high)
+
+        # Return the current node as the root of the trimmed subtree.
+        return root
+
+
+# V0
 # IDEA :RECURSION, BST
 # IDEA : USE BST'S PROPERTY : 
 # -> FOR EVERY NODE : right > node > left 
