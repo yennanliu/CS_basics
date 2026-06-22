@@ -30,6 +30,116 @@ The number of nodes in the tree is in the range [1, 104].
 
 
 """
+
+# V0
+# IDEA: DFS (POST ORDER)
+class Solution(object):
+    
+    #self.max_diameter = 0
+    
+    def diameterOfBinaryTree(self, root):
+        if not root:
+            return 0
+        
+        self.max_diameter = 0
+
+        self.helper(root)
+        """
+        NOTE !!! we ONLY need to call helper func once
+
+        e.g. 
+
+        NO NEED to call below:
+
+            # self.helper(root.left)
+            # self.helper(root.right)
+        
+
+        """
+        # self.helper(root.left)
+        # self.helper(root.right)
+        
+        return self.max_diameter
+
+
+    def helper(self, root):
+        if not root:
+            return 0
+
+        _left = self.helper(root.left)
+        _right = self.helper(root.right)
+
+        # ??
+        self.max_diameter = max(self.max_diameter, _left + _right)
+
+        return max(_left, _right) + 1
+
+
+# V0-1
+# IDEA: DFS (POST ORDER)
+class Solution(object):
+    def diameterOfBinaryTree(self, root):
+        # stores the maximum diameter found so far
+        self.max_diameter = 0
+
+        self.helper(root)
+
+        return self.max_diameter
+
+    def helper(self, root):
+        # height of an empty tree
+        if not root:
+            return 0
+
+        # height of left subtree
+        _left = self.helper(root.left)
+
+        # height of right subtree
+        _right = self.helper(root.right)
+
+        # diameter passing through current node
+        self.max_diameter = max(
+            self.max_diameter,
+            _left + _right
+        )
+
+        # return height of current subtree
+        return max(_left, _right) + 1
+
+
+# V0-2
+# IDEA: DFS (POST ORDER)
+class Solution(object):
+    def diameterOfBinaryTree(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: int
+        """
+        # Step 1: Initialize the tracking variable as an instance property
+        self.max_diameter = 0
+        
+        # Step 2: Trigger the recursive helper function ONCE starting from the root
+        self.calculate_height_and_diameter(root)
+        
+        return self.max_diameter
+
+    def calculate_height_and_diameter(self, root):
+        # Base case: An empty tree has a height of 0
+        if not root:
+            return 0
+
+        # Step 3: Recursively gather heights from the bottom up
+        left_height = self.calculate_height_and_diameter(root.left)
+        right_height = self.calculate_height_and_diameter(root.right)
+
+        # Step 4: The diameter passing through this node is (left_height + right_height)
+        # Update our global maximum if this path is longer than any path found before
+        self.max_diameter = max(self.max_diameter, left_height + right_height)
+
+        # Step 5: Return the actual height of this subtree back up to its parent node
+        return max(left_height, right_height) + 1
+
+
 # V0 
 class Solution:
     def diameterOfBinaryTree(self, root):
