@@ -1,6 +1,6 @@
 # Progress
 
-# 2026-06-22
+# 2026-06-23
 
 - Dijkstra.md
 	- Template 1: Basic Dijkstra
@@ -99,15 +99,10 @@
 			- 525
 		- set
 			- 128**
-			- 2104
-		- 2 pointers
-			- 31
 		- tree
 			- 1110,652,742,863
 		- bst
 			- 1382
-		- greedy
-			- 984
 		- diff array
 			- 370,1109
 		- Dijkstra
