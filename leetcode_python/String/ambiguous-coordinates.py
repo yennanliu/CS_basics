@@ -46,6 +46,16 @@ No
 
 
 # V0
+# IDEA: STRING SPLIT, `Cross multiply`
+"""
+Steps
+
+1. strip input
+2. loop over string (i)
+    - get left, right part
+3. get possible left list, right list via helper func
+4. gen all combinations via `Cross multiply`
+"""
 class Solution(object):
     def ambiguousCoordinates(self, s):
         """
@@ -59,6 +69,12 @@ class Solution(object):
         # Step 2: Try every possible split position to divide the digits into left and right halves
         # The left part needs at least 1 character, and the right part needs at least 1 character.
         for i in range(1, len(digits)):
+
+            """
+            NOTE !!!
+
+            how we split string
+            """
             left_part = digits[:i]
             right_part = digits[i:]
             
@@ -67,6 +83,12 @@ class Solution(object):
             valid_rights = self.get_valid_formats(right_part)
             
             # Step 4: Cross multiply the valid choices together
+
+            """
+            NOTE !!!
+
+            `Cross multiply` to get all possible combinations
+            """
             for left in valid_lefts:
                 for right in valid_rights:
                     res.append("({}, {})".format(left, right))
@@ -81,6 +103,9 @@ class Solution(object):
         ans = []
         n = len(sub_str)
         
+        """
+        # Scenario A
+        """
         # Scenario A: Try treating the entire string slice as a whole integer (no decimal point)
         # Rule: It cannot have leading zeros unless the string is exactly "0"
         """
@@ -122,6 +147,9 @@ class Solution(object):
         if n == 1 or not sub_str.startswith('0'):
             ans.append(sub_str)
             
+        """
+        # Scenario B
+        """
         # Scenario B: Inject a decimal point at every possible interior position
         for i in range(1, n):
             integer_part = sub_str[:i]
