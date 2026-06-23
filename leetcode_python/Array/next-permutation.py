@@ -39,6 +39,158 @@ Constraints:
 
 """
 
+
+
+# V0
+# IDEA: 2 POINTERS (GPT)
+"""
+NOTE !!!
+
+CORE IDEA:
+
+
+1. Scan from right to left and find the first index i
+   where:
+   nums[i] < nums[i + 1]
+
+   -> This is the pivot.
+
+
+2. Scan from the right again and find the smallest number
+   larger than nums[i] 
+   (the first one greater than it when scanning 
+   from the end).
+
+
+3. Swap them.
+
+4. Reverse the suffix nums[i+1:].
+
+
+
+"""
+class Solution(object):
+    def nextPermutation(self, nums):
+        # Get the length of the array
+        n = len(nums)
+
+        # ----------------------------------
+        # Step 1: Find the pivot
+        # ----------------------------------
+        # Start from the second-to-last element
+        i = n - 2
+
+        # Move left while the sequence is non-increasing
+        # We are looking for the first position where:
+        # nums[i] < nums[i + 1]
+        #
+        # Example:
+        # [1, 2, 5, 4, 3]
+        #            ^
+        # The suffix [5,4,3] is decreasing.
+        # Pivot = 2 (index 1)
+        while i >= 0 and nums[i] >= nums[i + 1]:
+            i -= 1
+
+        # If i == -1:
+        # The entire array is decreasing, e.g. [3,2,1]
+        # There is no larger permutation.
+        # We will simply reverse the whole array later.
+
+        # ----------------------------------
+        # Step 2: Find the successor
+        # ----------------------------------
+        if i >= 0:
+            # Start from the end of the array
+            j = n - 1
+
+            # Find the first element larger than nums[i]
+            # from the right side.
+            #
+            # Example:
+            # nums = [1,2,5,4,3]
+            # pivot = 2
+            #
+            # Scan from right:
+            # 3 > 2  --> found
+            while nums[j] <= nums[i]:
+                j -= 1
+
+            # Swap pivot and successor
+            #
+            # Before:
+            # [1,2,5,4,3]
+            #
+            # After:
+            # [1,3,5,4,2]
+            nums[i], nums[j] = nums[j], nums[i]
+
+        # ----------------------------------
+        # Step 3: Reverse the suffix
+        # ----------------------------------
+        # Everything to the right of the pivot is currently
+        # in descending order.
+        #
+        # After the swap we want the smallest possible suffix,
+        # so reverse it into ascending order.
+        #
+        # Example:
+        # [1,3,5,4,2]
+        #      -----
+        # reverse => [2,4,5]
+        #
+        # Result:
+        # [1,3,2,4,5]
+        left, right = i + 1, n - 1
+
+        # Standard two-pointer reversal
+        while left < right:
+            nums[left], nums[right] = nums[right], nums[left]
+
+            left += 1
+            right -= 1
+
+        # LeetCode modifies nums in-place.
+        # Returning nums is optional but harmless.
+        return nums
+
+
+# V0-1
+# IDEA: 2 POINTERS (GEMINI)
+class Solution(object):
+    def nextPermutation(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: None Do not return anything, modify nums in-place instead.
+        """
+        if not nums or len(nums) <= 1:
+            return
+            
+        n = len(nums)
+        i = n - 2
+        
+        # Step 1: Find the first decreasing element from the right (the pivot)
+        while i >= 0 and nums[i] >= nums[i + 1]:
+            i -= 1
+            
+        # If a pivot was found (meaning the array isn't entirely sorted in descending order)
+        if i >= 0:
+            j = n - 1
+            # Step 2: Find the smallest element to the right of 'i' that is greater than nums[i]
+            while nums[j] <= nums[i]:
+                j -= 1
+            # Swap them
+            nums[i], nums[j] = nums[j], nums[i]
+            
+        # Step 3: Reverse everything to the right of index 'i' in-place
+        # If i == -1, this beautifully reverses the whole array (handling the last permutation case)
+        l, r = i + 1, n - 1
+        while l < r:
+            nums[l], nums[r] = nums[r], nums[l]
+            l += 1
+            r -= 1
+
+
 # V0
 class Solution:
     def nextPermutation(self, nums):
