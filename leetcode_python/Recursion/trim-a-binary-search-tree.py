@@ -44,6 +44,50 @@ root is guaranteed to be a valid binary search tree.
 """
 
 # V0
+
+class Solution(object):
+    def trimBST(self, root, low, high):
+        # edge
+        if not root:
+            return None
+        
+        _left = self.trimBST(root.left, low, high)
+        _right = self.trimBST(root.right, low, high)
+
+        # NOTE !!!
+        # search right if `root.val < low`
+        """
+
+        # Scenario 1: The current root value is too small.
+        # Everything in the left subtree is guaranteed to be even smaller, so discard it entirely.
+        # The new root for this position will be the trimmed version of the right subtree.
+
+        """
+        if root.val < low:
+            return _right
+        
+        """
+
+        # Scenario 2: The current root value is too large.
+        # Everything in the right subtree is guaranteed to be even larger, so discard it entirely.
+        # The new root for this position will be the trimmed version of the left subtree.
+
+        """
+        if root.val > high:
+            return _left
+
+        # NOTE !!!
+        # below is optional (can go without below)
+        if root.val < low or root.val > high:
+            return None
+
+        root.left = _left
+        root.right = _right
+
+
+        return root
+
+# V0
 # IDEA: BST PROPERTY + DFS (POST ORDER) (GEMINI)
 class Solution(object):
     def trimBST(self, root, low, high):
