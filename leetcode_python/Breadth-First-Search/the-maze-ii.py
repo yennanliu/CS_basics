@@ -103,10 +103,69 @@ It rolls until hitting a wall.
 
 
 # V0 
+# IDEA: Dijkstra + `dist` matrix (GPT)
+# TODO: validate
+import heapq
+
 class Solution:
     def shortestDistance(self, maze, start, destination):
-        pass
+        m, n = len(maze), len(maze[0])
 
+        directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+
+        # NOTE !!!
+        dist = [[float("inf")] * n for _ in range(m)]
+        dist[start[0]][start[1]] = 0
+
+        pq = [(0, start[0], start[1])]  # (distance, row, col)
+
+        while pq:
+            cur_dist, x, y = heapq.heappop(pq)
+
+            if [x, y] == destination:
+                return cur_dist
+
+            """
+            # NOTE !!!
+
+            if `cur_dist > dist[x][y]`
+                -> NOT possible to form a better route
+                -> NO need to proceed
+            """
+            if cur_dist > dist[x][y]:
+                continue
+
+            for dx, dy in directions:
+                nx, ny = x, y
+                # NOTE !!!
+                # since the ball can `keep moving`
+                # -> we need to init a steps = 0
+                #     -> so can calculate `how far` 
+                #        we move within the `while` loop below
+                steps = 0
+
+                """
+                NOTE !!!!
+
+                since the ball can `keep moving`
+                here we need `while` loop, instead of `if`
+                """
+                while (
+                    0 <= nx + dx < m
+                    and 0 <= ny + dy < n
+                    and maze[nx + dx][ny + dy] == 0
+                ):
+                    nx += dx
+                    ny += dy
+                    steps += 1
+
+                new_dist = cur_dist + steps
+
+                if new_dist < dist[nx][ny]:
+                    dist[nx][ny] = new_dist
+                    heapq.heappush(pq, (new_dist, nx, ny))
+
+        return -1
 
 # V0-1
 # IDEA: Dijkstra (GPT)
@@ -150,6 +209,13 @@ class Solution:
                 ny = y
                 steps = 0
 
+
+                """
+                NOTE !!!!
+
+                since the ball can `keep moving`
+                here we need `while` loop, instead of `if`
+                """
                 while (
                     0 <= nx + dx_dir < m and
                     0 <= ny + dy_dir < n and
