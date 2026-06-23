@@ -52,14 +52,250 @@ Follow-up: Could you find a solution with O(n) time complexity?
 
 """
 
+
+# V0
+class Solution(object):
+    def subArrayRanges(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        pass
+        
+
+
+# V0-1
+# IDEA: MONO STACK (gpt)
+class Solution:
+    def subArrayRanges(self, nums):
+
+        # Helper function:
+        # Calculate the total contribution of each element
+        # either as a MAXIMUM or as a MINIMUM.
+        #
+        # is_max = True  -> compute sum of all subarray maximums
+        # is_max = False -> compute sum of all subarray minimums
+        def contribution(is_max):
+
+            # Length of input array
+            n = len(nums)
+
+            # Monotonic stack stores indices
+            stack = []
+
+            # Running total contribution
+            total = 0
+
+            # Iterate one extra position (n)
+            #
+            # The extra iteration acts as a "sentinel"
+            # that forces all remaining elements to be popped.
+            #
+            # Example:
+            # nums = [1,2,3]
+            #
+            # At i == n, we trigger processing for any
+            # elements still left in the stack.
+            for i in range(n + 1):
+
+                # Pop while current element breaks
+                # the monotonic property.
+                #
+                # For maximum calculation:
+                #     maintain decreasing stack
+                #
+                # For minimum calculation:
+                #     maintain increasing stack
+                while stack and (
+
+                    # Sentinel case:
+                    # flush remaining stack elements
+                    i == n
+
+                    or
+
+                    # Maximum mode:
+                    # pop when current value is larger
+                    # than stack top
+                    (
+                        nums[stack[-1]] < nums[i]
+                        if is_max
+
+                        # Minimum mode:
+                        # pop when current value is smaller
+                        # than stack top
+                        else nums[stack[-1]] > nums[i]
+                    )
+                ):
+
+                    # Current index being processed
+                    #
+                    # This element's contribution can now
+                    # be fully determined because we found
+                    # its next greater/smaller boundary.
+                    mid = stack.pop()
+
+                    # Previous boundary
+                    #
+                    # If stack becomes empty,
+                    # there is no previous boundary.
+                    #
+                    # Use -1 as a virtual boundary.
+                    left = stack[-1] if stack else -1
+
+                    # Current index is the next boundary
+                    right = i
+
+                    # Count how many subarrays use nums[mid]
+                    # as the maximum (or minimum).
+                    #
+                    # Left choices:
+                    #     mid - left
+                    #
+                    # Right choices:
+                    #     right - mid
+                    #
+                    # Total subarrays:
+                    #     (mid-left) * (right-mid)
+                    #
+                    # Contribution:
+                    #     value * count
+                    total += (
+                        nums[mid]
+                        * (mid - left)
+                        * (right - mid)
+                    )
+
+                # Push current index into stack
+                #
+                # Stack remains monotonic:
+                #
+                # Maximum mode:
+                #     decreasing values
+                #
+                # Minimum mode:
+                #     increasing values
+                stack.append(i)
+
+            # Return total maximum contribution
+            # or total minimum contribution
+            return total
+
+        # Sum of subarray ranges:
+        #
+        # range = max - min
+        #
+        # Therefore:
+        #
+        # sum(range)
+        # =
+        # sum(all maximum contributions)
+        # -
+        # sum(all minimum contributions)
+        return contribution(True) - contribution(False)
+
+
+
+# V0-2
+# IDEA: MONO STACK (gemini)
+class Solution(object):
+    def subArrayRanges(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        return self.sumSubarrayMaxs(nums) - self.sumSubarrayMins(nums)
+
+    def sumSubarrayMins(self, nums):
+        """
+        Calculates the sum of minimum values across all subarrays in O(N).
+        Identical to LC 907.
+        """
+        n = len(nums)
+        # Initialize default boundaries: index -1 on the left, index n on the right
+        left = [-1] * n
+        right = [n] * n
+        
+        # Monotonic Increasing Stack to find the next/previous smaller elements
+        stack = []
+        
+        # Step 1: Find how far left each element can rule as the minimum
+        for i in range(n):
+            while stack and nums[stack[-1]] >= nums[i]:
+                stack.pop()
+            if stack:
+                left[i] = stack[-1]
+            stack.append(i)
+            
+        stack = [] # Reset the stack
+        
+        # Step 2: Find how far right each element can rule as the minimum
+        # Note: We use strictly > to gracefully handle duplicate elements without double-counting
+        for i in range(n - 1, -1, -1):
+            while stack and nums[stack[-1]] > nums[i]:
+                stack.pop()
+            if stack:
+                right[i] = stack[-1]
+            stack.append(i)
+            
+        # Step 3: Count total combinations
+        total_mins = 0
+        for i in range(n):
+            num_subarrays = (i - left[i]) * (right[i] - i)
+            total_mins += nums[i] * num_subarrays
+            
+        return total_mins
+
+    def sumSubarrayMaxs(self, nums):
+        """
+        Calculates the sum of maximum values across all subarrays in O(N).
+        """
+        n = len(nums)
+        left = [-1] * n
+        right = [n] * n
+        
+        # Monotonic Decreasing Stack to find the next/previous larger elements
+        stack = []
+        
+        # Step 1: Find how far left each element rules as the maximum
+        for i in range(n):
+            while stack and nums[stack[-1]] <= nums[i]:
+                stack.pop()
+            if stack:
+                left[i] = stack[-1]
+            stack.append(i)
+            
+        stack = [] # Reset the stack
+        
+        # Step 2: Find how far right each element rules as the maximum
+        for i in range(n - 1, -1, -1):
+            while stack and nums[stack[-1]] < nums[i]:
+                stack.pop()
+            if stack:
+                right[i] = stack[-1]
+            stack.append(i)
+            
+        # Step 3: Count total combinations
+        total_maxs = 0
+        for i in range(n):
+            num_subarrays = (i - left[i]) * (right[i] - i)
+            total_maxs += nums[i] * num_subarrays
+            
+        return total_maxs
+
+
+
+
 # V0
 # IDEA : BRUTE FORCE
 class Solution:
     def subArrayRanges(self, nums):
         res = 0
+        # 1st loop
         for i in range(len(nums)):
             curMin = float("inf")
             curMax = -float("inf")
+            # 2nd loop
             for j in range(i, len(nums)):
                 curMin = min(curMin, nums[j])
                 curMax = max(curMax, nums[j])
