@@ -40,7 +40,76 @@ class Solution(object):
     	pass
 
 
-# V1
+# V1-1
+# IDEA: GREEDY (GPT)
+class Solution(object):
+    def strWithout3a3b(self, a, b):
+        ans = []
+
+        while a > 0 or b > 0:
+
+            # Last two chars are "aa"
+            if len(ans) >= 2 and ans[-1] == ans[-2] == 'a':
+                ans.append('b')
+                b -= 1
+
+            # Last two chars are "bb"
+            elif len(ans) >= 2 and ans[-1] == ans[-2] == 'b':
+                ans.append('a')
+                a -= 1
+
+            # Prefer the character with more remaining count
+            elif a >= b and a > 0:
+                ans.append('a')
+                a -= 1
+
+            elif b > 0:
+                ans.append('b')
+                b -= 1
+
+        return "".join(ans)
+
+
+
+# V1-2
+# IDEA: GREEDY (GPT)
+class Solution(object):
+    def strWithout3a3b(self, a, b):
+        """
+        :type a: int
+        :type b: int
+        :rtype: str
+        """
+        ans = []
+        
+        # Keep looping until BOTH a and b are fully used up
+        while a > 0 or b > 0:
+            write_a = False
+            
+            # Check the last two characters to see if we are forced to write 'a' or 'b'
+            if len(ans) >= 2 and ans[-1] == ans[-2]:
+                if ans[-1] == 'b':
+                    write_a = True  # Forced to write 'a' because we have "bb"
+                else:
+                    write_a = False # Forced to write 'b' because we have "aa"
+            else:
+                # No danger of 3-in-a-row! Greedily pick the character with more remaining counts
+                if a >= b:
+                    write_a = True
+                else:
+                    write_a = False
+            
+            # Append the chosen character and decrement its count
+            if write_a:
+                ans.append('a')
+                a -= 1
+            else:
+                ans.append('b')
+                b -= 1
+                
+        return "".join(ans)
+
+
 
 # V2
 # IDEA: GREEDY
