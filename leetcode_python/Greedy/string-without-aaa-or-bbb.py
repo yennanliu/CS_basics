@@ -46,18 +46,29 @@ class Solution(object):
     def strWithout3a3b(self, a, b):
         ans = []
 
+        """
+        NOTE !!!
+
+
+        should be `or`
+
+        -> or we will miss the remaining chars
+        """
         while a > 0 or b > 0:
 
+        	# case 1) "aa"
             # Last two chars are "aa"
             if len(ans) >= 2 and ans[-1] == ans[-2] == 'a':
                 ans.append('b')
                 b -= 1
 
+            # case 2) "bb"
             # Last two chars are "bb"
             elif len(ans) >= 2 and ans[-1] == ans[-2] == 'b':
                 ans.append('a')
                 a -= 1
 
+            # case 3) others
             # Prefer the character with more remaining count
             elif a >= b and a > 0:
                 ans.append('a')
