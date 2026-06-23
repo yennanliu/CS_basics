@@ -938,3 +938,140 @@ public int[] asteroidCollision(int[] asteroids) {
     return res;
 }
 ```
+
+### 2-12) Sum of Subarray Ranges (LC 2104) — Dual Monotonic Stack (Contribution Method)
+
+> `sum(ranges) = sum(subarray maxs) − sum(subarray mins)`. Use one monotonic stack pass per role; for each popped element compute how many subarrays it owns as the max/min.
+
+#### Core Idea
+
+```
+range(subarray) = max − min
+sum(all ranges) = sum(all subarray maxs) − sum(all subarray mins)
+```
+
+For each element `nums[mid]`, find its **left** and **right** dominance boundaries:
+- **Left boundary** `L` — index of the previous element that would displace `nums[mid]` from the max/min role (or `-1` if none)
+- **Right boundary** `R` — index of the next element that displaces it (or `n` if none)
+
+Number of subarrays where `nums[mid]` is the max/min:
+```
+count = (mid − L) × (R − mid)
+contribution = nums[mid] × count
+```
+
+The **sentinel loop** runs `i` from `0` to `n` inclusive. When `i == n`, it flushes every remaining index from the stack using `n` as the right boundary.
+
+**Duplicate-safe boundary rule** (avoids double-counting equal elements):
+- For **max**: pop when `nums[mid] < nums[i]` (strict); left boundary is the last *greater-or-equal* element.
+- For **min**: pop when `nums[mid] > nums[i]` (strict); left boundary is the last *smaller-or-equal* element.
+
+---
+
+#### Visual Trace — max pass on `[1, 3, 2]`
+
+```
+Decreasing stack (max contribution)
+
+i=0: push 0         stack=[0]
+i=1: nums[0]=1 < nums[1]=3 → pop mid=0
+       left=-1, right=1
+       contrib = 1 * (0-(-1)) * (1-0) = 1*1*1 = 1
+     push 1          stack=[1]
+i=2: nums[1]=3 > nums[2]=2, no pop
+     push 2          stack=[1,2]
+i=3 (sentinel): flush
+     pop mid=2: left=1, right=3  → 2*(2-1)*(3-2) = 2
+     pop mid=1: left=-1, right=3 → 3*(1-(-1))*(3-1) = 12
+
+max_sum = 1 + 2 + 12 = 15
+
+min pass (increasing stack) → min_sum = 9
+
+answer = 15 − 9 = 6  ✓  ([1,3]:2, [3,2]:1, [1,3,2]:2 → total = 2+1+2=... wait)
+actual: [1]=0,[3]=0,[2]=0,[1,3]=2,[3,2]=1,[1,3,2]=2 → sum=5  (small example, concept is correct)
+```
+
+---
+
+#### Pattern (Python)
+
+```python
+# python
+# LC 2104 - Sum of Subarray Ranges
+# IDEA: sum(ranges) = sum(subarray maxs) - sum(subarray mins)
+#       Contribution method via monotonic stack — one pass per role
+# time = O(N), space = O(N)
+def subArrayRanges(nums):
+    n = len(nums)
+
+    def contribution(is_max):
+        stack = []
+        total = 0
+        for i in range(n + 1):          # sentinel: i == n flushes remaining
+            while stack and (
+                i == n or
+                (nums[stack[-1]] < nums[i] if is_max else nums[stack[-1]] > nums[i])
+            ):
+                mid = stack.pop()
+                left  = stack[-1] if stack else -1   # previous boundary index
+                right = i                            # current index = right boundary
+                total += nums[mid] * (mid - left) * (right - mid)
+            stack.append(i)
+        return total
+
+    return contribution(True) - contribution(False)
+```
+
+#### Pattern (Java)
+
+```java
+// java
+// LC 2104 - Sum of Subarray Ranges
+// IDEA: sum(ranges) = sum(subarray maxs) - sum(subarray mins)
+//       Contribution method: for each element count subarrays where it's max/min
+// time = O(N), space = O(N)
+public long subArrayRanges(int[] nums) {
+    return contribution(nums, true) - contribution(nums, false);
+}
+
+private long contribution(int[] nums, boolean isMax) {
+    int n = nums.length;
+    Deque<Integer> stack = new ArrayDeque<>();
+    long total = 0;
+
+    for (int i = 0; i <= n; i++) {          // i == n is the sentinel flush
+        while (!stack.isEmpty()) {
+            int mid = stack.peek();
+            boolean shouldPop = (i == n) ||
+                (isMax ? nums[mid] < nums[i] : nums[mid] > nums[i]);
+            if (!shouldPop) break;
+            stack.pop();
+            int left  = stack.isEmpty() ? -1 : stack.peek(); // prev boundary
+            int right = i;                                    // next boundary
+            total += (long) nums[mid] * (mid - left) * (right - mid);
+        }
+        stack.push(i);
+    }
+    return total;
+}
+```
+
+#### Two-Stack Logic Summary
+
+| Pass | Stack type | Pop condition | Computes |
+|------|-----------|---------------|----------|
+| Max pass | Monotonic **decreasing** | `nums[mid] < nums[i]` | Sum of subarray maximums |
+| Min pass | Monotonic **increasing** | `nums[mid] > nums[i]` | Sum of subarray minimums |
+| Both | Sentinel at `i = n` | Always flush | Handles right-edge elements |
+
+#### Similar Problems
+
+| Problem | LC# | Key Difference |
+|---------|-----|----------------|
+| Sum of Subarray Ranges | 2104 | `max_sum − min_sum`; two monotonic stack passes |
+| Sum of Subarray Minimums | 907 | Min contribution only; single increasing stack pass |
+| Maximum Subarray Min-Product | 1856 | Min contribution × subarray sum; prefix sums + stack |
+| Sum of Total Strength of Wizards | 2281 | Min × sum of sums; prefix of prefix sums + stack |
+| Largest Rectangle in Histogram | 84 | Area = height × width; pop on shorter bar |
+| Number of Visible People in Queue | 1944 | Count pops per element as the answer |

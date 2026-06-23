@@ -63,6 +63,57 @@ class Solution(object):
         pass
         
 
+# V0-0-1
+# IDEA: MONO STACK (gpt)
+class Solution:
+    def subArrayRanges(self, nums):
+        n = len(nums)
+
+        # -------------------------
+        # Sum of all subarray maximums
+        # -------------------------
+        max_sum = 0
+        stack = []
+
+        for i in range(n + 1):
+            while stack and (
+                i == n or nums[stack[-1]] < nums[i]
+            ):
+                mid = stack.pop()
+
+                left = stack[-1] if stack else -1
+                right = i
+
+                count = (mid - left) * (right - mid)
+
+                max_sum += nums[mid] * count
+
+            stack.append(i)
+
+        # -------------------------
+        # Sum of all subarray minimums
+        # -------------------------
+        min_sum = 0
+        stack = []
+
+        for i in range(n + 1):
+            while stack and (
+                i == n or nums[stack[-1]] > nums[i]
+            ):
+                mid = stack.pop()
+
+                left = stack[-1] if stack else -1
+                right = i
+
+                count = (mid - left) * (right - mid)
+
+                min_sum += nums[mid] * count
+
+            stack.append(i)
+
+        return max_sum - min_sum
+
+
 
 # V0-1
 # IDEA: MONO STACK (gpt)
@@ -101,11 +152,11 @@ class Solution:
                 # Pop while current element breaks
                 # the monotonic property.
                 #
-                # For maximum calculation:
-                #     maintain decreasing stack
+                # For `maximum` calculation:
+                #     maintain `decreasing` stack
                 #
-                # For minimum calculation:
-                #     maintain increasing stack
+                # For `minimum` calculation:
+                #     maintain `increasing` stack
                 while stack and (
 
                     # Sentinel case:
