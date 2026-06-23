@@ -173,10 +173,12 @@ class Solution(object):
         while i >= 0 and nums[i] >= nums[i + 1]:
             i -= 1
             
-        # If a pivot was found (meaning the array isn't entirely sorted in descending order)
+        # If a pivot was found (meaning the array isn't
+        # entirely sorted in descending order)
         if i >= 0:
             j = n - 1
-            # Step 2: Find the smallest element to the right of 'i' that is greater than nums[i]
+            # Step 2: Find the smallest element 
+            # to the right of 'i' that is greater than nums[i]
             while nums[j] <= nums[i]:
                 j -= 1
             # Swap them

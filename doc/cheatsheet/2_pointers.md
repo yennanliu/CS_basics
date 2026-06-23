@@ -56,6 +56,11 @@
     - Validate each aligned group: size must allow extension (>= 3) if counts differ
     - LC 809 (Expressive Words)
 
+- `Find-Pivot + Find-Successor + Reverse-Suffix` (Next Permutation)
+    - Scan right-to-left to find first ascending pair (pivot), then smallest-greater successor
+    - Swap pivot and successor, then reverse the descending suffix → ascending
+    - LC 31 (Next Permutation), LC 556 (Next Greater Element III)
+
 - Algorithm
     - binary search
     - sliding window
@@ -1291,6 +1296,138 @@ private boolean isStretchy(String s, String word) {
 | Count and Say | 38 | Generate next sequence by reading groups |
 | Consecutive Characters | 1446 | Find longest single-char run |
 | Run-Length Encoding | — | Encode/decode character groups |
+
+### 0-2-8) Next Permutation — LC 31
+
+#### Core Idea
+
+**Find-Pivot → Find-Successor → Swap → Reverse-Suffix:**
+
+1. **Find pivot** — scan right-to-left for the first index `i` where `nums[i] < nums[i+1]`. The suffix `nums[i+1:]` is fully descending (by definition). If no such `i` exists, the whole array is descending → reverse it and return.
+2. **Find successor** — scan right-to-left for the first index `j` where `nums[j] > nums[i]`. This is the smallest value in the suffix that beats the pivot.
+3. **Swap** `nums[i]` and `nums[j]`. The suffix is still descending after the swap.
+4. **Reverse suffix** `nums[i+1:]` — descending → ascending, giving the smallest possible tail.
+
+```
+Key invariant:
+  suffix after pivot is ALWAYS descending when we find the pivot.
+  After the swap it's still descending (we swapped the smallest-greater element in).
+  Reversing descending → ascending gives the smallest suffix.
+```
+
+**Why it works:**
+- Pivot is the rightmost position where we can increment the number.
+- Picking the smallest successor ensures the minimum possible increase at position `i`.
+- Reversing the suffix ensures the tail is as small as possible.
+
+---
+
+#### Visual Trace
+
+```
+nums = [1, 2, 5, 4, 3]
+
+Step 1 — Find pivot (right-to-left, first nums[i] < nums[i+1]):
+  i=3: nums[3]=4, nums[4]=3  → 4 >= 3, skip
+  i=2: nums[2]=5, nums[3]=4  → 5 >= 4, skip
+  i=1: nums[1]=2, nums[2]=5  → 2 < 5  ✓ pivot = index 1, value 2
+
+Step 2 — Find successor (right-to-left, first nums[j] > nums[pivot]):
+  j=4: nums[4]=3 > 2  ✓ successor = index 4, value 3
+
+Step 3 — Swap pivot and successor:
+  [1, 2, 5, 4, 3]  →  [1, 3, 5, 4, 2]
+      ^        ^
+      i        j
+
+Step 4 — Reverse suffix nums[2:]:
+  [1, 3, 5, 4, 2]  →  [1, 3, 2, 4, 5]
+         -------            -------
+
+Result: [1, 3, 2, 4, 5]
+```
+
+---
+
+#### Pattern (Python)
+
+```python
+# python
+# LC 31 - Next Permutation
+# time = O(N), space = O(1)
+def nextPermutation(nums):
+    n = len(nums)
+    i = n - 2
+
+    # Step 1: find pivot
+    while i >= 0 and nums[i] >= nums[i + 1]:
+        i -= 1
+
+    # Step 2 & 3: find successor and swap
+    if i >= 0:
+        j = n - 1
+        while nums[j] <= nums[i]:
+            j -= 1
+        nums[i], nums[j] = nums[j], nums[i]
+
+    # Step 4: reverse suffix
+    left, right = i + 1, n - 1
+    while left < right:
+        nums[left], nums[right] = nums[right], nums[left]
+        left += 1
+        right -= 1
+```
+
+#### Pattern (Java)
+
+```java
+// java
+// LC 31 - Next Permutation
+// time = O(N), space = O(1)
+public void nextPermutation(int[] nums) {
+    int n = nums.length;
+    int i = n - 2;
+
+    // Step 1: find pivot (right-to-left, first ascending pair)
+    while (i >= 0 && nums[i] >= nums[i + 1]) i--;
+
+    // Step 2 & 3: find successor and swap
+    if (i >= 0) {
+        int j = n - 1;
+        while (nums[j] <= nums[i]) j--;
+        int tmp = nums[i]; nums[i] = nums[j]; nums[j] = tmp;
+    }
+
+    // Step 4: reverse suffix (descending → ascending)
+    int l = i + 1, r = n - 1;
+    while (l < r) {
+        int tmp = nums[l]; nums[l] = nums[r]; nums[r] = tmp;
+        l++; r--;
+    }
+}
+```
+
+#### Algorithm Steps Summary
+
+| Step | Action | Condition | Effect |
+|------|--------|-----------|--------|
+| Find pivot | Scan right-to-left | Stop at first `nums[i] < nums[i+1]` | Marks leftmost improvable position |
+| No pivot found | `i == -1` | Whole array descending | Reverse entire array (wrap to first permutation) |
+| Find successor | Scan right-to-left from end | First `nums[j] > nums[i]` | Smallest value that beats pivot |
+| Swap | `nums[i], nums[j]` | — | Minimum increment at position `i` |
+| Reverse suffix | `nums[i+1:]` | Always | Descending → ascending = smallest tail |
+
+#### Similar Problems
+
+| Problem | LC# | Key Pattern |
+|---------|-----|-------------|
+| Next Permutation | 31 | Pivot + successor + reverse suffix |
+| Previous Permutation with One Swap | 1053 | Scan left for first descending pair, swap with rightmost smaller |
+| Next Greater Element III | 556 | Same algorithm on integer digits (with overflow check) |
+| Permutation Sequence | 60 | Build Kth permutation directly using factorial number system |
+| Permutations | 46 | Generate all permutations (backtracking) |
+| Permutations II | 47 | All permutations with duplicates (backtracking + dedup) |
+| Find the Next Palindrome | 3348 | Permutation-style digit manipulation |
 
 ### 0-2-3) QuickSelect (Partition Algorithm for Kth Element) — LC 215
 
