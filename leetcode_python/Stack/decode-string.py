@@ -40,6 +40,47 @@ All the integers in s are in the range [1, 300].
 
 """
 
+
+# V0
+# IDEA : STACK (GEMINI)
+class Solution(object):
+    def decodeString(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+        stack = []
+        current_str = ""
+        current_num = 0
+        
+        for char in s:
+            if char.isdigit():
+                current_num = current_num * 10 + int(char)
+                
+            elif char == '[':
+                # Push the string first, then the multiplier onto the SAME stack
+                stack.append(current_str)
+                stack.append(current_num)
+                
+                # Reset trackers
+                current_str = ""
+                current_num = 0
+                
+            elif char == ']':
+                # The top item is guaranteed to be the multiplier
+                repeat_times = stack.pop()
+                # The next item popped is guaranteed to be the preceding string text
+                prev_str = stack.pop()
+                
+                # Decode this layer and update our ongoing string tracking
+                current_str = prev_str + (current_str * repeat_times)
+                
+            else:
+                current_str += char
+                
+        return current_str
+
+
 # V0
 # IDEA : STACK
 # NOTE : treat before cases separately
@@ -82,6 +123,46 @@ class Solution:
                 pre_string = stack.pop()
                 string = pre_string + pre_num * string
         return string
+
+
+# V0-1
+# IDEA: STACK (GPT)
+class Solution(object):
+    def decodeString(self, s):
+
+        digit_st = []
+        alpha_st = []
+
+        current_str = ""
+        current_num = 0
+
+        for ch in s:
+
+            # Build multi-digit number
+            if ch.isdigit():
+                current_num = current_num * 10 + int(ch)
+
+            elif ch == "[":
+                # Save current context
+                digit_st.append(current_num)
+                alpha_st.append(current_str)
+
+                # Reset for nested section
+                current_num = 0
+                current_str = ""
+
+            elif ch == "]":
+                repeat = digit_st.pop()
+                prev_str = alpha_st.pop()
+
+                current_str = prev_str + current_str * repeat
+
+            else:
+                # Normal character
+                current_str += ch
+
+        return current_str
+
 
 # V1
 # https://leetcode.com/problems/decode-string/discuss/378711/Easy-understand-python-solution-88-beat
