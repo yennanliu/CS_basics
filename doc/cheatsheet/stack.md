@@ -636,28 +636,61 @@ for i in range(len(s)):
 print (stack)
 ```
 
-### 1-1-4) deal with `pre num, pre string` — LC 227
+### 1-1-4) Delay-Insert to Stack (act on `pre_op`, not current op) — LC 227
+
+**Key Insight**: When scanning an expression left-to-right, we can't decide what to do with the current number until we see the **next** operator — so we **delay** the push until then, acting on `pre_op`.
+
+**Why?**
+- `+` / `-` (low precedence): push `±num` directly, defer to final `sum(stack)`
+- `*` / `/` (high precedence): pop last value and combine immediately — but we only know this **after** `num` is fully built and the next operator arrives
+
+**Setup**:
+- `pre_op = '+'` (init) — makes the first number push as positive automatically
+- `num` accumulates digits; trigger fires on operator or end-of-string
+
+**Visual trace — `"3+2*2"` → 7**:
+```
+char  num  trigger?  pre_op  action               stack
+'3'   3    no        '+'     —                    []
+'+'   3    YES       '+'     push(3)  → pre_op='+' [3]
+'2'   2    no        '+'     —                    [3]
+'*'   2    YES       '+'     push(2)  → pre_op='*' [3, 2]
+'2'   2    YES(end)  '*'     pop()→2, push(2*2=4)  [3, 4]
+sum([3, 4]) = 7 ✓
+```
+
+**Template**:
 ```python
 # LC 227, 394
-# ...
+stack = []
+pre_op = '+'   # init to '+' so first num is pushed as-is
+num = 0
 for i, each in enumerate(s):
-    # ...
+    if each.isdigit():
+        num = 10 * num + int(each)
+    # trigger: delay until we see the NEXT operator (or end of string)
     if i == len(s) - 1 or each in "+-*/":
         if pre_op == "+":
-            # ...
+            stack.append(num)
         elif pre_op == "-":
-            # ...
+            stack.append(-num)
         elif pre_op == "*":
-            # ...
+            stack.append(stack.pop() * num)
         elif pre_op == "/":
-            # ...
-        """
-        NOTE this !!!
-        """
-        pre_op = each
+            stack.append(int(float(stack.pop()) / num))  # truncate toward zero
+        pre_op = each   # save current op → becomes pre_op next iteration
         num = 0
-# ...
+return sum(stack)
 ```
+
+**Related problems using this pattern**:
+
+| LC | Problem | Variation |
+|----|---------|-----------|
+| 227 | Basic Calculator II | `+-*/`, no parentheses |
+| 224 | Basic Calculator I | `+-()`, no `*/` |
+| 772 | Basic Calculator III | `+-*/()` combined |
+| 394 | Decode String | `pre_op` tracks repeat count before `[` |
 
 ## 2) LeetCode Examples
 
@@ -1289,11 +1322,14 @@ class Solution:
 ```
 
 ### 2-5') Basic Calculator II — LC 227
+
+> **Pattern**: Delay-Insert (see [1-1-4](#1-1-4-delay-insert-to-stack-act-on-pre_op-not-current-op----lc-227)) — push `num` only when the *next* operator arrives; act on `pre_op` at that point.
+
 ```python
 # python
 # LC 227. Basic Calculator II, LC 224. Basic Calculator
 # V0
-# IDEA : STACK
+# IDEA : STACK + delay-insert (pre_op pattern)
 class Solution:
     def calculate(self, s):
         stack = []
