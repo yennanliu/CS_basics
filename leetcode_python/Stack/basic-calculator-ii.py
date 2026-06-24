@@ -39,6 +39,20 @@ The answer is guaranteed to fit in a 32-bit integer
 
 # V0
 # IDEA : STACK (gemini)
+"""
+Steps:
+
+1. loop over s
+   maintain `current_num`
+
+2. check the op, based on the op,
+   we then calculate and append res or current_num to stack
+   -> NOTE !!!
+      -> we DON'T append res / current_num to stack immediately;
+         but we do it `later` when mee the op
+
+3. sum over res
+"""
 class Solution(object):
     def calculate(self, s):
         """
