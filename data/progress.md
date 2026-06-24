@@ -1,5 +1,124 @@
 # Progress
 
+
+# 2026-06-25
+
+- trie.md
+	- 2) LC Example
+
+
+- Dijkstra.md
+	- Template 1: Basic Dijkstra
+
+- intervals.md
+
+- python_trick.md
+	- 2) LC Example
+
+- stack.md
+
+- backtrack.md
+	- todo: `Type 2) : Permutations (排列組合) (全排列)`
+- dp.md
+	- todo: `Template 7-1: One Edit Distance (LC 161) — Exactly-1-Edit Variant`
+- heap
+	- LC example
+- stack.md
+
+
+- OK:
+  - graph.md
+  - dfs.md
+  - tree2.md
+  - priority_queue.md
+  - monotonic_stack.md
+  - complexity_drills.html
+  - String.md
+  - bfs.md
+  - sort.md
+  - set.md
+  - 2 pointer.md
+  - hash_map.md
+  - tree.md
+  - union_find
+  - BST.md
+  - Queue.md
+  - greedy.md
+  - difference_array.md
+
+- `MUST LC problems`
+	- todo
+
+
+- Blind 75
+
+	- math & geometry (doing)
+
+- needcode 150
+
+	- greedy
+	- intervals
+	- math & geometry
+
+- LC weekly
+	- `data/lc_weekly/lc_weekly_gpt.md`
+		- Weekly Contest 319 (doing)
+			- https://leetcode.com/contest/weekly-contest-319/
+
+- Others
+	- DP - `0/1 Knapsack and` -> revisit
+	- recent updated cheatsheet
+	- TODO LC:
+		- 34(todo),875(todo),81(todo)
+		- 377(todo, Permutations DP),210
+		- 312
+		- 416,494 (0/1 Knapsack)
+			- 0/1 knapsack DP
+		- 1143, 72
+		- 1905,399
+		- 323,2316
+		- 663,508
+		- 701,450
+		- 652,662
+		- 776,399
+		- 112,113,437
+		- 737
+		- 742
+		- graph bipartite
+			- 785
+		- dist in LCA
+			- 1740
+		- tree -> graph
+			- 863
+		- Flatten Binary Tree to Linked List
+			- 114
+		- mono stack
+			- 907**, 853
+		- BFS
+			- 542
+			-	1087
+		- hashmap
+			- 525
+		- set
+			- 128**
+		- tree
+			- 1110,652,742,863
+		- bst
+			- 1382
+		- diff array
+			- 370,1109
+		- Dijkstra
+			- 1631
+		- trie
+			- 211 (wildcard),1268
+			- delete op
+				- https://yennj12.js.org/CS_basics/cheatsheets/trie.html#template-6-trie-with-delete-operation
+		- lazy_bst_in_order(todo),173(todo),2616(todo, compare PQ)
+		- topo_sort,257(todo)
+		- `Combinations VS Permutations` in DP
+			- https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Dynamic_Programming/coin_change_2.py#L125
+
+
 # 2026-06-24
 
 - trie.md
@@ -25,9 +144,6 @@
 - stack.md
 
 
-
-
-
 - OK:
   - graph.md
   - dfs.md
@@ -47,8 +163,6 @@
   - Queue.md
   - greedy.md
   - difference_array.md
-
-
 
 - `MUST LC problems`
 	- todo
