@@ -39,6 +39,51 @@ s only contains lower case English letters.
 """
 
 # V0
+# IDEA: STACK
+"""
+
+NOTE !!! key of this LC
+
+1. stack as [char, count]
+
+2. we can update st val directly:
+    -> stack[-1][1] += 1
+
+
+3. ONLY 2 cases:
+    - stack NOT empty and last val == cur
+    - else (stock is empty or last val != cur)
+
+"""
+class Solution(object):
+    def removeDuplicates(self, s, k):
+        """
+        NOTE !!!
+
+        stack as [char, count]
+        """
+        stack = []  # [char, count]
+
+        for ch in s:
+            # case 1)
+            if stack and stack[-1][0] == ch:
+                stack[-1][1] += 1
+
+                if stack[-1][1] == k:
+                    stack.pop()
+            # case 2)
+            else:
+                stack.append([ch, 1])
+
+        res = []
+
+        for ch, cnt in stack:
+            res.append(ch * cnt)
+
+        return "".join(res)
+
+
+# V0
 # IDEA : STACK
 class Solution:
      def removeDuplicates(self, x, k):
