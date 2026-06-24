@@ -49,6 +49,18 @@ The number of opening brackets '[' equals n / 2, and the number of closing brack
 
 # V0
 # IDEA : GREEDY (GPT)
+"""
+IDEA: 
+
+The key observation:
+
+    1. Track unmatched ].
+
+    2. Whenever balance becomes negative, we need one swap.
+
+    3. That swap effectively contributes 2 to the balance.
+
+"""
 class Solution(object):
     def minSwaps(self, s):
         balance = 0
