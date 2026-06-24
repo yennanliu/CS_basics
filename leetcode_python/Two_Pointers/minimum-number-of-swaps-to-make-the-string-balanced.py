@@ -48,6 +48,52 @@ The number of opening brackets '[' equals n / 2, and the number of closing brack
 """
 
 # V0
+# IDEA : GREEDY (GPT)
+class Solution(object):
+    def minSwaps(self, s):
+        balance = 0
+        swaps = 0
+
+        for ch in s:
+            if ch == "[":
+                balance += 1
+            else:
+                balance -= 1
+
+            if balance < 0:
+                swaps += 1
+                balance = 1
+
+        return swaps
+
+
+
+# V0-1
+# IDEA : GREEDY (GEMINI)
+class Solution(object):
+    def minSwaps(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        # Tracks the number of unmatched opening brackets '['
+        unmatched_open = 0
+        
+        for char in s:
+            if char == '[':
+                unmatched_open += 1
+            else:
+                # It's a closing bracket ']'
+                if unmatched_open > 0:
+                    # We found a matching pair! Cancel one out.
+                    unmatched_open -= 1
+                    
+        # Every swap fixes 2 pairs simultaneously. 
+        # Using integer division (unmatched_open + 1) // 2 beautifully handles rounding up.
+        return (unmatched_open + 1) // 2
+
+
+# V0
 # IDEA : GREEDY
 # STEP 1) : remove "[]" pair
 # STEP 2) : since all "[]" pairs are removed already
