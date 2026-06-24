@@ -38,6 +38,51 @@ The answer is guaranteed to fit in a 32-bit integer
 """
 
 # V0
+# IDEA : STACK (gemini)
+class Solution(object):
+    def calculate(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        if not s:
+            return 0
+            
+        stack = []
+        current_num = 0
+        # Tracks the last operator seen. The first number is implicitly positive.
+        operation = '+' 
+        
+        # We append a dummy character at the end to force the loop to process the very last number
+        for i, char in enumerate(s):
+            # 1. Build the multi-digit number
+            if char.isdigit():
+                current_num = current_num * 10 + int(char)
+                
+            # 2. If the character is an operator or we've reached the last index
+            if (not char.isdigit() and char != ' ') or i == len(s) - 1:
+                if operation == '+':
+                    stack.append(current_num)
+                elif operation == '-':
+                    stack.append(-current_num)
+                elif operation == '*':
+                    stack.append(stack.pop() * current_num)
+                elif operation == '/':
+                    # CRITICAL: In Python, integer division '//' rounds down.
+                    # We cast to float and then int to properly truncate toward zero (e.g., -3 // 2 is -2, but int(-3/2) is -1).
+                    prev_num = stack.pop()
+                    stack.append(int(float(prev_num) / current_num))
+                    
+                # Save the new operator and reset the number builder
+                operation = char
+                current_num = 0
+                
+        # 3. Low priority operations (+ and -) are now just a clean sum of the stack elements
+        return sum(stack)
+
+
+
+# V0
 # IDEA : STACK
 # NOTE !!! 
 #   -> 1) we init pre_op = '+'
