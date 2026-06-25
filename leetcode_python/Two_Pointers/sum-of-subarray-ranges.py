@@ -65,6 +65,126 @@ class Solution(object):
 
 # V0-0-1
 # IDEA: MONO STACK (gpt)
+"""
+CORE IDEA:
+
+
+
+For every subarray:
+
+\[
+\text{range} = \max(subarray) - \min(subarray)
+\]
+
+Return the sum of all subarray ranges.
+
+Example:
+
+```python
+nums = [1,2,3]
+```
+
+Subarrays:
+
+| Subarray | Max | Min | Range |
+|-----------|------|------|--------|
+| [1] | 1 | 1 | 0 |
+| [2] | 2 | 2 | 0 |
+| [3] | 3 | 3 | 0 |
+| [1,2] | 2 | 1 | 1 |
+| [2,3] | 3 | 2 | 1 |
+| [1,2,3] | 3 | 1 | 2 |
+
+Total:
+
+```python
+0 + 0 + 0 + 1 + 1 + 2 = 4
+```
+
+---
+
+# Key Observation
+
+Instead of calculating:
+
+```python
+(max - min)
+```
+
+for every subarray,
+
+we can compute:
+
+```python
+(sum of all subarray maximums)
+-
+(sum of all subarray minimums)
+```
+
+because:
+
+\[
+\sum(\max - \min)
+=
+\sum(\max)
+-
+\sum(\min)
+\]
+
+So the problem becomes:
+
+1. Find the sum of all subarray maximums.
+2. Find the sum of all subarray minimums.
+3. Subtract.
+
+---
+
+# Contribution Technique
+
+Instead of iterating through all subarrays, think from each element's perspective.
+
+For an element:
+
+```python
+nums[i]
+```
+
+determine:
+
+- How many subarrays use it as the maximum?
+- How many subarrays use it as the minimum?
+
+Then:
+
+```python
+contribution = nums[i] * count
+```
+
+---
+
+# Core Formula
+
+Suppose index `mid` is the element being processed.
+
+We find:
+
+```text
+left    mid    right
+ |       |       |
+```
+
+where:
+
+- `left` = previous boundary
+- `right` = next boundary
+
+Then the number of subarrays where `nums[mid]` is the chosen max/min is:
+
+```python
+count = (mid - left) * (right - mid)
+```
+
+"""
 class Solution:
     def subArrayRanges(self, nums):
         n = len(nums)
