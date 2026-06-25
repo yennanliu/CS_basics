@@ -508,8 +508,17 @@ class Solution(object):
             return 0
             
         stack = []
+
+        """
+        NOTE !!!
+
+        we define current_num, operation
+
+        for `prev` digit, op tracking
+        """
         current_num = 0
-        # Tracks the last operator seen. The first number is implicitly positive.
+        # Tracks the last operator seen.
+        # The first number is implicitly positive.
         operation = '+' 
         
         # We append a dummy character at the end to force the loop to process the very last number
@@ -528,6 +537,14 @@ class Solution(object):
             # 2. If the character is an operator or 
             # we've reached the last index
             if (not char.isdigit() and char != ' ') or i == len(s) - 1:
+
+                """
+                NOTE !!!
+
+                we use `operation`, instead of char as op here
+
+                -> `operation` is the prev op
+                """
                 if operation == '+':
                     stack.append(current_num)
                 elif operation == '-':
