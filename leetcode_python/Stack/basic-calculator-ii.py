@@ -49,9 +49,454 @@ Steps:
    we then calculate and append res or current_num to stack
    -> NOTE !!!
       -> we DON'T append res / current_num to stack immediately;
-         but we do it `later` when mee the op
+         but we do it `later` when meet the op
 
 3. sum over res
+"""
+
+"""
+# Dry run
+
+
+````markdown
+# Dry Run: `s = "3-2*2"`
+
+## Key Idea
+
+When we encounter an operator (`+`, `-`, `*`, `/`):
+
+1. The current number (`num`) is complete.
+2. Apply the **previous operator (`pre_op`)** to that number.
+3. Store the result in the stack.
+4. Update `pre_op` to the current operator.
+
+---
+
+## Initial State
+
+```python
+stack = []
+pre_op = '+'
+num = 0
+```
+
+```text
+Expression: 3 - 2 * 2
+            ^
+
+stack  = []
+pre_op = '+'
+num    = 0
+```
+
+---
+
+# Iteration 1
+
+Current character:
+
+```text
+Expression: 3 - 2 * 2
+            ^
+            '3'
+```
+
+Digit:
+
+```python
+num = 10 * 0 + 3
+```
+
+Result:
+
+```python
+num = 3
+```
+
+State:
+
+```text
+stack  = []
+pre_op = '+'
+num    = 3
+```
+
+No operator encountered yet, so continue.
+
+---
+
+# Iteration 2
+
+Current character:
+
+```text
+Expression: 3 - 2 * 2
+              ^
+              '-'
+```
+
+Operator encountered.
+
+Current state before processing:
+
+```python
+stack  = []
+pre_op = '+'
+num    = 3
+```
+
+Since:
+
+```python
+pre_op == '+'
+```
+
+Execute:
+
+```python
+stack.append(num)
+```
+
+Result:
+
+```python
+stack = [3]
+```
+
+Visualization:
+
+```text
+Processed:
+
++3
+
+stack = [3]
+```
+
+Update:
+
+```python
+pre_op = '-'
+num = 0
+```
+
+State:
+
+```python
+stack  = [3]
+pre_op = '-'
+num    = 0
+```
+
+---
+
+# Iteration 3
+
+Current character:
+
+```text
+Expression: 3 - 2 * 2
+                ^
+                '2'
+```
+
+Digit:
+
+```python
+num = 2
+```
+
+State:
+
+```python
+stack  = [3]
+pre_op = '-'
+num    = 2
+```
+
+Continue.
+
+---
+
+# Iteration 4
+
+Current character:
+
+```text
+Expression: 3 - 2 * 2
+                  ^
+                  '*'
+```
+
+Operator encountered.
+
+Current state:
+
+```python
+stack  = [3]
+pre_op = '-'
+num    = 2
+```
+
+Since:
+
+```python
+pre_op == '-'
+```
+
+Execute:
+
+```python
+stack.append(-num)
+```
+
+Result:
+
+```python
+stack.append(-2)
+
+stack = [3, -2]
+```
+
+Visualization:
+
+```text
+Processed:
+
++3
+-2
+
+stack = [3, -2]
+```
+
+Update:
+
+```python
+pre_op = '*'
+num = 0
+```
+
+State:
+
+```python
+stack  = [3, -2]
+pre_op = '*'
+num    = 0
+```
+
+---
+
+# Iteration 5 (Last Character)
+
+Current character:
+
+```text
+Expression: 3 - 2 * 2
+                      ^
+                      '2'
+```
+
+Digit:
+
+```python
+num = 2
+```
+
+State:
+
+```python
+stack  = [3, -2]
+pre_op = '*'
+num    = 2
+```
+
+Since this is the last character:
+
+```python
+i == len(s) - 1
+```
+
+we must process it.
+
+---
+
+## Process `*`
+
+Current state:
+
+```python
+stack  = [3, -2]
+pre_op = '*'
+num    = 2
+```
+
+Execute:
+
+```python
+stack.append(stack.pop() * num)
+```
+
+### Step 1
+
+```python
+stack.pop()
+```
+
+Returns:
+
+```python
+-2
+```
+
+Stack becomes:
+
+```python
+[3]
+```
+
+### Step 2
+
+Multiply:
+
+```python
+-2 * 2
+```
+
+Result:
+
+```python
+-4
+```
+
+### Step 3
+
+Append:
+
+```python
+stack.append(-4)
+```
+
+Stack becomes:
+
+```python
+[3, -4]
+```
+
+Visualization:
+
+```text
+Before:
+
+[3, -2]
+
+Compute:
+
+(-2) * 2 = -4
+
+After:
+
+[3, -4]
+```
+
+---
+
+# Final Result
+
+```python
+return sum(stack)
+```
+
+```python
+sum([3, -4])
+```
+
+Result:
+
+```python
+-1
+```
+
+---
+
+# Visual Summary
+
+```text
+Expression:
+
+3 - 2 * 2
+
+Step 1:
++3
+
+stack = [3]
+
+--------------------------------
+
+Step 2:
+-2
+
+stack = [3, -2]
+
+--------------------------------
+
+Step 3:
+(-2) * 2
+
+stack = [3, -4]
+
+--------------------------------
+
+Final:
+
+3 + (-4)
+= -1
+```
+
+---
+
+# Why `stack.append(-num)`?
+
+The algorithm converts:
+
+```text
+3 - 2 + 5
+```
+
+into:
+
+```text
+[3, -2, 5]
+```
+
+Then:
+
+```python
+sum(stack)
+```
+
+naturally computes:
+
+```text
+3 + (-2) + 5
+= 6
+```
+
+So:
+
+```python
+elif pre_op == '-':
+    stack.append(-num)
+```
+
+means:
+
+> "Store the next number as a negative value."
+
+NOT:
+
+> "Make the previous number negative."
+````
+
 """
 class Solution(object):
     def calculate(self, s):
@@ -72,8 +517,16 @@ class Solution(object):
             # 1. Build the multi-digit number
             if char.isdigit():
                 current_num = current_num * 10 + int(char)
-                
-            # 2. If the character is an operator or we've reached the last index
+
+
+            """
+            NOTE !!! 
+
+            we are dealing with `prev` op,
+            NOT the cur one
+            """    
+            # 2. If the character is an operator or 
+            # we've reached the last index
             if (not char.isdigit() and char != ' ') or i == len(s) - 1:
                 if operation == '+':
                     stack.append(current_num)
@@ -86,7 +539,13 @@ class Solution(object):
                     # We cast to float and then int to properly truncate toward zero (e.g., -3 // 2 is -2, but int(-3/2) is -1).
                     prev_num = stack.pop()
                     stack.append(int(float(prev_num) / current_num))
-                    
+                   
+                """
+                NOTE !!! 
+
+                we save cur op,
+                so can be used next time when we meet the other op again
+                """    
                 # Save the new operator and reset the number builder
                 operation = char
                 current_num = 0
