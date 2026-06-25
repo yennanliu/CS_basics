@@ -42,6 +42,12 @@ All the integers in s are in the range [1, 300].
 
 # V0
 # IDEA : STACK (GPT)
+"""
+NOTE !!!
+
+
+# stack: [(curr_str, curr_num)]
+"""
 class Solution(object):
     def decodeString(self, s):
         if not s:
@@ -66,9 +72,22 @@ class Solution(object):
                 curr_num = 0
 
             elif ch == ']':
-                prev_str, repeat = stack.pop()
+                """
+                NOTE !!!
 
-                curr_str = prev_str + curr_str * repeat
+
+                when `ch == ']'`
+                    -> we pop prev_str, prev_num
+
+                    -> cur_str = prev_str + curr_str * prev_num
+
+                        -> so we DON'T add `curr_str` stack directly,
+                           but update it as prev_str + curr_str * prev_num
+                           , then add to stack
+                """
+                prev_str, prev_num = stack.pop()
+
+                curr_str = prev_str + curr_str * prev_num
 
             else:
                 curr_str += ch
