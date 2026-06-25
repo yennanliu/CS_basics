@@ -40,6 +40,41 @@ All the integers in s are in the range [1, 300].
 
 """
 
+# V0
+# IDEA : STACK (GPT)
+class Solution(object):
+    def decodeString(self, s):
+        if not s:
+            return ""
+
+        # NOTE !!!
+        # stack: [(curr_str, curr_num)]
+        stack = []
+
+        curr_num = 0
+        curr_str = ""
+
+        for ch in s:
+
+            if ch.isdigit():
+                curr_num = curr_num * 10 + int(ch)
+
+            elif ch == '[':
+                stack.append((curr_str, curr_num))
+
+                curr_str = ""
+                curr_num = 0
+
+            elif ch == ']':
+                prev_str, repeat = stack.pop()
+
+                curr_str = prev_str + curr_str * repeat
+
+            else:
+                curr_str += ch
+
+        return curr_str
+
 
 # V0
 # IDEA : STACK (GEMINI)
