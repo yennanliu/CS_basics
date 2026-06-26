@@ -2364,6 +2364,7 @@ Calculate shortest distance from each cell to ANY source cell in a grid.
 | Easy | LC 102 | Level-order traversal | Pattern 2 (Level-by-Level) |
 | **Medium** | **LC 127** | **Shortest path transformation - Word Ladder** | **Pattern 7 (BFS + Backtracking)** |
 | Medium | LC 200 | Connected components | Pattern 3 (Graph BFS) |
+| Medium | LC 742 | Closest leaf (tree → undirected graph) | §2-14 (Tree → Graph + BFS) |
 | **Medium** | **LC 542** | **Simultaneous multi-source - 01 Matrix** | **Pattern 4 (Simultaneous Multi-Source)** |
 | Medium | LC 934 | DFS + Multi-source BFS (island expansion) | Pattern 4.5 (DFS + Multi-Source) |
 | Medium | LC 1162 | As Far from Land as Possible | Pattern 4 (Simultaneous Multi-Source) |
@@ -3003,3 +3004,92 @@ public int numSquares(int n) {
     return -1;
 }
 ```
+
+### 2-14) Closest Leaf in a Binary Tree (LC 742) — Tree → Graph + BFS ⭐⭐⭐⭐
+> "Closest" = fewest **edges** on a binary tree. The catch: from the target you may need
+> to walk **upward** (to a parent) as well as downward (to children). A plain tree only
+> has child pointers, so first **convert the tree into an undirected graph** (each node ↔
+> its parent and children), then run a normal BFS from the target — the **first leaf
+> popped is the answer** (BFS on an unweighted graph gives shortest #edges).
+
+**1) Core Idea**
+
+- **DFS to build an undirected graph** + record the `target` node + collect `leaves`.
+  - For each node, add edges *both ways*: `graph[node]→parent` and `graph[parent]→node`.
+  - This is the crucial step — it makes the parent reachable, so "going up" becomes a normal edge.
+- **BFS from the target node**; the first node popped that is a leaf (no children) is closest.
+  - Equal-weight edges ⇒ BFS guarantees minimal edge count; no need to track distances.
+
+```python
+# python — LC 742 (DFS build graph + BFS from target)
+from collections import defaultdict, deque
+
+class Solution(object):
+    def findClosestLeaf(self, root, k):
+        graph = defaultdict(list)   # node -> [neighbors]  (undirected)
+        leaves = set()
+        target = [None]
+
+        def build(node, parent):
+            if not node:
+                return
+            if node.val == k:
+                target[0] = node
+            if parent:                          # connect BOTH directions
+                graph[node].append(parent)
+                graph[parent].append(node)
+            if not node.left and not node.right: # leaf = no children
+                leaves.add(node)
+            build(node.left, node)
+            build(node.right, node)
+
+        build(root, None)
+
+        # BFS from target; first leaf reached is the closest
+        q = deque([target[0]])
+        visited = {target[0]}
+        while q:
+            node = q.popleft()
+            if node in leaves:
+                return node.val                  # earliest pop = fewest edges
+            for nei in graph[node]:
+                if nei not in visited:
+                    visited.add(nei)
+                    q.append(nei)
+```
+
+**2) Why BFS (not DFS)?**
+
+| | |
+|---|---|
+| Goal | **minimum #edges** target → any leaf |
+| Edge weights | all equal (1) ⇒ BFS layer = exact distance |
+| Why graph, not tree | answer leaf may be *above* the target → need parent edges |
+| Why "first leaf wins" | BFS pops nodes in nondecreasing distance order |
+
+```
+Tree (k=2):                 As undirected graph, BFS from 2:
+       1                    dist 0: 2
+      / \                   dist 1: 4, 1
+     2   3   (leaf)         dist 2: 5, 3(leaf) <- returned (3 closer than the 5→6 chain)
+    /
+   4
+  /
+ 5
+/
+6 (leaf)
+```
+
+**3) Similar LC**
+
+| LC | Problem | Relation |
+|----|---------|----------|
+| 742 | Closest Leaf in a Binary Tree | this — tree→graph, BFS to nearest leaf |
+| 863 | All Nodes Distance K in Binary Tree | same tree→graph trick, BFS K levels out |
+| 1192 | Critical Connections | tree/graph as undirected, edge traversal |
+| 994 | Rotting Oranges | multi-source BFS, "first reach = min dist" idea |
+| 542 | 01 Matrix | BFS shortest distance on unweighted grid |
+
+> **Pattern takeaway**: whenever a *tree* problem needs movement **upward (toward parent)**,
+> convert it to an **undirected graph** (add parent links via DFS) and switch to graph BFS/DFS.
+> This "tree → graph" reframing is the key to LC 742 and LC 863.
