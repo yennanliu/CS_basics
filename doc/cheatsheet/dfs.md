@@ -1638,24 +1638,73 @@ def dfs(root, value):
 ```
 
 ```python
-# form IV : check if duplicated nodes in tree
-# LC 652
+# form IV : check if duplicated SUBTREES in tree
+# LC 652 Find Duplicate Subtrees
 # python
-m = collections.defaultdict(int)
-# m is collection for record visited nodes
+m = collections.defaultdict(int)   # { subtree_signature : count }
 def dfs(root, m, res):
     if not root:
-        return "#"
+        return "#"                  # null marker -> makes signature unambiguous
 
-    ### NOTE : we get path via below, so we can know duplicated nodes
-    path = root.val + "-" + self.dfs(root.left, m, res) + "-" + self.dfs(root.right, m, res)
+    ### NOTE : serialize CURRENT subtree (post-order) -> use signature as hash key
+    # str(root.val) avoids int+str TypeError; "#" + commas avoid ambiguity (e.g. 1,12 vs 11,2)
+    path = str(root.val) + "," + dfs(root.left, m, res) + "," + dfs(root.right, m, res)
 
-    if m[path] == 1:
-        res.append(path)
+    if m[path] == 1:                # seen exactly once before -> this is the 2nd time -> duplicate
+        res.append(root)            # collect the ROOT NODE (not the path string)
 
     m[path] += 1
-    return path
+    return path                     # return signature so PARENT can build its own signature
 ```
+
+#### ⭐ LC 652 — Find Duplicate Subtrees (deep dive)
+
+> "I think this is a tree *path* problem?" — **No.** A path problem (LC 112 / 113 / 257)
+> tracks a *root → leaf* line of nodes. LC 652 instead asks whether two **whole subtrees**
+> are structurally identical. The trick is to give every subtree a **canonical signature**
+> and let a hashmap count how many times each signature appears. It belongs to
+> **Pattern 8 (Path Signatures / Shape Encoding)** — the tree analogue of "distinct islands".
+
+**1) Core Idea**
+
+- **Post-order serialization**: a subtree is fully described by `val + signature(left) + signature(right)`.
+  Children must be encoded *before* the parent → **post-order DFS** (bottom-up).
+- **Hashmap counting**: identical subtrees produce identical signature strings.
+  Increment a counter per signature; when it first hits **2**, that subtree is a duplicate.
+- **Append `root`, append once**: collect the node the **second** time a signature appears
+  (using `if count == 1` *before* incrementing, or `if count == 2` *after*) so each duplicate
+  kind is reported exactly once — even if it occurs 3+ times.
+
+**2) Pattern / Recognition**
+
+| Signal | What it tells you |
+|--------|-------------------|
+| "duplicate / identical **subtrees**", "same structure & values" | serialize + hashmap |
+| need to compare *whole subtrees*, not a single root→leaf line | NOT a path problem |
+| answer is built bottom-up from children | **post-order** DFS |
+| need a delimiter (`,`) + null marker (`#`) | avoid signature ambiguity |
+
+```
+Encoding rules (why each piece matters):
+  "#"   -> null child       (distinguishes shapes: a node w/ 1 child vs 2)
+  ","   -> field delimiter  (so vals "1,12" never collide with "11,2")
+  post-order -> children serialized first, parent reuses their result
+Complexity: O(n) nodes, but each signature is O(n) long -> O(n^2) time / space worst case.
+  (Use an int-id map instead of raw strings to get true O(n) — see V2 in the .py file.)
+```
+
+**3) Similar LC**
+
+| LC | Problem | Relation |
+|----|---------|----------|
+| 652 | Find Duplicate Subtrees | this problem — subtree signature + count |
+| 694 | Number of Distinct Islands | grid analogue — encode shape, dedupe via `set` |
+| 449 | Serialize / Deserialize BST | same serialization idea, encode→decode |
+| 297 | Serialize / Deserialize Binary Tree | canonical (pre/post-order + `#`) encoding |
+| 572 | Subtree of Another Tree | match one subtree (can also use signature compare) |
+| 508 | Most Frequent Subtree Sum | bottom-up subtree aggregate + hashmap count |
+| 1948 | Delete Duplicate Folders in System | generalizes 652 — serialize subtrees, mark duplicates |
+
 
 - Grpah transversal (DFS)
 
