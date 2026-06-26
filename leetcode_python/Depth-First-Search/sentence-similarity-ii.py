@@ -47,6 +47,129 @@ xi and yi consist of English letters.
 
 """
 
+
+# V0
+# IDEA: DFS + HASHMAP (GPT)
+# TODO: VALIDATE
+class Solution(object):
+    def areSentencesSimilarTwo(self, sentence1, sentence2, similarPairs):
+
+        if len(sentence1) != len(sentence2):
+            return False
+
+        rel_map = {}
+
+        for a, b in similarPairs:
+            if a not in rel_map:
+                rel_map[a] = []
+
+            if b not in rel_map:
+                rel_map[b] = []
+
+            rel_map[a].append(b)
+            rel_map[b].append(a)
+
+        for i in range(len(sentence1)):
+            s1 = sentence1[i]
+            s2 = sentence2[i]
+
+            visited = set()
+
+            if not self.helper(rel_map, s1, s2, visited):
+                return False
+
+        return True
+
+    def helper(self, rel_map, node1, node2, visited):
+
+        if node1 == node2:
+            return True
+
+        # NOTE !!! below
+        if node1 in visited:
+            return False
+
+        # NOTE !!! below
+        if node1 not in rel_map:
+            return False
+
+        visited.add(node1)
+
+        for nei in rel_map[node1]:
+            """
+            NOTE !!!
+
+             we need to `return True` if dfs calling `succeed`;
+             or the True never get propagated
+            """
+            if self.helper(rel_map, nei, node2, visited):
+                return True
+
+        return False
+
+
+
+# V0-1
+# IDEA: DFS + HASHMAP (GEMINI)
+# TODO: VALIDATE
+class Solution(object):
+    def areSentencesSimilarTwo(self, sentence1, sentence2, similarPairs):
+        """
+        :type sentence1: List[str]
+        :type sentence2: List[str]
+        :type similarPairs: List[List[str]]
+        :rtype: bool
+        """
+        # Sentences with different counts can never be similar
+        if len(sentence1) != len(sentence2):
+            return False
+            
+        # 1. Build the similarity adjacency graph using similarPairs
+        rel_map = {}
+        for w1, w2 in similarPairs:
+            if w1 not in rel_map:
+                rel_map[w1] = []
+            if w2 not in rel_map:
+                rel_map[w2] = []
+            rel_map[w1].append(w2)
+            rel_map[w2].append(w1)
+            
+        # 2. Iterate and verify word matching sequentially
+        for i in range(len(sentence1)): 
+            s1 = sentence1[i]
+            s2 = sentence2[i]
+            
+            # Words are naturally similar to themselves
+            if s1 == s2:
+                continue
+                
+            # If one word isn't even in our dictionary, it cannot reach any alternate pairs
+            if s1 not in rel_map or s2 not in rel_map:
+                return False
+                
+            # Run DFS path validation
+            visited = set()
+            if not self.helper(rel_map, s1, s2, visited):
+                return False
+                
+        return True
+
+    def helper(self, rel_map, current, target, visited):
+        if current == target:
+            return True
+            
+        visited.add(current)
+        
+        # Traverse neighbors
+        for neighbor in rel_map.get(current, []):
+            if neighbor not in visited:
+                # FIX: Check the result of the recursive call. If a path is found, bubble up True!
+                if self.helper(rel_map, neighbor, target, visited):
+                    return True
+                    
+        return False
+
+
 # V0
 # IDEA : DFS
 from collections import defaultdict
