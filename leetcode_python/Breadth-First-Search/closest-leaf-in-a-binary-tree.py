@@ -1,5 +1,6 @@
 """
 
+# https://leetcode.ca/all/742.html
 # https://zxi.mytechroad.com/blog/tree/742-closest-leaf-in-a-binary-tree/
 
 [LeetCode] 742. Closest Leaf in a Binary Tree
@@ -60,6 +61,150 @@ There exists some node in the given binary tree for which node.val == k.
 #         -> We only consider the min distance between left (no sub tree) and k
 
 """
+
+
+# V0
+# IDEA: DFS + BFS (GPT)
+# TODO: validate
+from collections import defaultdict, deque
+
+class Solution(object):
+
+    def findClosestLeaf(self, root, k):
+        # ---------------------------------------------------
+        # graph[node] = all neighbors of node
+        # We convert the tree into an undirected graph.
+        #
+        # Example:
+        #
+        #      1
+        #     / \
+        #    2   3
+        #
+        # becomes
+        #
+        # 1 <--> 2
+        # |
+        # +----> 3
+        # ---------------------------------------------------
+        graph = defaultdict(list)
+
+        # Store every leaf node.
+        leaves = set()
+
+        # Will store the TreeNode whose value == k.
+        target = None
+
+        # ---------------------------------------------------
+        # DFS to build graph
+        # ---------------------------------------------------
+        def build(node, parent):
+
+            if not node:
+                return
+
+            # Remember the node whose value is k.
+            nonlocal target
+            if node.val == k:
+                target = node
+
+            # If parent exists, connect both directions.
+            if parent:
+                graph[node].append(parent)
+                graph[parent].append(node)
+
+            # Leaf node
+            if not node.left and not node.right:
+                leaves.add(node)
+
+            # Continue DFS
+            build(node.left, node)
+            build(node.right, node)
+
+        build(root, None)
+
+        # ---------------------------------------------------
+        # BFS from target node
+        #
+        # Because every edge has equal weight (=1),
+        # BFS guarantees the first leaf reached
+        # is the closest one.
+        # ---------------------------------------------------
+        q = deque([target])
+
+        visited = set([target])
+
+        while q:
+
+            node = q.popleft()
+
+            # First leaf reached
+            if node in leaves:
+                return node.val
+
+            # Explore every adjacent node
+            for nei in graph[node]:
+
+                if nei not in visited:
+                    visited.add(nei)
+                    q.append(nei)
+
+
+
+# V0-1
+# IDEA: BFS (GEMINI)
+# TODO: validate
+from collections import defaultdict, deque
+
+class Solution(object):
+    def findClosestLeaf(self, root, k):
+        """
+        :type root: TreeNode
+        :type k: int
+        :rtype: int
+        """
+        # Graph map tracking neighbors: { node_object: [neighbor_node_objects] }
+        graph = defaultdict(list)
+        self.target_node = None
+        
+        # 1. DFS to build an undirected graph from the binary tree
+        def build_graph(node, parent):
+            if not node:
+                return
+                
+            # Track the memory object that contains our starting value k
+            if node.val == k:
+                self.target_node = node
+                
+            if parent:
+                graph[node].append(parent)
+                graph[parent].append(node)
+                
+            build_graph(node.left, node)
+            build_graph(node.right, node)
+            
+        build_graph(root, None)
+        
+        # 2. BFS starting directly from our target node object
+        queue = deque([self.target_node])
+        visited = set([self.target_node])
+        
+        while queue:
+            curr = queue.popleft()
+            
+            if curr:
+                # Leaf definition: Has no left and no right child paths
+                if not curr.left and not curr.right:
+                    return curr.val
+                    
+                # Scan all valid connections (parent + children branches)
+                for neighbor in graph[curr]:
+                    if neighbor not in visited:
+                        visited.add(neighbor)
+                        queue.append(neighbor)
+                        
+        return -1
+
 
 # V0
 # IDEA : DFS build GRAPH + BFS find ans
