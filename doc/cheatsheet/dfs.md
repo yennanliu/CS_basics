@@ -3082,6 +3082,127 @@ class Solution(object):
         return True
 ```
 
+#### ⭐ LC 737 — Sentence Similarity II (deep dive)
+
+> Despite the "sentence / words" framing, this is a **graph connectivity** problem,
+> NOT a string problem. Each `similarPair` is an **undirected edge**; similarity is
+> **transitive** (`a~b, b~c ⇒ a~c`), which is exactly "are these two nodes in the same
+> connected component?". (Contrast LC 734 *Sentence Similarity I* — no transitivity,
+> so a plain set lookup suffices, no graph needed.)
+
+**1) Core Idea**
+
+- **Build an undirected graph** from `similarPairs`: `graph[a].add(b)`, `graph[b].add(a)`.
+- For each aligned word pair `(w1, w2)`:
+  - `w1 == w2` → similar by definition (a word is similar to itself) → skip.
+  - else **DFS/BFS** from `w1` trying to reach `w2`; if unreachable → return `False`.
+- Length mismatch → immediately `False`.
+
+```python
+# clean reference (explicit graph + DFS reachability)
+def areSentencesSimilarTwo(s1, s2, pairs):
+    if len(s1) != len(s2):
+        return False
+    g = collections.defaultdict(set)
+    for a, b in pairs:
+        g[a].add(b); g[b].add(a)
+
+    def connected(src, dst):
+        if src == dst:
+            return True
+        stack, seen = [src], {src}          # seed seen w/ src to avoid re-visit
+        while stack:
+            w = stack.pop()
+            if w == dst:
+                return True
+            for nei in g[w]:
+                if nei not in seen:
+                    seen.add(nei); stack.append(nei)
+        return False
+
+    return all(connected(a, b) for a, b in zip(s1, s2))
+```
+
+**2) Pattern / Recognition**
+
+| Signal | What it tells you |
+|--------|-------------------|
+| relation is **transitive** (`a~b, b~c ⇒ a~c`) | connected-components problem |
+| "are X and Y related/connected/in same group" | DFS / BFS / **Union-Find** |
+| edges given as pairs, query many (x,y) reachability | prefer **Union-Find** (near O(1)/query) |
+| must seed `visited` with the start node | avoid infinite loop on cycles |
+
+```
+3 interchangeable engines (same idea, different machinery):
+  DFS / BFS   -> per-query graph traversal      | O((V+E)) per query
+  Union-Find  -> union all pairs, then find()    | ~O(α(n)) per query  <- best for many queries
+Don't forget: w1 == w2 short-circuits TRUE even if the word isn't in the graph.
+```
+
+**3) Similar LC**
+
+| LC | Problem | Relation |
+|----|---------|----------|
+| 737 | Sentence Similarity II | this problem — transitive → component check |
+| 734 | Sentence Similarity I | NOT transitive → just set lookup (no graph) |
+| 547 | Number of Provinces | count connected components (DFS / Union-Find) |
+| 200 | Number of Islands | grid connected components |
+| 990 | Satisfiability of Equality Equations | `==`/`!=` constraints → Union-Find |
+| 684 | Redundant Connection | detect the edge that creates a cycle (Union-Find) |
+| 399 | Evaluate Division | connectivity + weighted (ratio) edges |
+
+**4) Concept — why an "early `return False`" does NOT break the overall DFS** ⭐⭐⭐⭐⭐
+
+> A very common confusion with this template:
+> ```python
+> def helper(graph, node, target, visited):
+>     if node == target:    return True
+>     if node in visited:   return False     # <-- does this kill the whole search??
+>     visited.add(node)
+>     for nei in graph[node]:
+>         if helper(graph, nei, target, visited):
+>             return True                    # bubble success UP
+>     return False                           # <-- and does this??
+> ```
+> **No.** A `return` only goes **one level up** the recursion stack — to the *caller*,
+> NOT to the top-level call. A `False` just ends *that one branch* and lets the parent's
+> `for` loop move on to its next neighbor. Only `True` propagates all the way up
+> (because every caller does `if helper(...): return True`).
+
+**Walkthrough** — graph `A→[B,C]`, `B→[D]`, `C→[E]`; call `helper(A, target=E)`:
+
+```text
+helper(A)  visited={A}        for nei in [B, C]:  -> loop PAUSES at B
+ └─ helper(B)  visited={A,B}  for nei in [D]:
+     └─ helper(D)  no neighbors -> return False   ── returns to helper(B) ONLY
+    back in helper(B): `if False: return True` skipped; no more neighbors -> return False
+back in helper(A): B branch failed, loop RESUMES -> nei = C
+ └─ helper(C)  visited={A,B,D,C}  for nei in [E]:
+     └─ helper(E)  E == target -> return True
+    back in helper(C): `if True: return True`     -> helper(C) returns True
+back in helper(A): `if True: return True`         -> helper(A) returns True
+```
+
+```text
+            helper(A) ───────────────► True
+            ├─ helper(B) ──► False        (dead branch, did NOT stop search)
+            │   └─ helper(D) ──► False
+            └─ helper(C) ──► True
+                └─ helper(E) ──► True
+```
+
+The first `False` (from the `B→D` branch) **did not** stop the search — it only
+ended that branch, and the loop in `helper(A)` continued on to `C`.
+
+**Same logic for `if node in visited: return False`** — on a cyclic graph
+(`A↔B`, `A↔C`): `helper(A)→helper(B)→helper(A)` hits `A in visited` and returns `False`
+*to `helper(B)` only*. It means "don't re-search through A", not "give up". Control
+returns to `helper(A)`'s loop, which then explores `C` normally. Nothing is cut off.
+
+> **Key idea**: the bottom `return False` runs **only after every neighbor has been tried**.
+> One child returning `False` just advances the `for` loop; the whole DFS reports `False`
+> only when *all* branches are exhausted without reaching the target.
+
 ### 2-9) Concatenated Words — LC 472
 ```python
 # LC 472. Concatenated Words
