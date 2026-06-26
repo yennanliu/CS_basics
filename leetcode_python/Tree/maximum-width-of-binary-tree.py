@@ -45,6 +45,42 @@ The number of nodes in the tree is in the range [1, 3000].
 """
 
 # V0
+# IDEA: BST + DFS (GPT)
+# IDEA : GIVEN index = idx -> its left tree index = idx*2 ; its right tree index = idx*2 + 1
+class Solution(object):
+
+    def widthOfBinaryTree(self, root):
+        if not root:
+            return 0
+
+        self.max_width = 0
+
+        # level -> leftmost index
+        self.level_map = {}
+
+        self.helper(root, 0, 0)
+
+        return self.max_width
+
+    def helper(self, node, level, idx):
+        if not node:
+            return
+
+        # First node seen on this level
+        if level not in self.level_map:
+            self.level_map[level] = idx
+
+        # Update answer
+        self.max_width = max(
+            self.max_width,
+            idx - self.level_map[level] + 1
+        )
+
+        self.helper(node.left, level + 1, 2 * idx)
+        self.helper(node.right, level + 1, 2 * idx + 1)
+
+
+# V0
 # IDEA : defaultdict + DFS
 # IDEA : GIVEN index = idx -> its left tree index = idx*2 ; its right tree index = idx*2 + 1
 from collections import defaultdict
@@ -60,6 +96,45 @@ class Solution:
         d = defaultdict(list)
         dfs(root, 0, 0)
         return max(v[-1] - v[0] + 1 for _, v in d.items())
+
+
+# V0-1
+# IDEA: BST + DFS (GEMINI)
+class Solution(object):
+    def widthOfBinaryTree(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: int
+        """
+        if not root:
+            return 0
+            
+        self.max_width = 0
+        # level_map stores { level_depth: leftmost_node_index }
+        self.level_map = {}
+        
+        # Start DFS traversal from the root at level 0, index 1
+        self.helper(root, 0, 1)
+        
+        return self.max_width
+
+    def helper(self, node, level, idx):
+        if not node:
+            return
+            
+        # If this is the FIRST time we hit this level depth, 
+        # it is guaranteed to be the leftmost node on this level!
+        if level not in self.level_map:
+            self.level_map[level] = idx
+            
+        # Calculate the distance from the leftmost node of the current level
+        current_width = idx - self.level_map[level] + 1
+        self.max_width = max(self.max_width, current_width)
+        
+        # Recurse down to children using standard heap-indexing formulas
+        self.helper(node.left, level + 1, 2 * idx)
+        self.helper(node.right, level + 1, 2 * idx + 1)
+
 
 # V0'
 # IDEA : BFS
