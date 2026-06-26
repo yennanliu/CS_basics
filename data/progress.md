@@ -8,7 +8,7 @@
 
 
 - Dijkstra.md
-	- Template 1: Basic Dijkstra
+	- Template 5: Bidirectional Dijkstra
 
 - intervals.md
 

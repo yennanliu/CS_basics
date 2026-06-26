@@ -36,6 +36,80 @@ The number of the nodes in the tree will be in the range [1, 10^4]
 """
 
 # V0
+# IDEA: DFS (post order) + serialization + hashmap (GPT)
+class Solution(object):
+    def findDuplicateSubtrees(self, root):
+        """
+
+        self.node_map: { path: cnt }
+        """
+        self.node_map = {}
+        self.res = []
+
+        self.helper(root)
+
+        return self.res
+
+    def helper(self, root):
+        if not root:
+            return "#"
+
+        left = self.helper(root.left)
+        right = self.helper(root.right)
+
+        serial = "{},{},{}".format(root.val, left, right)
+
+        if serial not in self.node_map:
+            self.node_map[serial] = 1
+        else:
+            self.node_map[serial] += 1
+            if self.node_map[serial] == 2:
+                self.res.append(root)
+
+        return serial
+
+
+# V0-1
+# IDEA: DFS (post order) + serialization + hashmap (GEMINI)
+class Solution(object):
+    def findDuplicateSubtrees(self, root):
+        """
+        :type root: Optional[TreeNode]
+        :rtype: List[Optional[TreeNode]]
+        """
+        self.count_map = {}
+        self.res = []
+        
+        # Start the bottom-up serialization traversal
+        self.serialize(root)
+        
+        return self.res
+        
+    def serialize(self, node):
+        if not node:
+            return "#"
+            
+        # 1. Collect child sub-structures bottom-up (Post-order traversal)
+        left_serialized = self.serialize(node.left)
+        right_serialized = self.serialize(node.right)
+        
+        # 2. Build the unique signature for the subtree rooted at the current node
+        # Using commas ensures numbers like 11 and 1 don't blend together ambiguously
+        subtree_signature = "{},{},{}".format(node.val, left_serialized, right_serialized)
+        
+        # 3. Log the signature into our frequency tracking map
+        self.count_map[subtree_signature] = self.count_map.get(subtree_signature, 0) + 1
+        
+        # 4. If this is exactly the SECOND time we've seen this identical structure,
+        # collect its root node as a duplicate representative.
+        if self.count_map[subtree_signature] == 2:
+            self.res.append(node)
+            
+        # Return the structural layout upward so the parent node can include it
+        return subtree_signature
+
+
+# V0
 # IDEA : DFS
 # DEMO : defaultdict
 # In [26]: import collections 
