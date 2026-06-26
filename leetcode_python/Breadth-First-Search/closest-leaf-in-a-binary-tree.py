@@ -64,6 +64,79 @@ There exists some node in the given binary tree for which node.val == k.
 
 
 # V0
+# IDEA: DFS + BFS (GEMINI)
+# TODO: validate
+from collections import defaultdict, deque
+
+class Solution(object):
+    def findClosestLeaf(self, root, k):
+
+        """
+        NOTE !!!
+
+
+        graph: {  node_object: [neighbor_node_objects] }
+        """
+        # Graph map tracking neighbors: { node_object: [neighbor_node_objects] }
+        graph = defaultdict(list)
+        self.target_node = None
+        
+        # 1. Populate the graph map using our instance helper method
+        self.build_graph(root, None, graph, k)
+        
+        """
+        NOTE !!! 
+
+    
+        the bfs ONLY start from target node
+
+        
+        (other nodes are NOT included at init stage)
+        """
+        # 2. BFS starting directly from our target node object
+        queue = deque([self.target_node])
+        visited = set([self.target_node])
+        
+        while queue:
+            curr = queue.popleft()
+            
+            if curr:
+                # Leaf definition: Has no left and no right child paths
+                if not curr.left and not curr.right:
+                    return curr.val
+                    
+                # Scan all valid connections (parent + children branches)
+                for neighbor in graph[curr]:
+                    if neighbor not in visited:
+                        visited.add(neighbor)
+                        queue.append(neighbor)
+                        
+        return -1
+
+    # Moved to be an official sibling method so 'self' works perfectly
+    def build_graph(self, node, parent, graph, k):
+        if not node:
+            return
+            
+        """
+        NOTE !!! 
+
+        if node.val == k,
+        update target_node as cur node
+        """
+        # Track the memory object that contains our starting value k
+        if node.val == k:
+            self.target_node = node
+            
+        if parent:
+            graph[node].append(parent)
+            graph[parent].append(node)
+            
+        self.build_graph(node.left, node, graph, k)
+        self.build_graph(node.right, node, graph, k)
+
+
+# V0
 # IDEA: DFS + BFS (GPT)
 # TODO: validate
 from collections import defaultdict, deque
