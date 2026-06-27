@@ -27,6 +27,64 @@ nums[i] is either 0 or 1.
 """
 
 # V0
+
+
+class Solution(object):
+    def findMaxLength(self, nums):
+        # edge
+        if not nums or len(nums) <= 1:
+            return 0
+        
+        # map: {prefix: idx}
+        prefix_map = {0: -1}
+        
+        max_len = 0
+        prefix = 0
+
+        for i, val in enumerate(nums):
+            if val == 0:
+                prefix += 1
+            else:
+                prefix -= 1
+
+            # prefix_a - prefix_b = 0
+            # -> prefix_a = prefix_b
+            if prefix in prefix_map:
+                """
+                NOTE !!!
+
+                len = `i - prefix_map[prefix]`
+
+                but NOT `i - prefix_map[prefix] + 1`
+
+
+                -> why ?
+                
+                -> taking `nums = [0, 1]` as an example:
+
+                 map = {0:-1}
+
+                [0,1]   map = {0:-1, 1:0}, prefix = 1
+                 i
+
+                [0,1]   map = {0:-1, 1:0}, prefix = 0
+                   i 
+
+                        -> len = 1 - (-1) = 2
+
+                """
+                max_len = max(max_len, i - prefix_map[prefix])
+
+            else:
+                prefix_map[prefix] = i
+
+
+        return max_len
+
+
+
+
+# V0
 class Solution(object):
     def findMaxLength(self, nums):
         mp = {0: -1}  # prefix_sum -> first index
