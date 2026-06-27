@@ -42,6 +42,78 @@ If graph[u] contains v, then graph[v] contains u.
 """
 
 # V0
+# IDEA: COLOR + DFS (gpt)
+"""
+NOTE !!
+
+ ONLY 2 colors are allowed
+
+    -> via dfs call, we color the node
+        -> via such op, we check if the graph is `Bipartite`
+"""
+class Solution(object):
+    def isBipartite(self, graph):
+
+        g_map = {}
+
+        for i, val in enumerate(graph):
+            if i not in g_map:
+                g_map[i] = []
+
+            for node in val:
+                g_map[i].append(node)
+
+        status = [0] * len(graph)
+
+        for i in range(len(graph)):
+            """
+            NOTE !!!
+
+            optimization:
+                ONLY process uncolored node
+            """
+            if status[i] == 0:
+                if not self.helper(g_map, i, 1, status):
+                    return False
+
+        return True
+
+    def helper(self, g_map, node, color, status):
+
+        """
+        NOTE !!!
+
+
+          via below, we can
+
+           1. early quit (return False)
+                - if node color conflicted
+                - status[node] != color
+
+           2. Not processing the `node` which plan to be colored in same color
+                - status[node] == color
+        """
+        if status[node] != 0:
+            return status[node] == color
+
+        status[node] = color
+
+        for nxt in g_map[node]:
+            """
+            NOTE !!!
+
+             we need to `propagate` False as early as possible,
+             so we know that the graph CAN NOT be splited in to 2 group  
+             right away.
+            """
+            if not self.helper(g_map, nxt, -color, status):
+                return False
+
+        return True
+
+
+
+# V0
 # IDEA : GRAPH + DFS
 class Solution:
     
