@@ -1,7 +1,7 @@
 # Progress
 
 
-# 2026-06-27
+# 2026-06-28
 
 - trie.md
 	- 2) LC Example
@@ -91,14 +91,11 @@
 		- mono stack
 			- 907**, 853
 		- BFS
-			- 542
 			-	1087
 		- tree
 			- 1110,652,742,863
 		- bst
 			- 1382
-		- diff array
-			- 370,1109
 		- Dijkstra
 			- 1631
 		- trie
