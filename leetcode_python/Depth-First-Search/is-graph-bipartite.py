@@ -1,6 +1,7 @@
 """
 
 785. Is Graph Bipartite?
+
 Medium
 
 There is an undirected graph with n nodes, where each node is numbered between 0 and n - 1. You are given a 2D array graph, where graph[u] is an array of nodes that node u is adjacent to. More formally, for each v in graph[u], there is an undirected edge between node u and node v. The graph has the following properties:
@@ -111,6 +112,43 @@ class Solution(object):
 
         return True
 
+
+
+# V0-1
+# IDEA: COLOR + DFS (GEMINI)
+class Solution(object):
+    def isBipartite(self, graph):
+        """
+        :type graph: List[List[int]]
+        :rtype: bool
+        """
+        # status tracking array: 0 means uncolored, 1 or -1 are the two opposing colors
+        status = [0] * len(graph)
+        
+        # Outer loop is necessary to handle disconnected graph components
+        for i in range(len(graph)):
+            # CRITICAL FIX: Only kick off a coloring DFS path if the node hasn't been colored yet!
+            if status[i] == 0:
+                # Direct injection of 'graph' instead of creating an extra copy map
+                if not self.helper(graph, i, 1, status):
+                    return False
+        return True
+
+    def helper(self, graph, node, color, status):
+        # BASE CASE FIX: If this node is already colored...
+        if status[node] != 0:
+            # Return True if it matches our target color (valid path), or False if it conflicts!
+            return status[node] == color
+            
+        # Paint the current node with the validated color
+        status[node] = color
+        
+        # Traverse and color all neighboring connections with the opposite color
+        for neighbor in graph[node]:
+            if not self.helper(graph, neighbor, -1 * color, status):
+                return False
+                
+        return True
 
 
 # V0
