@@ -28,6 +28,79 @@ Constraints:
 """
 
 # V0
+# IDEA: SET + ONLY loop nums and check existed (GEMINI)
+"""
+NOTE !!!
+
+instead of looping within [min, max],
+-> we loop ONLY elements in set
+    -> and check the max consecutive len
+"""
+class Solution(object):
+    def longestConsecutive(self, nums):
+        if not nums:
+            return 0
+            
+        my_set = set(nums)
+        max_len = 1
+        
+        # Loop directly through the elements in the set to avoid iterating over empty gaps
+        for l in my_set:
+            """
+            NOTE !!!
+
+
+            `if l - 1 not in my_set`
+                -> we are sure that `l-1` is NOT in set
+                    -> we DON'T miss `l-1`
+                        -> and we can safely count len from `l` 
+            """
+            # STYLE CHECK: Is 'l' the true start of a consecutive sequence?
+            # If l - 1 is in the set, we skip it because it's part of a streak we will count later.
+            if l - 1 not in my_set:
+                cur_len = 1
+                current_val = l
+                
+                """
+                NOTE !!!
+                """
+                # Trace the sequence upward using your logic style: check if current_val + 1 exists
+                while current_val + 1 in my_set:
+                    cur_len += 1
+                    current_val += 1
+                    
+                max_len = max(max_len, cur_len)
+                
+        return max_len
+
+
+# V0-1
+# IDEA: SET + ONLY loop nums and check existed (GPT)
+class Solution(object):
+    def longestConsecutive(self, nums):
+        if not nums:
+            return 0
+
+        my_set = set(nums)
+        max_len = 0
+
+        for num in my_set:
+            # Start only from the beginning of a sequence
+            if num - 1 not in my_set:
+                cur = num
+                cur_len = 1
+
+                while cur + 1 in my_set:
+                    cur += 1
+                    cur_len += 1
+
+                max_len = max(max_len, cur_len)
+
+        return max_len
+
+
+
+# V0
 # time: O(N log N)
 # space: O(N)
 class Solution(object):
