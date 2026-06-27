@@ -102,7 +102,7 @@
 		- Dijkstra
 			- 1631
 		- trie
-			- 211 (wildcard),1268
+			- 1268
 			- delete op
 				- https://yennj12.js.org/CS_basics/cheatsheets/trie.html#template-6-trie-with-delete-operation
 		- lazy_bst_in_order(todo),173(todo),2616(todo, compare PQ)
