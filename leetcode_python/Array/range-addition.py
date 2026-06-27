@@ -32,6 +32,121 @@ Constraints:
 """
 
 # V0
+# IDEA: DIFF ARRAY + PREFIX SUM (GPT)
+class Solution(object):
+    def getModifiedArray(self, length, updates):
+        # ------------------------------------------------------------------
+        # Create a difference array.
+        #
+        # Instead of updating every element in the range [start, end],
+        # we only record where the increment starts and where it ends.
+        #
+        # Time Complexity:
+        #   O(k), where k = number of updates
+        #
+        # Space Complexity:
+        #   O(n)
+        # ------------------------------------------------------------------
+        diff = [0] * length
+
+        # ------------------------------------------------------------------
+        # Process every update.
+        #
+        # Each update has the format:
+        #   [start, end, increment]
+        #
+        # Example:
+        #   [1, 3, 2]
+        #
+        # Means:
+        #   Add 2 to every index from 1 through 3 (inclusive).
+        #
+        # Difference array trick:
+        #
+        #   diff[start] += increment
+        #       -> Marks where the increment begins.
+        #
+        #   diff[end + 1] -= increment
+        #       -> Marks where the increment stops.
+        #
+        # We only subtract if (end + 1) is still inside the array.
+        # ------------------------------------------------------------------
+        for start, end, increment in updates:
+            diff[start] += increment
+
+            if end + 1 < length:
+                diff[end + 1] -= increment
+
+        # ------------------------------------------------------------------
+        # Build the final result by taking the prefix sum of diff.
+        #
+        # The running prefix represents the value that should appear
+        # at the current index.
+        # ------------------------------------------------------------------
+        result = [0] * length
+        prefix_sum = 0
+
+        # ------------------------------------------------------------------
+        # Convert the difference array back into the actual array.
+        #
+        # Example:
+        #
+        # diff = [0, 2, 0, 0, -2]
+        #
+        # prefix_sum progression:
+        #
+        # i=0 -> 0
+        # i=1 -> 2
+        # i=2 -> 2
+        # i=3 -> 2
+        # i=4 -> 0
+        #
+        # Final result:
+        # [0, 2, 2, 2, 0]
+        # ------------------------------------------------------------------
+        for i in range(length):
+            prefix_sum += diff[i]
+            result[i] = prefix_sum
+
+        # ------------------------------------------------------------------
+        # Return the fully updated array.
+        # ------------------------------------------------------------------
+        return result
+
+
+# V0-1
+# IDEA: DIFF ARRAY + PREFIX SUM (GEMINI)
+class Solution(object):
+    def getModifiedArray(self, length, updates):
+        """
+        :type length: int
+        :type updates: List[List[int]]
+        :rtype: List[int]
+        """
+        # Create our difference/modifier array
+        diff_arr = [0] * length
+        
+        # 1. Apply the range boundaries for each update in O(1) time
+        for start, end, inc in updates:
+            diff_arr[start] += inc
+            
+            # FIX: Place the negative cancel marker at 'end + 1' 
+            # so that index 'end' still safely receives the increment.
+            if end + 1 < length:
+                diff_arr[end + 1] -= inc
+        
+        # 2. Accumulate the values prefix-style to build the final array
+        res = [0] * length
+        running_prefix_sum = 0
+        
+        for i in range(length):
+            running_prefix_sum += diff_arr[i]
+            res[i] = running_prefix_sum
+            
+        return res
+
+
+# V0
 # IDEA : double loop -> 2 single loops,  prefix sum
 class Solution(object):
     def getModifiedArray(self, length, updates):
