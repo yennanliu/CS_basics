@@ -1,7 +1,7 @@
 # Progress
 
 
-# 2026-06-26
+# 2026-06-27
 
 - trie.md
 	- 2) LC Example
@@ -82,8 +82,6 @@
 		- 652
 		- 776,399
 		- 112,113,437
-		- graph bipartite
-			- 785
 		- dist in LCA
 			- 1740
 		- tree -> graph
@@ -95,10 +93,6 @@
 		- BFS
 			- 542
 			-	1087
-		- hashmap
-			- 525
-		- set
-			- 128**
 		- tree
 			- 1110,652,742,863
 		- bst
