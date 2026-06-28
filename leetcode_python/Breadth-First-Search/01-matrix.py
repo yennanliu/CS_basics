@@ -40,6 +40,69 @@ Note: This question is the same as 1765: https://leetcode.com/problems/map-of-hi
 """
 
 
+"""
+
+Q: Can we use `Dijkstra` for this LC ?
+
+
+->
+
+Yes, you **can** absolutely use Dijkstra's algorithm
+
+to solve LC 542, but it is **suboptimal and considered overkill.**
+
+Here is the breakdown of why it works, and why a 
+
+standard BFS is preferred instead.
+
+---
+
+### 🟢 Why Dijkstra's Algorithm *Can* Be Used
+
+Dijkstra's algorithm is designed to find the shortest path from a source node to other nodes in a graph, under one strict condition: **all edge weights must be non-negative ($\ge 0$).**
+
+In this problem:
+
+* The matrix cells are nodes.
+* The steps (up, down, left, right) are edges.
+* Every single step from one cell to an adjacent cell has a constant cost/weight of **`1`**.
+
+Since `1` is non-negative, the mathematical constraints for Dijkstra are fully satisfied. You could initialize a priority queue (min-heap) with all the `0` cells at distance `0`, and then expand outward. It will yield the 100% correct answer.
+
+---
+
+### 🛑 Why You *Shouldn't* Use It (BFS vs. Dijkstra)
+
+The deciding factor comes down to **uniform edge weights**.
+
+* **Dijkstra uses a Min-Heap (Priority Queue):** It needs a heap to constantly sort and pick the absolute closest unvisited node. Pushing and popping from a min-heap costs **$\mathcal{O}(\log V)$** time.
+* **BFS uses a standard FIFO Queue:** It processes elements strictly in the order they arrive. Pushing and popping from a deque costs **$\mathcal{O}(1)$** constant time.
+
+> **The Golden Rule of Shortest Paths:** When all edges in a graph have the exact same weight (e.g., all are `1`), a standard FIFO queue naturally explores nodes in perfectly sorted, radiating layers of distance anyway ($0 \to 1 \to 2 \to 3 \dots$).
+
+Because a regular queue naturally keeps the distances sorted for unweighted graphs, the sorting capability of Dijkstra's min-heap becomes entirely redundant.
+
+---
+
+### 📊 Complexity Comparison
+
+If the matrix has $M$ rows and $N$ columns, let $V = M \cdot N$.
+
+| Algorithm | Time Complexity | Why? |
+| --- | --- | --- |
+| **Multi-Source BFS** | **$\mathcal{O}(M \cdot N)$** | Every cell is pushed/popped from a FIFO queue exactly once at $\mathcal{O}(1)$ cost. |
+| **Dijkstra's Algorithm** | **$\mathcal{O}((M \cdot N) \log (M \cdot N))$** | Every cell is pushed/popped from a Min-Heap, adding a heavy logarithmic overhead. |
+
+**Summary:** You *can* use Dijkstra, but it adds unnecessary time complexity. Stick to Multi-Source BFS whenever edge weights are uniform!
+
+"""
+
+
+
+
+
+
+
 # V0
 # IDEA: Multi-source BFS (GPT)
 """
