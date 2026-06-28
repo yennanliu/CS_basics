@@ -1,7 +1,7 @@
 # Progress
 
 
-# 2026-06-28
+# 2026-06-29
 
 - trie.md
 	- 2) LC Example
@@ -81,13 +81,10 @@
 		- 701,450
 		- 652
 		- 776,399
-		- 112,113,437
 		- dist in LCA
 			- 1740
 		- tree -> graph
 			- 863
-		- Flatten Binary Tree to Linked List
-			- 114
 		- mono stack
 			- 907**, 853
 		- BFS
