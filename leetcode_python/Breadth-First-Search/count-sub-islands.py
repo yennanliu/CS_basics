@@ -42,6 +42,60 @@ grid1[i][j] and grid2[i][j] are either 0 or 1.
 
 
 # V0
+# IDEA: 2 PASS DFS (gpt)
+class Solution(object):
+    def countSubIslands(self, grid1, grid2):
+        rows = len(grid1)
+        cols = len(grid1[0])
+
+        # ---------------------------------------------------
+        # 1st pass:
+        # Remove every island in grid2 that overlaps water in grid1.
+        # ---------------------------------------------------
+        for r in range(rows):
+            for c in range(cols):
+                if grid2[r][c] == 1 and grid1[r][c] == 0:
+                    self.dfs(grid2, r, c)
+
+        count = 0
+
+        # ---------------------------------------------------
+        # 2nd pass:
+        # Count the remaining islands.
+        # ---------------------------------------------------
+        for r in range(rows):
+            for c in range(cols):
+                if grid2[r][c] == 1:
+                    count += 1
+                    self.dfs(grid2, r, c)
+
+        return count
+
+    def dfs(self, grid, r, c):
+        rows = len(grid)
+        cols = len(grid[0])
+
+        # Out of bounds
+        if r < 0 or r >= rows or c < 0 or c >= cols:
+            return
+
+        # Already water
+        if grid[r][c] == 0:
+            return
+
+        # Sink this land
+        grid[r][c] = 0
+
+        self.dfs(grid, r - 1, c)
+        self.dfs(grid, r + 1, c)
+        self.dfs(grid, r, c - 1)
+        self.dfs(grid, r, c + 1)
+
+
+
+
+# V0-1
+# IDEA: 2 PASS DFS (gemini)
 class Solution(object):
     def countSubIslands(self, grid1, grid2):
         """
@@ -49,7 +103,43 @@ class Solution(object):
         :type grid2: List[List[int]]
         :rtype: int
         """
-        pass
+        l = len(grid1)
+        w = len(grid1[0])
+        
+        # 1st Pass: Eliminate all grid2 islands that can NEVER be sub-islands
+        # If grid2 has land (1) but grid1 has water (0), sink that entire grid2 island.
+        for y in range(l):
+            for x in range(w):
+                if grid2[y][x] == 1 and grid1[y][x] == 0:
+                    self.dfs_sink(grid2, x, y)
+                    
+        cnt = 0
+        
+        # 2nd Pass: Count the remaining valid sub-islands left in grid2
+        for y in range(l):
+            for x in range(w):
+                if grid2[y][x] == 1:
+                    self.dfs_sink(grid2, x, y)
+                    cnt += 1
+                    
+        return cnt
+    
+    def dfs_sink(self, grid2, x, y):
+        l = len(grid2)
+        w = len(grid2[0])
+        
+        # Out of bounds or already water/visited -> stop traversal
+        if x < 0 or x >= w or y < 0 or y >= l or grid2[y][x] == 0:
+            return
+            
+        # Sink the land cell to 0 to mark it as visited (no extra space needed!)
+        grid2[y][x] = 0
+        
+        # Radiate out to all 4 neighbors using self.
+        self.dfs_sink(grid2, x - 1, y)
+        self.dfs_sink(grid2, x + 1, y)
+        self.dfs_sink(grid2, x, y - 1)
+        self.dfs_sink(grid2, x, y + 1)
 
 
 
