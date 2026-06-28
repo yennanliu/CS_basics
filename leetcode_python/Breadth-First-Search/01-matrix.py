@@ -40,7 +40,101 @@ Note: This question is the same as 1765: https://leetcode.com/problems/map-of-hi
 """
 
 
-# V0 
+# V0
+# IDEA: Multi-source BFS (GPT)
+"""
+
+NOTE !!!
+
+ in this LC, we start from `0` cell (instead of `1` cell)
+ e.g. the multi source BFS start from `0` cell
+
+"""
+from collections import deque
+
+class Solution(object):
+    def updateMatrix(self, mat):
+        rows = len(mat)
+        cols = len(mat[0])
+
+        q = deque()
+
+        # Distance matrix
+        dist = [[-1] * cols for _ in range(rows)]
+
+        # Put every 0 into the queue
+        for r in range(rows):
+            for c in range(cols):
+                if mat[r][c] == 0:
+                    q.append((r, c))
+                    dist[r][c] = 0
+
+        directions = [
+            (1, 0),
+            (-1, 0),
+            (0, 1),
+            (0, -1)
+        ]
+
+        # Multi-source BFS
+        while q:
+            r, c = q.popleft()
+
+            for dr, dc in directions:
+                nr = r + dr
+                nc = c + dc
+
+                if 0 <= nr < rows and 0 <= nc < cols and dist[nr][nc] == -1:
+                    dist[nr][nc] = dist[r][c] + 1
+                    q.append((nr, nc))
+
+        return dist
+
+
+
+# V0-1
+# IDEA: Multi-source BFS (GEMINI)
+from collections import deque
+
+class Solution(object):
+    def updateMatrix(self, mat):
+        """
+        :type mat: List[List[int]]
+        :rtype: List[List[int]]
+        """
+        l = len(mat)
+        w = len(mat[0])
+        
+        q = deque()
+        visited = [[False] * w for _ in range(l)]
+        
+        # 1. Flip the perspective: Enqueue all '0' cells as our starting points
+        for y in range(l):
+            for x in range(w):
+                if mat[y][x] == 0:
+                    q.append([x, y, 0])  # [x, y, current_distance]
+                    visited[y][x] = True
+                    
+        # Direction matrix for moving: Up, Down, Right, Left
+        directions = [[0, 1], [0, -1], [1, 0], [-1, 0]]
+        
+        # 2. Radiate outwards layer-by-layer uniformly using BFS
+        while q:
+            # FIX: Use Python's native popleft() to pull elements from the queue
+            x, y, dist = q.popleft()
+            
+            for d in directions:
+                x_ = x + d[0]
+                y_ = y + d[1]
+                
+                # Check matrix boundaries and verify if the neighbor hasn't been visited
+                if 0 <= x_ < w and 0 <= y_ < l and not visited[y_][x_]:
+                    visited[y_][x_] = True
+                    # The distance to this cell is simply the previous step's distance + 1
+                    mat[y_][x_] = dist + 1
+                    q.append([x_, y_, dist + 1])
+                    
+        return mat
 
 # V1 
 # http://bookshadow.com/weblog/2017/03/19/leetcode-01-matrix/
