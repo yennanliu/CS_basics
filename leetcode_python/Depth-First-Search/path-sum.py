@@ -40,6 +40,98 @@ The number of nodes in the tree is in the range [0, 5000].
 """
 
 # V0
+# IDEA: DFS (pre-order)(gpt)
+class Solution(object):
+    def hasPathSum(self, root, targetSum):
+        if not root:
+            return False
+
+        return self.helper(root, targetSum, 0)
+
+    def helper(self, root, targetSum, cur_sum):
+        if not root:
+            return False
+
+        """
+        NOTE !!!
+
+        we do `cur_sum` here, but NOT in recursion call,
+        so we have cleaner validation logic  at `leaf`
+        """
+        cur_sum += root.val
+
+        if not root.left and not root.right:
+            return cur_sum == targetSum
+
+        return (
+            self.helper(root.left, targetSum, cur_sum) or
+            self.helper(root.right, targetSum, cur_sum)
+        )
+
+
+
+
+# V0-1
+# IDEA: DFS (pre-order)(gpt)
+class Solution(object):
+    def hasPathSum(self, root, targetSum):
+        if not root:
+            return False
+
+        return self.helper(root, targetSum, 0)
+
+    def helper(self, root, targetSum, cur_sum):
+        if not root:
+            return False
+
+        """
+        NOTE !!!
+
+        if we DON'T `cur_sum` here, but in recursion call,
+        
+        -> so we need to add root.val to cur cur_sum first
+        """
+        if not root.left and not root.right:
+            return cur_sum + root.val == targetSum
+
+        return (
+            self.helper(root.left, targetSum, cur_sum + root.val) or
+            self.helper(root.right, targetSum, cur_sum + root.val)
+        )
+
+
+# V0-2
+# IDEA: DFS (pre-order)(GEMINI)
+class Solution(object):
+    def hasPathSum(self, root, targetSum):
+        """
+        :type root: TreeNode
+        :type targetSum: int
+        :rtype: bool
+        """
+        if not root:
+            return False
+        return self.helper(root, targetSum, 0)
+        
+    def helper(self, root, targetSum, cur_sum):
+        if not root:
+            return False
+            
+        # FIX: Add the current node's value immediately upon visiting it
+        cur_sum += root.val
+        
+        # Now, when we reach a leaf, cur_sum contains the complete path total
+        if not root.left and not root.right:
+            return cur_sum == targetSum
+            
+        return (self.helper(root.left, targetSum, cur_sum) or
+                self.helper(root.right, targetSum, cur_sum))
+
+
+
+
+
+# V0
 # IDEA : DFS 
 class Solution(object):
     def hasPathSum(self, root, sum):
