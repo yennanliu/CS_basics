@@ -37,6 +37,123 @@ The number of nodes in the tree is in the range [0, 5000].
 """
 
 # V0
+# IDEA: DFS (post order) + backtrack (GPT)
+class Solution(object):
+    def pathSum(self, root, targetSum):
+        self.res = []
+
+        if not root:
+            return self.res
+
+        self.helper(root, targetSum, 0, [])
+
+        return self.res
+
+    def helper(self, root, targetSum, cur_sum, cache):
+        if not root:
+            return
+
+        cur_sum += root.val
+        cache.append(root.val)
+
+        if not root.left and not root.right and cur_sum == targetSum:
+            self.res.append(cache[:])
+
+        self.helper(root.left, targetSum, cur_sum, cache)
+        self.helper(root.right, targetSum, cur_sum, cache)
+
+        """
+        NOTE !!!
+
+
+        we need `Backtrack` here,
+        (array is NOT primitive type, so it use the same copy in recursion)
+
+
+        -> why we need Backtrack?
+
+            ### Why `cache.pop()` is necessary
+
+            Suppose the tree is
+
+            ```
+                1
+               / \
+              2   3
+            ```
+
+            Without `cache.pop()`:
+
+            ```
+            visit 1: cache = [1]
+            visit 2: cache = [1,2]
+            return
+            visit 3: cache = [1,2,3]   # Wrong!
+            ```
+
+            With `cache.pop()`:
+
+            ```
+            visit 1: cache = [1]
+            visit 2: cache = [1,2]
+            return -> pop() => [1]
+            visit 3: cache = [1,3]     # Correct
+            ```
+
+            This is the standard DFS backtracking pattern:
+
+            ```python
+            cache.append(...)
+            dfs(...)
+            dfs(...)
+            cache.pop()
+            ```
+
+            * `cur_sum` does **NOT** need to be restored because integers are immutable and passed by value (reference to an immutable object).
+            * `cache` **DOES** need to be restored because lists are mutable and shared across recursive calls.
+
+        """
+        # Backtrack
+        cache.pop()
+
+
+
+# V0-1
+# IDEA: DFS (post order) + backtrack (gemini)
+class Solution(object):
+    def pathSum(self, root, targetSum):
+        """
+        :type root: TreeNode
+        :type targetSum: int
+        :rtype: List[List[int]]
+        """
+        self.res = []
+        if not root:
+            return self.res
+        self.helper(root, targetSum, 0, [])
+        return self.res
+        
+    def helper(self, root, targetSum, cur_sum, cache):
+        if not root:
+            return
+            
+        cur_sum += root.val
+        cache.append(root.val)
+        
+        if not root.left and not root.right and cur_sum == targetSum:
+            self.res.append(cache[:])
+            
+        self.helper(root.left, targetSum, cur_sum, cache)
+        self.helper(root.right, targetSum, cur_sum, cache)
+        
+        # CRITICAL FIX: Backtrack! 
+        # Remove the current node's value before returning up to the parent
+        cache.pop()
+
+
+
+
+# V0
 # IDEA : DFS
 class Solution(object):
     def pathSum(self, root, sum):
