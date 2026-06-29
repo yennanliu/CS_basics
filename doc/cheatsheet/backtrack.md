@@ -2517,6 +2517,92 @@ private boolean dfs(int crs, Map<Integer, List<Integer>> preMap, Set<Integer> vi
 }
 ```
 
+### 2-12) Path Sum II — LC 113
+
+- Tree DFS that collects **all root-to-leaf paths** whose sum equals `targetSum`.
+- Great example of **why backtrack (`cache.pop()`) is needed for a mutable list, but NOT for the primitive `cur_sum`**.
+    - `cache` (a `list`) is **shared by reference** across recursive calls → must `pop()` to undo before returning to the parent.
+    - `cur_sum` (an `int`) is **immutable / passed by value** → each call gets its own copy, so NO undo needed.
+- See also [1-2-3) NOT do `undo` on primary variable](#1-2-3-not-do-undo-on-primary-variable) and the `When to Use Backtracking` table.
+
+```python
+# python
+# LC 113 Path Sum II
+# V0
+# IDEA: DFS (post order) + backtrack
+class Solution(object):
+    def pathSum(self, root, targetSum):
+        self.res = []
+        if not root:
+            return self.res
+        self.helper(root, targetSum, 0, [])
+        return self.res
+
+    def helper(self, root, targetSum, cur_sum, cache):
+        if not root:
+            return
+
+        # do choice
+        cur_sum += root.val      # `int` -> immutable, gets a fresh copy per call
+        cache.append(root.val)   # `list` -> mutable, SAME copy shared in recursion
+
+        # found a valid root-to-leaf path
+        if not root.left and not root.right and cur_sum == targetSum:
+            self.res.append(cache[:])   # NOTE !!! shallow copy `cache[:]`
+
+        self.helper(root.left, targetSum, cur_sum, cache)
+        self.helper(root.right, targetSum, cur_sum, cache)
+
+        # NOTE !!! Backtrack (undo)
+        #   -> `cache` MUST be restored (mutable, shared by reference)
+        #   -> `cur_sum` does NOT need restore (int is immutable / passed by value)
+        cache.pop()
+```
+
+**Why `cache.pop()` is necessary**
+
+Suppose the tree is:
+
+```
+    1
+   / \
+  2   3
+```
+
+Without `cache.pop()`:
+
+```
+visit 1: cache = [1]
+visit 2: cache = [1,2]
+return
+visit 3: cache = [1,2,3]   # Wrong! 2 leaked into 3's path
+```
+
+With `cache.pop()`:
+
+```
+visit 1: cache = [1]
+visit 2: cache = [1,2]
+return -> pop() => [1]
+visit 3: cache = [1,3]     # Correct
+```
+
+This is the standard DFS backtracking pattern:
+
+```python
+cache.append(...)
+dfs(...)   # left
+dfs(...)   # right
+cache.pop()
+```
+
+| Variable  | Type           | Need undo (backtrack)? | Reason                                              |
+|-----------|----------------|------------------------|----------------------------------------------------|
+| `cache`   | `list` (mutable) | ✅ Yes (`cache.pop()`) | Shared by reference across recursive calls         |
+| `cur_sum` | `int` (immutable) | ❌ No                  | Passed by value; each call gets its own copy       |
+
+> **Alternative (no explicit pop):** pass a *new* list each call (`path + [node.val]`) so every branch owns its own copy — then no `pop()` is needed (see `V1`/`V1'` in the source). The trade-off is extra copying vs. one shared list with backtrack.
+
 ---
 
 ## Missing Google Patterns
