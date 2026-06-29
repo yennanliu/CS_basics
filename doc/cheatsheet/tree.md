@@ -1526,6 +1526,49 @@ public List<Integer> inorderTraversal(TreeNode root) {
 | Iterative Stack | O(n) | O(h) | No |
 | **Morris** | O(n) | **O(1)** | Temporarily (restored) |
 
+##### Morris **threading family** — temporary thread vs. permanent rewire
+
+Both the Morris traversal above and the O(1) **flatten** (LC 114) share the **same core step**: from the current node, find the **rightmost node of its left subtree** (the in-order predecessor) and use its empty `right` pointer to "thread" somewhere. They differ only in what they do with that thread:
+
+| Variant | Thread points to | Restored? | Purpose | Example |
+|---------|------------------|-----------|---------|---------|
+| **Morris traversal** | in-order successor (`curr`) | ✅ yes (unthread on 2nd visit) | Visit nodes O(1) space | LC 94, 144 |
+| **Morris rewire (flatten)** | original right subtree (`curr.right`) | ❌ no (permanent) | Restructure tree in-place | LC 114 |
+
+```python
+# Morris REWIRE pattern — permanent threading (LC 114 Flatten Binary Tree to Linked List)
+# time = O(n), space = O(1)
+def flatten(root):
+    curr = root
+    while curr:
+        if curr.left:
+            # find left subtree's rightmost node (in-order predecessor)
+            rightmost = curr.left
+            while rightmost.right:
+                rightmost = rightmost.right
+            # splice: predecessor.right -> original right subtree (PERMANENT, not restored)
+            rightmost.right = curr.right
+            curr.right = curr.left   # move left subtree to the right
+            curr.left = None         # clear left
+        curr = curr.right            # advance down the new right spine
+```
+
+**Mental model:** for each node with a left child, the left subtree is "inserted" between the node and its original right subtree, because the left subtree's pre-order traversal must come immediately after the node and before the right subtree. The rightmost node of the left subtree is exactly where the right subtree should re-attach.
+
+```
+   curr                 curr
+   /  \                    \
+  L    R     ───►          L            (curr.right = curr.left)
+   \                        \
+    ...                     ...
+      \                       \
+     L_rightmost            L_rightmost
+                              \
+                               R         (L_rightmost.right = R)
+```
+
+> **When to reach for this:** any "in-place, O(1) space, restructure a tree along its right spine" problem. The `while rightmost.right` predecessor-finding step is the signature. Recognize it as the **same machinery** as Morris traversal — only the thread's destination and whether you restore it change.
+
 ---
 
 ### 1.5) Tree Node Initialization
