@@ -41,27 +41,72 @@ Follow up: Can you flatten the tree in-place (with O(1) extra space)?
 # IDEA: DFS (post-order) (gpt)
 class Solution(object):
     def flatten(self, root):
+        """
+        Do not return anything, modify root in-place instead.
+        """
+
+        # Flatten the tree starting from the root.
         self.helper(root)
 
     def helper(self, node):
+        # Base case:
+        # An empty subtree has no tail.
         if not node:
             return None
 
+        # Recursively flatten the left subtree.
+        # left_tail is the last node of the flattened left subtree.
         left_tail = self.helper(node.left)
+
+        # Recursively flatten the right subtree.
+        # right_tail is the last node of the flattened right subtree.
         right_tail = self.helper(node.right)
 
-        # If there is a left subtree, insert it between node and right subtree
+        # If there is a left subtree:
+        #
+        # Before:
+        #
+        #      node
+        #     /    \
+        #   left   right
+        #
+        # After:
+        #
+        # node
+        #   \
+        #   left
+        #      \
+        #      right
+        #
         if left_tail:
+
+            # Connect the tail of the flattened left subtree
+            # to the original right subtree.
             left_tail.right = node.right
+
+            # Move the entire left subtree to become
+            # the right subtree.
             node.right = node.left
+
+            # The left child must be None according
+            # to the problem statement.
             node.left = None
 
-        # Return the tail of the flattened subtree
+        # Return the tail of the flattened subtree.
+        #
+        # Priority:
+        # 1. If a right subtree exists, its tail is the answer.
+        # 2. Otherwise, if only a left subtree exists,
+        #    its tail is the answer.
+        # 3. Otherwise this node itself is the tail.
         if right_tail:
             return right_tail
+
         if left_tail:
             return left_tail
+
         return node
+
 
 
 # V0-1
