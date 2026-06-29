@@ -42,7 +42,7 @@ Follow up: Can you flatten the tree in-place (with O(1) extra space)?
 class Solution(object):
     def flatten(self, root):
         """
-        Do not return anything, modify root in-place instead.
+        Do not return anything, modify root `in-place` instead.
         """
 
         # Flatten the tree starting from the root.
@@ -110,7 +110,23 @@ class Solution(object):
 
 
 # V0-1
-# IDEA: DFS (post-order) (GEMINI)
+# IDEA: DFS (post-order) (O(1) space) (CLAUDE)
+class Solution(object):
+    def flatten(self, root):
+        curr = root
+        while curr:
+            if curr.left:
+                rightmost = curr.left
+                while rightmost.right:        # find left subtree's rightmost
+                    rightmost = rightmost.right
+                rightmost.right = curr.right  # splice original right after it
+                curr.right = curr.left        # move left to right
+                curr.left = None
+            curr = curr.right                 # advance down the new right spine
+
+
+# V0-2
+# IDEA: DFS (post-order) + prev node (GEMINI)
 class Solution(object):
     def flatten(self, root):
         """

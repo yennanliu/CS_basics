@@ -1914,6 +1914,166 @@ Result: [1(with subtree [2,4]), 6, 7]
 | Trim a Binary Search Tree | 669 | Range-based filtering instead of value-based deletion |
 | Lowest Common Ancestor III | 1676 | Find LCA in forest after deletion |
 
+### 3.4) Flatten Binary Tree to Linked List — LC 114
+
+**Problem**: Flatten a binary tree into a "linked list" **in-place**, where every `right` pointer is the next node in **pre-order**, and every `left` pointer is `null`.
+
+```
+Input:                Output (right-linked, all left = null):
+
+      1                 1
+     / \                 \
+    2   5                 2
+   / \   \                 \
+  3   4   6                 3
+                            \
+                             4
+                              \
+                               5
+                                \
+                                 6
+```
+
+**Core Idea — Post-order DFS returning the "tail"**
+
+The cleanest recursive solution flattens left & right subtrees first (post-order), then rewires the current node. The key trick: **each `helper` call returns the *tail* (last node in pre-order) of the subtree it flattened**, so the parent knows where to splice the original right subtree.
+
+```python
+# python
+# LC 114 Flatten Binary Tree to Linked List
+# IDEA: DFS (post-order) — return the TAIL of each flattened subtree
+class Solution(object):
+    def flatten(self, root):
+        """Do not return anything, modify root in-place instead."""
+        self.helper(root)
+
+    def helper(self, node):
+        # Base case: an empty subtree has no tail
+        if not node:
+            return None
+
+        # 1) Flatten BOTH subtrees first (post-order)
+        left_tail  = self.helper(node.left)   # last node of flattened left
+        right_tail = self.helper(node.right)  # last node of flattened right
+
+        # 2) If a left subtree exists, splice it between node and node.right
+        if left_tail:
+            left_tail.right = node.right  # left's tail -> original right
+            node.right = node.left        # move left subtree to the right
+            node.left = None              # left must be null per problem
+
+        # 3) Return the tail of THIS flattened subtree (pre-order last node)
+        #    priority: right_tail > left_tail > node itself
+        if right_tail:
+            return right_tail
+        if left_tail:
+            return left_tail
+        return node
+```
+
+**Why return the tail?** When we move the left subtree to the right, we must reconnect the *original* right subtree to the **end** of the flattened left subtree — not to its root. The only node that knows where that end is, is the recursive call that flattened the left subtree. So it returns its tail.
+
+#### Rewiring visualization (the `if left_tail:` block)
+
+```
+Before:                 After:
+      node                node
+     /    \                  \
+   left   right             left            (node.right = node.left)
+                               \
+                              ...  (flattened left chain)
+                                  \
+                                  right     (left_tail.right = node.right)
+```
+
+#### Dry run — `root = [1,2,5,3,4,null,6]`
+
+```
+        1
+       / \
+      2   5
+     / \   \
+    3   4   6
+```
+
+Post-order visits the **deepest-left** nodes first. Trace of `helper` returns (the tail each call hands back):
+
+```
+helper(3): no children          -> left_tail=None, right_tail=None       -> return 3
+helper(4): no children          -> return 4
+helper(2): left_tail=3, right_tail=4
+           left_tail(3).right = node.right (4)   =>  3 -> 4
+           node.right = node.left (3)            =>  2 -> 3
+           node.left = None
+           subtree now: 2 -> 3 -> 4              -> return right_tail = 4
+helper(6): no children          -> return 6
+helper(5): left_tail=None, right_tail=6
+           (no left subtree, nothing to rewire)
+           subtree: 5 -> 6                       -> return right_tail = 6
+helper(1): left_tail=4 (tail of "2->3->4"), right_tail=6
+           left_tail(4).right = node.right (5)   =>  4 -> 5
+           node.right = node.left (2)            =>  1 -> 2
+           node.left = None
+           => 1 -> 2 -> 3 -> 4 -> 5 -> 6         -> return 6
+```
+
+Final flattened list (all `left=None`): `1 -> 2 -> 3 -> 4 -> 5 -> 6` ✅ (matches pre-order).
+
+#### Pattern & alternatives
+
+| Approach | Idea | Time | Space | Notes |
+|----------|------|------|-------|-------|
+| **Post-order + return tail** (above) | Flatten subtrees, splice via returned tail | O(N) | O(h) recursion | Clean, intuitive |
+| **Reverse pre-order + `prev`** | Visit `right → left → node`, set `node.right = prev` | O(N) | O(h) | Mirror of building list backwards (see `V0-1`) |
+| **Pre-order collect to list** | Store nodes in pre-order, relink in a loop | O(N) | O(N) | Easiest to reason about |
+| **Morris-style iterative** | For each node, find left subtree's rightmost, splice | O(N) | **O(1)** | Best for the *follow-up* (true in-place) |
+
+**Reverse pre-order (`prev` pointer) — the slick O(h) variant:**
+
+```python
+# Visit right first, then left, building the list from tail to head
+class Solution(object):
+    def __init__(self):
+        self.prev = None
+    def flatten(self, root):
+        if not root:
+            return
+        self.flatten(root.right)
+        self.flatten(root.left)
+        root.right = self.prev   # link to the chain built so far
+        root.left = None
+        self.prev = root         # current node becomes new head
+```
+
+**True O(1) space (iterative, the follow-up answer):**
+
+```python
+class Solution(object):
+    def flatten(self, root):
+        curr = root
+        while curr:
+            if curr.left:
+                rightmost = curr.left
+                while rightmost.right:        # find left subtree's rightmost
+                    rightmost = rightmost.right
+                rightmost.right = curr.right  # splice original right after it
+                curr.right = curr.left        # move left to right
+                curr.left = None
+            curr = curr.right                 # advance down the new right spine
+```
+
+**Key insight**: `right_tail > left_tail > node` priority for the return value mirrors **pre-order's last node** — pre-order ends in the rightmost branch, so the right subtree's tail (if any) is the overall tail.
+
+**Similar problems**:
+
+| Problem | LC # | Key Difference |
+|---------|------|-----------------|
+| Flatten Binary Tree to Linked List | 114 | Base pattern (pre-order flatten in-place) |
+| Binary Tree Preorder Traversal | 144 | Same visit order, just collect values |
+| Convert BST to Sorted Doubly Linked List | 426 | In-order flatten into a doubly linked list |
+| Increasing Order Search Tree | 897 | In-order flatten into right-only chain |
+| Flatten a Multilevel Doubly Linked List | 430 | Same "splice child chain before next" idea on a list |
+
 #### 1-1-3 -1) Get Maximum depth
 
 - LC 104 : Maximum Depth of Binary Tree
