@@ -1,14 +1,107 @@
 # https://leetcode.com/contest/weekly-contest-350/
 
-
+# 5:50 - 6:35 pm
 
 # LC 2739
 # https://leetcode.com/problems/total-distance-traveled/description/
 
 
 
+-> Return the maximum distance which can be traveled.
+
+
+a truck has 2 tank
+    - mainTank
+    - additionalTank
+
+
+10 km / L
+
+
+if main tank as >= 1 L, 1 L will be 
+transferred from additinal -> main
+
+
+
+# idea 1) brute force ??
+
+
+class Solution(object):
+    def distanceTraveled(self, mainTank, additionalTank):
+        # edge
+        if mainTank == 0 and additionalTank == 0:
+            return 0
+        
+        #dist = 0
+
+        if mainTank < 5:
+            return mainTank * 10
+
+        cnt = mainTank // 5
+
+        if additionalTank > 0:
+            cnt += 1
+
+        return cnt * 10
+
+
+
 # LC 2740
 # https://leetcode.com/problems/find-the-value-of-the-partition/
+
+
+-> Return the integer denoting 
+the value of such partition.
+
+
+
+nums, split to nums1, nums2
+
+- all of val in nums belongs to nums1 or nums2
+- both nums1 and nums2 are NOT empty
+- the `value` in min
+
+-> val = |max(nums1) - min(nums2)|
+
+
+
+# idea 1) greedy 
+
+-> find max 1 and max 2 ???
+
+-> find min 1 and min 2 ???
+
+
+
+# idea 2) brute force
+
+
+class Solution(object):
+    def findValueOfPartition(self, nums):
+        # edge
+        if not nums or len(nums) == 0:
+            # ??
+            return -1
+        if len(nums) == 1:
+            return 0 # ??
+
+        n = len(nums)
+
+
+        # ?? sort
+        sorted(nums)
+
+        # case 1) find max 1 and max 2 ??? (1st biggest, 2nd biggest)
+        max1 = nums[n-1]
+        max2 = nums[n-2]
+
+        # case 2) find max 1 and max 2 ???
+        min1 = nums[0]
+        min2 = nums[1]
+
+        return min(abs(max1 - max2), abs(min1 - min2)
+
+
 
 
 # LC 2741
