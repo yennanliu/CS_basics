@@ -29,6 +29,97 @@ The number of nodes in the tree is in the range [0, 1000].
 
 """
 
+
+# V0
+# IDEA 1) dfs (pre-order) + prefix + hashmap + backtrack (gpt)
+class Solution(object):
+    def pathSum(self, root, targetSum):
+        self.path_map = {0: 1}
+        self.cnt = 0
+
+        self.helper(root, targetSum, 0)
+
+        return self.cnt
+
+    def helper(self, root, targetSum, prefix):
+        if not root:
+            return
+
+        prefix += root.val
+
+        """
+        NOTE !!!
+
+
+        prefix_a - prefix_b = target
+
+        -> prefix_b =  prefix_a - target
+        """
+        # Count all paths ending at this node
+        self.cnt += self.path_map.get(prefix - targetSum, 0)
+
+        """
+        NOTE !!!
+
+        DON'T forget to update hashmap
+        """
+        # Add current prefix
+        self.path_map[prefix] = self.path_map.get(prefix, 0) + 1
+
+        self.helper(root.left, targetSum, prefix)
+        self.helper(root.right, targetSum, prefix)
+
+        """
+        NOTE !!!
+
+        since path_map (map) is NOT primitive type in py,
+        we need to do backtrack (undo) here
+        """
+        # Backtrack
+        self.path_map[prefix] -= 1
+
+
+
+# V0-1
+# IDEA 1) dfs (pre-order) + prefix + hashmap + backtrack (GEMINI)
+class Solution(object):
+    def pathSum(self, root, targetSum):
+        """
+        :type root: TreeNode
+        :type targetSum: int
+        :rtype: int
+        """
+        self.path_map = {}
+        self.cnt = 0
+        self.helper(root, targetSum, 0)
+        return self.cnt 
+
+    def helper(self, root, targetSum, prefix):
+        if not root:
+            return
+        
+        prefix += root.val
+        
+        # 1. Base case matching condition
+        if prefix == targetSum:
+            self.cnt += 1
+            
+        # 2. FIX: Look up (prefix - targetSum) instead of (targetSum - prefix)
+        # Also removed the leaf-node restriction so it runs on all valid tree nodes
+        if (prefix - targetSum) in self.path_map:
+            self.cnt += self.path_map[prefix - targetSum]
+            
+        # 3. FIX: Safely increment key frequencies using default values
+        self.path_map[prefix] = self.path_map.get(prefix, 0) + 1
+        
+        # Traverse downwards
+        self.helper(root.left, targetSum, prefix)
+        self.helper(root.right, targetSum, prefix)
+        
+        # 4. FIX: Backtrack! Clear the current branch's footprint from the global map
+        self.path_map[prefix] -= 1
+
+
 # V0 
 # IDEA : BFS + DFS 
 # => USE BFS FIND EVERY NODE IN THE TREE, AND USE DFS GET THR PATH SUM ON EVERY NODE (FOUND BY BFS)
