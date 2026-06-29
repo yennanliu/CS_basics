@@ -35,6 +35,64 @@ The number of nodes in the tree is in the range [0, 2000].
 
 Follow up: Can you flatten the tree in-place (with O(1) extra space)?
 """
+
+
+# V0
+# IDEA: DFS (post-order) (gpt)
+class Solution(object):
+    def flatten(self, root):
+        self.helper(root)
+
+    def helper(self, node):
+        if not node:
+            return None
+
+        left_tail = self.helper(node.left)
+        right_tail = self.helper(node.right)
+
+        # If there is a left subtree, insert it between node and right subtree
+        if left_tail:
+            left_tail.right = node.right
+            node.right = node.left
+            node.left = None
+
+        # Return the tail of the flattened subtree
+        if right_tail:
+            return right_tail
+        if left_tail:
+            return left_tail
+        return node
+
+
+# V0-1
+# IDEA: DFS (post-order) (GEMINI)
+class Solution(object):
+    def flatten(self, root):
+        """
+        :type root: TreeNode
+        :rtype: None Do not return anything, modify root in-place instead.
+        """
+        # Keeps track of the node that should come immediately AFTER the current node
+        self.prev = None
+        self.helper(root)
+
+    def helper(self, node):
+        if not node:
+            return
+            
+        # 1. Traverse BACKWARDS: Right first, then Left
+        self.helper(node.right)
+        self.helper(node.left)
+        
+        # 2. Stitch the current node to the flattening sequence chain
+        node.right = self.prev  # Right child points to the head of the processed chain
+        node.left = None         # Left child must be cleared completely per requirements
+        
+        # 3. Move the head pointer to the current node
+        self.prev = node
+
+
+
 # V0
 # IDEA: DFS + PREORDER
 # https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Recursion/FlattenBinaryTreeToLinkedList.java#L73
