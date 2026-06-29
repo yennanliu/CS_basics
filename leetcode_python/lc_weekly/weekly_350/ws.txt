@@ -1,0 +1,20 @@
+# https://leetcode.com/contest/weekly-contest-350/
+
+
+
+# LC 2739
+# https://leetcode.com/problems/total-distance-traveled/description/
+
+
+
+# LC 2740
+# https://leetcode.com/problems/find-the-value-of-the-partition/
+
+
+# LC 2741
+# https://leetcode.com/problems/special-permutations/description/
+
+
+
+# LC 2742
+# https://leetcode.com/problems/painting-the-walls/description/
