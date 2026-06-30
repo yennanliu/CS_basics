@@ -125,6 +125,38 @@ class Solution(object):
             curr = curr.right                 # advance down the new right spine
 
 
+
+# V0-2
+# IDEA: DFS (post-order) + prev node (GPT)
+class Solution(object):
+    def flatten(self, root):
+        self.helper(root)
+
+    def helper(self, root):
+        if not root:
+            return None
+
+        left_cache = root.left
+        right_cache = root.right
+
+        left_tail = self.helper(left_cache)
+        right_tail = self.helper(right_cache)
+
+        if left_cache:
+            root.right = left_cache
+            root.left = None
+
+            if left_tail:
+                left_tail.right = right_cache
+
+        if right_tail:
+            return right_tail
+        if left_tail:
+            return left_tail
+        return root
+
+
+
 # V0-2
 # IDEA: DFS (post-order) + prev node (GEMINI)
 class Solution(object):
