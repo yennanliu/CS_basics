@@ -37,6 +37,49 @@ Follow up: Can you flatten the tree in-place (with O(1) extra space)?
 """
 
 
+
+# V0
+# IDEA: DFS (post-order) (GEMINI)
+class Solution(object):
+    def flatten(self, root):
+        """
+        :type root: TreeNode
+        :rtype: None Do not return anything, modify root in-place instead.
+        """
+        self.helper(root)
+        
+    def helper(self, root):
+        # Base Case 1: Empty nodes have no tail
+        if not root:
+            return None
+            
+        # Base Case 2: Leaf nodes are their own tail
+        if not root.left and not root.right:
+            return root
+            
+        # Cache the head of the right side before it gets overwritten
+        right_head_cache = root.right
+        
+        # 1. Flatten the subtrees and retrieve their absolute tail nodes
+        _left = self.helper(root.left)
+        _right = self.helper(root.right)
+        
+        # 2. Re-stitch the structural pointers if a left child exists
+        if _left:
+            # The root's right child becomes the head of the left sublist
+            _left.right = right_head_cache
+            root.right = root.left
+            root.left = None  # Clear the left pointer per rules
+            
+        # 3. Return the absolute tail of this newly flattened sequence
+        # The priority order for the true tail is: right_tail -> left_tail -> root
+        if _right:
+            return _right
+        if _left:
+            return _left
+        return root
+
+
 # V0
 # IDEA: DFS (post-order) (gpt)
 class Solution(object):
