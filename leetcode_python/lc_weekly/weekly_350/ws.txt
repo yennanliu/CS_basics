@@ -2,9 +2,10 @@
 
 # 5:50 - 6:35 pm
 
+#-----------------------------------------
 # LC 2739
 # https://leetcode.com/problems/total-distance-traveled/description/
-
+#-----------------------------------------
 
 
 -> Return the maximum distance which can be traveled.
@@ -40,14 +41,38 @@ class Solution(object):
         cnt = mainTank // 5
 
         if additionalTank > 0:
-            cnt += 1
+            extra = (mainTank - 5 + additionalTank)
+            cnt = (cnt * 5) +  extra
 
         return cnt * 10
 
 
+#-------------- (fix)
 
+class Solution(object):
+    def distanceTraveled(self, mainTank, additionalTank):
+        distance = 0
+
+        while mainTank > 0:
+            if mainTank >= 5:
+                mainTank -= 5
+                distance += 50
+
+                if additionalTank > 0:
+                    mainTank += 1
+                    additionalTank -= 1
+            else:
+                distance += mainTank * 10
+                break
+
+        return distance
+
+
+#-----------------------------------------
 # LC 2740
 # https://leetcode.com/problems/find-the-value-of-the-partition/
+#-----------------------------------------
+
 
 
 -> Return the integer denoting 
@@ -103,11 +128,13 @@ class Solution(object):
 
 
 
-
+#-----------------------------------------
 # LC 2741 (todo)
 # https://leetcode.com/problems/special-permutations/description/
+#-----------------------------------------
 
 
+# 3.34 - 44 pm
 
 ->
 
@@ -170,7 +197,9 @@ nums = [2,3,6]
 
 # idea 1) greedy 
 
-# idea 2) brute force ??
+# idea 2) brute force (simulation) ??
+
+
 
 class Solution(object):
     def specialPerm(self, nums):
@@ -186,10 +215,10 @@ class Solution(object):
 
 
 
-
+#-----------------------------------------
 # LC 2742
 # https://leetcode.com/problems/painting-the-walls/description/
-
+#-----------------------------------------
 
 
 
