@@ -128,6 +128,24 @@ class Solution(object):
 
 
 
+#-------------- (fix)
+
+class Solution(object):
+    def findValueOfPartition(self, nums):
+        nums.sort()
+        # ??
+        min_diff = nums[1] - nums[0]
+
+        for i in range(1, len(nums)):
+            print("nums[i] = " + str(nums[i]) + ", nums[i-1] = " + str(nums[i-1]))
+            min_diff = min(min_diff, nums[i] - nums[i-1])
+
+
+        return min_diff
+
+
+
+
 #-----------------------------------------
 # LC 2741 (todo)
 # https://leetcode.com/problems/special-permutations/description/
