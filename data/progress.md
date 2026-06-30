@@ -1,7 +1,7 @@
 # Progress
 
 
-# 2026-06-29
+# 2026-06-30
 
 - trie.md
 	- 2) LC Example
@@ -80,7 +80,6 @@
 		- 663,508
 		- 701,450
 		- 652
-		- 776,399
 		- dist in LCA
 			- 1740
 		- tree -> graph
