@@ -39,6 +39,63 @@ The BST is always valid and each node’s value is different.
 """
 
 # V0
+# IDEA : BST properties (left < root < right) + recursion (GEMINI)
+class Solution(object):
+    def splitBST(self, root, V):
+        """
+        :type root: TreeNode
+        :type V: int
+        :rtype: List[TreeNode]
+        """
+        # FIX 1: Base case must return a matching pair of elements [small, big]
+        if not root:
+            return [None, None]
+            
+        # Case 1: The current root belongs to the SMALL tree
+        if root.val <= V:
+            # Recursively split the right subtree
+            small_part, big_part = self.splitBST(root.right, V)
+            
+            # The smaller pieces from the right side attach to root's right
+            root.right = small_part
+            
+            # root is now the complete head of the small tree group
+            return [root, big_part]
+            
+        # Case 2: The current root belongs to the BIG tree
+        else:
+            # Recursively split the left subtree
+            small_part, big_part = self.splitBST(root.left, V)
+            
+            # The bigger pieces from the left side attach to root's left
+            root.left = big_part
+            
+            # root is now the complete head of the big tree group
+            return [small_part, root]
+
+
+# V0-1
+# IDEA : BST properties (left < root < right) + recursion (GPT)
+class Solution(object):
+    def splitBST(self, root, V):
+        return self.helper(root, V)
+
+    def helper(self, root, V):
+        if not root:
+            return None, None
+
+        if root.val <= V:
+            small, big = self.helper(root.right, V)
+            root.right = small
+            return root, big
+
+        else:
+            small, big = self.helper(root.left, V)
+            root.left = big
+            return small, root
+
+
+# V0
 # IDEA : BST properties (left < root < right) + recursion
 # https://blog.csdn.net/magicbean2/article/details/79679927
 # https://www.itdaan.com/tw/d58594b92742689b5769f9827365e8b4

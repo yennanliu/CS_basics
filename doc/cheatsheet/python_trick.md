@@ -2725,8 +2725,57 @@ def dfs(r, tmp):
         dfs(r.right, tmp + [str(r.right.val)])
 ```
 
-| `path` type | Mutable? | New object per call? | Need backtrack (`pop`)? |
+**`int` accumulators (`cur_sum`) follow the SAME immutable rule — NO backtrack** ⭐
+
+A very common confusion: in a DFS that carries **both** a running sum (`cur_sum`, an
+`int`) **and** a path list (`cache`), why do we `cache.pop()` but never "un-add"
+`cur_sum`? Because **integers are immutable** — `cur_sum += root.val` does NOT mutate
+the parent's integer in place; it **rebinds** the *local* `cur_sum` to a brand-new int
+object. When the child frame is destroyed, the parent's `cur_sum` is untouched.
+
+| Variable | How Python passes it | Need backtrack? | Why |
+|----------|----------------------|-----------------|-----|
+| **`cur_sum`** (`int`) | **by value** (immutable copy) | **❌ No** | `+= val` makes a NEW int bound to the local name; the parent's value is never overwritten, so it auto-restores when the child frame ends. |
+| **`cache`** (`list`) | **by reference** (one shared object) | **✅ Yes** | ONE list instance is shared across the whole recursion tree. A child's `append` is seen by the parent, so we MUST `pop()` to clean up. |
+
+```python
+# LC 113 - Path Sum II
+# https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Depth-First-Search/path-sum-ii.py
+class Solution(object):
+    def pathSum(self, root, targetSum):
+        self.res = []
+        if not root:
+            return self.res
+        self.helper(root, targetSum, 0, [])
+        return self.res
+
+    def helper(self, root, targetSum, cur_sum, cache):
+        if not root:
+            return
+
+        cur_sum += root.val        # int  -> rebinds LOCAL name to a new int (immutable)
+        cache.append(root.val)     # list -> mutates the ONE shared list
+
+        if not root.left and not root.right and cur_sum == targetSum:
+            self.res.append(cache[:])    # snapshot — cache[:] copies, else later pops corrupt it
+
+        self.helper(root.left,  targetSum, cur_sum, cache)
+        self.helper(root.right, targetSum, cur_sum, cache)
+
+        cache.pop()                # MUST backtrack the list ...
+        # NOTE: NO `cur_sum -= root.val` — the int never changed for the parent
+```
+
+**Memory walk-through** — parent at `cur_sum = 5`, `cache = [5]`, step into a child of value `3`:
+
+| | Going DOWN into child | Coming back UP to parent |
+|---|---|---|
+| **`cache` (list)** | `cache.append(3)` → `[5, 3]` (same object) | without `pop()` it stays `[5, 3]` → **parent corrupted → backtrack required** |
+| **`cur_sum` (int)** | `cur_sum + 3` → `8` (new int, local) | child frame destroyed → parent's `cur_sum` still `5` → **no backtrack needed** |
+
+| `path` / accumulator type | Mutable? | New object per call? | Need backtrack (`pop`)? |
 |-------------|----------|----------------------|-------------------------|
+| `int` (`cur_sum`) | No | Yes (`n + x` rebinds) | **No**                  |
 | `str`       | No       | Yes (`s + x`)        | **No**                  |
 | `tuple`     | No       | Yes (`t + (x,)`)     | **No**                  |
 | `list` + `tmp + [x]` | No (rebound) | Yes | **No** |

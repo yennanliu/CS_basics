@@ -1213,6 +1213,57 @@ int dfs(TreeNode root, int depth) {
 }
 ```
 
+**Python equivalent — `int` accumulator vs `list` path (LC 113 Path Sum II)** ⭐
+
+The same rule holds in Python. In a DFS that carries **both** a running sum (`cur_sum`,
+an `int`) **and** a path (`cache`, a `list`), we `cache.pop()` but never "un-add"
+`cur_sum`:
+
+- **`cur_sum` (`int`) — NO backtrack.** Integers are **immutable**. `cur_sum += root.val`
+  does NOT change the parent's integer in place; it **rebinds the local `cur_sum`** to a
+  brand-new int object. When the child frame ends, the parent's `cur_sum` is untouched.
+- **`cache` (`list`) — NEEDS backtrack.** There is only **one** list instance shared
+  across the whole recursion tree. A child's `append` is visible to the parent, so we
+  MUST `pop()` to restore state for the sibling branch.
+
+```python
+# python
+# LC 113 - Path Sum II
+# https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Depth-First-Search/path-sum-ii.py
+class Solution(object):
+    def pathSum(self, root, targetSum):
+        self.res = []
+        if not root:
+            return self.res
+        self.helper(root, targetSum, 0, [])
+        return self.res
+
+    def helper(self, root, targetSum, cur_sum, cache):
+        if not root:
+            return
+
+        cur_sum += root.val        # int  -> rebinds LOCAL name to a NEW int (immutable)
+        cache.append(root.val)     # list -> mutates the ONE shared list
+
+        if not root.left and not root.right and cur_sum == targetSum:
+            self.res.append(cache[:])   # snapshot, else later pops corrupt it
+
+        self.helper(root.left,  targetSum, cur_sum, cache)
+        self.helper(root.right, targetSum, cur_sum, cache)
+
+        cache.pop()                # MUST backtrack the list ...
+        # NOTE: NO `cur_sum -= root.val` — the int never changed for the parent
+```
+
+**Memory walk-through** — parent at `cur_sum = 5`, `cache = [5]`, step into a child of value `3`:
+
+| | Going DOWN into child | Coming back UP to parent |
+|---|---|---|
+| **`cache` (list)** | `cache.append(3)` → `[5, 3]` (same object) | without `pop()` it stays `[5, 3]` → **parent corrupted → backtrack required** |
+| **`cur_sum` (int)** | `cur_sum + 3` → `8` (new int, local) | child frame destroyed → parent's `cur_sum` still `5` → **no backtrack needed** |
+
+> See also [python_trick.md §1-54](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/python_trick.md) — `str`/`tuple`/`int` (immutable, no backtrack) vs `list.append` (mutable, needs `pop`).
+
 ### 1-3)  if `true`, return true right after recursive call
 
 ```java
