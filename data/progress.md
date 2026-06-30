@@ -62,7 +62,7 @@
 
 - LC weekly
 	- `data/lc_weekly/lc_weekly_gpt.md`
-		- Weekly Contest 350 (doing)
+		- Weekly Contest 350 (done)
 			- https://leetcode.com/contest/weekly-contest-350/
 
 - Others

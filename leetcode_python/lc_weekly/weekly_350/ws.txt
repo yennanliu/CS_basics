@@ -230,7 +230,89 @@ class Solution(object):
 
 
 
+#-------------- (fix)
 
+# idea: DP + dfs
+
+
+class Solution(object):
+    def specialPerm(self, nums):
+        MOD = 10**9 + 7
+        n = len(nums)
+        memo = {}
+
+        def dfs(mask, last):
+            if mask == (1 << n) - 1:
+                return 1
+
+            if (mask, last) in memo:
+                return memo[(mask, last)]
+
+            ans = 0
+
+            for nxt in range(n):
+                if (mask >> nxt) & 1:
+                    continue
+
+                if nums[last] % nums[nxt] == 0 or nums[nxt] % nums[last] == 0:
+                    ans = (ans + dfs(mask | (1 << nxt), nxt)) % MOD
+
+            memo[(mask, last)] = ans
+            return ans
+
+        ans = 0
+
+        for i in range(n):
+            ans = (ans + dfs(1 << i, i)) % MOD
+
+        return ans
+
+
+
+# (TLE)
+
+class Solution(object):
+    def specialPerm(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        self.total_count = 0
+        self.MOD = 10**9 + 7
+        n = len(nums)
+        
+        # Explicit boolean tracking array instead of a bitmask
+        visited = [False] * n 
+        
+        # We use an inner function to easily share state variables
+        def backtrack(prev_idx, count_used):
+            # Base Case: If we successfully placed all numbers, we found 1 valid path
+            if count_used == n:
+                self.total_count = (self.total_count + 1) % self.MOD
+                return
+            
+            # Try placing every possible available number next
+            for next_idx in range(n):
+                if not visited[next_idx]:
+                    # Check divisibility condition between neighbor elements
+                    if nums[next_idx] % nums[prev_idx] == 0 or nums[prev_idx] % nums[next_idx] == 0:
+                        
+                        # 1. Action: Choose the number
+                        visited[next_idx] = True
+                        
+                        # 2. Recurse: Move to the next position
+                        backtrack(next_idx, count_used + 1)
+                        
+                        # 3. Backtrack: Undo the choice for alternative branches
+                        visited[next_idx] = False
+
+        # Kickstart the permutation sequence with every possible starting element
+        for i in range(n):
+            visited[i] = True
+            backtrack(i, 1)
+            visited[i] = False
+            
+        return self.total_count
 
 
 #-----------------------------------------
