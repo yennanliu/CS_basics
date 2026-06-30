@@ -31,6 +31,61 @@ The number of nodes in the tree is in the range [0, 1000].
 
 
 # V0
+# IDEA 1) dfs (pre-order) + prefix + hashmap + backtrack (GEMINI)
+class Solution(object):
+    def pathSum(self, root, targetSum):
+
+        """
+        NOTE !!!
+
+        we prefer init path_map as `{}`,
+
+         -> then we need to explicitly do base case match check
+
+         -> 
+
+            ```
+            # 1. Base case matching condition
+            if prefix == targetSum:
+               self.cnt += 1
+
+            ```
+
+
+         -> compare V0 and V0-0-1
+        """
+        self.path_map = {}
+        self.cnt = 0
+        self.helper(root, targetSum, 0)
+        return self.cnt 
+
+    def helper(self, root, targetSum, prefix):
+        if not root:
+            return
+        
+        prefix += root.val
+        
+        # 1. Base case matching condition
+        if prefix == targetSum:
+            self.cnt += 1
+            
+        # 2. FIX: Look up (prefix - targetSum) instead of (targetSum - prefix)
+        # Also removed the leaf-node restriction so it runs on all valid tree nodes
+        if (prefix - targetSum) in self.path_map:
+            self.cnt += self.path_map[prefix - targetSum]
+            
+        # 3. FIX: Safely increment key frequencies using default values
+        self.path_map[prefix] = self.path_map.get(prefix, 0) + 1
+        
+        # Traverse downwards
+        self.helper(root.left, targetSum, prefix)
+        self.helper(root.right, targetSum, prefix)
+        
+        # 4. FIX: Backtrack! Clear the current branch's footprint from the global map
+        self.path_map[prefix] -= 1
+
+
+# V0-0-1
 # IDEA 1) dfs (pre-order) + prefix + hashmap + backtrack (gpt)
 class Solution(object):
     def pathSum(self, root, targetSum):
