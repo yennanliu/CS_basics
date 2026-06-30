@@ -40,6 +40,7 @@ At most 50000 calls will be made to addWord and search.
 
 """
 
+
 # V0
 # IDEA: TRIE + recursion (gemini)
 class MyNode(object):
@@ -79,6 +80,18 @@ class WordDictionary(object):
             return node.is_end
             
         char = word[index]
+
+        """
+        NOTE !!!
+
+        for both cases (char == or != '.'),
+        we ALL proceed with recursion call !!!
+
+         - return self.search_helper(word, index + 1, node.next[char])
+
+         - if self.search_helper(word, index + 1, child_node)
+            ...
+        """
         
         if char != ".":
             # Standard exact match lookup
