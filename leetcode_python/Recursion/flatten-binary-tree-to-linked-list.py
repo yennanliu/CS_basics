@@ -70,6 +70,60 @@ class Solution(object):
             _left.right = right_head_cache
             root.right = root.left
             root.left = None  # Clear the left pointer per rules
+
+        """
+        Q: why don't need to handle `if _right` case ?
+
+
+        ->
+        The short answer is NO, 
+        we don't need a separate if _right: block for the stitching process.
+
+
+        -> why ?
+
+        1. The Right Subtree Stays Put
+
+        Because this is a Pre-order traversal (Root $\to$ Left $\to$ Right), 
+        the right subtree always 
+        belongs at the very end of the flattened chain.
+
+        - If a right subtree exists, it is already sitting exactly where it needs to be (root.right).
+
+        
+        - We don't need to move it or re-stitch its internal connections; 
+          its own recursive call (_right = self.helper(root.right)) 
+          already took care of flattening it in place.
+
+
+
+        -> 2. How the Left Tail Connects to the Right Head ?
+
+
+        ```
+        _left.right = right_head_cache
+        ```
+
+        This single line perfectly handles both possibilities 
+        for the right subtree:
+
+
+        - Case A: The right subtree exists. 
+                  right_head_cache points to the head node
+                  of that right subtree. The left tail (_left) 
+                  hooks directly onto it. The chain becomes: 
+                  Root $\to$ Left Sublist $\to$ Right Sublist.
+
+    
+        - Case B: 
+                  The right subtree is empty (None). 
+                  right_head_cache is None. 
+                  This line safely assigns _left.right = None,
+                   which is exactly correct because 
+                   the left sublist is now the 
+                   absolute end of the chain.
+
+        """
             
         # 3. Return the absolute tail of this newly flattened sequence
         # The priority order for the true tail is: right_tail -> left_tail -> root
