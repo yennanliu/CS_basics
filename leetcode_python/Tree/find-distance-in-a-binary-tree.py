@@ -52,9 +52,113 @@ Link to All Problems
 
 
 # V0
+class Solution:
+    def findDistance(self, root, p, q):
+    	pass
+
+# V1-1
+# IDEA: LCA + get_dist + DFS (gpt)
+class Solution:
+    def findDistance(self, root, p, q):
+        if p == q:
+            return 0
+
+        lca = self.get_lca(root, p, q)
+
+        dist_p = self.get_dist(lca, p, 0)
+        dist_q = self.get_dist(lca, q, 0)
+
+        return dist_p + dist_q
+
+    def get_lca(self, root, p, q):
+        if not root:
+            return None
+
+        if root.val == p or root.val == q:
+            return root
+
+        left = self.get_lca(root.left, p, q)
+        right = self.get_lca(root.right, p, q)
+
+        if left and right:
+            return root
+
+        return left if left else right
+
+    def get_dist(self, root, target, dist):
+    	"""
+    	NOTE !!!
+
+    	if not root, we return `-1`
+
+    	but NOT `0`, since 0 is also considered as a valid state
+    	"""
+        if not root:
+            return -1
+
+        if root.val == target:
+            return dist
+
+        left = self.get_dist(root.left, target, dist + 1)
+        if left != -1:
+            return left
+
+        return self.get_dist(root.right, target, dist + 1)
 
 
-# V1
+# V1-2
+# IDEA: LCA + get_dist + DFS (GEMINI)
+class Solution(object):
+    def findDistance(self, root, p, q):
+        """
+        :type root: TreeNode
+        :type p: int
+        :type q: int
+        :rtype: int
+        """
+        if p == q:
+            return 0
+            
+        # FIX 1: Pass 'root' and added 'self.' prefix 
+        lca = self.get_lca(root, p, q)
+        
+        # Calculate distances relative to the LCA node
+        dist_p = self.get_dist(lca, p, 0)
+        dist_q = self.get_dist(lca, q, 0)
+        
+        # Simple unified return works for all cases!
+        return dist_p + dist_q
+
+    def get_lca(self, root, p, q):
+        # FIX 2: Added missing empty tree base case safety rule
+        if not root:
+            return None
+            
+        # FIX 3: Compare against node integer values (.val) instead of objects
+        if root.val == p or root.val == q:
+            return root
+        
+        _left = self.get_lca(root.left, p, q)
+        _right = self.get_lca(root.right, p, q)
+        
+        if _left and _right:
+            return root
+        return _left if _left else _right
+
+    def get_dist(self, root, target_val, dist):
+        if not root:
+            return -1  # Return -1 to clearly signify a dead end path
+        
+        if root.val == target_val:
+            return dist
+            
+        # FIX 4: Capture and return the valid path results back up the chain
+        left_dist = self.get_dist(root.left, target_val, dist + 1)
+        if left_dist != -1:
+            return left_dist
+            
+        return self.get_dist(root.right, target_val, dist + 1)
+
 
 
 # V2-1
