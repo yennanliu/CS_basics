@@ -116,6 +116,28 @@ class Solution(object):
         # Backtrack
         cache.pop()
 
+        """
+
+         NOTE !!! 
+
+        we DON'T need to do backtrack on `cur_sum`
+
+
+        -> because `integers` are `immutable` in Python, 
+           meaning their values CAN NOT be changed in place.
+
+
+        -> 
+
+        When you pass an integer like cur_sum into a function call, 
+        Python passes it by value (technically, a copy of the reference to that integer object). 
+        Any modifications you make to cur_sum inside a 
+        specific function frame stay locked inside that 
+        frame and its children.
+
+
+        """
+
 
 
 # V0-1
