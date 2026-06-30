@@ -1,23 +1,24 @@
-20250630: 776(again),399(todo),437,114(again),113,211(again)
-20250629: 112(ok, but again),113(again),437(again),114(again)
-20250628: 370,1109,542,1905
-20250627: 525,128(again),785,211(wildcard, again)
-20250626: 662(again!!),652(again),737(ok, but again),742(again)
-20250625: 227(again),394(again),1209,2104(again)
-20250624: 227(again),394(again),1209(again),1963(again)
-20250623: 31(again),2104(again),984,669,505(again),816(again)
-20250622: 1710,669(again),538,543
-20250621: 774,583(again),767(again),110,505(again)
-20250620: 816(again)
-20250619: 2049(again),316
-20250618: 687,635
-20250617: 297(todo),785(todo)
-20250615: weekly_266,
-20250614: 72(again),5,139,257(again),95(check),647(todo),91(todo),322(todo),139(todo)
-20250613: 53,55,57,435,252,253,309,518(again),97,weekly_331
-20250612: 309(again),518(again),97(again),72(again),207,261,994,210(todo),743(again),787(again),416,494
-20250611: 416(again),494(again),153,155,105,138(again),146,621(again),39(again),79(again)
-20250610: 271,238(again),128,525,15(again, 2 pointers),424(again?),567(again)
+20260701  1740(todo),399(todo),907(todo),1143(todo)
+20260630: 776(again),437,114(again),113,211(again)
+20260629: 112(ok, but again),113(again),437(again),114(again)
+20260628: 370,1109,542,1905
+20260627: 525,128(again),785,211(wildcard, again)
+20260626: 662(again!!),652(again),737(ok, but again),742(again)
+20260625: 227(again),394(again),1209,2104(again)
+20260624: 227(again),394(again),1209(again),1963(again)
+20260623: 31(again),2104(again),984,669,505(again),816(again)
+20260622: 1710,669(again),538,543
+20260621: 774,583(again),767(again),110,505(again)
+20260620: 816(again)
+20260619: 2049(again),316
+20260618: 687,635
+20260617: 297(todo),785(todo)
+20260615: weekly_266,
+20260614: 72(again),5,139,257(again),95(check),647(todo),91(todo),322(todo),139(todo)
+20260613: 53,55,57,435,252,253,309,518(again),97,weekly_331
+20260612: 309(again),518(again),97(again),72(again),207,261,994,210(todo),743(again),787(again),416,494
+20260611: 416(again),494(again),153,155,105,138(again),146,621(again),39(again),79(again)
+20260610: 271,238(again),128,525,15(again, 2 pointers),424(again?),567(again)
 ,53(again),62,1143(ok, review),300(again)
 
 

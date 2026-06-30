@@ -1,7 +1,7 @@
 # Progress
 
 
-# 2026-06-30
+# 2026-07-01
 
 - trie.md
 	- 2) LC Example
@@ -85,7 +85,7 @@
 		- tree -> graph
 			- 863
 		- mono stack
-			- 907**, 853
+			- 853
 		- BFS
 			-	1087
 		- tree
