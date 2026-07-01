@@ -45,6 +45,133 @@ Ai, Bi, Cj, Dj consist of lower case English letters and digits.
 
 """
 
+
+# V0
+# IDEA: DFS + `nested hashmap` + visited (gpt)
+class Solution(object):
+    def calcEquation(self, equations, values, queries):
+        graph = {}
+
+        for i in range(len(equations)):
+            a, b = equations[i]
+            val = values[i]
+
+            if a not in graph:
+                graph[a] = {}
+            if b not in graph:
+                graph[b] = {}
+
+            graph[a][b] = val
+            graph[b][a] = 1.0 / val
+
+        self.graph = graph
+
+        ans = []
+
+        for a, b in queries:
+            if a not in self.graph or b not in self.graph:
+                ans.append(-1.0)
+            elif a == b:
+                ans.append(1.0)
+            else:
+                visited = set()
+                ans.append(self.helper(a, b, 1.0, visited))
+
+        return ans
+
+    def helper(self, x, y, val, visited):
+        if x == y:
+            return val
+
+        visited.add(x)
+
+        for nxt in self.graph[x]:
+            if nxt not in visited:
+                """
+                NOTE !!!
+
+                we get res via recursion call,
+                and once got a valid res (res != -1)
+
+                -> we return and use it as a valid ans immediately
+                """
+
+                res = self.helper(
+                    nxt,
+                    y,
+                    val * self.graph[x][nxt],
+                    visited
+                )
+                if res != -1:
+                    return res
+
+        return -1.0
+
+
+
+# V0-1
+# IDEA: DFS + `nested hashmap` + visited (GEMINI)
+class Solution(object):
+    def calcEquation(self, equations, values, queries):
+        """
+        :type equations: List[List[str]]
+        :type values: List[float]
+        :type queries: List[List[str]]
+        :rtype: List[float]
+        """
+        # FIX 1: Save graph to self so helper can access it
+        self.graph = {}
+        for i in range(len(equations)):
+            a = equations[i][0]
+            b = equations[i][1]
+            val = values[i]
+            if a not in self.graph:
+                self.graph[a] = {}
+            if b not in self.graph:
+                self.graph[b] = {}
+            self.graph[a][b] = val
+            self.graph[b][a] = 1.0 / val
+            
+        ans = []
+        for i in range(len(queries)):
+            a = queries[i][0]
+            b = queries[i][1]
+            
+            # FIX 2: Corrected variable names from x, y to a, b
+            if a not in self.graph or b not in self.graph:
+                ans.append(-1.0)
+            elif a == b:
+                ans.append(1.0)
+            else:
+                visited = set()
+                # Pass 1.0 as the initial cumulative product value
+                ans.append(self.helper(a, b, 1.0, visited))
+        return ans
+
+    def helper(self, x, y, cur_val, visited):
+        if x == y:
+            return cur_val
+            
+        visited.add(x)
+        
+        for neighbor in self.graph[x].keys():
+            if neighbor not in visited:
+                """
+                NOTE !!!
+
+                we get res via recursion call,
+                and once got a valid res (res != -1)
+
+                -> we return and use it as a valid ans immediately
+                """
+                # FIX 3: Capture the path calculation value in a variable to avoid double recursion
+                result = self.helper(neighbor, y, cur_val * self.graph[x][neighbor], visited)
+                if result != -1.0:
+                    return result
+                    
+        return -1.0
+
+
 # V0 
 # IDEA : DFS + collections.defaultdict(dict)
 class Solution:
