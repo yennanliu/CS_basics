@@ -39,6 +39,76 @@ NOTE !!!
 
 """
 
+
+# V0
+# IDEA: DFS (pre-order)
+class Solution(object):
+    def binaryTreePaths(self, root):
+        # edge
+        if not root:
+            return
+
+        self.paths = []
+
+        self.helper(root, "")
+
+        return self.paths
+
+
+    def helper(self, root, path):
+        if not root:
+            return
+
+        # ??
+        if not path:
+            path += str(root.val)
+        else:
+            path += ("->" + str(root.val))
+
+        if not root.left and not root.right:
+            self.paths.append(path)
+            return
+
+        self.helper(root.left, path)
+        self.helper(root.right, path)
+
+
+# V0-1
+# IDEA: DFS (GPT)
+class Solution(object):
+    def binaryTreePaths(self, root):
+        if not root:
+            return []
+
+        self.paths = []
+        self.dfs(root, str(root.val))
+        return self.paths
+
+    def dfs(self, node, path):
+        if not node.left and not node.right:
+            self.paths.append(path)
+            return
+
+        if node.left:
+            """
+            NOTE !!!
+
+            via below, we DON'T need to handle below as V0:
+
+            ```
+            if not path:
+                path += str(root.val)
+            else:
+                path += ("->" + str(root.val))
+            ```
+
+            """
+            self.dfs(node.left, path + "->" + str(node.left.val))
+
+        if node.right:
+            self.dfs(node.right, path + "->" + str(node.right.val))
+
+
 # V0
 # IDEA: DFS
 class Solution(object):
