@@ -109,6 +109,62 @@ For each element arr[i], count:
 
 
 """
+# V0
+# IDEA: MONO STACK (Gemini)
+class Solution(object):
+    def sumSubarrayMins(self, arr):
+        """
+        :type arr: List[int]
+        :rtype: int
+        """
+        if not arr:
+            return 0
+            
+        MOD = 10**9 + 7
+        n = len(arr)
+        
+        left = [0] * n
+        right = [0] * n
+        
+        # --- 1. PRE-CALCULATE LEFT DISTANCES ---
+        # Stores indices of a strictly increasing sequence
+        mono_st = [] 
+        for i in range(n):
+            val = arr[i]
+            # Pop elements that are greater than or equal to current val
+            while mono_st and arr[mono_st[-1]] >= val:
+                mono_st.pop()
+            
+            # If stack is empty, it means 'val' is the smallest element seen so far
+            # Distance to left boundary is i - (-1) = i + 1
+            left[i] = i + 1 if not mono_st else i - mono_st[-1]
+            mono_st.append(i)
+
+        # --- 2. PRE-CALCULATE RIGHT DISTANCES ---
+        # Reset the stack for the backward pass
+        mono_st = [] 
+        for i in range(n - 1, -1, -1):
+            val = arr[i]
+            # Pop elements that are strictly greater than current val
+            while mono_st and arr[mono_st[-1]] > val:
+                mono_st.pop()
+            
+            # If stack is empty, there is no smaller element to its right
+            # Distance to right boundary is n - i
+            right[i] = n - i if not mono_st else mono_st[-1] - i
+            mono_st.append(i)
+
+        # --- 3. AGGREGATE TOTAL SUM ---
+        ans = 0
+        for i in range(n):
+            ans += arr[i] * left[i] * right[i]
+            ans %= MOD
+            
+        return ans
+
+
+# V0-1
+# IDEA: MONO STACK
 class Solution(object):
     def sumSubarrayMins(self, arr):
         """
