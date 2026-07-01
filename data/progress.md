@@ -75,19 +75,12 @@
 		- 416,494 (0/1 Knapsack)
 			- 0/1 knapsack DP
 		- 1143, 72
-		- 399
-		- 323,2316
 		- 663,508
 		- 701,450
-		- 652
-		- dist in LCA
-			- 1740
 		- tree -> graph
 			- 863
 		- mono stack
 			- 853
-		- BFS
-			-	1087
 		- tree
 			- 1110,652,742,863
 		- bst
@@ -99,7 +92,7 @@
 			- delete op
 				- https://yennj12.js.org/CS_basics/cheatsheets/trie.html#template-6-trie-with-delete-operation
 		- lazy_bst_in_order(todo),173(todo),2616(todo, compare PQ)
-		- topo_sort,257(todo)
+		- topo_sort
 		- `Combinations VS Permutations` in DP
 			- https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Dynamic_Programming/coin_change_2.py#L125
 
