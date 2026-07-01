@@ -34,6 +34,65 @@ Constraints:
 
 CORE IDEA:
 
+-V1
+
+
+- left[i] =
+    number of consecutive elements to 
+    the left (including itself) where arr[i] 
+    is the minimum.
+
+
+- right[i] = 
+    number of consecutive elements 
+    to the right (including itself) 
+    where arr[i] remains the minimum.
+
+
+-> ans = SUM( arr[i] * left[i] * right[i] )
+
+
+
+-> NOTE:
+
+The only subtlety is how to handle duplicates.
+
+On the left, use >.
+On the right, use >=.
+
+
+-> Dry run
+
+
+if arr = [3,1,2,4]
+
+->
+
+left  = [1,2,1,1]
+right = [1,3,2,1]
+
+
+-> so
+
+3 * 1 * 1 = 3
+1 * 2 * 3 = 6
+2 * 1 * 2 = 4
+4 * 1 * 1 = 4
+
+Total = 17
+
+
+-> ans = 17
+
+
+
+
+
+----------
+
+
+-V2
+
 For each element arr[i], count:
 
   - how many subarrays choose arr[i] as 
