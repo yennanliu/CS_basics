@@ -456,6 +456,7 @@ public TreeNode subtreeWithAllDeepest(TreeNode root) {
 - **LC 886** – Possible Bipartition: Detect bipartite graph conflicts
 - **LC 1135** – Connecting Cities: MST with Kruskal's algorithm
 - **LC 1319** – Network Connections: Minimum operations to connect all nodes
+- **LC 2316** – Count Unreachable Pairs of Nodes: Component sizes + running-remainder cross-pair count (see §2-13)
 
 ## 2) Diagrams
 
@@ -1003,3 +1004,120 @@ public TreeNode subtreeWithAllDeepest(TreeNode root) {
     return set.iterator().next();
 }
 ```
+
+### 2-13) Count Unreachable Pairs of Nodes (LC 2316) — Union-Find + Running-Remainder Pair Count
+> Union all edges → group nodes into components → count pairs of nodes that live in **different** components (they are unreachable from each other).
+
+Python ref: `leetcode_python/Depth-First-Search/count-unreachable-pairs-of-nodes-in-an-undirected-graph.py`
+
+**Key Idea:** two nodes are *unreachable* ⟺ they belong to **different connected components**. So the answer = number of cross-component node pairs = `Σ (s_i · s_j)` over all pairs of components `i < j`, where `s_i` is the size of component `i`.
+
+#### ⭐ The `remain` trick — O(k) cross-pair counting (no nested loop)
+
+Naively you might:
+- compute `C(n, 2)` (all pairs) then subtract intra-component pairs `Σ C(s_i, 2)`, **or**
+- double-loop over every pair of components `s_i · s_j` → O(k²).
+
+Instead, keep a running `remain` = "nodes not yet consumed" and accumulate in **one pass**:
+
+```python
+res = 0
+remain = n
+for s in size.values():
+    remain -= s          # remain now = total nodes in the *remaining* components
+    res += s * remain     # pair this component's s nodes with every node still ahead
+return res
+```
+
+**Why it works** (avoids double-counting):
+
+For component `i` (processed in order), after `remain -= s_i`, `remain = n − (s_1 + … + s_i) = Σ_{j>i} s_j`.
+So each step adds `s_i · Σ_{j>i} s_j`. Summing over all `i`:
+
+```
+Σ_i  s_i · (Σ_{j>i} s_j)  =  Σ_{i < j} s_i · s_j
+```
+
+which is exactly every cross-component pair, counted **once**. Subtracting first (`remain -= s` *before* multiplying) is what excludes the component's pairing with itself and prevents `(i, j)` / `(j, i)` duplicates.
+
+**Visual trace** (example graph `n = 7, edges = [[0,2],[0,5],[2,4],[1,6],[5,4]]` → components of size `4, 2, 1`, expected `14`):
+
+```
+remain = 7
+s=4 → remain = 3 → res += 4*3 = 12   (res=12)
+s=2 → remain = 1 → res += 2*1 = 2    (res=14)
+s=1 → remain = 0 → res += 1*0 = 0    (res=14)  ✅
+```
+> The per-step values depend on iteration order, but the **total is invariant** (= `Σ_{i<j} s_i·s_j`).
+
+#### Full solution
+
+```python
+# LC 2316 - Count Unreachable Pairs of Nodes in an Undirected Graph
+# IDEA: Union-Find → component sizes → running-remainder cross-pair count
+# time = O((N + E) * α(N)), space = O(N)
+class MyUF:
+    def __init__(self, n):
+        self.parents = list(range(n))
+
+    def get_parent(self, x):
+        if self.parents[x] != x:
+            self.parents[x] = self.get_parent(self.parents[x])  # path compression
+        return self.parents[x]
+
+    def union(self, x, y):
+        px, py = self.get_parent(x), self.get_parent(y)
+        if px != py:
+            self.parents[py] = px
+
+class Solution(object):
+    def countPairs(self, n, edges):
+        uf = MyUF(n)
+        for x, y in edges:
+            uf.union(x, y)
+
+        # root -> component size (store the COUNT, not the node list)
+        size = {}
+        for i in range(n):
+            root = uf.get_parent(i)
+            size[root] = size.get(root, 0) + 1
+
+        res, remain = 0, n
+        for s in size.values():
+            remain -= s          # remaining nodes ahead of this component
+            res += s * remain     # cross-component pairs, counted once
+        return res
+```
+
+```java
+// LC 2316 - Count Unreachable Pairs of Nodes in an Undirected Graph
+// IDEA: Union-Find → component sizes → running-remainder cross-pair count
+// time = O((N + E) * α(N)), space = O(N)
+public long countPairs(int n, int[][] edges) {
+    int[] parent = new int[n], size = new int[n];
+    for (int i = 0; i < n; i++) { parent[i] = i; size[i] = 1; }
+    for (int[] e : edges) union(parent, size, e[0], e[1]);
+
+    long res = 0, remain = n;              // use long: pairs can exceed int range
+    for (int i = 0; i < n; i++) {
+        if (find(parent, i) == i) {        // i is a root → this component's size is size[i]
+            remain -= size[i];
+            res += (long) size[i] * remain;
+        }
+    }
+    return res;
+}
+private int find(int[] p, int x) { return p[x] == x ? x : (p[x] = find(p, p[x])); }
+private void union(int[] p, int[] sz, int x, int y) {
+    int rx = find(p, x), ry = find(p, y);
+    if (rx == ry) return;
+    if (sz[rx] < sz[ry]) { int t = rx; rx = ry; ry = t; }
+    p[ry] = rx; sz[rx] += sz[ry];          // union by size keeps size[root] correct
+}
+```
+
+**Gotchas:**
+- **Store the count, not the nodes.** You only ever need `s_i`, so `size[root] += 1` beats collecting node lists → O(N) space, not O(N) per component.
+- **Subtract before multiplying** (`remain -= s` then `res += s * remain`) — reversing the two lines would count each component against itself.
+- **Watch overflow (Java).** With `n` up to `10^5`, cross-pairs approach `~5·10^9` > `Integer.MAX_VALUE`; use `long`.
+- **Same trick, general use:** counting cross-group pairs given group sizes `[s_1..s_k]` is always `Σ_{i<j} s_i·s_j`, computable in one O(k) pass this way — handy far beyond Union-Find.
