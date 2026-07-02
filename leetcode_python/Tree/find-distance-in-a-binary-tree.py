@@ -54,7 +54,84 @@ Link to All Problems
 # V0
 class Solution:
     def findDistance(self, root, p, q):
-    	pass
+        if p == q or not root:
+            return 0
+            
+        # Step 1: Find the Lowest Common Ancestor node
+        lca = self.get_lca(root, p, q)
+        
+        # Step 2: Calculate path distances starting from that LCA node
+        dist_p = self.get_dist(lca, p, 0)
+        dist_q = self.get_dist(lca, q, 0)
+        
+        """
+        NOTE !!!
+
+        why we can just do `dist_p + dist_q` as final dist ??
+
+        -> ONLY two structural cases:
+
+
+        case 1:
+
+                  LCA
+                 /   \
+                p     q
+
+
+        case 2:
+
+
+                p (=LCA)
+                  \
+                   ...
+                     q
+
+
+        """
+        # Total distance is always the sum of both paths from the LCA
+        return dist_p + dist_q
+
+    def get_lca(self, root, p, q):
+        if not root:
+            return None
+            
+        # Match by node values since p and q are integers
+        if root.val == p or root.val == q:
+            return root
+            
+        left = self.get_lca(root.left, p, q)
+        right = self.get_lca(root.right, p, q)
+        
+        # If both sides return a node, the current node is their split point (LCA)
+        if left and right:
+            return root
+            
+        return left if left else right
+
+    # NOTE !!! below helper func
+    # pre-order DFS
+    def get_dist(self, root, target, dist):
+        """
+        NOTE !!!
+        If not root, we return `-1`
+        but NOT `0`, since 0 is also considered as a valid state (found at current node).
+        """
+        if not root:
+            return -1
+
+        if root.val == target:
+            return dist
+
+        left = self.get_dist(root.left, target, dist + 1)
+        right = self.get_dist(root.right, target, dist + 1)
+
+        # If the left subtree found the target, pass that valid distance up
+        if left != -1:
+            return left
+
+        # Otherwise, return whatever the right subtree found (either a valid distance or -1)
+        return right
 
 # V1-1
 # IDEA: LCA + get_dist + DFS (gpt)
