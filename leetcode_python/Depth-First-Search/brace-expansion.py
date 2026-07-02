@@ -44,7 +44,7 @@ Google
 # V0
 class Solution:
     def expand(self, s):
-    	pass
+        pass
 
 
 # V1-2

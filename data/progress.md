@@ -4,11 +4,11 @@
 # 2026-07-01
 
 - trie.md
-	- 2) LC Example
+	- 2) 2-5) Number of Ways to Arrive at Destination (LC 1976) — Dijkstra + Path Count
 
 
 - Dijkstra.md
-	- Template 5: Bidirectional Dijkstra
+	- LC Examples
 
 - intervals.md
 
