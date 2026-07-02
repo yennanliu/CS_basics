@@ -54,6 +54,72 @@ class Solution(object):
         """
         
 
+# V1-2
+# IDEA: UNION FIND (GPT)
+class MyUF:
+
+    def __init__(self, n):
+        self.parents = list(range(n))
+        self.cluster_cnt = n
+
+    def get_parent(self, x):
+        if self.parents[x] != x:
+            self.parents[x] = self.get_parent(self.parents[x])
+        return self.parents[x]
+
+    def union(self, x, y):
+        px = self.get_parent(x)
+        py = self.get_parent(y)
+
+        if px == py:
+            return
+
+        self.parents[py] = px
+        self.cluster_cnt -= 1
+
+    def is_connected(self, x, y):
+        return self.get_parent(x) == self.get_parent(y)
+
+
+class Solution(object):
+    def countPairs(self, n, edges):
+
+        my_uf = MyUF(n)
+
+        for x, y in edges:
+            my_uf.union(x, y)
+
+        # root -> component size
+        size = {}
+
+        for i in range(n):
+            root = my_uf.get_parent(i)
+            """
+            NOTE !!!
+
+            instead of save all nodes in cluster,
+            	-> all we need is the `node cnt`
+            	-> save `node cnt` instead
+            """
+            size[root] = size.get(root, 0) + 1
+
+        res = 0
+        remain = n
+
+        for s in size.values():
+        	"""
+        	NOTE !!!
+
+        	how we use below trick to optimize the 
+
+        	`number of pair` calculation
+        	"""
+            remain -= s
+            res += s * remain
+
+        return res
+
+
 # V1-1
 # IDEA: UNION FIND (gemini)
 class MyUF:
@@ -111,57 +177,6 @@ class Solution(object):
             
         return res
 
-
-# V1-2
-# IDEA: UNION FIND (GPT)
-class MyUF:
-
-    def __init__(self, n):
-        self.parents = list(range(n))
-        self.cluster_cnt = n
-
-    def get_parent(self, x):
-        if self.parents[x] != x:
-            self.parents[x] = self.get_parent(self.parents[x])
-        return self.parents[x]
-
-    def union(self, x, y):
-        px = self.get_parent(x)
-        py = self.get_parent(y)
-
-        if px == py:
-            return
-
-        self.parents[py] = px
-        self.cluster_cnt -= 1
-
-    def is_connected(self, x, y):
-        return self.get_parent(x) == self.get_parent(y)
-
-
-class Solution(object):
-    def countPairs(self, n, edges):
-
-        my_uf = MyUF(n)
-
-        for x, y in edges:
-            my_uf.union(x, y)
-
-        # root -> component size
-        size = {}
-
-        for i in range(n):
-            root = my_uf.get_parent(i)
-            size[root] = size.get(root, 0) + 1
-
-        res = 0
-        remain = n
-
-        for s in size.values():
-            remain -= s
-            res += s * remain
-
-        return res
 
 
 # V2
