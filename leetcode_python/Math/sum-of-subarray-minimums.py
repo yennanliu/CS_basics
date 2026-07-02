@@ -28,6 +28,19 @@ Constraints:
 
 """
 
+
+"""
+
+NOTE !!!
+
+we CAN'T solve this LC with regular `mono stack` pattern.
+
+-> e.g. CAN'T solve with algo as LC 739 
+"""
+
+
+
+
 # V0
 # IDEA: MONO STACK (INCREASING)
 """
@@ -133,8 +146,14 @@ class Solution(object):
             val = arr[i]
             # Pop elements that are greater than or equal to current val
             while mono_st and arr[mono_st[-1]] >= val:
+                """
+                # NOTE !!!
+                """
                 mono_st.pop()
             
+            """
+            # NOTE !!!
+            """
             # If stack is empty, it means 'val' is the smallest element seen so far
             # Distance to left boundary is i - (-1) = i + 1
             left[i] = i + 1 if not mono_st else i - mono_st[-1]

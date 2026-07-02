@@ -829,6 +829,91 @@ public int sumSubarrayMins(int[] arr) {
 }
 ```
 
+#### **Contribution Method — Visualizing `left[i]` / `right[i]` (Python)** ⭐⭐⭐⭐⭐
+
+> `leetcode_python/Math/sum-of-subarray-minimums.py`
+
+**Core idea:** every subarray has exactly one minimum, so instead of enumerating subarrays we ask *"for how many subarrays is `arr[i]` the minimum?"* — then sum `arr[i] * count`.
+
+For each index `i`, that count splits into two independent choices:
+
+```
+        left choices              right choices
+           <---->                    <----->
+   ┌───────────────────────────────────────────────┐
+   │  ...  PSE   .   .   .   [i]   .   .   .   NSE   │      arr
+   └───────────────────────────────────────────────┘
+              ^                          ^
+        previous smaller           next smaller-or-equal
+        element (strict >=)        element (strict >)
+
+   left[i]  = i - PSE     ← # of left endpoints that keep arr[i] as min
+   right[i] = NSE - i     ← # of right endpoints that keep arr[i] as min
+
+   count(i) = left[i] * right[i]
+   contribution = arr[i] * left[i] * right[i]
+```
+
+- A subarray keeps `arr[i]` as its minimum only if it **starts** somewhere in `(PSE, i]` and **ends** somewhere in `[i, NSE)`.
+- The two ranges are independent → multiply them.
+
+**Handling duplicates (avoid double counting):** use **`>=`** on the left pass and **`>`** on the right pass (asymmetric). Equal values are then counted on exactly one side.
+
+```python
+# python
+# LC 907 - Sum of Subarray Minimums (contribution method)
+# time = O(n), space = O(n)
+MOD = 10**9 + 7
+n = len(arr)
+left  = [0] * n   # left[i]  = distance to previous smaller element
+right = [0] * n   # right[i] = distance to next smaller-or-equal element
+
+# --- LEFT pass: distance to Previous Smaller Element (pop on >=) ---
+mono_st = []
+for i in range(n):
+    val = arr[i]
+    # Pop elements that are greater than OR EQUAL to current val
+    while mono_st and arr[mono_st[-1]] >= val:
+        mono_st.pop()   # these can't be the left boundary of arr[i]
+
+    # If stack empty -> val is the smallest so far, boundary is index -1
+    #   left choices = i - (-1) = i + 1
+    # Else -> boundary is the surviving stack top (the PSE)
+    #   left choices = i - mono_st[-1]
+    left[i] = i + 1 if not mono_st else i - mono_st[-1]
+    mono_st.append(i)
+
+# --- RIGHT pass: distance to Next Smaller Element (pop on >) ---
+mono_st = []
+for i in range(n - 1, -1, -1):
+    val = arr[i]
+    while mono_st and arr[mono_st[-1]] > val:   # strict > here
+        mono_st.pop()
+    right[i] = n - i if not mono_st else mono_st[-1] - i
+    mono_st.append(i)
+
+ans = 0
+for i in range(n):
+    ans = (ans + arr[i] * left[i] * right[i]) % MOD
+```
+
+**Why `left[i] = i + 1` when the stack is empty:** an empty stack means nothing to the left is smaller than `arr[i]` — `arr[i]` dominates the whole prefix. The imaginary left boundary sits at index `-1`, so the left choices span indices `0..i`, i.e. `i - (-1) = i + 1`.
+
+**Visual trace on `arr = [3, 1, 2, 4]`:**
+
+```
+i=0 val=3 : stack empty              -> left[0] = 0-(-1) = 1   stack=[0]
+i=1 val=1 : arr[0]=3 >= 1 -> pop 0
+            stack empty              -> left[1] = 1-(-1) = 2   stack=[1]
+i=2 val=2 : arr[1]=1 >= 2? no        -> left[2] = 2-1     = 1   stack=[1,2]
+i=3 val=4 : arr[2]=2 >= 4? no        -> left[3] = 3-2     = 1   stack=[1,2,3]
+
+left  = [1, 2, 1, 1]
+right = [1, 3, 2, 1]   (symmetric backward pass with strict >)
+
+contribution = 3*1*1 + 1*2*3 + 2*1*2 + 4*1*1 = 3 + 6 + 4 + 4 = 17  ✓
+```
+
 ### 2-8) Remove K Digits (LC 402) — Monotonic Increasing Stack
 > Maintain increasing stack; remove digits when a smaller digit arrives.
 
