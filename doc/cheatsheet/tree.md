@@ -3167,6 +3167,92 @@ private int getDistance(TreeNode node, int target) {
 }
 ```
 
+#### **Python — `get_dist` helper (the key part)** ⭐⭐⭐⭐⭐
+
+**Idea:** `findDistance` = `get_lca` (find split point) + `get_dist` twice (measure each branch from the LCA). The whole trick lives in `get_dist`:
+
+```python
+# python
+# LC 1740 Find Distance in a Binary Tree
+class Solution:
+    def findDistance(self, root, p, q):
+        if p == q or not root:
+            return 0
+        # Step 1: find the split point (Lowest Common Ancestor)
+        lca = self.get_lca(root, p, q)
+        # Step 2: measure edge distance from LCA down to each target
+        dist_p = self.get_dist(lca, p, 0)
+        dist_q = self.get_dist(lca, q, 0)
+        # dist is ALWAYS the sum — see the 2 structural cases below
+        return dist_p + dist_q
+
+    def get_lca(self, root, p, q):
+        if not root:
+            return None
+        if root.val == p or root.val == q:  # match by VALUE (p, q are ints)
+            return root
+        left = self.get_lca(root.left, p, q)
+        right = self.get_lca(root.right, p, q)
+        if left and right:      # p, q split here -> this node is the LCA
+            return root
+        return left if left else right
+
+    # NOTE !!! below helper func -- pre-order DFS
+    def get_dist(self, root, target, dist):
+        """
+        NOTE !!!
+        If not root, we return `-1` (sentinel = "not found in this branch"),
+        but NOT `0`, since 0 is also a VALID answer (target found at current node).
+        """
+        if not root:
+            return -1          # <-- sentinel: dead end, target not on this path
+
+        if root.val == target:
+            return dist        # <-- found: dist = # edges from LCA to here
+
+        left = self.get_dist(root.left, target, dist + 1)
+        right = self.get_dist(root.right, target, dist + 1)
+
+        # If the left subtree found the target, pass that valid distance up
+        if left != -1:
+            return left
+        # Otherwise return whatever the right subtree found (a valid dist, or -1)
+        return right
+```
+
+**Why `-1` and not `0` for "not found"?**
+
+| Return value | Meaning |
+|--------------|---------|
+| `0`          | **VALID** — target found exactly at the current node (0 edges away) |
+| `dist > 0`   | **VALID** — target found `dist` edges below the start node |
+| `-1`         | **SENTINEL** — target is NOT in this branch (dead end) |
+
+If we returned `0` for "not found", we could not distinguish *"found here, distance 0"* from *"not found"*. So `0` is reserved as a real distance and `-1` is the only safe "not found" flag.
+
+**How the valid distance bubbles up (pre-order DFS):**
+1. Hit `None` → return `-1` (this path is a dead end).
+2. Hit the target → return the accumulated `dist` (an edge count ≥ 0).
+3. Otherwise recurse `left` / `right` with `dist + 1`.
+   - `left != -1` → target lives in the left subtree, forward that distance up **immediately** (short-circuit, skip right).
+   - else return `right` (either the right subtree's valid distance, or `-1` if both sides failed).
+
+**Why `dist_p + dist_q` is always correct** — starting from the LCA there are only 2 shapes:
+
+```
+case 1: p and q are in different subtrees      case 2: one target IS the LCA
+                                                        (ancestor of the other)
+          LCA                                        p (= LCA)
+         /   \                                          \
+        p     q                                          ...
+                                                           q
+   dist = dist_p + dist_q                        dist_p = 0, so dist = dist_q
+```
+
+In both cases `get_dist(lca, p) + get_dist(lca, q)` gives the exact edge count on the path `p … q`.
+
+> **Ref:** `leetcode_python/Tree/find-distance-in-a-binary-tree.py`
+
 ### 1-1-19) Find Paths with Specific Properties
 
 #### Path Sum Problems
