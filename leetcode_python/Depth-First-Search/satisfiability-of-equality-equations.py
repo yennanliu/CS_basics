@@ -51,6 +51,24 @@ class Solution(object):
             a = eq[0]
             b = eq[3]
 
+            """
+            NOTE !!!
+
+            we need to build graph
+            with bi-direction
+
+            -> 
+
+            1. otherwise, `same_group[x]` will raises KeyError.
+            	(if x is NOT in key in graph)
+
+
+            2. check below, 
+            	self.helper(a, b, same_group, visited) or self.helper(b, a, same_group, visited)
+            	is WRONG
+
+
+            """
             if a not in same_group:
                 same_group[a] = []
 
@@ -74,6 +92,63 @@ class Solution(object):
             if eq[1:3] == "!=":
                 visited = set()
 
+	            """
+	            NOTE !!!
+
+	            CAN'T only build graph in `single` direction,
+	            and call recursion in with `swap` node 
+
+
+	            e.g.
+	            
+	            -> below is WRONG !!!
+
+	            if ( not self.helper(a, b, same_group, visited)
+	              or not self.helper(b, a, same_group, visited) ):
+	              	return False
+
+
+
+	            -> 
+
+	            No. Calling the DFS twice with swapped arguments 
+	                is NOT equivalent to making the graph bidirectional.
+
+
+				given the relations:
+				
+				```
+				a==b
+				b==c
+				```
+
+
+
+				If you only build the graph in one direction:
+
+
+				```
+				a → b → c
+				```
+
+				
+				->
+
+				Case 1: helper(a, c)
+					-> so it returns True.
+
+				
+				Case 2: helper(c, a)
+
+					-> there are no outgoing edges, so it returns False.
+
+
+				-> final result is False
+
+				-> but it should be `True`, so above idea is wrong.
+
+
+	            """
                 # if connected -> contradiction
                 if self.helper(a, b, same_group, visited):
                     return False
