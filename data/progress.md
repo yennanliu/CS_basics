@@ -6,10 +6,6 @@
 - trie.md
 	- 2) 2-5) Number of Ways to Arrive at Destination (LC 1976) — Dijkstra + Path Count
 
-
-- Dijkstra.md
-	- LC Examples
-
 - intervals.md
 
 - python_trick.md
@@ -45,6 +41,7 @@
   - Queue.md
   - greedy.md
   - difference_array.md
+  - Dijkstra.md
 
 - `MUST LC problems`
 	- todo
@@ -87,6 +84,7 @@
 			- 1382
 		- Dijkstra
 			- 1631
+			- 1976
 		- trie
 			- 1268
 			- delete op
