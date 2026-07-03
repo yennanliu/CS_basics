@@ -92,6 +92,26 @@ class Solution(object):
             if eq[1:3] == "!=":
                 visited = set()
 
+                """
+                NOTE !!!
+
+
+                we DON'T need below:
+
+				```
+                if y in same_group[x]:
+            		return False
+            	```
+
+            	->
+
+            	since the dfs (this helper func)
+            	already natually does it.
+            	
+                """
+
+
+
 	            """
 	            NOTE !!!
 
