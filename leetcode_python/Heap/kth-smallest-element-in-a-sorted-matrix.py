@@ -44,7 +44,7 @@ Could you solve the problem in O(n) time complexity? The solution may be too adv
 
 
 # V0
-# IDEA: SORT + MATRIX (gpt)
+# IDEA: binary search + MATRIX (gpt)
 class Solution(object):
     def kthSmallest(self, matrix, k):
         # Number of rows (the matrix is n x n).
