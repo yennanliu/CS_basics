@@ -63,6 +63,35 @@ class Solution(object):
         pass
         
 
+# V0-1
+# IDEA: BRUTE FORCE (gpt)
+class Solution(object):
+    def subArrayRanges(self, nums):
+        n = len(nums)
+        ans = 0
+
+        # Choose every possible starting index.
+        for i in range(n):
+
+            # Initially, the subarray contains only nums[i].
+            cur_min = nums[i]
+            cur_max = nums[i]
+
+            # Extend the subarray one element at a time.
+            for j in range(i, n):
+
+                # Update the current minimum.
+                cur_min = min(cur_min, nums[j])
+
+                # Update the current maximum.
+                cur_max = max(cur_max, nums[j])
+
+                # Add the range of the current subarray.
+                ans += (cur_max - cur_min)
+
+        return ans
+
+
 # V0-0-1
 # IDEA: MONO STACK (gpt)
 """
