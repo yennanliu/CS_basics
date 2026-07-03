@@ -47,63 +47,94 @@ Could you solve the problem in O(n) time complexity? The solution may be too adv
 # IDEA: SORT + MATRIX (gpt)
 class Solution(object):
     def kthSmallest(self, matrix, k):
-        # Check whether the matrix is empty or the first row is empty.
-        # If either is true, there is no valid element to return.
-        if not matrix or not matrix[0]:
-            return -1
+        # Number of rows (the matrix is n x n).
+        n = len(matrix)
 
-        # Create an empty list to store every number in the matrix.
-        nums = []
+        # The smallest possible value is the top-left element.
+        left = matrix[0][0]
 
-        # Iterate through each row in the matrix.
-        for row in matrix:
+        # The largest possible value is the bottom-right element.
+        right = matrix[n - 1][n - 1]
 
-            # Iterate through every number in the current row.
-            for num in row:
+        # Continue binary searching until left and right meet.
+        while left < right:
 
-                # Add the current number to the nums list.
-                nums.append(num)
+            # Compute the middle value.
+            mid = left + (right - left) // 2
 
-        # Sort all collected numbers in ascending order.
-        nums.sort()
+            # Count how many numbers in the matrix are <= mid.
+            count = self.countLessEqual(matrix, mid)
 
-        # k is 1-based in the problem statement:
-        # k = 1 means the smallest element.
-        #
-        # Python lists are 0-based:
-        # index 0 is the first element.
-        #
-        # Therefore, the kth smallest element is located at index (k - 1).
-        return nums[k - 1]
+            # If there are fewer than k numbers <= mid,
+            # the kth smallest must be larger.
+            if count < k:
+                left = mid + 1
+            else:
+                # Otherwise, mid could still be the answer,
+                # so continue searching the left half.
+                right = mid
+
+        # When left == right, we have found the kth smallest value.
+        return left
+
+    def countLessEqual(self, matrix, target):
+        # Matrix dimension.
+        n = len(matrix)
+
+        # Start from the bottom-left corner.
+        row = n - 1
+        col = 0
+
+        # Number of elements <= target.
+        count = 0
+
+        # Continue while we remain inside the matrix.
+        while row >= 0 and col < n:
+
+            # If current value is <= target,
+            # then every value above it in this column
+            # is also <= target because columns are sorted.
+            if matrix[row][col] <= target:
+
+                # Add all elements from row 0 to current row.
+                count += row + 1
+
+                # Move to the next column.
+                col += 1
+
+            else:
+                # Current value is too large.
+                # Move upward to find smaller values.
+                row -= 1
+
+        return count
 
 
 # V0-1
-# IDEA: SORT + MATRIX (gemini)
+# IDEA: binary search (gemini)
 class Solution(object):
     def kthSmallest(self, matrix, k):
-        """
-        :type matrix: List[List[int]]
-        :type k: int
-        :rtype: int
-        """
-        if not matrix or len(matrix) == 0 or len(matrix[0]) == 0:
-            return -1
-            
-        flat_list = []
-        l = len(matrix)
-        w = len(matrix[0])
+        n = len(matrix)
+        low, high = matrix[0][0], matrix[n-1][n-1]
         
-        if l * w == 1:
-            return matrix[0][0]
-            
-        for y in range(l):
-            for x in range(w):
-                flat_list.append(matrix[y][x])
+        # Helper function to count how many elements are less than or equal to 'mid'
+        def countLessOrEqual(mid):
+            count = 0
+            col = n - 1  # Start at the top-right corner
+            for row in range(n):
+                while col >= 0 and matrix[row][col] > mid:
+                    col -= 1
+                count += (col + 1)
+            return count
+
+        while low < high:
+            mid = low + (high - low) // 2
+            if countLessOrEqual(mid) < k:
+                low = mid + 1
+            else:
+                high = mid
                 
-        flat_list.sort()
-        
-        # FIX: Adjust for 0-indexing since k is 1-indexed
-        return flat_list[k - 1]
+        return low
 
 
 # V0-2
