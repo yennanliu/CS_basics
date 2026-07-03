@@ -39,15 +39,125 @@ equations[i][3] is a lowercase letter.
 
 
 # V0
+# IDEA: DFS (gpt)
+class Solution(object):
+    def equationsPossible(self, equations):
+
+        # adjacency list for ==
+        same_group = {}
+
+        # initialize every variable
+        for eq in equations:
+            a = eq[0]
+            b = eq[3]
+
+            if a not in same_group:
+                same_group[a] = []
+
+            if b not in same_group:
+                same_group[b] = []
+
+        # build graph
+        for eq in equations:
+            a = eq[0]
+            b = eq[3]
+
+            if eq[1:3] == "==":
+                same_group[a].append(b)
+                same_group[b].append(a)
+
+        # verify all != equations
+        for eq in equations:
+            a = eq[0]
+            b = eq[3]
+
+            if eq[1:3] == "!=":
+                visited = set()
+
+                # if connected -> contradiction
+                if self.helper(a, b, same_group, visited):
+                    return False
+
+        return True
+
+    def helper(self, cur, target, graph, visited):
+
+        if cur == target:
+            return True
+
+        if cur in visited:
+            return False
+
+        visited.add(cur)
+
+        for nxt in graph[cur]:
+            if self.helper(nxt, target, graph, visited):
+                return True
+
+        return False
+
+
+
+
+# V0-1
+# IDEA: DFS (gemini)
 class Solution(object):
     def equationsPossible(self, equations):
         """
         :type equations: List[str]
         :rtype: bool
         """
-        pass
+        # Graph map to store undirected '==' relationships
+        same_group = {}
+        
+        # Step 1: Build the graph using only '==' equations
+        for eq in equations:
+            # Every equation is exactly 4 chars long: e.g., "a==b"
+            a = eq[0]
+            b = eq[3]
+            
+            if eq[1:3] == "==":
+                if a not in same_group: same_group[a] = []
+                if b not in same_group: same_group[b] = []
+                
+                # Relations are mutual (undirected graph edges)
+                same_group[a].append(b)
+                same_group[b].append(a)
 
+        # Step 2: Validate the contradiction rules using '!=' equations
+        for eq in equations:
+            a = eq[0]
+            b = eq[3]
+            
+            if eq[1:3] == "!=":
+                # Self-contradiction safeguard (e.g., "a!=a")
+                if a == b:
+                    return False
+                
+                # Check if 'a' can reach 'b' through the '==' graph bridges
+                visited = set()
+                if self.can_reach(a, b, same_group, visited):
+                    # Contradiction! Graph says they are equal, but equation says "!="
+                    return False
+                    
+        return True
 
+    def can_reach(self, current, target, same_group, visited):
+        if current == target:
+            return True
+            
+        visited.add(current)
+        
+        # If current node has no connected neighbors, it can't reach anything
+        if current not in same_group:
+            return False
+            
+        for neighbor in same_group[current]:
+            if neighbor not in visited:
+                if self.can_reach(neighbor, target, same_group, visited):
+                    return True
+                    
+        return False
 
 # V1
 
