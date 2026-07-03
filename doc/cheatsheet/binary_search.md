@@ -2885,6 +2885,100 @@ class Solution(object):
         return nums[l] + k - missing_count(l)
 ```
 
+### 4.23) Kth Smallest Element in a Sorted Matrix (LC 378) ⭐⭐⭐⭐⭐ — LC 378
+
+> Given an `n x n` matrix where each **row and column** is sorted ascending, return the `k`-th smallest element. Requires memory better than `O(n²)` (so we can't just flatten & sort).
+
+#### 1. Core Idea
+
+**Binary search on the VALUE RANGE, not on indices.**
+
+Because rows/columns are sorted, the answer lies in `[matrix[0][0], matrix[n-1][n-1]]`. We binary search over this **value space** and, for each candidate `mid`, count how many matrix elements are `<= mid`.
+
+- The function `count(mid) = #elements <= mid` is **monotonically non-decreasing** in `mid` → this monotonicity is what enables binary search.
+- We want the **smallest value** `x` such that `count(x) >= k`. That `x` is guaranteed to be an actual element in the matrix (the k-th smallest).
+
+```
+if count(mid) < k  → answer is bigger  → left  = mid + 1
+else               → mid might be it   → right = mid   (keep left half, include mid)
+```
+
+Loop `while left < right`, converge to a single value, return `left`.
+
+#### 2. Pattern
+
+**"Binary search on answer + count check"** — same family as Koko (LC 875), Split Array (LC 410).
+The twist: the **count step** exploits the sorted-matrix structure to run in `O(n)` (staircase walk) instead of `O(n²)`.
+
+**Count `<= target` in O(n) — staircase from bottom-left:**
+
+```python
+def countLessEqual(matrix, target):
+    n = len(matrix)
+    row, col = n - 1, 0          # start bottom-left corner
+    count = 0
+    while row >= 0 and col < n:
+        if matrix[row][col] <= target:
+            count += row + 1     # whole column above is also <= target
+            col += 1             # move right
+        else:
+            row -= 1             # move up
+    return count
+```
+
+**Full solution:**
+
+```python
+# LC 378 - Kth Smallest Element in a Sorted Matrix
+# IDEA: binary search on value range + O(n) count of elements <= mid
+# time = O(n * log(max - min)), space = O(1)
+class Solution:
+    def kthSmallest(self, matrix, k):
+        n = len(matrix)
+        left, right = matrix[0][0], matrix[n - 1][n - 1]
+
+        while left < right:
+            mid = left + (right - left) // 2
+            if self.countLessEqual(matrix, mid) < k:
+                left = mid + 1          # too few <= mid, go higher
+            else:
+                right = mid             # enough, mid may be the answer
+        return left                     # left == right == k-th smallest
+
+    def countLessEqual(self, matrix, target):
+        n = len(matrix)
+        row, col = n - 1, 0
+        count = 0
+        while row >= 0 and col < n:
+            if matrix[row][col] <= target:
+                count += row + 1
+                col += 1
+            else:
+                row -= 1
+        return count
+```
+
+**Key points to remember:**
+- Search space is **values** (`matrix[0][0] .. matrix[n-1][n-1]`), not indices.
+- Use `while left < right` + `right = mid` (left-boundary style) so we converge on the first value with `count >= k`.
+- `left` always ends on a real matrix element — no need to snap it back.
+- Alternative count: per-row `bisect_right` gives `O(n log n)`; the staircase is `O(n)`.
+- Alternative overall approach: **min-heap** of `(val, r, c)`, pop `k` times → `O(k log n)` time, `O(n)` space (worse memory, simpler to reason about).
+
+#### 3. Similar LC Problems
+
+| LC | Problem | Relation |
+|----|---------|----------|
+| **378** | Kth Smallest Element in a Sorted Matrix | This problem — BS on value + count |
+| **668** | Kth Smallest Number in Multiplication Table | BS on value; `count(x)=Σ min(x//i, n)` |
+| **719** | Find K-th Smallest Pair Distance | BS on distance value + two-pointer count |
+| **786** | K-th Smallest Prime Fraction | BS on fraction value + count |
+| **373** | Find K Pairs with Smallest Sums | Heap variant (same k-smallest idea) |
+| **240** | Search a 2D Matrix II | Same staircase walk (search, not count) |
+| **875** | Koko Eating Bananas | Same "BS on answer + count/feasibility" template |
+| **410** | Split Array Largest Sum | Same "BS on answer" template |
+| **4**   | Median of Two Sorted Arrays | k-th smallest via binary search partition |
+
 ## LC Examples
 
 ### 2-1) Find First and Last Position (LC 34) — Left/Right Binary Search
