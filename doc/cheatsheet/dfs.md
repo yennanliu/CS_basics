@@ -188,6 +188,31 @@
   - LC 124 - Binary Tree Maximum Path Sum (return subtree value, aggregate global max)
   - LC 834 - Sum of Distances in Tree (subtree size + reroot DP, advanced follow-up)
 
+### **Pattern 14: Connectivity / Contradiction Check (Equality Grouping)** — LC 990
+- **Description**: Given equality (`==`) and inequality (`!=`) constraints, decide if they are all satisfiable. Build a graph from the `==` edges, then verify no `!=` pair is actually connected.
+- **Recognition**: "equality equations", "variables are equal/not equal", "satisfiability", "group by equivalence then detect contradiction", relations that are **transitive** (`a==b`, `b==c` ⟹ `a==c`)
+- **Key Technique**: **Two-phase** processing — (1) build an **undirected** graph from all `==` relations; (2) for each `!=` relation, DFS to check reachability. If two "must-be-different" variables are connected → contradiction → return False.
+- **Examples**: LC 990 (Satisfiability of Equality Equations)
+- **Core Algorithm Idea** (⭐⭐⭐⭐⭐):
+  1. **Graph Construction**: for every `x==y`, add **both** `x→y` and `y→x` (undirected). The `==` relation is symmetric AND transitive, so connected components = equivalence classes.
+  2. **Contradiction Scan**: for every `x!=y`, run DFS from `x`; if it can reach `y`, the two are forced equal by the graph but required unequal → **unsatisfiable**.
+  3. Process **all `==` first**, then **all `!=`** — a `!=` seen before its group is fully built would give a wrong answer.
+- **Important Notes**:
+  - ⚠️ **Graph MUST be bidirectional.** Calling `dfs(a,b)` and `dfs(b,a)` on a *single-direction* graph is NOT equivalent — for `a==b, b==c`, one-directional `dfs(c, a)` finds no outgoing edge and wrongly returns False. Store both directions instead.
+  - **No need** to pre-check `if y in graph[x]` before DFS — the DFS naturally covers the direct-edge case (`cur == target` on the first hop's recursion).
+  - The self-inequality `a!=a` is inherently unsatisfiable; DFS returns True immediately since `cur == target` (the gemini variant guards it explicitly).
+  - `visited` set is **reset per `!=` query** so each reachability check explores independently.
+- **Alternative (cleaner): Union-Find** — `union(x,y)` for each `==`; then for each `!=`, if `find(x)==find(y)` return False. `O(N·α)` time, usually the preferred interview answer. See [union_find.md](./union_find.md).
+- **DFS vs Union-Find trade-off**: DFS query is `O(V+E)` per `!=` check (can be `O(N²)` overall); Union-Find is near-`O(1)` per query — but DFS reinforces the graph-connectivity mental model.
+- **Similar Classic LC Problems**:
+  - LC 990 - Satisfiability of Equality Equations (canonical equality grouping + contradiction)
+  - LC 547 - Number of Provinces (connected components via DFS/Union-Find)
+  - LC 200 - Number of Islands (connectivity grouping on a grid)
+  - LC 721 - Accounts Merge (merge by shared email → components)
+  - LC 684 - Redundant Connection (detect the edge that creates a cycle — Union-Find)
+  - LC 399 - Evaluate Division (transitive relations, weighted variant → Pattern 12)
+  - LC 785 - Is Graph Bipartite? (2-coloring = a "different-group" constraint check)
+
 ## Templates & Algorithms
 
 ### Template Comparison Table
@@ -4545,6 +4570,83 @@ visited = set()  # Track visited nodes
 import sys
 sys.setrecursionlimit(10000)
 ```
+
+---
+
+### 2-15) Satisfiability of Equality Equations — LC 990
+
+> **Pattern 14** (Connectivity / Contradiction Check). Build an undirected graph from all `==` equations, then DFS to confirm no `!=` pair is actually connected.
+
+```python
+# python
+# LC 990 - Satisfiability of Equality Equations
+# IDEA: DFS — group `==` variables into a graph, then check `!=` contradictions
+# time = O(N^2) worst case (DFS per `!=`), space = O(N)
+class Solution(object):
+    def equationsPossible(self, equations):
+        same_group = {}
+
+        # 1) init nodes so graph[x] never KeyErrors
+        for eq in equations:
+            a, b = eq[0], eq[3]
+            same_group.setdefault(a, [])
+            same_group.setdefault(b, [])
+
+        # 2) build UNDIRECTED graph from `==` only (bi-directional is required!)
+        for eq in equations:
+            a, b = eq[0], eq[3]
+            if eq[1:3] == "==":
+                same_group[a].append(b)
+                same_group[b].append(a)
+
+        # 3) verify each `!=` : if a can reach b, it's a contradiction
+        for eq in equations:
+            a, b = eq[0], eq[3]
+            if eq[1:3] == "!=":
+                visited = set()
+                if self.helper(a, b, same_group, visited):
+                    return False
+        return True
+
+    def helper(self, cur, target, graph, visited):
+        if cur == target:          # reachable → forced equal → contradiction
+            return True
+        if cur in visited:
+            return False
+        visited.add(cur)
+        for nxt in graph[cur]:
+            if self.helper(nxt, target, graph, visited):
+                return True
+        return False
+```
+
+**Union-Find alternative** (cleaner, near-`O(N·α)`):
+
+```python
+# python
+# LC 990 - Union-Find
+class Solution:
+    def equationsPossible(self, equations):
+        uf = {}
+        def find(x):
+            uf.setdefault(x, x)
+            if x != uf[x]:
+                uf[x] = find(uf[x])   # path compression
+            return uf[x]
+        def union(x, y):
+            uf[find(x)] = find(y)
+
+        for e in equations:
+            if e[1] == '=':
+                union(e[0], e[-1])
+        for e in equations:
+            if e[1] == '!':
+                if find(e[0]) == find(e[-1]):
+                    return False
+        return True
+```
+
+**Gotcha**: the `==` graph MUST be bidirectional. For `a==b, b==c`, a single-direction graph makes `dfs(c, a)` fail (no outgoing edge from `c`) and wrongly reports satisfiable — store both `x→y` and `y→x`.
 
 ---
 
