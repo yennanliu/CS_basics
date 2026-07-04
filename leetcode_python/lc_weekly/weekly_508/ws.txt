@@ -72,9 +72,196 @@ class Solution(object):
 # https://leetcode.com/problems/filter-occupied-intervals/
 
 
+
+->
+
+Return the remaining occupied intervals in sorted order.
+
+
+
+2D int arr: occupiedIntervals
+
+occupiedIntervals[i] = [start, end]
+
+
+NOTE:  These intervals may `overlap`
+
+
+2 int: freeStart and freeEnd    
+    - free time interval
+
+
+
+Task:
+
+`merge` all occupied intervals that overlap or touch, 
+then `remove` all integer points `in the free interval`
+ from the merged occupied intervals.
+
+
+
+
+touch:  2nd interval start immediately
+        after the 1st one
+
+
+------------
+
+ex 1)
+
+Input: 
+
+occupiedIntervals = [[2,6],[4,8],[10,10],[10,12],[14,16]], 
+freeStart = 7, freeEnd = 11
+
+Output: [[2,6],[12,12],[14,16]]
+
+
+->
+
+
+[[2,8],[10,12],[14,16]]
+
+[7,11]
+
+->
+
+
+[[2,6],[12,12],[14,16]]
+
+
+
+
+ex 2)
+
+
+Input: occupiedIntervals = [[1,5],[2,3]],
+
+ freeStart = 3, freeEnd = 8
+
+
+-> 
+
+[[1,5]]
+
+[3,8]
+
+
+->
+
+[1,2]
+
+
+
+
+------------
+
+
+# idea 1) interval
+
+
+class Solution(object):
+    def filterOccupiedIntervals(self, occupiedIntervals, freeStart, freeEnd)
+        # edge
+
+        merged = []
+
+        # sort is needed ???
+        occupiedIntervals.sort(lambda x: x[0])
+
+
+        """
+        NOTE !!!
+
+        since `occupiedIntervals` is sorted (small -> big),
+
+        the ONLY non overlap could be:
+
+        |---|
+
+               |---|
+
+
+        """
+
+
+        for start, end in occupiedIntervals:
+            if not merged or  merged[1] < start:
+                merged.append([start, end])
+            else:
+                # ??
+                prev_s, prev_e = merged[-1]
+                merged[-1] = [min(prev_s, start), max(prev_e, end)]
+
+
+        # ???
+        fresh = [freeStart, freeEnd]
+
+
+        """
+        NON overlap cases:
+
+        1. 
+             |----|
+             f    f
+
+       |--| 
+
+
+        2.  
+
+             |----|
+             f    f
+
+                      |--| 
+        """
+
+        for i in range(len(merged)):
+
+            start, end = merged[i]
+            
+            if end < fresh[0] or start > fresh[1]:
+                continue
+            else:
+                """
+                  |---|
+                  f   f
+
+                |---|
+
+
+                     |---|
+                     f   f
+
+                       |---|
+
+                """
+                # ??
+                if start < fresh[0] < end:
+                    merged[i] = [start, fresh[0]]
+                else:
+                    merged[i] = [fresh[1], end]
+
+
+        return merged
+
+
+        
+
+
+
+
+
 # LC 3976
 # https://leetcode.com/problems/maximum-subarray-sum-after-multiplier/description/
 
 
 # LC 3977
 # https://leetcode.com/problems/minimum-time-to-reach-target-with-limited-power/description/
+
+
+
+
+
+
+
