@@ -38,6 +38,36 @@ s[i] is either 'I' or 'D'.
 
 # V0
 # IDEA: 2 POINTERS (gpt)
+"""
+Core idea:
+
+For every character:
+
+"I" means the current number must be the smallest remaining, so use low.
+"D" means the current number must be the largest remaining, so use high.
+
+After processing all characters, 
+
+xactly one number remains (low == high), so append it.
+
+This is the intended greedy solution for LeetCode 942.
+
+
+
+-> Dry run
+
+input:  s = "IDID"
+
+| Step  | char | Action          | ans         | low | high |
+| ----- | ---- | --------------- | ----------- | --- | ---- |
+| Start | -    | -               | `[]`        | 0   | 4    |
+| i=0   | I    | append low (0)  | `[0]`       | 1   | 4    |
+| i=1   | D    | append high (4) | `[0,4]`     | 1   | 3    |
+| i=2   | I    | append low (1)  | `[0,4,1]`   | 2   | 3    |
+| i=3   | D    | append high (3) | `[0,4,1,3]` | 2   | 2    |
+
+
+"""
 class Solution(object):
     def diStringMatch(self, s):
         n = len(s)

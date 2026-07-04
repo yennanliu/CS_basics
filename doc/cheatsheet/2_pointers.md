@@ -61,6 +61,11 @@
     - Swap pivot and successor, then reverse the descending suffix → ascending
     - LC 31 (Next Permutation), LC 556 (Next Greater Element III)
 
+- `Converging Low/High pointers to build a permutation` (greedy)
+    - Consume smallest available value on one signal, largest on the other
+    - `low`/`high` walk inward over the range `[0, n]`; the survivor fills the last slot
+    - LC 942 (DI String Match)
+
 - Algorithm
     - binary search
     - sliding window
@@ -1428,6 +1433,103 @@ public void nextPermutation(int[] nums) {
 | Permutations | 46 | Generate all permutations (backtracking) |
 | Permutations II | 47 | All permutations with duplicates (backtracking + dedup) |
 | Find the Next Palindrome | 3348 | Permutation-style digit manipulation |
+
+### 0-2-9) DI String Match (Converging Low/High Pointers) — LC 942
+
+#### Core Idea
+
+Reconstruct a permutation of `[0, n]` from a `"I"`/`"D"` string. Keep two pointers over the **available value range**:
+
+- `low = 0` (smallest unused value), `high = n` (largest unused value)
+- On `"I"` (next must be **larger**) → append `low`, then `low++`
+- On `"D"` (next must be **smaller**) → append `high`, then `high--`
+- After the loop `low == high` → append that final survivor
+
+**Why it's always valid:** picking `low` for `"I"` guarantees whatever comes next is bigger (all remaining values are `> low`); picking `high` for `"D"` guarantees whatever comes next is smaller. We never "use up" a value we needed, so any greedy choice produces one valid answer.
+
+```
+Pointer roles:
+  low  — smallest value not yet placed (consumed on "I")
+  high — largest value not yet placed  (consumed on "D")
+
+Invariant: after k chars processed, exactly (n+1) - k values remain,
+           and they are the contiguous range [low, high].
+           The final leftover (low == high) fills the last slot.
+```
+
+---
+
+#### Visual Trace
+
+```
+s = "IDID"   →   n = 4,  low = 0, high = 4
+
+| Step  | char | Action          | ans         | low | high |
+| ----- | ---- | --------------- | ----------- | --- | ---- |
+| start | -    | -               | []          | 0   | 4    |
+| i=0   | I    | append low  (0) | [0]         | 1   | 4    |
+| i=1   | D    | append high (4) | [0,4]       | 1   | 3    |
+| i=2   | I    | append low  (1) | [0,4,1]     | 2   | 3    |
+| i=3   | D    | append high (3) | [0,4,1,3]   | 2   | 2    |
+| end   | -    | append low  (2) | [0,4,1,3,2] | 2   | 2    |
+
+Result: [0, 4, 1, 3, 2]
+```
+
+---
+
+#### Pattern (Python)
+
+```python
+# python
+# LC 942 - DI String Match
+# IDEA: converging low/high pointers over range [0, n]
+# time = O(N), space = O(N) for output (O(1) extra)
+def diStringMatch(s):
+    low, high = 0, len(s)
+    ans = []
+    for c in s:
+        if c == "I":
+            ans.append(low)   # next value will be larger
+            low += 1
+        else:                 # c == "D"
+            ans.append(high)  # next value will be smaller
+            high -= 1
+    ans.append(low)           # low == high: last remaining value
+    return ans
+```
+
+#### Pattern (Java)
+
+```java
+// java
+// LC 942 - DI String Match
+// IDEA: converging low/high pointers over range [0, n]
+// time = O(N), space = O(N) for output (O(1) extra)
+public int[] diStringMatch(String s) {
+    int n = s.length();
+    int low = 0, high = n;
+    int[] ans = new int[n + 1];
+    for (int i = 0; i < n; i++) {
+        if (s.charAt(i) == 'I') {
+            ans[i] = low++;   // next value will be larger
+        } else {              // 'D'
+            ans[i] = high--;  // next value will be smaller
+        }
+    }
+    ans[n] = low;             // low == high: last remaining value
+    return ans;
+}
+```
+
+#### Similar Problems
+
+| Problem | LC# | Key Pattern |
+|---------|-----|-------------|
+| DI String Match | 942 | Greedy: `"I"`→low, `"D"`→high, converge inward |
+| Next Permutation | 31 | Pivot + successor + reverse suffix |
+| Valid Permutations for DI Sequence | 903 | Count (not construct) DI permutations via DP |
+| Score After Flipping Matrix | 861 | Greedy per-position optimal choice |
 
 ### 0-2-3) QuickSelect (Partition Algorithm for Kth Element) — LC 215
 
@@ -3305,6 +3407,7 @@ def decode(self, s):
 - LC 392 Is Subsequence
 - LC 680 Valid Palindrome II
 - LC 844 Backspace String Compare
+- LC 942 DI String Match
 - LC 977 Squares of a Sorted Array
 
 ### Medium:
@@ -3351,6 +3454,7 @@ def decode(self, s):
 | **Pattern Match with Constraints** | Subsequence + character type validation | LC 1023 |
 | **Longest Palindromic Prefix** | Find longest palindromic prefix, prepend reversed suffix | LC 214, LC 336 |
 | **Length-Prefixed (Encode/Decode)** | Parse `len#word` blocks; `i` jumps by declared length | LC 271, LC 297 |
+| **Converging Low/High (build permutation)** | Greedy: consume smallest/largest available per signal | LC 942 |
 
 ---
 
