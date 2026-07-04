@@ -37,13 +37,83 @@ s[i] is either 'I' or 'D'.
 
 
 # V0
+# IDEA: 2 POINTERS (gpt)
+class Solution(object):
+    def diStringMatch(self, s):
+        n = len(s)
+
+        nums = [i for i in range(n + 1)]
+
+        l = 0
+        r = n
+
+        ans = []
+
+        for ch in s:
+            if ch == "I":
+                ans.append(nums[l])
+                l += 1
+            else:
+                ans.append(nums[r])
+                r -= 1
+
+        ans.append(nums[l])
+
+        return ans
+
+
+# V0-1
+# IDEA: 2 POINTERS (GEMINI)
 class Solution(object):
     def diStringMatch(self, s):
         """
         :type s: str
         :rtype: List[int]
         """
-        pass
+        n = len(s)
+        
+        # Pointers representing our available range [0, n]
+        l = 0
+        r = n
+        
+        ans = []
+        
+        # Build the array sequentially based on directions
+        for char in s:
+            if char == "I":
+                ans.append(l)
+                l += 1
+            else:  # char == "D"
+                ans.append(r)
+                r -= 1
+                
+        # Crucial step: append the remaining number left at the end
+        ans.append(l)  # at this point, l == r
+        
+        return ans
+
+
+# V0-2
+# IDEA: 2 POINTERS (gpt)
+class Solution(object):
+    def diStringMatch(self, s):
+        low = 0
+        high = len(s)
+
+        ans = []
+
+        for c in s:
+            if c == "I":
+                ans.append(low)
+                low += 1
+            else:
+                ans.append(high)
+                high -= 1
+
+        ans.append(low)
+        return ans
+
+
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/84206493
