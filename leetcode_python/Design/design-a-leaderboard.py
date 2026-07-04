@@ -66,6 +66,69 @@ class Leaderboard:
 
 
 
+
+# V0-1
+# IDEA: HASHMAP (gpt)
+class Leaderboard:
+
+    def __init__(self):
+        self.user_score = {}
+
+    def addScore(self, playerId, score):
+        self.user_score[playerId] = self.user_score.get(playerId, 0) + score
+
+    def top(self, K):
+        return sum(sorted(self.user_score.values(), reverse=True)[:K])
+
+    def reset(self, playerId):
+        self.user_score[playerId] = 0
+
+
+
+# V0-2
+# IDEA: PQ (gemini)
+import heapq
+
+class Leaderboard:
+
+    def __init__(self):
+        # Maps playerId -> current total score
+        self.scores = {}
+
+    def addScore(self, playerId: int, score: int) -> None:
+        # If the player exists, add to their score. Otherwise, initialize it.
+        if playerId in self.scores:
+            self.scores[playerId] += score
+        else:
+            self.scores[playerId] = score
+
+    def top(self, K: int) -> int:
+        # Step 1: Use a min-heap to keep track of the top K scores
+        min_heap = []
+        
+        """
+        NOTE !!! below
+
+        -> we form the PQ when `top` is called everytime,
+           then collect the top K
+           -> and NOTE that since what we need is `sum` of top K
+           		-> so we can atually use `min heap`
+        """
+        for score in self.scores.values():
+            heapq.heappush(min_heap, score)
+            # If the heap size exceeds K, pop the smallest element
+            if len(min_heap) > K:
+                heapq.heappop(min_heap)
+                
+        # Step 2: Return the SUM of the top K elements
+        return sum(min_heap)
+
+    def reset(self, playerId: int) -> None:
+        # Delete or reset the player's score to 0
+        if playerId in self.scores:
+            del self.scores[playerId]
+
+
 # V1
 # https://leetcode.ca/2019-04-27-1244-Design-A-Leaderboard/
 from sortedcontainers import SortedList
@@ -93,4 +156,3 @@ class Leaderboard:
 
 
 # V2
-
