@@ -1,9 +1,71 @@
 # https://leetcode.com/contest/weekly-contest-508/
 
 
+3.15 - 4.07 pm
+
 
 # LC 3974
 # https://leetcode.com/problems/maximum-total-sum-of-k-selected-elements/
+
+
+->
+
+Return an integer denoting
+
+ the `maximum` possible total sum.`
+
+
+
+
+nums: int arr
+
+k: int
+mul: int
+
+get k from nums, do below one by one in any order
+
+1. Add the element's value to the total sum
+
+   or
+
+2.  Multiply the element by the current value of mul 
+    and add the result to the total sum
+
+
+
+# idea 1) greedy
+
+class Solution(object):
+    def maxSum(self, nums, k, mul):
+        # edge
+        # ??
+        if k == 1 and mul == 1:
+            return max(nums)
+
+        candidates = []
+        # ??
+        nums.sort(reverse=True)
+
+        n = len(nums)
+
+
+        if k == n:
+            candidates = nums
+        else:
+            candidates = nums[:k]
+
+        res = 0
+
+        for x in candidates:
+            if k > 0:
+                res += (x * k)
+                k -= 1
+            else:
+                res += x
+
+        return res
+
+
 
 
 # LC 3975
