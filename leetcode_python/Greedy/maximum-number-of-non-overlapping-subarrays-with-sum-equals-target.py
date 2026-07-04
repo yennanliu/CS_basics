@@ -41,7 +41,59 @@ class Solution(object):
 
 
 # V1-1
-# IDEA: PREFIX + HASHMAP (gpt)
+# IDEA: greedy + PREFIX + HASHMAP (gpt)
+"""
+
+- Core Greedy Idea
+
+Instead of storing every interval:
+
+Maintain prefix sums only since the last accepted subarray.
+Once you find one subarray summing to target, 
+
+-> immediately count it and `restart`.
+
+Why?
+
+Choosing the earliest ending valid interval 
+always leaves the `most room` for future intervals.
+
+
+"""
+
+"""
+Dry run
+
+
+input:
+
+nums = [-1,3,5,1,4,2,-9]
+target = 6
+
+
+->
+
+init
+
+seen = {0}
+prefix = 0
+ans = 0
+
+
+run
+
+| num | prefix | prefix-target | found? | ans | seen     |
+| --- | ------ | ------------- | ------ | --- | -------- |
+| -1  | -1     | -7            | No     | 0   | {0,-1}   |
+| 3   | 2      | -4            | No     | 0   | {0,-1,2} |
+| 5   | 7      | 1             | No     | 0   | {...,7}  |
+| 1   | 8      | 2             | Yes    | 1   | restart  |
+| 4   | 4      | -2            | No     | 1   | {0,4}    |
+| 2   | 6      | 0             | Yes    | 2   | restart  |
+| -9  | -9     | -15           | No     | 2   | {0,-9}   |
+
+
+"""
 class Solution(object):
     def maxNonOverlapping(self, nums, target):
         seen = set([0])
@@ -65,15 +117,39 @@ class Solution(object):
 
 
 # V1-2
-# IDEA: PREFIX + HASHMAP (GEMINI)
+# IDEA: greedy + PREFIX + HASHMAP (GEMINI)
+"""
+NOTE !!!
+
+Greedy `reset` idea:
+
+💡 The Strategy
+
+As you loop through the array, 
+keep a running prefix sum and look for `prefix - target` in your tracking set.
+
+
+- The moment you find a match, 
+  it means you have discovered a 
+  valid subarray that equals the target.
+
+- To `maximize` the total count,
+  you should instantly lock this subarray in,
+  increment your counter, 
+  and `clear` your history (reset the prefix sum tracking).
+
+- Clearing the tracking history forces 
+  any future valid subarrays to start
+  after the current index, ensuring 
+  they never overlap with the one you just completed.
+
+
+"""
 class Solution(object):
     def maxNonOverlapping(self, nums, target):
-        """
-        :type nums: List[int]
-        :type target: int
-        :rtype: int
-        """
-        # Set to track prefix sums seen in the current non-overlapping segment
+
+        # Set to track prefix sums seen
+        # in the current non-overlapping segment
         seen_prefixes = set()
         
         # Base case: A prefix sum of 0 is always seen at the start
