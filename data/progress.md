@@ -59,8 +59,8 @@
 
 - LC weekly
 	- `data/lc_weekly/lc_weekly_gpt.md`
-		- Weekly Contest 350 (done)
-			- https://leetcode.com/contest/weekly-contest-350/
+		- Weekly Contest 508 (doing)
+			- https://leetcode.com/contest/weekly-contest-508/
 
 - Others
 	- DP - `0/1 Knapsack and` -> revisit
