@@ -261,6 +261,7 @@ def fractional_knapsack(items, capacity):
 | Maximum Units on Truck | 1710 | Sort by value | Easy |
 | Boats to Save People | 881 | Two pointers | Medium |
 | Minimum Cost to Connect Sticks | 1167 | Min heap | Medium |
+| Max Non-Overlapping Subarrays Sum=Target | 1546 | Prefix sum + greedy reset | Medium |
 
 ## LC Examples
 
@@ -691,6 +692,118 @@ class Solution(object):
         result += truckSize * boxTypes[i][1]
         return result
 ```
+
+### 2-9) Max Non-Overlapping Subarrays With Sum = Target (LC 1546) — Greedy Prefix-Sum Reset
+> The moment a valid subarray is found, **lock it in and clear all history** — earliest-ending choice leaves the most room for future subarrays.
+
+#### The Greedy Clear Idea
+
+```python
+# Check if there is a matching complement prefix sum
+if (running_prefix - target) in seen_prefixes:
+    cnt += 1
+
+    # GREEDY RESET: Clear everything to prevent overlaps
+    seen_prefixes.clear()
+    running_prefix = 0
+```
+
+**Why clear / reset works (the greedy argument):**
+
+- We use **prefix sums**: a subarray `nums[i+1..j]` sums to `target` iff `prefix[j] - prefix[i] == target`, i.e. `prefix[j] - target` was a prefix sum we've seen before.
+- The instant we detect such a match, we've found a valid subarray **ending as early as possible** at the current index `j`.
+- **Greedy choice property:** taking the *earliest-ending* valid subarray is never worse than waiting for a later one. An earlier finish frees up the maximum number of remaining elements for future subarrays — it can only help, never hurt, the total count. (This is the same "sort by end time" intuition as interval scheduling — here the end time is discovered on the fly.)
+- To guarantee the **next** subarray does not overlap the one we just took, everything before/at index `j` must become invisible. Clearing `seen_prefixes` and resetting `running_prefix = 0` makes index `j` the new "virtual start" — future matches can only use complements formed **after** `j`.
+
+> ⚠️ **Order matters:** you must re-add the base `0` before continuing. In the V1-1 style it's `seen = set([0])` on reset; in the V1-2 style `seen_prefixes.clear()` is immediately followed (after the `if`) by `seen_prefixes.add(running_prefix)` where `running_prefix` is now `0` — so `0` re-enters the set. Without a `0` in the fresh set, the very next subarray starting right after `j` could never be detected.
+
+#### Visualization
+
+```
+nums = [-1, 3, 5, 1, 4, 2, -9],  target = 6
+
+Legend: prefix = running prefix sum
+        complement = prefix - target  (what we look for in `seen`)
+        seen = prefix sums since the LAST reset
+
+┌─────┬────────┬────────────┬────────┬─────┬──────────────────┐
+│ num │ prefix │ complement │ found? │ cnt │ seen (this seg)  │
+├─────┼────────┼────────────┼────────┼─────┼──────────────────┤
+│ init│   0    │     -      │   -    │  0  │ {0}              │
+│ -1  │  -1    │    -7      │  No    │  0  │ {0,-1}           │
+│  3  │   2    │    -4      │  No    │  0  │ {0,-1,2}         │
+│  5  │   7    │     1      │  No    │  0  │ {0,-1,2,7}       │
+│  1  │   8    │     2      │  YES   │  1  │ RESET → {0}      │  ← subarray [5,1] sums to 6
+│  4  │   4    │    -2      │  No    │  1  │ {0,4}            │
+│  2  │   6    │     0      │  YES   │  2  │ RESET → {0}      │  ← subarray [4,2] sums to 6
+│ -9  │  -9    │   -15      │  No    │  2  │ {0,-9}           │
+└─────┴────────┴────────────┴────────┴─────┴──────────────────┘
+
+Answer: cnt = 2   (subarrays [5,1] and [4,2] are non-overlapping)
+```
+
+```
+Why NOT wait for a bigger subarray?
+
+Full array [3,5,1,4,2,-9] also sums to 6, but choosing it would
+"swallow" indices that could otherwise host BOTH [5,1] and [4,2]:
+
+  [-1,  3,  5,  1,  4,  2, -9]
+            └──6──┘                ← take EARLY  →  1 subarray, rest still free
+                     └──6──┘       ← then take another →  total = 2  ✅
+
+  [-1,  3,  5,  1,  4,  2, -9]
+        └──────── 6 ────────┘      ← greedy-late swallows everything → total = 1  ❌
+```
+
+```java
+// java
+// LC 1546 - Max Non-Overlapping Subarrays With Sum = Target
+// IDEA: Greedy + prefix sum + hashset; on match, count and RESET history
+// time = O(N), space = O(N)
+public int maxNonOverlapping(int[] nums, int target) {
+    Set<Integer> seen = new HashSet<>();
+    seen.add(0);                 // base prefix
+    int running = 0, cnt = 0;
+    for (int num : nums) {
+        running += num;
+        if (seen.contains(running - target)) {
+            cnt++;
+            seen.clear();        // GREEDY RESET: prevent overlap
+            running = 0;
+        }
+        seen.add(running);       // re-adds 0 right after a reset
+    }
+    return cnt;
+}
+```
+
+```python
+# python
+# LC 1546 - Max Non-Overlapping Subarrays With Sum = Target
+# IDEA: Greedy + prefix sum + hashset; on match, count and RESET history
+# time = O(N), space = O(N)
+class Solution(object):
+    def maxNonOverlapping(self, nums, target):
+        seen_prefixes = set([0])   # base prefix
+        running_prefix = 0
+        cnt = 0
+        for num in nums:
+            running_prefix += num
+            if (running_prefix - target) in seen_prefixes:
+                cnt += 1
+                # GREEDY RESET: clear everything to prevent overlaps
+                seen_prefixes.clear()
+                running_prefix = 0
+            seen_prefixes.add(running_prefix)  # re-adds 0 right after a reset
+        return cnt
+```
+
+**Similar Problems:**
+- LC 560 Subarray Sum Equals K (count ALL subarrays — no reset, keep full history)
+- LC 974 Subarray Sums Divisible by K (prefix-sum + hashmap on remainders)
+- LC 134 Gas Station (greedy start reset when running total goes negative)
+- LC 435 Non-overlapping Intervals (same earliest-end greedy, but intervals given upfront)
 
 ## Decision Framework
 
