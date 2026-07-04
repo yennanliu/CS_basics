@@ -1,0 +1,18 @@
+# https://leetcode.com/contest/weekly-contest-508/
+
+
+
+# LC 3974
+# https://leetcode.com/problems/maximum-total-sum-of-k-selected-elements/
+
+
+# LC 3975
+# https://leetcode.com/problems/filter-occupied-intervals/
+
+
+# LC 3976
+# https://leetcode.com/problems/maximum-subarray-sum-after-multiplier/description/
+
+
+# LC 3977
+# https://leetcode.com/problems/minimum-time-to-reach-target-with-limited-power/description/
