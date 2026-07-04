@@ -256,8 +256,137 @@ class Solution(object):
 # https://leetcode.com/problems/maximum-subarray-sum-after-multiplier/description/
 
 
+->
+
+Return the `maximum possible sum` of a 
+
+`non-empty` `subarray` in the resulting array.
+
+
+
+nums: int arr
+
+k: positive int
+
+
+-> choose `sub array` and do `one` of below op:
+
+1. Multiply each number in the chosen subarray by k.
+
+2. divide each num in the subarray by k
+
+    - if divide by `positive num by k
+        -> use `floor val of the result 
+
+
+    - if divide by `negative num by k
+        -> use `ceiling` val of the result 
+
+
+sub-array:
+    A subarray is a `contiguous` 
+    non-empty sequence of elements within an array.
+
+
+
+# idea 1) brute force
+
+# idea 2)  greedy ??
+
+
+# idea 3) slide window + simulation ???
+    - do below 2 op on `most possible` possible in nums
+        -> nums_1, nums_2
+
+    - get the `max sum` of the subarray from nums_1, nums_2
+
+
+
+
+class Solution(object):
+    def maxSubarraySum(self, nums, k):
+        # edge
+
+        window_1 = []
+        window_2 = []
+
+        n = len(nums)
+
+        # ??
+        #l = 0
+        l = 0
+
+        # get windows
+
+        while l < range(n):
+            #val = nums[l]
+            # ???
+            r = l
+            while nums[r] > 0:
+                r += 1
+
+            if r - l >= 1:
+                window_1 = [l, r - 1]
+            l = r + 1
+
+        window_1 = [l, r]
+
+        # ???
+        _max = nums[0]
+        for i in range(n):
+            # ???
+            if nums[n] > _max:
+                window_2 = [i, i]
+
+
+        # calculate max sub arr sum
+        res1 = sum( [  k * x for x in nums[window1[0]: window1[1]] ])
+
+        res2 = floor(nums[i] / k)
+
+
+        return max(res1, res2)
+
+
+
+
+
+
+
+
+
+
+
+
 # LC 3977
 # https://leetcode.com/problems/minimum-time-to-reach-target-with-limited-power/description/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
