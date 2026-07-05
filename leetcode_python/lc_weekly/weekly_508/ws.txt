@@ -67,6 +67,52 @@ class Solution(object):
 
 
 
+#----------------------------- (fixed)
+
+class Solution(object):
+    def maxSum(self, nums, k, mul):
+        nums.sort(reverse=True)
+
+        ans = 0
+
+        # take the k largest elements
+        for i in range(k):
+            ans += nums[i] * max(1, mul)
+            mul -= 1
+
+        return ans
+
+
+#----------------------------- (fixed)
+
+
+class Solution(object):
+    def maxSum(self, nums, k, mul):
+        """
+        :type nums: List[int]
+        :type k: int
+        :type mul: int
+        :rtype: int
+        """
+        # Step 1: Sort array in descending order to get largest candidates
+        nums.sort(reverse=True)
+        
+        # Step 2: Extract the top k largest elements
+        candidates = nums[:k]
+        
+        res = 0
+        
+        # Step 3: Process elements sequentially using the optimal multiplier choice
+        for x in candidates:
+            # We can choose either (x * 1) or (x * mul). Take the maximum multiplier.
+            res += x * max(1, mul)
+            
+            # The current value of mul decreases by 1 regardless of the choice
+            mul -= 1
+            
+        return res
+
+
 
 # LC 3975
 # https://leetcode.com/problems/filter-occupied-intervals/
