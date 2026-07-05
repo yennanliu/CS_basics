@@ -3093,3 +3093,111 @@ Tree (k=2):                 As undirected graph, BFS from 2:
 > **Pattern takeaway**: whenever a *tree* problem needs movement **upward (toward parent)**,
 > convert it to an **undirected graph** (add parent links via DFS) and switch to graph BFS/DFS.
 > This "tree → graph" reframing is the key to LC 742 and LC 863.
+
+### 2-15) Populating Next Right Pointers (LC 116 / 117) — Level BFS wires the `next` links ⭐⭐⭐⭐
+
+> Each node has a `next` pointer that should point to the node **immediately to its right on
+> the same level** (or `NULL` if it's the rightmost). This is just a **level-order BFS**: while
+> processing one level, chain each node to the one dequeued after it. The follow-up ("O(1)
+> extra space") reuses the `next` pointers you just built as a **linked list of the level above**
+> to wire the level below — no queue needed.
+
+**1) Core Idea**
+
+- **`next` = "the node to my right on the same level."** So process the tree **level by level**
+  and, inside each level, link `prev.next = cur` as you pop nodes off the queue.
+- The **last node of every level** gets `next = None` (queue is emptied per level, so it never
+  points into the next level).
+- Works for both LC 116 (perfect tree) and LC 117 (any binary tree) — BFS doesn't care about
+  the tree shape; children are simply enqueued when they exist.
+- **O(1)-space follow-up**: once level *L* is fully linked, walk it via `next` pointers as if it
+  were a linked list and set the `next` pointers of level *L+1* — recycling the structure you
+  already built instead of a queue.
+
+**2) Pattern**
+
+```python
+# python — LC 116/117: BFS by layer, chain nodes via prev pointer
+from collections import deque
+
+class Solution(object):
+    def connect(self, root):
+        # time = O(N), space = O(W)  (W = max width / one level)
+        if not root:
+            return None
+
+        q = deque([root])
+        while q:
+            size = len(q)
+            prev = None
+            for _ in range(size):          # one full level per outer iteration
+                cur = q.popleft()
+                if prev:                    # link previous node -> current
+                    prev.next = cur
+                prev = cur
+                if cur.left:
+                    q.append(cur.left)
+                if cur.right:
+                    q.append(cur.right)
+            prev.next = None                # last node of the level -> NULL
+        return root
+```
+
+**Alternative (peek at queue front instead of tracking `prev`):**
+
+```python
+# python — same BFS, use i < size - 1 to point at the next node still in queue
+for i in range(size):
+    cur = q.popleft()
+    if i < size - 1:
+        cur.next = q[0]                     # front of queue = node to the right
+    if cur.left:  q.append(cur.left)
+    if cur.right: q.append(cur.right)
+```
+
+**Follow-up — O(1) space (perfect tree, LC 116):** reuse `next` links, no queue.
+
+```python
+# python — walk each level as a linked list to wire the next level
+class Solution(object):
+    def connect(self, root):
+        # time = O(N), space = O(1)
+        if not root:
+            return None
+        leftmost = root
+        while leftmost.left:               # stop once we reach the leaf level
+            head = leftmost
+            while head:
+                head.left.next = head.right             # (1) same parent
+                if head.next:
+                    head.right.next = head.next.left    # (2) across parents
+                head = head.next                        # move right via existing links
+            leftmost = leftmost.left        # drop to next level's leftmost
+        return root
+```
+
+```
+Visual (LC 116):
+        1 -> NULL
+      /   \
+     2  -> 3 -> NULL
+    / \   / \
+   4-> 5->6->7 -> NULL
+
+BFS level 2: prev walks 4→5→6→7, chaining next; last (7) -> NULL.
+O(1) trick: from level [2,3], (1) 2.left→2.right = 4→5, (2) 2.right→2.next.left = 5→6, ...
+```
+
+**3) Similar LC**
+
+| LC | Problem | Relation |
+|----|---------|----------|
+| 116 | Populating Next Right Pointers in Each Node | this — **perfect** tree, BFS or O(1) `next`-reuse |
+| 117 | Populating Next Right Pointers II | same BFS; tree **not** perfect, so O(1) version needs a dummy head per level |
+| 102 | Binary Tree Level Order Traversal | the base level-BFS this is built on |
+| 199 | Binary Tree Right Side View | rightmost node per level = last node before `next = None` |
+| 314 | Binary Tree Vertical Order Traversal | level BFS grouping, but keyed by column not by `next` |
+
+> **Pattern takeaway**: "point to the node on my right" ⇒ **level-order BFS**, linking nodes in
+> dequeue order and terminating each level with `next = None`. For O(1) space, treat the
+> already-linked level as a linked list to build the one below.
