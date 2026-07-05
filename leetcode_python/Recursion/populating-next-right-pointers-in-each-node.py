@@ -43,6 +43,109 @@ The recursive approach is fine. You may assume implicit stack space does not cou
 """
 
 # V0
+# IDEA: BFS by layer (gpt)
+from collections import deque
+
+class Solution(object):
+    def connect(self, root):
+        if not root:
+            return None
+
+        q = deque([root])
+
+        while q:
+            size = len(q)
+            prev = None
+
+            for i in range(size):
+                cur = q.popleft()
+
+                if prev:
+                    prev.next = cur
+                prev = cur
+
+                if cur.left:
+                    q.append(cur.left)
+                if cur.right:
+                    q.append(cur.right)
+
+            # last node in this level
+            prev.next = None
+
+        return root
+
+
+# V0-1
+# IDEA: BFS by layer (GEMINI)
+from collections import deque
+
+class Solution(object):
+    def connect(self, root):
+        """
+        :type root: Node
+        :rtype: Node
+        """
+        if not root:
+            return None
+            
+        # Initialize queue using deque for O(1) pops from the front
+        q = deque([root])
+        
+        while q:
+            size = len(q)
+            
+            for i in range(size):
+                cur = q.popleft()
+                
+                # If this is NOT the last node of the current level,
+                # point its next pointer to the current front of the queue
+                if i < size - 1:
+                    cur.next = q[0]
+                else:
+                    cur.next = None  # Last node of the level points to None
+                    
+                # Standard child collection step (no parentheses!)
+                if cur.left:
+                    q.append(cur.left)
+                if cur.right:
+                    q.append(cur.right)
+                    
+        # Return the original root node of the modified tree
+        return root
+
+
+
+# V0-2
+# IDEA: BFS by layer + O(1) space (GEMINI)
+class Solution(object):
+    def connect(self, root):
+        if not root:
+            return None
+            
+        # Start at the leftmost node of the current level
+        leftmost = root
+        
+        while leftmost.left:
+            # Step across the current level using the established .next pointers
+            head = leftmost
+            while head:
+                # Connection 1: Connect children sharing the same parent
+                head.left.next = head.right
+                
+                # Connection 2: Connect children spanning across different parents
+                if head.next:
+                    head.right.next = head.next.left
+                    
+                # Move to the next parent node on this same level
+                head = head.next
+                
+            # Move down to the next level's leftmost starting point
+            leftmost = leftmost.left
+            
+        return root
+
+
+# V0
 # IDEA : BFS
 # REF : LC # 117 : populating-next-right-pointers-in-each-node-ii/
 class Solution:
