@@ -43,6 +43,45 @@ The recursive approach is fine. You may assume implicit stack space does not cou
 """
 
 # V0
+# IDEA: BFS by layer + prev node (gpt) (LC 116)
+from collections import deque
+
+class Solution(object):
+    def connect(self, root):
+        if not root:
+            return None
+
+        q = deque([root])
+
+        while q:
+            size = len(q)
+            prev = None
+
+            for i in range(size):
+                cur = q.popleft()
+
+                if prev:
+                    prev.next = cur
+                prev = cur
+
+                if cur.left:
+                    q.append(cur.left)
+                if cur.right:
+                    q.append(cur.right)
+
+            """
+            NOTE !!!
+
+            below
+            """
+            # last node in this level
+            prev.next = None
+
+        return root
+
+
+
+# V0
 # IDEA : BFS
 class Solution:
     def connect(self, root):
@@ -279,4 +318,4 @@ class Solution(object):
                  tmp = tmp.next
              self.connect(tmp2)
 
-# V2 
+# V2
