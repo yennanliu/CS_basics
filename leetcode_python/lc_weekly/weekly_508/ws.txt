@@ -442,10 +442,118 @@ class Solution(object):
 
 
 
+#-------------- (fixed)
+
+
+class Solution(object):
+    def maxSubarraySum(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: int
+        """
+        def solve(is_multiplier):
+            n = len(nums)
+            t0 = float('-inf')
+            t1 = float('-inf')
+            t2 = float('-inf')
+            
+            global_max = float('-inf')
+            
+            for i, x in enumerate(nums):
+                # Using float(x) ensures true division before int() truncates towards zero
+                mod_x = x * k if is_multiplier else int(float(x) / k)
+                
+                next_t0 = max(x, t0 + x)
+                next_t1 = max(mod_x, t0 + mod_x, t1 + mod_x)
+                next_t2 = max(t1 + x, t2 + x)
+                
+                if i > 0:
+                    next_t2 = max(next_t2, x)
+                
+                t0, t1, t2 = next_t0, next_t1, next_t2
+                
+                global_max = max(global_max, t1, t2)
+                if i < n - 1:
+                    global_max = max(global_max, t0)
+                    
+            return global_max
+
+        return max(solve(is_multiplier=True), solve(is_multiplier=False))
 
 
 
+#-------------- (fixed)
 
+
+(dp)
+
+
+class Solution(object):
+    def maxSubarraySum(self, nums, k):
+        NEG = -(1 << 60)
+
+        def div(x):
+            # floor for positive, ceiling for negative
+            if x >= 0:
+                return x // k
+            return -((-x) // k)
+
+        # DP for multiply
+        a = nums[0]          # no operation yet
+        b = nums[0] * k      # inside multiply
+        d = NEG              # multiply finished
+
+        ans_mul = max(a, b)
+
+        for x in nums[1:]:
+            kx = x * k
+
+            na = max(x, a + x)
+
+            nb = max(
+                kx,          # start new subarray & start multiply
+                a + kx,      # start multiply here
+                b + kx       # continue multiplying
+            )
+
+            nd = max(
+                b + x,       # stop multiplying before x
+                d + x,       # already stopped
+                x            # start a new subarray after operation
+            )
+
+            a, b, d = na, nb, nd
+            ans_mul = max(ans_mul, a, b, d)
+
+        # DP for divide
+        a = nums[0]
+        c = div(nums[0])
+        d = NEG
+
+        ans_div = max(a, c)
+
+        for x in nums[1:]:
+            dx = div(x)
+
+            na = max(x, a + x)
+
+            nc = max(
+                dx,
+                a + dx,
+                c + dx
+            )
+
+            nd = max(
+                c + x,
+                d + x,
+                x
+            )
+
+            a, c, d = na, nc, nd
+            ans_div = max(ans_div, a, c, d)
+
+        return max(ans_mul, ans_div)
 
 
 

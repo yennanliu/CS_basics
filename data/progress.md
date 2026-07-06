@@ -59,7 +59,7 @@
 
 - LC weekly
 	- `data/lc_weekly/lc_weekly_gpt.md`
-		- Weekly Contest 508 (doing)
+		- Weekly Contest 508 (OK)
 			- https://leetcode.com/contest/weekly-contest-508/
 
 - Others
