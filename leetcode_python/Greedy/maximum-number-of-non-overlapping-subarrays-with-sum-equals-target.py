@@ -35,12 +35,77 @@ Constraints:
 
 
 # V0
+# IDEA: PREFIX + SET + greedy (reset) (gpt)
+class Solution(object):
+    def maxNonOverlapping(self, nums, target):
+        ans = 0
+
+        prefix = 0
+
+        # Prefix sums seen since the last accepted subarray.
+        """
+        NOTE !!!
+
+
+        1. we init p_map as {0}
+
+
+        -> actually, 
+            -> It is really just a set of prefix sums we've seen so far.
+
+                -> so it's better to set it as {predix_a, prefix_b, ...}
+                    -> e.g. init it as {0}
+
+
+        2. Why initialize with {0: 1} instead of {}? 
+            -> since p_map is the `prefix` we've met
+                -> so before any processing, the prefix is 0
+                    -> so we init p_map as {0}
+        """
+        seen = {0}
+
+        for x in nums:
+            prefix += x
+
+            # prefix - previous_prefix = target
+            if prefix - target in seen:
+                ans += 1
+
+                # Greedily start searching for the next non-overlapping subarray.
+                prefix = 0
+                seen = {0}
+            else:
+                seen.add(prefix)
+
+        return ans
+
+
+# V0
 # IDEA: PREFIX + HAHSMAP + greedy (reset) (gpt)
 class Solution(object):
     def maxNonOverlapping(self, nums, target):
         ans = 0
 
         prefix = 0
+        """
+        NOTE !!!
+
+
+        1. we init p_map as {0: 1}
+
+
+        -> actually, 
+            -> It is really just a set of prefix sums we've seen so far.
+
+                -> so it's better to set it as {predix_a, prefix_b, ...}
+                    -> e.g. init it as {0}
+
+
+        2. Why initialize with {0: 1} instead of {}? 
+            -> since p_map is the `prefix` we've met
+                -> so before any processing, the prefix is 0
+                    -> so we init p_map as {0: 1}
+        """
         p_map = {0: 1}
 
         for x in nums:
@@ -51,6 +116,12 @@ class Solution(object):
 
                 # Greedily start searching for the next segment
                 prefix = 0
+                """
+                NOTE !!!
+
+
+                we reset p_map as {0: 1}
+                """
                 p_map = {0: 1}
                 continue
 
@@ -61,7 +132,7 @@ class Solution(object):
 
 
 # V0-1
-# IDEA: PREFIX + HAHSMAP + greedy (reset) (gemini)
+# IDEA: PREFIX + SET + greedy (reset) (gemini)
 class Solution(object):
     def maxNonOverlapping(self, nums, target):
         """
