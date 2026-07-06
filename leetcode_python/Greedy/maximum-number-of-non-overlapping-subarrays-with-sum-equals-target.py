@@ -35,9 +35,65 @@ Constraints:
 
 
 # V0
+# IDEA: PREFIX + HAHSMAP + greedy (reset) (gpt)
 class Solution(object):
     def maxNonOverlapping(self, nums, target):
-        pass
+        ans = 0
+
+        prefix = 0
+        p_map = {0: 1}
+
+        for x in nums:
+            prefix += x
+
+            if prefix - target in p_map:
+                ans += 1
+
+                # Greedily start searching for the next segment
+                prefix = 0
+                p_map = {0: 1}
+                continue
+
+            p_map[prefix] = 1
+
+        return ans
+
+
+
+# V0-1
+# IDEA: PREFIX + HAHSMAP + greedy (reset) (gemini)
+class Solution(object):
+    def maxNonOverlapping(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: int
+        """
+        # FIX 1: Initialize the answer counter BEFORE the loop starts
+        ans = 0
+        running_prefix = 0
+        
+        # A hash set is cleaner than a map since we just need to know if a prefix exists.
+        # FIX 2: Seed it with 0 to handle subarrays starting from index 0.
+        seen_prefixes = {0}
+        
+        for i in range(len(nums)):
+            val = nums[i]
+            running_prefix += val
+            
+            # If our target complement prefix sum exists in our current window segment
+            if (running_prefix - target) in seen_prefixes:
+                ans += 1
+                
+                # FIX 3: Greedy Reset! Clear history and reset the prefix calculator
+                running_prefix = 0
+                seen_prefixes = {0}
+            else:
+                # Otherwise, record the current prefix sum as a valid entry point
+                seen_prefixes.add(running_prefix)
+                
+        return ans
+
 
 
 # V1-1
