@@ -1,9 +1,9 @@
 # LeetCode Practice List (2025-2026) - By Category
 
-**Total Unique Problems: 514**
+**Total Unique Problems: 515**
 
 Generated from: `data/progress.md`
-Date: 2026-06-29
+Date: 2026-07-06
 
 ---
 
@@ -14,7 +14,7 @@ Date: 2026-06-29
 - [Binary Search](#binary-search) (24 problems)
 - [Binary Search Tree](#binary-search-tree) (13 problems)
 - [Breadth-First-Search](#breadth-first-search) (24 problems)
-- [Depth-First-Search](#depth-first-search) (25 problems)
+- [Depth-First-Search](#depth-first-search) (26 problems)
 - [Design](#design) (13 problems)
 - [Dynamic Programming](#dynamic-programming) (51 problems)
 - [Graph](#graph) (9 problems)
@@ -87,11 +87,11 @@ Date: 2026-06-29
 
 ## Depth-First-Search
 
-**Count: 25**
+**Count: 26**
 
 112, 113, 200, 257, 332, 399, 417, 529, 547, 694
-695, 721, 733, 737, 785, 802, 827, 841, 987, 1020
-1087, 1192, 1466, 2316, 3319
+695, 721, 733, 737, 785, 802, 827, 841, 987, 990
+1020, 1087, 1192, 1466, 2316, 3319
 
 ---
 
@@ -262,10 +262,10 @@ These problems were not found in the leetcode_python or leetcode_java directory 
 568, 576, 642, 644, 662, 668, 685, 691, 697, 704
 711, 715, 718, 719, 730, 741, 744, 759, 773, 803
 823, 839, 847, 857, 862, 894, 899, 930, 935, 956
-979, 990, 1008, 1026, 1035, 1043, 1080, 1092, 1123, 1136
-1186, 1201, 1202, 1203, 1220, 1235, 1245, 1249, 1278, 1293
-1319, 1326, 1373, 1425, 1434, 1449, 1480, 1499, 1510, 1514
-1547, 1557, 1569, 1690, 1696, 1697, 1745, 1770, 1911, 1931
+979, 1008, 1026, 1035, 1043, 1080, 1092, 1123, 1136, 1186
+1201, 1202, 1203, 1220, 1235, 1245, 1249, 1278, 1293, 1319
+1326, 1373, 1425, 1434, 1449, 1480, 1499, 1510, 1514, 1547
+1557, 1569, 1690, 1696, 1697, 1745, 1770, 1911, 1931, 1976
 2034, 2050, 2064, 2127, 2182, 2187, 2192, 2226, 2246, 2398
 2493
 
@@ -276,9 +276,9 @@ These problems were not found in the leetcode_python or leetcode_java directory 
 | Category | Count | Percentage |
 |----------|-------|------------|
 | Dynamic Programming | 51 | 9.9% |
-| Array | 45 | 8.8% |
+| Array | 45 | 8.7% |
 | Tree | 29 | 5.6% |
-| Depth-First-Search | 25 | 4.9% |
+| Depth-First-Search | 26 | 5.0% |
 | Stack | 24 | 4.7% |
 | Binary Search | 24 | 4.7% |
 | Breadth-First-Search | 24 | 4.7% |
@@ -292,7 +292,7 @@ These problems were not found in the leetcode_python or leetcode_java directory 
 | Two Pointers | 13 | 2.5% |
 | Binary Search Tree | 13 | 2.5% |
 | Design | 13 | 2.5% |
-| Graph | 9 | 1.8% |
+| Graph | 9 | 1.7% |
 | Backtracking | 6 | 1.2% |
 | Math | 4 | 0.8% |
 | Sliding Window | 2 | 0.4% |
