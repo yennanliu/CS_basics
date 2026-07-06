@@ -134,6 +134,55 @@ class Solution(object):
         return cnt // 2
 
 
+# 1-2
+# IDEA: DFS (gemini)
+class Solution(object):
+    def countPairs(self, root, distance):
+
+        self.ans = 0
+        
+        """
+        NOTE !!!
+
+        ouput of dfs is `list of integers.`
+
+        -> the `distance` from that 
+           specific `child node` down 
+           to one of its leaf nodes.
+        """
+        def dfs(node):
+            if not node:
+                return []
+            
+            # Base Case: If it's a leaf node, return a list containing a distance of 0
+            if not node.left and not node.right:
+                return [0]
+            
+            # Post-Order Traversal: Go deep into left and right subtrees first
+            left_distances = dfs(node.left)
+            right_distances = dfs(node.right)
+            
+            # Count valid pairs that cross through the current node (acting as the LCA)
+            for l in left_distances:
+                for r in right_distances:
+                    # +2: for the `1` edge from left leaf to current node
+                    #     plus the `1` edge from current node to right leaf
+                    #
+                    #     -> so that's why `+2`
+                    if l + r + 2 <= distance:
+                        self.ans += 1
+            
+            # Increment distances by 1 to account for the edge up to the parent node
+            parent_distances = []
+            for d in left_distances + right_distances:
+                if d + 1 < distance:  # Optimization: drop paths that already exceed the limit
+                    parent_distances.append(d + 1)
+                    
+            return parent_distances
+
+        dfs(root)
+        return self.ans
+
 
 # 2-1
 # IDEA: Graph Conversion + BFS
