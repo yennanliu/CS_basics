@@ -1678,6 +1678,79 @@ Both variants are correct; the snapshot-size version is more concise; the State 
 
 ---
 
+### Pattern 10: Tree → Undirected Graph + Per-Leaf Bounded BFS — LC 1530
+
+**a. Core idea**
+
+A tree only lets you walk *down* (parent → child). But the shortest path between two **leaf** nodes goes **up** to their lowest common ancestor and then **down** again — you need to traverse edges in *both* directions. So convert the tree into an **undirected graph** (add both `parent→child` and `child→parent` edges), then the leaf-to-leaf shortest path becomes a plain graph distance you can measure with BFS.
+
+For LC 1530 (count pairs of leaves whose shortest path ≤ `distance`):
+1. **One DFS/traversal** to (a) collect all leaf nodes and (b) build the undirected adjacency map.
+2. **Run a bounded BFS from each leaf**, expanding only while `dist < distance`. Every *other* leaf reached is a good pair.
+3. Each pair `A–B` is discovered twice (once from `A`, once from `B`) → **divide the final count by 2**.
+
+**b. Pattern**
+
+```python
+# python — Tree → Graph conversion + per-leaf bounded BFS (LC 1530)
+# time  = O(L * (V + E)) = O(L * N)   L = #leaves, N = #nodes
+# space = O(N)                        adjacency map + queue/visited
+from collections import deque, defaultdict
+
+class Solution:
+    def countPairs(self, root, distance):
+        leaves = []
+        graph = defaultdict(list)
+
+        # Step 1: collect leaves + build UNDIRECTED graph
+        def build(node, parent=None):
+            if not node:
+                return
+            if not node.left and not node.right:   # leaf
+                leaves.append(node)
+            if parent:                              # bidirectional edge
+                graph[node].append(parent)
+                graph[parent].append(node)
+            build(node.left, node)
+            build(node.right, node)
+        build(root)
+
+        cnt = 0
+        # Step 2: bounded BFS from every leaf
+        for leaf in leaves:
+            queue = deque([(leaf, 0)])              # (node, dist)
+            visited = {leaf}
+            while queue:
+                cur, d = queue.popleft()
+                if cur != leaf and not cur.left and not cur.right:
+                    cnt += 1                         # reached another leaf
+                if d < distance:                     # only expand within limit
+                    for nxt in graph[cur]:
+                        if nxt not in visited:
+                            visited.add(nxt)
+                            queue.append((nxt, d + 1))
+        return cnt // 2                              # each pair counted twice
+```
+
+**Recognition signals**
+- Problem talks about the **distance / shortest path between leaf (or arbitrary) nodes** of a tree.
+- Path must go **up and then down** → downward-only tree recursion is insufficient.
+- Small constraints (`distance ≤ 10`, `N ≤ 2^10`) make the bounded-BFS-per-leaf cost acceptable.
+
+> **Alternative (often preferred):** a single **post-order DFS** that returns a bucket array of leaf-distances and combines left/right subtrees at each node — O(N) with no graph. See **DFS Pattern 15**. Use BFS when the "convert-to-graph, then measure distance" mental model is clearer or when non-tree edges exist.
+
+**c. Similar LC**
+
+| Problem | LC # | Link to this pattern |
+|---------|------|----------------------|
+| Number of Good Leaf Nodes Pairs | 1530 | canonical tree→graph + per-leaf bounded BFS |
+| All Nodes Distance K in Binary Tree | 863 | tree→graph, then BFS `k` steps from a target node |
+| Amount of Time for Binary Tree to Be Infected | 2385 | tree→graph, BFS "infection spread" = max distance |
+| Step-By-Step Directions From a Binary Tree Node | 2096 | shortest node-to-node path via LCA (up-then-down) |
+| Closest Leaf in a Binary Tree | 742 | tree→graph, multi-source/target BFS to nearest leaf |
+
+---
+
 ## Problem Categories
 
 ### 1. Tree Traversal Problems

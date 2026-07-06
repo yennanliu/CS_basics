@@ -213,6 +213,78 @@
   - LC 399 - Evaluate Division (transitive relations, weighted variant → Pattern 12)
   - LC 785 - Is Graph Bipartite? (2-coloring = a "different-group" constraint check)
 
+### **Pattern 15: Post-Order Distance-Bucket Aggregation (Leaf-Pair Counting)** — LC 1530
+
+**a. Core idea**
+
+Instead of converting the tree to a graph and running BFS from every leaf (O(N²)), a single **post-order DFS** counts leaf pairs in **O(N)**. Each node returns a small **bucket array** `cnt[d]` = *"how many leaves in my subtree are exactly distance `d` below me."*
+
+At every node you do two things:
+1. **Combine children into a pair count.** A leaf `d1` deep in the left subtree and a leaf `d2` deep in the right subtree are joined *through this node*, so their path length is `d1 + d2 + 2`. Add `left[d1] * right[d2]` to the global answer whenever `d1 + d2 + 2 ≤ distance`.
+2. **Shift up and merge for the parent.** Return `cur[d+1] = left[d] + right[d]` — every leaf is now one edge farther from the parent than it was from this node.
+
+The key insight: **a pair is counted exactly once, at their lowest common ancestor** — the single node where one leaf sits below the left child and the other below the right child. No divide-by-2 needed (unlike the BFS approach).
+
+**b. Pattern**
+
+```python
+# python — Post-order distance-bucket aggregation (LC 1530)
+# time  = O(N * distance^2)   distance^2 from the d1/d2 double loop per node
+# space = O(N)                recursion depth + O(distance) bucket per frame
+class Solution:
+    def countPairs(self, root, distance):
+        self.ans = 0
+
+        def post_order(node):
+            # cnt[d] = number of leaves exactly d edges below `node`
+            if not node:
+                return [0] * (distance + 1)
+            if not node.left and not node.right:      # leaf: distance 0 to itself
+                base = [0] * (distance + 1)
+                base[0] = 1
+                return base
+
+            left  = post_order(node.left)
+            right = post_order(node.right)
+
+            # (1) join a left-leaf and a right-leaf THROUGH this node (their LCA)
+            for d1 in range(distance + 1):
+                for d2 in range(distance + 1):
+                    if d1 + d2 + 2 <= distance:       # +2 for the two edges via node
+                        self.ans += left[d1] * right[d2]
+
+            # (2) shift up by 1 edge for the parent's view
+            cur = [0] * (distance + 1)
+            for d in range(distance):                 # d+1 must stay in bounds
+                cur[d + 1] = left[d] + right[d]
+            return cur
+
+        post_order(root)
+        return self.ans
+```
+
+> **Optimization (prefix-sum counting, LC 1530 editorial V2-3):** replace the O(distance²) double loop with a running prefix sum so pairs are counted in O(distance) per node → overall O(N * distance). Same idea, cheaper join step.
+
+**Recognition signals**
+- Count / aggregate over **pairs of leaves (or nodes) constrained by their tree distance**.
+- Distance is **small and bounded** (`distance ≤ 10`) → a fixed-size bucket array per node is cheap.
+- You want **O(N)-ish** without building a graph — the pairing happens naturally at each LCA.
+
+> **Contrast with BFS Pattern 10:** BFS converts the tree to an undirected graph and runs a bounded BFS from each leaf (O(L·N), each pair counted twice). Post-order DFS keeps the tree structure, counts each pair once at its LCA, and is usually the interview-preferred answer.
+
+**c. Similar LC**
+
+| Problem | LC # | Link to this pattern |
+|---------|------|----------------------|
+| Number of Good Leaf Nodes Pairs | 1530 | canonical post-order distance-bucket aggregation |
+| Binary Tree Maximum Path Sum | 124 | return best downward value, combine left+right at node (LCA join) |
+| Diameter of Binary Tree | 543 | return subtree depth, `left_depth + right_depth` joined at node |
+| Longest Univalue Path | 687 | return one-side length, combine both sides at each node |
+| Count Nodes With the Highest Score | 2049 | post-order subtree size, aggregate at each node ([Pattern 13](#pattern-13-subtree-size-aggregation-remove-node-scoring--lc-2049)) |
+| Sum of Distances in Tree | 834 | post-order subtree counts + reroot DP (advanced follow-up) |
+
+---
+
 ## Templates & Algorithms
 
 ### Template Comparison Table

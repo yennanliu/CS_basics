@@ -187,7 +187,7 @@ class Solution:
 
 
 # 2-2
-# IDEA: Post-Order Traversal
+# IDEA: `Post`-Order Traversal
 # https://leetcode.com/problems/number-of-good-leaf-nodes-pairs/editorial/
 class Solution:
     def _post_order(self, current_node, distance):
@@ -230,7 +230,7 @@ class Solution:
 
 
 # 2-3
-# IDEA: Post-Order Traversal With Prefix Sum Counting
+# IDEA: `Post`-Order Traversal With Prefix Sum Counting
 # https://leetcode.com/problems/number-of-good-leaf-nodes-pairs/editorial/
 class Solution:
     def _post_order(self, current_node, distance):
