@@ -349,6 +349,9 @@ class Solution(object):
 # https://leetcode.com/problems/maximum-subarray-sum-after-multiplier/description/
 
 
+NOTE: It is a Dynamic Programming (DP) problem.
+
+
 ->
 
 Return the `maximum possible sum` of a 
