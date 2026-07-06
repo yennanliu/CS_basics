@@ -43,7 +43,7 @@ The recursive approach is fine. You may assume implicit stack space does not cou
 """
 
 # V0
-# IDEA: BFS by layer (gpt)
+# IDEA: BFS by layer + prev node (gpt)
 from collections import deque
 
 class Solution(object):
@@ -69,6 +69,11 @@ class Solution(object):
                 if cur.right:
                     q.append(cur.right)
 
+            """
+            NOTE !!!
+
+            below
+            """
             # last node in this level
             prev.next = None
 
@@ -76,7 +81,7 @@ class Solution(object):
 
 
 # V0-1
-# IDEA: BFS by layer (GEMINI)
+# IDEA: BFS by layer + prev node (GEMINI)
 from collections import deque
 
 class Solution(object):
