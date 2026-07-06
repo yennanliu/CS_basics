@@ -70,16 +70,18 @@ class Solution(object):
         leaves = []
         graph = defaultdict(list)
         
-        # Step 1: Traverse the tree to find all leaves and build an undirected graph map
+        # Step 1: Traverse the tree to 
+        # find all leaves and build an undirected `graph` map
         def build_graph(node, parent=None):
             if not node:
                 return
             
-            # If it's a leaf node, save it to our leaves list
+            # If it's a `leaf` node, save it to our leaves list
             if not node.left and not node.right:
                 leaves.append(node)
                 
-            # If there is a parent connection, make it bidirectional in our graph
+            # If there is a `parent` connection, make it 
+            # `bidirectional` in our graph
             if parent:
                 graph[node].append(parent)
                 graph[parent].append(node)
@@ -91,8 +93,22 @@ class Solution(object):
         
         cnt = 0
         
-        # Step 2: From each leaf node, run a limited BFS to find reachable target leaves
+
+        """
+        NOTE !!!
+
+        	-> loop over EVERY leaf node,
+        	   and run BFS inside
+        """
+        # Step 2: From each leaf node,
+        # run a `limited` `BFS` to 
+        # find reachable target `leaves`
         for leaf in leaves:
+        	"""
+        	NOTE !!!
+
+        	queue:  (cur_node, cur_dist)
+        	"""
             queue = deque([(leaf, 0)]) # Holds (current_node, current_distance)
             visited = {leaf}
             
@@ -103,6 +119,9 @@ class Solution(object):
                 if curr != leaf and not curr.left and not curr.right:
                     cnt += 1
                     
+                """
+                NOTE !!!
+                """
                 # Explore neighbors if we are still strictly under our distance limit
                 if dist < distance:
                     for neighbor in graph[curr]:
