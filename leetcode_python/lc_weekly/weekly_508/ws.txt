@@ -213,7 +213,7 @@ class Solution(object):
         merged = []
 
         # sort is needed ???
-        occupiedIntervals.sort(lambda x: x[0])
+        occupiedIntervals.sort(key: lambda x: x[0])
 
 
         """
@@ -293,6 +293,53 @@ class Solution(object):
 
 
         
+
+------------------- (fixed)
+
+
+class Solution(object):
+    def filterOccupiedIntervals(self, occupiedIntervals, freeStart, freeEnd):
+        """
+        :type occupiedIntervals: List[List[int]]
+        :type freeStart: int
+        :type freeEnd: int
+        :rtype: List[List[int]]
+        """
+        if not occupiedIntervals:
+            return []
+            
+        # Step 1: Sort by start times
+        occupiedIntervals.sort()
+        
+        # Step 2: Merge overlapping or touching intervals
+        merged = []
+        for start, end in occupiedIntervals:
+            # Note the "+ 1" to handle touching intervals like [1,1] and [2,2]
+            if merged and start <= merged[-1][1] + 1:
+                merged[-1][1] = max(merged[-1][1], end)
+            else:
+                merged.append([start, end])
+                
+        # Step 3: Remove the free time window from the merged intervals
+        res = []
+        for start, end in merged:
+            # Case 1: The interval is completely inside the free window -> removed completely
+            if start >= freeStart and end <= freeEnd:
+                continue
+                
+            # Case 2: Left segment remaining before the free window starts
+            if start < freeStart:
+                left_end = min(end, freeStart - 1)
+                res.append([start, left_end])
+                
+            # Case 3: Right segment remaining after the free window ends
+            if end > freeEnd:
+                right_start = max(start, freeEnd + 1)
+                res.append([right_start, end])
+                
+        return res
+
+
 
 
 
