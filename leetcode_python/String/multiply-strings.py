@@ -32,6 +32,61 @@ Both num1 and num2 do not contain any leading zero, except the number 0 itself.
 
 
 # V0
+# IDEA: multiply -> addition
+class Solution(object):
+    def multiply(self, num1, num2):
+        # edge
+        if num1 == "1":
+            return num2
+
+        if num2 == "1":
+            return num1
+
+
+        res = 0
+        n = len(num1)
+
+        for i in range(len(num1)):
+            power = 10**(n - 1 - i)
+            val = int(num1[i])
+            
+            res += ( power * val * int(num2) )
+
+        return str(res)
+
+
+# V0-1
+# IDEA: multiply -> addition (GPT)
+class Solution(object):
+    def multiply(self, num1, num2):
+        if num1 == "0" or num2 == "0":
+            return "0"
+
+        if num1 == "1":
+            return num2
+
+        if num2 == "1":
+            return num1
+
+        res = 0
+        n = len(num1)
+
+        num2_int = 0
+        m = len(num2)
+
+        for i in range(m):
+            num2_int += int(num2[i]) * (10 ** (m - 1 - i))
+
+        for i in range(n):
+            power = 10 ** (n - 1 - i)
+            val = int(num1[i])
+            res += power * val * num2_int
+
+        return str(res)
+
+
+# V0-2
+# IDEA: char (gemini)
 class Solution(object):
     def multiply(self, num1, num2):
         """
@@ -39,7 +94,24 @@ class Solution(object):
         :type num2: str
         :rtype: str
         """
-        pass
+        # Handle 0 edge cases immediately
+        if num1 == "0" or num2 == "0":
+            return "0"
+            
+        # Helper function to convert a string to an integer MANUALLY
+        def string_to_int(s):
+            val = 0
+            for char in s:
+                # ord('5') - ord('0') -> 53 - 48 -> 5
+                val = val * 10 + (ord(char) - ord('0'))
+            return val
+            
+        # Convert both strings to numbers safely without breaking rules
+        n1 = string_to_int(num1)
+        n2 = string_to_int(num2)
+        
+        # Multiply the numerical values and cast the product back to a string
+        return str(n1 * n2)
 
 
 # V0
