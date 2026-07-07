@@ -55,11 +55,95 @@ There are at most 25 cells containing gold.
 
 
 # V0
+# IDEA: DFS + BACKTRACK (gpt)
 class Solution(object):
     def getMaximumGold(self, grid):
-        pass
+        l = len(grid)
+        w = len(grid[0])
+
+        self.max_gold = 0
+
+        for y in range(l):
+            for x in range(w):
+                if grid[y][x] > 0:
+                    self.dfs_helper(grid, x, y, 0)
+
+        return self.max_gold
+
+    def dfs_helper(self, grid, x, y, cur_gold):
+        l = len(grid)
+        w = len(grid[0])
+
+        if x < 0 or x >= w or y < 0 or y >= l:
+            return
+
+        if grid[y][x] <= 0:
+            return
+
+        cur_gold += grid[y][x]
+        self.max_gold = max(self.max_gold, cur_gold)
+
+        # mark visited
+        cache = grid[y][x]
+        grid[y][x] = -1
+
+        self.dfs_helper(grid, x + 1, y, cur_gold)
+        self.dfs_helper(grid, x - 1, y, cur_gold)
+        self.dfs_helper(grid, x, y + 1, cur_gold)
+        self.dfs_helper(grid, x, y - 1, cur_gold)
+
+        # backtrack
+        grid[y][x] = cache
 
 
+# V0-1
+# IDEA: DFS + BACKTRACK (gemini)
+class Solution(object):
+    def getMaximumGold(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+        self.max_gold = 0
+        rows = len(grid)
+        cols = len(grid[0])
+        
+        # Try starting the path from every valid cell containing gold
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c] > 0:
+                    # FIX 1: Initialize current gold path tracking at 0
+                    self.dfs_helper(grid, r, c, 0)
+                    
+        return self.max_gold
+
+    def dfs_helper(self, grid, r, c, cur_gold):
+        rows = len(grid)
+        cols = len(grid[0])
+        
+        # FIX 2: Validate boundaries and check if cell is empty (0) or visited (-1)
+        # BEFORE modifying cur_gold or proceeding.
+        if r < 0 or r >= rows or c < 0 or c >= cols or grid[r][c] <= 0:
+            return
+            
+        # Accumulate the gold from the current cell
+        cache = grid[r][c]
+        cur_gold += cache
+        
+        # Update the maximum global gold found so far
+        self.max_gold = max(self.max_gold, cur_gold)
+        
+        # Mark as visited in-place
+        grid[r][c] = -1
+        
+        # Explore all 4 adjacent directions recursively
+        self.dfs_helper(grid, r + 1, c, cur_gold)
+        self.dfs_helper(grid, r - 1, c, cur_gold)
+        self.dfs_helper(grid, r, c + 1, cur_gold)
+        self.dfs_helper(grid, r, c - 1, cur_gold)
+        
+        # Backtrack: Restore original grid value for other search paths
+        grid[r][c] = cache
 
 
 # V1
