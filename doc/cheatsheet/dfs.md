@@ -1597,6 +1597,169 @@ def count_unreachable_pairs_uf(n, edges):
 
 ---
 
+### Template 12: Grid DFS + Backtracking — 3 Styles Compared (LC 1219 Path with Maximum Gold)
+
+> **Problem**: In an `m x n` grid, collect the most gold on a single path. You may start/stop
+> at any gold cell, move up/down/left/right, never revisit a cell, and never step on a `0` cell.
+> Since a path can start anywhere, we launch a DFS from **every** gold cell.
+> Because paths overlap across different start cells, we **backtrack** (restore the cell) after
+> each DFS so the grid is clean for the next launch.
+>
+> Source: [`path-with-maximum-gold.py`](../../leetcode_python/Backtracking/path-with-maximum-gold.py)
+
+All three versions are correct. They differ in **where** three decisions are made:
+1. **Guard** — is the neighbor valid (in-bounds + gold + not visited)?
+2. **Accumulate** — where does `cur_gold` get the current cell added?
+3. **Update max** — where do we record `self.max_gold`?
+
+#### Quick Comparison
+
+| | **V0-1** — validate in child | **V0-2** — validate before call | **V0-3** — update max in loop |
+|---|---|---|---|
+| **Neighbor loop** | 4 explicit recursive calls | `for m in moves:` | `for m in moves:` |
+| **Guard location** | **top of child** (base case) | **before** the recursive call | **before** the recursive call |
+| **Accumulate `cur_gold`** | inside child (`+= grid[r][c]`) | at call site (`cur_gold + grid[..]`) | at call site (`cur_gold + grid[..]`) |
+| **Start value passed** | `0` | `grid[start]` | `grid[start]` |
+| **Update `max_gold`** | top of child (once per cell) | top of child (once per cell) | inside loop (per neighbor) — **needs seed** |
+| **Extra recursive calls?** | Yes — invalid neighbors still call+return | No — only valid neighbors recurse | No — only valid neighbors recurse |
+| **Handles isolated start cell?** | ✅ automatic | ✅ automatic | ⚠️ only via caller seed |
+| **Verdict** | ✅ cleanest default | ✅ efficient, idiomatic | ⚠️ works, but fragile — avoid |
+
+**Mental model of the difference:** V0-1 pushes the validity check *down* into the callee ("the
+child decides if it should exist") — so the base case doubles as the guard. V0-2 / V0-3 pull it
+*up* into the caller ("the parent only calls valid children") — so there is no wasted stack frame,
+but the start cell must be validated separately (done by `if grid[y][x] > 0` in the launch loop).
+
+#### V0-1 — Validate inside the child (recommended default)
+
+```python
+# python — LC 1219
+# GUARD lives at the top of the child → doubles as the recursion base case.
+# Cleanest to reason about: you may call dfs() on ANY coordinate (even off-grid);
+# the child rejects itself. Cost: every invalid neighbor still spends one call frame.
+class Solution:
+    def getMaximumGold(self, grid):
+        self.max_gold = 0
+        rows, cols = len(grid), len(grid[0])
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c] > 0:
+                    self.dfs(grid, r, c, 0)   # start value = 0
+        return self.max_gold
+
+    def dfs(self, grid, r, c, cur_gold):
+        rows, cols = len(grid), len(grid[0])
+        # (1) GUARD: out of bounds OR empty(0) OR visited(-1) → stop
+        if r < 0 or r >= rows or c < 0 or c >= cols or grid[r][c] <= 0:
+            return
+        cache = grid[r][c]
+        cur_gold += cache                                  # (2) ACCUMULATE here
+        self.max_gold = max(self.max_gold, cur_gold)       # (3) UPDATE MAX per cell entry
+        grid[r][c] = -1                                    # mark visited
+        # recurse into ALL 4 dirs unconditionally — guard filters at the top
+        self.dfs(grid, r + 1, c, cur_gold)
+        self.dfs(grid, r - 1, c, cur_gold)
+        self.dfs(grid, r, c + 1, cur_gold)
+        self.dfs(grid, r, c - 1, cur_gold)
+        grid[r][c] = cache                                 # BACKTRACK: restore
+```
+
+**When to use:** your **default** for grid DFS. Fewest ways to get it wrong — the start cell and
+neighbors go through the *same* guard, so there is no special-casing. Prefer it when clarity matters
+or when the start cell might itself be invalid.
+
+#### V0-2 — Validate before the call, accumulate at the call site
+
+```python
+# python — LC 1219
+# GUARD is inline BEFORE each recursive call → no wasted frames on invalid neighbors.
+# The launch loop's `if grid[y][x] > 0` validates the START cell (child no longer does).
+class Solution:
+    def getMaximumGold(self, grid):
+        self.max_gold = 0
+        L, W = len(grid), len(grid[0])
+        for y in range(L):
+            for x in range(W):
+                if grid[y][x] > 0:
+                    self.dfs(grid, x, y, grid[y][x])   # start value = the cell itself
+        return self.max_gold
+
+    def dfs(self, grid, x, y, cur_gold):
+        L, W = len(grid), len(grid[0])
+        self.max_gold = max(self.max_gold, cur_gold)   # (3) UPDATE MAX per cell entry — safe
+        cache = grid[y][x]
+        grid[y][x] = -1                                # mark visited
+        moves = [[-1, 0], [1, 0], [0, 1], [0, -1]]
+        for dx, dy in moves:
+            x_, y_ = x + dx, y + dy
+            # (1) GUARD before recursing  +  (2) ACCUMULATE at the call site
+            if 0 <= x_ < W and 0 <= y_ < L and grid[y_][x_] > 0:
+                self.dfs(grid, x_, y_, cur_gold + grid[y_][x_])
+        grid[y][x] = cache                             # BACKTRACK: restore
+```
+
+**When to use:** when you want the **efficient / idiomatic competitive** form — a `moves` array
+scales cleanly to 8-direction or diagonal problems, and you skip the useless calls into walls.
+Because `max_gold` is still updated at **entry** (before the loop), an isolated start cell is scored
+correctly with no extra code. This is the version to reach for once you're comfortable.
+
+#### V0-3 — Update max inside the loop (works, but fragile — avoid)
+
+```python
+# python — LC 1219
+# Same structure as V0-2, BUT max_gold is updated INSIDE the loop (on `next_gold`),
+# not at cell entry. Consequence: the entry cell is never scored by the DFS itself,
+# so a lone gold cell with no gold neighbors would be missed → the launch loop must
+# SEED max_gold with grid[y][x]. That extra dependency is exactly what makes it fragile.
+class Solution:
+    def getMaximumGold(self, grid):
+        self.max_gold = 0
+        L, W = len(grid), len(grid[0])
+        for y in range(L):
+            for x in range(W):
+                if grid[y][x] > 0:
+                    self.max_gold = max(self.max_gold, grid[y][x])  # ⚠️ REQUIRED seed
+                    self.dfs(grid, x, y, grid[y][x])
+        return self.max_gold
+
+    def dfs(self, grid, x, y, cur_gold):
+        L, W = len(grid), len(grid[0])
+        cache = grid[y][x]
+        grid[y][x] = -1                                # mark visited (once per frame)
+        moves = [[-1, 0], [1, 0], [0, 1], [0, -1]]
+        for dx, dy in moves:
+            x_, y_ = x + dx, y + dy
+            if 0 <= x_ < W and 0 <= y_ < L and grid[y_][x_] > 0:
+                # NOTE: do NOT mark/unmark grid[y][x] here inside the loop.
+                # Marking is per-cell-entry, not per-neighbor: the same cell is
+                # explored by all 4 branches of THIS frame; re-marking each
+                # iteration would corrupt the shared state.
+                next_gold = cur_gold + grid[y_][x_]
+                self.max_gold = max(self.max_gold, next_gold)   # (3) UPDATE MAX in loop
+                self.dfs(grid, x_, y_, next_gold)
+        grid[y][x] = cache                             # BACKTRACK: restore
+```
+
+**When to use:** effectively **never** as a first choice. It's included to show the trap: moving the
+max-update into the loop makes the entry cell invisible to the DFS, forcing the caller-side seed.
+Miss that one line and single-cell (or fully-isolated) inputs silently return `0`. Prefer V0-1 / V0-2.
+
+#### Things to note (all versions)
+
+- **Backtracking is mandatory here**, not optional. A path may start from many cells and paths
+  overlap; restoring `grid[r][c] = cache` after the recursion lets later launches reuse the cell.
+  Contrast with plain "count islands" (LC 200) where you mark-and-never-restore.
+- **In-place visited marking** (`-1` / `0`) avoids an extra `visited` set — fine because we undo it.
+  The guard treats *empty* and *visited* uniformly (`<= 0`), so no separate visited check is needed.
+- **Mark/unmark exactly once per frame**, wrapping the neighbor exploration — never per neighbor.
+- **Where you update max determines whether you need a seed**: update at *cell entry* (V0-1/V0-2) and
+  every cell (including isolated ones) is counted for free; update *per neighbor* (V0-3) and you owe
+  the caller a seed for the start cell.
+- **Complexity** (all three): `time = O(4^k)` worst case where `k ≤ 25` is the number of gold cells
+  (each cell branches into ≤3 unvisited neighbors after the first); `space = O(k)` recursion depth.
+
+---
+
 - Assign sub tree to node, then return updated node at final stage (Important !!!!)
 
 ```java

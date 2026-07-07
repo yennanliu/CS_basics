@@ -237,6 +237,23 @@ class Solution(object):
             y_ = y + m[1]
             
             if 0 <= x_ < w and 0 <= y_ < l and grid[y_][x_] > 0:
+
+            	"""
+            	NOTE !!!
+
+
+            	we DON'T do below in `for m in moves` loop,
+
+            		```
+            		cache = grid[y][x]
+			        grid[y][x] = -1
+			        ```
+            	since:
+
+            		-> same cell CAN be visited serverl times
+            		   by different DFS recursion calls
+
+            	"""
                 next_gold = cur_gold + grid[y_][x_]
                 
                 # Update global tracking directly inside the loop step
