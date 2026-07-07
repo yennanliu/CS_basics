@@ -92,6 +92,13 @@ class Solution(object):
         self.dfs_helper(grid, x, y + 1, cur_gold)
         self.dfs_helper(grid, x, y - 1, cur_gold)
 
+
+        """
+        NOTE !!!
+
+
+        -> undo the grid `state` (e.g. backtrack) 
+        """
         # backtrack
         grid[y][x] = cache
 
@@ -144,6 +151,102 @@ class Solution(object):
         
         # Backtrack: Restore original grid value for other search paths
         grid[r][c] = cache
+
+
+
+# V0-2
+# IDEA: DFS (for loop in moves V1) + BACKTRACK (gemini)
+class Solution(object):
+    def getMaximumGold(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+        self.max_gold = 0
+        l = len(grid)
+        w = len(grid[0])
+        
+        for y in range(l):
+            for x in range(w):
+                if grid[y][x] > 0:
+                    # Pass the initial grid[y][x] value as the starting cur_gold
+                    self.dfs_helper(grid, x, y, grid[y][x])
+                    
+        return self.max_gold
+
+    def dfs_helper(self, grid, x, y, cur_gold):
+        l = len(grid)
+        w = len(grid[0])
+        
+        # Update the global maximum with our current valid accumulated path total
+        self.max_gold = max(self.max_gold, cur_gold)
+        
+        # Mark current cell as visited in-place
+        cache = grid[y][x]
+        grid[y][x] = -1
+        
+        # Explore neighbors using your specific move matrix layout
+        moves = [[-1, 0], [1, 0], [0, 1], [0, -1]]
+        for m in moves:
+            x_ = x + m[0]
+            y_ = y + m[1]
+            
+            # Inline boundary check and validation before making the call
+            if 0 <= x_ < w and 0 <= y_ < l and grid[y_][x_] > 0:
+                self.dfs_helper(grid, x_, y_, cur_gold + grid[y_][x_])
+                
+        # Backtrack: Restore the cell value for other search paths
+        grid[y][x] = cache
+
+
+
+# V0-3
+# IDEA: DFS (for loop in moves V2) + BACKTRACK (gemini)
+class Solution(object):
+    def getMaximumGold(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+        self.max_gold = 0
+        l = len(grid)
+        w = len(grid[0])
+        
+        for y in range(l):
+            for x in range(w):
+                if grid[y][x] > 0:
+                    # Initialize max_gold with the starting cell's value 
+                    # to cover single-cell configurations safely
+                    self.max_gold = max(self.max_gold, grid[y][x])
+                    self.dfs_helper(grid, x, y, grid[y][x])
+                    
+        return self.max_gold
+
+    def dfs_helper(self, grid, x, y, cur_gold):
+        l = len(grid)
+        w = len(grid[0])
+        
+        # Mark current cell as visited in-place
+        cache = grid[y][x]
+        grid[y][x] = -1
+        
+        # Explore neighbors 
+        moves = [[-1, 0], [1, 0], [0, 1], [0, -1]]
+        for m in moves:
+            x_ = x + m[0]
+            y_ = y + m[1]
+            
+            if 0 <= x_ < w and 0 <= y_ < l and grid[y_][x_] > 0:
+                next_gold = cur_gold + grid[y_][x_]
+                
+                # Update global tracking directly inside the loop step
+                self.max_gold = max(self.max_gold, next_gold)
+                
+                self.dfs_helper(grid, x_, y_, next_gold)
+                
+        # Backtrack: Restore the cell value 
+        grid[y][x] = cache
+
 
 
 # V1
