@@ -48,6 +48,71 @@ Constraints:
 
 """
 
+# V0
+# IDEA: GREEDY (gpt)
+# NOTE: this LC is `int` to `roman`,
+#       NOT `roman` to int (LC 13)
+class Solution(object):
+    def intToRoman(self, num):
+        values = [
+            (1000, "M"),
+            (900, "CM"),
+            (500, "D"),
+            (400, "CD"),
+            (100, "C"),
+            (90, "XC"),
+            (50, "L"),
+            (40, "XL"),
+            (10, "X"),
+            (9, "IX"),
+            (5, "V"),
+            (4, "IV"),
+            (1, "I"),
+        ]
+
+        ans = []
+
+        for value, symbol in values:
+            while num >= value:
+                ans.append(symbol)
+                num -= value
+
+        return "".join(ans)
+
+
+
+# V0-1
+# IDEA: GREEDY (gemini)
+class Solution(object):
+    def intToRoman(self, num):
+        """
+        :type num: int
+        :rtype: str
+        """
+        # Define all Roman numeral building blocks in descending order
+        roman_mapping = [
+            (1000, "M"), (900, "CM"), (500, "D"), (400, "CD"),
+            (100, "C"),  (90, "XC"),  (50, "L"),  (40, "XL"),
+            (10, "X"),   (9, "IX"),   (5, "V"),   (4, "IV"),
+            (1, "I")
+        ]
+        
+        res = []
+        
+        # Greedily match and subtract values
+        for value, symbol in roman_mapping:
+            if num == 0:
+                break
+                
+            # Determine how many times this Roman numeral fits into the remaining value
+            count = num // value
+            if count > 0:
+                res.append(symbol * count)
+                num -= value * count
+                
+        return "".join(res)
+
+
 # V0 
 # IDEA
 # In [8]: 1200%100
