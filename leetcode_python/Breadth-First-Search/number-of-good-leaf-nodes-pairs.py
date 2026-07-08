@@ -55,6 +55,59 @@ class Solution(object):
     	pass
 
 
+# V0-1
+# IDEA: BFS + graph (node <-> parent) (GPT)
+from collections import defaultdict, deque
+
+class Solution(object):
+    def countPairs(self, root, distance):
+
+        self.graph = defaultdict(list)
+        self.leaves = []
+
+        self.build_graph(root, None)
+
+        ans = 0
+
+        for start in self.leaves:
+
+            q = deque([(start, 0)])
+            visited = {start}
+
+            while q:
+                node, dist = q.popleft()
+
+                if node != start and not node.left and not node.right:
+                    ans += 1
+
+                if dist == distance:
+                    continue
+
+                for nxt in self.graph[node]:
+                    if nxt not in visited:
+                        visited.add(nxt)
+                        q.append((nxt, dist + 1))
+
+        return ans // 2
+
+    def build_graph(self, node, parent):
+
+        if not node:
+            return
+
+        self.graph[node]
+
+        if parent:
+            self.graph[node].append(parent)
+            self.graph[parent].append(node)
+
+        if not node.left and not node.right:
+            self.leaves.append(node)
+
+        self.build_graph(node.left, node)
+        self.build_graph(node.right, node)
+
+
 
 # V1-1
 # IDEA: BFS (gemini)
