@@ -919,6 +919,114 @@ public boolean isSubsequence(String s, String t) {
 - LC 524 Longest Word in Dictionary through Deleting
 - LC 792 Number of Matching Subsequences
 
+#### 0-2-5a) Longest Word in Dictionary through Deleting (LC 524) ⭐⭐⭐⭐
+
+**Core Idea**
+
+> LC 524 is **LC 392 (Is Subsequence) run once per dictionary word**, wrapped in a
+> "keep the best valid word so far" layer. The two-pointer subsequence check is
+> identical — the only new part is the **tie-break rule** when picking the winner.
+
+Given `s` and a `dictionary`, return the longest word that is a **subsequence** of `s`.
+On a length tie, return the **smallest lexicographical** one.
+
+For each `word`:
+1. **Subsequence check** (same as LC 392): scan `s` with pointer `i`, advance `word`
+   pointer `j` only on a match. `j == len(word)` at the end ⇒ `word` is a subsequence.
+2. **Candidate selection**: keep `word` if it beats the current best on `(length, lexicographic)`.
+
+```
+s = "abpcplea",  word = "apple"
+
+ a b p c p l e a       i=0 j=0  s[i]=a == a → j=1, i=1
+ i,j
+ a b p c p l e a       i=1 j=1  s[i]=b != p → i=2
+   i j
+ a b p c p l e a       i=2 j=1  s[i]=p == p → j=2, i=3
+     i j
+ ...                   → eventually j == 5 == len("apple") ✅ subsequence
+```
+
+**Pattern — 2 pointers + string comparison (`word < res`)**
+
+```python
+# python
+# LC 524 Longest Word in Dictionary through Deleting
+# V0 — IDEA: 2 POINTERS + string comparison (word < res)
+# time = O(d * (n + l)), space = O(1)   (d = #words, n = len(s), l = word len)
+class Solution(object):
+    def findLongestWord(self, s, dictionary):
+        res = ""
+
+        for word in dictionary:
+            i = 0   # pointer for s (main string)
+            j = 0   # pointer for word (target subsequence)
+
+            # ---- LC 392 subsequence check: always move i, move j on match ----
+            while i < len(s) and j < len(word):
+                if s[i] == word[j]:
+                    j += 1
+                i += 1
+
+            # whole word matched (word is a subsequence of s)
+            if j == len(word):
+                # NOTE !!! tie-break rule:
+                #   longer wins; on equal length, smaller lexicographic wins
+                if len(word) > len(res):
+                    res = word
+                elif len(word) == len(res) and word < res:
+                    res = word   # `word < res` → true string lexicographic compare
+
+        return res
+```
+
+> **NOTE on `word < res`**: Python compares strings **lexicographically** (dictionary
+> order) out of the box — `"apple" < "apply"` is `True`. This one line replaces an
+> explicit char-by-char comparison. See
+> [python_trick.md](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/python_trick.md).
+
+**Alternative — sort first, return the first match (no tie-break logic)**
+
+```python
+# python
+# V0-1 — IDEA: SORT (len DESC, lexicographic ASC) + 2 pointers
+# time = O(d log d + d * n), space = O(1)
+class Solution(object):
+    def findLongestWord(self, s, dictionary):
+        # longest first; ties broken by lexicographic ascending
+        dictionary.sort(key=lambda x: (-len(x), x))
+        for word in dictionary:
+            i = j = 0
+            while i < len(s) and j < len(word):
+                if s[i] == word[j]:
+                    j += 1
+                i += 1
+            if j == len(word):
+                return word   # first fit IS the answer (sorted order guarantees it)
+        return ""
+```
+
+**Two ways to handle the "longest + smallest lexicographic" requirement**
+
+| Approach | How the winner is chosen | Trade-off |
+|----------|--------------------------|-----------|
+| **Scan + compare** (`V0`) | keep best via `(len(word) > len(res))` and `word < res` | no sort — `O(1)` extra, but tie-break logic inline |
+| **Sort + first-fit** (`V0-1`) | `sort(key=lambda x: (-len(x), x))`, return first subsequence | cleaner loop, but `O(d log d)` sort up front |
+
+> **Pitfall**: don't `return word` on the first subsequence found **without sorting** —
+> a later word may be longer or (same length) lexicographically smaller. Either sort
+> first (V0-1) *or* compare against the running best (V0), never mix them.
+
+**Similar Problems**
+
+| Problem | LC# | Relation to LC 524 |
+|---------|-----|--------------------|
+| Is Subsequence | 392 | the inner check — is one string a subsequence of another |
+| Longest Word through Deleting | **524** | LC 392 per word + longest/lexicographic tie-break |
+| Number of Matching Subsequences | 792 | count how many words are subsequences (bucket by next-char for scale) |
+| Shortest Way to Form String | 1055 | greedy repeated subsequence matching |
+| Append Characters to Make Subsequence | 2486 | single subsequence scan, count leftover chars |
+
 #### 0-2-5b) One Edit Distance (Insert / Delete / Replace)
 
 **Core Idea:**
