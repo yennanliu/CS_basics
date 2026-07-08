@@ -46,13 +46,73 @@ The start point of each interval is unique.
 
 
 # V0
+# IDEA: SORT + HASHMAP (TLE) (gpt)
+class Solution(object):
+    def findRightInterval(self, intervals):
+        n = len(intervals)
+
+        res = [-1] * n
+
+        # Make a copy
+        # NOTE !!! how we make copy in py
+        intervals_cache = intervals[:]
+
+        # Sort by start
+        intervals.sort(key=lambda x: x[0])
+
+        # sorted index -> original index
+        idx_map = {}
+
+        for i in range(n):
+            for j in range(n):
+                if intervals[i][0] == intervals_cache[j][0]:
+                    idx_map[i] = j
+                    break
+
+        for i in range(n):
+            for j in range(i + 1, n):
+                if intervals[j][0] >= intervals[i][1]:
+                    res[idx_map[i]] = idx_map[j]
+                    break
+
+        return res
+
+
+
+# V0-1
+# IDEA: binary search (gemini)
+import bisect
+
 class Solution(object):
     def findRightInterval(self, intervals):
         """
         :type intervals: List[List[int]]
         :rtype: List[int]
         """
-        pass 
+        n = len(intervals)
+        res = [-1] * n
+        
+        # Step 1: Create a sorted list of lists containing [start_val, original_idx]
+        # This preserves the original index mapping securely without a messy dictionary lookup
+        starts = sorted([[interval[0], i] for i, interval in enumerate(intervals)], key=lambda x: x[0])
+        
+        # Step 2: Extract just the sorted start values to use with Python's bisect tool
+        just_starts = [x[0] for x in starts]
+        
+        # Step 3: Iterate over the original intervals and binary search for their right interval
+        for i, interval in enumerate(intervals):
+            end_val = interval[1]
+            
+            # Find the smallest start value that is >= the current interval's end value
+            idx = bisect.bisect_left(just_starts, end_val)
+            
+            # If a valid index is found inside the bounds of the list
+            if idx < n:
+                # Map the sorted index back to its original index position
+                res[i] = starts[idx][1]
+                
+        return res
+
 
 # V1 
 # http://bookshadow.com/weblog/2016/10/30/leetcode-find-right-interval/

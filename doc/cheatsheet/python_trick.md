@@ -178,6 +178,72 @@ In [33]: x
 Out[33]: [1, 2, 3, 4]
 ```
 
+### 0-2') Which copy `duplicates` an INDEPENDENT object (NOT affected by updating the original)?
+
+**The question:** how do we make a copy so that mutating the *original* does NOT
+affect the *copy* (and vice versa)?
+
+```python
+# ── The idiom you'll see everywhere (shallow copy of a list) ──
+# NOTE !!! how we make copy in py
+intervals_cache = intervals[:]        # copy 1) slice
+intervals_cache = intervals.copy()    # copy 2) .copy()  (same effect)
+intervals_cache = list(intervals)     # copy 3) list()   (same effect)
+```
+
+**Key distinction — it depends on whether the list is FLAT or NESTED:**
+
+```python
+#----------------------------------------------------------
+# CASE A) FLAT list (ints, strings, …) → shallow copy IS enough
+#----------------------------------------------------------
+original = [1, 2, 3]
+copy_    = original[:]         # independent copy
+
+original.append(4)
+original[0] = 99
+print(original)   # [99, 2, 3, 4]
+print(copy_)      # [1, 2, 3]     ← NOT affected  ✅
+
+#----------------------------------------------------------
+# CASE B) NESTED list (list of lists / objects) → shallow copy is NOT enough
+#----------------------------------------------------------
+original = [[1, 2], [3, 4]]
+shallow  = original[:]        # copies OUTER list only; inner lists are SHARED
+
+original.append([5, 6])       # outer-level change → safe
+print(shallow)                # [[1, 2], [3, 4]]   ← NOT affected  ✅
+
+original[0][0] = 99           # inner-level change → LEAKS through!
+print(shallow)                # [[99, 2], [3, 4]]  ← AFFECTED  ❌
+
+# → to be FULLY independent, use deepcopy:
+import copy
+deep = copy.deepcopy(original)
+original[0][0] = -1
+print(deep)                   # inner list unchanged  ✅
+```
+
+**Decision table — "I want a copy the original CANNOT affect"**
+
+| Data shape | Use | Independent? |
+|------------|-----|--------------|
+| `x = y`  (assignment) | — | ❌ same object, all changes leak |
+| Flat list `[1,2,3]` | `x[:]` / `x.copy()` / `list(x)` | ✅ fully independent |
+| Nested list `[[..],[..]]` | `x[:]` (shallow) | ⚠️ outer only — inner leaks |
+| Nested list / dict / objects | `copy.deepcopy(x)` | ✅ fully independent |
+| Dict (flat values) | `d.copy()` / `dict(d)` / `{**d}` | ✅ (values shared if mutable) |
+
+**Rule of thumb**
+- `[:]`, `.copy()`, `list()` → **shallow**: safe only when elements are *immutable*
+  (int, str, tuple) OR you only mutate the top level.
+- `copy.deepcopy()` → **deep**: safe for any nesting, but slower — use only when you
+  actually mutate nested elements.
+
+> Classic backtracking use (see LC 77 above): `result.append(current[:])` snapshots the
+> *current* path so later `current.pop()` / `current.append()` don't corrupt the saved
+> result — works because path elements are immutable ints.
+
 ### 1-1) Or logic for either existed element
 ```python
 In [8]: def test(l1, l2):
