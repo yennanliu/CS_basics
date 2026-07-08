@@ -46,22 +46,53 @@ The start point of each interval is unique.
 
 # V0
 # IDEA: BINRARY SEARCH (gpt)
+"""
+Steps:
+
+
+1. Store every interval's start together with its original index.
+
+2. Sort these pairs by start.
+
+3. For each interval [start, end], 
+   binary search for the smallest start ≥ end.
+
+
+4. If found, return its original index;
+   otherwise return -1.
+
+
+"""
 class Solution(object):
     def findRightInterval(self, intervals):
         n = len(intervals)
 
+        """
+        NOTE !!!
+
+
+        -> we collect both `start val` and `original idx`
+        """
         # (start, original_index)
         starts = []
         for i in range(n):
             starts.append((intervals[i][0], i))
 
+        # sort on first element (small -> big)
         starts.sort()
 
+        # init as -1
         res = [-1] * n
 
         for i in range(n):
             target = intervals[i][1]
 
+            """
+            NOTE !!!
+
+
+            -> search for `first` start >= target
+            """
             # Binary search for first start >= target
             left, right = 0, n - 1
             ans = -1
@@ -71,6 +102,8 @@ class Solution(object):
 
                 if starts[mid][0] >= target:
                     ans = starts[mid][1]
+                    # NOTE !!!
+                    # even found, still try to find a `smaller` start
                     right = mid - 1
                 else:
                     left = mid + 1
