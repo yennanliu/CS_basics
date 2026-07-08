@@ -44,6 +44,85 @@ The start point of each interval is unique.
 
 """
 
+# V0
+# IDEA: BINRARY SEARCH (gpt)
+class Solution(object):
+    def findRightInterval(self, intervals):
+        n = len(intervals)
+
+        # (start, original_index)
+        starts = []
+        for i in range(n):
+            starts.append((intervals[i][0], i))
+
+        starts.sort()
+
+        res = [-1] * n
+
+        for i in range(n):
+            target = intervals[i][1]
+
+            # Binary search for first start >= target
+            left, right = 0, n - 1
+            ans = -1
+
+            while left <= right:
+                mid = (left + right) // 2
+
+                if starts[mid][0] >= target:
+                    ans = starts[mid][1]
+                    right = mid - 1
+                else:
+                    left = mid + 1
+
+            res[i] = ans
+
+        return res
+
+
+
+# V0-1
+# IDEA: BINRARY SEARCH (GEMINI)
+class Solution(object):
+    def findRightInterval(self, intervals):
+        """
+        :type intervals: List[List[int]]
+        :rtype: List[int]
+        """
+        n = len(intervals)
+        res = [-1] * n
+        
+        # Step 1: Store intervals with their original index: [start, end, original_idx]
+        indexed_intervals = []
+        for i in range(n):
+            indexed_intervals.append([intervals[i][0], intervals[i][1], i])
+            
+        # Step 2: Sort based on the start time (index 0)
+        indexed_intervals.sort(key=lambda x: x[0])
+        
+        # Step 3: Iterate through each original interval and binary search for the right interval
+        for i in range(n):
+            target_end = intervals[i][1]
+            
+            # Manual Binary Search (Lower Bound Search)
+            left = 0
+            right = n - 1
+            best_idx = -1
+            
+            while left <= right:
+                mid = left + (right - left) // 2
+                
+                # If the current mid interval's start is valid (>= target_end)
+                if indexed_intervals[mid][0] >= target_end:
+                    best_idx = indexed_intervals[mid][2] # Record its original index
+                    right = mid - 1                     # Try to find an even smaller valid start
+                else:
+                    left = mid + 1                      # Too small, move right
+                    
+            res[i] = best_idx
+            
+        return res
+
 
 # V0
 # IDEA: SORT + HASHMAP (TLE) (gpt)
