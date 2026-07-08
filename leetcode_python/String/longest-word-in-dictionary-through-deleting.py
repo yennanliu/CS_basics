@@ -32,6 +32,32 @@ s and dictionary[i] consist of lowercase English letters.
 
 
 # V0
+# IDEA: 2 POINTERS +  string comparision (`word < res`) (gpt)
+class Solution(object):
+    def findLongestWord(self, s, dictionary):
+        res = ""
+
+        for word in dictionary:
+            i = 0
+            j = 0
+
+            while i < len(s) and j < len(word):
+                if s[i] == word[j]:
+                    j += 1
+                i += 1
+
+            # Whole word matched
+            if j == len(word):
+                if len(word) > len(res):
+                    res = word
+                elif len(word) == len(res) and word < res:
+                    res = word
+
+        return ress
+
+
+# V0-1
+# IDEA: SORT + 2 POINTERS +  string comparision (`word < res`) (gemini)
 class Solution(object):
     def findLongestWord(self, s, dictionary):
         """
@@ -39,7 +65,28 @@ class Solution(object):
         :type dictionary: List[str]
         :rtype: str
         """
-        pass
+        # Step 1: Sort the dictionary.
+        # Primary key: -len(x) sorts by length in descending order (longest first)
+        # Secondary key: x sorts alphabetically in ascending order (a-z)
+        dictionary.sort(key=lambda x: (-len(x), x))
+        
+        # Step 2: Test each word in order. The first one that fits is our winner!
+        for word in dictionary:
+            i = 0  # Pointer for string s
+            j = 0  # Pointer for current word
+            
+            # Scan through s to see if 'word' is a valid subsequence
+            while i < len(s) and j < len(word):
+                if s[i] == word[j]:
+                    j += 1
+                i += 1
+                
+            # If j reached the end of the word, it means the whole word was found in s
+            if j == len(word):
+                return word
+                
+        return ""
+
 
 
 # V1 
@@ -67,6 +114,7 @@ class Solution(object):
         if not ans: return ''
         maxl = len(max(ans, key = len))
         return min(w for w in ans if len(w) == maxl)
+
 
 # V2 
 # Time:  O((d * l) * logd), l is the average length of words
