@@ -3529,6 +3529,115 @@ value:  2  4 [5] 5  5  5 [5] 6  6
 
 ---
 
+### 4.24) Find Right Interval (LC 436) ⭐⭐⭐⭐ — LC 436
+
+**Approach**: Sort starts + **lower-bound** binary search, mapping sorted position back to the **original index**.
+
+#### 1) Core Idea
+
+> For each interval `[start_i, end_i]`, find the interval `j` whose `start_j` is the
+> **smallest start that is `>= end_i`** — this is a **lower-bound** (first `>=` target) search.
+
+The catch: the answer must be the **original index** of that interval, but binary
+search needs the starts **sorted**. So we sort `(start, original_index)` pairs together —
+sorting keeps each start glued to its original index, so after we locate the position in
+the sorted array we can read the original index straight off the pair.
+
+```
+intervals = [[3,4],[2,3],[1,2]]   (original indices 0,1,2)
+
+sort starts with their index →  starts = [(1,2), (2,1), (3,0)]
+                                            ^val,idx
+
+For interval [2,3]:  end = 3  → first start >= 3  → (3,0) → original index 0  ✅
+For interval [1,2]:  end = 2  → first start >= 2  → (2,1) → original index 1  ✅
+For interval [3,4]:  end = 4  → no start >= 4                → -1
+```
+
+**Why binary search?** The starts are unique and, once sorted, **monotonic** — exactly the
+lower-bound predicate `start >= end_i` (False…False, True…True). Total: `O(n log n)`.
+
+#### 2) Pattern — Sort-with-index + Lower Bound
+
+```python
+# LC 436 Find Right Interval
+# V1: manual lower-bound binary search
+# time = O(n log n), space = O(n)
+class Solution(object):
+    def findRightInterval(self, intervals):
+        n = len(intervals)
+
+        # NOTE !!! collect BOTH `start val` AND `original idx`, then sort
+        # -> sorting keeps start glued to its original index
+        starts = [(intervals[i][0], i) for i in range(n)]
+        starts.sort()                          # sort by start (unique)
+
+        res = [-1] * n
+        for i in range(n):
+            target = intervals[i][1]           # we need first start >= end_i
+
+            # ---- lower bound: first start >= target ----
+            left, right, ans = 0, n - 1, -1
+            while left <= right:
+                mid = (left + right) // 2
+                if starts[mid][0] >= target:
+                    ans = starts[mid][1]       # record original index (candidate)
+                    right = mid - 1            # keep searching LEFT for a smaller start
+                else:
+                    left = mid + 1
+            res[i] = ans
+        return res
+```
+
+**Cleaner via `bisect`** (extract just the sorted starts, `bisect_left` = first `>=`):
+
+```python
+import bisect
+# time = O(n log n), space = O(n)
+class Solution(object):
+    def findRightInterval(self, intervals):
+        n = len(intervals)
+        # (start, original_idx) sorted by start
+        starts = sorted([[iv[0], i] for i, iv in enumerate(intervals)])
+        just_starts = [s[0] for s in starts]   # bisect needs a plain sorted list
+
+        res = [-1] * n
+        for i, iv in enumerate(intervals):
+            idx = bisect.bisect_left(just_starts, iv[1])   # first start >= end_i
+            if idx < n:
+                res[i] = starts[idx][1]        # map sorted pos -> original index
+        return res
+```
+
+> **Common pitfall (TLE)**: the brute-force "sort then double loop to rebuild the
+> index map" is `O(n^2)`. The whole point is to replace that inner scan with a
+> `O(log n)` lower-bound search — recognizing the **first `>=` target** shape is the key.
+
+**Sort-with-index recipe (reusable):** when a problem sorts data but the answer must be
+the *original* position, pair each value with its index **before** sorting
+(`(val, idx)`), sort the pairs, run binary search on the values, then read `pair[1]` for
+the original index. Same trick appears in LC 315 / LC 493.
+
+#### 3) Similar LC Problems
+
+| Problem | LC# | Binary-search role | Twist |
+|---------|-----|--------------------|-------|
+| **Find Right Interval** | **436** | lower bound: first `start >= end_i` | map sorted pos → original index |
+| Search Insert Position | 35 | lower bound: first `>= target` | return the insertion index itself |
+| Time Based Key-Value Store | 981 | **upper bound − 1**: floor on timestamp | per-key sorted timestamp list |
+| Two Sum II (sorted) | 167 | search complement in sorted half | two-pointer alt |
+| Find First and Last Position | 34 | left + right boundary search | two lower/upper-bound calls |
+| Count of Smaller After Self | 315 | `SortedList` + `bisect` scanning right→left | index-preserving count |
+| My Calendar I | 729 | floor/ceiling via `SortedDict` | overlap check on ordered map |
+| Data Stream as Disjoint Intervals | 352 | floor/ceiling to merge intervals | ordered interval map |
+
+> **Recognition signal**: "for each element, find the *smallest value `>=` X* (or *largest
+> `<=` X*)" over a set that can be **sorted once** → sort + lower/upper-bound binary search.
+> If the set **mutates over time**, reach for `SortedList`/`SortedDict` instead (see
+> [python_trick.md §1-27-3](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/python_trick.md)).
+
+---
+
 ## Missing Google Patterns
 
 ### Monotonic Predicate (Conceptual Foundation)
