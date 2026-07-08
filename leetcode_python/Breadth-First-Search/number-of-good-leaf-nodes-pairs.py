@@ -71,12 +71,20 @@ class Solution(object):
 
         for start in self.leaves:
 
+            # queue: [node, dist]
             q = deque([(start, 0)])
+
+            """
+            NOTE !!!
+
+            we need visited, to avoid duplicated visiting
+            """
             visited = {start}
 
             while q:
                 node, dist = q.popleft()
 
+                # if reach the `leave`, we update ans
                 if node != start and not node.left and not node.right:
                     ans += 1
 
@@ -90,6 +98,7 @@ class Solution(object):
 
         return ans // 2
 
+    # helper func (2 param: node, parent)
     def build_graph(self, node, parent):
 
         if not node:
@@ -101,6 +110,13 @@ class Solution(object):
             self.graph[node].append(parent)
             self.graph[parent].append(node)
 
+        """
+        NOTE !!!
+
+
+        we need to collect `leave`, so can
+        loop it and run BFS 
+        """
         if not node.left and not node.right:
             self.leaves.append(node)
 
