@@ -1,55 +1,69 @@
 """
-LeetCode 655. Print Binary Tree
 
-Print a binary tree in an m*n 2D string array following these rules:
 
-The row number m should be equal to the height of the given binary tree.
-The column number n should always be an odd number.
-The root node's value (in string format) should be put in the exactly middle of the first row it can be put. The column and the row where the root node belongs will separate the rest space into two parts (left-bottom part and right-bottom part). You should print the left subtree in the left-bottom part and print the right subtree in the right-bottom part. The left-bottom part and the right-bottom part should have the same size. Even if one subtree is none while the other is not, you don't need to print anything for the none subtree but still need to leave the space as large as that for the other subtree. However, if two subtrees are none, then you don't need to leave space for both of them.
-Each unused space should contain an empty string "".
-Print the subtrees following the same rules.
+655. Print Binary Tree
+Medium
+Topics
+premium lock icon
+Companies
+Given the root of a binary tree, construct a 0-indexed m x n string matrix res that represents a formatted layout of the tree. The formatted layout matrix should be constructed using the following rules:
+
+The height of the tree is height and the number of rows m should be equal to height + 1.
+The number of columns n should be equal to 2height+1 - 1.
+Place the root node in the middle of the top row (more formally, at location res[0][(n-1)/2]).
+For each node that has been placed in the matrix at position res[r][c], place its left child at res[r+1][c-2height-r-1] and its right child at res[r+1][c+2height-r-1].
+Continue this process until all the nodes in the tree have been placed.
+Any empty cells should contain the empty string "".
+Return the constructed matrix res.
+
+ 
+
 Example 1:
 
-Input:
-     1
-    /
-   2
-Output:
-[["", "1", ""],
- ["2", "", ""]]
+
+Input: root = [1,2]
+Output: 
+[["","1",""],
+ ["2","",""]]
 Example 2:
 
-Input:
-     1
-    / \
-   2   3
-    \
-     4
-Output:
-[["", "", "", "1", "", "", ""],
- ["", "2", "", "", "", "3", ""],
- ["", "", "4", "", "", "", ""]]
-Example 3:
 
-Input:
-      1
-     / \
-    2   5
-   / 
-  3 
- / 
-4 
-Output:
+Input: root = [1,2,3,null,4]
+Output: 
+[["","","","1","","",""],
+ ["","2","","","","3",""],
+ ["","","4","","","",""]]
+ 
 
-[["",  "",  "", "",  "", "", "", "1", "",  "",  "",  "",  "", "", ""]
- ["",  "",  "", "2", "", "", "", "",  "",  "",  "",  "5", "", "", ""]
- ["",  "3", "", "",  "", "", "", "",  "",  "",  "",  "",  "", "", ""]
- ["4", "",  "", "",  "", "", "", "",  "",  "",  "",  "",  "", "", ""]]
-Note: The height of binary tree is in the range of [1, 10].
+Constraints:
+
+The number of nodes in the tree is in the range [1, 210].
+-99 <= Node.val <= 99
+The depth of the tree will be in the range [1, 10].
+ 
+
+
 
 """
 
 # V0
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution(object):
+    def printTree(self, root):
+        pass
+
+
+# V0-1
+
+
+# V0-2
+
+
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79439026
