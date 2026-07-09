@@ -221,7 +221,66 @@ for (int j = 0; j < temperatures.length; j++) {
 }
 ```
 
-- monotonic stack (greedy removal pattern - Remove K Digits)
+- **monotonic stack (greedy removal pattern - Remove K Digits)** ⭐⭐⭐⭐
+
+```
+Core Idea:
+  - To make the SMALLEST number, a high-place digit weighs more than any
+    low-place digit. So a bigger digit sitting BEFORE a smaller one is bad
+    -> greedily pop it while we still have removals (k > 0).
+  - Maintain a monotonic INCREASING stack: for each incoming digit, pop the
+    stack top whenever top > digit and k > 0 (each pop uses one removal).
+  - Each digit is pushed once and popped at most once -> O(n).
+
+Pattern (3 phases):
+  1) SCAN + POP  : for each digit, pop larger tops while k > 0, then push.
+  2) TAIL CUT    : if k still > 0 (digits were non-decreasing, e.g. "12345"),
+                   remove the last k digits -> stack[:-k].
+  3) CLEAN UP    : strip leading zeros (lstrip('0')); if empty -> "0".
+
+When to Use:
+  - "Remove k elements to get the smallest/largest sequence" (order preserved)
+  - "Build lexicographically smallest/largest result by dropping elements"
+  - Result must keep the RELATIVE order of the kept elements (not sorting)
+
+Watch-outs:
+  - Leading zeros: "10200", k=1 -> "0200" -> strip -> "200"
+  - Removals left over after the scan -> cut from the TAIL, not the front
+  - Empty result -> return "0" (LC 402), or handle per-problem sentinel
+
+Similar LC:
+  - LC 402   Remove K Digits (canonical greedy monotonic removal)
+  - LC 316   Remove Duplicate Letters (greedy + "appears later" check)
+  - LC 1081  Smallest Subsequence of Distinct Characters (same as LC 316)
+  - LC 1673  Find the Most Competitive Subsequence (keep exactly n-k, min result)
+  - LC 321   Create Maximum Number (greedy pick, monotonic, two-array merge)
+```
+
+```python
+# python
+# LC 402 - Remove K Digits
+# IDEA: MONOTONIC STACK + greedy removal (pop larger digit before a smaller one)
+# time = O(n), space = O(n)
+class Solution(object):
+    def removeKdigits(self, num, k):
+        stack = []
+
+        # 1) SCAN + POP: while a bigger digit sits before current, drop it
+        for digit in num:
+            while k > 0 and stack and stack[-1] > digit:
+                stack.pop()
+                k -= 1
+            stack.append(digit)
+
+        # 2) TAIL CUT: removals left over (num was non-decreasing) -> chop the end
+        while k > 0:
+            stack.pop()
+            k -= 1
+
+        # 3) CLEAN UP: strip leading zeros; empty -> "0"
+        res = "".join(stack).lstrip('0')
+        return res if res else "0"
+```
 
 ```java
 // java
