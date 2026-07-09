@@ -4885,6 +4885,67 @@ class Solution:
 
 ---
 
+### 2-16) Print Binary Tree — LC 655
+
+> **DFS + fixed-size matrix**. Pre-compute the tree height to size a `(height+1) × (2^(height+1)-1)` string grid, place the root at the middle column, then DFS placing each child at a **halving horizontal offset** `2^(height-row-1)`.
+
+**Key idea**: the grid dimensions are fixed *before* traversal (derived purely from height), so DFS only needs `(row, col)` — no dynamic sizing. Each level down halves the horizontal spread, which mirrors how a binary tree branches.
+
+```python
+# python
+# LC 655 - Print Binary Tree
+# IDEA: DFS + matrix — size grid from height, place root center, halve offset per level
+# time = O(H * 2^H) (grid size), space = O(H * 2^H)
+class Solution(object):
+    def printTree(self, root):
+        if not root:
+            return []
+
+        # 0-based height: single node -> 0, so leaf sits on last row
+        self.height = self.get_tree_height(root)
+
+        rows = self.height + 1
+        cols = 2 ** (self.height + 1) - 1
+
+        self.matrix = [[""] * cols for _ in range(rows)]
+
+        # root goes in the middle of the top row
+        self.helper(root, 0, (cols - 1) // 2)
+        return self.matrix
+
+    def get_tree_height(self, root):
+        if not root:
+            return -1              # NOTE: -1 so a leaf has height 0
+        return 1 + max(
+            self.get_tree_height(root.left),
+            self.get_tree_height(root.right),
+        )
+
+    def helper(self, node, row, col):
+        if not node:
+            return
+        self.matrix[row][col] = str(node.val)
+        if row == self.height:      # last row -> no children to place
+            return
+        # offset HALVES each level down
+        offset = 2 ** (self.height - row - 1)
+        self.helper(node.left,  row + 1, col - offset)
+        self.helper(node.right, row + 1, col + offset)
+```
+
+**Why `get_tree_height` returns `-1` for null**: it makes a single-node tree height `0`, so `rows = 1` and the node lands on the only row. If null returned `0`, every height would be off by one and the grid would be one row too tall.
+
+**Offset intuition**: at the top row a child must jump a quarter of the whole width; one level deeper, half of that; and so on. `2^(height-row-1)` encodes exactly this geometric halving so children never collide and the layout stays symmetric.
+
+| Step | Formula | Why |
+|------|---------|-----|
+| Rows | `height + 1` | one row per level |
+| Cols | `2^(height+1) - 1` | widest possible bottom row, keeps it symmetric |
+| Root col | `(cols - 1) // 2` | dead center of top row |
+| Child offset | `2^(height - row - 1)` | halves each level so subtrees don't overlap |
+
+---
+
 ## Quick Decision Tree: Which DFS Pattern to Use?
 
 ### Decision Flowchart
