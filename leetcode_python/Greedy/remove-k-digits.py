@@ -44,7 +44,34 @@ class Solution(object):
 
 
 # V0-1
-# IDEA: STACK (gpt)
+# IDEA: MONO STACK (increasing) (gpt)
+"""
+
+Dry run
+
+
+num = "1432219"
+k = 3
+
+Process:
+
+1
+14
+143   <-- 4 > 3, pop 4
+
+13
+132   <-- 3 > 2, pop 3
+
+122
+1221  <-- 2 > 1, pop 2
+
+1219
+
+Answer:
+
+1219
+
+"""
 class Solution(object):
     def removeKdigits(self, num, k):
         stack = []

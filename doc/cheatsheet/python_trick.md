@@ -1800,6 +1800,89 @@ In [14]: x.zfill(10)
 Out[14]: '0000000001'
 ```
 
+### 1-29') strip leading / trailing chars : `lstrip`, `rstrip`, `strip`
+
+```python
+# python
+# syntax : s.lstrip(chars) / s.rstrip(chars) / s.strip(chars)
+#   - lstrip : remove matching chars from the LEFT  (leading)
+#   - rstrip : remove matching chars from the RIGHT (trailing)
+#   - strip  : remove matching chars from BOTH ends
+#   - `chars` is a SET of characters to remove (NOT a substring/prefix!)
+#   - no arg -> strips whitespace (space, \t, \n, \r ...)
+#   - it does NOT touch chars in the MIDDLE, and returns a NEW string
+```
+
+```python
+#----------------------------
+# example 1 : strip leading zeros (lstrip)
+#----------------------------
+In [1]: x = "0000123"
+In [2]: x.lstrip("0")
+Out[2]: '123'
+
+# no leading zeros -> unchanged (safe, no error)
+In [3]: y = "123"
+In [4]: y.lstrip("0")
+Out[4]: '123'
+
+# all chars match -> empty string (WATCH OUT!)
+In [5]: "0000".lstrip("0")
+Out[5]: ''
+
+#----------------------------
+# example 2 : rstrip (trailing)
+#----------------------------
+In [6]: "12300".rstrip("0")
+Out[6]: '123'
+
+In [7]: "hello!!!".rstrip("!")
+Out[7]: 'hello'
+
+# common: drop trailing newline / whitespace when reading input
+In [8]: "  line\n".rstrip()
+Out[8]: '  line'
+
+#----------------------------
+# example 3 : strip (both ends) + whitespace default
+#----------------------------
+In [9]: "  hi  ".strip()
+Out[9]: 'hi'
+
+In [10]: "xxhixx".strip("x")
+Out[10]: 'hi'
+
+#----------------------------
+# example 4 : GOTCHA — `chars` is a char SET, not a prefix string
+#----------------------------
+# removes ANY leading char that is 'a','b', or 'c' (in any order),
+# NOT the literal prefix "abc"
+In [11]: "cabbage".lstrip("abc")
+Out[11]: 'ge'          # 'c','a','b','b','a' all stripped, stops at 'g'
+
+# to remove a real PREFIX/SUFFIX (py3.9+), use removeprefix / removesuffix:
+In [12]: "test.py".removesuffix(".py")
+Out[12]: 'test'
+In [13]: "img_001".removeprefix("img_")
+Out[13]: '001'
+```
+
+**Common LC use — strip leading zeros after building a number**
+
+```python
+# LC 402. Remove K Digits
+# after building the result digits in a stack, the front may have leading zeros
+# e.g. stack -> "0200"  (must return "200", and "" must become "0")
+
+res = "".join(stack).lstrip('0')   # "0200" -> "200",  "0000" -> ""
+return res if res else "0"         # handle the all-zero / empty case
+```
+
+> **Rule of thumb**: `lstrip('0')` is the idiomatic way to normalize a numeric string
+> (drop leading zeros) — but always guard the **empty-string** result (`res or "0"`),
+> since `"0"`/`"0000"` strip down to `""`. See also [`zfill`](#1-29-fill-0-to-string)
+> for the inverse (padding zeros).
+
 ### 1-30) `collections.defaultdict`
 ```python
 # defaultdict never raises KeyError — returns a default value for missing keys
