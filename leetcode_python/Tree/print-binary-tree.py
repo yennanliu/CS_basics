@@ -60,6 +60,19 @@ class Solution(object):
 
 # V0-1
 # IDEA: DFS + matrix (gpt)
+"""
+Steps:
+
+1. Compute the tree height.
+
+2. Create a matrix of size (height+1) × (2^(height+1)-1).
+
+3. Place the root in the middle.
+
+4. DFS to place children with horizontal offsets of 2^(height-row-1).
+
+
+"""
 class Solution(object):
     def printTree(self, root):
         if not root:
