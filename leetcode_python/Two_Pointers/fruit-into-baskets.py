@@ -56,8 +56,71 @@ class Solution(object):
 
 
 # V0-1
+# IDEA: SLIDE WINDOW (gemini)
+class Solution(object):
+    def totalFruit(self, fruits):
+        """
+        :type fruits: List[int]
+        :rtype: int
+        """
+        if not fruits:
+            return 0
+            
+        # Map to track the frequency of fruit types in the active window
+        basket = {}
+        left = 0
+        max_fruit = 0
+        
+        # Expand the window using the right pointer
+        for right in range(len(fruits)):
+            current_fruit = fruits[right]
+            basket[current_fruit] = basket.get(current_fruit, 0) + 1
+            
+            # If we have collected more than 2 distinct types, shrink the window from the left
+            while len(basket) > 2:
+                left_fruit = fruits[left]
+                basket[left_fruit] -= 1
+                
+                # If a fruit type's count hits 0, remove it completely from the basket
+                if basket[left_fruit] == 0:
+                    del basket[left_fruit]
+                    
+                left += 1  # Move left pointer forward
+                
+            # The length of the valid continuous window is (right - left + 1)
+            max_fruit = max(max_fruit, right - left + 1)
+            
+        return max_fruit
+
 
 # V0-2
+# IDEA: SLIDE WINDOW (gpt)
+class Solution(object):
+    def totalFruit(self, fruits):
+        if not fruits:
+            return 0
+
+        left = 0
+        count = {}
+        max_fruit = 0
+
+        for right in range(len(fruits)):
+            fruit = fruits[right]
+            count[fruit] = count.get(fruit, 0) + 1
+
+            # Shrink the window until there are at most 2 fruit types
+            while len(count) > 2:
+                left_fruit = fruits[left]
+                count[left_fruit] -= 1
+
+                if count[left_fruit] == 0:
+                    del count[left_fruit]
+
+                left += 1
+
+            max_fruit = max(max_fruit, right - left + 1)
+
+        return max_fruit
 
 
 # V1
