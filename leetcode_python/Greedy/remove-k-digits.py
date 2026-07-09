@@ -41,12 +41,68 @@ num does not have any leading zeros except for the zero itself.
 # V0
 class Solution(object):
     def removeKdigits(self, num, k):
+        pass
+
+
+# V0-1
+# IDEA: STACK (gpt)
+class Solution(object):
+    def removeKdigits(self, num, k):
+        stack = []
+
+        for digit in num:
+            while k > 0 and stack and stack[-1] > digit:
+                stack.pop()
+                k -= 1
+
+            stack.append(digit)
+
+        # If removals remain, remove from the end
+        while k > 0:
+            stack.pop()
+            k -= 1
+
+        # Remove leading zeros
+        res = "".join(stack).lstrip('0')
+
+        return res if res else "0"
+
+
+
+# V0-2
+# IDEA: STACK (GEMINI)
+class Solution(object):
+    def removeKdigits(self, num, k):
         """
         :type num: str
         :type k: int
         :rtype: str
         """
-        pass
+        # Edge Case: If we need to remove all digits, the result is "0"
+        if len(num) == k:
+            return "0"
+            
+        stack = []
+        
+        for digit in num:
+            # While we still have removals left (k > 0) AND the stack is not empty
+            # AND the top of the stack is GREATER than the current digit (a peak)
+            while k > 0 and stack and stack[-1] > digit:
+                stack.pop()  # Remove the peak digit
+                k -= 1
+            stack.append(digit)
+            
+        # If we still have removals left (e.g., for a non-decreasing number like "12345")
+        # remove the remaining digits from the end
+        if k > 0:
+            stack = stack[:-k]
+            
+        # Convert the stack back to a string and strip leading zeros
+        # e.g., "0200" -> "200"
+        res = "".join(stack).lstrip('0')
+        
+        # If stripping leading zeros leaves an empty string, return "0"
+        return res if res else "0"
 
 
 # V1 
