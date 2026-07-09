@@ -7,8 +7,9 @@
 - review `all recent updated cheatsheets`
 	- git commit
 
-- trie.md
-	- 2) 2-5) Number of Ways to Arrive at Destination (LC 1976) — Dijkstra + Path Count
+- heap
+	- LC example
+		- `2-7) Maximum Number of Events That Can Be Attended — LC 1353`
 
 - intervals.md
 
@@ -21,8 +22,7 @@
 	- todo: `Type 2) : Permutations (排列組合) (全排列)`
 - dp.md
 	- todo: `Template 7-1: One Edit Distance (LC 161) — Exactly-1-Edit Variant`
-- heap
-	- LC example
+
 - stack.md
 
 
