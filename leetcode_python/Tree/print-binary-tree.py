@@ -59,10 +59,110 @@ class Solution(object):
 
 
 # V0-1
+# IDEA: DFS + matrix (gpt)
+class Solution(object):
+    def printTree(self, root):
+        if not root:
+            return []
+
+        # height of tree (0-based)
+        self.height = self.get_tree_height(root)
+
+        rows = self.height + 1
+        cols = 2 ** (self.height + 1) - 1
+
+        self.matrix = [[""] * cols for _ in range(rows)]
+
+        # root starts at the middle
+        self.helper(root, 0, (cols - 1) // 2)
+
+        return self.matrix
+
+    def get_tree_height(self, root):
+        if not root:
+            return -1          # so leaf has height 0
+
+        return 1 + max(
+            self.get_tree_height(root.left),
+            self.get_tree_height(root.right)
+        )
+
+    def helper(self, root, row, col):
+        if not root:
+            return
+
+        self.matrix[row][col] = str(root.val)
+
+        if row == self.height:
+            return
+
+        offset = 2 ** (self.height - row - 1)
+
+        self.helper(root.left, row + 1, col - offset)
+        self.helper(root.right, row + 1, col + offset)
+
 
 
 # V0-2
+# IDEA: DFS + matrix (gemini)
+class Solution(object):
+    def printTree(self, root):
+        """
+        :type root: TreeNode
+        :type rtype: List[List[str]]
+        """
+        if not root:
+            return []
 
+        # Get tree height (defined by the problem as 0-indexed height)
+        # We subtract 1 because our helper function returns 1-indexed total depth.
+        self.height = self.get_tree_height(root) - 1
+
+        # Calculate layout boundaries based on problem rules
+        l = self.height + 1
+        w = 2**(self.height + 1) - 1
+
+        # FIX: Correct 2D matrix initialization syntax
+        self.matrix = [[""] * w for _ in range(l)]
+
+        # FIX: Place the root at row 0, middle column (w - 1) // 2
+        root_x = (w - 1) // 2
+        
+        # Start recursion (no visited set needed for trees)
+        self.helper(root, root_x, 0)
+
+        return self.matrix
+
+    def get_tree_height(self, root):
+        if not root:
+            return 0
+        
+        # FIX: Call the correct method name recursively
+        _left = self.get_tree_height(root.left)
+        _right = self.get_tree_height(root.right)
+
+        return max(_left, _right) + 1
+
+    def helper(self, root, x, y):
+        # Base case: if node is empty, stop processing
+        if not root:
+            return
+
+        # FIX: Element values must be stored as strings
+        self.matrix[y][x] = str(root.val)
+
+        # Calculate exact child offsets following the LeetCode instructions
+        offset = 2**(self.height - y - 1)
+
+        x_sub_left = x - offset
+        y_sub_left = y + 1
+
+        x_sub_right = x + offset
+        y_sub_right = y + 1
+
+        # Traverse down to children
+        self.helper(root.left, x_sub_left, y_sub_left)
+        self.helper(root.right, x_sub_right, y_sub_right)
 
 
 # V1
