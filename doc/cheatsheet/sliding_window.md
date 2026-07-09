@@ -1750,6 +1750,56 @@ public int lengthOfLongestSubstring(String s) {
 }
 ```
 
+#### LC 904: Fruit Into Baskets (Template: Variable Max — "At Most K Distinct")
+
+**Problem restated**: pick the longest contiguous subarray containing **at most 2 distinct** values (2 baskets, 1 fruit type each). This is the canonical *"longest window with at most K distinct elements"* problem with `K = 2`.
+
+**Key idea**: keep a `{fruit_type: count}` map of the window. Expand `right` every step; whenever the map holds more than 2 keys, shrink from `left` until it's back to ≤ 2. The answer is the largest window width `right - left + 1` seen along the way. The window never shrinks *below* the best valid width, so a single pass is O(n).
+
+```python
+# python
+# LC 904 - Fruit Into Baskets
+# IDEA: SLIDING WINDOW + HASHMAP — longest window with at most 2 distinct types
+# time = O(n), space = O(1)  (map holds at most 3 keys)
+class Solution(object):
+    def totalFruit(self, fruits):
+        if not fruits:
+            return 0
+
+        basket = {}          # fruit_type -> count in current window
+        left = 0
+        max_fruit = 0
+
+        for right in range(len(fruits)):
+            # 1) expand: add the fruit at right
+            f = fruits[right]
+            basket[f] = basket.get(f, 0) + 1
+
+            # 2) shrink: while > 2 distinct types, drop from the left
+            while len(basket) > 2:
+                lf = fruits[left]
+                basket[lf] -= 1
+                if basket[lf] == 0:   # type fully gone -> remove key
+                    del basket[lf]
+                left += 1
+
+            # 3) record best valid window width
+            max_fruit = max(max_fruit, right - left + 1)
+
+        return max_fruit
+```
+
+**Why `del` matters**: `len(basket)` is the number of distinct fruit types. If you only decrement counts without deleting zero-count keys, `len(basket)` stays inflated and the `while` loop shrinks the window too aggressively (or never exits correctly). Always remove a key once its count hits 0.
+
+**Generalization**: swap the `> 2` for `> K` and this template solves **LC 340 (Longest Substring with At Most K Distinct Characters)** verbatim — LC 904 is just the `K = 2` special case. See [At-Most K → Exactly K](#13-at-most-k--exactly-k-general-pattern--lc-992-lc-1248) for turning this into an *exactly-K* counter.
+
+| Piece | Role |
+|-------|------|
+| `basket` map | tracks distinct types + their counts in the window |
+| `while len(basket) > 2` | invariant enforcement — keep window valid |
+| `del` on zero count | keeps `len(basket)` = true distinct count |
+| `right - left + 1` | current window width, maximized into `max_fruit` |
+
 ### 3.3) Counting Subarrays Examples
 
 #### LC 713: Subarray Product Less Than K (Template: Counting)
