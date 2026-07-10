@@ -31,7 +31,9 @@ num1 and num2 are valid complex numbers.
 """
 
 # V0
-# IDEA : MATH 
+# IDEA : MATH
+# time = O(n)  # n = len(input string)
+# space = O(n)
 class Solution(object):
     def complexNumberMultiply(self, num1, num2):
         r_1 = int(num1.split("+")[0])
@@ -43,7 +45,9 @@ class Solution(object):
         return r_res + "+" +  i_res
 
 # V0'
-# IDEA : MATH 
+# IDEA : MATH
+# time = O(n)  # n = len(input string)
+# space = O(n)
 class Solution(object):
     def complexNumberMultiply(self, a, b):
         def split(s):
@@ -55,7 +59,9 @@ class Solution(object):
 
 # V1
 # http://bookshadow.com/weblog/2017/03/26/leetcode-complex-number-multiplication/
-# IDEA : STRING OP 
+# IDEA : STRING OP
+# time = O(n)  # n = len(input string)
+# space = O(n)
 class Solution(object):
     def complexNumberMultiply(self, a, b):
         """
@@ -69,6 +75,8 @@ class Solution(object):
         return '%s+%si' % (m * p - n * q, m * q + n * p)
 
 # V1'
+# time = O(n)  # n = len(input string)
+# space = O(n)
 class Solution(object):
 	# a : a1+a2*i
 	# b : b2+b2*i
@@ -77,9 +85,9 @@ class Solution(object):
 		rb, ib = float(b.split('+')[0]), float(b.split('+')[1].split('i')[0])
 		return '%d+%di' % ((ra*rb - ia*ib), ia*rb + ib*ra)
 
-# V2 
-# Time:  O(1)
-# Space: O(1)
+# V2
+# time = O(1)
+# space = O(1)
 class Solution(object):
     def complexNumberMultiply(self, a, b):
         ra, ia = list(map(int, a[:-1].split('+')))

@@ -3,6 +3,8 @@
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/81079495
 # IDEA :  LINEAR SCAN 
+# time = O(log n)  # n = value N; bin(N) has O(log n) bits
+# space = O(log n)
 class Solution(object):
     def binaryGap(self, N):
         """
@@ -20,6 +22,8 @@ class Solution(object):
 
 # V1' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/81079495
+# time = O(log n)  # n = value N; bin(N) has O(log n) bits
+# space = O(log n)  # bin(N) string
 class Solution:
     def binaryGap(self, N):
         """
@@ -37,8 +41,8 @@ class Solution:
         return res
 
 # V2 
-# Time:  O(logn) = O(1) due to n is a 32-bit number
-# Space: O(1)
+# time = O(logn) = O(1) due to n is a 32-bit number
+# space = O(1)
 class Solution(object):
     def binaryGap(self, N):
         """

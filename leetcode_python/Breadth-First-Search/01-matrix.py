@@ -113,6 +113,8 @@ NOTE !!!
  e.g. the multi source BFS start from `0` cell
 
 """
+# time = O(m * n)
+# space = O(m * n)
 from collections import deque
 
 class Solution(object):
@@ -157,6 +159,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: Multi-source BFS (GEMINI)
+# time = O(m * n)
+# space = O(m * n)
 from collections import deque
 
 class Solution(object):
@@ -202,6 +206,8 @@ class Solution(object):
 # V1 
 # http://bookshadow.com/weblog/2017/03/19/leetcode-01-matrix/
 # IDEA : QUEUE 
+# time = O((m * n) ^ 2)  # multi-pass border peeling, worst case
+# space = O(m * n)
 class Solution(object):
     def updateMatrix(self, matrix):
         """
@@ -239,6 +245,8 @@ class Solution:
     @param matrix: a 0-1 matrix
     @return: return a matrix
     """
+    # time = O(m * n)
+    # space = O(m * n)
     def updateMatrix(self, matrix):
         # write your code here
         n, m = len(matrix), len(matrix[0])
@@ -261,8 +269,8 @@ class Solution:
         return dp
 
 # V2 
-# Time:  O(m * n)
-# Space: O(m * n)
+# time = O(m * n)
+# space = O(m * n)
 import collections
 class Solution(object):
     def updateMatrix(self, matrix):
@@ -292,8 +300,8 @@ class Solution(object):
         return matrix
 
 
-# Time:  O(m * n)
-# Space: O(m * n)
+# time = O(m * n)
+# space = O(m * n)
 # dp solution
 class Solution2(object):
     def updateMatrix(self, matrix):

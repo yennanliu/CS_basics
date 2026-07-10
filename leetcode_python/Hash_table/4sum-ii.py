@@ -39,6 +39,8 @@ n == nums4.length
 # V1 
 # https://blog.csdn.net/danspace1/article/details/87854254
 # http://bookshadow.com/weblog/2016/11/13/leetcode-4sum-ii/
+# time = O(n^2)
+# space = O(n^2)
 class Solution(object):
     def fourSumCount(self, A, B, C, D):
         ans = 0
@@ -53,6 +55,8 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/4sum-ii/#tag-highlight-lang-python
+# time = O(n^2)
+# space = O(n^2)
 class Solution:
     def fourSumCount(self, A, B, C, D):
         # Write your code here
@@ -74,6 +78,8 @@ class Solution:
 
 # V1'
 # https://leetcode.com/problems/4sum-ii/discuss/761528/Python-solution
+# time = O(n^2)
+# space = O(n^2)
 class Solution:
     def fourSumCount(self, A, B, C, D):
         count = 0
@@ -95,6 +101,8 @@ class Solution:
 
 # V1''
 # https://leetcode.com/problems/4sum-ii/discuss/432974/python
+# time = O(n^2)
+# space = O(n^2)
 class Solution:
     def fourSumCount(self, A, B, C, D):
         ab = {}
@@ -109,6 +117,8 @@ class Solution:
 
 # V1'''
 # https://leetcode.com/problems/4sum-ii/discuss/331940/Python-O(n2)-with-hashing
+# time = O(n^2)
+# space = O(n^2)
 class Solution:
     def fourSumCount(self, A, B, C, D):
         twosum = collections.defaultdict(int)
@@ -124,9 +134,9 @@ class Solution:
                     res += twosum[z]
         return res
 
-# V2 
-# Time:  O(n^2)
-# Space: O(n^2)
+# V2
+# time = O(n^2)
+# space = O(n^2)
 import collections
 class Solution(object):
     def fourSumCount(self, A, B, C, D):

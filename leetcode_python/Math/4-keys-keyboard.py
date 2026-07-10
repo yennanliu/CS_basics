@@ -38,6 +38,8 @@ import collections
 
 # V2 
 # http://bookshadow.com/weblog/2017/07/30/leetcode-4-keys-keyboard/
+# time = O(n^2)  # n = N
+# space = O(n^2)
 class Solution(object):
     def maxA(self, N):
         """
@@ -56,9 +58,9 @@ class Solution(object):
                 dp[z + 2][dp[z][y]] = max(dp[z + 2][dp[z][y]], dp[z][y])
         return max(dp[N].values())
 
-# V3 
-# Time:  O(1)
-# Space: O(1)
+# V3
+# time = O(1)
+# space = O(1)
 class Solution(object):
     def maxA(self, N):
         """
@@ -78,9 +80,9 @@ class Solution(object):
         n4 = n - n3
         return 3**n3 * 4**n4
 
-# V3' 
-# Time:  O(n)
-# Space: O(1)
+# V3'
+# time = O(n)
+# space = O(1)
 class Solution2(object):
     def maxA(self, N):
         """

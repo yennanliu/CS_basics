@@ -2,8 +2,8 @@
 
 # V2 
 # https://blog.csdn.net/baidu_23318869/article/details/50386323
-# Time:  O(1)
-# Space: O(1)
+# time = O(1)
+# space = O(1)
 import math
 class Solution(object):
     def bulbSwitch(self, n):

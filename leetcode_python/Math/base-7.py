@@ -25,6 +25,8 @@ Constraints:
 
 # V0
 # IDEA : MATH : 10 based -> 7 based
+# time = O(log n)  # n = num
+# space = O(log n)
 class Solution(object):
     def convertToBase7(self, num):
         # help fumc
@@ -72,6 +74,8 @@ class Solution(object):
 
         -> so res = [2,0,2]
 """
+# time = O(log n)  # n = num
+# space = O(log n)
 class Solution(object):
     def convertToBase7(self, num):
         # edge case
@@ -93,6 +97,8 @@ class Solution(object):
 # V1
 # https://www.itread01.com/content/1544603062.html
 # https://kknews.cc/code/jlv38qp.html
+# time = O(log n)  # n = num
+# space = O(log n)
 class Solution(object):
     def convertToBase7(self, num):
         # edge case

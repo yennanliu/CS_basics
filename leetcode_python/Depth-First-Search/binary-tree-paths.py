@@ -42,6 +42,8 @@ NOTE !!!
 
 # V0
 # IDEA: DFS (pre-order)
+# time = O(n)  # n = number of tree nodes
+# space = O(n)  # recursion depth + collected paths
 class Solution(object):
     def binaryTreePaths(self, root):
         # edge
@@ -75,6 +77,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: DFS (GPT)
+# time = O(n)  # n = number of tree nodes
+# space = O(n)  # recursion depth + collected paths
 class Solution(object):
     def binaryTreePaths(self, root):
         if not root:
@@ -111,6 +115,8 @@ class Solution(object):
 
 # V0
 # IDEA: DFS
+# time = O(n)  # n = number of tree nodes
+# space = O(n)  # recursion depth + collected paths
 class Solution(object):
     def binaryTreePaths(self, root):
         self.res = []
@@ -155,6 +161,8 @@ class Solution(object):
 #         self.left = left
 #         self.right = right
 
+# time = O(n)  # n = number of tree nodes
+# space = O(n)  # recursion depth + collected paths
 class Solution(object):
     def binaryTreePaths(self, root):
         """

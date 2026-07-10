@@ -72,6 +72,8 @@ All the pairs (xi, yi) are distinct.
 # sentence1=["an","extraordinary","meal"]
 # sentence2=["one","good","dinner"]
 # similarPairs=[["great","good"],["extraordinary","good"],["well","good"],["wonderful","good"],["excellent","good"],["fine","good"],["nice","good"],["any","one"],["some","one"],["unique","one"],["the","one"],["an","one"],["single","one"],["a","one"],["truck","car"],["wagon","car"],["automobile","car"],["auto","car"],["vehicle","car"],["entertain","have"],["drink","have"],["eat","have"],["take","have"],["fruits","meal"],["brunch","meal"],["breakfast","meal"],["food","meal"],["dinner","meal"],["super","meal"],["lunch","meal"],["possess","own"],["keep","own"],["have","own"],["extremely","very"],["actually","very"],["really","very"],["super","very"]]
+# time = O(n * p)  # n = num words, p = num pairs
+# space = O(1)
 class Solution(object):
     def areSentencesSimilar(self, sentence1, sentence2, similarPairs):
         # edge case
@@ -95,6 +97,8 @@ class Solution(object):
 
 # V0'
 # https://zxi.mytechroad.com/blog/hashtable/leetcode-734-sentence-similarity/
+# time = O(n + p)  # n = num words, p = num pairs
+# space = O(p)
 import collections
 class Solution(object):
     def areSentencesSimilar(self, words1, words2, pairs):
@@ -109,6 +113,8 @@ class Solution(object):
         return True
 
 # V0''
+# time = O(n + p)  # n = num words, p = num pairs
+# space = O(p)
 import collections
 class Solution(object):
     def areSentencesSimilar(self, words1, words2, pairs):
@@ -148,6 +154,8 @@ class Solution(object):
 #              'talent': {'skills'}})
 # THEN COMPARE THROUGH words1, words2 WITH similars PATTERN
 # RETURN FALSE IF ANY ELEMENT IN words1 !=  words2 AND ELEMENT NOT IN similars RELATIONSHIP
+# time = O(n + p)  # n = num words, p = num pairs
+# space = O(p)
 import collections
 class Solution(object):
     def areSentencesSimilar(self, words1, words2, pairs):
@@ -169,6 +177,8 @@ class Solution(object):
 
 # V1'
 # https://zxi.mytechroad.com/blog/hashtable/leetcode-734-sentence-similarity/
+# time = O(n + p)  # n = num words, p = num pairs
+# space = O(p)
 class Solution:
     def areSentencesSimilar(self, words1, words2, pairs):
         if len(words1) != len(words2): return False
@@ -189,6 +199,8 @@ class Solution:
 
 # V1''
 # https://www.jiuzhang.com/solution/sentence-similarity/#tag-highlight-lang-python
+# time = O(n + p)  # n = num words, p = num pairs
+# space = O(p)
 class Solution:
     """
     @param words1: a list of string
@@ -214,7 +226,9 @@ class Solution:
                 return False
         return True
 
-# V2 
+# V2
+# time = O(n + p)  # n = num words, p = num pairs
+# space = O(p)
 import collections
 class Solution(object):
     def areSentencesSimilar(self, words1, words2, pairs):
@@ -234,7 +248,9 @@ class Solution(object):
                 return False
         return True
 
-# V3 
+# V3
+# time = O(n + p)  # n = num words, p = num pairs
+# space = O(p)
 import itertools
 class Solution(object):
     def areSentencesSimilar(self, words1, words2, pairs):

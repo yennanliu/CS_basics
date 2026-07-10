@@ -5,6 +5,8 @@
 #            => cases : 1) not buy stock today 2) sales stock today
 # -> hold : the max revenue when HOLD THE STOCK
 #            => cases : 1) buy stock today 2) not sales stock today
+# time = O(n)
+# space = O(1)
 class Solution:
     def maxProfit(self, prices, fee):
         cash = 0
@@ -17,6 +19,8 @@ class Solution:
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79888528
 # IDEA : DP 
+# time = O(n)
+# space = O(1)
 class Solution:
     def maxProfit(self, prices, fee):
         """
@@ -33,6 +37,8 @@ class Solution:
         
 # V1'
 # https://www.jiuzhang.com/solution/best-time-to-buy-and-sell-stock-with-transaction-fee/#tag-highlight-lang-python
+# time = O(n)
+# space = O(1)
 class Solution:
     """
     @param prices: a list of integers
@@ -46,8 +52,8 @@ class Solution:
         return a
 
 # V2
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def maxProfit(self, prices, fee):
         """

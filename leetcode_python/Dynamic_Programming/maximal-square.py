@@ -38,6 +38,8 @@ matrix[i][j] is '0' or '1'.
 # http://bookshadow.com/weblog/2015/06/03/leetcode-maximal-square/
 # dynamic programming state equation :
 # dp[x][y] = min(dp[x - 1][y - 1], dp[x][y - 1], dp[x - 1][y]) + 1
+# time = O(m*n)
+# space = O(m*n)
 class Solution:
     # @param {character[][]} matrix
     # @return {integer}
@@ -57,6 +59,8 @@ class Solution:
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/82992233
+# time = O(m*n)
+# space = O(m*n)
 class Solution(object):
     def maximalSquare(self, matrix):
         """
@@ -78,8 +82,8 @@ class Solution(object):
         return max(map(max, dp)) ** 2
 
 # V2 
-# Time:  O(n^2)
-# Space: O(n)
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     # @param {character[][]} matrix
     # @return {integer}
@@ -112,8 +116,8 @@ class Solution(object):
 
         return max_size * max_size
 
-# Time:  O(n^2)
-# Space: O(n^2)
+# time = O(n^2)
+# space = O(n^2)
 # DP.
 class Solution2(object):
     # @param {character[][]} matrix
@@ -148,6 +152,8 @@ class Solution2(object):
         return max_size * max_size
 
 # V2
+# time = O(m*n)
+# space = O(m*n)
 class Solution3(object):
     # @param {character[][]} matrix
     # @return {integer}

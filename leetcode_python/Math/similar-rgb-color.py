@@ -25,6 +25,8 @@
 # V2 
 # http://bookshadow.com/weblog/2018/03/18/leetcode-similar-rgb-color/
 ### Brute Force ###
+# time = O(1)  # fixed 16^3 iterations
+# space = O(1)
 class Solution(object):
     def similarRGB(self, color):
         """
@@ -45,9 +47,9 @@ class Solution(object):
                         ans = r, g, b
         return '#' + ''.join(hex(c)[2] * 2 for c in ans)
 
-# V3 
-# Time:  O(1)
-# Space: O(1)
+# V3
+# time = O(1)
+# space = O(1)
 class Solution(object):
     def similarRGB(self, color):
         """

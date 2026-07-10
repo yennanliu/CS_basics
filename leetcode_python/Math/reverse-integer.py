@@ -30,6 +30,8 @@ Constraints:
 
 # V0
 # IDEA : BRUTE FORCE
+# time = O(log(x)) = O(1)
+# space = O(log(x)) = O(1)
 class Solution(object):
     def reverse(self, x):
         # edge case
@@ -49,6 +51,8 @@ class Solution(object):
             return x_ if x_ > (-1) * 2**31 else 0
 
 # V0
+# time = O(log(x)) = O(1)
+# space = O(log(x)) = O(1)
 class Solution(object):
     def reverse(self, x):
         if x < 0:
@@ -71,7 +75,9 @@ class Solution(object):
 # to check 
 #assert s.reverse(0x7FFFFFFF - 1) == 0 
 
-# V1 
+# V1
+# time = O(log(x)) = O(1)
+# space = O(log(x)) = O(1)
 class Solution(object):
     # x = 20010000
     # x_reverse = int(str(x)[::-1]) 
@@ -86,6 +92,8 @@ class Solution(object):
 
 # V1'
 # https://blog.csdn.net/coder_orz/article/details/52039990
+# time = O(log(x)) = O(1)
+# space = O(1)
 class Solution(object):
     def reverse(self, x):
         flag = 1 if x >= 0 else -1
@@ -98,14 +106,16 @@ class Solution(object):
 
 # V1''
 # https://blog.csdn.net/coder_orz/article/details/52039990
+# time = O(log(x)) = O(1)
+# space = O(log(x)) = O(1)
 class Solution(object):
     def reverse(self, x):
         x = int(str(x)[::-1]) if x >= 0 else - int(str(-x)[::-1])
         return x if x < 2147483648 and x >= -2147483648 else 0
 
-# V2 
-# Time:  O(logn) = O(1)
-# Space: O(1)
+# V2
+# time = O(logn) = O(1)
+# space = O(1)
 class Solution(object):
     def reverse(self, x):
         """

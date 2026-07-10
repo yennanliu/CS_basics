@@ -34,6 +34,8 @@ grid[i][j] is 0 or 1
 
 # V0
 # IDEA : BFS
+# time = O(n^2)  # grid is n x n
+# space = O(n^2)
 class Solution(object):
     def maxDistance(self, grid):
         # edge
@@ -66,6 +68,8 @@ class Solution(object):
 
 # V0
 # IDEA : BFS + queue (made by array)
+# time = O(n^2)  # grid is n x n
+# space = O(n^2)
 class Solution(object):
     def maxDistance(self, grid):
             m,n = len(grid), len(grid[0])
@@ -95,6 +99,8 @@ class Solution(object):
 # V1
 # https://leetcode.com/problems/as-far-from-land-as-possible/discuss/360960/Python-BFS
 # IDEA : BFS
+# time = O(n^2)  # grid is n x n
+# space = O(n^2)
 class Solution(object):
     def maxDistance(self, grid):
             m,n = len(grid), len(grid[0])
@@ -116,6 +122,8 @@ class Solution(object):
 # V1'
 # https://leetcode.com/problems/as-far-from-land-as-possible/discuss/395330/python-bfs
 # IDEA : BFS
+# time = O(n^2)  # grid is n x n
+# space = O(n^2)
 from collections import deque
 class Solution:
     def maxDistance(self, grid):

@@ -17,6 +17,8 @@
 
 # V2 
 # https://blog.csdn.net/fuxuemingzhu/article/details/49161129
+# time = O(log n)  # n = num
+# space = O(1)
 class Solution(object):
     def addDigits(self, num):
         """
@@ -32,9 +34,9 @@ class Solution(object):
         return num
 
 
-# V2 
-# Time:  O(1)
-# Space: O(1)
+# V2
+# time = O(1)
+# space = O(1)
 
 class Solution(object):
     """

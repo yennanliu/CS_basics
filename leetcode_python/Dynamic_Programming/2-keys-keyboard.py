@@ -5,6 +5,8 @@
 # IDEA : DP
 # DP EQUATION :
 # dp[x] = min(dp[x], dp[y] + x / y) <- while y ∈[1, x) and x % y == 0
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def minSteps(self, n):
         """
@@ -22,6 +24,8 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/2-keys-keyboard/#tag-highlight-lang-python
+# time = O(sqrt(n))
+# space = O(1)
 class Solution:
     """
     @param n: The number of 'A'
@@ -41,8 +45,8 @@ class Solution:
         return sum(factors(n))
 
 # V2
-# Time:  O(sqrt(n))
-# Space: O(1)
+# time = O(sqrt(n))
+# space = O(1)
 class Solution(object):
     def minSteps(self, n):
         """

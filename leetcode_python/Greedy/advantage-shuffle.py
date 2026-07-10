@@ -3,6 +3,8 @@
 # V1 
 # http://bookshadow.com/weblog/2018/07/15/leetcode-advantage-shuffle/
 # https://blog.csdn.net/fuxuemingzhu/article/details/82796298
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def advantageCount(self, A, B):
         """
@@ -24,8 +26,8 @@ class Solution(object):
         return res
 
 # V2 
-# Time:  O(nlogn)
-# Space: O(n)
+# time = O(nlogn)
+# space = O(n)
 class Solution(object):
     def advantageCount(self, A, B):
         """

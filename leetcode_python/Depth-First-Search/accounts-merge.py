@@ -41,6 +41,8 @@ accounts[i][j] (for j > 0) is a valid email.
 # V1 
 # http://bookshadow.com/weblog/2017/11/05/leetcode-accounts-merge/
 # https://blog.csdn.net/fuxuemingzhu/article/details/82913712
+# time = O(n log n)  # n = total number of emails (union-find + final sort)
+# space = O(n)
 import collections
 class Solution(object):
     def accountsMerge(self, accounts):
@@ -77,6 +79,8 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/accounts-merge/#tag-highlight-lang-python
+# time = O(n log n)  # n = total number of emails (union-find + final sort)
+# space = O(n)
 class Solution:
     """
     @param accounts: List[List[str]]
@@ -316,9 +320,9 @@ class Solution:
 # }
 
 # V2 
-# Time:  O(nlogn), n is the number of total emails,
+# time = O(nlogn), n is the number of total emails,
 #                  and the max length ofemail is 320, p.s. {64}@{255}
-# Space: O(n)
+# space = O(n)
 import collections
 class UnionFind(object):
     def __init__(self):

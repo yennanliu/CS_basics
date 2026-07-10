@@ -71,9 +71,9 @@
 #     vector<vector<int>> hash;
 # };
 
-# V2 
-# Time:  O(9^2 * 2^9)
-# Space: O(9 * 2^9)
+# V2
+# time = O(9^2 * 2^9)
+# space = O(9 * 2^9)
 # DP solution.
 class Solution(object):
     def numberOfPatterns(self, m, n):
@@ -135,8 +135,8 @@ class Solution(object):
         return res
 
 
-# Time:  O(9^2 * 2^9)
-# Space: O(9 * 2^9)
+# time = O(9^2 * 2^9)
+# space = O(9 * 2^9)
 # DP solution.
 class Solution2(object):
     def numberOfPatterns(self, m, n):
@@ -201,8 +201,8 @@ class Solution2(object):
         return res
 
 
-# Time:  O(9!)
-# Space: O(9)
+# time = O(9!)
+# space = O(9)
 # Backtracking solution. (TLE)
 class Solution_TLE(object):
     def numberOfPatterns(self, m, n):

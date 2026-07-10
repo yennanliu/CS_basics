@@ -15,8 +15,8 @@ class Solution(object):
         :rtype: int
         """
         # After sorting, if i, j, k is a valid triple, then i, j-1, k, ..., i, i+1, k are also valid triples. No need to count them one by one.
-        # Time:  O(n^2)
-        # Space: O(1)
+        # time = O(n^2)
+        # space = O(1)
         nums.sort()
         count = 0
         for k in range(len(nums)):
@@ -39,8 +39,8 @@ class Solution(object):
         :rtype: int
         """
         # After sorting, if i, j, k is a valid triple, then i, j-1, k, ..., i, i+1, k are also valid triples. No need to count them one by one.
-        # Time:  O(n^2)
-        # Space: O(1)
+        # time = O(n^2)
+        # space = O(1)
         nums.sort()
         count = 0
         for k in range(len(nums)):
@@ -55,6 +55,8 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/3sum-smaller/#tag-highlight-lang-python
+# time = O(n^2)
+# space = O(1)
 class Solution:
     """
     @param nums:  an array of n integers
@@ -78,8 +80,8 @@ class Solution:
         return ans
 
 # V2
-# Time:  O(n^2)
-# Space: O(1)
+# time = O(n^2)
+# space = O(1)
 class Solution(object):
     # @param {integer[]} nums
     # @param {integer} target

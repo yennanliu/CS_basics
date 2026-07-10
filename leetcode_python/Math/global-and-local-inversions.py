@@ -40,6 +40,8 @@ nums is a permutation of all the numbers in the range [0, n - 1].
 """
 
 # V0
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def isIdealPermutation(self, A):
         for idx, value in enumerate(A):
@@ -53,6 +55,8 @@ class Solution(object):
 #     -> ALL global inversion MUST be local inversion as well
 #     -> SO for any j > i+1
 #     ->   we CAN'T have A[i] > A[j] -> A[i] <= A[j] for all i, j
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def isIdealPermutation(self, A):
         cmax = 0

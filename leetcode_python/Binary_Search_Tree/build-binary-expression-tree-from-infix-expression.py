@@ -51,6 +51,8 @@ It is guaranteed that s is a valid expression.
 
 # V0
 # IDEA : LC 224 Basic Calculator
+# time = O(n)
+# space = O(n)  # operand/operator stacks
 class Solution(object):
 
     def help(self, numSt, opSt):
@@ -88,6 +90,8 @@ class Solution(object):
 
 # V0'
 # IDEA : RECURSIVE
+# time = O(n^2)  # scan + string slicing at each recursion level
+# space = O(n)  # recursion depth + sliced substrings
 class Solution:
     def expTree(self, s):
         n = len(s)
@@ -116,6 +120,8 @@ class Solution:
 
 # V1
 # https://leetcode.com/problems/build-binary-expression-tree-from-infix-expression/discuss/864596/Python-Standard-parser-implementation
+# time = O(n)
+# space = O(n)  # token deque + recursion depth
 class Solution:
     # Standard parser implementation based on this BNF
     #   s := expression
@@ -158,6 +164,8 @@ class Solution:
 # V1'
 # IDEA : LC 224 Basic Calculator
 # https://leetcode.com/problems/build-binary-expression-tree-from-infix-expression/discuss/944215/Python-Solution-Similar-to-Basic-Calculator
+# time = O(n)
+# space = O(n)  # operand/operator stacks
 class Solution(object):
 
     def apply(self, numSt, opSt):
@@ -191,6 +199,8 @@ class Solution(object):
 # V1''
 # IDEA : RECURSIVE
 # https://leetcode.com/problems/build-binary-expression-tree-from-infix-expression/discuss/985360/Python-3-recursion-and-easy-to-understand
+# time = O(n^2)  # scan + string slicing at each recursion level
+# space = O(n)  # recursion depth + sliced substrings
 class Solution:
     def expTree(self, s):
         n = len(s)
@@ -219,6 +229,8 @@ class Solution:
 
 # V1'''
 # https://leetcode.com/problems/build-binary-expression-tree-from-infix-expression/discuss/862421/Python-O(n)-single-pass-Handles-multiple-digits-and-negative-numbers
+# time = O(n)
+# space = O(n)  # operand/operator stacks
 class Solution:
     def expTree(self, expression: str) -> 'Node':
         precedence = {'/':2, '*':2, '+':1, '-':1}

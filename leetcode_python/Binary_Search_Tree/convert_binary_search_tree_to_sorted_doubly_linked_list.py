@@ -38,6 +38,8 @@ All the values of the tree are unique.
 
 # V0
 # IDEA : DFS + INORDER
+# time = O(n)
+# space = O(h)  # h = tree height (recursion stack)
 class Solution:
     """
     @param root: root of a tree
@@ -74,6 +76,8 @@ class Solution:
 
 # V1
 # https://leetcode.com/problems/convert-binary-search-tree-to-sorted-doubly-linked-list/solutions/263241/convert-binary-search-tree-to-sorted-doubly-linked-list/
+# time = O(n)
+# space = O(h)  # h = tree height (recursion stack)
 class Solution:
     def treeToDoublyList(self, root: 'Node') -> 'Node':
         def helper(node):
@@ -114,6 +118,8 @@ class Solution:
 # V1'
 # https://blog.csdn.net/zhangpeterx/article/details/89567460
 # IDEA : BFS + INORDER 
+# time = O(n)
+# space = O(h)  # h = tree height (explicit stack)
 class Solution:
     def treeToDoublyList(self, root):
         if not root: return
@@ -133,6 +139,8 @@ class Solution:
 # V1''
 # https://www.jiuzhang.com/solution/convert-binary-search-tree-to-sorted-doubly-linked-list/#tag-highlight-lang-python
 # IDEA : DFS + INORDER
+# time = O(n)
+# space = O(h)  # h = tree height (recursion stack)
 class Solution:
     """
     @param root: root of a tree
@@ -169,6 +177,8 @@ class Solution:
         
 # V1'''
 # https://blog.csdn.net/zhangpeterx/article/details/89567460
+# time = O(n)
+# space = O(h)  # h = tree height (recursion stack)
 class Solution:
     def treeToDoublyList(self, root: 'Node') -> 'Node':
         def helper(node):

@@ -41,6 +41,8 @@ xi != yi
 # V1
 # IDEA : UNION FIND
 # https://leetcode.com/problems/connecting-cities-with-minimum-cost/discuss/831263/Python-very-Concise-Union-Find
+# time = O(E log E)  # E = len(connections); sort dominates union-find
+# space = O(N)  # N = number of cities
 class Solution:
     def minimumCost(self, N: int, connections: List[List[int]]) -> int:
         parents = [x for x in range(N)]

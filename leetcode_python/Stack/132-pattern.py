@@ -3,6 +3,8 @@
 # V1 
 # https://blog.csdn.net/u011693064/article/details/54650260
 # https://blog.csdn.net/fuxuemingzhu/article/details/81869398
+# time = O(n)
+# space = O(n)
 class Solution:
     def find132pattern(self, nums):
         """
@@ -23,8 +25,8 @@ class Solution:
         return False
         
 # V2 
-# Time:  O(n)
-# Space: O(n)
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def find132pattern(self, nums):
         """

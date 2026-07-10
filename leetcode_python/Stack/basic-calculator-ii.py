@@ -498,6 +498,8 @@ NOT:
 ````
 
 """
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def calculate(self, s):
         """
@@ -581,6 +583,8 @@ class Solution(object):
 #           -> if i == len(s) - 1 or each in '+-*/':
 #              ...
 #              -> pre_op = each
+# time = O(n)
+# space = O(n)
 class Solution:
     def calculate(self, s):
         stack = []
@@ -638,6 +642,8 @@ class Solution:
 # 10
 # 100
 # python 3
+# time = O(n)
+# space = O(n)
 class Solution:
     def calculate(self, s):
         stack = []
@@ -675,6 +681,8 @@ class Solution:
 
 # V1'
 # https://www.jiuzhang.com/solution/basic-calculator-ii/#tag-highlight-lang-python
+# time = O(n)
+# space = O(n)
 class Solution:
     def calculate(self, s):
         # Write your code here
@@ -704,6 +712,8 @@ class Solution:
 # V1''
 # IDEA : STACK
 # https://leetcode.com/problems/basic-calculator-ii/discuss/1492325/Python-clean-stack-solution-(easy-understanding)
+# time = O(n)
+# space = O(n)
 class Solution:
     def calculate(self, s: str) -> int:
         num, ope, stack = 0, '+', []
@@ -731,6 +741,8 @@ class Solution:
 # V1'''
 # IDEA : STACK
 # https://leetcode.com/problems/basic-calculator-ii/discuss/63076/Python-short-solution-with-stack.
+# time = O(n)
+# space = O(n)
 class Solution:
     def calculate(self, s):
         if not s:
@@ -758,6 +770,8 @@ class Solution:
 
 # V1''''
 # IDEA : STACK
+# time = O(n)
+# space = O(n)
 class Solution:
     def calculate(self, s):
         num, op, stack = 0, '+', [0]
@@ -847,8 +861,8 @@ class Solution:
 # }
 
 # V2 
-# Time:  O(n)
-# Space: O(n)
+# time = O(n)
+# space = O(n)
 class Solution(object):
     # @param {string} s
     # @return {integer}

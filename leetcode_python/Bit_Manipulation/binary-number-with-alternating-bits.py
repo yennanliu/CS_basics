@@ -10,6 +10,8 @@
 # The all() method returns:
 # True - If all elements in an iterable are true
 # False - If any element in an iterable is false
+# time = O(log n)  # n = value; bin(n) has O(log n) bits
+# space = O(log n)  # bin(n) string
 class Solution(object):
     def hasAlternatingBits(self, n):
         """
@@ -22,6 +24,8 @@ class Solution(object):
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79089937
 # IDEA : PATTERN
+# time = O(1)  # fixed 64-bit mask, at most 64 shifts
+# space = O(1)
 class Solution(object):
     def hasAlternatingBits(self, n):
         """
@@ -38,6 +42,8 @@ class Solution(object):
 # V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79089937
 # IDEA : BIT MANIPULATION 
+# time = O(1)  # constant number of 32-bit ops
+# space = O(1)
 class Solution(object):
     def hasAlternatingBits(self, n):
         """
@@ -48,8 +54,8 @@ class Solution(object):
         return not (n & n + 1)
 
 # V2 
-# Time:  O(1)
-# Space: O(1)
+# time = O(1)
+# space = O(1)
 class Solution(object):
     def hasAlternatingBits(self, n):
         """

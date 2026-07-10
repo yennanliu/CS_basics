@@ -2,7 +2,9 @@
 
 # V1 
 # https://www.twblogs.net/a/5c162c02bd9eee5e40bbaace/zh-cn
-# IDEA : DP + MOD 
+# IDEA : DP + MOD
+# time = O(1)
+# space = O(1)
 class Solution(object):
     def prisonAfterNDays(self, oldcells, N):
         """
@@ -26,9 +28,9 @@ class Solution(object):
             count += 1
         return cells
 
-# V2 
-# Time:  O(1)
-# Space: O(1)
+# V2
+# time = O(1)
+# space = O(1)
 class Solution(object):
     def prisonAfterNDays(self, cells, N):
         """
@@ -41,8 +43,8 @@ class Solution(object):
             cells = [0] + [cells[i-1] ^ cells[i+1] ^ 1 for i in range(1, 7)] + [0]
         return cells
 
-# Time:  O(1)
-# Space: O(1)
+# time = O(1)
+# space = O(1)
 class Solution2(object):
     def prisonAfterNDays(self, cells, N):
         """

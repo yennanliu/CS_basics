@@ -49,6 +49,8 @@ We will send a signal from a given `node k`
 
 # V0
 # IDEA : Dijkstra (PQ + BFS)
+# time = O((V + E) log V)
+# space = O(V + E)
 import heapq
 from collections import defaultdict
 
@@ -120,6 +122,8 @@ class Solution(object):
 
 # V0-0-1
 # IDEA : Dijkstra (PQ + BFS)
+# time = O((V + E) log V)
+# space = O(V + E)
 from heapq import heappush, heappop
 
 class Solution(object):
@@ -185,6 +189,8 @@ class Solution(object):
 
 # V0-1
 # IDEA : Dijkstra (PQ + BFS)
+# time = O((V + E) log V)
+# space = O(V + E)
 import heapq
 from collections import defaultdict
 
@@ -240,8 +246,10 @@ class Solution(object):
 
 
 
-# V0 
+# V0
 # IDEA : Dijkstra
+# time = O(V^2 + E)
+# space = O(V + E)
 class Solution:
     def networkDelayTime(self, times, N, K):
         K -= 1
@@ -457,9 +465,11 @@ class Solution:
 #     }
 # }
 
-# V1 
+# V1
 # IDEA : Dijkstra
 # https://blog.csdn.net/fuxuemingzhu/article/details/82862769
+# time = O(V^2 + E)
+# space = O(V + E)
 class Solution:
     def networkDelayTime(self, times, N, K):
         K -= 1
@@ -480,6 +490,8 @@ class Solution:
 # V1'
 # IDEA : Floyd-Warshall (TLE)
 # https://blog.csdn.net/fuxuemingzhu/article/details/82862769
+# time = O(V^3)
+# space = O(V^2)
 class Solution:
     def networkDelayTime(self, times, N, K):
         d = [[float('inf')] * N for _ in range(N)]
@@ -497,6 +509,8 @@ class Solution:
 # V1''
 # IDEA : Bellman-Ford (TLE)
 # https://blog.csdn.net/fuxuemingzhu/article/details/82862769
+# time = O(V * E)
+# space = O(V)
 class Solution:
     def networkDelayTime(self, times, N, K):
         dist = [float('inf')] * N
@@ -513,9 +527,9 @@ class Solution:
 # https://www.cnblogs.com/grandyang/p/8278115.html
 
 # V2 
-# Time:  O((|E| + |V|) * log|V|) = O(|E| * log|V|) by using binary heap,
+# time = O((|E| + |V|) * log|V|) = O(|E| * log|V|) by using binary heap,
 #        if we can further to use Fibonacci heap, it would be O(|E| + |V| * log|V|)
-# Space: O(|E| + |V|) = O(|E|)
+# space = O(|E| + |V|) = O(|E|)
 import collections
 import heapq
 # Dijkstra's algorithm

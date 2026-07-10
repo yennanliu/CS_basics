@@ -1,7 +1,9 @@
 # V0 
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/82824685
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def smallestRangeI(self, A, K):
         """
@@ -13,6 +15,8 @@ class Solution(object):
         
 # V1'
 # https://www.cnblogs.com/seyjs/p/9692725.html
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def smallestRangeI(self, A, K):
         """

@@ -33,6 +33,8 @@ Both num1 and num2 do not contain any leading zero, except the number 0 itself.
 
 # V0
 # IDEA: multiply -> addition
+# time = O(m * n)  # m = len(num1), n = len(num2) (big-int arithmetic)
+# space = O(m + n)
 class Solution(object):
     def multiply(self, num1, num2):
         # edge
@@ -57,6 +59,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: multiply -> addition (GPT)
+# time = O(m * n)  # m = len(num1), n = len(num2)
+# space = O(m + n)
 class Solution(object):
     def multiply(self, num1, num2):
         if num1 == "0" or num2 == "0":
@@ -87,6 +91,8 @@ class Solution(object):
 
 # V0-2
 # IDEA: char (gemini)
+# time = O(m * n)  # m = len(num1), n = len(num2)
+# space = O(m + n)
 class Solution(object):
     def multiply(self, num1, num2):
         """
@@ -115,6 +121,8 @@ class Solution(object):
 
 
 # V0
+# time = O(m * n)  # m = len(num1), n = len(num2)
+# space = O(m + n)
 class Solution(object):
     def multiply(self, num1, num2):
         """
@@ -183,6 +191,8 @@ class Solution(object):
 
 # In [30]: ord('0')
 # Out[30]: 48
+# time = O(m * n)  # m = len(num1), n = len(num2)
+# space = O(m + n)
 class Solution(object):
     def multiply(self, num1, num2):
         """
@@ -208,6 +218,8 @@ class Solution(object):
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/80681702
 # https://blog.csdn.net/XX_123_1_RJ/article/details/81431630
+# time = O(m * n)  # m = len(num1), n = len(num2) (big-int multiply)
+# space = O(m + n)
 class Solution(object):
     def multiply(self, num1, num2):
         """
@@ -219,6 +231,8 @@ class Solution(object):
 
 # V1''
 # https://www.jiuzhang.com/solution/multiply-strings/#tag-highlight-lang-python
+# time = O(m * n)  # m = len(num1), n = len(num2) (big-int arithmetic)
+# space = O(m + n)
 class Solution:
     """
     @param num1: a non-negative integers
@@ -238,9 +252,9 @@ class Solution:
 
         return str(dig1*dig2)
 
-# V2 
-# Time:  O(m * n)
-# Space: O(m + n)
+# V2
+# time = O(m * n)
+# space = O(m + n)
 class Solution(object):
     def multiply(self, num1, num2):
         """
@@ -263,8 +277,8 @@ class Solution(object):
 
         return ''.join(map(str, res[i::-1]))
 
-# Time:  O(m * n)
-# Space: O(m + n)
+# time = O(m * n)
+# space = O(m + n)
 # Using built-in bignum solution.
 class Solution2(object):
     def multiply(self, num1, num2):

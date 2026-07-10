@@ -42,6 +42,8 @@ Constraints:
 # V1
 # https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/solution/
 # IDEA : Bidirectional Dynamic Programming
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def maxProfit(self, prices):
         """
@@ -77,6 +79,8 @@ class Solution(object):
 # V1'
 # https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/solution/
 # IDEA : One-pass Simulation
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def maxProfit(self, prices):
         """

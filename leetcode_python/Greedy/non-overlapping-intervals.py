@@ -35,6 +35,8 @@ intervals[i].length == 2
 
 # V0
 # IDEA: GREEDY + SORT ON END + max_end
+# time = O(n log n)
+# space = O(1)
 class Solution(object):
     def eraseOverlapIntervals(self, intervals):
         if len(intervals) <= 1:
@@ -75,6 +77,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: GREEDY + SORT ON END + max_end
+# time = O(n log n)
+# space = O(1)
 class Solution(object):
     def eraseOverlapIntervals(self, intervals):
         """
@@ -83,7 +87,7 @@ class Solution(object):
         """
         if not intervals:
             return 0
-            
+
         # CRITICAL GREEDY FIX: Sort strictly by END times (x[1]).
         # If end times match, Python naturally falls back to sorting by start times (x[0]).
         intervals.sort(key=lambda x: x[1])
@@ -112,6 +116,8 @@ class Solution(object):
 # V0
 # IDEA : 2 POINTERS + sorting + intervals
 # TODO : make it general : (sort by x[0] or x[1] and the op)
+# time = O(n log n)
+# space = O(1)
 class Solution(object):
     def eraseOverlapIntervals(self, intervals):
         ### NOTE THIS !!!
@@ -136,6 +142,8 @@ class Solution(object):
 
 # V0'
 # IDEA : 2 POINTERS + sorting + intervals
+# time = O(n log n)
+# space = O(1)
 class Solution(object):
     def eraseOverlapIntervals(self, intervals):
         if not intervals: return 0
@@ -163,6 +171,8 @@ class Solution(object):
 
 # V0''
 # IDEA : 2 POINTERS + sorting + intervals
+# time = O(n log n)
+# space = O(1)
 class Solution(object):
     def eraseOverlapIntervals(self, intervals):
         cnt = 0

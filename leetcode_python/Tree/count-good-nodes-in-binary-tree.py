@@ -44,6 +44,8 @@ Each node's value is between [-10^4, 10^4].
 
 # V0
 # IDEA: RECURSION + HELPER + `max_so_far`
+# time = O(n)
+# space = O(h)  # h = tree height, worst O(n)
 class Solution(object):
     def goodNodes(self, root):
         # NOTE !!!
@@ -73,6 +75,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: RECURSION + `max_so_far`
+# time = O(n)
+# space = O(h)  # h = tree height, worst O(n)
 class Solution(object):
     def goodNodes(self, root):
         self.cnt = 0
@@ -94,6 +98,8 @@ class Solution(object):
 
 # V0-2
 # IDEA: RECURSION + `max_so_far`
+# time = O(n)
+# space = O(h)  # h = tree height, worst O(n)
 class Solution(object):
     def goodNodes(self, root):
         if not root:
@@ -122,6 +128,8 @@ class Solution(object):
 # V1
 # IDEA : DFS
 # https://leetcode.com/problems/count-good-nodes-in-binary-tree/editorial/
+# time = O(n)
+# space = O(h)  # h = tree height, worst O(n)
 class Solution:
     def goodNodes(self, root: TreeNode) -> int:
 	
@@ -141,6 +149,8 @@ class Solution:
 # V2
 # IDEA : DFS + ITERATIVE
 # https://leetcode.com/problems/count-good-nodes-in-binary-tree/editorial/
+# time = O(n)
+# space = O(h)  # h = tree height, worst O(n)
 class Solution:
     def goodNodes(self, root: TreeNode) -> int:
         stack = [(root, float("-inf"))]
@@ -159,6 +169,8 @@ class Solution:
 # V3
 # IDEA : BFS
 # https://leetcode.com/problems/count-good-nodes-in-binary-tree/editorial/
+# time = O(n)
+# space = O(n)  # BFS queue, worst O(n)
 class Solution:
     def goodNodes(self, root: TreeNode) -> int:
         num_good_nodes = 0

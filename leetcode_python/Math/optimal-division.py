@@ -46,6 +46,8 @@ There is only one optimal division for the given iput.
 
 # V0
 # IDEA : MATH 
+# time = O(n)   # n = len(nums)
+# space = O(n)
 class Solution(object):
     def optimalDivision(self, nums):
         nums = [ str(x) for x in nums ]
@@ -55,6 +57,8 @@ class Solution(object):
 
 # V0'
 # IDEA : MATH 
+# time = O(n)   # n = len(nums)
+# space = O(n)
 class Solution(object):
     def optimalDivision(self, nums):
         nums = [ str(x) for x in nums ]
@@ -66,6 +70,8 @@ class Solution(object):
 # IDEA : string op
 # IDEA : only 1st "/" need to be "/", 
 #        -> other "/" can be transformed into "*"
+# time = O(n)   # n = len(nums)
+# space = O(n)
 class Solution(object):
     def optimalDivision(self, nums):
         # edge case
@@ -88,6 +94,8 @@ class Solution(object):
         return _res
 
 # V0'''
+# time = O(n)   # n = len(nums)
+# space = O(n)
 class Solution(object):
     def optimalDivision(self, nums):
         """

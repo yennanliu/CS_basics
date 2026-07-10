@@ -2,7 +2,9 @@
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/83017233
-# IDEA : SET 
+# IDEA : SET
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def findRepeatedDnaSequences(self, s):
         """
@@ -22,6 +24,8 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/repeated-dna-sequences/#tag-highlight-lang-python
+# time = O(n)
+# space = O(n)
 class Solution:
     """
     @param s: a string
@@ -35,9 +39,9 @@ class Solution:
             dic[str] = 1 if str not in dic else dic[str] + 1
         return [k for k, v in dic.items() if v > 1]
         
-# V2 
-# Time:  O(n)
-# Space: O(n)
+# V2
+# time = O(n)
+# space = O(n)
 import collections
 class Solution(object):
     def findRepeatedDnaSequences(self, s):

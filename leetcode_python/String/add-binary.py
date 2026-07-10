@@ -28,6 +28,8 @@ Each string does not contain leading zeros except for the zero itself.
 
 # V0
 # IDEA : Bit-by-Bit Computation
+# time = O(n)   # n = max(len(a), len(b))
+# space = O(n)
 class Solution:
     def addBinary(self, a, b):
         n = max(len(a), len(b))
@@ -75,6 +77,8 @@ class Solution:
 
 # V0'
 # IDEA : STRING + BINARY
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def addBinary(self, a, b):
 
@@ -104,6 +108,8 @@ class Solution(object):
             return result[::-1] ### NOTE WE NEED TO REVERSE IT!
 
 # V0''
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def addBinary(self, a, b):
         """
@@ -121,6 +127,8 @@ class Solution(object):
         return res
 
 # V0'''
+# time = O(n)
+# space = O(n)
 class Solution(object):
     # @param a, a string
     # @param b, a string
@@ -141,12 +149,16 @@ class Solution(object):
 
 # V0''''
 # IDEA : py default
+# time = O(n)
+# space = O(n)
 class Solution:
     def addBinary(self, a, b) -> str:
         return '{0:b}'.format(int(a, 2) + int(b, 2))
 
 # V0''''
 # IDEA : Bit Manipulation
+# time = O(n)
+# space = O(n)
 class Solution:
     def addBinary(self, a, b) -> str:
         x, y = int(a, 2), int(b, 2)

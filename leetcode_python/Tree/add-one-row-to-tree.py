@@ -2,6 +2,8 @@
 
 # V1
 # https://www.jiuzhang.com/solution/add-one-row-to-tree/#tag-highlight-lang-python
+# time = O(n)  # n = number of tree nodes
+# space = O(h)  # h = tree height (recursion stack)
 class Solution:
     """
     @param root: the root of binary tree
@@ -34,6 +36,8 @@ class Solution:
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)  # n = number of tree nodes
+# space = O(h)  # h = tree height (recursion stack)
 class Solution(object):
     def addOneRow(self, root, v, d):
         """
@@ -60,8 +64,8 @@ class Solution(object):
         return root
 
 # V2 
-# Time:  O(n)
-# Space: O(h)
+# time = O(n)
+# space = O(h)
 class TreeNode(object):
     def __init__(self, x):
         self.val = x

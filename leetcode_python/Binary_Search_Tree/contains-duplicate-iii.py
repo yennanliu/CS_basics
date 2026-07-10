@@ -2,6 +2,8 @@
 
 # V1 
 # https://www.hrwhisper.me/leetcode-contains-duplicate-i-ii-iii/
+# time = O(n)
+# space = O(k)  # sliding-window bucket map holds at most k entries
 class Solution(object):
     def containsNearbyAlmostDuplicate(self, nums, k, t):
         """
@@ -23,9 +25,9 @@ class Solution(object):
             key_to_val[key] = num
         return False
         
-# V2 
-# Time:  O(n * t)
-# Space: O(max(k, t))
+# V2
+# time = O(n * t)
+# space = O(max(k, t))
 import collections
 class Solution(object):
     # @param {integer[]} nums

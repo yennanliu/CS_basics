@@ -64,6 +64,8 @@ class TrieNode:
 
 class AutocompleteSystem(object):
 
+    # time = O(k * L)  # k = num sentences, L = avg sentence length
+    # space = O(k * L)
     def __init__(self, sentences, times):
         """
         :type sentences: List[str]
@@ -77,6 +79,8 @@ class AutocompleteSystem(object):
             self.addSentence(s)
         self.tnode = self.trie
 
+    # time = O(p log p)  # p = sentences matching current prefix
+    # space = O(p)
     def input(self, c):
         """
         :type c: str
@@ -94,6 +98,8 @@ class AutocompleteSystem(object):
             self.tnode = self.trie
         return ans
 
+    # time = O(L^2)  # L = sentence length; add sentence to each prefix node's set
+    # space = O(L)
     def addSentence(self, sentence):
         node = self.trie
         for letter in sentence:
@@ -120,12 +126,16 @@ class TrieNode():
         
 class AutocompleteSystem(object):
  
+    # time = O(k * L)  # k = num sentences, L = avg sentence length
+    # space = O(k * L)
     def __init__(self, sentences, times):
         self.root = TrieNode()
         for i, sentence in enumerate(sentences):
             self.addRecord(sentence, times[i])
         self.keyWords = ''
     
+    # time = O(L)  # L = sentence length
+    # space = O(L)
     def addRecord(self, sentence, time):
         node = self.root
         for c in sentence:
@@ -134,6 +144,8 @@ class AutocompleteSystem(object):
         node.rank -= time
         node.data = sentence
  
+    # time = O(L + S log S)  # L = prefix length, S = sentences in matched subtree
+    # space = O(S)
     def input(self, c):
         res = []
         if c != '#':
@@ -144,6 +156,8 @@ class AutocompleteSystem(object):
             self.keyWords = ''
         return res
     
+    # time = O(L + S log S)  # L = prefix length, S = sentences in matched subtree
+    # space = O(S)
     def search(self, sentence):
         node = self.root
         for c in sentence:
@@ -153,6 +167,8 @@ class AutocompleteSystem(object):
         res = self.dfs(node)
         return [data for rank, data in sorted(res)[:3]]
         
+    # time = O(S)  # S = nodes/sentences in subtree rooted at node
+    # space = O(S)
     def dfs(self, node): 
         res = []
         if node:
@@ -165,6 +181,8 @@ class AutocompleteSystem(object):
 # V1''
 # https://zhuanlan.zhihu.com/p/99499171
 class AutocompleteSystem:    
+    # time = O(L)  # L = length of sentence w
+    # space = O(L)
     def insert(self, w: str, t=1):
         cur = self.root
         for c in w:
@@ -177,6 +195,8 @@ class AutocompleteSystem:
                 cur['hot'][w] = 0
             cur['hot'][w] += t  
             
+    # time = O(k * L)  # k = num sentences, L = avg sentence length
+    # space = O(k * L)
     def __init__(self, sentences: List[str], times: List[int]):
         self.root = {}
         self.w = ''
@@ -184,6 +204,8 @@ class AutocompleteSystem:
         for i, s in enumerate(sentences):
             self.insert(s, times[i])
         
+    # time = O(H log H)  # H = sentences sharing the current prefix
+    # space = O(H)
     def input(self, c: str) -> List[str]:
         if c == '#':
             self.insert(self.w)

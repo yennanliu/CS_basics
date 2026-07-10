@@ -39,6 +39,8 @@ p and q will exist in the tree.
 
 # V0
 # IDEA : RECURSION + POST ORDER TRANSVERSAL
+# time = O(n)
+# space = O(h)  # h = tree height (worst case O(n))
 class Solution(object):
     def lowestCommonAncestor(self, root, p, q):
 
@@ -70,6 +72,8 @@ class Solution(object):
 ### NOTE : we need POST ORDER TRANSVERSAL for this problem
 #          -> left -> right -> root
 #          -> we can make sure that if p == q, then the root must be p and q's "common ancestor"
+# time = O(n)
+# space = O(h)  # h = tree height (worst case O(n))
 class Solution(object):
     def lowestCommonAncestor(self, root, p, q):
         # if not root or find p in the tree or find q in the tree
@@ -84,6 +88,8 @@ class Solution(object):
         return left if left else right
 
 # V0'
+# time = O(n)
+# space = O(h)  # h = tree height (worst case O(n))
 class Solution(object):
     def lowestCommonAncestor(self, root, p, q):
         # if not root or find p in the tree or find q in the tree
@@ -102,6 +108,8 @@ class Solution(object):
             return left or right
 
 # V0''
+# time = O(n)
+# space = O(h)  # h = tree height (worst case O(n))
 class Solution(object):
     def lowestCommonAncestor(self, root, p, q):
         if not root or p == root or q == root:
@@ -113,9 +121,11 @@ class Solution(object):
         return left if left else right
 
 # V0'''
+# time = O(n)
+# space = O(h)  # h = tree height (worst case O(n))
 class Solution:
     def lowestCommonAncestor(self, root, A, B):
-        # A & : if there is B below => A 
+        # A & : if there is B below => A
         # B & : if there is A below => B 
         # A & : if there is nothing below => A 
         # B & : if there is everything below => B 

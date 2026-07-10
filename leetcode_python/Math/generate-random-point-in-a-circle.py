@@ -16,6 +16,8 @@
 
 # V2 
 # https://blog.csdn.net/fuxuemingzhu/article/details/83051190
+# time = O(1)
+# space = O(1)
 class Solution:
 
     def __init__(self, radius, x_center, y_center):
@@ -39,8 +41,8 @@ class Solution:
         return [newx, newy]
         
 # V3 
-# Time:  O(1)
-# Space: O(1)
+# time = O(1)
+# space = O(1)
 
 import random
 import math

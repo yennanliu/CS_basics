@@ -23,6 +23,8 @@
 # V2 
 # https://zhanghuimeng.github.io/post/leetcode-829-consecutive-numbers-sum/
 # http://bookshadow.com/weblog/2018/05/06/leetcode-consecutive-numbers-sum/
+# time = O(sqrt(n))  # n = N
+# space = O(1)
 class Solution(object):
     def consecutiveNumbersSum(self, N):
         """
@@ -40,9 +42,9 @@ class Solution(object):
                 ans += 1
         return ans
 
-# V3 
-# Time:  O(sqrt(n))
-# Space: O(1)
+# V3
+# time = O(sqrt(n))
+# space = O(1)
 class Solution(object):
     def consecutiveNumbersSum(self, N):
         """

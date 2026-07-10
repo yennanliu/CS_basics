@@ -44,8 +44,10 @@ The observations in richer are all logically consistent
 
 # V0 
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/82533658
+# time = O(n + e)  # n = len(quiet), e = len(richer)
+# space = O(n + e)
 class Solution:
     def loudAndRich(self, richer, quiet):
         m = collections.defaultdict(list)
@@ -68,6 +70,8 @@ class Solution:
 
 # V1'
 # https://www.jiuzhang.com/solution/loud-and-rich/#tag-highlight-lang-python
+# time = O(n + e)  # n = len(quiet), e = len(richer)
+# space = O(n + e)
 class Solution:
     """
     @param richer: the richer array
@@ -99,6 +103,8 @@ class Solution:
 # V1''
 # IDEA : Cached Depth-First Search
 # https://leetcode.com/problems/loud-and-rich/solution/
+# time = O(n + e)  # n = len(quiet), e = len(richer)
+# space = O(n + e)
 class Solution(object):
     def loudAndRich(self, richer, quiet):
         N = len(quiet)
@@ -119,9 +125,9 @@ class Solution(object):
 
         return map(dfs, range(N))
 
-# V2 
-# Time:  O(q + r)
-# Space: O(q + r)
+# V2
+# time = O(q + r)
+# space = O(q + r)
 class Solution(object):
     def loudAndRich(self, richer, quiet):
         """

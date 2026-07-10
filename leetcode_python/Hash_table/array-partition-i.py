@@ -17,6 +17,8 @@
 
 # V1 
 # http://bookshadow.com/weblog/2017/04/23/leetcode-array-partition-i/
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def arrayPairSum(self, nums):
         """
@@ -25,9 +27,9 @@ class Solution(object):
         """
         return sum(sorted(nums)[::2])
 
-# V2 
-# Time:  O(r), r is the range size of the integers
-# Space: O(r)
+# V2
+# time = O(r)  # r = range size of the integers
+# space = O(r)
 class Solution(object):
     def arrayPairSum(self, nums):
         """
@@ -44,8 +46,8 @@ class Solution(object):
             r = (lookup[i-LEFT] + r) % 2
         return result
 
-# Time:  O(nlogn)
-# Space: O(1)
+# time = O(n log n)
+# space = O(1)
 class Solution2(object):
     def arrayPairSum(self, nums):
         """
@@ -58,8 +60,8 @@ class Solution2(object):
             result += nums[i]
         return result
 
-# Time:  O(nlogn)
-# Space: O(n)
+# time = O(n log n)
+# space = O(n)
 class Solution3(object):
     def arrayPairSum(self, nums):
         """

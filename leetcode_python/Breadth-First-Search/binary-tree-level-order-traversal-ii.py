@@ -31,6 +31,8 @@ The number of nodes in the tree is in the range [0, 2000].
 """
 
 # V0
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def levelOrder(self, root):
         """
@@ -51,6 +53,8 @@ class Solution(object):
 # V0'
 # IDEA : BFS 
 # https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Breadth-First-Search/binary-tree-level-order-traversal.py
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def levelOrderBottom(self, root):
         res = []
@@ -71,7 +75,9 @@ class Solution(object):
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/49108449
-# IDEA : DFS 
+# IDEA : DFS
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def levelOrder(self, root):
         """
@@ -91,7 +97,9 @@ class Solution(object):
         
 # V1' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/49108449
-# IDEA : BFS  
+# IDEA : BFS
+# time = O(n)
+# space = O(n)
 class Solution:
     def levelOrderBottom(self, root):
         """
@@ -118,8 +126,8 @@ class Solution:
         return res[::-1]
 
 # V2 
-# Time:  O(n)
-# Space: O(n)
+# time = O(n)
+# space = O(n)
 class TreeNode(object):
     def __init__(self, x):
         self.val = x

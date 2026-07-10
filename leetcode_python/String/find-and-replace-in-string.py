@@ -1,7 +1,9 @@
 # V0 
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/81094404
+# time = O(n * m)  # n = len(S), m = len(indexes)
+# space = O(n)
 class Solution(object):
     def findReplaceString(self, S, indexes, sources, targets):
         """
@@ -30,8 +32,8 @@ class Solution(object):
         return ans
         
 # V2
-# Time:  O(n + m), m is the number of targets
-# Space: O(n)
+# time = O(n + m), m is the number of targets
+# space = O(n)
 class Solution(object):
     def findReplaceString(self, S, indexes, sources, targets):
         """
@@ -59,8 +61,8 @@ class Solution(object):
         return "".join(result)
 
 
-# Time:  O(mlogm + m * n)
-# Space: O(n + m)
+# time = O(mlogm + m * n)
+# space = O(n + m)
 class Solution2(object):
     def findReplaceString(self, S, indexes, sources, targets):
         """

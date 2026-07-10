@@ -1,5 +1,5 @@
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 
 # Find the minimum length word from a given dictionary words,
 # which has all the letters from the string licensePlate.
@@ -33,9 +33,11 @@
 # - Every words[i] will consist of lowercase letters, and have length in range [1, 15].
 
 
-# V0 
+# V0
+# time = O(n)  # n = total chars across words
+# space = O(1)
 import collections
-import re 
+import re
 class Solution(object):
     def shortestCompletingWord(self, licensePlate, words):
         """
@@ -50,8 +52,8 @@ class Solution(object):
             if all(clicense[k] <= cword[k] for k in clicense) and len(word) < len(ans):
                 ans = word
         return ans
-        
-# V1 
+
+# V1
 # http://bookshadow.com/weblog/2017/12/17/leetcode-shortest-completing-word/
 import collections
 import re 

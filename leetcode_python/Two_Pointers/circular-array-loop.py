@@ -6,6 +6,8 @@
 # V2 
 # http://bookshadow.com/weblog/2016/11/09/leetcode-circular-array-loop/
 # dfs 
+# time = O(n)  # n = len(nums)
+# space = O(n)  # recursion stack
 class Solution(object):
     def circularArrayLoop(self, nums):
         """
@@ -28,6 +30,8 @@ class Solution(object):
 
 # V3 
 # http://bookshadow.com/weblog/2016/11/09/leetcode-circular-array-loop/
+# time = O(n)  # n = len(nums)
+# space = O(1)
 class Solution(object):
     def circularArrayLoop(self, nums):
         """
@@ -59,8 +63,8 @@ class Solution(object):
 
 
 # V4 
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 
 class Solution(object):
     def circularArrayLoop(self, nums):

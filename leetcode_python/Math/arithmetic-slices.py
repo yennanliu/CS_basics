@@ -37,6 +37,8 @@ Constraints:
 #   -> step 2) use the other pointer j, "look back to idx = 0" via while loop
 #       -> if there is any case fit condition, add to result
 #   -> step 3) return ans
+# time = O(n^2)  # n = len(A)
+# space = O(1)
 class Solution(object):
     def numberOfArithmeticSlices(self, A):
         # edge case
@@ -58,6 +60,8 @@ class Solution(object):
 
 # V0'
 # IDEA : for loop
+# time = O(n)  # n = len(A)
+# space = O(1)
 class Solution(object):
     def numberOfArithmeticSlices(self, A):
         # edge case
@@ -77,6 +81,8 @@ class Solution(object):
 
 # V2 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79404220
+# time = O(n)  # n = len(A)
+# space = O(n)  # recursion depth
 class Solution(object):
     def numberOfArithmeticSlices(self, A):
         N = len(A)
@@ -95,6 +101,8 @@ class Solution(object):
         return op
 
 # V2'
+# time = O(n)  # n = len(A)
+# space = O(1)
 class Solution(object):
     def numberOfArithmeticSlices(self, A):
         """
@@ -111,9 +119,9 @@ class Solution(object):
                 addend = 0
         return count
 
-# V3 
-# Time:  O(n)
-# Space: O(1)
+# V3
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def numberOfArithmeticSlices(self, A):
         """

@@ -51,6 +51,8 @@ Constraints:
 
 # V0
 # IDEA : BINARY SEARCH
+# time = O(n * log(w))   # n = len(weights), w = sum(weights)
+# space = O(1)
 class Solution(object):
      def shipWithinDays(self, weights, D):
             """
@@ -88,6 +90,8 @@ class Solution(object):
 # V1
 # IDEA : BINARY SEARCH
 # https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/discuss/390359/Simple-Python-Binary-Search
+# time = O(n * log(w))   # n = len(weights), w = sum(weights)
+# space = O(1)
 class Solution(object):
      def shipWithinDays(self, weights, D):
             def cannot_split(weights, D, max_wgt):
@@ -118,6 +122,8 @@ class Solution(object):
 # --> The left bound is max(A),
 # --> The right bound is sum(A).
 # --> https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/discuss/256729/JavaC%2B%2BPython-Binary-Search
+# time = O(n * log(w))   # n = len(weights), w = sum(weights)
+# space = O(1)
 class Solution(object):
     def shipWithinDays(self, weights, D):
             left, right = max(weights), sum(weights)
@@ -137,6 +143,8 @@ class Solution(object):
 # V1''
 # IDEA : BINARY SEARCH
 # https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/discuss/884307/Python-binary-search
+# time = O(n * log(w))   # n = len(weights), w = sum(weights)
+# space = O(1)
 class Solution(object):
     def shipWithinDays(self, weights, D):
             left = max(weights)
@@ -165,6 +173,8 @@ class Solution(object):
 
 # V1'''
 # https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/discuss/257887/Python-Binary-Search
+# time = O(n * log(w))   # n = len(weights), w = sum(weights)
+# space = O(1)
 class Solution:
     def shipWithinDays(self, weights, D):
         low, high = max(weights), sum(weights)

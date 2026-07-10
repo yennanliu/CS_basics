@@ -2,6 +2,8 @@
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79624149
+# time = O(2^n * n)  # n = number of nodes; up to 2^n paths each of length O(n)
+# space = O(2^n * n)  # storing all paths
 class Solution(object):
     def allPathsSourceTarget(self, graph):
         """
@@ -23,6 +25,8 @@ class Solution(object):
 
 # V1' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79624149
+# time = O(2^n * n)  # n = number of nodes; up to 2^n paths each of length O(n)
+# space = O(2^n * n)  # storing all paths
 class Solution(object):
     def allPathsSourceTarget(self, graph):
         """
@@ -42,6 +46,8 @@ class Solution(object):
 # V1''
 # https://www.jiuzhang.com/solution/all-paths-from-source-to-target/#tag-highlight-lang-python
 # IDEA : DFS 
+# time = O(2^n * n)  # n = number of nodes; up to 2^n paths each of length O(n)
+# space = O(2^n * n)  # storing all paths
 class Solution:
     """
     @param graph: a 2D array
@@ -60,8 +66,8 @@ class Solution:
         return (res)
 
 # V2 
-# Time:  O(p + r * n), p is the count of all the possible paths in graph, r is the count of the result.
-# Space: O(n)
+# time = O(p + r * n), p is the count of all the possible paths in graph, r is the count of the result.
+# space = O(n)
 class Solution(object):
     def allPathsSourceTarget(self, graph):
         """

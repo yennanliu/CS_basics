@@ -33,6 +33,8 @@ The number of nodes in the tree is in the range [1, 104].
 
 # V0
 # IDEA: DFS (POST ORDER)
+# time = O(n)
+# space = O(h)  # h = tree height, worst O(n)
 class Solution(object):
     
     #self.max_diameter = 0
@@ -77,6 +79,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: DFS (POST ORDER)
+# time = O(n)
+# space = O(h)  # h = tree height, worst O(n)
 class Solution(object):
     def diameterOfBinaryTree(self, root):
         # stores the maximum diameter found so far
@@ -109,6 +113,8 @@ class Solution(object):
 
 # V0-2
 # IDEA: DFS (POST ORDER)
+# time = O(n)
+# space = O(h)  # h = tree height, worst O(n)
 class Solution(object):
     def diameterOfBinaryTree(self, root):
         """
@@ -140,7 +146,9 @@ class Solution(object):
         return max(left_height, right_height) + 1
 
 
-# V0 
+# V0
+# time = O(n)
+# space = O(h)  # h = tree height, worst O(n)
 class Solution:
     def diameterOfBinaryTree(self, root):
         """
@@ -169,6 +177,8 @@ class Solution:
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)
+# space = O(h)  # h = tree height, worst O(n)
 class Solution:
     def diameterOfBinaryTree(self, root):
         """
@@ -191,6 +201,8 @@ class Solution:
         
 # V1'
 # https://www.jiuzhang.com/solution/diameter-of-binary-tree/#tag-highlight-lang-python
+# time = O(n)
+# space = O(h)  # h = tree height, worst O(n)
 class Solution():
     def __init__(self):
         self.max = 0
@@ -207,9 +219,9 @@ class Solution():
         self.max = max(self.max, left + right)
         return 1 + max(left, right)
 
-# V2 
-# Time:  O(n)
-# Space: O(h)
+# V2
+# time = O(n)
+# space = O(h)
 class Solution(object):
     def diameterOfBinaryTree(self, root):
         """

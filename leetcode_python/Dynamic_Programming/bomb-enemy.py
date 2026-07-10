@@ -15,6 +15,8 @@
 # V0 
 ### NOTE : IT'S LIKE "BOMBERMAN", SO THE BOMB CAN ONLY EXPLODE "STRAIGHT" LINE,
 # -> BFS IN THIS PROBLEM MAY NOT WORKS
+# time = O(m * n * (m + n))
+# space = O(1)
 class Solution(object):
     def maxKilledEnemies(self, grid):
         """
@@ -48,7 +50,7 @@ class Solution(object):
                 if grid[x][j] == 'E':
                     down += 1
             return left+right+up+down
-        # base case
+        # base case 
         if not grid: return 0
         row, col = len(grid), len(grid[0])
         ans = 0
@@ -62,8 +64,10 @@ class Solution(object):
 # V0'
 # TODO : OPTIMIZATION : NOT TO SEARCH "visited" grid REPEATEDLY
 
-# V1 
+# V1
 # https://www.twblogs.net/a/5c9baf03bd9eee73ef4b0e0d
+# time = O(m * n * (m + n))
+# space = O(1)
 class Solution(object):
     def maxKilledEnemies(self, grid):
         """
@@ -112,13 +116,15 @@ class Solution(object):
 
 # V1'
 # https://www.twblogs.net/a/5c9baf03bd9eee73ef4b0e0d
+# time = O(m * n)
+# space = O(m * n)
 class Solution(object):
     def maxKilledEnemies(self, grid):
         """
         :type grid: List[List[str]]
         :rtype: int
         """
-        # base case 
+        # base case
         if not grid: return 0
         row, col = len(grid), len(grid[0])
         ans = 0
@@ -169,9 +175,9 @@ class Solution(object):
                     
         return ans
 
-# V2 
-# Time:  O(m * n)
-# Space: O(m * n)
+# V2
+# time = O(m * n)
+# space = O(m * n)
 class Solution(object):
     def maxKilledEnemies(self, grid):
         """

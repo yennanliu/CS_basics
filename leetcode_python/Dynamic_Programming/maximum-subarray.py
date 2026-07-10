@@ -36,6 +36,8 @@ Follow up: If you have figured out the O(n) solution, try coding another solutio
 
 # V0
 # IDEA : DP (Kadane’s algo)
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def maxSubArray(self, nums):
         max_sum = nums[0]
@@ -56,6 +58,8 @@ class Solution(object):
 # DP EQUATION :
 # -> dp[i+1] = dp[i] + s[i+1] (if dp[i] >= 0 )
 # -> dp[i+1] = s[i]           (if dp[i] < 0 )
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def maxSubArray(self, nums):
         # edge case: single element
@@ -82,6 +86,8 @@ class Solution(object):
 # DP EQUATION :
 # -> dp[i+1] = dp[i] + s[i+1] (if dp[i] >= 0 )
 # -> dp[i+1] = s[i]           (if dp[i] < 0 )
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def maxSubArray(self, nums):
         """
@@ -101,7 +107,9 @@ class Solution(object):
         return max_result
 
 # V0'
-# IDEA : DP 
+# IDEA : DP
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def maxSubArray(self, nums):
         cumsum = nums[0]
@@ -116,6 +124,8 @@ class Solution(object):
 
 # V0'
 # IDEA : BRUTE FORCE (TLE)
+# time = O(n^3)  # nested loops + sum() over growing tmp list
+# space = O(n)
 class Solution(object):
     def maxSubArray(self, nums):
         # edge case
@@ -137,6 +147,8 @@ class Solution(object):
 # DP EQUATION :
 # -> dp[i+1] = dp[i] + s[i+1] (if dp[i] >= 0 )
 # -> dp[i+1] = s[i]           (if dp[i] < 0 )
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def maxSubArray(self, nums):
         """
@@ -160,6 +172,8 @@ class Solution(object):
 # DP STATUS EQUATION : 
 # dp[i] = dp[i-1] + s[i] (dp[i-1] >= 0)
 # dp[i] = s[i] (dp[i-1] < 0)
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def maxSubArray(self, nums):
         """
@@ -182,9 +196,11 @@ class Solution(object):
 # V1 
 # https://blog.csdn.net/hyperbolechi/article/details/43038749
 # IDEA : BRUTE FORCE
+# time = O(n^3)  # nested loops + sum() over slice arr[i:j]
+# space = O(n)
 class Solution:
     def maxSubArray(self, arr):
-        maxval=-10000  
+        maxval=-10000
         for i in range(len(arr)):
             for j in range(i,len(arr)):
                 if maxval<sum(arr[i:j]):
@@ -196,6 +212,8 @@ class Solution:
 # V1
 # IDEA :  Optimized Brute Force
 # https://leetcode.com/problems/maximum-subarray/solution/
+# time = O(n^2)
+# space = O(1)
 class Solution:
     def maxSubArray(self, nums: List[int]) -> int:
         max_subarray = -math.inf
@@ -210,6 +228,8 @@ class Solution:
 # V1
 # IDEA : Dynamic Programming, Kadane's Algorithm
 # https://leetcode.com/problems/maximum-subarray/solution/
+# time = O(n)
+# space = O(1)
 class Solution:
     def maxSubArray(self, nums: List[int]) -> int:
         # Initialize our variables using the first element.
@@ -226,6 +246,8 @@ class Solution:
 # V1
 # IDEA : Divide and Conquer
 # https://leetcode.com/problems/maximum-subarray/solution/
+# time = O(n log n)
+# space = O(log n)  # recursion depth
 class Solution:
     def maxSubArray(self, nums: List[int]) -> int:
         def findBestSubarray(nums, left, right):
@@ -262,9 +284,9 @@ class Solution:
         # any array - so just call it using the entire input!
         return findBestSubarray(nums, 0, len(nums) - 1)
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def maxSubArray(self, nums):
         """

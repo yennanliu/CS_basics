@@ -33,6 +33,8 @@ The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit int
 
 # V0
 # Kadane algo
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def maxProduct(self, nums):
         if len(nums) == 1:
@@ -68,6 +70,8 @@ class Solution(object):
 
 # V0-1
 # Kadane algo
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def maxProduct(self, nums):
         """
@@ -105,6 +109,8 @@ class Solution(object):
 
 # V0
 # IDEA : brute force + product
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def maxProduct(self, A):
         global_max, local_max, local_min = float("-inf"), 1, 1
@@ -120,6 +126,8 @@ class Solution(object):
 # V1
 # IDEA : BRUTE FORCE (TLE)
 # https://leetcode.com/problems/maximum-product-subarray/solution/
+# time = O(n^2)
+# space = O(1)
 class Solution:
     def maxProduct(self, nums: List[int]) -> int:
         if len(nums) == 0:
@@ -138,6 +146,8 @@ class Solution:
 # V1'
 # IDEA : DP
 # https://leetcode.com/problems/maximum-product-subarray/solution/
+# time = O(n)
+# space = O(1)
 class Solution:
     def maxProduct(self, nums: List[int]) -> int:
         if len(nums) == 0:
@@ -161,6 +171,8 @@ class Solution:
 # V1''
 # IDEA : brute force
 # https://leetcode.com/problems/maximum-product-subarray/discuss/160466/Python-solution
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def maxProduct(self, nums):
         N = len(nums)
@@ -182,6 +194,8 @@ class Solution(object):
 
 # V1'''
 # https://leetcode.com/problems/maximum-product-subarray/discuss/728760/Simple-python
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def maxProduct(self, a):
         ans = max_prod = min_prod = a[0]                       
@@ -200,6 +214,8 @@ class Solution(object):
 # dpmin  = min(nums[i], dpmax * nums[i], dpmin * nums[i])
 # maxout = max(maxout, dpmax)
 class Solution:
+    # time = O(n)
+    # space = O(n)
     def maxstrtest(self, nums):
         n = len(nums)
         if n == 1: return nums[0]
@@ -211,6 +227,8 @@ class Solution:
             dpmin[i] = min(nums[i], dpmax[i - 1] * nums[i], dpmin[i - 1] * nums[i])  # 记录最小值，考虑负数的情况
         return max(dpmax)
 
+    # time = O(n)
+    # space = O(1)
     def maxstrtest1(self, nums):
         if len(nums) == 1: return nums[0]
         dpmax, dpmin, maxout= 1, 1, float('-inf')
@@ -219,8 +237,10 @@ class Solution:
             maxout = max(maxout, dpmax)
         return maxout
 
-# V2 
+# V2
 # https://blog.csdn.net/fuxuemingzhu/article/details/83211451
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def maxProduct(self, nums):
         """
@@ -238,9 +258,9 @@ class Solution(object):
             res = max(res, f[i])
         return res
 
-# V3 
-# Time:  O(n)
-# Space: O(1)
+# V3
+# time = O(n)
+# space = O(1)
 class Solution(object):
     # @param A, a list of integers
     # @return an integer
@@ -251,6 +271,8 @@ class Solution(object):
             global_max = max(global_max, local_max)
         return global_max
 
+# time = O(n)
+# space = O(1)
 class Solution2(object):
     # @param A, a list of integers
     # @return an integer

@@ -33,6 +33,8 @@ It is guaranteed that the list represents a number that does not have leading ze
 """
 
 # V0
+# time = O(n + m)  # n = len(l1), m = len(l2)
+# space = O(n + m)
 class Solution(object):
     def addTwoNumbers(self, l1, l2):
         str1 = ""
@@ -63,6 +65,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: LINKED LIST OP
+# time = O(max(n, m))  # n = len(l1), m = len(l2)
+# space = O(max(n, m))
 class Solution(object):
     def addTwoNumbers(self, l1, l2):
         dummy = ListNode(0)
@@ -88,6 +92,8 @@ class Solution(object):
 
 
 # V0
+# time = O(max(n, m))  # n = len(l1), m = len(l2)
+# space = O(max(n, m))
 class Solution(object):
     def addTwoNumbers(self, l1, l2):
         """
@@ -123,6 +129,8 @@ class Solution(object):
         return head.next
 
 # V0'
+# time = O(max(n, m))  # n = len(l1), m = len(l2)
+# space = O(max(n, m))
 class Solution:
     # @return a ListNode
     def addTwoNumbers(self, l1, l2):
@@ -163,6 +171,8 @@ class Solution:
 #     def __init__(self, x):
 #         self.val = x
 #         self.next = None
+# time = O(max(n, m))  # n = len(l1), m = len(l2)
+# space = O(max(n, m))
 class Solution:
     # @return a ListNode
     def addTwoNumbers(self, l1, l2):
@@ -189,6 +199,8 @@ class Solution:
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79379626
 # IDEA : STRING  
+# time = O(n + m)  # n = len(l1), m = len(l2)
+# space = O(n + m)
 class Solution(object):
     def addTwoNumbers(self, l1, l2):
         """
@@ -213,9 +225,9 @@ class Solution(object):
             head = head.next
         return answer
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class ListNode(object):
     def __init__(self, x):
         self.val = x

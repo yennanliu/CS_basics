@@ -41,6 +41,8 @@ words[i] consists of only lowercase English letters.
 # V1
 # IDEA : BFS
 # https://leetcode.com/problems/alien-dictionary/solution/
+# time = O(n)  # n = total chars across all words
+# space = O(1)  # graph nodes/edges bounded by alphabet (<=26)
 from collections import defaultdict, Counter, deque
 def alienOrder(self, words: List[str]) -> str:
     
@@ -81,6 +83,8 @@ def alienOrder(self, words: List[str]) -> str:
 # V1
 # IDEA : DFS
 # https://leetcode.com/problems/alien-dictionary/solution/
+# time = O(n)  # n = total chars across all words
+# space = O(1)  # graph nodes/edges bounded by alphabet (<=26)
 def alienOrder(self, words: List[str]) -> str:
 
     # Step 0: Put all unique letters into the adj list.
@@ -119,6 +123,8 @@ def alienOrder(self, words: List[str]) -> str:
 # V1
 # https://blog.csdn.net/qq_37821701/article/details/108807236
 # IDEA : Topological sorting (official solution)
+# time = O(n)  # n = total chars across all words
+# space = O(1)  # graph nodes/edges bounded by alphabet (<=26)
 class Solution:
     def alienOrder(self, words):
         # create adject matrx of the graph
@@ -251,6 +257,8 @@ class Solution:
 # V1
 # https://www.jiuzhang.com/solution/alien-dictionary/
 # IDEA : Topological sorting
+# time = O(n)  # n = total chars; heap over <=26 nodes is O(1) factor
+# space = O(1)  # graph nodes/edges bounded by alphabet (<=26)
 class Solution:
     def alienOrder(self, words):
         # Write your code here
@@ -300,6 +308,8 @@ class Solution:
 # V1'
 # https://www.cnblogs.com/lightwindy/p/8531872.html
 # IDEA :BFS 
+# time = O(n)  # n = total chars across all words
+# space = O(1)  # graph nodes/edges bounded by alphabet (<=26)
 class Solution(object):
     def alienOrder(self, words):
         """
@@ -358,6 +368,8 @@ class Solution(object):
 # V1'
 # https://www.cnblogs.com/lightwindy/p/8531872.html
 # IDEA : DFS
+# time = O(n)  # n = total chars across all words
+# space = O(1)  # graph nodes/edges bounded by alphabet (<=26)
 class Solution(object):
     def alienOrder(self, words):
         # Find ancestors of each node by DFS.
@@ -408,6 +420,8 @@ class Solution(object):
 
 # V1''
 # https://yao.page/posts/alien-dictionary-python/
+# time = O(n)  # n = total chars across all words
+# space = O(1)  # graph nodes/edges bounded by alphabet (<=26)
 class Solution(object):
     def alien_dictionary(self, words):
         n = len(words)
@@ -461,6 +475,8 @@ class Solution(object):
 
 # V1'''
 # https://medium.com/@dimko1/alien-dictionary-6cf2da24bf3c
+# time = O(n)  # n = total chars across all words
+# space = O(1)  # graph nodes/edges bounded by alphabet (<=26)
 class Solution(object):
     def alienOrder(self, words):
         pre = collections.defaultdict(set)
@@ -496,8 +512,8 @@ class Solution(object):
 
 # V2
 # https://github.com/kamyu104/LeetCode-Solutions/blob/master/Python/alien-dictionary.py
-# Time:  O(n)
-# Space: O(|V|+|E|) = O(26 + 26^2) = O(1)
+# time = O(n)
+# space = O(|V|+|E|) = O(26 + 26^2) = O(1)
 import collections
 # BFS solution.
 class Solution(object):
@@ -606,6 +622,8 @@ class Solution2(object):
     
 # V3
 # https://shareablecode.com/snippets/alien-dictionary-python-solution-leetcode-E6Er-DiZ3
+# time = O(n)  # n = total chars across all words
+# space = O(|V|+|E|) = O(26 + 26^2) = O(1)
 import collections
 # BFS solution.
 class Solution(object):

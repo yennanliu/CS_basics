@@ -61,6 +61,8 @@ For operations "C" and "D", there will always be at least one previous score on 
 
 # V0
 # IDEA : STACK
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def calPoints(self, ops):
         cache = []
@@ -84,8 +86,10 @@ class Solution(object):
             return 0
         return sum(cache)
 
-# V0' 
+# V0'
 # IDEA : STACK
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def calPoints(self, ops):
         stack=[]
@@ -103,6 +107,8 @@ class Solution(object):
 # V1
 # IDEA : STACK
 # https://leetcode.com/problems/baseball-game/solution/
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def calPoints(self, ops):
         stack = []
@@ -120,6 +126,8 @@ class Solution(object):
 
 # V1 
 # http://bookshadow.com/weblog/2017/09/24/leetcode-baseball-game/
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def calPoints(self, ops):
         """
@@ -149,6 +157,8 @@ assert s.calPoints(["10","10","C"]) == 10
 assert s.calPoints(["10","10","D"]) == 40
 
 # V2
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def calPoints(self, ops):
         history = []
@@ -165,6 +175,8 @@ class Solution(object):
         return sum(history)
 
 # V3
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def calPoints(self, ops):
         """
@@ -184,8 +196,8 @@ class Solution(object):
         return sum(history)
 
 # V4 
-# Time:  O(n)
-# Space: O(n)
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def calPoints(self, ops):
         """

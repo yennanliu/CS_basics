@@ -3,6 +3,8 @@
 # V1
 # http://bookshadow.com/weblog/2016/12/11/leetcode-encode-string-with-shortest-length/
 # IDEA : DP + BACKTRACKING
+# time = O(n^3)  # n = len(s); memoized over O(n^2) substrings
+# space = O(n^2)
 class Solution(object):
     def __init__(self):
         self.dp = dict()
@@ -33,8 +35,8 @@ class Solution(object):
         return ans
         
 # V2
-# Time:  O(n^3) on average
-# Space: O(n^2)
+# time = O(n^3) on average
+# space = O(n^2)
 class Solution(object):
     def encode(self, s):
         """

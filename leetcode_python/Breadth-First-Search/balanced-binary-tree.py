@@ -3,9 +3,11 @@
 # V1 : dev 
 
 
-# V2  
+# V2
 
 
+# time = O(n^2)  # isBalanced calls maxDepth at each node
+# space = O(n)  # recursion stack, h up to n
 class Solution(object):
     def maxDepth(self, root):        
         if root == None:
@@ -33,8 +35,8 @@ class Solution(object):
 
 
 # V3 
-# Time:  O(n)
-# Space: O(h), h is height of binary tree
+# time = O(n)
+# space = O(h), h is height of binary tree
 
 
 class TreeNode(object):

@@ -34,6 +34,8 @@ The number of nodes in the tree is in the range [2, 5 * 104].
 
 # V0
 # IDEA : DFS
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def maxProduct(self, root):
         all_sums = []
@@ -55,6 +57,8 @@ class Solution(object):
 # V1
 # IDEA : DFS
 # https://leetcode.com/problems/maximum-product-of-splitted-binary-tree/discuss/496817/Python-8-lines
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def maxProduct(self, root):
         sums = []
@@ -69,6 +73,8 @@ class Solution(object):
 # V1
 # IDEA : ONE PASS DFS
 # https://leetcode.com/problems/maximum-product-of-splitted-binary-tree/solution/
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def maxProduct(self, root):
         all_sums = []
@@ -90,6 +96,8 @@ class Solution(object):
 # V1
 # IDEA : TWO PASS DFS
 # https://leetcode.com/problems/maximum-product-of-splitted-binary-tree/solution/
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def maxProduct(self, root):
 
@@ -119,6 +127,8 @@ class Solution(object):
 # V1
 # IDEA : DFS
 # https://leetcode.com/problems/maximum-product-of-splitted-binary-tree/discuss/768608/Python-solution
+# time = O(n)
+# space = O(n)
 class Solution:
     def maxProduct(self, root):
         MOD = 1000000007
@@ -140,6 +150,8 @@ class Solution:
 
 # V1
 # https://leetcode.com/problems/maximum-product-of-splitted-binary-tree/discuss/1040798/Python
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def maxProduct(self, root):
         """

@@ -52,6 +52,8 @@ Node.random is null or is pointing to some node in the linked list.
 
 # V0
 # IDEA: RECURSION + HASHMAP
+# time = O(n)  # n = number of nodes
+# space = O(n)
 class Solution(object):
     def copyRandomList(self, head):
         # NOTE !!!
@@ -88,6 +90,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: 2 PASS + HASHMAP
+# time = O(n)  # n = number of nodes
+# space = O(n)
 class Solution(object):
     def copyRandomList(self, head):
         if not head:
@@ -121,6 +125,8 @@ class Solution(object):
 #   step 1) make 2 objects (m, n) refer to same instance (head)
 #   step 2) go through m, and set up the dict
 #   step 3) go through n, and get the random pointer via the dict we set up in step 2)
+# time = O(n)  # n = number of nodes
+# space = O(n)
 class Node(object):
     def __init__(self, val, next, random):
         self.val = val
@@ -152,6 +158,8 @@ class Node(object):
         self.next = next
         self.random = random
 """
+# time = O(n)  # n = number of nodes
+# space = O(n)
 class Solution(object):
     def copyRandomList(self, head):
         """
@@ -178,6 +186,8 @@ class Solution(object):
 
 # V1'
 # http://bookshadow.com/weblog/2015/07/31/leetcode-copy-list-random-pointer/
+# time = O(n)  # n = number of nodes
+# space = O(n)
 class Solution:
     # @param head, a RandomListNode
     # @return a RandomListNode
@@ -199,6 +209,8 @@ class Solution:
 # V1''
 # https://leetcode.com/problems/copy-list-with-random-pointer/discuss/43485/Clear-and-short-python-O(2n)-and-O(n)-solution
 # Definition for a Node.
+# time = O(n)  # n = number of nodes
+# space = O(n)
 class Node(object):
     def __init__(self, val, next, random):
         self.val = val
@@ -220,6 +232,8 @@ class Solution:
 
 # V1'''
 # https://leetcode.com/problems/copy-list-with-random-pointer/discuss/43485/Clear-and-short-python-O(2n)-and-O(n)-solution
+# time = O(n)  # n = number of nodes
+# space = O(n)
 class Node(object):
     def __init__(self, val, next, random):
         self.val = val
@@ -240,6 +254,8 @@ class Solution:
 
 # V1'''''
 # https://www.jiuzhang.com/solution/copy-list-with-random-pointer/#tag-highlight-lang-python
+# time = O(n)  # n = number of nodes
+# space = O(n)
 class Solution:
     # @param head: A RandomListNode
     # @return: A RandomListNode
@@ -270,9 +286,9 @@ class Solution:
             p = p.next
         return nHead
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class RandomListNode(object):
     def __init__(self, x):
         self.label = x
@@ -307,9 +323,9 @@ class Solution(object):
             copied_current, current = copied_current.__next__, current.__next__
         return dummy.__next__
 
-# V3 
-# Time:  O(n)
-# Space: O(n)
+# V3
+# time = O(n)
+# space = O(n)
 class Solution2(object):
     # @param head, a RandomListNode
     # @return a RandomListNode
@@ -329,8 +345,8 @@ class Solution2(object):
         return dummy.__next__
 
 # V4
-# time: O(n)
-# space: O(n)
+# time = O(n)
+# space = O(n)
 from collections import defaultdict
 class Solution3(object):
     def copyRandomList(self, head):

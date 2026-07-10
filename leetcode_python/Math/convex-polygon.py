@@ -30,6 +30,8 @@
 
 # V2
 # http://bookshadow.com/weblog/2016/12/04/leetcode-convex-polygon/
+# time = O(n)  # n = len(points)
+# space = O(1)
 class Solution(object):
     def isConvex(self, points):
         """
@@ -54,8 +56,8 @@ class Solution(object):
 
 
 # V3
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def isConvex(self, points):
         """

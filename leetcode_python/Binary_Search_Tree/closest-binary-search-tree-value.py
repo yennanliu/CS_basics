@@ -31,6 +31,8 @@ Base on the characteristics of binary search tree to search for the target.
 # V0
 # IDEA : BST property + tree traversal
 ###     -> BST property : left < root < right (value ordering)
+# time = O(h)  # h = tree height
+# space = O(1)
 class Solution(object):
     def closestValue(self, root, target):
 
@@ -61,6 +63,8 @@ class Solution(object):
 
 # V0'
 # KEY : BST PROPERTY : RIGHT > ROOT > LEFT
+# time = O(h)  # h = tree height
+# space = O(h)  # recursion stack
 class Solution(object):
     def closestValue(self, root, target):
         a = root.val
@@ -109,6 +113,8 @@ class Solution(object):
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(h)  # h = tree height
+# space = O(1)
 class Solution(object):
     def closestValue(self, root, target):
         """
@@ -135,6 +141,8 @@ class Solution(object):
 
 # V1'
 # http://www.voidcn.com/article/p-phbluudb-qp.html
+# time = O(h)  # h = tree height
+# space = O(h)  # recursion stack
 class Solution(object):
     def closestValue(self, root, target):
         a = root.val
@@ -145,6 +153,8 @@ class Solution(object):
 
 # V1''
 # http://www.voidcn.com/article/p-phbluudb-qp.html
+# time = O(h)  # h = tree height
+# space = O(h)  # path list stores nodes along the walk
 class Solution(object):
     def closestValue(self, root, target):
         path = []
@@ -155,6 +165,8 @@ class Solution(object):
 
 # V1'''
 # https://www.jiuzhang.com/solution/closest-binary-search-tree-value/#tag-highlight-lang-python
+# time = O(h)  # h = tree height
+# space = O(1)
 class Solution:
     """
     @param root: the given BST
@@ -179,6 +191,8 @@ class Solution:
 
 # V1''''
 # https://www.jiuzhang.com/solution/closest-binary-search-tree-value/#tag-highlight-lang-python
+# time = O(h)  # h = tree height
+# space = O(h)  # recursion stack
 class Solution:
     """
     @param root: the given BST
@@ -222,9 +236,9 @@ class Solution:
         upper = self.get_upper_bound(root.left, target)
         return root if upper is None else upper
 
-# V2 
-# Time:  O(h)
-# Space: O(1)
+# V2
+# time = O(h)
+# space = O(1)
 class Solution(object):
     def closestValue(self, root, target):
         """

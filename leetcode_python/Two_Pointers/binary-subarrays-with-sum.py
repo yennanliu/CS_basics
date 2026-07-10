@@ -2,6 +2,8 @@
 
 # V1
 # https://www.jiuzhang.com/solution/binary-subarrays-with-sum/#tag-highlight-lang-python
+# time = O(n)  # n = len(A)
+# space = O(n)
 import collections
 class Solution:
     """
@@ -22,6 +24,8 @@ class Solution:
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/83478995
 # IDEA : DICT 
+# time = O(n)  # n = len(A)
+# space = O(n)
 import collections
 class Solution(object):
     def numSubarraysWithSum(self, A, S):
@@ -43,6 +47,8 @@ class Solution(object):
 # V1'' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/83478995
 # IDEA : GREEDY 
+# time = O(n log n)  # n = len(A); bisect per element
+# space = O(n)
 class Solution(object):
     def numSubarraysWithSum(self, A, S):
         """
@@ -66,8 +72,8 @@ class Solution(object):
         return res
         
 # V2
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 # Two pointers solution
 class Solution(object):
     def numSubarraysWithSum(self, A, S):

@@ -35,6 +35,8 @@ The number of nodes in the tree is in the range [0, 100].
 
 # V0
 # IDEA : BFS + defaultdict
+# time = O(n log n)
+# space = O(n)
 from collections import defaultdict
 class Solution(object):
     def verticalOrder(self, root):
@@ -59,6 +61,8 @@ class Solution(object):
 
 # V0'
 # IDEA : DFS
+# time = O(n log n)
+# space = O(n)
 from collections import defaultdict
 class Solution:
     def verticalOrder(self, root):
@@ -93,6 +97,8 @@ class Solution:
 
 # V0''
 # IDEA : BFS + collections.defaultdict(list)
+# time = O(n log n)
+# space = O(n)
 import collections
 class Solution(object):
     def verticalOrder(self, root):
@@ -120,6 +126,8 @@ class Solution(object):
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n log n)
+# space = O(n)
 from collections import defaultdict
 class Solution:
     def verticalOrder(self, root: TreeNode) -> List[List[int]]:
@@ -146,6 +154,8 @@ class Solution:
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)
+# space = O(n)
 from collections import defaultdict
 class Solution:
     def verticalOrder(self, root: TreeNode) -> List[List[int]]:
@@ -178,6 +188,8 @@ class Solution:
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n log n)
+# space = O(n)
 from collections import defaultdict
 class Solution:
     def verticalOrder(self, root: TreeNode) -> List[List[int]]:
@@ -219,6 +231,8 @@ class Solution:
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n log n)
+# space = O(n)
 import collections
 class Solution(object):
     def verticalOrder(self, root):
@@ -253,6 +267,8 @@ class TreeNode:
         self.val = val
         self.left, self.right = None, None
 """
+# time = O(n log n)
+# space = O(n)
 class Solution:
     # @param {TreeNode} root the root of binary tree
     # @return {int[][]} the vertical order traversal
@@ -271,9 +287,9 @@ class Solution:
                 
         return [results[i] for i in sorted(results)]
 
-# V2 
-# Time:  O(n)
-# Space: O(n)
+# V2
+# time = O(n)
+# space = O(n)
 import collections
 # BFS + hash solution.
 class Solution(object):

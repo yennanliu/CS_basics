@@ -62,10 +62,12 @@ minStack does not store all elements in sorted order.
 
 
 -> 
-Instead, minStack[i] stores the minimum value seen 
+Instead, minStack[i] stores the minimum value seen
 in the main stack up to position i.
 
 """
+# time = O(1)  # per operation (push/pop/top/getMin)
+# space = O(n)
 class MinStack(object):
 
     def __init__(self):
@@ -118,6 +120,8 @@ class MinStack(object):
 # V0-1
 # IDEA: ARRAY + MAP
 # NOTE !!! the getMin time complexity is O(N), NOT O(1)
+# time = O(1)  # push/pop/top O(1); getMin O(n)
+# space = O(n)
 class MinStack(object):
 
     def __init__(self):

@@ -39,6 +39,8 @@ Constraints:
 
 # V1
 # https://leetcode.com/problems/rank-transform-of-an-array/discuss/1274219/Python-sort-and-dictionary-beats-95.31
+# time = O(n log n)
+# space = O(n)
 class Solution:
 	def arrayRankTransform(self, arr):
 		"""
@@ -55,6 +57,8 @@ class Solution:
 
 # V1'
 # https://leetcode.com/problems/rank-transform-of-an-array/discuss/1494913/Python-Straightforward
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def arrayRankTransform(self, arr):
         d = {}
@@ -70,6 +74,8 @@ class Solution(object):
 
 # V1''
 # https://leetcode.com/problems/rank-transform-of-an-array/discuss/489753/JavaC%2B%2BPython-HashMap
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def arrayRankTransform(self, A):
             rank = {}

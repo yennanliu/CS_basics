@@ -1,4 +1,6 @@
-# V0 
+# V0
+# time = O(1)   # expected O(1) via rejection sampling
+# space = O(1)
 class Solution:
     def rand10(self):
         """
@@ -22,7 +24,7 @@ class Solution:
             num = self.rand49()
         return num
             
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/81809478
 # The rand7() API is already defined for you.
 # def rand7():
@@ -30,6 +32,8 @@ class Solution:
 # IDEA : rand7 --> rand49 --> rand40 --> rand10.
 # ** MAKE A rand(N), the N = k*10, k = int
 # then we can get rand(10) via rand(N)%10
+# time = O(1)   # expected O(1) via rejection sampling
+# space = O(1)
 class Solution:
     def rand10(self):
         """
@@ -53,9 +57,9 @@ class Solution:
             num = self.rand49()
         return num
 
-# V2 
-# Time:  O(1.189), counted by statistics, limit would be O(log10/log7) = O(1.183)
-# Space: O(1)
+# V2
+# time = O(1.189), counted by statistics, limit would be O(log10/log7) = O(1.183)
+# space = O(1)
 import random
 def rand7():
     return random.randint(1, 7)
@@ -81,8 +85,8 @@ class Solution(object):
             generate(self.__cache)
         return self.__cache.pop()
 
-# Time:  O(2 * (1 + (9/49) + (9/49)^2 + ...)) = O(2/(1-(9/49)) = O(2.45)
-# Space: O(1)
+# time = O(2 * (1 + (9/49) + (9/49)^2 + ...)) = O(2/(1-(9/49)) = O(2.45)
+# space = O(1)
 class Solution2(object):
     def rand10(self):
         """

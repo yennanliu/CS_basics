@@ -57,6 +57,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: BFS + graph (node <-> parent) (GPT)
+# time = O(n^2)  # n = number of nodes; BFS from each leaf
+# space = O(n)
 from collections import defaultdict, deque
 
 class Solution(object):
@@ -127,6 +129,8 @@ class Solution(object):
 
 # V1-1
 # IDEA: BFS (gemini)
+# time = O(n^2)  # n = number of nodes; BFS from each leaf
+# space = O(n)
 from collections import deque, defaultdict
 
 class Solution(object):
@@ -205,6 +209,8 @@ class Solution(object):
 
 # 1-2
 # IDEA: DFS (gemini)
+# time = O(n^2)  # n = number of nodes; left x right leaf-distance pairs per node
+# space = O(n)
 class Solution(object):
     def countPairs(self, root, distance):
 
@@ -256,6 +262,8 @@ class Solution(object):
 # 2-1
 # IDEA: Graph Conversion + BFS
 # https://leetcode.com/problems/number-of-good-leaf-nodes-pairs/editorial/
+# time = O(n^2)  # n = number of nodes; BFS from each leaf
+# space = O(n)
 class Solution:
     def _traverse_tree(self, curr_node, prev_node, graph, leaf_nodes):
         if curr_node is None:
@@ -307,6 +315,8 @@ class Solution:
 # 2-2
 # IDEA: `Post`-Order Traversal
 # https://leetcode.com/problems/number-of-good-leaf-nodes-pairs/editorial/
+# time = O(n * distance^2)
+# space = O(n)
 class Solution:
     def _post_order(self, current_node, distance):
         if current_node is None:
@@ -350,6 +360,8 @@ class Solution:
 # 2-3
 # IDEA: `Post`-Order Traversal With Prefix Sum Counting
 # https://leetcode.com/problems/number-of-good-leaf-nodes-pairs/editorial/
+# time = O(n * distance)
+# space = O(n)
 class Solution:
     def _post_order(self, current_node, distance):
         if current_node is None:

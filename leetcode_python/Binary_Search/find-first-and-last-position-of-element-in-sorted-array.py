@@ -36,12 +36,14 @@ nums is a non-decreasing array.
 
 # V0
 # IDEA : BINARY SEARCH
+# time = O(logn)
+# space = O(1)
 class Solution:
     def searchRange(self, nums, target):
         l = self.findLeft(nums, target)
         r = self.findRight(nums, target)
         return [l, r] if l <= r else [-1, -1]
-     
+
     def findLeft(self, nums, target):
         l = 0
         r = len(nums)-1
@@ -72,6 +74,8 @@ class Solution:
 
 # V0'
 # IDEA : BINARY SEARCH
+# time = O(logn)
+# space = O(1)
 class Solution(object):
     def searchRange(self, nums, target):
         # help func
@@ -128,30 +132,34 @@ class Solution(object):
 
 # V0'
 # IDEA : BINARY SEARCH
+# time = O(logn)
+# space = O(1)
 class Solution:
     def searchRange(self, nums: List[int], target: int) -> List[int]:
-        
+
         def search(x):
-            lo, hi = 0, len(nums)           
+            lo, hi = 0, len(nums)
             while lo < hi:
                 mid = (lo + hi) // 2
                 if nums[mid] < x:
                     lo = mid+1
                 else:
-                    hi = mid                    
+                    hi = mid
             return lo
-        
+
         lo = search(target)
         hi = search(target+1)-1
-        
+
         if lo <= hi:
             return [lo, hi]
-                
+
         return [-1, -1]
 
 # V0'
 # IDEA : BRUTE FORCE + PY default
 # binary search : time O(n log n)
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def searchRange(self, nums, target):
         # edge case

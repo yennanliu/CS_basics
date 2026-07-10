@@ -77,6 +77,8 @@ DP eq:
             )
 
 """
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def maxProfit(self, prices):
         if not prices:
@@ -112,6 +114,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: 2D DP + STATE FUNC
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def maxProfit(self, prices):
         """
@@ -155,6 +159,8 @@ class Solution(object):
 
 # V1 
 # http://bookshadow.com/weblog/2015/11/24/leetcode-best-time-to-buy-and-sell-stock-with-cooldown/
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def maxProfit(self, prices):
         """
@@ -176,6 +182,8 @@ class Solution(object):
 
 # V1'
 # http://bookshadow.com/weblog/2015/11/24/leetcode-best-time-to-buy-and-sell-stock-with-cooldown/
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def maxProfit(self, prices):
         """
@@ -194,9 +202,9 @@ class Solution(object):
             buys[x] = max(buys[x - 1], sells[x - 2] - prices[x])
         return sells[-1]
         
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def maxProfit(self, prices):
         """

@@ -38,6 +38,8 @@ asteroids[i] != 0
 
 # V0
 # IDEA : STACK
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def asteroidCollision(self, asteroids):
         stack = []
@@ -55,6 +57,8 @@ class Solution(object):
 
 # V0
 # IDEA : STACK
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def asteroidCollision(self, asteroids):
         ans = []
@@ -73,6 +77,8 @@ class Solution(object):
 # V1
 # IDEA : STACK
 # https://leetcode.com/problems/asteroid-collision/solution/
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def asteroidCollision(self, asteroids):
         ans = []
@@ -88,8 +94,10 @@ class Solution(object):
                 ans.append(new)
         return ans
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/81079015
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def asteroidCollision(self, asteroids):
         stack = []
@@ -106,8 +114,8 @@ class Solution(object):
         return stack
 
 # V2 
-# Time:  O(n)
-# Space: O(n)
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def asteroidCollision(self, asteroids):
         """

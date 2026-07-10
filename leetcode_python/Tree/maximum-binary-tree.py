@@ -59,6 +59,8 @@ All integers in nums are unique.
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n^2)  # worst case: skewed tree, max() scan per level
+# space = O(n)
 class Solution(object):
     def constructMaximumBinaryTree(self, nums):
         """
@@ -73,9 +75,9 @@ class Solution(object):
         node.right = self.constructMaximumBinaryTree(nums[idx+1:])
         return node
 
-# V2 
-# Time:  O(n)
-# Space: O(n)
+# V2
+# time = O(n)
+# space = O(n)
 class TreeNode(object):
     def __init__(self, x):
         self.val = x

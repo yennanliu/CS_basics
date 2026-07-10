@@ -47,6 +47,8 @@ p and q exist in the tree.
 
 # V0
 # IDEA : HASH MAP
+# time = O(n)
+# space = O(n)
 class Solution:
     def lowestCommonAncestor(self, p, q):     
         # help func
@@ -69,6 +71,8 @@ class Solution:
 
 # V0'
 # IDEA : recursive
+# time = O(n)
+# space = O(1)
 class Solution:
     def lowestCommonAncestor(self, p, q):
         a, b = p, q
@@ -79,6 +83,8 @@ class Solution:
 
 # V0''
 # IDEA : set
+# time = O(n)
+# space = O(n)
 class Solution:
     def lowestCommonAncestor(self, p, q):
         visited = set()
@@ -105,6 +111,8 @@ class Solution:
     # 2. As the dictionary is insertion ordered you will always traverse the child at first then its parent. 
     # So this will make sure you find the lowest common ancestor (LCA)
 """
+# time = O(n)
+# space = O(n)
 class Solution:
     def lowestCommonAncestor(self, p: 'Node', q: 'Node') -> 'Node':
         dic1 = self.traverse(p)
@@ -127,6 +135,8 @@ class Solution:
 # V1
 # IDEA : recursive
 # https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-iii/discuss/1159063/Three-python-solutions
+# time = O(n)
+# space = O(1)
 class Solution:
     def lowestCommonAncestor(self, p: 'Node', q: 'Node') -> 'Node':
         a, b = p, q
@@ -138,6 +148,8 @@ class Solution:
 # V1
 # IDEA : set
 # https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-iii/discuss/1159063/Three-python-solutions
+# time = O(n)
+# space = O(n)
 class Solution:
     def lowestCommonAncestor(self, p: 'Node', q: 'Node') -> 'Node':
         visited = set()
@@ -151,6 +163,8 @@ class Solution:
 
 # V1
 # https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-iii/discuss/1159063/Three-python-solutions
+# time = O(n)
+# space = O(1)
 class Solution:
     def lowestCommonAncestor(self, p: 'Node', q: 'Node') -> 'Node':
         while p:
@@ -161,6 +175,8 @@ class Solution:
 
 # V1
 # https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-iii/discuss/2002710/Python
+# time = O(n)
+# space = O(n)
 class Solution:
     def lowestCommonAncestor(self, p, q):
         ans = set()
@@ -176,6 +192,8 @@ class Solution:
 
 # V1
 # https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-iii/discuss/933696/Simple-Python-Solution-using-Recursion-%2B-Set()
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def lowestCommonAncestor(self, p, q):
         pVals = set()
@@ -189,6 +207,8 @@ class Solution(object):
 
 # V1
 # https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-iii/discuss/979616/Python-iterative-solution
+# time = O(n)
+# space = O(n)
 class Solution:
     def lowestCommonAncestor(self, p: 'Node', q: 'Node') -> 'Node':
         path = set()
@@ -201,6 +221,8 @@ class Solution:
 
 # V1
 # https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree-iii/discuss/951584/Python%3A-Simple-Python-with-set-lookup
+# time = O(n)
+# space = O(n)
 class Solution:
     def lowestCommonAncestor(self, p: 'Node', q: 'Node') -> 'Node':
         

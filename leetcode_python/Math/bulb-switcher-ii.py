@@ -3,6 +3,8 @@
 
 # V2 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79451356
+# time = O(1)
+# space = O(1)
 class Solution:
     def flipLights(self, n, m):
         """
@@ -19,9 +21,9 @@ class Solution:
         if n == 1:
             return 2
 
-# V3 
-# Time:  O(1)
-# Space: O(1)
+# V3
+# time = O(1)
+# space = O(1)
 class Solution(object):
     def flipLights(self, n, m):
         """

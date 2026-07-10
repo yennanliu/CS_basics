@@ -5,6 +5,8 @@
 
 # V2 
 # https://blog.csdn.net/qian2729/article/details/50638161
+# time = O(n)  # n = length of decimal result string
+# space = O(n)
 class Solution(object):
     def fractionToDecimal(self, numerator, denominator):
         """
@@ -42,8 +44,8 @@ class Solution(object):
         return ans
 
 # V3 
-# Time:  O(logn), where logn is the length of result strings
-# Space: O(1)
+# time = O(logn), where logn is the length of result strings
+# space = O(1)
 
 class Solution(object):
     def fractionToDecimal(self, numerator, denominator):

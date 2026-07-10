@@ -29,7 +29,9 @@ Constraints:
 
 """
 
-# V0 
+# V0
+# time = O(D^2)   # D = number of digits = O(log N)
+# space = O(D)
 class Solution:
     def monotoneIncreasingDigits(self, N):
         s = list(str(N));
@@ -49,6 +51,8 @@ class Solution:
 
 # V0'
 # brute force -> time out error
+# time = O(N * D)   # D = number of digits = O(log N)
+# space = O(D)
 class Solution(object):
     def monotoneIncreasingDigits(self, n):
         def check(x):
@@ -65,6 +69,8 @@ class Solution(object):
         return n
 
 # V0'
+# time = O(D^2)   # D = number of digits = O(log N); recursion restarts scan
+# space = O(D)
 class Solution:
     def monotoneIncreasingDigits(self, N):
         s = str(N)
@@ -80,6 +86,8 @@ class Solution:
         
 # V1
 # https://leetcode.com/problems/monotone-increasing-digits/discuss/666468/Python-O(n)-Solution-Easy-to-Understand
+# time = O(D^2)   # D = number of digits = O(log N)
+# space = O(D)
 class Solution:
     def monotoneIncreasingDigits(self, N: int) -> int:
         s = list(str(N));
@@ -95,6 +103,8 @@ class Solution:
 
 # V1'
 # http://bookshadow.com/weblog/2017/12/03/leetcode-monotone-increasing-digits/
+# time = O(D)   # D = number of digits = O(log N)
+# space = O(D)
 class Solution(object):
     def monotoneIncreasingDigits(self, N):
         """
@@ -115,6 +125,8 @@ class Solution(object):
 
 # V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/82721627
+# time = O(D)   # D = number of digits = O(log N)
+# space = O(D)
 class Solution:
     def monotoneIncreasingDigits(self, N):
         """
@@ -135,6 +147,8 @@ class Solution:
 
 # V1'''
 # https://blog.csdn.net/fuxuemingzhu/article/details/82721627
+# time = O(D)   # D = number of digits = O(log N)
+# space = O(D)
 class Solution:
     def monotoneIncreasingDigits(self, N):
         """
@@ -160,6 +174,8 @@ class Solution:
 # IDEA : GREEDY 
 # Time Complexity: O(D^2)
 # Space Complexity : O(D)
+# time = O(D^2)   # D = number of digits = O(log N)
+# space = O(D)
 class Solution(object):
     def monotoneIncreasingDigits(self, N):
         digits = []
@@ -177,6 +193,8 @@ class Solution(object):
 # V1'''''
 # https://leetcode.com/problems/monotone-increasing-digits/solution/
 # IDEA : Truncate After Cliff
+# time = O(D)   # D = number of digits = O(log N)
+# space = O(D)
 class Solution(object):
     def monotoneIncreasingDigits(self, N):
         S = list(str(N))
@@ -191,6 +209,8 @@ class Solution(object):
 
 # V1''''''
 # https://leetcode.com/problems/monotone-increasing-digits/discuss/181945/Fast-and-simple-40ms-Python-solution-using-recursion
+# time = O(D^2)   # D = number of digits = O(log N); recursion restarts scan
+# space = O(D)
 class Solution:
     def monotoneIncreasingDigits(self, N):
         """
@@ -209,8 +229,8 @@ class Solution:
         return res
 
 # V2
-# Time:  O(logn) = O(1)
-# Space: O(logn) = O(1)
+# time = O(logn) = O(1)
+# space = O(logn) = O(1)
 class Solution(object):
     def monotoneIncreasingDigits(self, N):
         """

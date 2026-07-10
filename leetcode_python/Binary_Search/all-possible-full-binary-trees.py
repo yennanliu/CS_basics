@@ -9,6 +9,8 @@
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n * 4^n / n^(3/2))   # ~ sum of Catalan numbers (no memo, exponential)
+# space = O(n * 4^n / n^(3/2))
 class Solution(object):
     def allPossibleFBT(self, N):
         """
@@ -28,8 +30,8 @@ class Solution(object):
         return res
 
 # V2 
-# Time:  O(n * 4^n / n^(3/2)) ~= sum of Catalan numbers from 1 .. N
-# Space: O(n * 4^n / n^(3/2)) ~= sum of Catalan numbers from 1 .. N
+# time = O(n * 4^n / n^(3/2)) ~= sum of Catalan numbers from 1 .. N
+# space = O(n * 4^n / n^(3/2)) ~= sum of Catalan numbers from 1 .. N
 class TreeNode(object):
     def __init__(self, x):
         self.val = x

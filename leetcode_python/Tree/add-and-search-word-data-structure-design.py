@@ -43,6 +43,8 @@ At most 50000 calls will be made to addWord and search.
 
 # V0
 # IDEA: TRIE + recursion (gemini)
+# time = O(m) add / O(26^m) search worst  # m = word length
+# space = O(N)  # N = total chars stored in trie
 class MyNode(object):
     def __init__(self):
         # Maps characters to their corresponding child MyNode objects
@@ -109,6 +111,8 @@ class WordDictionary(object):
 
 # V0-1
 # IDEA: TRIE + recursion (GPT)
+# time = O(m) add / O(26^m) search worst  # m = word length
+# space = O(N)  # N = total chars stored in trie
 class MyNode(object):
     def __init__(self):
         # children:
@@ -194,6 +198,8 @@ class WordDictionary(object):
 
 
 # V0
+# time = O(m) add / O(26^m) search worst  # m = word length
+# space = O(N)  # N = total chars stored in trie
 from collections import defaultdict
 class Node(object):
     def __init__(self):
@@ -240,6 +246,8 @@ class WordDictionary(object):
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79390052
+# time = O(m) add / O(26^m) search worst  # m = word length
+# space = O(N)  # N = total chars stored in trie
 class Node(object):
     def __init__(self):
         self.children = collections.defaultdict(Node)
@@ -291,6 +299,8 @@ class WordDictionary(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/add-and-search-word-data-structure-design/#tag-highlight-lang-python
+# time = O(m) add / O(26^m) search worst  # m = word length
+# space = O(N)  # N = total chars stored in trie
 class TrieNode:
     def __init__(self):
         self.children = {}
@@ -341,6 +351,8 @@ class WordDictionary:
 
 # V1''
 # https://www.jiuzhang.com/solution/add-and-search-word-data-structure-design/#tag-highlight-lang-python
+# time = O(m) add / O(26^m) search worst  # m = word length
+# space = O(N)  # N = total chars stored in trie
 class TrieNode:
     def __init__(self):
         self.children = {}
@@ -390,8 +402,8 @@ class WordDictionary:
         return False
 
 # V2 
-# Time:  O(min(n, h)), per operation
-# Space: O(min(n, h))
+# time = O(min(n, h))  # per operation
+# space = O(min(n, h))
 class TrieNode(object):
     # Initialize your data structure here.
     def __init__(self):

@@ -37,6 +37,8 @@ Every number and running calculation will fit in a signed 32-bit integer.
 
 # V0
 # IDEA : STACK
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def calculate(self, s):
         res = 0
@@ -67,13 +69,15 @@ class Solution(object):
 # V0'
 # IDEA : STACK
 # https://leetcode.com/problems/basic-calculator/solution/
+# time = O(n)
+# space = O(n)
 class Solution:
     def calculate(self, s):
 
         stack = []
         operand = 0
         res = 0 # For the on-going result
-        sign = 1 # 1 means positive, -1 means negative  
+        sign = 1 # 1 means positive, -1 means negative
 
         for ch in s:
             if ch.isdigit():
@@ -134,6 +138,8 @@ class Solution:
 # V1
 # https://leetcode.com/problems/basic-calculator/discuss/62418/Python-with-stack
 # IDEA : STACK
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def calculate(self, s):
         res, num, sign, stack = 0, 0, 1, [1]
@@ -156,6 +162,8 @@ class Solution(object):
 # V1
 # IDEA : Stack and String Reversal
 # https://leetcode.com/problems/basic-calculator/solution/
+# time = O(n)
+# space = O(n)
 class Solution:
 
     def evaluate_expr(self, stack):
@@ -220,6 +228,8 @@ class Solution:
 # V1
 # IDEA : Stack and No String Reversal
 # https://leetcode.com/problems/basic-calculator/solution/
+# time = O(n)
+# space = O(n)
 class Solution:
     def calculate(self, s: str) -> int:
 
@@ -287,6 +297,8 @@ class Solution:
 # V1'
 # https://leetcode.com/problems/basic-calculator/discuss/196363/Python-solution
 # IDEA : STACK
+# time = O(n)
+# space = O(n)
 class Solution:
     def calculate(self, s):
         res = 0
@@ -336,6 +348,8 @@ class Solution:
 # V1''
 # https://leetcode.com/problems/basic-calculator/discuss/62344/Easy-18-lines-C%2B%2B-16-lines-Python
 # IDEA : STACK
+# time = O(n)
+# space = O(n)
 class Solution:
     def calculate(self, s):
         total = 0
@@ -358,6 +372,8 @@ class Solution:
 # V1''''
 # https://leetcode.com/problems/basic-calculator/discuss/62483/AC-Python-Solution
 # IDEA : STACK
+# time = O(n)
+# space = O(n)
 class Solution:
     def calculate(self, s):
         s = '+(+' + s + ')'

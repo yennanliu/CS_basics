@@ -6,6 +6,8 @@
 # DP EQUATION
 # dp[i][j]=dp[i+1][j−1]+2if(str[i]==str[j])
 # dp[i][j]=max(dp[i+1][j],dp[i][j-1])\quad if(str[i]!=str[j])dp[i][j]=max(dp[i+1][j],dp[i][j−1])if(str[i]!=str[j])
+# time = O(n^2)
+# space = O(n^2)
 class Solution:
     # @param {string} s the maximum length of s is 1000
     # @return {int} the longest palindromic subsequence's length
@@ -76,8 +78,8 @@ class Solution:
 # }
 
 # V2
-# Time:  O(n^2)
-# Space: O(n)
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def longestPalindromeSubseq(self, s):
         """

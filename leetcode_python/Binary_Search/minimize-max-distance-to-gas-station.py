@@ -44,6 +44,8 @@ class Solution:
 # V0-1
 # gemini
 # TODO: validate
+# time = O(n * log(W / eps))  # n = len(stations), W = stations[-1]-stations[0], eps = 1e-6
+# space = O(1)
 class Solution(object):
     def minmaxGasDist(self, stations, k):
         """
@@ -83,6 +85,8 @@ class Solution(object):
 # V0-2
 # gpt
 # TODO: validate
+# time = O(n * log(W / eps))  # n = len(stations), binary search on answer
+# space = O(1)
 import math
 
 class Solution:
@@ -116,6 +120,8 @@ class Solution:
 
 
 # V1
+# time = O(n * log(W / eps))  # n = len(stations), binary search on answer
+# space = O(1)
 class Solution:
     def minmaxGasDist(self, stations: List[int], k: int) -> float:
         def check(x):

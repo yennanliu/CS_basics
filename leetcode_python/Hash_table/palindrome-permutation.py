@@ -17,6 +17,8 @@ http://leetcode.com/problems/palindrome-permutation/
 # IDEA :
 # THE VALID STRING CAN ONLY HAVE 1 ELEMENT EXISTS FOR ODD TIMES (i.e. 1,3,5..)
 # AND ALL THE REST OF THE ELEMENTS SHOULD EXIST FOR EVEN TIMES (i.e. 2,4,6..)
+# time = O(n)
+# space = O(n)
 import collections
 class Solution(object):
     def canPermutePalindrome(self, s):
@@ -33,7 +35,9 @@ class Solution(object):
                     return False
         return True
 
-# V2 
+# V2
+# time = O(n)
+# space = O(n)
 import collections
 class Solution(object):
     def canPermutePalindrome(self, s):

@@ -2,6 +2,8 @@
 
 # V1 
 # http://bookshadow.com/weblog/2018/04/22/leetcode-binary-trees-with-factors/
+# time = O(n^2)
+# space = O(n)
 import collections
 class Solution(object):
     def numFactoredBinaryTrees(self, A):
@@ -25,6 +27,8 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/binary-trees-with-factors/#tag-highlight-lang-python
+# time = O(n^2)
+# space = O(n)
 class Solution:
     def numFactoredBinaryTrees(self, A):
         A.sort()
@@ -36,9 +40,9 @@ class Solution:
                     dp[A[i]] += dp[A[j]] * dp[A[i] / A[j]]
         return sum(dp.values()) % (10**9 + 7)
 
-# V2 
-# Time:  O(n^2)
-# Space: O(n)
+# V2
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def numFactoredBinaryTrees(self, A):
         """

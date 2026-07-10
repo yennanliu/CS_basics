@@ -1,7 +1,9 @@
 # V0 
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/82703064
+# time = O(10^4 + d)  # d = len(deadends); BFS over all lock states
+# space = O(10^4 + d)
 class Solution:
     def openLock(self, deadends, target):
         """
@@ -33,8 +35,10 @@ class Solution:
                         visited.add(newPoint)
         return -1
 
-# V1' 
+# V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/82703064
+# time = O(10^4 + d)  # d = len(deadends); BFS over all lock states
+# space = O(10^4 + d)
 class Solution(object):
     def openLock(self, deadends, target):
         """
@@ -67,11 +71,11 @@ class Solution(object):
             step += 1
         return -1
         
-# V2 
-# Time:  O(k * n^k + d), n is the number of alphabets,
+# V2
+# time = O(k * n^k + d), n is the number of alphabets,
 #                        k is the length of target,
 #                        d is the size of deadends
-# Space: O(k * n^k + d)
+# space = O(k * n^k + d)
 class Solution(object):
     def openLock(self, deadends, target):
         """

@@ -1,8 +1,10 @@
 # V0 
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/85387183
 # https://zxi.mytechroad.com/blog/searching/967-numbers-with-same-consecutive-differences/
+# time = O(2^N)  # N = number of digits; up to 2 choices per digit
+# space = O(2^N)
 class Solution(object):
     def numsSameConsecDiff(self, N, K):
         """
@@ -27,9 +29,9 @@ class Solution(object):
         if last - K >= 0:
             self.dfs(res, curint * 10 + last - K, N - 1, K)
 
-# V2 
-# Time:  O(2^n)
-# Space: O(2^n)
+# V2
+# time = O(2^n)
+# space = O(2^n)
 class Solution(object):
     def numsSameConsecDiff(self, N, K):
         """

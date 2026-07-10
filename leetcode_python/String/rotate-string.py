@@ -27,7 +27,9 @@ s and goal consist of lowercase English letters.
 
 """
 
-# V0 
+# V0
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def rotateString(self, A, B):
         for i in range(len(A)):
@@ -35,8 +37,10 @@ class Solution(object):
                 return True
         return False
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79521194
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def rotateString(self, A, B):
         for i in range(len(A)):
@@ -44,7 +48,9 @@ class Solution(object):
                 return True
         return False
         
-# V1' 
+# V1'
+# time = O(n^2)
+# space = O(n)
 class Solution:
     def rotateString(self, A, B):
         if (A == '' and B == '' ):
@@ -58,8 +64,10 @@ class Solution:
                 return True
         return False
 
-# V2 
+# V2
 # Rabin-Karp Algorithm (rolling hash)
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def rotateString(self, A, B):
         """
@@ -101,8 +109,8 @@ class Solution(object):
 
         return False
 
-# Time:  O(n)
-# Space: O(n)
+# time = O(n)
+# space = O(n)
 # KMP algorithm
 class Solution2(object):
     def rotateString(self, A, B):
@@ -143,8 +151,8 @@ class Solution2(object):
             return False
         return strStr(A*2, B) != -1
 
-# Time:  O(n^2)
-# Space: O(n)
+# time = O(n^2)
+# space = O(n)
 class Solution3(object):
     def rotateString(self, A, B):
         """

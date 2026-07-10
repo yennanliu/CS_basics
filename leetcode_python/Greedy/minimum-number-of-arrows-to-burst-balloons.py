@@ -45,6 +45,8 @@ points[i].length == 2
 # V1
 # IDEA : GREEDY
 # https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/editorial/
+# time = O(n log n)
+# space = O(1)
 class Solution:
     def findMinArrowShots(self, points: List[List[int]]) -> int:
         if not points:
@@ -67,6 +69,8 @@ class Solution:
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79888836
 # https://blog.csdn.net/MebiuW/article/details/53096708
+# time = O(n log n)
+# space = O(1)
 class Solution(object):
     def findMinArrowShots(self, points):
         """
@@ -85,8 +89,8 @@ class Solution(object):
         return ans
 
 # V2 
-# Time:  O(nlogn)
-# Space: O(1)
+# time = O(n log n)
+# space = O(1)
 class Solution(object):
     def findMinArrowShots(self, points):
         """

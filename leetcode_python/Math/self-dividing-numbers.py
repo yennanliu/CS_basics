@@ -17,8 +17,10 @@
 #         return [ i for i in set(output)] 
 
 
-# V2 
+# V2
 # https://blog.csdn.net/fuxuemingzhu/article/details/79053113
+# time = O(n * logr) = O(n)  # n = right - left + 1, r = right
+# space = O(1)
 class Solution:
     def isDividingNumber(self, num):
         if '0' in str(num):
@@ -38,15 +40,17 @@ class Solution:
         return answer
 
 
-# V2' 
+# V2'
+# time = O(n * logr) = O(n)  # n = right - left + 1, r = right
+# space = O(1)
 class Solution(object):
     def selfDividingNumbers(self, left, right):
         is_self_dividing = lambda num: '0' not in str(num) and all([num % int(digit) == 0 for digit in str(num)])
         return list(filter(is_self_dividing, list(range(left, right + 1))))
 
-# V3 
-# Time:  O(nlogr) = O(n)
-# Space: O(logr) = O(1)
+# V3
+# time = O(nlogr) = O(n)
+# space = O(logr) = O(1)
 class Solution(object):
     def selfDividingNumbers(self, left, right):
         """

@@ -56,6 +56,8 @@ lights[i].length == 2
 
 # V0
 # IDEA : Scanning line, LC 253 MEETING ROOM II
+# time = O(n log n)
+# space = O(n)
 class Solution:
     def brightestPosition(self, lights: List[List[int]]) -> int:
         # light range array
@@ -85,6 +87,8 @@ class Solution:
 
 # V0'
 # IDEA : Scanning line, LC 253 MEETING ROOM II
+# time = O(n log n)
+# space = O(n)
 from collections import defaultdict
 class Solution(object):
     def brightestPosition(self, lights):
@@ -121,6 +125,8 @@ class Solution(object):
 # https://leetcode.com/problems/brightest-position-on-street/discuss/1494005/Python%3A-Basically-meeting-room-II
 # IDEA :
 # So, the only difference in this problem in comparison to meeting room II is that we have to convert our input into intervals, which is straightforward and basically suggested to use by the first example. So, here is my code and here is meeting rooms II https://leetcode.com/problems/meeting-rooms-ii/
+# time = O(n log n)
+# space = O(n)
 class Solution:
     def brightestPosition(self, lights: List[List[int]]) -> int:
         intervals, heap, res, best = [], [], 0, 0
@@ -140,6 +146,8 @@ class Solution:
 # V1'
 # IDEA : diff array + sorting
 # https://github.com/doocs/leetcode/blob/main/solution/2000-2099/2021.Brightest%20Position%20on%20Street/README.md
+# time = O(n log n)
+# space = O(n)
 class Solution:
     def brightestPosition(self, lights: List[List[int]]) -> int:
         d = defaultdict(int)
@@ -157,6 +165,8 @@ class Solution:
 # V1''
 # IDEA : heapq
 # https://leetcode.com/problems/brightest-position-on-street/discuss/1502419/python-solution
+# time = O(n log n)
+# space = O(n)
 class Solution:
     def brightestPosition(self, lights: List[List[int]]) -> int:        
         lightRange = sorted([(light[0] - light[1], light[0] + light[1]) for light in lights], key = lambda x: (x[0], x[1]))
@@ -175,6 +185,8 @@ class Solution:
 # V1'''
 # IDEA : SCAN LINE
 # https://leetcode.com/problems/brightest-position-on-street/discuss/1657355/Python-Sweep-Line
+# time = O(n log n)
+# space = O(n)
 class Solution:
     def brightestPosition(self, lights: List[List[int]]) -> int:
         # light range array
@@ -204,6 +216,8 @@ class Solution:
 
 # V1''''
 # https://leetcode.com/problems/brightest-position-on-street/discuss/1494223/Python-3-or-Sweep-Line-Sorting-or-Explanation
+# time = O(n log n)
+# space = O(n)
 class Solution:
     def brightestPosition(self, lights: List[List[int]]) -> int:
         d = collections.defaultdict(int)
@@ -219,6 +233,8 @@ class Solution:
 
 # V1'''''
 # https://leetcode.com/problems/brightest-position-on-street/discuss/1509561/Python-O(nlogn)-Solution
+# time = O(n log n)
+# space = O(n)
 class Solution:
     def brightestPosition(self, lights: List[List[int]]) -> int:
         starts = sorted([pos-dis for pos, dis in lights])

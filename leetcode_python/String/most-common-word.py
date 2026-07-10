@@ -1,5 +1,5 @@
-# Time:  O(m + n), m is the size of banned, n is the size of paragraph
-# Space: O(m + n)
+# time = O(m + n), m is the size of banned, n is the size of paragraph
+# space = O(m + n)
 # Given a paragraph and a list of banned words,
 # return the most frequent word that is not in the list of banned words.
 # It is guaranteed there is at least one word that isn't banned, and that the answer is unique.
@@ -39,6 +39,8 @@
 
 # V0 
 # IDEA : REGULAR EXPRESSION + COLLECTION
+# time = O(n * m)  # n = paragraph len, m = banned len (banned is a list)
+# space = O(n + m)
 import collections
 class Solution:
     def mostCommonWord(self, paragraph, banned):
@@ -49,8 +51,10 @@ class Solution:
         count = collections.Counter(words)
         return count.most_common(1)[0][0]
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/80472079
+# time = O(n * m)  # n = paragraph len, m = banned len (banned is a list)
+# space = O(n + m)
 import collections
 class Solution:
     def mostCommonWord(self, paragraph, banned):
@@ -84,6 +88,8 @@ assert s.mostCommonWord(paragraph, banned) == "in"
 # V1' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/80472079
 # http://bookshadow.com/weblog/2018/04/15/leetcode-most-common-word/
+# time = O(n * m)  # n = paragraph len, m = banned len (banned is a list)
+# space = O(n + m)
 class Solution(object):
     def mostCommonWord(self, paragraph, banned):
         """
@@ -97,6 +103,8 @@ class Solution(object):
 
 # V1'
 # http://bookshadow.com/weblog/2018/04/15/leetcode-most-common-word/
+# time = O(n + m)  # n = paragraph len, m = banned len
+# space = O(n + m)
 class Solution(object):
     def mostCommonWord(self, paragraph, banned):
         """
@@ -111,7 +119,9 @@ class Solution(object):
                 del cnt[ban]
         return cnt.most_common(1)[0][0]
             
-# V2 
+# V2
+# time = O(n + m)  # n = paragraph len, m = banned len
+# space = O(n + m)
 import collections
 class Solution(object):
     def mostCommonWord(self, paragraph, banned):

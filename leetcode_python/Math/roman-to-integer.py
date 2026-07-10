@@ -53,6 +53,8 @@ Submissions
 """
 
 # V0
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def romanToInt(self, s):
         # helper ref
@@ -76,6 +78,8 @@ class Solution(object):
         
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/48208995
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def romanToInt(self, s):
         """
@@ -94,6 +98,8 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/roman-to-integer/#tag-highlight-lang-python
+# time = O(n)
+# space = O(1)
 class Solution:
     # @param {string} s
     # @return {integer}
@@ -121,8 +127,10 @@ class Solution:
             index -= 1
         return sum
 
-# V2 
+# V2
 # https://blog.csdn.net/fuxuemingzhu/article/details/48208995
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def romanToInt(self, s):
         """
@@ -140,8 +148,8 @@ class Solution(object):
         return res
 
 # V3
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 class Solution(object):
     # @return an integer
     def romanToInt(self, s):

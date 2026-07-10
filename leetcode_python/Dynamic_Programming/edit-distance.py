@@ -40,6 +40,8 @@ Constraints:
 
 # V0
 # IDEA: 2D DP
+# time = O(m*n)  # m = len(word1), n = len(word2)
+# space = O(m*n)
 class Solution(object):
     def minDistance(self, word1, word2):
         n1 = len(word1)
@@ -100,6 +102,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: 2D DP
+# time = O(m*n)  # m = len(word1), n = len(word2)
+# space = O(m*n)
 class Solution(object):
     def minDistance(self, word1, word2):
         """
@@ -146,6 +150,8 @@ class Solution(object):
 # V1
 # IDEA : DP
 # https://leetcode.com/problems/edit-distance/solution/
+# time = O(m*n)  # m = len(word1), n = len(word2)
+# space = O(m*n)
 class Solution:
     def minDistance(self, word1, word2):
         """

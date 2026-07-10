@@ -35,6 +35,8 @@ Node.val == 0
 # V1
 # IDEA : GREEDY + DFS
 # https://leetcode.com/problems/binary-tree-cameras/discuss/211180/JavaC%2B%2BPython-Greedy-DFS
+# time = O(n)
+# space = O(h)  # h = tree height (recursion stack)
 class Solution(object):
      def minCameraCover(self, root):
             self.res = 0
@@ -49,6 +51,8 @@ class Solution(object):
 
 # V1'
 # https://leetcode.com/problems/binary-tree-cameras/discuss/213666/Python-easy-to-understand
+# time = O(n)
+# space = O(h)  # h = tree height (recursion stack)
 class Solution:
     def minCameraCover(self, root):
         # 0 means not covered。1 means covered but not has a camera on it. 2 means a camera on it.
@@ -75,6 +79,8 @@ class Solution:
 
 # V1''
 # https://leetcode.com/problems/binary-tree-cameras/discuss/891691/Python
+# time = O(n)
+# space = O(h)  # h = tree height (recursion stack)
 class Solution(object):
     def minCameraCover(self, root):
             self.res = 0
@@ -90,6 +96,8 @@ class Solution(object):
 # V1'''
 # IDEA : RECURSION
 # https://leetcode.com/problems/binary-tree-cameras/discuss/316239/Simple-recursion-in-python
+# time = O(n)
+# space = O(h)  # h = tree height (recursion stack)
 class Solution(object):
     def min_camera(self, root):
         if root is None:
@@ -111,6 +119,8 @@ class Solution(object):
 # V1''''
 # IDEA : GREEDY
 # https://leetcode.com/problems/binary-tree-cameras/solution/
+# time = O(n)
+# space = O(n)  # recursion stack O(h) + covered set up to O(n)
 class Solution(object):
     def minCameraCover(self, root):
         self.ans = 0
@@ -132,6 +142,8 @@ class Solution(object):
 # V1'''''
 # IDEA : DP
 # https://leetcode.com/problems/binary-tree-cameras/solution/
+# time = O(n)
+# space = O(h)  # h = tree height (recursion stack)
 class Solution(object):
     def minCameraCover(self, root):
         def solve(node):

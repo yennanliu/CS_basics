@@ -53,6 +53,8 @@ Follow up: Could you solve it with time complexity O(height of tree)?
 #                -> 1) go to 1st RIGHT sub tree
 #                -> 2) iterate to deepest LEFT subtree
 #                -> 3) swap root and  `deepest LEFT subtree` then return root
+# time = O(n)  # recurses into both subtrees regardless of key
+# space = O(h)  # h = tree height (recursion stack)
 class Solution(object):
     def deleteNode(self, root, key):
         if not root: return None
@@ -76,6 +78,8 @@ class Solution(object):
         return root
 
 # V0'
+# time = O(h)  # h = tree height (BST-guided descent)
+# space = O(h)  # recursion stack
 class Solution(object):
     def deleteNode(self, root, key):
 
@@ -112,6 +116,8 @@ class Solution(object):
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)  # recurses into both subtrees regardless of key
+# space = O(h)  # h = tree height (recursion stack)
 class Solution(object):
     def deleteNode(self, root, key):
         """
@@ -137,6 +143,8 @@ class Solution(object):
     
 # V1'
 # https://leetcode.com/problems/delete-node-in-a-bst/discuss/93374/Simple-Python-Solution-With-Explanation
+# time = O(h)  # h = tree height (BST-guided descent)
+# space = O(h)  # recursion stack
 class Solution(object):
        def deleteNode(self,root, key):
             if not root: # if root doesn't exist, just return it
@@ -162,6 +170,8 @@ class Solution(object):
 
 # V1''
 # https://leetcode.com/problems/delete-node-in-a-bst/discuss/213685/Clean-Python-3-with-comments-in-details
+# time = O(h)  # h = tree height (BST-guided descent)
+# space = O(h)  # recursion stack
 class Solution:
     def deleteNode(self, root, key):
         """
@@ -207,6 +217,8 @@ class Solution:
         return root
 
 # V1'''
+# time = O(h)  # h = tree height (BST-guided descent)
+# space = O(h)  # recursion stack
 class Solution(object):
     def deleteNode(self, root, key):
         """
@@ -238,8 +250,8 @@ class Solution(object):
 
 # V2 
 # https://github.com/kamyu104/LeetCode-Solutions/blob/master/Python/delete-node-in-a-bst.py
-# Time:  O(h)
-# Space: O(h)
+# time = O(h)
+# space = O(h)
 class Solution(object):
     def deleteNode(self, root, key):
         """

@@ -44,6 +44,8 @@ Follow up: Could you solve it without reversing the input lists?
 # intermedia output : 
 # l1_num = 7243
 # l2_num = 564
+# time = O(n + m)  # n = len(l1), m = len(l2)
+# space = O(n + m)
 class Solution:
     def addTwoNumbers(self, l1, l2):
         if not l1 and not l2:
@@ -85,6 +87,8 @@ class Solution:
 #     def __init__(self, x):
 #         self.val = x
 #         self.next = None
+# time = O(n + m)  # n = len(l1), m = len(l2)
+# space = O(n + m)
 class Solution(object):
     def addTwoNumbers(self, l1, l2):
         """
@@ -114,6 +118,8 @@ class Solution(object):
 # V1'
 # https://leetcode.com/problems/add-two-numbers-ii/discuss/241079/Fast-Python3-Solution
 # IDEA : LINKED LIST
+# time = O(n + m)  # n = len(l1), m = len(l2)
+# space = O(n + m)
 class Solution:
     def addTwoNumbers(self, l1, l2):
         if not l1 and not l2:
@@ -141,6 +147,8 @@ class Solution:
 
 # V1''
 # https://leetcode.com/problems/add-two-numbers-ii/discuss/92682/Naive-Python-Solution
+# time = O(n + m)  # n = len(l1), m = len(l2)
+# space = O(n + m)
 class Solution(object):
     def addTwoNumbers(self, l1, l2):
         c1, c2 = '', ''
@@ -166,6 +174,8 @@ class Solution(object):
 #     def __init__(self, x):
 #         self.val = x
 #         self.next = None
+# time = O(n + m)  # n = len(l1), m = len(l2)
+# space = O(n + m)
 class Solution(object):
     def addTwoNumbers(self, l1, l2):
         """
@@ -210,6 +220,8 @@ class Solution(object):
 #     def __init__(self, x):
 #         self.val = x
 #         self.next = None
+# time = O(n + m)  # n = len(l1), m = len(l2)
+# space = O(n + m)
 class Solution(object):
     def addTwoNumbers(self, l1, l2):
         """
@@ -253,9 +265,9 @@ class Solution(object):
             h = h.next
         return c
 
-# V2 
-# Time:  O(m + n)
-# Space: O(m + n)
+# V2
+# time = O(m + n)
+# space = O(m + n)
 class ListNode(object):
     def __init__(self, x):
         self.val = x

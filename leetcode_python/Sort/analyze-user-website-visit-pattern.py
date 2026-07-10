@@ -56,6 +56,8 @@ All the tuples [username[i], timestamp[i], website[i]] are unique.
 # https://blog.csdn.net/qq_17550379/article/details/99209763
 # itertools.combinations : 
 #  -> https://codertw.com/%E7%A8%8B%E5%BC%8F%E8%AA%9E%E8%A8%80/364249/
+# time = O(n^3)  # n = len(username); worst case one user has all visits, C(k,3) combos
+# space = O(n^3)
 class Solution:
     def mostVisitedPattern(self, username, timestamp, website):
         data = [[username[i], timestamp[i], website[i]] for i in range(len(username))]
@@ -90,6 +92,8 @@ class Solution:
 
 # V1'
 # https://leetcode.com/problems/analyze-user-website-visit-pattern/discuss/355388/Python-Solution
+# time = O(n^3)
+# space = O(n^3)
 class Solution:
     def mostVisitedPattern(self, username, timestamp, website):
             dp = collections.defaultdict(list)
@@ -101,6 +105,8 @@ class Solution:
 # V1
 # https://blog.51cto.com/u_15344287/3648546
 # https://blog.csdn.net/qq_21201267/article/details/107784313
+# time = O(n^3)
+# space = O(n^3)
 class Solution:
     def mostVisitedPattern(self, username: List[str], timestamp: List[int], website: List[str]) -> List[str]:
         size1 = len(username)
@@ -139,6 +145,8 @@ class Solution:
 # V1''
 # IDEA : SUBSET
 # https://leetcode.com/problems/analyze-user-website-visit-pattern/discuss/355385/Python-using-subset3
+# time = O(n^3)
+# space = O(n^3)
 class Solution:
     def mostVisitedPattern(self, users, t, w):
             def subsets3(a, i, cres, fres):
@@ -176,6 +184,8 @@ class Solution:
 
 # V1'''
 # https://leetcode.com/problems/analyze-user-website-visit-pattern/discuss/1617330/python
+# time = O(n^3)
+# space = O(n^3)
 class Solution:
     def mostVisitedPattern(self, username, timestamp, website):
         #stores user and patterns
@@ -219,6 +229,8 @@ class Solution:
 # V1''''
 # IDEA : BRUTE FORCE
 # https://leetcode.com/problems/analyze-user-website-visit-pattern/discuss/534149/Python-Brute-Force
+# time = O(n^3)
+# space = O(n^3)
 from collections import defaultdict
 class Solution:
     def mostVisitedPattern(self, username, timestamp, website):        
@@ -240,6 +252,8 @@ class Solution:
 
 # V1'''''
 # https://leetcode.com/problems/analyze-user-website-visit-pattern/discuss/1032279/Python-with-Explanation
+# time = O(n^3)
+# space = O(n^3)
 from itertools import combinations
 class Solution(object):
     def mostVisitedPattern(self, username, timestamp, website):

@@ -37,6 +37,8 @@ Follow up: Can you solve it in O(n) time and O(1) space?
 """
 
 # V0
+# time = O(n)  # n = len(S) + len(T)
+# space = O(n)
 class Solution(object):
     def backspaceCompare(self, S, T):
 
@@ -56,6 +58,8 @@ class Solution(object):
 
 # V1
 # http://bookshadow.com/weblog/2018/06/03/leetcode-backspace-string-compare/
+# time = O(n)  # n = len(S) + len(T)
+# space = O(n)
 class Solution(object):
     def backspaceCompare(self, S, T):
         """
@@ -73,6 +77,8 @@ class Solution(object):
 
 # V1'
 # http://bookshadow.com/weblog/2018/06/03/leetcode-backspace-string-compare/
+# time = O(n)  # n = len(S) + len(T)
+# space = O(n)
 class Solution(object):
     def backspaceCompare(self, S, T):
         def toString(S):
@@ -93,6 +99,8 @@ class Solution(object):
 
 # V1''
 # https://www.jiuzhang.com/solution/backspace-string-compare/#tag-highlight-lang-python
+# time = O(n)  # n = len(S) + len(T)
+# space = O(n)
 class Solution(object):
     def backspaceCompare(self, S, T):
         def build(S):
@@ -106,6 +114,8 @@ class Solution(object):
         return build(S) == build(T)
 
 # V2
+# time = O(n)  # n = len(S) + len(T)
+# space = O(1)
 import itertools
 class Solution(object):
     def backspaceCompare(self, S, T):

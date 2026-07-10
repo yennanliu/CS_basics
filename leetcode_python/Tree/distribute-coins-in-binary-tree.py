@@ -11,6 +11,8 @@
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)
+# space = O(h)  # h = tree height, worst O(n)
 class Solution(object):
     def distributeCoins(self, root):
         """
@@ -29,9 +31,9 @@ class Solution(object):
         dfs(root)
         return self.ans
         
-# V2 
-# Time:  O(n)
-# Space: O(h)
+# V2
+# time = O(n)
+# space = O(h)
 # Definition for a binary tree node.
 class TreeNode(object):
     def __init__(self, x):

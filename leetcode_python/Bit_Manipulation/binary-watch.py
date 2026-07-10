@@ -3,6 +3,8 @@
 # V1 
 # https://www.jianshu.com/p/7723d729da3b
 # IDEA : GREEDY 
+# time = O(1)  # fixed 12*60 clock combos
+# space = O(1)  # excluding output list
 class Solution(object):
     def readBinaryWatch(self, num):
         return ['%d:%02d' % (h, m)
@@ -12,6 +14,8 @@ class Solution(object):
 # V1'
 # https://www.jianshu.com/p/7723d729da3b
 # IDEA : HASH MAP + GREEDY 
+# time = O(1)  # fixed 12*60 clock combos
+# space = O(1)  # maps over fixed ranges, excluding output
 class Solution(object):
     # Binary Watch
     def readBinaryWatch(self, num):

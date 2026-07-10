@@ -21,6 +21,8 @@
 # 256
 # 512
 # 1024
+# time = O((logn)^2) = O(1) due to n is a 32-bit number
+# space = O(logn) = O(1)
 class Solution(object):
     def reorderedPowerOf2(self, N):
         """
@@ -31,8 +33,8 @@ class Solution(object):
         return any(c == collections.Counter(str(1 << i)) for i in range(32))
 
 # V2
-# Time:  O((logn)^2) = O(1) due to n is a 32-bit number
-# Space: O(logn) = O(1)
+# time = O((logn)^2) = O(1) due to n is a 32-bit number
+# space = O(logn) = O(1)
 import collections
 class Solution(object):
     def reorderedPowerOf2(self, N):

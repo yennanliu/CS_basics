@@ -32,6 +32,8 @@ Constraints:
 
 # V0
 # IDEA : DP
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def numTilings(self, N):
         """
@@ -51,6 +53,8 @@ class Solution(object):
 # V1
 # IDEA : DP
 # http://bookshadow.com/weblog/2018/02/25/leetcode-domino-and-tromino-tiling/
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def numTilings(self, N):
         """
@@ -69,6 +73,8 @@ class Solution(object):
         
 # V1'
 # https://www.jiuzhang.com/solution/domino-and-tromino-tiling/#tag-highlight-lang-python
+# time = O(n)
+# space = O(n)
 class Solution:
     """
     @param N: a integer
@@ -89,8 +95,8 @@ class Solution:
         return f[N][0]
 
 # V2
-# Time:  O(logn)
-# Space: O(1)
+# time = O(logn)
+# space = O(1)
 import itertools
 class Solution(object):
     def numTilings(self, N):
@@ -123,8 +129,8 @@ class Solution(object):
         return matrix_expo(T, N)[0][0]  # T^N * [1, 0, 0, 0]
 
 
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 class Solution2(object):
     def numTilings(self, N):
         """

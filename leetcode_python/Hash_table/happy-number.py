@@ -1,5 +1,5 @@
-# Time:  O(k), where k is the steps to be happy number
-# Space: O(k)
+# time = O(k), where k is the steps to be happy number
+# space = O(k)
 #
 # Write an algorithm to determine if a number is "happy".
 #
@@ -19,6 +19,8 @@
 #
 
 # V0
+# time = O(k)  # k = steps to reach happy number / detect cycle
+# space = O(k)
 class Solution:
     # @param {integer} n
     # @return {boolean}
@@ -34,9 +36,11 @@ class Solution:
             n = sum
         return n == 1
             
-# V1 
+# V1
 # http://bookshadow.com/weblog/2015/04/22/leetcode-happy-number/
 # IDEA : SET 
+# time = O(k)  # k = steps to reach happy number / detect cycle
+# space = O(k)
 class Solution:
     # @param {integer} n
     # @return {boolean}
@@ -54,6 +58,8 @@ class Solution:
 
 # V1'
 # https://www.jiuzhang.com/solution/happy-number/#tag-highlight-lang-python
+# time = O(k)  # k = steps to reach happy number / detect cycle
+# space = O(k)
 class Solution:
     # @param {int} n an integer
     # @return {boolean} true if this is a happy number or false
@@ -67,7 +73,9 @@ class Solution:
                 break
         return n == 1
 
-# V2 
+# V2
+# time = O(k)  # k = steps to reach happy number / detect cycle
+# space = O(k)
 class Solution:
     # @param {integer} n
     # @return {boolean}

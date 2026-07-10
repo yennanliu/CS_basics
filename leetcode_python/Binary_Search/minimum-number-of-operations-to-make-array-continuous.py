@@ -52,8 +52,10 @@ Constraints:
 # V1
 # IDEA : deque
 # https://leetcode.com/problems/minimum-number-of-operations-to-make-array-continuous/discuss/1481315/Python-deque-linear
+# time = O(n log n)  # n = len(nums), dominated by sort
+# space = O(n)
 class Solution:
-    def minOperations(self, nums: List[int]) -> int:      
+    def minOperations(self, nums: List[int]) -> int:
         uniq = list(set(nums))
         q=deque()
         n=len(nums)
@@ -69,6 +71,8 @@ class Solution:
 # V1'
 # IDEA : BINARY SEARCH
 # https://leetcode.com/problems/minimum-number-of-operations-to-make-array-continuous/discuss/1470900/Python-Explanation-with-Pictures-Binary-Search
+# time = O(n log n)  # n = len(A), sort + n binary searches
+# space = O(n)
 class Solution(object):
     def minOperations(self, A: List[int]) -> int:
             A.sort()
@@ -110,6 +114,8 @@ class Solution(object):
 # V1'''
 # IDEA : BINARY SEARCH
 # https://leetcode.com/problems/minimum-number-of-operations-to-make-array-continuous/discuss/1470853/Python-Binary-Search-Clean-and-Concise
+# time = O(n log n)  # n = len(nums), sort + n binary searches
+# space = O(n)
 class Solution:
     def minOperations(self, nums: List[int]) -> int:
         n = len(nums)
@@ -126,6 +132,8 @@ class Solution:
 # V1''''
 # IDEA : SLIDING WINDOW
 # https://leetcode.com/problems/minimum-number-of-operations-to-make-array-continuous/discuss/1690374/Pythonorslide-window
+# time = O(n log n)  # n = len(nums), sort + sliding window
+# space = O(n)
 class Solution(object):
     def minOperations(self, nums):
         """

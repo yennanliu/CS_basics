@@ -9,6 +9,8 @@
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O((logn)^2)   # getHeight O(logn) per recursion level, O(logn) levels
+# space = O(logn)      # recursion depth
 class Solution(object):
     def countNodes(self, root):
         """
@@ -34,8 +36,8 @@ class Solution(object):
         return height
 
 # V2 
-# Time:  O(h * logn) = O((logn)^2)
-# Space: O(1)
+# time = O(h * logn) = O((logn)^2)
+# space = O(1)
 class Solution(object):
     # @param {TreeNode} root
     # @return {integer}
