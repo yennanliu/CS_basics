@@ -47,15 +47,56 @@ The depth of the tree will be in the range [1, 10].
 """
 
 # V0
-# Definition for a binary tree node.
-# class TreeNode(object):
-#     def __init__(self, val=0, left=None, right=None):
-#         self.val = val
-#         self.left = left
-#         self.right = right
+# IDEA: DFS (get height) + matrix + DFS (update matrix val)
 class Solution(object):
     def printTree(self, root):
-        pass
+        """
+        :type root: TreeNode
+        :rtype: List[List[str]]
+        """
+        if not root:
+            return []
+            
+        # 1. Adjust height to match LeetCode's 0-indexed definition
+        self.height = self.get_height(root) - 1
+        
+        self.l = self.height + 1
+        self.w = 2**(self.height + 1) - 1
+        self.matrix = [[""] * self.w for _ in range(self.l)]
+        
+        x_init = (self.w - 1) // 2
+        y_init = 0 
+        
+        # set `root call` as the first cell
+        self.helper(root, x_init, y_init)
+        
+        return self.matrix
+        
+    def get_height(self, root):
+        if not root:
+            return 0 
+        return 1 + max(
+            self.get_height(root.left), 
+            self.get_height(root.right)
+        )
+        
+    def helper(self, root, x, y):
+        if not root:
+            return
+            
+        # 2. Update cell and explicitly cast the value to a string
+        self.matrix[y][x] = str(root.val)
+        
+        # Calculate offsets using the problem's exact formulas
+        offset = 2**(self.height - y - 1)
+        
+        sub_left_x = x - offset
+        sub_left_y = y + 1
+        sub_right_x = x + offset
+        sub_right_y = y + 1
+        
+        self.helper(root.left, sub_left_x, sub_left_y)
+        self.helper(root.right, sub_right_x, sub_right_y)
 
 
 # V0-1
