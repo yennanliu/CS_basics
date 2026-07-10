@@ -46,13 +46,73 @@ Constraints:
 """
 
 # V0
+# IDEA: SLIDE WINDOW
+class Solution(object):
+    def totalFruit(self, fruits):
+        max_cnt = 0
+        cnt = 0
+
+        type_map = {}
+        l = 0
+
+        for r in range(len(fruits)):
+            right_type = fruits[r]
+
+            # Add current fruit first
+            type_map[right_type] = type_map.get(right_type, 0) + 1
+            cnt += 1
+
+            # Then shrink if there are more than 2 types
+            while len(type_map) > 2:
+                left_type = fruits[l]
+                type_map[left_type] -= 1
+
+                if type_map[left_type] == 0:
+                    del type_map[left_type]
+
+                l += 1
+                cnt -= 1
+
+            max_cnt = max(max_cnt, cnt)
+
+        return max_cnt
+
+
+# V0-0-1
+# IDEA: SLIDE WINDOW (gemini)
 class Solution(object):
     def totalFruit(self, fruits):
         """
         :type fruits: List[int]
         :rtype: int
         """
-        pass
+        max_cnt = 0
+        cnt = 0
+        type_map = {}
+        l = 0
+        
+        for r in range(len(fruits)):
+            right_type = fruits[r]
+            
+            # 1. Add the current fruit to the map and increment our manual counter
+            type_map[right_type] = type_map.get(right_type, 0) + 1
+            cnt += 1
+            
+            # 2. If we exceeded 2 types, shrink the window and decrement the counter
+            while len(type_map) > 2:
+                left_type = fruits[l]
+                type_map[left_type] -= 1
+                
+                if type_map[left_type] == 0:
+                    del type_map[left_type]
+                    
+                l += 1
+                cnt -= 1
+                
+            # 3. Now the window is valid, so we can safely update our maximum
+            max_cnt = max(max_cnt, cnt)
+            
+        return max_cnt
 
 
 # V0-1
