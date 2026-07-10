@@ -30,6 +30,43 @@ s and dictionary[i] consist of lowercase English letters.
 
 """
 
+# V0
+# IDEA: 2 POINTERS +  string comparision (`word < res`)
+class Solution(object):
+    def findLongestWord(self, s, dictionary):
+        res = ""
+
+        len_s = len(s)
+
+        for d in dictionary:
+            idx_s = 0
+            idx_d = 0
+
+            len_d = len(d)
+
+            # NOTE !!! 
+            # while `idx_s` and `idx_d` are BOTH in range
+            while idx_s < len_s and idx_d < len_d:
+                if s[idx_s] == d[idx_d]:
+                    idx_d += 1
+                idx_s += 1
+
+            """
+            NOTE !!!!
+
+
+            simply check `idx_d == len_d`
+                -> then we know if cur `d` can be formed by s via deletion 
+
+
+            # If idx_d reached len_d, we found all characters of 'd' in 's'
+            """
+            if idx_d == len_d:
+                if len(d) > len(res) or (len(d) == len(res) and d < res):
+                    res = d
+
+        return res
+
 
 # V0
 # IDEA: 2 POINTERS +  string comparision (`word < res`) (gpt)
