@@ -34,9 +34,7 @@ class Solution(object):
                 
 
 
-# V3 
-# time = O(n)
-# space = O(h), h is height of binary tree
+# V3
 
 
 class TreeNode(object):
@@ -46,6 +44,8 @@ class TreeNode(object):
         self.right = None
 
 
+# time = O(n)
+# space = O(h), h is height of binary tree
 class Solution(object):
     # @param root, a tree node
     # @return a boolean

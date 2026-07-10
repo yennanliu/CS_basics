@@ -35,17 +35,20 @@ There are many calls to sumRange function.
 
 
 
-# V1 
-
+# V1
+# time = O(1) (ctor), O(n) (lookup); n = len(nums)
+# space = O(1)
 class NumArray(object):
 
     def __init__(self, nums):
-        self.nums = nums 
+        self.nums = nums
 
     def sumRange(self, i, j):
         return sum(self.nums[i:j+1])
         
-# V2 
+# V2
+# time = O(n) (ctor), O(1) (lookup); n = len(nums)
+# space = O(n)
 class NumArray(object):
     def __init__(self, nums):
         """
@@ -71,10 +74,9 @@ class NumArray(object):
 # numArray.sumRange(0, 1)
 # numArray.sumRange(1, 2)
 
-# V3 
-# Time:  ctor:   O(n),
-#        lookup: O(1)
-# Space: O(n)
+# V3
+# time = O(n) (ctor), O(1) (lookup); n = len(nums)
+# space = O(n)
 class NumArray(object):
     def __init__(self, nums):
         """

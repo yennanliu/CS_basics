@@ -35,6 +35,8 @@ Constraints:
 
 # V0
 # IDEA 1) 1D DP (2 DP)
+# time = O(n)  # n = len(nums)
+# space = O(n)  # dp1, dp2 arrays
 class Solution(object):
     def rob(self, nums):
         if not nums:
@@ -105,6 +107,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: 1D DP
+# time = O(n)  # n = len(nums)
+# space = O(n)  # dp1, dp2 arrays
 class Solution(object):
     def rob(self, nums):
         # Edge cases
@@ -156,6 +160,8 @@ class Solution(object):
 # House Robber I problems, which have already been solved.
 # -> so same as LC 198 (House robber)
 # -> just need to implement method on nums[:-1] or nums[1:], and return max
+# time = O(n)  # n = len(nums)
+# space = O(1)
 class Solution:
     def rob(self, nums):
         """
@@ -184,6 +190,8 @@ class Solution:
 
 # V1'
 # https://leetcode.com/problems/house-robber-ii/discuss/60047/Python-easy-to-understand-solution
+# time = O(n)  # n = len(nums)
+# space = O(n)  # nums[:-1] / nums[1:] slice copies
 class Solution(object):
     def rob(self, nums):
         if len(nums) == 1:
@@ -200,6 +208,8 @@ class Solution(object):
 
 # V1''
 # https://leetcode.com/problems/house-robber-ii/discuss/132149/Easy-understanding-Python-Solution
+# time = O(n)  # n = len(nums)
+# space = O(n)  # nums[1:] / nums[:-1] slice copies
 class Solution(object):
     def rob(self, nums):
         """
@@ -224,6 +234,8 @@ class Solution(object):
 # V1'''
 # IDEA : DP
 # https://leetcode.com/problems/house-robber-ii/solution/
+# time = O(n)  # n = len(nums)
+# space = O(n)  # nums[:-1] / nums[1:] slice copies
 class Solution:
     def rob(self, nums: List[int]) -> int:
         if len(nums) == 0 or nums is None:
@@ -246,6 +258,8 @@ class Solution:
 
 # V1'''''
 # IDEA : DP
+# time = O(n)  # n = len(nums)
+# space = O(n)  # nums[:-1] / nums[1:] slice copies
 class Solution:
     def rob(self, nums):
         def help(nums):
@@ -266,9 +280,9 @@ class Solution:
 
         return max(help(nums[:-1]), help(nums[1:]))
 
-# V2 
-# Time:  O(n)
-# Space: O(h)
+# V2
+# time = O(n)  # n = number of tree nodes
+# space = O(h)  # h = tree height (recursion stack)
 class Solution(object):
     def rob(self, root):
         """

@@ -1,8 +1,10 @@
 # V0 
 
-# V1 
+# V1
 # https://zhuanlan.zhihu.com/p/50564246
-# IDEA : TWO POINTER 
+# IDEA : TWO POINTER
+# time = O(n)
+# space = O(1)
 class Solution:
     def isLongPressedName(self, name, typed):
         """
@@ -20,9 +22,9 @@ class Solution:
                 return False
         return idx == len(name)
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def isLongPressedName(self, name, typed):
         """

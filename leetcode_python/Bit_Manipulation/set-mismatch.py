@@ -118,7 +118,7 @@ class Solution:
 # https://leetcode.com/problems/set-mismatch/discuss/345631/Multiple-Python-Solution
 class Solution:
     def findErrorNums(self, nums):
-       count = [0] * (len(nums)+1)
+        count = [0] * (len(nums)+1)
         for x in nums:
             count[x] += 1
             

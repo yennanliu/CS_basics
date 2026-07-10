@@ -47,6 +47,8 @@ to
 
 # V0
 # IDEA: DFS (Recursion)
+# time = O(n)
+# space = O(h), recursion stack
 class Solution(object):
     def invertTree(self, root):
         # edge
@@ -65,6 +67,8 @@ class Solution(object):
 # -> below code shows a good example that tree is a type of "linked list"
 # -> we don't really modify tree's "value", but we modify the pointer
 # -> e.g. make root.left point to root.right, make root.right point to root.left
+# time = O(n)
+# space = O(h), recursion stack
 class Solution(object):
     def invertTree(self, root):
         def dfs(root):
@@ -79,6 +83,8 @@ class Solution(object):
 
 # V0'
 # IDEA BFS
+# time = O(n)
+# space = O(n), queue can hold up to a full level of nodes
 class Solution(object):
     def invertTree(self, root):
         if root == None:
@@ -99,6 +105,8 @@ class Solution(object):
 
 # V0
 # IDEA : DFS
+# time = O(n)
+# space = O(h), recursion stack
 class Solution(object):
     def invertTree(self, root):
         if root is None:
@@ -119,6 +127,8 @@ class Solution(object):
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)
+# space = O(h), recursion stack
 class Solution(object):
     def invertTree(self, root):
         """
@@ -134,13 +144,15 @@ class Solution(object):
 
 # V1' 
 # https://blog.csdn.net/coder_orz/article/details/51383933
-# Stack 
+# Stack
 # Definition for a binary tree node.
 # class TreeNode(object):
 #     def __init__(self, x):
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)
+# space = O(n), stack can hold up to O(n) nodes
 class Solution(object):
     def invertTree(self, root):
         """
@@ -163,7 +175,9 @@ class Solution(object):
 
 # V1'' 
 # https://blog.csdn.net/coder_orz/article/details/51383933
-# BFS 
+# BFS
+# time = O(n)
+# space = O(n), queue can hold up to a full level of nodes
 class Solution(object):
     def invertTree(self, root):
         """
@@ -183,9 +197,9 @@ class Solution(object):
 
         return root
 
-# V2 
-# Time:  O(n)
-# Space: O(h)
+# V2
+# time = O(n)
+# space = O(n), queue-based BFS
 # BFS solution.
 import collections
 class Queue(object):
@@ -231,8 +245,8 @@ class Solution(object):
 
         return root
 
-# Time:  O(n)
-# Space: O(h)
+# time = O(n)
+# space = O(n), stack-based DFS
 # Stack solution.
 class Solution2(object):
     # @param {TreeNode} root
@@ -251,8 +265,8 @@ class Solution2(object):
 
         return root
 
-# Time:  O(n)
-# Space: O(h)
+# time = O(n)
+# space = O(h), recursion stack
 # DFS, Recursive solution.
 class Solution3(object):
     # @param {TreeNode} root

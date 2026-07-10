@@ -34,6 +34,8 @@ s consists of lowercase English letters.
 
 # V0
 # IDEA : STACK
+# time = O(n)
+# space = O(n)
 class Solution:
      def removeDuplicates(self, x):
           # edge
@@ -58,6 +60,8 @@ class Solution:
 # V0'
 # IDEA : TWO POINTERS
 #      -> pointers : end, c
+# time = O(n)
+# space = O(n)
 class Solution:
      def removeDuplicates(self, S):
             end =  -1
@@ -73,6 +77,8 @@ class Solution:
 # V1
 # IDEA : STACK
 # https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/discuss/294893/JavaC%2B%2BPython-Two-Pointers-and-Stack-Solution
+# time = O(n)
+# space = O(n)
 class Solution:
     def removeDuplicates(self, S):
             res = []
@@ -86,6 +92,8 @@ class Solution:
 # V1'
 # IDEA : TWO POINTERS
 # https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/discuss/294964/JavaPython-3-three-easy-iterative-codes-w-brief-explanation-analysis-and-follow-up.
+# time = O(n)
+# space = O(n)
 class Solution:
      def removeDuplicates(self, S: str) -> str:
             end, a = -1, list(S)
@@ -101,6 +109,8 @@ class Solution:
 # IDEA : REPLACE
 # https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/solution/
 from string import ascii_lowercase
+# time = O(n^2)
+# space = O(n)
 class Solution:
     def removeDuplicates(self, S: str) -> str:
         # generate 26 possible duplicates
@@ -117,6 +127,8 @@ class Solution:
 # V1'''
 # IDEA : STACK
 # https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/solution/
+# time = O(n)
+# space = O(n)
 class Solution:
     def removeDuplicates(self, S: str) -> str:
         output = []

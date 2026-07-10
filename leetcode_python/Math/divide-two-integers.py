@@ -2,7 +2,9 @@
 
 # V1
 # https://www.cnblogs.com/zuoyuan/p/3779359.html
-# IDEA : BINARY SEARCH 
+# IDEA : BINARY SEARCH
+# time = O((logn)^2) = O(1)
+# space = O(1)
 class Solution:
     # @return an integer
     def divide(self, dividend, divisor):
@@ -25,6 +27,8 @@ class Solution:
 
 # V1'
 # https://blog.csdn.net/NXHYD/article/details/72539880
+# time = O(logn) = O(1)
+# space = O(1)
 class Solution(object):
     def divide(self, dividend, divisor):
         """
@@ -55,6 +59,8 @@ class Solution(object):
 
 # V1'''
 # https://www.jiuzhang.com/solution/divide-two-integers/#tag-highlight-lang-python
+# time = O(logn) = O(1)
+# space = O(1)
 class Solution(object):
     def divide(self, dividend, divisor):
         INT_MAX = 2147483647
@@ -75,6 +81,8 @@ class Solution(object):
         return ans
 
 # V1''''
+# time = O(1)
+# space = O(1)
 class Solution(object):
 	def divide(self, dividend, divisor):
 		"""
@@ -92,9 +100,9 @@ class Solution(object):
 		else:
 			return max(-2147483648, -(abs(dividend)//abs(divisor)))
             
-# V2 
-# Time:  O(logn) = O(1)
-# Space: O(1)
+# V2
+# time = O(logn) = O(1)
+# space = O(1)
 class Solution(object):
     def divide(self, dividend, divisor):
         """

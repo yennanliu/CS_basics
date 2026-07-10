@@ -1,7 +1,9 @@
 # V0
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/84956643
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def scoreOfParentheses(self, S):
         """
@@ -26,8 +28,10 @@ class Solution(object):
                     stack.append(num * 2)
         return sum(stack)
 
-# V1' 
+# V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/84956643
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def scoreOfParentheses(self, S):
         """
@@ -44,9 +48,9 @@ class Solution(object):
                 stack[-1] += max(v * 2, 1)
         return sum(stack)
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def scoreOfParentheses(self, S):
         """
@@ -64,8 +68,8 @@ class Solution(object):
         return result
 
 # V2'
-# Time:  O(n)
-# Space: O(h)
+# time = O(n)
+# space = O(n)
 class Solution2(object):
     def scoreOfParentheses(self, S):
         """

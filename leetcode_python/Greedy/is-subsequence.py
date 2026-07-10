@@ -2,6 +2,8 @@
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79568772
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def isSubsequence(self, s, t):
         """
@@ -16,8 +18,10 @@ class Solution(object):
                 queue.popleft()
         return not queue
 
-# V1' 
+# V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79568772
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def isSubsequence(self, s, t):
         """
@@ -32,9 +36,9 @@ class Solution(object):
             ti += 1
         return si == len(s)
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def isSubsequence(self, s, t):
         """

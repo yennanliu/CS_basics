@@ -38,6 +38,8 @@ The number of nodes in the tree is in the range [0, 5000].
 
 # V0
 # IDEA: DFS (post order) + backtrack (GPT)
+# time = O(n^2), n = number of nodes (path copy at each leaf costs O(h))
+# space = O(n), recursion stack + path cache
 class Solution(object):
     def pathSum(self, root, targetSum):
         self.res = []
@@ -142,6 +144,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: DFS (post order) + backtrack (gemini)
+# time = O(n^2), n = number of nodes (path copy at each leaf costs O(h))
+# space = O(n), recursion stack + path cache
 class Solution(object):
     def pathSum(self, root, targetSum):
         """
@@ -177,6 +181,8 @@ class Solution(object):
 
 # V0
 # IDEA : DFS
+# time = O(n^2), n = number of nodes (sum(path) recomputed at each leaf)
+# space = O(n)
 class Solution(object):
     def pathSum(self, root, sum):
         if not root: return []
@@ -193,10 +199,12 @@ class Solution(object):
             self.dfs(root.left, target, res, path + [root.left.val])
         if root.right:
             self.dfs(root.right, target, res, path + [root.right.val])
-            
-# V1 
+
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/80779574
-# IDEA : DFS 
+# IDEA : DFS
+# time = O(n^2), n = number of nodes (sum(path) recomputed at each leaf)
+# space = O(n)
 # Definition for a binary tree node.
 # class TreeNode(object):
 #     def __init__(self, x):
@@ -225,9 +233,11 @@ class Solution(object):
         if root.right:
             self.dfs(root.right, target, res, path + [root.right.val])
 
-# V1' 
+# V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/80779574
-# IDEA : DFS 
+# IDEA : DFS
+# time = O(n^2), n = number of nodes (sum(path) recomputed at each leaf)
+# space = O(n)
 # Definition for a binary tree node.
 # class TreeNode(object):
 #     def __init__(self, x):
@@ -259,6 +269,8 @@ class Solution(object):
 
 # V1''
 # https://www.jiuzhang.com/solution/path-sum-ii/#tag-highlight-lang-python
+# time = O(n^2), n = number of nodes (mysum(path) recomputed at each leaf)
+# space = O(n)
 class Solution:
     def pathSum(self, root, sum):
         """
@@ -284,9 +296,9 @@ class Solution:
         if root: findPath(root, [])
         return allPath
 
-# V2 
-# Time:  O(n)
-# Space: O(h), h is height of binary tree
+# V2
+# time = O(n^2), n = number of nodes (cur + [root.val] copy at each leaf)
+# space = O(h), h is height of binary tree
 class TreeNode(object):
     def __init__(self, x):
         self.val = x

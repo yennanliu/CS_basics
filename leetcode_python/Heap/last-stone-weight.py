@@ -43,6 +43,8 @@ Constraints:
 # V1
 # IDEA : Array-Based Simulation
 # https://leetcode.com/problems/last-stone-weight/editorial/
+# time = O(n^2), n = len(stones) (linear scan for max, n times)
+# space = O(1) extra
 class Solution:
     def lastStoneWeight(self, stones: List[int]) -> int:
 
@@ -63,6 +65,8 @@ class Solution:
 # V2
 # IDEA : Sorted Array-Based Simulation
 # https://leetcode.com/problems/last-stone-weight/editorial/
+# time = O(n^2), n = len(stones) (bisect.insort shifts O(n) per insertion)
+# space = O(1) extra
 class Solution:
     def lastStoneWeight(self, stones: List[int]) -> int:
         stones.sort()
@@ -76,6 +80,8 @@ class Solution:
 # V3
 # IDEA : Heap-Based Simulation
 # https://leetcode.com/problems/last-stone-weight/editorial/
+# time = O(n log n), n = len(stones)
+# space = O(1) extra (in-place heap)
 class Solution:
     def lastStoneWeight(self, stones: List[int]) -> int:
 

@@ -29,6 +29,8 @@ The number of nodes in the tree is in the range [1, 104].
 # TODO : implement bfs as well
 # V0
 # IDEA : DFS
+# time = O(n)  # n = number of tree nodes
+# space = O(n)  # res holds all node values, plus O(h) recursion stack
 class Solution(object):
     def averageOfLevels(self, root):
         """
@@ -54,6 +56,8 @@ class Solution(object):
 
 # V0'
 # IDEA : DFS
+# time = O(n)  # n = number of tree nodes
+# space = O(n)  # res holds all node values, plus O(h) recursion stack
 class Solution(object):
     def averageOfLevels(self, root):
         """
@@ -83,6 +87,8 @@ class Solution(object):
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)  # n = number of tree nodes
+# space = O(n)  # info holds per-level aggregates, plus O(h) recursion stack
 class Solution(object):
     def averageOfLevels(self, root):
         """
@@ -112,6 +118,8 @@ class Solution(object):
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)  # n = number of tree nodes
+# space = O(n)  # res holds all node values, plus O(h) recursion stack
 class Solution(object):
     def averageOfLevels(self, root):
         """
@@ -140,6 +148,8 @@ class Solution(object):
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)  # n = number of tree nodes
+# space = O(n)  # queue can hold up to a full level (up to O(n))
 class Solution(object):
     def averageOfLevels(self, root):
         """
@@ -163,9 +173,9 @@ class Solution(object):
                 res.append(sum(row) / float(len(row)))
         return res
 
-# V2 
-# Time:  O(n)
-# Space: O(h)
+# V2
+# time = O(n)
+# space = O(n)  # q holds up to a full level (up to O(n))
 class Solution(object):
     def averageOfLevels(self, root):
         """

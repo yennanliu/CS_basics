@@ -37,6 +37,8 @@ s consists only of printable ASCII characters.
 
 
 # V0
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def isPalindrome(self, s):
         if s is None:
@@ -70,8 +72,10 @@ class Solution(object):
         return fixed_s == fixed_s[::-1]
 
 
-# V0 
+# V0
 # IDEA : string + isalpha + isalnum
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def isPalindrome(self, s):
         s_ = ""
@@ -83,6 +87,8 @@ class Solution(object):
 # V1
 # https://blog.csdn.net/xiaolewennofollow/article/details/45148577
 # IDEA : STACK
+# time = O(n)
+# space = O(n)
 def isValid(s):
     matchDict={'(':')','[':']','{':'}'}
     strLen=len(s)
@@ -99,9 +105,11 @@ def isValid(s):
         return True
     else: return False
 
-# V1' 
+# V1'
 # http://bookshadow.com/weblog/2017/09/17/leetcode-valid-parenthesis-string/
 # https://blog.csdn.net/fuxuemingzhu/article/details/80680990
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def checkValidString(self, s):
         """
@@ -125,7 +133,9 @@ class Solution(object):
             vset = nset
         return 0 in vset
 
-# V2 
+# V2
+# time = O(n)
+# space = O(1)
 class Solution:
     # @param s, a string
     # @return a boolean
@@ -141,9 +151,9 @@ class Solution:
             i, j = i + 1, j - 1
         return True
 
-# V3 
-# Time:  O(n)
-# Space: O(1)
+# V3
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def checkValidString(self, s):
         """

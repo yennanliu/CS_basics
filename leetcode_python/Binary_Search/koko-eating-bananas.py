@@ -39,6 +39,8 @@ piles.length <= h <= 109
 
 # V0
 # IDEA : BINARY SEARCH
+# time = O(n log m), n = len(piles), m = max(piles)
+# space = O(1)
 class Solution(object):
     def minEatingSpeed(self, piles, h):
         l = 1
@@ -76,6 +78,8 @@ class Solution(object):
 
 # V0-1
 # IDEA : BINARY SEARCH
+# time = O(n log m), n = len(piles), m = max(piles)
+# space = O(1)
 class Solution(object):
     def minEatingSpeed(self, piles, h):
         l = 1
@@ -110,8 +114,10 @@ class Solution(object):
             res += a
         return res
 
-# V0 
+# V0
 # IDEA : BINARY SEARCH
+# time = O(n log m), n = len(piles), m = max(piles)
+# space = O(1)
 import math
 class Solution(object):
     def minEatingSpeed(self, piles, h):
@@ -152,8 +158,10 @@ class Solution(object):
 # V1
 # IDEA : BINARY SEARCH
 # https://leetcode.com/problems/koko-eating-bananas/solution/
+# time = O(n log m), n = len(piles), m = max(piles)
+# space = O(1)
 class Solution:
-    def minEatingSpeed(self, piles, h):  
+    def minEatingSpeed(self, piles, h):
         # Initalize the left and right boundaries     
         left = 1
         right = max(piles)
@@ -183,6 +191,8 @@ class Solution:
 # V1'
 # IDEA : BRUTE FORCE
 # https://leetcode.com/problems/koko-eating-bananas/solution/
+# time = O(n * m), n = len(piles), m = max(piles) (worst-case speed reaches m)
+# space = O(1)
 class Solution:
     def minEatingSpeed(self, piles, h):
         #Start at an eating speed of 1.
@@ -210,6 +220,8 @@ class Solution:
 # https://blog.csdn.net/fuxuemingzhu/article/details/82716042
 # IDEA : BINARY SEARCH
 # python 3
+# time = O(n log m), n = len(piles), m = max(piles)
+# space = O(1)
 class Solution:
     def minEatingSpeed(self, piles, H):
         minSpeed, maxSpeed = 1, max(piles)
@@ -226,7 +238,9 @@ class Solution:
 
 # V1''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/82716042
-# IDEA : BINARY SEARCH 
+# IDEA : BINARY SEARCH
+# time = O(n log s), n = len(piles), s = sum(piles)
+# space = O(1)
 class Solution(object):
     def minEatingSpeed(self, piles, H):
         """
@@ -247,9 +261,9 @@ class Solution(object):
                 r = K
         return l
 
-# V2 
-# Time:  O(nlogr)
-# Space: O(1)
+# V2
+# time = O(n log m), n = len(piles), m = max(piles)
+# space = O(1)
 class Solution(object):
     def minEatingSpeed(self, piles, H):
         """

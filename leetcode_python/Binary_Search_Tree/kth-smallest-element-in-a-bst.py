@@ -31,6 +31,8 @@ Follow up: If the BST is modified often (i.e., we can do insert and delete opera
 
 # V0
 # IDEA 1) IN - ORDER DFS
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def kthSmallest(self, root, k):
         self.sorted_elements = []
@@ -55,6 +57,8 @@ class Solution(object):
 
 # V0
 # IDEA 1) IN - ORDER DFS
+# time = O(k)  # stops early once kth element found
+# space = O(h)  # h = tree height (recursion stack)
 class Solution(object):
     def kthSmallest(self, root, k):
         self.k = k
@@ -78,6 +82,8 @@ class Solution(object):
 
 
 # V0-1
+# time = O(h + k)
+# space = O(h)  # h = tree height (explicit stack)
 class Solution(object):
     def kthSmallest(self, root, k):
         stack = []
@@ -100,6 +106,8 @@ class Solution(object):
 # V0
 # IDEA : DFS
 # -> pre order traversal BST, then sort it and get the k (from 1) smallest element
+# time = O(n log n)  # traversal O(n) + sort O(n log n)
+# space = O(n)
 class Solution(object):
     def kthSmallest(self, root, k):
 
@@ -118,7 +126,9 @@ class Solution(object):
         _list.sort()
         return _list[k-1]
 
-# V0' 
+# V0'
+# time = O(k)  # stops early once kth element found
+# space = O(h)  # h = tree height (recursion stack)
 class Solution(object):
     def kthSmallest(self, root, k):
         self.k = k
@@ -140,11 +150,13 @@ class Solution(object):
 # IDEA : Approach 1: Recursive Inorder Traversal
 #        -> the property of BST : inorder traversal of BST is an array sorted in the ascending order.
 # https://leetcode.com/problems/kth-smallest-element-in-a-bst/solution/
+# time = O(n)
+# space = O(n)
 class Solution:
     def kthSmallest(self, root, k):
         def inorder(r):
             return inorder(r.left) + [r.val] + inorder(r.right) if r else []
-    
+
         return inorder(root)[k - 1]
 
 # V1'
@@ -152,10 +164,12 @@ class Solution:
 #        -> the property of BST : inorder traversal of BST is an array sorted in the ascending order.
 #        -> The above recursion could be converted into iteration, with the help of stack. This way one could speed up the solution because there is no need to build the entire inorder traversal, and one could stop after the kth element.
 # https://leetcode.com/problems/kth-smallest-element-in-a-bst/solution/
+# time = O(h + k)
+# space = O(h)  # h = tree height
 class Solution:
     def kthSmallest(self, root, k):
         stack = []
-        
+
         while True:
             # Inorder Traversal
             ### get all `left sub tree` first
@@ -174,6 +188,8 @@ class Solution:
 # V1''
 # http://bookshadow.com/weblog/2015/07/02/leetcode-kth-smallest-element-bst/
 # IDEA : using inorder survey through whole BST (via BFS)
+# time = O(h + k)
+# space = O(h)  # h = tree height
 class Solution:
     def kthSmallest(self, root, k):
         stack = []
@@ -195,8 +211,10 @@ class Solution:
 # dev
 
 # V1'
-# IDEA : Recursive 
+# IDEA : Recursive
 # https://leetcode.com/problems/kth-smallest-element-in-a-bst/discuss/63829/Python-Easy-Iterative-and-Recursive-Solution
+# time = O(k)  # stops early once kth element found
+# space = O(h)  # h = tree height (recursion stack)
 class Solution(object):
     def kthSmallest(self, root, k):
         self.k = k
@@ -215,8 +233,10 @@ class Solution(object):
         self.dfs(node.right)
 
 # V1'''
-# IDEA : Iterative 
+# IDEA : Iterative
 # https://leetcode.com/problems/kth-smallest-element-in-a-bst/discuss/63829/Python-Easy-Iterative-and-Recursive-Solution
+# time = O(h + k)
+# space = O(h)  # h = tree height
 class Solution(object):
     def kthSmallest(self,root, k):
         stack = []
@@ -232,9 +252,9 @@ class Solution(object):
 
 # V1'''''
 # https://leetcode.com/problems/kth-smallest-element-in-a-bst/solution/
-# IDEA : RECURSION 
-#Time complexity : O(N), to build a traversal.
-# Space complexity : O(N) to keep an inorder traversal.
+# IDEA : RECURSION
+# time = O(n)  # to build a traversal
+# space = O(n)  # to keep an inorder traversal
 class Solution:
     def kthSmallest(self, root, k):
         """
@@ -250,8 +270,8 @@ class Solution:
 # V1''''''
 # https://leetcode.com/problems/kth-smallest-element-in-a-bst/solution/
 # IDEA : ITERATION
-# Time complexity : O(H+k), where HH is a tree height. This complexity is defined by the stack,
-# Space complexity : O(H+k), the same as for time complexity, O(N+k) in the worst case, and O(logN+k) in the average case.
+# time = O(h + k)  # h = tree height, defined by the stack
+# space = O(h + k)  # same as time; O(n) worst case, O(log n + k) average case for balanced BST
 class Solution:
     def kthSmallest(self, root, k):
         """
@@ -273,15 +293,17 @@ class Solution:
 
 # V1''''''''
 # https://blog.csdn.net/zhangpeterx/article/details/102879948
+# time = O(n)
+# space = O(n)
 class Solution:
     def kthSmallest(self, root: TreeNode, k: int) -> int:
         def inorder(r):
             return inorder(r.left) + [r.val] + inorder(r.right) if r else []    
         return inorder(root)[k - 1]
 
-# V2 
-# Time:  O(max(h, k))
-# Space: O(h)
+# V2
+# time = O(max(h, k))
+# space = O(h)
 class Solution(object):
     # @param {TreeNode} root
     # @param {integer} k

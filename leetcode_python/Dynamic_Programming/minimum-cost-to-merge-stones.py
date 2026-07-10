@@ -52,6 +52,8 @@ n == stones.length
 # Create prefix table. I used python "reduce" method. Same if using "for" loop. With prefix table, cost from i to j could be calculated in O(1) time.
 # Simply use dfs to loop through all possibilites merging between index i and j into m piles of stones.
 # "@functools.lrc_cache(None)" caches the execution result for (i,j,m) input, so that the complexity level could be largely reduced
+# time = O(n^3 * k)
+# space = O(n^2 * k)
 class Solution:
     def mergeStones(self, stones: List[int], K: int) -> int:
         p = functools.reduce(lambda s,x: s+[s[-1]+x],stones,[0])
@@ -67,6 +69,8 @@ class Solution:
 # V1'
 # IDEA : 1D DP
 # https://leetcode.com/problems/minimum-cost-to-merge-stones/discuss/247567/JavaC%2B%2BPython-DP
+# time = O(n^3)
+# space = O(n^2 * k)
 class Solution:
     def mergeStones(self, stones, K):
         n = len(stones)
@@ -116,6 +120,8 @@ class Solution:
 
 # V1'''
 # IDEA : DP
+# time = O(n^3)
+# space = O(n^2 * k)
 class Solution:
     def mergeStones(self, stones: List[int], K: int) -> int:
             def recursive(i, j, piles):
@@ -149,6 +155,8 @@ class Solution:
 # V1''''
 # IDEA : DP TOP DOWN
 # https://leetcode.com/problems/minimum-cost-to-merge-stones/discuss/424194/Python-top-down-dp-solution
+# time = O(n^3)
+# space = O(n^2)
 class Solution:
     def mergeStones(self, s, K):
         N = len(s)

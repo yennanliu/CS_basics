@@ -60,11 +60,13 @@ At most 104 calls will be made to move.
 # https://leetcode.com/problems/design-snake-game/solution/
 class SnakeGame:
 
+    # time = O(1)
+    # space = O(n), n = number of food items
     def __init__(self, width: int, height: int, food: List[List[int]]):
         """
         Initialize your data structure here.
         @param width - screen width
-        @param height - screen height 
+        @param height - screen height
         @param food - A list of food positions
         E.g food = [[1,1], [1,0]] means the first food is positioned at [1,1], the second is at [1,0].
         """
@@ -75,8 +77,10 @@ class SnakeGame:
         self.food = food
         self.food_index = 0
         self.movement = {'U': [-1, 0], 'L': [0, -1], 'R': [0, 1], 'D': [1, 0]}
-        
 
+
+    # time = O(1)
+    # space = O(1)
     def move(self, direction: str) -> int:
         """
         Moves the snake.
@@ -127,11 +131,13 @@ class SnakeGame:
 # https://leetcode.com/problems/design-snake-game/discuss/514781/fast-python-solution
 class SnakeGame:
 
+    # time = O(1)
+    # space = O(n), n = number of food items
     def __init__(self, width: int, height: int, food: List[List[int]]):
         """
         Initialize your data structure here.
         @param width - screen width
-        @param height - screen height 
+        @param height - screen height
         @param food - A list of food positions
         E.g food = [[1,1], [1,0]] means the first food is positioned at [1,1], the second is at [1,0].
         """
@@ -141,11 +147,13 @@ class SnakeGame:
         self.height = height
         self.eat = 0
 
+    # time = O(n), n = length of snake body (linear "in" check)
+    # space = O(1)
     def move(self, direction: str) -> int:
         """
         Moves the snake.
-        @param direction - 'U' = Up, 'L' = Left, 'R' = Right, 'D' = Down 
-        @return The game's score after the move. Return -1 if game over. 
+        @param direction - 'U' = Up, 'L' = Left, 'R' = Right, 'D' = Down
+        @return The game's score after the move. Return -1 if game over.
         Game over when snake crosses the screen boundary or bites its body.
         """
         #print(self.snake)
@@ -176,6 +184,8 @@ class SnakeGame:
 # https://leetcode.com/problems/design-snake-game/discuss/1751562/Python-or-OrderedDict
 class SnakeGame:
 
+    # time = O(1)
+    # space = O(n), n = number of food items
     def __init__(self, width: int, height: int, food: List[List[int]]):
         self.snake = OrderedDict() #keep track of the cells where occupied by the snake
         self.snake[(0, 0)] = True
@@ -186,8 +196,10 @@ class SnakeGame:
         self.score = 0
         self.head = (0, 0)
         self.ate = False
-        
 
+
+    # time = O(1)
+    # space = O(1)
     def move(self, direction: str) -> int:
         directionMoves = {"U": (-1, 0), "D": (1, 0), "L": (0, -1), "R":(0, 1)}
         dy, dx = directionMoves[direction]
@@ -213,29 +225,39 @@ class SnakeGame:
 # https://leetcode.com/problems/design-snake-game/discuss/1778152/Python-Queue
 class SnakeGame:
 
+    # time = O(1)
+    # space = O(n), n = number of food items
     def __init__(self, width: int, height: int, food: List[List[int]]):
         self.body = deque([(0,0)])
         self.C = width
         self.R = height
         self.food = food[::-1]
         self.score = 0
-        
+
+    # time = O(1)
+    # space = O(1)
     def out_of_bounds(self, row, col):
         if row < 0 or col < 0 or row >= self.R or col >= self.C:
-            return True        
+            return True
         return False
-        
-    def food_eaten(self, row, col):   
-        return (row, col) == tuple(self.food[-1])   
-    
+
+    # time = O(1)
+    # space = O(1)
+    def food_eaten(self, row, col):
+        return (row, col) == tuple(self.food[-1])
+
+    # time = O(n), n = length of snake body
+    # space = O(1)
     def self_bite(self, row, col):
         for i in range(len(self.body) - 1):
             if self.body[i] == (row, col):
                 return True
-            
+
         return False
-                    
-    def move(self, direction: str) -> int:        
+
+    # time = O(n), n = length of snake body (self_bite scan)
+    # space = O(1)
+    def move(self, direction: str) -> int:
         r, c  = self.body[-1]        
         row, col = {'U': (r - 1,c), 'D': (r + 1, c), 'L': (r, c - 1), 'R': (r, c + 1)}[direction]
         
@@ -265,11 +287,13 @@ class SnakeGame:
 # If the new head meets the food, we will put the tail back. Notice the axises of positions of the food are reversed ([1,2] is actually [2,1]).
 class SnakeGame(object):
 
+    # time = O(1)
+    # space = O(n), n = number of food items
     def __init__(self, width,height,food):
         """
         Initialize your data structure here.
         @param width - screen width
-        @param height - screen height 
+        @param height - screen height
         @param food - A list of food positions
         E.g food = [[1,1], [1,0]] means the first food is positioned at [1,1], the second is at [1,0].
         :type width: int
@@ -286,6 +310,8 @@ class SnakeGame(object):
         self.moves={'U':(0,-1),'L':(-1,0),'R':(1,0),'D':(0,1)}
 
 
+    # time = O(1)
+    # space = O(1)
     def move(self, direction):
         """
         Moves the snake.
@@ -320,11 +346,13 @@ class SnakeGame(object):
 from collections import deque
 class SnakeGame(object):
 
+    # time = O(1)
+    # space = O(n), n = number of food items
     def __init__(self, width,height,food):
         """
         Initialize your data structure here.
         @param width - screen width
-        @param height - screen height 
+        @param height - screen height
         @param food - A list of food positions
         E.g food = [[1,1], [1,0]] means the first food is positioned at [1,1], the second is at [1,0].
         :type width: int
@@ -339,6 +367,8 @@ class SnakeGame(object):
         self.score = 0
         self.moveOps = {"U": (-1, 0), "D": (1, 0), "L": (0, -1), "R": (0, 1)}
 
+    # time = O(1)
+    # space = O(1)
     def move(self, direction):
         """
         Moves the snake.

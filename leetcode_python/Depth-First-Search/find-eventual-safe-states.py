@@ -3,6 +3,8 @@
 # V1
 # http://bookshadow.com/weblog/2018/03/18/leetcode-find-eventual-safe-states/
 import collections
+# time = O(V + E)
+# space = O(V + E)
 class Solution(object):
     def eventualSafeNodes(self, graph):
         """
@@ -28,6 +30,8 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/find-eventual-safe-states/#tag-highlight-lang-python
+# time = O(V + E)
+# space = O(V)
 class Solution:
     """
     @param graph: a 2D integers array
@@ -52,9 +56,9 @@ class Solution:
             dfs(graph, i, visited)
         return sorted(list(ans))
 
-# V2 
-# Time:  O(|V| + |E|)
-# Space: O(|V|)
+# V2
+# time = O(|V| + |E|)
+# space = O(|V|)
 import collections
 class Solution(object):
     def eventualSafeNodes(self, graph):

@@ -47,6 +47,8 @@ The number of nodes in the tree is in the range [1, 5 * 104].
 # V1
 # IDEA : BFS
 # https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/discuss/534968/Python-BFS-solution-(100)
+# time = O(n)
+# space = O(n), queue can hold up to O(n) entries
 class Solution:
     def longestZigZag(self, root):
         q = [(root, 1, 0)] # node, direction, length; direction can be initialized to be 1 (to right child) or -1 (to left child)
@@ -79,6 +81,8 @@ class Solution:
 # V1
 # IDEA : DFS
 # https://www.codeleading.com/article/69034872436/
+# time = O(n), each node visited twice (once per initial direction)
+# space = O(h), recursion stack
 class Solution:
     def maxZigZag(self,root,isLeft,step):
         if(root is None):
@@ -105,6 +109,8 @@ class Solution:
 # left is the maximum length in direction of root.left
 # right is the maximum length in direction of root.right
 # result is the maximum length in the whole sub tree.
+# time = O(n)
+# space = O(h), recursion stack
 class Solution:
     def longestZigZag(self, root):
         def dfs(root):
@@ -118,8 +124,10 @@ class Solution:
 # https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/discuss/531860/python-postorder
 # a = the max number of nodes on a path down (starting from u) if I take a left
 # b = the max number of nodes on a path down (starting from u) if I take a right
+# time = O(n)
+# space = O(h), recursion stack
 class Solution(object):
-    def longestZigZag(self, root):        
+    def longestZigZag(self, root):
         c = [0]
         self.f(root, c)
         return c[0] - 1
@@ -133,6 +141,8 @@ class Solution(object):
 # V1
 # IDEA : BFS
 # https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/discuss/1771498/python-or-bfs
+# time = O(n)
+# space = O(n), queue can hold up to O(n) entries
 class Solution:
     def longestZigZag(self, root: Optional[TreeNode]) -> int:
         
@@ -165,6 +175,8 @@ class Solution:
 # V1
 # IDEA : DFS
 # https://leetcode.com/problems/longest-zigzag-path-in-a-binary-tree/discuss/532057/python-dfs
+# time = O(n)
+# space = O(h), recursion stack
 class Solution(object):
     def longestZigZag(self, root):
         self.max=0

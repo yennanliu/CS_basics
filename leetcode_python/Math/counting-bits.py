@@ -39,6 +39,8 @@ Can you do it without using any built-in function (i.e., like __builtin_popcount
 """
 
 # V0
+# time = O(n log n)  # n = num; bin() + count is O(log i) per value
+# space = O(n)
 class Solution:
     def countBits(self,string_num):
         result = []
@@ -50,9 +52,11 @@ class Solution:
         tmp = bin(x)
         return tmp.count('1') 
 
-# V1 
+# V1
+# time = O(n log n)  # n = num; manual dec->bin is O(log i) per value
+# space = O(n)
 class Solution(object):
-	# python dec to bin 
+	# python dec to bin
 	# https://stackoverflow.com/questions/3528146/convert-decimal-to-binary-in-python
 	# https://www.programiz.com/python-programming/examples/decimal-binary-recursion
 	def dec2bin(self,string_num):
@@ -72,6 +76,8 @@ class Solution(object):
 
 
 # V1'
+# time = O(n log n)  # n = num; bin() per value
+# space = O(n)
 class Solution(object):
 	def dec2bin(self,x):
 		return int(bin(x)[2:])
@@ -79,9 +85,9 @@ class Solution(object):
 		num_list = [x for x in range(num+1)]
 		return [ str(Solution().dec2bin(i)).count('1') for i in num_list ]
 
-# V2 
-# Time:  O(n)
-# Space: O(n)
+# V2
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def countBits(self, num):
         """

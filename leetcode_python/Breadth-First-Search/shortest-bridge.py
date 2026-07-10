@@ -1,8 +1,10 @@
 # V0
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/83716820
-# IDEA : BFS + DFS 
+# IDEA : BFS + DFS
+# time = O(m*n), m,n = grid dims (DFS to find island + BFS to expand)
+# space = O(m*n), visited grid + BFS queue
 class Solution:
     def shortestBridge(self, A):
         """
@@ -53,9 +55,9 @@ class Solution:
                 if 0 <= x < M and 0 <= y < N:
                     self.dfs(A, x, y, visited, que)
 
-# V2 
-# Time:  O(n^2)
-# Space: O(n^2)
+# V2
+# time = O(n^2), n = grid side length (each cell visited O(1) times)
+# space = O(n^2), lookup set + queue
 import collections
 class Solution(object):
     def shortestBridge(self, A):

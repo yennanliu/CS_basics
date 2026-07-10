@@ -1,7 +1,9 @@
 # V0
 
-# V1 
+# V1
 # https://www.twblogs.net/a/5c31e79ebd9eee35b21cb4a5
+# time = O((log n)^2)  # n = bound
+# space = O(r)  # r = size of result
 class Solution(object):
     def powerfulIntegers(self, x, y, bound):
         """
@@ -23,9 +25,9 @@ class Solution(object):
             i += 1
         return list(res)  
 
-# V2 
-# Time:  O((logn)^2), n is the bound
-# Space: O(r), r is the size of the result
+# V2
+# time = O((log n)^2)  # n = bound
+# space = O(r)  # r = size of result
 import math
 class Solution(object):
     def powerfulIntegers(self, x, y, bound):

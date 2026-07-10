@@ -2,9 +2,9 @@
 
 # V1 
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n), n = len(expression)
+# space = O(n)
 class Solution(object):
     def parseTernary(self, expression):
         """

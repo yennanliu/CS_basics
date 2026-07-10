@@ -37,9 +37,11 @@ class Solution(object):
             num &= num - 1
         return counter
 
-# V1'' 
+# V1''
 # https://www.jianshu.com/p/7723d729da3b
-# IDEA : MATH 
+# IDEA : MATH
+# time = O(C(10, num)) combinations checked, each O(1) work
+# space = O(1)  # excluding output list
 class Solution(object):
     def readBinaryWatch(self, num):
         """
@@ -62,7 +64,9 @@ class Solution(object):
 
 # V1'''
 # http://bookshadow.com/weblog/2016/09/18/leetcode-binary-watch/
-# IDEA : BIT MANIPULATION 
+# IDEA : BIT MANIPULATION
+# time = O(1)  # fixed 1024 iterations
+# space = O(1)  # excluding output list
 class Solution(object):
     def readBinaryWatch(self, num):
         """
@@ -79,7 +83,9 @@ class Solution(object):
 
 # V1''''
 # http://bookshadow.com/weblog/2016/09/18/leetcode-binary-watch/
-# IDEA : GREEDY 
+# IDEA : GREEDY
+# time = O(1)  # fixed 12*60 clock combos
+# space = O(1)  # excluding output list
 class Solution(object):
     def readBinaryWatch(self, num):
         """
@@ -93,9 +99,9 @@ class Solution(object):
                     ans.append('%d:%02d' % (h, m))
         return ans
 
-# V2 
-# Time:  O(1)
-# Space: O(1)
+# V2
+# time = O(1)
+# space = O(1)  # excluding output list
 class Solution(object):
     def readBinaryWatch(self, num):
         """

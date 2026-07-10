@@ -38,6 +38,8 @@ source and target consist of lowercase English letters.
 
 # V1
 # https://leetcode.ca/2018-10-20-1055-Shortest-Way-to-Form-String/
+# time = O(m*n), m = len(source), n = len(target)
+# space = O(1)
 class Solution:
     def shortestWay(self, source: str, target: str) -> int:
         def f(i, j):

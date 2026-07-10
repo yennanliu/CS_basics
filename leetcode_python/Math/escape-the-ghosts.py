@@ -1,7 +1,9 @@
 # V1 : dev 
 
-# V2 
+# V2
 # https://blog.csdn.net/fuxuemingzhu/article/details/80480462
+# time = O(n)  # n = len(ghosts)
+# space = O(1)
 class Solution:
     def escapeGhosts(self, ghosts, target):
         """
@@ -14,6 +16,8 @@ class Solution:
         return not any(abs(gx - tx) + abs(gy - ty) <= mht for gx, gy in ghosts)
 
 # V2'
+# time = O(n)  # n = len(ghosts)
+# space = O(1)
 class Solution:
     def escapeGhosts(self, ghosts, target):
         """
@@ -29,9 +33,9 @@ class Solution:
         return True 
 
 
-# V3 
-# Time:  O(n)
-# Space: O(1)
+# V3
+# time = O(n)  # n = len(ghosts)
+# space = O(1)
 class Solution(object):
     def escapeGhosts(self, ghosts, target):
         """

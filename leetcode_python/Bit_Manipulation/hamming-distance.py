@@ -29,6 +29,8 @@ Constraints:
 
 # V0
 # IDEA : STR -> BIN -> COMPARE
+# time = O(log(max(x, y)))
+# space = O(log(max(x, y)))
 class Solution:
     def hammingDistance(self, x: int, y: int):
         _x, _y = str(bin(x)[2:]), str(bin(y)[2:])
@@ -47,16 +49,20 @@ class Solution:
 # IDEA  : BITWISE OPERATOR 
 # https://github.com/yennanliu/CS_basics/blob/master/doc/bit_manipulation.md
 # XOR : if (a,b) = (1,0) or (0,1), then a ^ b = 1, otherwise = 0
+# time = O(log(max(x, y)))
+# space = O(log(max(x, y)))
 class Solution(object):
     def hammingDistance(self, x, y):
         return bin(x ^ y).count('1')
 
-# V1 
+# V1
 # http://bookshadow.com/weblog/2016/12/18/leetcode-hamming-distance/
-# IDEA  : BITWISE OPERATOR 
+# IDEA  : BITWISE OPERATOR
 # https://wiki.python.org/moin/BitwiseOperators
 # x ^ y
 # Does a "bitwise exclusive or". Each bit of the output is the same as the corresponding bit in x if that bit in y is 0, and it's the complement of the bit in x if that bit in y is 1.
+# time = O(log(max(x, y)))
+# space = O(log(max(x, y)))
 class Solution(object):
     def hammingDistance(self, x, y):
         """
@@ -68,6 +74,8 @@ class Solution(object):
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/54138423
+# time = O(log(max(x, y)))
+# space = O(log(max(x, y)))
 class Solution(object):
     def hammingDistance(self, x, y):
         """
@@ -79,6 +87,8 @@ class Solution(object):
 
 # V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/54138423
+# time = O(log(max(x, y)))
+# space = O(1)
 class Solution:
     def hammingDistance(self, x, y):
         """
@@ -96,6 +106,8 @@ class Solution:
 
 # V1'''
 # https://blog.csdn.net/fuxuemingzhu/article/details/54138423
+# time = O(log(max(x, y)))
+# space = O(1)
 class Solution:
     def hammingDistance(self, x, y):
         """
@@ -110,9 +122,9 @@ class Solution:
             xor >>= 1
         return res
 
-# V2 
-# Time:  O(1)
-# Space: O(1)
+# V2
+# time = O(log(max(x, y)))
+# space = O(1)
 class Solution(object):
     def hammingDistance(self, x, y):
         """

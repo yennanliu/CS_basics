@@ -63,6 +63,8 @@ Steps:
 
 
 """
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def findRightInterval(self, intervals):
         n = len(intervals)
@@ -116,6 +118,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: BINRARY SEARCH (GEMINI)
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def findRightInterval(self, intervals):
         """
@@ -159,6 +163,8 @@ class Solution(object):
 
 # V0
 # IDEA: SORT + HASHMAP (TLE) (gpt)
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def findRightInterval(self, intervals):
         n = len(intervals)
@@ -193,6 +199,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: binary search (gemini)
+# time = O(n log n)
+# space = O(n)
 import bisect
 
 class Solution(object):
@@ -233,6 +241,8 @@ class Solution(object):
 #     def __init__(self, s=0, e=0):
 #         self.start = s
 #         self.end = e
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def findRightInterval(self, intervals):
         """
@@ -246,9 +256,9 @@ class Solution(object):
             ans.append(invs[idx][1] if idx < len(intervals) else -1)
         return ans
         
-# V2 
-# Time:  O(nlogn)
-# Space: O(n)
+# V2
+# time = O(n log n)
+# space = O(n)
 import bisect
 class Solution(object):
     def findRightInterval(self, intervals):

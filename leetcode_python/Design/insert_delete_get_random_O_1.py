@@ -46,6 +46,8 @@ class RandomizedSet(object):
         self.set = set()
         self._len = 0
 
+    # time = O(1)
+    # space = O(1)
     def insert(self, val):
         if val in self.set:
             return False
@@ -53,6 +55,8 @@ class RandomizedSet(object):
         self._len += 1
         return True
 
+    # time = O(1)
+    # space = O(1)
     def remove(self, val):
         if val not in self.set:
             return False
@@ -60,6 +64,8 @@ class RandomizedSet(object):
         self._len -= 1
         return True
 
+    # time = O(n), due to list(self.set) conversion
+    # space = O(n)
     def getRandom(self):
         if self._len == 0:
             return []
@@ -80,6 +86,8 @@ class RandomizedSet(object):
         self.set = set()
         self.size = 0
 
+    # time = O(1)
+    # space = O(1)
     def insert(self, val):
         """
         Inserts a value to the set. Returns true if the set did not already contain the specified element.
@@ -92,6 +100,8 @@ class RandomizedSet(object):
             return True
         return False
 
+    # time = O(1)
+    # space = O(1)
     def remove(self, val):
         """
         Removes a value from the set. Returns true if the set contained the specified element.
@@ -104,6 +114,8 @@ class RandomizedSet(object):
             return True
         return False
 
+    # time = O(n), due to list(self.set) conversion
+    # space = O(n)
     def getRandom(self):
         """
         Get a random element from the set.
@@ -124,6 +136,8 @@ class RandomizedSet(object):
         """
         self.nums, self.pos = list(), dict()
 
+    # time = O(1)
+    # space = O(1)
     def insert(self, val):
         """
         Inserts a value to the set. Returns true if the set did not already contain the specified element.
@@ -136,6 +150,8 @@ class RandomizedSet(object):
             return True
         return False
 
+    # time = O(1)
+    # space = O(1)
     def remove(self, val):
         """
         Removes a value from the set. Returns true if the set contained the specified element.
@@ -143,10 +159,10 @@ class RandomizedSet(object):
         :rtype: bool
         """
         if val in self.pos:
-            ### NOTICE HERE 
-            # IDEA : 
-            # -> GET THE LAST IDX, ELEMENT IN THE LIST FIRST 
-            # -> THEN SWAP LAST AND THE to-remove ELEMENT (val) 
+            ### NOTICE HERE
+            # IDEA :
+            # -> GET THE LAST IDX, ELEMENT IN THE LIST FIRST
+            # -> THEN SWAP LAST AND THE to-remove ELEMENT (val)
             # -> SO ONCE REMOVE THE LAST ELEMENT IN THE LIST
             # -> WE CAN DO THE EXPECTED OP
             # -> UPDATE THE DICT ON ACCORDINGLY
@@ -158,6 +174,8 @@ class RandomizedSet(object):
             return True
         return False
 
+    # time = O(1)
+    # space = O(1)
     def getRandom(self):
         """
         Get a random element from the set.
@@ -178,6 +196,8 @@ class RandomizedSet(object):
         self.set = set()
         self.size = 0
 
+    # time = O(1)
+    # space = O(1)
     def insert(self, val):
         """
         Inserts a value to the set. Returns true if the set did not already contain the specified element.
@@ -190,6 +210,8 @@ class RandomizedSet(object):
             return True
         return False
 
+    # time = O(1)
+    # space = O(1)
     def remove(self, val):
         """
         Removes a value from the set. Returns true if the set contained the specified element.
@@ -202,6 +224,8 @@ class RandomizedSet(object):
             return True
         return False
 
+    # time = O(n), due to list(self.set) conversion
+    # space = O(n)
     def getRandom(self):
         """
         Get a random element from the set.
@@ -238,6 +262,8 @@ class RandomizedSet(object):
         """
         self.nums, self.pos = list(), dict()
 
+    # time = O(1)
+    # space = O(1)
     def insert(self, val):
         """
         Inserts a value to the set. Returns true if the set did not already contain the specified element.
@@ -250,6 +276,8 @@ class RandomizedSet(object):
             return True
         return False
 
+    # time = O(1)
+    # space = O(1)
     def remove(self, val):
         """
         Removes a value from the set. Returns true if the set contained the specified element.
@@ -265,6 +293,8 @@ class RandomizedSet(object):
             return True
         return False
 
+    # time = O(1)
+    # space = O(1)
     def getRandom(self):
         """
         Get a random element from the set.

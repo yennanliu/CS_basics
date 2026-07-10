@@ -2,8 +2,10 @@
 
 # V1 
 # http://bookshadow.com/weblog/2016/07/16/leetcode-guess-number-higher-or-lower-ii/
-# DP state func : 
+# DP state func :
 # dp[i][j] = min(k + max(dp[i][k - 1], dp[k + 1][j]))
+# time = O(n^3)  # O(n^2) intervals x O(n) split-point scan
+# space = O(n^2)
 class Solution(object):
     def getMoneyAmount(self, n):
         """
@@ -18,9 +20,9 @@ class Solution(object):
                                    for x in range(lo, hi))
         return dp[1][n]
 
-# V2 
-# Time:  O(n^2)
-# Space: O(n^2)
+# V2
+# time = O(n^3)  # O(n^2) intervals x O(n) split-point scan
+# space = O(n^2)
 class Solution(object):
     def getMoneyAmount(self, n):
         """

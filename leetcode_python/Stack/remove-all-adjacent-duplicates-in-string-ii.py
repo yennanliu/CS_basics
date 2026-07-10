@@ -56,6 +56,8 @@ NOTE !!! key of this LC
     - else (stock is empty or last val != cur)
 
 """
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def removeDuplicates(self, s, k):
 
@@ -92,6 +94,8 @@ NOTE !!! key of this LC
     - else (stock is empty or last val != cur)
 
 """
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def removeDuplicates(self, s, k):
         """
@@ -122,6 +126,8 @@ class Solution(object):
 
 # V0
 # IDEA : STACK
+# time = O(n)
+# space = O(n)
 class Solution:
      def removeDuplicates(self, x, k):
           # edge case
@@ -155,6 +161,8 @@ class Solution:
 # V0'
 # IDEA : STACK
 # NOTE !!! we DON'T need to modify original s, (but maintain an extra stack for duplicated checks)
+# time = O(n)
+# space = O(n)
 class Solution:
      def removeDuplicates(self, s, k):
             stack = [['#', 0]]
@@ -232,6 +240,8 @@ class Solution:
 # c = a stack = [['#', 0]]
 # c = a stack = [['#', 0], ['a', 1]]
 # aa
+# time = O(n)
+# space = O(n)
 class Solution:
      def removeDuplicates(self, s, k):
             stack = [['#', 0]]
@@ -250,6 +260,8 @@ class Solution:
 # https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string-ii/discuss/628576/Python-3-solutions-(Greedy-Stack-Two-pointers)-with-explanations
 # IDEA :
 # Explanations: stack will only store int. We will have two pointers fast and slow. Both of them run in the same direction, and each time a list of arr (let's say, it is arr) will copy s[fast] to arr[slow]. However when a character show-up time reachs k, slow will move backword k, so it will be replaced by next non-removable character that fast point to.
+# time = O(n)
+# space = O(n)
 class Solution:
     def removeDuplicates(self, s: str, k: int) -> str:
         slow, stack, s = 0, [], [c for c in s]
@@ -268,6 +280,8 @@ class Solution:
 # V1''
 # IDEA : STACK
 # https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string-ii/discuss/396006/Python-(Stack)
+# time = O(n)
+# space = O(n)
 class Solution:
     def removeDuplicates(self, s: str, k: int) -> str:
         stack = []

@@ -1,4 +1,6 @@
 # V0
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def integerBreak(self, n):
         """
@@ -14,6 +16,8 @@ class Solution(object):
 
 # V1
 # http://bookshadow.com/weblog/2016/04/19/leetcode-integer-break/
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def integerBreak(self, n):
         """
@@ -31,6 +35,8 @@ class Solution(object):
 # http://bookshadow.com/weblog/2016/04/19/leetcode-integer-break/
 from functools import reduce
 import operator
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def integerBreak(self, n):
         """
@@ -44,6 +50,8 @@ class Solution(object):
         remainder = n % m
         return [quotient] * (m - remainder) + [quotient + 1] * remainder
 
+# time = O(n^2)
+# space = O(1)
 class Solution2(object):
     def integerBreak(self, n):
         """
@@ -98,9 +106,9 @@ class Solution2(object):
 
 
 
-# V3 
-# Time:  O(logn), pow is O(logn).
-# Space: O(1)
+# V3
+# time = O(log n)  # pow is O(log n)
+# space = O(1)
 class Solution(object):
     def integerBreak(self, n):
         """
@@ -142,9 +150,9 @@ class Solution(object):
             res = 3 ** (n // 3 - 1) * 4
         return res
         
-# V4 
-# Time:  O(n)
-# Space: O(1)
+# V4
+# time = O(n)
+# space = O(1)
 # DP solution.
 class Solution2(object):
     def integerBreak(self, n):

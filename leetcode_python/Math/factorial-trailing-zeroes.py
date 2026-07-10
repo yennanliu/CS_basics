@@ -3,6 +3,8 @@
 # V1 
 # https://blog.csdn.net/coder_orz/article/details/51590478
 # IDEA : Iteration
+# time = O(log n)  # n = n, log base 5
+# space = O(1)
 class Solution(object):
     def trailingZeroes(self, n):
         """
@@ -15,9 +17,11 @@ class Solution(object):
             res += n
         return res
 
-# V1' 
+# V1'
 # https://blog.csdn.net/coder_orz/article/details/51590478
 # IDEA : Recursion
+# time = O(log n)  # n = n, log base 5
+# space = O(log n)  # recursion stack
 class Solution(object):
     def trailingZeroes(self, n):
         """
@@ -41,6 +45,8 @@ so the number Trailing Zeroes in 135! =  27+5 + 1 = 33
 
 """
 # https://blog.csdn.net/coder_orz/article/details/51590478
+# time = O(log n)  # n = n, log base 5
+# space = O(1)
 class Solution(object):
     def trailingZeroes(self, n):
         """
@@ -53,9 +59,9 @@ class Solution(object):
             res += n
         return res
 
-# V3 
-# Time:  O(logn) = O(1)
-# Space: O(1)
+# V3
+# time = O(logn) = O(1)
+# space = O(1)
 class Solution(object):
     # @return an integer
     def trailingZeroes(self, n):

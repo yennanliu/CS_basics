@@ -30,8 +30,8 @@
 # }
 
 # V2
-# Time:  O(m * n)
-# Space: O(n)
+# time = O(m * n)
+# space = O(n)
 class Solution(object):
     def minimumDeleteSum(self, s1, s2):
         """
@@ -53,8 +53,8 @@ class Solution(object):
                                            dp[(i+1)%2][j] + ord(s2[j]))
         return dp[len(s1)%2][-1]
 
-# Time:  O(m * n)
-# Space: O(m * n)
+# time = O(m * n)
+# space = O(m * n)
 class Solution2(object):
     def minimumDeleteSum(self, s1, s2):
         """

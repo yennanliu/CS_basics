@@ -36,6 +36,8 @@ stations is sorted in a strictly increasing order.
 
 
 # V0
+# time = O(1)
+# space = O(1)
 class Solution:
     def minmaxGasDist(self, stations: List[int], k: int) -> float:
         pass

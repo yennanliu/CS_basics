@@ -1,6 +1,8 @@
-# V1 
+# V1
+# time = O(1)  # per flip / init call
+# space = O(1)
 class Solution(object):
-	import random 
+	import random
 
 	def __init__(self, n_rows, n_cols):
 		"""
@@ -88,11 +90,9 @@ class Solution(object):
 
 
 
-# V3 
-# Time:  ctor:  O(1)
-#        flip:  O(1)
-#        reset: O(min(f, r * c))
-# Space: O(min(f, r * c))
+# V3
+# time = O(1) for ctor and flip, O(min(f, r * c)) for reset
+# space = O(min(f, r * c))
 import random
 class Solution(object):
 

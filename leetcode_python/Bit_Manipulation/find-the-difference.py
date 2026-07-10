@@ -32,7 +32,9 @@ s and t consist of lowercase English letters.
 
 
 # V0
-# IDEA : COLLECTIONS + DICT 
+# IDEA : COLLECTIONS + DICT
+# time = O(n)  # n = len(t)
+# space = O(n)
 import collections
 class Solution(object):
     def findTheDifference(self, s, t):
@@ -66,6 +68,8 @@ class Solution(object):
 
 # In [30]: (ds-dt).keys()
 # Out[30]: dict_keys([3])
+# time = O(n)  # n = len(t)
+# space = O(n)
 class Solution(object):
     def findTheDifference(self, s, t):
         """
@@ -77,9 +81,9 @@ class Solution(object):
         dt = collections.Counter(t)
         return (dt - ds).keys().pop()
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 import operator
 import collections
 from functools import reduce

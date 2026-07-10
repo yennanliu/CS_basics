@@ -20,7 +20,9 @@
 # x = minNum + (n-1)  --- (2)
 # so we will get the infal relation as below 
 # sum = n * minNum + m --- (final)
-# and this the  answer of this problem :    m = sum - n * minNum 
+# and this the  answer of this problem :    m = sum - n * minNum
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def minMoves(self, nums):
         """
@@ -30,9 +32,9 @@ class Solution(object):
         return sum(nums) - len(nums) * min(nums)
 
 
-# V3 
-# Time:  O(n)
-# Space: O(1)
+# V3
+# time = O(n)
+# space = O(1)
 
 class Solution(object):
     def minMoves(self, nums):

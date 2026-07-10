@@ -68,6 +68,8 @@ There exists some node in the given binary tree for which node.val == k.
 # TODO: validate
 from collections import defaultdict, deque
 
+# time = O(n), n = number of nodes in the tree (DFS build graph + BFS traversal)
+# space = O(n)
 class Solution(object):
     def findClosestLeaf(self, root, k):
 
@@ -141,6 +143,8 @@ class Solution(object):
 # TODO: validate
 from collections import defaultdict, deque
 
+# time = O(n), n = number of nodes in the tree (DFS build graph + BFS traversal)
+# space = O(n)
 class Solution(object):
 
     def findClosestLeaf(self, root, k):
@@ -229,6 +233,8 @@ class Solution(object):
 # TODO: validate
 from collections import defaultdict, deque
 
+# time = O(n), n = number of nodes in the tree (DFS build graph + BFS traversal)
+# space = O(n)
 class Solution(object):
     def findClosestLeaf(self, root, k):
         """
@@ -287,6 +293,8 @@ class Solution(object):
 # https://www.youtube.com/watch?v=x1wXkRrpavw
 # https://blog.csdn.net/qq_17550379/article/details/87778889
 import collections
+# time = O(n), n = number of nodes in the tree
+# space = O(n)
 class Solution:
     # build graph via DFS
     # node : current node
@@ -362,6 +370,8 @@ class Solution:
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n^2), n = number of nodes (parent-chain walk per leaf, worst case skewed tree)
+# space = O(n)
 class Solution(object):
     def findClosestLeaf(self, root, k):
         """
@@ -410,6 +420,8 @@ class TreeNode:
         self.val = val
         self.left, self.right = None, None
 """
+# time = O(n), n = number of nodes in the tree
+# space = O(n)
 class Solution:
     """
     @param root: the root
@@ -463,8 +475,10 @@ class Solution:
 # V1''
 # https://blog.csdn.net/qq_17550379/article/details/87778889
 # https://coordinate.wang/index.php/archives/2057/
-# IDEA : BFS + GRAPH 
+# IDEA : BFS + GRAPH
 import collections
+# time = O(n), n = number of nodes in the tree
+# space = O(n)
 class Solution:
     def findClosestLeaf(self, root: 'List[TreeNode]', k: 'int') -> 'int':
         self.start = None
@@ -536,10 +550,10 @@ class Solution:
 #     TreeNode* start_;
 # };
 
-# V2 
-# Time:  O(n)
-# Space: O(n)
+# V2
 import collections
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def findClosestLeaf(self, root, k):
         """

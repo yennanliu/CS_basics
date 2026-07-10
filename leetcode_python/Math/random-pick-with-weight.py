@@ -1,7 +1,9 @@
 # V1 : DEV 
 
 
-# V2 
+# V2
+# time = ctor: O(n), pickIndex: O(logn)  # n = len(w)
+# space = O(n)
 class Solution:
 
     def __init__(self, w):
@@ -36,10 +38,9 @@ class Solution:
 # param_1 = obj.pickIndex()
 
 
-# V3 
-# Time:  ctor: O(n)
-#        pickIndex: O(logn)
-# Space: O(n)
+# V3
+# time = ctor: O(n), pickIndex: O(logn)  # n = len(w)
+# space = O(n)
 
 import random
 import bisect

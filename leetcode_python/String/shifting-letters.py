@@ -2,6 +2,8 @@
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/80644702
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def shiftingLetters(self, S, shifts):
         """
@@ -23,10 +25,10 @@ class Solution(object):
             ans += shift_map(s, shifts_real[i])
         return ans
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
-# IDEA 
+# V2
+# time = O(n)
+# space = O(1)
+# IDEA
 # since the alphabet is cyclic. i.e. a, b, c..z, a ,b, c...
 # so we can get shift(num) = shift(num % 26) 
 class Solution(object):

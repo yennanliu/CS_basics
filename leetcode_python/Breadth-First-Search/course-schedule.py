@@ -40,6 +40,8 @@ All the pairs prerequisites[i] are unique.
 # IDEA 1) TOPO SORT
 from collections import deque
 
+# time = O(V + E), V = numCourses, E = len(prerequisites)
+# space = O(V + E)
 class Solution(object):
     def canFinish(self, numCourses, prerequisites):
 
@@ -98,6 +100,8 @@ class Solution(object):
 
 # V0
 # IDEA: DFS + STATUS CHECK
+# time = O(V + E), V = numCourses, E = len(prerequisites)
+# space = O(V + E)
 class Solution(object):
     def canFinish(self, numCourses, prerequisites):
         # graph[course] = list of prerequisites for that course
@@ -180,6 +184,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: DFS + STATUS CHECK
+# time = O(V + E), V = numCourses, E = len(prerequisites)
+# space = O(V + E)
 class Solution(object):
     def canFinish(self, numCourses, prerequisites):
         # Step 1: Map out the adjacency list dependencies graph
@@ -229,6 +235,8 @@ class Solution(object):
 # V0
 # IDEA : DFS, LC Course Schedule II
 from collections import defaultdict
+# time = O(V + E), V = numCourses, E = len(prerequisites)
+# space = O(V + E)
 class Solution(object):
     def canFinish(self, numCourses, prerequisites):
         def dfs(res, graph, visited, x):
@@ -271,6 +279,8 @@ class Solution(object):
 # IDEA : DFS
 # https://github.com/neetcode-gh/leetcode/blob/main/python/0207-course-schedule.py
 # https://www.youtube.com/watch?v=EgI5nU9etnU
+# time = O(V + E), V = numCourses, E = len(prerequisites)
+# space = O(V + E)
 class Solution:
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
         # dfs
@@ -302,14 +312,16 @@ class Solution:
         return True
 
 # V0
-# IDEA : DFS, LC Course Schedule II 
+# IDEA : DFS, LC Course Schedule II
 from collections import defaultdict
+# time = O(V + E), V = numCourses, E = len(prerequisites)
+# space = O(V + E)
 class Solution(object):
     def canFinish(self, numCourses, prerequisites):
         # edge case
         if not prerequisites:
             return [x for x in range(numCourses)]
-        
+
         # help func : dfs
         # 3 cases :  0 : unknown, 1 :visiting, 2 : visited   
         def dfs(idx, visited, g, res):
@@ -355,6 +367,8 @@ class Solution(object):
 # V0'
 # IDEA : DFS
 from collections import defaultdict
+# time = O(V + E), V = numCourses, E = len(prerequisites)
+# space = O(V + E)
 class Solution(object):
     def canFinish(self, numCourses, prerequisites):
         def check(course):
@@ -407,12 +421,14 @@ class Solution(object):
 # V0'
 # IDEA : DFS
 from collections import defaultdict
+# time = O(V + E), V = numCourses, E = len(prerequisites)
+# space = O(V + E)
 class Solution(object):
     def canFinish(self, numCourses, prerequisites):
         # edge case
         if not prerequisites:
             return True
-        
+
         # help func : dfs
         # 3 cases :  0 : unknown, 1 :visiting, 2 : visited   
         def dfs(idx, visited, g):
@@ -456,6 +472,8 @@ class Solution(object):
 # IDEA : Backtracking
 # https://leetcode.com/problems/course-schedule/solution/
 # IDEA : -> check : if the corresponding graph is a DAG (Directed Acyclic Graph), i.e. there is no cycle existed in the graph.
+# time = O(V + E), V = numCourses, E = len(prerequisites)
+# space = O(V + E)
 class Solution(object):
     def canFinish(self, numCourses, prerequisites):
         """
@@ -499,8 +517,10 @@ class Solution(object):
         return ret
 
 # V0''''
-# IDEA : DFS + topological sort 
+# IDEA : DFS + topological sort
 import collections
+# time = O(V + E), V = numCourses, E = len(prerequisites)
+# space = O(V + E)
 class Solution:
     def canFinish(self, numCourses, prerequisites):
         _graph = collections.defaultdict(list)
@@ -527,11 +547,13 @@ class Solution:
         return True
 
 # V0''''''
-# IDEA : BFS + topological sort 
+# IDEA : BFS + topological sort
 from collections import defaultdict, deque
+# time = O(V + E), V = numCourses, E = len(prerequisites)
+# space = O(V + E)
 class Solution:
     def canFinish(self, numCourses, prerequisites):
-        degree = defaultdict(int)   
+        degree = defaultdict(int)
         graph = defaultdict(set)
         q = deque()
         
@@ -563,8 +585,10 @@ class Solution:
         return len(stack) == numCourses
 
 # V0''''''''
-# IDEA : DFS + topological sort 
+# IDEA : DFS + topological sort
 import collections
+# time = O(V + E), V = numCourses, E = len(prerequisites)
+# space = O(V + E)
 class Solution(object):
     def canFinish(self, N, prerequisites):
         graph = collections.defaultdict(list)
@@ -576,7 +600,7 @@ class Solution(object):
             if not self.dfs(graph, visited, i):
                 return False
         return True
-        
+
     # Can we add node i to visited successfully?
     def dfs(self, graph, visited, i):
         # 0 = Unknown, 1 = visiting, 2 = visited
@@ -591,6 +615,8 @@ class Solution(object):
 
 # V0''''''' (AGAIN!)
 # IDEA : BFS + topological sort
+# time = O(V^2), V = numCourses (nested scan for zero indegree each round)
+# space = O(V + E)
 class Solution(object):
     def canFinish(self, N, prerequisites):
         graph = collections.defaultdict(list)
@@ -614,9 +640,11 @@ class Solution(object):
 # IDEA : BFS + topological sort
 # https://leetcode.com/problems/course-schedule/discuss/811500/Python-Intuitive-Solution
 from collections import defaultdict, deque
+# time = O(V + E), V = numCourses, E = len(prerequisites)
+# space = O(V + E)
 class Solution:
     def canFinish(self, numCourses, prerequisites):
-        degree = defaultdict(int)   
+        degree = defaultdict(int)
         graph = defaultdict(set)
         q = deque()
         
@@ -651,6 +679,8 @@ class Solution:
 # IDEA : Backtracking
 # https://leetcode.com/problems/course-schedule/solution/
 # IDEA : -> check : if the corresponding graph is a DAG (Directed Acyclic Graph), i.e. there is no cycle existed in the graph.
+# time = O(V + E), V = numCourses, E = len(prerequisites)
+# space = O(V + E)
 class Solution(object):
     def canFinish(self, numCourses, prerequisites):
         """
@@ -696,6 +726,8 @@ class Solution(object):
 # V1
 # IDEA : DFS
 # https://leetcode.com/problems/course-schedule/solution/
+# time = O(V + E), V = numCourses, E = len(prerequisites)
+# space = O(V + E)
 class Solution(object):
     def canFinish(self, numCourses, prerequisites):
         """
@@ -757,6 +789,8 @@ class GNode(object):
         self.inDegrees = 0
         self.outNodes = []
 
+# time = O(V + E), V = numCourses, E = len(prerequisites)
+# space = O(V + E)
 class Solution(object):
     def canFinish(self, numCourses, prerequisites):
         """
@@ -806,6 +840,8 @@ class Solution(object):
 # IDEA : BFS + topological sort
 # https://leetcode.com/problems/course-schedule/discuss/1656939/python
 from collections import defaultdict, deque
+# time = O(V + E), V = numCourses, E = len(prereq)
+# space = O(V + E)
 class Solution:
     def canFinish(self, n, prereq):
             G = [[] for _ in range(n)]
@@ -828,6 +864,8 @@ class Solution:
 # V1'''
 # IDEA : dfs + topological sort
 # https://leetcode.com/problems/course-schedule/discuss/1041737/Python-DFS
+# time = O(V + E), V = numCourses, E = len(prerequisites)
+# space = O(V + E)
 class Solution:
     def canFinish(self, numCourses, prerequisites):
         g = [[] for _ in range(numCourses)]
@@ -858,7 +896,9 @@ class Solution:
 # https://blog.csdn.net/fuxuemingzhu/article/details/82951771
 # diagram explaination:
 # https://leetcode.com/problems/course-schedule/discuss/658379/Python-by-DFS-and-cycle-detection-w-Graph
-# IDEA : DFS + topological sort 
+# IDEA : DFS + topological sort
+# time = O(V + E), V = N, E = len(prerequisites)
+# space = O(V + E)
 class Solution(object):
     def canFinish(self, N, prerequisites):
         """
@@ -875,7 +915,7 @@ class Solution(object):
             if not self.dfs(graph, visited, i):
                 return False
         return True
-        
+
     # Can we add node i to visited successfully?
     def dfs(self, graph, visited, i):
         # 0 = Unknown, 1 = visiting, 2 = visited
@@ -895,6 +935,8 @@ class Solution(object):
 # We first build a directed graph from prerequisites. The nodes are 0 to n-1, and there is an edge from i to j if i is the prerequisite of j. Then the courses can be finished if and only if the directed graph can be topologically sorted (equivalently, if and only if the directed graph is acyclic).
 # We start by labelling each node 0, meaning that they have not been dfs visited. Then we iterate i in range(numCourses), and if i has not been dfs visited, we dfs visit i. If any of such dfs visits return False, we return False; Else we return True. For the dfs visit procedure, we first label i to be 1, meaning that we are currently dfs visiting the descendants of i in the dfs tree. Then for each neighbor j of i, If j has label 1, then j is a predecessor of i in the dfs visit, and i -> j is a back edge, so the graph contains a cycle, we return False; Else if j has label 0, it has not been visited, and we need to do dfs(j). If dfs(j) returns False, it means that the dfs subgraph starting with j contains a cycle, and we need to return False. Finally, if no dfs(j) returns False, it means that the dfs subgraph starting with i is acyclic, we label i to be 2, meaning that we finished dfs searches all the descendants of i, and we return True.
 # The time complexity is O(n+m), and the space complexity is O(n+m), where n = numCourses, and m = len(prerequisites).
+# time = O(n + m), n = numCourses, m = len(prerequisites)
+# space = O(n + m)
 class Solution(object):
     def canFinish(self, numCourses, prerequisites):
         def dfs(i):
@@ -925,6 +967,8 @@ class Solution(object):
 # V1''''''
 # https://www.jiuzhang.com/solution/course-schedule/#tag-highlight-lang-python
 from collections import deque
+# time = O(V + E), V = numCourses, E = len(prerequisites)
+# space = O(V + E)
 class Solution:
     # @param {int} numCourses a total of n courses
     # @param {int[][]} prerequisites a list of prerequisite pairs
@@ -956,6 +1000,8 @@ class Solution:
 # V1''''''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/82951771
 # IDEA : BFS + topological sort
+# time = O(V^2), V = N (nested scan for zero indegree each round)
+# space = O(V + E)
 class Solution(object):
     def canFinish(self, N, prerequisites):
         """
@@ -978,11 +1024,11 @@ class Solution(object):
             indegrees[j] = -1
             for node in graph[j]:
                 indegrees[node] -= 1
-        return True           
+        return True
 
-# V2 
-# Time:  O(|V| + |E|)
-# Space: O(|E|)
+# V2
+# time = O(|V| + |E|)
+# space = O(|E|)
 from collections import defaultdict, deque
 class Solution(object):
     def canFinish(self, numCourses, prerequisites):

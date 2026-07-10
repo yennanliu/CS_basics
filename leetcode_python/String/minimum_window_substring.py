@@ -88,6 +88,8 @@ Follow up: Could you find an algorithm that runs in O(m + n) time?
 # V1
 # IDEA : SLIDING WINDOW
 # https://leetcode.com/problems/minimum-window-substring/solution/
+# time = O(m + n), m = len(s), n = len(t)
+# space = O(m + n)
 class Solution:
     def minWindow(self, s, t):
         """
@@ -151,6 +153,8 @@ class Solution:
 # V1'
 # IDEA : OPTIMIZED SLIDING WINDOW
 # https://leetcode.com/problems/minimum-window-substring/solution/
+# time = O(m + n), m = len(s), n = len(t)
+# space = O(m + n)
 class Solution:
     def minWindow(self, s, t):
         """

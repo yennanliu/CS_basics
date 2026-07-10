@@ -79,6 +79,8 @@ The elements in boxes[j] are distinct.
 # Complexity
 # Time O(sort(A) + sort(B) + BlogA)
 # Space O(sort)
+# time = O(N log N + M log M + M log N), N = len(packages), M = total box entries
+# space = O(1)
 class Solution:
     def minWastedSpace(self, A, boxes):
             A.sort()
@@ -101,6 +103,8 @@ class Solution:
 # V1
 # IDEA : Binary Search without PrefixSum
 # https://leetcode.com/problems/minimum-space-wasted-from-packaging/discuss/1254238/C%2B%2BJavaPython-Binary-Search-without-PrefixSum-Clean-and-Concise
+# time = O(N log N + M log M + M log N), N = len(packages), M = total box entries
+# space = O(1)
 class Solution:
     def minWastedSpace(self, packages: List[int], boxes: List[List[int]]) -> int:
         packages.sort()
@@ -126,6 +130,8 @@ class Solution:
 # V1
 # IDEA :  Binary Search & Prefix Sum
 # https://leetcode.com/problems/minimum-space-wasted-from-packaging/discuss/1332294/Python-Binary-Search-and-Prefix-Sum
+# time = O(N log N + M log M + M log N), N = len(packages), M = total box entries
+# space = O(N)  # prefix sum array
 class Solution:
     def minWastedSpace(self, packages: List[int], boxes: List[List[int]]) -> int:
         mod=10**9+7
@@ -152,6 +158,8 @@ class Solution:
 # V1
 # IDEA : HEAP
 # https://leetcode.com/problems/minimum-space-wasted-from-packaging/discuss/1253912/Python3.-Sort-packages-%2B-heapify-all-boxes
+# time = O(N log N + M log M), N = len(packages), M = total box entries (heap push/pop)
+# space = O(M)
 class Solution:
     # idea:
     #   1. sort packages, so we can process them from smaller to bigger size
@@ -215,6 +223,8 @@ def find_waste(boxes, packages, s, n):
     return total_waste
 
 
+# time = O(N log N + M log M + M log N), N = len(packages), M = total box entries
+# space = O(N)  # prefix sum array
 class Solution:
     def minWastedSpace(self, packages: List[int], boxes: List[List[int]]) -> int:
         M = 10**9 + 7

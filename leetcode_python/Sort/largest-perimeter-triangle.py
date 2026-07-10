@@ -32,7 +32,9 @@ Constraints:
 
 # V0
 
-# V1 
+# V1
+# time = O(n log n)
+# space = O(1)
 class Solution(object):
 	def largestPerimeter(self, A):
 		A.sort()
@@ -43,10 +45,9 @@ class Solution(object):
 				return A[i] + A[i+1] + A[i+2]
 		return 0 
 
-# V2 
-# Time:  O(nlogn)
-# Space: O(1)
-
+# V2
+# time = O(n log n)
+# space = O(1)
 class Solution(object):
     def largestPerimeter(self, A):
         """

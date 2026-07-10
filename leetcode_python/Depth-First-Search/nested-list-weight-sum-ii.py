@@ -5,6 +5,8 @@
 
 # V1'
 # https://www.jiuzhang.com/solution/nested-list-weight-sum-ii/#tag-highlight-lang-python
+# time = O(n), n = total number of integers/lists in nestedList
+# space = O(n)
 class Solution:
     """
     @param nestedList: a list of NestedInteger
@@ -39,9 +41,9 @@ class Solution:
         
         return wsum
         
-# V2 
-# Time:  O(n)
-# Space: O(h)
+# V2
+# time = O(n), n = total number of integers/lists in nestedList
+# space = O(h), h = max nesting depth
 class Solution(object):
     def depthSumInverse(self, nestedList):
         """

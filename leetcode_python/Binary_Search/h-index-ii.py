@@ -17,6 +17,8 @@ https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Sort/h-index.
 
 # V0
 # IDEA : BINARY SEARCH
+# time = O(log n)
+# space = O(1)
 class Solution:
     def hIndex(self, c):
         # NOTE : right = len(c) -1 
@@ -34,6 +36,8 @@ class Solution:
 
 # V0'
 # IDEA : SAME AS #274 H-Index
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def hIndex(self, citations):
         """
@@ -53,6 +57,8 @@ class Solution(object):
 # V1
 # https://leetcode.com/problems/h-index-ii/discuss/709447/Python-O(logN)-Binary-Search
 # IDEA : BINARY SEARCH
+# time = O(log n)
+# space = O(1)
 class Solution:
     def hIndex(self, c: List[int]) -> int:
         left, right = 0, len(c)-1
@@ -75,7 +81,9 @@ class Solution:
 # h=1 -> at least 1 citations paper
 # ....
 # h=6 -> at least 6 citations papers
-# ... 
+# ...
+# time = O(log n)
+# space = O(1)
 class Solution(object):
     def hIndex(self, citations):
         """
@@ -96,6 +104,8 @@ class Solution(object):
 
 # V1'
 # http://bookshadow.com/weblog/2015/09/04/leetcode-h-index-ii/
+# time = O(log n)
+# space = O(1)
 class Solution(object):
     def hIndex(self, citations):
         """
@@ -114,6 +124,8 @@ class Solution(object):
 
 # V1''
 # https://www.hrwhisper.me/leetcode-h-index-h-index-ii/
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def hIndex(self, citations):
         """
@@ -125,6 +137,8 @@ class Solution(object):
 
 # V1'''
 # https://www.hrwhisper.me/leetcode-h-index-h-index-ii/
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def hIndex(self, citations):
         """
@@ -133,9 +147,9 @@ class Solution(object):
         """
         return sum([i < c for i, c in enumerate(sorted(citations, reverse=True))])
 
-# V2 
-# Time:  O(logn)
-# Space: O(1)
+# V2
+# time = O(log n)
+# space = O(1)
 class Solution(object):
     def hIndex(self, citations):
         """

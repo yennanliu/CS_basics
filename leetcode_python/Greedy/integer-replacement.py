@@ -2,7 +2,9 @@
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79495908
-# IDEA : RECURSION  
+# IDEA : RECURSION
+# time = O(log n)
+# space = O(log n)
 class Solution(object):
     def integerReplacement(self, n):
         """
@@ -15,8 +17,10 @@ class Solution(object):
         else:
             return 1 + min(self.integerReplacement(n + 1), self.integerReplacement(n - 1))
 
-# V1' 
+# V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79495908
+# time = O(log n)
+# space = O(1)
 class Solution(object):
     def integerReplacement(self, n):
         """
@@ -35,9 +39,9 @@ class Solution(object):
                 n >>= 1
         return count
 
-# V2 
-# Time:  O(logn)
-# Space: O(1)
+# V2
+# time = O(log n)
+# space = O(1)
 class Solution(object):
     def integerReplacement(self, n):
         """
@@ -60,8 +64,8 @@ class Solution(object):
         return result
 
 
-# Time:  O(logn)
-# Space: O(logn)
+# time = O(log n)
+# space = O(log n)
 # Recursive solution.
 class Solution2(object):
     def integerReplacement(self, n):

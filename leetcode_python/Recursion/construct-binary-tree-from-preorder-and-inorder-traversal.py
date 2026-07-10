@@ -34,6 +34,8 @@ inorder is guaranteed to be the inorder traversal of the tree.
 
 # V0
 # IDEA: RECURSION + INORDER, PREORDER
+# time = O(n^2), index() lookup is O(n) at each of n recursive calls
+# space = O(n^2), slicing creates new lists at every recursion level
 class Solution(object):
     def buildTree(self, preorder, inorder):
         # Base case

@@ -44,6 +44,8 @@ Explanation: Longest consecutive sequence path is 2-3, not 3-2-1, so return 2.
 
 # V0
 # IDEA : DFS
+# time = O(n), each node visited once
+# space = O(h), h = tree height (recursion stack)
 class Solution(object):
     def longestConsecutive(self, root):
         if not root:
@@ -69,6 +71,8 @@ class Solution(object):
 
 # V0'
 # IDEA : BFS
+# time = O(n), each node visited once
+# space = O(n), stack can hold up to O(n) nodes
 class Solution(object):
     def longestConsecutive(self, root):
         if root is None:
@@ -123,9 +127,11 @@ class Solution(object):
 #                     q.append([cache, tmp.right])
 #         return res
 
-# V1 
+# V1
 # https://www.jianshu.com/p/ebabdeed9bca
-# IDEA : DFS 
+# IDEA : DFS
+# time = O(n), each node visited once
+# space = O(h), h = tree height (recursion stack)
 class Solution(object):
     def longestConsecutive(self, root):
         """
@@ -158,6 +164,8 @@ class Solution(object):
 # V1'
 # IDEA : BFS
 # https://baihuqian.github.io/2018-08-01-binary-tree-longest-consecutive-sequence/
+# time = O(n), each node visited once
+# space = O(n), stack can hold up to O(n) nodes
 class Solution(object):
     def longestConsecutive(self, root):
         if root is None:
@@ -185,7 +193,9 @@ class Solution(object):
 
 # V1'
 # https://eugenejw.github.io/2017/08/leetcode-298
-# IDEA : DFS 
+# IDEA : DFS
+# time = O(n), each node visited once
+# space = O(h), h = tree height (recursion stack)
 class Solution(object):
     def __init__(self):
         self.ret = 0
@@ -251,9 +261,9 @@ class Solution(object):
 #     }
 # };
 
-# V2 
-# Time:  O(n)
-# Space: O(h)
+# V2
+# time = O(n)
+# space = O(h), h = tree height (recursion stack)
 class Solution(object):
     def longestConsecutive(self, root):
         """

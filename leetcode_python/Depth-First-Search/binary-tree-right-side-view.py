@@ -32,6 +32,8 @@ The number of nodes in the tree is in the range [0, 100].
 
 # V0
 # IDEA: BFS + right node process first
+# time = O(n)  # n = number of tree nodes
+# space = O(n)  # queue
 from collections import deque
 
 class Solution(object):
@@ -64,6 +66,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: STANDARD BFS
+# time = O(n)  # n = number of tree nodes
+# space = O(n)  # queue
 from collections import deque
 
 class Solution(object):
@@ -93,6 +97,8 @@ class Solution(object):
 
 # V0
 # IDEA : DFS
+# time = O(n)  # n = number of tree nodes
+# space = O(n)  # recursion depth + result
 class Solution(object):
     def rightSideView(self, root):
         def dfs(root, _layer):
@@ -116,6 +122,8 @@ class Solution(object):
 
 # V0'
 # IDEA : BFS
+# time = O(n)  # n = number of tree nodes
+# space = O(n)  # queue + result
 class Solution(object):
     def rightSideView(self, root):
         # edge case
@@ -139,6 +147,8 @@ class Solution(object):
 
 # V0'
 # IDEA : DFS
+# time = O(n)  # n = number of tree nodes
+# space = O(n)  # recursion depth + result
 class Solution(object):
     def rightSideView(self, root):
         def dfs(root, layer):
@@ -161,6 +171,8 @@ class Solution(object):
 
 # V0''
 # IDEA : BFS
+# time = O(n)  # n = number of tree nodes
+# space = O(n)  # queue + result
 class Solution(object):
     def rightSideView(self, root):
         if not root:
@@ -187,32 +199,9 @@ class Solution(object):
         return [x[-1] for x in res]
 
 # V0'''
-# IDEA : DFS 
-class Solution(object):
-    def rightSideView(self, root):
-        """
-        :type root: TreeNode
-        :rtype: List[int]
-        """
-        res = []
-        self.levelOrder(root, 0, res)
-        return [level[-1] for level in res]
-
-    def levelOrder(self, root, level, res):
-        if not root: return
-        if len(res) == level: res.append([])
-        res[level].append(root.val)
-        if root.left: self.levelOrder(root.left, level + 1, res)
-        if root.right: self.levelOrder(root.right, level + 1, res)
-        
-# V1 
-# https://blog.csdn.net/fuxuemingzhu/article/details/79557632
-# Definition for a binary tree node.
-# class TreeNode(object):
-#     def __init__(self, x):
-#         self.val = x
-#         self.left = None
-#         self.right = None
+# IDEA : DFS
+# time = O(n)  # n = number of tree nodes
+# space = O(n)  # recursion depth + result
 class Solution(object):
     def rightSideView(self, root):
         """
@@ -230,7 +219,7 @@ class Solution(object):
         if root.left: self.levelOrder(root.left, level + 1, res)
         if root.right: self.levelOrder(root.right, level + 1, res)
 
-# V1' 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79557632
 # Definition for a binary tree node.
 # class TreeNode(object):
@@ -238,6 +227,35 @@ class Solution(object):
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)  # n = number of tree nodes
+# space = O(n)  # recursion depth + result
+class Solution(object):
+    def rightSideView(self, root):
+        """
+        :type root: TreeNode
+        :rtype: List[int]
+        """
+        res = []
+        self.levelOrder(root, 0, res)
+        return [level[-1] for level in res]
+
+    def levelOrder(self, root, level, res):
+        if not root: return
+        if len(res) == level: res.append([])
+        res[level].append(root.val)
+        if root.left: self.levelOrder(root.left, level + 1, res)
+        if root.right: self.levelOrder(root.right, level + 1, res)
+
+# V1'
+# https://blog.csdn.net/fuxuemingzhu/article/details/79557632
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+# time = O(n)  # n = number of tree nodes
+# space = O(n)  # queue
 class Solution(object):
     def rightSideView(self, root):
         """
@@ -260,6 +278,8 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/binary-tree-right-side-view/#tag-highlight-lang-python
+# time = O(n)  # n = number of tree nodes
+# space = O(n)  # recursion depth + result
 class Solution:
     """
     @param root: the root of the given tree
@@ -277,9 +297,9 @@ class Solution:
         collect(root, 0)
         return view
 
-# V2 
-# Time:  O(n)
-# Space: O(h)
+# V2
+# time = O(n)  # n = number of tree nodes
+# space = O(h)  # h = tree height (recursion depth)
 class TreeNode(object):
     def __init__(self, x):
         self.val = x
@@ -307,8 +327,8 @@ class Solution(object):
 
 
 # BFS solution
-# Time:  O(n)
-# Space: O(n)
+# time = O(n)  # n = number of tree nodes
+# space = O(n)  # level queue
 class Solution2(object):
     # @param root, a tree node
     # @return a list of integers

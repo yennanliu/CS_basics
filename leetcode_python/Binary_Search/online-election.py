@@ -1,7 +1,9 @@
 # V0 
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/82833704
+# time = O(n) ctor, O(log n) per q() call, n = len(persons)
+# space = O(n)
 class TopVotedCandidate(object):
 
     def __init__(self, persons, times):
@@ -33,10 +35,9 @@ class TopVotedCandidate(object):
                 l = mid + 1
         return self.leads[l - 1]
         
-# V2 
-# Time:  ctor: O(n)
-#        q:    O(logn)
-# Space: O(n)
+# V2
+# time = O(n) ctor, O(log n) per q() call
+# space = O(n)
 import collections
 import itertools
 import bisect

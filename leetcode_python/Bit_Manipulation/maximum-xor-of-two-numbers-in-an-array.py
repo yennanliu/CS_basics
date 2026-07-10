@@ -3,6 +3,8 @@
 # V1 
 # http://bookshadow.com/weblog/2016/10/15/leetcode-maximum-xor-of-two-numbers-in-an-array/
 # https://blog.csdn.net/fuxuemingzhu/article/details/79473171
+# time = O(32 * n), n = len(nums)
+# space = O(n)
 class Solution(object):
     def findMaximumXOR(self, nums):
         """
@@ -20,9 +22,9 @@ class Solution(object):
                     break
         return ans
        
-# V2 
-# Time:  O(n)
-# Space: O(n)
+# V2
+# time = O(32 * n), n = len(nums)
+# space = O(n)
 class Solution(object):
     def findMaximumXOR(self, nums):
         """

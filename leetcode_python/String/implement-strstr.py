@@ -33,15 +33,19 @@ haystack and needle consist of only lower-case English characters.
 
 """
 
-# V0 
+# V0
+# time = O(n * m), n = len(haystack), m = len(needle)
+# space = O(1)
 class Solution(object):
     def strStr(self, haystack, needle):
         if needle in haystack:
             return haystack.index(needle)
         else:
-            return -1 
+            return -1
 
 # V0'
+# time = O(n * m), n = len(haystack), m = len(needle)
+# space = O(m)
 class Solution(object):
     def strStr(self, haystack, needle):
         length = len(needle)
@@ -52,6 +56,8 @@ class Solution(object):
 
 # V1
 # https://blog.csdn.net/coder_orz/article/details/51708389
+# time = O(n * m), n = len(haystack), m = len(needle)
+# space = O(1)
 class Solution(object):
     def strStr(self, haystack, needle):
         """
@@ -63,6 +69,8 @@ class Solution(object):
 
 # V1'
 # https://blog.csdn.net/coder_orz/article/details/51708389
+# time = O(n * m), n = len(haystack), m = len(needle)
+# space = O(1)
 class Solution(object):
     def strStr(self, haystack, needle):
         """
@@ -83,6 +91,8 @@ class Solution(object):
 
 # V1''
 # https://blog.csdn.net/coder_orz/article/details/51708389
+# time = O(n * m), n = len(haystack), m = len(needle)
+# space = O(m)
 class Solution(object):
     def strStr(self, haystack, needle):
         """
@@ -97,6 +107,8 @@ class Solution(object):
 
 # V1'''
 # https://blog.csdn.net/coder_orz/article/details/51708389
+# time = O(n + m), n = len(haystack), m = len(needle)
+# space = O(m)
 class Solution(object):
     def strStr(self, haystack, needle):
         """
@@ -129,6 +141,8 @@ class Solution(object):
 
 # V1'''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79254558
+# time = O(n * m), n = len(haystack), m = len(needle)
+# space = O(1)
 class Solution(object):
     def strStr(self, haystack, needle):
         """
@@ -139,6 +153,8 @@ class Solution(object):
         return haystack.find(needle)
 
 # V1''''''
+# time = O(n * m), n = len(haystack), m = len(needle)
+# space = O(m)
 class Solution:
     def strStr(self, haystack, needle):
         """
@@ -155,6 +171,8 @@ class Solution:
 # V1'''''''
 # Wiki of KMP algorithm:
 # http://en.wikipedia.org/wiki/Knuth-Morris-Pratt_algorithm
+# time = O(n + m), n = len(haystack), m = len(needle)
+# space = O(m)
 class Solution(object):
     def strStr(self, haystack, needle):
         """
@@ -191,8 +209,8 @@ class Solution(object):
         return prefix
 
 # V2
-# Time:  O(n * k)
-# Space: O(k)
+# time = O(n * k), n = len(haystack), k = len(needle)
+# space = O(k)
 class Solution2(object):
     def strStr(self, haystack, needle):
         """

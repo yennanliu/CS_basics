@@ -35,12 +35,16 @@ You can assume that all directory names and file names only contain lower-case l
 # IDEA : Dict
 class FileSystem(object):
 
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
         """
         NOTE !!! we init root as below structure
         """
         self.root = {'dirs' : {}, 'files': {}}
 
+    # time = O(d + k log k), d = depth of path, k = number of entries in the resolved dir
+    # space = O(k)
     def ls(self, path):
         """
         :type path: str
@@ -51,6 +55,8 @@ class FileSystem(object):
             return sorted(node['dirs'].keys() + node['files'].keys())
         return [path.split('/')[-1]]
 
+    # time = O(d), d = depth of path
+    # space = O(d)
     def mkdir(self, path):
         """
         :type path: str
@@ -63,6 +69,8 @@ class FileSystem(object):
                 node['dirs'][dir] = {'dirs' : {}, 'files': {}}
             node = node['dirs'][dir]
 
+    # time = O(d + c), d = depth of path, c = len(content)
+    # space = O(d)
     def addContentToFile(self, filePath, content):
         """
         :type filePath: str
@@ -77,6 +85,8 @@ class FileSystem(object):
             node['files'][file] = ''
         node['files'][file] += content
 
+    # time = O(d), d = depth of path
+    # space = O(1)
     def readContentFromFile(self, filePath):
         """
         :type filePath: str
@@ -86,7 +96,9 @@ class FileSystem(object):
         path, file = '/'.join(dirs[:-1]), dirs[-1]
         node, type = self.getExistedNode(path)
         return node['files'][file]
-        
+
+    # time = O(d), d = depth of path
+    # space = O(1)
     def getExistedNode(self, path):
         """
         :type path: str
@@ -102,7 +114,7 @@ class FileSystem(object):
 
         # method 2) list comprehension with condition
         for dir in [ x for x in path.split('/') if len(x) > 0 ]:
-            if dir in node['dirs']: 
+            if dir in node['dirs']:
                 node = node['dirs'][dir]
             else:
                 return node, 'file'
@@ -113,9 +125,13 @@ class FileSystem(object):
 # http://bookshadow.com/weblog/2017/05/21/leetcode-design-in-memory-file-system/
 class FileSystem(object):
 
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
         self.root = {'dirs' : {}, 'files': {}}
 
+    # time = O(d + k log k), d = depth of path, k = number of entries in the resolved dir
+    # space = O(k)
     def ls(self, path):
         """
         :type path: str
@@ -125,6 +141,8 @@ class FileSystem(object):
         if type == 'dir': return sorted(node['dirs'].keys() + node['files'].keys())
         return [path.split('/')[-1]]
 
+    # time = O(d), d = depth of path
+    # space = O(d)
     def mkdir(self, path):
         """
         :type path: str
@@ -135,6 +153,8 @@ class FileSystem(object):
             if dir not in node['dirs']: node['dirs'][dir] = {'dirs' : {}, 'files': {}}
             node = node['dirs'][dir]
 
+    # time = O(d + c), d = depth of path, c = len(content)
+    # space = O(d)
     def addContentToFile(self, filePath, content):
         """
         :type filePath: str
@@ -148,6 +168,8 @@ class FileSystem(object):
         if file not in node['files']: node['files'][file] = ''
         node['files'][file] += content
 
+    # time = O(d), d = depth of path
+    # space = O(1)
     def readContentFromFile(self, filePath):
         """
         :type filePath: str
@@ -157,7 +179,9 @@ class FileSystem(object):
         path, file = '/'.join(dirs[:-1]), dirs[-1]
         node, type = self.getExistedNode(path)
         return node['files'][file]
-        
+
+    # time = O(d), d = depth of path
+    # space = O(1)
     def getExistedNode(self, path):
         """
         :type path: str

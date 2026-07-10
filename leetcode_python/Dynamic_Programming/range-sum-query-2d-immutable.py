@@ -2,12 +2,14 @@
 # IDEA : DP 
 # DP equation : dp[i][j]=dp[i][j−1]+dp[i][j−1]−dp[i][j]+a[i][j]
 # dp[i][j]  :  sum of sub-matrix (0,0)(0,0) to (i,j)(i,j)
+# time = O(m * n) (ctor), O(1) (lookup); m, n = matrix dims
+# space = O(m * n)
 class NumMatrix(object):
     # @param {int[][]} matrix a 2D matrix
     def __init__(self, matrix):
 
         if len(matrix) == 0 or len(matrix[0]) == 0:
-            return        
+            return
         n = len(matrix)
         m = len(matrix[0])
         self.dp  = [[0] * (m + 1) for _ in range(n + 1)]
@@ -25,6 +27,8 @@ class NumMatrix(object):
 # http://bookshadow.com/weblog/2015/11/12/leetcode-range-sum-query-2d-immutable/
 # IDEA : 
 # sumRange(row1, col1, row2, col2) = sums[row2][col2] + sums[row1 - 1][col1 - 1] - sums[row1 - 1][col2] - sums[row2][col1 - 1]
+# time = O(m * n) (ctor), O(1) (lookup); m, n = matrix dims
+# space = O(m * n)
 class NumMatrix(object):
     def __init__(self, matrix):
         """
@@ -63,6 +67,8 @@ class NumMatrix(object):
 # IDEA : DP 
 # DP equation : dp[i][j]=dp[i][j−1]+dp[i][j−1]−dp[i][j]+a[i][j]
 # dp[i][j]  :  sum of sub-matrix (0,0)(0,0)  to (i,j)(i,j)
+# time = O(m * n) (ctor), O(1) (lookup); m, n = matrix dims
+# space = O(m * n)
 class NumMatrix(object):
     # @param {int[][]} matrix a 2D matrix
     def __init__(self, matrix):
@@ -92,10 +98,9 @@ class NumMatrix(object):
 # obj = NumMatrix(matrix)
 # param_1 = obj.sumRegion(row1,col1,row2,col2)
 
-# V2 
-# Time:  ctor:   O(m * n),
-#        lookup: O(1)
-# Space: O(m * n)
+# V2
+# time = O(m * n) (ctor), O(1) (lookup); m, n = matrix dims
+# space = O(m * n)
 class NumMatrix(object):
     def __init__(self, matrix):
         """

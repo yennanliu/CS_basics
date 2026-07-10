@@ -1,7 +1,9 @@
 # V0 
 
-# V1 
+# V1
 # http://bookshadow.com/weblog/2016/11/20/leetcode-can-i-win/
+# time = O(2^n * n)  # n = maxChoosableInteger; memoized DFS over 2^n states, each doing O(n) work
+# space = O(2^n)  # dp dict keyed by bitmask state
 class Solution(object):
     def canIWin(self, maxChoosableInteger, desiredTotal):
         """
@@ -34,6 +36,8 @@ class Solution(object):
 # V1
 # https://www.jiuzhang.com/solution/can-i-win/#tag-highlight-lang-python
 # IDEA : DP
+# time = O(2^n * n)  # n = maxChoosableInteger; memoized over subsets, each doing O(n) work
+# space = O(2^n * n)  # memo keyed by string repr of remaining nums list
 class Solution:
     """
     @param maxChoosableInteger: a Integer
@@ -63,9 +67,9 @@ class Solution:
         self.memo[hash] = False
         return False
         
-# V2 
-# Time:  O(n!)
-# Space: O(n)
+# V2
+# time = O(2^n * n)  # n = maxChoosableInteger; memoized DFS over 2^n bitmask states
+# space = O(2^n)  # lookup dict keyed by bitmask
 class Solution(object):
     def canIWin(self, maxChoosableInteger, desiredTotal):
         """

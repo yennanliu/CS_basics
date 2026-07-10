@@ -41,6 +41,8 @@ kill is guaranteed to be in pid.
 # V0
 # IDEA : BFS + defaultdict
 from collections import defaultdict
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def killProcess(self, pid, ppid, kill):
         d = defaultdict(set)
@@ -58,6 +60,8 @@ class Solution(object):
 
 # V0'
 # IDEA : DFS
+# time = O(n)
+# space = O(n)
 class Solution:
     def killProcess(self, pid, ppid, kill):
         n = len(pid)
@@ -80,6 +84,8 @@ class Solution:
 # V1
 # IDEA : BFS
 # http://bookshadow.com/weblog/2017/05/15/leetcode-kill-process/
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def killProcess(self, pid, ppid, kill):
         dic = collections.defaultdict(set)
@@ -96,7 +102,9 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/582-kill-process/#tag-highlight-lang-python
-# IDEA : DFS 
+# IDEA : DFS
+# time = O(n)
+# space = O(n)
 class Solution:
     """
     @param pid: the process id
@@ -125,7 +133,9 @@ class Solution:
 
 # V1''
 # https://www.jiuzhang.com/solution/582-kill-process/#tag-highlight-lang-python
-# IDEA : BFS 
+# IDEA : BFS
+# time = O(n)
+# space = O(n)
 class Solution:
     """
     @param pid: the process id
@@ -260,11 +270,11 @@ class Solution:
 #     }
 # }
 
-# V2 
-# Time:  O(n)
-# Space: O(n)
+# V2
 import collections
 # DFS solution.
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def killProcess(self, pid, ppid, kill):
         """
@@ -286,9 +296,9 @@ class Solution(object):
         return result
 
 
-# Time:  O(n)
-# Space: O(n)
 # BFS solution.
+# time = O(n)
+# space = O(n)
 class Solution2(object):
     def killProcess(self, pid, ppid, kill):
         """

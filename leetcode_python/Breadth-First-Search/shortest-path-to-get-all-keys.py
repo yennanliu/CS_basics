@@ -55,6 +55,8 @@ Each key in the grid has a matching lock.
 # V1
 # IDEA : BFS
 # https://leetcode.com/problems/shortest-path-to-get-all-keys/discuss/458167/Python-BFS
+# time = O(R*C*2^k), R,C = grid dims, k = number of keys (state space = cell * key-subset)
+# space = O(R*C*2^k), seen set + queue
 class Solution:
     def shortestPathAllKeys(self, grid):
         R, C = len(grid), len(grid[0])
@@ -103,6 +105,8 @@ class Solution:
 # https://leetcode.com/problems/shortest-path-to-get-all-keys/discuss/324603/python-bfs
 from collections import deque
 # bfs can visit back only if the key is updated
+# time = O(R*C*2^k), R,C = grid dims, k = number of keys (state space = cell * key-subset)
+# space = O(R*C*2^k), visited set + queue
 class Solution:
     def shortestPathAllKeys(self, grid):
         h, w = len(grid), len(grid[0])
@@ -143,6 +147,8 @@ class Solution:
 # V1'
 # IDEA : BFS + memorization
 # https://leetcode.com/problems/shortest-path-to-get-all-keys/discuss/146990/Python-Heapq-solution-w-memoization
+# time = O(R*C*2^k*log(R*C*2^k)), R,C = grid dims, k = number of keys (heap push/pop over state space)
+# space = O(R*C*2^k), memo set + heap
 class Solution:
     def shortestPathAllKeys(self, grid):
         final, m, n, si, sj = 0, len(grid), len(grid[0]), 0, 0

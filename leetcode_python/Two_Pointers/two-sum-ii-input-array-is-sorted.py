@@ -38,6 +38,8 @@ The tests are generated such that there is exactly one solution.
 """
 
 # V0
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def twoSum(self, numbers, target):
         l = 0
@@ -59,6 +61,8 @@ class Solution(object):
 # V0
 # IDEA : TWO POINTERS
 #       -> l = 0, r = len(numbers) - 1
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def twoSum(self, numbers, target):
         l = 0
@@ -79,7 +83,9 @@ class Solution(object):
         return [-1, -1]
 
 # V0'
-# IDEA : TWO POINTERS 
+# IDEA : TWO POINTERS
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def twoSum(self, numbers, target):
         left, right = 0, len(numbers) - 1
@@ -93,6 +99,8 @@ class Solution(object):
 
 # V0'
 # IDEA : DICT
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def twoSum(self, numbers, target):
         num_dict = {}
@@ -102,7 +110,9 @@ class Solution(object):
             num_dict[num] = i + 1
 
 # V0''
-# IDEA : BINARY SEARCH 
+# IDEA : BINARY SEARCH
+# time = O(n log n)
+# space = O(1)
 class Solution(object):
     def twoSum(self, numbers, target):
         ### NOTE : we still need loop on numbers
@@ -121,9 +131,11 @@ class Solution(object):
                     ### binary search pattern
                     r = mid-1
                     
-# V1 
+# V1
 # https://blog.csdn.net/coder_orz/article/details/52388066
 # IDEA : TWO POINTER
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def twoSum(self, numbers, target):
         """
@@ -152,9 +164,11 @@ assert s.twoSum([-1,1,2,3],2) == [1,4]
 assert s.twoSum([],2) == None
 assert s.twoSum([],0) == None
        
-# V1' 
+# V1'
 # https://blog.csdn.net/coder_orz/article/details/52388066
 # IDEA : DICT
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def twoSum(self, numbers, target):
         """
@@ -170,7 +184,9 @@ class Solution(object):
 
 # V1''
 # https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/discuss/51249/Python-different-solutions-(two-pointer-dictionary-binary-search).
-# IDEA : BINARY SEARCH 
+# IDEA : BINARY SEARCH
+# time = O(n log n)
+# space = O(1)
 class Solution(object):
     def twoSum(self, numbers, target):
         for i in range(len(numbers)):
@@ -185,9 +201,9 @@ class Solution(object):
                 else:
                     r = mid-1
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def twoSum(self, nums, target):
         start, end = 0, len(nums) - 1

@@ -40,6 +40,8 @@ grid[i][j] is '0' or '1'.
 
 # V0
 # IDEA : DFS
+# time = O(m * n)
+# space = O(m * n)
 class Solution(object):
     def numIslands(self, grid):
         cnt = 0
@@ -73,11 +75,13 @@ class Solution(object):
                     self.dfs_helper(grid, x_, y_)
 
 
-# V0 
+# V0
 # IDEA : DFS
+# time = O(m * n)
+# space = O(m * n)
 class Solution(object):
     def numIslands(self, grid):
-      
+
         def dfs(grid, x, y):
             if grid[y][x] == "0":
                 return
@@ -102,6 +106,8 @@ class Solution(object):
 
 # V0'
 # IDEA : DFS
+# time = O(m * n)
+# space = O(m * n)
 class Solution(object):
     def numIslands(self, grid):
         def dfs(grid, item):
@@ -135,6 +141,8 @@ class Solution(object):
 
 # V0'''
 # IDEA : DFS
+# time = O(m * n)
+# space = O(m * n)
 class Solution:
     def numIslands(self, grid):
         """
@@ -148,7 +156,7 @@ class Solution:
                     self.dfs(grid, r, c)
                     res += 1
         return res
-        
+
     def dfs(self, grid, i, j):
         dirs = [[-1, 0], [0, 1], [0, -1], [1, 0]]
         # make the visited element as "0" in order to avoid visit
@@ -160,9 +168,11 @@ class Solution:
                 if grid[nr][nc] == "1":
                     self.dfs(grid, nr, nc)
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/81126995
-# IDEA : DFS 
+# IDEA : DFS
+# time = O(m * n)
+# space = O(m * n)
 class Solution:
     def numIslands(self, grid):
         """
@@ -188,9 +198,11 @@ class Solution:
 
 ### Test case : dev 
 
-# V1' 
+# V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/81126995
 # IDEA : BFS
+# time = O(m * n)
+# space = O(m * n)
 class Solution(object):
     def numIslands(self, grid):
         """
@@ -219,7 +231,9 @@ class Solution(object):
 
 # V1''
 # https://www.jiuzhang.com/solution/number-of-big-islands/#tag-highlight-lang-python
-# IDEA : BFS 
+# IDEA : BFS
+# time = O(m * n)
+# space = O(m * n)
 class Solution:
     """
     @param grid: a 2d boolean array
@@ -259,9 +273,9 @@ class Solution:
         
         return res >= k
 
-# V2 
-# Time:  O(m * n)
-# Space: O(m * n)
+# V2
+# time = O(m * n)
+# space = O(m * n)
 class Solution(object):
     # @param {boolean[][]} grid a boolean 2D matrix
     # @return {int} an integer

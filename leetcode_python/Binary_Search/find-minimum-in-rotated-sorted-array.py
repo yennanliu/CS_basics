@@ -43,6 +43,8 @@ nums is sorted and rotated between 1 and n times.
 
 # V0
 # IDEA : BINARY SEARCH + CHECK mid is in left or right part
+# time = O(logn)
+# space = O(1)
 class Solution(object):
     def findMin(self, nums):
         if not nums:
@@ -259,6 +261,8 @@ class Solution(object):
 
 # V0-1
 # IDEA : BINARY SEARCH + CHECK mid is in left or right part
+# time = O(logn)
+# space = O(1)
 class Solution(object):
     def findMin(self, nums):
         l, r = 0, len(nums) - 1
@@ -275,6 +279,8 @@ class Solution(object):
 
 
 # V0-2
+# time = O(logn)
+# space = O(1)
 class Solution(object):
     def findMin(self, nums):
         l = 0
@@ -300,8 +306,10 @@ class Solution(object):
         return min_val
 
 
-# V0 
+# V0
 # IDEA : BINARY SEARCH
+# time = O(logn)
+# space = O(1)
 class Solution(object):
     def findMin(self, nums):
         l = 0
@@ -316,13 +324,17 @@ class Solution(object):
         return nums[l] 
 
 # V0'
-# IDEA : LINEAR SEARCH 
+# IDEA : LINEAR SEARCH
+# time = O(n)
+# space = O(1)
 class Solution:
     def findMin(self, num):
         return min(num)
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79533470
+# time = O(logn)
+# space = O(1)
 class Solution(object):
     def findMin(self, nums):
         """
@@ -361,6 +373,8 @@ assert s.findMin([-3,5,4,4,1,2]) == -3
 # V1'
 # IDEA : BINARY SEARCH
 # https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/discuss/48619/9-line-python-clean-code
+# time = O(logn)
+# space = O(1)
 class Solution(object):
     def findMin(self, nums):
         """
@@ -380,6 +394,8 @@ class Solution(object):
 # V1''
 # IDEA : BINARY SEARCH
 # https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/solution/
+# time = O(logn)
+# space = O(1)
 class Solution(object):
     def findMin(self, nums):
         """
@@ -422,17 +438,19 @@ class Solution(object):
                 right = mid - 1
 
 # V1''''
-# IDEA : LINEAR SEARCH 
+# IDEA : LINEAR SEARCH
 # http://bookshadow.com/weblog/2014/10/16/leetcode-find-minimum-rotated-sorted-array/
+# time = O(n)
+# space = O(1)
 class Solution:
     # @param num, a list of integer
     # @return an integer
     def findMin(self, num):
         return min(num)
 
-# V2 
-# Time:  O(logn)
-# Space: O(1)
+# V2
+# time = O(logn)
+# space = O(1)
 class Solution(object):
     def findMin(self, nums):
         """
@@ -452,6 +470,8 @@ class Solution(object):
 
         return nums[left]
 
+# time = O(logn)
+# space = O(1)
 class Solution2(object):
     def findMin(self, nums):
         """

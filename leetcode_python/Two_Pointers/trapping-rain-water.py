@@ -29,9 +29,11 @@ n == height.length
 
 # V0
 # IDEA : 2 scans
+# time = O(n)
+# space = O(n)
 class Solution:
     def trap(self, height):
- 
+
         if not height:
             return 0
 
@@ -57,44 +59,48 @@ class Solution:
         return res
 
 # V0'
-# IDEA : TWO POINTERS 
+# IDEA : TWO POINTERS
 # IDEA : CORE
 #     -> step 1) use left_max, right_mex : record "highest" "wall" in left, right handside at current idx
-#     -> step 2) 
-#                case 2-1) if height[left] < height[right] : 
+#     -> step 2)
+#                case 2-1) if height[left] < height[right] :
 #                   -> all left passed idx's height is LOWER than height[right]
 #                   -> so the "short" wall MUST on left
 #                   -> and since we record left_max, so we can get trap amount based on left_max, height[left]
-#                
+#
 #                case 2-2) if height[left] > height[right]
 #                   -> .... (similar as above)
+# time = O(n)
+# space = O(1)
 class Solution:
     def trap(self, height):
- 
+
         if not height:
             return 0
 
         left_max = right_max = res = 0
         left, right = 0, len(height) - 1
- 
+
         while left < right:
             if height[left] < height[right]:  # left pointer op
                 if height[left] < left_max:
                     res += left_max - height[left]
                 else:
                     left_max = height[left]
-                left += 1  # move left pointer 
+                left += 1  # move left pointer
             else:
                 if height[right] < right_max:  # right pointer op
                     res += right_max - height[right]
                 else:
                     right_max = height[right]
-                right -= 1  # move right pointer 
+                right -= 1  # move right pointer
         return res
 
 # V1
 # IDEA : 2 scans
 # https://blog.csdn.net/XX_123_1_RJ/article/details/81048041
+# time = O(n)
+# space = O(n)
 class Solution:
     def trap(self, height):
  
@@ -135,35 +141,39 @@ class Solution:
 #                
 #                case 2-2) if height[left] > height[right]
 #                   -> .... (similar as above)
+# time = O(n)
+# space = O(1)
 class Solution:
     def trap(self, height):
- 
+
         if not height:
             return 0
 
         left_max = right_max = res = 0
         left, right = 0, len(height) - 1
- 
+
         while left < right:
             if height[left] < height[right]:  # left pointer op
                 if height[left] < left_max:
                     res += left_max - height[left]
                 else:
                     left_max = height[left]
-                left += 1  # move left pointer 
+                left += 1  # move left pointer
             else:
                 if height[right] < right_max:  # right pointer op
                     res += right_max - height[right]
                 else:
                     right_max = height[right]
-                right -= 1  # move right pointer 
+                right -= 1  # move right pointer
         return res
 
-### Test case : dev 
+### Test case : dev
 
 # V1'
 # https://blog.csdn.net/XX_123_1_RJ/article/details/81048041
-# IDEA : BRUTE FORCE 
+# IDEA : BRUTE FORCE
+# time = O(n)
+# space = O(n)
 class Solution:
     def trap(self, height):
         if not height: return 0
@@ -184,6 +194,8 @@ class Solution:
 
 # V1''
 # https://blog.csdn.net/jiangjiang_jian/article/details/81135879
+# time = O(n)
+# space = O(n)
 class Solution:
     # @param A, a list of integers
     # @return an integer
@@ -203,6 +215,8 @@ class Solution:
 
 # V1'''
 # https://www.cnblogs.com/zuoyuan/p/3781453.html
+# time = O(n)
+# space = O(n)
 class Solution:
     # @param A, a list of integers
     # @return an integer

@@ -2,6 +2,8 @@
 # IDEA : DP 
 # dp[x+y] = dp[x+y] + dp[x] (for all x in range(target + 1), for all y in nums)
 # -> dp[x] : # of ways can make sum = x from sub-nums 
+# time = O(target * n), n = len(nums)
+# space = O(target)
 class Solution(object):
     def combinationSum4(self, nums, target):
         """
@@ -19,6 +21,8 @@ class Solution(object):
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79343825
+# time = O(target * n), n = len(nums)
+# space = O(target)
 class Solution(object):
     def combinationSum4(self, nums, target):
         """
@@ -37,6 +41,8 @@ class Solution(object):
 # V1'
 # IDEA : DP 
 # http://bookshadow.com/weblog/2016/07/25/leetcode-combination-sum-iv/
+# time = O(target * n), n = len(nums)
+# space = O(target)
 class Solution(object):
     def combinationSum4(self, nums, target):
         """
@@ -56,6 +62,8 @@ class Solution(object):
 # https://www.hrwhisper.me/leetcode-combination-sum-iv/
 # IDEA DP 
 # dp[i] += dp[i-num]
+# time = O(target * n), n = len(nums)
+# space = O(target)
 class Solution(object):
     def combinationSum4(self, nums, target):
         """
@@ -74,6 +82,8 @@ class Solution(object):
 # https://www.hrwhisper.me/leetcode-combination-sum-iv/
 # IDEA : DP
 # dp[i+num] += dp[i]
+# time = O(target * n), n = len(nums)
+# space = O(target)
 class Solution(object):
     def combinationSum4(self, nums, target):
         """
@@ -89,8 +99,8 @@ class Solution(object):
         return dp[target]
 
 # V2 
-# Time:  O(nlon + n * t), t is the value of target.
-# Space: O(t)
+# time = O(target * n), n = len(nums)
+# space = O(target)
 class Solution(object):
     def combinationSum4(self, nums, target):
         """

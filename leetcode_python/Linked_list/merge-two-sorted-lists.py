@@ -30,6 +30,8 @@ Both l1 and l2 are sorted in non-decreasing order.
 
 # V0
 # IDEA: LINKED LIST OP
+# time = O(m + n)
+# space = O(m + n)
 class Solution(object):
     def mergeTwoLists(self, list1, list2):
         if not list1:
@@ -79,6 +81,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: LINKED LIST OP
+# time = O(m + n)
+# space = O(1)
 class Solution(object):
     def mergeTwoLists(self, list1, list2):
         # CRITICAL FIX: Base cases should only handle situations where an entire list is missing
@@ -110,6 +114,8 @@ class Solution(object):
 
 # V0
 # IDEA : LOOP 2 LINKED LISTS
+# time = O(m + n)
+# space = O(1)
 class Solution(object):
     def mergeTwoLists(self, l1, l2):
         if not l1 or not l2:
@@ -145,6 +151,8 @@ class Solution(object):
 
 # V0'
 # IDEA : LOOP 2 LINKED LISTS
+# time = O(m + n)
+# space = O(1)
 class Solution(object):
     def mergeTwoLists(self, list1, list2):
         # edge case
@@ -167,6 +175,8 @@ class Solution(object):
 
 # V0''
 # IDEA : RECURSION
+# time = O(m + n)
+# space = O(m + n)
 class Solution(object):
     def mergeTwoLists(self, l1, l2):
         if not l1 or not l2:
@@ -180,6 +190,8 @@ class Solution(object):
 
 # V1
 # https://blog.csdn.net/coder_orz/article/details/51529359
+# time = O(m + n)
+# space = O(1)
 class Solution(object):
     def mergeTwoLists(self, l1, l2):
         """
@@ -203,6 +215,8 @@ class Solution(object):
 
 # V1'
 # https://blog.csdn.net/coder_orz/article/details/51529359
+# time = O(m + n)
+# space = O(1)
 class Solution(object):
     def mergeTwoLists(self, l1, l2):
         """
@@ -233,6 +247,8 @@ class Solution(object):
 # V1''
 # https://blog.csdn.net/coder_orz/article/details/51529359
 # IDEA : RECURSION
+# time = O(m + n)
+# space = O(m + n)
 class Solution(object):
     def mergeTwoLists(self, l1, l2):
         if not l1 or not l2:
@@ -247,6 +263,8 @@ class Solution(object):
 # V1''
 # https://www.jiuzhang.com/solution/merge-two-sorted-lists/#tag-highlight-lang-python
 # IDEA : TWO POINTERS
+# time = O(m + n)
+# space = O(1)
 class Solution(object):
     def mergeTwoLists(self, l1, l2):
         dummy = ListNode(0)
@@ -275,6 +293,8 @@ class ListNode(object):
         if self:
             return "{} -> {}".format(self.val, self.__next__)
 
+# time = O((m + n) log(m + n))
+# space = O(m + n)
 class Solution(object):
     def mergeTwoLists(self, l1, l2):
         """
@@ -303,6 +323,8 @@ class ListNode(object):
         if self:
             return "{} -> {}".format(self.val, self.__next__)
 
+# time = O(m + n)
+# space = O(1)
 class Solution(object):
     def mergeTwoLists(self, l1, l2):
         """

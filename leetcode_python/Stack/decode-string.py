@@ -48,6 +48,8 @@ NOTE !!!
 
 # stack: [(curr_str, curr_num)]
 """
+# time = O(n), n = length of decoded output string
+# space = O(n)
 class Solution(object):
     def decodeString(self, s):
         if not s:
@@ -97,6 +99,8 @@ class Solution(object):
 
 # V0
 # IDEA : STACK (GEMINI)
+# time = O(n), n = length of decoded output string
+# space = O(n)
 class Solution(object):
     def decodeString(self, s):
         """
@@ -143,6 +147,8 @@ class Solution(object):
 #        3) "["
 #        4) "]"
 # and define num = 0 for dealing with "100a[b]", "10abc" cases
+# time = O(n), n = length of decoded output string
+# space = O(n)
 class Solution:
     def decodeString(self, s):
         num = 0
@@ -181,6 +187,8 @@ class Solution:
 
 # V0-1
 # IDEA: STACK (GPT)
+# time = O(n), n = length of decoded output string
+# space = O(n)
 class Solution(object):
     def decodeString(self, s):
 
@@ -225,6 +233,8 @@ class Solution(object):
 #  -> When meet '[' append the previous num and string to stack, 
 #  -> when meet the ']' pop the previous num and string to calculate. 
 #  -> Notice the num*10 + num is for some case like "100[leetcode]" that num is greater than 10.
+# time = O(n), n = length of decoded output string
+# space = O(n)
 class Solution:
     def decodeString(self, s):
         num = 0
@@ -286,7 +296,9 @@ assert s.decodeString("[[[a]]b]")==""
 # e.g. 
 # c = '3' -> ord(c) - ord('0') = 3 
 # c= '9'  -> ord(c) - ord('0') = 9
-# we can do that via int() as well. i.e. int('9') -> 9 
+# we can do that via int() as well. i.e. int('9') -> 9
+# time = O(n), n = length of decoded output string
+# space = O(n)
 class Solution(object):
     def decodeString(self, s):
         """
@@ -314,6 +326,8 @@ class Solution(object):
 
 # V1''
 # https://leetcode.com/problems/decode-string/discuss/163479/Python-short-and-simple-stack-solution-beats-100-with-explanation
+# time = O(n), n = length of decoded output string
+# space = O(n)
 class Solution:
       def decodeString(self, s):
         stack = []
@@ -335,6 +349,8 @@ class Solution:
 
 # V1'''
 # https://leetcode-cn.com/problems/decode-string/solution/decode-string-fu-zhu-zhan-fa-di-gui-fa-by-jyd/
+# time = O(n), n = length of decoded output string
+# space = O(n)
 class Solution:
     def decodeString(self, s: str) -> str:
         stack, res, multi = [], "", 0
@@ -353,6 +369,8 @@ class Solution:
 
 # V1''''
 # https://yq.aliyun.com/articles/714166
+# time = O(n), n = length of decoded output string
+# space = O(n)
 class Solution:
     def decodeString(self, s: str) -> str:
         #init
@@ -375,6 +393,8 @@ class Solution:
 
 # V1''''''
 # http://bookshadow.com/weblog/2016/09/04/leetcode-decode-string/
+# time = O(n), n = length of decoded output string
+# space = O(n)
 class Solution(object):
     def decodeString(self, s):
         """
@@ -398,9 +418,9 @@ class Solution(object):
                 parts[k] += c
         return parts[1]
 
-# V2 
-# Time:  O(n)
-# Space: O(n)
+# V2
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def decodeString(self, s):
         """

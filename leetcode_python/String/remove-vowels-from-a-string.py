@@ -25,6 +25,8 @@ S consists of lowercase English letters only.
 """
 
 # V0
+# time = O(n)
+# space = O(n)
 class Solution:
     def removeVowels(self, S):
         res = ""
@@ -36,6 +38,8 @@ class Solution:
 
 # V1
 # https://www.twblogs.net/a/5d5f289ebd9eee541c328825
+# time = O(n)
+# space = O(n)
 class Solution:
     def removeVowels(self, S: str) -> str:
         res=''
@@ -47,6 +51,8 @@ class Solution:
 
 # V1'
 # https://zhongwen.gitbook.io/leetcode-report/easy/1119.-remove-vowels-from-a-string
+# time = O(n)
+# space = O(n)
 class Solution:
     def removeVowels(self, S):
         res = ""

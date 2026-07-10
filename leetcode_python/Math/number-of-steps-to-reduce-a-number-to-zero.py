@@ -43,10 +43,12 @@ Constraints:
 
 # V0
 # IDEA : brute force
+# time = O(logn)
+# space = O(1)
 class Solution:
     def numberOfSteps (self, num):
         count = 0
-        
+
         while(num!=0):
             if num%2 == 0:
                 num = num // 2
@@ -59,10 +61,12 @@ class Solution:
 # V1
 # IDEA : brute force
 # https://leetcode.com/problems/number-of-steps-to-reduce-a-number-to-zero/discuss/721004/Easy-Python-Solution
+# time = O(logn)
+# space = O(1)
 class Solution:
     def numberOfSteps (self, num):
         count = 0
-        
+
         while(num!=0):
             if num%2 == 0:
                 num = num // 2
@@ -74,6 +78,8 @@ class Solution:
 
 # V1
 # IDEA : bit op
+# time = O(logn)
+# space = O(1)
 class Solution:
     def numberOfSteps(self, num):
         c=0

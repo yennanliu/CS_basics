@@ -36,6 +36,8 @@ Constraints:
 """
 
 # V0
+# time = O(n)
+# space = O(k)
 class Solution(object):
     def subarraysDivByK(self, nums, k):
         count_map = {0: 1}
@@ -55,6 +57,8 @@ class Solution(object):
         return cnt
 
 # V0-1
+# time = O(n)
+# space = O(k)
 class Solution(object):
     def subarraysDivByK(self, nums, k):
         if nums is None:
@@ -85,8 +89,10 @@ class Solution(object):
         return cnt
 
 
-# V1 
+# V1
 # https://blog.csdn.net/xx_123_1_rj/article/details/86549560
+# time = O(n)
+# space = O(n)
 import collections
 class Solution():
     def subarraysDivByK(self, A, K):
@@ -97,12 +103,14 @@ class Solution():
         count = collections.Counter(P)
         return sum(v*(v-1)/2 for v in count.values())
 
-# V1' 
+# V1'
 # https://blog.csdn.net/xx_123_1_rj/article/details/86549560
-import collections 
+# time = O(n)
+# space = O(k)
+import collections
 class Solution:
     def subarraysDivByK(self, a, k):
-        counts = collections.defaultdict(int)  # for count # of residual 
+        counts = collections.defaultdict(int)  # for count # of residual
         counts[0] = 1  # initialization, since 0 is one of the accepted cases 
         cur_sum = 0  # record the sum of current array 
         ans = 0  # record the # of divisible nums 
@@ -113,9 +121,9 @@ class Solution:
             counts[mod] += 1  # count 
         return ans
 
-# V2 
-# Time:  O(n)
-# Space: O(k)
+# V2
+# time = O(n)
+# space = O(k)
 import collections
 class Solution(object):
     def subarraysDivByK(self, A, K):

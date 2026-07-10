@@ -2,6 +2,8 @@
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/82714928
+# time = O(n), n = len(dominoes)
+# space = O(n)
 class Solution(object):
     def pushDominoes(self, d):
         """
@@ -28,6 +30,8 @@ class Solution(object):
         
 # V1'
 # https://www.jiuzhang.com/solution/push-dominoes/#tag-highlight-lang-python
+# time = O(n), n = len(dominoes)
+# space = O(n)
 class Solution:
     """
     @param dominoes: a string
@@ -63,8 +67,8 @@ class Solution:
         return ''.join(pushed)
 
 # V2
-# Time:  O(n)
-# Space: O(n)
+# time = O(n), n = len(dominoes)
+# space = O(n)
 class Solution(object):
     def pushDominoes(self, dominoes):
         """

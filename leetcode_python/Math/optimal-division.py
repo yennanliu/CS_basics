@@ -117,14 +117,16 @@ class Solution(object):
 # ideas:
 # case 1 : return nums if there is only one number
 # case 2 : return nums[0]/nums[1] if there are only 2 numbers 
-# case 3 : return nums[0]/(nums[1]*nums[2]*....*nums[N]) if there are N numbers 
+# case 3 : return nums[0]/(nums[1]*nums[2]*....*nums[N]) if there are N numbers
+# time = O(n)   # n = len(nums)
+# space = O(n)
 class Solution(object):
     def optimalDivision(self, nums):
         """
         :type nums: List[int]
         :rtype: str
-        """ 
-        nums = list(map(str, nums)) # adapt here for python 3 
+        """
+        nums = list(map(str, nums)) # adapt here for python 3
         if len(nums) <= 2:
             return '/'.join(nums)
         return '{}/({})'.format(nums[0], '/'.join(nums[1:]))
@@ -140,7 +142,9 @@ assert s.optimalDivision([ _ for _ in range(50, 40, -1)]) == '50/(49/48/47/46/45
 
 # V1'
 # http://bookshadow.com/weblog/2017/04/16/leetcode-optimal-division/
-# IDEA : MATH 
+# IDEA : MATH
+# time = O(n)   # n = len(nums)
+# space = O(n)
 class Solution(object):
     def optimalDivision(self, nums):
         """
@@ -153,6 +157,8 @@ class Solution(object):
 # V1''
 # http://bookshadow.com/weblog/2017/04/16/leetcode-optimal-division/
 # IDEA : BRUTE FORCE
+# time = O(2^n)   # n = len(nums), enumerate all parenthesizations
+# space = O(n)   # recursion stack + expression string
 class Solution(object):
     def optimalDivision(self, nums):
         """
@@ -177,6 +183,8 @@ class Solution(object):
 
 # V1'''
 # https://blog.csdn.net/orientliu96/article/details/104304944
+# time = O(n)   # n = len(nums)
+# space = O(n)
 class Solution(object):
     def optimalDivision(self, nums):
         """
@@ -190,8 +198,8 @@ class Solution(object):
         return "/".join(nums)
 
 # V2
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def optimalDivision(self, nums):
         """

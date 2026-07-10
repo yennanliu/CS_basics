@@ -1,5 +1,7 @@
 # V0
-# IDEA : BFS 
+# IDEA : BFS
+# time = O(n * sqrt(n))
+# space = O(n)
 class Solution(object):
     def numSquares(self, n):
         if n < 2:
@@ -26,7 +28,9 @@ class Solution(object):
 
 # V1 
 # http://bookshadow.com/weblog/2015/09/09/leetcode-perfect-squares/
-# time out error 
+# time out error
+# time = O(n * sqrt(n))
+# space = O(n)
 class Solution(object):
     def numSquares(self, n):
         """
@@ -52,6 +56,8 @@ class Solution(object):
 # IDEA : DP
 # http://bookshadow.com/weblog/2015/09/09/leetcode-perfect-squares/
 # https://leetcode.com/problems/perfect-squares/discuss/71512/Static-DP-C%2B%2B-12-ms-Python-172-ms-Ruby-384-ms
+# time = O(n * sqrt(n))
+# space = O(n)
 class Solution(object):
     _dp = [0]
     def numSquares(self, n):
@@ -64,6 +70,8 @@ class Solution(object):
 # IDEA : BFS
 # https://leetcode.com/problems/perfect-squares/discuss/71475/Short-Python-solution-using-BFS
 # IDEA : -> CHECK the LC discussion pic (BFS)
+# time = O(n * sqrt(n))
+# space = O(n)
 class Solution(object):
     def numSquares(self, n):
         if n < 2:
@@ -88,9 +96,9 @@ class Solution(object):
             toCheck = temp
         return cnt
 
-# V2 
-# Time:  O(n * sqrt(n))
-# Space: O(n)
+# V2
+# time = O(n * sqrt(n))
+# space = O(n)
 class Solution(object):
     _num = [0]
     def numSquares(self, n):

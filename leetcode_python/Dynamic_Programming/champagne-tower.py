@@ -2,6 +2,8 @@
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/83444553
+# time = O(query_row^2)
+# space = O(query_row^2)
 class Solution(object):
     def champagneTower(self, poured, query_row, query_glass):
         """
@@ -22,6 +24,8 @@ class Solution(object):
         
 # V1'
 # https://www.jiuzhang.com/solution/champagne-tower/#tag-highlight-lang-python
+# time = O(query_row^2)
+# space = O(query_row^2)
 class Solution:
     """
     @param poured: an integer
@@ -43,8 +47,8 @@ class Solution:
         return res[query_row][query_glass] if res[query_row][query_glass] <= 1 else 1
 
 # V2
-# Time:  O(n^2) = O(1), since n is at most 99
-# Space: O(n) = O(1)
+# time = O(query_row^2)
+# space = O(query_row)
 class Solution(object):
     def champagneTower(self, poured, query_row, query_glass):
         """

@@ -1,5 +1,7 @@
-# V0 
-# IDEA : DFS 
+# V0
+# IDEA : DFS
+# time = O(2^n * n), n = len(nums)
+# space = O(2^n * n)
 class Solution(object):
     def findSubsequences(self, nums):
         """
@@ -9,7 +11,7 @@ class Solution(object):
         res = set()
         self.dfs(nums, 0, res, [])
         return map(list, res)
-    
+
     def dfs(self, nums, index, res, path):
         if len(path) >= 2:
             res.add(tuple(path))
@@ -17,11 +19,13 @@ class Solution(object):
             ### be aware of it
             if not path or nums[i] >= path[-1]:
                 ### be aware of it
-                self.dfs(nums, i + 1, res, path + [nums[i]]) 
+                self.dfs(nums, i + 1, res, path + [nums[i]])
 
 # V1
-# https://blog.csdn.net/fuxuemingzhu/article/details/79827505 
-# IDEA : DFS 
+# https://blog.csdn.net/fuxuemingzhu/article/details/79827505
+# IDEA : DFS
+# time = O(2^n * n), n = len(nums)
+# space = O(2^n * n)
 class Solution(object):
     def findSubsequences(self, nums):
         """
@@ -31,7 +35,7 @@ class Solution(object):
         res = set()
         self.dfs(nums, 0, res, [])
         return map(list, res)
-    
+
     def dfs(self, nums, index, res, path):
         if len(path) >= 2:
             res.add(tuple(path))
@@ -42,6 +46,8 @@ class Solution(object):
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79827505
 # IDEA : DP
+# time = O(2^n * n), n = len(nums)
+# space = O(2^n * n)
 class Solution(object):
     def findSubsequences(self, nums):
         """
@@ -58,6 +64,8 @@ class Solution(object):
 
 # V1''
 # https://www.jiuzhang.com/solution/increasing-subsequences/#tag-highlight-lang-python
+# time = O(2^n * n), n = len(nums)
+# space = O(2^n * n)
 class Solution(object):
     def findSubsequences(self, nums):
         """

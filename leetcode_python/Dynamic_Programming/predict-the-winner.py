@@ -5,6 +5,8 @@
 # IDEA : DP
 # DP EQUATION :
 # solve(nums) = max(nums[0] - solve(nums[1:]), nums[-1] - solve(nums[:-1]))
+# time = O(n^2), n = len(nums)
+# space = O(n^2)
 class Solution(object):
     def PredictTheWinner(self, nums):
         """
@@ -25,6 +27,8 @@ class Solution(object):
 # IDEA : DP
 # DP EQUATION :
 # dp[i][j]=max(num[i]−dp[i+1][j],num[j]−dp[i][j−1])
+# time = O(n^2), n = len(nums)
+# space = O(n^2)
 class Solution:
     # @param {int[]} nums an array of scores
     # @return {boolean} check if player 1 will win
@@ -50,8 +54,8 @@ class Solution:
         return f[0][n - 1] >= 0
 
 # V2
-# Time:  O(n^2)
-# Space: O(n)
+# time = O(n^2), n = len(nums)
+# space = O(n)
 class Solution(object):
     def PredictTheWinner(self, nums):
         """

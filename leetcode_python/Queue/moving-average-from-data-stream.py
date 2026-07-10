@@ -91,7 +91,7 @@ class MovingAverage(object):
 # https://www.cnblogs.com/lightwindy/p/9736836.html
 # https://nifannn.github.io/2018/10/01/Algorithm-Notes-Leetcode-346-Moving-Average-from-Data-Stream/
 from collections import deque
- class MovingAverage(object):
+class MovingAverage(object):
     def __init__(self, size):
         """
         Initialize your data structure here.

@@ -22,6 +22,8 @@ Note: For the return value, each inner list's elements must follow the lexicogra
 
 # V1 
 # https://www.jiuzhang.com/solution/group-shifted-strings/#tag-highlight-lang-python
+# time = O(N * K), N = len(strings), K = max string length
+# space = O(N * K)
 class Solution:
     """
     @param strings: a string array

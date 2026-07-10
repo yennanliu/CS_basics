@@ -41,6 +41,8 @@ rooms[i][j] is -1, 0, or 231 - 1.
 
 # V0
 # IDEA: BFS
+# time = O(m*n), m,n = grid dimensions; multi-source BFS visits each cell at most once
+# space = O(m*n)
 from collections import deque
 
 class Solution:
@@ -78,7 +80,9 @@ class Solution:
 
 
 # V0
-# IDEA : BFS 
+# IDEA : BFS
+# time = O(m*n), m,n = grid dimensions; q grows with gates found so far, each cell relaxed only when a shorter distance is found
+# space = O(m*n)
 class Solution:
     def wallsAndGates(self, rooms):
         # base case:
@@ -107,6 +111,8 @@ class Solution:
 
 # V0-1
 # IDEA: BFS
+# time = O(m*n), m,n = grid dimensions; multi-source BFS visits each cell at most once (guarded by the INF check)
+# space = O(m*n)
 from collections import deque
 
 class Solution:
@@ -140,7 +146,9 @@ class Solution:
 
 
 # V0-2
-# IDEA : BFS  
+# IDEA : BFS
+# time = O(m*n), m,n = grid dimensions; multi-source BFS visits each cell at most once (guarded by the INF check)
+# space = O(m*n)
 from collections import deque
 
 class Solution:
@@ -184,8 +192,10 @@ class Solution:
                         q.append((x_, y_))
 
 
-# V0 
+# V0
 # IDEA : DFS  -> TLE (time out error)
+# time = O((m*n)^2), m,n = grid dimensions; a cell can be revisited/updated many times as `dist` improves via different DFS paths (no visited-once guarantee)
+# space = O(m*n), recursion stack can reach O(m*n) depth
 class Solution:
     def wallsAndGates(self, rooms: List[List[int]]) -> None:
         """
@@ -193,13 +203,13 @@ class Solution:
         """
         # base case
         if not rooms: return
-        
+
         row, col = len(rooms), len(rooms[0])
         for i in range(row):
             for j in range(col):
                 if rooms[i][j] == 0:
                     self.dfs(rooms, i, j, 0)
-                    
+
     def dfs(self, rooms, x, y, dist):
         row, col = len(rooms), len(rooms[0])
         if x < 0 or x >= row or y < 0 or y >= col or rooms[x][y] < dist:
@@ -243,8 +253,10 @@ class Solution:
 
 # V1'
 # https://blog.csdn.net/danspace1/article/details/86615657
-# IDEA : BFS 
+# IDEA : BFS
 # IDEA : START FROM "DOOR", THEN FIND THE empty room (INF)
+# time = O(m*n), m,n = grid dimensions; q grows with gates found so far, each cell relaxed only when a shorter distance is found
+# space = O(m*n)
 class Solution:
     def wallsAndGates(self, rooms):
         """
@@ -271,7 +283,9 @@ class Solution:
 
 # V1''
 # https://www.jiuzhang.com/solution/walls-and-gates/#tag-highlight-lang-python
-# IDEA : DFS 
+# IDEA : DFS
+# time = O(g*m*n), m,n = grid dimensions, g = number of gates; a fresh BFS (with its own visited set) is run from each gate
+# space = O(m*n)
 class Solution:
     """
     @param rooms: m x n 2D grid
@@ -311,9 +325,9 @@ class Solution:
                 visited.add((next_row, next_col))
                 que.put((next_row, next_col, next_step))
 
-# V2 
-# Time:  O(m * n)
-# Space: O(g)
+# V2
+# time = O(m*n), m,n = grid dimensions; multi-source BFS visits each cell at most once
+# space = O(g), g = number of gates (initial queue size; grid mutated in place)
 from collections import deque
 class Solution(object):
     def wallsAndGates(self, rooms):

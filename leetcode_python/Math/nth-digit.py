@@ -20,6 +20,8 @@
 # 9   100000000-99999999
 
 # http://bookshadow.com/weblog/2016/09/18/leetcode-nth-digit/
+# time = O(log n)
+# space = O(1)
 class Solution(object):
     def findNthDigit(self, n):
         """
@@ -33,9 +35,9 @@ class Solution(object):
         n -= 1
         return int(str(10**i + n / (i + 1))[n % (i + 1)])
 
-# V3 
-# Time:  O(logn)
-# Space: O(1)
+# V3
+# time = O(logn)
+# space = O(1)
 class Solution(object):
     def findNthDigit(self, n):
         """

@@ -46,6 +46,8 @@
 # In [15]: ord('C')  - ord('A')
 # Out[15]: 2
 # In [16]: ord('B')  - ord('A')
+# time = O(n), n is the sum of all word lengths
+# space = O(n)
 class Solution(object):
     def uniqueMorseRepresentations(self, words):
         """
@@ -58,9 +60,11 @@ class Solution(object):
         res = map(map_word, words)
         return len(set(res))
 
-# V1' 
+# V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79774003
-# IDEA : SET + DICT 
+# IDEA : SET + DICT
+# time = O(n), n is the sum of all word lengths
+# space = O(n)
 class Solution:
     def uniqueMorseRepresentations(self, words):
         """
@@ -78,7 +82,9 @@ class Solution:
             res.add(mword)
         return len(res)
         
-# V2 
+# V2
+# time = O(n), n is the sum of all word lengths
+# space = O(n)
 class Solution(object):
     def uniqueMorseRepresentations(self, words):
         """

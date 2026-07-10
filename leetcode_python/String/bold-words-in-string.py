@@ -27,18 +27,17 @@ All Problems:
 Link to All Problems
 """
 
-# Time:  O(n * l), n is the length of S, l is the average length of words
-# Space: O(t)    , t is the size of trie
-
 # V0
+# time = O(1)  # unimplemented stub
+# space = O(1)
 class Solution(object):
     def boldWords(self, words, S):
-        pass 
+        pass
 
 
 # V1
 # IDEA: TRIE
-# https://leetcode.ca/2017-12-27-758-Bold-Words-in-String/ 
+# https://leetcode.ca/2017-12-27-758-Bold-Words-in-String/
 class Trie:
     def __init__(self):
         self.children = [None] * 128
@@ -54,6 +53,8 @@ class Trie:
         node.is_end = True
 
 
+# time = O(n * l), n is the length of S, l is the average length of words
+# space = O(t), t is the size of trie
 class Solution:
     def boldWords(self, words: List[str], s: str) -> str:
         trie = Trie()
@@ -100,9 +101,9 @@ class Solution:
         return ''.join(ans)
 
 
-# V2 
-# Time:  O(n * l), n is the length of S, l is the average length of words
-# Space: O(t)    , t is the size of trie
+# V2
+# time = O(n * l), n is the length of S, l is the average length of words
+# space = O(t), t is the size of trie
 import collections
 import functools
 class Solution(object):

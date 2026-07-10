@@ -52,6 +52,8 @@ n == heights[r].length
 
 # V0
 # IDEA: REVERSE + 2 DFS + OVERLAPPING
+# time = O(m * n)
+# space = O(m * n)
 class Solution(object):
     def pacificAtlantic(self, heights):
         if not heights:
@@ -111,11 +113,13 @@ class Solution(object):
 
 # V0-1
 # IDEA: REVERSE + 2 DFS + OVERLAPPING
+# time = O(m * n)
+# space = O(m * n)
 class Solution(object):
     def pacificAtlantic(self, heights):
         if not heights:
             return []
-            
+
         l = len(heights)
         w = len(heights[0])
         
@@ -161,8 +165,10 @@ class Solution(object):
                     self.dfs(x_, y_, heights, visited)
 
 
-# V0 
+# V0
 # IDEA : DFS + SET
+# time = O(m * n)
+# space = O(m * n)
 class Solution:
     def pacificAtlantic(self, matrix):
         if not matrix: return []
@@ -192,6 +198,8 @@ class Solution:
             self.dfs( x + move[0], y + move[1], matrix, visit, matrix[x][y])
 
 # V0'
+# time = O(m * n)
+# space = O(m * n)
 class Solution:
     def pacificAtlantic(self, matrix):
         if not matrix: return []
@@ -204,7 +212,7 @@ class Solution:
             self.dfs(i, 0, matrix, pacific, -1)
             self.dfs(i, n - 1, matrix, atlantic, 0)
         return list(pacific&atlantic)
-        
+
     def dfs(self, x, y, matrix, visit, height):
         m,n = len(matrix),len(matrix[0])
         if x < 0 or x >= m or y < 0 or y >= n or (x,y) in visit:
@@ -212,14 +220,16 @@ class Solution:
         if matrix[x][y] < height:
             return
         visit.add((x,y))
-        self.dfs(x - 1, y, matrix, visit, matrix[x][y]) 
-        self.dfs(x + 1, y, matrix, visit, matrix[x][y]) 
-        self.dfs(x, y - 1, matrix, visit, matrix[x][y]) 
+        self.dfs(x - 1, y, matrix, visit, matrix[x][y])
+        self.dfs(x + 1, y, matrix, visit, matrix[x][y])
+        self.dfs(x, y - 1, matrix, visit, matrix[x][y])
         self.dfs(x, y + 1, matrix, visit, matrix[x][y])
 
 # V1
 # https://www.jiuzhang.com/solution/pacific-atlantic-water-flow/#tag-highlight-lang-python
-# IDEA : DFS 
+# IDEA : DFS
+# time = O(m * n)
+# space = O(m * n)
 class Solution:
     """
     @param matrix: the given matrix
@@ -251,8 +261,10 @@ class Solution:
 
 ### Test case : dev
 
-# V1' 
+# V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/82917037
+# time = O(m * n)
+# space = O(m * n)
 class Solution(object):
     def pacificAtlantic(self, matrix):
         """
@@ -288,6 +300,8 @@ class Solution(object):
 # V1''
 # https://leetcode.com/problems/pacific-atlantic-water-flow/discuss/90739/Python-DFS-bests-85.-Tips-for-all-DFS-in-matrix-question.
 # IDEA : DFS
+# time = O(m * n)
+# space = O(m * n)
 class Solution(object):
     def pacificAtlantic(self, matrix):
         """
@@ -332,6 +346,8 @@ class Solution(object):
 
 # V1'''
 # https://leetcode.com/problems/pacific-atlantic-water-flow/discuss/90739/Python-DFS-bests-85.-Tips-for-all-DFS-in-matrix-question.
+# time = O(m * n)
+# space = O(m * n)
 class Solution(object):
     def longestIncreasingPath(self, matrix):
         """
@@ -366,6 +382,8 @@ class Solution(object):
 # V1'''''
 # https://leetcode.com/problems/pacific-atlantic-water-flow/discuss/90764/Python-solution-using-bfs-and-sets.
 # IDEA : DFS + SET
+# time = O(m * n)
+# space = O(m * n)
 class Solution(object):
     def pacificAtlantic(self, matrix):
         if not matrix: return []
@@ -384,9 +402,9 @@ class Solution(object):
         atlantic =set ( [ (i, n-1) for i in range(m)] + [(m-1, j) for j in range(n-1)]) 
         return list( bfs(pacific) & bfs(atlantic) )
 
-# V2 
-# Time:  O(m * n)
-# Space: O(m * n)
+# V2
+# time = O(m * n)
+# space = O(m * n)
 class Solution(object):
     def pacificAtlantic(self, matrix):
         """

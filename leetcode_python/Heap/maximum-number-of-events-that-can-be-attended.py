@@ -47,8 +47,8 @@ class Solution:
         # step2: each iteration put the candidates in the heap
         # step3: each iteration eliminate the ineligibility ones from the heap
         # step4: each iteration choose one event attend if it is possible
-        # time complexity: O(max(n1logn1, n2))
-        # space complexity: O(n1)
+        # time = O(D + n log n), D = day range (100000), n = len(events)
+        # space = O(n)
         events.sort(key = lambda x: -x[0])
         h = []
         ans = 0
@@ -74,6 +74,8 @@ class Solution:
 # NOTE !!!
 # We just need to attend d where startTimei <= d <= endTimei, then we CAN attend the meeting
 # startTimei <= d <= endTimei. You can only attend one event at any time d.
+# time = O(D + n log n), D = day range (100000), n = len(events)
+# space = O(n)
 class Solution:
     def maxEvents(self, events):
         events.sort(key = lambda x: (-x[0], -x[1]))
@@ -96,6 +98,8 @@ class Solution:
 # V1
 # IDEA : PRIORITY QUEUE
 # https://blog.csdn.net/qq_42791848/article/details/109575370
+# time = O(D + n log n), D = day range (100000), n = len(events)
+# space = O(n)
 class Solution:
     def maxEvents(self, events):
         events.sort(key = lambda x: (-x[0], -x[1]))
@@ -124,8 +128,8 @@ class Solution:
 # If we can attend a meeting, we increment the result res.
 #
 # Complexity
-# Time O(d + nlogn), where D is the range of A[i][1]
-# Space O(N)
+# time = O(d + n log n), where d is the range of A[i][1]
+# space = O(n)
 class Solution(object):
     def maxEvents(self, A):
             # both of below work
@@ -148,6 +152,8 @@ class Solution(object):
 # V1''''
 # IDEA : HEAP
 # https://leetcode.com/problems/maximum-number-of-events-that-can-be-attended/discuss/1799845/Python-Heap
+# time = O(n log n + D), n = len(events), D = max end day
+# space = O(n)
 class Solution:
     def maxEvents(self, events: List[List[int]]) -> int:
         events.sort()
@@ -180,8 +186,8 @@ class Solution:
         # step2: each iteration put the candidates in the heap
         # step3: each iteration eliminate the ineligibility ones from the heap
         # step4: each iteration choose one event attend if it is possible
-        # time complexity: O(max(n1logn1, n2))
-        # space complexity: O(n1)
+        # time = O(D + n log n), D = day range, n = len(events)
+        # space = O(n)
         events.sort(key = lambda x: -x[0])
         h = []
         att = 0
@@ -204,6 +210,8 @@ class Solution:
 # V1''''''
 # IDEA : HEAP + index
 # https://leetcode.com/problems/maximum-number-of-events-that-can-be-attended/discuss/954460/Python%3A-faster-than-79.04-of-Python
+# time = O(D + n log n), D = day range, n = len(events)
+# space = O(n)
 import heapq
 class Solution:
     def maxEvents(self, events: List[List[int]]) -> int:

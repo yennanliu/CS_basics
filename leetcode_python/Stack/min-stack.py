@@ -151,9 +151,11 @@ class MinStack(object):
 
 # V0
 # IDEA : STACK
-# IDEA : 
+# IDEA :
 # -> USE A STACK TO STORAGE MIN VALUE IN THE STACK WHEN EVERY PUSH
 # -> SO WE CAN RETURN getMin IN CONSTANT TIEM VIA STACK ABOVE
+# time = O(1)  # per operation (push/pop/top/getMin)
+# space = O(n)
 class MinStack(object):
 
     def __init__(self):
@@ -161,7 +163,7 @@ class MinStack(object):
         initialize your data structure here.
         """
         self.stack = []
-        
+
     def push(self, x):
         if not self.stack:
             """
@@ -190,12 +192,14 @@ class MinStack(object):
 
 # V0'
 # IDEA : STACK
+# time = O(1)  # per operation (push/pop/top/getMin)
+# space = O(n)
 class MinStack(object):
 
     def __init__(self):
         self.stack = []
         self.min = []
-        
+
 
     def push(self, x):
         self.stack.append(x)
@@ -217,6 +221,8 @@ class MinStack(object):
 # V0
 # IDEA : heap
 # TODO : validate if below is correct
+# time = O(log n) for push/pop, O(1) for top, O(log n) for getMin (as implemented, pops from heap)
+# space = O(n)
 from heapq import *
 class MinStack:
 
@@ -247,6 +253,8 @@ class MinStack:
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79253237
 # IDEA : STACK
+# time = O(1)  # per operation (push/pop/top/getMin)
+# space = O(n)
 class MinStack(object):
 
     def __init__(self):
@@ -254,7 +262,7 @@ class MinStack(object):
         initialize your data structure here.
         """
         self.stack = []
-        
+
 
     def push(self, x):
         """
@@ -309,6 +317,8 @@ assert s.top() ==100
 
 # V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79253237
+# time = O(1)  # per operation (push/pop/top/getMin)
+# space = O(n)
 class MinStack(object):
 
     def __init__(self):
@@ -317,7 +327,7 @@ class MinStack(object):
         """
         self.stack = []
         self.min = []
-        
+
 
     def push(self, x):
         """
@@ -352,7 +362,9 @@ class MinStack(object):
 # V1''''
 # https://www.cnblogs.com/zuoyuan/p/4091870.html
 # stack1 : regular stack
-# stack2 : stack for return minimum in-stack element 
+# stack2 : stack for return minimum in-stack element
+# time = O(1)  # per operation (push/pop/top/getMin)
+# space = O(n)
 class MinStack:
     # @param x, an integer
     def __init__(self):
@@ -380,6 +392,8 @@ class MinStack:
         return self.stack2[-1]
 
 # V1'''''
+# time = O(1)  # per operation (push/pop/top/getMin)
+# space = O(n)
 class MinStack:
     def __init__(self):
         self.min = None
@@ -415,8 +429,8 @@ class MinStack:
         return self.min
 
 # V1'''''''
-# Time:  O(n)
-# Space: O(n)
+# time = O(1)  # per operation (push/pop/top/getMin)
+# space = O(n)
 class MinStack2:
     def __init__(self):
         self.stack, self.minStack = [], []

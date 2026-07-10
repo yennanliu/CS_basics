@@ -30,6 +30,8 @@ Constraints:
 
 # V0
 # IDEA: STACK
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def dailyTemperatures(self, temperatures):
         # edge
@@ -62,6 +64,8 @@ class Solution(object):
 
 
 # V0-1
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def dailyTemperatures(self, temperatures):
         if not temperatures:
@@ -87,6 +91,8 @@ class Solution(object):
 # V0
 # IDEA : STACK
 # // https://www.bilibili.com/list/525438321?sort_field=pubtime&spm_id_from=333.999.0.0&oid=779764003&bvid=BV1my4y1Z7jj
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def dailyTemperatures(self, tmp):
         # edge case
@@ -132,6 +138,8 @@ class Solution(object):
 # i : 6, stack : [(75, 2), (72, 5)], res : [1, 1, 0, 2, 1, 0, 0, 0]
 # i : 6, stack : [(75, 2)], res : [1, 1, 0, 2, 1, 1, 0, 0]
 # [1, 1, 4, 2, 1, 1, 0, 0]
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def dailyTemperatures(self, T):
         N = len(T)
@@ -156,6 +164,8 @@ class Solution(object):
 
 # V0''
 # IDEA : STACK
+# time = O(n)
+# space = O(n)
 class Solution:
     def dailyTemperatures(self, T):
         res = [0 for _ in range(len(T))]
@@ -169,6 +179,8 @@ class Solution:
 
 # V0'''
 # IDEA : BRUTE FORCE : TLE
+# time = O(n^2)
+# space = O(n)
 class Solution:
     def dailyTemperatures(self,T):
         r=[]
@@ -183,8 +195,10 @@ class Solution:
         r.append(0)    
         return r 
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79285081
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def dailyTemperatures(self, T):
         """
@@ -216,8 +230,8 @@ assert s.dailyTemperatures([-1,-1,-1,0,0,0])==[3,2,1,0,0,0]
 # V1'
 # https://leetcode.com/problems/daily-temperatures/solution/
 # IDEA : NEXT ARRAY
-# Time Complexity: O(NW), where NN is the length of T and WW is the number of allowed values for T[i]. Since W = 71W=71, we can consider this complexity O(N)O(N).
-# Space Complexity: O(N + W), the size of the answer and the next array.
+# time = O(n*W), where n = len(T), W = number of allowed values for T[i] (~71); ~O(n)
+# space = O(n + W)
 class Solution(object):
     def dailyTemperatures(self, T):
         nxt = [float('inf')] * 102
@@ -233,8 +247,8 @@ class Solution(object):
 # V1''
 # https://leetcode.com/problems/daily-temperatures/solution/
 # IDEA : STACK
-#Time Complexity: O(N), where NN is the length of T and WW is the number of allowed values for T[i]. Each index gets pushed and popped at most once from the stack.
-#Space Complexity: O(W). The size of the stack is bounded as it represents strictly increasing temperatures.
+# time = O(n), each index is pushed and popped at most once from the stack
+# space = O(W), the stack is bounded since it represents strictly increasing temperatures
 class Solution(object):
     def dailyTemperatures(self, T):
         ans = [0] * len(T)
@@ -249,6 +263,8 @@ class Solution(object):
 
 # V1'''
 # http://bookshadow.com/weblog/2017/12/03/leetcode-daily-temperatures/
+# time = O(n*W), where n = len(temperatures), W = number of allowed values (~71); ~O(n)
+# space = O(n + W)
 import collections
 class Solution(object):
     def dailyTemperatures(self, temperatures):
@@ -271,6 +287,8 @@ class Solution(object):
 
 # V1'''''
 # https://leetcode-cn.com/problems/daily-temperatures/solution/zhan-by-oliver8641/
+# time = O(n)
+# space = O(n)
 class Solution:
     def dailyTemperatures(self, T: List[int]) -> List[int]:
         res = [0 for _ in range(len(T))]
@@ -284,6 +302,8 @@ class Solution:
 
 # V1'''''''
 # https://leetcode.com/problems/daily-temperatures/discuss/397728/Easy-Python-O(n)-time-O(1)-space-beat-99.9
+# time = O(n)
+# space = O(1) excluding the output array
 class Solution:
     def dailyTemperatures(self, T: List[int]) -> List[int]:
         n, right_max = len(T), float('-inf')
@@ -299,9 +319,9 @@ class Solution:
                 res[i] = days
         return res
 
-# V2 
-# Time:  O(n)
-# Space: O(n)
+# V2
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def dailyTemperatures(self, temperatures):
         """

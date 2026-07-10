@@ -1,7 +1,9 @@
 # V0 
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/83478570
+# time = O(n * l)
+# space = O(n * l)
 class Solution(object):
     def numUniqueEmails(self, emails):
         """
@@ -22,8 +24,10 @@ class Solution(object):
             local = local[:plus_i]
         return local + "@" + domain
 
-# V1' 
+# V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/83478570
+# time = O(n * l)
+# space = O(n * l)
 class Solution:
     def numUniqueEmails(self, emails):
         """
@@ -37,9 +41,9 @@ class Solution:
             res.add(name + "@" + domain)
         return len(res)
         
-# V2 
-# Time:  O(n * l)
-# Space: O(n * l)
+# V2
+# time = O(n * l)
+# space = O(n * l)
 class Solution(object):
     def numUniqueEmails(self, emails):
         """

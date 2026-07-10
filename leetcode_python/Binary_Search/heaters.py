@@ -1,7 +1,9 @@
 # V0 
 
-# V1 
+# V1
 # https://blog.csdn.net/NXHYD/article/details/72326279
+# time = O((m + n) log n), m = len(houses), n = len(heaters)
+# space = O(1)
 class Solution(object):
     def findRadius(self, houses, heaters):
         """
@@ -22,8 +24,10 @@ class Solution(object):
             ans = max(ans, radius)
         return ans
 
-# V1' 
+# V1'
 # https://blog.csdn.net/NXHYD/article/details/72326279
+# time = O(m log m + n log n), m = len(houses), n = len(heaters)
+# space = O(n)
 import math
 class Solution(object):
     def findRadius(self, houses, heaters):
@@ -42,8 +46,10 @@ class Solution(object):
             j = max(j , abs(heaters[i] - each) )
         return(j)
 
-# V1'' 
+# V1''
 # https://blog.csdn.net/NXHYD/article/details/72326279
+# time = O(m log m + n log n), m = len(houses), n = len(heaters)
+# space = O(n)
 class Solution(object):
     def findRadius(self, houses, heaters):
         """
@@ -61,9 +67,9 @@ class Solution(object):
             r = max(r, dis)
         return r
 
-# V2 
-# Time:  O((m + n) * logn), m is the number of the houses, n is the number of the heaters.
-# Space: O(1)
+# V2
+# time = O((m + n) * log n), m is the number of the houses, n is the number of the heaters.
+# space = O(1)
 import bisect
 class Solution(object):
     def findRadius(self, houses, heaters):

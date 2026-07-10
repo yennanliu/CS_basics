@@ -11,6 +11,8 @@ class ListNode(object):
         self.val = val
         self.next = next
 """
+# time = O(n^2)
+# space = O(1)
 class Solution:
     """
     @param head: The first node of linked list.
@@ -45,6 +47,8 @@ class TreeNode:
         self.lLink = None
         self.rLink = None
 
+# time = O(n^2)
+# space = O(1)
 class Solution(object):
     def insertionSortList(self, head):
         """
@@ -69,6 +73,8 @@ class Solution(object):
 
 # V1''
 # https://blog.csdn.net/aliceyangxi1987/article/details/50752090
+# time = O(n^2)
+# space = O(1)
 class Solution(object):
     def insertionSortList(self, head):
         """
@@ -99,9 +105,7 @@ class Solution(object):
         
         return dummy.next
             
-# V2 
-# Time:  O(n ^ 2)
-# Space: O(1)
+# V2
 class ListNode(object):
     def __init__(self, x):
         self.val = x
@@ -113,6 +117,8 @@ class ListNode(object):
         else:
             return "Nil"
 
+# time = O(n^2)
+# space = O(1)
 class Solution(object):
     # @param head, a ListNode
     # @return a ListNode

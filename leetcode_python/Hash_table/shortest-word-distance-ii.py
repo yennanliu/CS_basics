@@ -1,7 +1,9 @@
 # V0 
 
-# V1 
+# V1
 # http://www.voidcn.com/article/p-fhbblvrn-qp.html
+# time = O(n) init, O(a*b) lookup, a, b = occurrences of word1, word2
+# space = O(n)
 class WordDistance(object):
     def __init__(self, words):
         """
@@ -9,7 +11,7 @@ class WordDistance(object):
         :type words: List[str]
         """
         self.dic = {}
-        for index, value in enumerate(words): 
+        for index, value in enumerate(words):
             if value not in self.dic:
                 self.dic[value] = [index]
             else:
@@ -26,6 +28,8 @@ class WordDistance(object):
 
 # V1'
 # http://www.voidcn.com/article/p-fhbblvrn-qp.html
+# time = O(n) init, O(a+b) lookup, a, b = occurrences of word1, word2
+# space = O(n)
 class WordDistance(object):
     def __init__(self, words):
         """
@@ -56,9 +60,9 @@ class WordDistance(object):
                 j += 1
         return res
 
-# V2 
-# Time:  init: O(n), lookup: O(a + b), a, b is occurences of word1, word2
-# Space: O(n)
+# V2
+# time = O(n) init, O(a+b) lookup, a, b = occurrences of word1, word2
+# space = O(n)
 import collections
 class WordDistance(object):
     # initialize your data structure here.

@@ -30,6 +30,8 @@ Minimize the total number of operations.
 # [9, 1, 5, 11, 7, 0, 0, 0]
 # In [61]: sol
 # Out[61]: [9, 1, 5, 11, 7, 0, 0, 0]
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def moveZeroes(self, nums):
         y = 0
@@ -37,10 +39,12 @@ class Solution(object):
             if nums[x] != 0:
                 nums[x], nums[y] = nums[y], nums[x]
                 y += 1
-        return nums 
+        return nums
 
 # V0'
 # IDEA : 2 POINTERS
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def moveZeroes(self, nums):
         # edge case
@@ -59,17 +63,23 @@ class Solution(object):
         return nums
 
 # V0''
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def moveZeroes(self, nums):
-        return [ x for x in nums if x != 0 ] + [ x for x in nums if x == 0 ] 
+        return [ x for x in nums if x != 0 ] + [ x for x in nums if x == 0 ]
 
-# V1' 
+# V1'
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def moveZeroes(self, nums):
-        return [ x for x in nums if x != 0 ] + [ x for x in nums if x == 0 ] 
+        return [ x for x in nums if x != 0 ] + [ x for x in nums if x == 0 ]
 
 # V1''
 # https://www.jiuzhang.com/solution/move-zeroes/#tag-highlight-lang-python
+# time = O(n)
+# space = O(1)
 class Solution:
     """
     @param nums: an integer array
@@ -89,7 +99,9 @@ class Solution:
                 nums[left] = 0
             left += 1
             
-# V2 
+# V2
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def moveZeroes(self, nums):
         non_zero_list = []
@@ -100,8 +112,10 @@ class Solution(object):
                 non_zero_list.append(nums[i])
         return non_zero_list + [0]*( length - len(non_zero_list))
 
-# V3 
+# V3
 # http://bookshadow.com/weblog/2015/09/19/leetcode-move-zeroes/
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def moveZeroes(self, nums):
         y = 0
@@ -111,7 +125,9 @@ class Solution(object):
                 y += 1
         return nums 
 
-# V4 
+# V4
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def moveZeroes(self, nums):
         """
@@ -124,6 +140,8 @@ class Solution(object):
                 nums[i], nums[pos] = nums[pos], nums[i]
                 pos += 1
 
+    # time = O(n log n)
+    # space = O(1)
     def moveZeroes2(self, nums):
         """
         :type nums: List[int]
@@ -131,7 +149,9 @@ class Solution(object):
         """
         nums.sort(cmp=lambda a, b: 0 if b else -1)
 
-# V5 
+# V5
+# time = O(n)
+# space = O(1)
 class Solution2(object):
     def moveZeroes(self, nums):
         """

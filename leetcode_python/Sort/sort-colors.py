@@ -48,6 +48,8 @@ Follow up: Could you come up with a one-pass algorithm using only constant extra
 
 # V0
 # NOTE : JUST IMPLEMENT WHATEVER SORTING ALGORITHM IN THIS PROBLEM
+# time = O(n)
+# space = O(1)
 class Solution:
     def sortColors(self, A):
         left, index, right = 0, 0, len(A) - 1
@@ -67,6 +69,8 @@ class Solution:
 
 # V0'
 # IDEA : BUBBLE SORT
+# time = O(n^2)
+# space = O(1)
 class Solution:
     def sortColors(self, A):
         if not A or len(A) == 1:
@@ -78,12 +82,16 @@ class Solution:
         return A
 
 # V0'' (may not validated)
+# time = O(n log n)
+# space = O(n)
 class Solution:
     def sortColors(self, A):
         return A.sort()
 
 # V1
 # https://blog.csdn.net/maymay_/article/details/80093460
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def sortColors(self, nums):
         if nums == []:
@@ -102,9 +110,11 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/sort-colors/#tag-highlight-lang-python
+# time = O(n)
+# space = O(1)
 class Solution:
     """
-    @param nums: A list of integer which is 0, 1 or 2 
+    @param nums: A list of integer which is 0, 1 or 2
     @return: nothing
     """
     def sortColors(self, A):
@@ -124,9 +134,11 @@ class Solution:
 
 # V1''
 # https://www.jiuzhang.com/solution/sort-colors/#tag-highlight-lang-python
+# time = O(n)
+# space = O(1)
 class Solution:
     """
-    @param nums: A list of integer which is 0, 1 or 2 
+    @param nums: A list of integer which is 0, 1 or 2
     @return: nothing
     """
     def sortColors(self, A):
@@ -146,8 +158,10 @@ class Solution:
                 end -= 1
         return start
 
-# V1'' 
+# V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79392195
+# time = O(n)
+# space = O(n)
 from collections import Counter
 class Solution(object):
     def sortColors(self, nums):
@@ -164,9 +178,9 @@ class Solution(object):
             else:
                 nums[i] = 2
  
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def sortColors(self, nums):
         """

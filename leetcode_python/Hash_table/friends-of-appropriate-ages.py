@@ -45,6 +45,8 @@ n == ages.length
 
 # V0
 import collections
+# time = O(n + a^2), n = number of people, a = number of distinct ages
+# space = O(a)
 class Solution(object):
     def numFriendRequests(self, ages):
         count = collections.Counter(ages)
@@ -58,9 +60,11 @@ class Solution(object):
 
 # V0'
 import collections
+# time = O(n + a^2), n = number of people, a = number of distinct ages
+# space = O(a)
 class Solution:
     """
-    @param ages: 
+    @param ages:
     @return: nothing
     """
     def numFriendRequests(self, ages):
@@ -71,6 +75,8 @@ class Solution:
 
 # V0''
 from collections import Counter
+# time = O(n + a^2), n = number of people, a = number of distinct ages
+# space = O(a)
 class Solution:
     def numFriendRequests(self, ages):
         def request(x,y):
@@ -83,6 +89,8 @@ class Solution:
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/83183022
 import collections
+# time = O(n + a^2), n = number of people, a = number of distinct ages
+# space = O(a)
 class Solution(object):
     def numFriendRequests(self, ages):
         """
@@ -101,6 +109,8 @@ class Solution(object):
 # V1'
 # http://bookshadow.com/weblog/2018/04/29/leetcode-friends-of-appropriate-ages/
 import collections
+# time = O(n * a), n = number of people, a = number of distinct ages
+# space = O(a)
 class Solution(object):
     def numFriendRequests(self, ages):
         """
@@ -119,11 +129,13 @@ class Solution(object):
 # V1''
 # https://www.jiuzhang.com/solution/friends-of-appropriate-ages/#tag-highlight-lang-python
 import collections
+# time = O(n + a^2), n = number of people, a = number of distinct ages
+# space = O(a)
 class Solution:
     """
-    @param ages: 
+    @param ages:
     @return: nothing
-    get the friend request conditions, 2 for loop can it sorted  
+    get the friend request conditions, 2 for loop can it sorted
     """
     def numFriendRequests(self, ages):
         def request(a, b):
@@ -131,10 +143,9 @@ class Solution:
         c = collections.Counter(ages)
         return sum(request(a, b) * c[a] * (c[b] - (a == b)) for a in c for b in c)
 
-# V2 
-# Time:  O(a^2 + n), a is the number of ages,
-#                    n is the number of people
-# Space: O(a)
+# V2
+# time = O(a^2 + n), a is the number of ages, n is the number of people
+# space = O(a)
 import collections
 class Solution(object):
     def numFriendRequests(self, ages):

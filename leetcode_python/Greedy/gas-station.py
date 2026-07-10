@@ -49,6 +49,8 @@ cost.length == n
 # IDEA : GREEDY
 # IDEA : if sum(gas) - sum(cost) > 0, => THERE MUST BE A SOLUTION
 # IDEA : since it's circular (symmetry), we can maintain "total" (e.g. total += gas[i] - cost[i]) of (gas[i], cost[i]) for each index as their "current sum"
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def canCompleteCircuit(self, gas, cost):
         start = remain = total = 0
@@ -63,6 +65,8 @@ class Solution(object):
 # V0'
 # IDEA : GREEDY
 # IDEA : if sum(gas) - sum(cost) > 0, => THERE MUST BE A SOLUTION
+# time = O(n)
+# space = O(1)
 class Solution:
     def canCompleteCircuit(self, gas, cost):
         start = 0
@@ -114,6 +118,8 @@ class Solution:
 # gas[a] – cost[a] + gas[b] – cost[b]  + gas[c] – cost[c] >=0
 # gas[a] – cost[a] + gas[b] – cost[b]  + gas[c] – cost[c]  + gas[d] – cost[d] < 0
 # -> SO THE CAR CAN'T PASS THE "gas station d", SINCE ITS SUM < 0
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def canCompleteCircuit(self, gas, cost):
         begin,subsum,sum,i = 0,0,0,0
@@ -148,9 +154,11 @@ assert s.canCompleteCircuit([1,2,3],[2,1,1])==1
 # Since s is the leftmost station that we can travel from it to n, so for any k from {0,...,s-1}, we can not travel from k to n. Or route(k,n) < 0 && route(s,n) > 0 => route(k,s) < 0.
 # And as sum(gas) >= sum(cost), route(0,k) + route(k,s) + route(s,n) > 0. Considering route(k,s) < 0, we can conclude that route(0,k) + route(s,n) > 0.
 # So based on this, we just need to find out the leftmost station that we can travel from it to n if sum(gas) >= sum(cost).
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def canCompleteCircuit(self, gas, cost):
-        if sum(gas) < sum(cost): 
+        if sum(gas) < sum(cost):
             return -1
         n, start, agg = len(gas), 0, 0
         for i in range(n):
@@ -161,6 +169,8 @@ class Solution(object):
 
 # V1'''
 # https://www.hrwhisper.me/leetcode-greedy/
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def canCompleteCircuit(self, gas, cost):
         start = remain = total = 0
@@ -176,6 +186,8 @@ class Solution(object):
 # V1''''
 # http://bookshadow.com/weblog/2015/08/06/leetcode-gas-station/
 # IDEA : GREEDY
+# time = O(n)
+# space = O(1)
 class Solution:
     # @param {integer[]} gas
     # @param {integer[]} cost
@@ -190,6 +202,8 @@ class Solution:
 
 # V1''''''
 # https://leetcode.com/problems/gas-station/discuss/164515/Python-O(N)-solution
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def canCompleteCircuit(self, gas, cost):
         N = len(gas)
@@ -214,9 +228,9 @@ class Solution(object):
         else:
             return -1
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     # @param gas, a list of integers
     # @param cost, a list of integers

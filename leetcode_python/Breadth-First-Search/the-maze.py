@@ -57,7 +57,9 @@ The maze contains at least 2 empty spaces, and both the width and height of the 
 """
 
 # V0
-# IDEA : DFS 
+# IDEA : DFS
+# time = O(m*n*max(m,n)), m,n = maze dimensions; each cell visited once via `visited`, each direction rolls up to O(max(m,n)) cells
+# space = O(m*n)
 class Solution(object):
     def hasPath(self, maze, start, destination):
 
@@ -87,6 +89,8 @@ class Solution(object):
 
 # V0'
 # IDEA : BFS
+# time = O(m*n*max(m,n)), m,n = maze dimensions; each cell marked visited via maze[i][j]=2 (visited once), each direction rolls up to O(max(m,n)) cells
+# space = O(m*n)
 class Solution:
     def hasPath(self, maze, start, destination):
         # write your code here
@@ -110,12 +114,14 @@ class Solution:
                 col -= y
                 if maze[row][col] == 0:
                     Q.append([row, col])
-                    
+
         return False
 
-# V1 
+# V1
 # https://blog.csdn.net/danspace1/article/details/88773383
-# IDEA : DFS 
+# IDEA : DFS
+# time = O(m*n*max(m,n)), m,n = maze dimensions; each cell visited once via `visited`, each direction rolls up to O(max(m,n)) cells
+# space = O(m*n)
 class Solution(object):
     def hasPath(self, maze, start, destination):
         """
@@ -157,6 +163,8 @@ class Solution:
     @param destination: the destination
     @return: whether the ball could stop at the destination
     """
+    # time = O(m*n*max(m,n)), m,n = maze dimensions; each cell marked visited via maze[i][j]=2 (visited once), each direction rolls up to O(max(m,n)) cells
+    # space = O(m*n)
     def hasPath(self, maze, start, destination):
         # write your code here
         Q = [start]
@@ -181,10 +189,10 @@ class Solution:
                     Q.append([row, col])
 
         return False
-        
-# V2 
-# Time:  O(max(r, c) * w)
-# Space: O(w)
+
+# V2
+# time = O(max(r, c) * w), r,c = maze dimensions, w = r*c (number of cells)
+# space = O(w)
 import collections
 class Solution(object):
     def hasPath(self, maze, start, destination):

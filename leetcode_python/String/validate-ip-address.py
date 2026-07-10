@@ -41,6 +41,8 @@ queryIP consists only of English letters, digits and the characters '.' and ':'.
 
 # V0
 # IDEA : Divide and Conquer
+# time = O(1)
+# space = O(1)
 class Solution:
     def validate_IPv4(self, IP):
         nums = IP.split('.')
@@ -76,6 +78,8 @@ class Solution:
             return "Neither"
 
 # V0'
+# time = O(1)
+# space = O(1)
 class Solution(object):
     def validIPAddress(self, IP):
         """
@@ -154,6 +158,8 @@ class Solution(object):
 # V1
 # https://leetcode.com/problems/validate-ip-address/solution/
 # IDEA : REGEX
+# time = O(1)
+# space = O(1)
 import re
 class Solution:
     chunk_IPv4 = r'([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])'
@@ -170,6 +176,8 @@ class Solution:
 # V1'
 # https://leetcode.com/problems/validate-ip-address/solution/
 # IDEA : Divide and Conquer
+# time = O(1)
+# space = O(1)
 class Solution:
     def validate_IPv4(self, IP: str) -> str:
         nums = IP.split('.')
@@ -221,6 +229,8 @@ class Solution:
 # In [59]: import string
 # In [60]: string.hexdigits
 # Out[60]: '0123456789abcdefABCDEF'
+# time = O(1)
+# space = O(1)
 import string
 class Solution(object):
     def validIPAddress(self, IP):

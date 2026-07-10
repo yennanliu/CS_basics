@@ -52,6 +52,8 @@ NOTE !!
     -> via dfs call, we color the node
         -> via such op, we check if the graph is `Bipartite`
 """
+# time = O(V + E)
+# space = O(V + E)
 class Solution(object):
     def isBipartite(self, graph):
 
@@ -116,6 +118,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: COLOR + DFS (GEMINI)
+# time = O(V + E)
+# space = O(V + E)
 class Solution(object):
     def isBipartite(self, graph):
         """
@@ -153,8 +157,10 @@ class Solution(object):
 
 # V0
 # IDEA : GRAPH + DFS
+# time = O(V + E)
+# space = O(V)
 class Solution:
-    
+
     def isBipartite(self, graph):
         n = len(graph)
         self.color = [0] * n
@@ -189,6 +195,8 @@ class Solution:
 # 5
 # 7
 # 9
+# time = O(V + E)
+# space = O(V + E)
 import collections
 class Solution(object):
     def isBipartite(self, graph):
@@ -218,7 +226,9 @@ class Solution(object):
 
 # V1
 # https://www.jiuzhang.com/solution/is-graph-bipartite/#tag-highlight-lang-python
-# IDEA : GRAPH + DFS OR BFS 
+# IDEA : GRAPH + DFS OR BFS
+# time = O(V + E)
+# space = O(V)
 class Solution:
     """
     @param graph: the given undirected graph
@@ -243,7 +253,9 @@ class Solution:
 
 # V1'
 # http://bookshadow.com/weblog/2018/02/18/leetcode-is-graph-bipartite/
-# IDEA : DFS + GRAPH 
+# IDEA : DFS + GRAPH
+# time = O(V + E)
+# space = O(V + E)
 import collections
 class Solution(object):
     def isBipartite(self, graph):
@@ -271,9 +283,9 @@ class Solution(object):
             if not dfs(k, 0): return False
         return True
 
-# V2 
-# Time:  O(|V| + |E|)
-# Space: O(|V|)
+# V2
+# time = O(|V| + |E|)
+# space = O(|V|)
 class Solution(object):
     def isBipartite(self, graph):
         """

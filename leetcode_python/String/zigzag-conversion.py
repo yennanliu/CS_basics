@@ -28,9 +28,11 @@ P     I
 # V0 
 
 
-# V1 
+# V1
 # https://blog.csdn.net/coder_orz/article/details/52039689
 # https://blog.csdn.net/fuxuemingzhu/article/details/80830509
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def convert(self, s, numRows):
         """
@@ -50,7 +52,9 @@ class Solution(object):
         return ''.join(arr)
 
 
-# V2 
+# V2
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def convert(self, s, numRows):
         """

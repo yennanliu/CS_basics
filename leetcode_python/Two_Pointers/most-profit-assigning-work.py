@@ -27,7 +27,9 @@ difficulty[i], profit[i], worker[i]  are in range [1, 10^5]
 
 # V1 
 # https://www.jiuzhang.com/solution/most-profit-assigning-work/#tag-highlight-lang-python
-# IDEA : GREEDY 
+# IDEA : GREEDY
+# time = O(n log n + m log m), n = len(difficulty), m = len(worker)
+# space = O(n)
 class Solution:
     def maxProfitAssignment(self, difficulty, profit, worker):
         jobs = sorted([a, b] for a, b in zip(difficulty, profit))
@@ -42,6 +44,8 @@ class Solution:
 # V1'
 # http://bookshadow.com/weblog/2018/04/29/leetcode-most-profit-assigning-work/
 # IDEA : GREEDY
+# time = O(D + n), D = max(difficulty + worker) - min(difficulty + worker)
+# space = O(D)
 import collections
 class Solution(object):
     def maxProfitAssignment(self, difficulty, profit, worker):
@@ -60,10 +64,9 @@ class Solution(object):
             maxVal = max(diffPro[x], maxVal)
         return sum(diffPro[w] for w in worker)
 
-# V2 
-# Time:  O(mlogm + nlogn), m is the number of workers,
-#                        , n is the number of jobs
-# Space: O(n)
+# V2
+# time = O(m log m + n log n), m is the number of workers, n is the number of jobs
+# space = O(n)
 class Solution(object):
     def maxProfitAssignment(self, difficulty, profit, worker):
         """

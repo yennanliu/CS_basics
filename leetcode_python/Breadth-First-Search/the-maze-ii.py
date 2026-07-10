@@ -102,9 +102,11 @@ It rolls until hitting a wall.
 
 
 
-# V0 
+# V0
 # IDEA: Dijkstra + `dist` matrix (GPT)
 # TODO: validate
+# time = O(m*n*log(m*n)*max(m,n)), m,n = maze dimensions; each heap pop/push is O(log(mn)), and each of the 4 directions rolls up to O(max(m,n)) cells
+# space = O(m*n)
 import heapq
 
 class Solution:
@@ -170,6 +172,8 @@ class Solution:
 # V0-1
 # IDEA: Dijkstra (GPT)
 # TODO: validate
+# time = O(m*n*log(m*n)*max(m,n)), m,n = maze dimensions; each heap pop/push is O(log(mn)), and each of the 4 directions rolls up to O(max(m,n)) cells
+# space = O(m*n)
 import heapq
 
 class Solution:
@@ -247,6 +251,8 @@ class Solution:
 # V0-2
 # IDEA: Dijkstra (GEMINI)
 # TODO: validate
+# time = O(m*n*log(m*n)*max(m,n)), m,n = maze dimensions; each heap pop/push is O(log(mn)), and each of the 4 directions rolls up to O(max(m,n)) cells
+# space = O(m*n)
 import heapq
 
 class Solution(object):
@@ -302,6 +308,8 @@ class Solution(object):
 # V1
 # https://leetcode.ca/2017-04-18-505-The-Maze-II/
 # IDEA: BFS
+# time = O(m*n*max(m,n)), m,n = maze dimensions; each cell can be re-enqueued when a shorter dist is found, each expansion rolls up to O(max(m,n)) cells
+# space = O(m*n)
 class Solution:
     def shortestDistance(
         self, maze: List[List[int]], start: List[int], destination: List[int]
@@ -328,6 +336,8 @@ class Solution:
 
 # V1
 # https://www.jiuzhang.com/solution/the-maze-ii/#tag-other-lang-python
+# time = O(m*n*max(m,n)), m,n = maze dimensions; each cell visited once via `visited`, each expansion rolls up to O(max(m,n)) cells
+# space = O(m*n)
 from collections import deque
 class Solution:
     def shortestDistance(self, maze, start, destination):
@@ -362,7 +372,9 @@ class Solution:
 
 # V1'
 # http://bookshadow.com/weblog/2017/01/29/leetcode-the-maze-ii/
-# IDEA : BFS 
+# IDEA : BFS
+# time = O(m*n), m,n = maze dimensions; O(m*n) to precompute dmap stop-positions in each direction, then O(m*n) BFS over precomputed stops
+# space = O(m*n)
 import collections
 class Solution(object):
     def findShortestWay(self, maze, ball, hole):
@@ -437,6 +449,8 @@ class Solution(object):
 # V1'''
 # http://bookshadow.com/weblog/2017/01/29/leetcode-the-maze-ii/
 # IDEA : Dijkstra ALGORITHM
+# time = O((m*n)^2), m,n = maze dimensions; `min(bmap.values())` scans up to O(m*n) entries on each of O(m*n) iterations (no heap used)
+# space = O(m*n)
 import collections
 class Solution(object):
     def findShortestWay(self, maze, ball, hole):
@@ -479,7 +493,9 @@ class Solution(object):
         
 # V1''''
 # https://www.jiuzhang.com/solution/the-maze-ii/#tag-other-lang-python
-# IDEA : BFS 
+# IDEA : BFS
+# time = O(m*n*max(m,n)), m,n = maze dimensions; each cell marked visited via maze[x][y]=2 (visited once), each expansion rolls up to O(max(m,n)) cells
+# space = O(m*n)
 import collections
 def shortestDistance(self, maze, start, destination):
         # write your code here
@@ -550,9 +566,9 @@ def shortestDistance(self, maze, start, destination):
 #     }
 # };
 
-# V2 
-# Time:  O(max(r, c) * wlogw)
-# Space: O(w)
+# V2
+# time = O(max(r, c) * w * log(w)), r,c = maze dimensions, w = r*c (number of cells); each heap pop/push is O(log(w)), neighbor generation rolls up to O(max(r,c))
+# space = O(w)
 import heapq
 class Solution(object):
     def shortestDistance(self, maze, start, destination):

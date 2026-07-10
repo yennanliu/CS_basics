@@ -3,6 +3,8 @@
 
 # V2
 # http://bookshadow.com/weblog/2016/08/10/leetcode-linked-list-random-node/
+# time = O(n)  # getRandom traverses the list
+# space = O(1)
 import random
 class Solution(object):
 
@@ -28,9 +30,9 @@ class Solution(object):
         return ans
 
 
-# V3 
-# Time:  O(n)
-# Space: O(1)
+# V3
+# time = O(n)
+# space = O(1)
 from random import randint
 class Solution(object):
 

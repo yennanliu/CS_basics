@@ -2,7 +2,9 @@
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/84498305
-# IDEA : GREEDY 
+# IDEA : GREEDY
+# time = O(n log n)
+# space = O(1)
 class Solution(object):
     def bagOfTokensScore(self, tokens, P):
         """
@@ -34,9 +36,9 @@ class Solution(object):
                 remain -= 1
         return points
         
-# V2 
-# Time:  O(nlogn)
-# Space: O(1)
+# V2
+# time = O(n log n)
+# space = O(1)
 class Solution(object):
     def bagOfTokensScore(self, tokens, P):
         """

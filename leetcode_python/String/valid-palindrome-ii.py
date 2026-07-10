@@ -29,10 +29,12 @@ s consists of lowercase English letters.
 
 """
 
-# V0 
+# V0
+# time = O(n)
+# space = O(n)
 class Solution:
     def validPalindrome(self, s):
-        
+
         l, r = 0, len(s) - 1
         
         while l < r:
@@ -53,9 +55,11 @@ class Solution:
 # V1
 # IDEA : 2 pointers + array op
 # https://leetcode.com/problems/valid-palindrome-ii/discuss/469677/JavaScript-and-Python-Solution
+# time = O(n)
+# space = O(n)
 class Solution:
     def validPalindrome(self, s: str) -> bool:
-        
+
         l, r = 0, len(s) - 1
         
         while l < r:
@@ -76,6 +80,8 @@ class Solution:
 # V1'
 # IDEA : 2 pointers + array op
 # https://leetcode.com/problems/valid-palindrome-ii/discuss/107723/Super-Simple-Python-Solution
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def validPalindrome(self, s):
         i = 0
@@ -91,6 +97,8 @@ class Solution(object):
 # V1''
 # IDEA : 2 pointers + RECURSIVE
 # https://leetcode.com/problems/valid-palindrome-ii/discuss/1123875/Python
+# time = O(n)
+# space = O(n)
 class Solution:
     def validPalindrome(self, s: str) -> bool:
         isPalindrome = lambda x: x == x[:: -1]
@@ -106,6 +114,8 @@ class Solution:
 # V1'''
 # IDEA : Two Pointers
 # https://leetcode.com/problems/valid-palindrome-ii/submissions/
+# time = O(n)
+# space = O(n)
 class Solution:
     def validPalindrome(self, s: str) -> bool:
         def check_palindrome(s, i, j):
@@ -130,6 +140,8 @@ class Solution:
 
 # V1''''
 # https://leetcode.com/problems/valid-palindrome-ii/discuss/1410354/Recursive-Python
+# time = O(n)
+# space = O(n)
 class Solution:
     def validPalindrome(self, s: str) -> bool:
         if not s:
@@ -149,6 +161,8 @@ class Solution:
 
 # V1'''''
 # https://leetcode.com/problems/valid-palindrome-ii/discuss/219079/Simple-Python-Solution
+# time = O(n^2)
+# space = O(n)
 class Solution:
     def isValid(self, s):
         try:

@@ -38,6 +38,8 @@ time is a valid time in the form "HH:MM".
 # IDEA : brute force + check subset of set
 # there is only 60 * 24 = 1440 min per day
 # so we can for loop over 1440 mins and check if all digits are still in original set (and return min if there is)
+# time = O(1) (at most 1440 iterations)
+# space = O(1)
 from datetime import datetime, timedelta
 class Solution:
     def nextClosestTime(self, time):
@@ -82,6 +84,8 @@ class Solution:
 # >>> set(c) <= set(b)
 # False 
 from datetime import *
+# time = O(1) (at most 1440 iterations)
+# space = O(1)
 class Solution:
     """
     @param time: the given time
@@ -96,6 +100,8 @@ class Solution:
 
 # V1
 # https://www.jiuzhang.com/solution/next-closest-time/#tag-highlight-lang-python
+# time = O(1) (at most 1440 iterations)
+# space = O(1)
 from datetime import *
 class Solution:
     """
@@ -117,7 +123,9 @@ class Solution:
 # x = 3, time[x] = 9, y = 2
 # x = 2, time[x] = 5, y = 3
 # x = 1, time[x] = 3, y = 5
-# x = 0, time[x] = 2, y = 9 
+# x = 0, time[x] = 2, y = 9
+# time = O(1)
+# space = O(1)
 class Solution(object):
     def nextClosestTime(self, time):
         """
@@ -134,9 +142,9 @@ class Solution(object):
                 if isValid(ntime): return ntime[:2] + ':' + ntime[2:]
         return stime[0] * 2 + ':' + stime[0] * 2
                 
-# V2 
-# Time:  O(1)
-# Space: O(1)
+# V2
+# time = O(1)
+# space = O(1)
 class Solution(object):
     def nextClosestTime(self, time):
         """

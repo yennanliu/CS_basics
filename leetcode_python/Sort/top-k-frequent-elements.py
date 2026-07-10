@@ -29,15 +29,17 @@ Follow up: Your algorithm's time complexity must be better than O(n log n), wher
 """
 
 # V0
+# time = O(n log n)
+# space = O(n)
 import collections
 class Solution(object):
     def topKFrequent(self, nums, k):
         freq_dict = dict(collections.Counter(nums))
-        # python sort a dict by value 
+        # python sort a dict by value
         # https://stackoverflow.com/questions/613183/how-do-i-sort-a-dictionary-by-value
         return [ x[0] for  x in sorted(list(freq_dict.items()), key=lambda x: x[1],reverse=True) ][:k]
 
-# V1 
+# V1
 import collections
 class Solution(object):
     def topKFrequent(self, nums, k):
@@ -48,6 +50,8 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/top-k-frequent-elements/#tag-highlight-lang-python
+# time = O(n log n)
+# space = O(n)
 class Solution:
     def topKFrequent(self, nums, k):
         # 统计元素的频率
@@ -62,9 +66,9 @@ class Solution:
             ret.append(freq_dict_sorted[i][0])
         return ret
 
-# V2 
-# Time:  O(n)
-# Space: O(n)
+# V2
+# time = O(n)
+# space = O(n)
 import collections
 class Solution(object):
     def topKFrequent(self, nums, k):
@@ -86,9 +90,9 @@ class Solution(object):
                     return result
         return result
 
-# V3 
-# Time:  O(n) ~ O(n^2), O(n) on average.
-# Space: O(n)
+# V3
+# time = O(n) ~ O(n^2), O(n) on average.
+# space = O(n)
 # Quick Select Solution
 from random import randint
 class Solution2(object):
@@ -133,9 +137,9 @@ class Solution2(object):
             else:  # new_pivot_idx < k - 1.
                 left = new_pivot_idx + 1
 
-# V4 
-# Time:  O(nlogk)
-# Space: O(n)
+# V4
+# time = O(n log k)
+# space = O(n)
 class Solution3(object):
     def topKFrequent(self, nums, k):
         """

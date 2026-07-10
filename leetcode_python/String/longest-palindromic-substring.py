@@ -32,6 +32,8 @@ s consist of only digits and English letters.
 #  -> step 2) and start from "center" 
 #  -> step 3) and do a while loop
 #  -> step 4) check if len of sub str > 1
+# time = O(n^2)
+# space = O(1)
 class Solution(object):
     def longestPalindrome(self, s):
         # edge
@@ -67,6 +69,8 @@ class Solution(object):
 
 # V0-1
 # IDEA : TWO POINTERS + IDX EXPANSION
+# time = O(n^2)
+# space = O(1)
 class Solution(object):
     def longestPalindrome(self, s):
         if not s:
@@ -112,6 +116,8 @@ class Solution(object):
     ```
 
 """
+# time = O(n^2)
+# space = O(n^2)
 class Solution(object):
     def longestPalindrome(self, s):
         if not s:
@@ -156,8 +162,8 @@ class Solution(object):
 #  -> step 3) and do a while loop
 #  -> step 4) check if len of sub str > 1
 # https://leetcode.com/problems/longest-palindromic-substring/discuss/1025355/Easy-to-understand-solution-with-O(n2)-time-complexity
-# Time complexity = best case O(n) to worse case O(n^2)
-# Space complexity = O(1) if not considering the space complexity for result, as all the comparison happens in place.
+# time = O(n^2)
+# space = O(1)
 class Solution:
     # The logic I have used is very simple, iterate over each character in the array and assming that its the center of a palindrome step in either direction to see how far you can go by keeping the property of palindrome true. The trick is that the palindrome can be of odd or even length and in each case the center will be different.
     # For odd length palindrome i am considering the index being iterating on is the center, thereby also catching the scenario of a palindrome with a length of 1.
@@ -216,6 +222,8 @@ class Solution:
 # V0'
 # IDEA : TWO POINTER + RECURSION
 # https://leetcode.com/problems/longest-palindromic-substring/discuss/1057629/Python.-Super-simple-and-easy-understanding-solution.-O(n2).
+# time = O(n^2)
+# space = O(1)
 class Solution:
     def longestPalindrome(self, s):
         res = ""
@@ -233,6 +241,8 @@ class Solution:
 # V0''
 # IDEA : TWO POINTERS
 # https://leetcode.com/problems/longest-palindromic-substring/discuss/1025496/Python-Clean-and-Simple
+# time = O(n^2)
+# space = O(n)
 class Solution:
     def longestPalindrome(self, s):
         left = 0
@@ -251,6 +261,8 @@ class Solution:
 # V0'''
 # IDEA : DP
 # https://leetcode.com/problems/longest-palindromic-substring/discuss/1194142/Super-Clean-DP-Python-Solution
+# time = O(n^2)
+# space = O(n^2)
 class Solution:
     def longestPalindrome(self, s):
             dp = [[0]*len(s) for _ in range(len(s))]   
@@ -266,6 +278,8 @@ class Solution:
 # V0'''
 # IDEA : BRUTE FORCE (TIME OUT ERROR)
 # brute force
+# time = O(n^3)
+# space = O(n)
 class Solution(object):
     def longestPalindrome(self, s):
         def check(_str):
@@ -284,6 +298,8 @@ class Solution(object):
 
 # V1
 # IDEA : LOOPING ON "MIDDLE"
+# time = O(n^2)
+# space = O(1)
 class Solution:
     """
     @param s: input string
@@ -292,7 +308,7 @@ class Solution:
     def longestPalindrome(self, s):
         if not s:
             return ""
-            
+
         longest = ""
         for middle in range(len(s)):
             sub = self.find_palindrome_from(s, middle, middle)
@@ -303,21 +319,23 @@ class Solution:
                 longest = sub
 
         return longest
-        
+
     def find_palindrome_from(self, string, left, right):
         while left >= 0 and right < len(string) and string[left] == string[right]:
             left -= 1
-            right += 1    
+            right += 1
         return string[left + 1:right]
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79573621
 # https://blog.csdn.net/qqxx6661/article/details/76864410
-# IDEA : DP 
+# IDEA : DP
 # STATUS EQUATION :
 # dp[i, j] = 1                                        if i == j
 #          = s[i] == s[j]                             if j = i + 1
-#          = s[i] == s[j] && dp[i + 1][j - 1]         if j > i + 1      
+#          = s[i] == s[j] && dp[i + 1][j - 1]         if j > i + 1
+# time = O(n^2)
+# space = O(n^2)
 class Solution(object):
     def longestPalindrome(self, s):
         """

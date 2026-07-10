@@ -1,7 +1,9 @@
 # V0 
 
-# V1 
+# V1
 # http://bookshadow.com/weblog/2016/08/15/leetcode-mini-parser/
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def deserialize(self, s):
         """
@@ -70,6 +72,8 @@ class NestedInteger(object):
        """
 
 
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def deserialize(self, s):
         if not s:

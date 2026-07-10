@@ -1,7 +1,9 @@
 # V0 
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/81749170
+# time = O(m + n)
+# space = O(m + n)
 class Solution:
     def uncommonFromSentences(self, A, B):
         """
@@ -18,9 +20,9 @@ class Solution:
                 ans.append(word)
         return ans
 
-# V2 
-# Time:  O(m + n)
-# Space: O(m + n)
+# V2
+# time = O(m + n)
+# space = O(m + n)
 import collections
 class Solution(object):
     def uncommonFromSentences(self, A, B):

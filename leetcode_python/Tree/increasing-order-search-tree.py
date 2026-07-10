@@ -8,6 +8,8 @@
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)
+# space = O(n), for the inorder array (plus O(h) recursion stack)
 class Solution(object):
     def increasingBST(self, root):
         """
@@ -41,6 +43,8 @@ class Solution(object):
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)
+# space = O(n), for the inorder array (plus O(h) recursion stack)
 class Solution(object):
     def increasingBST(self, root):
         """
@@ -75,6 +79,8 @@ class Solution(object):
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)
+# space = O(h), recursion stack only (no extra array)
 class Solution(object):
     def increasingBST(self, root):
         """
@@ -95,9 +101,9 @@ class Solution(object):
         self.prev = self.prev.right
         self.inOrder(root.right)
 
-# V2 
-# Time:  O(n)
-# Space: O(h)
+# V2
+# time = O(n)
+# space = O(h)
 class TreeNode(object):
     def __init__(self, x):
         self.val = x

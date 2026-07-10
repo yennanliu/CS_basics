@@ -5,7 +5,9 @@
 # IDEA : GREEDY 
 # sort two list firstly, then for loop greed list 
 # and move both index -> index + 1 if cookie > greed
-# only move greed's index -> index + 1 if cookie < greed 
+# only move greed's index -> index + 1 if cookie < greed
+# time = O(n log n)
+# space = O(1)
 class Solution:
     def findContentChildren(self, g, s):
         """
@@ -25,9 +27,9 @@ class Solution:
                 sp += 1
         return res
 
-# V2 
-# Time:  O(nlogn)
-# Space: O(1)
+# V2
+# time = O(n log n)
+# space = O(1)
 class Solution(object):
     def findContentChildren(self, g, s):
         """

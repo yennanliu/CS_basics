@@ -31,6 +31,8 @@ The number of nodes in the tree is in the range [0, 2000].
 
 # V0
 # IDEA : BFS
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def zigzagLevelOrder(self, root):
         # edge case
@@ -60,6 +62,8 @@ class Solution(object):
 
 # V0'
 # IDEA : DFS
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def zigzagLevelOrder(self, root):
         res = []
@@ -87,6 +91,8 @@ class Solution(object):
 #         self.left = None
 #         self.right = None
 from collections import deque
+# time = O(n)
+# space = O(n)
 class Solution:
     def zigzagLevelOrder(self, root):
         """
@@ -137,6 +143,8 @@ class Solution:
 #         self.left = None
 #         self.right = None
 from collections import deque
+# time = O(n)
+# space = O(n)
 class Solution:
     def zigzagLevelOrder(self, root):
         """
@@ -173,6 +181,8 @@ class Solution:
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)
+# space = O(n)
 class Solution:
     # @param root, a tree node
     # @return a list of lists of integers
@@ -188,9 +198,7 @@ class Solution:
         self.preorder(root, 0, res)
         return res
 
-# V2 
-# Time:  O(n)
-# Space: O(n)
+# V2
 class TreeNode(object):
     def __init__(self, x):
         self.val = x
@@ -198,6 +206,8 @@ class TreeNode(object):
         self.right = None
 
 
+# time = O(n)
+# space = O(n)
 class Solution(object):
     # @param root, a tree node
     # @return a list of lists of integers

@@ -32,6 +32,8 @@ The number of nodes in the tree is in the range [0, 105].
 # V0
 # IDEA : BFS
 # compare with LC 104 : Maximum Depth of Binary Tree
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def minDepth(self, root):
         # edge case
@@ -61,6 +63,8 @@ class Solution(object):
 # V0'
 # IDEA : DFS
 # compare with LC 104 : Maximum Depth of Binary Tree
+# time = O(n)
+# space = O(h), h is height of binary tree (recursion stack)
 class Solution(object):
     def minDepth(self, root):
         if not root:
@@ -76,6 +80,8 @@ class Solution(object):
 
 # V0''
 # IDEA : BFS
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def minDepth(self, root):
         if not root:
@@ -95,6 +101,8 @@ class Solution(object):
 # V1
 # https://blog.csdn.net/coder_orz/article/details/51337522
 # IDEA : DFS
+# time = O(n)
+# space = O(h), h is height of binary tree (recursion stack)
 class Solution(object):
     def minDepth(self, root):
         """
@@ -114,6 +122,8 @@ class Solution(object):
 # V1
 # http://bookshadow.com/weblog/2015/11/28/leetcode-minimum-depth-binary-tree/
 # IDEA : DFS
+# time = O(n)
+# space = O(h), h is height of binary tree (recursion stack)
 class Solution(object):
     def minDepth(self, root):
         """
@@ -130,7 +140,9 @@ class Solution(object):
 
 # V1'
 # http://bookshadow.com/weblog/2015/11/28/leetcode-minimum-depth-binary-tree/
-# IDEA : BFS 
+# IDEA : BFS
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def minDepth(self, root):
         if not root:
@@ -145,7 +157,7 @@ class Solution(object):
                     q.append([cur.left, step + 1])
                 if cur.right:
                     q.append([cur.right, step + 1])
-              
+
 # V1''
 # https://www.jiuzhang.com/solution/minimum-depth-of-binary-tree/#tag-highlight-lang-python
 """
@@ -155,11 +167,13 @@ class TreeNode:
         this.val = val
         this.left, this.right = None, None
 """
+# time = O(n)
+# space = O(h), h is height of binary tree (recursion stack)
 class Solution:
     """
     @param root: The root of binary tree.
     @return: An integer
-    """ 
+    """
     def minDepth(self, root):
         # write your code here
         return self.find(root)
@@ -179,15 +193,15 @@ class Solution:
             return left + 1
         return min(left,right) + 1
 
-# V2 
-# Time:  O(n)
-# Space: O(h), h is height of binary tree
+# V2
 class TreeNode(object):
     def __init__(self, x):
         self.val = x
         self.left = None
         self.right = None
 
+# time = O(n)
+# space = O(h), h is height of binary tree (recursion stack)
 class Solution(object):
     # @param root, a tree node
     # @return an integer

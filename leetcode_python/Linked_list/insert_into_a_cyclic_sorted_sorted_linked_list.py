@@ -31,6 +31,8 @@ The new node should insert between node 1 and node 3. After the insertion, the l
 # CASE 2) prev.val <= val <= cur.val
 # CASE 3) prev.val > cur.val and (val < cur.val or prev.val < cur): cur is either the min or the max with not all nodes with the same value
 # CASE 4) val != every nodes's value in a cyclic linked list where every node has the same value
+# time = O(n)  # n = number of nodes in the cyclic list
+# space = O(1)
 class Solution(object):
     def insert(self, head, val):
         node = Node(val, head)
@@ -63,6 +65,8 @@ class Solution(object):
                     
 # V1
 # https://blog.csdn.net/weixin_41677877/article/details/81200818
+# time = O(n)  # n = number of nodes in the cyclic list
+# space = O(1)
 class Solution:
     def insert(self, node, x):
         # write your code 
@@ -96,6 +100,8 @@ class Solution:
 # CASE 2) prev.val <= val <= cur.val
 # CASE 3) prev.val > cur.val and (val < cur.val or prev.val < cur): cur is either the min or the max with not all nodes with the same value
 # CASE 4) val != every nodes's value in a cyclic linked list where every node has the same value
+# time = O(n)  # n = number of nodes in the cyclic list
+# space = O(1)
 class Solution(object):
     def insert(self, head, val):
         """
@@ -129,6 +135,8 @@ class Solution(object):
 
 # V1''
 # https://github.com/dennyzhang/code.dennyzhang.com/tree/master/problems/insert-into-a-cyclic-sorted-list
+# time = O(n)  # n = number of nodes in the cyclic list
+# space = O(1)
 class Solution:
     def insert(self, head, insertVal):
         """
@@ -176,6 +184,8 @@ class Solution:
 
 # V1
 #  https://ttzztt.gitbooks.io/lc/content/linked-list/insert-into-a-cyclic-sorted-list.html
+# time = O(n)  # n = number of nodes in the cyclic list
+# space = O(1)
 class Solution(object):
     def insert(self, head, val):
         node = Node(val, head)

@@ -42,6 +42,8 @@ Google
 
 
 # V0
+# time = O(1)  # not implemented
+# space = O(1)  # not implemented
 class Solution:
     def expand(self, s):
         pass
@@ -67,6 +69,8 @@ for "{a,b}c{d,e}f",
 
 
 """
+# time = O(p * n)  # p = total number of expanded strings, n = length of s
+# space = O(p * n)
 class Solution:
     def expand(self, s):
         # groups will store every "choice group"
@@ -189,6 +193,8 @@ class Solution:
 
 # V1-2
 # IDEA: BFS (GEMINI)
+# time = O(p * n)  # p = total number of expanded strings, n = length of s
+# space = O(p * n)
 class Solution:
     def expand(self, s: str) -> list[str]:
         if not s:
@@ -233,6 +239,8 @@ class Solution:
 
 # V2
 # https://leetcode.ca/2018-11-21-1087-Brace-Expansion/
+# time = O(p * n)  # p = total number of expanded strings, n = length of s
+# space = O(p * n)
 class Solution:
     def expand(self, s: str) -> List[str]:
         def convert(s):

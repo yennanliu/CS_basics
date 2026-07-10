@@ -31,6 +31,8 @@ s1 and s2 consist of lowercase English letters.
 # IDEA: HASHMAP + SLIDE WINDOW
 from collections import Counter
 
+# time = O(n1 + n2)
+# space = O(1), at most 26 distinct lowercase letters
 class Solution(object):
     def checkInclusion(self, s1, s2):
         if len(s1) > len(s2):
@@ -71,6 +73,8 @@ class Solution(object):
 # IDEA: HASHMAP + SLIDE WINDOW
 from collections import Counter
 
+# time = O(n1 + n2)
+# space = O(1), at most 26 distinct lowercase letters
 class Solution(object):
     def checkInclusion(self, s1, s2):
         """
@@ -116,6 +120,8 @@ class Solution(object):
 
 # V0
 # IDEA : SORTRD + ARRAY INDEX
+# time = O((n2 - n1) * n1 * log(n1))
+# space = O(n1)
 class Solution(object):
     def checkInclusion(self, s1, s2):
         n1 = len(s1)
@@ -142,6 +148,8 @@ class Solution(object):
 # V0-1
 # IDEA :  sliding window + HASHMAP
 # https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/TwoPointer/PermutationInString.java#L48
+# time = O((n2 - n1) * n1)
+# space = O(n1)
 class Solution(object):
     def checkInclusion(self, s1, s2):
         # edge
@@ -174,6 +182,8 @@ class Solution(object):
 
 # V0-2
 # IDEA :  sliding window
+# time = O(n1 + n2)
+# space = O(1)
 class Solution(object):
     def checkInclusion(self, s1, s2):
         if len(s1) > len(s2):
@@ -201,6 +211,8 @@ class Solution(object):
         return False
 
 # V0-3
+# time = O((n2 - n1) * n1 * log(n1))
+# space = O(n1)
 class Solution(object):
     def checkInclusion(self, s1, s2):
         n1 = len(s1)
@@ -228,11 +240,13 @@ class Solution(object):
 
 # V0
 # IDEA : collections + sliding window
+# time = O(n1 + n2)
+# space = O(1)
 from collections import Counter
 class Solution(object):
     def checkInclusion(self, s1, s2):
         if len(s1) > len(s2):
-            return False   
+            return False
         l = 0
         tmp = ""
         _s1 = Counter(s1)
@@ -252,6 +266,8 @@ class Solution(object):
 
 # V0'
 # IDEA : collections + sliding window
+# time = O(n1 + n2)
+# space = O(1)
 class Solution(object):
     def checkInclusion(self, s1, s2):
         if len(s1) > len(s2):
@@ -275,6 +291,8 @@ class Solution(object):
 
 # V0
 # IDEA : collections + sliding window
+# time = O(n1 + n2)
+# space = O(1)
 import collections
 class Solution(object):
     def checkInclusion(self, s1, s2):
@@ -294,7 +312,7 @@ class Solution(object):
                 p += 1
         return False
 
-# V0' NEED TO FIX 
+# V0' NEED TO FIX
 # import collections
 # class Solution(object):
 #     def checkInclusion(self, s1, s2):
@@ -321,6 +339,8 @@ class Solution(object):
 
 # V1
 # http://bookshadow.com/weblog/2017/04/30/leetcode-permutation-in-string/
+# time = O(n1 + n2)
+# space = O(1)
 import collections
 class Solution(object):
     def checkInclusion(self, s1, s2):
@@ -347,6 +367,8 @@ class Solution(object):
 
 # V1'
 # http://bookshadow.com/weblog/2017/04/30/leetcode-permutation-in-string/
+# time = O(n1 + n2)
+# space = O(1)
 import collections
 class Solution(object):
     def checkInclusion(self, s1, s2):
@@ -378,6 +400,8 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/permutation-in-string/#tag-highlight-lang-python
+# time = O(n1 + n2)
+# space = O(1)
 import collections
 class Solution:
     def checkInclusion(self, s1, s2):
@@ -401,8 +425,8 @@ class Solution:
         return False
 
 # V2
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 import collections
 class Solution(object):
     def checkInclusion(self, s1, s2):

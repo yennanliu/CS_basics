@@ -56,6 +56,8 @@ It is guaranteed that there will be at least one element in the stack before cal
 #
 # push(x) will push x tom[++freq[x]]
 # pop() will pop from the m[maxfreq]
+# time = O(1)  # per push/pop operation
+# space = O(n)  # n = total number of pushed elements
 class FreqStack(object):
     def __init__(self):
         self.freq = collections.Counter()
@@ -78,6 +80,8 @@ class FreqStack(object):
 # V1'
 # IDEA : STACK
 # https://leetcode.com/problems/maximum-frequency-stack/solution/
+# time = O(1)  # per push/pop operation
+# space = O(n)
 class FreqStack(object):
 
     def __init__(self):
@@ -105,6 +109,8 @@ class FreqStack(object):
 # https://leetcode.com/problems/maximum-frequency-stack/discuss/1864976/Python-Heap-Solution
 # IDEA : 
 # The dict (self.d) keeps track of the frequency, adding when pushed and subtracting when popped, and the self.i takes care of the priority so it is sorted in order of the most recent entry in case of equal frequencies. We put the negative sign in front of the frequency/self.i when pushing to the stack as a makeshift way of turning Python's min heap into a max heap ...
+# time = O(log n)  # per push/pop operation, due to heap
+# space = O(n)
 class FreqStack(object):
 
     def __init__(self):
@@ -124,6 +130,8 @@ class FreqStack(object):
 
 # V1'''
 # https://leetcode.com/problems/maximum-frequency-stack/discuss/163565/Python-2-different-solutions
+# time = O(1)  # per push/pop operation
+# space = O(n)
 class FreqStack:
 
     def __init__(self):
@@ -145,6 +153,8 @@ class FreqStack:
 # V1''''
 # IDEA : DICT
 # https://leetcode.com/problems/maximum-frequency-stack/discuss/1087025/Python-dictionary-solution
+# time = O(1)  # per push/pop operation
+# space = O(n)
 class FreqStack:
 
     def __init__(self):
@@ -179,10 +189,12 @@ class FreqStack:
 
 # V1'''''
 # https://leetcode.com/problems/maximum-frequency-stack/discuss/163565/Python-2-different-solutions
+# time = O(log n)  # per push/pop operation, due to heap
+# space = O(n)
 class FreqStack:
 
     def __init__(self):
-        self.stack = [] 
+        self.stack = []
         self.cnt = collections.Counter()
         self.index = -1
 
@@ -199,6 +211,8 @@ class FreqStack:
 # V1''''''
 # IDEA : HEAP
 # https://leetcode.com/problems/maximum-frequency-stack/discuss/344640/python-heap
+# time = O(log n)  # per push/pop operation, due to heap
+# space = O(n)
 from collections import Counter
 import heapq
 

@@ -1,8 +1,10 @@
 # V0 
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79137225
-# IDEA : LINEAR SEARCH 
+# IDEA : LINEAR SEARCH
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def nextGreatestLetter(self, letters, target):
         """
@@ -17,9 +19,11 @@ class Solution(object):
                 return letter
         return letters[0]
 
-# V1' 
+# V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79137225
-# IDEA : BINARY SEARCH 
+# IDEA : BINARY SEARCH
+# time = O(log n)
+# space = O(1)
 class Solution(object):
     def nextGreatestLetter(self, letters, target):
         """
@@ -30,9 +34,9 @@ class Solution(object):
         index = bisect.bisect_right(letters, target)
         return letters[index % len(letters)]
        
-# V2 
-# Time:  O(logn)
-# Space: O(1)
+# V2
+# time = O(log n)
+# space = O(1)
 import bisect
 class Solution(object):
     def nextGreatestLetter(self, letters, target):

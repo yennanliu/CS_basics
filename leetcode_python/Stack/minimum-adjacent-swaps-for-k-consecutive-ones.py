@@ -46,6 +46,8 @@ nums[i] is 0 or 1.
 # that has minimum distance to their median sequence.
 # To solve this, we need to use the prefix sum of A,
 # which is B in this solution.
+# time = O(n)
+# space = O(n)
 class Solution:
      def minMoves(self, A, k):
             A = [i for i, a in enumerate(A) if a]
@@ -62,6 +64,8 @@ class Solution:
 # V1'
 # IDEA : SLIDING WINDOW
 # https://leetcode.com/problems/minimum-adjacent-swaps-for-k-consecutive-ones/discuss/987607/O(n)-explanation-with-picture
+# time = O(n)
+# space = O(n)
 class Solution:
     def minMoves(self, nums: List[int], k: int) -> int:
         p = [i for i, v in enumerate(nums) if v == 1]
@@ -103,6 +107,8 @@ class Solution:
 # V1''
 # IDEA : SLIDING WINDOW 
 # https://leetcode.com/problems/minimum-adjacent-swaps-for-k-consecutive-ones/discuss/988056/Python-O(n)-Sliding-Window-with-detailed-explanation
+# time = O(n)
+# space = O(n)
 class Solution:
     def minMoves(self, nums: List[int], k: int) -> int:
         # we use a rolling window, which keeps indices of consecutive k appearences of 1s
@@ -117,13 +123,11 @@ class Solution:
         # the median x changes but the summation does not change
         # therefore, for ith occurence of 1, we subtract its index with k, ai -> ai-i.
         # To find the rolling maximum value of c = |a0-x| + |(a1-1) - x| + |(a(k-1) - (k-1)) - x|
-        # we just need to update the value instead of recalculating. 
+        # we just need to update the value instead of recalculating.
         # When we update the median from x -> y, for the first
         # half A we add (y-x) to each of them, for the second half of A we subtract (y-x)
         # and we need to remove |a0-x| and include |ak-y| where ak is the next index of 1
-		
-		# Time complexity: O(n), space complexity: O(n)
-        
+
         ones = []
         for i in range(len(nums)):
             if nums[i] == 1:
@@ -154,6 +158,8 @@ class Solution:
 # V1'''
 # IDEA : SLIDING WINDOW
 # https://leetcode.com/problems/minimum-adjacent-swaps-for-k-consecutive-ones/discuss/987362/Python-The-trick-and-related-problems
+# time = O(n)
+# space = O(n)
 class Solution:
     def minMoves(self, nums: List[int], k: int) -> int:
         pos = [p for p,x in enumerate(nums) if x == 1]
@@ -188,6 +194,8 @@ class Solution:
 # V1''''
 # IDEA : SLIDING WINDOW
 # https://blog.51cto.com/u_15344287/3647241
+# time = O(n)
+# space = O(n)
 class Solution:
     def minMoves(self, nums, k):
         # count distance between each "1"
@@ -227,6 +235,8 @@ class Solution:
 # V1'''''''
 # IDEA : SLIDING WINDOW
 # https://zhuanlan.zhihu.com/p/448747037
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def minMoves(self, nums, k):
         p = []

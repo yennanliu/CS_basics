@@ -1,6 +1,8 @@
-# V0 
+# V0
 # https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Linked_list/reverse-linked-list.py
-# TO VALIDATE 
+# TO VALIDATE
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def sortList(self, head):
         head_list = []
@@ -24,13 +26,15 @@ class Solution(object):
 #     def __init__(self, x):
 #         self.val = x
 #         self.next = None
+# time = O(n log n)
+# space = O(log n)
 class Solution(object):
     def sortList(self, head):
         """
         :type head: ListNode
         :rtype: ListNode
         """
-        if not head or not head.__next__: 
+        if not head or not head.__next__:
             return head
         pre, slow, fast = head, head, head
         while fast and fast.__next__:
@@ -60,9 +64,9 @@ class Solution(object):
         move.next = l1 if l1 else l2
         return head.__next__
 
-# V3 
-# Time:  O(nlogn)
-# Space: O(logn) for stack call
+# V3
+# time = O(n log n)
+# space = O(log n) for stack call
 class ListNode(object):
     def __init__(self, x):
         self.val = x

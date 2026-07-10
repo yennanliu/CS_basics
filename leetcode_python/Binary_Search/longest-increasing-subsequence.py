@@ -39,6 +39,8 @@ Follow up: Can you come up with an algorithm that runs in O(n log(n)) time compl
 
 # V0
 # IDEA: 1D DP
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def lengthOfLIS(self, nums):
         # Edge case:
@@ -97,6 +99,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: 1D DP
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def lengthOfLIS(self, nums):
         """
@@ -139,8 +143,9 @@ class Solution(object):
 # PROCESS : 
 # Start from dp[0], then go through all nums
 # and update dp on the same time
-# then return max(dp) which is the longest lengh of the sub-array  
-# time complexity : O(n^2), space complexity : O(n)
+# then return max(dp) which is the longest lengh of the sub-array
+# time = O(n^2)
+# space = O(n)
 class Solution:
     def lengthOfLIS(self, nums):
         # write your code here
@@ -158,10 +163,12 @@ class Solution:
 
 # V0'
 # IDEA : ARRAY
+# time = O(n^2) (linear scan to find insertion point)
+# space = O(n)
 class Solution:
     def lengthOfLIS(self, nums):
         sub = [nums[0]]
-        
+
         for num in nums[1:]:
             if num > sub[-1]:
                 sub.append(num)
@@ -175,8 +182,9 @@ class Solution:
         return len(sub)
 
 # V0''
-# IDEA : DP 
-# time complexity : O(n^2), space complexity : O(n)
+# IDEA : DP
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def lengthOfLIS(self, nums):
         """
@@ -197,6 +205,8 @@ class Solution(object):
 # V0'''
 # IDEA : improve With Binary Search
 # https://leetcode.com/problems/longest-increasing-subsequence/solution/
+# time = O(n log n)
+# space = O(n)
 class Solution:
     def lengthOfLIS(self, nums):
         sub = []
@@ -206,16 +216,18 @@ class Solution:
             # If num is greater than any element in sub
             if i == len(sub):
                 sub.append(num)
-            
+
             # Otherwise, replace the first element in sub greater than or equal to num
             else:
                 sub[i] = num
-        
+
         return len(sub)
 
 # V1
 # IDEA : DP
 # https://leetcode.com/problems/longest-increasing-subsequence/solution/
+# time = O(n^2)
+# space = O(n)
 class Solution:
     def lengthOfLIS(self, nums: List[int]) -> int:
         dp = [1] * len(nums)
@@ -229,6 +241,8 @@ class Solution:
 # V1
 # IDEA : Intelligently Build a Subsequence
 # https://leetcode.com/problems/longest-increasing-subsequence/solution/
+# time = O(n^2) (linear scan to find insertion point)
+# space = O(n)
 class Solution:
     def lengthOfLIS(self, nums: List[int]) -> int:
         sub = [nums[0]]
@@ -248,6 +262,8 @@ class Solution:
 # V1
 # IDEA : improve With Binary Search
 # https://leetcode.com/problems/longest-increasing-subsequence/solution/
+# time = O(n log n)
+# space = O(n)
 class Solution:
     def lengthOfLIS(self, nums: List[int]) -> int:
         sub = []
@@ -264,9 +280,11 @@ class Solution:
         
         return len(sub)
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79820919
-# IDEA : DP 
+# IDEA : DP
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def lengthOfLIS(self, nums):
         """
@@ -287,6 +305,8 @@ class Solution(object):
 # V1'
 # https://www.jiuzhang.com/solution/longest-increasing-subsequence/#tag-highlight-lang-python
 # IDEA : DP
+# time = O(n^2)
+# space = O(n)
 class Solution:
     """
     @param nums: The integer array
@@ -306,7 +326,8 @@ class Solution:
 # V1''
 # https://www.jiuzhang.com/solution/longest-increasing-subsequence/#tag-highlight-lang-python
 # IDEA : DP + binary search
-# time complexity : O(nlogn), space complexity : O(n)
+# time = O(n^2) (this implementation's inner loop is a linear scan, not binary search)
+# space = O(n)
 class Solution:
     """
     @param nums: The integer array
@@ -347,6 +368,8 @@ class Solution:
 
 # V1'''
 # https://www.jiuzhang.com/solution/longest-increasing-subsequence/#tag-highlight-lang-python
+# time = O(n log n)
+# space = O(n)
 class Solution:
     """
     @param nums: An integer array
@@ -380,9 +403,9 @@ class Solution:
                 g[l] = min(g[l], nums[i])
         return lis
 
-# V2 
-# Time:  O(nlogn)
-# Space: O(n)
+# V2
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def lengthOfLIS(self, nums):
         """
@@ -410,8 +433,8 @@ class Solution(object):
 
         return len(LIS)
 
-# Time:  O(n^2)
-# Space: O(n)
+# time = O(n^2)
+# space = O(n)
 # Traditional DP solution.
 class Solution2(object):
     def lengthOfLIS(self, nums):

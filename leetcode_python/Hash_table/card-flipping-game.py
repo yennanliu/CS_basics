@@ -1,8 +1,10 @@
 # V0 
 
-# V1 
+# V1
 # http://bookshadow.com/weblog/2018/04/22/leetcode-card-flipping-game/
-# IDEA : GREEDY 
+# IDEA : GREEDY
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def flipgame(self, fronts, backs):
         """
@@ -18,6 +20,8 @@ class Solution(object):
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/82861796
+# time = O(n)
+# space = O(n)
 class Solution:
     def flipgame(self, fronts, backs):
         """
@@ -47,13 +51,15 @@ class Solution:
     @return: nothing
     find the min value on two sides of the same card across different times
     """
+    # time = O(n)
+    # space = O(n)
     def flipgame(self, f, b):
         same = {x for x, y in zip(f, b) if x == y}
         return min([i for i in f + b if i not in same] or [0])
 
-# V2 
-# Time:  O(n)
-# Space: O(n)
+# V2
+# time = O(n)
+# space = O(n)
 import itertools
 class Solution(object):
     def flipgame(self, fronts, backs):

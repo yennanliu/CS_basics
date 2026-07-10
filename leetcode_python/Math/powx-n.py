@@ -37,8 +37,10 @@ Constraints:
 # -> 4 * myPow(16, 2)
 # -> 4 * myPow(256, 1)
 # -> 4 * 256 * myPow(myPow, 0)
-# -> 4 * 256 * 1 
+# -> 4 * 256 * 1
 # => 1024 (final result)
+# time = O(log n)
+# space = O(log n)  # recursion depth
 class Solution(object):
     def myPow(self, x, n):
         if n == 0:
@@ -51,8 +53,10 @@ class Solution(object):
             return x * self.myPow(x, n - 1) ### NOTE : x * self.myPow(x, n - 1)
         return self.myPow(x * x, n / 2) ### NOTE : x * x
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/82960833
+# time = O(log n)
+# space = O(log n)  # recursion depth
 class Solution(object):
     def myPow(self, x, n):
         """
@@ -73,6 +77,8 @@ class Solution(object):
 # https://blog.csdn.net/fuxuemingzhu/article/details/82960833
 # IDEA : ITERATION (二分求冪)
 # https://segmentfault.com/a/1190000020655190
+# time = O(log n)
+# space = O(1)
 class Solution(object):
     def myPow(self, x, n):
         """
@@ -94,9 +100,9 @@ class Solution(object):
             x *= x
         return ans
 
-# V2 
-# Time:  O(logn) = O(1)
-# Space: O(1)
+# V2
+# time = O(logn)
+# space = O(1)
 class Solution(object):
     def myPow(self, x, n):
         """
@@ -113,9 +119,9 @@ class Solution(object):
             x *= x
         return 1 / result if n < 0 else result
         
-# V3 
-# Time:  O(logn)
-# Space: O(logn)
+# V3
+# time = O(logn)
+# space = O(logn)
 # Recursive solution.
 class Solution2(object):
     def myPow(self, x, n):

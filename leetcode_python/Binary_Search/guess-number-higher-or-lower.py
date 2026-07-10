@@ -18,13 +18,15 @@
 
 # V0 
 
-# V1 
+# V1
 # https://blog.csdn.net/coder_orz/article/details/52038995
-# IDEA : ITERATION 
+# IDEA : ITERATION
 # The guess API is already defined for you.
 # @param num, your guess
 # @return -1 if my number is lower, 1 if my number is higher, otherwise return 0
 # def guess(num):
+# time = O(log n)
+# space = O(1)
 class Solution(object):
     def guessNumber(self, n):
         """
@@ -41,9 +43,11 @@ class Solution(object):
             else:
                 return mid
 
-# V1' 
+# V1'
 # https://blog.csdn.net/coder_orz/article/details/52038995
-# IDEA : RECURSION 
+# IDEA : RECURSION
+# time = O(log n)
+# space = O(log n) (recursion call stack)
 class Solution(object):
     def guessNumber(self, n):
         """
@@ -60,6 +64,8 @@ class Solution(object):
             return self.guessIn(left, mid-1) if guess(mid) == -1 else self.guessIn(mid+1, right)
 
 # V2
+# time = O(log n)
+# space = O(1)
 class Solution(object):
     def guessNumber(self, n):
         """
@@ -78,6 +84,8 @@ class Solution(object):
         return left
 
 # V3
+# time = O(log n)
+# space = O(1)
 class Solution(object):
     def guessNumber(self, n):
         """
@@ -93,9 +101,9 @@ class Solution(object):
                 left = mid + 1
         return left
 
-# V4 
-# Time:  O(logn)
-# Space: O(1)
+# V4
+# time = O(log n)
+# space = O(1)
 class Solution(object):
     def guessNumber(self, n):
         """

@@ -11,6 +11,8 @@
 
 # V1
 # https://www.jiuzhang.com/solution/sort-transformed-array/#tag-highlight-lang-python
+# time = O(n)
+# space = O(n)
 class Solution:
     """
     @param nums: a sorted array
@@ -73,9 +75,9 @@ class Solution:
 #     }
 # };
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def sortTransformedArray(self, nums, a, b, c):
         """

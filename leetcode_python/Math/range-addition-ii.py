@@ -12,9 +12,9 @@
 # 		return min(output)
 
 
-# V2 
-# Time:  O(p), p is the number of ops
-# Space: O(1)
+# V2
+# time = O(p), p is the number of ops
+# space = O(1)
 class Solution(object):
     def maxCount(self, m, n, ops):
         """

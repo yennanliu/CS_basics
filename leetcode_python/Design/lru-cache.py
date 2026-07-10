@@ -47,6 +47,8 @@ At most 2 * 105 calls will be made to get and put.
 
 # V0
 # IDEA: OrderedDict
+# time = O(1) per get/put operation
+# space = O(capacity)
 from collections import OrderedDict
 
 class LRUCache(object):
@@ -97,6 +99,8 @@ class Node:
         self.next = None
 
 
+# time = O(1) per get/put operation
+# space = O(capacity)
 class LRUCache:
 
     def __init__(self, capacity):
@@ -176,6 +180,8 @@ class Node:
         self.prev = None
         self.next = None
 
+# time = O(1) per get/put operation
+# space = O(capacity)
 class LRUCache(object):
 
     def __init__(self, capacity):
@@ -247,7 +253,8 @@ class LRUCache(object):
 
 # V0
 # IDEA : ARRAY + LRU (implement LRU via array)
-# time: O(N) for get/put, space: O(capacity)
+# time = O(n) for get/put (list.remove is O(n))
+# space = O(capacity)
 class LRUCache(object):
 
     def __init__(self, capacity):
@@ -308,6 +315,8 @@ class LRUCache(object):
 #       -> There is a structure called ordered dictionary, it combines behind both hashmap and linked list. 
 #       -> In Python this structure is called OrderedDict 
 #       -> and in Java LinkedHashMap.
+# time = O(1) per get/put operation
+# space = O(capacity)
 from collections import OrderedDict
 class LRUCache(OrderedDict):
 
@@ -349,13 +358,15 @@ class LRUCache(OrderedDict):
 # V1'
 # IDEA : Hashmap + DoubleLinkedList
 # https://leetcode.com/problems/lru-cache/solution/
-class DLinkedNode(): 
+class DLinkedNode():
     def __init__(self):
         self.key = 0
         self.value = 0
         self.prev = None
         self.next = None
-            
+
+# time = O(1) per get/put operation
+# space = O(capacity)
 class LRUCache():
     def _add_node(self, node):
         """
@@ -450,6 +461,8 @@ class LRUCache():
 # V1''
 # IDEA : OrderedDict
 # https://leetcode.com/problems/lru-cache/discuss/595933/Python-OrderedDict-sol.-90%2B-w-Hint
+# time = O(1) per get/put operation
+# space = O(capacity)
 from collections import OrderedDict
 class LRUCache:
 
@@ -496,6 +509,8 @@ class ListNode:
         self.prev = self
         self.next = self
 
+# time = O(1) per get/put operation
+# space = O(capacity)
 class LRUCache:
 
     def __init__(self, capacity):
@@ -551,6 +566,8 @@ class LRUCache:
 
 # V1'
 # https://blog.csdn.net/laughing2333/article/details/70231547
+# time = O(n) for get/put (list.remove is O(n))
+# space = O(capacity)
 class LRUCache(object):
 
     def __init__(self, capacity):

@@ -42,6 +42,8 @@ nums[i] != nums[i + 1] for all valid i.
 #
 # NOTE : ONLY have to compare index i with index i + 1 (its right element)
 #        ; otherwise, i-1 already returned as answer
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def findPeakElement(self, nums):
         for i in range(len(nums)-1):
@@ -57,8 +59,10 @@ class Solution(object):
 # IDEA :  Linear Scan + problem understanding
 # NOTE :  If the array contains multiple peaks, return the index to any of the peaks.
 #   -> e.g. for nums = [1,2,1,3,5,6,4], we can return EITHER index = 1 or 5
+# time = O(n)
+# space = O(1)
 class Solution(object):
-    def findPeakElement(self, nums):       
+    def findPeakElement(self, nums):
         if len(nums) <= 2:
             _max = max(nums)
             return nums.index(_max)
@@ -71,6 +75,8 @@ class Solution(object):
 
 # V0'
 # IDEA : RECURSIVE BINARY SEARCH
+# time = O(logn)
+# space = O(logn)   # recursion stack
 class Solution(object):
     def findPeakElement(self, nums):
 
@@ -90,6 +96,8 @@ class Solution(object):
 # V1
 # https://leetcode.com/problems/find-peak-element/solution/
 # IDEA :  Linear Scan + problem understanding
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def findPeakElement(self, nums):
         for i in range(len(nums)-1):
@@ -100,6 +108,8 @@ class Solution(object):
 # V1'
 # IDEA : RECURSIVE BINARY SEARCH
 # https://leetcode.com/problems/find-peak-element/solution/
+# time = O(logn)
+# space = O(logn)
 class Solution(object):
     def findPeakElement(self, nums):
 
@@ -113,8 +123,10 @@ class Solution(object):
 
         return help(nums, 0, len(nums)-1)
 
-# V1 
+# V1
 # https://blog.csdn.net/aliceyangxi1987/article/details/50484982
+# time = O(logn)
+# space = O(logn)
 class Solution(object):
     def findPeakElement(self, nums):
         """
@@ -138,6 +150,8 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/find-peak-element/#tag-highlight-lang-python
+# time = O(logn)
+# space = O(1)
 class Solution:
     #@param A: An integers list.
     #@return: return any of peek positions.
@@ -157,9 +171,9 @@ class Solution:
         else:
             return start
 
-# V2 
-# Time:  O(logn)
-# Space: O(1)
+# V2
+# time = O(logn)
+# space = O(1)
 class Solution(object):
     def findPeakElement(self, nums):
         """

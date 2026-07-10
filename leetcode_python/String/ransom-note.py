@@ -30,7 +30,9 @@ ransomNote and magazine consist of lowercase English letters.
 
 """
 
-# V0 
+# V0
+# time = O(m + n)
+# space = O(m + n)
 from collections import Counter
 class Solution(object):
     def canConstruct(self, ransomNote, magazine):
@@ -41,8 +43,10 @@ class Solution(object):
                 return False
         return True
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/54178342
+# time = O(m + n)
+# space = O(m + n)
 class Solution:
     def canConstruct(self, ransomNote, magazine):
         """
@@ -57,7 +61,9 @@ class Solution:
                 return False
         return True
 
-# V2 
+# V2
+# time = O(m + n)
+# space = O(1) (26-letter fixed-size array)
 class Solution(object):
     def canConstruct(self, ransomNote, magazine):
         """
@@ -83,9 +89,9 @@ class Solution(object):
         return letters == 0
 
 
-# V3 
-# Time:  O(n)
-# Space: O(1)
+# V3
+# time = O(m + n)
+# space = O(m + n)
 import collections
 class Solution2(object):
     def canConstruct(self, ransomNote, magazine):
@@ -96,9 +102,9 @@ class Solution2(object):
         """
         return not collections.Counter(ransomNote) - collections.Counter(magazine)
 
-# V3 
-# Time:  O(n)
-# Space: O(1)
+# V3
+# time = O(m + n)
+# space = O(1) (26-letter fixed-size array)
 class Solution(object):
     def canConstruct(self, ransomNote, magazine):
         """
@@ -123,8 +129,8 @@ class Solution(object):
 
         return letters == 0
 
-# Time:  O(n)
-# Space: O(1)
+# time = O(m + n)
+# space = O(m + n)
 import collections
 class Solution2(object):
     def canConstruct(self, ransomNote, magazine):

@@ -37,6 +37,8 @@ The number of nodes in the tree is in the range [0, 5000].
 
 # V0
 # IDEA: DFS (post order) + helper func
+# time = O(n^2), height helper recomputed at every node
+# space = O(h), h = tree height (recursion stack)
 class Solution(object):
     def isBalanced(self, root):
         # edge
@@ -63,6 +65,8 @@ class Solution(object):
 
 
 # V0-1
+# time = O(n^2), height helper recomputed at every node
+# space = O(h), h = tree height (recursion stack)
 class Solution(object):
     def isBalanced(self, root):
         if not root:
@@ -91,6 +95,8 @@ class Solution(object):
 
 
 # V0-2
+# time = O(n^2), height helper recomputed at every node
+# space = O(h), h = tree height (recursion stack)
 class Solution(object):
     def isBalanced(self, root):
         """
@@ -127,6 +133,8 @@ class Solution(object):
 
 # V0
 # https://blog.csdn.net/coder_orz/article/details/51335758
+# time = O(n^2), getAllDepth traverses subtree at every recursive call
+# space = O(h), h = tree height (recursion stack)
 class Solution(object):
     def isBalanced(self, root):
         """
@@ -154,6 +162,8 @@ class Solution(object):
 # V1
 # IDEA : TOP DOWN RECURSION
 # https://leetcode.com/problems/balanced-binary-tree/solution/
+# time = O(n^2), height recomputed at every node
+# space = O(h), h = tree height (recursion stack)
 class Solution:
     # Compute the tree's height via recursion
     def height(self, root: TreeNode) -> int:
@@ -176,6 +186,8 @@ class Solution:
 # V1'
 # IDEA : BOTTOM UP RECURSION
 # https://leetcode.com/problems/balanced-binary-tree/solution/
+# time = O(n), each node visited once
+# space = O(h), h = tree height (recursion stack)
 class Solution:
     # Return whether or not the tree at root is balanced while also returning
     # the tree's height
@@ -201,7 +213,9 @@ class Solution:
 
 # V1''
 # https://blog.csdn.net/coder_orz/article/details/51335758
-# IDEA : DFS 
+# IDEA : DFS
+# time = O(n^2), getAllDepth traverses subtree at every recursive call
+# space = O(h), h = tree height (recursion stack)
 class Solution(object):
     def isBalanced(self, root):
         """
@@ -229,6 +243,8 @@ class Solution(object):
 # V1'''
 # https://blog.csdn.net/coder_orz/article/details/51335758
 # IDEA : OPTIMIZED DFS
+# time = O(n), each node visited once
+# space = O(h), h = tree height (recursion stack)
 class Solution(object):
     def isBalanced(self, root):
         """
@@ -251,7 +267,9 @@ class Solution(object):
 
 # V1''''
 # https://blog.csdn.net/coder_orz/article/details/51335758
-# IDEA : RECURSION 
+# IDEA : RECURSION
+# time = O(n^2), getDepth recomputed at every node
+# space = O(h), h = tree height (recursion stack)
 class Solution(object):
     def isBalanced(self, root):
         """
@@ -282,6 +300,8 @@ class TreeNode:
         this.val = val
         this.left, this.right = None, None
 """
+# time = O(n), each node visited once
+# space = O(h), h = tree height (recursion stack)
 class Solution:
     """
     @param root: The root of binary tree.
@@ -304,8 +324,8 @@ class Solution:
         return abs(leftHeight - rightHeight) <= 1, max(leftHeight , rightHeight) + 1
 
 # V2
-# Time:  O(n)
-# Space: O(h), h is height of binary tree
+# time = O(n)
+# space = O(h), h is height of binary tree
 class TreeNode(object):
     def __init__(self, x):
         self.val = x

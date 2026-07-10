@@ -1,7 +1,9 @@
 # V0 
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79391682
+# time = O(n * k), n = number of words in sentence, k = max word length
+# space = O(d), d = total length of dict words
 class Solution(object):
     def replaceWords(self, dict, sentence):
         """
@@ -18,8 +20,8 @@ class Solution(object):
         return ' '.join(map(replace, sentence.split()))
 
 # V2
-# Time:  O(n)
-# Space: O(t), t is the number of nodes in trie
+# time = O(n), n is total number of characters in dictionary + sentence
+# space = O(t), t is the number of nodes in trie
 import collections
 class Solution(object):
     def replaceWords(self, dictionary, sentence):

@@ -1,5 +1,7 @@
-# V0 
+# V0
 # IDEA : DFS
+# time = O(n + e), n = N, e = len(dislikes)
+# space = O(n + e)
 class Solution:
     """
     @param N:  sum of the set
@@ -33,6 +35,8 @@ class Solution:
 # V1
 # https://www.jiuzhang.com/solution/possible-bipartition/#tag-highlight-lang-python
 # IDEA : DFS
+# time = O(n + e), n = N, e = len(dislikes)
+# space = O(n + e)
 class Solution:
     """
     @param N:  sum of the set
@@ -66,7 +70,9 @@ class Solution:
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/82827177
 # https://www.youtube.com/watch?v=VlZiMD7Iby4
-# IDEA : BFS 
+# IDEA : BFS
+# time = O(n + e), n = N, e = len(dislikes)
+# space = O(n + e)
 import collections
 class Solution(object):
     def possibleBipartition(self, N, dislikes):
@@ -96,9 +102,9 @@ class Solution(object):
                         bfs.append(e)
         return True
 
-# V2 
-# Time:  O(|V| + |E|)
-# Space: O(|V| + |E|)
+# V2
+# time = O(|V| + |E|)
+# space = O(|V| + |E|)
 import collections
 class Solution(object):
     def possibleBipartition(self, N, dislikes):

@@ -69,6 +69,8 @@ s consists of English letters (lower-case and upper-case), digits (0-9), ' ', '+
 
 # V0
 # IDEA : REGEX
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def myAtoi(self, str):
         str = str.strip()
@@ -85,6 +87,8 @@ class Solution(object):
 
 # V0'
 # IDEA : string op
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def myAtoi(self, _str):
         _str = _str.strip()
@@ -145,9 +149,11 @@ class Solution(object):
 # V1
 # IDEA : Follow the Rules
 # https://leetcode.com/problems/string-to-integer-atoi/solution/
+# time = O(n)
+# space = O(1)
 class Solution:
     def myAtoi(self, input: str) -> int:
-        sign = 1 
+        sign = 1
         result = 0
         index = 0
         n = len(input)
@@ -188,6 +194,8 @@ class Solution:
 # V1
 # IDEA : Deterministic Finite Automaton (DFA)
 # https://leetcode.com/problems/string-to-integer-atoi/solution/
+# time = O(n)
+# space = O(1)
 class StateMachine:
     def __init__(self):
         self.State = { "q0": 1, "q1": 2, "q2": 3, "qd": 4 }
@@ -268,6 +276,8 @@ class StateMachine:
         """Get current state."""
         return self.__current_state
 
+# time = O(n)
+# space = O(1)
 class Solution:
     def myAtoi(self, input: str) -> int:
         q = StateMachine()
@@ -279,8 +289,10 @@ class Solution:
 
         return q.get_integer()
 
-# V1 
+# V1
 # https://blog.csdn.net/coder_orz/article/details/52053932
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def myAtoi(self, _str):
         _str = _str.strip()
@@ -305,7 +317,9 @@ class Solution(object):
 
 # V1'
 # https://blog.csdn.net/coder_orz/article/details/52053932
-# IDEA : REGULAR EXPRESSION 
+# IDEA : REGULAR EXPRESSION
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def myAtoi(self, str):
         """
@@ -324,6 +338,8 @@ class Solution(object):
 
 # V1''
 # https://www.jiuzhang.com/solution/string-to-integer-atoi/#tag-highlight-lang-python
+# time = O(n)
+# space = O(1)
 class Solution(object):
     # string -> int, remove prefix and +, -. Please note the max, min interval of int when transform
     def atoi(self, str):
@@ -354,7 +370,9 @@ class Solution(object):
             return MaxInt * - 1 - 1 
         return ret
 
-# V2 
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def myAtoi(self, str):
         """

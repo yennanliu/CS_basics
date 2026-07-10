@@ -5,6 +5,8 @@
 # V2 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79542812
 import collections
+# time = O(n)  # n = len(s)
+# space = O(1)  # fixed alphabet / 10 words
 class Solution(object):
     def originalDigits(self, s):
         """
@@ -30,6 +32,8 @@ class Solution(object):
 
 # V3 
 # http://bookshadow.com/weblog/2016/10/16/leetcode-reconstruct-original-digits-from-english/
+# time = O(n)  # n = len(s)
+# space = O(1)  # fixed alphabet / 10 words
 class Solution(object):
     def originalDigits(self, s):
         """
@@ -49,9 +53,9 @@ class Solution(object):
                 cnts[c] -= t * cntn[c]
         return ''.join(str(i) * n for i, n in enumerate(ans))
 
-# V4 
-# Time:  O(n)
-# Space: O(1)
+# V4
+# time = O(n)
+# space = O(1)
 from collections import Counter
 class Solution(object):
     def originalDigits(self, s):

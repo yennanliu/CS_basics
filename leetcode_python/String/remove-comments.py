@@ -3,6 +3,8 @@
 # V1 
 # https://blog.csdn.net/xiaojie_570/article/details/80539027
 # https://blog.csdn.net/fuxuemingzhu/article/details/79540349
+# time = O(n), n is the total number of characters in source
+# space = O(k), k is the max length of a line
 class Solution(object):
     def removeComments(self, source):
         """
@@ -33,9 +35,9 @@ class Solution(object):
                 line = '' # reset line as blank string 
         return res
 
-# V2 
-# Time:  O(n), n is the length of the source
-# Space: O(k), k is the max length of a line
+# V2
+# time = O(n), n is the length of the source
+# space = O(k), k is the max length of a line
 class Solution(object):
     def removeComments(self, source):
         """

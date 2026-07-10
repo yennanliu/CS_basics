@@ -41,6 +41,8 @@ nums is an ascending array that is possibly rotated.
 # V0
 # IDEA : BINARY SEARCH
 # CHECK IF MID is in left, or right part
+# time = O(log n)
+# space = O(1)
 class Solution(object):
     def search(self, nums, target):
         l = 0
@@ -73,6 +75,8 @@ class Solution(object):
 # V0-1
 # IDEA : BINARY SEARCH
 # CHECK IF MID is in left, or right part
+# time = O(log n)
+# space = O(1)
 class Solution(object):
     def search(self, nums, target):
         if not nums:
@@ -122,7 +126,9 @@ class Solution(object):
 #  2) if mid in on the left of pivot  -> array[:mid] is ordering
 #     -> check if mid in on the left or right on mid
 #     -> binary search on left or right sub array
-### NOTE : THE NESTED IF ELSE CONDITION 
+### NOTE : THE NESTED IF ELSE CONDITION
+# time = O(log n)
+# space = O(1)
 class Solution(object):
     def search(self, nums, target):
         if not nums: return -1
@@ -157,6 +163,8 @@ class Solution(object):
 
 # V0'
 # IDEA : BINARY SEARCH
+# time = O(log n)
+# space = O(1)
 class Solution:
     def search(self, nums, target):
         start, end = 0, len(nums) - 1
@@ -179,6 +187,8 @@ class Solution:
 # V1
 # IDEA : BINARY SEARCH
 # https://leetcode.com/problems/search-in-rotated-sorted-array/solution/
+# time = O(log n)
+# space = O(1)
 class Solution:
     def search(self, nums, target):
         """
@@ -237,6 +247,8 @@ class Solution:
 # V1'
 # IDEA : ONE PASS BINARY SEARCH
 # https://leetcode.com/problems/search-in-rotated-sorted-array/solution/
+# time = O(log n)
+# space = O(1)
 class Solution:
     def search(self, nums: List[int], target: int) -> int:
         start, end = 0, len(nums) - 1
@@ -258,8 +270,10 @@ class Solution:
 
 # V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79534213
-# CHECK ALSO : BINARY SEARCH 
+# CHECK ALSO : BINARY SEARCH
 # https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/binary_search.py
+# time = O(log n)
+# space = O(1)
 class Solution(object):
     def search(self, nums, target):
         """
@@ -287,6 +301,8 @@ class Solution(object):
 
 # V1''''
 # https://www.jiuzhang.com/solution/search-in-rotated-sorted-array/#tag-highlight-lang-python
+# time = O(log n)
+# space = O(1)
 class Solution:
     """
     @param A: an integer rotated sorted array
@@ -319,6 +335,8 @@ class Solution:
 
 # V1''''
 # https://blog.csdn.net/aliceyangxi1987/article/details/50557496
+# time = O(log n)
+# space = O(1)
 class Solution(object):
     def search(self, nums, target):
         """
@@ -326,7 +344,7 @@ class Solution(object):
         :type target: int
         :rtype: int
         """
-        
+
         start=0
         end=len(nums)-1
         

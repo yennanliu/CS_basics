@@ -28,8 +28,10 @@ Return false.
 
 # V0 
 
-# V1 
+# V1
 # http://bookshadow.com/weblog/2016/10/02/leetcode-valid-word-abbreviation/
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def validWordAbbreviation(self, word, abbr):
         """
@@ -52,9 +54,9 @@ class Solution(object):
                 loc += 1
         return loc + cnt == size
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def validWordAbbreviation(self, word, abbr):
         """

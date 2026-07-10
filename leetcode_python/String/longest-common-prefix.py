@@ -18,7 +18,9 @@ All given inputs are in lowercase letters a-z.
 
 """
 
-# V0 
+# V0
+# time = O(n * k), n = number of strings, k = length of common prefix
+# space = O(k)
 class Solution:
     def longestCommonPrefix(self, strs):
         if not strs:
@@ -34,8 +36,10 @@ class Solution:
             r += strs[0][i]
         return r
     
-# V1 
+# V1
 # https://blog.csdn.net/coder_orz/article/details/51706442
+# time = O(n * k), n = number of strings, k = length of common prefix
+# space = O(k)
 class Solution(object):
     def longestCommonPrefix(self, strs):
         """
@@ -52,8 +56,10 @@ class Solution(object):
             res += strs[0][i]
         return res
 
-# V1' 
+# V1'
 # https://blog.csdn.net/coder_orz/article/details/51706442
+# time = O(n * m * log n), n = number of strings, m = max string length (sort dominates)
+# space = O(k), k = length of common prefix
 class Solution(object):
     def longestCommonPrefix(self, strs):
         """
@@ -70,9 +76,11 @@ class Solution(object):
             res += strs[0][i]
         return res
 
-# V1''  
+# V1''
 # https://blog.csdn.net/coder_orz/article/details/51706442
-# IDEA : ZIP PYTHON DEFAULT FUNC 
+# IDEA : ZIP PYTHON DEFAULT FUNC
+# time = O(n * k), n = number of strings, k = length of common prefix
+# space = O(n)
 class Solution(object):
     def longestCommonPrefix(self, strs):
         """
@@ -86,9 +94,9 @@ class Solution(object):
                 return strs[0][:i]
         return min(strs)
 
-# V2 
-# Time:  O(n * k), k is the length of the common prefix
-# Space: O(1)
+# V2
+# time = O(n * k), n = number of strings, k = length of common prefix
+# space = O(1)
 class Solution(object):
     def longestCommonPrefix(self, strs):
         """
@@ -105,8 +113,8 @@ class Solution(object):
         return strs[0]
 
 
-# Time:  O(n * k), k is the length of the common prefix
-# Space: O(k)
+# time = O(n * k), n = number of strings, k = length of common prefix
+# space = O(k)
 class Solution2(object):
     def longestCommonPrefix(self, strs):
         """

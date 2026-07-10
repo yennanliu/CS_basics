@@ -2,6 +2,8 @@
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/82876061
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def predictPartyVictory(self, senate):
         """
@@ -24,9 +26,9 @@ class Solution(object):
                 q_d.append(d + n)
         return "Radiant" if q_r else "Dire"
         
-# V2 
-# Time:  O(n)
-# Space: O(n)
+# V2
+# time = O(n)
+# space = O(n)
 import collections
 class Solution(object):
     def predictPartyVictory(self, senate):

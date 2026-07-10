@@ -42,7 +42,9 @@ class Node:
         self.pos = pos
         self.left = None
         self.right = None
-        
+
+# time = O(n), n = len(flowers)
+# space = O(n), doubly linked list of nodes
 class Solution(object):
     def kEmptySlots(self, flowers, k):
         """
@@ -87,6 +89,8 @@ class FenwickTree(object):
             x -= self.lowbit(x)
         return res
 
+# time = O(n log n), n = len(flowers), each Fenwick tree op is O(log n)
+# space = O(n), Fenwick tree + nums array
 class Solution(object):
     def kEmptySlots(self, flowers, k):
         """

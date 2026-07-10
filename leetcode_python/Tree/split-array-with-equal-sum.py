@@ -9,7 +9,9 @@
 # 3) CHECK IF THERE EXIST INDEX i IN LEFT ARRAY THAT CAN SPLIT 2 SUB ARRAY WITH SAME SUM
 # 4) CHECK IF THERE EXIST INDEX k IN RIGHT ARRAY THAT CAN SPLIT 2 SUB ARRAY WITH SAME SUM
 # 5) RETURN TRUE IF ANY CASE HAPPEN ABOVE
-# 6) RETURN FALSE IF NO ABOVE CASE 
+# 6) RETURN FALSE IF NO ABOVE CASE
+# time = O(n^2), n = len(nums)
+# space = O(n)
 class Solution:
     """
     @param nums: a list of integer
@@ -32,8 +34,10 @@ class Solution:
                     return True
         return False
 
-# V1' 
+# V1'
 # http://bookshadow.com/weblog/2017/04/03/leetcode-split-array-with-equal-sum/
+# time = O(n^2), n = len(nums)
+# space = O(n^2) worst case (idxs/jlist dictionaries of lists)
 class Solution(object):
     def splitArray(self, nums):
         """
@@ -62,9 +66,9 @@ class Solution(object):
                     return True
         return False
         
-# V2 
-# Time:  O(n^2)
-# Space: O(n)
+# V2
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def splitArray(self, nums):
         """

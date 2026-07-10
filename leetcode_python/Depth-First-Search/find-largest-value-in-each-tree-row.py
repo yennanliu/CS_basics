@@ -1,5 +1,7 @@
-# V0 
-# IDEA : DFS 
+# V0
+# IDEA : DFS
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def largestValues(self, root):
         """
@@ -9,7 +11,7 @@ class Solution(object):
         levels = []
         self.dfs(root, levels, 0)
         return [max(l) for l in levels]
-    
+
     def dfs(self, root, levels, level):
         if not root: return
         if level == len(levels): levels.append([])
@@ -17,15 +19,17 @@ class Solution(object):
         self.dfs(root.left, levels, level + 1)
         self.dfs(root.right, levels, level + 1)
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/70183314
-# IDEA :  BFS 
+# IDEA :  BFS
 # Definition for a binary tree node.
 # class TreeNode(object):
 #     def __init__(self, x):
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def largestValues(self, root):
         """
@@ -47,15 +51,17 @@ class Solution(object):
             res.append(max_level)
         return res
 
-# V1' 
+# V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/70183314
-# IDEA : DFS 
+# IDEA : DFS
 # Definition for a binary tree node.
 # class TreeNode(object):
 #     def __init__(self, x):
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def largestValues(self, root):
         """
@@ -75,7 +81,9 @@ class Solution(object):
 
 # V1''
 # https://www.jiuzhang.com/solution/find-largest-value-in-each-tree-row/#tag-highlight-lang-python
-# IDEA : BFS 
+# IDEA : BFS
+# time = O(n)
+# space = O(n)
 class Solution:
     """
     @param root: a root of integer
@@ -90,9 +98,9 @@ class Solution:
             row = [kid for node in row for kid in (node.left, node.right) if kid]
         return maxes
 
-# V2 
-# Time:  O(n)
-# Space: O(h)
+# V2
+# time = O(n)
+# space = O(h)
 class Solution(object):
     def largestValues(self, root):
         """
@@ -114,8 +122,8 @@ class Solution(object):
         return result
 
 
-# Time:  O(n)
-# Space: O(n)
+# time = O(n)
+# space = O(n)
 class Solution2(object):
     def largestValues(self, root):
         """

@@ -17,8 +17,10 @@
 
 
 
-# V2 
+# V2
 # https://blog.csdn.net/fuxuemingzhu/article/details/80655459
+# time = O(n * x), n = number of fractions, x = max denominator
+# space = O(n)
 class Solution(object):
     def fractionAddition(self, expression):
         """
@@ -45,8 +47,8 @@ class Solution(object):
 
 
 # V3
-# Time:  O(nlogx), x is the max denominator
-# Space: O(n)
+# time = O(nlogx), x is the max denominator
+# space = O(n)
 import re
 class Solution(object):
     def fractionAddition(self, expression):

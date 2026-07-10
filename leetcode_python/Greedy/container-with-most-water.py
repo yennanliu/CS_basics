@@ -36,8 +36,10 @@ n == height.length
 
 """
 
-# V0 
-# IDEA : TWO POINTERS 
+# V0
+# IDEA : TWO POINTERS
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def maxArea(self, height):
         ans = 0
@@ -51,9 +53,11 @@ class Solution(object):
                 r -= 1
         return ans
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/82822939
-# IDEA : TWO POINTERS 
+# IDEA : TWO POINTERS
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def maxArea(self, height):
         """
@@ -73,6 +77,8 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/container-with-most-water/#tag-highlight-lang-python
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def maxArea(self, height):
         left, right = 0, len(height) - 1
@@ -87,9 +93,9 @@ class Solution(object):
             ans = max(ans, area) 
         return ans
         
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     # @return an integer
     def maxArea(self, height):

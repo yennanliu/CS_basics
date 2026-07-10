@@ -31,6 +31,8 @@ Follow up: Could you solve it both recursively and iteratively?
 
 # V0
 # IDEA : Iterative
+# time = O(n), n = number of nodes in tree
+# space = O(n)
 class Solution:
     # @param root, a tree node
     # @return a boolean
@@ -62,6 +64,8 @@ class Solution:
 
 # V0'
 # IDEA : Recursive
+# time = O(n), n = number of nodes in tree
+# space = O(h), h = height of tree (recursion depth)
 class Solution(object):
     def isSymmetric(self, root):
         if not root:
@@ -83,6 +87,8 @@ class Solution(object):
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n), n = number of nodes in tree
+# space = O(h), h = height of tree (recursion depth)
 class Solution(object):
     def isSymmetric(self, root):
         """
@@ -102,7 +108,9 @@ class Solution(object):
 
 # V1'
 # https://blog.csdn.net/coder_orz/article/details/51579528
-# DFS 
+# DFS
+# time = O(n), n = number of nodes in tree
+# space = O(n)
 class Solution(object):
     def isSymmetric(self, root):
         """
@@ -129,7 +137,9 @@ class Solution(object):
 
 # V1''
 # https://blog.csdn.net/coder_orz/article/details/51579528
-# BFS 
+# BFS
+# time = O(n^2) worst case, n = number of nodes (list.insert(0, ...) is O(n))
+# space = O(n)
 class Solution(object):
     def isSymmetric(self, root):
         """
@@ -157,6 +167,8 @@ class Solution(object):
 # V1'''
 # https://www.jiuzhang.com/solution/symmetric-tree/#tag-highlight-lang-python
 import collections
+# time = O(n), n = number of nodes in tree
+# space = O(h), h = height of tree (recursion depth)
 class Solution(object):
     def _is_symmetric(self, l, r):
         if not l and not r:
@@ -184,6 +196,8 @@ class TreeNode:
         self.right = None
 
 # Iterative solution
+# time = O(n), n = number of nodes in tree
+# space = O(n)
 class Solution:
     # @param root, a tree node
     # @return a boolean
@@ -213,6 +227,8 @@ class Solution:
 
 # V3
 # Recursive solution
+# time = O(n), n = number of nodes in tree
+# space = O(h), h = height of tree (recursion depth)
 class Solution2:
     # @param root, a tree node
     # @return a boolean
@@ -274,9 +290,7 @@ class Solution2:
 #     return true;
 # }
 
-# V4 
-# Time:  O(n)
-# Space: O(h), h is height of binary tree
+# V4
 # Given a binary tree, check whether it is a mirror of itself (ie, symmetric around its center).
 class TreeNode(object):
     def __init__(self, x):
@@ -285,6 +299,8 @@ class TreeNode(object):
         self.right = None
 
 # Iterative solution
+# time = O(n), n = number of nodes in tree
+# space = O(n)
 class Solution(object):
     # @param root, a tree node
     # @return a boolean
@@ -313,6 +329,8 @@ class Solution(object):
         return True
 
 # Recursive solution
+# time = O(n), n = number of nodes in tree
+# space = O(h), h = height of tree (recursion depth)
 class Solution2(object):
     # @param root, a tree node
     # @return a boolean

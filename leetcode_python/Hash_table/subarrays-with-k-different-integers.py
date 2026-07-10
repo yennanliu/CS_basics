@@ -38,7 +38,8 @@ Constraints:
 # https://leetcode.com/problems/subarrays-with-k-different-integers/discuss/234643/Python-solution
 # IDEA : 
 # We initialize the result res = 0, and two pointers l = 0, r = 0, and two dictionaries dicL = {}, dicR = {}. We iterate i in range(len(A)), and use dicL (dicR) as a counter of the elements in A[l:i+1] (A[r:i+1]). For each i, we move l (r) to the leftmost (rightmost) index idx such that A[idx:i+1] contains K distinct elements, or equivalently len(dicL) == K (len(dicR) == K). Then any index l <= j <= r satisfies the property that A[j:i+1] contains K distinct elements. Therefore, we increment res accordingly: res += r-l. Finally, after iterating over i, we return res.
-# Time complexity: O(n), space complexity: O(n).
+# time = O(n)
+# space = O(k)
 class Solution(object):
     def subarraysWithKDistinct(self, A, K):
         dicL = collections.defaultdict(int)
@@ -79,6 +80,8 @@ class Solution(object):
 # Complexity:
 # Time O(N) for two passes.
 # Space O(K) at most K elements in the counter
+# time = O(n)
+# space = O(k)
 class Solution(object):
     def subarraysWithKDistinct(self, A, K):
         return self.atMostK(A, K) - self.atMostK(A, K - 1)
@@ -98,6 +101,8 @@ class Solution(object):
 
 # V1''
 # https://leetcode.com/problems/subarrays-with-k-different-integers/discuss/997358/Python-Solution
+# time = O(n)
+# space = O(k)
 class Solution:
     def subarraysWithKDistinct(self, A: List[int], K: int) -> int:
         distinct = defaultdict(int)
@@ -118,6 +123,8 @@ class Solution:
 # V1'''
 # IDEA : sliding window
 # https://leetcode.com/problems/subarrays-with-k-different-integers/discuss/348984/Different-Python-two-pointer-solutions
+# time = O(n * k), min() over dict values each step
+# space = O(k)
 class Solution(object):
     def subarraysWithKDistinct(self, A: List[int], K: int) -> int:
             if K == 0 or len(A) < K:
@@ -140,6 +147,8 @@ class Solution(object):
 # V1''''
 # IDEA : sliding window + bisect
 # https://leetcode.com/problems/subarrays-with-k-different-integers/discuss/348984/Different-Python-two-pointer-solutions
+# time = O(n * k), bisect insert/pop into sorted list of size <= k
+# space = O(k)
 class Solution(object):
     def subarraysWithKDistinct(self, A: List[int], K: int) -> int:
             if K == 0 or len(A) < K:
@@ -167,6 +176,8 @@ class Solution(object):
 # V1''''''
 # IDEA : hashmap + freq
 # https://leetcode.com/problems/subarrays-with-k-different-integers/discuss/348984/Different-Python-two-pointer-solutions
+# time = O(n)
+# space = O(k)
 class Solution(object):
     def subarraysWithKDistinct(self, A: List[int], K: int) -> int:
         if K == 0 or len(A) < K:

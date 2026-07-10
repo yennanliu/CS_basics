@@ -38,6 +38,8 @@ target is the value of one of the nodes in the tree.
 # DEMO
 # root = TreeNode{val: 3, left: TreeNode{val: 5, left: TreeNode{val: 6, left: None, right: None}, right: TreeNode{val: 2, left: TreeNode{val: 7, left: None, right: None}, right: TreeNode{val: 4, left: None, right: None}}}, right: TreeNode{val: 1, left: TreeNode{val: 0, left: None, right: None}, right: TreeNode{val: 8, left: None, right: None}}}
 # self.graph = defaultdict(<class 'list'>, {3: [5, 1], 5: [3, 6, 2], 6: [5], 2: [5, 7, 4], 7: [2], 4: [2], 1: [3, 0, 8], 0: [1], 8: [1]})
+# time = O(n)  # n = number of tree nodes
+# space = O(n)
 from collections import defaultdict
 class Solution:
     
@@ -70,6 +72,8 @@ class Solution:
 
 # V0'
 # IDEA : DFS + BFS
+# time = O(n)  # n = number of tree nodes
+# space = O(n)
 class Solution(object):
     def distanceK(self, root, target, K):
         # DFS
@@ -111,6 +115,8 @@ class Solution(object):
 # V1
 # IDEA : DFS + BFS
 # https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/discuss/604718/Python-BFS-solution
+# time = O(n)  # n = number of tree nodes
+# space = O(n)
 from collections import defaultdict,deque
 class Solution:
     def __init__(self):
@@ -144,6 +150,8 @@ class Solution:
 # V1'
 # IDEA :  Annotate Parent
 # https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/solution/
+# time = O(n)  # n = number of tree nodes
+# space = O(n)
 class Solution(object):
     def distanceK(self, root, target, K):
         def dfs(node, par = None):
@@ -170,6 +178,8 @@ class Solution(object):
 # V1''
 # IDEA : Percolate Distance
 # https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/solution/
+# time = O(n)  # n = number of tree nodes
+# space = O(n)
 class Solution(object):
     def distanceK(self, root, target, K):
         ans = []
@@ -216,6 +226,8 @@ class Solution(object):
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)  # n = number of tree nodes
+# space = O(n)
 class Solution(object):
     def distanceK(self, root, target, K):
         """
@@ -251,6 +263,8 @@ class Solution(object):
 
 # V1''''
 # https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/discuss/1044354/easy-python
+# time = O(n)  # n = number of tree nodes
+# space = O(n)
 class Solution:
     def distanceK(self, root: TreeNode, target: TreeNode, K: int) -> List[int]:
         def dfs(node, dist):
@@ -302,6 +316,8 @@ class Solution:
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)  # n = number of tree nodes
+# space = O(n)
 class Solution(object):
     def distanceK(self, root, target, K):
         """
@@ -329,6 +345,8 @@ class Solution(object):
 
 # V1'''''''
 # https://www.jiuzhang.com/solution/all-nodes-distance-k-in-binary-tree/#tag-highlight-lang-python
+# time = O(n)  # n = number of tree nodes
+# space = O(n)
 class Solution(object):
     def distanceK(self, root, target, K):
         def dfs(node, par = None):
@@ -354,12 +372,12 @@ class Solution(object):
 # V1''''''''''
 # https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/solution/
 # IDEA :  Annotate Parent
-# Time Complexity: O(N)
-# Space Complexity: O(N)
 # PROCESS:
 # 0. If we know the parent of every node x, we know all nodes that are distance 1 from x. We can then perform a breadth first search from the target node to find the answer.
 # 1. We first do a depth first search where we annotate every node with information about it's parent.
 # 2. After, we do a breadth first search to find all nodes a distance K from the target.
+# time = O(n)  # n = number of tree nodes
+# space = O(n)
 class Solution(object):
     def distanceK(self, root, target, K):
         def dfs(node, par = None):
@@ -386,8 +404,8 @@ class Solution(object):
 # V1''''''''''
 # https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/solution/
 # IDEA : Percolate Distance
-# Time Complexity: O(N)
-# Space Complexity: O(N)
+# time = O(n)  # n = number of tree nodes
+# space = O(n)
 class Solution(object):
     def distanceK(self, root, target, K):
         ans = []
@@ -426,9 +444,9 @@ class Solution(object):
         dfs(root)
         return ans
 
-# V2 
-# Time:  O(n)
-# Space: O(n)
+# V2
+# time = O(n)
+# space = O(n)
 import collections
 class Solution(object):
     def distanceK(self, root, target, K):

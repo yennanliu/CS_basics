@@ -2,6 +2,8 @@
 
 # V1
 # https://www.hrwhisper.me/leetcode-range-sum-query-mutable/
+# time = O(n log n) ctor (n calls to add(), each O(log n)); O(log n) update/sumRange
+# space = O(n)
 class NumArray(object):
     def __init__(self, nums):
         """
@@ -50,11 +52,9 @@ class NumArray(object):
         if not self.nums: return  0
         return self.sum(j+1) - self.sum(i)
 
-# V2 
-# Time:  ctor:   O(n),
-#        update: O(logn),
-#        query:  O(logn)
-# Space: O(n)
+# V2
+# time = O(n) ctor, O(log n) update, O(log n) query
+# space = O(n)
 class NumArray(object):
     def __init__(self, nums):
         """
@@ -106,10 +106,8 @@ class NumArray(object):
             i += (i & -i)
 
 
-# Time:  ctor:   O(n),
-#        update: O(logn),
-#        query:  O(logn)
-# Space: O(n)
+# time = O(n) ctor, O(log n) update, O(log n) query
+# space = O(n)
 # Segment Tree solutoin.
 class NumArray2(object):
     def __init__(self, nums):

@@ -36,7 +36,9 @@ All the words in sentence are separated by a single space
 
 """
 
-# V0 
+# V0
+# time = O(n), n = len(sentence)
+# space = O(n)
 class Solution:
     def toGoatLatin(self, S):
         """
@@ -55,8 +57,10 @@ class Solution:
             new_words.append(word)
         return ' '.join(new_words)
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/80471925
+# time = O(n), n = len(sentence)
+# space = O(n)
 class Solution:
     def toGoatLatin(self, S):
         """
@@ -75,8 +79,10 @@ class Solution:
             new_words.append(word)
         return ' '.join(new_words)
         
-# V1' 
+# V1'
 # http://bookshadow.com/weblog/2018/04/29/leetcode-goat-latin/
+# time = O(n), n = len(sentence)
+# space = O(n)
 class Solution(object):
     def toGoatLatin(self, S):
         """
@@ -94,6 +100,8 @@ class Solution(object):
 
 # V1''
 # https://www.jiuzhang.com/solution/1394-goat-latin/#tag-other-lang-python
+# time = O(n), n = len(sentence)
+# space = O(n)
 class Solution:
     """
     @param S: 
@@ -123,7 +131,9 @@ class Solution:
             start, end = end + 1, end + 2      
         return answer[:-1]
 
-# V2 
+# V2
+# time = O(n), n = len(sentence)
+# space = O(n)
 class Solution(object):
     def toGoatLatin(self, S):
         """

@@ -28,7 +28,8 @@ nums[i] is either 0 or 1.
 
 # V0
 
-
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def findMaxLength(self, nums):
         # edge
@@ -85,6 +86,8 @@ class Solution(object):
 
 
 # V0
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def findMaxLength(self, nums):
         mp = {0: -1}  # prefix_sum -> first index
@@ -110,6 +113,8 @@ class Solution(object):
 
 # V0-1
 # IDEA : PREFIX SUM, HASHMAP
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def findMaxLength(self, nums):
         # edge case
@@ -144,6 +149,8 @@ class Solution(object):
 # IDEA : PREFIX SUM, LC 1248,560
 # https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/count-number-of-nice-subarrays.py
 from collections import defaultdict
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def findMaxLength(self, nums):
         # edge case
@@ -180,6 +187,8 @@ class Solution(object):
 #     -> FIND MAX SUB ARRAY LENGH WHEN COUNT(0) == COUNT(1)
 #     -> (WHEN cur in _dict, THERE IS THE COUNT(0) == COUNT(1) CASE)
 # explaination : https://leetcode.com/problems/contiguous-array/discuss/99655/python-on-solution-with-visual-explanation
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def findMaxLength(self, nums):
         # edge case
@@ -207,10 +216,10 @@ class Solution(object):
             """
             if tmp in d:
                 res = max(res, k - d[tmp])
-            """
-            Case 2 : if tmp sum NOT in dict
-            # NOTE THIS : if tmp not in d, then use its cur value as key, index as value
-            """
+                """
+                Case 2 : if tmp sum NOT in dict
+                # NOTE THIS : if tmp not in d, then use its cur value as key, index as value
+                """
             else:
                 d[tmp] = k ### NOTE : we just need to add index to dict at once, since what we need is MAX len of continous subarray with condition, so we only add 1st index to dist will make this work (max len subarray)
         return res
@@ -221,6 +230,8 @@ class Solution(object):
 #     -> FIND MAX SUB ARRAY LENGH WHEN COUNT(0) == COUNT(1)
 #     -> (WHEN cur in _dict, THERE IS THE COUNT(0) == COUNT(1) CASE)
 # explaination : https://leetcode.com/problems/contiguous-array/discuss/99655/python-on-solution-with-visual-explanation
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def findMaxLength(self, nums):
         r = 0
@@ -242,27 +253,31 @@ class Solution(object):
 # V0''
 # IDEA : SET UP A DICT, cur_sum, ans 
 # -> TO SAVE THE LENGTH OF SUB ARRAY WHEN COUNT OF 0 = COUNT OF 1, AND UPDATE cur_sum, ans  BY CASES 
-# -> RETURN THE MAX OF THE ans 
+# -> RETURN THE MAX OF THE ans
+# time = O(n)
+# space = O(n)
 class Solution:
     def findMaxLength(self, nums):
         index_sum = {}
         cur_sum = 0
         ans = 0
         for i in range(len(nums)):
-            if nums[i] == 0: 
+            if nums[i] == 0:
                 cur_sum -= 1
-            else: 
+            else:
                 cur_sum += 1
-            if cur_sum == 0: 
+            if cur_sum == 0:
                 ans = i+1
-            elif cur_sum in index_sum: 
+            elif cur_sum in index_sum:
                 ans = max(ans, i-index_sum[cur_sum])
-            if cur_sum not in index_sum: 
+            if cur_sum not in index_sum:
                 index_sum[cur_sum] = i
         return ans
 
 # V0'''
 # IDEA : BRUTE FROCE (Time Limit Exceeded)
+# time = O(n^3)
+# space = O(1)
 class Solution:
     def findMaxLength(self, nums):
         r = 0
@@ -280,7 +295,9 @@ class Solution:
 # https://www.jiuzhang.com/solution/contiguous-array/#tag-highlight-lang-python
 # IDEA : SET UP A DICT, cur_sum, ans 
 # -> TO SAVE THE LENGTH OF SUB ARRAY WHEN COUNT OF 0 = COUNT OF 1, AND UPDATE cur_sum, ans  BY CASES 
-# -> RETURN THE MAX OF THE ans 
+# -> RETURN THE MAX OF THE ans
+# time = O(n)
+# space = O(n)
 class Solution:
     """
     @param nums: a binary array
@@ -305,6 +322,8 @@ class Solution:
 
 # V1'
 # https://leetcode.com/problems/contiguous-array/discuss/99655/python-on-solution-with-visual-explanation
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def findMaxLength(self, nums):
         count = 0
@@ -326,6 +345,8 @@ class Solution(object):
 # V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/82667054
 # https://kingsfish.github.io/2017/07/13/Leetcode-525-Contiguous-Array/
+# time = O(n)
+# space = O(n)
 class Solution:
     def findMaxLength(self, nums):
         """
@@ -395,9 +416,9 @@ class Solution:
 # }
 
 
-# V2 
-# Time:  O(n)
-# Space: O(n)
+# V2
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def findMaxLength(self, nums):
         """

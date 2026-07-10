@@ -42,7 +42,6 @@
 # V2 
 # time = O(n)
 # space = O(1)
-
 class Solution(object):
     def minCost(self, costs):
         """

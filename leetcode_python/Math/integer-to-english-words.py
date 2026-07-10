@@ -31,6 +31,8 @@ Constraints:
 
 # V1
 # https://leetcode.com/problems/integer-to-english-words/discuss/70643/Short-Python
+# time = O(log n)  # n = num; work is proportional to number of digits
+# space = O(log n)  # recursion depth / output words
 class Solution(object):
     def numberToWords(self, num):
         """
@@ -53,6 +55,8 @@ class Solution(object):
         return " ".join(res) or "Zero"
 
 # V1'
+# time = O(log n)  # n = num; recursion by digit groups
+# space = O(log n)  # recursion depth
 class Solution:
     def numberToWords(self, num):
         tens = [
@@ -117,6 +121,8 @@ class Solution:
 # V1''
 # (TLE)
 # https://leetcode.com/problems/integer-to-english-words/discuss/213494/Python-solution
+# time = O(log n)  # n = num; recursion by digit groups
+# space = O(log n)  # recursion depth
 class Solution:
     def numberToWords(self, num):
         """

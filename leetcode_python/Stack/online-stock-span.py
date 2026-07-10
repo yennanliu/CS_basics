@@ -1,7 +1,9 @@
 # V0
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/82781059
+# time = O(1) amortized per call, O(n) worst case for a single call
+# space = O(n)
 class StockSpanner(object):
 
     def __init__(self):
@@ -21,9 +23,9 @@ class StockSpanner(object):
 # obj = StockSpanner()
 # param_1 = obj.next(price)
 
-# V2 
-# Time:  O(n)
-# Space: O(n)
+# V2
+# time = O(1) amortized per call, O(n) worst case for a single call
+# space = O(n)
 class StockSpanner(object):
 
     def __init__(self):

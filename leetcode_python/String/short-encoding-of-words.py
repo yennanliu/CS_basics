@@ -1,8 +1,10 @@
 # V0 
 
-# V1 
+# V1
 # http://bookshadow.com/weblog/2018/04/22/leetcode-short-encoding-of-words/
-# IDEA : SORT 
+# IDEA : SORT
+# time = O(n log n), n is the total sum of the lengths of words
+# space = O(n)
 class Solution(object):
     def minimumLengthEncoding(self, words):
         """
@@ -18,9 +20,11 @@ class Solution(object):
             last = word
         return ans
 
-# V1'  
+# V1'
 # http://bookshadow.com/weblog/2018/04/22/leetcode-short-encoding-of-words/
-# IDEA :DICT + TREE 
+# IDEA :DICT + TREE
+# time = O(n), n is the total sum of the lengths of words
+# space = O(t), t is the number of nodes in trie
 class TrieNode:
     def __init__(self):
         self.children = dict()
@@ -64,9 +68,9 @@ class Solution(object):
             trie.insert(word[::-1])
         return trie.levelOrderTraverse()
         
-# V2 
-# Time:  O(n), n is the total sum of the lengths of words
-# Space: O(t), t is the number of nodes in trie
+# V2
+# time = O(n), n is the total sum of the lengths of words
+# space = O(t), t is the number of nodes in trie
 import collections
 import functools
 class Solution(object):

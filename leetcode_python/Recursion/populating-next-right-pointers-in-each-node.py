@@ -46,6 +46,8 @@ The recursive approach is fine. You may assume implicit stack space does not cou
 # IDEA: BFS by layer + prev node (gpt)
 from collections import deque
 
+# time = O(N)
+# space = O(N)
 class Solution(object):
     def connect(self, root):
         if not root:
@@ -84,6 +86,8 @@ class Solution(object):
 # IDEA: BFS by layer + prev node (GEMINI)
 from collections import deque
 
+# time = O(N)
+# space = O(N)
 class Solution(object):
     def connect(self, root):
         """
@@ -122,11 +126,13 @@ class Solution(object):
 
 # V0-2
 # IDEA: BFS by layer + O(1) space (GEMINI)
+# time = O(N)
+# space = O(1)
 class Solution(object):
     def connect(self, root):
         if not root:
             return None
-            
+
         # Start at the leftmost node of the current level
         leftmost = root
         
@@ -153,9 +159,11 @@ class Solution(object):
 # V0
 # IDEA : BFS
 # REF : LC # 117 : populating-next-right-pointers-in-each-node-ii/
+# time = O(N)
+# space = O(N)
 class Solution:
     def connect(self, root):
-        if not root: 
+        if not root:
             return None
         queue = []
         queue.append(root)
@@ -176,6 +184,8 @@ class Solution:
 # IDEA : BFS
 ### NOTE : in this problem, we need to populate the result as LINKED LIST form
 from collections import deque
+# time = O(N)
+# space = O(N)
 class Solution(object):
     def connect(self, root):
         if not root:
@@ -209,6 +219,8 @@ class Solution(object):
 # IDEA : BFS
 ### NOTE : in this problem, we need to populate the result as LINKED LIST form
 from collections import deque
+# time = O(N)
+# space = O(N)
 class Solution(object):
     def connect(self, root):
         """
@@ -235,13 +247,15 @@ class Solution(object):
 
 # V0'
 ### NOTE : in this problem, we need to populate the result as LINKED LIST form
-# IDEA : DFS 
+# IDEA : DFS
 # DEMO
 #      1 -> NULL
 #    /  \
 #   2 -> 3 -> NULL
 #  / \  / \
 # 4->5->6->7 -> NULL
+# time = O(N)
+# space = O(log N)
 class Solution:
     # @param root, a tree link node
     # @return nothing
@@ -260,8 +274,10 @@ class Solution:
 # V1
 # IDEA :  Level Order Traversal
 # https://leetcode.com/problems/populating-next-right-pointers-in-each-node/solution/
-import collections 
+import collections
 
+# time = O(N)
+# space = O(N)
 class Solution:
     def connect(self, root: 'Node') -> 'Node':
         
@@ -307,6 +323,8 @@ class Solution:
 # V1
 # IDEA : Using previously established next pointers
 # https://leetcode.com/problems/populating-next-right-pointers-in-each-node/solution/
+# time = O(N)
+# space = O(1)
 class Solution:
     def connect(self, root: 'Node') -> 'Node':
         
@@ -343,6 +361,8 @@ class Solution:
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79559645
+# time = O(N)
+# space = O(log N)
 class Solution:
     # @param root, a tree link node
     # @return nothing
@@ -359,6 +379,8 @@ class Solution:
 # IDEA : BFS
 # https://leetcode.com/problems/populating-next-right-pointers-in-each-node/discuss/291622/Python-recursive-solution
 from collections import deque
+# time = O(N)
+# space = O(N)
 class Solution(object):
     def connect(self, root):
         """
@@ -386,6 +408,8 @@ class Solution(object):
 # V1''
 # IDEA : LINKED LIST
 # https://leetcode.com/problems/populating-next-right-pointers-in-each-node/discuss/291622/Python-recursive-solution
+# time = O(N)
+# space = O(1)
 class Solution(object):
     def connect(self, root):
         """
@@ -408,6 +432,8 @@ class Solution(object):
 
 # V1'''
 # https://www.cnblogs.com/loadofleaf/p/5523911.html
+# time = O(N)
+# space = O(log N)
 class Solution(object):
     def connect(self, root):
         if root and root.left:
@@ -420,8 +446,6 @@ class Solution(object):
             self.connect(root.right)
 
 # V2
-# Time:  O(n)
-# Space: O(1)
 class TreeNode(object):
     def __init__(self, x):
         self.val = x
@@ -435,6 +459,8 @@ class TreeNode(object):
         else:
             return "{} -> {}".format(self.val, repr(self.__next__))
 
+# time = O(N)
+# space = O(1)
 class Solution(object):
     # @param root, a tree node
     # @return nothing

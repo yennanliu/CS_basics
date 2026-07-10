@@ -49,16 +49,20 @@ Follow up: How would you extend your design to be generic and work with all type
 # V1
 # https://leetcode.com/problems/peeking-iterator/discuss/123811/Python-solution
 class PeekingIterator(object):
+    # time = O(1)
+    # space = O(1)
     def __init__(self, iterator):
         """
         Initialize your data structure here.
         :type iterator: Iterator
         """
-        self.next_val = None 
+        self.next_val = None
         self.iterator = iterator
         if self.iterator.hasNext():
             self.next_val = iterator.next()
 
+    # time = O(1)
+    # space = O(1)
     def peek(self):
         """
         Returns the next element in the iteration without advancing the iterator.
@@ -66,6 +70,8 @@ class PeekingIterator(object):
         """
         return self.next_val
 
+    # time = O(1)
+    # space = O(1)
     def next(self):
         """
         :rtype: int
@@ -78,8 +84,10 @@ class PeekingIterator(object):
             self.next_val = None
 
         return cur_val
-        
 
+
+    # time = O(1)
+    # space = O(1)
     def hasNext(self):
         """
         :rtype: bool
@@ -89,24 +97,34 @@ class PeekingIterator(object):
 # V1'
 # https://leetcode.com/problems/peeking-iterator/discuss/72626/Simple-Python-Solution
 class PeekingIterator(object):
+    # time = O(1)
+    # space = O(1)
     def __init__(self, iterator):
         self.iter = iterator
         self.temp = self.iter.next() if self.iter.hasNext() else None
 
+    # time = O(1)
+    # space = O(1)
     def peek(self):
         return self.temp
 
+    # time = O(1)
+    # space = O(1)
     def next(self):
         ret = self.temp
         self.temp = self.iter.next() if self.iter.hasNext() else None
         return ret
 
+    # time = O(1)
+    # space = O(1)
     def hasNext(self):
         return self.temp is not None
 
- # V1''
- # https://leetcode.com/problems/peeking-iterator/discuss/729795/Python-Solution
- class PeekingIterator:
+# V1''
+# https://leetcode.com/problems/peeking-iterator/discuss/729795/Python-Solution
+class PeekingIterator:
+    # time = O(1)
+    # space = O(1)
     def __init__(self, iterator):
         """
         Initialize your data structure here.
@@ -115,6 +133,8 @@ class PeekingIterator(object):
         self.iter = iterator
         self.cache = None
 
+    # time = O(1)
+    # space = O(1)
     def peek(self):
         """
         Returns the next element in the iteration without advancing the iterator.
@@ -124,6 +144,8 @@ class PeekingIterator(object):
             self.cache = self.iter.next()
         return self.cache
 
+    # time = O(1)
+    # space = O(1)
     def next(self):
         """
         :rtype: int
@@ -134,6 +156,8 @@ class PeekingIterator(object):
             return temp
         return self.iter.next()
 
+    # time = O(1)
+    # space = O(1)
     def hasNext(self):
         """
         :rtype: bool

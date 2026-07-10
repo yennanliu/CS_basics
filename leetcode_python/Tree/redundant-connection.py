@@ -71,6 +71,8 @@ class MyUF(object):
         pass
 
 """
+# time = O(n * alpha(n)), n = len(edges) (union-find with path compression + union by rank)
+# space = O(n)
 class Solution(object):
     def findRedundantConnection(self, edges):
         uf = MyUF()
@@ -152,6 +154,8 @@ class UF(object):
         return True
 
 
+# time = O(n * alpha(n)), n = len(edges) (union-find with path compression)
+# space = O(n)
 class Solution(object):
     def findRedundantConnection(self, edges):
         """
@@ -172,8 +176,10 @@ class Solution(object):
 
 
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/80487064
+# time = O(n log n), n = len(edges) (find with path compression, no union by rank)
+# space = O(n)
 class Solution:
     def findRedundantConnection(self, edges):
         """
@@ -199,6 +205,8 @@ class Solution:
 
 # V1'
 # https://www.jiuzhang.com/solution/redundant-connection/#tag-highlight-lang-python
+# time = O(n log n), n = len(edges) (find with path compression, no union by rank)
+# space = O(n)
 class Solution:
 
     def findRedundantConnection(self, edges):
@@ -238,9 +246,9 @@ class UnionFind(object):
 #     x= t.findRedundantConnection([[1,2], [2,3], [3,4], [1,4], [1,5]])
 #     print(x)
 
-# V2 
-# Time:  O(nlog*n) ~= O(n), n is the length of the positions
-# Space: O(n)
+# V2
+# time = O(n log*n) ~= O(n), n is the length of the positions
+# space = O(n)
 class UnionFind(object):
     def __init__(self, n):
         self.set = range(n)
@@ -257,6 +265,8 @@ class UnionFind(object):
         self.set[min(x_root, y_root)] = max(x_root, y_root)
         return True
 
+# time = O(n log*n) ~= O(n), n is the length of the positions
+# space = O(n)
 class Solution(object):
     def findRedundantConnection(self, edges):
         """

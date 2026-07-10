@@ -52,6 +52,8 @@ sentence[i] consists of lowercase English letters.
 
 # V1
 # http://bookshadow.com/weblog/2016/10/09/leetcode-sentence-screen-fitting/
+# time = O(rows + n * cols), n = len(sentence)
+# space = O(n * cols)
 class Solution(object):
     def wordsTyping(self, sentence, rows, cols):
         """
@@ -138,8 +140,8 @@ class Solution(object):
 # }
 
 # V2
-# Time:  O(r + n * c)
-# Space: O(n)
+# time = O(r + n * c), n = len(sentence)
+# space = O(n)
 class Solution(object):
     def wordsTyping(self, sentence, rows, cols):
         """

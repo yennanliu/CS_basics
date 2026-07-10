@@ -53,17 +53,25 @@ At most 2000 calls will be made to all functions combined.
 # IDEA : hashmap
 # https://leetcode.com/problems/design-authentication-manager/discuss/1118881/Clean-Python-3-hashmap
 class AuthenticationManager:
+    # time = O(1)
+    # space = O(1)
     def __init__(self, timeToLive: int):
         self.time = timeToLive
         self.unexpired = {}
 
+    # time = O(1)
+    # space = O(1)
     def generate(self, tokenId: str, currentTime: int):
         self.unexpired[tokenId] = currentTime + self.time
 
+    # time = O(1)
+    # space = O(1)
     def renew(self, tokenId: str, currentTime: int):
         if self.unexpired.get(tokenId, 0) > currentTime:
             self.unexpired[tokenId] = currentTime + self.time
 
+    # time = O(n), n = number of tokens
+    # space = O(1)
     def countUnexpiredTokens(self, currentTime: int):
         for token in tuple(self.unexpired.keys()):
             if self.unexpired[token] <= currentTime:
@@ -75,18 +83,26 @@ class AuthenticationManager:
 # https://leetcode.com/problems/design-authentication-manager/discuss/1118827/Clean-Python-with-explanation
 class AuthenticationManager(object):
 
+    # time = O(1)
+    # space = O(1)
     def __init__(self, timeToLive):
         self.token = dict()
         self.time = timeToLive    # store timeToLive and create dictionary
 
+    # time = O(1)
+    # space = O(1)
     def generate(self, tokenId, currentTime):
         self.token[tokenId] = currentTime    # store tokenId with currentTime
 
+    # time = O(1)
+    # space = O(1)
     def renew(self, tokenId, currentTime):
         limit = currentTime-self.time        # calculate limit time to filter unexpired tokens
         if tokenId in self.token and self.token[tokenId]>limit:    # filter tokens and renew its time
             self.token[tokenId] = currentTime
 
+    # time = O(n), n = number of tokens
+    # space = O(1)
     def countUnexpiredTokens(self, currentTime):
         limit = currentTime-self.time       # calculate limit time to filter unexpired tokens
         c = 0
@@ -100,13 +116,19 @@ class AuthenticationManager(object):
 # https://leetcode.com/problems/design-authentication-manager/discuss/1127288/Python-using-LinkedHashmap
 class AuthenticationManager:
 
+    # time = O(1)
+    # space = O(1)
     def __init__(self, timeToLive: int):
         self.ttl = timeToLive
         self.cache = OrderedDict() #linkedHashmap using in LRU cache
 
+    # time = O(1)
+    # space = O(1)
     def generate(self, tokenId: str, currentTime: int):
         self.cache[tokenId] = currentTime + self.ttl
-        
+
+    # time = O(1) amortized
+    # space = O(1)
     def renew(self, tokenId: str, currentTime: int):
         if tokenId not in self.cache:
             return
@@ -114,7 +136,9 @@ class AuthenticationManager:
         if expiryTime > currentTime:
             self.cache[tokenId] = currentTime + self.ttl
             self.cache.move_to_end(tokenId)
-        
+
+    # time = O(k) amortized, k = number of expired tokens removed
+    # space = O(1)
     def countUnexpiredTokens(self, currentTime: int):
         while self.cache and next(iter(self.cache.values())) <= currentTime:
             self.cache.popitem(last=False)
@@ -126,6 +150,8 @@ class AuthenticationManager:
 from collections import deque
 class AuthenticationManager(object):
 
+    # time = O(1)
+    # space = O(1)
     def __init__(self, timeToLive):
         """
         :type timeToLive: int
@@ -135,6 +161,8 @@ class AuthenticationManager(object):
         self.latest = {}
 
 
+    # time = O(1)
+    # space = O(1)
     def generate(self, tokenId, currentTime):
         """
         :type tokenId: str
@@ -145,6 +173,8 @@ class AuthenticationManager(object):
         self.latest[tokenId] = currentTime
 
 
+    # time = O(1)
+    # space = O(1)
     def renew(self, tokenId, currentTime):
         """
         :type tokenId: str
@@ -155,6 +185,8 @@ class AuthenticationManager(object):
             self.generate(tokenId, currentTime)
 
 
+    # time = O(k) amortized, k = number of expired entries removed
+    # space = O(1)
     def countUnexpiredTokens(self, currentTime):
         """
         :type currentTime: int

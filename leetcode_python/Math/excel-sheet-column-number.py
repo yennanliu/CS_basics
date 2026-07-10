@@ -3,6 +3,8 @@
 
 # V1
 # https://blog.csdn.net/coder_orz/article/details/51406455
+# time = O(n)  # n = len(s)
+# space = O(1)
 class Solution(object):
     # transform   26 Carry ->  10 Carry (Decimal)  
     def titleToNumber(self, s):
@@ -15,9 +17,9 @@ class Solution(object):
             sum = sum*26 + ord(c) - 64 # 64 = ord('A') - 1
         return sum
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)  # n = len(s)
+# space = O(1)
 class Solution(object):
     def titleToNumber(self, s):
         """

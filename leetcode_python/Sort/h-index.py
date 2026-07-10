@@ -29,6 +29,8 @@ n == citations.length
 """
 
 # V0
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def hIndex(self, citations):
         N = len(citations)
@@ -42,7 +44,9 @@ class Solution(object):
 # h-index = 1 : AT LEAST 0 essay with power 1 
 # h-index = 2 : AT LEAST 0 essay with power 2  
 # h-index = 3 : AT LEAST 0 essay with power 3  
-# h-index = 4 : AT LEAST 0 essay with power 4  
+# h-index = 4 : AT LEAST 0 essay with power 4
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def hIndex(self, citations):
         """
@@ -61,6 +65,8 @@ class Solution(object):
 
 # V1
 # http://bookshadow.com/weblog/2015/09/03/leetcode-h-index/
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def hIndex(self, citations):
         """
@@ -80,6 +86,8 @@ class Solution(object):
 
 # V1''
 # http://bookshadow.com/weblog/2015/09/03/leetcode-h-index/
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def hIndex(self, citations):
         """
@@ -93,6 +101,8 @@ class Solution(object):
 
 # V1'''
 # http://bookshadow.com/weblog/2015/09/03/leetcode-h-index/
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def hIndex(self, citations):
         """
@@ -103,6 +113,8 @@ class Solution(object):
 
 # V1''''
 # http://bookshadow.com/weblog/2015/09/03/leetcode-h-index/
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def hIndex(self, citations):
         """
@@ -117,6 +129,8 @@ class Solution(object):
 
 # V1'''''
 # http://bookshadow.com/weblog/2015/09/03/leetcode-h-index/
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def hIndex(self, citations):
         """
@@ -127,6 +141,8 @@ class Solution(object):
                 for i, c in enumerate(sorted(citations) + [0]))
 
 # V2
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def hIndex(self, citations):
         """
@@ -149,9 +165,9 @@ class Solution(object):
                 return i
         return h
 
-# V4 
-# Time:  O(nlogn)
-# Space: O(1)
+# V4
+# time = O(n log n)
+# space = O(1)
 class Solution2(object):
     def hIndex(self, citations):
         """
@@ -167,9 +183,9 @@ class Solution2(object):
                 break
         return h
 
-# V5 
-# Time:  O(nlogn)
-# Space: O(n)
+# V5
+# time = O(n log n)
+# space = O(n)
 class Solution3(object):
     def hIndex(self, citations):
         """

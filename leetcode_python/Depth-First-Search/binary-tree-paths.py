@@ -202,6 +202,8 @@ class Solution(object):
 
 # V0
 # IDEA : BFS
+# time = O(n)  # n = number of tree nodes
+# space = O(n)  # queue + collected paths
 class Solution(object):
     def binaryTreePaths(self, root):
         # edge case
@@ -232,6 +234,8 @@ class Solution(object):
 
 # V0
 # IDEA : BFS
+# time = O(n)  # n = number of tree nodes
+# space = O(n)  # queue + collected paths
 class Solution(object):
     def binaryTreePaths(self, root):
         # edge case
@@ -265,6 +269,8 @@ class Solution(object):
 
 # V0'
 # IDEA : BFS
+# time = O(n)  # n = number of tree nodes
+# space = O(n)  # queue + collected paths
 class Solution:
     def binaryTreePaths(self, root):
         res = []
@@ -288,7 +294,9 @@ class Solution:
         return res
 
 # V0'
-# IDEA : DFS 
+# IDEA : DFS
+# time = O(n)  # n = number of tree nodes
+# space = O(n)  # recursion depth + collected paths
 class Solution:
     def binaryTreePaths(self, root):
         ans = []
@@ -307,6 +315,8 @@ class Solution:
 # V1
 # IDEA : DFS
 # https://leetcode.com/problems/binary-tree-paths/discuss/68335/Python-DFS
+# time = O(n)  # n = number of tree nodes
+# space = O(n)  # recursion depth + collected paths
 class Solution:
     def binaryTreePaths(self, root):
         ans = []
@@ -325,6 +335,8 @@ class Solution:
 # V1'
 # IDEA : DFS
 # https://leetcode.com/problems/binary-tree-paths/discuss/237550/Python-solution
+# time = O(n)  # n = number of tree nodes
+# space = O(n)  # recursion depth + collected paths
 class Solution:
     def binaryTreePaths(self, root):
         def dfs(root):
@@ -359,6 +371,8 @@ class Solution:
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)  # n = number of tree nodes
+# space = O(n)  # recursion depth + collected paths
 class Solution:
     # @param {TreeNode} root
     # @return {string[]}
@@ -381,6 +395,8 @@ class Solution:
 
 # V1'''
 # https://blog.csdn.net/coder_orz/article/details/51706119
+# time = O(n^2)  # each recursive call rebuilds sub-results as new lists
+# space = O(n^2)
 class Solution:
     # @param {TreeNode} root
     # @return {string[]}
@@ -400,6 +416,8 @@ class Solution:
 # V1'''''
 # https://blog.csdn.net/coder_orz/article/details/51706119
 # IDEA : BFS (RECURSION)
+# time = O(n)  # n = number of tree nodes
+# space = O(n)  # stack + collected paths
 class Solution:
     # @param {TreeNode} root
     # @return {string[]}
@@ -416,7 +434,9 @@ class Solution:
 
 # V1'''''''
 # https://blog.csdn.net/coder_orz/article/details/51706119
-# IDEA : BFS 
+# IDEA : BFS
+# time = O(n)  # n = number of tree nodes
+# space = O(n)  # queue + collected paths
 class Solution:
     # @param {TreeNode} root
     # @return {string[]}
@@ -431,8 +451,10 @@ class Solution:
                 queue.insert(0, (node.right, curs + str(node.val) + '->'))
         return res
 
-# V1'''''''''  
+# V1'''''''''
 # https://www.jiuzhang.com/solution/binary-tree-paths/#tag-highlight-lang-python
+# time = O(n)  # n = number of tree nodes
+# space = O(n)  # recursion depth + collected paths
 class Solution:
     """
     @param root: the root of the binary tree
@@ -441,7 +463,7 @@ class Solution:
     def binaryTreePaths(self, root):
         if root is None:
             return []
-            
+
         result = []
         self.dfs(root, [str(root.val)], result)
         return result
@@ -463,6 +485,8 @@ class Solution:
 
 # V1''''''''
 # https://www.jiuzhang.com/solution/binary-tree-paths/#tag-highlight-lang-python
+# time = O(n^2)  # each recursive call rebuilds sub-results as new lists
+# space = O(n^2)
 class Solution:
     """
     @param root: the root of the binary tree
@@ -471,7 +495,7 @@ class Solution:
     def binaryTreePaths(self, root):
         if root is None:
             return []
-            
+
         if root.left is None and root.right is None:
             return [str(root.val)]
 
@@ -484,9 +508,9 @@ class Solution:
             
         return paths
 
-# V2 
-# Time:  O(n * h)
-# Space: O(h)
+# V2
+# time = O(n * h)  # n = number of nodes, h = tree height (string concat cost)
+# space = O(h)
 class Solution(object):
     # @param {TreeNode} root
     # @return {string[]}

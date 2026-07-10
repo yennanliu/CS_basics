@@ -176,7 +176,7 @@ class AutocompleteSystem(object):
                 res.append([node.rank, node.data])
             for child in node.children.values():
                 res.extend(self.dfs(child))
-         return res 
+        return res
 
 # V1''
 # https://zhuanlan.zhihu.com/p/99499171

@@ -41,6 +41,8 @@ Follow up: Finding the O(n) is straightforward, could you find an O(log(n)) solu
 # V0
 # IDEA : PROBLEM UNDERSTANDING
 # SAME AS LC 162 Find Peak Element
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def peakIndexInMountainArray(self, arr):
         if len(arr) < 3:
@@ -52,6 +54,8 @@ class Solution(object):
 
 # V0'
 # IDEA : BINARY SEARCH
+# time = O(log n)
+# space = O(1)
 class Solution(object):
     def peakIndexInMountainArray(self, arr):
         if len(arr) < 3:
@@ -70,9 +74,11 @@ class Solution(object):
                 r = mid - 1
         return -1
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/80721162
-# IDEA : BINARY SEARCH 
+# IDEA : BINARY SEARCH
+# time = O(log n)
+# space = O(1)
 class Solution(object):
     def peakIndexInMountainArray(self, A):
         """
@@ -90,9 +96,11 @@ class Solution(object):
                 break
         return mid
 
-# V1' 
+# V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/80721162
-# IDEA : BINARY SEARCH 
+# IDEA : BINARY SEARCH
+# time = O(log n)
+# space = O(1)
 class Solution:
     def peakIndexInMountainArray(self, A):
         """
@@ -111,9 +119,11 @@ class Solution:
                 right = mid
         return -1
 
-# V1'' 
+# V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/80721162
-# IDEA : MAX 
+# IDEA : MAX
+# time = O(n)
+# space = O(1)
 class Solution:
     def peakIndexInMountainArray(self, A):
         """
@@ -124,7 +134,9 @@ class Solution:
 
 # V1'''
 # https://blog.csdn.net/fuxuemingzhu/article/details/80721162
-# IDEA : FIRST DECREASE 
+# IDEA : FIRST DECREASE
+# time = O(n)
+# space = O(1)
 class Solution:
     def peakIndexInMountainArray(self, A):
         """
@@ -136,9 +148,9 @@ class Solution:
                 return i
         return -1
         
-# V2 
-# Time:  O(logn)
-# Space: O(1)
+# V2
+# time = O(log n)
+# space = O(1)
 class Solution(object):
     def peakIndexInMountainArray(self, A):
         """

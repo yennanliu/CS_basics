@@ -1,6 +1,8 @@
 
 
-# V1 
+# V1
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def sortedSquares(self, A):
         output = [ x**2 for x in A ]
@@ -8,9 +10,9 @@ class Solution(object):
         return output
 
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def sortedSquares(self, A):
         """

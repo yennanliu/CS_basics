@@ -17,8 +17,10 @@
 
 # V0 
 
-# V1 
+# V1
 # http://bookshadow.com/weblog/2017/08/13/leetcode-judge-route-circle/
+# time = O(n), n = len(moves)
+# space = O(1)
 class Solution(object):
     def judgeCircle(self, moves):
         """
@@ -37,6 +39,8 @@ class Solution(object):
 
 # V1'
 # https://leetcode.com/articles/judge-route-circle/
+# time = O(n), n = len(moves)
+# space = O(1)
 class Solution(object):
     def judgeCircle(self, moves):
         x = y = 0
@@ -50,6 +54,8 @@ class Solution(object):
 
 # V1''
 # https://leetcode.com/problems/robot-return-to-origin/discuss/151512/657-judge-route-circle-solution-in-java-c-python
+# time = O(n), n = len(moves)
+# space = O(1)
 class Solution(object):
     def judgeCircle(self, moves):
         """
@@ -70,6 +76,8 @@ class Solution(object):
         return v == 0 and h == 0 # moves in v & h is equal to 0 means going back to starting point.
 
 # V2
+# time = O(n), n = len(moves)
+# space = O(1)
 class Solution:
     def judgeCircle(self, moves):
         x_move = 1*(moves.count('R')) + (-1)*(moves.count('L'))
@@ -80,6 +88,8 @@ class Solution:
             return False
 
 # V3
+# time = O(n), n = len(moves)
+# space = O(1)
 class Solution(object):
     def judgeCircle(self, moves):
         """

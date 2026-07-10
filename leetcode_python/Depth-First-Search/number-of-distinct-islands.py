@@ -39,8 +39,10 @@ The length of each dimension in the given grid does not exceed 50.
 
 """
 
-# V0 
+# V0
 # IDEA : DFS
+# time = O(rows * cols)
+# space = O(rows * cols)
 class Solution:
     def numDistinctIslands(self, grid):
         def dfs(x, y, pos, rel_pos):
@@ -118,6 +120,8 @@ class Solution:
 # V0'
 # IDEA DFS
 # TODO : validate it
+# time = O(rows * cols)
+# space = O(rows * cols)
 class Solution(object):
     def numIslands(self, grid):
         def dfs(grid, item):
@@ -153,8 +157,10 @@ class Solution(object):
                         res += 1
         return res
 
-# V1 
+# V1
 # https://blog.csdn.net/danspace1/article/details/86610850
+# time = O(rows * cols)
+# space = O(rows * cols)
 class Solution:
     def numDistinctIslands(self, grid):
         """
@@ -188,9 +194,11 @@ class Solution:
 # V1
 # IDEA : Brute Force
 # https://leetcode.com/problems/number-of-distinct-islands/solution/
+# time = O((rows * cols)^2), each island is compared against all previously found unique islands
+# space = O(rows * cols)
 class Solution:
     def numDistinctIslands(self, grid: List[List[int]]) -> int:
-        
+
         def current_island_is_unique():
             for other_island in unique_islands:
                 if len(other_island) != len(current_island):
@@ -233,6 +241,8 @@ class Solution:
 # V1
 # IDEA : Hash By Local Coordinates
 # https://leetcode.com/problems/number-of-distinct-islands/solution/
+# time = O(rows * cols)
+# space = O(rows * cols)
 class Solution:
     def numDistinctIslands(self, grid: List[List[int]]) -> int:
 
@@ -266,6 +276,8 @@ class Solution:
 # V1
 # IDEA : Hash By Path Signature
 # https://leetcode.com/problems/number-of-distinct-islands/solution/
+# time = O(rows * cols)
+# space = O(rows * cols)
 class Solution:
     def numDistinctIslands(self, grid: List[List[int]]) -> int:
 
@@ -297,7 +309,9 @@ class Solution:
 
 # V1'
 # https://www.jiuzhang.com/solution/number-of-distinct-islands/#tag-highlight-lang-python
-# IDEA : DFS / BFS 
+# IDEA : DFS / BFS
+# time = O(rows * cols)
+# space = O(rows * cols)
 class Solution:
     """
     @param grid: a list of lists of integers
@@ -334,9 +348,9 @@ class Solution:
         self.dx = [0, 0, 1, -1]
         self.dy = [1, -1, 0, 0]
 
-# V2 
-# Time:  O(m * n)
-# Space: O(m * n)
+# V2
+# time = O(m * n)
+# space = O(m * n)
 class Solution(object):
     def numDistinctIslands(self, grid):
         """

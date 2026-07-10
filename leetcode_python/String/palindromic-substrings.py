@@ -62,6 +62,8 @@ DP eq:
     False, otherwise
 
 """
+# time = O(n^2)
+# space = O(n^2)
 class Solution(object):
     def countSubstrings(self, s):
         # Length of input string
@@ -167,6 +169,8 @@ DP State DefinitionLet $dp[i][j]$ be a boolean value (or integer 1 / 0) represen
 \end{cases}$$Boundary Base Case ($j - i \le 2$): If the matching characters are adjacent ($j - i = 1$, like "aa") or separated by exactly one letter ($j - i = 2$, like "aba"), there is no larger inner subproblem left to check. It is automatically a palindrome.Dependency Requirement ($dp[i+1][j-1]$): To compute the state for row $i$, we look at row $i+1$ (the row directly beneath it). Therefore, our outer loop must run backwards from the bottom row up to the top.
 
 """
+# time = O(n^2)
+# space = O(n^2)
 class Solution(object):
     def countSubstrings(self, s):
         """
@@ -214,6 +218,8 @@ class Solution(object):
 
 # V0
 # IDEA : BRUTE FORCE
+# time = O(n^3)  # O(n^2) substrings, each palindrome check up to O(n)
+# space = O(n)
 class Solution(object):
     def countSubstrings(self, s):
         count = 0
@@ -227,6 +233,8 @@ class Solution(object):
 
 # V0'
 # IDEA : BRUTE FORCE
+# time = O(n^3)  # O(n^2) substrings, each palindrome check up to O(n)
+# space = O(n)
 class Solution(object):
     def countSubstrings(self, s):
         count = 0
@@ -238,6 +246,8 @@ class Solution(object):
 
 # V0''
 # IDEA : TWO POINTERS (similar as LC 005)
+# time = O(n^2)
+# space = O(1)
 class Solution(object):
     def countSubstrings(self, s):
         count = 0
@@ -267,9 +277,11 @@ class Solution(object):
 # IDEA : TWO POINTERS
 # https://leetcode.com/problems/palindromic-substrings/discuss/1041760/Python-Easy-Solution-Beats-85
 # https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/String/longest-palindromic-substring.py
+# time = O(n^2)
+# space = O(1)
 class Solution:
     def countSubstrings(self, s):
-        ans = 0    
+        ans = 0
         for i in range(len(s)):
             # odd case
             # example : s = "abc"
@@ -289,9 +301,11 @@ class Solution:
             ans += 1          
         return ans
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79433960
-# IDEA : GREEDY 
+# IDEA : GREEDY
+# time = O(n^3)  # O(n^2) substrings, each palindrome check up to O(n)
+# space = O(n)
 class Solution(object):
     def countSubstrings(self, s):
         """
@@ -305,8 +319,10 @@ class Solution(object):
                     count += 1
         return count
 
-# V1' 
+# V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79433960
+# time = O(n^2)
+# space = O(1)
 class Solution(object):
     def countSubstrings(self, s):
         """
@@ -332,9 +348,11 @@ class Solution(object):
                 right += 1
         return count
 
-# V1'' 
+# V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79433960
-# IDEA : DP 
+# IDEA : DP
+# time = O(n^2)
+# space = O(n^2)
 class Solution(object):
     def countSubstrings(self, s):
         """
@@ -453,9 +471,9 @@ class Solution(object):
 #     }
 # }
 
-# V2 
-# Time:  O(n)
-# Space: O(n)
+# V2
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def countSubstrings(self, s):
         """

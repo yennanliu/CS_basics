@@ -40,6 +40,8 @@ Follow up: Can you flatten the tree in-place (with O(1) extra space)?
 
 # V0
 # IDEA: DFS (post-order) (GEMINI)
+# time = O(n)
+# space = O(h), h is height of binary tree (recursion stack)
 class Solution(object):
     def flatten(self, root):
         """
@@ -47,7 +49,7 @@ class Solution(object):
         :rtype: None Do not return anything, modify root in-place instead.
         """
         self.helper(root)
-        
+
     def helper(self, root):
         # Base Case 1: Empty nodes have no tail
         if not root:
@@ -136,6 +138,8 @@ class Solution(object):
 
 # V0
 # IDEA: DFS (post-order) (gpt)
+# time = O(n)
+# space = O(h), h is height of binary tree (recursion stack)
 class Solution(object):
     def flatten(self, root):
         """
@@ -208,6 +212,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: DFS (post-order) (O(1) space) (CLAUDE)
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def flatten(self, root):
         curr = root
@@ -225,6 +231,8 @@ class Solution(object):
 
 # V0-2
 # IDEA: DFS (post-order) + prev node (GPT)
+# time = O(n)
+# space = O(h), h is height of binary tree (recursion stack)
 class Solution(object):
     def flatten(self, root):
         self.helper(root)
@@ -256,6 +264,8 @@ class Solution(object):
 
 # V0-2
 # IDEA: DFS (post-order) + prev node (GEMINI)
+# time = O(n)
+# space = O(h), h is height of binary tree (recursion stack)
 class Solution(object):
     def flatten(self, root):
         """
@@ -286,6 +296,8 @@ class Solution(object):
 # V0
 # IDEA: DFS + PREORDER
 # https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Recursion/FlattenBinaryTreeToLinkedList.java#L73
+# time = O(n)
+# space = O(n)
 class Solution:
     def flatten(self, root):
         """
@@ -323,6 +335,8 @@ class Solution:
 #         self.left = left
 #         self.right = right
 
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def flatten(self, root):
         """
@@ -350,6 +364,8 @@ class Solution(object):
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/70241424
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def flatten(self, root):
         """
@@ -370,6 +386,8 @@ class Solution(object):
 
 # V1'
 # http://bookshadow.com/weblog/2016/09/02/leetcode-flatten-binary-tree-to-linked-list/
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def flatten(self, root):
         """
@@ -389,6 +407,8 @@ class Solution(object):
 
 # V1''
 # http://bookshadow.com/weblog/2016/09/02/leetcode-flatten-binary-tree-to-linked-list/
+# time = O(n)
+# space = O(h), h is height of binary tree (recursion stack)
 class Solution(object):
     def flatten(self, root):
         """
@@ -407,6 +427,8 @@ class Solution(object):
 
 # V1'''
 # https://www.jiuzhang.com/solution/flatten-binary-tree-to-linked-list/#tag-highlight-lang-python
+# time = O(n)
+# space = O(h), h is height of binary tree (recursion stack)
 class Solution:
     last_node = None
     
@@ -429,6 +451,8 @@ class Solution:
 
 # V1''''
 # https://www.jiuzhang.com/solution/flatten-binary-tree-to-linked-list/#tag-highlight-lang-python
+# time = O(n)
+# space = O(h), h is height of binary tree (recursion stack)
 class Solution:
     """
     @param root: a TreeNode, the root of the binary tree
@@ -458,15 +482,15 @@ class Solution:
             return left_last            
         return root
 
-# V2 
-# Time:  O(n)
-# Space: O(h), h is height of binary tree
+# V2
 class TreeNode(object):
     def __init__(self, x):
         self.val = x
         self.left = None
         self.right = None
 
+# time = O(n)
+# space = O(h), h is height of binary tree
 class Solution(object):
     # @param root, a tree node
     # @return nothing, do it in place
@@ -483,6 +507,8 @@ class Solution(object):
         else:
             return list_head
 
+# time = O(n)
+# space = O(h), h is height of binary tree
 class Solution2(object):
     list_head = None
     # @param root, a tree node

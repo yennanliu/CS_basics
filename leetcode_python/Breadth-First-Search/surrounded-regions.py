@@ -33,6 +33,8 @@ board[i][j] is 'X' or 'O'.
 
 # V0
 # IDEA 1) 2 PASS DFS
+# time = O(m*n), m,n = board dims
+# space = O(m*n), recursion stack in worst case
 class Solution(object):
     def solve(self, board):
         """
@@ -123,6 +125,8 @@ class Solution(object):
 
 # V0-1
 # IDEA 1) 2 PASS DFS
+# time = O(m*n), m,n = board dims
+# space = O(m*n), recursion stack in worst case
 class Solution(object):
     def solve(self, board):
         """
@@ -199,6 +203,8 @@ class Solution(object):
 
 # V0
 # IDEA : BFS
+# time = O(m*n), m,n = board dims
+# space = O(m*n), queue holds up to O(m*n) cells
 class Solution(object):
     def solve(self, board):
         # edge case
@@ -256,9 +262,11 @@ class Solution(object):
 
 # V0'
 # IDEA : BFS
+# time = O(m*n), m,n = board dims
+# space = O(m*n), queue holds up to O(m*n) cells
 class Solution(object):
     def solve(self, board):
-        import collections 
+        import collections
         if not board: return 
         l, w = len(board), len(board[0])
         q=collections.deque()
@@ -295,9 +303,11 @@ class Solution(object):
 # STEP 2) GO THROUGH (bfs) ALL BOUNDARY "0" MAKE THEM AND ALL THEIR CONNECTION "O" AS "D". i.e. "O" -> "D"
 # STEP 3) GO THROUGH ALL REST OF "O" (NOT EQUAL TO "D" yet) AS "X"
 # STEP 4) GO THROUGH ALL "D" AND MAKE THEM TO "O"
+# time = O(m*n), m,n = board dims
+# space = O(m*n), queue holds up to O(m*n) cells
 class Solution(object):
     def solve(self, board):
-        import collections 
+        import collections
         """
         :type board: List[List[str]]
         :rtype: None Do not return anything, modify board in-place instead.
@@ -345,6 +355,8 @@ assert s.solve([["X","X","X","X"],["X","O","O","X"],["X","X","O","X"],["X","X","
 # V1
 # IDEA : UNION FIND
 # https://leetcode.com/problems/surrounded-regions/discuss/1764075/Python-or-Union-Find
+# time = O(m*n*alpha(m*n)), m,n = board dims, alpha = inverse Ackermann (union-find near O(1))
+# space = O(m*n), DSU root/rank arrays
 class DSU:
     def __init__(self, n):
         self.root = list(range(n))
@@ -408,6 +420,8 @@ class Solution:
 # V1
 # IDEA : UNION FIND
 # https://leetcode.com/problems/surrounded-regions/discuss/1371795/python3-%2B-Union-Find
+# time = O(m*n*alpha(m*n)), m,n = board dims, alpha = inverse Ackermann (union-find near O(1))
+# space = O(m*n), parent dict
 class Solution:
     def solve(self, board):
         """
@@ -449,6 +463,8 @@ class Solution:
 # V1'
 # https://leetcode.com/problems/surrounded-regions/discuss/475014/python3-BFS-and-DFS
 # IDEA : DFS
+# time = O(m*n), m,n = board dims
+# space = O(m*n), recursion stack in worst case
 class Solution:
     #recursion, dfs
     def solve(self, board: List[List[str]]) -> None:
@@ -490,12 +506,11 @@ class Solution:
 
 # V1''
 # https://leetcode.com/problems/surrounded-regions/discuss/475014/python3-BFS-and-DFS
-# IDEA : BFS 
+# IDEA : BFS
+# time = O(m*n), m,n = board dims
+# space = O(m*n), queue holds up to O(m*n) cells
 class Solution:
     '''
-    Time complexity : O(MXN)
-    Space complexity : O(1)
-
     First, check the four border of the matrix. If there is a element is
     'O', alter it and all its neighbor 'O' elements to 'N'.
 
@@ -554,9 +569,11 @@ class Solution:
 
 # V1'''
 # https://www.jiuzhang.com/solution/surrounded-regions/#tag-highlight-lang-python
+# time = O(m*n), m,n = board dims
+# space = O(m*n), queue holds up to O(m*n) cells
 class Solution:
     # @param {list[list[str]]} board a 2D board containing 'X' and 'O'
-    # @return nothing 
+    # @return nothing
     def surroundedRegions(self, board):
         # Write your code here
         if not any(board):
@@ -574,6 +591,8 @@ class Solution:
 
 # V1''''
 # https://www.jiuzhang.com/solution/surrounded-regions/#tag-highlight-lang-python
+# time = O(m*n), m,n = board dims
+# space = O(m*n), queue holds up to O(m*n) cells
 class Solution:
     # @param {list[list[str]]} board a 2D board containing 'X' and 'O'
     # @return nothing
@@ -615,9 +634,9 @@ class Solution:
                 elif board[i][j] == 'O':
                     board[i][j] = 'X'
                     
-# V2 
-# Time:  O(m * n)
-# Space: O(m + n)
+# V2
+# time = O(m*n), m,n = board dims
+# space = O(m*n), queue holds up to O(m*n) cells
 import collections
 class Solution(object):
     def solve(self, board):

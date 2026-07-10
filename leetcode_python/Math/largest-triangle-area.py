@@ -2,8 +2,10 @@
 
 # V2 
 # http://bookshadow.com/weblog/2018/04/09/leetcode-largest-triangle-area/
-### Shoelace formula  ### : get the area of triangle from its 3 points 
+### Shoelace formula  ### : get the area of triangle from its 3 points
 # https://en.wikipedia.org/wiki/Shoelace_formula
+# time = O(n^3)  # n = len(points)
+# space = O(1)
 class Solution(object):
     def largestTriangleArea(self, points):
         """
@@ -23,9 +25,9 @@ class Solution(object):
                     ans = max(ans, triangleArea(x1, y1, x2, y2, x3, y3))
         return ans
 
-# V3 
-# Time:  O(n^3)
-# Space: O(1)
+# V3
+# time = O(n^3)  # n = len(points)
+# space = O(1)
 class Solution(object):
     def largestTriangleArea(self, points):
         """

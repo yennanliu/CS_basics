@@ -54,6 +54,8 @@ Follow-up: Could you find a solution with O(n) time complexity?
 
 
 # V0
+# time = O(1)
+# space = O(1)
 class Solution(object):
     def subArrayRanges(self, nums):
         """
@@ -61,10 +63,12 @@ class Solution(object):
         :rtype: int
         """
         pass
-        
+
 
 # V0-1
 # IDEA: BRUTE FORCE (gpt)
+# time = O(n^2)
+# space = O(1)
 class Solution(object):
     def subArrayRanges(self, nums):
         n = len(nums)
@@ -214,6 +218,8 @@ count = (mid - left) * (right - mid)
 ```
 
 """
+# time = O(n)
+# space = O(n)
 class Solution:
     def subArrayRanges(self, nums):
         n = len(nums)
@@ -266,6 +272,8 @@ class Solution:
 
 # V0-1
 # IDEA: MONO STACK (gpt)
+# time = O(n)
+# space = O(n)
 class Solution:
     def subArrayRanges(self, nums):
 
@@ -398,6 +406,8 @@ class Solution:
 
 # V0-2
 # IDEA: MONO STACK (gemini)
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def subArrayRanges(self, nums):
         """
@@ -488,6 +498,8 @@ class Solution(object):
 
 # V0
 # IDEA : BRUTE FORCE
+# time = O(n^2)
+# space = O(1)
 class Solution:
     def subArrayRanges(self, nums):
         res = 0
@@ -505,6 +517,8 @@ class Solution:
 # V0'
 # IDEA : monotonic stack
 # https://zhuanlan.zhihu.com/p/444725220
+# time = O(n)
+# space = O(n)
 class Solution:
     def subArrayRanges(self, nums):
         A, s, res = [-float('inf')] + nums + [-float('inf')], [], 0
@@ -523,6 +537,8 @@ class Solution:
 
 # V0''
 # IDEA : INCREASING STACK
+# time = O(n)
+# space = O(n)
 class Solution:
     def subArrayRanges(self, A0):
         res = 0
@@ -549,6 +565,8 @@ class Solution:
 # V1
 # IDEA : BRUTE FORCE
 # https://leetcode.com/problems/sum-of-subarray-ranges/discuss/1624303/python-bruct-foce
+# time = O(n^2)
+# space = O(1)
 class Solution:
     def subArrayRanges(self, nums):
         res = 0
@@ -600,6 +618,8 @@ class Solution:
 # It will be easy if you can refer to this problem and my post:
 # 901. Online Stock Span
 # I copy some of my codes from this solution.
+# time = O(n)
+# space = O(n)
 class Solution:
     def subArrayRanges(self, A0):
         res = 0
@@ -626,6 +646,8 @@ class Solution:
 # V1''
 # IDEA : monotonic stack
 # https://zhuanlan.zhihu.com/p/444725220
+# time = O(n)
+# space = O(n)
 class Solution:
     def subArrayRanges(self, nums):
         A, s, res = [-float('inf')] + nums + [-float('inf')], [], 0
@@ -649,6 +671,8 @@ class Solution:
 # V1''''
 # IDEA : 2 POINTERS
 # https://www.codeleading.com/article/65096149220/
+# time = O(n^2)
+# space = O(1)
 class Solution:
     def subArrayRanges(self, nums):
         count = 0
@@ -668,6 +692,8 @@ class Solution:
 # V1'''''
 # IDEA : sumSubarray
 # https://leetcode.com/problems/sum-of-subarray-ranges/discuss/1638345/Python-0(n)
+# time = O(n)
+# space = O(n)
 class Solution:
     def subArrayRanges(self, nums):
         return self.sumSubarray(nums, operator.gt) - self.sumSubarray(nums, operator.lt)
@@ -689,6 +715,8 @@ class Solution:
 # V1'''''''
 # IDEA : DP
 # https://leetcode.com/problems/sum-of-subarray-ranges/discuss/1624305/Python-DP-Solution
+# time = O(n^2)
+# space = O(n^2)
 class Solution:
     def subArrayRanges(self, nums):
             dp = [[(None, None) for i in range(len(nums))] for j in range(len(nums))]

@@ -37,6 +37,8 @@ The number of nodes in the tree is in the range [1, 104].
 # V1
 # IDEA : RECURSION
 # https://leetcode.com/problems/house-robber-iii/solution/
+# time = O(n)
+# space = O(h), h is height of binary tree (recursion stack)
 class Solution:
     def rob(self, root: TreeNode) -> int:
         def helper(node):
@@ -56,6 +58,8 @@ class Solution:
 # V1'
 # IDEA : RECURSION WITH MEMORY
 # https://leetcode.com/problems/house-robber-iii/solution/
+# time = O(n)
+# space = O(n)
 class Solution:
     def rob(self, root: TreeNode) -> int:
         rob_saved = {}
@@ -85,6 +89,8 @@ class Solution:
 # V1''
 # IDEA : DP
 # https://leetcode.com/problems/house-robber-iii/solution/
+# time = O(n)
+# space = O(n)
 class Solution:
     def rob(self, root: TreeNode) -> int:
         if not root:
@@ -125,7 +131,9 @@ class Solution:
 
 # V1''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/80779068
-# for more solutions, plz check the link above 
+# for more solutions, plz check the link above
+# time = O(n)
+# space = O(h), h is height of binary tree (recursion stack)
 class Solution(object):
     def rob(self, root):
         """
@@ -144,6 +152,8 @@ class Solution(object):
 
 # V1''''''
 # https://www.hrwhisper.me/leetcode-house-robber-iii/
+# time = O(n)
+# space = O(h), h is height of binary tree (recursion stack)
 class Solution(object):
     def rob(self, root):
         """
@@ -158,9 +168,9 @@ class Solution(object):
         rob_R, no_rob_R = self.dfs_rob(root.right)
         return max(no_rob_L + no_rob_R + root.val , rob_L + rob_R), rob_L + rob_R
 
-# V2 
-# Time:  O(n)
-# Space: O(h)
+# V2
+# time = O(n)
+# space = O(h), h is height of binary tree (recursion stack)
 class Solution(object):
     def rob(self, root):
         """

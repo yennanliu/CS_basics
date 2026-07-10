@@ -59,6 +59,8 @@ DP eq:
 
 
 """
+# time = O(n * s), n = len(nums), s = sum(nums) // 2 (target)
+# space = O(s)
 class Solution(object):
     def canPartition(self, nums):
         # Calculate the total sum of all numbers.
@@ -144,6 +146,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: 1D DP
+# time = O(n * s), n = len(nums), s = sum(nums) // 2 (target)
+# space = O(s)
 class Solution(object):
     def canPartition(self, nums):
         # Calculate the grand total of all integers within the input array.
@@ -185,6 +189,8 @@ class Solution(object):
 # V1
 # IDEA : brute force (TLE)
 # https://leetcode.com/problems/partition-equal-subset-sum/solution/
+# time = O(2^n), n = len(nums)
+# space = O(n)
 class Solution:
     def canPartition(self, nums: List[int]) -> bool:
         def dfs(nums: List[int], n: int, subset_sum: int) -> bool:
@@ -211,6 +217,8 @@ class Solution:
 # V1'
 # IDEA : Top Down Dynamic Programming - Memoization
 # https://leetcode.com/problems/partition-equal-subset-sum/solution/
+# time = O(n * s), n = len(nums), s = sum(nums) // 2 (subset_sum)
+# space = O(n * s)
 class Solution:
     def canPartition(self, nums: List[int]) -> bool:
         @lru_cache(maxsize=None)
@@ -238,6 +246,8 @@ class Solution:
 # V1''
 # IDEA : Bottom Up Dynamic Programming
 # https://leetcode.com/problems/partition-equal-subset-sum/solution/
+# time = O(n * s), n = len(nums), s = sum(nums) // 2 (subset_sum)
+# space = O(n * s)
 class Solution:
     def canPartition(self, nums: List[int]) -> bool:
         # find sum of array elements
@@ -263,7 +273,9 @@ class Solution:
 
 # V1'''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79787425
-# DFS 
+# DFS
+# time = O(2^n), n = len(nums)
+# space = O(n)
 class Solution:
     def canPartition(self, nums):
         """
@@ -288,6 +300,8 @@ class Solution:
 # V1'''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79787425
 # dp[j] = dp[j] || dp[j - nums[i]]
+# time = O(n * s), n = len(nums), s = sum(nums)
+# space = O(s)
 class Solution(object):
     def canPartition(self, nums):
         """
@@ -302,9 +316,9 @@ class Solution(object):
                 nset.add(m + n)
         return sums / 2 in nset
 
-# V2 
-# Time:  O(n * s), s is the sum of nums
-# Space: O(s)
+# V2
+# time = O(n * s), s is the sum of nums
+# space = O(s)
 class Solution(object):
     def canPartition(self, nums):
         """

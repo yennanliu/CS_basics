@@ -31,6 +31,8 @@ postorder is guaranteed to be the postorder traversal of the tree.
 """
 
 # V0
+# time = O(n^2), index() lookup is O(n) at each of n recursive calls
+# space = O(n^2), slicing creates new lists at every recursion level
 class Solution(object):
     def buildTree(self, inorder, postorder):
         if len(postorder) == 0:
@@ -44,7 +46,9 @@ class Solution(object):
         return root
 
 # V0
-# IDEA : Binary Tree property, same as LC 105 
+# IDEA : Binary Tree property, same as LC 105
+# time = O(n^2), index() lookup is O(n) at each of n recursive calls
+# space = O(n^2), slicing creates new lists at every recursion level
 class Solution(object):
     def buildTree(self, inorder, postorder):
         if not inorder:
@@ -65,7 +69,9 @@ class Solution(object):
         root.right =  self.buildTree(inorder[idx+1:], postorder[idx:-1])
         return root
    
-# V0' 
+# V0'
+# time = O(n^2), index() lookup is O(n) at each of n recursive calls
+# space = O(n^2), slicing creates new lists at every recursion level
 class Solution(object):
     def buildTree(self, inorder, postorder):
         if len(inorder) == 0:
@@ -91,6 +97,8 @@ class Solution(object):
 # i.e. INORDER :  [left-sub-tree]root[right-sub-tree]
 # i.e. POSTORDER :  [left-sub-tree][right-sub-tree]root
 # -> SO WE CAN RE-BUILD THE BST FROM INORDER AND POSTORDER AND INFROMATION ABOVE
+# time = O(n^2), index() lookup is O(n) at each of n recursive calls
+# space = O(n^2), slicing creates new lists at every recursion level
 class Solution(object):
     def buildTree(self, inorder, postorder):
         if len(inorder) == 0:
@@ -105,7 +113,9 @@ class Solution(object):
 
 # V1'
 # https://blog.csdn.net/qqxx6661/article/details/75905524
-# IDEA : PRE-ORDER AND IN-ORDER 
+# IDEA : PRE-ORDER AND IN-ORDER
+# time = O(n^2), index() lookup is O(n) at each of n recursive calls
+# space = O(n^2), slicing creates new lists at every recursion level
 class Solution(object):
     def buildTree(self, preorder, inorder):
         if len(preorder) == 0:
@@ -118,9 +128,9 @@ class Solution(object):
         root.right = self.buildTree(preorder[index + 1 : len(preorder)], inorder[index + 1 : len(inorder)])
         return root
 
-# V2 
-# Time:  O(n)
-# Space: O(n)
+# V2
+# time = O(n), hashmap gives O(1) index lookup
+# space = O(n), for hashmap and recursion stack
 class TreeNode(object):
     def __init__(self, x):
         self.val = x

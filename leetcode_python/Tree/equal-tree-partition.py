@@ -49,6 +49,8 @@ Medium
 
 # V0
 # IDEA : DFS + cache
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def checkEqualTree(self, root):
         seen = []
@@ -64,6 +66,8 @@ class Solution(object):
 
 # V0''
 # IDEA : DFS + cache
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def checkEqualTree(self, root):
         seen = []
@@ -109,9 +113,11 @@ class Solution(object):
 ### SO -> ALWAYS CHECK IF SUM(tree) = 2*(sub_tree_1) = 2*(sub_tree_2)
 ### tree = sub_tree_1 + sub_tree_2
 # IDEA : DFS
-# IDEA : GET THE SUM LIST (self.mp = {}), 
-#        -> THEN CHECK IF THERE EXIST ANY i, j IN  self.mp 
-#        -> SUCH THAT i = j/2 
+# IDEA : GET THE SUM LIST (self.mp = {}),
+#        -> THEN CHECK IF THERE EXIST ANY i, j IN  self.mp
+#        -> SUCH THAT i = j/2
+# time = O(n)
+# space = O(n)
 class Solution:
     def checkEqualTree(self, root):
         self.mp = {}
@@ -131,6 +137,8 @@ class Solution:
         return sum
 
 # V0'
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def checkEqualTree(self, root):
         seen = []
@@ -156,6 +164,8 @@ class Solution(object):
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def checkEqualTree(self, root):
         """
@@ -183,6 +193,8 @@ class TreeNode:
         self.val = val
         self.left, self.right = None, None
 """
+# time = O(n)
+# space = O(n)
 class Solution:
     """
     @param root: a TreeNode
@@ -207,6 +219,8 @@ class Solution:
 
 # V1''
 # https://leetcode.com/articles/equal-tree-partition/
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def checkEqualTree(self, root):
         seen = []
@@ -223,6 +237,8 @@ class Solution(object):
 # V1
 # IDEA : DFS
 # https://leetcode.com/problems/equal-tree-partition/solution/
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def checkEqualTree(self, root):
         seen = []
@@ -236,9 +252,9 @@ class Solution(object):
         seen.pop()
         return total / 2.0 in seen
 
-# V2 
-# Time:  O(n)
-# Space: O(n)
+# V2
+# time = O(n)
+# space = O(n)
 import collections
 class Solution(object):
     def checkEqualTree(self, root):

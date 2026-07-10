@@ -34,6 +34,8 @@ Constraints:
 
 # V0
 # IDEA : PREFIX SUM, HASHMAP
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def subarraySum(self, nums, k):
         if nums is None:
@@ -59,6 +61,8 @@ class Solution(object):
 # IDEA : PREFIX SUM, LC 1248
 # https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Array/count-number-of-nice-subarrays.py
 from collections import defaultdict
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def subarraySum(self, nums, k):
         # edge case
@@ -87,6 +91,8 @@ class Solution(object):
 # V0'
 # IDEA : HASH TABLE + sub array sum
 # IDEA : https://blog.csdn.net/fuxuemingzhu/article/details/82767119
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def subarraySum(self, nums, k):
         n = len(nums)
@@ -122,6 +128,8 @@ class Solution(object):
 
 # V0'
 # IDEA : HASH TABLE + sub array sum
+# time = O(n)
+# space = O(n)
 class Solution:
     def subarraySum(self, nums, k):
         # write your code here
@@ -181,6 +189,8 @@ class Solution:
 # d : defaultdict(<class 'int'>, {0: 1, 1: 1, 2: 1})
 # 2
 import collections
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def subarraySum(self, nums, k):
         """
@@ -203,6 +213,8 @@ class Solution(object):
 # V1' 
 # http://bookshadow.com/weblog/2017/04/30/leetcode-subarray-sum-equals-k/
 import collections
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def subarraySum(self, nums, k):
         """
@@ -220,6 +232,8 @@ class Solution(object):
 
 # V1''
 # https://www.jiuzhang.com/solution/subarray-sum-equals-k/#tag-highlight-lang-python
+# time = O(n)
+# space = O(n)
 class Solution:
     """
     @param nums: a list of integer
@@ -319,9 +333,9 @@ class Solution:
 #     }
 # }
 
-# V2 
-# Time:  O(n)
-# Space: O(n)
+# V2
+# time = O(n)
+# space = O(n)
 import collections
 class Solution(object):
     def subarraySum(self, nums, k):

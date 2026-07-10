@@ -1,7 +1,9 @@
 # V0 
 
-# V1 
+# V1
 # http://bookshadow.com/weblog/2018/05/06/leetcode-masking-personal-information/
+# time = O(n), n = len(S)
+# space = O(n)
 class Solution(object):
     def maskPII(self, S):
         """
@@ -19,6 +21,8 @@ class Solution(object):
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/80644199
+# time = O(n), n = len(S)
+# space = O(n)
 class Solution(object):
     def convert_phone(self, phone):
         phone = phone.strip().replace(' ', '').replace('(', '').replace(')', '').replace('-', '').replace('+', '')
@@ -39,9 +43,9 @@ class Solution(object):
         """
         return self.convert_email(S) if '@' in S else self.convert_phone(S)
         
-# V2 
-# Time:  O(1)
-# Space: O(1)
+# V2
+# time = O(n), n = len(S)
+# space = O(n)
 class Solution(object):
     def maskPII(self, S):
         """

@@ -40,6 +40,8 @@ from typing import List
 
 class LogSystem:
 
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
         self.logs = []
 
@@ -52,9 +54,13 @@ class LogSystem:
             "Second": 19
         }
 
+    # time = O(1)
+    # space = O(1)
     def put(self, id: int, timestamp: str) -> None:
         self.logs.append((id, timestamp))
 
+    # time = O(n), n = number of stored logs
+    # space = O(n) for the result list
     def retrieve(self, start: str, end: str, granularity: str) -> List[int]:
 
         k = self.idx[granularity]
@@ -96,6 +102,8 @@ class LogSystem:
 # V1-2
 class LogSystem(object):
 
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
         # A simple list storage is ideal because we need to scan logs without destroying a heap
         self.logs = []
@@ -116,6 +124,8 @@ class LogSystem(object):
         self.min_suffix = ":01:01:00:00:00"
         self.max_suffix = ":12:31:23:59:59"
 
+    # time = O(1)
+    # space = O(1)
     def put(self, id, timestamp):
         """
         :type id: int
@@ -124,6 +134,8 @@ class LogSystem(object):
         """
         self.logs.append((id, timestamp))
 
+    # time = O(n), n = number of stored logs
+    # space = O(n) for the result list
     def retrieve(self, start, end, granularity):
         """
         :type start: str
@@ -158,6 +170,8 @@ class LogSystem(object):
 # V2-1
 # https://leetcode.ca/2017-08-26-635-Design-Log-Storage-System/
 class LogSystem:
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
         self.logs = []
         self.d = {
@@ -169,9 +183,13 @@ class LogSystem:
             "Second": 19,
         }
 
+    # time = O(1)
+    # space = O(1)
     def put(self, id: int, timestamp: str) -> None:
         self.logs.append((id, timestamp))
 
+    # time = O(n), n = number of stored logs
+    # space = O(n) for the result list
     def retrieve(self, start: str, end: str, granularity: str) -> List[int]:
         i = self.d[granularity]
         return [id for id, ts in self.logs if start[:i] <= ts[:i] <= end[:i]]
@@ -183,14 +201,20 @@ class LogSystem:
 # V2-2
 # https://leetcode.ca/2017-08-26-635-Design-Log-Storage-System/
 class LogSystem:
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
         self.logs = SortedDict()
 
+    # time = O(log n), n = number of distinct timestamps stored
+    # space = O(1) amortized (excluding storage growth)
     def put(self, id: int, timestamp: str) -> None:
         if timestamp not in self.logs:
             self.logs[timestamp] = []
         self.logs[timestamp].append(id)
 
+    # time = O(log n + m), n = number of distinct timestamps, m = matched entries
+    # space = O(m) for the result list
     def retrieve(self, start: str, end: str, granularity: str) -> List[int]:
         index = {
             "Year": 4,

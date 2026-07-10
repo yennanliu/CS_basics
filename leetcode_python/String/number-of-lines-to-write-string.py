@@ -43,6 +43,8 @@
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79810381
 # IDEA : ASIIC
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def numberOfLines(self, widths, S):
         """
@@ -60,8 +62,10 @@ class Solution(object):
                 last = width
         return [lines, last]
 
-# V1' 
+# V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79810381
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def numberOfLines(self, widths, S):
         """
@@ -80,7 +84,9 @@ class Solution(object):
                 row += lendict[s]
         return lines, row
         
-# V2 
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def numberOfLines(self, widths, S):
         """

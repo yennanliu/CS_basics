@@ -2,7 +2,9 @@
 
 # V1 
 # http://bookshadow.com/weblog/2016/07/07/leetcode-find-k-pairs-with-smallest-sums/
-# IDEA : HEAP 
+# IDEA : HEAP
+# time = O(k * n1) (n1 pushes per idx2 step, up to k pops)
+# space = O(k * n1)
 class Solution(object):
     def kSmallestPairs(self, nums1, nums2, k):
         """
@@ -28,7 +30,9 @@ class Solution(object):
 
 # V1' 
 # http://bookshadow.com/weblog/2016/07/07/leetcode-find-k-pairs-with-smallest-sums/
-# IDEA : HEAP 
+# IDEA : HEAP
+# time = O(k * log(min(k, n1)))
+# space = O(min(k, n1))
 class Solution(object):
     def kSmallestPairs(self, nums1, nums2, k):
         """
@@ -52,7 +56,9 @@ class Solution(object):
 
 # V1'' 
 # http://bookshadow.com/weblog/2016/07/07/leetcode-find-k-pairs-with-smallest-sums/
-# IDEA : HEAP 
+# IDEA : HEAP
+# time = O(k * log(min(k, n1)))
+# space = O(min(k, n1))
 def kSmallestPairs(self, nums1, nums2, k):
     queue = []
     def push(i, j):
@@ -68,9 +74,9 @@ def kSmallestPairs(self, nums1, nums2, k):
             push(i + 1, 0)
     return pairs
     
-# V2 
-# Time:  O(k * log(min(n, m, k))), where n is the size of num1, and m is the size of num2.
-# Space: O(min(n, m, k))
+# V2
+# time = O(k * log(min(n, m, k))), where n is the size of num1, and m is the size of num2.
+# space = O(min(n, m, k))
 from heapq import heappush, heappop
 class Solution(object):
     def kSmallestPairs(self, nums1, nums2, k):
@@ -102,8 +108,8 @@ class Solution(object):
         return pairs
 
 
-# time: O(mn * log k)
-# space: O(k)
+# time = O(m*n * log(m*n)) (nsmallest sorts internally, uses a size-k heap)
+# space = O(m*n)
 from heapq import nsmallest
 from itertools import product
 class Solution2(object):

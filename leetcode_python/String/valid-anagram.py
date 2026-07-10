@@ -29,21 +29,27 @@ Follow up: What if the inputs contain Unicode characters? How would you adapt yo
 
 """
 
-# V0 
+# V0
+# time = O(n log n)
+# space = O(n)
 class Solution:
     def isAnagram(self, s, t):
         return sorted(s) == sorted(t)
 
-# V1 
+# V1
 # https://blog.csdn.net/liuchonge/article/details/51913298
 # http://bookshadow.com/weblog/2015/08/01/leetcode-valid-anagram/
+# time = O(n log n)
+# space = O(n)
 class Solution:
     def isAnagram(self, s, t):
         return sorted(s) == sorted(t)
 
-# V1' 
+# V1'
 # https://blog.csdn.net/liuchonge/article/details/51913298
 # http://bookshadow.com/weblog/2015/08/01/leetcode-valid-anagram/
+# time = O(n)
+# space = O(n)
 class Solution:
     # @param {string} s
     # @param {string} t
@@ -53,13 +59,15 @@ class Solution:
         return Counter(s).items() == Counter(t).items()
 
 # V2
+# time = O(n log n)
+# space = O(n)
 class Solution:
     def isAnagram(self, s, t):
         return sorted(s) == sorted(t)
 
 # V3 
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 import collections
 import string
 class Solution(object):
@@ -78,8 +86,8 @@ class Solution(object):
                 return False
         return True
 
-# Time:  O(nlogn)
-# Space: O(n)
+# time = O(n log n)
+# space = O(n)
 class Solution2(object):
     # @param {string} s
     # @param {string} t
@@ -87,8 +95,8 @@ class Solution2(object):
     def isAnagram(self, s, t):
         return sorted(s) == sorted(t)
 
-# Time:  O(n)
-# Space: O(n)
+# time = O(n)
+# space = O(n)
 class Solution3(object):
     # @param {string} s
     # @param {string} t

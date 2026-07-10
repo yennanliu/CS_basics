@@ -107,13 +107,13 @@ class Solution(object):
         remain = n
 
         for s in size.values():
-        	"""
-        	NOTE !!!
+            """
+            NOTE !!!
 
-        	how we use below trick to optimize the 
+            how we use below trick to optimize the
 
-        	`number of pair` calculation
-        	"""
+            `number of pair` calculation
+            """
             remain -= s
             res += s * remain
 

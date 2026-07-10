@@ -1,8 +1,10 @@
 # V1 : DEV 
 
 
-# V2 
+# V2
 # https://blog.csdn.net/fuxuemingzhu/article/details/83098201
+# time = O(n) ctor, O(log n) pick  # n = len(rects)
+# space = O(n)
 class Solution(object):
 
     def __init__(self, rects):
@@ -43,10 +45,9 @@ class Solution(object):
 # param_1 = obj.pick()
 
 
-# V3 
-# Time:  ctor: O(n)
-#        pick: O(logn)
-# Space: O(n)
+# V3
+# time = O(n) ctor, O(log n) pick  # n = len(rects)
+# space = O(n)
 
 import random
 import bisect

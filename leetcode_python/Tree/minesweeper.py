@@ -1,7 +1,9 @@
 # V0
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79462285
+# time = O(m * n), m = rows, n = cols (each cell visited at most once)
+# space = O(m * n) (recursion stack worst case)
 class Solution(object):
     def updateBoard(self, board, click):
         """
@@ -20,9 +22,9 @@ class Solution(object):
                     self.updateBoard(board, [row + r, col + c])
         return board
 
-# V2 
-# Time:  O(m * n)
-# Space: O(m + n)
+# V2
+# time = O(m * n)
+# space = O(m + n)
 import collections
 class Solution(object):
     def updateBoard(self, board, click):
@@ -66,8 +68,8 @@ class Solution(object):
         return board
 
 
-# Time:  O(m * n)
-# Space: O(m * n)
+# time = O(m * n)
+# space = O(m * n)
 class Solution2(object):
     def updateBoard(self, board, click):
         """

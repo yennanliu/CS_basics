@@ -361,7 +361,7 @@ class Solution(object):
                     out_degree[word1[i]] = sets.Set()
                 in_degree[word2[i]].add(word1[i])
                 out_degree[word1[i]].add(word2[i])
-                break　　
+                break
 
 ### Test case : dev 
 
@@ -512,10 +512,10 @@ class Solution(object):
 
 # V2
 # https://github.com/kamyu104/LeetCode-Solutions/blob/master/Python/alien-dictionary.py
-# time = O(n)
-# space = O(|V|+|E|) = O(26 + 26^2) = O(1)
 import collections
 # BFS solution.
+# time = O(n)
+# space = O(|V|+|E|) = O(26 + 26^2) = O(1)
 class Solution(object):
     def alienOrder(self, words):
         """
@@ -570,6 +570,8 @@ class Solution(object):
                 break
 
 # DFS solution.
+# time = O(n)  # n = total chars across all words (ancestor DFS search)
+# space = O(1)  # graph nodes/edges bounded by alphabet (<=26)
 class Solution2(object):
     def alienOrder(self, words):
         """
@@ -619,13 +621,13 @@ class Solution2(object):
             # So it is cyclic.
             return True
         return False
-    
+
 # V3
 # https://shareablecode.com/snippets/alien-dictionary-python-solution-leetcode-E6Er-DiZ3
-# time = O(n)  # n = total chars across all words
-# space = O(|V|+|E|) = O(26 + 26^2) = O(1)
 import collections
 # BFS solution.
+# time = O(n)  # n = total chars across all words
+# space = O(|V|+|E|) = O(26 + 26^2) = O(1)
 class Solution(object):
     def alienOrder(self, words):
         """
@@ -680,6 +682,8 @@ class Solution(object):
                 break
 
 # DFS solution.
+# time = O(n)  # n = total chars across all words (ancestor DFS search)
+# space = O(1)  # graph nodes/edges bounded by alphabet (<=26)
 class Solution2(object):
     def alienOrder(self, words):
         """

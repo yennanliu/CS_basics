@@ -50,6 +50,8 @@ Follow up: Can you come up with an algorithm that runs in O(m + n) time?
 ### NOTE : we need to merge the sorted arrat to nums1 with IN PLACE (CAN'T USE EXTRA CACHE)
 # -> SO WE START FROM RIGHT HAND SIDE (biggeest element) to LEFT HAND SIDE (smallest element)
 # -> Then paste the remain elements
+# time = O(m + n)
+# space = O(1)
 class Solution(object):
     def merge(self, nums1, m, nums2, n):
         ### NOTE : we define 2 pointers (p, q) here
@@ -74,10 +76,12 @@ class Solution(object):
 ### NOTE : we need to merge the sorted arrat to nums1 with IN PLACE (CAN'T USE EXTRA CACHE)
 # -> SO WE START FROM RIGHT HAND SIDE (biggeest element) to LEFT HAND SIDE (smallest element)
 # -> Then paste the remain elements
+# time = O(m + n)
+# space = O(1)
 class Solution:
     def merge(self, A, m, B, n):
-        pos = m + n - 1 
-        i = m - 1  
+        pos = m + n - 1
+        i = m - 1
         j = n - 1
         while  i >= 0 and j >= 0 :
             if A[i]>B[j] :
@@ -88,7 +92,7 @@ class Solution:
                 A[pos]=B[j]
                 pos-=1
                 j-=1
-                
+
         while i >= 0 :
             A[pos] = A[i]
             pos-=1
@@ -100,9 +104,11 @@ class Solution:
 
 # V0''
 # IDEA : 2 pointers
+# time = O(m + n)
+# space = O(1)
 class Solution:
     def merge(self, nums1, m, nums2, n):
-        # below piece of code for edge case handling is not necessary 
+        # below piece of code for edge case handling is not necessary
         if m == 0:
             nums1[:n] = nums2
 
@@ -124,6 +130,8 @@ class Solution:
 
 # V0'''
 # IDEA : via sorted func (may not be accepted)
+# time = O((m+n) log(m+n))
+# space = O(m+n)
 class Solution(object):
     def merge(self, nums1, m, nums2, n):
         return sorted(nums1 + nums2)
@@ -131,6 +139,8 @@ class Solution(object):
 # V1
 # https://blog.csdn.net/coder_orz/article/details/51681144
 # IDEA : 3 POINTERS
+# time = O(m + n)
+# space = O(1)
 class Solution(object):
     def merge(self, nums1, m, nums2, n):
         """
@@ -153,6 +163,8 @@ class Solution(object):
 # V1'
 # https://blog.csdn.net/coder_orz/article/details/51681144
 # IDEA : 2 POINTERS
+# time = O(m + n)
+# space = O(1)
 class Solution(object):
     def merge(self, nums1, m, nums2, n):
         """
@@ -174,6 +186,8 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/merge-sorted-array/#tag-highlight-lang-python
+# time = O(m + n)
+# space = O(1)
 class Solution:
     """
     @param: A: sorted integer array A which has m elements, but size of A is m+n
@@ -208,6 +222,8 @@ class Solution:
 
 # V1''
 # https://blog.csdn.net/liuxiao214/article/details/77856326
+# time = O(m + n)
+# space = O(1)
 class Solution(object):
     def merge(self, nums1, m, nums2, n):
         """
@@ -229,7 +245,9 @@ class Solution(object):
                 j-=1
             k-=1
 
-# V2 
+# V2
+# time = O(m + n)
+# space = O(1)
 class Solution:
     # @param A  a list of integers
     # @param m  an integer, length of A
@@ -257,9 +275,9 @@ class Solution:
 #     Solution().merge(A, 3, B, 4)
 #     print(A)
 
-# V3 
-# Time:  O(n)
-# Space: O(n)
+# V3
+# time = O(m + n)
+# space = O(n)
 # you may get a input like this,
 # nums1 : [0]
 # m : 0
@@ -268,7 +286,7 @@ class Solution:
 # so you need to judge if n is still large than 0
 class Solution2:
     def merge(self, nums1, m, nums2, n):
-        # Space: O(n),
+        # space = O(n),
         # Reference:
         # - https://stackoverflow.com/questions/4948293/python-slice-assignment-memory-usage
         # - https://stackoverflow.com/questions/10623302/how-assignment-works-with-python-list-slice

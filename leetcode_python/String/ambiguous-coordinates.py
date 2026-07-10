@@ -56,6 +56,8 @@ Steps
 3. get possible left list, right list via helper func
 4. gen all combinations via `Cross multiply`
 """
+# time = O(n^3)  # O(n) splits, each get_valid_formats scan is O(n), plus O(n) cross-multiply pairs
+# space = O(n^2)  # output list holds O(n) strings of length O(n)
 class Solution(object):
     def ambiguousCoordinates(self, s):
         """
@@ -65,7 +67,7 @@ class Solution(object):
         # Step 1: Strip the outer parenthesis characters '(' and ')'
         digits = s[1:-1]
         res = []
-        
+
         # Step 2: Try every possible split position to divide the digits into left and right halves
         # The left part needs at least 1 character, and the right part needs at least 1 character.
         for i in range(1, len(digits)):
@@ -170,6 +172,8 @@ class Solution(object):
 
 # V0-2
 # IDEA: GEMINI
+# time = O(n^3)  # O(n) splits, each get_valid_formats scan is O(n), plus O(n) cross-multiply pairs
+# space = O(n^2)  # output list holds O(n) strings of length O(n)
 class Solution(object):
     def ambiguousCoordinates(self, s):
         """
@@ -179,7 +183,7 @@ class Solution(object):
         # Step 1: Strip the outer parenthesis characters '(' and ')'
         digits = s[1:-1]
         res = []
-        
+
         # Step 2: Try every possible split position to divide the digits into left and right halves
         # The left part needs at least 1 character, and the right part needs at least 1 character.
         for i in range(1, len(digits)):
@@ -230,6 +234,8 @@ class Solution(object):
 
 # V0-2
 # IDEA: GPT
+# time = O(n^3)  # O(n) splits, each generate() scan is O(n), plus O(n) cross-multiply pairs
+# space = O(n^2)  # output list holds O(n) strings of length O(n)
 class Solution(object):
     def ambiguousCoordinates(self, s):
         digits = s[1:-1]  # remove outer parentheses
@@ -270,8 +276,10 @@ class Solution(object):
 
 
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/80677194
+# time = O(n^3)  # O(n) splits, each get_number scan is O(n), plus O(n) cross-multiply pairs
+# space = O(n^2)  # output list holds O(n) strings of length O(n)
 class Solution(object):
     def ambiguousCoordinates(self, S):
         """
@@ -302,9 +310,9 @@ class Solution(object):
             decimal_list.append(integer + '.' + fractor)
         return decimal_list
         
-# V2 
-# Time:  O(n^4)
-# Space: O(n)
+# V2
+# time = O(n^4)
+# space = O(n)
 import itertools
 class Solution(object):
     def ambiguousCoordinates(self, S):

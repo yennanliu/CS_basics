@@ -40,6 +40,8 @@ matrix[i][j] is '0' or '1'.
 # V1
 # IDEA : Dynamic Programming - Better Brute Force on Histograms
 # https://leetcode.com/problems/maximal-rectangle/solution/
+# time = O(rows^2 * cols)  # for each cell, scan upward up to `rows` times
+# space = O(rows * cols)
 class Solution:
     def maximalRectangle(self, matrix: List[List[str]]) -> int:
         maxarea = 0
@@ -61,6 +63,8 @@ class Solution:
 # V1
 # IDEA : Using Histograms - Stack
 # https://leetcode.com/problems/maximal-rectangle/solution/
+# time = O(rows * cols)  # each row builds a histogram in O(cols), then O(cols) stack pass
+# space = O(cols)
 class Solution:
 
     # Get the maximum area in a histogram given its heights
@@ -100,6 +104,8 @@ class Solution:
 # V1
 # IDEA : Dynamic Programming - Maximum Height at Each Point
 # https://leetcode.com/problems/maximal-rectangle/solution/
+# time = O(rows * cols)
+# space = O(cols)
 class Solution:
 
     def maximalRectangle(self, matrix: List[List[str]]) -> int:

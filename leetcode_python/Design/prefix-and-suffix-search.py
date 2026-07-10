@@ -29,12 +29,16 @@ words[i] and prefix, suffix queries consist of lowercase letters only.
 class WordFilter(object):
     class Trie(object):
 
+        # time = O(1)
+        # space = O(1)
         def __init__(self):
             """
             Initialize your data structure here.
             """
             self.trie = {}
 
+        # time = O(l), l = len(word)
+        # space = O(l)
         def insert(self, word, i):
             """
             Inserts a word into the trie.
@@ -49,6 +53,8 @@ class WordFilter(object):
                 cur['i'] = i
             return cur
 
+        # time = O(p), p = len(prefix)
+        # space = O(1)
         def startsWith(self, prefix):
             """
             Returns if there is any word in the trie that starts with the given prefix.
@@ -62,6 +68,8 @@ class WordFilter(object):
                 cur = cur[c]
             return cur['i']
 
+    # time = O(w * l^2), w = number of words, l = avg word length
+    # space = O(w * l^2)
     def __init__(self, words):
         """
         :type words: List[str]
@@ -73,7 +81,9 @@ class WordFilter(object):
             for i in range(len(word)):
                 w = word[-i:]
                 t.insert(w + ',' + word, weight)
-            
+
+    # time = O(p + s), p = len(prefix), s = len(suffix)
+    # space = O(1)
     def f(self, prefix, suffix):
         """
         :type prefix: str
@@ -91,6 +101,8 @@ class WordFilter(object):
 # http://bookshadow.com/weblog/2017/12/11/leetcode-prefix-and-suffix-search/
 class WordFilter(object):
 
+    # time = O(w * l^2), w = number of words, l = avg word length
+    # space = O(w * l^2)
     def __init__(self, words):
         """
         :type words: List[str]
@@ -103,6 +115,8 @@ class WordFilter(object):
                     suffix = word[y:]
                     self.map[prefix + '#' + suffix] = idx
 
+    # time = O(p + s), p = len(prefix), s = len(suffix)
+    # space = O(p + s)
     def f(self, prefix, suffix):
         """
         :type prefix: str
@@ -111,13 +125,13 @@ class WordFilter(object):
         """
         return self.map.get(prefix + '#' + suffix, -1)
 
-# V2 
-# Time:  ctor:   O(w * l^2), w is the number of words, l is the word length on average
-#        search: O(p + s)  , p is the length of the prefix, s is the length of the suffix,
-# Space: O(t), t is the number of trie nodes
+# V2
+# t = number of trie nodes
 import collections
 class WordFilter(object):
 
+    # time = O(w * l^2), w = number of words, l = avg word length
+    # space = O(t)
     def __init__(self, words):
         """
         :type words: List[str]
@@ -134,6 +148,8 @@ class WordFilter(object):
                     cur = cur[word[j%len(word)]]
                     cur["_weight"] = weight
 
+    # time = O(p + s), p = len(prefix), s = len(suffix)
+    # space = O(1)
     def f(self, prefix, suffix):
         """
         :type prefix: str
@@ -148,16 +164,18 @@ class WordFilter(object):
         return cur["_weight"]
 
 
-# Time:  ctor:   O(w * l), w is the number of words, l is the word length on average
-#        search: O(p + s + max(m, n)), p is the length of the prefix, s is the length of the suffix,
-#                                      m is the number of the prefix match, n is the number of the suffix match
-# Space: O(w * l)
+# w = number of words, l = avg word length
+# m = number of prefix match, n = number of suffix match
 class Trie(object):
 
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
         _trie = lambda: collections.defaultdict(_trie)
         self.__trie = _trie()
 
+    # time = O(l), l = len(word)
+    # space = O(l)
     def insert(self, word, i):
         def add_word(cur, i):
             if "_words" not in cur:
@@ -170,6 +188,8 @@ class Trie(object):
             cur = cur[c]
             add_word(cur, i)
 
+    # time = O(l), l = len(word)
+    # space = O(1)
     def find(self, word):
         cur = self.__trie
         for c in word:
@@ -181,6 +201,8 @@ class Trie(object):
 
 class WordFilter2(object):
 
+    # time = O(w * l), w = number of words, l = avg word length
+    # space = O(w * l)
     def __init__(self, words):
         """
         :type words: List[str]
@@ -191,6 +213,8 @@ class WordFilter2(object):
             self.__prefix_trie.insert(words[i], i)
             self.__suffix_trie.insert(words[i][::-1], i)
 
+    # time = O(p + s + max(m, n)), p = len(prefix), s = len(suffix)
+    # space = O(m + n)
     def f(self, prefix, suffix):
         """
         :type prefix: str

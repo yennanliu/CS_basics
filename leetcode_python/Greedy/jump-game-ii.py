@@ -41,6 +41,8 @@ Steps:
             - If we reach currentJumpEnd, it means we finished the current jump, and can begin checking the next jump by setting currentJumpEnd = farthest.
     step 3) return jumps
 """
+# time = O(n)
+# space = O(1)
 class Solution:
     def jump(self, nums: List[int]) -> int:
             jumps = 0
@@ -59,6 +61,8 @@ class Solution:
 # V1
 # IDEA : GREEDY
 # https://leetcode.com/problems/jump-game-ii/discuss/1672485/Python-Greedy
+# time = O(n)
+# space = O(1)
 class Solution:
     def jump(self, nums: List[int]) -> int:
         l = r = res = farthest = 0
@@ -74,6 +78,8 @@ class Solution:
 # IDEA : GREEDY
 # https://blog.csdn.net/fuxuemingzhu/article/details/84578893
 # https://blog.51cto.com/u_15302258/3078964
+# time = O(n)
+# space = O(1)
 class Solution:
     def jump(self, nums):
         reach = 0
@@ -96,6 +102,8 @@ class Solution:
 # core idea come from bfs from each idx and create nxt level range node and maintain seen hashset.
 # since new level node are always continous range number, we can just keep a range with two pointer.
 # each idx will create a range can jump(for x<=right).just keep this range and move forward.
+# time = O(n)
+# space = O(1)
 class Solution:
     def jump(self, nums: List[int]) -> int:
         l=r=steps=0
@@ -115,6 +123,8 @@ Steps:
             - If we reach currentJumpEnd, it means we finished the current jump, and can begin checking the next jump by setting currentJumpEnd = farthest.
     step 3) return jumps
 """
+# time = O(n)
+# space = O(1)
 class Solution:
     def jump(self, nums: List[int]) -> int:
             jumps = 0
@@ -133,6 +143,8 @@ class Solution:
 # V1''''
 # IDEA : memorization
 # https://leetcode.com/problems/jump-game-ii/discuss/433949/python-memorization-
+# time = O(n)
+# space = O(1)
 class Solution:
     def jump(self, nums):
             num_jump = 0
@@ -148,6 +160,8 @@ class Solution:
 # V1''''''
 # IDEA : DP
 # https://leetcode.com/problems/jump-game-ii/discuss/1455589/Python-Dynamic-Programming
+# time = O(n^2)
+# space = O(n)
 import math
 class Solution:
     # Dynamic Programming

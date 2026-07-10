@@ -68,6 +68,8 @@ class Solution(object):
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/82915149
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def isIdealPermutation(self, A):
         """
@@ -83,6 +85,8 @@ class Solution(object):
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/82915149
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def isIdealPermutation(self, A):
         """
@@ -98,6 +102,8 @@ class Solution(object):
 
 # V1'''
 # https://leetcode.com/problems/global-and-local-inversions/discuss/635114/Python-intuitive-approach
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def isIdealPermutation(self, A: List[int]) -> bool:
         for idx, value in enumerate(A):
@@ -112,6 +118,8 @@ class Solution(object):
 
 # V1''''
 # https://leetcode.com/problems/global-and-local-inversions/discuss/535557/775-Global-and-Local-Inversions-Py-All-in-One-by-Talse
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def isIdealPermutation(self, A: List[int]) -> bool:
             mx = 0
@@ -122,14 +130,16 @@ class Solution(object):
 
 # V1'''
 # http://bookshadow.com/weblog/2018/01/28/leetcode-global-and-local-inversions/
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def isIdealPermutation(self, A: List[int]) -> bool:
             return all(abs(A[i] - i) <= 1 for i in range(len(A)))
 
 # V2
 # https://github.com/kamyu104/LeetCode-Solutions/blob/master/Python/global-and-local-inversions.py
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def isIdealPermutation(self, A):
         """

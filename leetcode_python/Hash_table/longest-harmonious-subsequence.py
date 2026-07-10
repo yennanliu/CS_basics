@@ -1,5 +1,5 @@
-# Time:  O(n)
-# Space: O(n)
+# time = O(n)
+# space = O(n)
 # We define a harmonious array is an array where the difference
 # between its maximum value and its minimum value is exactly 1.
 #
@@ -12,8 +12,10 @@
 # Explanation: The longest harmonious subsequence is [3,2,2,2,3].
 # Note: The length of the input array will not exceed 20,000.
 
-# V0 
-from collections 
+# V0
+import collections
+# time = O(n), n = len(nums)
+# space = O(n)
 class Solution(object):
     def findLHS(self, nums):
         """
@@ -27,9 +29,11 @@ class Solution(object):
                 res = max(res, count[num] + count[num + 1])
         return res
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79233752
-from collections 
+import collections
+# time = O(n), n = len(nums)
+# space = O(n)
 class Solution(object):
     def findLHS(self, nums):
         """
@@ -44,9 +48,11 @@ class Solution(object):
                 longest = max(longest, counter[num] + counter[num + 1])
         return longest
 
-# V1' 
+# V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79233752
-from collections 
+import collections
+# time = O(n), n = len(nums)
+# space = O(n)
 class Solution(object):
     def findLHS(self, nums):
         """
@@ -62,7 +68,9 @@ class Solution(object):
 
 # V1''
 # http://bookshadow.com/weblog/2017/05/21/leetcode-longest-harmonious-subsequence/
-from collections 
+import collections
+# time = O(n log n), n = len(nums) (sorted over unique keys)
+# space = O(n)
 class Solution(object):
     def findLHS(self, nums):
         """
@@ -80,6 +88,8 @@ class Solution(object):
 
 # V1'''
 # https://www.jiuzhang.com/solution/longest-harmonious-subsequence/#tag-highlight-lang-python
+# time = O(n), n = len(nums)
+# space = O(n)
 class Solution:
     """
     @param nums: a list of integers
@@ -100,9 +110,9 @@ class Solution:
                 ans = max(ans, vis[num] + vis[num - 1])
         return ans
 
-# V2 
-# Time:  O(n)
-# Space: O(n)
+# V2
+# time = O(n), n = len(nums)
+# space = O(n)
 import collections
 class Solution(object):
     def findLHS(self, nums):

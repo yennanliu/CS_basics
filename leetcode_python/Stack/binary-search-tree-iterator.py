@@ -47,6 +47,8 @@ At most 105 calls will be made to hasNext, and next.
 
 # V0
 # IDEA : STACK + tree
+# time = O(n) init (full in-order traversal), O(n) per next() due to pop(0)
+# space = O(n)
 class BSTIterator(object):
     def __init__(self, root):
         """
@@ -54,7 +56,7 @@ class BSTIterator(object):
         """
         self.stack = []
         self.inOrder(root)
-    
+
     def inOrder(self, root):
         if not root:
             return
@@ -81,6 +83,8 @@ class BSTIterator(object):
 
 # V0'
 # IDEA : STACK + tree
+# time = O(n) init (full in-order traversal), O(1) amortized per next() (pop from end)
+# space = O(n)
 class BSTIterator(object):
     def __init__(self, root):
         """
@@ -122,6 +126,8 @@ class BSTIterator(object):
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n) init (full in-order traversal), O(1) amortized per next() (pop from end)
+# space = O(n)
 class BSTIterator(object):
     def __init__(self, root):
         """
@@ -129,7 +135,7 @@ class BSTIterator(object):
         """
         self.stack = []
         self.inOrder(root)
-    
+
     def inOrder(self, root):
         if not root:
             return
@@ -158,6 +164,8 @@ class BSTIterator(object):
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n) init (full in-order traversal), O(1) per next()
+# space = O(n)
 class BSTIterator:
 
     def __init__(self, root: TreeNode):
@@ -200,6 +208,8 @@ class BSTIterator:
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(h) init, O(1) amortized per next() (O(n) total across all calls)
+# space = O(h), h = height of the tree
 class BSTIterator:
 
     def __init__(self, root: TreeNode):
@@ -247,6 +257,8 @@ class BSTIterator:
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(h) init, O(1) amortized per next() (O(n) total across all calls)
+# space = O(h), h = height of the tree
 class BSTIterator(object):
 
     def __init__(self, root):
@@ -279,6 +291,8 @@ class BSTIterator(object):
         
 # V1'''''
 # https://www.jiuzhang.com/solution/binary-search-tree-iterator/#tag-highlight-lang-python
+# time = O(h) init, O(1) amortized per next() (O(n) total across all calls)
+# space = O(h), h = height of the tree
 class BSTIterator:
     """
     @param: root: The root of binary tree.
@@ -311,6 +325,8 @@ class BSTIterator:
 
 # V1''
 # https://www.jiuzhang.com/solution/binary-search-tree-iterator/#tag-highlight-lang-python
+# time = O(h) init, O(h) worst-case per next() (O(1) amortized, O(n) total)
+# space = O(h), h = height of the tree
 class BSTIterator:
     """
     @param: root: The root of binary tree.
@@ -347,6 +363,8 @@ class BSTIterator:
 
 # V1'''
 # https://www.jiuzhang.com/solution/binary-search-tree-iterator/#tag-highlight-lang-python
+# time = O(1) init, O(h) worst-case per next() (O(1) amortized, O(n) total)
+# space = O(h), h = height of the tree
 class BSTIterator:
     #@param root: The root of binary tree.
     def __init__(self, root):
@@ -368,9 +386,9 @@ class BSTIterator:
         self.curt = self.curt.right
         return nxt
 
-# V2 
-# Time:  O(1)
-# Space: O(h), h is height of binary tree
+# V2
+# time = O(1) per next() (amortized), O(1) init
+# space = O(h), h is height of binary tree
 class TreeNode(object):
     def __init__(self, x):
         self.val = x

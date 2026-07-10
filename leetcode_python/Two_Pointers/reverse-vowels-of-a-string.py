@@ -10,8 +10,10 @@
 # Example 2:
 # Given s = "leetcode", return "leotcede".
 
-# V1  :  
-import re 
+# V1  :
+import re
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def reverseVowels(self, s):
         index = []
@@ -24,7 +26,9 @@ class Solution(object):
             s_list[index[i]],  s_list[index[::-1][i]]  =  s_list[index[::-1][i]], s_list[index[i]]
         return ''.join(x for x in s_list)
 
-# V2 
+# V2
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def reverseVowels(self, s):
         """
@@ -45,7 +49,9 @@ class Solution(object):
                 j -= 1
         return "".join(string)
 
-# V3 
+# V3
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def reverseVowels(self, s):
         """

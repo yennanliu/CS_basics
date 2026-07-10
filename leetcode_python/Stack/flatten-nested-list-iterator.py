@@ -66,12 +66,14 @@ The values of the integers in the nested list is in the range [-106, 106].
 #        """
 
 # V0
+# time = O(n)  # n = total number of integers, flatten done upfront in __init__
+# space = O(n)  # queue holds all integers + recursion depth up to nesting depth
 class NestedIterator(object):
 
     def __init__(self, nestedList):
 
         self.queue = []
-        
+
         def getAll(nests):
             for nest in nests:
                 if nest.isInteger():
@@ -89,6 +91,8 @@ class NestedIterator(object):
         return len(self.queue)
 
 # V0'
+# time = O(n)
+# space = O(n)
 import collections
 class NestedIterator(object):
 
@@ -128,8 +132,10 @@ class NestedIterator(object):
 # flatten_array(_input)
 # print ("r = " + str(r))
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79529982
+# time = O(n)
+# space = O(n)
 import collections
 class NestedIterator(object):
 
@@ -161,6 +167,8 @@ class NestedIterator(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/flatten-nested-list-iterator/#tag-highlight-lang-python
+# time = O(1) amortized per next()/hasNext() call, O(n) total across full iteration
+# space = O(n)  # stack holds unexpanded elements, up to total number of elements
 class NestedIterator(object):
 
     def __init__(self, nestedList):
@@ -193,8 +201,10 @@ class NestedIterator(object):
 # V1
 # IDEA :  Make a Flat List with Recursion
 # https://leetcode.com/problems/flatten-nested-list-iterator/solution/
+# time = O(n)
+# space = O(n)
 class NestedIterator:
-    
+
     def __init__(self, nestedList):
         def flatten_list(nested_list):
             for nested_integer in nested_list:
@@ -216,8 +226,10 @@ class NestedIterator:
 # V1
 # IDEA : Stack
 # https://leetcode.com/problems/flatten-nested-list-iterator/solution/
+# time = O(1) amortized per next()/hasNext() call, O(n) total across full iteration
+# space = O(n)
 class NestedIterator:
-    
+
     def __init__(self, nestedList):
         self.stack = list(reversed(nestedList))
         
@@ -242,8 +254,10 @@ class NestedIterator:
 # V1
 # IDEA : Two Stacks
 # https://leetcode.com/problems/flatten-nested-list-iterator/solution/
+# time = O(1) amortized per next()/hasNext() call, O(n) total across full iteration
+# space = O(d)  # d = max nesting depth
 class NestedIterator:
-    
+
     def __init__(self, nestedList):
         self.stack = [[nestedList, 0]]
         
@@ -363,6 +377,8 @@ class NestedIterator:
 # V1
 # IDEA : Using a Generator
 # https://leetcode.com/problems/flatten-nested-list-iterator/solution/
+# time = O(1) amortized per next()/hasNext() call, O(n) total across full iteration
+# space = O(d)  # d = max nesting depth (generator call stack)
 class NestedIterator:
 
     def __init__(self, nestedList: [NestedInteger]):
@@ -406,9 +422,9 @@ class NestedIterator:
         except: # The generator is finished so raised StopIteration.
             return False
 
-# V2 
-# Time:  O(n), n is the number of the integers.
-# Space: O(h), h is the depth of the nested lists.
+# V2
+# time = O(1) amortized per next()/hasNext() call, O(n) total, n = number of integers
+# space = O(h)  # h = depth of the nested lists
 class NestedIterator(object):
 
     def __init__(self, nestedList):

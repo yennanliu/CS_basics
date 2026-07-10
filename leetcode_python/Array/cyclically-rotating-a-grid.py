@@ -278,11 +278,11 @@ class Solution(object):
             self.new_values_for_layer(grid, layer, k)
         return self.og_grid
 
- # V1'''''
- # https://leetcode.com/problems/cyclically-rotating-a-grid/discuss/1379013/simple-python-solution-beat-97.9
+# V1'''''
+# https://leetcode.com/problems/cyclically-rotating-a-grid/discuss/1379013/simple-python-solution-beat-97.9
 # time = O(m*n)
 # space = O(m*n)
- class Solution:
+class Solution:
     def rotateGrid(self, grid: List[List[int]], k: int) -> List[List[int]]:
         m, n = len(grid), len(grid[0])
         

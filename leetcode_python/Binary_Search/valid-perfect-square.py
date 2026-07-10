@@ -29,6 +29,8 @@ Constraints:
 # IDEA : use the fact 
 #         -> that if there is no i * i == num for  i <= num
 #         -> num is NOT a square number
+# time = O(sqrt(num))
+# space = O(1)
 class Solution(object):
     def isPerfectSquare(self, num):
         i = 1
@@ -41,6 +43,8 @@ class Solution(object):
 
 # V0'
 # IDEA : BINARY SEARCH
+# time = O(log num)
+# space = O(1)
 class Solution(object):
     def isPerfectSquare(self, num):
         left, right = 0, num
@@ -52,9 +56,11 @@ class Solution(object):
                 left = mid + 1
         return left * left == num
 
-# V1 
+# V1
 # http://bookshadow.com/weblog/2016/06/26/leetcode-valid-perfect-square/
-# IDEA : Newton's method 
+# IDEA : Newton's method
+# time = O(log num)
+# space = O(1)
 class Solution(object):
     def isPerfectSquare(self, num):
         """
@@ -66,9 +72,11 @@ class Solution(object):
             x = (x + num / x) / 2
         return x * x == num
 
-# V1' 
+# V1'
 # http://bookshadow.com/weblog/2016/06/26/leetcode-valid-perfect-square/
-# IDEA : Binary search 
+# IDEA : Binary search
+# time = O(log num)
+# space = O(1)
 class Solution(object):
     def isPerfectSquare(self, num):
         """
@@ -84,9 +92,9 @@ class Solution(object):
                 left = mid + 1
         return left * left == num
         
-# V2 
-# Time:  O(logn)
-# Space: O(1)
+# V2
+# time = O(log num)
+# space = O(1)
 class Solution(object):
     def isPerfectSquare(self, num):
         """

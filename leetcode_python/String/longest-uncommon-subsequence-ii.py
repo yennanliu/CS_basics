@@ -1,7 +1,9 @@
 # V0 
 
-# V1 
+# V1
 # http://bookshadow.com/weblog/2017/04/03/leetcode-longest-uncommon-subsequence-ii/
+# time = O(n^2 * l), n = len(strs), l = max string length
+# space = O(n)
 class Solution(object):
     def uncommon(self, parent, child):
         lp, lc = len(parent), len(child)
@@ -24,9 +26,9 @@ class Solution(object):
                 return len(c)
         return -1
           
-# V2 
-# Time:  O(l * n^2)
-# Space: O(1)
+# V2
+# time = O(n^2 * l), n = len(strs), l = max string length
+# space = O(1)
 class Solution(object):
     def findLUSlength(self, strs):
         """

@@ -52,6 +52,8 @@ Link to All Problems
 
 
 # V0
+# time = O(n), LCA search + two distance searches, each O(n)
+# space = O(h), recursion stack
 class Solution:
     def findDistance(self, root, p, q):
         if p == q or not root:
@@ -135,6 +137,8 @@ class Solution:
 
 # V1-1
 # IDEA: LCA + get_dist + DFS (gpt)
+# time = O(n)
+# space = O(h)
 class Solution:
     def findDistance(self, root, p, q):
         if p == q:
@@ -163,13 +167,13 @@ class Solution:
         return left if left else right
 
     def get_dist(self, root, target, dist):
-    	"""
-    	NOTE !!!
+        """
+        NOTE !!!
 
-    	if not root, we return `-1`
+        if not root, we return `-1`
 
-    	but NOT `0`, since 0 is also considered as a valid state
-    	"""
+        but NOT `0`, since 0 is also considered as a valid state
+        """
         if not root:
             return -1
 
@@ -185,6 +189,8 @@ class Solution:
 
 # V1-2
 # IDEA: LCA + get_dist + DFS (GEMINI)
+# time = O(n)
+# space = O(h)
 class Solution(object):
     def findDistance(self, root, p, q):
         """
@@ -240,6 +246,8 @@ class Solution(object):
 
 # V2-1
 # https://leetcode.ca/2021-03-23-1740-Find-Distance-in-a-Binary-Tree/
+# time = O(n)
+# space = O(h)
 class Solution:
     def findDistance(self, root: Optional[TreeNode], p: int, q: int) -> int:
         def lca(root, p, q):
@@ -271,6 +279,8 @@ class Solution:
 
 # V2-2
 # https://leetcode.ca/2021-03-23-1740-Find-Distance-in-a-Binary-Tree/
+# time = O(n)
+# space = O(h)
 class Solution:
     def findDistance(self, root: TreeNode, p: int, q: int) -> int:
         # initialize variables to hold the depth of the target nodes and their common ancestor

@@ -22,10 +22,12 @@
 
 # V0 
 
-# V0' 
-#  if p -> q  then  ~q -> ~p 
+# V0'
+#  if p -> q  then  ~q -> ~p
 #  => s with more then 1  "A" or more than 2 CONTINUOUS "LL" then false
 #  => if else, true
+# time = O(n)
+# space = O(1)
 class Solution:
     def checkRecord(self, s):
         if ( s.count('A') > 1  or s.find('LLL') >= 0):
@@ -33,9 +35,11 @@ class Solution:
         else:
             return True
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/70337973
-# IDEA : REGULAR EXPRESSION 
+# IDEA : REGULAR EXPRESSION
+# time = O(n)
+# space = O(1)
 class Solution:
     def checkRecord(self, s):
         """
@@ -44,7 +48,9 @@ class Solution:
         """
         return not re.match(".*A.*A.*", s) and not re.match(".*LLL.*", s)
         
-# V2 
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def checkRecord(self, s):
         """

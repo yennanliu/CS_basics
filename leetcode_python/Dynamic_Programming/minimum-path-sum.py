@@ -46,6 +46,8 @@ n == grid[i].length
 #    ...:     
 # grid : [[1, 4, 5], [2, 7, 6], [6, 8, 7]]
 # 7
+# time = O(m * n)
+# space = O(1)
 class Solution:
     def minPathSum(self, grid):
 
@@ -124,9 +126,9 @@ class Solution:
 #     }
 # }
 
-# V2 
-# Time:  O(m * n)
-# Space: O(m + n)
+# V2
+# time = O(m * n)
+# space = O(m + n)
 class Solution(object):
     # @param grid, a list of lists of integers
     # @return an integer

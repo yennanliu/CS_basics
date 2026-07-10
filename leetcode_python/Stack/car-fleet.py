@@ -59,6 +59,8 @@ All the values of position are unique.
 # Step 3) if `new` car travel_time > `prev` cars
 #         -> form a NEW FLEET
 # Step 4) keep above and return ans
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def carFleet(self, target, position, speed):
         pos_speed = []
@@ -90,6 +92,8 @@ class Solution(object):
 # Step 4) keep above and return ans
 # 
 # https://blog.csdn.net/fuxuemingzhu/article/details/81867361
+# time = O(n log n)
+# space = O(n)
 class Solution:
     def carFleet(self, target, position, speed):
         """
@@ -113,6 +117,8 @@ class Solution:
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/81867361
+# time = O(n log n)
+# space = O(n)
 class Solution:
     def carFleet(self, target, position, speed):
         """
@@ -133,9 +139,9 @@ class Solution:
                     stack.append(time)
         return len(stack)
 
-# V2 
-# Time:  O(nlogn)
-# Space: O(n)
+# V2
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def carFleet(self, target, position, speed):
         """

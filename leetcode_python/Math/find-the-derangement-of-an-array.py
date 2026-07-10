@@ -21,6 +21,8 @@
 # V2 
 # https://blog.csdn.net/magicbean2/article/details/79112988
 # http://bookshadow.com/weblog/2017/07/02/leetcode-find-the-derangement-of-an-array/
+# time = O(n)
+# space = O(n)  # dp array
 class Solution(object):
     def findDerangement(self, n):
         """
@@ -35,6 +37,8 @@ class Solution(object):
 
 # V2' 
 # http://bookshadow.com/weblog/2017/07/02/leetcode-find-the-derangement-of-an-array/
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def findDerangement(self, n):
         """
@@ -50,9 +54,9 @@ class Solution(object):
             sig *= -1
         return ans % MOD
 
-# V3 
-# Time:  O(n)
-# Space: O(1)
+# V3
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def findDerangement(self, n):
         """

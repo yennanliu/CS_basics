@@ -57,6 +57,8 @@ The grid contains exactly one '*'.
 
 # V0
 # IDEA : BFS
+# time = O(m*n), m,n = grid dims
+# space = O(m*n), seen set + queue
 class Solution:
     def getFood(self, grid):
         # edge case
@@ -109,6 +111,8 @@ class Solution:
 # https://blog.csdn.net/Changxing_J/article/details/117224537
 # https://www.xknote.com/blog/559651.html
 # IDEA : BFS
+# time = O(m*n), m,n = grid dims
+# space = O(m*n), seen set + queue
 class Solution:
     def getFood(self, grid):
         Row = len(grid)
@@ -193,8 +197,8 @@ class Solution:
 # }
 
 # V2
-# Time:  O(m * n)
-# Space: O(m + n)
+# time = O(m*n), m,n = grid dims
+# space = O(m*n), queue holds up to O(m*n) cells
 class Solution(object):
     def getFood(self, grid):
         """

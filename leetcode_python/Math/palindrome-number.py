@@ -1,4 +1,6 @@
 # V0
+# time = O(log n)  # n = x, number of digits
+# space = O(log n)
 class Solution(object):
     # @return a boolean
     def isPalindrome(self, x):
@@ -21,7 +23,9 @@ assert s.isPalindrome(10**32 + 1) == True
 assert s.isPalindrome(10**32 + 3) == False
 
 # V1
-import math  
+import math
+# time = O(log n)  # n = x, number of digits
+# space = O(log n)
 class Solution(object):
     # @return a boolean
     def isPalindrome(self, x):
@@ -37,9 +41,9 @@ class Solution(object):
         else:
             return False
 
-# V2 
-# Time:  O(1)
-# Space: O(1)
+# V2
+# time = O(log n)  # n = x, number of digits
+# space = O(1)
 class Solution(object):
     # @return a boolean
     def isPalindrome(self, x):

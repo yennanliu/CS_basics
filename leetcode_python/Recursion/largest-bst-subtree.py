@@ -24,8 +24,8 @@
 # V1
 
 # V2
-# Time:  O(n)
-# Space: O(h)
+# time = O(n)
+# space = O(h), h is height of binary tree (recursion stack)
 class Solution(object):
     def largestBSTSubtree(self, root):
         """

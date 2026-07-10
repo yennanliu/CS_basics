@@ -42,7 +42,9 @@
 # 1 <= len(chars) <= 1000.
 
 # V0
-import collections 
+# time = O(n)
+# space = O(n)
+import collections
 class Solution(object):
     def compress(self, chars):
         count = collections.Counter(chars)
@@ -50,9 +52,11 @@ class Solution(object):
         val_count = len([ x for x in list(count.values()) if x > 1 ])
         return key_count + val_count
 
-# V1 
+# V1
 # http://bookshadow.com/weblog/2017/10/29/leetcode-string-compression/
-# IDEA : QUEUE 
+# IDEA : QUEUE
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def compress(self, chars):
         """
@@ -76,14 +80,16 @@ class Solution(object):
 
 # V1'
 # https://blog.csdn.net/androidchanhao/article/details/81408345
-# IDEA : 2 POINTERS 
+# IDEA : 2 POINTERS
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def compress(self, chars):
         """
         :type chars: List[str]
         :rtype: int
         """
-        n = len(chars) 
+        n = len(chars)
         cur = 0 # index of current element, for compress the list 
         i = 0
         while i < n:
@@ -101,9 +107,9 @@ class Solution(object):
             i = j + 1 # move to next element 
         return cur
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def compress(self, chars):
         """

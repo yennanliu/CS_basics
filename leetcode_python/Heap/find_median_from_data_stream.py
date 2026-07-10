@@ -70,6 +70,8 @@ If 99% of all integer numbers from the stream are in the range [0, 100], how wou
 #             -> if odd length ((len(self.small) != len(self.large)))
 #                 -> return float(self.large[0])
 from heapq import *
+# time = O(log n) per addNum, O(1) per findMedian
+# space = O(n)
 class MedianFinder:
     def __init__(self):
         self.small = []  # the smaller half of the list, max heap (invert min-heap)
@@ -106,6 +108,8 @@ class MedianFinder:
 # V1
 # https://leetcode.com/problems/find-median-from-data-stream/discuss/74062/Short-simple-JavaC%2B%2BPython-O(log-n)-%2B-O(1)
 from heapq import *
+# time = O(log n) per addNum, O(1) per findMedian
+# space = O(n)
 class MedianFinder:
 
     def __init__(self):
@@ -126,6 +130,8 @@ class MedianFinder:
 # V1''
 # https://leetcode.com/problems/find-median-from-data-stream/discuss/74047/JavaPython-two-heap-solution-O(log-n)-add-O(1)-find
 from heapq import *
+# time = O(log n) per addNum, O(1) per findMedian
+# space = O(n)
 class MedianFinder:
     def __init__(self):
         self.small = []  # the smaller half of the list, max heap (invert min-heap)
@@ -170,6 +176,8 @@ class MedianFinder:
 
 # V1'''
 # https://leetcode.com/problems/find-median-from-data-stream/discuss/74044/Very-Short-O(log-n)-%2B-O(1)
+# time = O(log n) per addNum, O(1) per findMedian
+# space = O(n)
 class MedianFinder:
     def __init__(s):
         h = [[], 1, -1, i := []]
@@ -179,6 +187,8 @@ class MedianFinder:
 # V1''''
 # https://leetcode.com/problems/find-median-from-data-stream/discuss/74044/Very-Short-O(log-n)-%2B-O(1)
 from heapq import *
+# time = O(log n) per addNum, O(1) per findMedian
+# space = O(n)
 class MedianFinder:
 
     def __init__(self):
@@ -197,6 +207,8 @@ class MedianFinder:
 # http://bookshadow.com/weblog/2015/10/19/leetcode-find-median-data-stream/
 # IDEA : HEAP
 from heapq import *
+# time = O(log n) per addNum, O(1) per findMedian
+# space = O(n)
 class MedianFinder:
     def __init__(self):
         """
@@ -232,6 +244,8 @@ class MedianFinder:
 # V1''''''
 # http://bookshadow.com/weblog/2015/10/19/leetcode-find-median-data-stream/
 # IDEA : HEAP
+# time = O(log n) per addNum, O(1) per findMedian
+# space = O(n)
 import heapq
 class MedianFinder:
     def __init__(self):
@@ -253,6 +267,8 @@ class MedianFinder:
 # V1''''''''
 # http://bookshadow.com/weblog/2015/10/19/leetcode-find-median-data-stream/
 # IDEA : HEAP
+# time = O(log n) per addNum, O(1) per findMedian (custom binary heap)
+# space = O(n)
 class Heap:
     def __init__(self, cmp):
         self.cmp = cmp
@@ -294,6 +310,8 @@ class Heap:
             else:
                 break
 
+# time = O(log n) per addNum, O(1) per findMedian
+# space = O(n)
 class MedianFinder:
     def __init__(self):
         """

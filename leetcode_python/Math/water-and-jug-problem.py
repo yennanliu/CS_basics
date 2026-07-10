@@ -4,7 +4,9 @@
 # V2 
 # https://blog.csdn.net/fuxuemingzhu/article/details/83574784
 # given equation : z = m * x + n * y
-# find if it has solution integer pair (m, n ) 
+# find if it has solution integer pair (m, n )
+# time = O(log(min(x, y)))
+# space = O(log(min(x, y)))  # recursive gcd call stack
 class Solution(object):
     def canMeasureWater(self, x, y, z):
         """
@@ -18,9 +20,9 @@ class Solution(object):
     def gcd(self, x, y):
         return x if y == 0 else self.gcd(y, x % y)
 
-# V3  
-# Time:  O(logn),  n is the max of (x, y)
-# Space: O(1)
+# V3
+# time = O(logn), n is the max of (x, y)
+# space = O(1)
 class Solution(object):
     def canMeasureWater(self, x, y, z):
         """

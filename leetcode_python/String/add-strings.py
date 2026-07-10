@@ -31,6 +31,8 @@ num1 and num2 don't have any leading zeros except for the zero itself.
 
 # V0
 # IDEA : string + math
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def addStrings(self, num1, num2):
         result = []
@@ -61,11 +63,13 @@ class Solution(object):
 
 # V0'
 # IDEA : string + math
+# time = O(n^2)  # num1[:-1] slicing each iteration costs O(n)
+# space = O(n)
 class Solution(object):
     def addStrings(self, num1, num2):
         result = []
         carry = 0
-        while num1 or num2 or carry:  # while there is still non-add digit in num1, and num2; or there is non-zero carry 
+        while num1 or num2 or carry:  # while there is still non-add digit in num1, and num2; or there is non-zero carry
             digit = carry
             if num1:
                 digit += int(num1[-1])
@@ -105,6 +109,8 @@ Add Two Numbers.
 Add Two Numbers II.
 
 """
+# time = O(n)
+# space = O(n)
 class Solution:
     def addStrings(self, num1: str, num2: str) -> str:
         res = []
@@ -126,8 +132,10 @@ class Solution:
         
         return ''.join(str(x) for x in res[::-1])
 
-# V1 
+# V1
 # http://bookshadow.com/weblog/2016/10/09/leetcode-add-strings/
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def addStrings(self, num1, num2):
         """
@@ -152,6 +160,8 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/add-strings/#tag-highlight-lang-python
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def addStrings(self, num1, num2):
         """
@@ -175,7 +185,9 @@ class Solution(object):
             flag = sum / 10
         return res if flag == 0 else (str(flag)+ res)
 
-# V2 
+# V2
+# time = O(n)
+# space = O(n)
 class Solution:
     def addStrings(self, num1, num2):
         output = []
@@ -198,7 +210,9 @@ class Solution:
                 carry_fix = 0 
         return ''.join(list(reversed(output)))
             
-# V3 
+# V3
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def addStrings(self, num1, num2):
         """

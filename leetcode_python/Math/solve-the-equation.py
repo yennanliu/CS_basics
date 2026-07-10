@@ -44,6 +44,8 @@ equation consists of integers with an absolute value in the range [0, 100] witho
 # https://leetcode.com/problems/solve-the-equation/discuss/105362/Simple-2-liner-(and-more)
 # eval : The eval() method parses the expression passed to this method and runs python expression (code) within the program.
 # -> https://www.runoob.com/python/python-func-eval.html
+# time = O(n)  # n = len(equation)
+# space = O(n)
 class Solution(object):
     def solveEquation(self, equation):
         tmp = equation.replace('x', 'j').replace('=', '-(')
@@ -57,6 +59,8 @@ class Solution(object):
 # V0'
 # IDEA : REGULAR EXPRESSION
 import re
+# time = O(n)  # n = len(equation)
+# space = O(n)
 class Solution(object):
     def solveEquation(self, equation):
         a, b, side = 0, 0, 1
@@ -75,6 +79,8 @@ class Solution(object):
         return 'x=%d' % (b / a) if a else 'No solution' if b else 'Infinite solutions'
 
 # V0'
+# time = O(n)  # n = len(equation)
+# space = O(n)
 class Solution(object):
     def solveEquation(self, equation):
         z = eval(equation.replace('x', 'j').replace('=', '-(') + ')', {'j': 1j})
@@ -83,6 +89,8 @@ class Solution(object):
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/80656224
+# time = O(n)  # n = len(equation)
+# space = O(n)
 class Solution(object):
     def solveEquation(self, equation):
         """
@@ -133,6 +141,8 @@ class Solution(object):
 # V1'
 # https://leetcode.com/problems/solve-the-equation/discuss/105362/Simple-2-liner-(and-more)
 # IDEA : eval
+# time = O(n)  # n = len(equation)
+# space = O(n)
 class Solution(object):
     def solveEquation(self, equation):
         z = eval(equation.replace('x', 'j').replace('=', '-(') + ')', {'j': 1j})
@@ -140,8 +150,8 @@ class Solution(object):
         return 'x=%d' % (a / x) if x else 'No solution' if a else 'Infinite solutions'
 
 # V2
-# Time:  O(n)
-# Space: O(n)
+# time = O(n)  # n = len(equation)
+# space = O(n)
 import re
 class Solution(object):
     def solveEquation(self, equation):

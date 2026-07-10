@@ -40,6 +40,8 @@ n == image[i].length
 # V0
 # IDEA : DFS
 # dfs
+# time = O((m*n)^2) (visited membership check via list `in` is O(m*n))
+# space = O(m*n)
 class Solution(object):
     def floodFill(self, image, sr, sc, newColor):
         def dfs(x, y):
@@ -67,7 +69,9 @@ class Solution(object):
         return image
 
 # V0'
-# IDEA : DFS 
+# IDEA : DFS
+# time = O(m*n)
+# space = O(m*n)
 class Solution(object):
     def floodFill(self, image, sr, sc, newColor):
 
@@ -89,7 +93,9 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/flood-fill/#tag-highlight-lang-python
-# IDEA : DFS 
+# IDEA : DFS
+# time = O(m*n)
+# space = O(m*n)
 class Solution(object):
     def floodFill(self, image, sr, sc, newColor):
         rows, cols, orig_color = len(image), len(image[0]), image[sr][sc]
@@ -102,9 +108,11 @@ class Solution(object):
             traverse(sr, sc)
         return image 
 
-# V1' 
+# V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79401716
-# IDEA : DFS 
+# IDEA : DFS
+# time = O(m*n)
+# space = O(m*n)
 class Solution(object):
     def floodFill(self, image, sr, sc, newColor):
         """
@@ -127,9 +135,11 @@ class Solution(object):
         dfs(sr, sc)
         return image
 
-# V1'' 
+# V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79401716
-# IDEA : BFS 
+# IDEA : BFS
+# time = O(m*n)
+# space = O(m*n)
 class Solution:
     def floodFill(self, image, sr, sc, newColor):
         """
@@ -154,9 +164,9 @@ class Solution:
                     que.append((newx, newy))
         return image
 
-# V2 
-# Time:  O(m * n)
-# Space: O(m * n)
+# V2
+# time = O(m*n)
+# space = O(m*n)
 class Solution(object):
     def floodFill(self, image, sr, sc, newColor):
         """

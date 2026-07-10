@@ -19,9 +19,9 @@
 #             else m % 2 == 1 and n % 2 == 0:
 #                 return 2 
 
-# V3 
-# Time:  O(1)
-# Space: O(1)
+# V3
+# time = O(1)
+# space = O(1)
 class Solution(object):
     def mirrorReflection(self, p, q):
         """
@@ -33,8 +33,8 @@ class Solution(object):
         return 2 if (p & -p) > (q & -q) else 0 if (p & -p) < (q & -q) else 1
 
 
-# Time:  O(log(max(p, q))) = O(1) due to 32-bit integer
-# Space: O(1)
+# time = O(log(max(p, q))) = O(1) due to 32-bit integer
+# space = O(1)
 class Solution2(object):
     def mirrorReflection(self, p, q):
         """

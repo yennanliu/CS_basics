@@ -1,7 +1,9 @@
 # V0 
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/82083609
+# time = O(n * l log l), n = len(A), l = max string length
+# space = O(n * l)
 class Solution(object):
     def numSpecialEquivGroups(self, A):
         """
@@ -13,9 +15,9 @@ class Solution(object):
             B.add(''.join(sorted(a[0::2])) + ''.join(sorted(a[1::2])))
         return len(B)
 
-# V2 
-# Time:  O(n * l)
-# Space: O(n)
+# V2
+# time = O(n * l)
+# space = O(n)
 class Solution(object):
     def numSpecialEquivGroups(self, A):
         """

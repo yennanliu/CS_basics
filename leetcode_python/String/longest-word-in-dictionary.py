@@ -29,9 +29,11 @@
 # V0 
 
 
-# V1  
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79123277
-# IDEA : GREEDY 
+# IDEA : GREEDY
+# time = O(sum(len(w)^2)) ~ O(n * l), n = number of words, l = avg word length
+# space = O(n * l)
 class Solution(object):
     def longestWord(self, words):
         """
@@ -53,9 +55,11 @@ class Solution(object):
                     res = w
         return res
 
-# V1'  
-# https://blog.csdn.net/fuxuemingzhu/article/details/79123277       
-# IDEA : SORT 
+# V1'
+# https://blog.csdn.net/fuxuemingzhu/article/details/79123277
+# IDEA : SORT
+# time = O(n*log(n)*l), n = number of words, l = avg word length (sort + set membership)
+# space = O(n * l)
 class Solution(object):
     def longestWord(self, words):
         """
@@ -72,7 +76,9 @@ class Solution(object):
                     longestWord = word
         return longestWord
         
-# V2 
+# V2
+# time = O(n * l), n = number of words, l = avg word length (trie build + DFS)
+# space = O(n * l)
 import collections
 from functools import reduce
 class Solution(object):

@@ -20,7 +20,9 @@
 
 # V1 
 # idea :
-# please notice the "each digit" term in the problem description 
+# please notice the "each digit" term in the problem description
+# time = O(1)  # fixed loop over digits 2..9
+# space = O(1)
 class Solution(object):
 	def smallestFactorization(self, a):
 		if a ==1:
@@ -37,6 +39,8 @@ class Solution(object):
 # V2 
 # http://bookshadow.com/weblog/2017/06/18/leetcode-minimum-factorization/
 # https://blog.csdn.net/feifeiiong/article/details/73556747
+# time = O(log a)  # repeatedly divide a by factors 2..9
+# space = O(1)
 class Solution(object):
     def smallestFactorization(self, a):
         """
@@ -54,9 +58,9 @@ class Solution(object):
         return ans <= 0x7FFFFFFF and ans or 0 
 
 
-# V3 
-# Time:  O(loga)
-# Space: O(1)
+# V3
+# time = O(log a)
+# space = O(1)
 class Solution(object):
     def smallestFactorization(self, a):
         """

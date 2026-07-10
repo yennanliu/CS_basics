@@ -58,8 +58,10 @@ sequences[i] is a subsequence of nums.
 
 # V0 
 
-# V1 
+# V1
 # http://bookshadow.com/weblog/2016/10/30/leetcode-sequence-reconstruction/
+# time = O(n + s), n = len(org), s = total length of seqs
+# space = O(n + s)
 class Solution(object):
     def sequenceReconstruction(self, org, seqs):
         """
@@ -91,8 +93,10 @@ class Solution(object):
             q = nq
         return True
 
-# V1' 
+# V1'
 # http://bookshadow.com/weblog/2016/10/30/leetcode-sequence-reconstruction/
+# time = O(n + s), n = len(org), s = total length of seqs
+# space = O(n + s)
 class Solution(object):
     def sequenceReconstruction(self, org, seqs):
         """
@@ -121,6 +125,8 @@ class Solution(object):
 
 # V1''
 # https://www.jiuzhang.com/solution/sequence-reconstruction/#tag-highlight-lang-python
+# time = O(n + s), n = len(org), s = total length of seqs
+# space = O(n + s)
 class Solution:
     """
     @param org: a permutation of the integers from 1 to n
@@ -183,9 +189,9 @@ class Solution:
             return topo_order        
         return None
 
-# V2 
-# Time:  O(n * s), n is the size of org, s is the size of seqs
-# Space: O(n)
+# V2
+# time = O(n * s), n is the size of org, s is the size of seqs
+# space = O(n)
 import collections
 class Solution(object):
     def sequenceReconstruction(self, org, seqs):
@@ -216,8 +222,8 @@ class Solution(object):
 
         return cnt_to_match == 0
 
-# Time:  O(|V| + |E|)
-# Space: O(|E|)
+# time = O(|V| + |E|)
+# space = O(|E|)
 class Solution2(object):
     def sequenceReconstruction(self, org, seqs):
         """

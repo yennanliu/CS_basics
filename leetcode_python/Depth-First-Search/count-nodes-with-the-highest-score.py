@@ -116,6 +116,8 @@ which is required since `n` can be up to `10^5`.
 
 
 """
+# time = O(n)  # n = number of nodes; single DFS pass
+# space = O(n)  # adjacency list + recursion depth
 class Solution(object):
     def countHighestScoreNodes(self, parents):
         """
@@ -315,6 +317,8 @@ class Solution(object):
 
 # V1-2
 # IDEA: DFS (gemini)
+# time = O(n)  # n = number of nodes; one DFS to compute sizes + one linear scan
+# space = O(n)  # adjacency list + subtree_size array + recursion depth
 class Solution(object):
     def countHighestScoreNodes(self, parents):
         """
@@ -322,7 +326,7 @@ class Solution(object):
         :rtype: int
         """
         n = len(parents)
-        
+
         # 1. Build an adjacency tree mapping (parent -> list of children)
         tree = [[] for _ in range(n)]
         for child_idx, parent_idx in enumerate(parents):
@@ -374,6 +378,8 @@ class Solution(object):
 
 # V1-3
 # IDEA: TREE DP (gemini)
+# time = O(n)  # n = number of nodes; single post-order DFS
+# space = O(n)  # adjacency list + recursion depth
 class Solution(object):
     def countHighestScoreNodes(self, parents):
         """
@@ -381,7 +387,7 @@ class Solution(object):
         :rtype: int
         """
         n = len(parents)
-        
+
         # Step 1: Reconstruct the tree layout as an adjacency list mapping: parent -> [children]
         tree = [[] for _ in range(n)]
         for child_idx, parent_idx in enumerate(parents):
@@ -428,6 +434,8 @@ class Solution(object):
 
 
 # V2
+# time = O(n)  # n = number of nodes; single DFS pass
+# space = O(n)  # graph + Counter + recursion depth
 class Solution:
     def countHighestScoreNodes(self, parents):
         graph = collections.defaultdict(list)

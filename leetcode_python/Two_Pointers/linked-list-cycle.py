@@ -46,6 +46,8 @@ Follow up: Can you solve it using O(1) (i.e. constant) memory?
 # V0
 # IDEA : fast-slow pointer (2 pointers)
 # https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/2_pointers.md
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def hasCycle(self, head):
         if not head:
@@ -64,6 +66,8 @@ class Solution(object):
 # V0'
 # IDEA : fast-slow pointer (2 pointers)
 # https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/2_pointers.md
+# time = O(n)
+# space = O(1)
 class Solution:
     def hasCycle(self, head):
         if not head:
@@ -79,29 +83,8 @@ class Solution:
 
 # V0
 # IDEA : MAP
-class Solution(object):
-    def hasCycle(self, head):
-        """
-        :type head: ListNode
-        :rtype: bool
-        """
-        map = {}
-        while head:
-            if id(head) in map:
-                return True
-            else:
-                map[id(head)] = True
-            head = head.next
-        return False
-    
-# V1 
-# https://blog.csdn.net/coder_orz/article/details/51516558
-# IDEA : MAP 
-# Definition for singly-linked list.
-# class ListNode(object):
-#     def __init__(self, x):
-#         self.val = x
-#         self.next = None
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def hasCycle(self, head):
         """
@@ -117,9 +100,36 @@ class Solution(object):
             head = head.next
         return False
 
-# V1'  
+# V1
+# https://blog.csdn.net/coder_orz/article/details/51516558
+# IDEA : MAP 
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+# time = O(n)
+# space = O(n)
+class Solution(object):
+    def hasCycle(self, head):
+        """
+        :type head: ListNode
+        :rtype: bool
+        """
+        map = {}
+        while head:
+            if id(head) in map:
+                return True
+            else:
+                map[id(head)] = True
+            head = head.next
+        return False
+
+# V1'
 # https://blog.csdn.net/coder_orz/article/details/51516558
 # IDEA  : TWO POINTER
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def hasCycle(self, head):
         """
@@ -134,8 +144,10 @@ class Solution(object):
                 return True
         return False
 
-# V1'' 
+# V1''
 # https://blog.csdn.net/coder_orz/article/details/51516558
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def hasCycle(self, head):
         """
@@ -155,14 +167,14 @@ class Solution(object):
             head = after
         return before
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
 class ListNode(object):
     def __init__(self, x):
         self.val = x
         self.next = None
 
+# time = O(n)
+# space = O(1)
 class Solution(object):
     # @param head, a ListNode
     # @return a boolean
@@ -174,13 +186,15 @@ class Solution(object):
                 return True
         return False
 
-# V4 
+# V4
 # Definition for singly-linked list.
 class ListNode:
     def __init__(self, x):
         self.val = x
         self.next = None
 
+# time = O(n)
+# space = O(1)
 class Solution:
     # @param head, a ListNode
     # @return a boolean

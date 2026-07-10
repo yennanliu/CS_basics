@@ -35,6 +35,8 @@ Follow up: Could you do it in one pass?
 # V1
 # IDEA : Iterative Link Reversal
 # https://leetcode.com/problems/reverse-linked-list-ii/solution/
+# time = O(n)
+# space = O(1)
 class Solution:
     def reverseBetween(self, head, m, n):
         """
@@ -78,6 +80,8 @@ class Solution:
 # V1'
 # IDEA : Recursion
 # https://leetcode.com/problems/reverse-linked-list-ii/solution/
+# time = O(n)
+# space = O(n) (recursion stack)
 class Solution:
     def reverseBetween(self, head, m, n):
         """
@@ -145,6 +149,8 @@ class Solution:
 #    def __init__(self, x):
 #        self.val = x
 #        self.next = None
+# time = O(n)
+# space = O(1)
 class Solution:
     def reverseBetween(self, head, m, n):
         dummyNode = ListNode(0)
@@ -171,6 +177,8 @@ class Solution:
 
 # V1'
 # https://www.jiuzhang.com/solution/reverse-linked-list-ii/#tag-highlight-lang-python
+# time = O(n)
+# space = O(1)
 from lintcode import ListNode
 class Solution:
 
@@ -203,9 +211,7 @@ class Solution:
         mth.next = nth_next
         return dummy.next
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
 class ListNode(object):
     def __init__(self, x):
         self.val = x
@@ -214,6 +220,8 @@ class ListNode(object):
     def __repr__(self):
         if self:
             return "{} -> {}".format(self.val, repr(self.__next__))
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def reverseBetween(self, head, m, n):
         diff, dummy, cur = n - m + 1, ListNode(-1), head

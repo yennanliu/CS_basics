@@ -27,9 +27,11 @@
 
 # V0 
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/80932597
-# IDEA : SET 
+# IDEA : SET
+# time = O(n^2 * l), n = len(words), l = avg word length (set build + intersection)
+# space = O(n * l)
 class Solution:
     def maxProduct(self, words):
         """
@@ -49,7 +51,9 @@ class Solution:
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/80932597
-# IDEA : BIT MANIPULATION 
+# IDEA : BIT MANIPULATION
+# time = O(n^2 + n * l), n = len(words), l = avg word length
+# space = O(n)
 class Solution(object):
     def maxProduct(self, words):
         """
@@ -68,9 +72,9 @@ class Solution(object):
                     res = max(res, len(words[j]) * len(words[i]))
         return res
 
-# V2 
-# Time:  O(n) ~ O(n^2)
-# Space: O(n)
+# V2
+# time = O(n) ~ O(n^2), n = len(words)  # counting sort + pruned pairwise scan
+# space = O(n)
 class Solution(object):
     def maxProduct(self, words):
         """
@@ -105,8 +109,8 @@ class Solution(object):
                     max_product = len(words[i]) * len(words[j])
         return max_product
 
-# Time:  O(nlogn) ~ O(n^2)
-# Space: O(n)
+# time = O(n log n) ~ O(n^2), n = len(words)
+# space = O(n)
 # Sorting + Pruning + Bit Manipulation
 class Solution2(object):
     def maxProduct(self, words):

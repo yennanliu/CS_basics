@@ -1,4 +1,6 @@
 # V1
+# time = O(1)
+# space = O(1)
 class Solution(object):
     def canWinNim(self, n):
         """
@@ -10,9 +12,9 @@ class Solution(object):
         else:
         	return True 
 
-# V2 
-# Time:  O(1)
-# Space: O(1)
+# V2
+# time = O(1)
+# space = O(1)
 class Solution(object):
     def canWinNim(self, n):
         """

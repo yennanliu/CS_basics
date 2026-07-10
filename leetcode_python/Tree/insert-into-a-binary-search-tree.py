@@ -34,17 +34,21 @@ It's guaranteed that val does not exist in the original BST.
 """
 
 # VO : recursion + dfs
+# time = O(h), h = tree height (worst case O(n) for skewed tree)
+# space = O(h), recursion stack
 class Solution(object):
     def insertIntoBST(self, root, val):
-        if not root: 
+        if not root:
             return TreeNode(val)
-        if root.val < val: 
+        if root.val < val:
             root.right = self.insertIntoBST(root.right, val);
-        elif root.val > val: 
+        elif root.val > val:
             root.left = self.insertIntoBST(root.left, val);
         return(root)
-        
+
 # V0'
+# time = O(h), h = tree height (worst case O(n) for skewed tree)
+# space = O(h), recursion stack
 class Solution(object):
     def insertIntoBST(self, root, val):
         if(root == None): return TreeNode(val);
@@ -53,18 +57,22 @@ class Solution(object):
         return(root)
 
 # V0''
+# time = O(h), h = tree height (worst case O(n) for skewed tree)
+# space = O(h), recursion stack
 class Solution(object):
     def insertIntoBST(self, root, val):
-        if(root == None): 
+        if(root == None):
             return TreeNode(val)
         if (root.val > val):
             root.left = self.insertIntoBST(root.left, val)
-        if(root.val < val): 
+        if(root.val < val):
             root.right = self.insertIntoBST(root.right, val)
         return(root)
 
 # V1
 # https://leetcode.com/problems/insert-into-a-binary-search-tree/discuss/180244/Python-4-line-clean-recursive-solution
+# time = O(h), h = tree height (worst case O(n) for skewed tree)
+# space = O(h), recursion stack
 class Solution(object):
     def insertIntoBST(self, root, val):
         if(root == None): return TreeNode(val);
@@ -76,6 +84,8 @@ class Solution(object):
 
 # V1'
 # https://leetcode.com/problems/insert-into-a-binary-search-tree/discuss/390367/Python3-(Iterative-and-Recursive)
+# time = O(h), h = tree height (worst case O(n) for skewed tree)
+# space = O(1), iterative, no recursion stack
 class Solution(object):
     def insertIntoBST(self, root, val):
         if not root: return TreeNode(val)
@@ -95,6 +105,8 @@ class Solution(object):
 
 # V1''
 # https://leetcode.com/problems/insert-into-a-binary-search-tree/discuss/373442/Python-Recursive-solution-(Bottom-up-approach)-96ms
+# time = O(h), h = tree height (worst case O(n) for skewed tree)
+# space = O(h), recursion stack
 class Solution(object):
     def insertIntoBST(self, root, val):
         if not root:

@@ -71,6 +71,8 @@ DP eq:
 
 
 """
+# time = O(n * amount), n = len(coins)
+# space = O(amount)
 class Solution(object):
     def change(self, amount, coins):
 
@@ -173,6 +175,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: 1D DP
+# time = O(n * amount), n = len(coins)
+# space = O(amount)
 class Solution(object):
     def change(self, amount, coins):
         """
@@ -180,7 +184,7 @@ class Solution(object):
         :type coins: List[int]
         :rtype: int
         """
-        # dp[i] stores the total number 
+        # dp[i] stores the total number
         # of combinations to make change for amount 'i'
         dp = [0] * (amount + 1)
         
@@ -203,9 +207,11 @@ class Solution(object):
 
 
 
-# V0 
+# V0
 # IDEA : DP
 # DP EQUATION : dp[i] += dp[i - coin]
+# time = O(n * amount), n = len(coins)
+# space = O(amount)
 class Solution(object):
     def change(self, amount, coins):
         """
@@ -227,7 +233,9 @@ class Solution(object):
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/82845212
 # IDEA : DP
-# DP EQUATION : dp[i] += dp[i - coin], when coin <= i 
+# DP EQUATION : dp[i] += dp[i - coin], when coin <= i
+# time = O(n * amount), n = len(coins)
+# space = O(amount)
 class Solution(object):
     def change(self, amount, coins):
         """
@@ -246,6 +254,8 @@ class Solution(object):
 # V1'
 # IDEA : DP
 # https://leetcode.com/problems/coin-change-2/solution/
+# time = O(n * amount), n = len(coins)
+# space = O(amount)
 class Solution:
     def change(self, amount: int, coins: List[int]) -> int:
         dp = [0] * (amount + 1)
@@ -258,6 +268,8 @@ class Solution:
 
 # V1'
 # https://www.jiuzhang.com/solution/coin-change-ii/#tag-highlight-lang-python
+# time = O(n * amount), n = len(coins)
+# space = O(amount)
 class Solution:
     """
     @param amount: a total amount of money amount

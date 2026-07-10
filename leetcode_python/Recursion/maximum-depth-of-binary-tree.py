@@ -32,6 +32,8 @@ The number of nodes in the tree is in the range [0, 104].
 # V0
 # IDEA: DFS (post order)
 # NOTE !!! we DON'T need global var
+# time = O(n)
+# space = O(h), h is height of binary tree (recursion stack)
 class Solution(object):
     def maxDepth(self, root):
         # Base case: empty tree has depth 0
@@ -51,6 +53,8 @@ class Solution(object):
 # V0-0-1
 # IDEA: DFS (post order)
 # NOTE !!! we DON'T need global var
+# time = O(n)
+# space = O(h), h is height of binary tree (recursion stack)
 class Solution(object):
     def maxDepth(self, root):
         # Base case: empty tree has depth 0
@@ -71,6 +75,8 @@ class Solution(object):
 # IDEA: DFS (post order) with attr var
 # NOTE !!! we init `max_depth_tracker` everytime when the function is called
 #          so the `max_depth_tracker` in test cases NOT affect each other
+# time = O(n)
+# space = O(h), h is height of binary tree (recursion stack)
 class Solution(object):
     def maxDepth(self, root):
         # CRITICAL FIX: Initialize your tracker inside the method.
@@ -97,6 +103,8 @@ class Solution(object):
 # V0
 # IDEA : BFS
 # compare with LC 111 : mininum Depth of Binary Tree
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def maxDepth(self, root):
         # edge case
@@ -125,6 +133,8 @@ class Solution(object):
 
 # V0
 # IDEA : DFS
+# time = O(n)
+# space = O(h), h is height of binary tree (recursion stack)
 class Solution(object):
     def maxDepth(self, root):
 
@@ -134,6 +144,8 @@ class Solution(object):
 
 # V0'
 # bfs
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def maxDepth(self, root):
         # edge case
@@ -154,6 +166,8 @@ class Solution(object):
 
 # V0''
 # IDEA : BFS
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def maxDepth(self, root):
         if not root:
@@ -172,6 +186,8 @@ class Solution(object):
 
 # V0''''
 # IDEA : DFS
+# time = O(n)
+# space = O(n), for cache list holding a layer number per node (plus O(h) recursion stack)
 class Solution(object):
     def maxDepth(self, root):
         def dfs(root, _layer):
@@ -192,6 +208,8 @@ class Solution(object):
 
 # V0'''
 # IDEA : DFS
+# time = O(n)
+# space = O(h), h is height of binary tree (recursion stack)
 class Solution:
     def maxDepth(self, root):
         self.layer_final = 0
@@ -208,6 +226,8 @@ class Solution:
 # V1
 # https://blog.csdn.net/coder_orz/article/details/51337420
 # IDEA : DFS
+# time = O(n)
+# space = O(h), h is height of binary tree (recursion stack)
 class Solution(object):
     def maxDepth(self, root):
         """
@@ -229,6 +249,8 @@ assert s.maxDepth([1,2,3,4,5]) == 3
 # V1'
 # https://blog.csdn.net/coder_orz/article/details/51337420
 # IDEA : BFS
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def maxDepth(self, root):
         """
@@ -252,6 +274,8 @@ class Solution(object):
 
 # V1''
 # https://blog.csdn.net/qqxx6661/article/details/75676272
+# time = O(n)
+# space = O(h), h is height of binary tree (recursion stack)
 class Solution(object):
     level_true = 0
     def preorder(self, root, level, level_true):
@@ -266,14 +290,14 @@ class Solution(object):
         return self.level_true
 
 # V2
-# Time:  O(n)
-# Space: O(h), h is height of binary tree
 class TreeNode(object):
     def __init__(self, x):
         self.val = x
         self.left = None
         self.right = None
 
+# time = O(n)
+# space = O(h), h is height of binary tree (recursion stack)
 class Solution(object):
     # @param root, a tree node
     # @return an integer

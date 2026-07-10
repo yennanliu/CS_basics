@@ -49,6 +49,8 @@ board[clickr][clickc] is either 'M' or 'E'.
 
 # V0
 # IDEA : DFS
+# time = O(rows * cols)
+# space = O(rows * cols)
 class Solution:
     def updateBoard(self, board, click):
 
@@ -84,7 +86,9 @@ class Solution:
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79462285
-# IDEA : DFS 
+# IDEA : DFS
+# time = O(rows * cols)
+# space = O(rows * cols)
 class Solution(object):
     def updateBoard(self, board, click):
         (row, col) = click
@@ -102,7 +106,9 @@ class Solution(object):
 
 # V1'
 # http://bookshadow.com/weblog/2017/02/26/leetcode-minesweeper/
-# IDEA : BFS 
+# IDEA : BFS
+# time = O(rows * cols)
+# space = O(rows * cols)
 class Solution(object):
     def updateBoard(self, board, click):
         """
@@ -143,8 +149,10 @@ class Solution(object):
         return board
 
 # V1''
-# IDEA : BFS 
+# IDEA : BFS
 # https://leetcode.com/problems/minesweeper/discuss/284461/Python-BFS
+# time = O(rows * cols)
+# space = O(rows * cols)
 class Solution(object):
     def updateBoard(self, board, click):
         """
@@ -178,10 +186,12 @@ class Solution(object):
                                 seen.add((a+x, b+y))
         return board 
 
- # V1'''
- # https://leetcode.com/problems/minesweeper/discuss/284461/Python-BFS
- # IDEA : DFS 
- class Solution:
+# V1'''
+# https://leetcode.com/problems/minesweeper/discuss/284461/Python-BFS
+# IDEA : DFS
+# time = O(rows * cols)
+# space = O(rows * cols)
+class Solution:
     def updateBoard(self, board: List[List[str]], click: List[int]) -> List[List[str]]:
         x, y = click
         surround = [(-1, 0), (1, 0), (0, 1), (0, -1), (1, -1), (1, 1), (-1, 1), (-1, -1)]
@@ -215,7 +225,9 @@ class Solution(object):
 
 # V1''''
 # https://leetcode.com/problems/minesweeper/discuss/144746/Python-BFS-%2B-DFS-with-comments
-# IDEA : DFS, BFS 
+# IDEA : DFS, BFS
+# time = O(rows * cols)
+# space = O(rows * cols)
 class Solution:
     
     directions = [(-1, 0), (-1, -1), (-1, 1), (0,-1), (0, 1), (1, -1), (1, 0), (1, 1)]

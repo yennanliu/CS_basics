@@ -56,6 +56,8 @@ sum(wall[i]) is the same for each row i.
 # In [94]: _counter
 # Out[94]: Counter({1: 2, 2: 1})
 import collections
+# time = O(n), n = total number of bricks
+# space = O(m), m = number of distinct widths
 class Solution(object):
     def leastBricks(self, wall):
         _counter = collections.Counter()
@@ -73,6 +75,8 @@ class Solution(object):
 
 # V0'
 # IDEA : HASH TABLE + COUNTER UPDATE (looping every element in the list and cumsum and get the max count)
+# time = O(n), n = total number of bricks
+# space = O(m), m = number of distinct widths
 class Solution(object):
     def leastBricks(self, wall):
         left_counter = collections.Counter()
@@ -85,8 +89,10 @@ class Solution(object):
                 count = max(count, left_counter[left])
         return len(wall) - count
 
-# V1 
+# V1
 # http://bookshadow.com/weblog/2017/04/09/leetcode-brick-wall/
+# time = O(n), n = total number of bricks
+# space = O(m), m = number of distinct widths
 class Solution(object):
     def leastBricks(self, wall):
         """
@@ -101,8 +107,10 @@ class Solution(object):
                 cnt += b
         return len(wall) - max(rims.values() or [0])
 
-# V1' 
+# V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/80526298
+# time = O(n), n = total number of bricks
+# space = O(m), m = number of distinct widths
 class Solution(object):
     def leastBricks(self, wall):
         """
@@ -143,9 +151,9 @@ class Solution(object):
 #     }
 # }
 
-# V2 
-# Time:  O(n), n is the total number of the bricks
-# Space: O(m), m is the total number different widths
+# V2
+# time = O(n), n is the total number of the bricks
+# space = O(m), m is the total number different widths
 import collections
 class Solution(object):
     def leastBricks(self, wall):

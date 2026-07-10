@@ -24,6 +24,8 @@
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79378135
+# time = O(n * logn), n = N (checks each digit of every number in 1..N)
+# space = O(logn)
 class Solution(object):
     def rotatedDigits(self, N):
         """
@@ -41,6 +43,8 @@ class Solution(object):
 
 # V1'
 # http://bookshadow.com/weblog/2018/02/25/leetcode-rotated-digits/
+# time = O(n * logn), n = N (checks each digit of every number in 1..N)
+# space = O(logn)
 class Solution(object):
     def rotatedDigits(self, N):
         """
@@ -56,6 +60,9 @@ class Solution(object):
         return ans
              
 # V2
+# IDEA : digit DP
+# time = O(logn), n = N (states over the O(logn) digits)
+# space = O(logn)
 class Solution(object):
     def rotatedDigits(self, N):
         """
@@ -81,8 +88,8 @@ class Solution(object):
         return dp(A, 0, True, False, lookup)
 
 
-# Time:  O(n)
-# Space: O(n)
+# time = O(n), n = N
+# space = O(n)
 class Solution2(object):
     def rotatedDigits(self, N):
         """
@@ -104,8 +111,8 @@ class Solution2(object):
         return dp.count(DIFF)
 
 
-# Time:  O(nlogn) = O(n), because O(logn) = O(32) by this input
-# Space: O(logn) = O(1)
+# time = O(nlogn) = O(n), n = N, because O(logn) = O(32) by this input
+# space = O(logn) = O(1)
 class Solution3(object):
     def rotatedDigits(self, N):
         """

@@ -6,10 +6,9 @@
 
 
 
-# V2 
-# Time:  O(n^2)
-# Space: O(1)
-
+# V2
+# time = O(n^2)
+# space = O(1)
 class Solution(object):
     def triangleNumber(self, nums):
         """

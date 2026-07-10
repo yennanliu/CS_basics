@@ -1,7 +1,9 @@
 # V0 
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/82973125
+# time = O(1)
+# space = O(1)
 class Solution(object):
     def computeArea(self, A, B, C, D, E, F, G, H):
         """
@@ -26,10 +28,9 @@ class Solution(object):
             area = x * y
         return area1 + area2 - area
 
-# V2 
-# Time:  O(n^1.5) on average
-#        O(n^2) on worst
-# Space: O(n)
+# V2
+# time = O(n^1.5) on average, O(n^2) worst case
+# space = O(n)
 import collections
 class Solution(object):
     def minAreaRect(self, points):
@@ -60,8 +61,9 @@ class Solution(object):
                     lookup[y1, y2] = x
         return result if result != float("inf") else 0
 
-# Time:  O(n^2)
-# Space: O(n)
+# V3
+# time = O(n^2)
+# space = O(n)
 class Solution2(object):
     def minAreaRect(self, points):
         """

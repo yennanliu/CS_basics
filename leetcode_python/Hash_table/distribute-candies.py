@@ -1,5 +1,3 @@
-# Time:  O(n)
-# Space: O(n)
 # Given an integer array with even length, where different numbers
 # in this array represent different kinds of candies.
 # Each number means one candy of the corresponding kind.
@@ -26,9 +24,11 @@
 
 # V0
 
-# V1 
+# V1
 # http://bookshadow.com/weblog/2017/05/07/leetcode-distribute-candies/
-# IDEA : RETURN min( (# of candies/2 ), (# of candies types))  
+# IDEA : RETURN min( (# of candies/2 ), (# of candies types))
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def distributeCandies(self, candies):
         """
@@ -37,7 +37,9 @@ class Solution(object):
         """
         return min(len(candies) / 2, len(set(candies)))
 
-# V2 
+# V2
+# time = O(n)
+# space = O(n)
 class Solution(object):
 
     def distributeCandies(self, candies):

@@ -41,7 +41,9 @@ Note: This question is the same as 1296: https://leetcode.com/problems/divide-ar
 # hand = [1, 2, 3, 6, 2, 3, 4, 7, 8]
 # handDict = collections.Counter(hand)
 # then handDict  = Counter({1: 1, 2: 2, 3: 2, 4: 1, 6: 1, 7: 1, 8: 1})
-# so we can for loop visit above counter Dict and do op on it 
+# so we can for loop visit above counter Dict and do op on it
+# time = O(n log n), n = len(hand) (min(handDict.keys()) scan repeated, dominated by grouping work)
+# space = O(n)
 import collections
 class Solution(object):
     def isNStraightHand(self, hand, W):
@@ -59,9 +61,9 @@ class Solution(object):
                 if not handDict[y]: del handDict[y] # delete this dict key since there no element under this key (e.g. if handDict = Counter({1: 0, 2: 2, 3: 2, 4: 1, 6: 1, 7: 1, 8: 1}), then del handDict[1])
         return True
 
-# V2 
-# Time:  O(nlogn)
-# Space: O(n)
+# V2
+# time = O(n log n)
+# space = O(n)
 from collections import Counter
 from heapq import heapify, heappop
 class Solution(object):

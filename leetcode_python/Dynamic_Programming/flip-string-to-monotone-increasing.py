@@ -36,6 +36,8 @@ s[i] is either '0' or '1'.
 """
 
 # V0
+# time = O(n)  # n = len(s)
+# space = O(1)
 class Solution:
     def minFlipsMonoIncr(self, s):
         ones = 0
@@ -78,8 +80,10 @@ class Solution:
             res = min(res, ones + zeros)
         return res
 
-# V0' 
+# V0'
 # IDEA : PREFIX SUM
+# time = O(n)  # n = len(S)
+# space = O(n)  # prefix sum array P
 class Solution(object):
     def minFlipsMonoIncr(self, S):
         # get pre-fix sum
@@ -93,6 +97,8 @@ class Solution(object):
         return res
 
 # V0''
+# time = O(n)  # n = len(s)
+# space = O(1)
 class Solution:
     def minFlipsMonoIncr(self, s, ones = 0):
         res = zeros = s.count("0")
@@ -104,6 +110,8 @@ class Solution:
 # V1
 # IDEA : PREFIX SUM
 # https://leetcode.com/problems/flip-string-to-monotone-increasing/solution/
+# time = O(n)  # n = len(S)
+# space = O(n)  # prefix sum array P
 class Solution(object):
     def minFlipsMonoIncr(self, S):
         # get pre-fix sum
@@ -116,6 +124,8 @@ class Solution(object):
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/83247054
+# time = O(n)  # n = len(S)
+# space = O(n)  # prefix sum array P
 class Solution(object):
     def minFlipsMonoIncr(self, S):
         """
@@ -135,6 +145,8 @@ class Solution(object):
 # We start with assuming "111.." section occupies all string, s.
 # Then we update "000.." section as s[:i + 1] and "111.." section as s[i + 1:] during iteration as well as the result
 # "zeros" variable counts all misplaced "0"s and "ones" variable counts all misplaced "1"s
+# time = O(n)  # n = len(s)
+# space = O(1)
 class Solution:
     def minFlipsMonoIncr(self, s, ones = 0):
         res = zeros = s.count("0")
@@ -149,6 +161,8 @@ class Solution:
 #  -> We start with assuming "111.." section occupies all string, s.
 #  -> Then we update "000.." section as s[:i + 1] and "111.." section as s[i + 1:] during iteration as well as the result
 #  -> "zeros" variable counts all misplaced "0"s and "ones" variable counts all misplaced "1"s
+# time = O(n)  # n = len(s)
+# space = O(1)
 class Solution:
     def minFlipsMonoIncr(self, s):
         res = cur = s.count("0")
@@ -159,6 +173,8 @@ class Solution:
 
 # V1'''''
 # https://leetcode.com/problems/flip-string-to-monotone-increasing/discuss/184080/Python-3-liner
+# time = O(n)  # n = len(s)
+# space = O(1)
 class Solution:
     def minFlipsMonoIncr(self, s):
         res = cur = s.count("0")
@@ -167,6 +183,8 @@ class Solution:
 
 # V1''''''
 # https://www.jiuzhang.com/solution/flip-string-to-monotone-increasing/#tag-highlight-lang-python
+# time = O(n)  # n = len(S)
+# space = O(1)
 class Solution:
     """
     @param S: a string
@@ -181,8 +199,8 @@ class Solution:
         return n
 
 # V2
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def minFlipsMonoIncr(self, S):
         """

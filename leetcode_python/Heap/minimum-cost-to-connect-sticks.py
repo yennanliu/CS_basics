@@ -37,11 +37,12 @@ Space: O(n).
 
 """
 
+from heapq import *
+
 # V0
 # IDEA : heapq
 class Solution(object):
     def connectSticks(self, sticks):
-        from heapq import * 
         heapify(sticks)
         res = 0
         while len(sticks) > 1:
@@ -57,7 +58,6 @@ class Solution(object):
 # https://blog.csdn.net/qq_32424059/article/details/100058788
 class Solution(object):
     def connectSticks(self, sticks):
-        from heapq import * 
         heapify(sticks)
         res = 0
         while len(sticks) > 1:

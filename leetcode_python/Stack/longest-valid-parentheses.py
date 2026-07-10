@@ -35,6 +35,8 @@ s[i] is '(', or ')'.
 # V1
 # IDEA : STACK
 # https://leetcode.com/problems/longest-valid-parentheses/discuss/582820/Java-and-Python-using-stack
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def longestValidParentheses(self, s):
             stack = []
@@ -59,6 +61,8 @@ class Solution(object):
 # V1'
 # IDEA : STACK
 # https://leetcode.com/problems/longest-valid-parentheses/discuss/14180/Python-Stack-Solution
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def longestValidParentheses(self, s):
         stack = []
@@ -78,9 +82,11 @@ class Solution(object):
 # V1''
 # IDEA : STACK
 # https://leetcode.com/problems/longest-valid-parentheses/discuss/1503685/Python-or-Stack
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def longestValidParentheses(self, s):
-   
+
         if s =="":
             return 0
         max_ = 0
@@ -102,6 +108,8 @@ class Solution(object):
 # V1'''
 # IDEA : STACK
 # https://leetcode.com/problems/longest-valid-parentheses/discuss/1139974/PythonGo-O(n)-by-stack-w-Comment
+# time = O(n)
+# space = O(n)
 class Solution:
     def longestValidParentheses(self, s):
 
@@ -137,6 +145,8 @@ class Solution:
 # V1''''
 # IDEA : DEQUE
 # https://leetcode.com/problems/longest-valid-parentheses/discuss/14186/Python-solution-with-detailed-explanation
+# time = O(n)
+# space = O(n)
 from collections import deque
 class Solution(object):
     def longestValidParentheses(self, s):
@@ -161,6 +171,8 @@ class Solution(object):
 # V1'''''
 # IDEA : DP
 # https://leetcode.com/problems/longest-valid-parentheses/discuss/350422/Simple-Python-DP-solution
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def longestValidParentheses(self, s):
         if not s:

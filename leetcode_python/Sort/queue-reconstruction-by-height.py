@@ -46,13 +46,13 @@ class Solution(object):
         ### NOTE : we make a new array for insert, and return as ans
         res = []
         for p in people:
-        """
-        py insert syntax
-        # syntax : 
-        # https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/python_trick.md#1-6-insert-into-array-in-place
+            """
+            py insert syntax
+            # syntax :
+            # https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/python_trick.md#1-6-insert-into-array-in-place
 
-        # arr.insert(<index>,<value>)
-        """
+            # arr.insert(<index>,<value>)
+            """
             res.insert(p[1], p)
         return res
 

@@ -49,14 +49,20 @@ searchWord consists of lowercase English letters.
 # V0
 # IDEA : TRIE
 class TrieNode:
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
         self.children = dict()
         self.words = []
 
 class Trie:
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
         self.root = TrieNode()
-    
+
+    # time = O(l), l = len(word) (sort is over <= 3 words)
+    # space = O(l)
     def insert(self, word):
         node = self.root
         for char in word:
@@ -67,7 +73,9 @@ class Trie:
             node.words.sort()
             while len(node.words) > 3:
                 node.words.pop()
-    
+
+    # time = O(w), w = len(word)
+    # space = O(w)
     def search(self, word):
         res = []
         node = self.root
@@ -82,6 +90,8 @@ class Trie:
         return res
 
 class Solution:
+    # time = O(n * l), n = len(products), l = avg product length
+    # space = O(n * l)
     def suggestedProducts(self, products, searchWord):
         trie = Trie()
         for prod in products:
@@ -92,14 +102,20 @@ class Solution:
 # IDEA : TRIE
 # https://leetcode.com/problems/search-suggestions-system/discuss/436183/Python-Trie-Solution
 class TrieNode:
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
         self.children = dict()
         self.words = []
 
 class Trie:
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
         self.root = TrieNode()
-    
+
+    # time = O(l), l = len(word) (sort is over <= 3 words)
+    # space = O(l)
     def insert(self, word):
         node = self.root
         for char in word:
@@ -110,7 +126,9 @@ class Trie:
             node.words.sort()
             while len(node.words) > 3:
                 node.words.pop()
-    
+
+    # time = O(w), w = len(word)
+    # space = O(w)
     def search(self, word):
         res = []
         node = self.root
@@ -125,6 +143,8 @@ class Trie:
         return res
 
 class Solution:
+    # time = O(n * l), n = len(products), l = avg product length
+    # space = O(n * l)
     def suggestedProducts(self, products, searchWord):
         trie = Trie()
         for prod in products:

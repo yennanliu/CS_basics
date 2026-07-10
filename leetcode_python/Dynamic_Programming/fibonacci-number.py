@@ -1,7 +1,7 @@
 # V0
 # https://github.com/labuladong/fucking-algorithm/blob/master/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E7%B3%BB%E5%88%97/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E8%AF%A6%E8%A7%A3%E8%BF%9B%E9%98%B6.md
-# TIME COMPLEXITY : 2^N
-# SPACE COMPLEXITY : 1 
+# time = O(2^n)
+# space = O(n)  # recursion call stack depth
 class Solution:
     def fib(self, N):
         if N <= 2:
@@ -10,8 +10,8 @@ class Solution:
 
 # V0'
 # IDEA : optimized DP
-# TIME COMPLEXITY : N
-# SPACE COMPLEXITY : 1 
+# time = O(n)
+# space = O(1)
 class Solution:
     def fib(self, N: int) -> int:
         if N == 0 or N == 1:
@@ -23,6 +23,8 @@ class Solution:
 
 # V1
 # https://blog.csdn.net/zhangpeterx/article/details/100056015
+# time = O(n)
+# space = O(1)
 class Solution:
     def fib(self, N: int) -> int:
         if N == 0 or N == 1:
@@ -33,8 +35,8 @@ class Solution:
         return b
 
 # V2
-# Time:  O(logn)
-# Space: O(1)
+# time = O(logn)
+# space = O(1)
 import itertools
 class Solution(object):
     def fib(self, N):
@@ -61,8 +63,8 @@ class Solution(object):
              [1, 0]]
         return matrix_expo(T, N)[1][0]
 
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 class Solution2(object):
     def fib(self, N):
         """

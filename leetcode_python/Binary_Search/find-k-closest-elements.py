@@ -33,6 +33,8 @@ arr is sorted in ascending order.
 
 # V0
 # IDEA: 2 POINTERS
+# time = O(n - k)   # shrink window from n down to k
+# space = O(1)
 class Solution(object):
     def findClosestElements(self, arr, k, x):
         # edge
@@ -47,17 +49,17 @@ class Solution(object):
          the while condition
          """
         while r - l + 1 > k:
-         """
-         NOTE !!!
+            """
+            NOTE !!!
 
 
-          if there is a tie (e.g. >=),
-          we move right pointer first (r -= 1)
-         """
-          if abs(x - arr[l]) <= abs(x - arr[r]):
-            r -= 1
-          else:
-            l += 1
+            if there is a tie (e.g. >=),
+            we move right pointer first (r -= 1)
+            """
+            if abs(x - arr[l]) <= abs(x - arr[r]):
+                r -= 1
+            else:
+                l += 1
 
         """
          NOTE !!!
@@ -73,6 +75,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: SLIDE WINDOW
+# time = O(n - k)
+# space = O(1)
 class Solution(object):
     def findClosestElements(self, arr, k, x):
         l, r = 0, len(arr) - 1
@@ -89,6 +93,8 @@ class Solution(object):
 
 # V0-2
 # IDEA: BINARY SEARCH
+# time = O(log(n - k))
+# space = O(1)
 class Solution(object):
     def findClosestElements(self, arr, k, x):
         if not arr:
@@ -115,8 +121,10 @@ class Solution(object):
         return arr[l:l + k]
 
 
-# V0 
+# V0
 # IDEA : TWO POINTERS
+# time = O(n - k)
+# space = O(1)
 class Solution(object):
     def findClosestElements(self, arr, k, x):
         while len(arr) > k:
@@ -129,6 +137,8 @@ class Solution(object):
 
 # V0'
 # IDEA : SORTING
+# time = O(n log n)
+# space = O(n)
 class Solution:
     def findClosestElements(self, arr, k, x):
         # Sort using custom comparator
@@ -138,12 +148,14 @@ class Solution:
         result = []
         for i in range(k):
             result.append(sorted_arr[i])
-        
+
         # Sort again to have output in ascending order
         return sorted(result)
 
 # V0''
-# IDEA : BINARY SEARCH 
+# IDEA : BINARY SEARCH
+# time = O(log(n - k))
+# space = O(1)
 class Solution(object):
     def findClosestElements(self, arr, k, x):
         left = 0
@@ -158,6 +170,8 @@ class Solution(object):
 
 # V0'''
 # IDEA : HASHMAP + brute force
+# time = O(n log n)   # sort distinct diffs
+# space = O(n)
 class Solution(object):
     def findClosestElements(self, arr, k, x):
         # edge case
@@ -184,6 +198,8 @@ class Solution(object):
 # V1
 # IDEA :  Sort With Custom Comparator
 # https://leetcode.com/problems/find-k-closest-elements/solution/
+# time = O(n log n)
+# space = O(n)
 class Solution:
     def findClosestElements(self, arr: List[int], k: int, x: int) -> List[int]:
         # Sort using custom comparator
@@ -200,6 +216,8 @@ class Solution:
 # V1'
 # IDEA : Binary Search + Sliding Window
 # https://leetcode.com/problems/find-k-closest-elements/solution/
+# time = O(log(n) + k)
+# space = O(1)
 class Solution:
     def findClosestElements(self, arr: List[int], k: int, x: int) -> List[int]:
         # Base case
@@ -230,6 +248,8 @@ class Solution:
 # V1''
 # IDEA :  Binary Search To Find The Left Bound
 # https://leetcode.com/problems/find-k-closest-elements/solution/
+# time = O(log(n - k))
+# space = O(1)
 class Solution:
     def findClosestElements(self, arr: List[int], k: int, x: int) -> List[int]:
         # Initialize binary search bounds
@@ -248,7 +268,9 @@ class Solution:
 
 # V1'''
 # https://blog.csdn.net/fuxuemingzhu/article/details/82968136
-# IDEA : HEAP 
+# IDEA : HEAP
+# time = O(n + k log n)   # heapify O(n), k pops O(log n) each
+# space = O(n)
 class Solution(object):
     def findClosestElements(self, arr, k, x):
         N = len(arr)
@@ -258,7 +280,9 @@ class Solution(object):
 
 # V1'''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/82968136
-# IDEA : TWO POINTERS 
+# IDEA : TWO POINTERS
+# time = O(n - k)
+# space = O(1)
 class Solution(object):
     def findClosestElements(self, arr, k, x):
         # since the array already sorted, arr[-1] must be the biggest one,
@@ -275,7 +299,9 @@ class Solution(object):
 
 # V1'''''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/82968136
-# IDEA : BINARY SEARCH 
+# IDEA : BINARY SEARCH
+# time = O(log(n - k))
+# space = O(1)
 class Solution(object):
     def findClosestElements(self, arr, k, x):
         left = 0
@@ -290,6 +316,8 @@ class Solution(object):
 
 # V1'''''''
 # https://www.jiuzhang.com/solution/460-find-k-closest-elements/#tag-highlight-lang-python
+# time = O(logn + k)
+# space = O(1)
 class Solution:
     # @param {int[]} A an integer array
     # @param {int} target an integer
@@ -338,9 +366,9 @@ class Solution:
             
         return len(A)
 
-# V2 
-# Time:  O(logn + k)
-# Space: O(1)
+# V2
+# time = O(logn + k)
+# space = O(1)
 import bisect
 class Solution(object):
     def findClosestElements(self, arr, k, x):

@@ -2,6 +2,8 @@
 
 # V2 
 # https://blog.csdn.net/fuxuemingzhu/article/details/81748335
+# time = O(n^2)  # n = grid dimension
+# space = O(1)
 class Solution(object):
     def projectionArea(self, grid):
         """
@@ -23,6 +25,8 @@ class Solution(object):
 
 # V3 
 # https://www.cnblogs.com/seyjs/p/9538305.html
+# time = O(n^2)  # n = grid dimension
+# space = O(n)  # front and side arrays
 class Solution(object):
     def projectionArea(self, grid):
         """
@@ -41,9 +45,9 @@ class Solution(object):
                 side[j] = max(side[j],grid[i][j])
         return top + sum(front) + sum(side)
 
-# V4 
-# Time:  O(n^2)
-# Space: O(1)
+# V4
+# time = O(n^2)
+# space = O(1)
 class Solution(object):
     def projectionArea(self, grid):
         """

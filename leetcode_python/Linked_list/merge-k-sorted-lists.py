@@ -40,6 +40,8 @@ The sum of lists[i].length won't exceed 10^4.
 """
 # V0
 # IDEA : LC 021 + implement mergeTwoLists on each of the 2 linked list
+# time = O(k * n), k = number of lists, n = total number of nodes
+# space = O(1)
 class Solution(object):
     def mergeKLists(self, lists):
         if len(lists) == 0:
@@ -77,6 +79,8 @@ class Solution(object):
 # V1
 # IDEA : BRUTE FORCE
 # https://leetcode.com/problems/merge-k-sorted-lists/solution/
+# time = O(n log n), n = total number of nodes
+# space = O(n)
 class Solution(object):
     def mergeKLists(self, lists):
         """
@@ -101,6 +105,8 @@ class Solution(object):
 # https://www.gushiciku.cn/pl/pJaa/zh-tw
 from Queue import PriorityQueue
 
+# time = O(n log k), n = total number of nodes, k = number of lists
+# space = O(k)
 class Solution(object):
     def mergeKLists(self, lists):
         """
@@ -124,6 +130,8 @@ class Solution(object):
 # V3
 # IDEA : Merge with Divide And Conquer
 # https://leetcode.com/problems/merge-k-sorted-lists/solution/
+# time = O(n log k), n = total number of nodes, k = number of lists
+# space = O(1)
 class Solution(object):
     def mergeKLists(self, lists):
         """
@@ -158,6 +166,8 @@ class Solution(object):
 # V4
 # https://blog.csdn.net/fuxuemingzhu/article/details/83068632
 # IDEA : HEAP SAVE KEY & VALUE
+# time = O(n log k), n = total number of nodes, k = number of lists
+# space = O(k)
 import heapq
 class Solution:
     def mergeKLists(self, lists):
@@ -187,7 +197,9 @@ class Solution:
 
 # V5
 # https://blog.csdn.net/fuxuemingzhu/article/details/83068632
-# IDEA : HEAP SAVE VALUE AND NODE 
+# IDEA : HEAP SAVE VALUE AND NODE
+# time = O(n log k), n = total number of nodes, k = number of lists
+# space = O(k)
 class Solution(object):
     def mergeKLists(self, lists):
         """
@@ -218,6 +230,8 @@ class Solution(object):
 #     def __init__(self, x):
 #         self.val = x
 #         self.next = None
+# time = O(k * n), k = number of lists, n = total number of nodes
+# space = O(1)
 class Solution:
     def mergeKLists(self, lists):
         """
@@ -245,6 +259,8 @@ class Solution:
 
 # V7
 # https://blog.csdn.net/qian2729/article/details/50528385
+# time = O(n log k), n = total number of nodes, k = number of lists
+# space = O(k)
 class Solution(object):
     def mergeKLists(self, lists):
         """

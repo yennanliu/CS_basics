@@ -45,6 +45,8 @@ It is guaranteed that there will be at least k elements in the array when you se
 #           -> we ONLY need to keep at most k element
 #               -> if element more than k, then pop element out
 #                   -> then return 0 element directly
+# time = O(m log k) init (m = len(nums)), O(log k) per add
+# space = O(k)
 import heapq
 class KthLargest:
 
@@ -60,11 +62,13 @@ class KthLargest:
             heapq.heappush(self.heap, val)
         else:
             heapq.heappushpop(self.heap, val)
-            
+
         return self.heap[0]
 
 # V0'
 # IDEA : HEAP
+# time = O(m log k) init (m = len(nums)), O(log k) per add
+# space = O(k)
 import heapq
 class KthLargest(object):
 
@@ -107,7 +111,9 @@ class KthLargest(object):
 # heappushpop(q, item) # op : push -> pop 
 # heapify(q) # Transform list x into a heap, in-place, in linear time.
 # heapreplace(q, item) # op : pop -> push 
-# nlargest(n, q) # op : return TOP N Max number as list 
+# nlargest(n, q) # op : return TOP N Max number as list
+# time = O(m log k) init (m = len(nums)), O(log k) per add
+# space = O(k)
 class KthLargest(object):
 
     def __init__(self, k, nums):
@@ -150,6 +156,8 @@ assert kthlargest.add(4) == 8
 
 # V1'
 # https://www.jianshu.com/p/1ee69ca082b7
+# time = O(m log k) init (m = len(nums)), O(log k) per add
+# space = O(k)
 import heapq
 class KthLargest:
 

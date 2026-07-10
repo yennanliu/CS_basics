@@ -53,6 +53,8 @@ There will be no empty parentheses (i.e: "()" is not a substring of expression).
 # V1
 # IDEA : DFS
 # https://leetcode.com/problems/minimum-cost-to-change-the-final-value-of-expression/discuss/1267304/Python-Recursion-dfs-solution-explained
+# time = O(n)
+# space = O(n)
 class Solution:
     def minOperationsToFlip(self, E):
         def corr(s):
@@ -83,6 +85,8 @@ class Solution:
 # V1'
 # IDEA : STACK
 # https://leetcode.com/problems/minimum-cost-to-change-the-final-value-of-expression/discuss/1653211/Python-simple-stack-solution-with-explanation-or-100
+# time = O(n)
+# space = O(n)
 class Solution:
     def minOperationsToFlip(self, expression: str) -> int:
         # This calculates expression 'left' ('&' or '|') 'right', and minimum cost to flip
@@ -129,8 +133,10 @@ class Solution:
 # V1''
 # IDEA : STACK
 # https://leetcode.com/problems/minimum-cost-to-change-the-final-value-of-expression/discuss/1267651/Python3.-O(N)-iterative-with-using-stack
+# time = O(n)
+# space = O(n)
 class Solution:
-    def minOperationsToFlip(self, expression: str) -> int:                              
+    def minOperationsToFlip(self, expression: str) -> int:
         stack = [[0, 0, None]]
         for e in expression:                                                    
             if e == "(":                                                        
@@ -164,6 +170,8 @@ class Solution:
 # V1''
 # IDEA : DP
 # https://leetcode.com/problems/minimum-cost-to-change-the-final-value-of-expression/discuss/1267522/Python-DP-O(n)
+# time = O(n)
+# space = O(n)
 class Solution:
     def minOperationsToFlip(self, exp: str) -> int:
         def solve(stack):

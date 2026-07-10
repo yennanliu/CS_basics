@@ -53,21 +53,27 @@ At most 5000 calls will be made to visit, back, and forward.
 from collections import deque
 class BrowserHistory:
 
+    # time = O(1)
+    # space = O(1)
     def __init__(self, homepage: str):
-	
+
         self.history = deque([homepage])
         self.cur_index = 0
 
+    # time = O(n) worst-case, n = length of history (clearing forward history)
+    # space = O(1)
     def visit(self, url: str):
         # clear all forward history
         tail_len = len(self.history)-1-self.cur_index
         while tail_len:
             self.history.pop()
             tail_len -= 1
-            
+
         self.history.append(url)
         self.cur_index += 1
-        
+
+    # time = O(1)
+    # space = O(1)
     def back(self, steps: int):
 		# boundary check
         if steps > self.cur_index:
@@ -76,6 +82,8 @@ class BrowserHistory:
             self.cur_index -= steps
         return self.history[self.cur_index]
 
+    # time = O(1)
+    # space = O(1)
     def forward(self, steps: int):
 		# boundary check
         if steps >= len(self.history) - self.cur_index:
@@ -90,19 +98,27 @@ class BrowserHistory:
 # https://leetcode.com/problems/design-browser-history/discuss/1377645/Python-List-Approach
 class BrowserHistory:
 
+    # time = O(1)
+    # space = O(1)
     def __init__(self, homepage: str):
         self.cur_page_index = 0
         self.history = [homepage]
 
+    # time = O(n), n = length of history (slicing to drop forward history)
+    # space = O(n)
     def visit(self, url: str):
         self.history = self.history[:self.cur_page_index + 1]
         self.history.append(url)
         self.cur_page_index = len(self.history) - 1
 
+    # time = O(1)
+    # space = O(1)
     def back(self, steps: int):
         self.cur_page_index = max(self.cur_page_index - steps, 0)
         return self.history[self.cur_page_index]
 
+    # time = O(1)
+    # space = O(1)
     def forward(self, steps: int):
         if steps + self.cur_page_index >= len(self.history):
             self.cur_page_index = len(self.history) - 1
@@ -115,14 +131,20 @@ class BrowserHistory:
 # https://leetcode.com/problems/design-browser-history/discuss/674520/Python-Two-Stacks
 class BrowserHistory:
 
+    # time = O(1)
+    # space = O(1)
     def __init__(self, homepage: str):
         self.back_stack = [homepage]
         self.forward_stack = []
 
+    # time = O(n) worst-case, n = length of forward_stack (clear())
+    # space = O(1)
     def visit(self, url: str):
-        self.forward_stack.clear() 
+        self.forward_stack.clear()
         self.back_stack.append(url)
 
+    # time = O(steps)
+    # space = O(1)
     def back(self, steps: int):
         while len(self.back_stack) >= 2 and steps > 0:
             top = self.back_stack.pop()
@@ -130,6 +152,8 @@ class BrowserHistory:
             steps -= 1
         return self.back_stack[-1]
 
+    # time = O(steps)
+    # space = O(1)
     def forward(self, steps: int):
         while len(self.forward_stack) > 0 and steps > 0:
             top = self.forward_stack.pop()
@@ -141,15 +165,21 @@ class BrowserHistory:
 # https://leetcode.com/problems/design-browser-history/discuss/674579/python-easy-solution
 class BrowserHistory:
 
+	# time = O(1)
+	# space = O(1)
 	def __init__(self, homepage: str):
 		self.l = [homepage]
 		self.idx = 0
 
+	# time = O(n) worst-case, n = length of l (deleting forward history)
+	# space = O(1)
 	def visit(self, url: str):
 		del self.l[self.idx + 1:]
 		self.l.append(url)
 		self.idx += 1
 
+	# time = O(1)
+	# space = O(1)
 	def back(self, steps: int):
 		if steps <= self.idx:
 			self.idx -= steps
@@ -158,6 +188,8 @@ class BrowserHistory:
 			self.idx = 0
 			return self.l[0]
 
+	# time = O(1)
+	# space = O(1)
 	def forward(self, steps: int):
 		if self.idx + steps <= len(self.l) - 1:
 			self.idx += steps            

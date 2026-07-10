@@ -57,19 +57,25 @@ The number of calls to the two functions is less than or equal to 104 in total.
 # https://leetcode.com/problems/design-file-system/discuss/365925/Python-dict-solution
 class FileSystem:
 
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
         self.d = {}
 
+    # time = O(L), L = len(path)
+    # space = O(L)
     def createPath(self, path: str, value: int) -> bool:
         if path in self.d: return False
         if len(path) == 1: return False
         idx = len(path) - 1
         while path[idx] != '/': idx -= 1
-        if idx == 0 or path[:idx] in self.d: 
+        if idx == 0 or path[:idx] in self.d:
             self.d[path] = value
             return True
         return False
-        
+
+    # time = O(1)
+    # space = O(1)
     def get(self, path: str) -> int:
         return self.d.get(path, -1)
 
@@ -78,25 +84,30 @@ class FileSystem:
 # https://leetcode.com/problems/design-file-system/discuss/827613/python-simple-solution
 class FileSystem:
 
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
-        from collections import defaultdict 
+        from collections import defaultdict
         T = lambda : defaultdict(T)
         self.T = T
         self.env = self.T()
-        
 
+    # time = O(L), L = number of components in path
+    # space = O(L)
     def createPath(self, path: str, value: int) -> bool:
         tokens = list(filter(lambda x : x, path.split('/')))
-        m = self.env 
+        m = self.env
         for token in tokens[:-1]:
             if token not in m:
-                return False 
+                return False
             m = m[token][0]
         if tokens[-1] in m:
             return False
         m[tokens[-1]] = (self.T(),value)
-        return True 
+        return True
 
+    # time = O(L), L = number of components in path
+    # space = O(L)
     def get(self, path: str) -> int:
         tokens = list(filter(lambda x : x, path.split('/')))
         m = self.env 
@@ -118,9 +129,13 @@ class Node:
         self.val = val
         
 class FileSystem:
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
         self.root = Node()
 
+    # time = O(L), L = number of components in path
+    # space = O(L)
     def createPath(self, path: str, value: int) -> bool:
         path, node = path[1:].split('/'), self.root
         for p in path[:-1]:
@@ -132,6 +147,8 @@ class FileSystem:
         node.children[path[-1]] = Node(value)
         return True
 
+    # time = O(L), L = number of components in path
+    # space = O(L)
     def get(self, path: str) -> int:
         node = self.root
         for p in path[1:].split('/'):
@@ -145,24 +162,30 @@ class FileSystem:
 # https://leetcode.com/problems/design-file-system/solution/
 class FileSystem:
 
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
         self.paths = defaultdict()
 
+    # time = O(L), L = len(path) (rfind + hashing)
+    # space = O(1)
     def createPath(self, path: str, value: int) -> bool:
-        
+
         # Step-1: basic path validations
         if path == "/" or len(path) == 0 or path in self.paths:
             return False
-        
+
         # Step-2: if the parent doesn't exist. Note that "/" is a valid parent.
         parent = path[:path.rfind('/')]
         if len(parent) > 1 and parent not in self.paths:
             return False
-        
+
         # Step-3: add this new path and return true.
         self.paths[path] = value
         return True
 
+    # time = O(1)
+    # space = O(1)
     def get(self, path: str) -> int:
         return self.paths.get(path, -1)
 
@@ -178,13 +201,17 @@ class TrieNode(object):
 
 class FileSystem:
 
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
-        
+
         # Root node contains the empty string.
         self.root = TrieNode("")
 
+    # time = O(L), L = number of components in path
+    # space = O(L)
     def createPath(self, path: str, value: int) -> bool:
-        
+
         # Obtain all the components
         components = path.split("/")
         
@@ -212,8 +239,10 @@ class FileSystem:
         cur.value = value
         return True
 
+    # time = O(L), L = number of components in path
+    # space = O(L)
     def get(self, path: str) -> int:
-        
+
         # Obtain all the components
         cur = self.root
         

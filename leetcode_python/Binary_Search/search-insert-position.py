@@ -41,6 +41,8 @@ nums contains distinct values sorted in ascending order.
 
 # V0
 # IDEA : BINARY SEARCH
+# time = O(log n)
+# space = O(1)
 class Solution:
     def searchInsert(self, nums, target):
         left, right = 0, len(nums) - 1
@@ -54,6 +56,8 @@ class Solution:
 
 # V0'
 # IDEA : BINARY SEARCH + OTHER CASES HANDLING
+# time = O(log n)
+# space = O(1)
 class Solution(object):
     def searchInsert(self, nums, target):
         l = 0
@@ -85,9 +89,11 @@ class Solution(object):
         # edge case : if result < 0, we result 0         
         return result if result > 0 else 0
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/70738108
-# via python intrinsic func 
+# via python intrinsic func
+# time = O(log n)
+# space = O(1)
 class Solution(object):
     def searchInsert(self, nums, target):
         """
@@ -97,8 +103,10 @@ class Solution(object):
         """
         return bisect.bisect_left(nums, target)
 
-# V1' 
+# V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/70738108
+# time = O(log n)
+# space = O(1)
 class Solution(object):
     def searchInsert(self, nums, target):
         """
@@ -118,9 +126,9 @@ class Solution(object):
                 left = mid + 1
         return left
 
-# V2 
-# Time:  O(logn)
-# Space: O(1)
+# V2
+# time = O(log n)
+# space = O(1)
 class Solution(object):
     def searchInsert(self, nums, target):
         """

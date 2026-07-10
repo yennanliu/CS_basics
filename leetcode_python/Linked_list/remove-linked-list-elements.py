@@ -31,6 +31,8 @@ The number of nodes in the list is in the range [0, 104].
 """
 
 # V0
+# time = O(n)
+# space = O(1)
 class Solution:
     def removeElements(self, head, val):
         dummy = ListNode(0)
@@ -45,6 +47,8 @@ class Solution:
         return dummy.next
 
 # V0'
+# time = O(n)
+# space = O(1)
 class Solution:
     def removeElements(self, head, val):
         dummy = ListNode(0)
@@ -64,6 +68,8 @@ class Solution:
 #     def __init__(self, x):
 #         self.val = x
 #         self.next = None
+# time = O(n)
+# space = O(1)
 class Solution:
     # @param {ListNode} head
     # @param {integer} val
@@ -85,6 +91,8 @@ class Solution:
 
 # V1'
 # http://bookshadow.com/weblog/2015/04/24/leetcode-remove-linked-list-elements/
+# time = O(n)
+# space = O(1)
 class Solution:
     # @param {ListNode} head
     # @param {integer} val
@@ -102,6 +110,8 @@ class Solution:
 
 # V1''
 # https://blog.csdn.net/coder_orz/article/details/51706294
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def removeElements(self, head, val):
         """
@@ -121,6 +131,8 @@ class Solution(object):
 
 # V1'''
 # https://blog.csdn.net/coder_orz/article/details/51706294
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def removeElements(self, head, val):
         """
@@ -139,14 +151,14 @@ class Solution(object):
         slow.next = None
         return new_head.next
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
 class ListNode(object):
     def __init__(self, x):
         self.val = x
         self.next = None
 
+# time = O(n)
+# space = O(1)
 class Solution(object):
     # @param {ListNode} head
     # @param {integer} val

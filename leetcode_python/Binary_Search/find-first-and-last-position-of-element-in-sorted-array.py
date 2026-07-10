@@ -177,6 +177,8 @@ class Solution(object):
 # V1
 # IDEA : BINARY SEARCH
 # https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/discuss/1054742/Python-O(logn)
+# time = O(logn)
+# space = O(1)
 class Solution:
     def searchRange(self, nums: List[int], target: int) -> List[int]:
         
@@ -201,6 +203,8 @@ class Solution:
 # V1'
 # IDEA : BINARY SEARCH
 # https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/discuss/144320/Python-tm
+# time = O(logn)
+# space = O(1)
 class Solution:
     def searchRange(self, nums, target):
         l = self.findLeft(nums, target)
@@ -230,13 +234,15 @@ class Solution:
 # V1''
 # IDEA : BINARY SEARCH
 # https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/discuss/236386/Python-solution
+# time = O(logn)
+# space = O(1)
 class Solution(object):
     def searchRange(self, nums, target):
         """
         :type nums: List[int]
         :type target: int
         :rtype: List[int]
-        """            
+        """
         def search_for(nums, target, left = True):
             i = 0
             j = len(nums) 
@@ -264,6 +270,8 @@ class Solution(object):
 # V1'''
 # IDEA : bisect_left
 # https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/discuss/236386/Python-solution
+# time = O(logn)
+# space = O(1)
 class Solution:
     def searchRange(self, nums: 'List[int]', target: 'int') -> 'List[int]':
         if not nums:
@@ -277,6 +285,8 @@ class Solution:
 # V1''''
 # IDEA : BINARY SEARCH
 # https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/solution/
+# time = O(logn)
+# space = O(1)
 class Solution:
     def searchRange(self, nums: List[int], target: int) -> List[int]:
         

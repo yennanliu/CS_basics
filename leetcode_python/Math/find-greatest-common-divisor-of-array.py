@@ -46,6 +46,8 @@ Constraints:
 
 # V1
 # https://leetcode.com/problems/find-greatest-common-divisor-of-array/discuss/1459270/python-solution
+# time = O(n + m)  # n = len(nums), m = min(nums)
+# space = O(1)
 class Solution:
     def findGCD(self, nums):
         min_ = min(nums)
@@ -59,6 +61,8 @@ class Solution:
 
 # V1'
 # https://leetcode.com/problems/find-greatest-common-divisor-of-array/discuss/1442477/Python-Euclidean-algorithm
+# time = O(n + log m)  # n = len(nums), m = min(nums)
+# space = O(1)
 class Solution:
     def findGCD(self, nums):
         a, b = min(nums), max(nums)
@@ -68,6 +72,8 @@ class Solution:
 
 # V1''
 # https://leetcode.com/problems/find-greatest-common-divisor-of-array/discuss/1418724/python-easy-to-undetstand
+# time = O(n + m)  # n = len(nums), m = min(nums)
+# space = O(1)
 class Solution:
 	def findGCD(self, nums):
 		maxNum = max(nums)

@@ -37,8 +37,8 @@ s consists of only uppercase English letters.
 
 # V0
 # IDEA : SLIDING WINDOW + MAP + MAX_FREQ_CNT
-# Time:  O(N)
-# Space: O(1) (ONLY 26 alphabet)
+# time = O(n), n = len(s)
+# space = O(1) (only 26 alphabet)
 """
 
 Time Complexity

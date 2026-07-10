@@ -1,7 +1,9 @@
 # V0 
 
-# V1 
+# V1
 # http://bookshadow.com/weblog/2017/08/30/leetcode-path-sum-iv/
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def pathSum(self, nums):
         """
@@ -21,6 +23,8 @@ class Solution(object):
         
 # V1'
 # https://www.jiuzhang.com/solution/path-sum-iv/#tag-highlight-lang-python
+# time = O(n)
+# space = O(n)
 class Solution:
     """
     @param nums: the list
@@ -46,9 +50,9 @@ class Solution:
                     ret = ret + a[idx];         
         return ret;
 
-# V2 
-# Time:  O(n)
-# Space: O(p), p is the number of paths
+# V2
+# time = O(n)
+# space = O(p), p is the number of paths
 import collections
 class Solution(object):
     def pathSum(self, nums):

@@ -44,6 +44,8 @@ Every cost[i] will be an integer in the range [0, 999].
 # IDEA : DP 
 # DP EQUATION:
 # dp[x] = min(dp[x - 1], dp[x - 2]) + cost[x]
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def minCostClimbingStairs(self, cost):
         """
@@ -58,6 +60,8 @@ class Solution(object):
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79188612
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def minCostClimbingStairs(self, cost):
         """
@@ -71,6 +75,8 @@ class Solution(object):
 
 # V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79188612
+# time = O(n)
+# space = O(n)
 class Solution:
     def minCostClimbingStairs(self, cost):
         """
@@ -91,6 +97,8 @@ class Solution:
 # IDEA : DP
 # DP EQUATION :
 # dp[i] = min(dp[i-1] + cost[i-1],dp[i-2] + cost[i-2])
+# time = O(n)
+# space = O(1)
 class Solution:
     """
     @param cost: an array
@@ -104,7 +112,9 @@ class Solution:
             a, b = b, c
         return b
 
-# V2 
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def minCostClimbingStairs(self, cost):
         """

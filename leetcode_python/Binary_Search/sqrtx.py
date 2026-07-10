@@ -27,6 +27,8 @@ Constraints:
 
 # V0
 # IDEA : binary search
+# time = O(log x)
+# space = O(1)
 class Solution(object):
     def mySqrt(self, x):
         # edge case
@@ -51,6 +53,8 @@ class Solution(object):
 
 # V0
 # IDEA : binary search
+# time = O(log num)
+# space = O(1)
 class Solution(object):
     def mySqrt(self, num):
         if num <= 1:
@@ -68,7 +72,9 @@ class Solution(object):
         return l if l * l < num else l - 1
 
 # V0'
-# IDEA : binary search 
+# IDEA : binary search
+# time = O(log x)
+# space = O(1)
 class Solution(object):
     def mySqrt(self, x):
         # NOTE : this approach calculates mid 2 times
@@ -84,6 +90,8 @@ class Solution(object):
 
 # V0''
 # IDEA : binary search
+# time = O(log x)
+# space = O(1)
 class Solution(object):
     def mySqrt(self, x):
         l, r = 0, x
@@ -100,10 +108,12 @@ class Solution(object):
             mid = (l + r) // 2
         return mid
 
-# V1 
+# V1
 # http://bookshadow.com/weblog/2015/08/29/leetcode-sqrtx/
 # https://blog.csdn.net/fuxuemingzhu/article/details/79254648
-# IDEA : binary search 
+# IDEA : binary search
+# time = O(log x)
+# space = O(1)
 class Solution(object):
     def mySqrt(self, x):
         """
@@ -119,10 +129,12 @@ class Solution(object):
             mid = int((low + high) / 2)
         return mid
 
-# V1' 
+# V1'
 # http://bookshadow.com/weblog/2015/08/29/leetcode-sqrtx/
-# IDEA : Newton's method 
+# IDEA : Newton's method
 # https://zh.wikipedia.org/wiki/%E7%89%9B%E9%A1%BF%E6%B3%95
+# time = O(log x)
+# space = O(1)
 class Solution(object):
     def mySqrt(self, x):
         """
@@ -134,9 +146,9 @@ class Solution(object):
             t = int(t / 2.0 + x / (2.0 * t))
         return t
 
-# V2 
-# Time:  O(logn)
-# Space: O(1)
+# V2
+# time = O(log x)
+# space = O(1)
 class Solution(object):
     def mySqrt(self, x):
         """

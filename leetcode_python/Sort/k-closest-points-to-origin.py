@@ -39,6 +39,8 @@ Constraints:
 
 # V0
 # IDEA: PQ
+# time = O(n log n), n = len(points)
+# space = O(n)
 from heapq import heapify, heappop
 
 class Solution(object):
@@ -65,6 +67,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: PQ
+# time = O(n log n), n = len(points)
+# space = O(n)
 from heapq import heapify, heappop
 
 class Solution(object):
@@ -77,6 +81,8 @@ class Solution(object):
 
 # V0-2
 # IDEA: PQ
+# time = O(n log n), n = len(points)
+# space = O(n)
 import heapq
 
 class Solution(object):
@@ -106,6 +112,8 @@ class Solution(object):
 
 # V0
 # IDEA : sort + lambda
+# time = O(n log n), n = len(points)
+# space = O(n)
 class Solution(object):
     def kClosest(self, points, K):
         points.sort(key = lambda x : x[0]**2 +  x[1]**2)
@@ -113,6 +121,8 @@ class Solution(object):
 
 # V0'
 # IDEA : sort + lambda
+# time = O(n log n), n = len(points)
+# space = O(n)
 class Solution(object):
     def kClosest(self, points, k):
         def my_func(x, y):
@@ -120,11 +130,13 @@ class Solution(object):
         # edge case
         if not points:
             return
-        points.sort(key= lambda (x, y) : my_func(x, y))
+        points.sort(key= lambda p : my_func(p[0], p[1]))
         #print ("points = " + str(points))
         return points[:k]
 
-# V1 
+# V1
+# time = O(n log n), n = len(points)
+# space = O(n)
 class Solution(object):
     def kClosest(self, points, K):
         # python sort list on lmabda func
@@ -134,8 +146,8 @@ class Solution(object):
 
 
 # V2
-# Time:  O(n) on average
-# Space: O(1)
+# time = O(n) on average
+# space = O(1)
 
 # quick select solution
 from random import randint
@@ -175,9 +187,9 @@ class Solution(object):
         kthElement(points, K, lambda a, b: dist(a) < dist(b))
         return points[:K]
 
-# V3  
-# Time:  O(nlogk)
-# Space: O(k)
+# V3
+# time = O(n log k)
+# space = O(k)
 import heapq
 class Solution2(object):
     def kClosest(self, points, K):

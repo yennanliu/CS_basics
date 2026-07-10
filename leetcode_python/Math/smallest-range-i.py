@@ -30,9 +30,9 @@ class Solution(object):
             maxv = max(maxv,i-K)
         return max(0,maxv-minv)
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def smallestRangeI(self, A, K):
         """

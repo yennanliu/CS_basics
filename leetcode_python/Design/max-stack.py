@@ -43,6 +43,8 @@ class MaxStack(object):
         self.stack = []
         self.max_stack = []
 
+    # time = O(1)
+    # space = O(1)
     def push(self, x):
         """
         :type x: int
@@ -57,6 +59,8 @@ class MaxStack(object):
         else:
             self.max_stack.append(x)
 
+    # time = O(1)
+    # space = O(1)
     def pop(self):
         """
         :rtype: int
@@ -65,12 +69,16 @@ class MaxStack(object):
             self.max_stack.pop(-1)
             return self.stack.pop(-1)
 
+    # time = O(1)
+    # space = O(1)
     def top(self):
         """
         :rtype: int
         """
         return self.stack[-1]
 
+    # time = O(1)
+    # space = O(1)
     def peekMax(self):
         """
         :rtype: int
@@ -78,6 +86,8 @@ class MaxStack(object):
         if len(self.max_stack) != 0:
             return self.max_stack[-1]
 
+    # time = O(n)
+    # space = O(n)
     def popMax(self):
         """
         :rtype: int
@@ -108,6 +118,8 @@ class MaxStack:
         self.head = None
         self.max_val = None
 
+    # time = O(1)
+    # space = O(1)
     def push(self, x):
         """
         Push element x onto stack.
@@ -122,6 +134,8 @@ class MaxStack:
             self.head = Node(x)
         self.max_val = max(x, self.max_val) if self.max_val or self.max_val == 0 else x
 
+    # time = O(n), rescans list to recompute max
+    # space = O(1)
     def pop(self):
         """
         Removes the element on top of the stack and returns that element.
@@ -140,6 +154,8 @@ class MaxStack:
         self.max_val = v
         return rtn
 
+    # time = O(1)
+    # space = O(1)
     def top(self):
         """
         Get the top element.
@@ -148,6 +164,8 @@ class MaxStack:
         if self.head:
             return self.head.val
 
+    # time = O(1)
+    # space = O(1)
     def peekMax(self):
         """
         Retrieve the maximum element in the stack.
@@ -155,6 +173,8 @@ class MaxStack:
         """
         return self.max_val
 
+    # time = O(n), scans list to find and remove max, then rescans to recompute max
+    # space = O(1)
     def popMax(self):
         """
         Retrieve the maximum element in the stack, and remove it. If you find more than one maximum elements, only remove the top-most one.
@@ -189,15 +209,23 @@ class MaxStack(object):
 	def __init__(self):
 		self.data = []
 
+	# time = O(n), list.insert(0, x) shifts all elements
+	# space = O(1)
 	def push(self, x):
 		self.data.insert(0, x)
 
+	# time = O(n), list.pop(0) shifts all elements
+	# space = O(1)
 	def pop(self):
 		self.data.pop(0)
 
+	# time = O(1)
+	# space = O(1)
 	def top(self):
 		self.data[0]
 
+	# time = O(n), scans data for max then removes it
+	# space = O(1)
 	def peakMax(self):
 		res = max(self.data)
 		self.data.remove(res)

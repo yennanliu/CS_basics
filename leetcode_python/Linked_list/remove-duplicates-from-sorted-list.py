@@ -37,6 +37,8 @@ The list is guaranteed to be sorted in ascending order.
 #     def __init__(self, x):
 #         self.val = x
 #         self.next = None
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def deleteDuplicates(self, head):
         """
@@ -51,8 +53,10 @@ class Solution(object):
                 p = p.next
         return head
 
-# V1' 
+# V1'
 # https://blog.csdn.net/coder_orz/article/details/51506143
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def deleteDuplicates(self, head):
         """
@@ -67,9 +71,11 @@ class Solution(object):
             p = q
         return head
 
-# V1'' 
+# V1''
 # https://blog.csdn.net/coder_orz/article/details/51506143
-# IDEA : ITERATION 
+# IDEA : ITERATION
+# time = O(n)
+# space = O(n) (recursion stack)
 class Solution(object):
     def deleteDuplicates(self, head):
         """
@@ -81,15 +87,15 @@ class Solution(object):
         head.next = self.deleteDuplicates(head.next)
         return head if head.val != head.next.val else head.next
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
 class ListNode(object):
     def __init__(self, x):
         self.val = x
         self.next = None
 
 
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def deleteDuplicates(self, head):
         """
@@ -105,6 +111,8 @@ class Solution(object):
             cur = runner
         return head
 
+    # time = O(n)
+    # space = O(n) (recursion stack)
     def deleteDuplicates2(self, head):
         """
         :type head: ListNode

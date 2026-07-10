@@ -240,13 +240,13 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/01-matrix/#tag-highlight-lang-python
+# time = O(m * n)
+# space = O(m * n)
 class Solution:
     """
     @param matrix: a 0-1 matrix
     @return: return a matrix
     """
-    # time = O(m * n)
-    # space = O(m * n)
     def updateMatrix(self, matrix):
         # write your code here
         n, m = len(matrix), len(matrix[0])

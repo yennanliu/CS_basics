@@ -4,6 +4,8 @@
 
 # V1'
 # https://www.jiuzhang.com/solution/minimum-falling-path-sum/#tag-highlight-lang-python
+# time = O(n^2)
+# space = O(1)
 class Solution:
     """
     @param A: the given array
@@ -19,8 +21,8 @@ class Solution:
         return min(A[-1])
         
 # V2
-# Time:  O(n^2)
-# Space: O(1)
+# time = O(n^2)
+# space = O(1)
 class Solution(object):
     def minFallingPathSum(self, A):
         """

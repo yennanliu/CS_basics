@@ -68,27 +68,27 @@ class Solution(object):
                 if word1[i - 1] == word2[j - 1]:
                     dp[i][j] = dp[i - 1][j - 1]
 
-                """
-                NOTE !!!
+                    """
+                    NOTE !!!
 
-                why dp[i][j - 1] for `insert` ?
-
-
-                -> consider below:
-
-                word1 = "ab"
-                word2 = "abc"
+                    why dp[i][j - 1] for `insert` ?
 
 
-                we want to convert `ab` to `abc`
+                    -> consider below:
 
-                -> so what we need is the `ab` state,
-                   -> which is dp[i][j-1]
-
-                   -> e.g. we `shrink` 1 index on w2 right pointer
+                    word1 = "ab"
+                    word2 = "abc"
 
 
-                """
+                    we want to convert `ab` to `abc`
+
+                    -> so what we need is the `ab` state,
+                       -> which is dp[i][j-1]
+
+                       -> e.g. we `shrink` 1 index on w2 right pointer
+
+
+                    """
                 else:
                     dp[i][j] = min(
                         dp[i - 1][j],      # delete from word1

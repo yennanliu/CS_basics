@@ -46,6 +46,8 @@ Note:The length of each dimension in the givengriddoes not exceed 50.
 
 # V0
 # IDEA : DFS + normalize
+# time = O((rows * cols) * log(rows * cols)), sorting each of the 8 rotated/reflected shapes dominates
+# space = O(rows * cols)
 class Solution(object):
     def numDistinctIslands2(self, grid):
         directions = [(0, -1), (0, 1), (-1, 0), (1, 0)]
@@ -95,8 +97,8 @@ class Solution(object):
 # V1
 # IDEA : DFS + normalize
 # https://github.com/kamyu104/LeetCode-Solutions/blob/master/Python/number-of-distinct-islands-ii.py
-# Time:  O((m * n) * log(m * n))
-# Space: O(m * n)
+# time = O((m * n) * log(m * n))
+# space = O(m * n)
 class Solution(object):
     def numDistinctIslands2(self, grid):
         directions = [(0, -1), (0, 1), (-1, 0), (1, 0)]

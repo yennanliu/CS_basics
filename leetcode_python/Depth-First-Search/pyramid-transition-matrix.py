@@ -1,8 +1,10 @@
 # V0 
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/82469175
-# IDEA : BACKTRACKING 
+# IDEA : BACKTRACKING
+# time = O(a^b), a = len(allowed), b = len(bottom) (no memoization)
+# space = O(b), recursion depth
 class Solution(object):
     def pyramidTransition(self, bottom, allowed):
         """
@@ -30,7 +32,9 @@ class Solution(object):
   
 # V1'
 # https://www.jiuzhang.com/solution/pyramid-transition-matrix/#tag-highlight-lang-python
-# IDEA : DFS 
+# IDEA : DFS
+# time = O(a^b), a = len(allowed), b = len(bottom) (no memoization)
+# space = O(b), recursion depth
 class Solution:
     """
     @param bottom: a string
@@ -63,10 +67,10 @@ class Solution:
                 mydict[ele[:-1]].append(ele[-1])
         return self.dfs(bottom, mydict, '')
 
-# V2 
-# Time:  O((a^(b+1)-a)/(a-1)) = O(a^b) , a is the size of allowed,
+# V2
+# time = O((a^(b+1)-a)/(a-1)) = O(a^b), a is the size of allowed,
 # b is the length of bottom
-# Space: O((a^(b+1)-a)/(a-1)) = O(a^b)
+# space = O((a^(b+1)-a)/(a-1)) = O(a^b)
 class Solution(object):
     def pyramidTransition(self, bottom, allowed):
         """

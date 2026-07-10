@@ -24,6 +24,8 @@
 
 # V2 
 # http://bookshadow.com/weblog/2016/08/28/leetcode-elimination-game/
+# time = O(log n)  # n = n
+# space = O(1)
 class Solution(object):
     def lastRemaining(self, n):
         """
@@ -44,8 +46,8 @@ class Solution(object):
 
 
 # V3
-# Time:  O(logn)
-# Space: O(1)
+# time = O(logn)
+# space = O(1)
 class Solution(object):
     def lastRemaining(self, n):
         """

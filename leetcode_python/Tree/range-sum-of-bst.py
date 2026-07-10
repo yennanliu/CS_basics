@@ -9,6 +9,8 @@
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)
+# space = O(h), h = tree height (recursion stack)
 class Solution(object):
     def rangeSumBST(self, root, L, R):
         """
@@ -38,6 +40,8 @@ class Solution(object):
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)
+# space = O(h), h = tree height (recursion stack)
 class Solution(object):
     def rangeSumBST(self, root, L, R):
         """
@@ -60,9 +64,9 @@ class Solution(object):
         if root.val > L:
             self.dfs(root.left, L, R, res)
 
-# V2 
-# Time:  O(n)
-# Space: O(h)
+# V2
+# time = O(n)
+# space = O(h), h = tree height
 # Definition for a binary tree node.
 class TreeNode(object):
     def __init__(self, x):

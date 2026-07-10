@@ -266,13 +266,13 @@ class Solution(object):
         return c
 
 # V2
-# time = O(m + n)
-# space = O(m + n)
 class ListNode(object):
     def __init__(self, x):
         self.val = x
         self.next = None
 
+# time = O(m + n)
+# space = O(m + n)
 class Solution(object):
     def addTwoNumbers(self, l1, l2):
         """

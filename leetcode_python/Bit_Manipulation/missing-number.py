@@ -36,13 +36,17 @@ Follow up: Could you implement a solution using only O(1) extra space complexity
 
 """
 
-# V0 
+# V0
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def missingNumber(self, nums):
         return sum(range(len(nums)+1)) - sum(nums)
 
-# V1 
+# V1
 # http://bookshadow.com/weblog/2015/08/24/leetcode-missing-number/
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def missingNumber(self, nums):
         """
@@ -65,6 +69,8 @@ class Solution(object):
 # 0 | 1 | 1
 # 1 | 0 | 1
 # 1 | 1 | 0
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def missingNumber(self, nums):
         """
@@ -75,12 +81,16 @@ class Solution(object):
         b = reduce(operator.xor, range(len(nums) + 1))
         return a ^ b
 
-# V2 
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def missingNumber(self, nums):
         return sum(range(len(nums)+1)) - sum(nums)
 
-# V3 
+# V3
+# time = O(n)
+# space = O(1)
 import operator
 from functools import reduce
 class Solution(object):

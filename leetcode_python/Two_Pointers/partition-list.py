@@ -10,6 +10,8 @@ class ListNode(object):
         if self:
             return "{} -> {}".format(self.val, repr(self.__next__))
 
+# time = O(n)
+# space = O(n)
 class Solution(object):
     # @param head, a ListNode
     # @param x, an integer
@@ -27,9 +29,7 @@ class Solution(object):
             cur = cur.__next__ 
         return left + right 
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
 
 class ListNode(object):
     def __init__(self, x):
@@ -40,6 +40,8 @@ class ListNode(object):
         if self:
             return "{} -> {}".format(self.val, repr(self.__next__))
 
+# time = O(n)
+# space = O(1)
 class Solution(object):
     # @param head, a ListNode
     # @param x, an integer

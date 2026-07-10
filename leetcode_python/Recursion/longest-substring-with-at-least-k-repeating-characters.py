@@ -8,6 +8,8 @@
 # c =  a s =  ababb
 # s =  ababb 5
 # Out[50]: 5
+# time = O(26 * n) = O(n)
+# space = O(26) = O(1), recursion stack depth is bounded by alphabet size
 class Solution(object):
     def longestSubstring(self, s, k):
         """
@@ -20,7 +22,7 @@ class Solution(object):
         for c in set(s):
             if s.count(c) < k:
                 return max(self.longestSubstring(t, k) for t in s.split(c))
-        return len(s) 
+        return len(s)
 
 #  V0': NEED TO FIX
 # import collections 
@@ -38,8 +40,10 @@ class Solution(object):
 #                 tmp += 1 
 #         return max(tmp, count) if max(tmp, count) < k else 0
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/82889933
+# time = O(26 * n) = O(n)
+# space = O(26) = O(1), recursion stack depth is bounded by alphabet size
 class Solution(object):
     def longestSubstring(self, s, k):
         """
@@ -56,6 +60,8 @@ class Solution(object):
 
 # V1'
 # https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters/discuss/87768/4-lines-Python
+# time = O(26 * n) = O(n)
+# space = O(26) = O(1), recursion stack depth is bounded by alphabet size
 from collections import Counter
 class Solution:
     def longestSubstring(self, s, k):
@@ -67,6 +73,8 @@ class Solution:
 
 # V1''
 # https://leetcode.com/problems/longest-substring-with-at-least-k-repeating-characters/discuss/87768/4-lines-Python
+# time = O(26 * n) = O(n)
+# space = O(26) = O(1), recursion stack depth is bounded by alphabet size
 class Solution:
     def longestSubstring(self, s, k):
         if len(s) < k:
@@ -76,9 +84,9 @@ class Solution:
             return len(s)
         return max(self.longestSubstring(t, k) for t in s.split(c))
 
-# V2 
-# Time:  O(26 * n) = O(n)
-# Space: O(26) = O(1)
+# V2
+# time = O(26 * n) = O(n)
+# space = O(26) = O(1), recursion stack depth is bounded by alphabet size
 class Solution(object):
     def longestSubstring(self, s, k):
         """

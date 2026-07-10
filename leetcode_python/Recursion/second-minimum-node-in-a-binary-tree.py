@@ -1,5 +1,7 @@
-# V0 
+# V0
 # IDEA : DFS
+# time = O(N log N) (sorting all N values)
+# space = O(N)
 class Solution:
     def findSecondMinimumValue(self, root):
         result=[]
@@ -15,6 +17,8 @@ class Solution:
         self.dfs(root.right, result)
 
 # V0'
+# time = O(N log N) (sorting all N values)
+# space = O(N)
 class Solution:
     def findSecondMinimumValue(self, root: TreeNode) -> int:
         values = []
@@ -41,6 +45,8 @@ class TreeNode(object):
         self.left = None
         self.right = None
 
+# time = O(N log N) (sorting all N values)
+# space = O(N)
 class Solution:
     def findSecondMinimumValue(self, root: TreeNode) -> int:
         values = []
@@ -70,6 +76,8 @@ class Solution:
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(N)
+# space = O(H)
 class Solution(object):
     def findSecondMinimumValue(self, root):
         """
@@ -90,6 +98,8 @@ class Solution(object):
 # V1''
 # https://leetcode.com/problems/second-minimum-node-in-a-binary-tree/solution/
 # IDEA : BRUTE FORCE
+# time = O(N)
+# space = O(N)
 class Solution(object):
     def findSecondMinimumValue(self, root):
         def dfs(node):
@@ -111,6 +121,8 @@ class Solution(object):
 # V1'''
 # IDEA : AD-HOC
 # https://leetcode.com/problems/second-minimum-node-in-a-binary-tree/solution/
+# time = O(N)
+# space = O(H)
 def findSecondMinimumValue(self, root):
     self.ans = float('inf')
     min1 = root.val
@@ -135,6 +147,8 @@ class TreeNode(object):
         self.left = None
         self.right = None
 
+# time = O(N)
+# space = O(H)
 class Solution(object):
     def findSecondMinimumValue(self, root):
         self.min = sys.maxsize
@@ -163,8 +177,8 @@ class Solution(object):
 # assert Solution().findSecondMinimumValue(root) == 5
 
 # V2
-# Time:  O(n)
-# Space: O(h)
+# time = O(N log 2) = O(N) (heap bounded to size 2)
+# space = O(H)
 import heapq
 class Solution(object):
     def findSecondMinimumValue(self, root):

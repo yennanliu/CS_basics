@@ -73,7 +73,9 @@ Each function has an "end" log for each "start" log.
 #               calculate time duration 
 #               pop the last elment from the stack 
 #.              if stack exist
-#                   calculate time duration 
+#                   calculate time duration
+# time = O(m)  # m = len(logs)
+# space = O(n + m)  # ans array O(n) + stack up to O(m)
 class Solution(object):
     def exclusiveTime(self, n, logs):
         ans = [0] * n
@@ -110,6 +112,8 @@ class Solution(object):
 # log =  1:end:5 stack =  [[0, 0], [1, 2]] ans =  [2, 0]
 # log =  0:end:6 stack =  [[0, 6]] ans =  [2, 4]
 # [3, 4]
+# time = O(m)  # m = len(logs)
+# space = O(n + m)
 class Solution(object):
     def exclusiveTime(self, n, logs):
         """
@@ -135,6 +139,8 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/exclusive-time-of-functions/#tag-highlight-lang-python
+# time = O(m)  # m = len(logs)
+# space = O(n + m)
 class Solution:
     def exclusiveTime(self, n, logs):
         stack = []
@@ -154,8 +160,8 @@ class Solution:
         return result
         
 # V2
-# Time:  O(n)
-# Space: O(n)
+# time = O(m)  # m = len(logs)
+# space = O(n + m)
 class Solution(object):
     def exclusiveTime(self, n, logs):
         """

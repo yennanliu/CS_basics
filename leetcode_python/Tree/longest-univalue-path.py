@@ -36,6 +36,8 @@ The depth of the tree will not exceed 1000.
 
 # V0
 # IDEA: DFS + PRE NODE
+# time = O(n)
+# space = O(h), recursion stack
 class Solution(object):
     def longestUnivaluePath(self, root):
         self.longest = 0
@@ -93,6 +95,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: DFS
+# time = O(n)
+# space = O(h), recursion stack
 class Solution(object):
     def longestUnivaluePath(self, root):
         self.longest = 0
@@ -123,6 +127,8 @@ class Solution(object):
 
 
 # V0
+# time = O(n)
+# space = O(h), recursion stack
 class Solution(object):
     def longestUnivaluePath(self, root):
         longest = [0]
@@ -148,14 +154,14 @@ class Solution(object):
 # V1
 # https://leetcode.com/problems/longest-univalue-path/discuss/108142/Python-Simple-to-Understand
 # IDEA : DFS
+# time = O(n)
+# space = O(h), recursion stack
 class Solution(object):
     def longestUnivaluePath(self, root):
         """
         :type root: TreeNode
         :rtype: int
         """
-        # Time: O(n)
-        # Space: O(n)
         longest = [0]
         def traverse(node):
             if not node:
@@ -176,6 +182,8 @@ class Solution(object):
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)
+# space = O(h), recursion stack
 class Solution(object):
     def longestUnivaluePath(self, root):
         """
@@ -204,6 +212,8 @@ class Solution(object):
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)
+# space = O(h), recursion stack
 class Solution(object):
     def longestUnivaluePath(self, root):
         """
@@ -227,6 +237,8 @@ class Solution(object):
 
 # V1'''
 # https://www.jiuzhang.com/solution/longest-univalue-path/#tag-highlight-lang-python
+# time = O(n)
+# space = O(h), recursion stack
 class Solution(object):
     # dfs go through all left and right sub trees 
     def do_dfs(self, root, answer):
@@ -262,8 +274,8 @@ class Solution(object):
 # V1''''
 # https://leetcode.com/problems/longest-univalue-path/solution/
 # IDEA : RECURSION
-# Time Complexity: O(N)
-# Space Complexity: O(H) 
+# time = O(n)
+# space = O(h)
 class Solution(object):
     def longestUnivaluePath(self, root):
         self.ans = 0
@@ -283,9 +295,9 @@ class Solution(object):
         arrow_length(root)
         return self.ans
 
-# V2 
-# Time:  O(n)
-# Space: O(h)
+# V2
+# time = O(n)
+# space = O(h)
 class Solution(object):
     def longestUnivaluePath(self, root):
         """

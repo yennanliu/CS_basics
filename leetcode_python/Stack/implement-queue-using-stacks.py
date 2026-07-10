@@ -45,13 +45,15 @@ Follow-up: Can you implement the queue such that each operation is amortized O(1
 
 """
 
-# V0 
-# IDEA : STACK 
+# V0
+# IDEA : STACK
+# time = O(n) for push (re-stack all elements), O(1) for pop/peek/empty
+# space = O(n)
 class MyQueue:
     def __init__(self):
         self.stack = []
 
-    def push(self, x):  
+    def push(self, x):
         tmp = []
         while self.stack:
             tmp.append(self.stack.pop())
@@ -70,6 +72,8 @@ class MyQueue:
 
 # V0'
 # IDEA : TWO STACK
+# time = O(1) for push, amortized O(1) for pop/peek/empty
+# space = O(n)
 class MyQueue(object):
     def __init__(self):
         self.input = []
@@ -95,6 +99,8 @@ class MyQueue(object):
 
 # V1
 # https://leetcode.com/problems/implement-queue-using-stacks/discuss/192598/python-easy-solution
+# time = O(1) for push, amortized O(1) for pop/peek/empty
+# space = O(n)
 class MyQueue(object):
     def __init__(self):
         """
@@ -151,8 +157,10 @@ assert q.empty() == True
 
 # V1'
 # https://blog.csdn.net/coder_orz/article/details/51586814
-# inStack  : for push operation 
+# inStack  : for push operation
 # outStack : for pop/peek  operation
+# time = O(1) for push, amortized O(1) for pop/peek/empty
+# space = O(n)
 class MyQueue(object):
     def __init__(self):
         """
@@ -191,6 +199,8 @@ class MyQueue(object):
 
 # V1''
 # https://leetcode.com/problems/implement-queue-using-stacks/discuss/192598/python-easy-solution
+# time = O(n) for push (re-stack all elements), O(1) for pop/peek/empty
+# space = O(n)
 class MyQueue:
 
     def __init__(self):
@@ -238,6 +248,8 @@ class MyQueue:
 # JAVA
 
 # V2
+# time = O(1) for push, amortized O(1) for pop/peek/empty
+# space = O(n)
 class Queue:
     # initialize your data structure here.
     def __init__(self):

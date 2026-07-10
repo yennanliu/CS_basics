@@ -193,6 +193,8 @@ class Solution:
 # V1
 # IDEA : py default
 # https://leetcode.com/problems/add-binary/solution/
+# time = O(n)
+# space = O(n)
 class Solution:
     def addBinary(self, a, b) -> str:
         return '{0:b}'.format(int(a, 2) + int(b, 2))
@@ -200,6 +202,8 @@ class Solution:
 # V1'
 # IDEA : Bit-by-Bit Computation
 # https://leetcode.com/problems/add-binary/solution/
+# time = O(n)
+# space = O(n)
 class Solution:
     def addBinary(self, a, b) -> str:
         n = max(len(a), len(b))
@@ -229,6 +233,8 @@ class Solution:
 # V1''
 # IDEA : Bit Manipulation
 # https://leetcode.com/problems/add-binary/solution/
+# time = O(n)
+# space = O(n)
 class Solution:
     def addBinary(self, a, b) -> str:
         x, y = int(a, 2), int(b, 2)
@@ -241,6 +247,8 @@ class Solution:
 # V1'''
 # IDEA : Bit Manipulation V2
 # https://leetcode.com/problems/add-binary/solution/
+# time = O(n)
+# space = O(n)
 class Solution:
     def addBinary(self, a, b) -> str:
         x, y = int(a, 2), int(b, 2)
@@ -264,6 +272,8 @@ class Solution:
 
 # In [19]: bin(int(a, 2) + int(b, 2))
 # Out[19]: '0b100'
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def addBinary(self, a, b):
         """
@@ -275,6 +285,8 @@ class Solution(object):
 
 # V1''''''
 # https://blog.csdn.net/coder_orz/article/details/51706532
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def addBinary(self, a, b):
         """
@@ -293,7 +305,9 @@ class Solution(object):
 
 # V1'''''''
 # https://blog.csdn.net/coder_orz/article/details/51706532
-# IDEA : RECURSION 
+# IDEA : RECURSION
+# time = O(n^2)  # n recursive calls, each doing O(n) string slicing/concat
+# space = O(n^2)
 class Solution(object):
     def addBinary(self, a, b):
         """
@@ -312,6 +326,8 @@ class Solution(object):
 
 # V1''''''''
 # https://www.jiuzhang.com/solution/add-binary/#tag-highlight-lang-python
+# time = O(n)
+# space = O(n)
 class Solution:
     # @param {string} a a number
     # @param {string} b a number
@@ -334,7 +350,9 @@ class Solution:
             sum = '1' + sum
         return sum
 
-# V2 
+# V2
+# time = O(n)
+# space = O(n)
 class Solution:
     def addBinary(self, a, b):
         len_ =  max(len(a),len(b))
@@ -359,9 +377,9 @@ class Solution:
             output=[1] + output
         return ''.join( str(i) for i in output )
 
-# V3  
-# Time:  O(n)
-# Space: O(1)
+# V3
+# time = O(n)
+# space = O(n)
 class Solution(object):
     # @param a, a string
     # @param b, a string
@@ -380,8 +398,8 @@ class Solution(object):
             result += str(carry)
         return result[::-1]
 
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(n)
 from itertools import izip_longest
 class Solution2(object):
     def addBinary(self, a, b):
@@ -401,7 +419,9 @@ class Solution2(object):
         
         return result[::-1]
 
-# V4 
+# V4
+# time = O(n)
+# space = O(n)
 class Solution:
     # @param a, a string
     # @param b, a string

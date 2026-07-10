@@ -5,6 +5,8 @@
 
 # V2 
 # https://blog.csdn.net/fuxuemingzhu/article/details/81079261
+# time = O(log(buckets) / log(tests))
+# space = O(1)
 class Solution(object):
     def poorPigs(self, buckets, minutesToDie, minutesToTest):
         """
@@ -20,9 +22,9 @@ class Solution(object):
         return pigs
 
 
-# V3 
-# Time:  O(1)
-# Space: O(1)
+# V3
+# time = O(1)
+# space = O(1)
 import math
 class Solution(object):
     def poorPigs(self, buckets, minutesToDie, minutesToTest):

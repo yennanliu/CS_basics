@@ -35,6 +35,8 @@ grid[i][j] is either 0 or 1.
 
 # V0
 # IDEA: DFS + VISITED
+# time = O(m * n)
+# space = O(m * n)  # recursion stack in the worst case
 class Solution(object):
     def maxAreaOfIsland(self, grid):
         # edge
@@ -75,6 +77,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: DFS + VISITED
+# time = O(m * n)
+# space = O(m * n)  # recursion stack in the worst case
 class Solution(object):
     def maxAreaOfIsland(self, grid):
         if not grid or not grid[0]:
@@ -114,10 +118,12 @@ class Solution(object):
         )
 
 
-# V0 
-# IDEA : DFS 
-# * PLEASE NOTE THAT IT IS NEEDED TO GO THROUGH EVERY ELEMENT IN THE GRID 
+# V0
+# IDEA : DFS
+# * PLEASE NOTE THAT IT IS NEEDED TO GO THROUGH EVERY ELEMENT IN THE GRID
 #   AND RUN THE DFS WITH IN THIS PROBLEM
+# time = O(m * n)
+# space = O(m * n)  # recursion stack in the worst case
 class Solution(object):
     def maxAreaOfIsland(self, grid):
         """
@@ -134,7 +140,7 @@ class Solution(object):
                     self.res = max(self.res, self.island)
                     self.island = 0
         return self.res
-    
+
     def dfs(self, grid, i, j): # ensure grid[i][j] == 1
         M, N = len(grid), len(grid[0])
         grid[i][j] = 0
@@ -147,9 +153,11 @@ class Solution(object):
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79182435
-# IDEA : DFS 
-# * PLEASE NOTE THAT IT IS NEEDED TO GO THROUGH EVERY ELEMENT IN THE GRID 
+# IDEA : DFS
+# * PLEASE NOTE THAT IT IS NEEDED TO GO THROUGH EVERY ELEMENT IN THE GRID
 #   AND RUN THE DFS WITH IN THIS PROBLEM
+# time = O(m * n)
+# space = O(m * n)  # recursion stack in the worst case
 class Solution(object):
     def maxAreaOfIsland(self, grid):
         """
@@ -179,7 +187,9 @@ class Solution(object):
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79182435
-# IDEA : DFS 
+# IDEA : DFS
+# time = O(m * n)
+# space = O(m * n)  # recursion stack in the worst case
 class Solution(object):
     def maxAreaOfIsland(self, grid):
         """
@@ -202,14 +212,16 @@ class Solution(object):
 
 # V1'''
 # https://www.jiuzhang.com/solution/max-area-of-island/#tag-highlight-lang-python
-# IDEA : DFS 
+# IDEA : DFS
+# time = O(m * n)
+# space = O(m * n)  # recursion stack in the worst case
 class Solution(object):
     def maxAreaOfIsland(self, grid):
         """
         :type grid: List[List[int]]
         :rtype: int
-        GET EACH ISLAND AREA VIA DFS 
-        """ 
+        GET EACH ISLAND AREA VIA DFS
+        """
         if not grid: return
         
         rows, cols = len(grid), len(grid[0])
@@ -232,9 +244,9 @@ class Solution(object):
         
         return count
 
-# V2 
-# Time:  O(m * n)
-# Space: O(m * n), the max depth of dfs may be m * n
+# V2
+# time = O(m * n)
+# space = O(m * n)  # the max depth of dfs may be m * n
 class Solution(object):
     def maxAreaOfIsland(self, grid):
         """

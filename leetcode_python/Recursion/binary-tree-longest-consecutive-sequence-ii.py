@@ -25,10 +25,9 @@
 
 # V1 
 
-# V2 
-# Time:  O(n)
-# Space: O(h)
-
+# V2
+# time = O(n)
+# space = O(h), h = tree height (recursion stack)
 class Solution(object):
     def longestConsecutive(self, root):
         """

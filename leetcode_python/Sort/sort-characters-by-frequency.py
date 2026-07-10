@@ -37,6 +37,8 @@ s consists of uppercase and lowercase English letters and digits.
 """
 
 # V0
+# time = O(n log n)
+# space = O(n)
 from collections import Counter
 class Solution(object):
     def frequencySort(self, s):
@@ -49,6 +51,8 @@ class Solution(object):
         return res
 
 # V0'
+# time = O(n log n)
+# space = O(n)
 import collections
 class Solution(object):
     def frequencySort(self, s):
@@ -59,6 +63,8 @@ class Solution(object):
         return res
 
 # V0'
+# time = O(n log n)
+# space = O(n)
 import collections
 class Solution(object):
     def frequencySort(self, s):
@@ -71,6 +77,8 @@ class Solution(object):
         return res
 
 # V0'
+# time = O(n log n)
+# space = O(n)
 import collections
 class Solution(object):
     def frequencySort(self, s):
@@ -84,13 +92,17 @@ class Solution(object):
 
 # V0'
 # IDEA : collections.Counter(s).most_common
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def frequencySort(self, s):
         return ''.join(c * t for c, t in collections.Counter(s).most_common())
 
-# V1 
-# IDEA : SORT 
+# V1
+# IDEA : SORT
 # https://blog.csdn.net/fuxuemingzhu/article/details/79437548
+# time = O(n log n)
+# space = O(n)
 import collections
 class Solution(object):
     def frequencySort(self, s):
@@ -115,6 +127,8 @@ assert s.frequencySort(['','','']) == ''
 
 # V1'
 # http://bookshadow.com/weblog/2016/11/02/leetcode-sort-characters-by-frequency/
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def frequencySort(self, s):
         """
@@ -124,10 +138,12 @@ class Solution(object):
         return ''.join(c * t for c, t in collections.Counter(s).most_common())
 
 # V2
+# time = O(n log n)
+# space = O(n)
 import collections
 class Solution(object):
     def frequencySort(self, s):
-    	# sort Counter by value 
+    	# sort Counter by value
     	# https://stackoverflow.com/questions/20950650/how-to-sort-counter-by-value-python
         s_freq_dict = collections.Counter(s).most_common()
         output = ''
@@ -135,9 +151,9 @@ class Solution(object):
             output = output + (s_freq_dict[i][0]*s_freq_dict[i][1])
         return output
 
-# V2' 
-# Time:  O(n)
-# Space: O(n)
+# V2'
+# time = O(n)
+# space = O(n)
 import collections
 class Solution(object):
     def frequencySort(self, s):

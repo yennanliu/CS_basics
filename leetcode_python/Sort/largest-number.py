@@ -28,6 +28,8 @@ Constraints:
 
 # V0
 # IDEA : Sorting via Custom Comparator
+# time = O(n log n), n = len(nums)
+# space = O(n)
 class compare(str):
     # __lt__ defines ">" operator in python
     def __lt__(x, y):
@@ -35,11 +37,13 @@ class compare(str):
 
 class Solution:
     def largestNumber(self, nums):
-        largest = sorted([str(v) for v in nums], key=compare) 
-        largest = ''.join(largest) 
-        return '0' if largest[0] == '0' else largest 
+        largest = sorted([str(v) for v in nums], key=compare)
+        largest = ''.join(largest)
+        return '0' if largest[0] == '0' else largest
 
 # V0'
+# time = O(n log n), n = len(num)
+# space = O(n)
 from functools import cmp_to_key
 class Solution:
     # @param num, a list of integers
@@ -53,6 +57,8 @@ class Solution:
         return [1, -1][a + b > b + a]
 
 # V0'
+# time = O(n log n), n = len(nums)
+# space = O(n)
 class compare(str):
     # __lt__ defines ">" operator in python
     def __lt__(x, y):
@@ -60,13 +66,15 @@ class compare(str):
 
 class Solution:
     def largestNumber(self, nums):
-        largest = sorted([str(v) for v in nums], key=compare) 
-        largest = ''.join(largest) 
-        return '0' if largest[0] == '0' else largest 
+        largest = sorted([str(v) for v in nums], key=compare)
+        largest = ''.join(largest)
+        return '0' if largest[0] == '0' else largest
 
 # V1
 # IDEA : Sorting via Custom Comparator
 # https://leetcode.com/problems/largest-number/solution/
+# time = O(n log n), n = len(nums)
+# space = O(n)
 class LargerNumKey(str):
     def __lt__(x, y):
         return x+y > y+x
@@ -94,6 +102,8 @@ class Solution:
 # Out[71]: '00003243242000'
 # In [72]: x.lstrip("0")
 # Out[72]: '3243242000'
+# time = O(n log n), n = len(num)
+# space = O(n)
 from functools import cmp_to_key
 class Solution:
     # @param num, a list of integers
@@ -118,6 +128,8 @@ assert s.largestNumber([])=="0"
 
 # V1'
 # https://leetcode.com/problems/largest-number/discuss/53270/Python-simple-solution-in-4-lines
+# time = O(n log n), n = len(nums)
+# space = O(n)
 class Solution:
     def largestNumber(self, nums):
         """
@@ -133,6 +145,8 @@ class Solution:
 
 # V1''
 # https://blog.csdn.net/qian2729/article/details/50638656
+# time = O(n log n), n = len(nums)
+# space = O(n)
 class Solution(object):
     def largestNumber(self, nums):
         """
@@ -148,6 +162,8 @@ class Solution(object):
 
 # V1'''
 # https://www.jianshu.com/p/960cf375c40a
+# time = O(n^2), n = len(nums) (bubble-sort-like comparison)
+# space = O(n)
 class Solution:
     def smaller(self,a,b):
         strA = str(a) + str(b)
@@ -179,13 +195,17 @@ class compare(str):
     def __lt__(x, y):
         return x+y > y+x
 
+# time = O(n log n), n = len(nums)
+# space = O(n)
 class Solution:
     def largestNumber(self, nums):
-        largest = sorted([str(v) for v in nums], key=compare) 
-        largest = ''.join(largest) 
-        return '0' if largest[0] == '0' else largest 
+        largest = sorted([str(v) for v in nums], key=compare)
+        largest = ''.join(largest)
+        return '0' if largest[0] == '0' else largest
 
 # V2
+# time = O(n log n), n = len(num)
+# space = O(n)
 class Solution(object):
     # @param num, a list of integers
     # @return a string

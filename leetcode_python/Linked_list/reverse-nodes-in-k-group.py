@@ -33,6 +33,8 @@ Follow-up: Can you solve the problem in O(1) extra memory space?
 
 # V0
 # IDEA : Iterative
+# time = O(n)
+# space = O(1)
 class Solution:
     def reverseKGroup(self, head, k):
         # help func
@@ -73,8 +75,10 @@ class Solution:
 # V1
 # IDEA : Recursion
 # https://leetcode.com/problems/reverse-nodes-in-k-group/solution/
+# time = O(n)
+# space = O(n/k) (recursion stack)
 class Solution:
-    
+
     def reverseLinkedList(self, head, k):
         
         # Reverse k nodes of the given linked list.
@@ -131,8 +135,10 @@ class Solution:
 # V1'
 # IDEA : Iterative O(1) space
 # https://leetcode.com/problems/reverse-nodes-in-k-group/solution/
+# time = O(n)
+# space = O(1)
 class Solution:
-    
+
     def reverseLinkedList(self, head, k):
         
         # Reverse k nodes of the given linked list.
@@ -207,6 +213,8 @@ class Solution:
 # V1''
 # IDEA : ITERATION + help func
 # https://leetcode.com/problems/reverse-nodes-in-k-group/discuss/462808/Python-Clear-Solution
+# time = O(n)
+# space = O(1)
 class Solution:
     def reverseKGroup(self, head, k):
         dummy = ListNode(None)
@@ -266,6 +274,8 @@ class Solution:
 # V1'''
 # IDEA : RECURSIVE
 # https://leetcode.com/problems/reverse-nodes-in-k-group/discuss/11676/64ms-python-solution1
+# time = O(n)
+# space = O(n/k) (recursion stack)
 class Solution(object):
     def reverseKGroup(self, head, k):
         if not head or not head.next:
@@ -290,6 +300,8 @@ class Solution(object):
 
 # V1'''''
 # https://leetcode.com/problems/reverse-nodes-in-k-group/discuss/11508/Python-solution-with-detailed-explanation
+# time = O(n)
+# space = O(k)
 class Solution(object):
     def reverseKGroup(self, head, K):
         """
@@ -324,6 +336,8 @@ class Solution(object):
             
 # V1'''''''
 # https://leetcode.com/problems/reverse-nodes-in-k-group/discuss/211534/Python-solution
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def reverseKGroup(self, head, k):
         """

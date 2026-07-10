@@ -1,7 +1,9 @@
 # V0 
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/82914193
+# time = O(m + n)
+# space = O(n)
 class Solution(object):
     def wordSubsets(self, A, B):
         """
@@ -29,8 +31,8 @@ class Solution(object):
         return res
         
 # V2
-# Time:  O(m + n)
-# Space: O(1)
+# time = O(m + n)
+# space = O(1)
 import collections
 class Solution(object):
     def wordSubsets(self, A, B):

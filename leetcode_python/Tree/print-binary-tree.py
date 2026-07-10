@@ -48,6 +48,8 @@ The depth of the tree will be in the range [1, 10].
 
 # V0
 # IDEA: DFS (get height) + matrix + DFS (update matrix val)
+# time = O(h * 2^h), h = tree height (building/filling the matrix dominates)
+# space = O(h * 2^h) (matrix size)
 class Solution(object):
     def printTree(self, root):
         """
@@ -56,7 +58,7 @@ class Solution(object):
         """
         if not root:
             return []
-            
+
         # 1. Adjust height to match LeetCode's 0-indexed definition
         self.height = self.get_height(root) - 1
         
@@ -114,6 +116,8 @@ Steps:
 
 
 """
+# time = O(h * 2^h), h = tree height
+# space = O(h * 2^h) (matrix size)
 class Solution(object):
     def printTree(self, root):
         if not root:
@@ -159,6 +163,8 @@ class Solution(object):
 
 # V0-2
 # IDEA: DFS + matrix (gemini)
+# time = O(h * 2^h), h = tree height
+# space = O(h * 2^h) (matrix size)
 class Solution(object):
     def printTree(self, root):
         """
@@ -228,6 +234,8 @@ class Solution(object):
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(h * 2^h), h = tree height
+# space = O(h * 2^h) (matrix size)
 class Solution(object):
     def printTree(self, root):
         """
@@ -251,6 +259,8 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/print-binary-tree/#tag-highlight-lang-python
+# time = O(h * 2^h), h = tree height
+# space = O(h * 2^h) (matrix size)
 class Solution(object):
     def printTree(self, root):
         """
@@ -279,9 +289,9 @@ class Solution(object):
         traverse(root, 0, 0)
         return res
 
-# V2 
-# Time:  O(h * 2^h)
-# Space: O(h * 2^h)
+# V2
+# time = O(h * 2^h)
+# space = O(h * 2^h)
 class Solution(object):
     def printTree(self, root):
         """

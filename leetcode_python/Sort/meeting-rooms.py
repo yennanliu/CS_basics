@@ -23,8 +23,8 @@ intervals[i].length == 2
 0 <= starti < endi <= 106
 
 """
-# Time:  O(nlogn)
-# Space: O(n)
+# time = O(n log n)
+# space = O(n)
 #
 # Definition for an interval.
 # class Interval:
@@ -33,6 +33,8 @@ intervals[i].length == 2
 #         self.end = e
  
 # V0
+# time = O(n log n)
+# space = O(n)
 class Solution:
     def canAttendMeetings(self, intervals):
         """
@@ -50,6 +52,8 @@ class Solution:
 
 # V0'
 # IDEA : SORT
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def canAttendMeetings(self, intervals):
         # edge case
@@ -73,7 +77,9 @@ class Solution(object):
                 last = intervals[i]
         return True
 
-# V1 
+# V1
+# time = O(n log n)
+# space = O(n)
 class Solution:
     # @param {Interval[]} intervals
     # @return {boolean}
@@ -96,6 +102,8 @@ class Solution:
 # V1''
 # IDEA : SORTING
 # https://leetcode.com/problems/meeting-rooms/solution/
+# time = O(n log n)
+# space = O(n)
 class Solution:
     def canAttendMeetings(self, intervals):
         intervals.sort()
@@ -106,6 +114,8 @@ class Solution:
 
 # V1''''
 # https://blog.csdn.net/qq508618087/article/details/50750465
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def canAttendMeetings(self, v):
         """
@@ -137,7 +147,9 @@ class Solution(object):
 #     }
 # }
 
-# V2 
+# V2
+# time = O(n log n)
+# space = O(n)
 class Solution:
     # @param {Interval[]} intervals
     # @return {boolean}

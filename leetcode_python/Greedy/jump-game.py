@@ -31,6 +31,8 @@ Constraints:
 # V0
 # IDEA: GREEDY
 # -> keep tracking `farthest`
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def canJump(self, nums):
         farthest = 0
@@ -74,6 +76,8 @@ class Solution(object):
 # V0-1
 # IDEA: GREEDY
 # -> keep tracking `farthest`
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def canJump(self, nums):
         """
@@ -101,6 +105,8 @@ class Solution(object):
 
 
 # V0
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def canJump(self, nums):
         # edge case
@@ -114,6 +120,8 @@ class Solution(object):
         return True
 
 # V0'
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def canJump(self, nums):
         reach = 0
@@ -123,7 +131,7 @@ class Solution(object):
             reach = max(reach, i + num)
         return True
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/83504437
 # IDEA :  GREEDY 
 # -> 1) WE DONT HAVE TO CARE ABOUT THE PRIOR STEPS, BUT ONLY SELECT THE CURRENT BEST STEP, THEN MOVE FORWARD
@@ -155,11 +163,13 @@ class Solution(object):
 # i = 2 num = 1 reach = 3
 # i = 3 num = 0 reach = 3
 # False
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def canJump(self, nums):
         reach = 0
         for i, num in enumerate(nums):
-            # DON'T HAVE TO CARE PRIOR STEP, 
+            # DON'T HAVE TO CARE PRIOR STEP,
             # -> IMAGE EACH INDEX IS REACHABLE FIRST, 
             # -> THEN VALIDATE IF IT'S POSSBILE FROM PRIOR STEP TO THIS INDEX 
             # so if i > reach, means it's not possbile form prior step to reach this index -> return false
@@ -181,6 +191,8 @@ assert s.canJump([ 0 for _ in range(10)]) ==False
 
 # V1'
 # https://leetcode.com/problems/jump-game/discuss/593108/python-O(N)-solution-Space%3AO(1)
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def canJump(self, nums):
         lstidx = len(nums)-1
@@ -189,9 +201,9 @@ class Solution(object):
                 lstidx = i
         return not lstidx
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     # @param A, a list of integers
     # @return a boolean

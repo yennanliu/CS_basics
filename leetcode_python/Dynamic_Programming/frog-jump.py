@@ -37,9 +37,11 @@ stones is sorted in a strictly increasing order.
 # V1
 # IDEA : BFS
 # https://leetcode.com/problems/frog-jump/discuss/518608/python-BFS
+# time = O(n^2)  # n = len(stones); O(n) positions x O(n) jump sizes states
+# space = O(n^2)
 class Solution:
     def canCross(self, stones: List[int]) -> bool:
-        last = stones[-1] 
+        last = stones[-1]
         visited = set()
         stones = set(stones)
         q = [(0,0)]
@@ -65,6 +67,8 @@ class Solution:
 # V1''
 # IDEA : Memoization
 # https://leetcode.com/problems/frog-jump/discuss/88854/Python-solution-with-detailed-explanation
+# time = O(n^2)  # n = len(stones); O(n) positions x O(n) jump sizes states
+# space = O(n^2)
 class Solution(object):
     def helper(self, pos, k, stones, N, cache):
         if pos > N:
@@ -92,9 +96,11 @@ class Solution(object):
 # V1'''
 # IDEA : DFS
 # https://leetcode.com/problems/frog-jump/discuss/511679/Python-by-DFS-DP-w-Comment
+# time = O(n^2)  # n = len(stones); O(n) positions x O(n) jump sizes states
+# space = O(n^2)
 class Solution(object):
     def canCross(self, stones):
-        
+
         # total number of valid jump index
         n = len(stones)
         
@@ -146,7 +152,8 @@ class Solution(object):
 # IDEA :
 # Use a dictionary dic which maps the position of a stone in stones to the set of stepsizes that can jump onto the stone. We initialize dic = {0:{0}}, meaning that we start with the stone at position 0. Next, we iterate i over range(len(stones)), and check if stones[i] is in dic, if it is, it means that there are previous jumps that land on this stone, and we can continue jumping ahead, in which case we iterate over all val in dic[stones[i]], and for each val, we can continue jumping ahead with three stepsizes (val-1, val, and val+1). Therefore, we add val-1 to dic[stones[i]+val-1], val to dic[stones[i]+val], and val+1 to dic[stones[i]+val+1]. Finally, we check if stones[-1] is in dic, if it is, we return True; Else we return False.
 #
-# Time complexity: O(n^2), space complexity: O(n^2).
+# time = O(n^2)  # n = len(stones)
+# space = O(n^2)
 class Solution:
     def canCross(self, stones):
         dic = collections.defaultdict(set)

@@ -17,6 +17,8 @@ There are two left leaves in the binary tree, with values 9 and 15 respectively.
 
 # V0
 # IDEA : DFS
+# time = O(N)
+# space = O(H)
 class Solution:
     def sumOfLeftLeaves(self, root):
         tmp = []
@@ -40,6 +42,8 @@ class Solution:
 
 # V0'
 # IDEA : BFS
+# time = O(N)
+# space = O(N)
 class Solution(object):
     def sumOfLeftLeaves(self, root):
         if not root:
@@ -54,9 +58,11 @@ class Solution(object):
                     res += u.left.val
             if u.right:
                 stack.append(u.right)
-        return res    
-        
+        return res
+
 # V0''
+# time = O(N)
+# space = O(H)
 class Solution:
     def sumOfLeftLeaves(self, root):
         """
@@ -82,8 +88,10 @@ class Solution:
 # V1
 # IDEA : DFS
 # https://leetcode.com/problems/sum-of-left-leaves/discuss/808949/Naive-Python-3-DFS
+# time = O(N)
+# space = O(H)
 class Solution:
-    summ = 0 
+    summ = 0
     def sumOfLeftLeaves(self, root: TreeNode) -> int:
         return self.sumOfLeftLeavesHelper(root, 0, "root") 
     
@@ -101,6 +109,8 @@ class Solution:
 # V1'
 # IDEA : BFS
 # https://leetcode.com/problems/sum-of-left-leaves/discuss/175329/Python-solution
+# time = O(N)
+# space = O(N)
 class Solution(object):
     def sumOfLeftLeaves(self, root):
         if not root:
@@ -115,10 +125,12 @@ class Solution(object):
                     res += u.left.val
             if u.right:
                 stack.append(u.right)
-        return res        
+        return res
 
 # V1''
-# http://bookshadow.com/weblog/2016/09/25/leetcode-sum-of-left-leaves/ 
+# http://bookshadow.com/weblog/2016/09/25/leetcode-sum-of-left-leaves/
+# time = O(N)
+# space = O(H)
 class Solution(object):
     def sumOfLeftLeaves(self, root):
         """
@@ -135,6 +147,8 @@ class Solution(object):
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/54178595
+# time = O(N)
+# space = O(H)
 class Solution:
     def sumOfLeftLeaves(self, root):
         """
@@ -157,6 +171,8 @@ class Solution:
 
 # V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/54178595
+# time = O(N)
+# space = O(N)
 class Solution:
     def sumOfLeftLeaves(self, root):
         """
@@ -178,9 +194,9 @@ class Solution:
                 stack.append(node.right)
         return leftsum
 
-# V2 
-# Time:  O(n)
-# Space: O(h)
+# V2
+# time = O(N)
+# space = O(H)
 class Solution(object):
     def sumOfLeftLeaves(self, root):
         """
@@ -197,7 +213,9 @@ class Solution(object):
 
         return sumOfLeftLeavesHelper(root, False)
 
-# V2' 
+# V2'
+# time = O(N)
+# space = O(H)
 class Solution(object):
     def sumOfLeftLeavesHelper(self, root, is_left):
         if not root:

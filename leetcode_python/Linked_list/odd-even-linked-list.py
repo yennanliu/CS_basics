@@ -14,7 +14,9 @@ Note:
 The relative order inside both the even and odd groups should remain as it was in the input.
 The first node is considered odd, the second node even and so on …
 """
-# V0 
+# V0
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def oddEvenList(self, head):
         """
@@ -38,8 +40,10 @@ class Solution(object):
         odd.next = evenHead.next
         return oddHead.next
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79569396
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def oddEvenList(self, head):
         """
@@ -82,7 +86,9 @@ class ListNode:
             return True
         else:
             return False
-            
+
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def oddEvenList(self, head):
         """
@@ -106,9 +112,9 @@ class Solution(object):
         odd.next = evenHead.__next__
         return oddHead.__next__
 
-# V3  
-# Time:  O(n)
-# Space: O(1)
+# V3
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def oddEvenList(self, head):
         """

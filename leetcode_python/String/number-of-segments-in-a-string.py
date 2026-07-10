@@ -23,6 +23,8 @@
 # Out[7]: ['there', 'are', '2', 'pigs']
 # In [8]: x.split(" ")
 # Out[8]: ['there', 'are', '2', 'pigs', '']
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def countSegments(self, s):
         """
@@ -31,14 +33,16 @@ class Solution(object):
         """
         return len(s.split())
 
-# V2 
+# V2
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def countSegments(self, s):
         return len([i for i in s.strip().split(' ') if i])
 
-# V3 
-# Time:  O(n)
-# Space: O(1)
+# V3
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def countSegments(self, s):
         """

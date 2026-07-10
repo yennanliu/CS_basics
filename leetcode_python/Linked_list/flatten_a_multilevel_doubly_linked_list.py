@@ -1,4 +1,6 @@
 # V0
+# time = O(n)  # n = total number of nodes across all levels
+# space = O(d)  # d = max nesting depth, due to recursion stack
 class Solution:
     def flatten(self, head: 'Node') -> 'Node':
         self.dfs(head)
@@ -24,6 +26,8 @@ class Solution:
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/81985172
+# time = O(n)  # n = total number of nodes across all levels
+# space = O(d)  # d = max nesting depth, due to recursion stack
 class Solution(object):
     def flatten(self, head):
         """
@@ -56,6 +60,8 @@ class Solution(object):
 
 # V1'
 # https://lequ7.com/2019/07/27/java/LeetCode430-bian-ping-hua-duo-ji-shuang-xiang-lian-biao-FlattenaMultilevelDoublyLinkedList/
+# time = O(n)  # n = total number of nodes across all levels
+# space = O(d)  # d = max nesting depth, due to recursion stack
 class Solution:
     def flatten(self, head: 'Node') -> 'Node':
         self.dfs(head)

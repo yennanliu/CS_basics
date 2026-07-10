@@ -33,11 +33,8 @@ strs[i] consists of lowercase English letters.
 """
 
 # V0
-# Time: O(N + M log M)
-# Space: O(M)
-#
-# N = len(nums)
-# M = number of unique elements
+# time = O(n + m log m), n = len(nums), m = number of unique elements
+# space = O(m)
 class Solution(object):
     def topKFrequent(self, nums, k):
         # edge
@@ -74,6 +71,8 @@ class Solution(object):
 
 # V0-0-X
 # IDEA : HASH TABLE
+# time = O(n + m log m), n = len(nums), m = number of unique elements
+# space = O(m)
 class Solution(object):
     def topKFrequent(self, nums, k):
         freq = {}
@@ -88,6 +87,8 @@ class Solution(object):
 
 # V0-0-1
 # IDEA : HASH TABLE
+# time = O(N * K log K), N = len(strs), K = max length of a string
+# space = O(N * K)
 class Solution:
     def groupAnagrams(self, strs):
         res = {}
@@ -101,8 +102,8 @@ class Solution:
 
 
 # V0-1
-# Time: O(N * K log K)
-# Space: O(N * K)
+# time = O(N * K log K), N = len(strs), K = max length of a string
+# space = O(N * K)
 class Solution(object):
     def groupAnagrams(self, strs):
         groups = {}
@@ -119,8 +120,8 @@ class Solution(object):
 
 
 # V0-0-1
-# Time: O(N * K)
-# Space: O(N * K)
+# time = O(N * K), N = len(strs), K = max length of a string
+# space = O(N * K)
 class Solution(object):
     def groupAnagrams(self, strs):
         groups = {}
@@ -143,6 +144,8 @@ class Solution(object):
 
 # V0'
 # IDEA : SORT LIST strs.sort(key = lambda x : ''.join(sorted(x)) )
+# time = O(N * K * (log N + log K)), N = len(strs), K = max length of a string
+# space = O(N * K)
 class Solution:
     def groupAnagrams(self, strs):
         r = []
@@ -160,10 +163,12 @@ class Solution:
         return [x for x in r if len(x) > 0]
 
 # V0''
-# IDEA : SORT + DICT 
+# IDEA : SORT + DICT
+# time = O(N * K log K), N = len(strs), K = max length of a string
+# space = O(N * K)
 class Solution(object):
     def groupAnagrams(self, strs):
-        
+
         r = []
         d = {}
 
@@ -187,7 +192,9 @@ class Solution(object):
 
 # V1 
 # https://blog.csdn.net/XX_123_1_RJ/article/details/81145095
-# IDEA : SORT + DICT 
+# IDEA : SORT + DICT
+# time = O(N * K log K), N = len(strs), K = max length of a string
+# space = O(N * K)
 class Solution:
     def groupAnagrams(self, strs):
         res = {}
@@ -198,13 +205,15 @@ class Solution:
             res[k].append(item)  # if same, put all the same string into dict k 
         return [res[x] for x in res]  # output the result 
 
-# V1' 
+# V1'
 # https://blog.csdn.net/XX_123_1_RJ/article/details/81145095
+# time = O(N * K), N = len(strs), K = max length of a string
+# space = O(N * K)
 class Solution:
     def groupAnagrams(self, strs):
         res = {}
         for s in strs:
-            count = [0] * 26  
+            count = [0] * 26
             for c in s:  
                 count[ord(c) - ord('a')] += 1
             if tuple(count) not in res:
@@ -214,6 +223,8 @@ class Solution:
 
 # V1''
 # https://www.jiuzhang.com/solution/group-anagrams/#tag-highlight-lang-python
+# time = O(N * K * (log N + log K)), N = len(strs), K = max length of a string
+# space = O(N * K)
 class Solution:
     def groupAnagrams(self, strs):
         dic = {}
@@ -222,9 +233,9 @@ class Solution:
             dic[sortedItem] = dic.get(sortedItem, []) + [item]
         return dic.values()
 
-# V2 
-# Time:  O(n * glogg), g is the max size of groups.
-# Space: O(n)
+# V2
+# time = O(n * g log g), g is the max size of groups
+# space = O(n)
 import collections
 class Solution(object):
     def groupAnagrams(self, strs):

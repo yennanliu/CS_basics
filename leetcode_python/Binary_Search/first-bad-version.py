@@ -38,6 +38,8 @@ Constraints:
 
 # V0
 # IDEA : binary search
+# time = O(log n)
+# space = O(1)
 class Solution(object):
     def firstBadVersion(self, n):
         # edge case
@@ -57,9 +59,11 @@ class Solution(object):
 
 # V0'
 # IDEA : binary search
+# time = O(log n)
+# space = O(1)
 class Solution(object):
     def firstBadVersion(self, n):
-        left = 1 
+        left = 1
         right = n
         while right > left + 1:
             mid = (left + right)//2
@@ -71,8 +75,10 @@ class Solution(object):
             return left
         return right 
 
-# V1 
+# V1
 # https://blog.csdn.net/coder_orz/article/details/52048093
+# time = O(log n)
+# space = O(1)
 class Solution(object):
     def firstBadVersion(self, n):
         """
@@ -91,6 +97,8 @@ class Solution(object):
 
 # V1'
 # https://blog.csdn.net/coder_orz/article/details/52048093
+# time = O(log n)
+# space = O(1)
 class Solution(object):
     def firstBadVersion(self, n):
         """
@@ -108,6 +116,8 @@ class Solution(object):
 
 # V1''
 # https://www.jiuzhang.com/solution/first-bad-version/#tag-highlight-lang-python
+# time = O(log n)
+# space = O(1)
 class Solution:
     """
     @param n: An integers.
@@ -125,7 +135,9 @@ class Solution:
             return start
         return end
 
-# V2  
+# V2
+# time = O(log n)
+# space = O(1)
 class Solution(object):
     def firstBadVersion(self, n):
         """
@@ -141,7 +153,9 @@ class Solution(object):
                 left = mid + 1
         return left
 
-# V3  
+# V3
+# time = O(log n)
+# space = O(1)
 class Solution(object):
     def firstBadVersion(self, n):
         """

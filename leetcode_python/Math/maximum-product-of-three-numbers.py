@@ -1,4 +1,6 @@
 # V0
+# time = O(n log n)  # n = len(nums), sorting
+# space = O(1)  # in-place sort
 class Solution(object):
     def maximumProduct(self, nums):
         nums.sort()
@@ -9,6 +11,8 @@ class Solution(object):
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79169635
 # https://blog.csdn.net/Chris_zhangrx/article/details/78975308
+# time = O(n log n)  # n = len(nums), sorting
+# space = O(1)  # in-place sort
 class Solution(object):
     def maximumProduct(self, nums):
         """
@@ -33,7 +37,9 @@ assert s.maximumProduct([_ for _ in range(-100,100)])==980100
 # V1'
 # idea : for getting the max product of three number from the given array : 
 # case 1 : all 3 integers are positive  (1st, 2rd, and 3rd big)
-# case 2 : 1 biggest positive integer, and 1st small and 2rd small negative integers 
+# case 2 : 1 biggest positive integer, and 1st small and 2rd small negative integers
+# time = O(n log n)  # n = len(nums), sorting
+# space = O(n)  # sorted() creates a new list
 class Solution(object):
     def maximumProduct(self, nums):
         sorted_nums = sorted(nums)
@@ -48,8 +54,8 @@ class Solution(object):
         return max(max_case1,max_case2)
 
 # V2
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def maximumProduct(self, nums):
         """

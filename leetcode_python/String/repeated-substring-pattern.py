@@ -34,6 +34,8 @@ s consists of lowercase English letters.
 
 # V0
 # IDEA : # only have to go through till HALF of s's length, since it's not possbile to find the SubstringPattern if len(s[:x]) > size//2
+# time = O(n^2)  # n iterations, each doing O(n) string comparison
+# space = O(n)
 class Solution(object):
     def repeatedSubstringPattern(self, s):
         _len_s = len(s)
@@ -54,6 +56,8 @@ class Solution(object):
 
 # V0'
 # IDEA : # only have to go through till HALF of s's length, since it's not possbile to find the SubstringPattern if len(s[:x]) > size//2
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def repeatedSubstringPattern(self, s):
         _len = len(s)
@@ -73,6 +77,8 @@ class Solution(object):
 
 # V0'
 # IDEA : # only have to go through till HALF of s's length, since it's not possbile to find the SubstringPattern if len(s[:x]) > size//2
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def repeatedSubstringPattern(self, s):
         _len = len(s)
@@ -90,6 +96,8 @@ class Solution(object):
         return False
 
 # V0''
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def repeatedSubstringPattern(self, str):
         size = len(str)
@@ -104,17 +112,21 @@ class Solution(object):
         return False
 
 # V0'
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def repeatedSubstringPattern(self, str):
         size = len(str)
         # only have to go through till half of s's length, since it's not possbile to find the SubstringPattern if len(s[:x]) > size//2
         for x in range(1, size // 2 + 1):
-            # if len(s) is  len(s[:x]) 's  multiple, check if SubstringPattern 
+            # if len(s) is  len(s[:x]) 's  multiple, check if SubstringPattern
             if str[:x] * (size // x) == str:
                 return True
         return False
 
 # V0''
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def repeatedSubstringPattern(self, str):
         size = len(str)
@@ -129,6 +141,8 @@ class Solution(object):
 
 # V1
 # http://bookshadow.com/weblog/2016/11/13/leetcode-repeated-substring-pattern/
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def repeatedSubstringPattern(self, str):
         """
@@ -159,7 +173,9 @@ assert s.repeatedSubstringPattern("".join([ 'a' for _ in range(100)])) == True
 # IDEA : 
 # go through the sting, if can find any sub-string 
 # that is part of the origin string, return Ture.
-# if not, return False. 
+# if not, return False.
+# time = O(n^2)
+# space = O(n)
 class Solution:
     def repeatedSubstringPattern(self, s):
         """
@@ -174,9 +190,9 @@ class Solution:
                     return True
         return False
 
-# V2 
-# Time:  O(n)
-# Space: O(n)
+# V2
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def repeatedSubstringPattern(self, str):
         """

@@ -44,6 +44,8 @@ Note: This question is the same as 1038: https://leetcode.com/problems/binary-se
 
 # V0
 # IDEA: BST PROPERTY + DFS (gemini)
+# time = O(n)
+# space = O(h)
 class Solution(object):
     def convertBST(self, root):
         """
@@ -130,6 +132,8 @@ class Solution(object):
 # root.val = 2
 # root.val = 3
 # root.val = 0
+# time = O(n)
+# space = O(h)
 class Solution(object):
 
     def convertBST(self, root):
@@ -153,6 +157,8 @@ class Solution(object):
 # NOTE : the implementation difference on cur VS self.cur
 # 1) if cur : we need to ssign output of help() func to cur
 # 2) if self.cur : no need to assign, plz check V0 as reference
+# time = O(n)
+# space = O(h)
 class Solution(object):
     def convertBST(self, root):
         def help(cur, root):
@@ -177,6 +183,8 @@ class Solution(object):
 
 # V0''
 # IDEA : BFS
+# time = O(n)
+# space = O(n), stack holds up to O(n) nodes in the worst (skewed) case
 class Solution(object):
     def convertBST(self, root):
         total = 0      
@@ -201,6 +209,8 @@ class Solution(object):
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)
+# space = O(h)
 class Solution(object):
     def convertBST(self, root):
         """
@@ -221,9 +231,9 @@ class Solution(object):
 
 # V1'
 # https://leetcode.com/problems/convert-bst-to-greater-tree/solution/
-# IDEA : RECURSION 
-# Time complexity : O(N)
-# Space complexity : O(N)
+# IDEA : RECURSION
+# time = O(n)
+# space = O(h)
 class Solution(object):
     def __init__(self):
         self.total = 0
@@ -239,12 +249,12 @@ class Solution(object):
 # V1''
 # https://leetcode.com/problems/convert-bst-to-greater-tree/solution/
 # Iteration with a Stack
-# Time complexity : O(N)
-# Space complexity : O(N)
+# time = O(n)
+# space = O(n), stack holds up to O(n) nodes in the worst (skewed) case
 class Solution(object):
     def convertBST(self, root):
         total = 0
-        
+
         node = root
         stack = []
         while stack or node is not None:
@@ -265,9 +275,9 @@ class Solution(object):
 
 # V1'''
 # https://leetcode.com/problems/convert-bst-to-greater-tree/solution/
-# IDEA :  Reverse Morris In-order Traversal 
-# Time complexity : O(N)
-# Space complexity : O(1)
+# IDEA :  Reverse Morris In-order Traversal
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def convertBST(self, root):
         # Get the node with the smallest value greater than this one.
@@ -306,9 +316,9 @@ class Solution(object):
                     node = node.left
         return root 
 
-# V2 
-# Time:  O(n)
-# Space: O(h)
+# V2
+# time = O(n)
+# space = O(h)
 class Solution(object):
     def convertBST(self, root):
         """

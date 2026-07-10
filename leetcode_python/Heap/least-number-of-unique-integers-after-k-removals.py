@@ -28,6 +28,8 @@ Constraints:
 
 # V0
 # IDEA : Counter
+# time = O(n log n), n = len(arr) (Counter build + sort by frequency)
+# space = O(n)
 from collections import Counter
 class Solution:
     def findLeastNumOfUniqueInts(self, arr, k):
@@ -55,6 +57,8 @@ class Solution:
 
 # V0
 # IDEA : Counter
+# time = O(n log n), n = len(arr)
+# space = O(n)
 class Solution:
     def findLeastNumOfUniqueInts(self, arr, k):
         num_counter = Counter(arr)
@@ -76,6 +80,8 @@ class Solution:
 
 # V0'
 # IDEA : Counter
+# time = O(n log n), n = len(arr)
+# space = O(n)
 class Solution:
     def findLeastNumOfUniqueInts(self, arr, k):
         num_counter = Counter(arr)
@@ -88,6 +94,8 @@ class Solution:
 
 # V0''
 # IDEA : Counter + heapq
+# time = O(n log n), n = len(arr)
+# space = O(n)
 class Solution(object):
     def findLeastNumOfUniqueInts(self, arr, k):
             # use counter, and heap (priority queue)
@@ -108,6 +116,8 @@ class Solution(object):
 # V1
 # IDEA : Counter
 # https://leetcode.com/problems/least-number-of-unique-integers-after-k-removals/discuss/979896/Python-Solution
+# time = O(n log n), n = len(arr)
+# space = O(n)
 class Solution:
     def findLeastNumOfUniqueInts(self, arr, k):
         num_counter = Counter(arr)
@@ -121,6 +131,8 @@ class Solution:
 # V1'
 # IDEA : Counter
 # https://leetcode.com/problems/least-number-of-unique-integers-after-k-removals/discuss/686293/Python-solution-with-Counter
+# time = O(n log n), n = len(arr)
+# space = O(n)
 class Solution:
     def findLeastNumOfUniqueInts(self, arr, k):
         from collections import Counter
@@ -136,6 +148,8 @@ class Solution:
 
 # V1''
 # IDEA : Counter
+# time = O(n log n), n = len(arr)
+# space = O(n)
 from collections import Counter
 class Solution:
     def findLeastNumOfUniqueInts(self, arr, k):
@@ -166,6 +180,8 @@ class Solution:
 # V1'''
 # IDEA : Counter + heapq
 # https://leetcode.com/problems/least-number-of-unique-integers-after-k-removals/discuss/686429/Python-heaps
+# time = O(n log n), n = len(arr)
+# space = O(n)
 from collections import Counter
 from heapq import *
 class Solution(object):
@@ -184,6 +200,8 @@ class Solution(object):
 # V1''''
 # IDEA : Counter + heapq
 # https://leetcode.com/problems/least-number-of-unique-integers-after-k-removals/discuss/688829/Python-heap-solution
+# time = O(n log n), n = len(arr)
+# space = O(n)
 class Solution(object):
     def findLeastNumOfUniqueInts(self, arr, k):
         heap = []
@@ -207,6 +225,8 @@ class Solution(object):
 # -> We want to delete the number with lowest occurence thus we can use minimum steps to reduce the total unique numbers in the list. For example,[4,3,1,1,3,3,2]. The Counter of this array will be: {3:3, 1:2, 4:1, 2:1}. Given k = 3, the greedy approach is to delete 2 and 4 first because both of them are appearing once. We need an ordering data structure to give us the lowest occurence of number each time. As you may know, Priority Queue comes to play
 # -> Use heap to build PQ for the counter. We store each member as a tuple: (count, number) Python heap module will sort it based on the first member of the tuple.
 # -> loop through k times to pop member out of heap and check if we need to push it back
+# time = O(n log n), n = len(arr)
+# space = O(n)
 class Solution(object):
     def findLeastNumOfUniqueInts(self, arr, k):
             # use counter, and heap (priority queue)
@@ -227,6 +247,8 @@ class Solution(object):
 # V1'''''''
 # IDEA : Counter + heapq
 # https://leetcode.com/problems/least-number-of-unique-integers-after-k-removals/discuss/1542356/Python-MinHeap-Solution
+# time = O(n log n), n = len(arr) (heap of unique keys, worst-case k decrements)
+# space = O(n)
 class Solution:
     def findLeastNumOfUniqueInts(self, arr, k):
         counter = collections.Counter(arr)

@@ -45,6 +45,8 @@ At most 2 * 105 calls will be made to set and get.
 # V0
 # IDEA : Hashmap + Linear Search
 # map: [k : [v1, t1], [v2, t2], .... ]
+# time = O(1) for set, O(log n) for get (n = # values stored for key)
+# space = O(n) total stored entries
 class TimeMap(object):
 
     def __init__(self):
@@ -89,6 +91,8 @@ class TimeMap(object):
 # V0-1
 # IDEA : Hashmap + Linear Search
 # map: [k : [v1, t1], [v2, t2], .... ]
+# time = O(1) for set, O(log n) for get (n = # values stored for key)
+# space = O(n) total stored entries
 class TimeMap(object):
 
     def __init__(self):
@@ -133,6 +137,8 @@ class TimeMap(object):
 # V1
 # IDEA : Hashmap + Linear Search
 # https://leetcode.com/problems/time-based-key-value-store/editorial/
+# time = O(1) for set, O(timestamp) for get (worst case scans back from timestamp to 1)
+# space = O(n) total stored entries
 class TimeMap:
     def __init__(self):
         self.key_time_map = {}
@@ -163,6 +169,8 @@ class TimeMap:
 # V2
 # IDEA : Sorted Map + Binary Search
 # https://leetcode.com/problems/time-based-key-value-store/editorial/
+# time = O(log n) for set, O(log n) for get
+# space = O(n) total stored entries
 from sortedcontainers import SortedDict
 
 class TimeMap:
@@ -194,6 +202,8 @@ class TimeMap:
 # V3
 # IDEA : Array + Binary Search
 # https://leetcode.com/problems/time-based-key-value-store/editorial/
+# time = O(1) amortized for set, O(log n) for get
+# space = O(n) total stored entries
 class TimeMap:
     def __init__(self):
         self.key_time_map = {}

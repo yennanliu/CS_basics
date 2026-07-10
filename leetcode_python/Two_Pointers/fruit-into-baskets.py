@@ -47,6 +47,8 @@ Constraints:
 
 # V0
 # IDEA: SLIDE WINDOW
+# time = O(n)  # n = len(fruits)
+# space = O(1)  # at most 3 fruit types tracked
 class Solution(object):
     def totalFruit(self, fruits):
         max_cnt = 0
@@ -80,6 +82,8 @@ class Solution(object):
 
 # V0-0-1
 # IDEA: SLIDE WINDOW (gemini)
+# time = O(n)  # n = len(fruits)
+# space = O(1)  # at most 3 fruit types tracked
 class Solution(object):
     def totalFruit(self, fruits):
         """
@@ -117,6 +121,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: SLIDE WINDOW (gemini)
+# time = O(n)  # n = len(fruits)
+# space = O(1)  # at most 3 fruit types tracked
 class Solution(object):
     def totalFruit(self, fruits):
         """
@@ -155,6 +161,8 @@ class Solution(object):
 
 # V0-2
 # IDEA: SLIDE WINDOW (gpt)
+# time = O(n)  # n = len(fruits)
+# space = O(1)  # at most 3 fruit types tracked
 class Solution(object):
     def totalFruit(self, fruits):
         if not fruits:
@@ -187,8 +195,10 @@ class Solution(object):
 # V1
 
 
-# V2 
+# V2
 # https://blog.csdn.net/XX_123_1_RJ/article/details/82828570
+# time = O(n)  # n = len(tree)
+# space = O(1)  # at most 3 fruit types tracked
 class Solution:
     def totalFruit(self, tree):
         cnt = {}
@@ -211,13 +221,12 @@ class Solution:
 
 
 
-# V3 
-# Time:  O(n)
-# Space: O(1)
-
+# V3
 import collections
 
 
+# time = O(n)  # n = len(tree)
+# space = O(1)  # at most 3 fruit types tracked
 class Solution(object):
     def totalFruit(self, tree):
         """

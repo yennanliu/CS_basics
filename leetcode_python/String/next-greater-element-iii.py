@@ -2,6 +2,8 @@
 
 # V1 
 # http://bookshadow.com/weblog/2017/04/09/leetcode-next-greater-element-iii/
+# time = O(d), d = number of digits in n
+# space = O(d)
 class Solution(object):
     def nextGreaterElement(self, n):
         """
@@ -23,9 +25,9 @@ class Solution(object):
         ans = int(''.join(nums))
         return n < ans <= 0x7FFFFFFF and ans or -1
         
-# V2 
-# Time:  O(logn) = O(1)
-# Space: O(logn) = O(1)
+# V2
+# time = O(log n) = O(1), log n = number of digits in n
+# space = O(log n) = O(1)
 class Solution(object):
     def nextGreaterElement(self, n):
         """

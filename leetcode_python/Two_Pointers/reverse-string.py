@@ -8,14 +8,18 @@
 # Given s = "hello", return "olleh".
 
 
-# V1 
+# V1
+# time = O(n)
+# space = O(n)
 class Solution2(object):
     def reverseString(self, s):
         return s[::-1]
 
 
 
-# V2 
+# V2
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def reverseString(self, s):
         """
@@ -31,9 +35,9 @@ class Solution(object):
         return "".join(string)
 
 
-# V3 
-# Time:  O(n)
-# Space: O(n)
+# V3
+# time = O(n)
+# space = O(n)
 class Solution2(object):
     def reverseString(self, s):
         """

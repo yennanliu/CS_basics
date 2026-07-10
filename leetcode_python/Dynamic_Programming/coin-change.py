@@ -38,6 +38,8 @@ Output: 0
  DP eq:
     -  dp[i] = Math.min(dp[i], dp[i - coin] + 1);
 """
+# time = O(amount * n), n = len(coins)
+# space = O(amount)
 class Solution(object):
     def coinChange(self, coins, amount):
         # edge
@@ -94,6 +96,8 @@ class Solution(object):
  DP eq:
     -  dp[i] = Math.min(dp[i], dp[i - coin] + 1);
 """
+# time = O(amount * n), n = len(coins)
+# space = O(amount)
 class Solution(object):
     def coinChange(self, coins, amount):
         # Edge cases handled perfectly
@@ -146,6 +150,8 @@ class Solution(object):
 
 # V0
 # IDEA : BFS
+# time = O(amount * n), n = len(coins)
+# space = O(amount)
 from collections import defaultdict
 class Solution(object):
     def coinChange(self, coins, amount):
@@ -173,6 +179,8 @@ class Solution(object):
 
 # V0'
 # IDEA : DFS (TLE, need fix)
+# time = O(n^(amount/min_coin)), n = len(coins), exponential worst case
+# space = O(amount/min_coin), recursion depth
 class Solution(object):
     def coinChange(self, coins, amount):
         # help func
@@ -192,6 +200,8 @@ class Solution(object):
 
 # V0''
 # IDEA : DFS, backtrack (TLE, need fix)
+# time = O(n^(amount/min_coin)), n = len(coins), exponential worst case
+# space = O(amount/min_coin), recursion depth
 class Solution(object):
     def coinChange(self, coins, amount):
         # help func
@@ -226,6 +236,8 @@ class Solution(object):
 # http://bookshadow.com/weblog/2015/12/27/leetcode-coin-change/
 # IDEA : DP
 # DP state equation :  dp[x + c] = min(dp[x] + 1, dp[x + c])
+# time = O(amount * n), n = len(coins)
+# space = O(amount)
 import collections
 class Solution(object):
     def coinChange(self, coins, amount):
@@ -249,7 +261,9 @@ class Solution(object):
 
 # V1'
 # http://bookshadow.com/weblog/2015/12/27/leetcode-coin-change/
-# IDEA : BFS 
+# IDEA : BFS
+# time = O(amount * n), n = len(coins)
+# space = O(amount)
 class Solution(object):
     def coinChange(self, coins, amount):
         """
@@ -303,6 +317,8 @@ class Solution(object):
 # V1''
 # https://leetcode.com/problems/coin-change/solution/
 # IDEA : DP (BOTTOM UP)
+# time = O(amount * n), n = len(coins)
+# space = O(amount)
 class Solution:
     def coinChange(self, coins: List[int], amount: int) -> int:
         dp = [float('inf')] * (amount + 1)
@@ -316,9 +332,11 @@ class Solution:
 # V1'''
 # https://leetcode.com/problems/coin-change/discuss/114993/Four-kinds-of-solutions%3A-DP-BFS-DFS-improved-DFS
 # IDEA : DP
+# time = O(amount * n), n = len(coins)
+# space = O(amount)
 class Solution:
     def coinChange(self, coins, amount):
-        M = float('inf')        
+        M = float('inf')
         # dynamic programming
         dp = [0] + [M] * amount
         for i in range(1, amount+1):
@@ -329,8 +347,10 @@ class Solution:
 # V1''''
 # https://leetcode.com/problems/coin-change/discuss/114993/Four-kinds-of-solutions%3A-DP-BFS-DFS-improved-DFS
 # IDEA : BFS
+# time = O(amount * n), n = len(coins)
+# space = O(amount)
 class Solution:
-    def coinChange(self, coins, amount):    
+    def coinChange(self, coins, amount):
         # BFS, graph search. Keep records of visited nodes
         visited = [True] + [False] * amount
         
@@ -354,6 +374,8 @@ class Solution:
 # V1'''''
 # https://leetcode.com/problems/coin-change/discuss/114993/Four-kinds-of-solutions%3A-DP-BFS-DFS-improved-DFS
 # IDDA : DFS
+# time = O(n^(amount/min_coin)), n = len(coins), exponential worst case
+# space = O(amount/min_coin), recursion depth
 class Solution:
     def coinChange(self, coins, amount):
         if amount == 0:

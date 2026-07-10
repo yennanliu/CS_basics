@@ -35,6 +35,8 @@ Follow up: Could you do it in O(n) time and O(1) space?
 # head = ListNode{val: 2, next: ListNode{val: 1, next: None}}
 # head = ListNode{val: 1, next: None}
 # head = None
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def isPalindrome(self, head):
         ### NOTE : THE CONDITION
@@ -49,6 +51,8 @@ class Solution(object):
 
 # V0
 # IDEA : LINKED LIST -> LIST
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def isPalindrome(self, head):
         if not head or not head.next:
@@ -64,6 +68,8 @@ class Solution(object):
         return tmp_list[:mid_] == tmp_list[-mid_:][::-1]
 
 # V1
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def isPalindrome(self, head):
         if not head or not head.next:
@@ -71,7 +77,7 @@ class Solution(object):
 
         new_list = []
 
-        # slow & fast pointers find the middle of the linked list 
+        # slow & fast pointers find the middle of the linked list
         slow = fast = head
         while fast and fast.next:
             #new_list.insert(0, slow.val)
@@ -91,6 +97,8 @@ class Solution(object):
 # V1'
 # IDEA : LINKED LIST -> LIST
 # https://blog.csdn.net/coder_orz/article/details/51306985
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def isPalindrome(self, head):
         """
@@ -113,6 +121,8 @@ class Solution(object):
 
 # V1''
 # https://blog.csdn.net/coder_orz/article/details/51306985
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def isPalindrome(self, head):
         """
@@ -124,7 +134,7 @@ class Solution(object):
 
         new_list = []
 
-        # slow & fast pointers find the middle of the linked list 
+        # slow & fast pointers find the middle of the linked list
         slow = fast = head
         while fast and fast.next:
             new_list.insert(0, slow.val)
@@ -142,6 +152,8 @@ class Solution(object):
 
 # V1'''
 # https://blog.csdn.net/coder_orz/article/details/51306985
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def isPalindrome(self, head):
         """
@@ -151,7 +163,7 @@ class Solution(object):
         if not head or not head.next:
             return True
 
-        # slow & fast pointers find the middle of the linked list 
+        # slow & fast pointers find the middle of the linked list
         slow = fast = head
         while fast.next and fast.next.next:
             slow = slow.next
@@ -178,6 +190,8 @@ class Solution(object):
 
 # V1'''''
 # http://bookshadow.com/weblog/2015/07/10/leetcode-palindrome-linked-list/
+# time = O(n)
+# space = O(1)
 class Solution:
     # @param {ListNode} head
     # @return {boolean}
@@ -216,6 +230,8 @@ class ListNode(object):
          self.val = x
          self.next = None
 
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def isPalindrome(self, head):
         """
@@ -237,8 +253,8 @@ class Solution(object):
         return True
 
 # V2
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 class Solution(object):
     # @param {ListNode} head
     # @return {boolean}

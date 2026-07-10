@@ -36,6 +36,8 @@ n == matrix[i].length
 # IDEA: BINARY SEARCH
 # row = mid // w_
 # col = mid % w_
+# time = O(log(m*n)) = O(log m + log n)
+# space = O(1)
 class Solution(object):
     def searchMatrix(self, matrix, target):
         if not matrix or len(matrix) == 0:
@@ -67,6 +69,8 @@ class Solution(object):
 # IDEA: BINARY SEARCH
 # row = mid // w_
 # col = mid % w_
+# time = O(log(m*n)) = O(log m + log n)
+# space = O(1)
 class Solution(object):
     def searchMatrix(self, matrix, target):
         if not matrix or len(matrix) == 0 or len(matrix[0]) == 0:
@@ -95,10 +99,10 @@ class Solution(object):
                 
         return False
 
-# V0 
+# V0
 # IDEA : MATRIX IN ORDER + BRUTE FORCE
-# Space: O(1)
-# Time:  O(m+n) # worst case
+# time = O(m + n)  # worst case
+# space = O(1)
 class Solution:
     def searchMatrix(self, matrix, target):
         if len(matrix) == 0:
@@ -115,6 +119,8 @@ class Solution:
 
 # V0'
 # IDEA : DFS
+# time = O(m*n)
+# space = O(m*n)  # recursion stack in worst case
 class Solution(object):
     def searchMatrix(self, matrix, target):
         def dfs(matrix, target, x, y):
@@ -140,8 +146,8 @@ class Solution(object):
 
 # V0'
 # IDEA : BINARY SEARCH
-# Space: O(1)
-# Time:  O(logm + logn)
+# time = O(log m + log n)
+# space = O(1)
 class Solution(object):
     def searchMatrix(self, matrix, target):
         """
@@ -164,6 +170,8 @@ class Solution(object):
 
 # V1
 # https://leetcode.com/problems/search-a-2d-matrix/discuss/351404/Python-Simple-Solution
+# time = O(m + n)
+# space = O(1)
 class Solution:
     def searchMatrix(self, matrix, target):
         if len(matrix) == 0:
@@ -194,6 +202,8 @@ assert s.searchMatrix([[_ for _ in range(99)] for _ in range(999)], 2) == True
 # V1'
 # https://leetcode.com/problems/search-a-2d-matrix/discuss/592696/python-super-easy
 # IDEA : BRUTE FORCE
+# time = O(m*n)
+# space = O(1)
 class Solution:
     def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
         for x in matrix:

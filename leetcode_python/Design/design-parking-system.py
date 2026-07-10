@@ -41,9 +41,13 @@ At most 1000 calls will be made to addCar
 # https://leetcode.com/problems/design-parking-system/discuss/876953/JavaC%2B%2BPython-3-Lines
 class ParkingSystem:
 
+    # time = O(1)
+    # space = O(1)
     def __init__(self, big, medium, small):
         self.A = [big, medium, small]
 
+    # time = O(1)
+    # space = O(1)
     def addCar(self, carType):
         self.A[carType - 1] -= 1
         return self.A[carType - 1] >= 0
@@ -52,8 +56,13 @@ class ParkingSystem:
 # https://leetcode.com/problems/design-parking-system/discuss/876893/python-Easy-4-line-code
 class ParkingSystem:
 
+    # time = O(1)
+    # space = O(1)
     def __init__(self, big: int, medium: int, small: int):
         self.arr  =[big,medium,small]
+
+    # time = O(1)
+    # space = O(1)
     def addCar(self, carType: int) -> bool:
         if(self.arr[carType-1]):
             self.arr[carType-1]-=1
@@ -64,14 +73,18 @@ class ParkingSystem:
 # https://leetcode.com/problems/design-parking-system/discuss/1128843/Python-fast-and-efficient-(97)
 class ParkingSystem:
     __slots__ = ['_parking']
-	
+
+    # time = O(1)
+    # space = O(1)
     def __init__(self, big: int, medium: int, small: int):
         self._parking = {
-            1: big, 
-            2: medium, 
+            1: big,
+            2: medium,
             3: small
         }
 
+    # time = O(1)
+    # space = O(1)
     def addCar(self, carType: int) -> bool:
         available_spots = self._parking[carType]
         if available_spots:

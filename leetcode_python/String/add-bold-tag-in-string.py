@@ -1,7 +1,9 @@
 # V0 
 
-# V1 
+# V1
 # http://bookshadow.com/weblog/2017/06/11/leetcode-add-bold-tag-in-string/
+# time = O(n^2 * d), n = len(s), d = number of words in dict
+# space = O(n)
 class Solution(object):
     def addBoldTag(self, s, dict):
         """
@@ -27,9 +29,9 @@ class Solution(object):
         if start > -1: ans += '<b>' + s[start:end] + '</b>'
         return ans
         
-# V2 
-# Time:  O(n * d * l), l is the average string length
-# Space: O(n)
+# V2
+# time = O(n * d * l), l is the average string length
+# space = O(n)
 import collections
 import functools
 # 59ms
@@ -57,8 +59,8 @@ class Solution(object):
         return "".join(result)
 
 
-# Time:  O(n * l), l is the average string length
-# Space: O(t)    , t is the size of trie
+# time = O(n * l), l is the average string length
+# space = O(t), t is the size of trie
 # trie solution, 439ms
 class Solution2(object):
     def addBoldTag(self, s, words):

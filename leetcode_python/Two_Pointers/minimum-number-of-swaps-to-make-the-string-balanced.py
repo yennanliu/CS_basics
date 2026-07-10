@@ -61,6 +61,8 @@ The key observation:
     3. That swap effectively contributes 2 to the balance.
 
 """
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def minSwaps(self, s):
         balance = 0
@@ -82,6 +84,8 @@ class Solution(object):
 
 # V0-1
 # IDEA : GREEDY (GEMINI)
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def minSwaps(self, s):
         """
@@ -122,6 +126,8 @@ class Solution(object):
 # print (r)
 # stk = ['[', '[', '[']
 # 2
+# time = O(n)
+# space = O(n)
 class Solution:
     def minSwaps(self, s):
             stk = []
@@ -141,6 +147,8 @@ class Solution:
 # For every 2 pairs of square brackets, a swap will make them matched;
 # If only 1 pair not matched, we need a swap.
 # Therefore, we need at least (pairs + 1) / 2 swaps.
+# time = O(n)
+# space = O(n)
 class Solution:
     def minSwaps(self, s: str) -> int:
             stk = []
@@ -156,6 +164,8 @@ class Solution:
 # https://leetcode.com/problems/minimum-number-of-swaps-to-make-the-string-balanced/discuss/1390249/JavaPython-3-Space-O(1)-time-O(n)-codes-w-brief-explanation.
 # IDEA :
 # There are only 2 types of characters in s, so we can get rid of stack in above codes and use two counters, openBracket and closeBracket, to memorize the unmatched open and close square brackets: - Credit to @saksham66 for suggestion of variables naming.
+# time = O(n)
+# space = O(1)
 class Solution:
     def minSwaps(self, s: str) -> int:
             open_bracket = close_bracket = 0
@@ -173,6 +183,8 @@ class Solution:
 # https://leetcode.com/problems/minimum-number-of-swaps-to-make-the-string-balanced/discuss/1390249/JavaPython-3-Space-O(1)-time-O(n)-codes-w-brief-explanation.
 # IDEA :
 # Since the occurrences of ['s and ]'s are same, we actually only need to count openBracket, and closeBracket is redundant. Credit to @fishballLin
+# time = O(n)
+# space = O(1)
 def minSwaps(self, s: str) -> int:
         open_bracket = 0
         for c in s:
@@ -196,7 +208,8 @@ def minSwaps(self, s: str) -> int:
 # [][[]][[]][] : [1, 0, 1, 2, 1, 0, 1, 2, 1, 0, 1, 0]
 #
 # Complexity
-# Time complexity is O(n) to traverse our string, space is O(1).
+# time = O(n)
+# space = O(1)
 class Solution:
     def minSwaps(self, s):
         bal, ans = 0, 0
@@ -208,6 +221,8 @@ class Solution:
 
 # V1''''
 # https://leetcode.com/problems/minimum-number-of-swaps-to-make-the-string-balanced/discuss/1393727/Golang-and-Python-Solutions
+# time = O(n)
+# space = O(1)
 class Solution:
     def minSwaps(self, s: str) -> int:
         extraClose, close = 0, 0
@@ -222,6 +237,8 @@ class Solution:
 # V1''''
 # IDEA : TWO POINTERS
 # https://leetcode.com/problems/minimum-number-of-swaps-to-make-the-string-balanced/discuss/1444539/Python3-solution-or-O(n)-or-explained-pattern
+# time = O(n)
+# space = O(1)
 class Solution:
     def minSwaps(self, s: str) -> int:
         l = 0
@@ -242,6 +259,8 @@ class Solution:
 
 # V1'''''
 # https://leetcode.com/problems/minimum-number-of-swaps-to-make-the-string-balanced/discuss/1390394/Easy-Python
+# time = O(n)
+# space = O(n)
 class Solution:
     def minSwaps(self, s: str) -> int:
         lks=[]

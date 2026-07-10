@@ -53,11 +53,13 @@ class ListNode:
         self.val = x
         self.next = None
 
+# time = O(index) per get/addAtIndex/deleteAtIndex call, O(1) for addAtHead/addAtTail
+# space = O(n)  # n = number of nodes stored
 class MyLinkedList:
     def __init__(self):
         self.size = 0
         self.head = ListNode(0)  # sentinel node as pseudo-head
-        
+
 
     def get(self, index: int) -> int:
         """
@@ -141,11 +143,13 @@ class ListNode:
         self.val = x
         self.next, self.prev = None, None
 
+# time = O(min(index, n - index)) per get/addAtIndex/deleteAtIndex call, O(1) for addAtHead/addAtTail
+# space = O(n)  # n = number of nodes stored
 class MyLinkedList:
     def __init__(self):
         self.size = 0
         # sentinel nodes as pseudo-head and pseudo-tail
-        self.head, self.tail = ListNode(0), ListNode(0) 
+        self.head, self.tail = ListNode(0), ListNode(0)
         self.head.next = self.tail
         self.tail.prev = self.head
         

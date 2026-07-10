@@ -5,7 +5,7 @@
 # IDEA : DFS 
 # time = O(n)
 # space = O(n)
- def removeStones(self, points):
+def removeStones(self, points):
         rows = collections.defaultdict(set)
         cols = collections.defaultdict(set)
         for i, j in points:
@@ -38,7 +38,7 @@
 # IDEA : DFS optimized
 # time = O(n)
 # space = O(n)
- def removeStones(self, points):
+def removeStones(self, points):
         index = collections.defaultdict(set)
         for i, j in points:
             index[i].add(j + 10000)

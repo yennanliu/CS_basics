@@ -63,7 +63,7 @@ class Solution(object):
             if not any(row):
                 result.append([0] * length)
                 continue
-            result.append([sum(map(lambda (x, y): x*y, zip(row, col))) 
+            result.append([sum(map(lambda p: p[0]*p[1], zip(row, col)))
                                         if any(col) else 0 for col in BT])
         return result
 

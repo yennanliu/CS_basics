@@ -16,17 +16,17 @@ Example 3:
 Input: [1,1,1,3,3,4,3,2,4,2]
 Output: true
 """
-# Time:  O(n)
-# Space: O(n)
 #
 # Given an array of integers, find if the array contains any duplicates.
 # Your function should return true if any value appears at least twice in the array,
 # and it should return false if every element is distinct.
 #
 
-# V0 
+# V0
 
-# V1 
+# V1
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def containsDuplicate(self, nums):
         if len(set(nums)) != len(nums):
@@ -41,6 +41,8 @@ class Solution:
     @param nums: the given array
     @return: if any value appears at least twice in the array
     """
+    # time = O(n)
+    # space = O(n)
     def containsDuplicate(self, nums):
         # Write your code here
         hashset = {}
@@ -50,7 +52,9 @@ class Solution:
             hashset[num] = True
         return False
         
-# V2 
+# V2
+# time = O(n)
+# space = O(n)
 class Solution:
     # @param {integer[]} nums
     # @return {boolean}

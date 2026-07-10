@@ -37,6 +37,8 @@ sum(routes[i].length) <= 105
 
 # V0
 # IDEA : BFS + GRAPH
+# time = O(N), N = total number of stops across all routes (each route cleared once)
+# space = O(N)
 class Solution(object):
     def numBusesToDestination(self, routes, S, T):
         # edge case:
@@ -106,6 +108,8 @@ class Solution(object):
 # The second part is general bfs. Take a stop from queue and find all connected route.
 # The hashset seen record all visited stops and we won't check a stop for twice.
 # We can also use a hashset to record all visited routes, or just clear a route after visit.
+# time = O(N), N = total number of stops across all routes
+# space = O(N)
 class Solution(object):
     def numBusesToDestination(self, routes, S, T):
         to_routes = collections.defaultdict(set)
@@ -141,6 +145,8 @@ class Solution:
     # 1. The level is each time to take bus.
     # 2. The position is all of the stops you can reach for taking one time of bus.
     # 3. Using a queue to record all of the stops can be arrived for each time you take buses.
+    # time = O(N), N = total number of stops across all routes
+    # space = O(N)
     def numBusesToDestination(self, routes, S, T):
         """
         :type routes: List[List[int]]
@@ -193,6 +199,8 @@ class Solution:
 # We can view each bus route as a node. If two routes share at least one stop, then there is an edge between them. Based on that, we can build an adjacent-list graph g.
 # Then to get the minimal number of bus routes to go from S to T, we can use BFS. The source node is any node containing stop S and destination node is any node containing stop T. The distance between source nodes and destination nodes is the number of bus routes. The distance starts from 1. (If S and T is on at same bus routes, we return 1).
 # A corner case is that S == T, we should return 0.
+# time = O(R^2 * S), R = number of routes, S = max route length (pairwise route intersection)
+# space = O(R^2)
 class Solution(object):
     def numBusesToDestination(self, routes, S, T):
         if S == T: return 0
@@ -213,6 +221,8 @@ class Solution(object):
 # V1'''''
 # IDEA : BFS
 # https://leetcode.com/problems/bus-routes/solution/
+# time = O(R^2 * S), R = number of routes, S = max route length (pairwise route intersection)
+# space = O(R^2)
 class Solution(object):
     def numBusesToDestination(self, routes, S, T):
         if S == T: return 0

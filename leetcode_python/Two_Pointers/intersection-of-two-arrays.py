@@ -1,6 +1,3 @@
-# Time:  O(m + n)
-# Space: O(min(m, n))
-
 # Given two arrays, write a function to compute their intersection.
 #
 # Example:
@@ -11,7 +8,9 @@
 # The result can be in any order.
 
 
-# V0 
+# V0
+# time = O(m + n)
+# space = O(m + n)
 class Solution(object):
     def intersection(self, nums1, nums2):
         """
@@ -21,7 +20,9 @@ class Solution(object):
         """
         return list(set(nums1) & set(nums2))
 
-# V0' 
+# V0'
+# time = O(m + n)
+# space = O(m + n)
 class Solution(object):
     def intersection(self, nums1, nums2):
         nums1_ = set(list(nums1))
@@ -30,6 +31,8 @@ class Solution(object):
 
 # V1
 # https://blog.csdn.net/coder_orz/article/details/51452615
+# time = O(m + n)
+# space = O(m + n)
 class Solution(object):
     def intersection(self, nums1, nums2):
         """
@@ -39,8 +42,10 @@ class Solution(object):
         """
         return list(set(nums1) & set(nums2))
 
-# V1' 
+# V1'
 # https://blog.csdn.net/coder_orz/article/details/51452615
+# time = O(m * n)  # `i in nums2` is O(n) per element
+# space = O(m)
 class Solution(object):
     def intersection(self, nums1, nums2):
         """
@@ -55,8 +60,10 @@ class Solution(object):
 
         return res
 
-# V2 
+# V2
 # Hash solution.
+# time = O(m + n)
+# space = O(min(m, n))
 class Solution(object):
     def intersection(self, nums1, nums2):
         """
@@ -87,10 +94,10 @@ class Solution(object):
         """
         return list(set(nums1) & set(nums2))
 
-# V3 
-# Time:  O(max(m, n) * log(max(m, n)))
-# Space: O(1)
+# V3
 # Binary search solution.
+# time = O(max(m, n) * log(max(m, n)))
+# space = O(1)
 class Solution2(object):
     def intersection(self, nums1, nums2):
         """
@@ -122,10 +129,10 @@ class Solution2(object):
 
         return res
 
-# V4 
-# Time:  O(max(m, n) * log(max(m, n)))
-# Space: O(1)
+# V4
 # Two pointers solution.
+# time = O(max(m, n) * log(max(m, n)))
+# space = O(1)
 class Solution3(object):
     def intersection(self, nums1, nums2):
         """

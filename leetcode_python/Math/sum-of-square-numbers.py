@@ -1,4 +1,6 @@
-# V1 
+# V1
+# time = O(sqrt(c))
+# space = O(1)
 import math
 class Solution(object):
 	def judgeSquareSum(self, c):
@@ -23,6 +25,8 @@ class Solution(object):
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/77531867
+# time = O(sqrt(c))
+# space = O(1)
 class Solution(object):
     def judgeSquareSum(self, c):
         """
@@ -47,6 +51,8 @@ class Solution(object):
 # since a**2 + b**2 = c 
 # so c - b**2 = a**2 which is a square integer
 # so the key of this solution is :  check if c - b**2 is a square integer
+# time = O(sqrt(c) * logc)
+# space = O(1)
 class Solution:
     def judgeSquareSum(self, c):
         """
@@ -59,9 +65,9 @@ class Solution:
                 return True
         return False
 
-# V3 
-# Time:  O(sqrt(c) * logc)
-# Space: O(1)
+# V3
+# time = O(sqrt(c) * logc)
+# space = O(1)
 import math
 class Solution(object):
     def judgeSquareSum(self, c):

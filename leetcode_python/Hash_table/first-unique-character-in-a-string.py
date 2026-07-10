@@ -28,8 +28,10 @@ s consists of only lowercase English letters.
 
 """
 
-# V0 
+# V0
 import collections
+# time = O(n)
+# space = O(1), bounded by the 26 lowercase letters
 class Solution(object):
     def firstUniqChar(self, s):
         """
@@ -47,6 +49,8 @@ class Solution(object):
 # V1 
 # http://bookshadow.com/weblog/2016/08/21/leetcode-first-unique-character-in-a-string/
 import collections
+# time = O(n)
+# space = O(1), bounded by the 26 lowercase letters
 class Solution(object):
     def firstUniqChar(self, s):
         """
@@ -63,6 +67,8 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/first-unique-character-in-a-string/#tag-highlight-lang-python
+# time = O(n)
+# space = O(1), bounded by the 26 lowercase letters
 class Solution:
     """
     @param str: str: the given string
@@ -78,7 +84,9 @@ class Solution:
             if counter[c] == 1:
                 return c
 
-# V2 
+# V2
+# time = O(n), s.count runs on a bounded (<=26) set of unique chars
+# space = O(1), bounded by the 26 lowercase letters
 class Solution(object):
     def firstUniqChar(self, s):
         s_ = ''.join(set(s))
@@ -90,8 +98,10 @@ class Solution(object):
                 return i            
         return -1 
 
-# V3 
-# IDEA : hash table 
+# V3
+# IDEA : hash table
+# time = O(n)
+# space = O(1), bounded by the 26 lowercase letters
 class Solution(object):
     def firstUniqChar(self, s):
         counts = {}
@@ -106,8 +116,10 @@ class Solution(object):
                 return i
         return -1 
 
-# V4 
+# V4
 from collections import defaultdict
+# time = O(n)
+# space = O(1), bounded by the 26 lowercase letters
 class Solution(object):
     def firstUniqChar(self, s):
         """

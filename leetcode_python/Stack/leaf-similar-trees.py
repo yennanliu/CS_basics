@@ -9,6 +9,8 @@
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(m + n)  # m, n = number of nodes in root1, root2
+# space = O(m + n)  # recursion stack + leaves lists
 class Solution:
     def leafSimilar(self, root1, root2):
         """
@@ -32,7 +34,9 @@ class Solution:
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/81748617
-# pastOrder  
+# pastOrder
+# time = O(m + n)
+# space = O(m + n)
 class Solution:
     def leafSimilar(self, root1, root2):
         """
@@ -55,6 +59,8 @@ class Solution:
 # V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/81748617
 # postOrder
+# time = O(m + n)
+# space = O(m + n)
 class Solution:
     def leafSimilar(self, root1, root2):
         """
@@ -79,7 +85,9 @@ class Solution:
 
 # V1'''
 # https://blog.csdn.net/fuxuemingzhu/article/details/81748617
-# looping  
+# looping
+# time = O(m + n)
+# space = O(m + n)
 class Solution:
     def leafSimilar(self, root1, root2):
         """
@@ -102,9 +110,9 @@ class Solution:
             stack.append(node.right)
         return res
 
-# V2 
-# Time:  O(n)
-# Space: O(h)
+# V2
+# time = O(n)
+# space = O(h)
 import itertools
 # Definition for a binary tree node.
 class TreeNode(object):
@@ -114,6 +122,8 @@ class TreeNode(object):
         self.right = None
 
 # V2'
+# time = O(m + n)
+# space = O(m + n)
 class Solution(object):
     def leafSimilar(self, root1, root2):
         """

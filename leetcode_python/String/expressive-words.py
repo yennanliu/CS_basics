@@ -1,7 +1,9 @@
 # V0 
 
-# V1 
+# V1
 # http://bookshadow.com/weblog/2018/04/02/leetcode-expressive-words/
+# time = O(n + s), n = sum of all word lengths, s = len(S)
+# space = O(n + s)
 class Solution(object):
     def expressiveWords(self, S, words):
         """
@@ -34,9 +36,9 @@ class Solution(object):
             if c[1] != w[1] and c[1] < 3: return 0
         return 1
         
-# V2 
-# Time:  O(n + s), n is the sum of all word lengths, s is the length of S
-# Space: O(l + s), l is the max word length
+# V2
+# time = O(n + s), n is the sum of all word lengths, s is the length of S
+# space = O(l + s), l is the max word length
 import itertools
 class Solution(object):
     def expressiveWords(self, S, words):

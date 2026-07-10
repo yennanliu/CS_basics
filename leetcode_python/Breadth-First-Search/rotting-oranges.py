@@ -42,6 +42,8 @@ grid[i][j] is 0, 1, or 2.
 
 # V0
 # IDEA: MULTI-SOURCE BFS
+# time = O(m * n)
+# space = O(m * n)
 from collections import deque
 class Solution(object):
     def orangesRotting(self, grid):
@@ -114,6 +116,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: BFS
+# time = O(m * n)
+# space = O(m * n)
 from collections import deque
 
 class Solution(object):
@@ -172,6 +176,8 @@ class Solution(object):
 
 
 # V0
+# time = O(m * n)
+# space = O(m * n)
 class Solution(object):
     def orangesRotting(self, grid):
         n = len(grid)
@@ -202,6 +208,8 @@ class Solution(object):
 # V1
 # IDEA : BFS
 # https://leetcode.com/problems/rotting-oranges/discuss/239032/Python-solution
+# time = O(m * n)
+# space = O(m * n)
 class Solution(object):
     def orangesRotting(self, grid):
         n = len(grid)
@@ -230,10 +238,12 @@ class Solution(object):
 # V1'
 # IDEA : BFS
 # https://leetcode.com/problems/rotting-oranges/discuss/781882/Python-by-BFS-%2B-timestamp-w-Demo
+# time = O(m * n)
+# space = O(m * n)
 from collections import deque
 class Solution:
     def orangesRotting(self, grid):
-        
+
         # Constant for grid state
         VISITED = -1
         EMPTY = 0
@@ -292,6 +302,8 @@ class Solution:
 # V1''
 # IDEA : BFS
 # https://leetcode.com/problems/rotting-oranges/discuss/238862/Python-bfs
+# time = O(m * n)
+# space = O(m * n)
 class Solution:
     def orangesRotting(self, g):
         q, good = [], 0
@@ -317,6 +329,8 @@ class Solution:
 # V1'''
 # IDEA : BFS
 # https://leetcode.com/problems/rotting-oranges/discuss/388104/Python-10-lines-BFS-beat-97
+# time = O(m * n)
+# space = O(m * n)
 class Solution:
     def orangesRotting(self, grid):
         row, col = len(grid), len(grid[0])
@@ -333,6 +347,8 @@ class Solution:
 # V1''''
 # IDEA : DP
 # https://leetcode.com/problems/rotting-oranges/discuss/342939/Python-DP-Solution
+# time = O((m * n)^2)
+# space = O((m * n)^2)
 class Solution:
     def orangesRotting(self, grid):
         m = len(grid)

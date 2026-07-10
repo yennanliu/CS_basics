@@ -12,7 +12,9 @@
 # return 5.
 #
 
-# V0 
+# V0
+# time = O(n)
+# space = O(n)
 class Solution:
     def lengthOfLastWord(self, s):
         string_set = s.strip().split(' ')
@@ -22,12 +24,16 @@ class Solution:
             return len(string_set[-1])
 
 # V1
+# time = O(n)
+# space = O(n)
 class Solution:
     def lengthOfLastWord(self, s):
         string_set = s.strip().split(' ')
         return len(string_set[-1])
 
-# V2  
+# V2
+# time = O(n)
+# space = O(1)
 class Solution:
     # @param s, a string
     # @return an integer
@@ -42,17 +48,17 @@ class Solution:
         return length
 
 # V3
-# Time:  O(n)
-# Space: O(n)
+# time = O(n)
+# space = O(n)
 class Solution2:
     # @param s, a string
     # @return an integer
     def lengthOfLastWord(self, s):
         return len(s.strip().split(" ")[-1])
 
-# V4 
-# Time:  O(n)
-# Space: O(1)
+# V4
+# time = O(n)
+# space = O(1)
 class Solution(object):
     # @param s, a string
     # @return an integer
@@ -66,8 +72,8 @@ class Solution(object):
                 length += 1
         return length
 
-# Time:  O(n)
-# Space: O(n)
+# time = O(n)
+# space = O(n)
 class Solution2(object):
     # @param s, a string
     # @return an integer

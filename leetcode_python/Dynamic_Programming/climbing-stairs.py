@@ -35,6 +35,8 @@ Constraints:
 # V0
 # IDEA : RECURSION + MEMORIZATION
 # https://leetcode.com/explore/learn/card/recursion-i/255/recursion-memoization/1662/
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def climbStairs(self, n):
         cache = {}
@@ -49,10 +51,10 @@ class Solution(object):
             return res
         return help(n)
 
-# V0' 
+# V0'
+# time = O(2^n)
+# space = O(n)
 class Solution:
-    # Time:  O(2^n)
-    # Space: O(n)
     def climbStairs(self, n):
         if n == 1:
             return 1
@@ -64,10 +66,12 @@ class Solution:
 # https://blog.csdn.net/coder_orz/article/details/51506414
 # n = 1,2,3,4,5,6,7,8,9... -> output : 1,2,3,5,8,13,21,34....
 # -> output(n) = output(n-2) + output(n-1)
-# IDEA  : Fibonacci SERIES 
+# IDEA  : Fibonacci SERIES
+# time = O(n)
+# space = O(1)
 class Solution:
     def climbStairs(self, n):
-        prev, current = 0, 1 
+        prev, current = 0, 1
         for i in range(n):
             prev, current =  current, prev+current
         return current
@@ -77,6 +81,8 @@ class Solution:
 # https://blog.csdn.net/coder_orz/article/details/51506414
 # IDEA : DP 
 # RECURSION WOULD BE TOO SLOW, SO USE DP SPEED UP THE PROCESS (DP CAN RECORD HISTORY)
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def climbStairs(self, n):
         """
@@ -90,7 +96,9 @@ class Solution(object):
             steps.append(steps[i-1] + steps[i-2])
         return steps[n]
 
-# V2 
+# V2
+# time = O(n)
+# space = O(1)
 class Solution:
     """
     :type n: int
@@ -102,8 +110,8 @@ class Solution:
             prev, current = current, prev + current,
         return current
 
-    # Time:  O(2^n)
-    # Space: O(n)
+    # time = O(2^n)
+    # space = O(n)
     def climbStairs1(self, n):
         if n == 1:
             return 1
@@ -111,9 +119,9 @@ class Solution:
             return 2
         return self.climbStairs(n - 1) + self.climbStairs(n - 2)
 
-# V3 
-# Time:  O(logn)
-# Space: O(1)
+# V3
+# time = O(logn)
+# space = O(1)
 import itertools
 class Solution(object):
     def climbStairs(self, n):
@@ -140,8 +148,8 @@ class Solution(object):
              [1, 0]]
         return matrix_expo(T, n)[0][0]
 
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 class Solution2(object):
     """
     :type n: int

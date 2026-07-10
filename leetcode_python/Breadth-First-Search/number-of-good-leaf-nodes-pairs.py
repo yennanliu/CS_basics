@@ -177,11 +177,11 @@ class Solution(object):
         # run a `limited` `BFS` to 
         # find reachable target `leaves`
         for leaf in leaves:
-        	"""
-        	NOTE !!!
+            """
+            NOTE !!!
 
-        	queue:  (cur_node, cur_dist)
-        	"""
+            queue:  (cur_node, cur_dist)
+            """
             queue = deque([(leaf, 0)]) # Holds (current_node, current_distance)
             visited = {leaf}
             

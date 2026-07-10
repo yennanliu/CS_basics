@@ -48,6 +48,8 @@ Ai, Bi, Cj, Dj consist of lower case English letters and digits.
 
 # V0
 # IDEA: DFS + `nested hashmap` + visited (gpt)
+# time = O(E + Q * (V + E)), E = len(equations), V = number of distinct variables, Q = len(queries)
+# space = O(V + E)
 class Solution(object):
     def calcEquation(self, equations, values, queries):
         graph = {}
@@ -111,6 +113,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: DFS + `nested hashmap` + visited (GEMINI)
+# time = O(E + Q * (V + E)), E = len(equations), V = number of distinct variables, Q = len(queries)
+# space = O(V + E)
 class Solution(object):
     def calcEquation(self, equations, values, queries):
         """
@@ -172,8 +176,10 @@ class Solution(object):
         return -1.0
 
 
-# V0 
+# V0
 # IDEA : DFS + collections.defaultdict(dict)
+# time = O(E + Q * (V + E)), E = len(equations), V = number of distinct variables, Q = len(queries)
+# space = O(V + E)
 class Solution:
     def calcEquation(self, equations, values, queries):
         """
@@ -188,7 +194,7 @@ class Solution:
             table[y][x] = 1.0 / value
         ans = [self.dfs(x, y, table, set()) if x in table and y in table else -1.0 for (x, y) in queries]
         return ans
-        
+
     def dfs(self, x, y, table, visited):
         if x == y:
             return 1.0
@@ -203,6 +209,8 @@ class Solution:
 
 # V0'
 # IDEA : DFS + collections.defaultdict(dict)
+# time = O(E + Q * (V + E)), E = len(equations), V = number of distinct variables, Q = len(queries)
+# space = O(V + E)
 class Solution:
     def calcEquation(self, equations, values, queries):
         from collections import defaultdict
@@ -254,6 +262,8 @@ class Solution:
 #             {'a': {'b': 2.0},
 #              'b': {'a': 0.5, 'c': 3.0},
 #              'c': {'b': 0.3333333333333333}})
+# time = O(E + Q * (V + E)), E = len(equations), V = number of distinct variables, Q = len(queries)
+# space = O(V + E)
 class Solution:
     def calcEquation(self, equations, values, queries):
         """
@@ -285,7 +295,9 @@ class Solution:
 
 # V1'
 # https://zxi.mytechroad.com/blog/graph/leetcode-399-evaluate-division/
-# IDEA : DFS 
+# IDEA : DFS
+# time = O(E + Q * (V + E)), E = len(equations), V = number of distinct variables, Q = len(queries)
+# space = O(V + E)
 class Solution:
   def calcEquation(self, equations, values, queries):
     def divide(x, y, visited):
@@ -308,7 +320,9 @@ class Solution:
 
 # V1''
 # https://zxi.mytechroad.com/blog/graph/leetcode-399-evaluate-division/
-# IDEA : UNION FIND 
+# IDEA : UNION FIND
+# time = O(E + Q) amortized, with union-find path compression (E = len(equations), Q = len(queries))
+# space = O(V), V = number of distinct variables
 class Solution:
   def calcEquation(self, equations, values, queries):
     def find(x):
@@ -406,9 +420,9 @@ class Solution:
 # }
 
 
-# V2 
-# Time:  O(e + q * |V|!), |V| is the number of variables
-# Space: O(e)
+# V2
+# time = O(e + q * |V|!), |V| is the number of variables
+# space = O(e)
 import collections
 class Solution(object):
     def calcEquation(self, equations, values, query):

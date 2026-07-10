@@ -32,6 +32,8 @@ s and dictionary[i] consist of lowercase English letters.
 
 # V0
 # IDEA: 2 POINTERS +  string comparision (`word < res`)
+# time = O(d * (n + l)), d = len(dictionary), n = len(s), l = avg word length
+# space = O(1)
 class Solution(object):
     def findLongestWord(self, s, dictionary):
         res = ""
@@ -70,6 +72,8 @@ class Solution(object):
 
 # V0
 # IDEA: 2 POINTERS +  string comparision (`word < res`) (gpt)
+# time = O(d * (n + l)), d = len(dictionary), n = len(s), l = avg word length
+# space = O(1)
 class Solution(object):
     def findLongestWord(self, s, dictionary):
         res = ""
@@ -95,6 +99,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: SORT + 2 POINTERS +  string comparision (`word < res`) (gemini)
+# time = O(d*log(d) + d * (n + l)), d = len(dictionary), n = len(s), l = avg word length
+# space = O(log d) (sort), O(1) extra
 class Solution(object):
     def findLongestWord(self, s, dictionary):
         """
@@ -126,9 +132,11 @@ class Solution(object):
 
 
 
-# V1 
+# V1
 # http://bookshadow.com/weblog/2017/02/26/leetcode-longest-word-in-dictionary-through-deleting/
-# IDEA : GREEDY + BFS 
+# IDEA : GREEDY + BFS
+# time = O(n + total_len_of_d), n = len(s)
+# space = O(total_len_of_d)
 class Solution(object):
     def findLongestWord(self, s, d):
         """
@@ -153,9 +161,9 @@ class Solution(object):
         return min(w for w in ans if len(w) == maxl)
 
 
-# V2 
-# Time:  O((d * l) * logd), l is the average length of words
-# Space: O(1)
+# V2
+# time = O(d*log(d) + d * n), d = len(d), n = len(s)
+# space = O(1)
 class Solution(object):
     def findLongestWord(self, s, d):
         """

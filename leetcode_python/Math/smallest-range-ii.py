@@ -2,6 +2,8 @@
 
 # V2 
 # https://blog.csdn.net/fuxuemingzhu/article/details/84998077
+# time = O(n log n)  # n = len(A), sorting
+# space = O(1)  # in-place sort
 class Solution(object):
     def smallestRangeII(self, A, K):
         """
@@ -19,9 +21,9 @@ class Solution(object):
             res = min(mx - mn, res)
         return res
 
-# V3 
-# Time:  O(nlogn)
-# Space: O(1)
+# V3
+# time = O(nlogn)
+# space = O(1)
 
 class Solution(object):
     def smallestRangeII(self, A, K):

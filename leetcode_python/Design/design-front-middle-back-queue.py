@@ -55,23 +55,35 @@ At most 1000 calls will be made to pushFront, pushMiddle, pushBack, popFront, po
 # https://leetcode.com/problems/design-front-middle-back-queue/discuss/954022/Python3-Use-Python...
 class FrontMiddleBackQueue:
 
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
         self.dq = []
 
+    # time = O(n), n = len(dq) (list insert at front)
+    # space = O(1)
     def pushFront(self, val):
         self.dq.insert(0, val)
 
+    # time = O(n), n = len(dq) (list insert at middle)
+    # space = O(1)
     def pushMiddle(self, val):
         self.dq.insert(len(self.dq) // 2, val)
 
+    # time = O(1) amortized
+    # space = O(1)
     def pushBack(self, val):
         self.dq.append(val)
 
+    # time = O(n), n = len(dq) (list pop from front)
+    # space = O(1)
     def popFront(self):
         if len(self.dq) == 0:
             return -1
         return self.dq.pop(0)
 
+    # time = O(n), n = len(dq) (list pop from middle)
+    # space = O(1)
     def popMiddle(self):
         if len(self.dq) == 0:
             return -1
@@ -79,6 +91,8 @@ class FrontMiddleBackQueue:
             return self.dq.pop(len(self.dq) // 2)
         return self.dq.pop((len(self.dq) - 1) // 2)
 
+    # time = O(1) amortized
+    # space = O(1)
     def popBack(self):
         if len(self.dq) == 0:
             return -1
@@ -89,29 +103,43 @@ class FrontMiddleBackQueue:
 # https://leetcode.com/problems/design-front-middle-back-queue/discuss/952168/Python-3-simple-list-implementation-faster-than-100.00
 class FrontMiddleBackQueue:
 
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
         self.q=[]
-        
+
+    # time = O(n), n = len(q) (list rebuild)
+    # space = O(n)
     def pushFront(self, val):
         self.q=[val] + self.q
 
+    # time = O(n), n = len(q) (list slicing/rebuild)
+    # space = O(n)
     def pushMiddle(self, val):
         n=len(self.q)//2
         self.q=self.q[:n] + [val] + self.q[n:]
 
+    # time = O(1) amortized
+    # space = O(1)
     def pushBack(self, val):
         self.q+=[val]
 
+    # time = O(n), n = len(q) (list pop from front)
+    # space = O(1)
     def popFront(self):
         if self.q:
             return self.q.pop(0)
-        else: return -1      
+        else: return -1
 
+    # time = O(n), n = len(q) (list pop from middle)
+    # space = O(1)
     def popMiddle(self):
         if self.q:
             return self.q.pop(len(self.q)//2-1+len(self.q)%2)
         else: return -1
-        
+
+    # time = O(1) amortized
+    # space = O(1)
     def popBack(self):
         if self.q:
             return self.q.pop(-1)
@@ -122,42 +150,58 @@ class FrontMiddleBackQueue:
 # https://leetcode.com/problems/design-front-middle-back-queue/discuss/952022/Python-balance-two-deques
 class FrontMiddleBackQueue:
 
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
         self.front = deque()
         self.back = deque()
 
+    # time = O(1) amortized (rebalances by at most one element)
+    # space = O(1)
     def _correct_size(self):
         while len(self.back) > len(self.front):
             self.front.append(self.back.popleft())
-        
+
         while len(self.front) > len(self.back) + 1:
             self.back.appendleft(self.front.pop())
-        
+
+    # time = O(1)
+    # space = O(1)
     def pushFront(self, val):
         self.front.appendleft(val)
         self._correct_size()
 
+    # time = O(1)
+    # space = O(1)
     def pushMiddle(self, val):
         if len(self.front) > len(self.back):
             self.back.appendleft(self.front.pop())
         self.front.append(val)
         self._correct_size()
 
+    # time = O(1)
+    # space = O(1)
     def pushBack(self, val):
         self.back.append(val)
         self._correct_size()
 
+    # time = O(1)
+    # space = O(1)
     def popFront(self):
         front = self.front if self.front else self.back
         ret = front.popleft() if front else -1
         self._correct_size()
         return ret
 
+    # time = O(1)
+    # space = O(1)
     def popMiddle(self):
         ret = self.front.pop() if self.front else -1
         self._correct_size()
         return ret
 
+    # time = O(1)
+    # space = O(1)
     def popBack(self):
         back = self.back if self.back else self.front
         ret = back.pop() if back else -1

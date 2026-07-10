@@ -65,7 +65,9 @@ class Solution:
 # V1
 # IDEA : UNION FIND
 # https://leetcode.com/problems/connecting-cities-with-minimum-cost/discuss/460868/Python-Union-Find
-import heapq 
+import heapq
+# time = O(E log E)  # E = len(connections); heap push/pop dominates
+# space = O(N)  # N = number of cities
 class Solution(object):
     def minimumCost(self, N, connections):
         """

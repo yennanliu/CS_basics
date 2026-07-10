@@ -53,6 +53,8 @@ return its level order traversal as:
 # IDEA: BFS
 from collections import deque
 
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def levelOrder(self, root):
         if not root:
@@ -90,6 +92,8 @@ class Solution(object):
 # IDEA: BFS
 from collections import deque
 
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def levelOrder(self, root):
         if not root:
@@ -118,6 +122,8 @@ class Solution(object):
 
 # V0
 # IDEA : BFS
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def levelOrder(self, root):
         """
@@ -144,6 +150,8 @@ class Solution(object):
 
 # V0'
 # IDEA : BFS
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def levelOrder(self, root):
         if not root:
@@ -166,6 +174,8 @@ class Solution(object):
 # V0'
 # IDEA : BFS
 import collections
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def levelOrder(self, root):
         if not root:
@@ -190,8 +200,10 @@ class Solution(object):
         return r
 
 # V0'
-# IDEA : BFS 
+# IDEA : BFS
 # Definition for a binary tree node.
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def levelOrder(self, root):
         res = []
@@ -240,6 +252,8 @@ class Solution(object):
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def levelOrder(self, root):
         res = []
@@ -259,13 +273,15 @@ class Solution(object):
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79616156
-# IDEA : DFS 
+# IDEA : DFS
 # Definition for a binary tree node.
 # class TreeNode(object):
 #     def __init__(self, x):
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def levelOrder(self, root):
         """
@@ -283,15 +299,17 @@ class Solution(object):
         if root.left: self.level(root.left, level + 1, res)
         if root.right: self.level(root.right, level + 1, res)
 
-# V1' 
+# V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79616156
-# IDEA : BFS 
+# IDEA : BFS
 # Definition for a binary tree node.
 # class TreeNode(object):
 #     def __init__(self, x):
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def levelOrder(self, root):
         """
@@ -325,6 +343,8 @@ class TreeNode:
         self.val = val
         self.left, self.right = None, None
 """
+# time = O(n)
+# space = O(n)
 class Solution:
     """
     @param root: A Tree
@@ -333,7 +353,7 @@ class Solution:
     def levelOrder(self, root):
         if root is None:
             return []
-            
+
         queue = deque([root])
         result = []
         while queue:
@@ -350,6 +370,8 @@ class Solution:
 
 # V1'''
 # https://www.jiuzhang.com/solution/binary-tree-level-order-traversal/#tag-highlight-lang-python
+# time = O(n)
+# space = O(n)
 class Solution:
     """
     @param root: The root of binary tree.
@@ -374,6 +396,8 @@ class Solution:
 
 # V1''''
 # https://www.jiuzhang.com/solution/binary-tree-level-order-traversal/#tag-highlight-lang-python
+# time = O(n^2)  # dfs re-scans the tree once per level, up to n levels
+# space = O(n)
 class Solution:
     """
     @param root: A Tree
@@ -401,14 +425,14 @@ class Solution:
         self.dfs(root.right, cur_level + 1, target_level, level)
 
 # V2
-# Time:  O(n)
-# Space: O(n)
 class TreeNode(object):
     def __init__(self, x):
         self.val = x
         self.left = None
         self.right = None
 
+# time = O(n)
+# space = O(n)
 class Solution(object):
     # @param root, a tree node
     # @return a list of lists of integers

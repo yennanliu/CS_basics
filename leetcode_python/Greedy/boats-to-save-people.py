@@ -2,7 +2,9 @@
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/82806311
-# IDEA : TWO POINTERS 
+# IDEA : TWO POINTERS
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def numRescueBoats(self, people, limit):
         """
@@ -20,9 +22,9 @@ class Solution(object):
             res += 1
         return res
         
-# V2 
-# Time:  O(nlogn)
-# Space: O(n)
+# V2
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def numRescueBoats(self, people, limit):
         """

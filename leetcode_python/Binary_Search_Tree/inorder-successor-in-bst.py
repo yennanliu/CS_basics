@@ -38,6 +38,8 @@ Output: null
 
 # V0
 # IDEA : DFS
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def inorderSuccessor(self, root, p):
         r = []
@@ -56,8 +58,10 @@ class Solution(object):
         
 # V0'
 # IDEA : DFS
+# time = O(n)
+# space = O(n)
 class Solution(object):
-    def inorderSuccessor(self, root, p):         
+    def inorderSuccessor(self, root, p):
         def inOrder(root):
             if not root:
                 return
@@ -73,6 +77,8 @@ class Solution(object):
 
 # V0''
 # IDEA : `bfs` like approach
+# time = O(h)  # h = tree height
+# space = O(1)
 class Solution(object):
     def inorderSuccessor(self, root, p):
         ans = None
@@ -93,13 +99,15 @@ class Solution(object):
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def inorderSuccessor(self, root, p):
         """
         :type root: TreeNode
         :type p: TreeNode
         :rtype: TreeNode
-        """           
+        """
         def inOrder(root):
             if not root:
                 return
@@ -113,15 +121,17 @@ class Solution(object):
             if l[i] == p:
                 return l[i+1] if i+1 < len(l) else None
 
-# V1' 
+# V1'
 # https://blog.csdn.net/danspace1/article/details/86667504
+# time = O(h)  # h = tree height
+# space = O(1)
 class Solution(object):
     def inorderSuccessor(self, root, p):
         """
         :type root: TreeNode
         :type p: TreeNode
         :rtype: TreeNode
-        """       
+        """
         ans = None
         while root:
             if p.val < root.val:
@@ -131,9 +141,9 @@ class Solution(object):
                 root = root.right
         return ans
         
-# V2 
-# Time:  O(h)
-# Space: O(1)
+# V2
+# time = O(h)
+# space = O(1)
 class Solution(object):
     def inorderSuccessor(self, root, p):
         """

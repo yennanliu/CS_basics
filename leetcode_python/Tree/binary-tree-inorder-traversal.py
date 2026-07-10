@@ -34,6 +34,8 @@ Follow up: Recursive solution is trivial, could you do it iteratively?
 # V0
 # IDEA : recursion
 # https://leetcode.com/problems/binary-tree-inorder-traversal/solutions/332283/python-recursive-and-iterative-solutions/
+# time = O(n)  # n = number of tree nodes
+# space = O(h)  # h = tree height (recursion stack)
 class Solution(object):
     # left -> root -> right
     def inorderTraversal(self, root):
@@ -52,11 +54,13 @@ class Solution(object):
 
 # V0'
 # IDEA : ITERATION
+# time = O(n)  # n = number of tree nodes
+# space = O(h)  # h = tree height (stack)
 class Solution:
     def inorderTraversal(self, root):
         stack = []
         res = []
-        
+
         while True:
             # NOTE !!! : we GO THROUGH left sub tree to the end first, and form our stack on the same time, then do in-order transversal
             while root:
@@ -73,6 +77,8 @@ class Solution:
         return res
 
 # V0'
+# time = O(n)  # n = number of tree nodes
+# space = O(h)  # h = tree height (recursion stack)
 class Solution(object):
     def inorderTraversal(self, root):
         answer = []
@@ -96,6 +102,8 @@ class Solution(object):
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)  # n = number of tree nodes
+# space = O(h)  # h = tree height (recursion stack)
 class Solution(object):
     def inorderTraversal(self, root):
         """
@@ -116,13 +124,15 @@ class Solution(object):
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79294461
-# Iteration 
+# Iteration
 # Definition for a binary tree node.
 # class TreeNode(object):
 #     def __init__(self, x):
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)  # n = number of tree nodes
+# space = O(h)  # h = tree height (stack)
 class Solution(object):
     def inorderTraversal(self, root):
         """
@@ -144,6 +154,8 @@ class Solution(object):
 # V1
 # IDEA : ITERATION
 # https://leetcode.com/problems/binary-tree-inorder-traversal/solutions/2256663/python-recursive-and-iterative-inorder-traversals/
+# time = O(n)  # n = number of tree nodes
+# space = O(h)  # h = tree height (stack)
 class Solution:
     def inorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
         stack = []
@@ -164,6 +176,8 @@ class Solution:
 
 # V1''
 # https://www.jiuzhang.com/solution/binary-tree-inorder-traversal/#tag-highlight-lang-python
+# time = O(n)  # n = number of tree nodes
+# space = O(h)  # h = tree height (stack)
 class Solution:
     """
     @param root: A Tree
@@ -193,16 +207,16 @@ class Solution:
                 inorder.append(stack[-1].val)             
         return inorder
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# Morris Traversal Solution
+# time = O(n)
+# space = O(1)
 class TreeNode(object):
     def __init__(self, x):
         self.val = x
         self.left = None
         self.right = None
 
-# Morris Traversal Solution
 class Solution(object):
     def inorderTraversal(self, root):
         """
@@ -229,10 +243,10 @@ class Solution(object):
 
         return result
 
-# V2' 
-# Time:  O(n)
-# Space: O(h)
+# V2'
 # Stack Solution
+# time = O(n)
+# space = O(h)  # h = tree height (stack)
 class Solution2(object):
     def inorderTraversal(self, root):
         """

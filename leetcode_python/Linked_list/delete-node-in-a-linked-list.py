@@ -48,7 +48,9 @@ The node to be deleted is in the list and is not a tail node
 
 # V0
 ### NODE : we don't have the access to the whole linked list
-#         -> we can only find a "tricky" way solve this problem via the given conditions 
+#         -> we can only find a "tricky" way solve this problem via the given conditions
+# time = O(1)
+# space = O(1)
 class Solution:
     def deleteNode(self, node):
         node.val = node.next.val
@@ -72,6 +74,8 @@ class Solution:
 
 # V1
 # https://leetcode.com/problems/delete-node-in-a-linked-list/discuss/847113/Python-Solution
+# time = O(1)
+# space = O(1)
 class Solution:
     def deleteNode(self, node):
         node.val = node.next.val
@@ -79,6 +83,8 @@ class Solution:
 
 # V1'
 # https://leetcode.com/problems/delete-node-in-a-linked-list/discuss/140910/Python-
+# time = O(1)
+# space = O(1)
 class Solution:
     def deleteNode(self, node):
         node.val = node.next.val
@@ -86,17 +92,21 @@ class Solution:
 
 # V1'
 # http://bookshadow.com/weblog/2015/07/15/leetcode-delete-node-linked-list/
+# time = O(1)
+# space = O(1)
 class Solution:
     # @param {ListNode} node
     # @return {void} Do not return anything, modify node in-place instead.
     def deleteNode(self, node):
         ### ORDERING MATTER (can't change)
-        ### step 1) get the value of next node 
-        ### step 2) point to next node 
+        ### step 1) get the value of next node
+        ### step 2) point to next node
         node.val = node.next.val
         node.next = node.next.__next__
 
 # V2
+# time = O(1)
+# space = O(1)
 class Solution(object):
     # @param {ListNode} node
     # @return {void} Do not return anything, modify node in-place instead.

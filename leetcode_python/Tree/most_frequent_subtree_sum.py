@@ -29,6 +29,8 @@ The number of nodes in the tree is in the range [1, 104].
 
 # V0
 # IDEA : DFS + TREE
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def findFrequentTreeSum(self, root):
         """
@@ -52,6 +54,8 @@ class Solution(object):
 
 # V0'
 # IDEA : DFS + TREE
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def findFrequentTreeSum(self, root):
         if not root: return []
@@ -71,6 +75,8 @@ class Solution(object):
 
 # V0'
 # IDEA : DFS + COUNTER
+# time = O(n)
+# space = O(n)
 from collections import Counter
 class Solution(object):
     def findFrequentTreeSum(self, root):
@@ -94,6 +100,8 @@ class Solution(object):
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79435381
 # IDEA : TREE
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def findFrequentTreeSum(self, root):
         """
@@ -123,6 +131,8 @@ class Solution(object):
 # V1'
 # https://leetcode.com/problems/most-frequent-subtree-sum/discuss/98675/JavaC%2B%2BPython-DFS-Find-Subtree-Sum
 # IDEA : TREE
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def findFrequentTreeSum(self, root):
         if root is None: return []
@@ -141,6 +151,8 @@ class Solution(object):
 # V1''
 # https://leetcode.com/problems/most-frequent-subtree-sum/discuss/98749/Python-clean-solution-beats-97
 # IDEA : TREE
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def findFrequentTreeSum(self, root):
         """
@@ -178,6 +190,8 @@ class TreeNode(object):
         self.left = None
         self.right = None
 
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def findFrequentTreeSum(self, root):
         """

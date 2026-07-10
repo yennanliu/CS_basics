@@ -33,6 +33,8 @@ What if elements of nums2 are stored on disk, and the memory is limited such tha
 
 # V0
 # IDEA : 2 POINTERS
+# time = O(m log m + n log n)  # sorting both arrays
+# space = O(1)  # excluding output
 class Solution(object):
     def intersect(self, nums1, nums2):
         res = []
@@ -50,7 +52,9 @@ class Solution(object):
                 j += 1
         return res
   
-# V0' 
+# V0'
+# time = O(m + n)
+# space = O(min(m, n))
 class Solution(object):
     def intersect(self, nums1, nums2):
         """
@@ -60,9 +64,11 @@ class Solution(object):
         """
         return list((collections.Counter(nums1) & collections.Counter(nums2)).elements())
 
-# V1 
+# V1
 # https://blog.csdn.net/coder_orz/article/details/51496278
 # IDEA : COUNTER
+# time = O(m + n)
+# space = O(min(m, n))
 class Solution(object):
     def intersect(self, nums1, nums2):
         """
@@ -72,9 +78,11 @@ class Solution(object):
         """
         return list((collections.Counter(nums1) & collections.Counter(nums2)).elements())
 
-# V1' 
+# V1'
 # https://blog.csdn.net/coder_orz/article/details/51496278
-# IDEA : TWO POINTER 
+# IDEA : TWO POINTER
+# time = O(m log m + n log n)  # sorting both arrays
+# space = O(1)  # excluding output
 class Solution(object):
     def intersect(self, nums1, nums2):
         """
@@ -98,9 +106,11 @@ class Solution(object):
 
         return res
 
-# V1'' 
+# V1''
 # https://blog.csdn.net/coder_orz/article/details/51496278
-# IDEA : DICT 
+# IDEA : DICT
+# time = O(m + n)
+# space = O(min(m, n))
 class Solution(object):
     def intersect(self, nums1, nums2):
         """
@@ -119,10 +129,10 @@ class Solution(object):
 
         return res
 
-# V2 
-# Time:  O(m + n)
-# Space: O(min(m, n))
+# V2
 # Hash solution.
+# time = O(m + n)
+# space = O(min(m, n))
 import collections
 class Solution(object):
     def intersect(self, nums1, nums2):
@@ -158,11 +168,11 @@ class Solution(object):
             intersect.extend([i] * c[i])
         return intersect
 
-# V3 
+# V3
 # If the given array is already sorted, and the memory is limited, and (m << n or m >> n).
-# Time:  O(min(m, n) * log(max(m, n)))
-# Space: O(1)
 # Binary search solution.
+# time = O(min(m, n) * log(max(m, n)))
+# space = O(1)
 class Solution(object):
     def intersect(self, nums1, nums2):
         """
@@ -194,11 +204,11 @@ class Solution(object):
 
         return res
 
-# V4 
+# V4
 # If the given array is already sorted, and the memory is limited or m ~ n.
-# Time:  O(m + n)
-# Soace: O(1)
 # Two pointers solution.
+# time = O(m + n)
+# space = O(1)
 class Solution(object):
     def intersect(self, nums1, nums2):
         """
@@ -223,11 +233,11 @@ class Solution(object):
 
         return res
 
-# V5 
+# V5
 # If the given array is not sorted, and the memory is limited.
-# Time:  O(max(m, n) * log(max(m, n)))
-# Space: O(1)
 # Two pointers solution.
+# time = O(max(m, n) * log(max(m, n)))
+# space = O(1)
 class Solution(object):
     def intersect(self, nums1, nums2):
         """

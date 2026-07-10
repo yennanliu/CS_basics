@@ -36,6 +36,8 @@ The number of nodes in both trees is in the range [0, 100].
 
 # V0
 # IDEA: DFS
+# time = O(N)
+# space = O(H)
 class Solution(object):
     def isSameTree(self, p, q):
         if not p and not q:
@@ -51,6 +53,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: DFS
+# time = O(N)
+# space = O(H)
 class Solution(object):
     def isSameTree(self, p, q):
         if not p and not q:
@@ -67,9 +71,11 @@ class Solution(object):
 
 # V0
 # IDEA : Recursion
+# time = O(N)
+# space = O(H)
 class Solution(object):
     def isSameTree(self, p, q):
-        
+
         def dfs(p, q):
             ### NOTE : we need to put this as 1st condition, or will cause "not sub tree" error
             if not p and not q:
@@ -87,6 +93,8 @@ class Solution(object):
 
 # V0'
 # IDEA : iteration
+# time = O(N)
+# space = O(N)
 class Solution:
     def isSameTree(self, p, q):
         def check(p, q):
@@ -98,7 +106,7 @@ class Solution:
                 return False
             if p.val != q.val:
                 return False
-            return True      
+            return True
         queue = [(p, q)]
         while queue:
             p, q = queue.pop(0)
@@ -112,9 +120,11 @@ class Solution:
 
 # V0''
 # IDEA : Recursion
+# time = O(N)
+# space = O(H)
 class Solution(object):
     def isSameTree(self, p, q):
-        
+
         def dfs(p, q):
             ### NOTE : we need to put this as 1st condition, or will cause "not sub tree" error
             if (not p and not q):
@@ -134,6 +144,8 @@ class Solution(object):
 
 # V0'''
 # IDEA : Recursion
+# time = O(N)
+# space = O(H)
 class Solution(object):
     def isSameTree(self, p, q):
         # if p != None and q != None
@@ -147,6 +159,8 @@ class Solution(object):
 # V0''''
 # IDEA : Iteration (DFS)
 # https://leetcode.com/problems/same-tree/solution/
+# time = O(N)
+# space = O(H)
 class Solution(object):
     def isSameTree(self, p, q):
         def dfs(p, q):
@@ -164,8 +178,8 @@ class Solution(object):
 # V1
 # https://leetcode.com/problems/same-tree/solution/
 # IDEA : Recursion
-# Time complexity : O(N), where N is a number of nodes in the tree, since one visits each node exactly once.
-# Space complexity : O(logN) in the best case of completely balanced tree and O(N) in the worst case of completely unbalanced tree, to keep a recursion stack.
+# time = O(N)
+# space = O(H)
 class Solution:
     def isSameTree(self, p, q):
         """
@@ -196,8 +210,8 @@ class Solution:
 # V1'
 # https://leetcode.com/problems/same-tree/solution/
 # IDEA : Iteration  (BFS)
-# Time complexity : O(N) since each node is visited exactly once.
-# Space complexity : O(log(N)) in the best case of completely balanced tree and O(N) in the worst case of completely unbalanced tree, to keep a deque.
+# time = O(N)
+# space = O(N)
 from collections import deque
 class Solution:
     def isSameTree(self, p, q):
@@ -230,8 +244,8 @@ class Solution:
 # V1''
 # http://bookshadow.com/weblog/2016/08/18/leetcode-same-tree/
 # IDEA : Recursion
-# time : O(N), where N is a number of nodes in the tree
-# space :  O(2**n)
+# time = O(N)
+# space = O(H)
 # Definition for a binary tree node.
 # class TreeNode(object):
 #     def __init__(self, x):
@@ -254,6 +268,8 @@ class Solution(object):
 # V1'''
 # https://www.cnblogs.com/loadofleaf/p/5502249.html
 # IDEA : Iteration (DFS)
+# time = O(N)
+# space = O(H)
 # Definition for a binary tree node.
 # class TreeNode(object):
 #     def __init__(self, x):
@@ -280,14 +296,14 @@ class Solution(object):
         return dfs(p,q)
 
 # V2
-# Time:  O(n)
-# Space: O(h), h is height of binary tree
 class TreeNode(object):
     def __init__(self, x):
         self.val = x
         self.left = None
         self.right = None
 
+# time = O(N)
+# space = O(H)
 class Solution(object):
     # @param p, a tree node
     # @param q, a tree node

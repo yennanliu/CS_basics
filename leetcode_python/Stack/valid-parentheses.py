@@ -38,6 +38,8 @@ Output: true
 
 
 # V0
+# time = O(n), n = len(s)
+# space = O(n)
 class Solution(object):
     def isValid(self, s):
         if not s:
@@ -67,6 +69,8 @@ class Solution(object):
 
 
 # V0-1
+# time = O(n), n = len(s)
+# space = O(n)
 class Solution(object):
     def isValid(self, s):
         stack = []
@@ -86,6 +90,8 @@ class Solution(object):
 
 # V0
 # IDEA : STACK + DICT
+# time = O(n), n = len(s)
+# space = O(n)
 class Solution(object):
     def isValid(self, s):
         # edge case
@@ -108,6 +114,8 @@ class Solution(object):
 
 # V0'
 # IDEA : STACK + DICT
+# time = O(n), n = len(s)
+# space = O(n)
 class Solution:
     # @return a boolean
     def isValid(self, s):
@@ -121,6 +129,8 @@ class Solution:
 
 # V0''
 # IDEA : queue + dict
+# time = O(n), n = len(s)
+# space = O(n)
 class Solution(object):
     def isValid(self, s):
         d = {'(':')', '{':'}', '[':']'}
@@ -143,6 +153,8 @@ class Solution(object):
 
 # V0'''
 # IDEA : STACK + DICT
+# time = O(n), n = len(s)
+# space = O(n)
 class Solution:
     def isValid(self, s):
         lookup = {"(":")", "[":"]", "{":"}"}
@@ -161,6 +173,8 @@ class Solution:
 # V1
 # https://blog.csdn.net/coder_orz/article/details/51697963
 # IDEA : STACK
+# time = O(n), n = len(s)
+# space = O(n)
 class Solution(object):
     def isValid(self, s):
         """
@@ -176,9 +190,11 @@ class Solution(object):
                 pars.append(c)
         return len(pars) == 1
 
-# V1' 
+# V1'
 # https://blog.csdn.net/coder_orz/article/details/51697963
-# IDEA : STACK 
+# IDEA : STACK
+# time = O(n), n = len(s)
+# space = O(n)
 class Solution(object):
     def isValid(self, s):
         """
@@ -195,7 +211,9 @@ class Solution(object):
                 pars.append(c)
         return len(pars) == 1
 
-# V1'' 
+# V1''
+# time = O(n), n = len(s)
+# space = O(n)
 class Solution:
     # @return a boolean
     def isValid(self, s):
@@ -210,9 +228,9 @@ class Solution:
 #     print(Solution().isValid("()[]{}"))
 #     print(Solution().isValid("()[{]}"))
 
-# V2 
-# Time:  O(n)
-# Space: O(n)
+# V2
+# time = O(n)
+# space = O(n)
 class Solution(object):
     # @return a boolean
     def isValid(self, s):

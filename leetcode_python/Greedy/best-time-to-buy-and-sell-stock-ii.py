@@ -1,5 +1,7 @@
-# V0 
+# V0
 # IDEA : GREEDY
+# time = O(n)
+# space = O(1)
 class Solution:
     def maxProfit(self, prices):
         profit = 0
@@ -24,6 +26,8 @@ class Solution:
 # -> when price = 7, => r=0
 # -> when price = 4, => r=0+0
 # -> so profit=0
+# time = O(n)
+# space = O(1)
 class Solution:
     # @param prices, a list of integer
     # @return an integer
@@ -54,7 +58,9 @@ assert s.maxProfit([_ for _ in range(99)])==98
 
 # V2
 # https://blog.csdn.net/coder_orz/article/details/52072136
-# IDEA : GREEDY 
+# IDEA : GREEDY
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def maxProfit(self, prices):
         """
@@ -73,9 +79,9 @@ class Solution(object):
             i = j + 1
         return res
 
-# V3 
-# Time:  O(n)
-# Space: O(1)
+# V3
+# time = O(n)
+# space = O(1)
 class Solution(object):
     # @param prices, a list of integer
     # @return an integer

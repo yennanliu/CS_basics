@@ -37,6 +37,8 @@ The number of the nodes in the tree will be in the range [1, 10^4]
 
 # V0
 # IDEA: DFS (post order) + serialization + hashmap (GPT)
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def findDuplicateSubtrees(self, root):
         """
@@ -71,6 +73,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: DFS (post order) + serialization + hashmap (GEMINI)
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def findDuplicateSubtrees(self, root):
         """
@@ -154,6 +158,8 @@ class Solution(object):
 #
 #
 import collections
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def findDuplicateSubtrees(self, root):
         res = []
@@ -180,6 +186,8 @@ class Solution(object):
 
 # V0'
 import collections
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def findDuplicateSubtrees(self, root):
         self.res = []
@@ -197,7 +205,9 @@ class Solution(object):
         return path
 
 # V0''
-# IDEA : DFS 
+# IDEA : DFS
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def findDuplicateSubtrees(self, root):
         count = collections.Counter()
@@ -222,6 +232,8 @@ class Solution(object):
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def findDuplicateSubtrees(self, root):
         """
@@ -249,8 +261,10 @@ class Solution(object):
 ### Test case : dev 
 
 # V1'
-# IDEA : DFS 
+# IDEA : DFS
 # https://leetcode.com/problems/find-duplicate-subtrees/solution/
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def findDuplicateSubtrees(self, root):
         count = collections.Counter()
@@ -269,6 +283,8 @@ class Solution(object):
 # V1''
 # IDEA :  Unique Identifier
 # https://leetcode.com/problems/find-duplicate-subtrees/solution/
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def findDuplicateSubtrees(self, root):
         trees = collections.defaultdict()
@@ -285,9 +301,9 @@ class Solution(object):
         lookup(root)
         return ans
 
-# V2 
-# Time:  O(n)
-# Space: O(n)
+# V2
+# time = O(n)
+# space = O(n)
 import collections
 class Solution(object):
     def findDuplicateSubtrees(self, root):
@@ -308,8 +324,8 @@ class Solution(object):
         getid(root, lookup, trees)
         return [roots[0] for roots in trees.values() if len(roots) > 1]
 
-# Time:  O(n * h)
-# Space: O(n * h)
+# time = O(n * h)
+# space = O(n * h)
 class Solution2(object):
     def findDuplicateSubtrees(self, root):
         """

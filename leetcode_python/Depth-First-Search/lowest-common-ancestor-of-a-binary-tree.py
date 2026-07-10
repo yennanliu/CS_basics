@@ -184,6 +184,8 @@ class Solution:
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)
+# space = O(h)  # h = tree height (worst case O(n))
 class Solution(object):
     def lowestCommonAncestor(self, root, p, q):
         """
@@ -202,6 +204,8 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/lowest-common-ancestor-of-a-binary-tree/#tag-highlight-lang-python
+# time = O(n)
+# space = O(h)  # h = tree height (worst case O(n))
 class Solution:
     """
     @param: root: The root of the binary search tree.
@@ -240,7 +244,9 @@ class Solution:
 
 # V1'
 # https://leetcode.com/articles/lowest-common-ancestor-of-a-binary-tree/
-# IDEA : BFS 
+# IDEA : BFS
+# time = O(n)
+# space = O(n)
 class Solution:
 
     def lowestCommonAncestor(self, root, p, q):
@@ -287,6 +293,8 @@ class Solution:
 # V1'''
 # IDEA : Recursive Approach
 # https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/solution/
+# time = O(n)
+# space = O(h)  # h = tree height (worst case O(n))
 class Solution:
 
     def __init__(self):
@@ -329,6 +337,8 @@ class Solution:
 # V1''''
 # IDEA :  Iterative using parent pointers
 # https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/solution/
+# time = O(n)
+# space = O(n)
 class Solution:
 
     def lowestCommonAncestor(self, root, p, q):
@@ -375,6 +385,8 @@ class Solution:
 # V1''''
 # IDEA :  Iterative without parent pointers
 # https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/solution/
+# time = O(n)
+# space = O(h)  # h = tree height (worst case O(n))
 class Solution:
 
     # Three static flags to keep track of post-order traversal.
@@ -457,9 +469,9 @@ class Solution:
 
         return None
 
-# V2 
-# Time:  O(n)
-# Space: O(h)
+# V2
+# time = O(n)
+# space = O(h)  # h = tree height (worst case O(n))
 class Solution(object):
     # @param {TreeNode} root
     # @param {TreeNode} p

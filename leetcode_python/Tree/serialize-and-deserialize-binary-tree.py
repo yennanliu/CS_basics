@@ -39,6 +39,8 @@ The number of nodes in the tree is in the range [0, 104].
 
 # V0
 # IDRA : DFS
+# time = O(n)
+# space = O(n)
 class Codec:
 
     def serialize(self, root):
@@ -82,6 +84,8 @@ class Codec:
   
 # V0
 # IDEA : DFS + tree property + recursive  + queue
+# time = O(n)
+# space = O(n)
 class Codec:
     ### DFS
     def serialize(self, root):
@@ -123,6 +127,8 @@ class Codec:
 # V0'
 # IDEA : DFS + tree property + recursive + collections.deque
 import collections
+# time = O(n)
+# space = O(n)
 class Codec:
     ### DFS
     def serialize(self, root):
@@ -164,6 +170,8 @@ class Codec:
 # CHECK Solution description !!!
 # https://leetcode.com/problems/serialize-and-deserialize-binary-tree/solution/
 # Deserialization 
+# time = O(n)
+# space = O(n)
 class Codec:
 
     def serialize(self, root):
@@ -233,6 +241,8 @@ class Codec:
 # pop_left: a
 # deque(['b', 'c', 'd', 'e', 'f'])
 import collections
+# time = O(n)
+# space = O(n)
 class Codec:
     def serialize(self, root):
         """Encodes a tree to a single string.
@@ -367,6 +377,8 @@ class Codec:
 # V1'
 # http://bookshadow.com/weblog/2015/10/26/leetcode-serialize-and-deserialize-binary-tree/
 # IDEA : BINARY TREE TRANVERSE
+# time = O(n)
+# space = O(n)
 class Codec:
 
     def serialize(self, root):
@@ -396,6 +408,8 @@ class Codec:
 # V1''
 # http://bookshadow.com/weblog/2015/10/26/leetcode-serialize-and-deserialize-binary-tree/
 # IDEA : BINARY TREE TRANVERSE (BY LAYER)
+# time = O(n)
+# space = O(n)
 class Codec:
     def serialize(self, root):
         """Encodes a tree to a single string.
@@ -446,6 +460,8 @@ class Codec:
 # http://bookshadow.com/weblog/2015/10/26/leetcode-serialize-and-deserialize-binary-tree/
 # IDEA : JSON + DICT
 import json
+# time = O(n)
+# space = O(n)
 class Codec:
     def serialize(self, root):
         """Encodes a tree to a single string.
@@ -501,6 +517,8 @@ class Codec:
 # http://bookshadow.com/weblog/2015/10/26/leetcode-serialize-and-deserialize-binary-tree/
 # IDEA : JSON + TUPLE 
 import json
+# time = O(n)
+# space = O(n)
 class Codec:
     def serialize(self, root):
         def tuplify(root):
@@ -518,6 +536,8 @@ class Codec:
 
 # V1'''''
 # https://leetcode.com/problems/serialize-and-deserialize-binary-tree/discuss/74259/Recursive-preorder-Python-and-C%2B%2B-O(n)
+# time = O(n)
+# space = O(n)
 class Codec:
     def serialize(self, root):
         def doit(node):
@@ -546,6 +566,8 @@ class Codec:
 # V1''''''
 # IDEA : BFS 
 # https://leetcode.com/problems/serialize-and-deserialize-binary-tree/discuss/166904/Python-or-BFS-tm
+# time = O(n)
+# space = O(n)
 class Codec:
     def serialize(self, root):    
         if not root: return ""

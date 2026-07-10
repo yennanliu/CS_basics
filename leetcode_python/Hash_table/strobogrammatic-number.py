@@ -31,7 +31,9 @@ num does not contain any leading zeros except for zero itself.
 
 """
 
-# V0 
+# V0
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def isStrobogrammatic(self, num):
         d = {'0':'0','1':'1','6':'9','8':'8','9':'6'}
@@ -56,6 +58,8 @@ class Solution(object):
 #     ...: Solution().isStrobogrammatic(num)    
 #     ...: 
 # Out[20]: True
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def isStrobogrammatic(self, num):
         """
@@ -72,6 +76,8 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/strobogrammatic-number/#tag-highlight-lang-python
+# time = O(n)
+# space = O(1)
 class Solution:
     """
     @param num: a string
@@ -87,8 +93,10 @@ class Solution:
             i, j = i+1, j-1
         return True
 
-# V2  
-# need to double check 
+# V2
+# need to double check
+# time = O(n)
+# space = O(1)
 class Solution:
     def isStrobogrammatic(self, nums):
         lookup = {'0':'0', '1':'1', '6':'9', '8':'8', '9':'6'}
@@ -100,7 +108,9 @@ class Solution:
                 return False
         return True 
 
-# V3 
+# V3
+# time = O(n)
+# space = O(1)
 class Solution:
     # @param {string} num
     # @return {boolean}

@@ -64,6 +64,8 @@ class Node:
         self.key=key
         self.val=val
         self.count=count
+# time = O(1) per get/put operation
+# space = O(k), k = capacity of cache
 class LFUCache:
     
     def __init__(self, capacity):
@@ -124,6 +126,8 @@ class Node:
         self.key=key
         self.val=val
         self.count=count
+# time = O(1) per get/put operation
+# space = O(k), k = capacity of cache
 class LFUCache:
     
     def __init__(self, capacity):
@@ -176,10 +180,10 @@ class LFUCache:
             self.count_node[1][key]=node
             self.minV=1
 
-# V2 
+# V2
 # https://github.com/kamyu104/LeetCode-Solutions/blob/master/Python/lfu-cache.py
-# Time:  O(1), per operation
-# Space: O(k), k is the capacity of cache
+# time = O(1), per operation
+# space = O(k), k is the capacity of cache
 import collections
 class ListNode(object):
     def __init__(self, key, value, freq):

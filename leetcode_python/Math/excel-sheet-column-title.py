@@ -39,6 +39,8 @@ Constraints:
 
 # V0
 # https://www.jianshu.com/p/591d3a2ab45d
+# time = O(logn)
+# space = O(logn)
 class Solution(object):
     def convertToTitle(self, n):
         tar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -77,6 +79,8 @@ class Solution(object):
 #         return res[::-1]
 
 # V0'
+# time = O(n)  # n = len(s)
+# space = O(1)
 class Solution(object):
     def titleToNumber(self, s):
         """
@@ -91,6 +95,8 @@ class Solution(object):
 
 # V0''
 # https://leetcode.com/problems/excel-sheet-column-title/discuss/205987/Python-Solution-with-explanation
+# time = O(logn)
+# space = O(logn)
 class Solution:
     def convertToTitle(self, n):
         """
@@ -113,6 +119,8 @@ class Solution:
         return res
 
 # V0'''
+# time = O(logn)
+# space = O(logn)
 class Solution(object):
     def convertToTitle(self, n):
         tar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -127,6 +135,8 @@ class Solution(object):
 
 # V1
 # https://www.jianshu.com/p/591d3a2ab45d
+# time = O(logn)
+# space = O(logn)
 class Solution(object):
     def convertToTitle(self, n):
         tar = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -141,6 +151,8 @@ class Solution(object):
 
 # V1'
 # https://leetcode.com/problems/excel-sheet-column-title/discuss/205987/Python-Solution-with-explanation
+# time = O(logn)
+# space = O(logn)
 class Solution:
     def convertToTitle(self, n):
         """
@@ -165,6 +177,8 @@ class Solution:
 # V1''
 # https://www.cnblogs.com/loadofleaf/p/5093574.html
 # python 2
+# time = O(logn)
+# space = O(logn)
 class Solution(object):
     def convertToTitle(self, n):
         """
@@ -180,8 +194,10 @@ class Solution(object):
         
 # V1'''
 # https://blog.csdn.net/coder_orz/article/details/51406455
+# time = O(n)  # n = len(s)
+# space = O(1)
 class Solution(object):
-    # transform   26 Carry ->  10 Carry (Decimal)  
+    # transform   26 Carry ->  10 Carry (Decimal)
     def titleToNumber(self, s):
         """
         :type s: str
@@ -192,9 +208,9 @@ class Solution(object):
             sum = sum*26 + ord(c) - 64 # 64 = ord('A') - 1
         return sum
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)  # n = len(s)
+# space = O(1)
 class Solution(object):
     def titleToNumber(self, s):
         """

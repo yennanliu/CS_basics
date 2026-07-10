@@ -1,8 +1,10 @@
 # V1 : dev  
 
-# V2 
+# V2
 # https://blog.csdn.net/fuxuemingzhu/article/details/79457764
 import collections
+# time = O(n)  # n = len(answers)
+# space = O(n)
 class Solution(object):
     def numRabbits(self, answers):
         """
@@ -16,6 +18,8 @@ class Solution(object):
 # V3 
 # http://bookshadow.com/weblog/2018/02/16/leetcode-rabbits-in-forest/
 #### Greedy Algorithm ###
+# time = O(n)  # n = len(answers)
+# space = O(n)
 class Solution(object):
     def numRabbits(self, answers):
         """
@@ -33,8 +37,8 @@ class Solution(object):
         return ans
 
 # V4
-# Time:  O(n)
-# Space: O(n)
+# time = O(n)  # n = len(answers)
+# space = O(n)
 import collections
 class Solution(object):
     def numRabbits(self, answers):

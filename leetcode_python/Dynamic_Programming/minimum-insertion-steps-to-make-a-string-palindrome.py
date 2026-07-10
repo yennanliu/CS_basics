@@ -64,6 +64,8 @@ s consists of lowercase English letters.
 #
 # Step3.
 # return n - dp[n][n]
+# time = O(n^2)
+# space = O(n^2)
 class Solution(object):
      def minInsertions(self, s):
             n = len(s)
@@ -76,6 +78,8 @@ class Solution(object):
 # V1'
 # IDEA : DP
 # https://leetcode.com/problems/minimum-insertion-steps-to-make-a-string-palindrome/discuss/476662/Python-Clean-DP
+# time = O(n^2)
+# space = O(n^2)
 class Solution(object):
     def minInsertions(self, s):
         n = len(s)
@@ -88,6 +92,8 @@ class Solution(object):
 # V1''
 # IDEA : DP
 # https://leetcode.com/problems/minimum-insertion-steps-to-make-a-string-palindrome/discuss/1630626/Python-or-DP-or-Simplest-Solution
+# time = O(n^3)
+# space = O(n^3)
 class Solution:
     def minInsertions(self, s: str, lookup={}) -> int:
         if len(s) <= 1:
@@ -102,6 +108,8 @@ class Solution:
 # V1'''
 # IDEA : DP
 # https://leetcode.com/problems/minimum-insertion-steps-to-make-a-string-palindrome/discuss/470733/Python-concise-dp-solution
+# time = O(n^2)
+# space = O(n^2)
 class Solution:
     def minInsertions(self, s: str) -> int:
         N=len(s)

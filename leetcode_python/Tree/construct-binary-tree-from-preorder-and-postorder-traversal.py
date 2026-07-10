@@ -15,6 +15,8 @@
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n^2), pre.index() scan + list slicing at each of n nodes
+# space = O(n^2), slicing creates new lists at each level
 class Solution(object):
     def constructFromPrePost(self, pre, post):
         """
@@ -31,9 +33,9 @@ class Solution(object):
         root.right = self.constructFromPrePost(pre[idx:], post[idx-1:-1])
         return root
 
-# V2 
-# Time:  O(n)
-# Space: O(h)
+# V2
+# time = O(n)
+# space = O(h)
 class TreeNode(object):
     def __init__(self, x):
         self.val = x
@@ -63,8 +65,8 @@ class Solution(object):
         return stack[0]
 
 
-# Time:  O(n)
-# Space: O(n)
+# time = O(n)
+# space = O(n)
 class Solution2(object):
     def constructFromPrePost(self, pre, post):
         """

@@ -170,10 +170,10 @@ def summaryRanges(self, nums):
 def summaryRanges(self, nums):
     ranges = r = []
     for n in nums:
-        if `n-1` not in r:
+        if repr(n-1) not in r:
             r = []
             ranges += r,
-        r[1:] = `n`,
+        r[1:] = repr(n),
     return map('->'.join, ranges)
 
 # V2

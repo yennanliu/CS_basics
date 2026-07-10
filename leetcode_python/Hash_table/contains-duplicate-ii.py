@@ -20,8 +20,8 @@ Output: false
 
 """
 
-# Time:  O(n)
-# Space: O(n)
+# time = O(n)
+# space = O(n)
 #
 # Given an array of integers and an integer k, return true if
 # and only if there are two distinct indices i and j in the array
@@ -32,7 +32,9 @@ Output: false
 
 # V1 
 # https://blog.csdn.net/coder_orz/article/details/51674266
-# IDEA : HASH TABLE 
+# IDEA : HASH TABLE
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def containsNearbyDuplicate(self, nums, k):
         """
@@ -62,6 +64,8 @@ class Solution(object):
 # In [16]: window.discard(3)
 # In [17]: window
 # Out[17]: {4}
+# time = O(n)
+# space = O(min(n, k))
 class Solution(object):
     def containsNearbyDuplicate(self, nums, k):
         """
@@ -81,6 +85,8 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/contains-duplicate-ii/#tag-highlight-lang-python
+# time = O(n)
+# space = O(n)
 class Solution:
     """
     @param nums: the given array
@@ -97,7 +103,9 @@ class Solution:
             dic[value] = index
         return False
 
-# V2 
+# V2
+# time = O(n)
+# space = O(n)
 class Solution:
     # @param {integer[]} nums
     # @param {integer} k

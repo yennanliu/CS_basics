@@ -38,6 +38,8 @@ isConnected[i][j] == isConnected[j][i]
 
 # V0
 # BFS
+# time = O(n^2)
+# space = O(n^2)
 from collections import defaultdict
 class Solution(object):
     def findCircleNum(self, M):
@@ -89,6 +91,8 @@ class Solution(object):
 
 # V0'
 # IDEA : DFS ITERATIVE
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def findCircleNum(self, M):
         res = 0
@@ -109,6 +113,8 @@ class Solution(object):
 
 # V0''
 # IDEA : UNION FIND
+# time = O(n^2 * α(n))
+# space = O(n)
 class UnionFind(object):
     def __init__(self, n):
         self.n = n
@@ -188,6 +194,8 @@ class Solution:
 # V1
 # IDEA : DFS ITERATIVE
 # https://leetcode.com/problems/number-of-provinces/discuss/204048/Python-solution
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def findCircleNum(self, M):
         res = 0
@@ -208,6 +216,8 @@ class Solution(object):
 
 # V1' : DFS RECURSIVE
 # https://leetcode.com/problems/number-of-provinces/discuss/204048/Python-solution
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def findCircleNum(self, M):
         def dfs(i):
@@ -228,6 +238,8 @@ class Solution(object):
 # V1''
 # IDEA : BFS
 # https://leetcode.com/problems/number-of-provinces/discuss/741509/Python
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def findCircleNum(self, M):
         friendships = {i : set() for i in range(len(M[0]))}
@@ -267,6 +279,8 @@ class Solution(object):
 # V1''''
 # https://leetcode.com/problems/number-of-provinces/discuss/269818/Union-Find-Python-solution
 # IDEA : UNION FIND + ROUTE COMPRESSION
+# time = O(n^2 * α(n))
+# space = O(n)
 class UnionFind(object):
     def __init__(self, n):
         self.n = n
@@ -315,6 +329,8 @@ class Solution:
 # V1'''''
 # IDEA : BFS
 # https://leetcode.com/problems/number-of-provinces/discuss/1364979/Python-or-BFS
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def findCircleNum(self, isConnected):
             dic = collections.defaultdict(list)
@@ -343,6 +359,8 @@ class Solution(object):
 # V1''''''
 # IDEA : DFS
 # https://leetcode.com/problems/number-of-provinces/discuss/101349/Python-Simple-Explanation
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def findCircleNum(self, A):
         N = len(A)

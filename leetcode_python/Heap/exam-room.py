@@ -4,6 +4,8 @@
 # http://bookshadow.com/weblog/2018/06/17/leetcode-exam-room/
 # https://blog.csdn.net/fuxuemingzhu/article/details/83141523
 # IDEA : bisect.insort :  https://www.cnblogs.com/skydesign/archive/2011/09/02/2163592.html
+# time = O(n) per seat/leave call (linear scan + bisect.insort shifting)
+# space = O(n)
 class ExamRoom(object):
 
     def __init__(self, N):
@@ -44,10 +46,9 @@ class ExamRoom(object):
 # param_1 = obj.seat()
 # obj.leave(p)
 
-# V2 
-# Time:  seat:  O(logn), amortized
-#        leave: O(logn)
-# Space: O(n)
+# V2
+# time = O(log n) amortized per seat/leave call
+# space = O(n)
 import heapq
 class ExamRoom(object):
 

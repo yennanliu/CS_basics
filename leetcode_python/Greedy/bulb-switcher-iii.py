@@ -52,6 +52,8 @@ light is a permutation of  [1, 2, ..., n]
 # cur_open records how many bulb are on currently
 # and if max_open == cur_open on idx=k
 #   -> means all bulb on left are on, so current bulb (idx=k) can become blue
+# time = O(n)
+# space = O(1)
 class Solution:
     def numTimesAllBlue(self, light):
         # edge case
@@ -68,6 +70,8 @@ class Solution:
         return res
 
 # V0'
+# time = O(n)
+# space = O(1)
 class Solution:
     def numTimesAllBlue(self, light):
         max_bulb_ind = 0
@@ -82,6 +86,8 @@ class Solution:
 
 # V1
 # https://iter01.com/575553.html
+# time = O(n)
+# space = O(1)
 class Solution:
     def numTimesAllBlue(self, light):
         max_bulb_ind = 0
@@ -98,6 +104,8 @@ class Solution:
 
 # V1''
 # https://www.codeleading.com/article/31473623024/
+# time = O(n)
+# space = O(1)
 class Solution:
     def numTimesAllBlue(self, light):
         ans=0

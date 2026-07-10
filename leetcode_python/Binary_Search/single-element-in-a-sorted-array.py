@@ -1,7 +1,9 @@
 # V0 
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79275636
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def singleNonDuplicate(self, nums):
         """
@@ -10,8 +12,10 @@ class Solution(object):
         """
         return reduce(lambda x, y: x^y, nums)
 
-# V1' 
+# V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79275636
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def singleNonDuplicate(self, nums):
         """
@@ -23,8 +27,10 @@ class Solution(object):
                 return nums[i]
         return nums[-1]
 
-# V1'' 
+# V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79275636
+# time = O(log n)
+# space = O(1)
 class Solution(object):
     def singleNonDuplicate(self, nums):
         """
@@ -42,9 +48,9 @@ class Solution(object):
                 left = mid + 2
         return nums[left]
         
-# V2 
-# Time:  O(logn)
-# Space: O(1)
+# V2
+# time = O(log n)
+# space = O(1)
 class Solution(object):
     def singleNonDuplicate(self, nums):
         """

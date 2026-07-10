@@ -33,6 +33,8 @@ s and t consist of lowercase letters, uppercase letters, and digits.
 
 # V0
 # IDER : RECURSION
+# time = O(min(m, n))
+# space = O(min(m, n)) (recursion stack, at most 1 extra call)
 class Solution:
     def isOneEditDistance(self, s, t):
         m = len(s)
@@ -52,6 +54,8 @@ class Solution:
 
 # V0
 # IDEA : DEAL WITH ALL CASES (Exhaustive method)
+# time = O(min(m, n))
+# space = O(1)
 class Solution:
     def isOneEditDistance(self, s, t):
         lenS=len(s)
@@ -99,6 +103,8 @@ class Solution:
 # V1
 # IDEA : ONE PASS algorithm
 # https://leetcode.com/problems/one-edit-distance/solution/
+# time = O(min(m, n))
+# space = O(min(m, n)) (recursion stack, at most 1 extra call)
 class Solution:
     def isOneEditDistance(self, s: 'str', t: 'str') -> 'bool':
         ns, nt = len(s), len(t)
@@ -128,6 +134,8 @@ class Solution:
 
 # V1'
 # https://www.jiuzhang.com/solution/one-edit-distance/#tag-highlight-lang-python
+# time = O(min(m, n))
+# space = O(min(m, n)) (recursion stack, at most 1 extra call)
 class Solution:
     # @param {string} s a string
     # @param {string} t a string
@@ -150,6 +158,8 @@ class Solution:
 # V1''
 # https://blog.csdn.net/zhangpeterx/article/details/90577678
 # https://www.cnblogs.com/lightwindy/p/8606871.html
+# time = O(min(m, n))
+# space = O(1)
 class Solution:
     def isOneEditDistance(self, s: str, t: str) -> bool:
         lenS=len(s)
@@ -183,9 +193,9 @@ class Solution:
                         return False
             return True
 
-# V2 
-# Time:  O(m + n)
-# Space: O(1)
+# V2
+# time = O(m + n)
+# space = O(1)
 class Solution(object):
     def isOneEditDistance(self, s, t):
         """

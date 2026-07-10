@@ -57,6 +57,8 @@ tokens = ["+","1","3","*"]
 
 
 """
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def evalRPN(self, tokens):
         st = []
@@ -90,6 +92,8 @@ class Solution(object):
 # V0
 # IDEA : STACK + eval
 # https://blog.csdn.net/fuxuemingzhu/article/details/79559703
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def evalRPN(self, tokens):
         stack = []
@@ -133,6 +137,8 @@ class Solution(object):
 # 12
 # <function <lambda> at 0x7f8c068c48c8>
 # 1
+# time = O(n)
+# space = O(n)
 class Solution:
     def evalRPN(self, tokens):
         """
@@ -158,6 +164,8 @@ class Solution:
 # V1
 # IDEA : Reducing the List In-place
 # https://leetcode.com/problems/evaluate-reverse-polish-notation/solution/
+# time = O(n^2)  # list.pop(i) from middle shifts remaining elements
+# space = O(1)  # extra space beyond input list
 def evalRPN(self, tokens: List[str]) -> int:
 
         operations = {
@@ -195,6 +203,8 @@ def evalRPN(self, tokens: List[str]) -> int:
 # V1
 # IDEA : Reducing the List In-place + NO lambda functions.
 # https://leetcode.com/problems/evaluate-reverse-polish-notation/solution/
+# time = O(n^2)  # list.pop(i) from middle shifts remaining elements
+# space = O(1)  # extra space beyond input list
 def evalRPN(self, tokens: List[str]) -> int:
 
     current_position = 0
@@ -231,6 +241,8 @@ def evalRPN(self, tokens: List[str]) -> int:
 # V1
 # IDEA : Evaluate with Stack
 # https://leetcode.com/problems/evaluate-reverse-polish-notation/solution/
+# time = O(n)
+# space = O(n)
 def evalRPN(self, tokens: List[str]) -> int:
         
     operations = {
@@ -261,6 +273,8 @@ def evalRPN(self, tokens: List[str]) -> int:
 # 3) pop the last two numbers -> perform the operation and store it in the stack.
 # 4) keep repeating 2 and 3
 # 5) you'll ultimately be left with the result in the stack
+# time = O(n)
+# space = O(n)
 class Solution:
     def evalRPN(self, tokens):
         """
@@ -299,6 +313,8 @@ assert s.evalRPN(["1","1", "1", "*", "+"]) == 2
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79559703
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def evalRPN(self, tokens):
         """
@@ -322,6 +338,8 @@ class Solution(object):
 
 # V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79559703
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def evalRPN(self, tokens):
         """
@@ -346,6 +364,8 @@ class Solution(object):
 # V1'''
 # https://leetcode.com/problems/evaluate-reverse-polish-notation/discuss/47537/6-7-lines-in-Python
 # IDEA : RECURSIVE
+# time = O(n)
+# space = O(n)  # recursion stack + remaining tokens list
 class Solution(object):
     def evalRPN(self, tokens):
         t = tokens.pop()
@@ -357,6 +377,8 @@ class Solution(object):
 
 # V1''''
 # https://leetcode.com/problems/evaluate-reverse-polish-notation/discuss/47549/A-Python-solution-with-8-lines
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def evalRPN(self, tokens):
         stack = []
@@ -371,6 +393,8 @@ class Solution(object):
 # V1'''''
 # https://leetcode.com/problems/evaluate-reverse-polish-notation/discuss/47537/6-7-lines-in-Python
 # IDEA : ITERATION
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def evalRPN(self, tokens):
         stack = []
@@ -379,11 +403,11 @@ class Solution(object):
                 b, a = stack.pop(), stack.pop()
                 t = int(eval(a+t+b+'.'))
             stack += t,
-        return int(stack[0]) 
+        return int(stack[0])
 
 # V2
-# Time:  O(n)
-# Space: O(n)
+# time = O(n)
+# space = O(n)
 import operator
 class Solution(object):
     # @param tokens, a list of string

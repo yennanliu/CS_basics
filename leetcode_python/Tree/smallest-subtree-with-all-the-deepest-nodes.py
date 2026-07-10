@@ -12,6 +12,8 @@
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)
+# space = O(h), h = tree height (recursion stack)
 class Solution(object):
     def subtreeWithAllDeepest(self, root):
         """
@@ -30,9 +32,9 @@ class Solution(object):
         else:
             return l[0] + 1, root
 
-# V2 
-# Time:  O(n)
-# Space: O(h)
+# V2
+# time = O(n)
+# space = O(h), h = tree height
 import collections
 class Solution(object):
     def subtreeWithAllDeepest(self, root):

@@ -48,12 +48,16 @@ from sortedcontainers import SortedList
 # balanced bst solution
 class MRUQueue(object):
 
+    # time = O(n)
+    # space = O(n)
     def __init__(self, n):
         """
         :type n: int
         """
-        self.__sl = SortedList((i-1, i) for i in xrange(1, n+1))  
+        self.__sl = SortedList((i-1, i) for i in xrange(1, n+1))
 
+    # time = O(log n)
+    # space = O(1)
     def fetch(self, k):
         """
         :type k: int
@@ -65,9 +69,9 @@ class MRUQueue(object):
         return val
 
 
-# Time:  ctor:  O(n + m), m is the max number of calls
-# Space: fetch: O(log(n + m))
 class BIT(object):  # 0-indexed.
+    # time = O(n + m), m is the max number of calls
+    # space = O(n + m)
     def __init__(self, n):
         MAX_CALLS = 2000
         self.__bit = [0]*(n+MAX_CALLS+1)  # Extra one for dummy node.
@@ -77,12 +81,16 @@ class BIT(object):  # 0-indexed.
             last_i = i - (i & -i)
             self.__bit[i] -= self.__bit[last_i]
 
+    # time = O(log n)
+    # space = O(1)
     def add(self, i, val):
         i += 1  # Extra one for dummy node.
         while i < len(self.__bit):
             self.__bit[i] += val
             i += (i & -i)
 
+    # time = O(log n)
+    # space = O(1)
     def query(self, i):
         i += 1  # Extra one for dummy node.
         ret = 0
@@ -91,6 +99,8 @@ class BIT(object):  # 0-indexed.
             i -= (i & -i)
         return ret
 
+    # time = O(log n)
+    # space = O(1)
     def binary_lift(self, k):
         floor_log2_n = len(self.__bit).bit_length()-1
         pow_i = 2**floor_log2_n
@@ -107,6 +117,8 @@ class BIT(object):  # 0-indexed.
 # fenwick / bit solution
 class MRUQueue2(object):
 
+    # time = O(n)
+    # space = O(n)
     def __init__(self, n):
         """
         :type n: int
@@ -114,7 +126,9 @@ class MRUQueue2(object):
         self.__bit = BIT(n)
         self.__lookup = {i:i+1 for i in xrange(n)}
         self.__curr = n
-        
+
+    # time = O(log n)
+    # space = O(1)
     def fetch(self, k):
         """
         :type k: int
@@ -136,6 +150,8 @@ import math
 # sqrt decomposition solution
 class MRUQueue3(object):
 
+    # time = O(n)
+    # space = O(n)
     def __init__(self, n):
         """
         :type n: int
@@ -144,6 +160,8 @@ class MRUQueue3(object):
         for i in xrange(n):
             self.__buckets[i//len(self.__buckets)].append(i+1)
 
+    # time = O(sqrt(n))
+    # space = O(1)
     def fetch(self, k):
         """
         :type k: int

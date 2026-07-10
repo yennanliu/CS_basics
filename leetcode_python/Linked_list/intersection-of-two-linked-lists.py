@@ -71,6 +71,8 @@ Follow up: Could you write a solution that runs in O(n) time and use only O(1) m
 #        -> e.g.
 #             process1 : headA -> headB -> headA ...
 #             process2 : headB -> headA -> headB ...
+# time = O(m + n)
+# space = O(1)
 class Solution(object):
     def getIntersectionNode(self, headA, headB):
         if not headA or not headB:
@@ -94,6 +96,8 @@ class Solution(object):
         return p
 
 # V0'
+# time = O(m + n)
+# space = O(1)
 class Solution(object):
     def getIntersectionNode(self, headA, headB):
             a_pointer, b_pointer = headA, headB
@@ -127,6 +131,8 @@ class Solution(object):
 #  -> So if define pathA=ownA + commonC and pathB=ownB+commonC then we can travers distance of len(OwnA+commonC+ownB)=len(ownB+commonC+ownA).
 #     In case of intersection we stop in the intersection node.
 #     In case there is no intersection we stop at the end of the list (None).
+# time = O(m + n)
+# space = O(1)
 class Solution(object):
     def getIntersectionNode(self, headA, headB):
             a_pointer, b_pointer = headA, headB
@@ -142,6 +148,8 @@ class Solution(object):
 #     def __init__(self, x):
 #         self.val = x
 #         self.next = None
+# time = O(m + n)
+# space = O(1)
 class Solution(object):
     def getIntersectionNode(self, headA, headB):
         """
@@ -164,6 +172,8 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/intersection-of-two-linked-lists/#tag-highlight-lang-python
+# time = O(m + n)
+# space = O(1)
 class Solution:
     # @param headA: the first list
     # @param headB: the second list
@@ -191,9 +201,9 @@ class Solution:
             node2 = node2.next
         return node1
 
-# V2 
-# Time:  O(m + n)
-# Space: O(1)
+# V2
+# time = O(m + n)
+# space = O(1)
 class ListNode(object):
     def __init__(self, x):
         self.val = x

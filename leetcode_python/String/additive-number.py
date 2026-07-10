@@ -46,6 +46,8 @@ Follow up: How would you handle overflow for very large input integers?
 
 # V0
 # IDEA (GPT)
+# time = O(1)  # unimplemented stub
+# space = O(1)
 class Solution(object):
     def isAdditiveNumber(self, num):
         """
@@ -56,6 +58,8 @@ class Solution(object):
 
 
 # V0-1
+# time = O(n^3)  # O(n^2) splits, each check() scan is O(n)
+# space = O(n)
 class Solution:
     def isAdditiveNumber(self, num: str) -> bool:
         n = len(num)
@@ -96,6 +100,8 @@ class Solution:
 
 # V0-2
 # IDEA: Backtracking / Brute Force (GEMINI)
+# time = O(n^3)  # O(n^2) splits, each isValidSequence recursion is O(n)
+# space = O(n)
 class Solution(object):
     def isAdditiveNumber(self, num):
         """
@@ -147,9 +153,11 @@ class Solution(object):
         return self.isValidSequence(n2, next_sum, k + len(next_sum_str), num)
 
 
-# V1 
+# V1
 # http://bookshadow.com/weblog/2015/11/18/leetcode-additive-number/
-# IDEA : ITERATION 
+# IDEA : ITERATION
+# time = O(n^3)  # O(n^2) combinations, each inner while scan is O(n)
+# space = O(n)
 class Solution(object):
     def isAdditiveNumber(self, num):
         """
@@ -172,9 +180,11 @@ class Solution(object):
         return False
 
 
-# V1' 
+# V1'
 # http://bookshadow.com/weblog/2015/11/18/leetcode-additive-number/
-# IDEA : RECURSION 
+# IDEA : RECURSION
+# time = O(n^3)  # O(n^2) splits, each recursive search scan is O(n)
+# space = O(n)
 class Solution(object):
     def isAdditiveNumber(self, num):
         """
@@ -202,9 +212,9 @@ class Solution(object):
                     return True
         return False
 
-# V2 
-# Time:  O(n^3)
-# Space: O(n)
+# V2
+# time = O(n^3)
+# space = O(n)
 class Solution(object):
     def isAdditiveNumber(self, num):
         """

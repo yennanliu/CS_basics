@@ -27,6 +27,8 @@
 #     ...: 
 # In [14]: list(map(f,x))
 # Out[14]: [2, 3, 4]
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def findMinDifference(self, timePoints):
         """
@@ -42,7 +44,9 @@ class Solution(object):
 
 # V1' 
 # http://bookshadow.com/weblog/2017/03/12/leetcode-minimum-time-difference/
-# IDEA : SORT  + MAP 
+# IDEA : SORT  + MAP
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def findMinDifference(self, timePoints):
         """
@@ -54,9 +58,9 @@ class Solution(object):
         return min((tp[x+1][0] - tp[x][0]) * 60 + tp[x+1][1] - tp[x][1] \
                    for x in range(len(tp) - 1))
 
-# V2 
-# Time:  O(nlogn)
-# Space: O(n)
+# V2
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def findMinDifference(self, timePoints):
         """

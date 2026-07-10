@@ -1,7 +1,9 @@
 # V0 
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/84495797
+# time = O(n), n = len(pushed)
+# space = O(n)
 class Solution(object):
     def validateStackSequences(self, pushed, popped):
         """
@@ -22,9 +24,9 @@ class Solution(object):
                 pi += 1
         return not stack
 
-# V2 
-# Time:  O(n)
-# Space: O(n)
+# V2
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def validateStackSequences(self, pushed, popped):
         """

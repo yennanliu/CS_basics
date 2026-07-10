@@ -1,10 +1,12 @@
 
-  # V1' 
+  # V1'
 class ListNode(object):
     def __init__(self, x):
         self.val = x
         self.next = None
 
+# time = O(m + n), m is the number of G, n is the number of nodes
+# space = O(m)
 class Solution(object):
     def numComponents(self, head, G):
         count = 0 
@@ -19,7 +21,9 @@ class Solution(object):
         return count
                 
   
-# V2 
+# V2
+# time = O(m + n), m is the number of G, n is the number of nodes
+# space = O(m)
 class Solution:
     def numComponents(self, head, G):
         """
@@ -36,9 +40,9 @@ class Solution:
         return groups
 
 
-# V3 
-# Time:  O(m + n), m is the number of G, n is the number of nodes
-# Space: O(m)
+# V3
+# time = O(m + n), m is the number of G, n is the number of nodes
+# space = O(m)
 class ListNode(object):
     def __init__(self, x):
         self.val = x

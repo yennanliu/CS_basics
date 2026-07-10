@@ -61,6 +61,8 @@ Constraints:
 # i = 13 bin(i) = 0b1101 bin(i >> 1) = 0b110 bin(i >> 1) ^ i  = 0b1011
 # i = 14 bin(i) = 0b1110 bin(i >> 1) = 0b111 bin(i >> 1) ^ i  = 0b1001
 # i = 15 bin(i) = 0b1111 bin(i >> 1) = 0b111 bin(i >> 1) ^ i  = 0b1000
+# time = O(2^n)
+# space = O(2^n)
 class Solution(object):
     def grayCode(self, n):
         res = []
@@ -78,6 +80,8 @@ class Solution(object):
 
 # V0
 # IDEA : RECURSION & grayCode property
+# time = O(2^n)
+# space = O(2^n)
 class Solution(object):
     def grayCode(self, n):
         def help(n):
@@ -108,11 +112,13 @@ class Solution(object):
 # In [77]: int('11',2)      # transform '11' to a 2 bases int                                                      
 # Out[77]: 3
 #
-# In [78]: int('100',2)     # transform '100' to a 2 bases int                                                       
+# In [78]: int('100',2)     # transform '100' to a 2 bases int
 # Out[78]: 4
+# time = O(2^n)
+# space = O(2^n)
 class Solution:
     def grayCode(self, n):
-        
+
         def help(n):
             if n == 0:
                 return ['0']
@@ -120,11 +126,13 @@ class Solution:
                 return ['0', '1']
             prev = help(n - 1)
             return ['0' + code for code in prev] + ['1' + code for code in reversed(prev)]
-        
+
         return [int(code, 2) for code in help(n)]
 
 # V1
 # https://leetcode.com/problems/gray-code/discuss/312866/40-ms-recursive-Python-solution
+# time = O(2^n)
+# space = O(2^n)
 class Solution:
     def grayCode(self, n):
         
@@ -167,6 +175,8 @@ class Solution:
 
 # In [33]: add
 # Out[33]: 32
+# time = O(2^n)
+# space = O(2^n)
 class Solution:
     def grayCode(self, n):
         res = [0]
@@ -182,6 +192,8 @@ class Solution:
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/80664204
 # IDEA : ITERATION
+# time = O(2^n)
+# space = O(2^n)
 class Solution(object):
     def grayCode(self, n):
         """
@@ -203,6 +215,8 @@ class Solution(object):
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/80664204
 # IDEA : RECURSION
+# time = O(2^n)
+# space = O(2^n)
 class Solution(object):
     def grayCode(self, n):
         """
@@ -224,6 +238,8 @@ class Solution(object):
 
 # V1''
 # https://blog.csdn.net/qqxx6661/article/details/78371259
+# time = O(2^n)
+# space = O(2^n)
 class Solution(object):
     def grayCode(self, n):
         """
@@ -231,15 +247,15 @@ class Solution(object):
         :rtype: List[int]
         """
         res = []
-        #size = 1 << n  # if n=4, left move 4 digits, from 1 to 10000, which is 16 
+        #size = 1 << n  # if n=4, left move 4 digits, from 1 to 10000, which is 16
         size = 2**n  # above is OK as well
         for i in range(size):
             res.append((i >> 1) ^ i)
         return res
 
-# V2 
-# Time:  O(2^n)
-# Space: O(1)
+# V2
+# time = O(2^n)
+# space = O(2^n)
 class Solution(object):
     def grayCode(self, n):
         """
@@ -254,6 +270,8 @@ class Solution(object):
 
 # Proof of closed form formula could be found here:
 # http://math.stackexchange.com/questions/425894/proof-of-closed-form-formula-to-convert-a-binary-number-to-its-gray-code
+# time = O(2^n)
+# space = O(2^n)
 class Solution2(object):
     def grayCode(self, n):
         """

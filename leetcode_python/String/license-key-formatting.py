@@ -35,6 +35,8 @@ s consists of English letters, digits, and dashes '-'.
 
 # V0
 # IDEA : BRUTE FORCE + STRTING OP
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def licenseKeyFormatting(self, s, k):
         # help func
@@ -72,6 +74,8 @@ class Solution(object):
 
 # V0'
 # IDEA : inverse traversal + residual
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def licenseKeyFormatting(self, S, K):
         result = []
@@ -85,6 +89,8 @@ class Solution(object):
 
 # V0''
 # IDEA : string op + brute force
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def licenseKeyFormatting(self, s, k):
         # edge case
@@ -122,6 +128,8 @@ class Solution(object):
 # V0'''
 # IDEA : GO THROUGH THE STRING FROM BACK,
 #        -> SO NO NEED TO THINK ABOUT THE "len(S) % K > 1"  cases
+# time = O(n)
+# space = O(n)
 class Solution:
     def licenseKeyFormatting(self, S, K):
         S = S.replace("-", "").upper()[::-1]
@@ -131,16 +139,18 @@ class Solution:
 # DEMO : range with gap
 #    ...: for i in range(1,10, 2):
 #    ...: ^Iprint (i)
-#    ...:  
+#    ...:
 # 1
 # 3
 # 5
 # 7
 # 9
 #
-# IDEA:  
-# -> use '#' to add back the remainder of len(S) % K 
+# IDEA:
+# -> use '#' to add back the remainder of len(S) % K
 # -> then go throughg S (with gap), and replace '#' with ''
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def licenseKeyFormatting(self, S, K):
         S = S.replace('-', '').upper()
@@ -148,8 +158,10 @@ class Solution(object):
             S = '#' * (K - len(S) % K) + S
         return '-'.join(S[x:x + K] for x in range(0, len(S), K)).replace('#', '')
 
-# V1 
+# V1
 # http://bookshadow.com/weblog/2017/01/08/leetcode-license-key-formatting/
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def licenseKeyFormatting(self, S, K):
         """
@@ -162,10 +174,12 @@ class Solution(object):
             S = '#' * (K - len(S) % K) + S
         return '-'.join(S[x:x + K] for x in range(0, len(S), K)).replace('#', '')
 
-### Test case : dev 
+### Test case : dev
 
 # V1'
 # https://leetcode.com/problems/license-key-formatting/discuss/131978/beats-100-python3-submission
+# time = O(n)
+# space = O(n)
 class Solution:
     def licenseKeyFormatting(self, S, K):
         """
@@ -178,6 +192,8 @@ class Solution:
 
 # V1''
 # https://leetcode.com/problems/license-key-formatting/discuss/96497/Python-solution
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def licenseKeyFormatting(self, S, K):
         """
@@ -196,6 +212,8 @@ class Solution(object):
 
 # V1'''
 # https://leetcode.com/problems/license-key-formatting/discuss/175523/Concise-Python-Beats-100
+# time = O(n)
+# space = O(n)
 class Solution:
     def licenseKeyFormatting(self, S, K):
         """
@@ -206,12 +224,12 @@ class Solution:
         def chunks(l, n):
             for i in range(0, len(l), n):
                 yield l[i:i+n]
-        s = S[::-1].upper().replace('-', '')   
+        s = S[::-1].upper().replace('-', '')
         return '-'.join(list(chunks(s, K)))[::-1]
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def licenseKeyFormatting(self, S, K):
         """

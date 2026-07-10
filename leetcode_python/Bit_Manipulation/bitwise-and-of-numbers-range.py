@@ -27,6 +27,8 @@
 # bin(48) =  'b110000'.     # decimal -> binary
 # -> '110000' - '00' = '1100' # 2 left shift
 # int('1100', 2) = 12   # binary -> decimal
+# time = O(log n)  # n = max(m, n); shifts until m == n
+# space = O(1)
 class Solution:
     # @param m, an integer
     # @param n, an integer
@@ -39,9 +41,9 @@ class Solution:
             p += 1
         return m << p
 
-# V2 
-# Time:  O(1)
-# Space: O(1)
+# V2
+# time = O(log n)  # n = max(m, n); clears lowest set bit each iteration
+# space = O(1)
 class Solution(object):
     # @param m, an integer
     # @param n, an integer
@@ -51,6 +53,8 @@ class Solution(object):
             n &= n - 1
         return n
 
+# time = O(log n)  # n = max(m, n); shifts until diff == 0
+# space = O(1)
 class Solution2(object):
     # @param m, an integer
     # @param n, an integer

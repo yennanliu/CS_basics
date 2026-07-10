@@ -1,8 +1,10 @@
 # V0 
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/84924672
 # https://blog.csdn.net/GQxxxxxl/article/details/84927823
+# time = O(n * l), l is the average length of words
+# space = O(1)
 class Solution:
     def isAlienSorted(self, words, order):
         """
@@ -24,8 +26,8 @@ class Solution:
         return(True)
         
 # V2
-# Time:  O(n * l), l is the average length of words
-# Space: O(1)
+# time = O(n * l), l is the average length of words
+# space = O(1)
 class Solution(object):
     def isAlienSorted(self, words, order):
         """

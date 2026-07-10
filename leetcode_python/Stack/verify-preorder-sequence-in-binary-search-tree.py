@@ -2,9 +2,9 @@
 
 # V1 
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n), n = len(preorder)
+# space = O(1)
 class Solution(object):
     # @param {integer[]} preorder
     # @return {boolean}

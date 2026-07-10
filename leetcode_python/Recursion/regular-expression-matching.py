@@ -43,6 +43,8 @@ It is guaranteed for each appearance of the character '*', there will be a previ
 # V1
 # IDEA : RECURSIVE
 # https://leetcode.com/problems/regular-expression-matching/solution/
+# time = O(2^(m+n)) worst case (exponential branching without memoization)
+# space = O(m+n) recursion depth
 class Solution(object):
     def isMatch(self, text, pattern):
         if not pattern:
@@ -59,6 +61,8 @@ class Solution(object):
 # V1'
 # IDEA : DP (TOP - DOWN)
 # https://leetcode.com/problems/regular-expression-matching/solution/
+# time = O(m*n)
+# space = O(m*n)
 class Solution(object):
     def isMatch(self, text, pattern):
         memo = {}
@@ -81,6 +85,8 @@ class Solution(object):
 # V1''
 # IDEA : DP (BOTTOM UP)
 # https://leetcode.com/problems/regular-expression-matching/solution/
+# time = O(m*n)
+# space = O(m*n)
 class Solution(object):
     def isMatch(self, text, pattern):
         dp = [[False] * (len(pattern) + 1) for _ in range(len(text) + 1)]
@@ -99,6 +105,8 @@ class Solution(object):
 # V1'''
 # IDEA : DP
 # https://leetcode.com/problems/regular-expression-matching/discuss/239391/Python-solution
+# time = O(m*n)
+# space = O(m*n)
 class Solution(object):
     def isMatch(self, s, p):
         n = len(s)
@@ -123,6 +131,8 @@ class Solution(object):
 # V1''''
 # IDEA : REGULAR EXPRESSION
 # https://leetcode.com/problems/regular-expression-matching/discuss/126284/Python-one-liner-cheats
+# time = O(m*n) (regex engine dependent)
+# space = O(m+n)
 class Solution:
     def isMatch(self, s, p):
         return True if re.match(r"%s" %p, s) and re.match(r"%s" %p, s).group(0) == s else False
@@ -130,6 +140,8 @@ class Solution:
 # V1'''''
 # IDEA : REGULAR EXPRESSION
 # https://leetcode.com/problems/regular-expression-matching/discuss/126284/Python-one-liner-cheats
+# time = O(m*n) (regex engine dependent)
+# space = O(m+n)
 class Solution:
     def isMatch(self, s, p):
         return s in re.findall(p, s)
@@ -137,13 +149,17 @@ class Solution:
 # V1''''''
 # IDEA : REGULAR EXPRESSION
 # https://leetcode.com/problems/regular-expression-matching/discuss/126284/Python-one-liner-cheats
+# time = O(m*n) (regex engine dependent)
+# space = O(m+n)
 class Solution:
     def isMatch(self, s, p):
-        return bool(re.match(r"%s" %p, s)) and re.match(r"%s" %p, s).group(0) == s 
+        return bool(re.match(r"%s" %p, s)) and re.match(r"%s" %p, s).group(0) == s
 
 # V1'''''''
 # IDEA : DP
 # https://leetcode.com/problems/regular-expression-matching/discuss/5677/Python-7-liner
+# time = O(m*n)
+# space = O(m*n)
 class Solution(object):
     def isMatch(self, s, p):
         ls, lp = len(s), len(p)

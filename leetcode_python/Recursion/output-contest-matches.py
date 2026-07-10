@@ -37,8 +37,10 @@
 
 # V0 : dev
 
-# V1 
+# V1
 # http://bookshadow.com/weblog/2017/03/19/leetcode-output-contest-matches/
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def solve(self, groups):
         size = len(groups)
@@ -55,9 +57,9 @@ class Solution(object):
         """
         return self.solve(list(map(str, list(range(1, n + 1)))))
 
-# V2 
-# Time:  O(n)
-# Space: O(n)
+# V2
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def findContestMatch(self, n):
         """

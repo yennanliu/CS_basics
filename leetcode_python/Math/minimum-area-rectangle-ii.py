@@ -1,7 +1,9 @@
 # V1 : dev 
 
-# V2 
+# V2
 # https://blog.csdn.net/fuxuemingzhu/article/details/83961509
+# time = O(n^2)  # n = len(points)
+# space = O(n)
 class Solution(object):
     def minAreaRect(self, points):
         """
@@ -26,6 +28,8 @@ class Solution(object):
         return res if res != float("inf") else 0
 
 # V2'
+# time = O(n^3)  # n = len(points)
+# space = O(n)
 class Solution(object):
     def minAreaRect(self, points):
         """
@@ -54,9 +58,9 @@ class Solution(object):
                                 res = min(res, abs((p3[0] - p1[0]) * (p2[1] - p1[1])))
         return res if res != float("inf") else 0
 
-# V3 
-# Time:  O(n^2) ~ O(n^3)
-# Space: O(n^2)
+# V3
+# time = O(n^2) ~ O(n^3)  # n = len(points)
+# space = O(n^2)
 import collections
 import itertools
 class Solution(object):

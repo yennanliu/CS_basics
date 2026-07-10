@@ -41,6 +41,8 @@ The number of nodes in the tree is in the range [0, 5000].
 
 # V0
 # IDEA: DFS (pre-order)(gpt)
+# time = O(n)
+# space = O(h), h is height of binary tree
 class Solution(object):
     def hasPathSum(self, root, targetSum):
         if not root:
@@ -73,6 +75,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: DFS (pre-order)(gpt)
+# time = O(n)
+# space = O(h), h is height of binary tree
 class Solution(object):
     def hasPathSum(self, root, targetSum):
         if not root:
@@ -102,6 +106,8 @@ class Solution(object):
 
 # V0-2
 # IDEA: DFS (pre-order)(GEMINI)
+# time = O(n)
+# space = O(h), h is height of binary tree
 class Solution(object):
     def hasPathSum(self, root, targetSum):
         """
@@ -132,7 +138,9 @@ class Solution(object):
 
 
 # V0
-# IDEA : DFS 
+# IDEA : DFS
+# time = O(n)
+# space = O(h), h is height of binary tree
 class Solution(object):
     def hasPathSum(self, root, sum):
         if not root:
@@ -142,9 +150,11 @@ class Solution(object):
         else:
             return self.hasPathSum(root.left, sum-root.val) or self.hasPathSum(root.right, sum-root.val)
 
-# V1 
+# V1
 # https://blog.csdn.net/coder_orz/article/details/51595815
-# IDEA : DFS (recursion) 
+# IDEA : DFS (recursion)
+# time = O(n)
+# space = O(h), h is height of binary tree
 class Solution(object):
     def hasPathSum(self, root, sum):
         if not root:
@@ -154,9 +164,11 @@ class Solution(object):
         else:
             return self.hasPathSum(root.left, sum-root.val) or self.hasPathSum(root.right, sum-root.val)
 
-# V1' 
+# V1'
 # https://blog.csdn.net/coder_orz/article/details/51595815
 # IDEA : DFS (non - recursion) (via stack)
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def hasPathSum(self, root, sum):
         """
@@ -174,9 +186,11 @@ class Solution(object):
                 stack.append((node.left, tmp_sum-node.val))
         return False
 
-# V1'' 
+# V1''
 # https://blog.csdn.net/coder_orz/article/details/51595815
 # IDEA : BFS (via queue)
+# time = O(n)
+# space = O(n)
 # Definition for a binary tree node.
 # class TreeNode(object):
 #     def __init__(self, x):
@@ -202,11 +216,13 @@ class Solution(object):
 
 # V1'''
 # https://www.jiuzhang.com/solution/path-sum/#tag-highlight-lang-python
+# time = O(n)
+# space = O(h), h is height of binary tree
 class Solution:
     """
     @param root: the tree
     @param sum: the sum
-    @return:  if the tree has a root-to-leaf path 
+    @return:  if the tree has a root-to-leaf path
     """
     def pathSum(self, root, sum):
         # Write your code here.
@@ -217,9 +233,9 @@ class Solution:
         else:
             return self.pathSum(root.left, sum - root.val) or self.pathSum(root.right, sum - root.val)
 
-# V2 
-# Time:  O(n)
-# Space: O(h), h is height of binary tree
+# V2
+# time = O(n)
+# space = O(h), h is height of binary tree
 class TreeNode(object):
     def __init__(self, x):
         self.val = x

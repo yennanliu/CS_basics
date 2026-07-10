@@ -2,7 +2,9 @@
 
 # V1
 # http://bookshadow.com/weblog/2016/11/20/leetcode-minimum-moves-to-equal-array-elements-ii/
-# IDEA : GET THE SUM OF ABSOULT DIFFERENCE BETWEEN ELMENTS AND THEIR MEDIAN 
+# IDEA : GET THE SUM OF ABSOULT DIFFERENCE BETWEEN ELMENTS AND THEIR MEDIAN
+# time = O(n log n)  # sort
+# space = O(1)  # excluding sort space
 class Solution(object):
     def minMoves2(self, nums):
         """
@@ -13,9 +15,9 @@ class Solution(object):
         median = nums[len(nums) / 2]
         return sum(abs(num - median) for num in nums)
 
-# V2 
-# Time:  O(n) on average
-# Space: O(1)
+# V2
+# time = O(n) on average  # quickselect
+# space = O(1)
 from random import randint
 # Quick select solution.
 class Solution(object):

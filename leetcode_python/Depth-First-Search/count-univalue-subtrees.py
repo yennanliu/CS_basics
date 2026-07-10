@@ -8,6 +8,8 @@
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)  # n = number of tree nodes
+# space = O(h)  # h = tree height (recursion depth)
 class Solution:
     def countUnivalSubtrees(self, root):
         self.count = 0
@@ -35,6 +37,8 @@ class TreeNode:
         self.val = val
         self.left, self.right = None, None
 """
+# time = O(n)  # n = number of tree nodes
+# space = O(h)  # h = tree height (recursion depth)
 class Solution:
     """
     @param root: the given tree
@@ -60,9 +64,9 @@ class Solution:
             return True
         return False
 
-# V2 
-# Time:  O(n)
-# Space: O(h)
+# V2
+# time = O(n)  # n = number of tree nodes
+# space = O(h)  # h = tree height (recursion depth)
 class Solution(object):
     # @param {TreeNode} root
     # @return {integer}

@@ -6,34 +6,34 @@
 # space = O(1)
 class Solution(object):
     def pourWater(self, a, V, K):
-    """
-    :type heights: List[int]
-    :type V: int
-    :type K: int
-    :rtype: List[int]
-    """
-    n = len(a)
-    for i in range(V):
-        ok = False
-        index = -1
-        for j in range(K - 1, -1, -1):
-            if a[j] > a[j + 1]: break
-            if a[j] < a[j + 1]:
-                ok = True
-                index = j
-        if ok:
-            a[index] += 1
-            continue
-        for j in range(K + 1, n):
-            if a[j] > a[j - 1]: break
-            if a[j] < a[j - 1]:
-                ok = True
-                index = j
-        if ok:
-            a[index] += 1
-        else:
-            a[K] += 1
-    return a
+        """
+        :type heights: List[int]
+        :type V: int
+        :type K: int
+        :rtype: List[int]
+        """
+        n = len(a)
+        for i in range(V):
+            ok = False
+            index = -1
+            for j in range(K - 1, -1, -1):
+                if a[j] > a[j + 1]: break
+                if a[j] < a[j + 1]:
+                    ok = True
+                    index = j
+            if ok:
+                a[index] += 1
+                continue
+            for j in range(K + 1, n):
+                if a[j] > a[j - 1]: break
+                if a[j] < a[j - 1]:
+                    ok = True
+                    index = j
+            if ok:
+                a[index] += 1
+            else:
+                a[K] += 1
+        return a
 
 # V2
 # time = O(v * n)

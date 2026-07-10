@@ -32,6 +32,8 @@ The number of nodes in the list is in the range [1, 100].
 
 # V0
 # IDEA : fast, slow pointers + linkedlist
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def middleNode(self, head):
         # edge case
@@ -48,6 +50,8 @@ class Solution(object):
 # V1
 # IDEA : OUTPUT TO ARRAY
 # https://leetcode.com/problems/middle-of-the-linked-list/solution/
+# time = O(n)
+# space = O(n)
 class Solution:
     def middleNode(self, head: ListNode) -> ListNode:
         arr = [head]
@@ -55,9 +59,9 @@ class Solution:
             arr.append(arr[-1].next)
         return arr[len(arr) // 2]
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class ListNode(object):
     def __init__(self, x):
         self.val = x

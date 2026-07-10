@@ -31,6 +31,8 @@ Constraints:
 
 # V0
 # IDEA : LC 739
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def nextGreaterElements(self, nums):
         # edge case
@@ -56,6 +58,8 @@ class Solution(object):
 
 # V0'
 # IDEA : STACK + circular loop handling
+# time = O(n)
+# space = O(n)
 class Solution:
     def nextGreaterElements(self, nums):
         stack = []
@@ -71,6 +75,8 @@ class Solution:
 
 # V0'
 # IDEA : STACK + circular loop handling
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def nextGreaterElements(self, nums):
         # edge case
@@ -93,9 +99,11 @@ class Solution(object):
 
 # V0'
 # IDEA : STACK + circular loop handling
+# time = O(n)
+# space = O(n)
 class Solution:
     def nextGreaterElements(self, nums):
-        ### NOTE : since we can search nums circurly, 
+        ### NOTE : since we can search nums circurly,
         #  -> so here we make a new array (augLst = nums + nums) for that     
         augLst = nums + nums
         stack = []
@@ -116,6 +124,8 @@ class Solution:
 
 # V0''
 # IDER : brute force (for + while loop) : TLE
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def nextGreaterElements(self, nums):
         # edge case
@@ -139,6 +149,8 @@ class Solution(object):
 
 # V1
 # https://leetcode.com/problems/next-greater-element-ii/discuss/184046/Python-solution
+# time = O(n)
+# space = O(n)
 class Solution:
     def nextGreaterElements(self, nums):
         augLst = nums + nums
@@ -154,6 +166,8 @@ class Solution:
 
 # V1'
 # https://leetcode.com/problems/next-greater-element-ii/discuss/184046/Python-solution
+# time = O(n)
+# space = O(n)
 class Solution:
     def nextGreaterElements(self, nums):
         stack = []
@@ -173,6 +187,8 @@ class Solution:
 # I performed Next Greater Element I from right to left twice
 # The double pass allows you to simulate circulation
 # I came up with this during an onsite and amazed myself that this actually worked when I came here to test it
+# time = O(n)
+# space = O(n)
 class Solution:
     def nextGreaterElements(self, nums):
         st = []
@@ -190,6 +206,8 @@ class Solution:
 
 # v1''''
 # https://leetcode.com/problems/next-greater-element-ii/discuss/743506/Python
+# time = O(n)
+# space = O(n)
 class Solution:
     def nextGreaterElements(self, nums):
         st = []

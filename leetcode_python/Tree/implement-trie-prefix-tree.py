@@ -68,6 +68,8 @@ class Node():
         self.isword = False
 
 # implement basic methods
+# time = O(L) per insert/search/startsWith call, L = length of word/prefix
+# space = O(total chars inserted) for the trie storage
 class Trie():
 
     def __init__(self):
@@ -111,6 +113,8 @@ class Node(object):
         self.children = defaultdict(Node)
         self.isword = False
         
+# time = O(L) per insert/search/startsWith call, L = length of word/prefix
+# space = O(total chars inserted) for the trie storage
 class Trie(object):
 
     def __init__(self):
@@ -147,14 +151,16 @@ class Trie(object):
 
 # V0''
 # IDEA : USE dict AS data structure (# TrieNode: is dict, or hashmap)
-class Trie(object):            
+# time = O(L) per insert/search/startsWith call, L = length of word/prefix
+# space = O(total chars inserted) for the trie storage
+class Trie(object):
     def __init__(self):
-        self.root = {} # TrieNode: is dict, or hashmap       
- 
+        self.root = {} # TrieNode: is dict, or hashmap
+
     def insert(self, word):
         p = self.root
-        for c in word:            
-            if c not in p: 
+        for c in word:
+            if c not in p:
                 p[c] = {}
             ### NOTE THIS
             p = p[c]
@@ -181,14 +187,16 @@ class Trie(object):
 # V1
 # IDEA : USE dict AS data structure (# TrieNode: is dict, or hashmap)
 # https://leetcode.com/problems/implement-trie-prefix-tree/discuss/633007/25-lines-python-use-50-less-code-than-c%2B%2B-should-I-change-to-python
-class Trie(object):            
+# time = O(L) per insert/search/startsWith call, L = length of word/prefix
+# space = O(total chars inserted) for the trie storage
+class Trie(object):
     def __init__(self):
-        self.root = {} # TrieNode: is dict, or hashmap       
- 
+        self.root = {} # TrieNode: is dict, or hashmap
+
     def insert(self, word):
         p = self.root
-        for c in word:            
-            if c not in p: 
+        for c in word:
+            if c not in p:
                 p[c] = {}
             p = p[c]
         ### NOTE HERE
@@ -215,7 +223,9 @@ class Node(object):
     def __init__(self):
         self.children = collections.defaultdict(Node)
         self.isword = False
-        
+
+# time = O(L) per insert/search/startsWith call, L = length of word/prefix
+# space = O(total chars inserted) for the trie storage
 class Trie(object):
 
     def __init__(self):
@@ -274,10 +284,12 @@ class TrieNode:
     def __init__(self):
         self.children = {}
         self.is_word = False
-    
-    
+
+
+# time = O(L) per insert/search/startsWith call, L = length of word/prefix
+# space = O(total chars inserted) for the trie storage
 class Trie:
-    
+
     def __init__(self):
         self.root = TrieNode()
 
@@ -291,11 +303,11 @@ class Trie:
             if c not in node.children:
                 node.children[c] = TrieNode()
             node = node.children[c]
-        
+
         node.is_word = True
 
     """
-    return the node in the trie if exists 
+    return the node in the trie if exists
     """
     def find(self, word):
         node = self.root
@@ -304,7 +316,7 @@ class Trie:
             if node is None:
                 return None
         return node
-        
+
     """
     @param: word: A string
     @return: if the word is in the trie.
@@ -327,10 +339,12 @@ class TrieNode:
     def __init__(self):
         self.children = {}
         self.is_word = False
-    
-    
+
+
+# time = O(L) per insert/search/startsWith call, L = length of word/prefix
+# space = O(total chars inserted) for the trie storage
 class Trie:
-    
+
     def __init__(self):
         self.root = TrieNode()
 
@@ -344,11 +358,11 @@ class Trie:
             if c not in node.children:
                 node.children[c] = TrieNode()
             node = node.children[c]
-        
+
         node.is_word = True
 
     """
-    return the node in the trie if exists 
+    return the node in the trie if exists
     """
     def find(self, word):
         node = self.root
@@ -357,7 +371,7 @@ class Trie:
             if node is None:
                 return None
         return node
-        
+
     """
     @param: word: A string
     @return: if the word is in the trie.
@@ -373,15 +387,15 @@ class Trie:
     def startsWith(self, prefix):
         return self.find(prefix) is not None
 
-# V2 
-# Time:  O(n), per operation
-# Space: O(1)
+# V2
 class TrieNode(object):
     # Initialize your data structure here.
     def __init__(self):
         self.is_string = False
         self.leaves = {}
 
+# time = O(L) per operation, L = length of word/prefix
+# space = O(total chars inserted) for the trie storage
 class Trie(object):
 
     def __init__(self):

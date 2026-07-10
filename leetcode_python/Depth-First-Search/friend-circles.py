@@ -35,10 +35,12 @@ If M[i][j] = 1, then M[j][i] = 1.
 
 # V0 
 
-# V1 
+# V1
 # https://blog.csdn.net/XX_123_1_RJ/article/details/82656277
 # http://bookshadow.com/weblog/2017/04/03/leetcode-friend-circles/
-# IDEA : disjoint- set 
+# IDEA : disjoint- set
+# time = O(n^3) (no path compression / union by rank, find() can take O(n) per call)
+# space = O(n)
 class Solution(object):
     def findCircleNum(self, M):
         """
@@ -57,10 +59,12 @@ class Solution(object):
                 if M[x][y]: f[find(x)] = find(y)
         return sum(f[x] == x for x in range(N))
 
-# V1' 
+# V1'
 # https://blog.csdn.net/XX_123_1_RJ/article/details/82656277
 # http://bookshadow.com/weblog/2017/04/03/leetcode-friend-circles/
 # IDEA : DFS  (stack)
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def findCircleNum(self, M):
         """
@@ -80,11 +84,13 @@ class Solution(object):
                 dfs(x)
         return cnt
 
-# V1'' 
+# V1''
 # https://blog.csdn.net/XX_123_1_RJ/article/details/82656277
 # http://bookshadow.com/weblog/2017/04/03/leetcode-friend-circles/
 # IDEA : BFS (queue)
-lass Solution(object):
+# time = O(n^2)
+# space = O(n)
+class Solution(object):
     def findCircleNum(self, M):
         """
         :type M: List[List[int]]
@@ -108,7 +114,9 @@ lass Solution(object):
 
 # V1'''
 # https://www.jiuzhang.com/solution/friend-circles/#tag-highlight-lang-python
-# IDEA : UNION FIND 
+# IDEA : UNION FIND
+# time = O(n^2)
+# space = O(n)
 class Solution:
     """
     @param M: a matrix
@@ -135,9 +143,9 @@ class Solution:
                 self.BFS(i, M) # START SEARCH 
         return count
 
-# V2 
-# Time:  O(n^2)
-# Space: O(n)
+# V2
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def findCircleNum(self, M):
         """

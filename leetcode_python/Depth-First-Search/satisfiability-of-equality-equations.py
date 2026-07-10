@@ -112,7 +112,7 @@ class Solution(object):
 
 
 
-	            """
+                """
 	            NOTE !!!
 
 	            CAN'T only build graph in `single` direction,
@@ -168,7 +168,7 @@ class Solution(object):
 				-> but it should be `True`, so above idea is wrong.
 
 
-	            """
+                """
                 # if connected -> contradiction
                 if self.helper(a, b, same_group, visited):
                     return False

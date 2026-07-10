@@ -18,8 +18,8 @@ Explanation:
 One longest palindrome that can be built is "dccaccd", whose length is 7.
 
 """
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 
 # Given a string which consists of lowercase or uppercase letters,
 # find the length of the longest palindromes that can be built with those letters.
@@ -46,7 +46,9 @@ One longest palindrome that can be built is "dccaccd", whose length is 7.
 # V1 
 # http://bookshadow.com/weblog/2016/10/02/leetcode-longest-palindrome/
 # IDEA : collections.Counter
-import collections 
+import collections
+# time = O(n), n = len(s)
+# space = O(1) (bounded alphabet)
 class Solution(object):
     def longestPalindrome(self, s):
         """
@@ -62,8 +64,10 @@ class Solution(object):
                 odd += 1        # to cacluate how many odd elements in the string, and ans = ans +1 if there are odd elements 
         return ans + (odd > 0)  # for cases : "cccaadd", "cc" can be palindrome, while c is odd, and can palindrome string allow 1 odd element.  if true, (odd > 0) == 1 ; else : (odd > 0) == 0  
 
-# V2 
+# V2
 import collections
+# time = O(n), n = len(s)
+# space = O(1) (bounded alphabet)
 class Solution(object):
     def longestPalindrome(self, s):
         """

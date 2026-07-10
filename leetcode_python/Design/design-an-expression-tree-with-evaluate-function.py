@@ -64,7 +64,9 @@ class eNode(Node):
         self.val = val
         self.left = None
         self.right = None
-        
+
+    # time = O(n), n = number of nodes in the tree
+    # space = O(h), h = height of the tree (recursion stack)
     def evaluate(self):
         alu = {'*': lambda x, y: x * y, '-': lambda x, y: x - y, '+': lambda x, y: x + y, '/': lambda x, y: x // y}
         def eval(node):
@@ -75,6 +77,8 @@ class eNode(Node):
 
 
 class TreeBuilder(object):
+    # time = O(n), n = len(postfix)
+    # space = O(n)
     def buildTree(self, postfix: List[str]) -> 'Node':
         def search(node):
             node.val = postfix[self.i]
@@ -118,13 +122,17 @@ class TreeNode(Node):
             "*": operator.mul, 
             "/": operator.floordiv
         }
-        
+
+    # time = O(n), n = number of nodes in the tree
+    # space = O(h), h = height of the tree (recursion stack)
     def evaluate(self) -> int:
         if self.val not in self.ops:
-            return int(self.val) 
+            return int(self.val)
         return self.ops[self.val] (self.left.evaluate(), self.right.evaluate())
 
 class TreeBuilder(object):
+    # time = O(n), n = len(postfix)
+    # space = O(n)
     def buildTree(self, postfix: List[str]) -> 'Node':
         stack = []
         for item in postfix:
@@ -160,7 +168,9 @@ class TreeNode(Node):
         self.value = val
         self.left = l
         self.right = r
-    
+
+    # time = O(n), n = number of nodes in the tree
+    # space = O(h), h = height of the tree (recursion stack)
     def evaluate(self):
         if not self.left and not self.right:
 		# leaf node => value is an integer
@@ -183,6 +193,8 @@ and returns the expression tree represnting it as a Node.
 """
 
 class TreeBuilder(object):
+    # time = O(n), n = len(postfix)
+    # space = O(n)
     def buildTree(self, postfix: List[str]) -> 'Node':
         stk = []
         for ch in postfix:

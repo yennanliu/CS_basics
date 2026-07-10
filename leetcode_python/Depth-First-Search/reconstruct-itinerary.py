@@ -1,7 +1,9 @@
 # V0 
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/83551204
+# time = O(E log E), E = number of tickets (sorting edges)
+# space = O(E)
 class Solution(object):
     def findItinerary(self, tickets):
         """
@@ -25,6 +27,8 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/reconstruct-itinerary/#tag-highlight-lang-python
+# time = O(E log E), E = number of tickets (sorting edges)
+# space = O(E)
 class Solution:
     def findItinerary(self, tickets):
         targets = collections.defaultdict(list)
@@ -40,11 +44,11 @@ class Solution:
         dfs('JFK')
         return route[::-1]
         
-# V2 
-# Time:  O(t! / (n1! * n2! * ... nk!)), t is the total number of tickets,
+# V2
+# time = O(t! / (n1! * n2! * ... nk!)), t is the total number of tickets,
 #                                       ni is the number of the ticket which from is city i,
 #                                       k is the total number of cities.
-# Space: O(t)
+# space = O(t)
 import collections
 class Solution(object):
     def findItinerary(self, tickets):

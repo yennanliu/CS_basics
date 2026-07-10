@@ -40,6 +40,8 @@ Constraints:
 # V1
 # IDEA : BINARY SEARCH
 # https://leetcode.com/problems/split-array-largest-sum/solution/
+# time = O(n * log(sum(nums)))
+# space = O(1)
 class Solution:
     def splitArray(self, nums: List[int], m: int) -> int:
         
@@ -81,6 +83,8 @@ class Solution:
 # V1'
 # IDEA : TOP DOWN DP
 # https://leetcode.com/problems/split-array-largest-sum/solution/
+# time = O(n^2 * m)
+# space = O(n * m)
 class Solution:
     def splitArray(self, nums: List[int], m: int) -> int:
         n = len(nums)
@@ -119,6 +123,8 @@ class Solution:
 # V1''
 # IDEA : BOTTOM UP DP
 # https://leetcode.com/problems/split-array-largest-sum/solution/
+# time = O(n^2 * m)
+# space = O(n * m)
 class Solution:
     def splitArray(self, nums: List[int], m: int) -> int:
         n = len(nums)

@@ -39,6 +39,8 @@ data[i] is either 0 or 1.
 # IDEA : Sliding Window with Two Pointers
 # IDEA : core : Find which sub-array HAS MOST "1", since it means it needs MINIMUM SWAP for getting all "1" toogether
 # https://leetcode.com/problems/minimum-swaps-to-group-all-1s-together/solution/
+# time = O(n)
+# space = O(1)
 class Solution:
     def minSwaps(self, data):
         ones = sum(data)
@@ -61,6 +63,8 @@ class Solution:
 # IDEA : Sliding Window with Two Pointers
 # IDEA : core : Find which sub-array HAS MOST "1", since it means it needs MINIMUM SWAP for getting all "1" toogether
 # https://leetcode.com/problems/minimum-swaps-to-group-all-1s-together/solution/
+# time = O(n)
+# space = O(1)
 class Solution:
     def minSwaps(self, data):
         ones = sum(data)
@@ -82,6 +86,8 @@ class Solution:
 # V1'
 # IDEA : Sliding Window with Deque (Double-ended Queue)
 # https://leetcode.com/problems/minimum-swaps-to-group-all-1s-together/solution/
+# time = O(n)
+# space = O(k), k = number of 1's (window size)
 class Solution:
     def minSwaps(self, data):
         ones = sum(data)
@@ -104,6 +110,8 @@ class Solution:
 
 # V1''
 # https://leetcode.com/problems/minimum-swaps-to-group-all-1s-together/discuss/710135/python
+# time = O(n)
+# space = O(1)
 class Solution:
     def minSwaps(self, data):
         # window size
@@ -123,6 +131,8 @@ class Solution:
 # V1'''
 # IDEA : 2 POINTERS + SLIDING WINDOW
 # https://leetcode.com/problems/minimum-swaps-to-group-all-1s-together/discuss/715540/Concise-Python
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def minSwaps(self, data):
         left, count, res, k = 0, 0, len(data), sum(data)
@@ -138,6 +148,8 @@ class Solution(object):
 # V1''''
 # IDEA : 2 POINTERS + SLIDING WINDOW
 # https://leetcode.com/problems/minimum-swaps-to-group-all-1s-together/discuss/619208/Python-Sliding-Window
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def minSwaps(self, data):
         window_size, ans = sum(data), len(data)

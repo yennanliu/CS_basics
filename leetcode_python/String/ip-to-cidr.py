@@ -5,9 +5,9 @@
 # DEV 
 
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n), n = number of IPs to cover
+# space = O(1)
 class Solution(object):
     def ipToCIDR(self, ip, n):
         """

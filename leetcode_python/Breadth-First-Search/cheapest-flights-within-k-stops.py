@@ -45,6 +45,8 @@ src != dst
 import heapq
 from collections import defaultdict
 
+# time = O(E * K * log(n * K)), E = number of flights, K = max stops
+# space = O(n * K + E)
 class Solution(object):
     def findCheapestPrice(self, n, flights, src, dst, K):
 
@@ -105,6 +107,8 @@ class Solution(object):
 import heapq
 from collections import defaultdict
 
+# time = O(E * K * log(n * K)), E = number of flights, K = max stops
+# space = O(n * K + E)
 class Solution(object):
     def findCheapestPrice(self, n, flights, src, dst, K):
 
@@ -152,15 +156,17 @@ class Solution(object):
 # IDEA :  Dijkstra
 import heapq
 
+# time = O(n^2 * K * log(n * K)), n = number of cities, K = max stops
+# space = O(n^2 + n * K)
 class Solution:
-    
+
     def findCheapestPrice(self, n: int, flights: List[List[int]], src: int, dst: int, K: int) -> int:
-        
+
         # Build the adjacency matrix
         adj_matrix = [[0 for _ in range(n)] for _ in range(n)]
         for s, d, w in flights:
             adj_matrix[s][d] = w
-            
+
         # Shortest distances array
         distances = [float("inf") for _ in range(n)]
         current_stops = [float("inf") for _ in range(n)]
@@ -200,8 +206,10 @@ class Solution:
 # V1
 # https://leetcode.com/problems/cheapest-flights-within-k-stops/solution/
 # IDEA :  Depth-First-Search with Memoization
+# time = O(n^2 * K), n = number of cities, K = max stops (n work per (node, stops) state)
+# space = O(n * K)
 class Solution:
-    
+
     def __init__(self):
         self.adj_matrix = None
         self.memo = {}
@@ -243,10 +251,12 @@ class Solution:
 # V1
 # https://leetcode.com/problems/cheapest-flights-within-k-stops/solution/
 # IDEA :  Bellman-Ford
+# time = O(K * E), E = number of flights, K = max stops
+# space = O(n)
 class Solution:
-    
+
     def findCheapestPrice(self, n: int, flights: List[List[int]], src: int, dst: int, K: int) -> int:
-        
+
         # We use two arrays for storing distances and keep swapping
         # between them to save on the memory
         distances = [[float('inf')] * n for _ in range(2)]
@@ -275,10 +285,12 @@ class Solution:
 # V1
 # https://leetcode.com/problems/cheapest-flights-within-k-stops/solution/
 # IDEA :  Breadth First Search
+# time = O(K * n^2), n = number of cities, K = max stops
+# space = O(n * K)
 class Solution:
-    
+
     def findCheapestPrice(self, n: int, flights: List[List[int]], src: int, dst: int, K: int) -> int:
-        
+
         # Build the adjacency matrix
         adj_matrix = [[0 for _ in range(n)] for _ in range(n)]
         for s, d, w in flights:
@@ -335,6 +347,8 @@ class Solution:
 # -> For Dijkstra, there is not need to maintain a best cost for each node since it's kind of greedy search. It always chooses the lowest cost node for next search. So the previous searched node always has a lower cost and has no chance to be updated. The first time we pop our destination from our queue, we have found the lowest cost to our destination.
 import collections
 import math
+# time = O(E * K * log(E * K)), E = number of flights, K = max stops
+# space = O(E * K)
 class Solution:
     def findCheapestPrice(self, n, flights, src, dst, K):
         graph = collections.defaultdict(dict)
@@ -356,6 +370,8 @@ class Solution:
 # V1'
 # IDEA : Dijkstra
 # https://leetcode.com/problems/cheapest-flights-within-k-stops/discuss/209730/Python-solution
+# time = O(E * K * log(E * K)), E = number of flights, K = max stops
+# space = O(E * K)
 class Solution(object):
     def findCheapestPrice(self, n, flights, src, dst, K):
         """

@@ -40,17 +40,21 @@ a and b consist of lowercase English letters.
 #         or
 #       -> 2) B in A * (x+1)
 # -> return -1 if above contitions are not met
+# time = O(m * (m + n)), m = len(A), n = len(B) (string concat + substring search)
+# space = O(m + n)
 class Solution(object):
     def repeatedStringMatch(self, A, B):
         sa, sb = len(A), len(B)
         x = 1
         while (x - 1) * sa <= 2 * max(sa, sb):
-            if B in A * x: 
+            if B in A * x:
                 return x
             x += 1
         return -1
 
 # V0'
+# time = O(m * (m + n)), m = len(a), n = len(b)
+# space = O(m + n)
 class Solution(object):
     def repeatedStringMatch(self, a, b):
         # edge case
@@ -77,6 +81,8 @@ class Solution(object):
 # Let x be the theoretical lower bound, which is ceil(len(B)/len(A)).
 # The answer n can only be x or x + 1 (in the case where len(B) is a multiple of len(A) like in A = "abcd" and B = "cdabcdab") and not more. Because if B is already in A * n, B is definitely in A * (n + 1).
 # Hence we only need to check whether B in A * x or B in A * (x + 1), and if both are not possible return -1.
+# time = O(m + n), m = len(A), n = len(B)
+# space = O(m + n)
 class Solution(object):
     def repeatedStringMatch(self, A, B):
         t = -(-len(B) // len(A)) # Equal to ceil(len(b) / len(a))
@@ -90,6 +96,8 @@ class Solution(object):
 # Let x be the theoretical lower bound, which is ceil(len(B)/len(A)).
 # The answer n can only be x or x + 1 (in the case where len(B) is a multiple of len(A) like in A = "abcd" and B = "cdabcdab") and not more. Because if B is already in A * n, B is definitely in A * (n + 1).
 # Hence we only need to check whether B in A * x or B in A * (x + 1), and if both are not possible return -1.
+# time = O(m + n), m = len(A), n = len(B)
+# space = O(m + n)
 class Solution(object):
     def repeatedStringMatch(self, A, B):
         times = -(-len(B) // len(A)) # Equal to ceil(len(b) / len(a))
@@ -98,8 +106,10 @@ class Solution(object):
             return times + i
         return -1
 
-# V1 
+# V1
 # http://bookshadow.com/weblog/2017/10/01/leetcode-repeated-string-match/
+# time = O(m * (m + n)), m = len(A), n = len(B)
+# space = O(m + n)
 class Solution(object):
     def repeatedStringMatch(self, A, B):
         sa, sb = len(A), len(B)
@@ -114,6 +124,8 @@ class Solution(object):
 
 # V1'
 # https://leetcode.com/problems/repeated-string-match/discuss/224182/Explanation-on-the-Intuitive-Python-2-liner-solution
+# time = O(m + n), m = len(A), n = len(B)
+# space = O(m + n)
 class Solution:
     def repeatedStringMatch(self, A, B):
         r = math.ceil(len(B) / len(A))
@@ -125,8 +137,8 @@ class Solution:
 # V1'
 # https://leetcode.com/problems/repeated-string-match/solution/
 # IDEA : BRUTE FORCE
-# time complexity : O(N*(M+N))
-# space complexity : O(M+N)
+# time = O(m * (m + n)), m = len(A), n = len(B)
+# space = O(m + n)
 class Solution(object):
     def repeatedStringMatch(self, A, B):
         q = (len(B) - 1) // len(A) + 1
@@ -137,6 +149,8 @@ class Solution(object):
 # V1''
 # https://leetcode.com/problems/repeated-string-match/solution/
 # IDEA : Rabin-Karp (Rolling Hash)
+# time = O(m + n), m = len(A), n = len(B)
+# space = O(m + n)
 class Solution(object):
     def repeatedStringMatch(self, A, B):
         def check(index):
@@ -173,8 +187,10 @@ class Solution(object):
                 return q if i < q * len(A) else q+1
         return -1
 
-# V2 
+# V2
 # Rabin-Karp Algorithm (rolling hash)
+# time = O(m + n), m = len(A), n = len(B)
+# space = O(m + n)
 class Solution(object):
     def repeatedStringMatch(self, A, B):
         """

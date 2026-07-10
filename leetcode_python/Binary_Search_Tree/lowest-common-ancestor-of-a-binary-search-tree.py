@@ -36,11 +36,13 @@ p and q will exist in the BST.
 
 # V0
 # IDEA: DFS + BST property
+# time = O(h)  # h = tree height, BST-guided descent
+# space = O(h)  # recursion stack
 class Solution(object):
     def lowestCommonAncestor(self, root, p, q):
         if not root:
             return None
-            
+
         # Case 1: If both target nodes are smaller than the root, move left
         if p.val < root.val and q.val < root.val:
             return self.lowestCommonAncestor(root.left, p, q)

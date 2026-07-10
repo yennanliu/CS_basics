@@ -26,9 +26,11 @@ An empty tree is represented by "" instead of "()"
 
 # V0
 # IDEA : tree property + recursive
+# time = O(n), each char processed a constant number of times
+# space = O(n), recursion stack + string slicing
 class Solution(object):
     def str2tree(self, s):
-        if not s: 
+        if not s:
             return None
         n = ''
         while s and s[0] not in ('(', ')'):
@@ -83,7 +85,7 @@ class Solution(object):
         def str2treeHelper(s, i):
             start = i
             if s[i] == '-': i += 1
-            while i < len(s) and s[i].isdigit(): 
+            while i < len(s) and s[i].isdigit():
                 i += 1
             node = TreeNode(int(s[start:i]))
             if i < len(s) and s[i] == '(':
@@ -98,7 +100,9 @@ class Solution(object):
 
         return str2treeHelper(s, 0)[0] if s else None
 
-# V0' 
+# V0'
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def str2tree(self, s):
         """
@@ -139,13 +143,15 @@ class Solution(object):
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def str2tree(self, s):
         """
         :type s: str
         :rtype: TreeNode
         """
-        if not s: 
+        if not s:
             return None
         n = ''
         while s and s[0] not in ('(', ')'):
@@ -185,7 +191,9 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/construct-binary-tree-from-string/#tag-highlight-lang-python
-# IDEA : RECURSION 
+# IDEA : RECURSION
+# time = O(n)
+# space = O(n)
 class Solution:
     """
     @param s: a string
@@ -227,6 +235,8 @@ class Solution:
         return root
 
 # V1''
+# time = O(n^2), findIndex scans a range for each node
+# space = O(n)
 # https://www.geeksforgeeks.org/construct-binary-tree-string-bracket-representation/
 # Python3 program to conStruct a 
 # binary tree from the given String 
@@ -297,10 +307,10 @@ def treeFromString(Str, si, ei):
         root.right = treeFromString(Str, index + 2, ei - 1) 
     return root 
 
-# V2 
+# V2
 # https://github.com/kamyu104/LeetCode-Solutions/blob/master/Python/construct-binary-tree-from-string.py
-# Time:  O(n)
-# Space: O(h)
+# time = O(n)
+# space = O(h)
 class TreeNode(object):
     def __init__(self, x):
         self.val = x

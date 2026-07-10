@@ -1,4 +1,6 @@
 # V0
+# time = O(n^2)  # n pops from a list, each O(n)
+# space = O(n)
 class Solution:
     def getPermutation(self, n, k):
         baselist = [i + 1 for i in range(n)]
@@ -17,6 +19,8 @@ class Solution:
 
 # V1
 # https://leetcode.com/problems/permutation-sequence/discuss/562480/Python-O(n)-solution
+# time = O(n^2)  # n pops from a list, each O(n)
+# space = O(n)
 class Solution:
     def getPermutation(self, n: int, k: int) -> str:
         # the list contains elements when digit = n 
@@ -57,6 +61,8 @@ assert s.getPermutation(3,-2) == "321"
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/80658810
 # http://bangbingsyb.blogspot.com/2014/11/leetcode-permutation-sequence.html
+# time = O(n^2)  # n pops from a list, each O(n)
+# space = O(n)
 class Solution(object):
     def getPermutation(self, n, k):
         """
@@ -78,8 +84,8 @@ class Solution(object):
         return ans
     
 # V2
-# Time:  O(n^2)
-# Space: O(n)
+# time = O(n^2)
+# space = O(n)
 import math
 # Cantor ordering solution
 class Solution(object):

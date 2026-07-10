@@ -55,15 +55,25 @@ Problem Solution
 
 # V0
 class Leaderboard:
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
+        pass
 
+    # time = O(1)
+    # space = O(1)
     def addScore(self, playerId, score):
+        pass
 
+    # time = O(1)
+    # space = O(1)
     def top(self, K):
-        
+        pass
 
+    # time = O(1)
+    # space = O(1)
     def reset(self, playerId):
-
+        pass
 
 
 
@@ -71,15 +81,23 @@ class Leaderboard:
 # IDEA: HASHMAP (gpt)
 class Leaderboard:
 
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
         self.user_score = {}
 
+    # time = O(1)
+    # space = O(1)
     def addScore(self, playerId, score):
         self.user_score[playerId] = self.user_score.get(playerId, 0) + score
 
+    # time = O(n log n), n = number of players
+    # space = O(n)
     def top(self, K):
         return sum(sorted(self.user_score.values(), reverse=True)[:K])
 
+    # time = O(1)
+    # space = O(1)
     def reset(self, playerId):
         self.user_score[playerId] = 0
 
@@ -91,10 +109,14 @@ import heapq
 
 class Leaderboard:
 
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
         # Maps playerId -> current total score
         self.scores = {}
 
+    # time = O(1)
+    # space = O(1)
     def addScore(self, playerId: int, score: int) -> None:
         # If the player exists, add to their score. Otherwise, initialize it.
         if playerId in self.scores:
@@ -102,6 +124,8 @@ class Leaderboard:
         else:
             self.scores[playerId] = score
 
+    # time = O(n log K), n = number of players
+    # space = O(K)
     def top(self, K: int) -> int:
         # Step 1: Use a min-heap to keep track of the top K scores
         min_heap = []
@@ -123,6 +147,8 @@ class Leaderboard:
         # Step 2: Return the SUM of the top K elements
         return sum(min_heap)
 
+    # time = O(1)
+    # space = O(1)
     def reset(self, playerId: int) -> None:
         # Delete or reset the player's score to 0
         if playerId in self.scores:
@@ -135,10 +161,14 @@ from sortedcontainers import SortedList
 
 
 class Leaderboard:
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
         self.d = defaultdict(int)
         self.rank = SortedList()
 
+    # time = O(log n), n = number of players (SortedList add/remove)
+    # space = O(1)
     def addScore(self, playerId: int, score: int) -> None:
         if playerId not in self.d:
             self.d[playerId] = score
@@ -148,9 +178,13 @@ class Leaderboard:
             self.d[playerId] += score
             self.rank.add(self.d[playerId])
 
+    # time = O(K)
+    # space = O(K)
     def top(self, K: int) -> int:
         return sum(self.rank[-K:])
 
+    # time = O(log n), n = number of players
+    # space = O(1)
     def reset(self, playerId: int) -> None:
         self.rank.remove(self.d.pop(playerId))
 

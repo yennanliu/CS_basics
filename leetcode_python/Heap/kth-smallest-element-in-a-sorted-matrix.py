@@ -45,6 +45,8 @@ Could you solve the problem in O(n) time complexity? The solution may be too adv
 
 # V0
 # IDEA: binary search + MATRIX (gpt)
+# time = O(n log(max-min)), n = matrix dimension (countLessEqual is O(n) per binary search step)
+# space = O(1)
 class Solution(object):
     def kthSmallest(self, matrix, k):
         # Number of rows (the matrix is n x n).
@@ -112,6 +114,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: binary search (gemini)
+# time = O(n log(max-min)), n = matrix dimension
+# space = O(1)
 class Solution(object):
     def kthSmallest(self, matrix, k):
         n = len(matrix)
@@ -139,6 +143,8 @@ class Solution(object):
 
 # V0-2
 # IDEA: BRUTE FORCE
+# time = O(n^2 log n), n = matrix dimension (flatten + sort)
+# space = O(n^2)
 class Solution(object):
     def kthSmallest(self, matrix, k):
         if not matrix or len(matrix) == 0 or len(matrix[0]) == 0:
@@ -159,8 +165,10 @@ class Solution(object):
 
         return list[k-1]
 
-# V1 
+# V1
 # http://bookshadow.com/weblog/2016/08/01/leetcode-kth-smallest-element-in-a-sorted-matrix/
+# time = O(k log k) (heap holds up to O(k) entries)
+# space = O(m*n) (visited matrix)
 class Solution(object):
     def kthSmallest(self, matrix, k):
         """
@@ -183,8 +191,10 @@ class Solution(object):
                 heapq.heappush(q, (matrix[i][j + 1], i, j + 1))
         return ans
 
-# V1' 
+# V1'
 # http://bookshadow.com/weblog/2016/08/01/leetcode-kth-smallest-element-in-a-sorted-matrix/
+# time = O(k log k)
+# space = O(k)
 class Solution(object):
     def kthSmallest(self, matrix, k):
         """
@@ -203,8 +213,10 @@ class Solution(object):
                 heapq.heappush(q, (matrix[i][j + 1], i, j + 1))
         return ans
 
-# V1'' 
+# V1''
 # http://bookshadow.com/weblog/2016/08/01/leetcode-kth-smallest-element-in-a-sorted-matrix/
+# time = O(n log n * log(max-min)), n = matrix dimension (bisect over each row per binary search step)
+# space = O(1)
 class Solution(object):
     def kthSmallest(self, matrix, k):
         """
@@ -222,8 +234,10 @@ class Solution(object):
                 lo = mid + 1
         return lo
 
-# V1''' 
+# V1'''
 # http://bookshadow.com/weblog/2016/08/01/leetcode-kth-smallest-element-in-a-sorted-matrix/
+# time = O(n log(max-min)), n = matrix dimension (countLower is O(n) per binary search step)
+# space = O(1)
 class Solution(object):
     def kthSmallest(self, matrix, k):
         """
@@ -252,9 +266,9 @@ class Solution(object):
                 i -= 1
         return cnt
         
-# V2 
-# Time:  O(k * log(min(n, m, k))), with n x m matrix
-# Space: O(min(n, m, k))
+# V2
+# time = O(k * log(min(n, m, k))), with n x m matrix
+# space = O(min(n, m, k))
 from heapq import heappush, heappop
 class Solution(object):
     def kthSmallest(self, matrix, k):

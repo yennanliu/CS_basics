@@ -33,6 +33,8 @@ Submissions
 
 # V0
 # IDEA: DFS + isSAME tree
+# time = O(m * n), m = nodes in root, n = nodes in subRoot
+# space = O(h), h = height of root (recursion stack)
 class Solution(object):
     def isSubtree(self, root, subRoot):
         if not root:
@@ -66,6 +68,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: DFS
+# time = O(m * n), m = nodes in root, n = nodes in subRoot
+# space = O(h), h = height of root (recursion stack)
 class Solution(object):
     def isSubtree(self, root, subRoot):
         # Base Case: If the main tree is empty, subRoot cannot be a subtree of it
@@ -93,6 +97,8 @@ class Solution(object):
 
 # V0-2
 # IDEA: BFS
+# time = O(m * n), m = nodes in root, n = nodes in subRoot
+# space = O(m), m = nodes in root (BFS queue)
 from collections import deque
 
 class Solution(object):
@@ -133,9 +139,11 @@ class Solution(object):
 
 # V0
 # IDEA : BFS + DFS (LC 100 Same tree)
+# time = O(m * n), m = nodes in root, n = nodes in subRoot
+# space = O(m), m = nodes in root (BFS queue + cache)
 class Solution(object):
     def isSubtree(self, root, subRoot):
-        
+
         # dfs
         # IDEA : LC 100 Same tree
         def check(p, q):
@@ -175,6 +183,8 @@ class Solution(object):
 
 # V0'
 # IDEA : DFS + DFS (LC 100 Same tree)
+# time = O(m * n), m = nodes in root, n = nodes in subRoot
+# space = O(h + m), h = height of root (recursion), m = nodes in root (res list)
 class Solution(object):
     def isSubtree(self, root, subRoot):
         # IDEA : LC 100 Same tree
@@ -206,7 +216,9 @@ class Solution(object):
         return True in res
 
 # V0'
-# IDEA : DFS + DFS 
+# IDEA : DFS + DFS
+# time = O(m * n), m = nodes in s, n = nodes in t
+# space = O(h), h = height of s (recursion stack)
 class Solution(object):
     def isSubtree(self, s, t):
         if not s and not t:
@@ -224,7 +236,9 @@ class Solution(object):
         return s.val == t.val and self.isSameTree(s.left, t.left) and self.isSameTree(s.right, t.right)
 
 # V0'
-# IDEA : BFS + DFS 
+# IDEA : BFS + DFS
+# time = O(m * n), m = nodes in s, n = nodes in t
+# space = O(m), m = nodes in s (BFS queue)
 class Solution(object):
     def isSubtree(self, s, t):
         if not s and not t:
@@ -242,7 +256,7 @@ class Solution(object):
             que.append(node.left)
             que.append(node.right)
         return False
-        
+
     def isSameTree(self, s, t):
         if not s and not t:
             return True
@@ -277,6 +291,8 @@ class Solution(object):
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(m * n), m = nodes in s, n = nodes in t
+# space = O(h), h = height of s (recursion stack)
 class Solution(object):
     def isSubtree(self, s, t):
         """
@@ -306,6 +322,8 @@ class Solution(object):
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(m * n), m = nodes in s, n = nodes in t
+# space = O(m), m = nodes in s (BFS queue)
 class Solution(object):
     def isSubtree(self, s, t):
         """
@@ -336,9 +354,9 @@ class Solution(object):
             return False
         return s.val == t.val and self.isSameTree(s.left, t.left) and self.isSameTree(s.right, t.right)
 
-# V2 
-# Time:  O(m * n), m is the number of nodes of s, n is the number of nodes of t
-# Space: O(h), h is the height of s
+# V2
+# time = O(m * n), m is the number of nodes of s, n is the number of nodes of t
+# space = O(h), h is the height of s
 class Solution(object):
     def isSubtree(self, s, t):
         """

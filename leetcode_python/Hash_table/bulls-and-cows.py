@@ -1,5 +1,5 @@
-# Time:  O(n)
-# Space: O(10) = O(1)
+# time = O(n)
+# space = O(10) = O(1)
 # You are playing the following Bulls and Cows game with your friend:
 # You write a 4-digit secret number and ask your friend to guess it,
 # each time your friend guesses a number, you give a hint, the hint
@@ -39,6 +39,8 @@
 # In [20]: operator.eq(1,2)
 # Out[20]: False
 import collections, operator
+# time = O(n)
+# space = O(10) = O(1)
 class Solution(object):
     def getHint(self, secret, guess):
         """
@@ -52,8 +54,10 @@ class Solution(object):
         cow = sum((sa & sb).values()) - bull         # (find the number of digits that exist in both secret, and guess) - bull 
         return str(bull) + 'A' + str(cow) + 'B'
 
-# V1' 
+# V1'
 # http://bookshadow.com/weblog/2015/10/31/leetcode-bulls-and-cows/
+# time = O(n)
+# space = O(10) = O(1)
 def getHint(self, secret, guess):
     bulls = sum(map(operator.eq, secret, guess))
     both = sum(min(secret.count(x), guess.count(x)) for x in '0123456789')
@@ -61,6 +65,8 @@ def getHint(self, secret, guess):
 
 # V1''
 # https://www.jiuzhang.com/solution/bulls-and-cows/#tag-highlight-lang-python
+# time = O(n)
+# space = O(10) = O(1)
 class Solution:
     def getHint(self, secret, guess):
         a , b , n = 0 , 0 , len(secret)
@@ -77,9 +83,9 @@ class Solution:
             b += min(ds[i],dg[i])
         return str(a) + 'A' + str(b - a) + 'B'
 
-# V2 
-# Time:  O(n)
-# Space: O(10) = O(1)
+# V2
+# time = O(n)
+# space = O(10) = O(1)
 import operator
 # One pass solution.
 from collections import defaultdict, Counter
@@ -111,6 +117,8 @@ class Solution(object):
         return "%dA%dB" % (A, B)
 
 # Two pass solution.
+# time = O(n)
+# space = O(10) = O(1)
 class Solution2(object):
     def getHint(self, secret, guess):
         """

@@ -1,8 +1,10 @@
 # V0 
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/80476862
-# IDEA : DFS 
+# IDEA : DFS
+# time = O(V + E), V = len(rooms), E = total keys
+# space = O(V)
 class Solution:
     def canVisitAllRooms(self, rooms):
         """
@@ -45,7 +47,9 @@ class Solution:
 
 # V1'
 # https://www.jiuzhang.com/solution/keys-and-rooms/#tag-highlight-lang-python
-# IDEA : BFS 
+# IDEA : BFS
+# time = O(V + E), V = len(rooms), E = total keys
+# space = O(V)
 import collections
 class Solution:
     """
@@ -64,9 +68,9 @@ class Solution:
                     q.append(v)                  
         return len(seen) == len(rooms)
 
-# V2 
-# Time:  O(n!)
-# Space: O(n)
+# V2
+# time = O(V + E), V = len(rooms), E = total keys
+# space = O(V)
 class Solution(object):
     def canVisitAllRooms(self, rooms):
         """

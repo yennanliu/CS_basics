@@ -5,6 +5,8 @@
 # e.g. 
 # n = 13   --> 1,10,11,12,13,2,3,4,5,6,7,8,9 
 # n = 300  --> 1,10,100,101,102...198,199,2,20,200,201...299,3,30,300
+# time = O(n)
+# space = O(n)  # output list
 class Solution:
     def lexicalOrder(self, n):
         """
@@ -26,8 +28,9 @@ class Solution:
         return ans
 
 
-# V3 
-# Space: O(1)
+# V3
+# time = O(n)
+# space = O(1)  # excluding output list
 class Solution(object):
     def lexicalOrder(self, n):
         result = []

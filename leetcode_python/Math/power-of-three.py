@@ -1,4 +1,6 @@
-# V1 
+# V1
+# time = O(log n)  # n = n, log base 3
+# space = O(1)
 class Solution(object):
     def isPowerOfThree(self, n):
         if (n ==0 or n < 0):
@@ -10,9 +12,9 @@ class Solution(object):
         #print (n)
         return True
 
-# V2 
-# Time:  O(1)
-# Space: O(1)
+# V2
+# time = O(1)
+# space = O(1)
 # import math
 # class Solution(object):
 #     def __init__(s=elf):

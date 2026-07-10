@@ -18,9 +18,9 @@
 # V0 : DEV 
 
 
-# V1 
-# Time:  O(n)
-# Space: O(1)
+# V1
+# time = O(n)
+# space = O(1)
 class TreeNode(object):
     def __init__(self, x):
         self.val = x
@@ -43,8 +43,8 @@ class Solution(object):
 
         return parent
 
-# Time:  O(n)
-# Space: O(n)
+# time = O(n)
+# space = O(n), recursion stack (worst case, skewed tree)
 class Solution2(object):
     # @param root, a tree node
     # @return root of the upside down tree

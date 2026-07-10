@@ -47,6 +47,8 @@ Constraints:
 # cur = 0110100110010110
 # cur = 01101001100101101001011001101001
 # ..
+# time = O(2^n)  # build full row string
+# space = O(2^n)
 class Solution(object):
     def kthGrammar(self, n, k):
         # edge
@@ -68,6 +70,8 @@ class Solution(object):
 # V1
 # https://leetcode.com/problems/k-th-symbol-in-grammar/solution/
 # IDEA : BRUTE FORCE
+# time = O(n)  # recursion depth n
+# space = O(n)  # recursion stack
 class Solution(object):
     def kthGrammar(self, N, K):
         if N == 1: return 0
@@ -76,6 +80,8 @@ class Solution(object):
 # V1'
 # https://leetcode.com/problems/k-th-symbol-in-grammar/solution/
 # IDEA : Recursion (Parent Variant)
+# time = O(n)  # recursion depth n
+# space = O(n)  # recursion stack
 class Solution(object):
     def kthGrammar(self, N, K):
         if N == 1: return 0
@@ -84,6 +90,8 @@ class Solution(object):
 # V1'
 # https://leetcode.com/problems/k-th-symbol-in-grammar/solution/
 # IDEA : Recursion (Flip Variant)
+# time = O(n)  # recursion depth n
+# space = O(n)  # recursion stack
 class Solution(object):
     def kthGrammar(self, N, K):
         if N == 1: return 0
@@ -95,12 +103,16 @@ class Solution(object):
 # V1'
 # https://leetcode.com/problems/k-th-symbol-in-grammar/solution/
 # IDEA : Binary Count
+# time = O(log k)  # bits of K
+# space = O(log k)
 class Solution(object):
     def kthGrammar(self, N, K):
         return bin(K - 1).count('1') % 2
 
-# V2 
+# V2
 # https://blog.csdn.net/fuxuemingzhu/article/details/82848294
+# time = O(n)  # recursion depth n
+# space = O(n)  # recursion stack
 class Solution(object):
     def kthGrammar(self, N, K):
         """
@@ -124,6 +136,8 @@ class Solution(object):
             return 1 - self.kthGrammar(N - 1, K - (2**(N - 2)))
 
 # V2'
+# time = O(n)  # recursion depth n
+# space = O(n)  # recursion stack
 class Solution(object):
     def kthGrammar(self, N, K):
         """
@@ -143,8 +157,8 @@ class Solution(object):
             return 1 - self.kthGrammar(N - 1, K - (1 << (N - 2)))
 
 # V3
-# Time:  O(logn) = O(1) because n is 32-bit integer
-# Space: O(1)
+# time = O(logn) = O(1) because n is 32-bit integer
+# space = O(1)
 
 class Solution(object):
     def kthGrammar(self, N, K):

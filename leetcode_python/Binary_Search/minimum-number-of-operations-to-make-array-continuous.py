@@ -158,10 +158,11 @@ class Solution(object):
         return n - max_continusous
 
 # V1'''''
+# time = O(n log n)
+# space = O(n)
 class Solution:
 	def minOperations(self, nums: List[int]) -> int:
 		# use binary search using bisect_right
-		# Time O(nlogn), Space O(n)
 		n = len(nums)
 		nums = sorted(set(nums))
 		result = sys.maxsize

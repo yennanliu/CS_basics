@@ -34,6 +34,8 @@ Follow up: A linked list can be reversed either iteratively or recursively. Coul
 # -> STEP 2) point head.next to prev
 # -> STEP 3) move prev to head
 # -> STEP 4) move head to "next"
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def reverseList(self, head):
         if not head or not head.next:
@@ -56,6 +58,8 @@ class Solution(object):
 
 # V0-1
 # IDEA : Linkedlist basics
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def reverseList(self, head):
         # Initialize our pointer states
@@ -84,6 +88,8 @@ class Solution(object):
 # -> STEP 2) point head.next to prev
 # -> STEP 3) move prev to head
 # -> STEP 4) move head to "next"
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def reverseList(self, head):
         # edge case
@@ -111,6 +117,8 @@ class Solution(object):
 # prev = ListNode{val: 3, next: ListNode{val: 2, next: ListNode{val: 1, next: None}}}
 # prev = ListNode{val: 4, next: ListNode{val: 3, next: ListNode{val: 2, next: ListNode{val: 1, next: None}}}}
 # prev = ListNode{val: 5, next: ListNode{val: 4, next: ListNode{val: 3, next: ListNode{val: 2, next: ListNode{val: 1, next: None}}}}}
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def reverseList(self, head):
         if not head:
@@ -132,6 +140,8 @@ class Solution(object):
 
 # V0'
 # IDEA : Linkedlist basics
+# time = O(n)
+# space = O(1)
 class Solution:
     def reverseList(self, head):
         ### NOTE : we define _prev, _cur first
@@ -156,6 +166,8 @@ class Solution:
 # V0'
 # https://github.com/yennanliu/CS_basics/blob/master/data_structure/python/linkedList.py
 # IDEA : Linkedlist basics
+# time = O(n)
+# space = O(1)
 class Solution:
     def reverseList(self, head: ListNode):
         prev = None
@@ -176,6 +188,8 @@ class Solution:
 #     def __init__(self, x):
 #         self.val = x
 #         self.next = None
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def reverseList(self, head):
         """
@@ -196,7 +210,9 @@ class Solution(object):
 
 # V1'
 # http://bookshadow.com/weblog/2015/05/05/leetcode-reverse-linked-list/
-# IDEA :  LINKED LIST 
+# IDEA :  LINKED LIST
+# time = O(n)
+# space = O(1)
 class Solution:
     # @param {ListNode} head
     # @return {ListNode}
@@ -211,7 +227,9 @@ class Solution:
 
 # V1'
 # http://bookshadow.com/weblog/2015/05/05/leetcode-reverse-linked-list/
-# IDEA :  ITERATION  
+# IDEA :  ITERATION
+# time = O(n)
+# space = O(n) (recursion stack)
 class Solution:
     # @param {ListNode} head
     # @return {ListNode}
@@ -224,9 +242,7 @@ class Solution:
         head.next = newHead
         return self.doReverse(next, head)
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
 class ListNode(object):
     def __init__(self, x):
         self.val = x
@@ -237,6 +253,8 @@ class ListNode(object):
             return "{} -> {}".format(self.val, repr(self.__next__))
 
 # Iterative solution.
+# time = O(n)
+# space = O(1)
 class Solution(object):
     # @param {ListNode} head
     # @return {ListNode}
@@ -246,9 +264,9 @@ class Solution(object):
             dummy.next, head.next, head = head, dummy.next, head.next
         return dummy.__next__
 
-# Time:  O(n)
-# Space: O(n)
 # Recursive solution.
+# time = O(n)
+# space = O(n) (recursion stack)
 class Solution2(object):
     # @param {ListNode} head
     # @return {ListNode}

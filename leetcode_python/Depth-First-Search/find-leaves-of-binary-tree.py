@@ -1,6 +1,6 @@
 # V0 
 
-# V1 
+# V1
 # https://blog.csdn.net/danspace1/article/details/87738403
 # Definition for a binary tree node.
 # class TreeNode:
@@ -8,6 +8,8 @@
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)
+# space = O(n)
 class Solution:
     def findLeaves(self, root: 'TreeNode') -> 'List[List[int]]':
         def getLevel(root, d):
@@ -26,7 +28,7 @@ class Solution:
             res.append(d[k])
         return res
 
-# V1' 
+# V1'
 # https://blog.csdn.net/danspace1/article/details/87738403
 # Definition for a binary tree node.
 # class TreeNode(object):
@@ -34,6 +36,8 @@ class Solution:
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def findLeaves(self, root):
         """
@@ -60,6 +64,8 @@ class Solution(object):
 
 # V1''
 # https://www.jiuzhang.com/solution/find-leaves-of-binary-tree/#tag-highlight-lang-python
+# time = O(n)
+# space = O(n)
 class Solution:
     """
     @param: root: the root of binary tree
@@ -83,9 +89,9 @@ class Solution:
         self.leaves[height].append(root.val)
         return height
 
-# V2 
-# Time:  O(n)
-# Space: O(h)
+# V2
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def findLeaves(self, root):
         """

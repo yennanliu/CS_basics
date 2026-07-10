@@ -41,6 +41,8 @@ All the pairs [ai, bi] are distinct.
 # IDEA : topological sort
 from collections import deque
 
+# time = O(V + E), V = numCourses, E = len(prerequisites)
+# space = O(V + E)
 class Solution(object):
     def findOrder(self, numCourses, prerequisites):
         """
@@ -128,6 +130,8 @@ class Solution(object):
 # IDEA : topological sort
 from collections import deque
 
+# time = O(V + E), V = numCourses, E = len(prerequisites)
+# space = O(V + E)
 class MyTopoSort(object):
     def __init__(self, n, prerequisites):
         self.sorted_arr = []
@@ -178,6 +182,8 @@ class MyTopoSort(object):
 
 
 # Wrapper class required by LeetCode interface
+# time = O(V + E), V = numCourses, E = len(prerequisites)
+# space = O(V + E)
 class Solution(object):
     def findOrder(self, numCourses, prerequisites):
         sorter = MyTopoSort(numCourses, prerequisites)
@@ -189,12 +195,14 @@ class Solution(object):
 # IDEA : DFS + topological sort
 # SAME dfs logic as LC 207 (Course Schedule)
 from collections import defaultdict
+# time = O(V + E), V = numCourses, E = len(prerequisites)
+# space = O(V + E)
 class Solution(object):
     def findOrder(self, numCourses, prerequisites):
         # edge case
         if not prerequisites:
             return [x for x in range(numCourses)]
-        
+
         # help func : dfs
         # 3 cases :  0 : unknown, 1 :visiting, 2 : visited   
         def dfs(idx, visited, g, res):
@@ -243,6 +251,8 @@ class Solution(object):
 # IDEA : DFS + topological sort
 # SAME dfs logic as LC 207 (Course Schedule)
 import collections
+# time = O(V + E), V = numCourses, E = len(prerequisites)
+# space = O(V + E)
 class Solution:
     def findOrder(self, numCourses, prerequisites):
         # build graph
@@ -275,6 +285,8 @@ class Solution:
 # V0'
 # IDEA : DFS + topological sort
 # SAME dfs logic as LC 207 (Course Schedule)
+# time = O(V + E), V = numCourses, E = len(prerequisites)
+# space = O(V + E)
 class Solution(object):
     def findOrder(self, numCourses, prerequisites):
         """
@@ -308,8 +320,10 @@ class Solution(object):
         return True
 
 # V1
-# IDEA : BFS 
+# IDEA : BFS
 # http://bookshadow.com/weblog/2015/05/14/leetcode-course-schedule-ii/
+# time = O(V^2), V = numCourses (linear scan over courses each round)
+# space = O(V + E)
 class Solution:
     # @param {integer} numCourses
     # @param {integer[][]} prerequisites
@@ -339,7 +353,9 @@ class Solution:
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/83302328
-# IDEA : DFS + topological sort 
+# IDEA : DFS + topological sort
+# time = O(V + E), V = numCourses, E = len(prerequisites)
+# space = O(V + E)
 class Solution(object):
     def findOrder(self, numCourses, prerequisites):
         """
@@ -357,7 +373,7 @@ class Solution(object):
             if not self.dfs(graph, visited, i, path):
                 return []
         return path
-    
+
     def dfs(self, graph, visited, i, path):
         # 0 = Unknown, 1 = visiting, 2 = visited
         if visited[i] == 1: return False
@@ -372,7 +388,9 @@ class Solution(object):
 
 # V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/83302328
-# IDEA : BFS 
+# IDEA : BFS
+# time = O(V^2), V = numCourses (nested scan for zero indegree each round)
+# space = O(V + E)
 class Solution(object):
     def findOrder(self, numCourses, prerequisites):
         """
@@ -400,8 +418,10 @@ class Solution(object):
                 indegrees[node] -= 1
         return path
 
-# V2 
+# V2
 from collections import defaultdict, deque
+# time = O(V + E), V = numCourses, E = len(prerequisites)
+# space = O(V + E)
 class Solution(object):
     def findOrder(self, numCourses, prerequisites):
         """

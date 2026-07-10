@@ -44,6 +44,8 @@ Follow up: Could you find an O(nums1.length + nums2.length) solution?
 
 # V0
 # IDEA : STACK (for + while loop)
+# time = O(n * m), n = len(nums1), m = len(nums2)
+# space = O(m)
 class Solution(object):
     def nextGreaterElement(self, nums1, nums2):
         # edge case
@@ -74,6 +76,8 @@ class Solution(object):
 
 # V0'
 # IDEA : double for loop (one of loops is INVERSE ORDERING) + case conditions op
+# time = O(n * m), n = len(nums1), m = len(nums2)
+# space = O(m)
 class Solution(object):
     def nextGreaterElement(self, nums1, nums2):
         res = [None for _ in range(len(nums1))]
@@ -101,6 +105,8 @@ class Solution(object):
 # V1
 # IDEA : same as LC 739 Daily Temperatures.
 # https://leetcode.com/problems/next-greater-element-i/discuss/183740/Python-solution
+# time = O(n + m), n = len(nums1), m = len(nums2)
+# space = O(m)
 class Solution:
     def nextGreaterElement(self, nums1, nums2):
         if not nums1:
@@ -122,7 +128,9 @@ class Solution:
 
 # V1'
 # https://leetcode.com/problems/next-greater-element-i/discuss/97691/straightforward-python-solution
-class Solution:    
+# time = O(n * m), n = len(findNums), m = len(nums)
+# space = O(n)
+class Solution:
     def nextGreaterElement(self, findNums, nums):
         def helper(num):
             for tmp in nums[nums.index(num):]:
@@ -134,6 +142,8 @@ class Solution:
 
 # V1'
 # https://leetcode.com/problems/next-greater-element-i/discuss/143065/Python-solution
+# time = O(n + m), n = len(findNums), m = len(nums)
+# space = O(m)
 class Solution(object):
     def nextGreaterElement(self, findNums, nums):
         stack, res, nn_dic = [], [], {} # nn is next number

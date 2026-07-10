@@ -20,6 +20,8 @@
 # The rand7() API is already defined for you.
 # def rand7():
 # @return a random integer in the range 1 to 7
+# time = O(1)  # expected, rejection sampling
+# space = O(1)
 class Solution:
     def rand10(self):
         """
@@ -43,9 +45,9 @@ class Solution:
         return num
 
 
-# V3 
-# Time:  O(1.189), counted by statistics, limit would be O(log10/log7) = O(1.183)
-# Space: O(1)
+# V3
+# time = O(1.189), counted by statistics, limit would be O(log10/log7) = O(1.183)
+# space = O(1)
 
 import random
 def rand7():
@@ -73,9 +75,9 @@ class Solution(object):
             generate(self.__cache)
         return self.__cache.pop()
 
-# V3' 
-# Time:  O(2 * (1 + (9/49) + (9/49)^2 + ...)) = O(2/(1-(9/49)) = O(2.45)
-# Space: O(1)
+# V3'
+# time = O(2 * (1 + (9/49) + (9/49)^2 + ...)) = O(2/(1-(9/49)) = O(2.45)
+# space = O(1)
 class Solution2(object):
     def rand10(self):
         """

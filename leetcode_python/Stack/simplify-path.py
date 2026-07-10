@@ -44,6 +44,8 @@ path is a valid absolute Unix path.
 
 # V0
 # IDEA : STACK
+# time = O(n), n = len(path)
+# space = O(n)
 class Solution:
     def simplifyPath(self, path: str) -> str:
         s = path.split('/')
@@ -54,11 +56,13 @@ class Solution:
             elif s[i] == '..':
                 if result:
                     result.pop()
-        
+
         return "/"+"/".join(result)
 
 # V0'
 # IDEA : STACK
+# time = O(n), n = len(path)
+# space = O(n)
 class Solution(object):
     def simplifyPath(self, path):
         stack = []
@@ -69,11 +73,13 @@ class Solution(object):
             if dir == '..':
                 if stack:
                     stack.pop()
-            else:                
+            else:
                 stack.append(dir)
         return '/' + '/'.join(stack)
 
 # V0''
+# time = O(n), n = len(path)
+# space = O(n)
 class Solution(object):
     def simplifyPath(self, path):
         s_final = []
@@ -96,6 +102,8 @@ class Solution(object):
 # V1
 # IDEA : STACK
 # https://leetcode.com/problems/simplify-path/solution/
+# time = O(n), n = len(path)
+# space = O(n)
 class Solution:
     def simplifyPath(self, path: str) -> str:
 
@@ -126,6 +134,8 @@ class Solution:
 # V1'
 # IDEA : STACK
 # https://leetcode.com/problems/simplify-path/discuss/1958861/Python-3
+# time = O(n), n = len(path)
+# space = O(n)
 class Solution:
     def simplifyPath(self, path: str) -> str:
         s = path.split('/')
@@ -142,6 +152,8 @@ class Solution:
 # V1''
 # IDEA : STACK
 # https://leetcode.com/problems/simplify-path/discuss/1050588/Python-stack
+# time = O(n), n = len(path)
+# space = O(n)
 class Solution:
     def simplifyPath(self, path):
         s = []
@@ -160,6 +172,8 @@ class Solution:
 # V1'''
 # IDEA : STACK
 # https://leetcode.com/problems/simplify-path/discuss/1050624/Python-by-stack-w-Comment
+# time = O(n), n = len(path)
+# space = O(n)
 class Solution:
     def simplifyPath(self, path: str) -> str:
         
@@ -191,7 +205,9 @@ class Solution:
 # V1'''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/80812350
 # https://www.cnblogs.com/zuoyuan/p/3777289.html
-# IDEA  :  SIMULATE THE PROCESS 
+# IDEA  :  SIMULATE THE PROCESS
+# time = O(n), n = len(path)
+# space = O(n)
 class Solution(object):
     def simplifyPath(self, path):
         """
@@ -231,9 +247,9 @@ class Solution(object):
 # stack : ['c']
 # Out[54]: '/c'
 
-# V2 
-# Time:  O(n)
-# Space: O(n)
+# V2
+# time = O(n)
+# space = O(n)
 class Solution(object):
     # @param path, a string
     # @return a string

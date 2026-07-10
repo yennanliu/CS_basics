@@ -1,5 +1,7 @@
 # V0
 # IDEA : BFS
+# time = O(n), n = total number of integers/lists in nestedList
+# space = O(n)
 class Solution(object):
     def depthSum(self, nestedList):
         """
@@ -13,7 +15,7 @@ class Solution(object):
             for i in nestedList:
                 if not i.isInteger():
                     newList += i.getList()
-            nestedList = newList            
+            nestedList = newList
             depth += 1
         return ans
 
@@ -79,6 +81,8 @@ class Solution(object):
 #        Return None if this NestedInteger holds a single integer
 #        :rtype List[NestedInteger]
 #        """
+# time = O(n), n = total number of integers/lists in nestedList
+# space = O(n)
 class Solution(object):
     def depthSum(self, nestedList):
         """
@@ -141,9 +145,9 @@ class Solution(object):
 #     }
 # };
 
-# V2 
-# Time:  O(n)
-# Space: O(h)
+# V2
+# time = O(n), n = total number of integers/lists in nestedList
+# space = O(h), h = max nesting depth
 class Solution(object):
     def depthSum(self, nestedList):
         """

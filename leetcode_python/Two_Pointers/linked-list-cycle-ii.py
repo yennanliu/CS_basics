@@ -44,6 +44,8 @@ Follow up: Can you solve it using O(1) (i.e. constant) memory?
 # V0
 # IDEA : 2 pointers + linked list basics
 # https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/2_pointers.md
+# time = O(n)
+# space = O(1)
 class Solution:
     def detectCycle(self, head):
         if not head or not head.next:
@@ -75,6 +77,8 @@ class Solution:
 
 # V0'
 # IDEA : SET
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def detectCycle(self, head):
         if not head or not head.next:
@@ -89,6 +93,8 @@ class Solution(object):
 
 # V0'
 # IDEA : SET
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def detectCycle(self, head):
         if not head: return None
@@ -100,13 +106,15 @@ class Solution(object):
             head = head.next
         return None
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79530638
 # Definition for singly-linked list.
 # class ListNode(object):
 #     def __init__(self, x):
 #         self.val = x
 #         self.next = None
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def detectCycle(self, head):
         """
@@ -129,7 +137,9 @@ class Solution(object):
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79530638
-# IDEA : SET 
+# IDEA : SET
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def detectCycle(self, head):
         """
@@ -147,6 +157,8 @@ class Solution(object):
 
 # V1''
 # http://bookshadow.com/weblog/2015/07/10/leetcode-linked-list-cycle-ii/
+# time = O(n)
+# space = O(1)
 class Solution:
     # @param head, a ListNode
     # @return a list node
@@ -171,6 +183,8 @@ class Solution:
 #     def __init__(self, x):
 #         self.val = x
 #         self.next = None
+# time = O(n)
+# space = O(1)
 class Solution:
     # @param head, a ListNode
     # @return a list node
@@ -191,9 +205,7 @@ class Solution:
             return slow
         return None
 
-# V3 
-# Time:  O(n)
-# Space: O(1)
+# V3
 class ListNode(object):
     def __init__(self, x):
         self.val = x
@@ -205,6 +217,8 @@ class ListNode(object):
         else:
             return None
 
+# time = O(n)
+# space = O(1)
 class Solution(object):
     # @param head, a ListNode
     # @return a list node

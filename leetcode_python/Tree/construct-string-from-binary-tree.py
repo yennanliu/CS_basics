@@ -34,6 +34,8 @@ The number of nodes in the tree is in the range [1, 104].
 # IDEA : recursive + tree + check problem examples
 #        -> if root.right and not root.left
 #        -> if root.left and not root.right
+# time = O(n)
+# space = O(h)
 class Solution(object):
     def tree2str(self, root):
         def dfs(root):
@@ -71,6 +73,8 @@ class Solution(object):
 # IDEA : tree + check problem examples
 #        -> if root.right and not root.left
 #        -> if root.left and not root.right
+# time = O(n)
+# space = O(h)
 class Solution(object):
     def tree2str(self, root):
         def dfs(root):
@@ -93,6 +97,8 @@ class Solution(object):
         return res
 
 # V0''
+# time = O(n)
+# space = O(h)
 class Solution:
     def tree2str(self, t):
         if not t:
@@ -109,6 +115,8 @@ class Solution:
         return str(t.val) + '(' + self.tree2str(t.left) + ')' + '(' + self.tree2str(t.right) + ')'
 
 # V0'''
+# time = O(n)
+# space = O(h)
 class Solution:
     def tree2str(self, root):
         if not root:
@@ -126,6 +134,8 @@ class Solution:
         #return str(root.val) + "(" + self.tree2str(root.left) + ")" +  "(" + self.tree2str(root.right) + ")"
 
 # V0'''''
+# time = O(n)
+# space = O(h)
 class Solution(object):
     def tree2str(self, t):
         if not t: return ""
@@ -137,6 +147,8 @@ class Solution(object):
         return s
 
 # V0''''''
+# time = O(n)
+# space = O(h)
 class Solution(object):
     def tree2str(self, t):
         if not t: return ''
@@ -146,6 +158,8 @@ class Solution(object):
         return ans
 
 # V0'''
+# time = O(n)
+# space = O(h)
 class Solution(object):
     def tree2str(self, t):
         if not t:
@@ -158,8 +172,8 @@ class Solution(object):
         if right:
             res += "(%s)" % right
         return str(t.val) + res
-        
-# V1 
+
+# V1
 # http://bookshadow.com/weblog/2017/06/04/leetcode-construct-string-from-binary-tree/
 # Definition for a binary tree node.
 # class TreeNode(object):
@@ -167,6 +181,8 @@ class Solution(object):
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)
+# space = O(h)
 class Solution(object):
     def tree2str(self, t):
         """
@@ -179,10 +195,12 @@ class Solution(object):
         if t.right: ans += '(' + self.tree2str(t.right) + ')'
         return ans
 
-### Test case : dev 
+### Test case : dev
 
 # V1'
 # https://www.polarxiong.com/archives/LeetCode-606-construct-string-from-binary-tree.html
+# time = O(n)
+# space = O(h)
 class Solution:
     def tree2str(self, t):
         """
@@ -202,6 +220,8 @@ class Solution:
 # V1''
 # https://leetcode.com/problems/construct-string-from-binary-tree/discuss/104090/Python-recursion
 # IDEA : RECURSION
+# time = O(n)
+# space = O(h)
 class Solution:
     def tree2str(self, t):
         """
@@ -227,7 +247,9 @@ class Solution:
 
 # V1'''
 # https://leetcode.com/problems/construct-string-from-binary-tree/discuss/151806/Python3%3A-Iterative-Method-Using-stack
-# IDEA : STACK 
+# IDEA : STACK
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def tree2str(self,t):
         if not t: return ""
@@ -252,6 +274,8 @@ class Solution(object):
 
 # V1''''
 # https://leetcode.com/problems/construct-string-from-binary-tree/discuss/103984/Python-Simple-Solution
+# time = O(n)
+# space = O(h)
 class Solution(object):
     def tree2str(self, t):
         """
@@ -271,6 +295,8 @@ class Solution(object):
 
 # V1'''''
 # https://leetcode.com/problems/construct-string-from-binary-tree/discuss/104000/Python-Straightforward-with-Explanation
+# time = O(n)
+# space = O(h)
 class Solution(object):
     def tree2str(self, t):
         if not t: return ''
@@ -278,9 +304,9 @@ class Solution(object):
         right = '({})'.format(self.tree2str(t.right)) if t.right else ''
         return '{}{}{}'.format(t.val, left, right)
 
-# V2 
-# Time:  O(n)
-# Space: O(h)
+# V2
+# time = O(n)
+# space = O(h)
 class Solution(object):
     def tree2str(self, t):
         """
