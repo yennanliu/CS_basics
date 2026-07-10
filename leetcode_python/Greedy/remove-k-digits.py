@@ -38,13 +38,64 @@ num does not have any leading zeros except for the zero itself.
 
 
 # V0
+# IDEA: STACK (stack[-1] > digit) (gpt)
+"""
+
+Dry run
+
+
+num = "1432219"
+k = 3
+
+Process:
+
+1
+14
+143   <-- 4 > 3, pop 4
+
+13
+132   <-- 3 > 2, pop 3
+
+122
+1221  <-- 2 > 1, pop 2
+
+1219
+
+Answer:
+
+1219
+
+"""
 class Solution(object):
     def removeKdigits(self, num, k):
-        pass
 
+        # Edge case: if we remove all digits, return "0"
+        if len(num) == k:
+            return "0"
+            
+        st = []
+        
+        for digit in num:
+            # Pop from stack if the top is GREATER than the current digit
+            # and we still have operations left (k > 0)
+            while k > 0 and st and st[-1] > digit:
+                st.pop()
+                k -= 1
+            st.append(digit)
+            
+        # If we still have k left to remove (e.g., num was "1234")
+        # remove them from the END of the stack
+        if k > 0:
+            st = st[:-k]
+            
+        # Convert stack back to string and strip leading zeros
+        res = "".join(st).lstrip("0")
+        
+        # If stripping left us with an empty string, return "0"
+        return res if res else "0"
 
 # V0-1
-# IDEA: MONO STACK (increasing) (gpt)
+# IDEA: STACK (stack[-1] > digit) (gpt)
 """
 
 Dry run
@@ -77,12 +128,21 @@ class Solution(object):
         stack = []
 
         for digit in num:
+            """
+            # Pop from stack if the top is GREATER 
+              than the current digit
+
+            # and we still have operations left (k > 0)
+            """
             while k > 0 and stack and stack[-1] > digit:
                 stack.pop()
                 k -= 1
 
             stack.append(digit)
 
+        # If we still have k left to remove (e.g., num was "1234")
+        # remove them from the END of the stack
+        
         # If removals remain, remove from the end
         while k > 0:
             stack.pop()
