@@ -35,6 +35,8 @@ Constraints:
 
 # V0
 # BACKTRACK
+# time = O(k * C(n, k))
+# space = O(k * C(n, k))
 class Solution(object):
     def combine(self, n, k): 
         def dfs(current, start):
@@ -59,6 +61,8 @@ class Solution(object):
 
 # V0'
 # BACKTRACK
+# time = O(k * C(n, k))
+# space = O(k * C(n, k))
 class Solution:
     def combine(self, n, k):
         res=[]
@@ -78,6 +82,8 @@ class Solution:
 # V1
 # https://leetcode.com/problems/combinations/discuss/1222840/Python-backtracking-simple-soln
 # IDEA : BACKTRACK
+# time = O(k * C(n, k))
+# space = O(k * C(n, k))
 class Solution:
     def combine(self, n, k):
         res=[]
@@ -97,6 +103,8 @@ class Solution:
 # V1''
 # https://leetcode.com/problems/combinations/discuss/286994/python
 # IDEA : BACKTRACK + dfs
+# time = O(k * C(n, k))
+# space = O(k * C(n, k))
 class Solution(object):
     def combine(self, n, k):
         result = []
@@ -124,6 +132,8 @@ class Solution(object):
 # V1'''
 # https://leetcode.com/problems/combinations/discuss/170834/Python-solution
 # IDEA : iteration
+# time = O(k * C(n, k))
+# space = O(k * C(n, k))
 class Solution(object):
     def combine(self, n, k):
         """
@@ -146,6 +156,8 @@ class Solution(object):
 # V1''''
 # https://leetcode.com/problems/combinations/discuss/170834/Python-solution
 # IDEA : iteration
+# time = O(k * C(n, k))
+# space = O(k * C(n, k))
 class Solution(object):
     def combine(self, n, k):
         if k == 0:
@@ -178,6 +190,8 @@ class Solution(object):
 # k : 1 path : [3] array : range(5, 5)
 # k : 2 path : [] array : range(4, 5)
 # Out[35]: [[1, 2], [1, 3], [1, 4], [2, 3], [2, 4], [3, 4]]
+# time = O(k * C(n, k))
+# space = O(k * C(n, k))
 class Solution(object):
     def combine(self, n, k):
         """
@@ -201,6 +215,8 @@ class Solution(object):
 # V1''''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79515180
 # IDEA : BACKTRACKING 
+# time = O(k * C(n, k))
+# space = O(k * C(n, k))
 class Solution(object):
     def combine(self, n, k):
         """
@@ -222,8 +238,8 @@ class Solution(object):
                 self.helper(array[i + 1:], k - 1, res, path + [array[i]])
 
 # V2 
-# Time:  O(k * C(n, k))
-# Space: O(k)
+# time = O(k * C(n, k))
+# space = O(k)
 class Solution(object):
     def combine(self, n, k):
         """

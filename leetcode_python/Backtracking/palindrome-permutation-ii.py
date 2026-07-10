@@ -2,6 +2,8 @@
 
 # V1
 # https://blog.csdn.net/pointbreak1/article/details/48779125
+# time = O(n * n!)
+# space = O(n)
 class Solution(object):
     def __init__(self):
         self.results = []
@@ -52,8 +54,8 @@ class Solution(object):
             self.recursion(left + candidate[i], candidate[:i] + candidate[i+1:], l, single)
 
 # V2 
-# Time:  O(n * n!)
-# Space: O(n)
+# time = O(n * n!)
+# space = O(n)
 import collections
 import itertools
 class Solution(object):
@@ -86,6 +88,8 @@ class Solution(object):
                 cur.pop()
                 used[i] = False
 
+# time = O(n * n!)
+# space = O(n)
 class Solution2(object):
     def generatePalindromes(self, s):
         """

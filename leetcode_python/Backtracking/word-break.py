@@ -39,6 +39,8 @@ All the strings of wordDict are unique.
 
 # V0
 # IDEA: BFS
+# time = O(n * k), n = len(s), k = len(wordDict)
+# space = O(n)
 from collections import deque
 
 class Solution(object):
@@ -113,6 +115,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: BFS
+# time = O(n * k), n = len(s), k = len(wordDict)
+# space = O(n)
 from collections import deque
 
 class Solution(object):
@@ -157,6 +161,8 @@ class Solution(object):
 
 # V0
 # IDEA: BFS
+# time = O(n^2), n = len(s)
+# space = O(n)
 from collections import deque
 class Solution(object):
     def wordBreak(self, s, wordDict):
@@ -199,6 +205,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: BFS
+# time = O(n^2), n = len(s)
+# space = O(n)
 from collections import deque
 
 class Solution(object):
@@ -281,6 +289,8 @@ dp[i] = OR over all j < i of:
 
 
 """
+# time = O(n^2), n = len(s)
+# space = O(n)
 class Solution(object):
     def wordBreak(self, s, wordDict):
         wordSet = set(wordDict)
@@ -305,6 +315,8 @@ class Solution(object):
 
 # V0-3
 # IDEA: 1D DP
+# time = O(n^2), n = len(s)
+# space = O(n)
 class Solution(object):
     def wordBreak(self, s, wordDict):
         """
@@ -350,6 +362,8 @@ class Solution(object):
 
 # V0
 # IDEA : BFS
+# time = O(n^2), n = len(s)
+# space = O(n)
 class Solution:
     def wordBreak(self, s, wordDict):
         if not s or not wordDict:
@@ -370,6 +384,8 @@ class Solution:
 
 # V0'
 # IDEA : DP
+# time = O(n^2), n = len(s)
+# space = O(n)
 class Solution(object):
     def wordBreak(self, s, wordDict):
         """
@@ -388,6 +404,8 @@ class Solution(object):
 # V1
 # IDEA : BFS
 # https://leetcode.com/problems/word-break/discuss/535831/Python-BFS
+# time = O(n^2), n = len(s)
+# space = O(n)
 class Solution:
     def wordBreak(self, s, wordDict):
         if not s or not wordDict: return
@@ -407,6 +425,8 @@ class Solution:
 # V1
 # IDEA : Brute Force (TLE)
 # https://leetcode.com/problems/word-break/solution/
+# time = O(2^n), n = len(s)
+# space = O(n)
 class Solution:
     def wordBreak(self, s, wordDict):
         def wordBreakRecur(s: str, word_dict: Set[str], start: int):
@@ -422,6 +442,8 @@ class Solution:
 # V1
 # IDEA : RECURSION WITH MEMORY
 # https://leetcode.com/problems/word-break/solution/
+# time = O(n^2), n = len(s)
+# space = O(n)
 class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> bool:
         @lru_cache
@@ -438,6 +460,8 @@ class Solution:
 # V1
 # IDEA : BFS
 # https://leetcode.com/problems/word-break/solution/
+# time = O(n^2), n = len(s)
+# space = O(n)
 class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> bool:
         word_set = set(wordDict)
@@ -460,6 +484,8 @@ class Solution:
 # V1
 # IDEA : DP
 # https://leetcode.com/problems/word-break/solution/
+# time = O(n^2), n = len(s)
+# space = O(n)
 class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> bool:
         word_set = set(wordDict)
@@ -476,6 +502,8 @@ class Solution:
 # V1
 # IDEA : Iterative
 # https://leetcode.com/problems/word-break/discuss/1659559/Python-or-Iterative
+# time = O(n^2), n = len(s)
+# space = O(n)
 class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> bool:
         parts = []
@@ -499,6 +527,8 @@ class Solution:
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79368360
+# time = O(n^2), n = len(s)
+# space = O(n)
 class Solution(object):
     def wordBreak(self, s, wordDict):
         """
@@ -521,6 +551,8 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/word-break/#tag-highlight-lang-python
+# time = O(n^2), n = len(s)
+# space = O(n)
 class Solution:
     # @param s: A string s
     # @param dict: A dictionary of words dict
@@ -544,6 +576,8 @@ class Solution:
 # V1
 # IDEA : Dynamic Programming bottom up
 # https://leetcode.com/problems/word-break/discuss/164472/Python-solution
+# time = O(n^2), n = len(s)
+# space = O(n)
 class Solution(object):
     def wordBreak(self, s, wordDict):
         """
@@ -566,6 +600,8 @@ class Solution(object):
 # V1
 # IDEA : Dynamic Programming top down (memoization)
 # https://leetcode.com/problems/word-break/discuss/164472/Python-solution
+# time = O(n^2), n = len(s)
+# space = O(n)
 class Solution(object):
     def wordBreak(self, s, wordDict):
         """
@@ -590,8 +626,8 @@ class Solution(object):
         return dfs(0)
 
 # V2 
-# Time:  O(n * l^2)
-# Space: O(n)
+# time = O(n * l^2)
+# space = O(n)
 class Solution(object):
     def wordBreak(self, s, wordDict):
         """

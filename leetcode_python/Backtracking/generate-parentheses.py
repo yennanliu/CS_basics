@@ -25,6 +25,8 @@ Constraints:
 
 # V0
 # IDEA : bracktrack + Valid Parentheses (LC 020)
+# time = O(4^n / sqrt(n))
+# space = O(4^n / sqrt(n))
 class Solution(object):
     def generateParenthesis(self, n):
         # help func for backtracking
@@ -75,6 +77,8 @@ class Solution(object):
 # NOTE : KEEP DFS WHEN MEAT 2 CONDTIONS:
 #  1) len(path) < n 
 #  2) # of "("  > # of ")" (means it's still possible to form a "paratheses" as expected)
+# time = O(4^n / sqrt(n))
+# space = O(4^n / sqrt(n))
 class Solution(object):
     def generateParenthesis(self, n):
         res = []
@@ -94,6 +98,8 @@ class Solution(object):
 # IDEA : DFS
 # https://blog.csdn.net/nxhyd/article/details/72514987
 # https://blog.csdn.net/fuxuemingzhu/article/details/79362373
+# time = O(4^n / sqrt(n))
+# space = O(4^n / sqrt(n))
 class Solution(object):
     def generateParenthesis(self, n):
         """
@@ -116,6 +122,8 @@ class Solution(object):
 # V1'
 # BRUTE FORCE
 # https://leetcode.com/problems/generate-parentheses/solution/
+# time = O(n * 4^n)
+# space = O(n * 4^n)
 class Solution(object):
     def generateParenthesis(self, n):
         def generate(A = []):
@@ -145,6 +153,8 @@ class Solution(object):
 # V1''
 # https://leetcode.com/problems/generate-parentheses/solution/
 # BRACKTRACKING
+# time = O(4^n / sqrt(n))
+# space = O(4^n / sqrt(n))
 class Solution:
     def generateParenthesis(self, n: int) -> List[str]:
         ans = []
@@ -166,6 +176,8 @@ class Solution:
 # V1'''
 # https://leetcode.com/problems/generate-parentheses/solution/
 # Closure Number
+# time = O(4^n / sqrt(n))
+# space = O(4^n / sqrt(n))
 class Solution(object):
     def generateParenthesis(self, N):
         if N == 0: return ['']
@@ -178,6 +190,8 @@ class Solution(object):
 
 # V1'''''
 # https://blog.csdn.net/nxhyd/article/details/72514987
+# time = O(4^n / sqrt(n))
+# space = O(4^n / sqrt(n))
 class Solution(object):
     def generateParenthesis(self, n):
         """
@@ -194,6 +208,8 @@ class Solution(object):
 
 # V1''''''
 # https://blog.csdn.net/nxhyd/article/details/72514987
+# time = O(4^n / sqrt(n))
+# space = O(4^n / sqrt(n))
 class Solution(object):
     def deep(self,tot,ln,rn,strs,lis):
         if ln<tot:
@@ -214,6 +230,8 @@ class Solution(object):
 
 # V1''''''
 # https://blog.csdn.net/nxhyd/article/details/72514987
+# time = O(4^n / sqrt(n))
+# space = O(4^n / sqrt(n))
 class Solution(object):
     def generateParenthesis(self, n):
         """
@@ -231,8 +249,8 @@ class Solution(object):
         return genrate('',n, n)
 
 # V2 
-# Time:  O(4^n / n^(3/2)) ~= Catalan numbers
-# Space: O(n)
+# time = O(4^n / n^(3/2)) ~= Catalan numbers
+# space = O(n)
 class Solution(object):
     # @param an integer
     # @return a list of string

@@ -38,6 +38,9 @@ It is guaranteed that the input board has only one solution.
 # V1
 # IDEA : BACKTRACK
 # https://leetcode.com/problems/sudoku-solver/solutions/259057/sudoku-solver/
+# time = O(9^m)
+# space = O(m)
+# m = number of empty cells
 from collections import defaultdict
 class Solution:
     def solveSudoku(self, board):
@@ -136,6 +139,9 @@ class Solution:
 # https://leetcode.com/problems/sudoku-solver/solutions/1995505/very-short-python-dfs-solution-with-notes/
 # IDEA :
 # DFS is used as a recursive function to try out all possible cases of a problem and find the case(s) that works and return it to you. In this case, it checks if it follows all 3 rules and if it does it edits the board until it finds a case that works.
+# time = O(9^m)
+# space = O(m)
+# m = number of empty cells
 class Solution:
     def solveSudoku(self, board: List[List[str]]) -> None:
         spaces = [] # create an empty list
@@ -175,6 +181,9 @@ class Solution:
 # V1''
 # IDEA : BACKTRACKING
 # https://leetcode.com/problems/sudoku-solver/solutions/1418166/python-backtracking/
+# time = O(9^m)
+# space = O(m)
+# m = number of empty cells
 class Solution:
     def solveSudoku(self, board: List[List[str]]) -> None:
         self.b = board
@@ -219,6 +228,9 @@ class Solution:
 # 	2) for a general matrix, the nth element is at row n // len(col) and col n % len(col)
 # 	3) in python, setA - setB is equivalent to setA.difference(setB)
 #  	4) string.digits is equivalent to '0123456789'
+# time = O(9^m)
+# space = O(m)
+# m = number of empty cells
 class Solution:
     def solveSudoku(self, board: List[List[str]]) -> None:
         def unique_vals(row, col):
@@ -249,6 +261,9 @@ class Solution:
 # V1'''''
 # IDEA : BACKTRACKING
 # https://leetcode.com/problems/sudoku-solver/solutions/2683628/python/
+# time = O(9^m)
+# space = O(m)
+# m = number of empty cells
 class Solution:
     def solveSudoku(self, board: List[List[str]]) -> None:
         """

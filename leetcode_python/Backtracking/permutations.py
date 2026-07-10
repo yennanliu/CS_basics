@@ -26,6 +26,8 @@ Output: [[1]]
 # V0
 # IDEA : BACKTRACK, 
 # similar idea as LC 77 -> difference : contains VS start
+# time = O(n * n!)
+# space = O(n)
 class Solution(object):
     def permute(self, nums):
         def help(cur):
@@ -54,6 +56,8 @@ class Solution(object):
         return res
 
 # V0 
+# time = O(n * n!)
+# space = O(n)
 class Solution(object):
     def permute(self, nums):
 
@@ -76,6 +80,8 @@ class Solution(object):
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79363903
 # IDEA : VIA permutations FUNC 
+# time = O(n * n!)
+# space = O(n)
 from itertools import permutations
 class Solution(object):
     def permute(self, nums):
@@ -88,6 +94,8 @@ class Solution(object):
 # V1' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79363903
 # IDEA : DFS + RECURSION 
+# time = O(n * n!)
+# space = O(n)
 class Solution(object):
     def permute(self, nums):
         """
@@ -108,6 +116,8 @@ class Solution(object):
 # V1'' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79363903
 # IDEA : BACKTRACKING  + DFS 
+# time = O(n * n!)
+# space = O(n)
 class Solution(object):
     def permute(self, nums):
         """
@@ -132,6 +142,8 @@ class Solution(object):
 # V1'''
 # https://www.jiuzhang.com/solution/permutations/#tag-highlight-lang-python
 # IDEA : Recursion
+# time = O(n * n!)
+# space = O(n)
 class Solution:
     """
     @param nums: A list of Integers.
@@ -159,6 +171,8 @@ class Solution:
 # V1''''
 # https://www.jiuzhang.com/solution/permutations/#tag-highlight-lang-python
 # IDEA : Non-Recursion
+# time = O(n * n!)
+# space = O(n)
 class Solution:
     """
     @param nums: A list of Integers.
@@ -192,9 +206,9 @@ class Solution:
                 permutations.append(list(permutation))
         return permutations
  
-# V2 
-# Time:  O(n * n!)
-# Space: O(n)
+# V2
+# time = O(n * n!)
+# space = O(n)
 class Solution(object):
     # @param num, a list of integer
     # @return a list of lists of integers
@@ -216,8 +230,8 @@ class Solution(object):
                 cur.pop()
                 used[i] = False
                 
-# Time:  O(n^2 * n!)
-# Space: O(n^2)
+# time = O(n^2 * n!)
+# space = O(n^2)
 class Solution2(object):
     def permute(self, nums):
         """

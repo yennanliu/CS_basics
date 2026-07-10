@@ -31,6 +31,8 @@ digits[i] is a digit in the range ['2', '9'].
 
 # V0
 # IDEA : backtracking
+# time = O(n * 4^n)  # n = len(digits)
+# space = O(n)
 class Solution(object):
     def letterCombinations(self, digits):
         # help func
@@ -60,6 +62,8 @@ class Solution(object):
 
 # V0'
 # IDEA : dfs + backtracking
+# time = O(n * 4^n)  # n = len(digits)
+# space = O(n)
 class Solution(object):
     def letterCombinations(self, digits):
 
@@ -92,6 +96,8 @@ class Solution(object):
 
 # V0''
 # IDEA : dfs + backtracking
+# time = O(n * 4^n)  # n = len(digits)
+# space = O(n)
 class Solution(object):
     def letterCombinations(self, digits):
         d = {'2' : "abc", '3' : "def", '4' : "ghi", '5' : "jkl", '6' : "mno", '7' : "pqrs", '8' : "tuv", '9' : "wxyz"}
@@ -113,6 +119,8 @@ class Solution(object):
         return res
 
 # V0''''
+# time = O(n * 4^n)  # n = len(digits)
+# space = O(n)
 class Solution(object):
     def letterCombinations(self, digits):
         if digits == "": return []
@@ -123,6 +131,8 @@ class Solution(object):
         return res
 
 # V0''''''
+# time = O(n * 4^n)  # n = len(digits)
+# space = O(n)
 class Solution(object):
     def letterCombinations(self, digits):
         d = {'2' : "abc", '3' : "def", '4' : "ghi", '5' : "jkl", '6' : "mno", '7' : "pqrs", '8' : "tuv", '9' : "wxyz"}
@@ -140,6 +150,8 @@ class Solution(object):
 
 # V0'''''''
 # IDEA : DFS
+# time = O(n * 4^n)  # n = len(digits)
+# space = O(n)
 class Solution(object):
     def letterCombinations(self, digits):
         d_map = {'2' : "abc", '3' : "def", '4' : "ghi", '5' : "jkl", '6' : "mno", '7' : "pqrs", '8' : "tuv", '9' : "wxyz"}
@@ -165,6 +177,8 @@ class Solution(object):
 # IDEA : BACK TRACKING  + DFS 
 # idea : consider a telephone "keyboard" panel :
 #  2 : abc ; 3 : def .... 9 : wxyz 
+# time = O(n * 4^n)  # n = len(digits)
+# space = O(n)
 class Solution(object):
     def letterCombinations(self, digits):
         """
@@ -186,6 +200,8 @@ class Solution(object):
 
 # V1' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79363119
+# time = O(n * 4^n)  # n = len(digits)
+# space = O(n)
 from itertools import product
 class Solution(object):
     def letterCombinations(self, digits):
@@ -210,6 +226,8 @@ class Solution(object):
 # res =  ['a', 'b', 'c']
 # res =  ['ad', 'bd', 'cd', 'ae', 'be', 'ce', 'af', 'bf', 'cf']
 # Out[97]: ['ad', 'bd', 'cd', 'ae', 'be', 'ce', 'af', 'bf', 'cf']
+# time = O(n * 4^n)  # n = len(digits)
+# space = O(n)
 class Solution(object):
     def letterCombinations(self, digits):
         """
@@ -225,6 +243,8 @@ class Solution(object):
 
 # V1'''
 # https://www.jiuzhang.com/solution/letter-combinations-of-a-phone-number/#tag-highlight-lang-python
+# time = O(n * 4^n)  # n = len(digits)
+# space = O(n)
 class Solution:
     """
     @param digits: A digital string
@@ -259,6 +279,8 @@ class Solution:
 
 # V1''''
 # https://www.jiuzhang.com/solution/letter-combinations-of-a-phone-number/#tag-highlight-lang-python
+# time = O(n * 4^n)  # n = len(digits)
+# space = O(n)
 class Solution(object):
     def letterCombinations(self, digits):
         chr = ["", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"]
@@ -275,9 +297,9 @@ class Solution(object):
             res = copy.copy(tmp)
         return res
 
-# V2 
-# Time:  O(n * 4^n)
-# Space: O(n)
+# V2
+# time = O(n * 4^n)
+# space = O(n)
 class Solution(object):
     # @return a list of strings, [s1, s2]
     def letterCombinations(self, digits):
@@ -297,8 +319,8 @@ class Solution(object):
 
         return result
 
-# Time:  O(n * 4^n)
-# Space: O(n)
+# time = O(n * 4^n)
+# space = O(n)
 # Recursive Solution
 class Solution2(object):
     # @return a list of strings, [s1, s2]

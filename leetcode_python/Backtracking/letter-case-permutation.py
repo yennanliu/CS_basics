@@ -33,8 +33,10 @@ s will consist only of letters or digits.
 
 """
 
-# V0 
-# IDEA : DFS 
+# V0
+# IDEA : DFS
+# time = O(n * 2^n)
+# space = O(n)
 class Solution(object):
     def letterCasePermutation(self, S):
         res = []
@@ -53,6 +55,8 @@ class Solution(object):
             
 # V0'
 # IDEA : DFS
+# time = O(n * 2^n)
+# space = O(n)
 class Solution(object):
     def letterCasePermutation(self, S):
         r = []
@@ -72,6 +76,8 @@ class Solution(object):
 # V1 
 # http://bookshadow.com/weblog/2018/02/18/leetcode-letter-case-permutation/
 # IDEA : Recursion
+# time = O(n * 2^n)
+# space = O(n * 2^n)
 class Solution(object):
     def letterCasePermutation(self, S):
         """
@@ -86,6 +92,8 @@ class Solution(object):
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79360330
+# time = O(n * 2^n)
+# space = O(n)
 class Solution(object):
     def letterCasePermutation(self, S):
         """
@@ -109,6 +117,8 @@ class Solution(object):
 
 # V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79360330
+# time = O(n * 2^n)
+# space = O(n)
 class Solution(object):
     def letterCasePermutation(self, S):
         """
@@ -131,6 +141,8 @@ class Solution(object):
 
 # V1'''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79360330
+# time = O(n * 2^n)
+# space = O(n * 2^n)
 class Solution(object):
     def letterCasePermutation(self, S):
         """
@@ -146,8 +158,8 @@ class Solution(object):
         return res
 
 # V2 
-# Time:  O(n * 2^n)
-# Space: O(n * 2^n)
+# time = O(n * 2^n)
+# space = O(n * 2^n)
 class Solution(object):
     def letterCasePermutation(self, S):
         """

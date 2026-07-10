@@ -3,6 +3,8 @@
 # V1 
 # http://blog.ystanzhang.com/2015/10/lc-factor-combinations_5.html
 # IDEA :  ITERATION 
+# time = O(n * log n), n = input number (conventional bound)
+# space = O(log n)
 def getFactors( n):
     todo, res = [(n, 2, [])], []
     while todo:
@@ -17,6 +19,8 @@ def getFactors( n):
 # V1'
 # http://blog.ystanzhang.com/2015/10/lc-factor-combinations_5.html
 # IDEA : RECURSION 
+# time = O(n * log n), n = input number (conventional bound)
+# space = O(log n)
 def getFactors( n):
     def factor(n, i, combi, combis):
         while i * i <= n:
@@ -27,9 +31,9 @@ def getFactors( n):
         return combis
     return factor(n, 2, [], [])
 
-# V2 
-# Time:  O(nlogn)
-# Space: O(logn)
+# V2
+# time = O(nlogn)
+# space = O(logn)
 class Solution(object):
     # @param {integer} n
     # @return {integer[][]}

@@ -6,6 +6,8 @@
 # STATUS EQUATION : 
 # dp[i][j] = dp[i - 1][j - 1] + 1     if A[i] == B[j]
 # dp[i][j] = 0                  otherwise
+# time = O(m * n)  # m = len(A), n = len(B)
+# space = O(n)
 class Solution(object):
     def findLength(self, A, B):
         """
@@ -29,6 +31,8 @@ class Solution(object):
 
 # V1' 
 # http://bookshadow.com/weblog/2017/10/29/leetcode-maximum-length-of-repeated-subarray/
+# time = O(m^2 + n^2)  # m = len(A), n = len(B)
+# space = O(m^2)
 class TrieNode:
     def __init__(self):
         self.children = dict()
@@ -64,9 +68,9 @@ class Solution(object):
             ans = max(ans, cnt)
         return ans
 
-# V2 
-# Time:  O(m * n)
-# Space: O(min(m, n))
+# V2
+# time = O(m * n)
+# space = O(min(m, n))
 import collections
 class Solution(object):
     def findLength(self, A, B):
@@ -88,8 +92,8 @@ class Solution(object):
         return result
 
 
-# Time:  O(m * n * log(min(m, n)))
-# Space: O(min(m, n))
+# time = O(m * n * log(min(m, n)))
+# space = O(min(m, n))
 # Binary search + rolling hash solution (226 ms)
 class Solution2(object):
     def findLength(self, A, B):
@@ -134,8 +138,8 @@ class Solution2(object):
         return left-1
 
 
-# Time:  O(m * n * min(m, n) * log(min(m, n)))
-# Space: O(min(m^2, n^2))
+# time = O(m * n * min(m, n) * log(min(m, n)))
+# space = O(min(m^2, n^2))
 # Binary search (122 ms)
 class Solution3(object):
     def findLength(self, A, B):

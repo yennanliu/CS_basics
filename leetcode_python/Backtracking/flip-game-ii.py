@@ -1,7 +1,9 @@
 # V0 
 
-# V1 
+# V1
 # http://www.voidcn.com/article/p-mzcklgpa-qp.html
+# time = O(n!!) (exponential game tree, no memo), n = len(s)
+# space = O(n^2) (recursion depth n, string copy n each level)
 class Solution(object):
     def canWin(self, s):
         """
@@ -16,8 +18,10 @@ class Solution(object):
                     return True # if the player2 can't win, then the current player (player1) win 
         return False # if there is no return within the loop, then current player will lose (player1)
 
-# V1' 
+# V1'
 # http://www.voidcn.com/article/p-mzcklgpa-qp.html
+# time = O(2^n) (memoized over reachable states), n = len(s)
+# space = O(2^n * n)
 class Solution(object):
     _dic = {}
     def canWin(self, s):
@@ -37,8 +41,10 @@ class Solution(object):
                 dic[s] = False
         return dic[s]
 
-# V1'' 
+# V1''
 # http://www.voidcn.com/article/p-mzcklgpa-qp.html
+# time = O(2^n) (memoized over reachable states), n = len(s)
+# space = O(2^n * n)
 class Solution(object):
     _dic = {}
     def canWin(self, s):
@@ -52,9 +58,9 @@ class Solution(object):
 
         return dic[s]
 
-# V2 
-# Time:  O(n + c^2)
-# Space: O(c)
+# V2
+# time = O(n + c^2)
+# space = O(c)
 import itertools
 import re
 # The best theory solution (DP, O(n + c^2)) could be seen here:
@@ -71,8 +77,8 @@ class Solution(object):
         return g_final > 0  # Theorem 1: First player must win iff g(current_state) != 0
 
 
-# Time:  O(n + c^3 * 2^c * logc), n is length of string, c is count of "++"
-# Space: O(c * 2^c)
+# time = O(n + c^3 * 2^c * logc), n is length of string, c is count of "++"
+# space = O(c * 2^c)
 # hash solution.
 # We have total O(2^c) game strings,
 # and each hash key in hash table would cost O(c),
@@ -100,8 +106,8 @@ class Solution2(object):
         return canWinHelper(map(len, re.findall(r'\+\++', s)))
 
 
-# Time:  O(c * n * c!), n is length of string, c is count of "++"
-# Space: O(c * n), recursion would be called at most c in depth.
+# time = O(c * n * c!), n is length of string, c is count of "++"
+# space = O(c * n), recursion would be called at most c in depth.
 #                  Besides, it costs n space for modifying string at each depth.
 class Solution3(object):
     def canWin(self, s):

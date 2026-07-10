@@ -36,6 +36,8 @@ All the strings of wordDict are unique.
 
 # V0
 # IDEA : BACKTRCK, LC 078 Subsets
+# time = O(n * 2^n)
+# space = O(n * 2^n)
 class Solution(object):
     def wordBreak(self, s, wordDict):
         def help(cur):
@@ -67,6 +69,8 @@ class Solution(object):
 # V1
 # IDEA : RECURSION
 # https://leetcode.com/problems/word-break-ii/discuss/1426014/Python-interview-friendly-simple-recursion
+# time = O(n * 2^n)
+# space = O(n * 2^n)
 class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> List[str]:
         def recur(s, path):
@@ -84,6 +88,8 @@ class Solution:
 # V1
 # IDEA : BACKTRCK
 # https://leetcode.com/problems/word-break-ii/discuss/44404/Python-backtracking
+# time = O(n * 2^n)
+# space = O(n * 2^n)
 class Solution:
     # @param s, a string
     # @param dict, a set of string
@@ -112,6 +118,8 @@ class Solution:
 
 # V1
 # IDEA : BACKTRACK
+# time = O(n * 2^n)
+# space = O(n * 2^n)
 class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> List[str]:     
         n = len(s)
@@ -133,6 +141,8 @@ class Solution:
 # V1
 # IDEA : DFS
 # https://leetcode.com/problems/word-break-ii/discuss/222797/Python-solution
+# time = O(n * 2^n)
+# space = O(n * 2^n)
 class Solution(object):
     def wordBreak(self, s, wordDict):
         """
@@ -163,6 +173,8 @@ class Solution(object):
 # V1
 # IDEA : Top-Down Dynamic Programming
 # https://leetcode.com/problems/word-break-ii/solution/
+# time = O(n * 2^n)
+# space = O(n * 2^n)
 class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> List[str]:
         wordSet = set(wordDict)
@@ -197,6 +209,8 @@ class Solution:
 # V1
 # IDEA : Bottom-Up Dynamic Programming
 # https://leetcode.com/problems/word-break-ii/solution/
+# time = O(n * 2^n)
+# space = O(n * 2^n)
 class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> List[str]:
         # quick check on the characters,
@@ -224,6 +238,8 @@ class Solution:
 
 # V1
 # https://leetcode.com/problems/word-break-ii/solution/
+# time = O(n * 2^n)
+# space = O(n * 2^n)
 class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> List[str]:
         # quick check on the characters,
@@ -259,6 +275,8 @@ class Solution:
 
 # V1
 # https://leetcode.com/problems/word-break-ii/solution/
+# time = O(n * 2^n)
+# space = O(n * 2^n)
 class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> List[str]:
         # quick check on the characters,

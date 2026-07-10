@@ -33,6 +33,8 @@ s consists of digits only.
 
 # V0 
 # IDEA : DFS
+# time = O(1)  # bounded: at most 3^4 splits
+# space = O(1)
 class Solution(object):
     def restoreIpAddresses(self, s):
         # if not valid input form (ip address length should < 12)
@@ -59,6 +61,8 @@ class Solution(object):
 
 # V0'
 # IDEA : BFS (AGAIN)
+# time = O(1)  # bounded: at most 3^4 splits
+# space = O(1)
 class Solution(object):
     def restoreIpAddresses(self, s):
         if len(s) > 12: return []
@@ -113,6 +117,8 @@ class Solution(object):
 # 2. The digit order of ip should be same as the digit order of s;
 # 3. Each part separated by the '.' should not start with '0' except only '0';
 # 4. Each part separared by the '.' should not larger than 255;
+# time = O(1)  # bounded: at most 3^4 splits
+# space = O(1)
 class Solution(object):
     def restoreIpAddresses(self, s):
         """
@@ -162,6 +168,8 @@ assert s.restoreIpAddresses("254000") == ['25.40.0.0', '254.0.0.0']
 # V1'
 # https://leetcode.com/problems/restore-ip-addresses/discuss/30946/DFS-in-Python
 # IDEA : DFS
+# time = O(1)  # bounded: at most 3^4 splits
+# space = O(1)
 class Solution(object):
     def restoreIpAddresses(self, s):
         """
@@ -186,6 +194,8 @@ class Solution(object):
 # V1'
 # https://leetcode.com/problems/restore-ip-addresses/discuss/30946/DFS-in-Python
 # IDEA : BFS
+# time = O(1)  # bounded: at most 3^4 splits
+# space = O(1)
 class Solution(object):
     def restoreIpAddresses(self, s):
         res=[]
@@ -205,6 +215,8 @@ class Solution(object):
 # V1''
 # https://leetcode.com/problems/restore-ip-addresses/discuss/31211/Adding-a-python-solution-also-requesting-for-improvement
 # IDEA : BRUTE FORCE
+# time = O(1)  # bounded: at most 3^4 splits
+# space = O(1)
 class Solution:
     # @param s, a string
     # @return a list of strings
@@ -240,6 +252,8 @@ class Solution:
 
 # V1' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/80657420
+# time = O(1)  # bounded: at most 3^4 splits
+# space = O(1)
 class Solution(object):
     def restoreIpAddresses(self, s):
         """
@@ -262,9 +276,9 @@ class Solution(object):
                 continue
             self.dfs(s[i+1:], path + [s[:i+1]], res)
             
-# V2 
-# Time:  O(n^m) = O(3^4)
-# Space: O(n * m) = O(3 * 4)
+# V2
+# time = O(n^m) = O(3^4)
+# space = O(n * m) = O(3 * 4)
 class Solution(object):
     # @param s, a string
     # @return a list of strings

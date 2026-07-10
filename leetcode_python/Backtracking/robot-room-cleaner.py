@@ -70,6 +70,9 @@ All the empty cells can be visited from the starting position.
 # V1
 # IDEA : BACKTRACKING
 # https://leetcode.com/problems/robot-room-cleaner/solutions/265763/robot-room-cleaner/
+# time = O(N)
+# space = O(N)
+# N = number of accessible cells
 class Solution:       
     def cleanRoom(self, robot):
         """
@@ -106,6 +109,9 @@ class Solution:
 # V1'
 # IDEA : DFS
 # https://leetcode.com/problems/robot-room-cleaner/solutions/462887/python-dfs-solution/
+# time = O(N)
+# space = O(N)
+# N = number of accessible cells
 class Solution:
     def cleanRoom(self, robot):
         """
@@ -152,6 +158,9 @@ class Solution:
 # V1''
 # IDEA : BACKTRACKING
 # https://leetcode.com/problems/robot-room-cleaner/solutions/217835/python-backtracking/
+# time = O(N)
+# space = O(N)
+# N = number of accessible cells
 class Solution(object):
     def cleanRoom(self, robot):
         """
@@ -192,6 +201,9 @@ class Solution(object):
 # V1'''
 # IDEA : BACKTRCKING
 # https://leetcode.com/problems/robot-room-cleaner/solutions/213456/python-solution/
+# time = O(N)
+# space = O(N)
+# N = number of accessible cells
 class Solution(object):
     def cleanRoom(self, robot):
         """

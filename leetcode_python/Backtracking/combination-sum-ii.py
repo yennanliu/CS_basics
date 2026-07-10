@@ -40,7 +40,9 @@ Constraints:
 
 """
 
-# V0 
+# V0
+# time = O(2^n * n), n = len(candidates)
+# space = O(n)
 class Solution(object):
 
     def combinationSum2(self, candidates, target):
@@ -113,6 +115,8 @@ class Solution(object):
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79343638
 # IDEA : DFS 
+# time = O(2^n * n), n = len(candidates)
+# space = O(n)
 class Solution(object):
     def combinationSum2(self, candidates, target):
         candidates.sort()
@@ -135,6 +139,8 @@ class Solution(object):
 # V1'
 # IDEA : BACKTRACKING 
 # https://leetcode.com/problems/combination-sum-ii/solution/
+# time = O(2^n * n), n = len(candidates)
+# space = O(n)
 class Solution:
     def combinationSum2(self, candidates, target):
 
@@ -177,6 +183,8 @@ class Solution:
 # V1'
 # IDEA : BACKTRACKING with index
 # https://leetcode.com/problems/combination-sum-ii/solution/
+# time = O(2^n * n), n = len(candidates)
+# space = O(n)
 class Solution:
     def combinationSum2(self, candidates, target: int):
 
@@ -209,9 +217,9 @@ class Solution:
 
         return results
 
-# V2 
-# Time:  O(k * C(n, k))
-# Space: O(k)
+# V2
+# time = O(k * C(n, k))
+# space = O(k)
 class Solution(object):
     # @param candidates, a list of integers
     # @param target, integer

@@ -2,6 +2,8 @@
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79789165
+# time = O(k^n)  # n = len(nums)
+# space = O(n)
 class Solution:
     def canPartitionKSubsets(self, nums, k):
         """
@@ -29,6 +31,8 @@ class Solution:
 
 # V1' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79789165
+# time = O(k * 2^n)  # n = len(nums)
+# space = O(n)
 class Solution(object):
     def canPartitionKSubsets(self, nums, k):
         """
@@ -57,9 +61,9 @@ class Solution(object):
             return False
         return dfs(k, 0, 0, 0)
         
-# V2 
-# Time:  O(n*2^n)
-# Space: O(2^n)
+# V2
+# time = O(n*2^n)
+# space = O(2^n)
 class Solution(object):
     def canPartitionKSubsets(self, nums, k):
         """
@@ -83,8 +87,8 @@ class Solution(object):
         return dfs(nums, total//k, 0, total, lookup)
 
 
-# Time:  O(k^(n-k) * k!)
-# Space: O(n)
+# time = O(k^(n-k) * k!)
+# space = O(n)
 # DFS solution with pruning.
 class Solution2(object):
     def canPartitionKSubsets(self, nums, k):

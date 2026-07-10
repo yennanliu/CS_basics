@@ -28,6 +28,8 @@ s contains only lowercase English letters.
 
 # V0
 # IDEA : BACKTRCK
+# time = O(n * 2^n)
+# space = O(n)
 class Solution(object):
     def partition(self, s):
         # help func
@@ -81,6 +83,8 @@ class Solution(object):
 
 # V0'
 # IDEA : BACKTRCK, similar as LC 046 permutations
+# time = O(n * 2^n)
+# space = O(n)
 class Solution(object):
     def partition(self, s):
         def help(s, res, path):
@@ -100,6 +104,8 @@ class Solution(object):
 
 # V0''
 # IDEA : BACKTRCK, similar as LC 046 permutations
+# time = O(n * 2^n)
+# space = O(n)
 class Solution(object):
     def partition(self, s):
         res = []
@@ -137,6 +143,8 @@ class Solution(object):
 # 1
 # 2
 # 3
+# time = O(n * 2^n)
+# space = O(n)
 class Solution(object):
     def partition(self, s):
         """
@@ -171,6 +179,8 @@ assert s.partition("aaa")==[['a', 'a', 'a'], ['a', 'aa'], ['aa', 'a'], ['aaa']]
 # V1'
 # https://leetcode.com/problems/palindrome-partitioning/discuss/42100/Python-easy-to-understand-backtracking-solution.
 # IDEA : DFS + backtracking
+# time = O(n * 2^n)
+# space = O(n)
 class Solution(object):
     def partition(self, s):
         res = []
@@ -190,6 +200,8 @@ class Solution(object):
 # V1''
 # https://leetcode.com/problems/palindrome-partitioning/discuss/441529/backtracking-python
 # IDEA : BACKTRACKING + DFS + DP
+# time = O(n * 2^n)
+# space = O(n^2)
 class Solution(object):
     def partition(self, s):
         """
@@ -215,6 +227,8 @@ class Solution(object):
 
 # V1'''
 # https://leetcode.com/problems/palindrome-partitioning/discuss/42025/1-liner-Python-Ruby
+# time = O(n * 2^n)
+# space = O(n * 2^n)
 class Solution(object):
     def partition(self, s):
         return [[s[:i]] + rest
@@ -281,8 +295,8 @@ class Solution(object):
 # }
 
 # V2 
-# Time:  O(n^2 ~ 2^n)
-# Space: O(n^2)
+# time = O(n^2 ~ 2^n)
+# space = O(n^2)
 class Solution(object):
     # @param s, a string
     # @return a list of lists of string
@@ -306,8 +320,8 @@ class Solution(object):
 
         return sub_partition[0]
 
-# Time:  O(2^n)
-# Space: O(n)
+# time = O(2^n)
+# space = O(n)
 # recursive solution
 class Solution2(object):
     # @param s, a string

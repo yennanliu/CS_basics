@@ -11,6 +11,8 @@ class MagicDictionary(object):
         """
         self.dmap = collections.defaultdict(set)
 
+    # time = O(k * l^2), k = num words, l = word length
+    # space = O(k * l^2)
     def buildDict(self, dict):
         """
         Build a dictionary through a list of words
@@ -22,6 +24,8 @@ class MagicDictionary(object):
                 key = word[:x] + '_' + word[x+1:]
                 self.dmap[key].add(word[x])
 
+    # time = O(l^2), l = word length
+    # space = O(1)
     def search(self, word):
         """
         Returns if there is any word in the trie that equals to the given word after modifying exactly one character
@@ -40,9 +44,9 @@ class MagicDictionary(object):
 # obj.buildDict(dict)
 # param_2 = obj.search(word)
 
-# V2 
-# Time:  O(n), n is the length of the word
-# Space: O(d)
+# V2
+# time = O(n), n is the length of the word
+# space = O(d)
 import collections
 class MagicDictionary(object):
 

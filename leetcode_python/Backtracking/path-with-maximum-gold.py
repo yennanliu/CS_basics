@@ -56,6 +56,8 @@ There are at most 25 cells containing gold.
 
 # V0
 # IDEA: DFS + BACKTRACK (gpt)
+# time = O(4^(m*n)), m = rows, n = cols
+# space = O(m*n)
 class Solution(object):
     def getMaximumGold(self, grid):
         l = len(grid)
@@ -105,6 +107,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: DFS + BACKTRACK (gemini)
+# time = O(4^(m*n)), m = rows, n = cols
+# space = O(m*n)
 class Solution(object):
     def getMaximumGold(self, grid):
         """
@@ -156,6 +160,8 @@ class Solution(object):
 
 # V0-2
 # IDEA: DFS (for loop in moves V1) + BACKTRACK (gemini)
+# time = O(4^(m*n)), m = rows, n = cols
+# space = O(m*n)
 class Solution(object):
     def getMaximumGold(self, grid):
         """
@@ -202,6 +208,8 @@ class Solution(object):
 
 # V0-3
 # IDEA: DFS (for loop in moves V2) + BACKTRACK (gemini)
+# time = O(4^(m*n)), m = rows, n = cols
+# space = O(m*n)
 class Solution(object):
     def getMaximumGold(self, grid):
         """
@@ -273,6 +281,8 @@ class Solution(object):
 # V2-1
 # IDEA: Depth-First Search with Backtracking
 # https://leetcode.com/problems/path-with-maximum-gold/editorial/
+# time = O(4^(m*n)), m = rows, n = cols
+# space = O(m*n)
 class Solution:
     def getMaximumGold(self, grid: List[List[int]]) -> int:
         DIRECTIONS = [0, 1, 0, -1, 0]
@@ -316,6 +326,8 @@ class Solution:
 # V2-2
 # IDEA: bfs with Backtracking
 # https://leetcode.com/problems/path-with-maximum-gold/editorial/
+# time = O(4^(m*n) * m*n), m = rows, n = cols (queue states each copy visited set)
+# space = O(4^(m*n) * m*n)
 class Solution:
     def getMaximumGold(self, grid: List[List[int]]) -> int:
         DIRECTIONS = [0, 1, 0, -1, 0]

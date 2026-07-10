@@ -30,6 +30,8 @@ Constraints:
 
 # V0
 # IDEA : BACKTRACK + LC 078 Subsets + dict
+# time = O(n * 2^n)
+# space = O(n * 2^n)
 from collections import Counter
 class Solution:
     def subsetsWithDup(self, nums):
@@ -57,6 +59,8 @@ class Solution:
 
 # V0'
 # IDEA : BACKTRACKING + LC 078 Subsets + dict
+# time = O(n * 2^n)
+# space = O(n * 2^n)
 from collections import Counter
 class Solution(object):
     def subsetsWithDup(self, nums):
@@ -95,6 +99,8 @@ class Solution(object):
 # V0'''' 
 # IDEA : backtrack + seen
 # https://github.com/youngyangyang04/leetcode-master/blob/master/problems/0090.%E5%AD%90%E9%9B%86II.md
+# time = O(n * 2^n)
+# space = O(n * 2^n)
 class Solution:
     def subsetsWithDup(self, nums):
         result = []
@@ -120,6 +126,8 @@ class Solution:
 
 # V0'
 # IDEA : BRUTE FORCE
+# time = O(n * 2^n)
+# space = O(n * 2^n)
 class Solution:
     def subsetsWithDup(self, nums):
         # small trick (init with a null array)
@@ -150,6 +158,8 @@ class Solution:
 #     func(x)
 # test()
 # print (z)
+# time = O(n * 2^n)
+# space = O(n * 2^n)
 class Solution(object):
     def subsetsWithDup(self, nums):
         ### NOTE the param
@@ -173,6 +183,8 @@ class Solution(object):
 # V1
 # IDEA : BRUTE FORCE
 # https://leetcode.com/problems/subsets-ii/discuss/221114/Python-iterative-solution
+# time = O(n * 2^n)
+# space = O(n * 2^n)
 class Solution:
     def subsetsWithDup(self, nums):
         ans=[[]]
@@ -188,6 +200,8 @@ class Solution:
 # IDEA : DFS 
 # https://www.cnblogs.com/loadofleaf/p/5395066.html
 #  SAME AS # 78 subset
+# time = O(n * 2^n)
+# space = O(n * 2^n)
 class Solution(object):
     def subsetsWithDup(self, nums):
         """
@@ -242,6 +256,8 @@ class Solution(object):
 # path + [nums[i]] : [3]
 
 # Out[13]: [[], [1], [1, 2], [1, 2, 3], [1, 3], [2], [2, 3], [3]]
+# time = O(n * 2^n)
+# space = O(n * 2^n)
 class Solution(object):
     def subsets(self, nums):
         """
@@ -260,6 +276,8 @@ class Solution(object):
 # V1''
 # IDEA : BACKTRACKING
 # https://leetcode.com/problems/subsets-ii/discuss/690114/Python-Backtracking-Solution
+# time = O(n * 2^n)
+# space = O(n * 2^n)
 class Solution:
     def subsetsWithDup(self, nums):
         nums.sort()
@@ -278,6 +296,8 @@ class Solution:
 
 # V1''
 # https://www.jianshu.com/p/b6c831622498
+# time = O(n * 2^n)
+# space = O(n * 2^n)
 from itertools import combinations
 class Solution(object):
     def subsetsWithDup(self, nums):
@@ -291,6 +311,8 @@ class Solution(object):
 
 # V1'''
 # https://www.jianshu.com/p/b6c831622498
+# time = O(n * 2^n)
+# space = O(n * 2^n)
 class Solution(object):
     def subsetsWithDup(self, nums):
         res = [[]]
@@ -304,8 +326,8 @@ class Solution(object):
         return res
 
 # V2 
-# Time:  O(n * 2^n)
-# Space: O(1)
+# time = O(n * 2^n)
+# space = O(1)
 class Solution(object):
     def subsetsWithDup(self, nums):
         """
@@ -325,8 +347,8 @@ class Solution(object):
             previous_size = size
         return result
 
-# Time:  O(n * 2^n) ~ O((n * 2^n)^2)
-# Space: O(1)
+# time = O(n * 2^n) ~ O((n * 2^n)^2)
+# space = O(1)
 class Solution2(object):
     def subsetsWithDup(self, nums):
         """
@@ -347,8 +369,8 @@ class Solution2(object):
             i += 1
         return result
 
-# Time:  O(n * 2^n) ~ O((n * 2^n)^2)
-# Space: O(1)
+# time = O(n * 2^n) ~ O((n * 2^n)^2)
+# space = O(1)
 class Solution3(object):
     def subsetsWithDup(self, nums):
         """

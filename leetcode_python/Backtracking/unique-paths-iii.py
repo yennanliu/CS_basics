@@ -53,6 +53,9 @@ There is exactly one starting cell and one ending cell.
 
 # V0
 # IDEA : BACKTRACK
+# time = O(4^(m*n))
+# space = O(m*n)
+# m, n = grid dimensions
 class Solution:
     def uniquePathsIII(self, A):
         # help func
@@ -91,6 +94,9 @@ class Solution:
 # Complexity
 # Time complexity is as good as dp,
 # but it take less space and easier to implement.
+# time = O(4^(m*n))
+# space = O(m*n)
+# m, n = grid dimensions
 class Solution:
     def uniquePathsIII(self, A):
         self.res = 0
@@ -155,6 +161,9 @@ class Solution:
 # If we find a path that has walked over every non-obstacle square exactly once, we increase self.walks by 1.
 # We ensure this by counting visited squares.
 # The key point in this DFS is that we modify every visited square by decreasing square value (grid[i][j] -= 1) and reversing it after each DFS. Therefore, the next DFS will be fresh on unmodified grid.
+# time = O(4^(m*n))
+# space = O(m*n)
+# m, n = grid dimensions
 class Solution:
     def uniquePathsIII(self, grid: List[List[int]]) -> int:
         def dfs(i, j, visited):
@@ -179,6 +188,9 @@ class Solution:
 # V1'''
 # IDEA : Backtracking
 # https://leetcode.com/problems/unique-paths-iii/solution/
+# time = O(4^(m*n))
+# space = O(m*n)
+# m, n = grid dimensions
 class Solution:
     def uniquePathsIII(self, grid: List[List[int]]) -> int:
         rows, cols = len(grid), len(grid[0])
@@ -236,6 +248,9 @@ class Solution:
 
 # V1''''
 # https://leetcode.com/problems/unique-paths-iii/discuss/871046/python-backtracking
+# time = O(4^(m*n))
+# space = O(m*n)
+# m, n = grid dimensions
 class Solution:
 	def uniquePathsIII(self, grid: List[List[int]]) -> int:
 		r = len(grid)
@@ -268,6 +283,9 @@ class Solution:
 
 # V1''''
 # https://leetcode.com/problems/unique-paths-iii/discuss/222122/Python-solution
+# time = O(4^(m*n))
+# space = O(m*n)
+# m, n = grid dimensions
 class Solution:
     def uniquePathsIII(self, grid):
         """

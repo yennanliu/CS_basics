@@ -32,6 +32,8 @@ Constraints:
 # V0
 # IDEA : BACKTRACK + LC 46 + COUNTER
 # https://leetcode.com/problems/permutations-ii/editorial/
+# time = O(n * n!)
+# space = O(n)
 class Solution(object):
     def permuteUnique(self, nums):
         def help(res, cur, cnt):
@@ -65,6 +67,8 @@ class Solution(object):
 
 # V0'
 # IDEA : BACKTRACK + LC 46 -> TLE
+# time = O(n * n!)
+# space = O(n)
 class Solution(object):
     def permuteUnique(self, nums):
         def help(res, cur, cnt):
@@ -100,6 +104,8 @@ class Solution(object):
 # V1
 # IDEA : BACKTRACK + COUNTER
 # https://leetcode.com/problems/permutations-ii/editorial/
+# time = O(n * n!)
+# space = O(n)
 class Solution:
     def permuteUnique(self, nums: List[int]) -> List[List[int]]:
         results = []
@@ -129,6 +135,8 @@ class Solution:
 # https://blog.csdn.net/weixin_38111819/article/details/79131409
 # https://blog.csdn.net/XX_123_1_RJ/article/details/81021815
 # IDEA : DFS 
+# time = O(n * n!)
+# space = O(n)
 class Solution(object):
     def permuteUnique(self, nums):
         """
@@ -148,9 +156,9 @@ class Solution(object):
                 continue
             self.dfs(nums[:i]+nums[i+1:], path+[nums[i]], res)
 
-# V2 
-# Time:  O(n * n!)
-# Space: O(n)
+# V2
+# time = O(n * n!)
+# space = O(n)
 class Solution(object):
     def permuteUnique(self, nums):
         """
@@ -176,6 +184,8 @@ class Solution(object):
             cur.pop()
             used[i] = False
 
+# time = O(n * n!)
+# space = O(n * n!)
 class Solution2(object):
     # @param num, a list of integer
     # @return a list of lists of integers

@@ -48,6 +48,8 @@ All elements of candidates are distinct.
 
 # V0
 # IDEA : DFS + BACKTRACK
+# time = O(n^(t/m)), n = len(candidates), t = target, m = min(candidates)
+# space = O(t/m)
 class Solution(object):
     def combinationSum(self, candidates, target):
         if not candidates:
@@ -102,6 +104,8 @@ class Solution(object):
 
 # V0
 # IDEA : DFS + BACKTRACK
+# time = O(n^(t/m)), n = len(candidates), t = target, m = min(candidates)
+# space = O(t/m)
 class Solution(object):
     def combinationSum(self, candidates, target):
 
@@ -124,6 +128,8 @@ class Solution(object):
 
 
 # V0-1
+# time = O(n^(t/m)), n = len(candidates), t = target, m = min(candidates)
+# space = O(t/m)
 class Solution(object):
     def combinationSum(self, candidates, target):
         self.res = []
@@ -157,6 +163,8 @@ class Solution(object):
 
 # V0'
 # IDEA : DFS + BACKTRACK
+# time = O(n^(t/m)), n = len(candidates), t = target, m = min(candidates)
+# space = O(t/m)
 class Solution(object):
     def combinationSum(self, candidates, target):
         res = []
@@ -178,6 +186,8 @@ class Solution(object):
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79322462
 # IDEA : DFS 
+# time = O(n^(t/m)), n = len(candidates), t = target, m = min(candidates)
+# space = O(t/m)
 class Solution(object):
     def combinationSum(self, candidates, target):
         """
@@ -204,6 +214,8 @@ class Solution(object):
 # V1
 # https://github.com/neetcode-gh/leetcode/blob/main/python/0039-combination-sum.py
 # https://www.youtube.com/watch?v=GBKI9VSKdGg
+# time = O(n^(t/m)), n = len(candidates), t = target, m = min(candidates)
+# space = O(t/m)
 class Solution:
     def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
         res = []
@@ -228,6 +240,8 @@ class Solution:
 # V1'
 # https://leetcode.com/problems/combination-sum/discuss/16554/Share-My-Python-Solution-beating-98.17
 # IDEA : BACKTRACKING
+# time = O(n^(t/m)), n = len(candidates), t = target, m = min(candidates)
+# space = O(t/m)
 class Solution(object):
     def combinationSum(self, candidates, target):
         result = []
@@ -248,6 +262,8 @@ class Solution(object):
 
 # V1''
 # https://www.jiuzhang.com/solution/combination-sum/#tag-highlight-lang-python
+# time = O(n^(t/m)), n = len(candidates), t = target, m = min(candidates)
+# space = O(t/m)
 class Solution:
     # @param candidates, a list of integers
     # @param target, integer
@@ -275,8 +291,8 @@ class Solution:
             combination.pop()  # backtracking
             
 # V2 
-# Time:  O(k * n^k)
-# Space: O(k)
+# time = O(k * n^k)
+# space = O(k)
 class Solution(object):
     # @param candidates, a list of integers
     # @param target, integer

@@ -8,6 +8,8 @@
 # similarly, if  k = 4, n = 4 -> output = [[1,1,1,1]] # only solution 
 
 
+# time = O(k * C(9, k))
+# space = O(k)
 class Solution:
     # @param {integer} k
     # @param {integer} n
@@ -26,8 +28,8 @@ class Solution:
         return ans
 
 # V2 
-# Time:  O(k * C(n, k))
-# Space: O(k)
+# time = O(k * C(n, k))
+# space = O(k)
 class Solution(object):
     # @param {integer} k
     # @param {integer} n

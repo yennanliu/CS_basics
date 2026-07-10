@@ -3,6 +3,8 @@
 # V1 
 # http://bookshadow.com/weblog/2017/02/19/leetcode-beautiful-arrangement/
 # IDEA : Memoization
+# time = O(n!)  # n = N; memoization prunes, actual runtime is much less
+# space = O(n!)  # cache over (idx, remaining nums) states
 class Solution(object):
     def countArrangement(self, N):
         """
@@ -24,6 +26,8 @@ class Solution(object):
 # V2 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79431941
 # IDEA : BACKTRACKING 
+# time = O(n!)  # n = N
+# space = O(n)  # n = N
 class Solution(object):
     def countArrangement(self, N):
         """
@@ -46,9 +50,9 @@ class Solution(object):
         helper(N, 1, used)
         return self.count
 
-# V3 
-# Time:  O(n!)
-# Space: O(n)
+# V3
+# time = O(n!)
+# space = O(n)
 class Solution(object):
     def countArrangement(self, N):
         """

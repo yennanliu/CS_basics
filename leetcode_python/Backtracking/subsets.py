@@ -37,6 +37,8 @@ All the numbers of nums are unique.
 
 # V0
 # IDEA : BACKTRACK
+# time = O(n * 2^n)
+# space = O(n)
 class Solution:
     def subsets(self, nums):
         result = []
@@ -57,6 +59,8 @@ class Solution:
 # IDEA : DFS
 # plz also refer backtrack cheatsheet
 # https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/backtrack.md
+# time = O(n * 2^n)
+# space = O(n)
 class Solution(object):
     def subsets(self, nums):
         def dfs(layer, start, tmp):
@@ -84,6 +88,8 @@ class Solution(object):
 
 # V0'
 # brack tracking
+# time = O(n * 2^n)
+# space = O(n)
 class Solution(object):
     def subsets(self, nums):
         def help(start, tmp, res):
@@ -105,6 +111,8 @@ class Solution(object):
 
 # V0''
 # IDEA : BRUTE FROCE
+# time = O(n * 2^n)
+# space = O(n * 2^n)
 class Solution(object):
     def subsets(self, nums):
         nums.sort()
@@ -118,6 +126,8 @@ class Solution(object):
 
 # V0'''
 # IDEA : Backtracking
+# time = O(n * 2^n)
+# space = O(n)
 class Solution:
     def subsets(self, nums):
         def backtrack(first = 0, curr = []):
@@ -142,6 +152,8 @@ class Solution:
 # V0''''''
 # IDEA : DFS 
 # SAME AS # 90 subset-ii 
+# time = O(n * 2^n)
+# space = O(n)
 class Solution(object):
     def subsets(self, nums):
         """
@@ -164,6 +176,8 @@ class Solution(object):
 
 # V0''''''''
 # IDEA : DFS
+# time = O(n * 2^n)
+# space = O(n)
 class Solution:
     """
     @param nums: A set of numbers
@@ -187,6 +201,8 @@ class Solution:
 # V1
 # IDEA : BACKTRACK
 # https://github.com/youngyangyang04/leetcode-master/blob/master/problems/0078.%E5%AD%90%E9%9B%86.md
+# time = O(n * 2^n)
+# space = O(n)
 class Solution:
     def subsets(self, nums):
         result = []
@@ -205,6 +221,8 @@ class Solution:
 
 # V1
 # https://www.jiuzhang.com/solution/subsets/#tag-highlight-lang-python
+# time = O(n * 2^n)
+# space = O(n)
 class Solution:
     """
     @param nums: A set of numbers
@@ -228,6 +246,8 @@ class Solution:
 # IDEA : BACKTRACK
 # https://www.youtube.com/watch?v=REOH22Xwdkk&t=4s
 # https://github.com/neetcode-gh/leetcode/blob/main/python/0078-subsets.py
+# time = O(n * 2^n)
+# space = O(n)
 class Solution:
     def subsets(self, nums: List[int]) -> List[List[int]]:
         res = []
@@ -251,6 +271,8 @@ class Solution:
 # V1'
 # https://leetcode.com/problems/subsets/solution/
 # IDEA : Cascading
+# time = O(n * 2^n)
+# space = O(n * 2^n)
 class Solution:
     def subsets(self, nums):
         n = len(nums)
@@ -264,6 +286,8 @@ class Solution:
 # V1''
 # https://leetcode.com/problems/subsets/solution/
 # IDEA : Backtracking
+# time = O(n * 2^n)
+# space = O(n)
 class Solution:
     def subsets(self, nums):
         def backtrack(first = 0, curr = []):
@@ -288,6 +312,8 @@ class Solution:
 # V1'''
 # https://leetcode.com/problems/subsets/solution/
 # IDRA :  Lexicographic (Binary Sorted) Subsets
+# time = O(n * 2^n)
+# space = O(n * 2^n)
 class Solution:
     def subsets(self, nums):
         n = len(nums)
@@ -304,6 +330,8 @@ class Solution:
 
 # V1''
 # https://www.jiuzhang.com/solution/subsets/#tag-highlight-lang-python
+# time = O(n * 2^n)
+# space = O(n)
 class Solution:
     
     def search(self, nums, S, index):
@@ -323,6 +351,8 @@ class Solution:
 
 # V1'''
 # https://www.jiuzhang.com/solution/subsets/#tag-highlight-lang-python
+# time = O(n * 2^n)
+# space = O(n * 2^n)
 class Solution:
     
     def search(self, nums, S, index):
@@ -338,9 +368,9 @@ class Solution:
         self.search(sorted(nums), [], 0)
         return self.results
 
-# V2 
-# Time:  O(n * 2^n)
-# Space: O(1)
+# V2
+# time = O(n * 2^n)
+# space = O(1)
 class Solution(object):
     def subsets(self, nums):
         """
@@ -356,8 +386,8 @@ class Solution(object):
                 result[-1].append(nums[i])
         return result
 
-# Time:  O(n * 2^n)
-# Space: O(1)
+# time = O(n * 2^n)
+# space = O(1)
 class Solution(object):
     def subsets(self, nums):
         """
@@ -378,8 +408,8 @@ class Solution(object):
 
         return result
 
-# Time:  O(n * 2^n)
-# Space: O(1)
+# time = O(n * 2^n)
+# space = O(1)
 class Solution(object):
     def subsets(self, nums):
         """

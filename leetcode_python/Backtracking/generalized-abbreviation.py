@@ -5,8 +5,8 @@
 # DEV 
 
 # V2 
-# Time:  O(n * 2^n)
-# Space: O(n)
+# time = O(n * 2^n)
+# space = O(n)
 class Solution(object):
     def generateAbbreviations(self, word):
         """

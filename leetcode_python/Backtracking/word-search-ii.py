@@ -38,6 +38,8 @@ All the strings of words are unique.
 # IDEA : DFS + trie
 # DEMO
 # >>> words = ['oath', 'pea', 'eat', 'rain'], trie = {'o': {'a': {'t': {'h': {'#': None}}}}, 'p': {'e': {'a': {'#': None}}}, 'e': {'a': {'t': {'#': None}}}, 'r': {'a': {'i': {'n': {'#': None}}}}}
+# time = O(m*n*4^L), L = max word length
+# space = O(N*L), N = num words (trie)
 class Solution(object):
     def checkList(self, board, row, col, word, trie, rList):
         if row<0 or row>=len(board) or col<0 or col>=len(board[0]) or board[row][col] == '.' or board[row][col] not in trie:
@@ -79,6 +81,8 @@ class Solution(object):
 # V1
 # IDEA : Backtracking with Trie
 # https://leetcode.com/problems/word-search-ii/solution/
+# time = O(m*n*4^L), L = max word length
+# space = O(N*L), N = num words (trie)
 class Solution:
     def findWords(self, board, words):
         WORD_KEY = '$'
@@ -139,6 +143,8 @@ class Solution:
 # V1
 # IDEA : DFS + trie
 # https://leetcode.com/problems/word-search-ii/discuss/59808/Python-DFS-362ms
+# time = O(m*n*4^L), L = max word length
+# space = O(N*L), N = num words (trie)
 class Solution(object):
     def checkList(self, board, row, col, word, trie, rList):
         if row<0 or row>=len(board) or col<0 or col>=len(board[0]) or board[row][col] == '.' or board[row][col] not in trie: return
@@ -180,6 +186,8 @@ class Solution(object):
 # V1
 # IDEA : DFS + trie
 # https://leetcode.com/problems/word-search-ii/discuss/59905/Python-AC-solution
+# time = O(m*n*4^L), L = max word length
+# space = O(N*L), N = num words (trie)
 class TrieNode:
     def __init__(self):
         self.children = collections.defaultdict(TrieNode)

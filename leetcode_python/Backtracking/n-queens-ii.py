@@ -31,6 +31,8 @@ Constraints:
 # V1
 # IDEA : BACKTRACK
 # https://leetcode.com/problems/n-queens-ii/solutions/1146740/n-queens-ii/
+# time = O(n!)
+# space = O(n)
 class Solution:
     def totalNQueens(self, n):
         def backtrack(row, diagonals, anti_diagonals, cols):
@@ -69,6 +71,8 @@ class Solution:
 # V1
 # IDEA : BACKTRACK
 # https://leetcode.com/problems/n-queens-ii/solutions/243444/python-solution/
+# time = O(n!)
+# space = O(n)
 class Solution:
     def totalNQueens(self, n: int) -> int:
         def backtrack(i):
@@ -94,6 +98,8 @@ class Solution:
 # V1''
 # IDEA : BACKTRACK
 # https://leetcode.com/problems/n-queens-ii/submissions/812441270/
+# time = O(n!)
+# space = O(n)
 class Solution:
     def totalNQueens(self, n: int) -> int: 
         def backtrack(row, col, diag, adiag):

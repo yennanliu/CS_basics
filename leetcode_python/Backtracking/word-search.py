@@ -42,6 +42,8 @@ Follow up: Could you use search pruning to make your solution faster with a larg
 
 # V0
 # IDEA : DFS + backtracking
+# time = O(m*n*4^L), L = word length
+# space = O(L)
 class Solution(object):
     def exist(self, board, word):
         # Edge case
@@ -125,6 +127,8 @@ class Solution(object):
 
 # V0
 # IDEA : DFS + backtracking
+# time = O(m*n*4^L), L = word length
+# space = O(L)
 class Solution(object):
     def exist(self, board, word):
         if not board or not word:
@@ -173,6 +177,8 @@ class Solution(object):
 
 # V0
 # IDEA : DFS + backtracking
+# time = O(m*n*4^L), L = word length
+# space = O(m*n)
 class Solution(object):
  
     def exist(self, board, word):
@@ -216,6 +222,8 @@ class Solution(object):
    
 
 # V0-1
+# time = O(m*n*4^L), L = word length
+# space = O(m*n)
 class Solution(object):
     def exist(self, board, word):
         if not board and word:
@@ -274,6 +282,8 @@ class Solution(object):
 
 # V0'
 # IDEA : DFS
+# time = O(m*n*4^L), L = word length
+# space = O(L)
 class Solution(object):
     def exist(self, board, word):
         """
@@ -302,6 +312,8 @@ class Solution(object):
 # V1
 # IDEA : BACKTEACKING
 # https://leetcode.com/problems/word-search/solution/
+# time = O(m*n*4^L), L = word length
+# space = O(L)
 class Solution(object):
     def exist(self, board, word):
         """
@@ -351,6 +363,8 @@ class Solution(object):
 # IDEA : BACKTEACKING
 # https://leetcode.com/problems/word-search/solution/
 
+    # time = O(m*n*4^L), L = word length
+    # space = O(L)
     def backtrack(self, row, col, suffix):
         """
             backtracking with side-effect,
@@ -387,6 +401,8 @@ class Solution(object):
 # Out[39]: 'acv'
 # In [41]: 'wfwwrgergewCEVER'.swapcase()
 # Out[41]: 'WFWWRGERGEWcever'
+# time = O(m*n*4^L), L = word length
+# space = O(L)
 class Solution(object):
     def exist(self, board, word):
         """
@@ -415,6 +431,8 @@ class Solution(object):
 # V1'
 # https://www.cnblogs.com/zuoyuan/p/3769767.html
 # IDEA : DFS 
+# time = O(m*n*4^L), L = word length
+# space = O(L)
 class Solution:
     # @param board, a list of lists of 1 length string
     # @param word, a string
@@ -457,6 +475,8 @@ class Solution:
 
 # V1''
 # https://www.jiuzhang.com/solution/word-search/#tag-highlight-lang-python
+# time = O(m*n*4^L), L = word length
+# space = O(m*n)
 class Solution:
     # @param board, a list of lists of 1 length string
     # @param word, a string
@@ -497,8 +517,8 @@ class Solution:
         return False
 
 # V2
-# Time:  O(m * n * l)
-# Space: O(l)
+# time = O(m * n * l)
+# space = O(l)
 class Solution(object):
     # @param board, a list of lists of 1 length string
     # @param word, a string
