@@ -1,5 +1,5 @@
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 # Suppose you have a long flowerbed in which some of the plots are planted and some are not.
 # However, flowers cannot be planted in adjacent plots - they would compete for water
 # and both would die.
@@ -53,6 +53,8 @@
 # 7
 # 8
 # 9
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def canPlaceFlowers(self, flowerbed, n):
         """
@@ -71,7 +73,9 @@ class Solution(object):
 # V1' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79253848
 # http://bookshadow.com/weblog/2017/06/04/leetcode-can-place-flowers/
-# IDEA : GREEDY 
+# IDEA : GREEDY
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def canPlaceFlowers(self, flowerbed, n):
         """
@@ -89,8 +93,8 @@ class Solution(object):
         return res >= n
 
 # V2 
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def canPlaceFlowers(self, flowerbed, n):
         """

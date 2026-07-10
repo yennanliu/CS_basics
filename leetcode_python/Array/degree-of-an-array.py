@@ -2,6 +2,8 @@
 
 # V1 
 # http://bookshadow.com/weblog/2017/10/15/leetcode-degree-of-an-array/
+# time = O(n)
+# space = O(n)
 import collections
 class Solution(object):
     def findShortestSubArray(self, nums):
@@ -25,6 +27,8 @@ class Solution(object):
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79146067
+# time = O(n^2)
+# space = O(n)
 import collections
 class Solution(object):
     def findShortestSubArray(self, nums):
@@ -47,7 +51,9 @@ class Solution(object):
 
 # V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79146067
-# IDEA : STACK 
+# IDEA : STACK
+# time = O(n)
+# space = O(n)
 import collections, heapq
 class Solution:
     def findShortestSubArray(self, nums):
@@ -67,7 +73,9 @@ class Solution:
 
 # V1'''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79146067
-# IDEA : DICT 
+# IDEA : DICT
+# time = O(n)
+# space = O(n)
 import collections
 class Solution:
     def findShortestSubArray(self, nums):
@@ -90,8 +98,8 @@ class Solution:
         return res
 
 # V2 
-# Time:  O(n)
-# Space: O(n)
+# time = O(n)
+# space = O(n)
 import collections
 class Solution(object):
     def findShortestSubArray(self, nums):

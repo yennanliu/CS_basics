@@ -2,6 +2,8 @@
 
 # V1 
 # http://bookshadow.com/weblog/2017/11/05/leetcode-candy-crush/
+# time = O((r*c)^2)
+# space = O(1)
 class Solution(object):
     def candyCrush(self, board):
         """
@@ -49,8 +51,8 @@ class Solution(object):
         return board
         
 # V2 
-# Time:  O((R * C)^2)
-# Space: O(1)
+# time = O((R * C)^2)
+# space = O(1)
 class Solution(object):
     def candyCrush(self, board):
         """

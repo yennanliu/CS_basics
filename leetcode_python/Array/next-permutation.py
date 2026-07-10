@@ -69,6 +69,8 @@ CORE IDEA:
 
 
 """
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def nextPermutation(self, nums):
         # Get the length of the array
@@ -157,6 +159,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: 2 POINTERS (GEMINI)
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def nextPermutation(self, nums):
         """
@@ -194,6 +198,8 @@ class Solution(object):
 
 
 # V0
+# time = O(n)
+# space = O(1)
 class Solution:
     def nextPermutation(self, nums):
         i = j = len(nums)-1
@@ -213,6 +219,8 @@ class Solution:
             r -= 1
 
 # V0'
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def nextPermutation(self, num):
         k, l = -1, 0
@@ -234,6 +242,8 @@ class Solution(object):
 # IDEA : 2 POINTERS
 # https://leetcode.com/problems/next-permutation/discuss/14054/Python-solution-with-comments.
 # https://leetcode.com/problems/next-permutation/discuss/545263/Python-3-Easy-to-understand
+# time = O(n)
+# space = O(1)
 class Solution:
     def nextPermutation(self, nums):
         i = j = len(nums)-1
@@ -258,6 +268,8 @@ class Solution:
 # First observe that if a list of numbers is in descending order, then there is no lexicographically next greater permutation. Hence for i in range(n-1,0,-1), we search for the first occurrence of i such that nums[i] < nums[i+1]. If no such i exists, the list is in descending order, and we use nums.reverse() to reverse the list in-place. Otherwise, if such i exists, then nums[i-1] will be updated to get the lexicographically next greater permutation. Next, we need to search for the smallest number in nums[i:] that's larger than nums[i-1], and swap it with nums[i-1]. Note that nums[i:] is sorted in descending order. Hence we start with j = i, and while j < n and nums[j] > nums[i-1], we do idx = j, j += 1. When we are out of the while loop, nums[idx] will be the smallest number in nums[i:] that's larger than nums[i]. We then swap nums[idx] and nums[i-1]. After the swap, we just need to sort nums[i:] in ascending order to get the lexicographically next greater permutation. This can be achieved fairly easily in-place, because nums[i:] is already in descending order, and we just need to invert nums[i:] in-place to sort nums[i:] in ascending order.
 # To illustrate the algorithm with an example, consider nums = [2,3,1,5,4,2]. It is easy to see that i = 2 is the first i (from the right) such that nums[i] < nums[i+1]. Then we swap nums[2] = 1 with the smallest number in nums[3:] that is larger than 1, which is nums[5] = 2, after which we get nums = [2,3,2,5,4,1]. To get the lexicographically next greater permutation of nums, we just need to sort nums[3:] = [5,4,1] in-place. Finally, we reach nums = [2,3,2,1,4,5].
 # Time complexity: O(n), space complexity: O(1).
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def nextPermutation(self, nums):
         """
@@ -282,6 +294,8 @@ class Solution(object):
 # https://zxi.mytechroad.com/blog/algorithms/array/leetcode-31-next-permutation/
 # VIDEO DEMO 
 # https://www.youtube.com/watch?v=1ja5s9TmwZM
+# time = O(n)
+# space = O(1)
 class Solution:
   def nextPermutation(self, nums):
     n = len(nums)
@@ -298,6 +312,8 @@ class Solution:
 
 # V1' 
 # http://bookshadow.com/weblog/2016/09/09/leetcode-next-permutation/
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def nextPermutation(self, nums):
         """
@@ -318,6 +334,8 @@ class Solution(object):
 
 # V1
 # https://leetcode.com/problems/next-permutation/discuss/162049/Explanations-(Java-Python)
+# time = O(n)
+# space = O(1)
 class Solution:
     def nextPermutation(self, nums: List[int]) -> None:
         """
@@ -344,6 +362,8 @@ class Solution:
 # STEP 3) 12 134 (reverse 431 -> 134)
 # STEP 4) 13 124 (find the 1st elment in 134 that bigger than 2)
 # STEP 5) answer = 13124
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def nextPermutation(self, nums):
         """
@@ -382,6 +402,8 @@ class Solution(object):
 
 # V1'''
 # https://www.jiuzhang.com/solution/next-permutation/#tag-highlight-lang-python
+# time = O(n)
+# space = O(1)
 class Solution:
     # @param num :  a list of integer
     # @return : a list of integer
@@ -437,9 +459,9 @@ class Solution:
 #     }
 # }
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     # @param {integer[]} nums
     # @return {void} Do not return anything, modify nums in-place instead.

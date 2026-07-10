@@ -28,6 +28,8 @@ Explanation: The array represents the integer 4321.
 # c
 # b
 # a
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def plusOne(self, digits):
         """
@@ -47,7 +49,9 @@ class Solution(object):
         return digits
 
 # V0'
-# IDEA : array -> string -> int -> string 
+# IDEA : array -> string -> int -> string
+# time = O(n)
+# space = O(n)
 class Solution:
     def plusOne(self, digits):
         digits_ = [str(i) for i in digits]
@@ -55,8 +59,10 @@ class Solution:
         d += 1 
         return list(str(d))
 
-# V1 
+# V1
 # https://blog.csdn.net/coder_orz/article/details/51583916
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def plusOne(self, digits):
         """
@@ -77,8 +83,10 @@ class Solution(object):
 
 ### Test case : dev
 
-# V1' 
+# V1'
 # https://blog.csdn.net/coder_orz/article/details/51583916
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def plusOne(self, digits):
         """
@@ -94,9 +102,9 @@ class Solution(object):
         digits.insert(0, 1)
         return digits
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def plusOne(self, digits):
         """
@@ -113,8 +121,8 @@ class Solution(object):
         digits.append(0)
         return digits
 
-# Time:  O(n)
-# Space: O(n)
+# time = O(n)
+# space = O(n)
 class Solution2(object):
     def plusOne(self, digits):
         """

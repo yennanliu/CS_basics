@@ -1,5 +1,5 @@
-# Time:  O(n^2)
-# Space: O(1)
+# time = O(n^2)
+# space = O(1)
 #
 # Given numRows, generate the first numRows of Pascal's triangle.
 #
@@ -41,6 +41,8 @@
 #     ...: print (res)
 #     ...: 
 # [[1], [1, 1], [1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1, 1]]
+# time = O(n^2)
+# space = O(n^2)
 class Solution(object):
     def generate(self, numRows):
         """
@@ -57,7 +59,9 @@ class Solution(object):
 
 # V1' 
 # https://blog.csdn.net/coder_orz/article/details/51589254
-# IDEA : PASCALS RULE 
+# IDEA : PASCALS RULE
+# time = O(n^2)
+# space = O(n^2)
 class Solution(object):
     def generate(self, numRows):
         """
@@ -83,6 +87,8 @@ class Solution(object):
 #  +  0 1 3 3 1
 # ------------------
 #  =  1 4 6 4 1
+# time = O(n^2)
+# space = O(n^2)
 class Solution(object):
     def generate(self, numRows):
         """
@@ -97,6 +103,8 @@ class Solution(object):
 # V1'''
 # IDEA : RECURSION
 # https://stackoverflow.com/questions/30036082/creating-pascals-triangle-using-python-recursion
+# time = O(2^n)
+# space = O(n)
 class Solution(object):
     def pascals_triangle(self, rows):
 
@@ -111,9 +119,9 @@ class Solution(object):
                 answer = answer + str(combination(row, column)) + "\t"
             print(answer)
 
-# V2 
-# Time:  O(n^2)
-# Space: O(1) 
+# V2
+# time = O(n^2)
+# space = O(1)
 class Solution(object):
     # @return a list of lists of integers
     def generate(self, numRows):
@@ -127,6 +135,8 @@ class Solution(object):
                     result[i].append(result[i - 1][j - 1] + result[i - 1][j])
         return result
 
+    # time = O(n^2)
+    # space = O(n^2)
     def generate2(self, numRows):
         if not numRows: return []
         res = [[1]]
@@ -134,6 +144,8 @@ class Solution(object):
             res += [map(lambda x, y: x + y, res[-1] + [0], [0] + res[-1])]
         return res[:numRows]
 
+    # time = O(n^2)
+    # space = O(n^2)
     def generate3(self, numRows):
         """
         :type numRows: int

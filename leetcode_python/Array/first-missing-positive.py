@@ -32,6 +32,8 @@ Constraints:
 
 # V0
 # IDEA : for loop + while loop + problem understanding
+# time = O(n)
+# space = O(1)
 class Solution:
     def firstMissingPositive(self, nums):
         for i, n in enumerate(nums):
@@ -53,6 +55,8 @@ class Solution:
 # https://leetcode.com/problems/first-missing-positive/discuss/231337/Python-solution
 # Idea: change nums[n-1] to float('inf') for all n in nums if 1 <= n <= len(nums), meaning that we have seen n in nums. Then we traverse nums once more, and find the first idx such that nums[idx] != float('inf'), then idx+1 will be the first missing positive in nums. If no such idx exists, it means that we have seen 1, 2, ..., len(nums) in nums, hence the first missing positive is len(nums)+1.
 # Time complexity: O(n), space complexity: O(1).
+# time = O(n)
+# space = O(1)
 class Solution:
     def firstMissingPositive(self, nums):
         for i, n in enumerate(nums):
@@ -73,6 +77,8 @@ class Solution:
 # IDEA :  Index as a hash key.
 # https://leetcode.com/problems/first-missing-positive/solution/
 # /doc/pic/first-missing-positive.png
+# time = O(n)
+# space = O(1)
 class Solution:
     def firstMissingPositive(self, nums: List[int]) -> int:
         n = len(nums)
@@ -115,6 +121,8 @@ class Solution:
 
 # V1''
 # https://leetcode.com/problems/first-missing-positive/discuss/697416/clean-python-code
+# time = O(n)
+# space = O(1)
 class Solution:
     def firstMissingPositive(self, nums: List[int]) -> int:
         L = len(nums)
@@ -141,6 +149,8 @@ class Solution:
 # Solution using extra space: O(N) time and space
 # If the length of the nums array is N, then the first missing positive will be between 1 to N+1. Think Why N+1? We can have in the array 1 to N.
 # Take an temp array of size N and for any number x in nums such that 1<=x<=N, mark temp[x-1]. Then simply walk the temp array and report the first unmarked index.
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def firstMissingPositive(self, nums):
         temp, N = [None]*len(nums), len(nums)
@@ -159,6 +169,8 @@ class Solution(object):
 # Simply traverse the nums array and put any number within [1, N] in their right place. For example if 2 is in that input, then put 2 at index 1.
 # Now traverse this "shuffled" array again. You expect 1 at 0th index. Otherwise it is missing. Then you expect 2 at 1st index and so on.
 # Above idea can be a little tricky. What about cases like [1] and [1,1] - i.e. 1 is in its place or there are duplicates - we need to advance pointer regardless.
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def firstMissingPositive(self, nums):
         N, i = len(nums), 0

@@ -7,6 +7,8 @@
 # -> IF A[LEFT] < A[LEFT +1] :  MOVE LEFT TO RIGHT (LEFT = LEFT + 1 )
 # -> IF A[RIGHT] < A[RIGHT - 1] :  MOVE RIGHT TO LEFT (RIGHT  = RIGHT - 1 )
 # -> CHECK WHETHER TWO POINTER LEFT, RIGHT OVERLAP  
+# time = O(n)
+# space = O(1)
 class Solution:
     def validMountainArray(self, A):
         """
@@ -24,6 +26,8 @@ class Solution:
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/84206380
+# time = O(n)
+# space = O(1)
 class Solution:
     def validMountainArray(self, A):
         """
@@ -49,6 +53,8 @@ class Solution:
 
 # V1'' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/84206380
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def validMountainArray(self, A):
         """
@@ -67,8 +73,8 @@ class Solution(object):
         return i == N - 1
 
 # V2 
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def validMountainArray(self, A):
         """

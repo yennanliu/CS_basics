@@ -79,6 +79,8 @@ Therefore, it is NOT a valid word square.
 
 # V1
 # http://us.jiuzhang.com/solution/valid-word-square/#tag-highlight-lang-python
+# time = O(m*n)
+# space = O(1)
 class Solution:
     """
     @param words: a list of string
@@ -97,6 +99,8 @@ class Solution:
         
 # V1' 
 # http://bookshadow.com/weblog/2016/10/16/leetcode-valid-word-square/
+# time = O(m*n)
+# space = O(1)
 class Solution(object):
     def validWordSquare(self, words):
         """
@@ -122,8 +126,8 @@ class Solution(object):
         return True
 
 # V2 
-# Time:  O(m * n)
-# Space: O(1)
+# time = O(m*n)
+# space = O(1)
 class Solution(object):
     def validWordSquare(self, words):
         """

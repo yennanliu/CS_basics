@@ -2,6 +2,8 @@
 
 # V1 
 # https://www.jiuzhang.com/solution/transpose-matrix/#tag-highlight-lang-python
+# time = O(r*c)
+# space = O(r*c)
 class Solution:
     """
     @param A: A matrix
@@ -18,6 +20,8 @@ class Solution:
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/81015450
+# time = O(r*c)
+# space = O(r*c)
 class Solution:
     def transpose(self, A):
         """
@@ -32,8 +36,8 @@ class Solution:
         return res
         
 # V2 
-# Time:  O(r * c)
-# Space: O(1)
+# time = O(r*c)
+# space = O(1)
 class Solution(object):
     def transpose(self, A):
         """
@@ -46,8 +50,8 @@ class Solution(object):
                 result[c][r] = val
         return result
 
-# Time:  O(r * c)
-# Space: O(1)
+# time = O(r*c)
+# space = O(1)
 class Solution2(object):
     def transpose(self, A):
         """

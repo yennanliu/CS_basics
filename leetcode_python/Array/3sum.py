@@ -32,6 +32,8 @@ Constraints:
 
 # V0
 # IDEA : for loop + 2 sum
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def threeSum(self, nums):
         if nums is None or len(nums) < 3:
@@ -72,6 +74,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: SORT + 2 POINTERS
+# time = O(n^2)
+# space = O(1)
 class Solution(object):
     def threeSum(self, nums):
         nums.sort()
@@ -111,6 +115,8 @@ class Solution(object):
 
 # V0-2
 # IDEA: SORT + 2 POINTERS
+# time = O(n^2)
+# space = O(1)
 class Solution(object):
     def threeSum(self, nums):
         if nums is None or len(nums) < 3:
@@ -159,6 +165,8 @@ class Solution(object):
 
 # V0
 # IDEA : for loop + 2 sum
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def threeSum(self, nums):
         # edge case
@@ -199,8 +207,8 @@ class Solution(object):
 
 # V0'
 # IDEA : 2 SUM -> 3 SUM
-# Time:  O(n^2)
-# Space: O(1)
+# time = O(n^2)
+# space = O(1)
 # Given an array S of n integers,
 # are there elements a, b, c in S such that a + b + c = 0?
 # Find all unique triplets in the array which gives the sum of zero.
@@ -247,6 +255,8 @@ class Solution(object):
 
 # V0''
 # IDEA : 2 SUM -> 3 SUM
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def threeSum(self, nums):
         res = []
@@ -302,6 +312,8 @@ class Solution(object):
 #         return res
 
 # V0''''''
+# time = O(n^2)
+# space = O(n)
 class Solution:
     """
     @param numbersbers : Give an array numbersbers of n integer
@@ -331,6 +343,8 @@ class Solution:
 # https://algorithm.yuanbin.me/zh-tw/integer_array/3_sum.html?q=
 # IDEA :  SORT + HASH TABLE + 2 SUM
 # IDEA : 2 SUM = 1 SUM + 1 SUM   -> 3 SUM = 2 SUM + 1 SUM 
+# time = O(n^2)
+# space = O(n)
 class Solution:
     """
     @param numbersbers : Give an array numbersbers of n integer
@@ -359,6 +373,8 @@ class Solution:
 # V1' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/83115850
 # IDEA : SORT + DOUBLE POINTER 
+# time = O(n^2)
+# space = O(1)
 class Solution(object):
     def threeSum(self, nums):
         """
@@ -391,6 +407,8 @@ class Solution(object):
 # V1'' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/83115850
 # IDEA : collections.Counter + DOUBLE POINTER 
+# time = O(n^2)
+# space = O(n)
 import collections
 class Solution(object):
     def threeSum(self, nums):
@@ -423,6 +441,8 @@ class Solution(object):
 
 # V1'''
 # https://www.jiuzhang.com/solution/3sum/#tag-highlight-lang-python
+# time = O(n^2)
+# space = O(1)
 class Solution:
     """
     @param numbers: Give an array numbers of n integer
@@ -453,9 +473,9 @@ class Solution:
             else:
                 left += 1
 
-# V2 
-# Time:  O(n^2)
-# Space: O(1)
+# V2
+# time = O(n^2)
+# space = O(1)
 import collections
 class Solution(object):
     def threeSum(self, nums):
@@ -482,6 +502,8 @@ class Solution(object):
             i += 1
         return result
 
+    # time = O(n^2)
+    # space = O(n)
     def threeSum2(self, nums):
         """
         :type nums: List[int]

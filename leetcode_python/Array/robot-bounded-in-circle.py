@@ -41,6 +41,8 @@ instructions[i] is 'G', 'L' or, 'R'.
 
 # V0
 # IDEA : math + array
+# time = O(n)
+# space = O(1)
 class Solution:
     def isRobotBounded(self, instructions):
         """
@@ -105,6 +107,8 @@ class Solution:
 
 # V1
 # https://leetcode.com/problems/robot-bounded-in-circle/discuss/1425424/Java-%2B-Python-solution
+# time = O(n)
+# space = O(1)
 class Solution:
     def isRobotBounded(self, instructions):
         dirs = [[0,1], [1,0], [0,-1], [-1,0]]
@@ -124,6 +128,8 @@ class Solution:
 # V1
 # IDEA : one pass
 # https://leetcode.com/problems/robot-bounded-in-circle/solution/
+# time = O(n)
+# space = O(1)
 class Solution:
     def isRobotBounded(self, instructions: str) -> bool:
         # north = 0, east = 1, south = 2, west = 3
@@ -149,6 +155,8 @@ class Solution:
 
 # V1
 # https://leetcode.com/problems/robot-bounded-in-circle/discuss/910396/Python-easy
+# time = O(n)
+# space = O(1)
 class Solution:
     def isRobotBounded(self, instructions):
         print(instructions)
@@ -171,6 +179,8 @@ class Solution:
 
 # V1'
 # https://leetcode.com/problems/robot-bounded-in-circle/discuss/290870/Python
+# time = O(n)
+# space = O(1)
 class Solution:
     def isRobotBounded(self, instructions):
         marked = set()

@@ -59,6 +59,8 @@ bookings[i].length == 3
 # Complexity
 # Time O(booking + N) for one pass on bookings
 # Space O(N) for the result
+# time = O(b + n)
+# space = O(n)
 class Solution:
     def corpFlightBookings(self, bookings, n):
         res = [0] * (n + 1)
@@ -72,6 +74,8 @@ class Solution:
 # V1'
 # IDEA : ARRAY + prefix sum
 # https://leetcode.com/problems/corporate-flight-bookings/discuss/328949/Simple-Python-solution
+# time = O(b log b + n)
+# space = O(b + n)
 class Solution:
     def corpFlightBookings(self, bookings: List[List[int]], n: int) -> List[int]:
             answer = n * [0]
@@ -93,6 +97,8 @@ class Solution:
 # IDEA : ARRAY
 # https://leetcode.com/problems/corporate-flight-bookings/discuss/328893/Short-python-solution
 # IDEA : Simply use two arrays to keep track of how many bookings are added for every flight.
+# time = O(b + n)
+# space = O(n)
 class Solution:
     def corpFlightBookings(self, bookings: List[List[int]], n: int) -> List[int]:        
         opens = [0]*n
@@ -112,6 +118,8 @@ class Solution:
 
 # V1'''
 # https://leetcode.com/problems/corporate-flight-bookings/discuss/328986/Python-linear-solution
+# time = O(b + n)
+# space = O(n)
 class Solution:
     def corpFlightBookings(self, bookings: List[List[int]], n: int) -> List[int]:
         res = [0] * (n + 2)
@@ -129,6 +137,8 @@ class Solution:
 
 # V1''''
 # https://leetcode.com/problems/corporate-flight-bookings/discuss/328863/Python-concise-sum
+# time = O(b log b + n)
+# space = O(b + n)
 class Solution:
     def corpFlightBookings(self, bookings: List[List[int]], n: int) -> List[int]:
         res = [0] * n
@@ -160,6 +170,8 @@ class Solution:
 
 # V1''''''''
 # https://blog.51cto.com/u_15344287/3646723
+# time = O(b + n)
+# space = O(n)
 class Solution:
     def corpFlightBookings(self, bookings: List[List[int]], n: int) -> List[int]:
         lst = [0] * (n + 1)

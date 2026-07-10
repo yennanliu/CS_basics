@@ -39,6 +39,8 @@ Could you do it in-place with O(1) extra space?
 
 # V0
 # IDEA: SPLIT + MOD
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def rotate(self, nums, k):
         if not nums or len(nums) <= 1:
@@ -67,6 +69,8 @@ class Solution(object):
 
 
 # V0-0-1
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def rotate(self, nums, k):
         """
@@ -88,6 +92,8 @@ class Solution(object):
 
 # V0
 # IDEA : pop + insert (python 3)
+# time = O(k * n)
+# space = O(1)
 class Solution(object):
     def rotate(self, nums, k):
         # edge case
@@ -108,6 +114,8 @@ class Solution(object):
 
 
 # V0-1
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def rotate(self, nums, k):
         n = len(nums)
@@ -126,6 +134,8 @@ class Solution(object):
 
 # V0
 # IDEA : pop + insert (python 3)
+# time = O(k * n)
+# space = O(1)
 class Solution(object):
     def rotate(self, nums, k):
         _len = len(nums)
@@ -137,6 +147,8 @@ class Solution(object):
 
 # V0'
 # IDEA : SLICE (in place)
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def rotate(self, nums, k):
         # edge case
@@ -154,6 +166,8 @@ class Solution(object):
 
 # V0''
 # IDEA : SLICE (in place)
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def rotate(self, nums, k):
         k = k % len(nums)
@@ -170,14 +184,18 @@ class Solution(object):
 
 # V0''''
 # IDEA : SLICE
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def rotate(self, nums, k):
         k = k % len(nums) # since the rotate operation is cyclic. i.e. if len(nums)=7, k=17 -> rotate(17) = rotate(17%7) = rotate(3)
         nums[:k], nums[k:] = nums[len(nums)-k:], nums[:len(nums)-k]
 
-# V1 
+# V1
 # https://blog.csdn.net/coder_orz/article/details/52052767
 # IDEA : SLICE 
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def rotate(self, nums, k):
         """
@@ -201,6 +219,8 @@ assert s.rotate([1], 2) == [1]
 
 # V1'
 # https://blog.csdn.net/coder_orz/article/details/52052767
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def rotate(self, nums, k):
         """
@@ -214,6 +234,8 @@ class Solution(object):
 
 # V1''
 # https://blog.csdn.net/coder_orz/article/details/52052767
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def rotate(self, nums, k):
         """
@@ -233,6 +255,8 @@ class Solution(object):
 
 # V1'''
 # https://blog.csdn.net/coder_orz/article/details/52052767
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def rotate(self, nums, k):
         """
@@ -247,7 +271,9 @@ class Solution(object):
             start, n = start + k, n - k
             k = k % n
 
-# V2 
+# V2
+# time = O(k * n)
+# space = O(n)
 class Solution:
     def rotate(self, nums, k):
         for epoch in range(k):
@@ -255,9 +281,9 @@ class Solution:
             nums = nums[:-1]
         return nums 
 
-# V3 
-# Time:  O(n)
-# Space: O(1)
+# V3
+# time = O(n)
+# space = O(1)
 class Solution(object):
     """
     :type nums: List[int]
@@ -277,8 +303,8 @@ class Solution(object):
             start += 1
             end -= 1
 
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 from fractions import gcd
 class Solution2(object):
     """
@@ -301,8 +327,8 @@ class Solution2(object):
             apply_cycle_permutation(k, i, cycle_len, nums)
 
 
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 class Solution3(object):
     """
     :type nums: List[int]
@@ -325,8 +351,8 @@ class Solution3(object):
                     break
             start += 1
 
-# Time:  O(n)
-# Space: O(n)
+# time = O(n)
+# space = O(n)
 class Solution4(object):
     """
     :type nums: List[int]
@@ -341,8 +367,8 @@ class Solution4(object):
         """
         nums[:] = nums[len(nums) - k:] + nums[:len(nums) - k]
 
-# Time:  O(k * n)
-# Space: O(1)
+# time = O(k * n)
+# space = O(1)
 class Solution5(object):
     """
     :type nums: List[int]

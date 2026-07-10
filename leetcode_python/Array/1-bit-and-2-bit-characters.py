@@ -1,7 +1,9 @@
 # V0 
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79130681
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def isOneBitCharacter(self, bits):
         """
@@ -16,8 +18,10 @@ class Solution(object):
                 pos += 1
         return pos == len(bits) - 1 and bits[pos] == 0
         
-# V1' 
+# V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79130681
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def isOneBitCharacter(self, bits):
         """
@@ -31,6 +35,8 @@ class Solution(object):
 
 # V1''
 # http://bookshadow.com/weblog/2017/10/29/leetcode-1-bit-and-2-bit-characters/
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def isOneBitCharacter(self, bits):
         """
@@ -46,8 +52,8 @@ class Solution(object):
         return False
 
 # V2 
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def isOneBitCharacter(self, bits):
         """

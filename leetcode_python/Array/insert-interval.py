@@ -47,6 +47,8 @@ newInterval.length == 2
 
 # V0
 # IDEA: INTERVAL OP + SORTING
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def insert(self, intervals, newInterval):
         intervals.append(newInterval)
@@ -73,6 +75,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: INTERVAL OP + SORTING
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def insert(self, intervals, newInterval):
         """
@@ -112,6 +116,8 @@ class Solution(object):
 ### NOTE : there are only 2 cases
 # case 1) no overlap -> append interval directly
 # case 2) overlap -> MODIFY 2nd element in last merged interval with the bigger index
+# time = O(n log n)
+# space = O(n)
 class Solution:
     def insert(self, intervals, newInterval):
         ### NOTE THIS TRICK!!! : APPEND newInterval to intervals
@@ -131,6 +137,8 @@ class Solution:
         return merged
 
 # V1
+# time = O(n log n)
+# space = O(n)
 class Solution:
     def insert(self, intervals, newInterval):
         res= []
@@ -151,6 +159,8 @@ class Solution:
 # IDEA
 # First merge the newInterval with the existing sorted list. Use the standard code to merge two sorted lists.
 # Then simply run the algorithm to merge a sorted interval list. https://discuss.leetcode.com/topic/75108/python-solution-with-detailed-explanation
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def merge(self, intervals):
         result = [intervals[0]]

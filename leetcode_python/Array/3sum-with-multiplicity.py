@@ -1,7 +1,9 @@
 # V0 
 
-# V1 
+# V1
 # https://www.jiuzhang.com/solution/3sum-with-multiplicity/#tag-highlight-lang-python
+# time = O(n)
+# space = O(n)
 import collections
 class Solution:
     """
@@ -34,6 +36,8 @@ class Solution:
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/83045983
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def threeSumMulti(self, A, target):
         """
@@ -69,9 +73,9 @@ class Solution(object):
         elif i == 3:
             return x * (x - 1) * (x - 2) / 6
                        
-# V2 
-# Time:  O(n^2), n is the number of disctinct A[i]
-# Space: O(n)
+# V2
+# time = O(n^2), n is the number of disctinct A[i]
+# space = O(n)
 import collections
 import itertools
 class Solution(object):

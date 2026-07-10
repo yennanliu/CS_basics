@@ -1,7 +1,9 @@
 # V0 
 
-# V1 
+# V1
 # http://bookshadow.com/weblog/2017/08/30/leetcode-non-decreasing-array/
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def checkPossibility(self, nums):
         """
@@ -20,6 +22,8 @@ class Solution(object):
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79264475
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def checkPossibility(self, nums):
         """
@@ -35,9 +39,9 @@ class Solution(object):
                 break
         return isIncrease(one) or isIncrease(two)
             
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def checkPossibility(self, nums):
         """

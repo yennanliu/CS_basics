@@ -1,8 +1,10 @@
 # V0 
 
-# V1 
+# V1
 # https://blog.csdn.net/GQxxxxxl/article/details/84928066
 # https://blog.csdn.net/fuxuemingzhu/article/details/84925747
+# time = O(n log n)
+# space = O(n)
 import collections
 class Solution:
     def canReorderDoubled(self, A):
@@ -20,9 +22,9 @@ class Solution:
 
         return all(v == 0 for v in count.values())
 
-# V2 
-# Time:  O(n + klogk)
-# Space: O(k)
+# V2
+# time = O(n + klogk)
+# space = O(k)
 import collections
 class Solution(object):
     def canReorderDoubled(self, A):

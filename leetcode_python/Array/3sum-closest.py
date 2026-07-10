@@ -44,8 +44,10 @@ Constraints:
 #
 # The sum that is closest to the target is 2. (-1 + 2 + 1 = 2).
 
-# V0 
+# V0
 # IDEA : SORT + DOUBLE POINTER
+# time = O(n^2)
+# space = O(1)
 class Solution(object):
     def threeSumClosest(self, nums, target):
         N = len(nums)
@@ -90,6 +92,8 @@ assert s.threeSumClosest([ 1 for _ in range(1000)] , 0) == 3
 # V1
 # IDEA : 2 POINTERS
 # https://leetcode.com/problems/3sum-closest/solution/
+# time = O(n^2)
+# space = O(1)
 class Solution:
     def threeSumClosest(self, nums: List[int], target: int) -> int:
         diff = float('inf')
@@ -111,6 +115,8 @@ class Solution:
 # V1
 # IEDA : BINARY SEARCH
 # https://leetcode.com/problems/3sum-closest/solution/
+# time = O(n^2 log n)
+# space = O(1)
 class Solution:
     def threeSumClosest(self, nums: List[int], target: int) -> int:
         diff = float('inf')
@@ -131,6 +137,8 @@ class Solution:
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/83116781
 # IDEA : SORT + DOUBLE POINTER
+# time = O(n^2)
+# space = O(1)
 class Solution(object):
     def threeSumClosest(self, nums, target):
         """
@@ -157,6 +165,8 @@ class Solution(object):
 
 # V1'
 # https://www.cnblogs.com/zuoyuan/p/3699449.html
+# time = O(n^2)
+# space = O(1)
 class Solution:
     # @return an integer
     def threeSumClosest(self, num, target):
@@ -174,9 +184,9 @@ class Solution:
                 else: right-=1
         return res
         
-# V2 
-# Time:  O(n^2)
-# Space: O(1)
+# V2
+# time = O(n^2)
+# space = O(1)
 class Solution(object):
     def threeSumClosest(self, nums, target):
         nums, result, min_diff, i = sorted(nums), float("inf"), float("inf"), 0

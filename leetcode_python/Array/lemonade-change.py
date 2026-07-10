@@ -38,7 +38,9 @@ bills[i] is either 5, 10, or 20.
 
 """
 
-# V0 
+# V0
+# time = O(n)
+# space = O(1)
 class Solution:
     def lemonadeChange(self, bills):
         changes = {5:0, 10:0}
@@ -69,7 +71,9 @@ class Solution:
 # https://blog.csdn.net/fuxuemingzhu/article/details/80913955
 # IDEA : GREEDY 
 # IDEA : THERE ARE ACTUALLY 2 CHANGES : 5, 10
-# SO USE GREEDY ITERATE ALL POSSBIBLE CASES 
+# SO USE GREEDY ITERATE ALL POSSBIBLE CASES
+# time = O(n)
+# space = O(1)
 class Solution:
     def lemonadeChange(self, bills):
         """
@@ -111,6 +115,8 @@ assert s.lemonadeChange([]) == True
 
 # V1'
 # https://leetcode-cn.com/problems/lemonade-change/solution/lemonade-change-tan-xin-suan-fa-by-jyd/
+# time = O(n)
+# space = O(1)
 class Solution:
     def lemonadeChange(self, bills: List[int]) -> bool:
         five, ten = 0, 0
@@ -131,9 +137,9 @@ class Solution:
                     return False
         return True
         
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 import collections
 class Solution(object):
     def lemonadeChange(self, bills):

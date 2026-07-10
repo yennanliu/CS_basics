@@ -23,6 +23,8 @@ Note:
 
 # V1
 # https://github.com/azl397985856/leetcode/blob/master/problems/1014.best-sightseeing-pair.md
+# time = O(n)
+# space = O(1)
 class Solution:
     def maxScoreSightseeingPair(self, A: List[int]) -> int:
         n = len(A)
@@ -35,6 +37,8 @@ class Solution:
 
 # V1'
 # https://github.com/azl397985856/leetcode/blob/master/problems/1014.best-sightseeing-pair.md
+# time = O(n)
+# space = O(1)
 class Solution:
     def maxScoreSightseeingPair(self, A: List[int]) -> int:
         n = len(A)

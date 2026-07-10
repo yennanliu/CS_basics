@@ -3,6 +3,8 @@
 # V1 
 # https://www.jianshu.com/p/30d2058db7f7
 # IDEA : DFS 
+# time = O(n)
+# space = O(n)
  def removeStones(self, points):
         rows = collections.defaultdict(set)
         cols = collections.defaultdict(set)
@@ -34,6 +36,8 @@
 # V1'
 # https://www.jianshu.com/p/30d2058db7f7
 # IDEA : DFS optimized
+# time = O(n)
+# space = O(n)
  def removeStones(self, points):
         index = collections.defaultdict(set)
         for i, j in points:
@@ -57,6 +61,8 @@
 
 # V1''
 # https://www.jianshu.com/p/30d2058db7f7
+# time = O(n)
+# space = O(n)
 def removeStones(self, points):
         UF = {}
         def find(x):
@@ -72,9 +78,9 @@ def removeStones(self, points):
             union(i, ~j)
         return len(points) - len({find(x) for x in UF})
 
-# V2 
-# Time:  O(n)
-# Space: O(n)
+# V2
+# time = O(n)
+# space = O(n)
 class UnionFind(object):
     def __init__(self, n):
         self.set = range(n)

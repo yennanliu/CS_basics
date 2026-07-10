@@ -75,6 +75,8 @@ file consist of English letters and digits.
 """
 
 # V0 
+# time = O(n)
+# space = O(1)
 class Solution:
     def read(self, buf, n):
         copied_chars = 0
@@ -96,6 +98,8 @@ class Solution:
 # IDEA : Use Internal Buffer of 4 Characters
 #     -> progress :  File -> Internal Buffer of 4 Characters -> Buffer of N Characters.
 # https://leetcode.com/problems/read-n-characters-given-read4/solution/
+# time = O(n)
+# space = O(1)
 class Solution:
     def read(self, buf: List[str], n: int) -> int:
         copied_chars = 0
@@ -153,6 +157,8 @@ class Solution:
 # @param buf, a list of characters
 # @return an integer
 # def read4(buf):
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def read(self, buf, n):
         """
@@ -173,12 +179,16 @@ class Solution(object):
 # V1''
 # https://www.jiuzhang.com/solution/read-n-characters-given-read4-ii-call-multiple-times/#tag-highlight-lang-python
 class Solution:
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
         self.buf4, self.i4, self.n4 = [None] * 4, 0, 0
 
     # @param {char[]} buf destination buffer
     # @param {int} n maximum number of characters to read
     # @return {int} the number of characters read
+    # time = O(n)
+    # space = O(1)
     def read(self, buf, n):
         # Write your code here
         i = 0
@@ -191,8 +201,8 @@ class Solution:
         return i
 
 # V2
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 def read4(buf):
     global file_content
     i = 0

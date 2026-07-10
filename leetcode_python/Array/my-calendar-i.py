@@ -3,9 +3,9 @@
 # V1 
 # dev 
 
-# V2 
-# Time:  O(nlogn) on average, O(n^2) on worst case
-# Space: O(n)
+# V2
+# time = O(nlogn) on average, O(n^2) on worst case
+# space = O(n)
 class Node(object):
     def __init__(self, start, end):
         self.__start = start
@@ -46,8 +46,8 @@ class MyCalendar(object):
         return self.root.insert(Node(start, end))
 
 
-# Time:  O(n^2)
-# Space: O(n)
+# time = O(n^2)
+# space = O(n)
 class MyCalendar2(object):
 
     def __init__(self):

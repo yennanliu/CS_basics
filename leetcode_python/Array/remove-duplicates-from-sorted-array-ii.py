@@ -82,6 +82,8 @@ nums is sorted in non-decreasing order.
 # -> two pointers : 
 #    -> slow : init with idx = 1
 #    -> fast : init with idx = 2
+# time = O(n)
+# space = O(1)
 class Solution:
     def removeDuplicates(self, nums):
         if len(nums) < 3:
@@ -118,6 +120,8 @@ class Solution:
 # [1, 1, 2, 2, 2, 3]
 # [1, 1, 2, 2, 2, 3]
 # 5
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def removeDuplicates(self, nums):
         i = 0
@@ -130,6 +134,8 @@ class Solution(object):
 
 # V0''
 # IDEA : 2 POINTERS
+# time = O(n)
+# space = O(1)
 class Solution:
     def removeDuplicates(self, nums: List[int]) -> int:
         if len(nums) < 3:
@@ -145,6 +151,8 @@ class Solution:
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/82829709
 # IDEA : TWO POINTER
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def removeDuplicates(self, nums):
         """
@@ -160,6 +168,8 @@ class Solution(object):
 
 # V1'
 # https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/discuss/829476/Python-solution
+# time = O(n)
+# space = O(1)
 class Solution:
     def removeDuplicates(self, nums):
         if len(nums) < 3:
@@ -194,8 +204,8 @@ class Solution:
 #         return left
 
 # V2 
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 class Solution(object):
     # @param a list of integers
     # @return an integer

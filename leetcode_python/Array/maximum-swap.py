@@ -40,6 +40,8 @@ Constraints:
 # SET UP 2 INDEX : LEFT, RIGHT. FOR COMPARING WITH CURRENT INDEX AND SAVE MAX INDEX 
 # SINCE WE ARE ONLY ALLOWED TO SWAP ONCE TO GET THE MAX VALUE
 # SO WE KEEP UPDATING THE LEFT AND RIGHT INDEX AND GO THOROUGH ALL GIVEN NUM  
+# time = O(logn)
+# space = O(logn)
 class Solution(object):
     def maximumSwap(self, num):
         # edge case
@@ -91,6 +93,8 @@ class Solution(object):
 # Out[35]: '1234'
 # In [36]: list(x)
 # Out[36]: ['1', '2', '3', '4']
+# time = O(logn)
+# space = O(logn)
 class Solution(object):
     def maximumSwap(self, num):
         """
@@ -127,6 +131,8 @@ class Solution(object):
 #        so the changes ("parent obj" only) in original instance will NOT affect the copied instance
 # https://stackoverflow.com/questions/4081561/what-is-the-difference-between-list-and-list-in-python
 # https://github.com/yennanliu/til#20210923
+# time = O((logn)^2)
+# space = O(logn)
 class Solution(object):
     def maximumSwap(self, num):
         A = list(str(num))
@@ -153,6 +159,8 @@ class Solution(object):
 # Out[35]: '1234'
 # In [36]: list(x)
 # Out[36]: ['1', '2', '3', '4']
+# time = O(logn)
+# space = O(logn)
 class Solution(object):
     def maximumSwap(self, num):
         """
@@ -164,7 +172,7 @@ class Solution(object):
         max_idx = len(digits)-1
         for i in reversed(range(len(digits))):
             if digits[i] > digits[max_idx]:
-                max_idx = i                    # if current digit > current max digit -> swap them 
+                max_idx = i                    # if current digit > current max digit -> swap them
             elif digits[max_idx] > digits[i]:
                 left, right = i, max_id        # if current max digit > current digit -> save current max digit to right idnex, and save current index to left
         digits[left], digits[right] = digits[right], digits[left] # swap left and right when loop finished 
@@ -172,6 +180,8 @@ class Solution(object):
 
 # V1'
 # http://bookshadow.com/weblog/2017/09/03/leetcode-maximum-swap/
+# time = O((logn)^2)
+# space = O(logn)
 class Solution(object):
     def maximumSwap(self, num):
         """
@@ -190,6 +200,8 @@ class Solution(object):
 
 # V1''
 # https://leetcode.com/problems/maximum-swap/discuss/107066/Python-Straightforward-with-Explanation
+# time = O((logn)^2)
+# space = O(logn)
 class Solution(object):
     def maximumSwap(self, num):
         A = list(str(num))
@@ -203,8 +215,8 @@ class Solution(object):
         return int("".join(ans))
 
 # V2 
-# Time:  O(logn), logn is the length of the number string
-# Space: O(logn)
+# time = O(logn), logn is the length of the number string
+# space = O(logn)
 class Solution(object):
     def maximumSwap(self, num):
         """

@@ -41,6 +41,8 @@ n == matrix[i].length
 #     for ...
 #     # up
 #     for ...
+# time = O(m * n)
+# space = O(1)
 class Solution(object):
     def spiralOrder(self, matrix):
         # edge case
@@ -91,6 +93,8 @@ class Solution(object):
 # V0
 # IDEA : 4 cases : right, down, left, up
 #      -> NOTE : boundary condition
+# time = O(m * n)
+# space = O(1)
 class Solution(object):
     def spiralOrder(self, matrix):
         if not matrix:
@@ -124,6 +128,8 @@ class Solution(object):
         return res
 
 # V0'
+# time = O(m * n)
+# space = O(1)
 class Solution(object):
     def spiralOrder(self, matrix):
         result = []
@@ -152,6 +158,8 @@ class Solution(object):
         return result
 
 # V0''
+# time = O(m * n)
+# space = O(1)
 class Solution:
     def spiralOrder(self, matrix):
         res = []
@@ -196,6 +204,8 @@ class Solution:
 # IDEA : matrix + array op
 # https://leetcode.com/problems/spiral-matrix/discuss/208593/Python-solution
 # Time complexity: O(nm), space complexity: O(nm), where n = len(matrix), and m = len(matrix[0]).
+# time = O(m * n)
+# space = O(m * n)
 class Solution(object):
     def spiralOrder(self, matrix):
         """
@@ -240,6 +250,8 @@ class Solution(object):
 # use num_col == 0, num_row == 0 to decide whether keep while looping or not
 # use num_col == 0 for both "left" and "right" move
 # -> since for "spiral move", the left + right move should == len(matrix) which is the num_col == 0 condition
+# time = O(m * n)
+# space = O(1)
 class Solution:
     def spiralOrder(self, matrix):
         res = []
@@ -292,8 +304,8 @@ assert s.spiralOrder([[1,2,3],[4,5,6]]) == [1,2,3,6,5,4]
 
 # V1'
 # IDEA : SIMULATION
-# Time Complexity: O(N)
-# Space Complexity: O(N)
+# time = O(N)
+# space = O(N)
 # https://leetcode.com/problems/spiral-matrix/solution/
 class Solution(object):
     def spiralOrder(self, matrix):
@@ -317,8 +329,8 @@ class Solution(object):
 
 # V1''
 # IDEA : Layer-by-Layer
-# Time Complexity: O(N)
-# Space Complexity:
+# time = O(N)
+# space = O(1)
 #   -> O(1)O(1) without considering the output array, since we don't use any additional data structures for our computations.
 #   -> O(N)O(N) if the output array is taken into account.
 # https://leetcode.com/problems/spiral-matrix/solution/
@@ -351,6 +363,8 @@ class Solution(object):
 # https://blog.csdn.net/qian2729/article/details/50539281
 # IDEA : STATUS + POINTER 
 # IDEA : STATUS = [0, 1, 2, 3]. POINTER = [up, down, left, right]
+# time = O(m * n)
+# space = O(1)
 class Solution:
     # @param matrix, a list of lists of integers
     # @return a list of integers
@@ -381,9 +395,9 @@ class Solution:
             if up > down or left > right: return res
             direct = (direct+1) % 4
 
-# V2 
-# Time:  O(m * n)
-# Space: O(1)
+# V2
+# time = O(m * n)
+# space = O(1)
 class Solution(object):
     # @param matrix, a list of lists of integers
     # @return a list of integers

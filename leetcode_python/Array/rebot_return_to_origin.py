@@ -1,4 +1,6 @@
 # V0
+# time = O(n)
+# space = O(1)
 class Solution:
     def judgeCircle(self, moves):
         directs = {'L':-1, 'R':1, 'U':1j, 'D':-1j}
@@ -7,6 +9,8 @@ class Solution:
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/83663650
 # IDEA : PY SUPPORT Complex arithmetic
+# time = O(n)
+# space = O(1)
 class Solution:
     def judgeCircle(self, moves):
         """
@@ -26,6 +30,8 @@ assert s.judgeCircle('')==True
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/83663650
+# time = O(n)
+# space = O(1)
 class Solution:
     def judgeCircle(self, moves):
         """
@@ -37,6 +43,8 @@ class Solution:
 
 # V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/83663650
+# time = O(n)
+# space = O(1)
 class Solution:
     def judgeCircle(self, moves):
         """
@@ -57,6 +65,8 @@ class Solution:
 
 # V1'''
 # https://blog.csdn.net/zhangpeterx/article/details/88362411
+# time = O(n)
+# space = O(1)
 class Solution:
     def judgeCircle(self, moves: str) -> bool:
         return moves.count('L')==moves.count('R') and moves.count('U')==moves.count('D')

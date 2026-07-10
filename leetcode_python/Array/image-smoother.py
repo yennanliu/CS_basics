@@ -41,6 +41,8 @@ n == img[i].length
 
 
 # V0
+# time = O(m*n)
+# space = O(m*n)
 class Solution:
     def imageSmoother(self, M):
         row, col = len(M), len(M[0])
@@ -56,6 +58,8 @@ class Solution:
         return res
 
 # V0'
+# time = O(m*n)
+# space = O(m*n)
 class Solution(object):
     def imageSmoother(self, M):
         dx, dy = [-1, 0, 1], [-1, 0, 1]
@@ -72,6 +76,8 @@ class Solution(object):
 
 # V1 
 # http://bookshadow.com/weblog/2017/08/21/leetcode-image-smoother/
+# time = O(m*n)
+# space = O(m*n)
 from math import floor
 class Solution(object):
     def imageSmoother(self, M):
@@ -103,6 +109,8 @@ assert s.imageSmoother([[],[]]) == [[], []]
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79156499
+# time = O(m*n)
+# space = O(m*n)
 from copy import deepcopy as copy
 class Solution(object):
     def imageSmoother(self, M):
@@ -133,6 +141,8 @@ class Solution(object):
 # IDEA : BRUTE FORCE 
 # Time Complexity: O(N)
 # Space Complexity: O(N)
+# time = O(m*n)
+# space = O(m*n)
 class Solution(object):
     def imageSmoother(self, M):
         R, C = len(M), len(M[0])
@@ -151,6 +161,8 @@ class Solution(object):
 
 # V1'''
 # https://leetcode.com/problems/image-smoother/discuss/454951/Python3-simple-solution
+# time = O(m*n)
+# space = O(m*n)
 class Solution:
     def imageSmoother(self, M: List[List[int]]) -> List[List[int]]:
         row, col = len(M), len(M[0])
@@ -164,6 +176,8 @@ class Solution:
 
 # V1''''
 # https://leetcode.com/problems/image-smoother/discuss/106635/python-O(m*n)
+# time = O(m*n)
+# space = O(m*n)
 class Solution(object):
     def imageSmoother(self, M):
         if not M: return M
@@ -182,8 +196,8 @@ class Solution(object):
         return new
 
 # V2 
-# Time:  O(m * n)
-# Space: O(1)
+# time = O(m * n)
+# space = O(1)
 class Solution(object):
     def imageSmoother(self, M):
         """

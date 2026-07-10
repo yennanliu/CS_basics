@@ -36,6 +36,8 @@ Return:
 
 # V1 
 # http://bookshadow.com/weblog/2016/10/09/leetcode-fizz-buzz/
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def fizzBuzz(self, n):
         """
@@ -46,6 +48,8 @@ class Solution(object):
 
 # V1' 
 # http://bookshadow.com/weblog/2016/10/09/leetcode-fizz-buzz/
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def fizzBuzz(self, n):
         """
@@ -64,9 +68,9 @@ class Solution(object):
             ans.append(n)
         return ans
         
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def fizzBuzz(self, n):
         """

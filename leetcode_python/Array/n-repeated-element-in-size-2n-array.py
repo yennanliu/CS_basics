@@ -2,6 +2,8 @@
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/85223404
+# time = O(n)
+# space = O(n)
 import collections
 class Solution(object):
     def repeatedNTimes(self, A):
@@ -16,9 +18,9 @@ class Solution(object):
                 return k
         return 0
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def repeatedNTimes(self, A):
         """

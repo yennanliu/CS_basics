@@ -39,6 +39,8 @@ Could you devise a constant space solution?
 
 # V0
 # IDEA : array op
+# time = O(m * n)
+# space = O(m + n)
 class Solution(object):
     def setZeroes(self, matrix):
         # edge case
@@ -67,6 +69,8 @@ class Solution(object):
 
 # V0'
 # IDEA : array op
+# time = O(m * n * (m + n))
+# space = O(m * n)
 class Solution(object):
     def setZeroes(self, matrix):   
 
@@ -97,6 +101,8 @@ class Solution(object):
 
 # V0''
 # IDEA : array op
+# time = O(m * n)
+# space = O(m + n)
 class Solution:
     def setZeroes(self, matrix):
         rownum = len(matrix)
@@ -120,6 +126,8 @@ class Solution:
 # IDEA : RECORD X, Y (X, Y AXIS) TO CHECK IF THERE IS 0 EXISTING 
 # THEN GO THROUGH ARRAY TO CHECK RELATIVE ROWS AND COLUMNS 
 # AND UPDATE THE VALUES (value -> 0)
+# time = O(m * n)
+# space = O(m + n)
 class Solution:
     # @param matrix, a list of lists of integers
     # RETURN NOTHING, MODIFY matrix IN PLACE.
@@ -158,6 +166,8 @@ assert s.setZeroes([[0,0,0], [0,0,0], [0,0,0]]) == [[0,0,0], [0,0,0], [0,0,0]]
 # IDEA : BRUTE FORCE + DOUBLE LOOP
 # TIME COMPLEXITY : O(N*M)
 # SPACE COMPLEXITY : O(N+M)
+# time = O(m * n)
+# space = O(m + n)
 class Solution(object):
     def setZeroes(self, matrix):
         """
@@ -185,6 +195,8 @@ class Solution(object):
 # https://leetcode.com/problems/set-matrix-zeroes/solution/
 # TIME COMPLEXITY : O((N*M))
 # SPACE COMPLEXITY : O(1)
+# time = O(m * n)
+# space = O(1)
 class Solution(object):
     def setZeroes(self, matrix):
         """
@@ -227,6 +239,8 @@ class Solution(object):
 # https://leetcode.com/problems/set-matrix-zeroes/solution/
 # TIME COMPLEXITY : O((N*M)*(N+M))
 # SPACE COMPLEXITY : O(1)
+# time = O(m * n * (m + n))
+# space = O(1)
 class Solution(object):
     def setZeroes(self, matrix):
         """
@@ -252,6 +266,8 @@ class Solution(object):
 
 # V1''''
 # https://blog.csdn.net/qqxx6661/article/details/78279728
+# time = O(m * n)
+# space = O(m + n)
 class Solution:
     # @param matrix, a list of lists of integers
     # RETURN NOTHING, MODIFY matrix IN PLACE.
@@ -274,6 +290,8 @@ class Solution:
 
 # V1'''''''
 # https://blog.csdn.net/qqxx6661/article/details/78279728
+# time = O(m * n * (m + n))
+# space = O(m * n)
 class Solution:
     # @param matrix, a list of lists of integers
     # RETURN NOTHING, MODIFY matrix IN PLACE.
@@ -293,8 +311,8 @@ class Solution:
             
 # V2 
 from functools import reduce
-# Time:  O(m * n)
-# Space: O(1)
+# time = O(m * n)
+# space = O(1)
 class Solution(object):
     # @param matrix, a list of lists of integers
     # RETURN NOTHING, MODIFY matrix IN PLACE.

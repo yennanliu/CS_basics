@@ -1,7 +1,9 @@
 # V0 
 
 # V1
-# IDEA : STRING 
+# IDEA : STRING
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def largeGroupPositions(self, S):
         """
@@ -23,7 +25,9 @@ class Solution(object):
 
 # V1'
 # http://bookshadow.com/weblog/2018/05/06/leetcode-positions-of-large-groups/
-# IDEA : TWO POINTERS 
+# IDEA : TWO POINTERS
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def largeGroupPositions(self, S):
         """
@@ -41,9 +45,11 @@ class Solution(object):
             d = c
         return ans
 
-# V1'' 
+# V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/80472242
-# IDEA : GREEDY 
+# IDEA : GREEDY
+# time = O(n)
+# space = O(1)
 class Solution:
     def largeGroupPositions(self, S):
         """
@@ -62,9 +68,11 @@ class Solution:
             groups.append([before_index, i])
         return groups
 
-# V1''' 
+# V1'''
 # https://blog.csdn.net/fuxuemingzhu/article/details/80472242
-# IDEA : GREEDY 
+# IDEA : GREEDY
+# time = O(n)
+# space = O(1)
 class Solution:
     def largeGroupPositions(self, S):
         """
@@ -85,9 +93,9 @@ class Solution:
                 prevc = c
         return groups
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def largeGroupPositions(self, S):
         """

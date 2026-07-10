@@ -45,6 +45,8 @@ All buildings in grid[i][j] occupy the entire grid cell: that is, they are a 1 x
 #	7 | 7, 4, 7, 7
 #	9 | 9, 4, 8, 7
 #	3 | 3, 3, 3, 3
+# time = O(m*n)
+# space = O(m+n)
 class Solution(object):
     def maxIncreaseKeepingSkyline(self, grid):
         """
@@ -62,6 +64,8 @@ class Solution(object):
 
 # V1' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79820383
+# time = O(m*n)
+# space = O(m*n)
 class Solution(object):
     def maxIncreaseKeepingSkyline(self, grid):
         """
@@ -78,6 +82,8 @@ class Solution(object):
 
 # V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79820383
+# time = O(m*n)
+# space = O(m+n)
 class Solution(object):
     def maxIncreaseKeepingSkyline(self, grid):
         """
@@ -98,8 +104,8 @@ class Solution(object):
         return res
 
 # V2 
-# Time:  O(n^2)
-# Space: O(n)
+# time = O(n^2)
+# space = O(n)
 import itertools
 class Solution(object):
     def maxIncreaseKeepingSkyline(self, grid):

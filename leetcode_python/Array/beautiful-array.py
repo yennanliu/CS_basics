@@ -35,6 +35,8 @@ Constraints:
 
 # V0-1
 # IDEA: Divide-and-Conquer (gpt)
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def beautifulArray(self, n):
         # Start with the smallest beautiful array.
@@ -99,6 +101,8 @@ class Solution(object):
 
 # V0-2
 # IDEA: Divide-and-Conquer (GEMINI)
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def __init__(self):
         # Cache to store previously computed beautiful arrays
@@ -127,8 +131,10 @@ class Solution(object):
         return self.memo[n]
 
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/83539773
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def beautifulArray(self, N):
         """
@@ -142,7 +148,9 @@ class Solution(object):
         
 # V1' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/83539773
-# IDEA : ITERATION 
+# IDEA : ITERATION
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def beautifulArray(self, N):
         """
@@ -155,8 +163,8 @@ class Solution(object):
         return odd + even
 
 # V2 
-# Time:  O(n)
-# Space: O(n)
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def beautifulArray(self, N):
         """

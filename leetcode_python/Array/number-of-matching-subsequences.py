@@ -2,7 +2,9 @@
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/82834760
-# IDEA : BINARY SEARCH + DICT 
+# IDEA : BINARY SEARCH + DICT
+# time = O(n + w * log(n)), n = len(S), w = total length of words
+# space = O(n)
 import collections, bisect
 class Solution(object):
     def numMatchingSubseq(self, S, words):
@@ -32,7 +34,9 @@ class Solution(object):
 
 # V1'
 # https://blog.csdn.net/u010829672/article/details/79833283
-# IDEA : BINARY SEARCH 
+# IDEA : BINARY SEARCH
+# time = O(n + w * log(n)), n = len(S), w = total length of words
+# space = O(n)
 class Solution(object):
     def numMatchingSubseq(self, S, words):
         """
@@ -73,6 +77,8 @@ class Solution(object):
 
 # V1''
 # https://blog.csdn.net/u010829672/article/details/79833283
+# time = O(n + w)
+# space = O(k), k is the number of words
 class Solution(object):
     def numMatchingSubseq(self, S, words):
         """
@@ -94,8 +100,8 @@ class Solution(object):
         return len(waiting[None])
 
 # V2 
-# Time:  O(n + w), n is the size of S, w is the size of words
-# Space: O(k), k is the number of words
+# time = O(n + w), n is the size of S, w is the size of words
+# space = O(k), k is the number of words
 import collections
 class Solution(object):
     def numMatchingSubseq(self, S, words):

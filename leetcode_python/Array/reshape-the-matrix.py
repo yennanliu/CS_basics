@@ -38,6 +38,8 @@ The given r and c are all positive.
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/83626519
 # IDEA : LIST & GO THROUGH MATRIX 
+# time = O(m * n)
+# space = O(m * n)
 class Solution(object):
     def matrixReshape(self, nums, r, c):
         """
@@ -62,6 +64,8 @@ class Solution(object):
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/83626519
 # IDEA : REMAINDER  
+# time = O(m * n)
+# space = O(m * n)
 class Solution(object):
     def matrixReshape(self, nums, r, c):
         """
@@ -83,6 +87,8 @@ class Solution(object):
 
 # V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/83626519
+# time = O(m * n)
+# space = O(m * n)
 class Solution(object):
     def matrixReshape(self, nums, r, c):
         """
@@ -105,7 +111,9 @@ class Solution(object):
                 col += 1
         return res
 
-# V2 
+# V2
+# time = O(m * n)
+# space = O(m * n)
 class Solution(object):
     def matrixReshape(self, nums, r, c):
         """

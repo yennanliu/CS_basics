@@ -27,6 +27,8 @@ Constraints:
 
 # V0
 # IDEA : SORTED 
+# time = O(n log n)
+# space = O(1)
 class Solution:
     def findKthLargest(self, nums):
         # edge case
@@ -38,6 +40,8 @@ class Solution:
 
 # V0'
 # IDEA : SORTED 
+# time = O(n log n)
+# space = O(1)
 class Solution:
     def findKthLargest(self, nums, k):
         nums.sort()
@@ -45,6 +49,8 @@ class Solution:
 
 # V0''
 # IDEA : bubble sort -> OK*** (reiew again!)
+# time = O(n*k)
+# space = O(1)
 class Solution:
     def findKthLargest(self, nums, k):
         for i in range(k):
@@ -67,6 +73,8 @@ class Solution:
 
 # V0'''
 # IDEA : quick sort -> check again
+# time = O(n) ~ O(n^2)
+# space = O(n)
 import random
 class Solution:
     def findKthLargest(self, nums, k):
@@ -86,6 +94,8 @@ class Solution:
 # V1 
 # http://bookshadow.com/weblog/2015/05/23/leetcode-kth-largest-element-array/
 # IDEA : SORTED 
+# time = O(n log n)
+# space = O(n)
 class Solution:
     def findKthLargest(self, nums, k):
         return sorted(nums, reverse=True)[k - 1]
@@ -93,6 +103,8 @@ class Solution:
 # V1'  
 # http://bookshadow.com/weblog/2015/05/23/leetcode-kth-largest-element-array/
 # IDEA : QUICK SORT
+# time = O(n) ~ O(n^2)
+# space = O(n)
 import random
 class Solution:
     # @param {integer[]} nums
@@ -115,6 +127,8 @@ class Solution:
 # V1'' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79264797
 # IDEA : REMOVE MAX 
+# time = O(n*k)
+# space = O(1)
 class Solution(object):
     def findKthLargest(self, nums, k):
         """
@@ -127,8 +141,8 @@ class Solution(object):
         return max(nums)
         
 # V2 
-# Time:  O(n) ~ O(n^2)
-# Space: O(1)
+# time = O(n) ~ O(n^2)
+# space = O(1)
 from random import randint
 class Solution(object):
     # @param {integer[]} nums

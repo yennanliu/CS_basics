@@ -2,7 +2,9 @@
 
 # V1 
 # http://bookshadow.com/weblog/2018/01/21/leetcode-max-chunks-to-make-sorted-ver-1/
-# IDEA : GREEDY 
+# IDEA : GREEDY
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def maxChunksToSorted(self, arr):
         """
@@ -18,6 +20,8 @@ class Solution(object):
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/80482014
+# time = O(n)
+# space = O(1)
 class Solution:
     def maxChunksToSorted(self, arr):
         """
@@ -34,8 +38,8 @@ class Solution:
         return chunks
         
 # V2 
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def maxChunksToSorted(self, arr):
         """

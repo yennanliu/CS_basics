@@ -34,6 +34,8 @@ Each element in nums appears once or twice.
 
 # V0
 # IDEA : Counter
+# time = O(n)
+# space = O(n)
 from collections import Counter
 class Solution(object):
     def findDuplicates(self, nums):
@@ -43,6 +45,8 @@ class Solution(object):
 # http://bookshadow.com/weblog/2016/10/25/leetcode-find-all-duplicates-in-an-array/
 # https://blog.csdn.net/fuxuemingzhu/article/details/79275549
 # IDEA : FIND ALL ELEMENTS EXIST EXACTLY 2 TIMES IN THE GIVEN ARRAY 
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def findDuplicates(self, nums):
         """
@@ -60,6 +64,8 @@ class Solution(object):
 # V1'
 # http://bookshadow.com/weblog/2016/10/25/leetcode-find-all-duplicates-in-an-array/
 # https://blog.csdn.net/fuxuemingzhu/article/details/79275549
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def findDuplicates(self, nums):
         """
@@ -78,8 +84,8 @@ class Solution(object):
         return ans
 
 # V2 
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def findDuplicates(self, nums):
         """
@@ -95,8 +101,8 @@ class Solution(object):
         return result
 
 
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 class Solution2(object):
     def findDuplicates(self, nums):
         """
@@ -117,8 +123,8 @@ class Solution2(object):
         return result
 
 
-# Time:  O(n)
-# Space: O(n), this doesn't satisfy the question
+# time = O(n)
+# space = O(n), this doesn't satisfy the question
 from collections import Counter
 class Solution3(object):
     def findDuplicates(self, nums):

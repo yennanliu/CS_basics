@@ -45,6 +45,8 @@ Both m and n are even integers.
 
 # V1
 # https://www.jianshu.com/p/b0b3391af7b3
+# time = O(m*n)
+# space = O(m*n)
 class Solution:
     def rotateGrid(self, grid, k):
         m = len(grid)
@@ -70,6 +72,8 @@ class Solution:
 
 # V1''
 # https://leetcode.com/problems/cyclically-rotating-a-grid/discuss/1299584/Python-Easy-to-understand-matrix-rotation
+# time = O(min(m,n) * (m+n)^2)
+# space = O(1)
 import math
 class Solution:
     def rotateGrid(self, grid, k):
@@ -129,6 +133,8 @@ class Solution:
 
 # V1'''
 # https://leetcode.com/problems/cyclically-rotating-a-grid/discuss/1316844/Python-or-Faster-Than-96-or-With-Comments
+# time = O(m*n)
+# space = O(m*n)
 class Solution:
     def assign(self, temp, rows, cols, i, j, arr, topL, topR, bottomR, bottomL):
         ix = 0
@@ -206,6 +212,8 @@ class Solution:
 
 # V1''''
 # https://leetcode.com/problems/cyclically-rotating-a-grid/discuss/1359971/This-was-a-tough-question!-Horrible-python-solution-that-works
+# time = O(m*n)
+# space = O(m*n)
 class Solution(object):
     def plus(self, num):
         return num + 1
@@ -272,6 +280,8 @@ class Solution(object):
 
  # V1'''''
  # https://leetcode.com/problems/cyclically-rotating-a-grid/discuss/1379013/simple-python-solution-beat-97.9
+# time = O(m*n)
+# space = O(m*n)
  class Solution:
     def rotateGrid(self, grid: List[List[int]], k: int) -> List[List[int]]:
         m, n = len(grid), len(grid[0])

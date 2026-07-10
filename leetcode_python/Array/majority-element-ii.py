@@ -3,6 +3,8 @@
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/83501323
 # IDEA : collections.Counter
+# time = O(n)
+# space = O(n)
 import collections
 class Solution(object):
     def majorityElement(self, nums):
@@ -24,6 +26,8 @@ class Solution(object):
 # IDEA : MOORE VOTING 
 # THERE ARE ONLY 2 DIGITS MAY EXIST >= 3/n TIMES 
 # SO SET n1, n2 as 2 DIGITS
+# time = O(n)
+# space = O(1)
 class Solution:
     # @param {integer[]} nums
     # @return {integer[]}
@@ -45,9 +49,9 @@ class Solution:
         return [n for n in (n1, n2) 
                    if n is not None and nums.count(n) > size / 3]
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 import collections
 class Solution(object):
     def majorityElement(self, nums):
@@ -86,6 +90,8 @@ class Solution(object):
 
         return result
 
+    # time = O(n)
+    # space = O(n)
     def majorityElement2(self, nums):
         """
         :type nums: List[int]

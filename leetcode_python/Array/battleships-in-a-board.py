@@ -3,6 +3,8 @@
 # V1 
 # http://bookshadow.com/weblog/2016/10/13/leetcode-battleships-in-a-board/
 # IDEA : GREEDY 
+# time = O(m * n)
+# space = O(1)
 class Solution(object):
     def countBattleships(self, board):
         """
@@ -26,6 +28,8 @@ class Solution(object):
 # V1' 
 # http://bookshadow.com/weblog/2016/10/13/leetcode-battleships-in-a-board/
 # IDEA : DFS
+# time = O(m * n)
+# space = O(m * n)
 class Solution(object):
     def countBattleships(self, board):
         """
@@ -53,9 +57,9 @@ class Solution(object):
                     dfs(x, y)
         return ans 
         
-# V2 
-# Time:  O(m * n)
-# Space: O(1)
+# V2
+# time = O(m * n)
+# space = O(1)
 class Solution(object):
     def countBattleships(self, board):
         """

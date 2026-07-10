@@ -2,6 +2,8 @@
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/82732066 
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def sortArrayByParity(self, A):
         """
@@ -10,9 +12,9 @@ class Solution(object):
         """
         return sorted(A, key = lambda x : x % 2)
         
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def sortArrayByParity(self, A):
         """

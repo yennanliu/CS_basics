@@ -44,6 +44,8 @@ nums is sorted in ascending order.
 """
 
 # V0
+# time = O(n)
+# space = O(n)
 class Solution:
     def summaryRanges(self, nums):
         if not nums:
@@ -64,6 +66,8 @@ class Solution:
         return res
 
 # V0'
+# time = O(n)
+# space = O(n)
 class Solution:
     def summaryRanges(self, nums):
         start, end, res = -2**31, -2**31, []
@@ -77,6 +81,8 @@ class Solution:
 
 # V1 
 # http://bookshadow.com/weblog/2015/06/26/leetcode-summary-ranges/
+# time = O(n)
+# space = O(n)
 class Solution:
     # @param {integer[]} nums
     # @return {string[]}
@@ -97,6 +103,8 @@ class Solution:
 
 # V1'
 # https://leetcode.com/problems/summary-ranges/discuss/63335/Simple-Python-solution
+# time = O(n)
+# space = O(n)
 class Solution:
     def summaryRanges(self, nums):
         if not nums:
@@ -116,6 +124,8 @@ class Solution:
 
 # V1''
 # https://leetcode.com/problems/summary-ranges/discuss/63335/Simple-Python-solution
+# time = O(n)
+# space = O(n)
 class Solution:
     def summaryRanges(self, nums):
         start, end, res = -2**31, -2**31, []
@@ -130,6 +140,8 @@ class Solution:
 # V1' 
 # http://bookshadow.com/weblog/2015/06/26/leetcode-summary-ranges/
 # IDEA : COLLECT THE RANGES, FORMTAT AND RETURN THEM 
+# time = O(n)
+# space = O(n)
 def summaryRanges(self, nums):
     ranges = []
     for n in nums:
@@ -141,6 +153,8 @@ def summaryRanges(self, nums):
 # V1'' 
 # http://bookshadow.com/weblog/2015/06/26/leetcode-summary-ranges/
 # IDEA : A variation of solution 1', holding the current range in an extra variable r to make things easier.
+# time = O(n)
+# space = O(n)
 def summaryRanges(self, nums):
     ranges = []
     for n in nums:
@@ -151,6 +165,8 @@ def summaryRanges(self, nums):
 
 # V1''' 
 # http://bookshadow.com/weblog/2015/06/26/leetcode-summary-ranges/
+# time = O(n)
+# space = O(n)
 def summaryRanges(self, nums):
     ranges = r = []
     for n in nums:
@@ -160,9 +176,9 @@ def summaryRanges(self, nums):
         r[1:] = `n`,
     return map('->'.join, ranges)
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 import itertools
 import re
 class Solution(object):
@@ -187,8 +203,8 @@ class Solution(object):
 
         return ranges
 
-# Time:  O(n)
-# Space: O(n)
+# time = O(n)
+# space = O(n)
 class Solution2(object):
     # @param {integer[]} nums
     # @return {string[]}

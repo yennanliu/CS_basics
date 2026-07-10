@@ -1,7 +1,9 @@
 # V0 
 
-# V1 
+# V1
 # http://www.voidcn.com/article/p-pqyeirhe-qp.html
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def shortestDistance(self, words, word1, word2):
         """
@@ -15,6 +17,8 @@ class Solution(object):
         return min([abs(i - j) for i in w1 for j in w2 if i != j]) # remove the "0" case (index difference = 0)
 # V1'
 # # http://www.voidcn.com/article/p-pqyeirhe-qp.html
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def shortestWordDistance(self, words, word1, word2):
 
@@ -27,9 +31,9 @@ class Solution(object):
 
         return min(set(abs(x-y) for x in dic[word1] for y in dic[word2]) - set([0]))  # remove the "0" case via set (index difference = 0)
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     # @param {string[]} words
     # @param {string} word1

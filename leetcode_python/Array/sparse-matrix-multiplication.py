@@ -29,6 +29,8 @@ Even direct multiplying gives better result. this question is expecting you to u
 
 # V0 
 # TODO : OPTIMIZE THE PROCESS DUE TO THE SPARSE-MATRIX CONDITION 
+# time = O(m * n * l)
+# space = O(m * l)
 class Solution(object):
     def multiply(self, A, B):
         m, n, l = len(A), len(A[0]), len(B[0])
@@ -45,6 +47,8 @@ class Solution(object):
 # http://www.voidcn.com/article/p-muhtjhos-qp.html
 # https://www.cnblogs.com/grandyang/p/5282959.html
 # IDEA : MAXTRIX OP
+# time = O(m * n * l)
+# space = O(m * l)
 class Solution(object):
     def multiply(self, A, B):
         """
@@ -63,9 +67,9 @@ class Solution(object):
                                         if any(col) else 0 for col in BT])
         return result
 
-# V2 
-# Time:  O(m * n * l), A is m x n matrix, B is n x l matrix
-# Space: O(m * l)
+# V2
+# time = O(m * n * l), A is m x n matrix, B is n x l matrix
+# space = O(m * l)
 class Solution(object):
     def multiply(self, A, B):
         """

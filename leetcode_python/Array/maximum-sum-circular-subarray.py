@@ -2,6 +2,8 @@
 
 # V1 
 # https://buptwc.com/2018/10/08/Leetcode-918-Maximum-Sum-Circular-Subarray/
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def maxSubarraySumCircular(self, A):
         left = [A[0]] * len(A)
@@ -19,6 +21,8 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/maximum-sum-circular-subarray/#tag-highlight-lang-python
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def maxSubarraySumCircular(self, A):
         N = len(A)
@@ -52,8 +56,8 @@ class Solution(object):
         return ans
         
 # V2 
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def maxSubarraySumCircular(self, A):
         """

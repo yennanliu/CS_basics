@@ -14,7 +14,9 @@ For example, given s = "++++", after one move, it may become one of the followin
 If there is no valid move, return an empty list [].
 """
 
-# V0  
+# V0
+# time = O(n^2)
+# space = O(n^2)
 class Solution(object):
     def generatePossibleNextMoves(self, s):
       states = []
@@ -29,6 +31,8 @@ class Solution(object):
 # IDEA : FIND OUT ALL EXISTING "++"  AND REPLACE WITH "--"  <------ flip two consecutive "++" into "--"
 # http://www.voidcn.com/article/p-umymlqqs-qp.html
 # https://blog.csdn.net/qq508618087/article/details/50855968
+# time = O(n^2)
+# space = O(n^2)
 class Solution(object):
     def generatePossibleNextMoves(self, s):
         """
@@ -38,8 +42,8 @@ class Solution(object):
         return [(s[:i] + "--" + s[i+2:]) for i in range(len(s)) if s[i:i+2] == "++"]
 
 # V2
-# Time:  O(c * n + n) = O(n * (c+1))
-# Space: O(n)
+# time = O(c * n + n) = O(n * (c+1))
+# space = O(n)
 class Solution(object):
     def generatePossibleNextMoves(self, s):
         """
@@ -57,8 +61,8 @@ class Solution(object):
         return res
 
 
-# Time:  O(c * m * n + n) = O(c * n + n), where m = 2 in this question
-# Space: O(n)
+# time = O(c * m * n + n) = O(c * n + n), where m = 2 in this question
+# space = O(n)
 # This solution compares O(m) = O(2) times for two consecutive "+", where m is length of the pattern
 class Solution2(object):
   def generatePossibleNextMoves(self, s):

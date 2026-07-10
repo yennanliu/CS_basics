@@ -52,6 +52,8 @@ nums is sorted in non-decreasing order.
 
 # V0
 # IDEA : 2 POINTERS: i, j
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def removeDuplicates(self, nums):
         # edge case
@@ -93,6 +95,8 @@ class Solution(object):
 # A = [1, 2, 2, 3, 4]
 # A = [1, 2, 3, 2, 4]
 # -> A = [1, 2, 3, 4, 2]
+# time = O(n)
+# space = O(1)
 class Solution:
     def removeDuplicates(self, A):
         if len(A) == 0:
@@ -111,6 +115,8 @@ class Solution:
 # IDEA : use an index j, when i go through the array,
 # if A[i] != A[j], then swap A[i] and A[j+1] and do j=j+1 (A[i], A[j+1] = A[j+1], A[i])
 # then i keep going through the array 
+# time = O(n)
+# space = O(1)
 class Solution:
     # @param a list of integers
     # @return an integer
@@ -127,6 +133,8 @@ class Solution:
 # V1' 
 # https://blog.csdn.net/coder_orz/article/details/51589013
 # IDEA : TWO POINTER 
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def removeDuplicates(self, nums):
         """
@@ -145,6 +153,8 @@ class Solution(object):
 # V1''
 # IDEA : 2 POINTERS + WHILE
 # https://leetcode.com/problems/remove-duplicates-from-sorted-array/discuss/145847/Python-
+# time = O(n)
+# space = O(1)
 class Solution:
     def removeDuplicates(self, nums):
         if not nums:
@@ -159,6 +169,8 @@ class Solution:
 
 # V1'''
 # https://www.jiuzhang.com/solution/remove-duplicates-from-sorted-array/#tag-highlight-lang-python
+# time = O(n)
+# space = O(1)
 class Solution:
     """
     @param A: a list of integers
@@ -192,8 +204,8 @@ class Solution:
 # }
 
 # V2 
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 class Solution(object):
     # @param a list of integers
     # @return an integer

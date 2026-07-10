@@ -65,6 +65,8 @@ n == nums.length
 #
 # https://www.cnblogs.com/grandyang/p/5869791.html
 # http://bookshadow.com/weblog/2016/09/11/leetcode-rotate-function/
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def maxRotateFunction(self, A):
         size = len(A)
@@ -78,6 +80,8 @@ class Solution(object):
 
 # V0'
 # IDEA : BRUTE FORCE (TLE)
+# time = O(n^2)
+# space = O(1)
 class Solution(object):
     def maxRotateFunction(self, nums):
         # help func
@@ -120,6 +124,8 @@ class Solution(object):
 # F(3) = F(2) + sum - 4B
 # -> THEN WE KNOW THE PATTERN OF ROTATE OPERATION IS ACTUAL :
 # ---> F(i) = F(i-1) + sum - n * A[n-i]
+# time = O(n)
+# space = O(1)
 class Solution:
     def maxRotateFunction(self, A):
         """
@@ -152,6 +158,8 @@ assert s.maxRotateFunction([-1,10,-5,1]) == 29
 
 # V1'
 # http://bookshadow.com/weblog/2016/09/11/leetcode-rotate-function/
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def maxRotateFunction(self, A):
         """
@@ -167,9 +175,9 @@ class Solution(object):
             ans = max(ans, sumn)
         return ans
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def maxRotateFunction(self, A):
         """

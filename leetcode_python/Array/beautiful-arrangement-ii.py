@@ -1,7 +1,9 @@
 # V0 
 
-# V1 
+# V1
 # http://bookshadow.com/weblog/2017/08/30/leetcode-beautiful-arrangement-ii/
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def constructArray(self, n, k):
         """
@@ -15,9 +17,9 @@ class Solution(object):
             ans.append(m)
         return ans + range(k + 2, n + 1)
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def constructArray(self, n, k):
         """

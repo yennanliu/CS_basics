@@ -37,6 +37,8 @@ Constraints:
 """
 
 # V0
+# time = O(n)
+# space = O(1)
 class Solution:
     def getMaxLen(self, nums):
         first_neg, zero = None, -1
@@ -55,6 +57,8 @@ class Solution:
 
 # V0'
 # IDEA : 2 POINTERS
+# time = O(n)
+# space = O(1)
 class Solution:
     def getMaxLen(self, nums):
         res = 0
@@ -91,6 +95,8 @@ class Solution:
 # we've seen since seeing a zero. zero is the index of the last zero we saw. 
 # neg is the number of negs seen since seeing zero. This is all the info we need to compute the max possible at any ending index i. 
 # So we loop through all possible ends, and keep this data updated.
+# time = O(n)
+# space = O(1)
 class Solution:
     def getMaxLen(self, nums):
         first_neg, zero = None, -1
@@ -112,6 +118,8 @@ class Solution:
 # https://www.codeleading.com/article/43895450358/
 # pos_len : len of sub array with prodcut > 0
 # neg_len : len of sub array with prodcut < 0
+# time = O(n)
+# space = O(1)
 class Solution:
     def getMaxLen(self, nums: List[int]) -> int:
         pos_len=0
@@ -134,6 +142,8 @@ class Solution:
 
 # V1
 # IDEA : 2 POINTERS
+# time = O(n)
+# space = O(1)
 class Solution:
     def getMaxLen(self, nums):
         res = 0
@@ -164,6 +174,8 @@ class Solution:
 # V1
 # IDEA : GREEDY
 # https://leetcode.com/problems/maximum-length-of-subarray-with-positive-product/discuss/839439/Python-Greedy-Solution
+# time = O(n)
+# space = O(n)
 class Solution:
     def getMaxLen(self, nums: List[int]) -> int:
         
@@ -197,6 +209,8 @@ class Solution:
 
 # V1
 # https://leetcode.com/problems/maximum-length-of-subarray-with-positive-product/discuss/821358/python
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def getMaxLen(self, nums):
         def func(nums):
@@ -225,6 +239,8 @@ class Solution(object):
 # V1
 # IDEA : DP
 # https://leetcode.com/problems/maximum-length-of-subarray-with-positive-product/discuss/819279/Python-Easy-python-dp-solution
+# time = O(n)
+# space = O(1)
 class Solution:
     def getMaxLen(self, nums: List[int]) -> int:
         pos, neg = 0, 0

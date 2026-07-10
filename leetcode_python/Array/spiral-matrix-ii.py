@@ -24,7 +24,9 @@ Constraints:
 
 """
 
-# V0 
+# V0
+# time = O(n^2)
+# space = O(1)
 class Solution:
     def generateMatrix(self, n):
         # Build n by n matrix
@@ -69,6 +71,8 @@ class Solution:
 # 2
 # 1
 # 0
+# time = O(n^2)
+# space = O(1)
 class Solution:
     def generateMatrix(self, n):
         # Build n by n matrix
@@ -109,6 +113,8 @@ assert s.generateMatrix(4) == [[1, 2, 3, 4], [12, 13, 14, 5], [11, 16, 15, 6], [
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79541687
+# time = O(n^2)
+# space = O(n^2)
 class Solution(object):
     def generateMatrix(self, n):
         """
@@ -159,6 +165,8 @@ class Solution(object):
         return matrix
 
 # V1'
+# time = O(n^2)
+# space = O(1)
 class Solution:
     # @return a list of lists of integer
     def generateMatrix(self, n):
@@ -187,9 +195,9 @@ class Solution:
             if count == n*n: return matrix
             direct = (direct+1) % 4
             
-# V2 
-# Time:  O(n^2)
-# Space: O(1)
+# V2
+# time = O(n^2)
+# space = O(1)
 class Solution(object):
     # @return a list of lists of integer
     def generateMatrix(self, n):

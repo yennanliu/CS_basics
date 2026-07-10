@@ -2,6 +2,8 @@
 
 # V1
 # http://bookshadow.com/weblog/2017/11/13/leetcode-find-pivot-index/
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def pivotIndex(self, nums):
         """
@@ -19,6 +21,8 @@ class Solution(object):
 # V1' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79248308
 class Solution(object):
+    # time = O(n)
+    # space = O(1)
     def pivotIndex(self, nums):
         """
         :type nums: List[int]
@@ -39,6 +43,8 @@ class Solution(object):
 # V1'' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79248308
 class Solution(object):
+    # time = O(n)
+    # space = O(n)
     def pivotIndex(self, nums):
         """
         :type nums: List[int]
@@ -54,9 +60,9 @@ class Solution(object):
                 return i
         return -1
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def pivotIndex(self, nums):
         """

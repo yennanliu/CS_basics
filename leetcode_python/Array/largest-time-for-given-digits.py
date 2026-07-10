@@ -2,7 +2,9 @@
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/84728534
-# IDEA : GREEDY 
+# IDEA : GREEDY
+# time = O(1)
+# space = O(1)
 class Solution(object):
     def largestTimeFromDigits(self, A):
         """
@@ -20,6 +22,8 @@ class Solution(object):
 
 # V1'
 # https://www.cnblogs.com/seyjs/p/10058403.html
+# time = O(1)
+# space = O(1)
 class Solution(object):
     def largestTimeFromDigits(self, A):
         """
@@ -36,9 +40,9 @@ class Solution(object):
         res = str(res).zfill(4)
         return res[0:2] + ':' + res[2:]
         
-# V2 
-# Time:  O(1)
-# Space: O(1)
+# V2
+# time = O(1)
+# space = O(1)
 import itertools
 class Solution(object):
     def largestTimeFromDigits(self, A):

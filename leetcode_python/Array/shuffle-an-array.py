@@ -2,6 +2,8 @@
 
 # V1 
 # http://bookshadow.com/weblog/2016/08/12/leetcode-shuffle-array/
+# time = O(n)
+# space = O(n)
 import random
 class Solution(object):
 
@@ -39,6 +41,8 @@ class Solution(object):
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79391342
+# time = O(n)
+# space = O(n)
 import random
 class Solution(object):
 
@@ -65,8 +69,8 @@ class Solution(object):
         return nums_s
         
 # V2
-# Time:  O(n)
-# Space: O(n)
+# time = O(n)
+# space = O(n)
 import random
 class Solution(object):
 

@@ -36,6 +36,8 @@ schedule and schedule[i] are lists with lengths in range [1, 50].
 # V1
 # IDEA : heapq
 # https://leetcode.com/problems/employee-free-time/discuss/1805842/Python-Solution
+# time = O(n log k)
+# space = O(k)
 class Solution:
     def employeeFreeTime(self, schedule: '[[Interval]]') -> '[Interval]':
         pq = []
@@ -55,6 +57,8 @@ class Solution:
 # V1'
 # IDEA : SORT by start
 # https://leetcode.com/problems/employee-free-time/discuss/408522/Python-sort-by-start
+# time = O(n log n)
+# space = O(n)
 class Solution:
     def employeeFreeTime(self, schedule: 'list<list<Interval>>') -> 'list<Interval>':
         
@@ -87,6 +91,8 @@ class Solution:
 # https://leetcode.com/problems/employee-free-time/discuss/877358/Python-O(N-log-K)-heap-solution
 # IDEA : 
 # I merge the intervals while keeping the heap size less than or equal to K. It is only less than K when I've already popped out all the elements from a certain employee. My solution treats each employees intervals as a queue. pop(0) in python is O(n) so if you wanted you could just convert all of the intervals to deque so your pop(0) is O(1) and it functions as an actual queue but I just pretended pop(0) was O(1) for demonstration purposes.
+# time = O(n log k)
+# space = O(k)
 class Solution:
     def employeeFreeTime(self, schedule: '[[Interval]]') -> '[Interval]':
         k = len(schedule)
@@ -118,6 +124,8 @@ class Solution:
 # V1'''
 # IDEA : SORT
 # https://leetcode.com/problems/employee-free-time/discuss/1039353/pythonjava-solution
+# time = O(n log n)
+# space = O(n)
 class Solution:
     def employeeFreeTime(self, schedule: '[[Interval]]') -> '[Interval]':
         listSchedule = []
@@ -140,6 +148,8 @@ class Solution:
 # V1''''
 # IDEA : bisect
 # https://leetcode.com/problems/employee-free-time/discuss/113142/Python-with-bisect
+# time = O(n^2)
+# space = O(n)
 from bisect import *
 class Solution(object):
     def employeeFreeTime(self, avails):
@@ -195,6 +205,8 @@ class Solution(object):
 
 # V1''''''
 # https://www.acwing.com/file_system/file/content/whole/index/content/2808852/
+# time = O(n log n)
+# space = O(n)
 class Solution:
     def employeeFreeTime(self, schedule: '[[Interval]]') -> '[Interval]':
         #TC: O(n log n)
@@ -232,6 +244,8 @@ import heapq
 S = 0
 E = 1
 class Solution:
+    # time = O(n log k)
+    # space = O(k)
     def employeeFreeTime(self, schedule: List[List[List[int]]]) -> List[List[int]]:
         """
         Method 1
@@ -274,6 +288,8 @@ class Solution:
 
         return ret
 
+    # time = O(n log n)
+    # space = O(n)
     def employeeFreeTime(self, schedule: List[List[List[int]]]) -> List[List[int]]:
         """
         Method 2
@@ -301,6 +317,8 @@ class Solution:
 
         return ret
 
+    # time = O(n log k)
+    # space = O(k)
     def employeeFreeTime_error(self, schedule: List[List[List[int]]]) -> List[List[int]]:
         """
         Cannot store iterator in the heap to compare

@@ -6,6 +6,8 @@
 # -> Sort the elements, make sure A[i] >= A[i-1] + 1, 
 # -> if not, THEN increase A[i] to A[i – 1] + 1
 # (so the needed moves are :  A[i – 1] + 1 - A[i]   )
+# time = O(nlogn)
+# space = O(1)
 class Solution(object):
   def minIncrementForUnique(self, A):
     A.sort()
@@ -19,6 +21,8 @@ class Solution(object):
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/84495213
+# time = O(nlogn)
+# space = O(1)
 class Solution(object):
     def minIncrementForUnique(self, A):
         """
@@ -38,9 +42,9 @@ class Solution(object):
                 prev = A[i]
         return res
 
-# V2 
-# Time:  O(nlogn)
-# Space: O(n)
+# V2
+# time = O(nlogn)
+# space = O(n)
 class Solution(object):
     def minIncrementForUnique(self, A):
         """

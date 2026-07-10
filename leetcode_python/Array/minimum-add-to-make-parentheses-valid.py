@@ -3,6 +3,8 @@
 # V1 
 # https://www.jiuzhang.com/solution/921-minimum-add-to-make-parentheses-valid/#tag-other-lang-python
 # IDEA : COUNT THE "LEFT" AND  "RIGHT" RESPECTIVELY (# ADD TO LEFT, # ADD TO RIGHT)
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def minAddToMakeValid(self, s):
         """
@@ -24,6 +26,8 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/minimum-add-to-make-parentheses-valid/#tag-highlight-lang-python
+# time = O(n)
+# space = O(1)
 class Solution:
     """
     @param S: the given string
@@ -41,9 +45,9 @@ class Solution:
                 right += 1 if i == '(' else -1
         return left + right
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def minAddToMakeValid(self, S):
         """

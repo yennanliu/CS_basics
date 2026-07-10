@@ -23,6 +23,8 @@
 
 # In [36]: x
 # Out[36]: 1
+# time = O(m*n)
+# space = O(1)
 class Solution:
     def flipAndInvertImage(self, A):
         """
@@ -40,6 +42,8 @@ class Solution:
 # V1' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/80471495
 # IDEA : GREEDY 
+# time = O(m*n)
+# space = O(m*n)
 class Solution:
     def flipAndInvertImage(self, A):
         """
@@ -54,8 +58,8 @@ class Solution:
         return res
 
 # V2 
-# Time:  O(n^2)
-# Space: O(1)
+# time = O(n^2)
+# space = O(1)
 class Solution(object):
     def flipAndInvertImage(self, A):
         """

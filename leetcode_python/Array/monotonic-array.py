@@ -41,7 +41,9 @@ Constraints:
 
 """
 
-# V0 
+# V0
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def isMonotonic(self, A):
         """
@@ -65,6 +67,8 @@ class Solution(object):
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/82348997
 # IDEA : CHECK IF THE ARRAY IS MONOTONIC ASCENDING OR MONOTONIC DESCENDING OR NOT 
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def isMonotonic(self, A):
         """
@@ -81,6 +85,8 @@ class Solution(object):
 
 # V1'
 # https://zxi.mytechroad.com/blog/algorithms/array/leetcode-896-monotonic-array/
+# time = O(n)
+# space = O(1)
 class Solution:
   def isMonotonic(self, A):    
     inc = True;
@@ -94,6 +100,8 @@ class Solution:
 
 # V1''
 # https://www.jiuzhang.com/solution/monotonic-array/#tag-highlight-lang-python
+# time = O(n)
+# space = O(1)
 class Solution:
     """
     @param A: a array
@@ -113,9 +121,9 @@ class Solution:
                     return False
         return True
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def isMonotonic(self, A):
         """

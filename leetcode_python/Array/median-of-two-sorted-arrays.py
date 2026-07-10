@@ -38,6 +38,8 @@ nums2.length == n
 
 # V0
 # IDEA : medium definiton
+# time = O((m+n)log(m+n))
+# space = O(m+n)
 class Solution:
     def findMedianSortedArrays(self, nums1, nums2):
         nums = nums1 + nums2
@@ -53,6 +55,8 @@ class Solution:
 
 # V0'
 # IDEA : heapq
+# time = O(m+n)
+# space = O(m+n)
 import heapq
 class Solution:
     def findMedianSortedArrays(self, nums1, nums2):
@@ -73,6 +77,8 @@ class Solution:
 # Merge both arrays and sort the new array.
 # If the length is odd, return the number in the middle of the array.
 # If the length is even, return the mean between the two numbers in the middle.
+# time = O((m+n)log(m+n))
+# space = O(m+n)
 class Solution:
     def findMedianSortedArrays(self, nums1, nums2):
         nums = nums1 + nums2
@@ -94,6 +100,8 @@ class Solution:
 #  -> We use the property of heaps to our advantage for this problem. We can easily get a merged sorted list using heaps, once we have this it is simple arithmetic.
 #  -> If the length of the merged list is even, then the median is the avg of the two middle numbers. If the length of the merged list is odd, then the median will be the middle number.
 #  -> building a heap is O(Nlog(n)) (n is number of elements in the array).
+# time = O(m+n)
+# space = O(m+n)
 import heapq
 class Solution:
     def findMedianSortedArrays(self, nums1, nums2):
@@ -109,6 +117,8 @@ class Solution:
 # V1
 # IDEA : bisect
 # https://leetcode.com/problems/median-of-two-sorted-arrays/discuss/2755/9-lines-O(log(min(mn)))-Python
+# time = O(log(min(m,n)))
+# space = O(1)
 class Solution:
     def findMedianSortedArrays(self, nums1, nums2):
         a, b = sorted((nums1, nums2), key=len)
@@ -124,6 +134,8 @@ class Solution:
 # V1
 # IDEA : binary search
 # https://leetcode.com/problems/median-of-two-sorted-arrays/discuss/2755/9-lines-O(log(min(mn)))-Python
+# time = O(log(min(m,n)))
+# space = O(1)
 class Solution:
     def findMedianSortedArrays(self, nums1, nums2):
         a, b = sorted((nums1, nums2), key=len)
@@ -142,6 +154,8 @@ class Solution:
 
 # V1
 # https://leetcode.com/problems/median-of-two-sorted-arrays/discuss/468832/Simple-python-solution
+# time = O((m+n)log(m+n))
+# space = O(m+n)
 class Solution:
     def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:      
         concat = sorted(nums1+nums2) 
@@ -155,6 +169,8 @@ class Solution:
 
 # V1
 # https://leetcode.com/problems/median-of-two-sorted-arrays/discuss/952647/Simple-python
+# time = O((m+n)log(m+n))
+# space = O(m+n)
 import statistics
 class Solution:
     def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:

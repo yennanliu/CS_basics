@@ -2,6 +2,8 @@
 
 # V1 
 # https://blog.csdn.net/Chip_Wan/article/details/81346936
+# time = O(m * n)
+# space = O(1)
 class Solution:
     def numMagicSquaresInside(self, grid):
         """
@@ -18,9 +20,9 @@ class Solution:
                     res+=1 if tmp in isMag else 0
         return res
         
-# V2 
-# Time:  O(m * n)
-# Space: O(1)
+# V2
+# time = O(m * n)
+# space = O(1)
 class Solution(object):
     def numMagicSquaresInside(self, grid):
         """

@@ -56,6 +56,8 @@ All the values of nums are unique.
 
 # V0
 # IDEA : 2 POINTERS
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def findMissingRanges(self, nums, lower, upper):
         l, r = lower, lower
@@ -87,6 +89,8 @@ class Solution(object):
 # V1 
 # https://blog.csdn.net/qq_32424059/article/details/94437790
 # IDEA : DOUBLE POINTERS
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def findMissingRanges(self, nums, lower, upper):
         start, end = lower, lower
@@ -114,6 +118,8 @@ class Solution(object):
 
 # V1'
 # https://github.com/qiyuangong/leetcode/blob/master/python/163_Missing_Ranges.py
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def findMissingRanges(self, nums, lower, upper):
         """
@@ -138,6 +144,8 @@ class Solution(object):
 
 # V1''
 # Missing Ranges - Leetcode Challenge - Python Solution - Poopcode
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def findMissingRanges(self, nums, lower, upper):
         """
@@ -162,6 +170,8 @@ class Solution(object):
 
 # V1'''
 # https://www.goodtecher.com/leetcode-163-missing-ranges/
+# time = O(n)
+# space = O(1)
 class Solution:
     def findMissingRanges(self, nums, lower, upper):
         results = []
@@ -209,9 +219,9 @@ class Solution:
 #     }
 # };
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def findMissingRanges(self, nums, lower, upper):
         def getRange(lower, upper):

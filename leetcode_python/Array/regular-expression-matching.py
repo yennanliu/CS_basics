@@ -43,6 +43,8 @@ It is guaranteed for each appearance of the character '*', there will be a previ
 # V1
 # IDEA : RECURSION
 # https://leetcode.com/problems/regular-expression-matching/solution/
+# time = O((m + n) * 2 ^ (m + n / 2))
+# space = O((m + n) * 2 ^ (m + n / 2))
 class Solution(object):
     def isMatch(self, text, pattern):
         if not pattern:
@@ -59,6 +61,8 @@ class Solution(object):
 # V1'
 # IDEA : DP
 # https://leetcode.com/problems/regular-expression-matching/solution/
+# time = O(m * n)
+# space = O(m * n)
 class Solution(object):
     def isMatch(self, text, pattern):
         memo = {}

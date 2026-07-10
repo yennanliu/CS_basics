@@ -14,6 +14,8 @@ Output: 2
 """
 
 # V0
+# time = O(n log n)
+# space = O(1)
 class Solution(object):
     def majorityElement(self, nums):
         nums.sort()
@@ -21,6 +23,8 @@ class Solution(object):
 
 # V1 
 # https://blog.csdn.net/NXHYD/article/details/71713772
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def majorityElement(self, nums):
         """
@@ -31,6 +35,8 @@ class Solution(object):
 
 # V1' 
 # https://blog.csdn.net/NXHYD/article/details/71713772
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def majorityElement(self, nums):
         """
@@ -50,6 +56,8 @@ class Solution(object):
 
 # V1''
 # http://bookshadow.com/weblog/2014/12/22/leetcode-majority-element/
+# time = O(n)
+# space = O(1)
 class Solution:
     # @param num, a list of integers
     # @return an integer
@@ -64,9 +72,9 @@ class Solution:
                 count -= 1
         return candidate
         
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 import collections
 class Solution(object):
     def majorityElement(self, nums):
@@ -87,6 +95,8 @@ class Solution(object):
 
         return nums[idx]
 
+    # time = O(n log n)
+    # space = O(n)
     def majorityElement2(self, nums):
         """
         :type nums: List[int]
@@ -94,6 +104,8 @@ class Solution(object):
         """
         return sorted(collections.Counter(nums).items(), key=lambda a: a[1], reverse=True)[0][0]
 
+    # time = O(n)
+    # space = O(n)
     def majorityElement3(self, nums):
         """
         :type nums: List[int]

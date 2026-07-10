@@ -57,6 +57,8 @@ Constraints:
 # V0
 # IDEA : TWO POINTER
 # https://leetcode.com/problems/remove-element/solution/
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def removeElement(self, nums, val):
         i = 0
@@ -68,6 +70,8 @@ class Solution(object):
 
 # V0
 # IDEA : TWO POINTER
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def removeElement(self, nums, val):
         length = 0
@@ -80,6 +84,8 @@ class Solution(object):
 # V1
 # IDEA : array
 # https://blog.csdn.net/coder_orz/article/details/51578854
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def removeElement(self, nums, val):
         length = 0
@@ -100,6 +106,8 @@ assert s.removeElement([_ for _ in range(100)], 3) == 99
 
 # V1' 
 # https://blog.csdn.net/coder_orz/article/details/51578854
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def removeElement(self, nums, val):
         """
@@ -157,6 +165,8 @@ class Solution(object):
 
 # V1'' 
 # https://blog.csdn.net/coder_orz/article/details/51578854
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def removeElement(self, nums, val):
         length, i = len(nums), 0 
@@ -169,8 +179,8 @@ class Solution(object):
         return length
 
 # V2 
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 class Solution(object):
     # @param    A       a list of integers
     # @param    elem    an integer, value need to be removed

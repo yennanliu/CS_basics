@@ -52,6 +52,8 @@ class NumMatrix(object):
     beats 83.86%
     """
 
+    # time = O(m * n)
+    # space = O(1)
     def __init__(self, matrix):
         """
         :type matrix: List[List[int]]
@@ -64,6 +66,8 @@ class NumMatrix(object):
                 row[col] += row[col - 1]
         self.matrix = matrix
 
+    # time = O(n)
+    # space = O(1)
     def update(self, row, col, val):
         """
         original means the single element value in original matrix
@@ -77,6 +81,8 @@ class NumMatrix(object):
         for y in range(col, len(self.matrix[0])):  # update elements in the row
             self.matrix[row][y] -= diff
 
+    # time = O(m)
+    # space = O(1)
     def sumRegion(self, row1, col1, row2, col2):
         """
         region sum is the sum of range sum in every row from row1 to row2
@@ -94,6 +100,8 @@ class NumMatrix(object):
 # https://github.com/GJzh/Leetcode/blob/master/python/308%20Range%20Sum%20Query%202D%20-%20Mutable.py
 class NumMatrix(object):
 
+    # time = O(m * n * log(m) * log(n))
+    # space = O(m * n)
     def __init__(self, matrix):
         """
         :type matrix: List[List[int]]
@@ -108,6 +116,8 @@ class NumMatrix(object):
             for j in range(n):
                 self.update(i, j, matrix[i][j])
 
+    # time = O(log(m) * log(n))
+    # space = O(1)
     def update(self, row, col, val):
         """
         :type row: int
@@ -127,6 +137,8 @@ class NumMatrix(object):
                 j += (j & (-j))
             i += (i & (-i))
 
+    # time = O(log(m) * log(n))
+    # space = O(1)
     def getSum(self, row, col):
         ans = 0
         i = row + 1
@@ -138,6 +150,8 @@ class NumMatrix(object):
             i -= (i & (-i))
         return ans
             
+    # time = O(log(m) * log(n))
+    # space = O(1)
     def sumRegion(self, row1, col1, row2, col2):
         """
         :type row1: int
@@ -152,6 +166,8 @@ class NumMatrix(object):
 # https://github.com/clairett/Leetcode-Lintcode-Python/blob/master/308.py
 class NumMatrix:
 
+    # time = O(m * n * log(m) * log(n))
+    # space = O(m * n)
     def __init__(self, matrix: List[List[int]]):
         if not matrix or not matrix[0]: return
         self.m, self.n = len(matrix), len(matrix[0])
@@ -165,6 +181,8 @@ class NumMatrix:
                 j += 1
             i += 1
 
+    # time = O(log(m) * log(n))
+    # space = O(1)
     def update(self, row: int, col: int, val: int) -> None:
         diff, self.matrix[row][col], i = val - self.matrix[row][col], val, row + 1
         while i <= self.m:
@@ -174,10 +192,14 @@ class NumMatrix:
                 j += (j & -j)
             i += (i & -i)
 
+    # time = O(log(m) * log(n))
+    # space = O(1)
     def sumRegion(self, row1: int, col1: int, row2: int, col2: int) -> int:
         return self.getSum(row2, col2) - self.getSum(row2, col1 - 1) - self.getSum(row1 - 1, col2) + self.getSum(
             row1 - 1, col1 - 1)
 
+    # time = O(log(m) * log(n))
+    # space = O(1)
     def getSum(self, row, col):
         result, i = 0, row + 1
         while i > 0:

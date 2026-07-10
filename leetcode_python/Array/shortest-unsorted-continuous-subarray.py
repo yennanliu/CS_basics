@@ -1,5 +1,5 @@
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 
 # Given an integer array, you need to find one continuous subarray that
 # if you only sort this subarray in ascending order,
@@ -41,6 +41,8 @@
 # Out[17]: [2, 4, 6, 8, 9, 10, 15]
 # In [18]: [i for i in range(_len) if nums[i] != _nums[i]]
 # Out[18]: [1, 2, 4, 5]
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def findUnsortedSubarray(self, nums):
         """
@@ -56,6 +58,8 @@ class Solution(object):
 
 # V1'
 # http://bookshadow.com/weblog/2017/05/15/leetcode-shortest-unsorted-continuous-subarray/
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def findUnsortedSubarray(self, nums):
         """
@@ -70,9 +74,9 @@ class Solution(object):
                 e = i
         return e - s + 1 if e != s else 0
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def findUnsortedSubarray(self, nums):
         """
@@ -89,8 +93,8 @@ class Solution(object):
             if nums[n-1-i] > min_from_right: left = n-1-i
 
 
-# Time:  O(nlogn)
-# Space: O(n)
+# time = O(n log n)
+# space = O(n)
 class Solution2(object):
     def findUnsortedSubarray(self, nums):
         """

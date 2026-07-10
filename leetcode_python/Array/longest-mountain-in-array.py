@@ -2,6 +2,8 @@
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/83422260
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def longestMountain(self, A):
         """
@@ -25,6 +27,8 @@ class Solution(object):
 
 # V1'
 # http://bookshadow.com/weblog/2018/06/03/leetcode-longest-mountain-in-array/
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def longestMountain(self, A):
         """
@@ -44,9 +48,9 @@ class Solution(object):
                 ans = max(ans, left[x] + right[x] + 1)
         return ans
         
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def longestMountain(self, A):
         """

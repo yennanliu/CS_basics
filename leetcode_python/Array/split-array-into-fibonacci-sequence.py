@@ -2,6 +2,8 @@
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/80662840
+# time = O(n^3)
+# space = O(n)
 class Solution(object):
     def splitIntoFibonacci(self, S):
         """
@@ -27,8 +29,8 @@ class Solution(object):
         return False
         
 # V2
-# Time:  O(n^3)
-# Space: O(n)
+# time = O(n^3)
+# space = O(n)
 class Solution(object):
     def splitIntoFibonacci(self, S):
         """

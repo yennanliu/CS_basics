@@ -2,6 +2,8 @@
 
 # V1 
 # https://www.jiuzhang.com/solution/fair-candy-swap/#tag-highlight-lang-python
+# time = O(n log n)
+# space = O(1)
 class Solution:
     """
     @param A: an array
@@ -31,6 +33,8 @@ class Solution:
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/82013077
+# time = O(m + n)
+# space = O(n)
 class Solution(object):
     def fairCandySwap(self, A, B):
         """
@@ -45,9 +49,9 @@ class Solution(object):
             if b >= 1 and b <= 100000 and b in set_B:
                 return [a, b]
 
-# V2 
-# Time:  O(m + n)
-# Space: O(m + n)
+# V2
+# time = O(m + n)
+# space = O(m + n)
 class Solution(object):
     def fairCandySwap(self, A, B):
         """

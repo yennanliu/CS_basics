@@ -3,6 +3,8 @@
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79188909
 # IDEA : FIND THE 1ST, 2ND MAX
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def dominantIndex(self, nums):
         """
@@ -22,6 +24,8 @@ class Solution(object):
 # V1' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79188909
 # IDEA : SORT 
+# time = O(n log n)
+# space = O(1)
 class Solution(object):
     def dominantIndex(self, nums):
         """
@@ -41,6 +45,8 @@ class Solution(object):
 # V1'' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79188909
 # IDEA : HEAP
+# time = O(n)
+# space = O(n)
 import heapq
 class Solution(object):
     def dominantIndex(self, nums):
@@ -58,8 +64,8 @@ class Solution(object):
         return -1
 
 # V2 
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def dominantIndex(self, nums):
         """

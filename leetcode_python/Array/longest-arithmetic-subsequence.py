@@ -38,6 +38,8 @@ Constraints:
 
 # V0
 # IDEA : DP
+# time = O(n^2)
+# space = O(n^2)
 class Solution:
     def longestArithSeqLength(self, A):
             dp = {}
@@ -49,6 +51,8 @@ class Solution:
 # V0'
 # IDEA : HASH TABLE
 # https://leetcode.com/problems/longest-arithmetic-subsequence/discuss/274657/Short-Python-solution
+# time = O(n^2)
+# space = O(n^2)
 class Solution:
     def longestArithSeqLength(self, A):
         aux, cnt, prefix = {a : {} for a in A}, {}, set()
@@ -71,6 +75,8 @@ class Solution:
 # V1
 # IDEA : HASH
 # https://leetcode.com/problems/longest-arithmetic-subsequence/discuss/274657/Short-Python-solution
+# time = O(n^2)
+# space = O(n^2)
 class Solution:
     def longestArithSeqLength(self, A):
         aux, cnt, prefix = {a : {} for a in A}, {}, set()
@@ -87,6 +93,8 @@ class Solution:
 
 # V1'
 # https://leetcode.com/problems/longest-arithmetic-subsequence/discuss/275395/python-O(n**2)-solution
+# time = O(n^2)
+# space = O(n^2)
 class Solution:
     def longestArithSeqLength(self, A):
         # Constant seq: '0000', O(len(A) )
@@ -109,6 +117,8 @@ class Solution:
 # V1''
 # IDEA : HASH SET
 # https://leetcode.com/problems/longest-arithmetic-subsequence/discuss/274625/simple-hash-Set-Python
+# time = O(n^2)
+# space = O(n^2)
 class Solution(object):
     def longestArithSeqLength(self, A):
         res = 2
@@ -149,6 +159,8 @@ class Solution(object):
 # V1'''
 # IDEA : DP
 # https://leetcode.com/problems/longest-arithmetic-subsequence/discuss/274611/JavaC%2B%2BPython-DP
+# time = O(n^2)
+# space = O(n^2)
 class Solution:
     def longestArithSeqLength(self, A):
             dp = {}
@@ -160,6 +172,8 @@ class Solution:
 # V1''''
 # IDEA : DP
 # https://leetcode.com/problems/longest-arithmetic-subsequence/discuss/514742/Python-DP
+# time = O(n^2)
+# space = O(n^2)
 class Solution:
     def longestArithSeqLength(self, A):
         DP = {}

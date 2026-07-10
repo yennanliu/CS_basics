@@ -35,6 +35,8 @@ Follow up: If you have figured out the O(n) solution, try coding another solutio
 
 # V0
 # IDEA : SLIDING WINDOW 
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def minSubArrayLen(self, target, nums):
         """
@@ -66,6 +68,8 @@ class Solution(object):
 
 
 # V0-1
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def minSubArrayLen(self, target, nums):
         if nums is None or len(nums) == 0:
@@ -93,6 +97,8 @@ class Solution(object):
 
 # V0
 # IDEA : SLIDING WINDOW : start, end
+# time = O(n)
+# space = O(1)
 class Solution:
     def minSubArrayLen(self, s, nums):
         if nums is None or len(nums) == 0:
@@ -127,6 +133,8 @@ class Solution:
 
 # V0'
 # IDEA : SLIDING WINDOW : start, end
+# time = O(n)
+# space = O(1)
 class Solution:
     def minSubArrayLen(self, s, nums):
         size = len(nums)
@@ -178,6 +186,8 @@ class Solution:
 # V1
 # IDEA : MOVING WINDOW (START, END AS WINDOW INDEX)
 # https://www.jiuzhang.com/solution/minimum-size-subarray-sum/#tag-highlight-lang-python
+# time = O(n)
+# space = O(1)
 class Solution:
     def minSubArrayLen(self, s, nums):
         if nums is None or len(nums) == 0:
@@ -203,6 +213,8 @@ class Solution:
 # V1 ''
 # http://bookshadow.com/weblog/2015/05/12/leetcode-minimum-size-subarray-sum/
 # IDEA : MOVING WINDOW (START, END AS WINDOW INDEX)
+# time = O(n)
+# space = O(1)
 class Solution:
     # @param {integer} s
     # @param {integer[]} nums
@@ -232,6 +244,8 @@ class Solution:
 # V1' 
 # http://bookshadow.com/weblog/2015/05/12/leetcode-minimum-size-subarray-sum/
 # IDEA : BINARY SEARCH 
+# time = O(nlogn)
+# space = O(1)
 class Solution:
     def minSubArrayLen(self, s, nums):
         size = len(nums)
@@ -328,9 +342,9 @@ class Solution:
 #     return (ans != INT_MAX) ? ans : 0;
 # }
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     # @param {integer} s
     # @param {integer[]} nums
@@ -347,8 +361,8 @@ class Solution(object):
                 start += 1
         return min_size if min_size != float("inf") else 0
 
-# Time:  O(nlogn)
-# Space: O(n)
+# time = O(nlogn)
+# space = O(n)
 # Binary search solution.
 class Solution2(object):
     # @param {integer} s

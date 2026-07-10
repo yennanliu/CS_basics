@@ -22,6 +22,8 @@ Explanation: In this case, no transaction is done, i.e. max profit = 0.
 
 # V0
 # IDEA : array op + problem understanding
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def maxProfit(self, prices):
         if len(prices) == 0:
@@ -41,6 +43,8 @@ class Solution(object):
 
 # V0''
 # IDEA : BRUTE FORCE (time out error)
+# time = O(n^2)
+# space = O(1)
 class Solution(object):
     def maxProfit(self, prices):
         res = 0
@@ -54,7 +58,9 @@ class Solution(object):
 
 # V1 
 # https://blog.csdn.net/coder_orz/article/details/51520971
-# TO NOTE : CAN ONLY DO ONE TRANSACTION IN THE PROBLEM  
+# TO NOTE : CAN ONLY DO ONE TRANSACTION IN THE PROBLEM
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def maxProfit(self, prices):
         if len(prices) == 0:
@@ -70,7 +76,9 @@ class Solution(object):
 
 # V1' 
 # https://blog.csdn.net/coder_orz/article/details/51520971
-# IDEA : DP 
+# IDEA : DP
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def maxProfit(self, prices):
         """
@@ -88,6 +96,8 @@ class Solution(object):
 
 # V1''
 # https://www.jiuzhang.com/solution/best-time-to-buy-and-sell-stock/#tag-highlight-lang-python
+# time = O(n)
+# space = O(1)
 class Solution:
     """
     @param prices: Given an integer array
@@ -105,8 +115,8 @@ class Solution:
         return total
 
 # V2 
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 class Solution(object):
     # @param prices, a list of integer
     # @return an integer

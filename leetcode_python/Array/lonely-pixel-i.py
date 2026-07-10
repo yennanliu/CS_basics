@@ -2,6 +2,8 @@
 
 # V1 
 # http://bookshadow.com/weblog/2017/03/05/leetcode-lonely-pixel-i/
+# time = O(m * n)
+# space = O(m + n)
 class Solution(object):
     def findLonelyPixel(self, picture):
         """
@@ -24,9 +26,9 @@ class Solution(object):
                             ans += 1
         return ans
 
-# V2 
-# Time:  O(m * n)
-# Space: O(m + n)
+# V2
+# time = O(m * n)
+# space = O(m + n)
 class Solution(object):
     def findLonelyPixel(self, picture):
         """

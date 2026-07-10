@@ -23,6 +23,8 @@ The integers in the m arrays will be in the range of [-10000, 10000].
 
 # V1 
 # https://blog.csdn.net/github_39261590/article/details/73655796
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def maxDistance(self, arrays):
         """
@@ -43,6 +45,8 @@ class Solution(object):
 
 # V1'
 # https://www.jianshu.com/p/8cdf02a4d30a
+# time = O(n)
+# space = O(1)
 class Solution:
     def maxDistance(self, arrays):
         """
@@ -56,8 +60,8 @@ class Solution:
         return res
 
 # V2 
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def maxDistance(self, arrays):
         """

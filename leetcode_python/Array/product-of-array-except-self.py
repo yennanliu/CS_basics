@@ -148,6 +148,8 @@ That's why the final answer is:
 ```
 
 """
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def productExceptSelf(self, nums):
         # Number of elements in the input array
@@ -267,6 +269,8 @@ class Solution(object):
 # https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Array/ProductOfArrayExceptSelf.java#L9
 
 # V0'
+# time = O(n)
+# space = O(1)
 class Solution:
     def productExceptSelf(self, nums):
         # CASE 1: has `more that one 0` -> the `Product of Array Except Self` should always equal 0
@@ -292,6 +296,8 @@ class Solution:
 
 # V0''
 # IDEA : ARRAY OP
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def productExceptSelf(self, nums):
         _len = len(nums)
@@ -313,6 +319,8 @@ class Solution(object):
         return ans
 
 # V0'''''
+# time = O(n)
+# space = O(1)
 class Solution:
     # @param {integer[]} nums
     # @return {integer[]}
@@ -344,6 +352,8 @@ class Solution:
 # -> output = [2*3*4, 1*3*4,1*2*4,1] <-- 1*2*4 (left of 3: 1,2 right of 3 : 4)
 # -> output = [2*3*4, 1*3*4,1*2*4,1*2*3] <-- 1*2*3 (left of 4 : 1,2,3)
 # -> final output  = [2*3*4, 1*3*4,1*2*4,1*2*3] = [24,12,8,6]
+# time = O(n)
+# space = O(1)
 class Solution:
     # @param {integer[]} nums
     # @return {integer[]}
@@ -362,6 +372,8 @@ class Solution:
 
 # V1'
 # https://www.jiuzhang.com/solution/product-of-array-except-self/#tag-highlight-lang-python
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def productExceptSelf(self, nums):
         """
@@ -379,9 +391,9 @@ class Solution(object):
             nb *= nums[length-i-1]
         return result
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     # @param {integer[]} nums
     # @return {integer[]}

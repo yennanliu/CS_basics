@@ -2,6 +2,8 @@
 
 # V1 
 # https://www.jiuzhang.com/solution/spiral-matrix-iii/#tag-highlight-lang-python
+# time = O(max(R, C)^2)
+# space = O(1)
 def spiralMatrixIII(self, R, C, r0, c0):
         """
         :type R: int
@@ -48,6 +50,8 @@ def spiralMatrixIII(self, R, C, r0, c0):
 
 # V1'
 # https://blog.csdn.net/XX_123_1_RJ/article/details/81952905
+# time = O(max(R, C)^2)
+# space = O(1)
 class Solution:
     def spiralMatrixIII(self, R, C, r0, c0):
         res = [[r0, c0]]
@@ -62,9 +66,9 @@ class Solution:
                         if len(res) == R * C:  # len(res) == R * C, means already finish the process 
                             return res
 
-# V2 
-# Time:  O(max(m, n)^2)
-# Space: O(1)
+# V2
+# time = O(max(m, n)^2)
+# space = O(1)
 class Solution(object):
     def spiralMatrixIII(self, R, C, r0, c0):
         """

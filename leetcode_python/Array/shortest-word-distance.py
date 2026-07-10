@@ -20,6 +20,8 @@ Note: You may assume that word1 does not equal to word2, and word1 and word2 are
 # -> 
 # Given word1 = “coding”, word2 = “practice”, return 3. <---- “coding” index = 3, “practice” index = 0, 3-0 = 3 
 # Given word1 = "makes", word2 = "coding", return 1. <---- "makes" index = 1,4,  "coding" index = 3, so take the min : 4-3 = 1 
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def shortestDistance(self, words, word1, word2):
         """
@@ -34,6 +36,8 @@ class Solution(object):
 
 # V1' 
 # http://www.voidcn.com/article/p-epmviyav-qp.html
+# time = O(n)
+# space = O(1)
 def shortestDistance(self, words, word1, word2):
     size = len(words)
     index1, index2 = size, size
@@ -49,8 +53,8 @@ def shortestDistance(self, words, word1, word2):
     return ans
 
 # V2 
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 class Solution(object):
     # @param {string[]} words
     # @param {string} word1

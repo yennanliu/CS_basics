@@ -41,6 +41,8 @@ Follow up: If the maximum number of allowed calls to the API knows is 3 * n, cou
 """
 
 # V0
+# time = O(n^2)
+# space = O(1)
 class Solution:
     def findCelebrity(self, n):
         self.n = n
@@ -64,6 +66,8 @@ class Solution:
         return True
 
 # V0'
+# time = O(n)
+# space = O(1)
 class Solution:
     # @param {int} n a party with n people
     # @return {int} the celebrity's label or -1
@@ -85,6 +89,8 @@ class Solution:
 # V1
 # IDEA : BRUTE FORCE
 # https://leetcode.com/problems/find-the-celebrity/solution/
+# time = O(n^2)
+# space = O(1)
 class Solution:
     def findCelebrity(self, n: int) -> int:
         self.n = n
@@ -103,6 +109,8 @@ class Solution:
 # V1
 # IDEA : Logical Deduction
 # https://leetcode.com/problems/find-the-celebrity/solution/
+# time = O(n)
+# space = O(1)
 class Solution:
     def findCelebrity(self, n: int) -> int:
         self.n = n
@@ -124,6 +132,8 @@ class Solution:
 # V1
 # IDEA :  Logical Deduction with Caching
 # https://leetcode.com/problems/find-the-celebrity/solution/
+# time = O(n)
+# space = O(n)
 from functools import lru_cache
 
 class Solution:
@@ -164,6 +174,8 @@ The knows API is already defined for you.
 @return a boolean, whether a knows b
 you can call Celebrity.knows(a, b)
 """
+# time = O(n)
+# space = O(1)
 class Solution:
     # @param {int} n a party with n people
     # @return {int} the celebrity's label or -1
@@ -182,9 +194,9 @@ class Solution:
                 return -1
         return celeb
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def findCelebrity(self, n):
         """

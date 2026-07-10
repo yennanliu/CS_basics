@@ -3,6 +3,8 @@
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/82597238
 # https://leetcode.com/problems/image-overlap/discuss/130623/C++JavaPython-Straight-Forward
+# time = O(n^4)
+# space = O(n^2)
 import collections
 class Solution:
     def largestOverlap(self, A, B):
@@ -18,8 +20,8 @@ class Solution:
         return max(d.values() or [0])
          
 # V2 
-# Time:  O(n^4)
-# Space: O(n^2)
+# time = O(n^4)
+# space = O(n^2)
 class Solution(object):
     def largestOverlap(self, A, B):
         """

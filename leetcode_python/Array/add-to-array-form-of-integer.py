@@ -38,6 +38,8 @@ num does not contain any leading zeros except for the zero itself.
 
 # V0
 # IDEA : array op
+# time = O(n)
+# space = O(n)
 class Solution:
     def addToArrayForm(self, num, k):
         s = ""
@@ -49,6 +51,8 @@ class Solution:
 # V1
 # IDEA : array op
 # https://leetcode.com/problems/add-to-array-form-of-integer/discuss/1433276/Python-solution
+# time = O(n)
+# space = O(n)
 class Solution:
     def addToArrayForm(self, num: List[int], k: int) -> List[int]:
         s = ""
@@ -60,6 +64,8 @@ class Solution:
 # V1
 # IDEA : int adding
 # https://leetcode.com/problems/add-to-array-form-of-integer/discuss/473808/python
+# time = O(n)
+# space = O(1)
 class Solution:
     def addToArrayForm(self, A: List[int], K: int) -> List[int]:
         K = list(map(int,list(str(K))))
@@ -81,6 +87,8 @@ class Solution:
 # V1
 # IDEA :  Schoolbook Addition
 # https://leetcode.com/problems/add-to-array-form-of-integer/solution/
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def addToArrayForm(self, A, K):
         A[-1] += K
@@ -93,6 +101,8 @@ class Solution(object):
 
 # V1
 # https://leetcode.com/problems/add-to-array-form-of-integer/discuss/874679/Python-one-liner
+# time = O(n)
+# space = O(n)
 class Solution:
     def addToArrayForm(self, A: List[int], K: int) -> List[int]:
         return [int(x) for x in str(int(''.join(str(x) for x in A))+K)]

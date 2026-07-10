@@ -3,6 +3,8 @@
 
 # V1
 # https://nifannn.github.io/2018/09/14/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0-Leetcode-821-Shortest-Distance-to-a-Character/
+# time = O(n)
+# space = O(1)
 class Solution:
     def shortestToChar(self, S, C):
         """
@@ -23,6 +25,8 @@ class Solution:
 # V1' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/80471765
 # https://nifannn.github.io/2018/09/14/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0-Leetcode-821-Shortest-Distance-to-a-Character/
+# time = O(n)
+# space = O(1)
 class Solution:
     def shortestToChar(self, S, C):
         """
@@ -46,6 +50,8 @@ class Solution:
 
 # V1''
 # http://bookshadow.com/weblog/2018/04/22/leetcode-shortest-distance-to-a-character/
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def shortestToChar(self, S, C):
         """
@@ -67,9 +73,9 @@ class Solution(object):
             ans[i] = min(ans[i], lastC - i)
         return ans
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 import itertools
 class Solution(object):
     def shortestToChar(self, S, C):

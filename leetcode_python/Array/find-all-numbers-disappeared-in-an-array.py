@@ -25,6 +25,8 @@ Output:
 # Out[25]: {1, 2, 3, 4, 5}
 # In [26]: list(y-x)
 # Out[26]: [2]
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def findDisappearedNumbers(self, nums):
         """
@@ -37,6 +39,8 @@ class Solution(object):
 
 # V1'
 # http://bookshadow.com/weblog/2016/11/01/leetcode-find-all-numbers-disappeared-in-an-array/
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def findDisappearedNumbers(self, nums):
         """
@@ -48,8 +52,8 @@ class Solution(object):
         return [i + 1 for i, n in enumerate(nums) if n > 0]   # go through the array to find the n not exists there (with +)
 
 # V2
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def findDisappearedNumbers(self, nums):
         """
@@ -68,6 +72,8 @@ class Solution(object):
                 nums[i] *= -1
         return result
 
+    # time = O(n)
+    # space = O(n)
     def findDisappearedNumbers2(self, nums):
         """
         :type nums: List[int]
@@ -75,6 +81,8 @@ class Solution(object):
         """
         return list(set(range(1, len(nums) + 1)) - set(nums))
 
+    # time = O(n)
+    # space = O(1)
     def findDisappearedNumbers3(self, nums):
         for i in range(len(nums)):
             index = abs(nums[i]) - 1

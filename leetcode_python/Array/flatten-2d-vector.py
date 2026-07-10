@@ -45,6 +45,8 @@ Follow up: As an added challenge, try to code it using only iterators in C++ or 
 
 # V0
 # IDEA : ARRAY OP
+# time = O(n)
+# space = O(n)
 class Vector2D:
 
     def __init__(self, v):
@@ -68,6 +70,8 @@ class Vector2D:
 
 # V0'
 # IDEA : ARRAY OP
+# time = O(1)
+# space = O(1)
 class Vector2D(object):
 
     def __init__(self, vec2d):
@@ -104,6 +108,8 @@ class Vector2D(object):
 # V1
 # IDEA : Flatten List in Constructor
 # https://leetcode.com/problems/flatten-2d-vector/solution/
+# time = O(n)
+# space = O(n)
 class Vector2D:
 
     def __init__(self, v: List[List[int]]):
@@ -128,6 +134,8 @@ class Vector2D:
 # V1'
 # IDEA : Two Pointers
 # https://leetcode.com/problems/flatten-2d-vector/solution/
+# time = O(1)
+# space = O(1)
 class Vector2D:
 
     def __init__(self, v: List[List[int]]):
@@ -168,6 +176,8 @@ class Vector2D:
 
 # V1'
 # https://www.jiuzhang.com/solution/flatten-2d-vector/#tag-highlight-lang-python
+# time = O(1)
+# space = O(1)
 class Vector2D(object):
 
     # @param vec2d {List[List[int]]}
@@ -192,6 +202,8 @@ class Vector2D(object):
 
 # V1''
 # https://www.jiuzhang.com/solution/flatten-2d-vector/#tag-highlight-lang-python
+# time = O(1)
+# space = O(1)
 class Vector2D(object):
 
     # @param vec2d {List[List[int]]}
@@ -227,6 +239,8 @@ class Vector2D(object):
 
 # V1'''
 # https://github.com/criszhou/LeetCode-Python/blob/master/251.%20Flatten%202D%20Vector.py
+# time = O(1)
+# space = O(1)
 class Vector2D(object):
     def __init__(self, vec2d):
         """
@@ -265,6 +279,8 @@ class Vector2D(object):
 
 # V1''''
 # http://www.voidcn.com/article/p-qxkyrjri-zo.html
+# time = O(1)
+# space = O(1)
 class Vector2D(object):
 
     def __init__(self, vec2d):
@@ -310,9 +326,9 @@ class Vector2D(object):
 # i, v = Vector2D(vec2d), []
 # while i.hasNext(): v.append(i.next())
 
-# V2 
-# Time:  O(1)
-# Space: O(1)
+# V2
+# time = O(1)
+# space = O(1)
 from collections import deque
 class Vector2D(object):
 

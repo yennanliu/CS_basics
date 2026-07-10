@@ -35,6 +35,8 @@ n == mat[i].length
 # V0 
 # IDEA : while loop + boundary conditions
 ### NOTE : the "directions" trick
+# time = O(m*n)
+# space = O(m*n)
 class Solution(object):
     def findDiagonalOrder(self, matrix):
         if not matrix or not matrix[0]: return []
@@ -66,6 +68,8 @@ class Solution(object):
 # V0'
 # IDEA : Diagonal Iteration and Reversal
 # NOTE !!! : for "odd" diagoal traversal, we just need to go over it and REVERSE it before append tp res
+# time = O(m*n)
+# space = O(m*n)
 class Solution:
     def findDiagonalOrder(self, matrix):
         
@@ -120,6 +124,8 @@ class Solution:
 # V1
 # IDEA : Diagonal Iteration and Reversal
 # https://leetcode.com/problems/diagonal-traverse/solution/
+# time = O(m*n)
+# space = O(m*n)
 class Solution:
     
     def findDiagonalOrder(self, matrix: List[List[int]]) -> List[int]:
@@ -167,6 +173,8 @@ class Solution:
 # V1
 # IDEA : Simulation
 # https://leetcode.com/problems/diagonal-traverse/solution/
+# time = O(m*n)
+# space = O(m*n)
 class Solution:
     
     def findDiagonalOrder(self, matrix: List[List[int]]) -> List[int]:
@@ -239,6 +247,8 @@ class Solution:
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/82528226
+# time = O(m*n)
+# space = O(m*n)
 class Solution(object):
     def findDiagonalOrder(self, matrix):
         """
@@ -272,6 +282,8 @@ class Solution(object):
 
 # V1''
 # http://bookshadow.com/weblog/2017/02/05/leetcode-diagonal-traverse/
+# time = O(m*n)
+# space = O(m*n)
 class Solution(object):
     def findDiagonalOrder(self, matrix):
         """

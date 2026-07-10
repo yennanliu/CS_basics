@@ -34,6 +34,8 @@ Constraints:
 # CHECK IF THE PRODUCT OF ALL DIGITS IN THE WINDOW [left, i] < k
 # IF NOT, REMOVE CURRENT LEFT, AND DO LEFT ++
 # REPEAT ABOVE PROCESS AND GO THOROUGH ALL ARRAY  
+# time = O(n)
+# space = O(1)
 class Solution:
     def numSubarrayProductLessThanK(self, nums, k):
         # init values
@@ -64,6 +66,8 @@ class Solution:
 # CHECK IF THE PRODUCT OF ALL DIGITS IN THE WINDOW [left, i] < k
 # IF NOT, REMOVE CURRENT LEFT, AND DO LEFT ++
 # REPEAT ABOVE PROCESS AND GO THOROUGH ALL ARRAY  
+# time = O(n)
+# space = O(1)
 class Solution:
     def numSubarrayProductLessThanK(self, nums, k):
         
@@ -83,6 +87,8 @@ class Solution:
 
 # V1'
 # http://bookshadow.com/weblog/2017/10/22/leetcode-subarray-product-less-than-k/
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def numSubarrayProductLessThanK(self, nums, k):
         """
@@ -105,6 +111,8 @@ class Solution(object):
 # V1'
 # IDEA : BINARY SEARCH
 # https://leetcode.com/problems/subarray-product-less-than-k/solution/
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def numSubarrayProductLessThanK(self, nums, k):
         if k == 0: return 0
@@ -123,6 +131,8 @@ class Solution(object):
 # V1''
 # IDEA : SLIDING WINDOW
 # https://leetcode.com/problems/subarray-product-less-than-k/solution/
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def numSubarrayProductLessThanK(self, nums, k):
         if k <= 1: return 0
@@ -136,9 +146,9 @@ class Solution(object):
             ans += right - left + 1
         return ans
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def numSubarrayProductLessThanK(self, nums, k):
         """

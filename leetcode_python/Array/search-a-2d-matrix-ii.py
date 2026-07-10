@@ -43,6 +43,8 @@ All the integers in each column are sorted in ascending order.
 #    row : --------->
 #    cols : ⬇
 #           ⬇    
+# time = O(m + n)
+# space = O(1)
 class Solution:
     def searchMatrix(self, matrix, target):
         if len(matrix) == 0:
@@ -66,6 +68,8 @@ class Solution:
 
 # V0'
 # IDEA : py array op (may not acceptable to interviewer)
+# time = O(m * n)
+# space = O(1)
 class Solution(object):
     def searchMatrix(self, matrix, target):
         # edge case
@@ -82,6 +86,8 @@ class Solution(object):
 
 # V0''
 # IDEA : DFS (brute force)
+# time = O(m * n)
+# space = O(m * n)
 class Solution(object):
     def searchMatrix(self, matrix, target):
         def dfs(matrix, target, x, y):
@@ -107,6 +113,8 @@ class Solution(object):
 
 # V0'''
 # IDEA : BINARY SEARCH
+# time = O(m * log(n))
+# space = O(1)
 class Solution:
     def searchMatrix(self, matrix, target):
 
@@ -129,6 +137,8 @@ class Solution:
 
 # V1
 # SAME AS #74 Search a 2D Matrix
+# time = O(m + n)
+# space = O(1)
 class Solution:
     def searchMatrix(self, matrix, target):
         if len(matrix) == 0:
@@ -159,6 +169,8 @@ assert s.searchMatrix([[_ for _ in range(99)] for _ in range(999)], 2) == True
 # V1'
 # http://bookshadow.com/weblog/2015/07/23/leetcode-search-2d-matrix-ii/
 # IDEA : GO THROUGH THE MATRIX 
+# time = O(m + n)
+# space = O(1)
 class Solution:
     # @param {integer[][]} matrix
     # @param {integer} target
@@ -175,6 +187,8 @@ class Solution:
 # V1''
 # http://bookshadow.com/weblog/2015/07/23/leetcode-search-2d-matrix-ii/
 # IDEA : BINARY SEARCH
+# time = O(m * log(n))
+# space = O(1)
 class Solution:
     # @param {integer[][]} matrix
     # @param {integer} target
@@ -198,6 +212,8 @@ class Solution:
 # V1'''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79459314
 # IDEA : GREEDY 
+# time = O(m * n)
+# space = O(1)
 class Solution(object):
     def searchMatrix(self, matrix, target):
         """
@@ -208,8 +224,8 @@ class Solution(object):
         return any(target in row for row in matrix)
         
 # V2 
-# Time:  O(m + n)
-# Space: O(1)
+# time = O(m + n)
+# space = O(1)
 class Solution(object):
     # @param {integer[][]} matrix
     # @param {integer} target

@@ -33,6 +33,8 @@ Constraints:
 
 # V0
 # IDEA: DIFF ARRAY + PREFIX SUM (GPT)
+# time = O(n + k)
+# space = O(n)
 class Solution(object):
     def getModifiedArray(self, length, updates):
         # ------------------------------------------------------------------
@@ -116,6 +118,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: DIFF ARRAY + PREFIX SUM (GEMINI)
+# time = O(n + k)
+# space = O(n)
 class Solution(object):
     def getModifiedArray(self, length, updates):
         """
@@ -148,6 +152,8 @@ class Solution(object):
 
 # V0
 # IDEA : double loop -> 2 single loops,  prefix sum
+# time = O(n + k)
+# space = O(n)
 class Solution(object):
     def getModifiedArray(self, length, updates):
         # edge case
@@ -174,6 +180,8 @@ class Solution(object):
 
 # V0'
 # IDEA : double loop -> 2 single loops,  prefix sum
+# time = O(n + k)
+# space = O(n)
 class Solution(object):
     def getModifiedArray(self, length, updates):
         # NOTE : we init res with (len+1)
@@ -200,6 +208,8 @@ class Solution(object):
 
 # V0'
 # IDEA : double loop -> 2 single loops,  prefix sum
+# time = O(n + k)
+# space = O(n)
 class Solution(object):
     def getModifiedArray(self, length, updates):
         ret = [0] * (length + 1)
@@ -231,6 +241,8 @@ class Solution(object):
 # V1
 # IDEA : double loop -> 2 single loops,  prefix sum
 # https://leetcode.com/problems/range-addition/discuss/84239/python-code
+# time = O(n + k)
+# space = O(n)
 class Solution(object):
     def getModifiedArray(self, length, updates):
         ret = [0] * (length + 1)
@@ -250,6 +262,8 @@ class Solution(object):
 # Checkpointing updates
 # We store updates at borders including start and end+1. A positive update at start and negative update at end+1.
 # We do a final calculation by taking a cumulative sum.
+# time = O(n + k)
+# space = O(n)
 class Solution(object):
     def getModifiedArray(self, length, updates):
         nums = [0]*length
@@ -264,6 +278,8 @@ class Solution(object):
 
 # V1''
 # https://leetcode.com/problems/range-addition/discuss/846584/Python-O(n-%2B-k)
+# time = O(n + k)
+# space = O(n)
 class Solution:
     def getModifiedArray(self, length, updates):
         result = [0] * (length + 1)
@@ -275,6 +291,8 @@ class Solution:
 
 # V1'''
 # https://leetcode.com/problems/range-addition/discuss/84241/Python-Simple-Solution
+# time = O(n + k)
+# space = O(n)
 class Solution(object):
     def getModifiedArray(self, length, updates):
         nums = [0 for _ in range(length)]
@@ -292,6 +310,8 @@ class Solution(object):
 # IDEA
 # We initialize two dictionaries start and end, which maps the index of the array to the increment value that starts and ends at index, respectively. Then we initialize the result res = [0]*length, and the increment value at the current index Inc = 0. We iterate i in range(length), we modify Inc according to the two dictionaries start and end, and add Inc to res[i]. Finally, we return res.
 # Time complexity: O(length+len(updates)), space complexity: O(length+len(updates)).
+# time = O(n + k)
+# space = O(n + k)
 class Solution:
     def getModifiedArray(self, length, updates):
         
@@ -364,9 +384,9 @@ class Solution:
 # }
 
 
-# V2 
-# Time:  O(k + n)
-# Space: O(1)
+# V2
+# time = O(k + n)
+# space = O(1)
 class Solution(object):
     def getModifiedArray(self, length, updates):
         """

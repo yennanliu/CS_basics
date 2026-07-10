@@ -2,6 +2,8 @@
 
 # V1 
 # http://bookshadow.com/weblog/2018/03/04/leetcode-valid-tic-tac-toe-state/
+# time = O(1)
+# space = O(1)
 class Solution(object):
     def validTicTacToe(self, board):
         """
@@ -23,8 +25,8 @@ class Solution(object):
         return False
         
 # V2 
-# Time:  O(1)
-# Space: O(1)
+# time = O(1)
+# space = O(1)
 class Solution(object):
     def validTicTacToe(self, board):
         """

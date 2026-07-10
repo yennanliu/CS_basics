@@ -52,6 +52,8 @@ moves follow the rules of tic tac toe.
 # V1
 # IDEA : BRUTE FORCE
 # https://leetcode.com/problems/find-winner-on-a-tic-tac-toe-game/solution/
+# time = O(n^2)
+# space = O(n^2)
 class Solution:
     def tictactoe(self, moves: List[List[int]]) -> str:
 
@@ -108,6 +110,8 @@ class Solution:
 # V1'
 # IDEA : RECORD EACH MOVE
 # https://leetcode.com/problems/find-winner-on-a-tic-tac-toe-game/solution/
+# time = O(n^2)
+# space = O(n)
 class Solution:
     def tictactoe(self, moves: List[List[int]]) -> str:
 

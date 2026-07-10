@@ -35,6 +35,8 @@ Constraints:
 
 # V0
 # IDEA : cumsum + dict (Prefix sum)
+# time = O(n)
+# space = O(n)
 class Solution:
     def numberOfSubarrays(self, nums, k):
         d = collections.defaultdict(int)
@@ -72,6 +74,8 @@ class Solution:
 # V1
 # IDEA : cumsum + dict (Prefix sum)
 # https://leetcode.com/problems/count-number-of-nice-subarrays/discuss/868119/python-solution
+# time = O(n)
+# space = O(n)
 class Solution:
     def numberOfSubarrays(self, nums, k):
         d = collections.defaultdict(int)
@@ -92,6 +96,8 @@ class Solution:
 # IDEA :
 # Convert "exact k" to "at most k". O(n) time O(1) space
 # Lee215's way. We are looking for result of "exact k", we can calculate "at most k" first, and final result will be: "exact k" == "atmost k" - "atmost k-1".
+# time = O(n)
+# space = O(1)
 class Solution:
     def numberOfSubarrays(self, nums: List[int], k: int) -> int:
             l=len(nums)
@@ -116,6 +122,8 @@ class Solution:
 # IDEA :
 # Record all odd indexes. O(n) time O(n) space
 # Record indexes of all odd numbers in a deque. If len(que)==k+1, that means we have k+1 odd numbers now, all subarray starting between que[0] and que[1], ending at current index i, are valid sub arrays.
+# time = O(n)
+# space = O(n)
 class Solution:
     def numberOfSubarrays(self, nums: List[int], k: int) -> int:
             res=0
@@ -136,6 +144,8 @@ class Solution:
 # Prefix sum. O(n) time O(n) space
 # Odd number being 1, even number being 0, calculate prefix sum of the whole nums. "visited" is a dictionary, key being prefix, value being the repeating count of that prefix.
 # Prefix sum is an increasing sequence, so visited[p] will always represent the prefix happened before current index.
+# time = O(n)
+# space = O(n)
 class Solution:
     def numberOfSubarrays(self, nums: List[int], k: int) -> int:
             res=cursum=0
@@ -149,6 +159,8 @@ class Solution:
 
 # V1'''''''''
 # https://leetcode.com/problems/count-number-of-nice-subarrays/discuss/421157/Simple-Python-solution
+# time = O(n)
+# space = O(n)
 class Solution:
     def numberOfSubarrays(self, nums, k):
         memo = {0:-1}
@@ -166,6 +178,8 @@ class Solution:
 # https://leetcode.com/problems/count-number-of-nice-subarrays/discuss/421003/Python-straightforward-solution
 # https://leetcode-cn.com/problems/count-number-of-nice-subarrays/
 # IDEA :  Straightforward Solution: similar to the idea in the solution for 828. Unique Letter String
+# time = O(n)
+# space = O(n)
 class Solution:
     def numberOfSubarrays(self, nums, k):
             lst = [-1]
@@ -181,6 +195,8 @@ class Solution:
 
 # V1''''''''''
 # https://leetcode.com/problems/count-number-of-nice-subarrays/discuss/420390/Simple-Python-Solution
+# time = O(n)
+# space = O(n)
 class Solution:
     def numberOfSubarrays(self, nums, k) :
         odd = [i for i in range(len(nums)) if nums[i] % 2 == 1]
@@ -194,6 +210,8 @@ class Solution:
 # V1'''''''''''
 # IDEA : AT MOST
 # https://leetcode.com/problems/count-number-of-nice-subarrays/discuss/419378/JavaC%2B%2BPython-Sliding-Window-O(1)-Space
+# time = O(n)
+# space = O(1)
 class Solution:
     def numberOfSubarrays(self, A, k):
         def atMost(k):
@@ -211,6 +229,8 @@ class Solution:
 # V1''''''''''''
 # IDEA : ONE PASS
 # https://leetcode.com/problems/count-number-of-nice-subarrays/discuss/419378/JavaC%2B%2BPython-Sliding-Window-O(1)-Space
+# time = O(n)
+# space = O(1)
 class Solution:
     def numberOfSubarrays(self, A, k):
         i = count = res = 0
@@ -227,6 +247,8 @@ class Solution:
 
 # V1''''''''''''''
 # https://littlebees.github.io/2021/08/leetcode-1248/
+# time = O(n)
+# space = O(1)
 class Solution:
     def numberOfSubarrays(self, nums: List[int], k: int) -> int:
         def atmost(limit):
@@ -244,6 +266,8 @@ class Solution:
 
 # V1'''''''''''''''
 # https://littlebees.github.io/2021/08/leetcode-1248/
+# time = O(n)
+# space = O(1)
 class Solution:
     def numberOfSubarrays(self, A, k):
         i = count = res = 0

@@ -1,4 +1,6 @@
 # V0
+# time = O(n log n)
+# space = O(n)
 class Solution:
     def sortArrayByParityII(self, A):
         """
@@ -13,8 +15,10 @@ class Solution:
             res.append(A[N - 1 - i])
         return res
         
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/83045735
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def sortArrayByParityII(self, A):
         """
@@ -33,8 +37,10 @@ class Solution(object):
             iseven = not iseven
         return res
 
-# V1'  
+# V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/83045735
+# time = O(n log n)
+# space = O(n)
 class Solution:
     def sortArrayByParityII(self, A):
         """
@@ -49,8 +55,10 @@ class Solution:
             res.append(A[N - 1 - i])
         return res
 
-# V1'' 
+# V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/83045735
+# time = O(n)
+# space = O(n)
 class Solution:
     def sortArrayByParityII(self, A):
         """
@@ -69,9 +77,9 @@ class Solution:
                 even += 2
         return res
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def sortArrayByParityII(self, A):
         """

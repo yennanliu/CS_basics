@@ -3,6 +3,8 @@
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/82820204
 # IDEA : GREEDY 
+# time = O(n^2)
+# space = O(n)
 class MyCalendarTwo(object):
 
     def __init__(self):
@@ -31,9 +33,9 @@ class MyCalendarTwo(object):
 # obj = MyCalendarTwo()
 # param_1 = obj.book(start,end)
 
-# V2 
-# Time:  O(n^2)
-# Space: O(n)
+# V2
+# time = O(n^2)
+# space = O(n)
 class MyCalendarTwo(object):
 
     def __init__(self):

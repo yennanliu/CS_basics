@@ -38,6 +38,8 @@ All the values of nums are unique.
 
 # V0
 # IDEA : UNION FIND
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def arrayNesting(self, nums):
         def search(idx):
@@ -57,6 +59,8 @@ class Solution(object):
 # V1
 # IDEA : UNION FIND
 # http://bookshadow.com/weblog/2017/05/28/leetcode-array-nesting/
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def arrayNesting(self, nums):
         """
@@ -80,6 +84,8 @@ class Solution(object):
 # V1'
 # IDEA : UNION FIND
 # https://blog.csdn.net/fuxuemingzhu/article/details/79460546
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def arrayNesting(self, nums):
         """
@@ -101,6 +107,8 @@ class Solution(object):
 # V1''
 # IDEA : UNION FIND
 # https://leetcode.com/problems/array-nesting/discuss/209108/Python-solution
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def arrayNesting(self, nums):
         seen = [0]*len(nums)
@@ -119,6 +127,8 @@ class Solution(object):
 # V1'''
 # IDEA : optimzied (we don't need extra space for seen, just make nums[idx] as -1)
 # https://leetcode.com/problems/array-nesting/discuss/209108/Python-solution
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def arrayNesting(self, nums):
         res = 0
@@ -137,6 +147,8 @@ class Solution(object):
 # V1''''
 # IDEA : UNION FIND
 # https://leetcode.com/problems/array-nesting/discuss/1439139/AA-Python-solution
+# time = O(n)
+# space = O(n)
 class Solution:
     def arrayNesting(self, nums):
         res = 0
@@ -158,6 +170,8 @@ class Solution:
 
 # V1'''''
 # https://leetcode.com/problems/array-nesting/discuss/314782/python
+# time = O(n)
+# space = O(n)
 class Solution:
     def arrayNesting(self, nums):
         res = 0
@@ -239,9 +253,9 @@ class Solution:
 #     }
 # }
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def arrayNesting(self, nums):
         """

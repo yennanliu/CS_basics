@@ -50,6 +50,8 @@ The squares labeled 1 and n2 do not have any ladders or snakes.
 # V0
 # IDEA : BFS + Matrix op
 # https://www.youtube.com/watch?v=6lH4nO3JfLk
+# time = O(n^2)
+# space = O(n^2)
 class Solution(object):
     def snakesAndLadders(self, board):
         length = len(board)
@@ -87,6 +89,8 @@ class Solution(object):
 
 # V0
 # IDEA : BFS
+# time = O(n^2)
+# space = O(n^2)
 class Solution(object):
     def snakesAndLadders(self, board):
         """
@@ -122,6 +126,8 @@ class Solution(object):
 # V1
 # IDEA : BFS + Matrix op
 # https://www.youtube.com/watch?v=6lH4nO3JfLk
+# time = O(n^2)
+# space = O(n^2)
 class Solution(object):
     def snakesAndLadders(self, board):
         length = len(board)
@@ -160,6 +166,8 @@ class Solution(object):
 # V1'
 # IDEA : BFS
 # http://us.jiuzhang.com/solution/snakes-and-ladders/#tag-highlight-lang-python
+# time = O(n^2)
+# space = O(n^2)
 class Solution(object):
     def snakesAndLadders(self, board):
         N = len(board)
@@ -233,9 +241,9 @@ class Solution(object):
 # V1''''
 # https://www.cnblogs.com/grandyang/p/11342652.html
 
-# V2 
-# Time:  O(n^2)
-# Space: O(n^2)
+# V2
+# time = O(n^2)
+# space = O(n^2)
 import collections
 class Solution(object):
     def snakesAndLadders(self, board):

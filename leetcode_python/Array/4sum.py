@@ -30,7 +30,9 @@ Constraints:
 
 """
 
-# V0 
+# V0
+# time = O(n^3)
+# space = O(1)
 class Solution(object):
     def fourSum(self, nums, target):
         resultList = []
@@ -56,6 +58,8 @@ class Solution(object):
 # https://leetcode.com/problems/4sum/discuss/164105/Python-solution
 # IDEA : BREAK DOWN + 2 SUM
 # First sort the array, loop over the first two indices i & j, and the problem reduces to the 2Sum problem, i.e., finding two indices k & l such that nums[k]+nums[l] == target - nums[i] - nums[j], which takes O(N) time. The total time complexity is then O(N^3).
+# time = O(n^3)
+# space = O(1)
 class Solution(object):
     def fourSum(self, nums, target):
         N = len(nums)
@@ -91,6 +95,8 @@ class Solution(object):
 # V1'
 # https://leetcode.com/problems/4sum/solution/
 # IDEA : HASH SET
+# time = O(n^3)
+# space = O(n)
 class Solution:
     def fourSum(self, nums, target):
     
@@ -139,6 +145,8 @@ class Solution:
 # V1''
 # https://leetcode.com/problems/4sum/solution/
 # IDEA : Two Pointers
+# time = O(n^3)
+# space = O(n)
 class Solution:
     def fourSum(self, nums, target):
     
@@ -192,6 +200,8 @@ class Solution:
 # V1'''
 # https://leetcode.com/problems/4sum/discuss/8604/Python-solution-with-detailed-explanation
 # IDEA : BREAK DOWN + 3 SUM
+# time = O(n^3)
+# space = O(1)
 class Solution(object):
     def fourSum(self, nums, target):
         """
@@ -224,6 +234,8 @@ class Solution(object):
 # V1''''' 
 # https://blog.csdn.net/qqxx6661/article/details/77104868
 # IDEA : DOUBLE POINTER 
+# time = O(n^3)
+# space = O(1)
 class Solution(object):
     def fourSum(self, nums, target):
         """
@@ -253,6 +265,8 @@ class Solution(object):
 # V1''''' 
 # https://blog.csdn.net/qqxx6661/article/details/77104868
 # IDEA : DOUBLE POINTER  + HASH TABLE 
+# time = O(n^2)
+# space = O(n^2)
 class Solution(object):
     def fourSum(self, nums, target):
         """
@@ -281,6 +295,8 @@ class Solution(object):
 # V1'''''' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/83543296
 # IDEA : K SUM
+# time = O(n^3)
+# space = O(1)
 class Solution(object):
     def fourSum(self, nums, target):
         """
@@ -321,6 +337,8 @@ class Solution(object):
 
 # V1'''''''' 
 # https://www.jiuzhang.com/solution/4sum/#tag-highlight-lang-python
+# time = O(n^3)
+# space = O(1)
 class Solution(object):
     def fourSum(self, nums, target):
         nums.sort()
@@ -349,9 +367,9 @@ class Solution(object):
                         left += 1
         return res
 
-# V2 
-# Time:  O(n^3)
-# Space: O(1)
+# V2
+# time = O(n^3)
+# space = O(1)
 import collections
 # Two pointer solution. (1356ms)
 class Solution(object):
@@ -386,8 +404,8 @@ class Solution(object):
                         left += 1
         return res
 
-# Time:  O(n^2 * p)
-# Space: O(n^2 * p)
+# time = O(n^2 * p)
+# space = O(n^2 * p)
 # Hash solution. (224ms)
 import collections
 class Solution2(object):
@@ -420,8 +438,8 @@ class Solution2(object):
                                 result.append(quad)
         return result
 
-# Time:  O(n^2 * p) ~ O(n^4)
-# Space: O(n^2)
+# time = O(n^2 * p) ~ O(n^4)
+# space = O(n^2)
 import collections
 class Solution3(object):
     def fourSum(self, nums, target):

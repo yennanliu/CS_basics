@@ -38,6 +38,8 @@ Can you solve the problem in linear runtime complexity?
 
 # V0
 # IDEA : Counter
+# time = O(n)
+# space = O(n)
 from collections import Counter
 class Solution(object):
     def findDuplicate(self, nums):
@@ -51,6 +53,8 @@ class Solution(object):
 
 # V0
 # IDEA : DICT
+# time = O(n)
+# space = O(n)
 class Solution:
     def findDuplicate(self, nums):
         seen = dict()
@@ -61,8 +65,10 @@ class Solution:
                 if num not in seen:
                     seen[num] = 1
 
-# V0' 
+# V0'
 # IDEA : SET
+# time = O(n)
+# space = O(n)
 class Solution:
     def findDuplicate(self, nums):
         seen = set()
@@ -74,6 +80,8 @@ class Solution:
 # V1
 # https://leetcode.com/articles/find-the-duplicate-number/
 # IDEA : Sorting
+# time = O(n log n)
+# space = O(1)
 class Solution:
     def findDuplicate(self, nums):
         nums.sort()
@@ -84,6 +92,8 @@ class Solution:
 # V1'
 # https://leetcode.com/articles/find-the-duplicate-number/
 # IDEA : SET
+# time = O(n)
+# space = O(n)
 class Solution:
     def findDuplicate(self, nums):
         seen = set()
@@ -98,6 +108,8 @@ class Solution:
 # IDEA : 
 #   -> TRANSFORM THE PROBLEM INTO "142 Linked List Cycle II"
 #   -> SO NOW the problem is to find the entrance of the cycle (cycle linked list)
+# time = O(n)
+# space = O(1)
 class Solution:
     def findDuplicate(self, nums):
         # Find the intersection point of the two runners.
@@ -118,6 +130,8 @@ class Solution:
 
 # V1'''
 # http://bookshadow.com/weblog/2015/09/28/leetcode-find-duplicate-number/
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def findDuplicate(self, nums):
         # The "tortoise and hare" step.  We start at the end of the array and try
@@ -148,6 +162,8 @@ class Solution(object):
 # V1''''
 # http://bookshadow.com/weblog/2015/09/28/leetcode-find-duplicate-number/
 # IDEA : Binary Search）+ Pigeonhole Principle
+# time = O(n log n)
+# space = O(1)
 class Solution(object):
     def findDuplicate(self, nums):
         """
@@ -167,6 +183,8 @@ class Solution(object):
 # V1'''''
 # https://www.hrwhisper.me/leetcode-find-the-duplicate-number/
 # IDEA : BINARY SEARCH
+# time = O(n log n)
+# space = O(1)
 class Solution(object):
     def findDuplicate(self, nums):
         """
@@ -187,6 +205,8 @@ class Solution(object):
 # V1''''''
 # https://www.hrwhisper.me/leetcode-find-the-duplicate-number/
 # IDEA : TWO POINTERS
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def findDuplicate(self, nums):
         """

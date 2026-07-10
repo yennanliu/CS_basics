@@ -30,6 +30,8 @@ The diagonal "[1, 2]" has different elements.
 """
 
 # V0 
+# time = O(m*n)
+# space = O(1)
 class Solution(object):
     def isToeplitzMatrix(self, matrix):
         m, n = len(matrix), len(matrix[0])
@@ -41,6 +43,8 @@ class Solution(object):
 
 # V1 
 # https://blog.csdn.net/mario_mmh/article/details/79940837
+# time = O(m*n)
+# space = O(1)
 class Solution(object):
     def isToeplitzMatrix(self, matrix):
         """
@@ -57,6 +61,8 @@ class Solution(object):
 
 # V1' 
 # http://bookshadow.com/weblog/2018/01/21/leetcode-toeplitz-matrix/
+# time = O(m*n)
+# space = O(m+n)
 class Solution(object):
     def isToeplitzMatrix(self, matrix):
         """
@@ -74,8 +80,8 @@ class Solution(object):
 # V1''
 # https://leetcode.com/problems/toeplitz-matrix/solution/
 # IDEA : GROUP BY CATEGORY
-# Time Complexity: O(M*N)
-# Space Complexity: O(M+N)
+# time = O(m*n)
+# space = O(m+n)
 class Solution(object):
     def isToeplitzMatrix(self, matrix):
         groups = {}
@@ -90,8 +96,8 @@ class Solution(object):
 # V1'''
 # https://leetcode.com/problems/toeplitz-matrix/solution/
 # IDEA :  Compare With Top-Left Neighbor
-# Time Complexity: O(M*N)
-# Space Complexity: O(1)
+# time = O(m*n)
+# space = O(1)
 class Solution(object):
     def isToeplitzMatrix(self, matrix):
         return all(r == 0 or c == 0 or matrix[r-1][c-1] == val
@@ -99,8 +105,8 @@ class Solution(object):
                    for c, val in enumerate(row))
 
 # V2 
-# Time:  O(m * n)
-# Space: O(1)
+# time = O(m*n)
+# space = O(1)
 class Solution(object):
     def isToeplitzMatrix(self, matrix):
         """

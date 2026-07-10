@@ -2,6 +2,8 @@
 
 # V1 
 # https://blog.csdn.net/u014688145/article/details/78950488
+# time = O(V * n)
+# space = O(1)
 class Solution(object):
     def pourWater(self, a, V, K):
     """
@@ -33,9 +35,9 @@ class Solution(object):
             a[K] += 1
     return a
 
-# V2 
-# Time:  O(v * n)
-# Space: O(1)
+# V2
+# time = O(v * n)
+# space = O(1)
 class Solution(object):
     def pourWater(self, heights, V, K):
         """

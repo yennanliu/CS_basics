@@ -38,6 +38,8 @@ Follow up: Could you implement a solution that runs in O(n) time complexity and 
 # IDEA : MAINTAIN var first, second
 #        AND GO THROUGH nums to check if there exists x (on the right hand side of a, b )
 #        such that x > second > first
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def increasingTriplet(self, nums):
         """
@@ -70,6 +72,8 @@ class Solution(object):
 # a = 5, x = 4, b = 0
 # a = 4, x = 6, b = 0
 # >>>
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def increasingTriplet(self, nums):
         ### NOTE : here we maintain a, b
@@ -86,6 +90,8 @@ class Solution(object):
 
 # V0'
 # IDEA : brute force + 2 pointers : TLE
+# time = O(n^3)
+# space = O(1)
 class Solution(object):
     def increasingTriplet(self, nums):
         # edge case
@@ -104,6 +110,8 @@ class Solution(object):
 # V1
 # IDEA : LINEAR SCAN
 # https://leetcode.com/problems/increasing-triplet-subsequence/solution/
+# time = O(n)
+# space = O(1)
 class Solution:
     def increasingTriplet(self, nums: List[int]) -> bool:
         first_num = float("inf")
@@ -129,6 +137,8 @@ class Solution:
 # STEP 3) elif b is None or b >= n ----> b = n
 # STEP 3) or, return True
 # STEP 4) return False 
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def increasingTriplet(self, nums):
         """
@@ -147,6 +157,8 @@ class Solution(object):
 
 # V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79826703
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def increasingTriplet(self, nums):
         """
@@ -164,8 +176,8 @@ class Solution(object):
         return False
 
 # V2 
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 import bisect
 class Solution(object):
     def increasingTriplet(self, nums):
@@ -183,8 +195,8 @@ class Solution(object):
                 return True
         return False
 
-# Time:  O(n * logk)
-# Space: O(k)
+# time = O(n * logk)
+# space = O(k)
 # Generalization of k-uplet.
 class Solution_Generalization(object):
     def increasingTriplet(self, nums):

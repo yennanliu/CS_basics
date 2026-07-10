@@ -30,6 +30,8 @@ Constraints:
 
 # V0
 # IDEA : BRUTE FORCE (GREEDY) + 2 POINTERS
+# time = O(n^2)
+# space = O(1)
 class Solution:
     def findLengthOfLCIS(self, nums):
         if len(nums) <= 1:
@@ -58,7 +60,9 @@ class Solution:
 # so we just have to start from 2 instead  
 # elment =  2  (the second "2" in the nums)
 # ..
-# .. 
+# ..
+# time = O(n)
+# space = O(1)
 class Solution:
     def findLengthOfLCIS(self, nums):
         """
@@ -79,7 +83,9 @@ class Solution:
         return result
 
 # V0'
-# IDEA : GREEDY 
+# IDEA : GREEDY
+# time = O(n^2)
+# space = O(1)
 class Solution(object):
     def findLengthOfLCIS(self, nums):
         if not nums: return 0
@@ -98,7 +104,9 @@ class Solution(object):
         return count 
 
 # V0''
-# IDEA : DP 
+# IDEA : DP
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def findLengthOfLCIS(self, nums):
         """
@@ -116,7 +124,9 @@ class Solution(object):
 # V1
 # http://bookshadow.com/weblog/2017/09/10/leetcode-longest-continuous-increasing-subsequence/
 # https://www.polarxiong.com/archives/LeetCode-674-longest-continuous-increasing-subsequence.html
-# IDEA : GREEDY 
+# IDEA : GREEDY
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def findLengthOfLCIS(self, nums):
         """
@@ -136,7 +146,9 @@ class Solution(object):
 
 # V1' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79220527
-# IDEA : DP 
+# IDEA : DP
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def findLengthOfLCIS(self, nums):
         """
@@ -153,7 +165,9 @@ class Solution(object):
 
 # V1'' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79220527
-# IDEA : DP WITH SPACE OPTIMIZATION 
+# IDEA : DP WITH SPACE OPTIMIZATION
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def findLengthOfLCIS(self, nums):
         """
@@ -170,8 +184,10 @@ class Solution(object):
                 cur = 1
         return longest
 
-# V1'''  
+# V1'''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79220527
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def findLengthOfLCIS(self, nums):
         """
@@ -191,8 +207,8 @@ class Solution(object):
         return res
 
 # V2
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def findLengthOfLCIS(self, nums):
         """

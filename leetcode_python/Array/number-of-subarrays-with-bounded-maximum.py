@@ -1,8 +1,10 @@
 # V0
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/82708723
-# IDEA : DP 
+# IDEA : DP
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def numSubarrayBoundedMax(self, A, L, R):
         """
@@ -24,9 +26,11 @@ class Solution(object):
                 dp[i] = i - prev
         return sum(dp)
 
-# V1' 
+# V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/82708723
 # IDEA : DP
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def numSubarrayBoundedMax(self, A, L, R):
         """
@@ -59,6 +63,8 @@ class Solution(object):
         :type R: int
         :rtype: int
         """
+        # time = O(n)
+        # space = O(n)
         ans = lastIdx = 0
         for i, x in enumerate(A + [10**10]):
             if x > R:
@@ -72,6 +78,8 @@ class Solution(object):
         :type L: int
         :rtype: int
         """
+        # time = O(n)
+        # space = O(1)
         ans = lastIdx = 0
         for i, x in enumerate(A):
             if x >= L:
@@ -80,8 +88,8 @@ class Solution(object):
         return ans
         
 # V2
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def numSubarrayBoundedMax(self, A, L, R):
         """

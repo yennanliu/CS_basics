@@ -45,6 +45,8 @@ Follow up: Can you find an O(n) solution?
 
 # V0
 # IDEA : COLLECTIONS 
+# time = O(n)
+# space = O(n)
 from collections import Counter
 class Solution(object):
     def thirdMax(self, nums):
@@ -57,6 +59,8 @@ class Solution(object):
 
 # V0'
 # IDEA : COLLECTIONS 
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def thirdMax(self, nums):
         import collections 
@@ -68,8 +72,8 @@ class Solution(object):
 
 # V0''
 # IDEA : COLLECTIONS 
-# TIME COMPLEXITY : O(N)
-# SPACE COMPLEXITY : O(N)
+# time = O(n)
+# space = O(n)
 # collections.Counter time complexity 
 # https://stackoverflow.com/questions/42461840/what-is-the-time-complexity-of-collections-counter-in-python
 class Solution(object):
@@ -82,6 +86,8 @@ class Solution(object):
 
 # V0''''
 # IDEA : SET 
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def thirdMax(self, nums):
         nums_set = set(nums)
@@ -93,6 +99,8 @@ class Solution(object):
         return _max
 
 # V0''
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def thirdMax(self, nums):
         # s1 > s2 > s3
@@ -110,6 +118,8 @@ class Solution(object):
 # https://blog.csdn.net/fuxuemingzhu/article/details/79255652
 # http://bookshadow.com/weblog/2016/10/09/leetcode-third-maximum-number/
 # IDEA : 3 VARIABLES 
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def thirdMax(self, nums):
         """
@@ -141,6 +151,8 @@ assert s.thirdMax([1,1,1,1,1]) == 1
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79255652
 # IDEA : REPLACE MAX 
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def thirdMax(self, nums):
         """
@@ -161,6 +173,8 @@ class Solution(object):
 # V1'' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79255652
 # IDEA : SET 
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def thirdMax(self, nums):
         """
@@ -176,8 +190,8 @@ class Solution(object):
         return _max
         
 # V2 
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def thirdMax(self, nums):
         """

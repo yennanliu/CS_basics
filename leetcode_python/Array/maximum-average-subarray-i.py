@@ -1,5 +1,5 @@
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 
 # Given an array consisting of n integers,
 # find the contiguous subarray of given length k that has the maximum average value.
@@ -25,6 +25,8 @@
 # V1
 # http://bookshadow.com/weblog/2017/07/16/leetcode-maximum-average-subarray-i/
 # IDEA : SLIDING WINDOW 
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def findMaxAverage(self, nums, k):
         """
@@ -42,6 +44,8 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/maximum-average-subarray/#tag-highlight-lang-python
+# time = O(n)
+# space = O(n)
 class Solution:
     """
     @param nums: an array
@@ -60,8 +64,8 @@ class Solution:
         return ans * 1.0 / k
 
 # V2 
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def findMaxAverage(self, nums, k):
         """

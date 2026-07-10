@@ -2,6 +2,8 @@
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/82914423
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def partitionDisjoint(self, A):
         """
@@ -20,6 +22,8 @@ class Solution(object):
 
 # V1'
 # https://blog.csdn.net/xx_123_1_rj/article/details/82949858
+# time = O(n)
+# space = O(1)
 class Solution:
     def partitionDisjoint(self, A):
 
@@ -39,9 +43,9 @@ class Solution:
 
         return res
 
-# V2 
-# Time:  O(n)
-# Space: O(n)
+# V2
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def partitionDisjoint(self, A):
         """

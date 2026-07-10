@@ -2,6 +2,8 @@
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/80643250
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def maxDistToClosest(self, seats):
         """
@@ -26,6 +28,8 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/maximize-distance-to-closest-person/#tag-highlight-lang-python
+# time = O(n)
+# space = O(1)
 class Solution:
     """
     @param seats: an array
@@ -41,8 +45,8 @@ class Solution:
         return max(res, len(seats) - i)
 
 # V2 
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def maxDistToClosest(self, seats):
         """

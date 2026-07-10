@@ -32,6 +32,8 @@ Follow up: Could you optimize your algorithm to use only O(rowIndex) extra space
 """
 
 # V0
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def getRow(self, rowIndex):
         # edge case
@@ -49,6 +51,8 @@ class Solution(object):
         return res
 
 # V0
+# time = O(n^2)
+# space = O(n^2)
 class Solution(object):
     def getRow(self, rowIndex):
         init = [[1], [1,1]]
@@ -62,7 +66,9 @@ class Solution(object):
             init.append(_tmp)
         return init[-1]
 
-# V0 
+# V0
+# time = O(n^2)
+# space = O(n^2)
 class Solution(object):
     def getRow(self, rowIndex):
         res = [[1 for j in range(i + 1)] for i in range(rowIndex + 1)]
@@ -73,6 +79,8 @@ class Solution(object):
 
 # V0'
 # a bit different in index init
+# time = O(n^2)
+# space = O(n^2)
 class Solution(object):
     def getRow(self, rowIndex):
         res = [[1 for j in range(i + 1)] for i in range(rowIndex + 1)]
@@ -82,6 +90,8 @@ class Solution(object):
         return res[-1]
 
 # V0''
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def getRow(self, rowIndex):
         """
@@ -104,6 +114,8 @@ class Solution(object):
 #  +  0 1 3 3 1
 # ------------------
 #  =  1 4 6 4 1
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def getRow(self, rowIndex):
         """
@@ -128,6 +140,8 @@ assert s.getRow(4) == [1,4,6,4,1]
 # V1' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/51348629
 # IDEA : CALCULATE WHOLE PASCALS TRIANGLE AND GET THE LAST ONE
+# time = O(n^2)
+# space = O(n^2)
 class Solution(object):
     def getRow(self, rowIndex):
         """
@@ -142,7 +156,9 @@ class Solution(object):
 
 # V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/51348629
-# IDEA : ONLY THE Nth LAYER OF PASCALS TRIANGLE 
+# IDEA : ONLY THE Nth LAYER OF PASCALS TRIANGLE
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def getRow(self, rowIndex):
         """
@@ -163,6 +179,8 @@ class Solution(object):
 # -> C(n, m) = C(n, m-1) * (n-m+1) / m
 # and we can use below property reduce half of computation 
 # C(n, m) == C(n, n-m)
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def getRow(self, rowIndex):
         """
@@ -174,9 +192,9 @@ class Solution(object):
             res[i] = res[rowIndex-i] = res[i-1] * (rowIndex-i+1) / i
         return res
 
-# V2 
-# Time:  O(n^2)
-# Space: O(1)
+# V2
+# time = O(n^2)
+# space = O(1)
 class Solution(object):
     # @return a list of integers
     def getRow(self, rowIndex):
@@ -187,6 +205,8 @@ class Solution(object):
                 old, result[j] = result[j], old + result[j]
         return result
 
+    # time = O(n^2)
+    # space = O(n)
     def getRow2(self, rowIndex):
         """
         :type rowIndex: int
@@ -197,6 +217,8 @@ class Solution(object):
             row = [x + y for x, y in zip([0] + row, row + [0])]
         return row
 
+    # time = O(n^2)
+    # space = O(n)
     def getRow3(self, rowIndex):
         """
         :type rowIndex: int
@@ -217,8 +239,8 @@ class Solution(object):
             res = add(res)
         return res
 
-# Time:  O(n^2)
-# Space: O(n)
+# time = O(n^2)
+# space = O(n)
 class Solution2(object):
     # @return a list of integers
     def getRow(self, rowIndex):

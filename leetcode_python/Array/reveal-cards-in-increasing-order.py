@@ -2,6 +2,8 @@
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/84728767
+# time = O(n log n)
+# space = O(n)
 import collections
 class Solution(object):
     def deckRevealedIncreasing(self, deck):
@@ -21,6 +23,8 @@ class Solution(object):
 
 # V1'
 # https://www.cnblogs.com/seyjs/p/10058367.html
+# time = O(n ^ 2)
+# space = O(n)
 class Solution(object):
     def deckRevealedIncreasing(self, deck):
         """
@@ -39,8 +43,8 @@ class Solution(object):
         return res
         
 # V2 
-# Time:  O(n)
-# Space: O(n)
+# time = O(n)
+# space = O(n)
 import collections
 class Solution(object):
     def deckRevealedIncreasing(self, deck):

@@ -32,6 +32,8 @@ n == matrix.length == matrix[i].length
 
 # V0
 # IDEA : TRANSPOSE (i,j -> j,i) -> REVERSE 
+# time = O(n^2)
+# space = O(1)
 class Solution(object):
     def rotate(self, matrix):
         # edge case
@@ -82,6 +84,8 @@ class Solution(object):
 
 # V0'
 # IDEA : TRANSPOSE (i,j -> j,i) -> REVERSE 
+# time = O(n^2)
+# space = O(1)
 class Solution:
     def rotate(self, matrix):
         ### NOTE !!! the ordering : transpose -> reverse
@@ -109,6 +113,8 @@ assert s.rotate([[[],[]]]) == [[[],[]]]
 # V1 
 # https://www.cnblogs.com/zuoyuan/p/3772978.html
 # IDEA : TRANSPOSE -> REVERSE 
+# time = O(n^2)
+# space = O(1)
 class Solution:
     # @param matrix, a list of lists of integers
     # @return a list of lists of integers
@@ -123,6 +129,8 @@ class Solution:
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79451733
+# time = O(n^2)
+# space = O(1)
 class Solution(object):
     def rotate(self, matrix):
         """
@@ -140,8 +148,8 @@ class Solution(object):
                     matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
 
 # V2 
-# Time:  O(n^2)
-# Space: O(1)
+# time = O(n^2)
+# space = O(1)
 class Solution(object):
     # @param matrix, a list of lists of integers
     # @return a list of lists of integers
@@ -160,8 +168,8 @@ class Solution(object):
 
         return matrix
 
-# Time:  O(n^2)
-# Space: O(n^2)
+# time = O(n^2)
+# space = O(n^2)
 class Solution2(object):
     # @param matrix, a list of lists of integers
     # @return a list of lists of integers

@@ -2,6 +2,8 @@
 
 # V1 
 # http://bookshadow.com/weblog/2017/03/05/leetcode-lonely-pixel-ii/
+# time = O(m * n)
+# space = O(m * n)
 class Solution(object):
     def findBlackPixel(self, picture, N):
         """
@@ -33,9 +35,9 @@ class Solution(object):
                             ans += 1
         return ans
 
-# V2 
-# Time:  O(m * n)
-# Space: O(m * n)
+# V2
+# time = O(m * n)
+# space = O(m * n)
 import collections
 class Solution(object):
     def findBlackPixel(self, picture, N):

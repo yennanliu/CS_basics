@@ -43,6 +43,8 @@ In this question, we represent the board using a 2D array. In principle, the boa
 """
 
 # V0
+# time = O(m*n)
+# space = O(m*n)
 class Solution:
     def gameOfLife(self, board: List[List[int]]) -> None:
         """
@@ -85,6 +87,8 @@ class Solution:
 # https://leetcode.com/problems/game-of-life/solution/
 #Time Complexity: O(M×N), where MM is the number of rows and NN is the number of columns of the Board.
 #Space Complexity: O(M×N), MM is the number of rows and NN is the number of columns of the Board. This is the space occupied by the copy board we created initially.
+# time = O(m*n)
+# space = O(m*n)
 class Solution:
     def gameOfLife(self, board):
         """
@@ -134,6 +138,8 @@ assert s.gameOfLife([[1,1,1]]) == [[0,1,0]]
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/82809923
 # IDEA : GREEDY 
+# time = O(m*n)
+# space = O(m*n)
 class Solution(object):
     def gameOfLife(self, board):
         """
@@ -174,6 +180,8 @@ class Solution(object):
 # https://leetcode.com/problems/game-of-life/solution/
 #Time Complexity: O(M×N), where MM is the number of rows and NN is the number of columns of the Board.
 #Space Complexity: O(1)
+# time = O(m*n)
+# space = O(1)
 class Solution:
     def gameOfLife(self, board: List[List[int]]) -> None:
         """
@@ -221,6 +229,8 @@ class Solution:
 # V1'''
 # http://bookshadow.com/weblog/2015/10/04/leetcode-game-life/
 # IDEA : BIT MANIPULATION 
+# time = O(m*n)
+# space = O(1)
 class Solution(object):
     def gameOfLife(self, board):
         """
@@ -246,8 +256,8 @@ class Solution(object):
         return board[x][y] & 1
 
 # V2 
-# Time:  O(m * n)
-# Space: O(1)
+# time = O(m * n)
+# space = O(1)
 class Solution(object):
     def gameOfLife(self, board):
         """
