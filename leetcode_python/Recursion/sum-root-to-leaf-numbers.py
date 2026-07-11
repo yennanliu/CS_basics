@@ -57,9 +57,77 @@ class Solution(object):
         pass
         
 # V0-1
+# IDEA: DFS + PATH (gpt)
+class Solution(object):
+    def sumNumbers(self, root):
+        self.res = 0
+        self.helper(root, [])
+        return self.res
+
+    def helper(self, root, path):
+        if not root:
+            return
+
+        path.append(root.val)
+
+        if not root.left and not root.right:
+            val = "".join(map(str, path))
+            self.res += int(val)
+            path.pop()          # backtrack before returning
+            return
+
+        self.helper(root.left, path)
+        self.helper(root.right, path)
+
+        path.pop()              # backtrack
 
 
 # V0-2
+# IDEA: DFS (gpt)
+class Solution(object):
+    def sumNumbers(self, root):
+        return self.helper(root, 0)
+
+    def helper(self, root, curr):
+        if not root:
+            return 0
+
+        curr = curr * 10 + root.val
+
+        if not root.left and not root.right:
+            return curr
+
+        return self.helper(root.left, curr) + self.helper(root.right, curr)
+
+
+
+# V0-3
+# IDEA: DFS + PATH (GEMINI)
+class Solution(object):
+    def sumNumbers(self, root):
+        self.res = 0
+        self.helper(root, [])
+        return self.res
+        
+    def helper(self, root, path):
+        if not root:
+            return 
+            
+        # 1. Append as string so "".join() works later
+        path.append(str(root.val))
+        
+        if not root.left and not root.right:
+            val = "".join(path)
+            self.res += int(val)
+            # 2. MUST backtrack before our early return!
+            path.pop()
+            return
+            
+        self.helper(root.left, path)
+        self.helper(root.right, path)
+        
+        # backtrack (undo) for non-leaf nodes
+        path.pop()
 
 
 # V0
