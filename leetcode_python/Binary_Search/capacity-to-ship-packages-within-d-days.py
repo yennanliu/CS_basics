@@ -51,6 +51,42 @@ Constraints:
 
 # V0
 # IDEA : BINARY SEARCH
+class Solution(object):
+    def shipWithinDays(self, weights, days):
+        l = max(weights)
+        r = sum(weights)
+
+        res = r
+
+        while l <= r:
+            mid = l + (r - l) // 2
+
+            cnt = self.can_ship(weights, mid)
+
+            if cnt <= days:
+                res = mid
+                r = mid - 1
+            else:
+                l = mid + 1
+
+        return res
+
+    def can_ship(self, weights, capacity):
+        cnt = 1
+        cur_weight = 0
+
+        for w in weights:
+            if cur_weight + w <= capacity:
+                cur_weight += w
+            else:
+                cnt += 1
+                cur_weight = w
+
+        return cnt
+
+
+# V0
+# IDEA : BINARY SEARCH
 # time = O(n * log(w))   # n = len(weights), w = sum(weights)
 # space = O(1)
 class Solution(object):
