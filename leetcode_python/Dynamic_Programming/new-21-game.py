@@ -4,6 +4,8 @@
 
 # V1'
 # https://www.jiuzhang.com/solution/new-21-game/#tag-highlight-lang-python
+# time = O(N)
+# space = O(N)
 class Solution:
     """
     @param N: int

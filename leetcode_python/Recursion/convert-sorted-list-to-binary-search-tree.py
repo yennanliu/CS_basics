@@ -1,8 +1,8 @@
 # V0 : DEV 
 
-# V1 
-# Time:  O(n)
-# Space: O(logn)
+# V1
+# time = O(n)
+# space = O(logn)
 
 class TreeNode(object):
     def __init__(self, x):

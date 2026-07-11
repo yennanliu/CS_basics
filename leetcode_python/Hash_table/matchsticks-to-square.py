@@ -4,6 +4,8 @@
 # http://bookshadow.com/weblog/2016/12/18/leetcode-matchsticks-to-square/
 # https://blog.csdn.net/XX_123_1_RJ/article/details/81507252
 # IDEA : MEMORY SEARCH 
+# time = O(n * 2^n)  # n = len(nums); memoized subset search over 4 parts
+# space = O(n * 2^n)  # memo dict keyed by subsets and part
 class Solution(object):
     def makesquare(self, nums):
         """
@@ -41,8 +43,8 @@ class Solution(object):
         return False
 
 # V2 
-# Time:  O(n * s * 2^n), s is the number of subset of which sum equals to side length.
-# Space: O(n * (2^n + s))
+# time = O(n * s * 2^n)  # s is the number of subset of which sum equals to side length
+# space = O(n * (2^n + s))
 class Solution(object):
     def makesquare(self, nums):
         """

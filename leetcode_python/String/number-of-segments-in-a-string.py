@@ -1,5 +1,5 @@
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 
 # Count the number of segments in a string,
 # where a segment is defined to be a contiguous
@@ -55,6 +55,8 @@ class Solution(object):
                 result += 1
         return result
 
+    # time = O(n)
+    # space = O(n)
     def countSegments2(self, s):
         """
         :type s: str

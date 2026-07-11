@@ -97,6 +97,8 @@ Constraints:
 # V1
 # IDEA : GREEDY
 # https://leetcode.com/problems/sell-diminishing-valued-colored-balls/discuss/927679/Python-greedy-solution
+# time = O(n log n)   # n = len(inventory); dominated by sort
+# space = O(1)
 class Solution(object):
     def maxProfit(self, inventory, orders):
             ans, mod = 0, 10**9+7
@@ -113,6 +115,8 @@ class Solution(object):
 
 # V1'
 # IDEA : GREEDY
+# time = O(n log n)   # n = len(inventory); dominated by sort
+# space = O(1)
 class Solution(object):
     def maxProfit(self, inventory, orders):
             inventory.sort(reverse=True)
@@ -139,6 +143,8 @@ class Solution(object):
 # V1''
 # IDEA : SORTING
 # https://leetcode.com/problems/sell-diminishing-valued-colored-balls/discuss/927920/python-concise-sort-solution
+# time = O(n log n)   # n = len(inventory)
+# space = O(n)
 class Solution(object):
     def maxProfit(self, inventory, orders):
         lis=sorted(inventory,reverse=True)+[0]
@@ -157,6 +163,8 @@ class Solution(object):
 # V1'''
 # IDEA : BINARY SEARCH
 # https://leetcode.com/problems/sell-diminishing-valued-colored-balls/discuss/1306530/Python-Binary-Search-and-Arithmetic-series-formula-680ms
+# time = O(n log n)   # n = len(inventory); sort + bounded scan with inner binary search
+# space = O(1)
 class Solution:
     def maxProfit(self, inventory, orders):
         inventory.sort(reverse=True)
@@ -184,6 +192,8 @@ class Solution:
 # V1''''
 # IDEA : GREEDY + BINARY SEARCH
 # https://leetcode.com/problems/sell-diminishing-valued-colored-balls/discuss/927526/Python-greedy-binary-search
+# time = O(n log(max(inventory)))   # n = len(inventory); binary search over value range, each step scans inventory
+# space = O(1)
 class Solution(object):
     def maxProfit(self, inventory, orders):
 		#count how many balls can be sold with this threshold
@@ -237,6 +247,8 @@ class Solution(object):
 # V1'''''
 # IDEA : heapq
 # https://leetcode.com/problems/sell-diminishing-valued-colored-balls/discuss/1474074/Python-Solution
+# time = O(n log n)   # n = len(inventory); heap push/pop operations
+# space = O(n)
 import heapq
 class MaxHeap:
     def __init__(self):

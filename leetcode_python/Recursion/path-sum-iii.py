@@ -32,6 +32,8 @@ The number of nodes in the tree is in the range [0, 1000].
 
 # V0
 # IDEA 1) dfs (pre-order) + prefix + hashmap + backtrack (GEMINI)
+# time = O(n)
+# space = O(h), h is height of binary tree (hashmap entries bounded by active path due to backtrack)
 class Solution(object):
     def pathSum(self, root, targetSum):
 
@@ -87,6 +89,8 @@ class Solution(object):
 
 # V0-0-1
 # IDEA 1) dfs (pre-order) + prefix + hashmap + backtrack (gpt)
+# time = O(n)
+# space = O(h), h is height of binary tree (hashmap entries bounded by active path due to backtrack)
 class Solution(object):
     def pathSum(self, root, targetSum):
         self.path_map = {0: 1}
@@ -137,6 +141,8 @@ class Solution(object):
 
 # V0-1
 # IDEA 1) dfs (pre-order) + prefix + hashmap + backtrack (GEMINI)
+# time = O(n)
+# space = O(h), h is height of binary tree (hashmap entries bounded by active path due to backtrack)
 class Solution(object):
     def pathSum(self, root, targetSum):
         """
@@ -175,9 +181,11 @@ class Solution(object):
         self.path_map[prefix] -= 1
 
 
-# V0 
+# V0
 # IDEA : BFS + DFS 
 # => USE BFS FIND EVERY NODE IN THE TREE, AND USE DFS GET THR PATH SUM ON EVERY NODE (FOUND BY BFS)
+# time = O(n^2), BFS visits every node, DFS from each node is O(n) worst case
+# space = O(n), BFS queue plus O(h) recursion stack
 # Definition for a binary tree node.
 # class TreeNode(object):
 #     def __init__(self, x):
@@ -211,8 +219,10 @@ class Solution(object):
         self.dfs(root.left, res, path, target)
         self.dfs(root.right, res, path, target)
 
-# V1 
+# V1
 # https://blog.csdn.net/xiaoxiaoley/article/details/79093996
+# time = O(n^2), pathSum recurses on every node, each triggers an O(n) dfs worst case
+# space = O(h), h is height of binary tree (recursion stack)
 class Solution(object):    
     def pathSum(self, root, sum):
         """
@@ -233,6 +243,8 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/path-sum-iii/#tag-highlight-lang-python
+# time = O(n^2), pathSum recurses on every node, each triggers an O(n) DFS worst case
+# space = O(h), h is height of binary tree (recursion stack)
 class Solution:
     """
     @param root: 
@@ -255,8 +267,10 @@ class Solution:
         else:
             return self.DFS(root, su, 0)+self.pathSum(root.left, su)+self.pathSum(root.right, su)
 
-# V2 
+# V2
 # https://blog.csdn.net/fuxuemingzhu/article/details/71097135
+# time = O(n^2), pathSum recurses on every node, each triggers an O(n) dfs worst case
+# space = O(h), h is height of binary tree (recursion stack)
 class Solution(object):
     def pathSum(self, root, sum):
         """
@@ -277,7 +291,9 @@ class Solution(object):
         res += self.dfs(root.right, sum)
         return res
 
-# V2' : BFS + DFS 
+# V2' : BFS + DFS
+# time = O(n^2), BFS visits every node, DFS from each node is O(n) worst case
+# space = O(n), BFS queue plus O(h) recursion stack
 class Solution(object):
     def pathSum(self, root, sum):
         """
@@ -306,8 +322,8 @@ class Solution(object):
         self.dfs(root.right, res, path, target)
 
 # V3
-# Time:  O(n)
-# Space: O(h)
+# time = O(n)
+# space = O(h)
 import collections
 class Solution(object):
     def pathSum(self, root, sum):
@@ -333,8 +349,8 @@ class Solution(object):
         lookup[0] = 1
         return pathSumHelper(root, 0, sum, lookup)
 
-# Time:  O(n^2)
-# Space: O(h)
+# time = O(n^2)
+# space = O(h)
 class Solution2(object):
     def pathSum(self, root, sum):
         """

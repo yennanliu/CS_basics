@@ -1,5 +1,5 @@
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 
 # We are to write the letters of a given string S, from left to right into lines.
 # Each line has maximum width 100 units, and if writing a letter would cause the width

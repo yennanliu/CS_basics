@@ -40,6 +40,8 @@ The same letters are at least distance 2 from each other.
 # PQ + FREQ MAP + COOL DOWN QUEUE
 # LC 621
 # https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Greedy/task-scheduler.py
+# time = O(n log n)   # n = len(s); heap ops on <=26 distinct chars
+# space = O(n)
 from collections import Counter, deque
 import heapq
 
@@ -202,6 +204,8 @@ class Solution(object):
 # PQ + FREQ MAP + COOL DOWN QUEUE
 # LC 621
 # https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Greedy/task-scheduler.py
+# time = O(n log n)   # n = len(s); heap ops on <=26 distinct chars
+# space = O(n)
 import heapq
 from collections import Counter, deque
 
@@ -265,6 +269,8 @@ class Solution(object):
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/83039098
 # https://www.cnblogs.com/fuxuemingzhu/p/15436068.html
+# time = O(n log n)   # n = len(words); heap ops on <=26 distinct chars
+# space = O(n)
 class Solution:
 	def rearrangeString(self, words, k):
 		_len = len(words)
@@ -291,6 +297,8 @@ class Solution:
 
 # V1'
 # https://github.com/alqamahjsr/Algorithms/blob/master/leetcode.com/python/358_Rearrange_String_k_Distance_Apart.py
+# time = O(n log n)   # n = len(s); heap ops on <=26 distinct chars
+# space = O(n)
 from collections import Counter
 import heapq
 class Solution(object):

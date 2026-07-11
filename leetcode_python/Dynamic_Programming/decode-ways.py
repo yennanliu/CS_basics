@@ -52,6 +52,8 @@ s contains only digits and may contain leading zero(s).
 dp[i]: ways to decode a string of `length i.`
 
 """
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def numDecodings(self, s):
         n = len(s)
@@ -116,6 +118,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: 1D DP
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def numDecodings(self, s):
         """
@@ -185,6 +189,8 @@ class Solution(object):
 # output : 6
 # dp : [1, 1, 2, 3, 3, 3, 6, 6]
 # output : 6
+# time = O(n)
+# space = O(n)
 class Solution:
     # @param s, a string
     # @return an integer
@@ -227,6 +233,8 @@ class Solution:
 # output : 6
 # dp : [1, 1, 2, 3, 3, 3, 6, 6]
 # output : 6
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def numDecodings(self, s):
         """
@@ -252,6 +260,8 @@ class Solution(object):
 # V1
 # IDEA : Recursive Approach with Memoization
 # https://leetcode.com/problems/decode-ways/solution/
+# time = O(n)
+# space = O(n)
 class Solution:
 
     @lru_cache(maxsize=None)
@@ -280,6 +290,8 @@ class Solution:
 # V1
 # IDEA : Iterative Approach
 # https://leetcode.com/problems/decode-ways/solution/
+# time = O(n)
+# space = O(n)
 class Solution:
     def numDecodings(self, s: str) -> int:
         # Array to store the subproblem results
@@ -307,6 +319,8 @@ class Solution:
 # V1
 # IDEA : Iterative, Constant Space
 # https://leetcode.com/problems/decode-ways/solution/
+# time = O(n)
+# space = O(1)
 class Solution:
     def numDecodings(self, s: str) -> int:
         if s[0] == "0":
@@ -329,6 +343,8 @@ class Solution:
 # V1'
 # https://www.jiuzhang.com/solution/decode-ways/#tag-highlight-lang-python
 # IDEA : DP
+# time = O(n)
+# space = O(n)
 class Solution:
     # @param {string} s a string,  encoded message
     # @return {int} an integer, the number of ways decoding
@@ -348,9 +364,9 @@ class Solution:
                 return 0
         return dp[len(s)]
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def numDecodings(self, s):
         """

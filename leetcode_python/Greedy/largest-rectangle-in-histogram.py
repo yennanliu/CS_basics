@@ -33,6 +33,8 @@ Constraints:
 # V1
 # IDEA : BRURE FORCE
 # https://leetcode.com/problems/largest-rectangle-in-histogram/solution/
+# time = O(n^3)
+# space = O(1)
 class Solution:
     def largestRectangleArea(self, heights: List[int]) -> int:
         max_area = 0
@@ -47,6 +49,8 @@ class Solution:
 # V1'
 # IDEA : BETTER BRURE FORCE
 # https://leetcode.com/problems/largest-rectangle-in-histogram/solution/
+# time = O(n^2)
+# space = O(1)
 class Solution:
     def largestRectangleArea(self, heights: List[int]) -> int:
         max_area = 0
@@ -65,6 +69,8 @@ class Solution:
 # In this approach, we maintain a stack. Initially, we push a -1 onto the stack to mark the end. We start with the leftmost bar and keep pushing the current bar's index onto the stack until we get two successive numbers in descending order, i.e. until we get heights[i]<heights[i−1]heights[i] < heights[i-1]heights[i]<heights[i−1]. Now, we start popping the numbers from the stack until we hit a number stack[j]stack[j]stack[j] on the stack such that heights[stack[j]]≤heights[i]heights\big[stack[j]\big] \leq heights[i]heights[stack[j]]≤heights[i]. Every time we pop, we find out the area of rectangle formed using the current element as the height of the rectangle and the difference between the the current element's index pointed to in the original array and the element stack[top−1]−1stack[top-1] - 1stack[top−1]−1 as the width i.e. if we pop an element stack[top]stack[top]stack[top] and i is the current index to which we are pointing in the original array, the current area of the rectangle will be considered as: 
 # (i−stack[top−1]−1)×heights[stack[top]].(i-stack[top-1]-1) \times heights\big[stack[top]\big].
 # (i−stack[top−1]−1)×heights[stack[top]]. Further, if we reach the end of the array, we pop all the elements of the stack and at every pop, this time we use the following equation to find the area: (heights.length−stack[top−1]−1)×heights[stack[top]](heights.length - stack[top-1] - 1) \times heights\big[stack[top]\big](heights.length−stack[top−1]−1)×heights[stack[top]], where stack[top]stack[top]stack[top] refers to the element just popped. Thus, we can get the area of the of the largest rectangle by comparing the new area found everytime.
+# time = O(n)
+# space = O(n)
 class Solution:
     def largestRectangleArea(self, heights: List[int]) -> int:
         stack = [-1]
@@ -85,6 +91,8 @@ class Solution:
 # V1''
 # IDEA : STACK (monotone stack)
 # https://leetcode.com/problems/largest-rectangle-in-histogram/solutions/1083629/python-by-monotone-stack-w-comment/
+# time = O(n)
+# space = O(n)
 class Solution:
     def largestRectangleArea(self, heights: List[int]) -> int:
         
@@ -124,6 +132,8 @@ class Solution:
 # V1'''
 # IDEA : STACK
 # https://leetcode.com/problems/largest-rectangle-in-histogram/solutions/342507/python-different-solutins/
+# time = O(n)
+# space = O(n)
 class Solution:
     def largestRectangleArea(self, heights: List[int]) -> int:
         stack = [0]
@@ -142,6 +152,8 @@ class Solution:
 # V1'''''
 # IDEA : STACK
 # https://leetcode.com/problems/largest-rectangle-in-histogram/solutions/1023979/python-solution/
+# time = O(n)
+# space = O(n)
 class Solution:
     def largestRectangleArea(self, heights: List[int]) -> int:
         stack = []
@@ -164,6 +176,8 @@ class Solution:
 # V1'''''''
 # IDEA : Divide and Conquer Approach
 # https://leetcode.com/problems/largest-rectangle-in-histogram/solution/
+# time = O(n^2)  # worst-case (unbalanced splits); O(n log n) average
+# space = O(n)  # recursion stack, worst-case
 class Solution:
     def largestRectangleArea(self, heights: List[int]) -> int:
         def calculateArea(heights: List[int], start: int, end: int) -> int:

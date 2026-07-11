@@ -9,6 +9,8 @@
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def isUnivalTree(self, root):
         """
@@ -30,6 +32,8 @@ class Solution(object):
 
 # V1' 
 # https://www.jianshu.com/p/fcedb4635798
+# time = O(n)
+# space = O(n)
 class Solution:
     def isUnivalTree(self, root):
         """
@@ -49,6 +53,8 @@ class Solution:
 
 # V1'' 
 # https://www.jianshu.com/p/fcedb4635798
+# time = O(n)
+# space = O(h)
 class Solution:
     def isUnivalTree(self, root):
         """
@@ -67,12 +73,14 @@ class Solution:
 
 # V1''' 
 # https://www.jianshu.com/p/fcedb4635798
+# time = O(n)
+# space = O(h)
 def hasUniValue(node):
     return not node or (node.val == root_val and hasUniValue(node.left) and hasUniValue(node.right))
 
 # V2 
-# Time:  O(n)
-# Space: O(h)
+# time = O(n)
+# space = O(h)
 # Definition for a binary tree node.
 class TreeNode(object):
     def __init__(self, x):
@@ -98,8 +106,8 @@ class Solution(object):
             s.append(node.right)
         return True
     
-# Time:  O(n)
-# Space: O(h)
+# time = O(n)
+# space = O(h)
 class Solution2(object):
     def isUnivalTree(self, root):
         """

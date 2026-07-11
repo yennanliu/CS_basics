@@ -35,6 +35,8 @@ s and p consist of lowercase English letters.
 
 # V0
 # IDEA : SLIDING WINDOW + collections.Counter()
+# time = O(n)
+# space = O(1)  # Counter bounded by 26 lowercase letters
 class Solution(object):
     def findAnagrams(self, s, p):
         ls, lp = len(s), len(p)
@@ -69,6 +71,8 @@ class Solution(object):
 #         return answer
 
 # V0''
+# time = O(n)
+# space = O(1)  # Counter bounded by 26 lowercase letters
 from collections import Counter
 class Solution(object):
     def findAnagrams(self, s, p):
@@ -91,6 +95,8 @@ class Solution(object):
 # V1
 # IDEA :  Sliding Window with HashMap
 # https://leetcode.com/problems/find-all-anagrams-in-a-string/solution/
+# time = O(n)
+# space = O(1)  # Counter bounded by 26 lowercase letters
 from collections import Counter
 class Solution:
     def findAnagrams(self, s: str, p: str) -> List[int]:
@@ -124,6 +130,8 @@ class Solution:
 # V1'
 # IDEA : Sliding Window with Array
 # https://leetcode.com/problems/find-all-anagrams-in-a-string/solution/
+# time = O(n)
+# space = O(1)  # fixed-size arrays of length 26
 class Solution:
     def findAnagrams(self, s: str, p: str) -> List[int]:
         ns, np = len(s), len(p)
@@ -156,6 +164,8 @@ class Solution:
 # http://bookshadow.com/weblog/2016/10/23/leetcode-find-all-anagrams-in-a-string/
 # https://blog.csdn.net/fuxuemingzhu/article/details/79184109
 # IDEA : collections.Counter 
+# time = O(n)
+# space = O(1)  # Counter bounded by 26 lowercase letters
 class Solution(object):
     def findAnagrams(self, s, p):
         """
@@ -180,6 +190,8 @@ class Solution(object):
 # V1'''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79184109
 # IDEA : collections.Counter
+# time = O(n)
+# space = O(1)  # Counter bounded by 26 lowercase letters
 from collections import Counter
 class Solution(object):
     def findAnagrams(self, s, p):
@@ -207,6 +219,8 @@ class Solution(object):
 # V1''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79184109
 # IDEA : TWO POINTERS 
+# time = O(n)
+# space = O(1)  # Counter bounded by 26 lowercase letters
 class Solution(object):
     def findAnagrams(self, s, p):
         """
@@ -254,9 +268,9 @@ class Solution(object):
 #   }
 # };
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def findAnagrams(self, s, p):
         """

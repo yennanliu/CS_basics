@@ -58,6 +58,8 @@ tasks[i] is an uppercase English letter.
 
 # V0
 # IDEA: BIG PQ + QUEUE + counter (map)
+# time = O(n)   # n = len(tasks); heap/queue bounded by 26-letter alphabet
+# space = O(1)
 import heapq
 from collections import Counter, deque
 
@@ -139,6 +141,8 @@ class Solution(object):
 
 # V0
 # IDEA: BIG PQ + QUEUE
+# time = O(n)   # n = len(tasks); heap/queue bounded by 26-letter alphabet
+# space = O(1)
 import heapq
 from collections import Counter, deque
 
@@ -218,6 +222,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: BIG PQ + QUEUE
+# time = O(n)   # n = len(tasks); heap/queue bounded by 26-letter alphabet
+# space = O(1)
 from collections import Counter, deque
 from heapq import heapify, heappop, heappush
 
@@ -273,6 +279,8 @@ class Solution(object):
 #   -> AAABBB, n = 2
 #   -> THE EXPECTED tuned missions is like : ABXABXAB
 #   -> (3 - 1) * (2 + 1) + (2) = 8
+# time = O(n)   # n = len(tasks); most_common() bounded by 26-letter alphabet
+# space = O(1)
 class Solution(object):
     def leastInterval(self, tasks, n):
         count = collections.Counter(tasks)
@@ -296,11 +304,13 @@ class Solution(object):
         time = (most - 1) * (n + 1) + num_most
         return max(time, len(tasks)) # be aware of it 
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/81947087
 # NOTE : However, there is a non-negative cooling interval n that means between two same tasks, there must be at least n intervals that CPU are doing different tasks or just be idle.
 # IDEA : MISSION_TIME = ( # of most mission -1 ) * (n+1) + (# of how many missions with same mission count)
 #        -> ANS = max(MISSION_TIME , tasks) (since every mission need to be run at least once)
+# time = O(n)   # n = len(tasks); most_common() bounded by 26-letter alphabet
+# space = O(1)
 class Solution(object):
     def leastInterval(self, tasks, n):
         """
@@ -317,6 +327,8 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/task-scheduler/#tag-highlight-lang-python
+# time = O(n)   # n = len(tasks); bounded by 26-letter alphabet
+# space = O(1)
 class Solution:
     """
     @param tasks: the given char array representing tasks CPU need to do
@@ -340,6 +352,8 @@ class Solution:
 
 # https://www.youtube.com/watch?v=s8p8ukTyA2I
 # https://github.com/neetcode-gh/leetcode/blob/main/python/0621-task-scheduler.py
+# time = O(n)   # n = len(tasks); heap/queue bounded by 26-letter alphabet
+# space = O(1)
 class Solution:
     def leastInterval(self, tasks: List[str], n: int) -> int:
         count = Counter(tasks)
@@ -362,9 +376,9 @@ class Solution:
                 heapq.heappush(maxHeap, q.popleft()[0])
         return time
 
-# V2 
-# Time:  O(n)
-# Space: O(26) = O(1)
+# V2
+# time = O(n)
+# space = O(26) = O(1)
 from collections import Counter
 class Solution(object):
     def leastInterval(self, tasks, n):

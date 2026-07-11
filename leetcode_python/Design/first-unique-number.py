@@ -79,25 +79,29 @@ At most 50000 calls will be made to showFirstUnique and add.
 from collections import Counter, deque
 class FirstUnique:
 
-    # time = O(n), space = O(n)
+    # time = O(n)
+    # space = O(n)
     def __init__(self, nums):
         self.count = Counter(nums)
         self.array = deque(nums)
         self.first = -1
         self._find()
 
-    # time = O(1), space = O(1)
+    # time = O(1)
+    # space = O(1)
     def showFirstUnique(self):
         return self.first
 
-    # time = O(n), space = O(1)
+    # time = O(n)
+    # space = O(1)
     def add(self, value):
         self.count[value] += 1
         self.array.append(value)
         if self.first == -1 or value == self.first:
             self._find()
 
-    # time = O(n), space = O(1)
+    # time = O(n)
+    # space = O(1)
     def _find(self):
         self.first = -1
         while self.array:
@@ -113,7 +117,8 @@ from collections import Counter, deque, defaultdict
 from heapq import heappush, heappop
 class FirstUnique:
 
-    # time = O(n log n), space = O(n)
+    # time = O(n log n)
+    # space = O(n)
     def __init__(self, nums):
         self.nums = nums
         self.dic = []
@@ -127,7 +132,8 @@ class FirstUnique:
             elif num in self.pos and self.counter[num] == 2:
                 self.pos.remove(num)
 
-    # time = O(log n), space = O(1)
+    # time = O(log n)
+    # space = O(1)
     def showFirstUnique(self):
         while len(self.dic):
             index, number = heappop(self.dic)
@@ -136,7 +142,8 @@ class FirstUnique:
                 return number
         return -1
 
-    # time = O(log n), space = O(1)
+    # time = O(log n)
+    # space = O(1)
     def add(self, value):
         self.nums.append(value)
         self.Counter[value] += 1
@@ -150,7 +157,8 @@ class FirstUnique:
 # https://github.com/jyj407/leetcode/blob/master/1429.md
 class FirstUnique:
 
-    # time = O(n), space = O(n)
+    # time = O(n)
+    # space = O(n)
     def __init__(self, nums):
         self.data = []
         self.mp = dict()
@@ -159,7 +167,8 @@ class FirstUnique:
             self.data.append(num);
             self.mp[num] = self.mp.setdefault(num, 0) + 1
 
-    # time = O(n), space = O(1)
+    # time = O(n)
+    # space = O(1)
     def showFirstUnique(self):
         for num in self.data :
             if (self.mp[num] == 1) :
@@ -168,7 +177,8 @@ class FirstUnique:
         return -1;
 
 
-    # time = O(1), space = O(1)
+    # time = O(1)
+    # space = O(1)
     def add(self, value):
         self.data.append(value)
         self.mp[value] =  self.mp.setdefault(value, 0) + 1
@@ -177,7 +187,8 @@ class FirstUnique:
 # https://github.com/jyj407/leetcode/blob/master/1429.md
 class FirstUnique:
 
-    # time = O(n^2), space = O(n)
+    # time = O(n^2)
+    # space = O(n)
     def __init__(self, nums):
         self.allDict = dict()
         self.unique = list()
@@ -185,7 +196,8 @@ class FirstUnique:
             self.allDict[num] = self.allDict.setdefault(num, 0) + 1
             self.updateUniqueSet(num)
 
-    # time = O(n), space = O(1)
+    # time = O(n)
+    # space = O(1)
     def updateUniqueSet(self, num) :
         if (self.allDict[num] == 1) :
             self.unique.append(num)
@@ -193,14 +205,16 @@ class FirstUnique:
             if (num in self.unique):
                 self.unique.remove(num)
 
-    # time = O(1), space = O(1)
+    # time = O(1)
+    # space = O(1)
     def showFirstUnique(self):
         if (not self.unique) :
             return -1
 
         return self.unique[0]
 
-    # time = O(n), space = O(1)
+    # time = O(n)
+    # space = O(1)
     def add(self, value):
         self.allDict[value] = self.allDict.setdefault(value, 0) + 1
         self.updateUniqueSet(value)
@@ -209,7 +223,8 @@ class FirstUnique:
 # https://github.com/jyj407/leetcode/blob/master/1429.md
 class FirstUnique2 :
 
-    # time = O(n^2), space = O(n)
+    # time = O(n^2)
+    # space = O(n)
     def __init__(self, nums):
         self.allDict = dict()
         self.unique = list()
@@ -217,7 +232,8 @@ class FirstUnique2 :
             self.allDict[num] = self.allDict.setdefault(num, 0) + 1
             self.updateUniqueSet(num)
 
-    # time = O(n), space = O(1)
+    # time = O(n)
+    # space = O(1)
     def updateUniqueSet(self, num) :
         if (self.allDict[num] == 1) :
             self.unique.append(num)
@@ -225,14 +241,16 @@ class FirstUnique2 :
             if (num in self.unique):
                 self.unique.remove(num)
 
-    # time = O(1), space = O(1)
+    # time = O(1)
+    # space = O(1)
     def showFirstUnique(self):
         if (not self.unique) :
             return -1
 
         return self.unique[0]
 
-    # time = O(n), space = O(1)
+    # time = O(n)
+    # space = O(1)
     def add(self, value):
         self.allDict[value] = self.allDict.setdefault(value, 0) + 1
         self.updateUniqueSet(value)

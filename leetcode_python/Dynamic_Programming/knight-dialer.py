@@ -1,7 +1,9 @@
 # V0 
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/83716573
+# time = O(n)
+# space = O(1)
 class Solution:
     def knightDialer(self, N):
         """
@@ -19,6 +21,8 @@ class Solution:
         
 # V1'
 # https://www.jiuzhang.com/solution/knight-dialer/#tag-highlight-lang-python
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def knightDialer(self, N):
         MOD = 10**9 + 7
@@ -35,8 +39,8 @@ class Solution(object):
         return sum(dp) % MOD
 
 # V2
-# Time:  O(logn)
-# Space: O(1)
+# time = O(logn)
+# space = O(1)
 import itertools
 class Solution(object):
     def knightDialer(self, N):
@@ -72,8 +76,8 @@ class Solution(object):
              [0, 0, 1, 0, 1, 0, 0, 0, 0, 0]]
         return sum(map(sum, matrix_expo(T, N-1))) % M
 
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 class Solution2(object):
     def knightDialer(self, N):
         """

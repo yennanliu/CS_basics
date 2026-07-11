@@ -30,6 +30,8 @@ Constraints:
 # V1
 # IDEA : DP
 # https://leetcode.com/problems/unique-binary-search-trees/solution/
+# time = O(n^2)
+# space = O(n)
 class Solution:
     def numTrees(self, n):
         """
@@ -48,6 +50,8 @@ class Solution:
 # V1'
 # IDEA : MATH
 # https://leetcode.com/problems/unique-binary-search-trees/solution/
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def numTrees(self, n):
         """
@@ -62,6 +66,8 @@ class Solution(object):
 # V1'
 # IDEA : recursion (TLE)
 # https://leetcode.com/problems/unique-binary-search-trees/discuss/164915/Python-solution
+# time = O(4^n / n^1.5)  # Catalan number recursion without memoization
+# space = O(n)  # recursion depth
 class Solution:
     def numTrees(self, n):
         """
@@ -78,6 +84,8 @@ class Solution:
 # V1'''
 # IDEA : DP
 # https://leetcode.com/problems/unique-binary-search-trees/discuss/164915/Python-solution
+# time = O(n^2)
+# space = O(n)
 class Solution:
     def numTrees(self, n):
         """
@@ -93,6 +101,8 @@ class Solution:
 
 # V1'''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79367789
+# time = O(n^2)  # memoized recursion over n states, each doing O(n) work
+# space = O(n)
 class Solution(object):
     def __init__(self):
         self.dp = dict()
@@ -113,6 +123,8 @@ class Solution(object):
         return ans
 
 # V1'''''''
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def numTrees(self, n):
         """
@@ -127,9 +139,9 @@ class Solution(object):
             dp.append(count)
         return dp.pop()
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def numTrees(self, n):
         """
@@ -148,8 +160,8 @@ class Solution(object):
 
         return combination(2 * n, n) - combination(2 * n, n - 1)
 
-# Time:  O(n^2)
-# Space: O(n)
+# time = O(n^2)
+# space = O(n)
 # DP solution.
 class Solution2(object):
     # @return an integer

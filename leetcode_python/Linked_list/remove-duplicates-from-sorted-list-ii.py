@@ -34,6 +34,8 @@
 #     def __init__(self, x):
 #         self.val = x
 #         self.next = None
+# time = O(n)
+# space = O(n)
 class Solution:
     def deleteDuplicates(self, head):
         """
@@ -55,9 +57,9 @@ class Solution:
                 head = head.next
         return root.next
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class ListNode(object):
     def __init__(self, x):
         self.val = x

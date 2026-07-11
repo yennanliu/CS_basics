@@ -28,7 +28,9 @@ Constraints:
 
 """
 
-# V0 
+# V0
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def findErrorNums(self, nums):
         N = len(nums)
@@ -38,6 +40,8 @@ class Solution(object):
         return [duplicated, missing]
 
 # V0'
+# time = O(n)
+# space = O(n)
 from collections import Counter
 class Solution(object):
     def findErrorNums(self, nums):
@@ -48,6 +52,8 @@ class Solution(object):
         return [duplicate, duplicate+_diff]
 
 # V0''
+# time = O(n)
+# space = O(n)
 from collections import Counter
 class Solution(object):
     def findErrorNums(self, nums):
@@ -65,6 +71,8 @@ class Solution(object):
 # https://blog.csdn.net/fuxuemingzhu/article/details/79247916
 # http://bookshadow.com/weblog/2017/07/24/leetcode-set-mismatch/
 # IDEA : SUM
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def findErrorNums(self, nums):
         """
@@ -84,10 +92,12 @@ assert s.findErrorNums([1,1,3,4]) == [1,2]
 assert s.findErrorNums([]) == [0,0]       
 assert s.findErrorNums([1,2,3]) == [0,0]       
 
-# V1' 
+# V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79247916
 # http://bookshadow.com/weblog/2017/07/24/leetcode-set-mismatch/
 # IDEA : HASH TABLE 
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def findErrorNums(self, nums):
         """
@@ -102,12 +112,16 @@ class Solution(object):
 
 # V1''
 # https://leetcode.com/problems/set-mismatch/discuss/105558/Oneliner-Python
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def findErrorNums(self, nums):
         return [sum(nums) - sum(set(nums)), sum(range(1, len(nums)+1)) - sum(set(nums))]
 
 # V1'''
 # https://leetcode.com/problems/set-mismatch/discuss/345631/Multiple-Python-Solution
+# time = O(n)
+# space = O(n)
 class Solution:
     def findErrorNums(self, nums):
         x = sum(nums) - sum(set(nums))
@@ -116,6 +130,8 @@ class Solution:
 
 # V1''''
 # https://leetcode.com/problems/set-mismatch/discuss/345631/Multiple-Python-Solution
+# time = O(n)
+# space = O(n)
 class Solution:
     def findErrorNums(self, nums):
         count = [0] * (len(nums)+1)
@@ -130,9 +146,9 @@ class Solution:
                 z = x
         return [twice, z]
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def findErrorNums(self, nums):
         """
@@ -152,8 +168,8 @@ class Solution(object):
         return result
 
 
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 class Solution2(object):
     def findErrorNums(self, nums):
         """
@@ -173,8 +189,8 @@ class Solution2(object):
                 nums[i] *= -1
         return result
 
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 class Solution3(object):
     def findErrorNums(self, nums):
         """

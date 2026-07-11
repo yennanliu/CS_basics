@@ -41,6 +41,8 @@ Note: This question is the same as 846: https://leetcode.com/problems/hand-of-st
 # V1
 # IDEA : collections.Counter
 # https://leetcode.com/problems/divide-array-in-sets-of-k-consecutive-numbers/discuss/470238/JavaC%2B%2BPython-Exactly-Same-as-846.-Hand-of-Straights
+# time = O(n log n)
+# space = O(n)
 from collections import Counter
 class Solution:
     def isPossibleDivide(self, A, k):
@@ -56,6 +58,8 @@ class Solution:
 # V1
 # IDEA : collections.Counter
 # https://leetcode.com/problems/divide-array-in-sets-of-k-consecutive-numbers/discuss/872280/python-solution
+# time = O(n^2 / k)  # min(cnt) scans remaining distinct keys each of the n/k group removals
+# space = O(n)
 class Solution:
 	def isPossibleDivide(self, nums: List[int], k: int) -> bool:
 		cnt = collections.Counter(nums)
@@ -73,6 +77,8 @@ class Solution:
 # V1''
 # IDEA : collections.Counter
 # https://leetcode.com/problems/divide-array-in-sets-of-k-consecutive-numbers/discuss/796529/Python-simple-easy-to-understand-solution
+# time = O(n^2 / k)  # min(dict.keys()) scans remaining distinct keys each of the n/k group removals
+# space = O(n)
 class Solution:
     def isPossibleDivide(self, nums: List[int], k: int) -> bool:
         if len(nums) % k != 0:
@@ -97,6 +103,8 @@ class Solution:
 # V1'''
 # IDEA : collections.Counter
 # https://leetcode.com/problems/divide-array-in-sets-of-k-consecutive-numbers/discuss/644577/Python-or-StraightForward-or-Simple
+# time = O(n log n)
+# space = O(n)
 from collections import Counter
 class Solution:
     def isPossibleDivide(self, nums: List[int], k: int) -> bool:
@@ -115,6 +123,8 @@ class Solution:
 # V1''''
 # IDEA : collections.Counter
 # https://leetcode.com/problems/divide-array-in-sets-of-k-consecutive-numbers/discuss/457625/Python-Counter-Solution
+# time = O(n log n)
+# space = O(n)
 from collections import Counter
 class Solution:
     def isPossibleDivide(self, nums: List[int], k: int) -> bool:

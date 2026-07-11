@@ -50,6 +50,8 @@ All integers in arr are unique (i.e. arr is a permutation of the integers from 1
 #   -> step 2) Reverse from 0 to max_idx
 #   -> step 3) Reverse whole list
 # https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/pancake_sort.py
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def pancakeSort(self, arr):
         """Sort Array with Pancake Sort.
@@ -84,6 +86,8 @@ class Solution(object):
 # V0'
 # IDEA : pancake_sort.py
 # https://github.com/yennanliu/CS_basics/blob/master/algorithm/python/pancake_sort.py#L44
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def pancakeSort(self, arr):
         cur = len(arr)
@@ -103,6 +107,8 @@ class Solution(object):
 # V1
 # https://leetcode.com/problems/pancake-sorting/discuss/817978/Python-O(n2)-by-simulation-w-Comment
 # https://leetcode.com/problems/pancake-sorting/discuss/330990/Python
+# time = O(n^2)
+# space = O(n)
 class Solution:
     def pancakeSort(self, A):
 
@@ -158,6 +164,8 @@ class Solution:
 # IDEA : RECURSIVE
 # https://leetcode.com/problems/pancake-sorting/discuss/553116/My-python-solution
 # https://leetcode.com/problems/pancake-sorting/discuss/274921/PythonDetailed-Explanation-for-This-Problem
+# time = O(n^2)
+# space = O(n)
 class Solution:
     def pancakeSort(self, A):
         pointer = len(A)
@@ -175,6 +183,8 @@ class Solution:
 
 # V1'
 # https://leetcode.com/problems/pancake-sorting/discuss/274921/PythonDetailed-Explanation-for-This-Problem
+# time = O(n^2)
+# space = O(n)
 class Solution:
     def pancakeSort(self, A):
         """
@@ -199,6 +209,8 @@ class Solution:
 
 # V1''
 # https://leetcode.com/problems/pancake-sorting/discuss/767576/python-solution
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def pancakeSort(self, A):
         ans = []
@@ -223,6 +235,8 @@ class Solution(object):
 # Reverse i + 1 numbers, so that the x will be at A[0]
 # Reverse x numbers, so that x will be at A[x - 1].
 # Repeat this process N times.
+# time = O(n^2)
+# space = O(n)
 class Solution:
      def pancakeSort(self, A):
             res = []
@@ -235,6 +249,8 @@ class Solution:
 # V1'''''
 # IDEA : simax_idxlar to BUBBLE SORT
 # https://leetcode.com/problems/pancake-sorting/solution/
+# time = O(n^2)
+# space = O(1)
 class Solution:
     def pancakeSort(self, A):
         """ sort like bubble-sort
@@ -268,8 +284,10 @@ class Solution:
 
         return ans
 
-# V2 
+# V2
 # http://blog.jobbole.com/74263/
+# time = O(n^2)
+# space = O(n)
 # Sorts Pancakes                                                                                    
 def sortPancakes(stack):
  
@@ -304,8 +322,10 @@ def flip(stack, index):
     newStack += stack[(index + 1):]
     return newStack
 
-# V3 
+# V3
 # https://blog.csdn.net/fuxuemax_idxngzhu/article/details/85937314
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def pancakeSort(self, A):
         N = len(A)
@@ -317,8 +337,8 @@ class Solution(object):
         return res
 
 # V4
-# Time:  O(n^2)
-# Space: O(1)
+# time = O(n^2)
+# space = O(1)
 class Solution(object):
     def pancakeSort(self, A):
         """

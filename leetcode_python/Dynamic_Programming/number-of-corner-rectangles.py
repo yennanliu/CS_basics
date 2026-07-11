@@ -63,6 +63,8 @@ The number of 1s in the grid will be at most 6000.
 
 # V1'
 # https://www.jiuzhang.com/solution/number-of-corner-rectangles/#tag-highlight-lang-python
+# time = O(N * sqrt(N))  # N = total number of 1s in grid, sqrt decomposition
+# space = O(m * n)  # rows list of 1-columns per row
 class Solution(object):
     def countCornerRectangles(self, grid):
         rows = [[c for c, val in enumerate(row) if val]
@@ -87,8 +89,8 @@ class Solution(object):
         return ans
 
 # V2
-# Time:  O(n * m^2), n is the number of rows with 1s, m is the number of cols with 1s
-# Space: O(n * m)
+# time = O(n * m^2), n is the number of rows with 1s, m is the number of cols with 1s
+# space = O(n * m)
 class Solution(object):
     def countCornerRectangles(self, grid):
         """

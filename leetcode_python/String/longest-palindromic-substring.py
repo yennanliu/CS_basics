@@ -358,6 +358,8 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/longest-palindromic-substring/#tag-highlight-lang-python
+# time = O(n^2)
+# space = O(n^2)
 class Solution:
     """
     @param s: input string
@@ -388,6 +390,8 @@ class Solution:
 
 # V1''
 # https://www.jiuzhang.com/solution/longest-palindromic-substring/#tag-highlight-lang-python
+# time = O(n^2)
+# space = O(1)
 class Solution:
     """
     @param s: input string
@@ -415,8 +419,8 @@ class Solution:
         return string[left + 1:right]
 
 # V2
-# Time:  O(n)
-# Space: O(n)
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def longestPalindrome(self, s):
         """

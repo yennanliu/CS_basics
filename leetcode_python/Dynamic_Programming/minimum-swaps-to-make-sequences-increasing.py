@@ -2,6 +2,8 @@
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/83269027
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def minSwap(self, A, B):
         """
@@ -25,6 +27,8 @@ class Solution(object):
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/83269027
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def minSwap(self, A, B):
         """
@@ -47,6 +51,8 @@ class Solution(object):
 
 # V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/83269027
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def minSwap(self, A, B):
         """
@@ -67,6 +73,8 @@ class Solution(object):
 
 # V1'''
 # https://www.jiuzhang.com/solution/minimum-swaps-to-make-sequences-increasing/#tag-highlight-lang-python
+# time = O(n)
+# space = O(n)
 class Solution:
     def minSwap(self, A, B):
         if len(A) == 0 or len(A) != len(B):
@@ -84,8 +92,8 @@ class Solution:
         return min(swapped[-1], non_swapped[-1])
 
 # V2
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def minSwap(self, A, B):
         """

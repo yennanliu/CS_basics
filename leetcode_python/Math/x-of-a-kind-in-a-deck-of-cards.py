@@ -1,7 +1,9 @@
 # V1 : dev 
 
-# V2 
+# V2
 # https://blog.csdn.net/danspace1/article/details/88956805
+# time = O(n * k)  # n = len(deck), k = number of distinct card values
+# space = O(k)
 class Solution(object):
     def hasGroupsSizeX(self, deck):
         """
@@ -24,9 +26,9 @@ class Solution(object):
                 return True
         return False
 
-# V3 
-# Time:  O(n * (logn)^2)
-# Space: O(n)
+# V3
+# time = O(n * (logn)^2)
+# space = O(n)
 import collections
 from functools import reduce
 class Solution(object):

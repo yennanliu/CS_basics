@@ -36,6 +36,8 @@ instead of looping within [min, max],
 -> we loop ONLY elements in set
     -> and check the max consecutive len
 """
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def longestConsecutive(self, nums):
         if not nums:
@@ -76,6 +78,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: SET + ONLY loop nums and check existed (GPT)
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def longestConsecutive(self, nums):
         if not nums:
@@ -101,8 +105,8 @@ class Solution(object):
 
 
 # V0
-# time: O(N log N)
-# space: O(N)
+# time = O(N log N)
+# space = O(N)
 class Solution(object):
     def longestConsecutive(self, nums):
         # edge
@@ -135,8 +139,8 @@ class Solution(object):
 
 # V0-0-1
 # IDEA: SORT + SET + SLIDE WINDOW
-# time: O(N log N)
-# space: O(N)
+# time = O(N log N)
+# space = O(N)
 class Solution(object):
     def longestConsecutive(self, nums):
         # edge
@@ -168,8 +172,8 @@ class Solution(object):
         return max_len
 
 # V0-1
-# time: O(N) # NOTE !!!
-# space: O(N)
+# time = O(N)  # NOTE !!!
+# space = O(N)
 class Solution(object):
     def longestConsecutive(self, nums):
         num_set = set(nums)
@@ -189,6 +193,8 @@ class Solution(object):
 
 # V0
 # IDEA : sliding window
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def longestConsecutive(self, nums):
         # edge case
@@ -231,6 +237,8 @@ class Solution(object):
 
 # V0'
 # IDEA : SORTING + 2 POINTERS
+# time = O(n log n)
+# space = O(1)
 class Solution(object):
     def longestConsecutive(self, nums):
         # edge case
@@ -258,6 +266,8 @@ class Solution(object):
 
 # V0'
 # IDEA : SORTING + 2 POINTERS
+# time = O(n log n)
+# space = O(1)
 class Solution:
     def longestConsecutive(self, nums):
         if not nums:
@@ -280,6 +290,8 @@ class Solution:
 
 # V0'
 # IDEA : HASHSET
+# time = O(n)
+# space = O(n)
 class Solution:
     def longestConsecutive(self, nums):
         longest_streak = 0
@@ -301,6 +313,8 @@ class Solution:
 # V1
 # IDEA : BRUTE FORCE
 # https://leetcode.com/problems/longest-consecutive-sequence/solution/
+# time = O(n^3)  # nested "in nums" checks on a list, each O(n)
+# space = O(1)
 class Solution:
     def longestConsecutive(self, nums):
         longest_streak = 0
@@ -320,6 +334,8 @@ class Solution:
 # V2
 # IDEA : SORTING
 # https://leetcode.com/problems/longest-consecutive-sequence/solution/
+# time = O(n log n)
+# space = O(1)
 class Solution:
     def longestConsecutive(self, nums):
         if not nums:
@@ -343,6 +359,8 @@ class Solution:
 # V3
 # IDEA : HashSet and Intelligent Sequence Building
 # https://leetcode.com/problems/longest-consecutive-sequence/solution/
+# time = O(n)
+# space = O(n)
 class Solution:
     def longestConsecutive(self, nums):
         longest_streak = 0
@@ -364,6 +382,8 @@ class Solution:
 # V4
 # https://leetcode.com/problems/longest-consecutive-sequence/discuss/1231015/Concise-Python-Solution-8-lines
 # https://www.youtube.com/watch?v=rc2QdQ7U78I
+# time = O(n)
+# space = O(n)
 class Solution:
     def longestConsecutive(self, nums: List[int]) -> int:
     # Concise Solution from https://www.youtube.com/watch?v=rc2QdQ7U78I&t=24s

@@ -42,6 +42,8 @@ There will be at least one element in the data structure when getRandom is calle
 import random
 class RandomizedSet(object):
 
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
         self.set = set()
         self._len = 0
@@ -79,6 +81,8 @@ class RandomizedSet(object):
 import random
 class RandomizedSet(object):
 
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
         """
         Initialize your data structure here.
@@ -130,6 +134,8 @@ class RandomizedSet(object):
 # IDEA : LIST + DICT
 class RandomizedSet(object):
 
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
         """
         Initialize your data structure here.
@@ -189,6 +195,8 @@ class RandomizedSet(object):
 import random
 class RandomizedSet(object):
 
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
         """
         Initialize your data structure here.
@@ -256,6 +264,8 @@ assert r.getRandom() in [1,2,3]
 # https://blog.csdn.net/fuxuemingzhu/article/details/82732532
 class RandomizedSet(object):
 
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
         """
         Initialize your data structure here.
@@ -308,6 +318,8 @@ class RandomizedSet(object):
 import random
 class RandomizedSet(object):
 
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
         """
         Initialize your data structure here.
@@ -315,6 +327,8 @@ class RandomizedSet(object):
         self.dataMap = {}
         self.dataList = []
 
+    # time = O(1)
+    # space = O(1)
     def insert(self, val):
         """
         Inserts a value to the set. Returns true if the set did not already contain the specified element.
@@ -327,6 +341,8 @@ class RandomizedSet(object):
         self.dataList.append(val)
         return True
 
+    # time = O(1)
+    # space = O(1)
     def remove(self, val):
         """
         Removes a value from the set. Returns true if the set contained the specified element.
@@ -343,6 +359,8 @@ class RandomizedSet(object):
         del self.dataMap[val]
         return True
 
+    # time = O(1)
+    # space = O(1)
     def getRandom(self):
         """
         Get a random element from the set.
@@ -355,6 +373,8 @@ class RandomizedSet(object):
 import random
 class RandomizedSet(object):
 
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
         """
         Initialize your data structure here.
@@ -363,6 +383,8 @@ class RandomizedSet(object):
         self.index = {}
         
 
+    # time = O(1)
+    # space = O(1)
     def insert(self, val):
         """
         Inserts a value to the set. Returns true if the set did not already contain the specified element.
@@ -376,6 +398,8 @@ class RandomizedSet(object):
         return True
         
 
+    # time = O(1)
+    # space = O(1)
     def remove(self, val):
         """
         Removes a value from the set. Returns true if the set contained the specified element.
@@ -393,6 +417,8 @@ class RandomizedSet(object):
         return True
         
 
+    # time = O(1)
+    # space = O(1)
     def getRandom(self):
         """
         Get a random element from the set.

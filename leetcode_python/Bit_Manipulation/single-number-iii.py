@@ -19,6 +19,8 @@
 
 
 # V0
+# time = O(n)
+# space = O(n)
 import collections 
 class Solution(object):
     def singleNumber(self, nums):
@@ -27,7 +29,9 @@ class Solution(object):
 
 # V1 
 
-# V2 
+# V2
+# time = O(n^2)  # list.remove() is O(n) inside a loop of n
+# space = O(n)
 class Solution:
 	def singleNumber(self, nums):
 		no_repeat_array=[]
@@ -38,7 +42,9 @@ class Solution:
 				no_repeat_array.append(item)
 		return no_repeat_array
 
-# V3 
+# V3
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def singleNumber(self, nums):
         """
@@ -47,7 +53,9 @@ class Solution(object):
         """
         return [x[0] for x in sorted(list(collections.Counter(nums).items()), key=lambda i: i[1], reverse=False)[:2]]
 
-# V4 
+# V4
+# time = O(n)
+# space = O(1)
 class Solution:
     def singleNumber(self, nums):
         x_xor_y = reduce(operator.xor, nums)
@@ -58,6 +66,8 @@ class Solution:
         return result
 
 # V5
+# time = O(n)
+# space = O(1)
 class Solution2:
     # @param {integer[]} nums
     # @return {integer[]}
@@ -75,9 +85,9 @@ class Solution2:
 
         return [x, x ^ x_xor_y]
 
-# V6 
-# Time:  O(n)
-# Space: O(1)
+# V6
+# time = O(n)
+# space = O(1)
 import operator
 import collections
 class Solution(object):
@@ -92,6 +102,8 @@ class Solution(object):
         return result
 
 
+# time = O(n)
+# space = O(1)
 class Solution2(object):
     # @param {integer[]} nums
     # @return {integer[]}
@@ -110,6 +122,8 @@ class Solution2(object):
         return [x, x ^ x_xor_y]
 
 
+# time = O(n log n)
+# space = O(n)
 class Solution3(object):
     def singleNumber(self, nums):
         """

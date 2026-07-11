@@ -34,6 +34,8 @@ Node.val is 0 or 1.
 
 # V0
 # IDEA : 257. Binary Tree Paths
+# time = O(n)
+# space = O(n)  # queue + path strings + res list
 class Solution(object):
     def sumRootToLeaf(self, root):
         def help(_str):
@@ -80,6 +82,8 @@ class Solution(object):
 # V1
 # IDEA : DFS
 # https://leetcode.com/problems/sum-of-root-to-leaf-binary-numbers/discuss/270025/JavaC%2B%2BPython-Recursive-Solution
+# time = O(n)
+# space = O(h)  # h = tree height (recursion stack)
 class Solution(object):
     def sumRootToLeaf(self, root, val=0):
         if not root: return 0
@@ -90,6 +94,8 @@ class Solution(object):
 # V1
 # IDEA : DFS
 # https://leetcode.com/problems/sum-of-root-to-leaf-binary-numbers/discuss/366183/Python-DFS
+# time = O(n)
+# space = O(h)  # h = tree height; path string + recursion stack
 class Solution(object):
     def sumRootToLeaf(self, root):
         """
@@ -120,6 +126,8 @@ class Solution(object):
 # V1
 # IDEA :  Iterative Preorder Traversal.
 # https://leetcode.com/problems/sum-of-root-to-leaf-binary-numbers/solution/
+# time = O(n)
+# space = O(n)  # explicit stack, worst case O(n) for a skewed tree
 class Solution:
     def sumRootToLeaf(self, root: TreeNode) -> int:
         root_to_leaf = 0
@@ -141,6 +149,8 @@ class Solution:
 # V1
 # IDEA : Recursive Preorder Traversal.
 # https://leetcode.com/problems/sum-of-root-to-leaf-binary-numbers/solution/
+# time = O(n)
+# space = O(h)  # h = tree height (recursion stack)
 class Solution:
     def sumRootToLeaf(self, root: TreeNode) -> int:
         def preorder(r, curr_number):
@@ -161,6 +171,8 @@ class Solution:
 # V1
 # IDEA : Morris Preorder Traversal.
 # https://leetcode.com/problems/sum-of-root-to-leaf-binary-numbers/solution/
+# time = O(n)
+# space = O(1)  # Morris traversal uses temporary tree-thread pointers, no stack/recursion
 class Solution:
     def sumRootToLeaf(self, root: TreeNode) -> int:
         root_to_leaf = curr_number = 0

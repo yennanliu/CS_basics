@@ -58,11 +58,15 @@ Output: [1,4,8,2,5,9,3,6,7]
 class ZigzagIterator(object):
 
     def __init__(self, v1, v2):
+        # time = O(1)
+        # space = O(1)
         self.v1 = v1
         self.v2 = v2
         self.flag = "v1"
         
     def next(self):
+        # time = O(n)  # n = len(self.v1) or len(self.v2); list.pop(0) shifts remaining elements
+        # space = O(1)
         if (self.v1 and self.flag == "v1") or (not self.v2):
             tmp1 = self.v1.pop(0)
             self.flag = "v2"
@@ -73,11 +77,15 @@ class ZigzagIterator(object):
             return tmp2
         
     def hasNext(self):
+        # time = O(1)
+        # space = O(1)
         return self.v1 or self.v2
 
 # V1
 # IDEA deque
 # https://zhuanlan.zhihu.com/p/157962559
+# time = O(1) per next()/hasNext() call; O(1) for __init__ (constant # of vectors)
+# space = O(1)  # deque holds at most 2 (size, iterator) entries
 class ZigzagIterator:
     def __init__(self, v1: List[int], v2: List[int]):
         self.q = collections.deque()
@@ -96,6 +104,8 @@ class ZigzagIterator:
 # V1
 # IDEA : TWO POINTERS
 # https://leetcode.com/problems/zigzag-iterator/solution/
+# time = O(1) per next()/hasNext() call (bounded by constant number of vectors); O(1) for __init__
+# space = O(1)
 class ZigzagIterator:
     def __init__(self, v1: List[int], v2: List[int]):
         self.vectors = [v1, v2]
@@ -135,6 +145,8 @@ class ZigzagIterator:
 # V1'
 # IDEA : Queue of Pointers
 # https://leetcode.com/problems/zigzag-iterator/solution/
+# time = O(1) per next()/hasNext() call; O(1) for __init__ (constant # of vectors)
+# space = O(1)  # queue holds at most 2 (vector_index, elem_index) pointers
 class ZigzagIterator:
     def __init__(self, v1: List[int], v2: List[int]):
         self.vectors = [v1, v2]
@@ -172,6 +184,8 @@ class ZigzagIterator(object):
         :type v1: List[int]
         :type v2: List[int]
         """
+        # time = O(n + m)  # n = len(v1), m = len(v2); merges both lists upfront
+        # space = O(n + m)  # merged list stores all elements
         self.l = []
         i = 0
         while i < max(len(v1), len(v2)):
@@ -186,6 +200,8 @@ class ZigzagIterator(object):
         """
         :rtype: int
         """
+        # time = O(1)
+        # space = O(1)
         cur = self.l[self.index]
         self.index += 1
         return cur
@@ -194,12 +210,16 @@ class ZigzagIterator(object):
         """
         :rtype: bool
         """
+        # time = O(1)
+        # space = O(1)
         if self.index < len(self.l):
             return True
         else:
             return False
             
 # V1''''
+# time = O(n + m)  # n = len(v1), m = len(v2)
+# space = O(n + m)  # output list
 class ZigzagIterator(object):
 
     def Zigzag(self, v1, v2):
@@ -222,9 +242,9 @@ class ZigzagIterator(object):
 # V1''''''''
 # https://blog.csdn.net/qq_46105170/article/details/108675981
 
-# V2 
-# Time:  O(n)
-# Space: O(k)
+# V2
+# time = O(n)
+# space = O(k)
 import collections
 class ZigzagIterator(object):
 

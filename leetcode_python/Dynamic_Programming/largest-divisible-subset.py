@@ -1,7 +1,9 @@
 # V0  : dev 
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/83027364
+# time = O(n^2)
+# space = O(n)
 class Solution:
     def largestDivisibleSubset(self, nums):
         """
@@ -29,9 +31,9 @@ class Solution:
             mx_index = parent[mx_index]
         return res[::-1]
 
-# V2 
-# Time:  O(n^2)
-# Space: O(n)
+# V2
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def largestDivisibleSubset(self, nums):
         """

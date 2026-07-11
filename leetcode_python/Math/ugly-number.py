@@ -33,6 +33,8 @@ Constraints:
 """
 
 # V0
+# time = O(log n)
+# space = O(1)
 class Solution(object):
     def isUgly(self, n):
         # edge case
@@ -63,7 +65,9 @@ class Solution(object):
                 flag = False
         return False
 
-# V1 
+# V1
+# time = O(log n)
+# space = O(1)
 class Solution(object):
 	# @param {integer} num
 	# @return {boolean}
@@ -83,8 +87,8 @@ class Solution(object):
 			return False
 
 # V2
-# Time:  O(logn) = O(1)
-# Space: O(1)
+# time = O(logn) = O(1)
+# space = O(1)
 class Solution(object):
     # @param {integer} num
     # @return {boolean}

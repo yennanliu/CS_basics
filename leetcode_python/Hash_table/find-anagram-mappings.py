@@ -46,7 +46,9 @@ A[i], B[i] are integers in range [0, 10^5].
 # - A, B have equal lengths in range [1, 100].
 # - A[i], B[i] are integers in range [0, 10^5].
 
-# V0 
+# V0
+# time = O(n)
+# space = O(n)
 import collections
 class Solution(object):
     def anagramMappings(self, A, B):
@@ -61,6 +63,8 @@ class Solution(object):
         return [dmap[x].pop() for x in A]
 
 # V0'
+# time = O(n^2)
+# space = O(1)
 class Solution(object):
     def anagramMappings(self, A, B):
         res = []
@@ -68,7 +72,9 @@ class Solution(object):
             res.append(B.index(i))
         return res 
         
-# V1 
+# V1
+# time = O(n^2)
+# space = O(n)
 from collections import OrderedDict
 class Solution(object):
     def anagramMappings(self, A, B):
@@ -83,8 +89,10 @@ class Solution(object):
         #print (lookup)
         return list(lookup.values())
 
-# V2 
+# V2
 # http://bookshadow.com/weblog/2018/01/07/leetcode-find-anagram-mappings/
+# time = O(n)
+# space = O(n)
 import collections
 class Solution(object):
     def anagramMappings(self, A, B):
@@ -98,7 +106,9 @@ class Solution(object):
             dmap[x].append(i)
         return [dmap[x].pop() for x in A]
 
-# V3 
+# V3
+# time = O(n)
+# space = O(n)
 import collections
 class Solution(object):
     def anagramMappings(self, A, B):

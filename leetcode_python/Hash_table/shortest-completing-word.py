@@ -55,6 +55,8 @@ class Solution(object):
 
 # V1
 # http://bookshadow.com/weblog/2017/12/17/leetcode-shortest-completing-word/
+# time = O(n)  # n = total chars across words
+# space = O(1)
 import collections
 import re 
 class Solution(object):
@@ -74,6 +76,8 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/shortest-completing-word/#tag-highlight-lang-python
+# time = O(n)  # n = total chars across words
+# space = O(1)
 import collections
 class Solution:
     """
@@ -99,7 +103,9 @@ class Solution:
                     ans = w
         return ans
 
-# V2 
+# V2
+# time = O(n)  # n = total chars across words
+# space = O(1)
 import collections
 class Solution(object):
     def shortestCompletingWord(self, licensePlate, words):

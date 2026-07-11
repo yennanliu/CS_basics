@@ -70,6 +70,8 @@ P= (total+target) / 2
 
 
 """
+# time = O(n * s), n = len(nums), s = subset_target = (total + target) // 2
+# space = O(s)
 class Solution(object):
     def findTargetSumWays(self, nums, target):
         total = sum(nums)
@@ -113,6 +115,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: 1D DP (0/1 knapsack), LC 416
+# time = O(n * s), n = len(nums), s = subset_target = (target + total_sum) // 2
+# space = O(s)
 class Solution(object):
     def findTargetSumWays(self, nums, target):
         """
@@ -161,6 +165,8 @@ class Solution(object):
 # dp[i + 1][x + nums[i]] += dp[i][x];
 # dp[i + 1][x - nums[i]] += dp[i][x];
 # ( dp[i][j] -> at index = i, # of the way can have sum = j )
+# time = O(n * sum), n = len(nums), sum = sum(nums)  # distinct sums per layer bounded by O(sum)
+# space = O(n * sum)
 class Solution:
     def findTargetSumWays(self, nums, S):
         """
@@ -180,6 +186,8 @@ class Solution:
 # V1
 # http://bookshadow.com/weblog/2017/01/22/leetcode-target-sum/
 # IDEA : DP
+# time = O(n * sum), n = len(nums), sum = sum(nums)
+# space = O(sum)
 import collections
 class Solution(object):
     def findTargetSumWays(self, nums, S):
@@ -206,6 +214,8 @@ class Solution(object):
 # -> dp[i + 1][x + nums[i]] += dp[i][x];
 # -> dp[i + 1][x - nums[i]] += dp[i][x];
 # (x : the "sum" can be built at last positon )
+# time = O(n * sum), n = len(nums), sum = sum(nums)
+# space = O(n * sum)
 class Solution:
     def findTargetSumWays(self, nums, S):
         """
@@ -224,6 +234,8 @@ class Solution:
 
 # V1''
 # IDEA : DFS (TIME OUT ERROR)
+# time = O(2^n), n = len(nums)
+# space = O(n)
 class Solution(object):
     def findTargetSumWays(self, nums, S):
         """
@@ -243,6 +255,8 @@ class Solution(object):
 # V1
 # https://blog.csdn.net/xiaoxiaoley/article/details/78968852
 # dp[x+y] += dp[y]
+# time = O(n * s), n = len(nums), s = target = (S + sum(nums)) // 2
+# space = O(s)
 class Solution(object):
     def findTargetSumWays(self, nums, S):
         """

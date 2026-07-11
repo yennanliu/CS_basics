@@ -13,6 +13,8 @@
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/51291091
 # IDEA :  RECURSION 
+# time = O(log n)  # n = num; recursion divides by 4 each call
+# space = O(log n)  # recursion call stack depth
 class Solution(object):
     def isPowerOfFour(self, num):
         """
@@ -28,6 +30,8 @@ class Solution(object):
 # V1' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/51291091
 # IDEA : ITERARION 
+# time = O(log n)  # n = num; divides by 4 each iteration
+# space = O(1)
 class Solution(object):
     def isPowerOfFour(self, num):
         """
@@ -42,6 +46,8 @@ class Solution(object):
 # V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/51291091
 # IDEA : BIT MANIPULATION 
+# time = O(1)
+# space = O(1)
 class Solution(object):
     def isPowerOfFour(self, num):
         """
@@ -53,6 +59,8 @@ class Solution(object):
 # V1'''
 # https://blog.csdn.net/fuxuemingzhu/article/details/51291091
 # IDEA : FUNC + LOG 
+# time = O(1)
+# space = O(1)
 class Solution(object):
     def isPowerOfFour(self, num):
         """
@@ -61,9 +69,9 @@ class Solution(object):
         """
         return num > 0 and (4 ** (int(math.log(num, 4)))) == num
 
-# V2 
-# Time:  O(1)
-# Space: O(1)
+# V2
+# time = O(1)
+# space = O(1)
 class Solution(object):
     def isPowerOfFour(self, num):
         """
@@ -74,8 +82,8 @@ class Solution(object):
                ((num & 0b01010101010101010101010101010101) == num)
 
 
-# Time:  O(1)
-# Space: O(1)
+# time = O(1)
+# space = O(1)
 class Solution2(object):
     def isPowerOfFour(self, num):
         """
@@ -87,6 +95,8 @@ class Solution2(object):
         return (num == 1)
 
 
+# time = O(log n)  # n = num; bin(num) has O(log n) bits
+# space = O(log n)  # bin(num) string
 class Solution3(object):
     def isPowerOfFour(self, num):
         """

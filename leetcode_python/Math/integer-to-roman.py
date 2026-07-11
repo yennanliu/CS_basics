@@ -52,6 +52,8 @@ Constraints:
 # IDEA: GREEDY (gpt)
 # NOTE: this LC is `int` to `roman`,
 #       NOT `roman` to int (LC 13)
+# time = O(1)  # fixed set of 13 value-symbol pairs, num bounded by 3999
+# space = O(1)
 class Solution(object):
     def intToRoman(self, num):
         values = [
@@ -83,6 +85,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: GREEDY (gemini)
+# time = O(1)
+# space = O(1)
 class Solution(object):
     def intToRoman(self, num):
         """
@@ -113,7 +117,7 @@ class Solution(object):
         return "".join(res)
 
 
-# V0 
+# V0
 # IDEA
 # In [8]: 1200%100
 # Out[8]: 0
@@ -130,6 +134,8 @@ class Solution(object):
 #         r = int(r)*10 + int(i)
 #         print (i, r)
 #     return r
+# time = O(1)
+# space = O(1)
 class Solution(object):
     def intToRoman(self, num):
         M = ["", "M", "MM", "MMM"]
@@ -140,6 +146,8 @@ class Solution(object):
 
 # V1
 # https://blog.csdn.net/NXHYD/article/details/72461202
+# time = O(1)
+# space = O(1)
 class Solution(object):
     def intToRoman(self, num):
         """
@@ -161,6 +169,8 @@ class Solution(object):
 # V1
 # IDEA : Greedy
 # https://leetcode.com/problems/integer-to-roman/solution/
+# time = O(1)
+# space = O(1)
 class Solution:
     def intToRoman(self, num: int) -> str:
         digits = [(1000, "M"), (900, "CM"), (500, "D"), (400, "CD"), (100, "C"), 
@@ -180,6 +190,8 @@ class Solution:
 # V1
 # IDEA : Hardcode Digits
 # https://leetcode.com/problems/integer-to-roman/solution/
+# time = O(1)
+# space = O(1)
 class Solution:
     def intToRoman(self, num: int) -> str:
         thousands = ["", "M", "MM", "MMM"]
@@ -189,8 +201,10 @@ class Solution:
         return (thousands[num // 1000] + hundreds[num % 1000 // 100] 
                + tens[num % 100 // 10] + ones[num % 10])
 
-# V1' 
+# V1'
 # https://blog.csdn.net/NXHYD/article/details/72461202
+# time = O(1)
+# space = O(1)
 class Solution(object):
     def intToRoman(self, num):
         """
@@ -203,8 +217,10 @@ class Solution(object):
         I = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"]
         return M[num/1000] + C[(num%1000)/100] + X[(num%100)/10] + I[num%10]
 
-# V1'' 
+# V1''
 # https://www.jiuzhang.com/solution/integer-to-roman/#tag-highlight-lang-python
+# time = O(1)
+# space = O(1)
 class Solution:
     def parse(self, digit, index):
         NUMS = {
@@ -240,8 +256,10 @@ class Solution:
             index += 1
         return s
 
-# V2 
+# V2
 # https://blog.csdn.net/NXHYD/article/details/72461202
+# time = O(1)
+# space = O(1)
 class Solution(object):
     def intToRoman(self, num):
         import math 
@@ -257,8 +275,8 @@ class Solution(object):
 
 
 # V3
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def intToRoman(self, num):
         """

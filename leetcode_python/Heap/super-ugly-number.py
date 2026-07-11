@@ -4,6 +4,8 @@
 # http://bookshadow.com/weblog/2015/12/03/leetcode-super-ugly-number/
 # Write a program to find the nth super ugly number.
 # Super ugly numbers are positive numbers whose all prime factors are in the given prime list primes of size k. For example, [1, 2, 4, 7, 8, 13, 14, 16, 19, 26, 28, 32] is the sequence of the first 12 super ugly numbers given primes = [2, 7, 13, 19] of size 4.
+# time = O(n * k), n = target index, k = len(primes)
+# space = O(n + k)
 import heapq
 class Solution(object):
     def nthSuperUglyNumber(self, n, primes):
@@ -23,8 +25,10 @@ class Solution(object):
                 uglies.append(ugly)
         return uglies[-1]
 
-# V1' 
+# V1'
 # http://bookshadow.com/weblog/2015/12/03/leetcode-super-ugly-number/
+# time = O(n * k), n = target index, k = len(primes)
+# space = O(n + k)
 class Solution(object):
     def nthSuperUglyNumber(self, n, primes):
         """
@@ -38,9 +42,9 @@ class Solution(object):
         map(uglies.append, itertools.islice(uniqed, n-1))
         return uglies[-1]
 
-# V2 
-# Time:  O(n * k)
-# Space: O(n + k)
+# V2
+# time = O(n * k)
+# space = O(n + k)
 import heapq
 # Heap solution. (620ms)
 class Solution(object):
@@ -66,8 +70,8 @@ class Solution(object):
 
         return uglies[-1]
 
-# Time:  O(n * k)
-# Space: O(n + k)
+# time = O(n * k)
+# space = O(n + k)
 # Hash solution. (932ms)
 class Solution2(object):
     def nthSuperUglyNumber(self, n, primes):
@@ -92,8 +96,8 @@ class Solution2(object):
 
         return uglies[-1]
 
-# Time:  O(n * logk) ~ O(n * klogk)
-# Space: O(n + k)
+# time = O(n * logk) ~ O(n * klogk)
+# space = O(n + k)
 class Solution3(object):
     def nthSuperUglyNumber(self, n, primes):
         """
@@ -116,8 +120,8 @@ class Solution3(object):
 
         return uglies[-1]
 
-# Time:  O(n * k)
-# Space: O(n + k)
+# time = O(n * k)
+# space = O(n + k)
 # TLE due to the last test case, but it passess and performs the best in C++.
 class Solution4(object):
     def nthSuperUglyNumber(self, n, primes):
@@ -140,8 +144,8 @@ class Solution4(object):
 
         return uglies[-1]
 
-# Time:  O(n * logk) ~ O(n * klogk)
-# Space: O(k^2)
+# time = O(n * logk) ~ O(n * klogk)
+# space = O(k^2)
 # TLE due to the last test case, but it passess and performs well in C++.
 class Solution5(object):
     def nthSuperUglyNumber(self, n, primes):

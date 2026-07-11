@@ -37,6 +37,8 @@ to_delete contains distinct values between 1 and 1000.
 # V1
 # https://leetcode.com/problems/delete-nodes-and-return-forest/editorial/
 # IDEA :  Recursion (Postorder Traversal)
+# time = O(n)
+# space = O(n)  # recursion stack + forest result
 class Solution:
     def delNodes(
         self, root: Optional[TreeNode], to_delete: List[int]
@@ -76,6 +78,8 @@ class Solution:
 # V2
 # https://leetcode.com/problems/delete-nodes-and-return-forest/editorial/
 # IDEA : BFS
+# time = O(n)
+# space = O(n)  # queue + forest result
 class Solution:
     def delNodes(
         self, root: Optional[TreeNode], to_delete: List[int]

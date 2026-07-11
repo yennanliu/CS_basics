@@ -42,6 +42,8 @@ logs[i] is guaranteed to have an identifier and at least one word after the iden
 
 # V0
 # IDEA : SORT BY KEY
+# time = O(n log n * l)  # n = len(logs), l = avg length of a log
+# space = O(n)
 class Solution:
     def reorderLogFiles(self, logs):
         def f(log):
@@ -68,6 +70,8 @@ class Solution:
 # V1
 # IDEA : SORT BY keys
 # https://leetcode.com/problems/reorder-data-in-log-files/solution/
+# time = O(n log n * l)  # n = len(logs), l = avg length of a log
+# space = O(n)
 class Solution:
     def reorderLogFiles(self, logs):
 
@@ -83,11 +87,13 @@ class Solution:
 
         return sorted(logs, key=get_key)
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/83961188
 # IDEA :
 # THE NEEDED RETURN FORM :
 # sorted alphabet-log + sorted nums-log 
+# time = O(n log n * l)  # n = len(logs), l = avg length of a log
+# space = O(n)
 class Solution(object):
     def reorderLogFiles(self, logs):
         letters = []
@@ -104,6 +110,8 @@ class Solution(object):
 # V1'
 # https://leetcode.com/problems/reorder-data-in-log-files/solution/
 # IDEA : SORT BY KEY
+# time = O(n log n * l)  # n = len(logs), l = avg length of a log
+# space = O(n)
 class Solution:
     def reorderLogFiles(self, logs: List[str]) -> List[str]:
 
@@ -162,6 +170,8 @@ class Solution:
 # isalpha()
 # The isalpha() method returns True if all characters in the string are alphabets. If not, it returns False.
 # https://blog.csdn.net/GQxxxxxl/article/details/83961863
+# time = O(n log n * l)  # n = len(logs), l = avg length of a log
+# space = O(n)
 class Solution:
     def reorderLogFiles(self, logs):
         def f(log):
@@ -172,6 +182,8 @@ class Solution:
         return logs #sorted(logs, key = f)
 
 # V2'
+# time = O(n log n * l)  # n = len(logs), l = avg length of a log
+# space = O(n)
 class Solution:
     def reorderLogFiles(self, logs):
         """
@@ -184,9 +196,9 @@ class Solution:
 
         return sorted(logs, key = f)
 
-# V3 
-# Time:  O(nlogn * l), n is the length of files, l is the average length of strings
-# Space: O(l)
+# V3
+# time = O(nlogn * l), n is the length of files, l is the average length of strings
+# space = O(l)
 class Solution(object):
     def reorderLogFiles(self, logs):
         """

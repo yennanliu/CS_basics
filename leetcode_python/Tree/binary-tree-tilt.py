@@ -8,6 +8,8 @@
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)  # n = number of tree nodes
+# space = O(h)  # h = tree height (recursion stack)
 class Solution:
     def findTilt(self, root):
         """
@@ -26,9 +28,9 @@ class Solution:
         self.sums += abs(left - right)
         return left + right + root.val
 
-# V2 
-# Time:  O(n)
-# Space: O(n)
+# V2
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def findTilt(self, root):
         """

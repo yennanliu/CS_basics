@@ -155,6 +155,8 @@ class Solution:
 # IDEA : array + sort
 # https://leetcode.com/problems/search-suggestions-system/discuss/1243220/Python-3-very-simple-solution
 class Solution:
+    # time = O(n log n + m*n)  # n = len(products), m = len(searchWord)
+    # space = O(n)
     def suggestedProducts(self, products, searchWord):
         answ=[]
         products.sort()
@@ -171,6 +173,8 @@ class Solution:
 # IDEA :  array + sort
 # https://leetcode.com/problems/search-suggestions-system/discuss/882649/Python
 class Solution:
+    # time = O(n log n + m*n)  # n = len(products), m = len(searchWord)
+    # space = O(m)
     def suggestedProducts(self, products, searchWord):
             products = sorted(products)
 
@@ -192,6 +196,8 @@ class Solution:
 # IDEA : HEAP
 # https://leetcode.com/problems/search-suggestions-system/discuss/1242697/Python-heap
 class Solution:
+    # time = O(n log n + m log n)  # n = len(products), m = len(searchWord)
+    # space = O(n)
     def suggestedProducts(self, products, searchWord):
         ans = []
         
@@ -225,6 +231,8 @@ class Solution:
 # IDEA : bisect
 # https://leetcode.com/problems/search-suggestions-system/discuss/517125/Python-simple-solution
 class Solution:
+    # time = O(n log n + m log n)  # n = len(products), m = len(searchWord)
+    # space = O(n)
     def suggestedProducts(self, products, searchWord):
             products.sort()
             res = []

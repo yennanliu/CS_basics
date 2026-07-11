@@ -229,6 +229,8 @@ class Solution:
 #   -> IF THERE IS ELEMENT == INF, -> RETURN THE DISTANCE BETWEEN INF AND ZERO
 #   -> STOP THE LOOP WHILE ALREADY GOT THE MIN DISATANCE
 # 4) REPEAT STEP 1) -> STEP 3) THEN RETURN THE UPDATED 2D GRID 
+# time = O((m*n)^2), m,n = grid dimensions; a cell can be revisited/updated many times as `dist` improves via different DFS paths (no visited-once guarantee)
+# space = O(m*n), recursion stack can reach O(m*n) depth
 class Solution:
     def wallsAndGates(self, rooms: List[List[int]]) -> None:
         """

@@ -2,6 +2,8 @@
 
 # V1
 # http://bookshadow.com/weblog/2016/12/04/leetcode-unique-substrings-in-wraparound-string/
+# time = O(n), n = len(p)
+# space = O(1)  # cmap bounded by 26 letters
 class Solution(object):
     def findSubstringInWraproundString(self, p):
         """
@@ -23,6 +25,8 @@ class Solution(object):
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/83088406
+# time = O(n), n = len(p)
+# space = O(1)  # count bounded by 26 letters
 class Solution:
     def findSubstringInWraproundString(self, p):
         """
@@ -42,6 +46,8 @@ class Solution:
 
 # V1''
 # https://www.jiuzhang.com/solution/unique-substrings-in-wraparound-string/#tag-highlight-lang-python
+# time = O(n), n = len(p)
+# space = O(1)  # res bounded by 26 letters
 class Solution:
     """
     @param p: the given string
@@ -56,6 +62,8 @@ class Solution:
         return sum(res.values())
 
 # V2
+# time = O(n), n = len(p)
+# space = O(1)  # letters array of fixed size 26
 class Solution(object):
     def findSubstringInWraproundString(self, p):
         """

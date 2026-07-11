@@ -30,6 +30,8 @@ The input tree is guaranteed to be a binary search tree.
 
 # V0
 # IDEA : BFS + queue op
+# time = O(n^2)  # q.pop(0)/nodes.pop(0) cost O(n) each, done n times
+# space = O(n)
 class Codec:
     def serialize(self, root):
         if not root:
@@ -88,6 +90,8 @@ class Codec:
         return root
 
 # V0' : BFS + collection.dequeue op
+# time = O(n)
+# space = O(n)
 class Codec:
     def serialize(self, root):
         if not root:
@@ -147,6 +151,8 @@ class Codec:
         return root
 
 # V0''
+# time = O(n)
+# space = O(n)  # recursion stack O(h) + vals list/deque O(n)
 class Codec:
 
     def serialize(self, root):
@@ -177,6 +183,8 @@ class Codec:
 # V1
 # IDEA : same as LC 297
 # https://leetcode.com/problems/serialize-and-deserialize-bst/discuss/93283/Python-solution-using-BST-property
+# time = O(n)
+# space = O(n)  # recursion stack O(h) + vals list/deque O(n)
 class Codec:
 
     def serialize(self, root):
@@ -207,6 +215,8 @@ class Codec:
 # V1'
 # IDEA : BST property
 # https://leetcode.com/problems/serialize-and-deserialize-bst/discuss/212043/Python-solution
+# time = O(n)
+# space = O(n)
 class Codec:
 
     def serialize(self, root):
@@ -257,6 +267,8 @@ class Codec:
 # https://leetcode.com/problems/serialize-and-deserialize-bst/discuss/212043/Python-solution
 class Codec:
 
+    # time = O(n)
+    # space = O(n)
     def serialize(self, root):
         """Encodes a tree to a single string.
         
@@ -274,6 +286,8 @@ class Codec:
         dfs(root)
         return "".join(res)
 
+    # time = O(n^2)  # worst case (skewed tree); scans remaining array each call to find split; O(n log n) average
+    # space = O(n)  # recursion depth up to n in worst case
     def deserialize(self, data):
         """Decodes your encoded data to tree.
         
@@ -306,6 +320,8 @@ class Codec:
 
 # V1''
 # http://bookshadow.com/weblog/2015/10/26/leetcode-serialize-and-deserialize-binary-tree/
+# time = O(n)
+# space = O(n)
 class Codec:
     def serialize(self, root):
         def doit(node):
@@ -339,6 +355,8 @@ class Codec:
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)
+# space = O(n)
 class Codec:
 
     def serialize(self, root):
@@ -397,6 +415,8 @@ class Codec:
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)
+# space = O(n)
 import json
 class Codec:
 
@@ -455,6 +475,8 @@ class Codec:
 
 # V1''''''
 # https://www.jiuzhang.com/solution/serialize-and-deserialize-bst/#tag-highlight-lang-python
+# time = O(n)
+# space = O(n)
 class Codec:
     def serialize(self, root):
         # write your code here
@@ -512,9 +534,9 @@ class Codec:
             p = new_p  
         return root
 
-# V2 
-# Time:  O(n)
-# Space: O(h)
+# V2
+# time = O(n)
+# space = O(h)
 import collections
 class TreeNode(object):
     def __init__(self, x):

@@ -50,6 +50,8 @@ Constraints:
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/82963310
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def validUtf8(self, data):
         """
@@ -77,6 +79,8 @@ class Solution(object):
 
 # V1'
 # https://leetcode.com/problems/utf-8-validation/discuss/87478/Simplest-Python-Solution
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def validUtf8(self, data):
         """
@@ -107,6 +111,8 @@ class Solution(object):
 
 # V1''
 # https://leetcode.com/problems/utf-8-validation/discuss/156588/My-easy-to-understand-Python-solution
+# time = O(n)
+# space = O(n)
 class Solution:
     def validUtf8(self, data):
         
@@ -131,6 +137,8 @@ class Solution:
 
 # V1'''
 # http://bookshadow.com/weblog/2016/09/04/leetcode-utf-8-validation/
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def validUtf8(self, data):
         """
@@ -156,6 +164,8 @@ class Solution(object):
 # IDEA : String Manipulation
 # time complexity : O(N)
 # space complexity : O(N)
+# time = O(n)
+# space = O(1)  # bin_rep is a fixed 8-char string per iteration
 class Solution:
     def validUtf8(self, data):
         """
@@ -206,6 +216,8 @@ class Solution:
 # Bit Manipulation
 # time complexity : O(N)
 # space complexity : O(1)
+# time = O(n)
+# space = O(1)
 class Solution:
     def validUtf8(self, data):
         """
@@ -269,9 +281,9 @@ class Solution:
 #     return size == 0;
 # }
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def validUtf8(self, data):
         """

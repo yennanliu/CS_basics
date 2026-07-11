@@ -20,9 +20,9 @@ class Solution(object):
             preorder[i] = p
         return True
 
-# V3 
-# Time:  O(n)
-# Space: O(h)
+# V3
+# time = O(n)
+# space = O(h)
 class Solution2(object):
     # @param {integer[]} preorder
     # @return {boolean}

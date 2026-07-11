@@ -1,8 +1,10 @@
 # V0  
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/83154114
 # IDEA : DP
+# time = O(m * n)
+# space = O(m * n)
 class Solution(object):
     def uniquePathsWithObstacles(self, obstacleGrid):
         """
@@ -22,9 +24,11 @@ class Solution(object):
                         dp[i][j] = dp[i - 1][j] + dp[i][j - 1]
         return dp[m][n]
 
-# V1' 
+# V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/83154114
 # IDEA : DP
+# time = O(m * n)
+# space = O(m * n)
 class Solution(object):
     def uniquePathsWithObstacles(self, obstacleGrid):
         """
@@ -46,9 +50,11 @@ class Solution(object):
                         dp[i][j] += dp[i][j - 1]
         return dp[m - 1][n - 1]
 
-# V1'' 
+# V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/83154114
 # IDEA : DP
+# time = O(m * n)
+# space = O(m * n)
 class Solution(object):
     def uniquePathsWithObstacles(self, obstacleGrid):
         """
@@ -68,9 +74,11 @@ class Solution(object):
                         dp[i][j] = dp[i - 1][j] + dp[i][j - 1]
         return dp[m - 1][n - 1]
 
-# V1''' 
+# V1'''
 # https://blog.csdn.net/fuxuemingzhu/article/details/83154114
 # IDEA : MEMORY SEARCH 
+# time = O(m * n)
+# space = O(m * n)  # memo table + recursion depth
 class Solution(object):
     def uniquePathsWithObstacles(self, obstacleGrid):
         """
@@ -101,6 +109,8 @@ class Solution(object):
 # idea :
 # dp[i][j] = 0  # if grid[i][j] == 1
 # dp[i][j] = dp[i-1][j] + dp[i][j-1]  # if grid[i][j] == 0
+# time = O(m * n)
+# space = O(m * n)
 class Solution:
     def uniquePathsWithObstacles(self, obstacleGrid):
         n, m = len(obstacleGrid), len(obstacleGrid[0])
@@ -121,9 +131,9 @@ class Solution:
 #     solu =Solution()
 #     print(solu.uniquePathsWithObstacles(obstacleGrid))
 
-# V3 
-# Time:  O(m * n)
-# Space: O(m + n)
+# V3
+# time = O(m * n)
+# space = O(m + n)
 class Solution(object):
     # @param obstacleGrid, a list of lists of integers
     # @return an integer

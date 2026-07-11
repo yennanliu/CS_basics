@@ -35,11 +35,13 @@ import collections
 class Solution(object):
     def topKFrequent(self, nums, k):
         freq_dict = dict(collections.Counter(nums))
-        # python sort a dict by value
+        # python sort a dict by value 
         # https://stackoverflow.com/questions/613183/how-do-i-sort-a-dictionary-by-value
         return [ x[0] for  x in sorted(list(freq_dict.items()), key=lambda x: x[1],reverse=True) ][:k]
 
 # V1
+# time = O(n log n)
+# space = O(n)
 import collections
 class Solution(object):
     def topKFrequent(self, nums, k):

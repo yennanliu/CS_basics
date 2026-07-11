@@ -1,4 +1,6 @@
 # V0
+# time = O(n)
+# space = O(h), h is height of binary tree (recursion stack)
 class Solution(object):
     def sumNumbers(self, root):
         """
@@ -27,6 +29,8 @@ class Solution(object):
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)
+# space = O(h), h is height of binary tree (recursion stack)
 class Solution(object):
     def sumNumbers(self, root):
         """
@@ -49,6 +53,8 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/sum-root-to-leaf-numbers/#tag-highlight-lang-python
+# time = O(n)
+# space = O(h), h is height of binary tree (recursion stack)
 class Solution:
     """
     @param root: the root of the tree
@@ -66,8 +72,8 @@ class Solution:
         return self.dfs(root.left, sum) + self.dfs(root.right, sum)
 
 # V2
-# Time:  O(n)
-# Space: O(h), h is height of binary tree
+# time = O(n)
+# space = O(h), h is height of binary tree
 class TreeNode(object):
     def __init__(self, x):
         self.val = x

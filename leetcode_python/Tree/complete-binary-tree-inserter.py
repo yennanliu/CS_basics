@@ -10,6 +10,8 @@
 #         self.right = None
 class CBTInserter(object):
 
+    # time = O(n)  # n = number of tree nodes
+    # space = O(n)  # self.tree stores all n nodes
     def __init__(self, root):
         """
         :type root: TreeNode
@@ -25,6 +27,8 @@ class CBTInserter(object):
             if node.right:
                 queue.append(node.right)
 
+    # time = O(1)
+    # space = O(1)
     def insert(self, v):
         """
         :type v: int
@@ -41,6 +45,8 @@ class CBTInserter(object):
         return father.val
         
 
+    # time = O(1)
+    # space = O(1)
     def get_root(self):
         """
         :rtype: TreeNode
@@ -53,11 +59,7 @@ class CBTInserter(object):
 # param_1 = obj.insert(v)
 # param_2 = obj.get_root()
 
-# V2 
-# Time:  ctor:     O(n)
-#        insert:   O(1)
-#        get_root: O(1)
-# Space: O(n)
+# V2
 class TreeNode(object):
     def __init__(self, x):
         self.val = x
@@ -66,6 +68,8 @@ class TreeNode(object):
 
 class CBTInserter(object):
 
+    # time = O(n)  # n = number of tree nodes
+    # space = O(n)  # self.__tree stores all n nodes
     def __init__(self, root):
         """
         :type root: TreeNode
@@ -77,6 +81,8 @@ class CBTInserter(object):
             if i.right:
                 self.__tree.append(i.right)        
 
+    # time = O(1)
+    # space = O(1)
     def insert(self, v):
         """
         :type v: int
@@ -90,6 +96,8 @@ class CBTInserter(object):
             self.__tree[(n-1)//2].right = self.__tree[-1]
         return self.__tree[(n-1)//2].val
 
+    # time = O(1)
+    # space = O(1)
     def get_root(self):
         """
         :rtype: TreeNode

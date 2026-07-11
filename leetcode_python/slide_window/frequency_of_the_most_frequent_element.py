@@ -60,6 +60,8 @@ Constraints:
 
 # V1
 # IDEA: SLIDE WINDOW
+# time = O(n log n)  # dominated by sort; sliding window itself is O(n) amortized
+# space = O(1)  # excluding sort's internal space
 class Solution(object):
     def maxFrequency(self, nums, k):
         # Sort so we can always raise smaller numbers
@@ -102,6 +104,8 @@ class Solution(object):
 
 # V2
 # IDEA: SLIDE WINDOW
+# time = O(n log n)  # dominated by sort; sliding window itself is O(n) amortized
+# space = O(1)  # excluding sort's internal space
 class Solution(object):
     def maxFrequency(self, nums, k):
         """

@@ -63,6 +63,8 @@ The right-most node is also defined by the same way with left and right exchange
 # IDEA : DFS
 # https://xiaoguan.gitbooks.io/leetcode/content/LeetCode/545-boundary-of-binary-tree-medium.html
 # https://www.cnblogs.com/lightwindy/p/9583723.html
+# time = O(n)  # n = number of tree nodes
+# space = O(n)  # output list + O(h) recursion stack
 class Solution(object):
     def boundaryOfBinaryTree(self, root):
         def leftBoundary(root, nodes):
@@ -112,6 +114,8 @@ class Solution(object):
         return nodes
 
 # V0'
+# time = O(n)  # n = number of tree nodes
+# space = O(n)  # output list + boundary/leaf lists
 class Solution(object):
     def boundaryOfBinaryTree(self, root):
         if not root: return []
@@ -154,6 +158,8 @@ class Solution(object):
 
 # V1
 # https://www.cnblogs.com/lightwindy/p/9583723.html
+# time = O(n)  # n = number of tree nodes
+# space = O(n)  # output list + O(h) recursion stack
 class Solution(object):
     def boundaryOfBinaryTree(self, root):
         """
@@ -207,6 +213,8 @@ class Solution(object):
 # To get nodes from the leaves, we DFS until we hit a leaf (until node.left and node.right are both None). We should take care to add to our stack in the order (right, left) so that they are popped in the order (left, right).
 # Now armed with all the nodes we could visit, let's visit them in order. As we visit a node, we should skip over ones we've seen before (comparing node objects by pointer, not node.val), and otherwise add node.val to our answer.
 # We could also rewrite this answer by calling visit(cur) directly instead of appending to left_bd_nodes, etc. to save a little space.
+# time = O(n)  # n = number of tree nodes
+# space = O(n)  # output list + boundary/leaf lists
 class Solution(object):
     def boundaryOfBinaryTree(self, root):
         if not root: return []
@@ -249,6 +257,8 @@ class Solution(object):
 
 # V1
 # https://leetcode.com/problems/boundary-of-binary-tree/discuss/422802/python-concise-solution
+# time = O(n)  # n = number of tree nodes
+# space = O(n)  # output list + O(h) recursion stack
 class Solution:
     def boundaryOfBinaryTree(self, root: TreeNode) -> List[int]:
         def dfs(root,isl,isr):
@@ -270,6 +280,8 @@ class Solution:
 
 # V1
 # https://leetcode.com/problems/boundary-of-binary-tree/discuss/422802/python-concise-solution
+# time = O(n)  # n = number of tree nodes
+# space = O(n)  # output list + O(h) recursion stack
 class Solution:
     def boundaryOfBinaryTree(self, root: TreeNode) -> List[int]:
         def leaf(root):
@@ -310,6 +322,8 @@ class Solution:
 
 # V1'
 # https://www.jiuzhang.com/solution/boundary-of-binary-tree/#tag-highlight-lang-python
+# time = O(n)  # n = number of tree nodes
+# space = O(n)  # output list + O(h) recursion stack
 class Solution:
     """
     @param root: a TreeNode
@@ -356,6 +370,8 @@ class Solution:
 
 # V1''
 # https://www.jiuzhang.com/solution/boundary-of-binary-tree/#tag-highlight-lang-python
+# time = O(n)  # n = number of tree nodes
+# space = O(n)  # output list + O(h) recursion stack
 class Solution:
     """
     @param root: a TreeNode
@@ -392,6 +408,8 @@ class Solution:
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)  # n = number of tree nodes
+# space = O(n)  # output/leaves lists + O(h) recursion stack
 class Solution(object):
     def boundaryOfBinaryTree(self, root):
         """
@@ -431,6 +449,8 @@ class Solution(object):
 
 # V1''''
 # https://blog.csdn.net/danspace1/article/details/86659807
+# time = O(n)  # n = number of tree nodes
+# space = O(n)  # output list + O(h) recursion stack
 class Solution:
     def boundaryOfBinaryTree(self, root):
         """
@@ -603,9 +623,9 @@ class Solution:
 #     }
 # }
 
-# V2 
-# Time:  O(n)
-# Space: O(h)
+# V2
+# time = O(n)
+# space = O(h)
 class Solution(object):
     def boundaryOfBinaryTree(self, root):
         """

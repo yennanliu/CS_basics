@@ -51,6 +51,8 @@ class Solution(object):
 
 # V1
 # IDEA: SLIDE WINDOW
+# time = O(n)  # n = len(word); single pass
+# space = O(1)
 class Solution(object):
     def longestBeautifulSubstring(self, word):
 
@@ -100,6 +102,8 @@ class Solution(object):
 
 # V2
 # IDEA: SLIDE WINDOW
+# time = O(n)  # n = len(word); single pass
+# space = O(1)
 class Solution(object):
     def longestBeautifulSubstring(self, word):
         """

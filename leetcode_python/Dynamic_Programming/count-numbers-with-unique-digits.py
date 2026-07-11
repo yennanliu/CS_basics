@@ -2,8 +2,10 @@
 # DP state equation : dp[i]=dp[i−1]∗(11−i)
 # https://www.jiuzhang.com/solution/count-numbers-with-unique-digits/
 
-# V1 
+# V1
 # http://bookshadow.com/weblog/2016/06/13/leetcode-count-numbers-with-unique-digits/
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def countNumbersWithUniqueDigits(self, n):
         """
@@ -16,9 +18,9 @@ class Solution(object):
         return sum(nums[:n]) + 1
 
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def countNumbersWithUniqueDigits(self, n):
         """

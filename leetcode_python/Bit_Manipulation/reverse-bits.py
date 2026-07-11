@@ -40,6 +40,8 @@ Follow up: If this function is called many times, how would you optimize it?
 """
 
 # V0
+# time = O(1)  # n = 32, fixed-width integer
+# space = O(1)
 class Solution:
     def reverseBits(self, n):
         s = bin(n)[2:]
@@ -51,6 +53,8 @@ class Solution:
 # DEMO
 # n = 10100101000001111010011100
 # n =       10100101000001111010011100
+# time = O(1)  # n = 32, fixed-width integer
+# space = O(1)
 class Solution:
     def reverseBits(self, n):
         n = bin(n)[2:]         # convert to binary, and remove the usual 0b prefix
@@ -61,7 +65,9 @@ class Solution:
         # Now we have a  proper binary representation, so we can make the final transformation
         return int(n[::-1],2)
 
-# V0'' 
+# V0''
+# time = O(1)
+# space = O(1)
 class Solution(object):
     def reverseBits(self, n):
         #b = bin(n)[:1:-1]
@@ -70,6 +76,8 @@ class Solution(object):
 
 # V1
 # https://leetcode.com/problems/reverse-bits/discuss/176539/Python-solution
+# time = O(1)  # n = 32, fixed-width integer
+# space = O(1)
 class Solution:
     def reverseBits(self, n):
         s = bin(n)[2:]
@@ -79,6 +87,8 @@ class Solution:
 
 # V1'
 # https://leetcode.com/problems/reverse-bits/discuss/732541/Python-Solution-with-explanation
+# time = O(1)  # n = 32, fixed-width integer
+# space = O(1)
 class Solution:
     def reverseBits(self, n: int):
         s = bin(n).replace("0b", "") # convert given number to binary representation
@@ -95,6 +105,8 @@ class Solution:
 # V1''
 # https://blog.csdn.net/coder_orz/article/details/51705094
 # IDEA : transform str to binary 2 -> extend to 32 digit -> complete this 32 digit
+# time = O(1)  # n = 32, fixed-width integer
+# space = O(1)
 class Solution(object):
     def reverseBits(self, n):
         """
@@ -107,6 +119,8 @@ class Solution(object):
 # V1'''
 # IDEA : string op
 # https://leetcode.com/problems/reverse-bits/discuss/744794/Easy-Python-or-100-Speed
+# time = O(1)  # n = 32, fixed-width integer
+# space = O(1)
 class Solution:
     def reverseBits(self, n):
         n = bin(n)[2:]         # convert to binary, and remove the usual 0b prefix
@@ -117,12 +131,16 @@ class Solution:
 
 # V1''''
 # https://leetcode.com/problems/reverse-bits/discuss/744794/Easy-Python-or-100-Speed
+# time = O(1)  # n = 32, fixed-width integer
+# space = O(1)
 class Solution:
     def reverseBits(self, n):
         return int( ('%32s' % bin(n)[2:]).replace(' ','0')[::-1] ,2)
 
 # V1'''''
 # https://leetcode.com/problems/reverse-bits/discuss/744794/Easy-Python-or-100-Speed
+# time = O(1)  # n = 32, fixed-width integer
+# space = O(1)
 class Solution:
     def reverseBits(self, n):
         n = bin(n)[2:]
@@ -131,6 +149,8 @@ class Solution:
 
 # V1''''''
 # https://blog.csdn.net/coder_orz/article/details/51705094
+# time = O(1)  # n = 32, fixed-width integer
+# space = O(1)
 class Solution(object):
     def reverseBits(self, n):
         """
@@ -145,6 +165,8 @@ class Solution(object):
 
 # V1'''''''
 # https://blog.csdn.net/coder_orz/article/details/51705094
+# time = O(1)  # n = 32, fixed-width integer
+# space = O(1)
 class Solution(object):
     def reverseBits(self, n):
         """
@@ -158,9 +180,9 @@ class Solution(object):
         n = ((n & 0xaaaaaaaa) >> 1) | ((n & 0x55555555) << 1);
         return n
 
-# V2 
-# Time : O(logn) = O(32)
-# Space: O(1)
+# V2
+# time = O(logn) = O(32)
+# space = O(1)
 class Solution(object):
     # @param n, an integer
     # @return an integer

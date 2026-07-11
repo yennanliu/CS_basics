@@ -9,6 +9,8 @@ class TrieNode:
         self.sum = 0
         self.val = 0
 
+# time = O(L), L = length of key/prefix per insert/sum call
+# space = O(N), N = total characters across all inserted keys (trie size)
 class MapSum(object):
 
     def __init__(self):
@@ -80,6 +82,8 @@ class Trie:
         return cur.val
     
     
+# time = O(L), L = length of key/prefix per insert/sum call
+# space = O(N), N = total characters across all inserted keys (trie size)
 class MapSum:
     
     def __init__(self):
@@ -114,9 +118,9 @@ class MapSum:
 # obj.insert(key,val)
 # param_2 = obj.sum(prefix)
 
-# V2 
-# Time:  O(n), n is the length of key
-# Space: O(t), t is the number of nodes in trie
+# V2
+# time = O(n), n is the length of key
+# space = O(t), t is the number of nodes in trie
 import collections
 class MapSum(object):
 

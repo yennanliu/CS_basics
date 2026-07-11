@@ -121,6 +121,8 @@ Case 2: last char comes from s2
 	)
 
 """
+# time = O(m*n)  # m = len(s1), n = len(s2)
+# space = O(m*n)
 class Solution(object):
     def isInterleave(self, s1, s2, s3):
         m, n = len(s1), len(s2)
@@ -161,7 +163,9 @@ class Solution(object):
 
 
 # V0-1
-# IDEA 1) 2D DP 
+# IDEA 1) 2D DP
+# time = O(m*n)  # m = len(s1), n = len(s2)
+# space = O(m*n)
 class Solution(object):
     def isInterleave(self, s1, s2, s3):
         """

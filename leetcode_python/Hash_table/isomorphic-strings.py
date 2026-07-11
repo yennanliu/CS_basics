@@ -1,5 +1,5 @@
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 
 # Given two strings s and t, determine if they are isomorphic.
 #
@@ -24,6 +24,8 @@
 # V1 
 # https://blog.csdn.net/liuxiao214/article/details/77587070
 # IDEA : HASH TABLE 
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def isIsomorphic(self, s, t):
         """
@@ -45,6 +47,8 @@ class Solution(object):
 # V1' 
 # https://blog.csdn.net/liuxiao214/article/details/77587070
 # IDEA : MAPPING + ORD 
+# time = O(n)
+# space = O(1)
 class Solution1(object):
     def isIsomorphic(self, s, t):
         """
@@ -63,6 +67,8 @@ class Solution1(object):
 
 # V1''
 # https://www.jiuzhang.com/solution/isomorphic-strings/#tag-highlight-lang-python
+# time = O(n)
+# space = O(n)
 class Solution:
     """
     @param s: a string
@@ -86,8 +92,8 @@ class Solution:
         return True
         
 # V2 
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 from itertools import izip  # Generator version of zip.
 class Solution(object):
     def isIsomorphic(self, s, t):
@@ -109,8 +115,8 @@ class Solution(object):
                 return False
         return True
 
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 class Solution2(object):
     def isIsomorphic(self, s, t):
         if len(s) != len(t):

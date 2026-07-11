@@ -6,6 +6,8 @@
 # DP EQUATION :
 # dp[i][0] = max(dp[j][0] + 1), nums[j] < nums[i]
 # dp[i][1] = sum(dp[j][1]), nums[j] < nums[i] and dp[j][0] == dp[i][0] - 1
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def findNumberOfLIS(self, nums):
         # init dp as dp[length][count] 
@@ -27,6 +29,8 @@ class Solution(object):
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79822126
 # IDEA : DP
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def findNumberOfLIS(self, nums):
         """
@@ -48,6 +52,8 @@ class Solution(object):
         
 # V1'
 # https://www.jiuzhang.com/solution/number-of-longest-increasing-subsequence/#tag-highlight-lang-python
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def findNumberOfLIS(self, nums):
         ans = [0, 0]
@@ -70,8 +76,8 @@ class Solution(object):
         return ans[1]
 
 # V2
-# Time:  O(n^2)
-# Space: O(n)
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def findNumberOfLIS(self, nums):
         """

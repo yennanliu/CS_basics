@@ -324,8 +324,8 @@ class Solution(object):
 
         return float("-inf")
 
-# time: O(max(h, k))
-# space: O(h)
+# time = O(max(h, k))
+# space = O(h)
 from itertools import islice
 class Solution2(object):
     def kthSmallest(self, root, k):

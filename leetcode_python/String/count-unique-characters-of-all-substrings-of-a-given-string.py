@@ -38,6 +38,8 @@ s consists of uppercase English letters only.
 """
 
 # V0
+# time = O(n)
+# space = O(1)
 class Solution(object):
      def uniqueLetterString(self, S):
             index = {c: [-1, -1] for c in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'}
@@ -67,6 +69,8 @@ class Solution(object):
 # Instead of counting all unique characters and struggling with all possible substrings,
 # we can count for every char in S, how many ways to be found as a unique char.
 # We count and sum, and it will be out answer.
+# time = O(n)
+# space = O(1)
 class Solution(object):
      def uniqueLetterString(self, S):
             index = {c: [-1, -1] for c in string.ascii_uppercase}
@@ -116,6 +120,8 @@ class Solution(object):
 
 # V1'
 # https://leetcode.com/problems/count-unique-characters-of-all-substrings-of-a-given-string/discuss/128974/10-line-Python-Solution
+# time = O(n)
+# space = O(n)
 class Solution:
     def uniqueLetterString(self, S):
         N, S, ret = len(S), [ord(_)-ord('a') for _ in S.lower()], 0
@@ -130,6 +136,8 @@ class Solution:
 
 # V1''
 # https://leetcode.com/problems/count-unique-characters-of-all-substrings-of-a-given-string/discuss/177144/python-concise-100
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def uniqueLetterString(self, S):
         a,b,s,n=[-1]*26,[-1]*26,0,ord('A')
@@ -144,6 +152,8 @@ class Solution(object):
 # https://leetcode.com/problems/count-unique-characters-of-all-substrings-of-a-given-string/discuss/1562768/Python-O(n)
 # IDEA : 
 #For any char c find closest equal chars in front and in back. c...c...c. Then initial char c is counted in substrings for which it is unique character, so that substring cannot contain closest front and back chars c and needs to contain original c. To compute such substrings multiply possibilities for left and right endings of the substring (c..left...c...right...c). And sum these values for all chars in s. This will count in a different way the value we want.
+# time = O(n)
+# space = O(n)
 class Solution:
     def uniqueLetterString(self, s):
         n = len(s)
@@ -162,6 +172,8 @@ class Solution:
 
 # V1''''
 # https://leetcode.com/problems/count-unique-characters-of-all-substrings-of-a-given-string/discuss/423812/Python-detailed-explanation
+# time = O(n)
+# space = O(n)
 class Solution:
     def uniqueLetterString(self, S):
         res=[0]*(len(S)+1)
@@ -176,6 +188,8 @@ class Solution:
 # V1'''''
 # IDEA : DP
 # https://blog.csdn.net/qq_17550379/article/details/103064459
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def uniqueLetterString(self, s):
         res = 0

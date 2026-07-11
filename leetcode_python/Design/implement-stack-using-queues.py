@@ -51,11 +51,13 @@ Follow-up: Can you implement the stack using only one queue?
 # https://leetcode.com/problems/implement-stack-using-queues/solutions/62516/concise-1-queue-java-c-python/
 class Stack:
 
-    # time = O(1), space = O(1)
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
         self._queue = collections.deque()
 
-    # time = O(n), space = O(1)
+    # time = O(n)
+    # space = O(1)
     def push(self, x):
     	# NOTE this trick!!!
         q = self._queue
@@ -63,15 +65,18 @@ class Stack:
         for _ in range(len(q) - 1):
             q.append(q.popleft())
 
-    # time = O(1), space = O(1)
+    # time = O(1)
+    # space = O(1)
     def pop(self):
         return self._queue.popleft()
 
-    # time = O(1), space = O(1)
+    # time = O(1)
+    # space = O(1)
     def top(self):
         return self._queue[0]
 
-    # time = O(1), space = O(1)
+    # time = O(1)
+    # space = O(1)
     def empty(self):
         return not len(self._queue)
 

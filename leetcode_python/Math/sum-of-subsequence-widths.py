@@ -35,6 +35,8 @@ Constraints:
 
 # V1
 # https://leetcode.com/problems/sum-of-subsequence-widths/discuss/1627929/Python-with-explanation
+# time = O(n log n)  # n = len(nums), sorting dominates
+# space = O(n)
 class Solution(object):
     def sumSubseqWidths(self, nums):
         nums = sorted(nums)
@@ -52,6 +54,8 @@ class Solution(object):
 # V1'
 # IDEA : bit op
 # https://leetcode.com/problems/sum-of-subsequence-widths/discuss/213939/Python-easy-solution
+# time = O(n log n)  # n = len(A), sorting dominates
+# space = O(1)
 class Solution(object):
     def sumSubseqWidths(self, A):
         s = diff = 0 
@@ -66,6 +70,8 @@ class Solution(object):
 # V1''
 # IDEA : MATH
 # https://leetcode.com/problems/sum-of-subsequence-widths/solution/
+# time = O(n log n)  # n = len(A), sorting dominates
+# space = O(n)  # pow2 array
 class Solution(object):
     def sumSubseqWidths(self, A):
         MOD = 10**9 + 7
@@ -84,6 +90,8 @@ class Solution(object):
 # V1'''
 # IDEA : bit op
 # https://leetcode.com/problems/sum-of-subsequence-widths/discuss/451179/Easy-Python-Solution
+# time = O(n log n)  # n = len(A), sorting dominates
+# space = O(1)
 class Solution:
     def sumSubseqWidths(self, A):
         A.sort()

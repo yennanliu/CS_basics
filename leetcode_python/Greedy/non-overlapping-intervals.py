@@ -199,13 +199,15 @@ class Solution(object):
                 last[1] = intervals[i][1]               
         return cnt
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/82728387
 # Definition for an interval.
 # class Interval(object):
 #     def __init__(self, s=0, e=0):
 #         self.start = s
 #         self.end = e
+# time = O(n log n)
+# space = O(1)
 class Solution(object):
     def eraseOverlapIntervals(self, intervals):
         """
@@ -229,6 +231,8 @@ class Solution(object):
 
 # V1'
 # https://leetcode.com/problems/non-overlapping-intervals/discuss/91721/Short-Ruby-and-Python
+# time = O(n log n)
+# space = O(1)
 class Solution(object):
     def eraseOverlapIntervals(self, intervals):
         end = float('-inf')
@@ -242,6 +246,8 @@ class Solution(object):
 
 # V1''
 # https://leetcode.com/problems/non-overlapping-intervals/discuss/91768/Python-greedy-solution-with-explanation
+# time = O(n log n)
+# space = O(1)
 class Solution(object):
     def eraseOverlapIntervals(self, intervals):
         """
@@ -262,6 +268,8 @@ class Solution(object):
 # V1'''
 # https://leetcode.com/problems/non-overlapping-intervals/discuss/276056/Python-Greedy-Interval-Scheduling
 # IDEA : GREEDY
+# time = O(n log n)
+# space = O(1)
 class Solution(object):
     def eraseOverlapIntervals(intervals):
         end, cnt = float('-inf'), 0
@@ -272,9 +280,9 @@ class Solution(object):
                 cnt += 1
         return cnt
 
-# V2 
-# Time:  O(nlogn)
-# Space: O(1)
+# V2
+# time = O(n log n)
+# space = O(1)
 class Solution(object):
     def eraseOverlapIntervals(self, intervals):
         """

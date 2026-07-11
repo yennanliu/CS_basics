@@ -49,6 +49,8 @@ Constraints:
 
 # V0
 # IDEA : HASH TABLE
+# time = O(n)
+# space = O(n)
 import collections
 class Solution(object):
     def findPairs(self, nums, k):
@@ -76,6 +78,8 @@ class Solution(object):
 
 # V0'
 # IDEA : SORT + BRUTE FORCE + BREAK
+# time = O(n^2)  # nested loop dominates; nums.sort() is O(n log n)
+# space = O(n)  # tmp list of found pairs
 class Solution(object):
     def findPairs(self, nums, k):
         # edge case
@@ -98,6 +102,8 @@ class Solution(object):
 
 # V0''
 # IDEA : SORT + BRUTE FORCE + BREAK
+# time = O(n^2)  # nested loop dominates; nums.sort() is O(n log n)
+# space = O(n)  # tmp list of found pairs
 class Solution(object):
     def findPairs(self, nums, k):
         d = {}
@@ -121,6 +127,8 @@ class Solution(object):
 # IDEA : FIND # OF PAIR THAT SUM-PAIR = K  (i.e. for pair(a,b), -> a + b = k)
 # -> a+ b = k 
 # -> a = k - b 
+# time = O(n)
+# space = O(n)
 import collections
 class Solution(object):
     def findPairs(self, nums, k):
@@ -141,6 +149,8 @@ class Solution(object):
 # V1' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79255633
 # IDEA : collections.Counter 
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def findPairs(self, nums, k):
         """
@@ -165,6 +175,8 @@ class Solution(object):
 
 # V1''
 # https://www.jiuzhang.com/solution/k-diff-pairs-in-an-array/#tag-highlight-lang-python
+# time = O(n log n)  # dominated by nums.sort()
+# space = O(1)
 class Solution:
     """
     @param nums: an array of integers
@@ -192,8 +204,8 @@ class Solution:
         return ans
 
 # V2 
-# Time:  O(n)
-# Space: O(n)
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def findPairs(self, nums, k):
         """

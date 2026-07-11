@@ -36,6 +36,8 @@ The number of nodes in the tree is in the range [1, 104].
 
 # V0
 # IDEA 1) DFS + BST
+# time = O(n)
+# space = O(h), h is height of binary tree (recursion stack)
 class Solution(object):
     def isValidBST(self, root):
         if not root:
@@ -58,6 +60,8 @@ class Solution(object):
 
 # V0-1
 # IDEA 1) DFS + BST
+# time = O(n)
+# space = O(h), h is height of binary tree (recursion stack)
 class Solution(object):
     def isValidBST(self, root):
         if not root:
@@ -86,6 +90,8 @@ class Solution(object):
 #   -> not only compare tmp.val with tmp.left.val, tmp.right.val,
 #   -> but we need compare if tmp.left.val is SMALLER then `previous node val`
 #   -> but we need compare if tmp.right.val is BIGGER then `previous node val`
+# time = O(n)
+# space = O(n), BFS queue can hold up to O(n) nodes
 class Solution(object):
     def isValidBST(self, root):
         if not root:
@@ -119,6 +125,8 @@ class Solution(object):
 
 # V0'
 # IDEA : BFS
+# time = O(n)
+# space = O(n), BFS queue can hold up to O(n) nodes
 class Solution:
     def isValidBST(self, root):
         
@@ -141,6 +149,8 @@ class Solution:
 
 # V0''
 # IDEA: RECURSION 
+# time = O(n)
+# space = O(h), h is height of binary tree (recursion stack)
 class Solution(object):
     def isValidBST(self, root):
         """
@@ -157,6 +167,8 @@ class Solution(object):
 
 # V0'''
 # IDEA: RECURSION 
+# time = O(n)
+# space = O(h), h is height of binary tree (recursion stack)
 class Solution(object):
     def isValidBST(self, root):
         
@@ -171,6 +183,8 @@ class Solution(object):
 
 # V0''''
 # IDEA : BFS + Inorder traversal
+# time = O(n)
+# space = O(n), stack can hold up to O(n) nodes
 class Solution:
     def isValidBST(self, root):
         pre, cur, stack = None, root, []

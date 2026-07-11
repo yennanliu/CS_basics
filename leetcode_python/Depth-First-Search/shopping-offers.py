@@ -1,8 +1,10 @@
 # V0 
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/82504050
 # IDEA : DFS 
+# time = O(n * 2^n)  # n = len(special); no memoization, brute-force recursion
+# space = O(n)  # recursion depth
 class Solution(object):
     def shoppingOffers(self, price, special, needs):
         """
@@ -27,9 +29,11 @@ class Solution(object):
             total += price[i] * need
         return total
 
-# V1' 
+# V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/82504050
 # IDEA : DFS 
+# time = O(n * 2^n)  # n = len(special); with memoization on `needs` state
+# space = O(2^n)  # memo dictionary of needs states
 class Solution(object):
     def shoppingOffers(self, price, special, needs):
         """
@@ -51,6 +55,8 @@ class Solution(object):
 # V1''
 # https://www.jiuzhang.com/solution/shopping-offers/#tag-highlight-lang-python
 # IDEA : DP
+# time = O(n * 2^n)  # n = len(special); brute-force recursion without memoization
+# space = O(n)  # recursion depth
 class Solution:
     def shoppingOffers(self, price,special,needs):
         res = 0
@@ -70,9 +76,9 @@ class Solution:
                 needs[j] += offer[j]
         return res;
         
-# V2 
-# Time:  O(n * 2^n)
-# Space: O(n)
+# V2
+# time = O(n * 2^n)
+# space = O(n)
 class Solution(object):
     def shoppingOffers(self, price, special, needs):
         """

@@ -1,7 +1,9 @@
 # V0 
 
-# V1 
+# V1
 # https://www.hrwhisper.me/leetcode-wiggle-sort-ii/
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def wiggleSort(self, nums):
         """
@@ -20,6 +22,8 @@ class Solution(object):
 
 # V1'
 # http://bookshadow.com/weblog/2015/12/31/leetcode-wiggle-sort-ii/
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def wiggleSort(self, nums):
         """
@@ -33,6 +37,8 @@ class Solution(object):
 
 # V1''
 # https://www.jiuzhang.com/solution/wiggle-sort-ii/#tag-highlight-lang-python
+# time = O(n)  # average case (quickselect); O(n^2) worst case
+# space = O(1)
 class Solution:
     """
     @param: nums: A list of integers
@@ -100,9 +106,9 @@ class Solution:
         else:
             return nums[kth]
 
-# V2 
-# Time:  O(n) ~ O(n^2)
-# Space: O(1)
+# V2
+# time = O(n) ~ O(n^2)
+# space = O(1)
 # Tri Partition (aka Dutch National Flag Problem) with virtual index solution. (TLE)
 from random import randint
 class Solution2(object):

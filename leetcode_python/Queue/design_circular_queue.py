@@ -49,9 +49,11 @@ At most 3000 calls will be made to enQueue, deQueue, Front, Rear, isEmpty, and i
 
 """
 
-# V0 
+# V0
 # IDEA : ARRAY
 # https://leetcode.com/problems/design-circular-queue/solution/
+# time = O(k) for __init__ (array init); O(1) for enQueue/deQueue/Front/Rear/isEmpty/isFull
+# space = O(k)  # k = queue capacity, fixed-size array
 class MyCircularQueue:
 
     def __init__(self, k):
@@ -115,6 +117,8 @@ class MyCircularQueue:
 # V0'
 # IDEA : LINKED LIST
 # https://leetcode.com/problems/design-circular-queue/solution/
+# time = O(1) per operation (init, enQueue, deQueue, Front, Rear, isEmpty, isFull)
+# space = O(k)  # k = queue capacity; up to k linked nodes stored
 class Node:
     def __init__(self, value, nextNode=None):
         self.value = value
@@ -192,6 +196,8 @@ class MyCircularQueue:
 # V1
 # IDEA : ARRAY
 # https://leetcode.com/problems/design-circular-queue/solution/
+# time = O(k) for __init__ (array init); O(1) for enQueue/deQueue/Front/Rear/isEmpty/isFull
+# space = O(k)  # k = queue capacity, fixed-size array
 class MyCircularQueue:
 
     def __init__(self, k: int):
@@ -255,6 +261,8 @@ class MyCircularQueue:
 # V1
 # IDEA : ARRAY V2 + LOCK
 # https://leetcode.com/problems/design-circular-queue/solution/
+# time = O(1) per operation (lock adds constant overhead)
+# space = O(k)  # k = queue capacity, fixed-size array
 from threading import Lock
 
 class MyCircularQueue:
@@ -286,6 +294,8 @@ class MyCircularQueue:
 # V1
 # IDEA : LINKED LIST
 # https://leetcode.com/problems/design-circular-queue/solution/
+# time = O(1) per operation (init, enQueue, deQueue, Front, Rear, isEmpty, isFull)
+# space = O(k)  # k = queue capacity; up to k linked nodes stored
 class Node:
     def __init__(self, value, nextNode=None):
         self.value = value
@@ -362,6 +372,8 @@ class MyCircularQueue:
 
 # V1
 # https://blog.csdn.net/qq_32424059/article/details/86998300
+# time = O(1) per operation (init, enQueue, deQueue, Front, Rear, isEmpty, isFull)
+# space = O(k)  # k = queue capacity, fixed-size array
 class MyCircularQueue(object):
  
     def __init__(self, k):
@@ -439,6 +451,8 @@ class MyCircularQueue(object):
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/81027583
+# time = O(1) per operation (init, enQueue, deQueue, Front, Rear, isEmpty, isFull)
+# space = O(m)  # m = total enQueue calls over the object's lifetime (list never shrinks)
 class MyCircularQueue(object):
 
     def __init__(self, k):
@@ -519,6 +533,8 @@ class MyCircularQueue(object):
 
 # V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/81027583
+# time = O(1) per operation for __init__/enQueue/Front/Rear/isEmpty/isFull (amortized append)
+# space = O(k)  # k = queue capacity
 class MyCircularQueue(object):
 
     def __init__(self, k):
@@ -548,6 +564,8 @@ class MyCircularQueue(object):
         Delete an element from the circular queue. Return true if the operation is successful.
         :rtype: bool
         """
+        # time = O(k)  # k = current queue length; list.pop(0) shifts remaining elements
+        # space = O(1)
         if not self.isEmpty():
             self.queue.pop(0)
             self.rear -= 1
@@ -601,6 +619,8 @@ class MyCircularQueue(object):
 
 # V1'''
 # https://blog.csdn.net/fuxuemingzhu/article/details/81027583
+# time = O(1) per operation for __init__/enQueue/Front/Rear/isEmpty/isFull (amortized append)
+# space = O(k)  # k = queue capacity
 class MyCircularQueue(object):
 
     def __init__(self, k):
@@ -628,6 +648,8 @@ class MyCircularQueue(object):
         Delete an element from the circular queue. Return true if the operation is successful.
         :rtype: bool
         """
+        # time = O(k)  # k = current queue length; list.pop(0) shifts remaining elements
+        # space = O(1)
         if not self.isEmpty():
             self.queue.pop(0)
             return True

@@ -34,6 +34,8 @@ Follow-up: Could you solve it in O(n log(k)) time and O(n) extra space?
 """
 
 # V0 : TODO : bouble check
+# time = O(n log n)
+# space = O(n)
 from collections import Counter
 class Solution(object):
     def topKFrequent(self, words, k):
@@ -75,6 +77,8 @@ class Solution(object):
 # heapq.heapify(heap) : transform array to stack into linear time 
 # heapq.heappop(heap) : perform stack pop operation (pop top element)
 # heappush(heap,5)    : perform stack push operation (add new element at top )
+# time = O(n + k log n)
+# space = O(n)
 import heapq
 class Solution(object):
     def topKFrequent(self, words, k):
@@ -88,9 +92,9 @@ class Solution(object):
         heapq.heapify(heap)
         return [heapq.heappop(heap)[1] for _ in range(k)]
 
-# V2 
-# Time:  O(n + klogk) on average
-# Space: O(n)
+# V2
+# time = O(n + klogk) on average
+# space = O(n)
 import collections
 import heapq
 from random import randint
@@ -137,9 +141,9 @@ class Solution(object):
             else:  # new_pivot_idx < k - 1.
                 left = new_pivot_idx + 1
 
-# V3 
-# Time:  O(nlogk)
-# Space: O(n)
+# V3
+# time = O(nlogk)
+# space = O(n)
 # Heap Solution
 class Solution2(object):
     def topKFrequent(self, words, k):
@@ -170,9 +174,9 @@ class Solution2(object):
             result.append(heapq.heappop(min_heap).val[1])
         return result[::-1]
 
-# V4 
-# Time:  O(n + klogk) ~ O(n + nlogn)
-# Space: O(n)
+# V4
+# time = O(n + klogk) ~ O(n + nlogn)
+# space = O(n)
 # Bucket Sort Solution
 class Solution3(object):
     def topKFrequent(self, words, k):
@@ -194,9 +198,9 @@ class Solution3(object):
         pairs.sort()
         return [pair[1] for pair in pairs[:k]]
 
-# V5 
-# time: O(nlogn)
-# space: O(n)
+# V5
+# time = O(nlogn)
+# space = O(n)
 from collections import Counter
 class Solution4(object):
     def topKFrequent(self, words, k):

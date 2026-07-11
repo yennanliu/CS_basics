@@ -1,7 +1,9 @@
 # V0
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79537797
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def isValidSerialization(self, preorder):
         """
@@ -16,9 +18,9 @@ class Solution(object):
                 stack.append('#')
         return len(stack) == 1 and stack.pop() == '#'
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def isValidSerialization(self, preorder):
         """

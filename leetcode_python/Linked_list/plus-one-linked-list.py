@@ -27,6 +27,8 @@ class ListNode(object):
         self.next = next
 """
 
+# time = O(n)
+# space = O(1)
 class Solution:
     """
     @param head: the first Node
@@ -58,6 +60,8 @@ class Solution:
         return dummy;
 
 # V1'
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def plusOne(self, head):
         """
@@ -88,6 +92,8 @@ class Solution(object):
 
 # V2 
 # https://github.com/apachecn/awesome-algorithm/blob/master/docs/Leetcode_Solutions/Python/369.Plus%20One%20Linked%20List.md
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def plusOne(self, head):
         """
@@ -117,9 +123,9 @@ class Solution(object):
         else:
             return head 
 
-# V3 
-# Time:  O(n)
-# Space: O(1)
+# V3
+# time = O(n)
+# space = O(1)
 class ListNode(object):
     def __init__(self, x):
         self.val = x
@@ -157,9 +163,9 @@ class Solution(object):
         return dummy if dummy.val else dummy.__next__
 
 
-# V4 
-# Time:  O(n)
-# Space: O(1)
+# V4
+# time = O(n)
+# space = O(1)
 class Solution2(object):
     def plusOne(self, head):
         """

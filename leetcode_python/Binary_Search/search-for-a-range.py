@@ -1,8 +1,10 @@
 # V0 
 
-# V1 
+# V1
 # https://siddontang.gitbooks.io/leetcode-solution/content/array/search_for_a_range.html
 # https://blog.csdn.net/qqxx6661/article/details/77943936
+# time = O(n)  # worst case linear scan when many duplicates of target
+# space = O(1)
 class Solution:
     # @param A, a list of integers
     # @param target, an integer to be searched
@@ -26,9 +28,9 @@ class Solution:
                 return list
         return [-1, -1]
 
-# V2 
-# Time:  O(logn)
-# Space: O(1)
+# V2
+# time = O(log n)
+# space = O(1)
 class Solution(object):
     def searchRange(self, nums, target):
         """

@@ -41,6 +41,8 @@ At most 104 calls will be made to next.
 # V0
 # IDEA : pop, append op
 # python 3
+# time = O(w)  # w = window size; list.pop(0) shifts elements, sum() scans window
+# space = O(w)
 class MovingAverage(object):
 
     def __init__(self, size):
@@ -58,6 +60,8 @@ class MovingAverage(object):
 
 # V0
 # IDEA : deque
+# time = O(w)  # w = window size; sum(self.q) scans window each call
+# space = O(w)
 from collections import deque
 class MovingAverage(object):
 
@@ -74,6 +78,8 @@ class MovingAverage(object):
 
 # V0'
 # IDEA : deque
+# time = O(w)  # w = window size; sum(self.__q) scans window each call
+# space = O(w)
 from collections import deque
 class MovingAverage(object):
 
@@ -90,6 +96,8 @@ class MovingAverage(object):
 # V1
 # https://www.cnblogs.com/lightwindy/p/9736836.html
 # https://nifannn.github.io/2018/10/01/Algorithm-Notes-Leetcode-346-Moving-Average-from-Data-Stream/
+# time = O(1)  # running sum maintained, no window scan
+# space = O(w)  # w = window size
 from collections import deque
 class MovingAverage(object):
     def __init__(self, size):
@@ -112,9 +120,9 @@ class MovingAverage(object):
         self.__q.append(val)
         return 1.0 * self.__sum / len(self.__q)
  
-# V2 
-# Time:  O(1)
-# Space: O(w)
+# V2
+# time = O(1)
+# space = O(w)
 from collections import deque
 class MovingAverage(object):
 

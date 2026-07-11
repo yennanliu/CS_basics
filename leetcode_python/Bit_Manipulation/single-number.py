@@ -36,7 +36,9 @@ Each element in the array appears twice except for one element which appears onl
 
 """
 
-# V0 
+# V0
+# time = O(n)
+# space = O(n)
 import collections 
 class Solution(object):
     def singleNumber(self, nums):
@@ -52,6 +54,8 @@ class Solution(object):
 # It returns the same number if we XOR with zero.
 # So we can XOR all the numbers in the input; 
 # -> duplicate numbers will zero out each other and we will be left with the single number.
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def singleNumber(self, nums):
         a = 0
@@ -61,6 +65,8 @@ class Solution(object):
 
 # V1
 # https://blog.csdn.net/qq_20141867/article/details/82314035
+# time = O(n)
+# space = O(n)  # set(nums)
 class Solution(object):
     def singleNumber(self, nums):
         """
@@ -71,6 +77,8 @@ class Solution(object):
         
 # V1'
 # https://www.jiuzhang.com/solution/single-number/#tag-highlight-lang-python
+# time = O(n)
+# space = O(1)
 class Solution:
     """
    @param A : an integer array
@@ -83,7 +91,9 @@ class Solution:
             ans = ans ^ x
         return ans
 
-# V1 
+# V1
+# time = O(n^2)  # `in` check and `.remove` on a list are each O(n)
+# space = O(n)
 class Solution:
 	def singleNumber(self, nums):
 		no_repeat_array=[]
@@ -94,9 +104,11 @@ class Solution:
 				no_repeat_array.append(item)
 		return no_repeat_array.pop()
 
-# V2 
+# V2
 # to know the non-repeat element 
 # 2∗(a+b+c)−(a+a+b+b+c)=c
+# time = O(n)
+# space = O(n)  # set(nums)
 class Solution(object):
     def singleNumber(self, nums):
         """
@@ -105,11 +117,13 @@ class Solution(object):
         """
         return 2 * sum(set(nums)) - sum(nums)
 
-# V3 
+# V3
 # XOR logic 
 # https://www.programiz.com/python-programming/operators
 # x ^ 0 = x 
 # x ^ x = 0
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def singleNumber(self, nums):
         """

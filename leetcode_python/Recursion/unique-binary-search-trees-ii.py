@@ -26,6 +26,8 @@ Constraints:
 
 # V0
 # IDEA: RECURSION
+# time = O(4^n / n^(3/2)) ~= Catalan numbers
+# space = O(4^n / n^(3/2)) ~= Catalan numbers
 class Solution(object):
     def generateTrees(self, n):
         """
@@ -133,6 +135,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: RECURSION
+# time = O(4^n / n^(3/2)) ~= Catalan numbers
+# space = O(4^n / n^(3/2)) ~= Catalan numbers
 class Solution(object):
     def generateTrees(self, n):
         """
@@ -178,6 +182,8 @@ class Solution(object):
 # V1
 # IDEA : RECURSION
 # https://leetcode.com/problems/unique-binary-search-trees-ii/solution/
+# time = O(4^n / n^(3/2)) ~= Catalan numbers
+# space = O(4^n / n^(3/2)) ~= Catalan numbers
 class Solution:
     def generateTrees(self, n):
         """
@@ -211,6 +217,8 @@ class Solution:
 # V1'
 # IDEA : Recursion
 # https://leetcode.com/problems/unique-binary-search-trees-ii/discuss/1288276/Python-%3A%3A-Recursion
+# time = O(4^n / n^(3/2)) ~= Catalan numbers (plus extra deepcopy overhead per tree)
+# space = O(4^n / n^(3/2)) ~= Catalan numbers
 from copy import deepcopy
 class Solution:
     def make_trees(self, nodes):
@@ -239,6 +247,8 @@ class Solution:
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(4^n / n^(3/2)) ~= Catalan numbers
+# space = O(4^n / n^(3/2)) ~= Catalan numbers
 class Solution(object):
     def generateTrees(self, n):
         """
@@ -263,9 +273,9 @@ class Solution(object):
                     res.append(root)
         return res
 
-# V3 
-# Time:  O(4^n / n^(3/2)) ~= Catalan numbers
-# Space: O(4^n / n^(3/2)) ~= Catalan numbers
+# V3
+# time = O(4^n / n^(3/2)) ~= Catalan numbers
+# space = O(4^n / n^(3/2)) ~= Catalan numbers
 class TreeNode(object):
     def __init__(self, x):
         self.val = x

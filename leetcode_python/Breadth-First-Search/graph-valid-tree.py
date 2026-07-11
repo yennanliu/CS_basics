@@ -30,6 +30,8 @@ Adobe Amazon Facebook Google LinkedIn Pinterest Salesforce Zenefits
 # V0
 # IDEA: UNION FIND
 # https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/BFS/GraphValidTree.java#L31
+# time = O(n * α(n))  # union-find with path compression
+# space = O(n)
 class Solution(object):
     def validTree(self, n, edges):
 
@@ -146,6 +148,8 @@ class UnionFind(object):
 
 # V0-1
 # IDEA: UNION FIND
+# time = O(n * α(n))  # union-find with path compression + union by rank
+# space = O(n)
 class Solution(object):
     def validTree(self, n, edges):
         # A tree must have exactly n - 1 edges
@@ -193,6 +197,8 @@ class UnionFind(object):
 
 # V0-1
 # IDEA: UNION FIND
+# time = O(n * α(n))  # union-find with path compression
+# space = O(n)
 class UF(object):
     def __init__(self, n):
         # Initialize each node as its own parent
@@ -243,6 +249,8 @@ class Solution(object):
 
 # V0-2
 # IDEA: DFS
+# time = O(V + E)  # V = n, E = len(edges)
+# space = O(V + E)
 class Solution(object):
     def validTree(self, n, edges):
         # Math Optimization: A valid tree MUST have exactly (n - 1) edges.
@@ -310,6 +318,8 @@ class Solution(object):
 
 # V0'
 # IDEA : Quick Find
+# time = O(n^2)  # find has no path compression, worst-case skewed chain
+# space = O(n)
 class Solution(object):
     def validTree(self, n, edges):
         """
@@ -336,6 +346,8 @@ class Solution(object):
 # V0'
 # IDEA : BFS
 #       -> check if visited count is as same as "n"
+# time = O(V + E)  # V = n, E = len(edges)
+# space = O(V + E)
 class Solution:
     def validTree(self, n: int, edges: List[List[int]]) -> bool:        
         if len(edges) != n - 1:  # Check number of edges.
@@ -363,6 +375,8 @@ class Solution:
 
 # V0''
 # IDEA : DFS
+# time = O(V + E)  # V = n, E = len(edges)
+# space = O(V + E)
 class Solution:
     def validTree(self, n: int, edges: List[List[int]]) -> bool:        
         if len(edges) != n-1:
@@ -392,6 +406,8 @@ class Solution:
 # https://www.jianshu.com/p/1b954f99a497
 # https://medium.com/@gxyou45/algorithm%E6%99%AE%E6%9E%97%E6%96%AF%E9%A0%93%E8%AA%B2%E7%A8%8B%E5%AD%B8%E7%BF%92%E7%AD%86%E8%A8%981-union-find-5af7911ca5ef
 # IDEA : Quick-Union
+# time = O(n^2)  # find has no path compression, worst-case skewed chain
+# space = O(n)
 class Solution(object):
     def validTree(self, n, edges):
         """
@@ -420,6 +436,8 @@ class Solution(object):
 # V1'  
 # http://www.voidcn.com/article/p-hjukomuq-zo.html
 # https://www.jianshu.com/p/1b954f99a497
+# time = O(n^2)  # find scans the list of sets linearly per edge
+# space = O(n)
 class Solution(object):
     def validTree(self, n, edges):
         """
@@ -472,6 +490,8 @@ class Solution(object):
 # V1''
 # https://blog.csdn.net/qq_37821701/article/details/104168177
 # IDEA :DFS 
+# time = O(V + E)  # V = n, E = len(edges)
+# space = O(V + E)
 class Solution:
     def validTree(self, n: int, edges: List[List[int]]) -> bool:        
         if len(edges) != n-1:
@@ -499,6 +519,8 @@ class Solution:
 # V1'''
 # https://blog.csdn.net/qq_37821701/article/details/104168177
 # IDEA : BFS
+# time = O(V + E)  # V = n, E = len(edges)
+# space = O(V + E)
 class Solution:
     def validTree(self, n: int, edges: List[List[int]]) -> bool:        
         if len(edges) != n - 1:  # Check number of edges.
@@ -528,8 +550,8 @@ class Solution:
 # IDEA : UNION FIND : dev
 
 # V2 
-# Time:  O(|V| + |E|)
-# Space: O(|V| + |E|)
+# time = O(|V| + |E|)
+# space = O(|V| + |E|)
 import collections
 # BFS solution. Same complexity but faster version.
 class Solution(object):
@@ -559,8 +581,8 @@ class Solution(object):
         return len(visited) == n
 
 
-# Time:  O(|V| + |E|)
-# Space: O(|V| + |E|)
+# time = O(|V| + |E|)
+# space = O(|V| + |E|)
 # BFS solution.
 class Solution2(object):
     # @param {integer} n

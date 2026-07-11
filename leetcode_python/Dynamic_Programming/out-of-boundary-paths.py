@@ -4,6 +4,8 @@
 # https://blog.csdn.net/fuxuemingzhu/article/details/83447155
 # http://bookshadow.com/weblog/2017/05/07/leetcode-out-of-boundary-paths/
 # IDEA : DP 
+# time = O(N * m * n)
+# space = O(N * m * n)
 class Solution(object):
     def findPaths(self, m, n, N, i, j):
         """
@@ -31,6 +33,8 @@ class Solution(object):
 # DP EQUATION :
 # dp[t + 1][x + dx][y + dy] += dp[t][x][y]
 # t means the # of moves, dx, dy = [(1,0), (-1,0), (0,1), (0,-1)]
+# time = O(N * m * n)
+# space = O(m * n)
     def findPaths(self, m, n, N, i, j):
         """
         :type m: int
@@ -64,6 +68,8 @@ class Solution(object):
 
 # V1'''
 # https://www.jiuzhang.com/solution/out-of-boundary-paths/#tag-highlight-lang-python
+# time = O(m * n * N)
+# space = O(m * n * N)
 class Solution:
     def findPaths(self, m: int, n: int, N: int, i: int, j: int) -> int:
         if 0 == N:
@@ -88,6 +94,8 @@ class Solution:
 
 # V1''
 # https://www.jiuzhang.com/solution/out-of-boundary-paths/#tag-highlight-lang-python
+# time = O(N * m * n)
+# space = O(m * n)
 class Solution:
        def findPaths(self, m, n, N, i, j):
         """
@@ -117,8 +125,8 @@ class Solution:
         return ans
 
 # V2
-# Time:  O(N * m * n)
-# Space: O(m * n)
+# time = O(N * m * n)
+# space = O(m * n)
 class Solution(object):
     def findPaths(self, m, n, N, x, y):
         """

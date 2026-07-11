@@ -42,6 +42,8 @@ Follow up: Could you do this using only O(n) extra space, where n is the total n
 # V1
 # https://leetcode.com/problems/triangle/solution/
 # IDEA :  Dynamic Programming (Bottom-up: In-place)
+# time = O(n^2), n = number of rows in triangle
+# space = O(1)  # modifies triangle in-place
 class Solution:
     def minimumTotal(self, triangle: List[List[int]]) -> int:
         for row in range(1, len(triangle)):
@@ -57,6 +59,8 @@ class Solution:
 # V1'
 # https://leetcode.com/problems/triangle/solution/
 # IDEA : Dynamic Programming (Bottom-up: Auxiliary Space)
+# time = O(n^2), n = number of rows in triangle
+# space = O(n)
 class Solution:
     def minimumTotal(self, triangle: List[List[int]]) -> int:
         prev_row = triangle[0]
@@ -75,6 +79,8 @@ class Solution:
 # V1''
 # https://leetcode.com/problems/triangle/solution/
 # IDEA : Dynamic Programming (Bottom-up: Flip Triangle Upside Down)
+# time = O(n^2), n = number of rows in triangle
+# space = O(n)
 class Solution:
     def minimumTotal(self, triangle: List[List[int]]) -> int:
         below_row = triangle[-1] 
@@ -90,6 +96,8 @@ class Solution:
 # V1'''
 # https://leetcode.com/problems/triangle/solution/
 # IDEA : Dynamic Programming (Bottom-up: Flip Triangle Upside Down)
+# time = O(n^2), n = number of rows in triangle
+# space = O(n)
 class Solution:
     def minimumTotal(self, triangle: List[List[int]]) -> int:
         below_row = triangle[-1] 
@@ -105,6 +113,8 @@ class Solution:
 # V1''''
 # https://leetcode.com/problems/triangle/solution/
 # IDEA : Memoization (Top-Down)
+# time = O(n^2), n = number of rows in triangle (memoized states (row, col))
+# space = O(n^2)  # cache size + recursion depth
 class Solution:
     def minimumTotal(self, triangle: List[List[int]]) -> int:
         @lru_cache(maxsize=None)
@@ -119,6 +129,8 @@ class Solution:
 # https://blog.csdn.net/qqxx6661/article/details/78474268
 # IDEA : DP 
 # dp[j] = triangle[i][j] + min(dp[j], dp[j + 1])
+# time = O(n^2), n = number of rows in triangle
+# space = O(n)
 class Solution(object):
     def minimumTotal(self, triangle):
         """
@@ -139,6 +151,8 @@ class Solution(object):
 # minpath[k][i] = min( minpath[k+1][i], minpath[k+1][i+1]) + triangle[k][i]
 # For the kth level:
 # minpath[i] = min( minpath[i], minpath[i+1]) + triangle[k][i];
+# time = O(n^2), n = number of rows in triangle
+# space = O(n)
 class Solution(object):
     def minimumTotal(self, triangle):
         """
@@ -153,8 +167,8 @@ class Solution(object):
         return dp[0]
 
 # V2
-# Time:  O(m * n)
-# Space: O(n)
+# time = O(m * n)
+# space = O(n)
 from functools import reduce
 class Solution(object):
     # @param triangle, a list of lists of integers

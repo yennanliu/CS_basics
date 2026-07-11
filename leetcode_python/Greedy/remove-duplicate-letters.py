@@ -35,6 +35,8 @@ Note: This question is the same as 1081: https://leetcode.com/problems/smallest-
 
 # V0
 # IDEA: MONO STACK (GPT)
+# time = O(n)
+# space = O(1)   # stack/seen/last_idx bounded by 26-letter alphabet
 class Solution(object):
     def removeDuplicateLetters(self, s):
         """
@@ -98,6 +100,8 @@ class Solution(object):
 # V2
 # IDEA: STACK
 # https://leetcode.com/problems/remove-duplicate-letters/solutions/1859515/python-on-beats-98-stack-detailed-explan-11pb/
+# time = O(n)
+# space = O(1)   # stack/visited/last_occ bounded by 26-letter alphabet
 class Solution:
     def removeDuplicateLetters(self, s):
         

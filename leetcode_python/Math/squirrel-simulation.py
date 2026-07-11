@@ -26,8 +26,10 @@
 # V1 : dev 
 
 
-# V2 
+# V2
 # http://bookshadow.com/weblog/2017/05/07/leetcode-squirrel-simulation/
+# time = O(n)  # n = len(nuts)
+# space = O(1)
 class Solution(object):
     def minDistance(self, height, width, tree, squirrel, nuts):
         """
@@ -43,9 +45,9 @@ class Solution(object):
         return total + min(manhattan(squirrel, nut) - manhattan(tree, nut) for nut in nuts)
 
 
-# V3 
-# Time:  O(n)
-# Space: O(1)
+# V3
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def minDistance(self, height, width, tree, squirrel, nuts):
         """

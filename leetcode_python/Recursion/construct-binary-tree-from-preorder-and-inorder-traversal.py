@@ -95,6 +95,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: RECURSION + INORDER, PREORDER
+# time = O(n^2), index() lookup is O(n) at each of n recursive calls
+# space = O(n^2), slicing creates new lists at every recursion level
 class Solution(object):
     def buildTree(self, preorder, inorder):
         # Base Case: If either list is empty, this subtree branch is empty
@@ -122,6 +124,8 @@ class Solution(object):
 
 # V0
 # IDEA : BST property
+# time = O(n^2), index() lookup is O(n) at each of n recursive calls
+# space = O(n^2), slicing creates new lists at every recursion level
 class Solution(object):
     def buildTree(self, preorder, inorder):
         if len(preorder) == 0:
@@ -148,6 +152,8 @@ class Solution(object):
 
 # V1
 # https://blog.csdn.net/qqxx6661/article/details/75905524
+# time = O(n^2), index() lookup is O(n) at each of n recursive calls
+# space = O(n^2), slicing creates new lists at every recursion level
 class Solution(object):
     def buildTree(self, preorder, inorder):
         if len(preorder) == 0:
@@ -162,6 +168,8 @@ class Solution(object):
 
 # V1'
 # https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/solution/
+# time = O(n), hashmap gives O(1) index lookup, no slicing
+# space = O(n), for hashmap and recursion stack
 class Solution:
     def buildTree(self, preorder: List[int], inorder: List[int]) -> TreeNode:
 
@@ -202,6 +210,8 @@ class TreeNode:
         this.val = val
         this.left, this.right = None, None
 """
+# time = O(n^2), index() lookup and slicing are O(n) at each of n recursive calls
+# space = O(n^2), slicing creates new lists at every recursion level
 from lintcode import TreeNode
 class Solution:
     """
@@ -219,8 +229,8 @@ class Solution:
         return root
 
 # V2
-# Time:  O(n)
-# Space: O(n)
+# time = O(n)
+# space = O(n)
 class TreeNode(object):
     def __init__(self, x):
         self.val = x
@@ -246,8 +256,8 @@ class Solution(object):
         node.right = self.buildTreeRecu(lookup, preorder, inorder, pre_start + 1 + i - in_start, i + 1, in_end)
         return node
 
-# time: O(n)
-# space: O(n)
+# time = O(n)
+# space = O(n)
 class Solution2(object):
     def buildTree(self, preorder, inorder):
         """

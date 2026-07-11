@@ -31,6 +31,8 @@ http://leetcode.com/problems/unique-word-abbreviation/
 
 # V1
 # https://www.jiuzhang.com/solution/unique-word-abbreviation/#tag-highlight-lang-python
+# time = O(n) init, O(k) isUnique  # n = dictionary size, k = words sharing the abbreviation
+# space = O(n)
 class ValidWordAbbr:
     
     def __init__(self, dictionary):
@@ -59,8 +61,10 @@ class ValidWordAbbr:
 
 ### Test case : dev
 
-# V1 
+# V1
 # http://www.voidcn.com/article/p-cfjjycdw-qp.html
+# time = O(n) init, O(1) isUnique
+# space = O(n)
 class ValidWordAbbr(object):
     def __init__(self, dictionary):
         """
@@ -82,9 +86,8 @@ class ValidWordAbbr(object):
         return abb not in self.dic or self.dic[abb] == word
 
 # V2
-# Time:  ctor:   O(n), n is number of words in the dictionary.
-#        lookup: O(1)
-# Space: O(k), k is number of unique words.
+# time = O(n) ctor, O(1) lookup  # n = number of words in the dictionary
+# space = O(k)  # k = number of unique words
 import collections
 class ValidWordAbbr(object):
     def __init__(self, dictionary):

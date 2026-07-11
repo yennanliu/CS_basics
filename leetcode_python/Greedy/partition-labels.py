@@ -32,6 +32,8 @@ s consists of lowercase English letters.
 
 # V0
 # IDEA : GREEDY
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def partitionLabels(self, s):
         d = {val:idx for idx, val in enumerate(list(s))}
@@ -84,6 +86,8 @@ class Solution(object):
 # i = 22, c = i, j = 23, ans = [9, 7]
 # i = 23, c = j, j = 23, ans = [9, 7]
 # [9, 7, 8]
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def partitionLabels(self, S):
         # note : this trick for get max index for each element in S
@@ -103,6 +107,8 @@ class Solution(object):
 
 # V0'
 # IDEA : GREEDY + find the max index for each element
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def partitionLabels(self, s):
         d = {}
@@ -135,6 +141,8 @@ class Solution(object):
 
 # V0''
 # https://leetcode.com/problems/partition-labels/discuss/298474/Python-two-pointer-solution-with-explanation
+# time = O(n)
+# space = O(n)
 class Solution:
     def partitionLabels(self, S):
         d = { c:i for i, c in enumerate(S) }
@@ -154,6 +162,8 @@ class Solution:
 # https://blog.csdn.net/fuxuemingzhu/article/details/79265829
 # https://leetcode.com/problems/partition-labels/discuss/298474/Python-two-pointer-solution-with-explanation
 # IDEA : GREEDY
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def partitionLabels(self, S):
         # NOTICE HERE 
@@ -182,6 +192,8 @@ assert s.partitionLabels("wfrw34nekmvlsoixhaWDOIQFIOQASCADQ") ==  [4, 1, 1, 1, 1
 # V1'
 # https://leetcode.com/problems/partition-labels/solution/
 # IDEA : GREEDY 
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def partitionLabels(self, S):
         last = {c: i for i, c in enumerate(S)}
@@ -196,6 +208,8 @@ class Solution(object):
 
 # V1''
 # https://leetcode.com/problems/partition-labels/discuss/193371/Python-solution-28ms
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def partitionLabels(self, S):
         """
@@ -221,6 +235,8 @@ class Solution(object):
 
 # V1'''
 # https://leetcode.com/problems/partition-labels/discuss/390697/Python-easy-two-pass-with-explanation.-O(N)-time-O(1)-space
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def partitionLabels(self, S):
         result, last_seen, max_last_seen, count = [], {}, 0, 0
@@ -236,6 +252,8 @@ class Solution(object):
 
 # V1''''
 # https://leetcode.com/problems/partition-labels/discuss/113258/Short-easy-Python
+# time = O(n^2)   # repeated slicing + set-intersection checks
+# space = O(n)
 class Solution(object):
     def partitionLabels(self, S):
         sizes = []
@@ -247,8 +265,10 @@ class Solution(object):
             S = S[i:]
         return sizes
 
-# V1''''' 
+# V1'''''
 # http://bookshadow.com/weblog/2018/01/14/leetcode-partition-labels/
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def partitionLabels(self, S):
         """
@@ -271,8 +291,8 @@ class Solution(object):
         return ans
         
 # V2
-# Time:  O(n)
-# Space: O(n)
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def partitionLabels(self, S):
         """

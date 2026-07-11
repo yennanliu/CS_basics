@@ -59,6 +59,8 @@ All the words in wordList are unique.
 # 1210. Minimum Moves to Reach Target with Rotations
 # 1263. Minimum Moves to Move a Box to Their Target Location
 # 1293. Shortest Path in a Grid with Obstacles Elimination
+# time = O(N * 26 * L^2 + P * L)  # N = len(wordList), L = word length, P = number of shortest paths (BFS builds parents level by level, then DFS reconstructs; P can be exponential worst case)
+# space = O(N * L + P * L)
 class Solution:
     def findLadders(self, beginWord, endWord, wordList):
         wordList = set(wordList)
@@ -101,6 +103,8 @@ class Solution:
 # V1
 # IDEA : BFS
 # https://leetcode.com/problems/word-ladder-ii/discuss/254249/Python-BFS
+# time = O(P * L^2 * 26)  # P = number of candidate paths explored; full paths are stored/extended in the queue so this can blow up combinatorially
+# space = O(P * L)  # queue holds growing partial/full paths
 from collections import defaultdict
 class Solution:
     def findLadders(self, beginWord, endWord, wordList):
@@ -132,6 +136,8 @@ class Solution:
 # IDEA : 
 # Idea: First do a BFS on the word graph. The purpose of the BFS is two-fold. First, we calculates the distance from beginWord to all words in wordList. If endWord is not in the same connected component as beginWord, we return []. We store the result in a dictionary dist. In particular, we know that the distance d from beginWord to endWord (dist[endWord]) is exactly the length of the shortest transformation sequences from beginWord to endWord. Secondly, we can construct the adjacency list representation of the word graph with the BFS, which is a dictionary graph that maps each word to its set of neighbors in the word graph. This facilitates the construction of the shortest transformation sequences using DFS in the next step, because the value corresponding to a particular key will be the set of all the neighbors of the key.
 # Next, we do a DFS starting from beginWord. We can use the dictionary dist to prune most of the search spaces, because we already know that each of the shortest transformation sequences is of length dist[endWord] = d, so that the transformation sequence is of the form [beginWord, word1, word2, ..., endWord], where dist[beginWord] = 0, dist[word1] = 1, dist[word2] = 2, ..., dist[endWord] = d. Therefore, we only need to make recursive DFS calls on those neighbors of the current word which are of distance dist[currentWord]+1 to the beginWord. We initialize two lists, res which holds the result, and tmp which holds all the words in the current DFS subtree. Once the DFS call is on endWord, we create a shallow copy of tmp and append it to res, and return.
+# time = O(N * 26 * L^2 + P * L)  # N = len(wordList), L = word length, P = number of shortest paths (BFS builds dist/graph, DFS reconstructs with pruning)
+# space = O(N * L + P * L)
 class Solution(object):
     def findLadders(self, beginWord, endWord, wordList):
         """
@@ -183,6 +189,8 @@ class Solution(object):
 # V1''
 # IDEA : BFS backwards from endWord to beginWord
 # https://leetcode.com/problems/word-ladder-ii/discuss/241584/Python-solution
+# time = O(N * 26 * L^2 + P * L)  # N = len(wordList), L = word length, P = number of shortest paths (backward BFS builds dist/graph, DFS reconstructs)
+# space = O(N * L + P * L)
 class Solution(object):
     def findLadders(self, beginWord, endWord, wordList):
         """
@@ -244,6 +252,8 @@ class Solution(object):
 # https://blog.csdn.net/qqxx6661/article/details/78509871
 # https://medium.com/@bill800227/leetcode-126-word-ladder-ii-19bc2ff4a6db
 # IDEA : BFS 
+# time = O(N * 26 * L^2 + P * L)  # N = len(wordList), L = word length, P = number of shortest paths (bidirectional BFS + DFS path construction)
+# space = O(N * L + P * L)
 class Solution(object):
     def findLadders(self, beginWord, endWord, wordList):
         """
@@ -304,6 +314,8 @@ class Solution(object):
 
 # V1'
 # https://www.cnblogs.com/zuoyuan/p/3697045.html
+# time = O(N * 26 * L^2 + P * L)  # N = len(wordList), L = word length, P = number of shortest paths (BFS over candidate sets + DFS path construction)
+# space = O(N * L + P * L)
 class Solution:
     # @param start, a string
     # @param end, a string
@@ -348,6 +360,8 @@ class Solution:
 
 # V1''
 # https://www.twblogs.net/a/5d17a56abd9eee1ede0563e6
+# time = O(P * L^2 * 26)  # P = number of paths kept per layer; full paths stored in `layer` dict so this can blow up combinatorially
+# space = O(P * L)
 class Solution:
     def findLadders(self, beginWord: str, endWord: str, wordList: List[str]) -> List[List[str]]:
         wordlist=set(wordList)

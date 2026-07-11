@@ -37,6 +37,8 @@ Follow up: This problem is similar to Search in Rotated Sorted Array, but nums m
 
 # V0
 # IDEA : LC 033 (binary search) + set
+# time = O(n)  # dominated by list(set(nums))
+# space = O(n)  # set(nums)
 class Solution(object):
     def search(self, nums, target):
         """
@@ -86,6 +88,8 @@ class Solution(object):
 # STEP 2) CHECK THE RELATIONS : nums[l] <= target < nums[mid], nums[mid] < target <= nums[r]
 #         -> THEN MODIFY l, r, with mid by cases
 # STEP 3) LOOP STEP 0) -> STEP 3), if nums[m] == target, return it, if not then return False at the end.
+# time = O(n)  # worst case O(n) with many duplicates, O(log n) average
+# space = O(1)
 class Solution(object):
     def search(self, nums, target):
         """
@@ -113,8 +117,10 @@ class Solution(object):
                     r = mid - 1
         return False
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/83214278
+# time = O(n)  # worst case O(n) with many duplicates, O(log n) average
+# space = O(1)
 class Solution(object):
     def search(self, nums, target):
         """
@@ -144,6 +150,8 @@ class Solution(object):
 
 # V1'
 # https://blog.csdn.net/happyaaaaaaaaaaa/article/details/51602234
+# time = O(n)  # worst case O(n) with many duplicates, O(log n) average
+# space = O(1)
 class Solution(object):
     def search(self, nums, target):
         """
@@ -168,6 +176,8 @@ class Solution(object):
 
 # V1''
 # https://www.jiuzhang.com/solution/search-in-rotated-sorted-array-ii/#tag-highlight-lang-python
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def search(self, A, target):
         # write your code here
@@ -231,9 +241,9 @@ class Solution(object):
 #     }
 # }
 
-# V2 
-# Time:  O(logn)
-# Space: O(1)
+# V2
+# time = O(log n)
+# space = O(1)
 class Solution(object):
     def search(self, nums, target):
         """

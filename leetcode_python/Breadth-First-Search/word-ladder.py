@@ -39,6 +39,8 @@ All the words in wordList are unique.
 #  1) since we use BFS, so the solution will be shortest one
 #  2) from problem : All the words in wordList are unique.
 #     -> so there is ONLY one possibility for next word within each iteration
+# time = O(M^2 * N)  # M = word length, N = len(wordList); each of the N words is dequeued once, and generates M*26 candidates each costing O(M) to build
+# space = O(M * N)  # wordset/visited set + queue store up to N words of length M
 class Solution(object):
     def ladderLength(self, beginWord, endWord, wordList):
         # we get non-duplicated list via set here
@@ -67,6 +69,8 @@ class Solution(object):
 # V1
 # IDEA : BFS
 # https://blog.csdn.net/fuxuemingzhu/article/details/82903681
+# time = O(M^2 * N)  # M = word length, N = len(wordList); each of the N words is dequeued once, and generates M*26 candidates each costing O(M) to build
+# space = O(M * N)  # wordset/visited set + queue store up to N words of length M
 class Solution(object):
     def ladderLength(self, beginWord, endWord, wordList):
         """
@@ -95,6 +99,8 @@ class Solution(object):
 # V1'
 # IDEA : BFS
 # https://leetcode.com/problems/word-ladder/discuss/40729/Compact-Python-solution
+# time = O(M^2 * N)  # M = word length, N = len(wordList); each of the N words is dequeued once, and generates M*26 candidates each costing O(M) to build
+# space = O(M * N)  # wordset/visited set + queue store up to N words of length M
 class Solution(object):
     def ladderLength(self, beginWord, endWord, wordList):
         wordList = set(wordList)
@@ -114,6 +120,8 @@ class Solution(object):
 # V1''
 # IDEA : BFS
 # https://leetcode.com/problems/word-ladder/discuss/157376/Python-(BFS)-tm
+# time = O(M^2 * N)  # M = word length, N = len(wordList); each of the N words is dequeued once, and generates M*26 candidates each costing O(M) to build
+# space = O(M * N)  # wordset/visited set + queue store up to N words of length M
 class Solution(object):
     def ladderLength(self, start, end, arr):
         arr = set(arr) #avoid TLE
@@ -136,6 +144,8 @@ class Solution(object):
 # V1 
 # IDEA : BFS
 # https://blog.csdn.net/fuxuemingzhu/article/details/82903681
+# time = O(M^2 * N)  # M = word length, N = len(wordList); each of the N words is dequeued once, and generates M*26 candidates each costing O(M) to build
+# space = O(M * N)  # wordset/visited set + queue store up to N words of length M
 class Solution(object):
     def ladderLength(self, beginWord, endWord, wordList):
         """
@@ -172,8 +182,8 @@ class Solution(object):
 # V1'
 # https://leetcode.com/problems/word-ladder/solution/
 # IDEA : BFS 
-# time complexity : O(M**2 * N)
-# space complexity : O(M**2 * N)
+# time = O(M**2 * N)
+# space = O(M**2 * N)
 from collections import defaultdict
 class Solution(object):
     def ladderLength(self, beginWord, endWord, wordList):
@@ -226,8 +236,8 @@ class Solution(object):
 # V1''
 # https://leetcode.com/problems/word-ladder/solution/
 # IDEA : Bidirectional Breadth First Search
-# time complexity : O(M**2 * N)
-# space complexity : O(M**2 * N)
+# time = O(M**2 * N)
+# space = O(M**2 * N)
 from collections import defaultdict
 class Solution(object):
     def __init__(self):
@@ -300,8 +310,8 @@ class Solution(object):
         return 0
 
 # V2 
-# Time:  O(n * d), n is length of string, d is size of dictionary
-# Space: O(d)
+# time = O(n * d)  # n = length of string, d = size of dictionary
+# space = O(d)
 from string import ascii_lowercase
 class Solution(object):
     def ladderLength(self, beginWord, endWord, wordList):

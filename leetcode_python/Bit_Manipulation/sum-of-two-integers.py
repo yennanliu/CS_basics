@@ -25,6 +25,8 @@ Constraints:
 
 # V0
 # https://leetcode.com/problems/sum-of-two-integers/discuss/1214257/Python-1-line%3A-91-faster
+# time = O(1)
+# space = O(1)
 class Souluton:
     def getSum(self, a, b):
         tmp = math.exp(a) * math.exp(b)
@@ -33,6 +35,8 @@ class Souluton:
 
 # V0'
 # https://leetcode.com/problems/sum-of-two-integers/discuss/196889/Python-one-liner
+# time = O(1)
+# space = O(1)
 class Solution(object):
     def getSum(self, a, b):
         return sum([a,b])
@@ -59,6 +63,8 @@ class Solution(object):
 # ^ 1010
 # ======
 #   1101 = 13
+# time = O(1)  # bounded by 32-bit width
+# space = O(1)
 class Solution(object):
     def getSum(self, a, b):
         """
@@ -81,6 +87,8 @@ class Solution(object):
 
 # V0'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79379939
+# time = O(1)  # bounded by 32-bit width
+# space = O(1)
 class Solution():
     def getSum(self, a, b):
         MAX = 2**31-1  #0x7fffffff
@@ -93,6 +101,8 @@ class Solution():
 # V1
 # https://leetcode.com/problems/sum-of-two-integers/solution/
 # IDEA : Bit Manipulation: Easy and Language-Independent
+# time = O(1)
+# space = O(1)
 class Solution:
     def getSum(self, a: int, b: int) -> int:
         x, y = abs(a), abs(b)
@@ -122,6 +132,8 @@ class Solution:
 # V1
 # https://leetcode.com/problems/sum-of-two-integers/solution/
 # IDEA : Bit Manipulation: Easy and Language-Independent
+# time = O(1)  # bounded by 32-bit width
+# space = O(1)
 class Solution:
     def getSum(self, a: int, b: int) -> int:
         x, y = abs(a), abs(b)
@@ -153,6 +165,8 @@ class Solution:
 # V1
 # https://leetcode.com/problems/sum-of-two-integers/solution/
 # IDEA : Bit Manipulation: Easy and Language-Independent
+# time = O(1)  # bounded by 32-bit width
+# space = O(1)
 class Solution:
     def getSum(self, a: int, b: int) -> int:
         x, y = abs(a), abs(b)
@@ -175,6 +189,8 @@ class Solution:
 # V1
 # https://leetcode.com/problems/sum-of-two-integers/solution/
 # IDEA : Bit Manipulation: Short Language-Specific Solution
+# time = O(1)  # bounded by 32-bit width
+# space = O(1)
 class Solution:
     def getSum(self, a: int, b: int) -> int:
         mask = 0xFFFFFFFF
@@ -188,6 +204,8 @@ class Solution:
 # V1
 # https://leetcode.com/problems/sum-of-two-integers/solution/
 # IDEA : Bit Manipulation: Short Language-Specific Solution
+# time = O(1)  # bounded by 32-bit width
+# space = O(1)
 class Solution:
     def getSum(self, a: int, b: int) -> int:
         mask = 0xFFFFFFFF
@@ -198,10 +216,12 @@ class Solution:
         max_int = 0x7FFFFFFF
         return a if a < max_int else ~(a ^ mask)
 
-# V1 
+# V1
 # http://bookshadow.com/weblog/2016/06/30/leetcode-sum-of-two-integers/
 # https://blog.csdn.net/fuxuemingzhu/article/details/79379939
 # https://blog.csdn.net/coder_orz/article/details/52034541
+# time = O(1)  # bounded by 32-bit width
+# space = O(1)
 class Solution(object):
     def getSum(self, a, b):
         """
@@ -222,6 +242,8 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/371-sum-of-two-integers/#tag-highlight-lang-python
+# time = O(1)  # bounded by 32-bit width
+# space = O(1)
 class Solution():
     def getSum(self, a, b):
         MAX = 0x7fffffff
@@ -231,9 +253,9 @@ class Solution():
             a, b = (a ^ b) & mask, ((a & b) << 1)
         return a if a <= MAX else ~(a ^ mask)
 
-# V2 
-# Time:  O(1)
-# Space: O(1)
+# V2
+# time = O(1)
+# space = O(1)
 class Solution(object):
     def getSum(self, a, b):
         """

@@ -4,6 +4,8 @@
 # http://bookshadow.com/weblog/2018/07/22/leetcode-length-of-longest-fibonacci-subsequence/
 # IDEA : DP
 # STATUS EQ : dp[y][x + y] = max(dp[y][x + y], dp[x][y] + 1)
+# time = O(n^2)
+# space = O(n^2)  # dp dict keyed by (y, x+y) pairs
 class Solution(object):
     def lenLongestFibSubseq(self, A):
         """
@@ -26,6 +28,8 @@ class Solution(object):
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/82715323
 # IDEA : GREEDY 
+# time = O(n^2 log(max(A)))  # n = len(A); while loop grows Fibonacci-fast
+# space = O(n)
 class Solution(object):
     def lenLongestFibSubseq(self, A):
         """
@@ -46,8 +50,8 @@ class Solution(object):
         return res if res > 2 else 0
         
 # V2 
-# Time:  O(n^2)
-# Space: O(n)
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def lenLongestFibSubseq(self, A):
         """

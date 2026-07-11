@@ -41,6 +41,8 @@ from heapq import *
 
 # V0
 # IDEA : heapq
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def connectSticks(self, sticks):
         heapify(sticks)
@@ -56,6 +58,8 @@ class Solution(object):
 # IDEA : heapq
 # https://www.codeleading.com/article/60602004195/
 # https://blog.csdn.net/qq_32424059/article/details/100058788
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def connectSticks(self, sticks):
         heapify(sticks)
@@ -70,6 +74,8 @@ class Solution(object):
 # V1
 # IDEA : heapq + greedy
 # https://www.codeleading.com/article/65392003933/
+# time = O(n log n)
+# space = O(n)
 import heapq
 class Solution:
     def connectSticks(self, sticks):

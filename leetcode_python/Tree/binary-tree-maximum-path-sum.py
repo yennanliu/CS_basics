@@ -34,6 +34,8 @@ The number of nodes in the tree is in the range [1, 3 * 104].
 
 # V0
 # IDEA : DFS
+# time = O(n)  # n = number of tree nodes
+# space = O(h)  # h = tree height (recursion stack)
 class Solution(object):
     def maxPathSum(self, root):
         def dfs(root):
@@ -72,6 +74,8 @@ class Solution(object):
 # V1
 # IDEA : DFS
 # https://leetcode.com/problems/binary-tree-maximum-path-sum/discuss/209995/Python-solution
+# time = O(n)  # n = number of tree nodes
+# space = O(h)  # h = tree height (recursion stack)
 class Solution(object):
     def maxPathSum(self, root):
         def dfs(root):
@@ -110,6 +114,8 @@ class Solution(object):
 # V1
 # IDEA : DFS
 # https://leetcode.com/problems/binary-tree-maximum-path-sum/solution/
+# time = O(n)  # n = number of tree nodes
+# space = O(h)  # h = tree height (recursion stack)
 class Solution:
     def maxPathSum(self, root):
         """
@@ -142,6 +148,8 @@ class Solution:
 # V1'
 # IDEA : DFS
 # https://leetcode.com/problems/binary-tree-maximum-path-sum/discuss/209995/Python-solution
+# time = O(n)  # n = number of tree nodes
+# space = O(h)  # h = tree height (recursion stack)
 class Solution(object):
     def maxPathSum(self, root):
         def dfs(root):
@@ -166,6 +174,8 @@ class Solution(object):
 # V1''
 # IDEA : DFS + bottom up
 # https://leetcode.com/problems/binary-tree-maximum-path-sum/discuss/329033/Python-bottom-up-DFS-solution
+# time = O(n)  # n = number of tree nodes
+# space = O(h)  # h = tree height (recursion stack)
 class Solution(object):
     def maxPathSum(self, root):
         def maxSum(root):
@@ -184,6 +194,8 @@ class Solution(object):
 
 # V1'''
 # https://leetcode.com/problems/binary-tree-maximum-path-sum/discuss/767709/Python-easy-as-hell-solution
+# time = O(n)  # n = number of tree nodes
+# space = O(h)  # h = tree height (recursion stack)
 class Solution(object):
     max_path = 0
     def maxPathSum(self, root):

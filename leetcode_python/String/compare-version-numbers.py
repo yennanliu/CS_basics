@@ -45,6 +45,8 @@ All the given revisions in version1 and version2 can be stored in a 32-bit integ
 
 # V0
 # IDEA : STRING + while op
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def compareVersion(self, version1, version2):
         # edge case
@@ -78,6 +80,8 @@ class Solution(object):
 
 # V0'
 # IDEA : STRING
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def compareVersion(self, version1, version2):
         v1_split = version1.split('.')
@@ -96,9 +100,11 @@ class Solution(object):
                 return 1
         return 0
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/80821268
 # IDEA : STRING
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def compareVersion(self, version1, version2):
         """
@@ -138,6 +144,8 @@ assert s.compareVersion("0.1", "0.2") == -1
 # V1
 # IDEA : Split + Parse, Two Pass
 # https://leetcode.com/problems/compare-version-numbers/solution/
+# time = O(n)
+# space = O(n)
 class Solution:
     def compareVersion(self, version1: str, version2: str) -> int:
         nums1 = version1.split('.')
@@ -157,6 +165,8 @@ class Solution:
 # V1
 # IDEA : Two Pointers, One Pass
 # https://leetcode.com/problems/compare-version-numbers/solution/
+# time = O(n)
+# space = O(1)
 class Solution:
     def get_next_chunk(self, version: str, n: int, p: int) -> List[int]:
         # if pointer is set to the end of string
@@ -189,7 +199,9 @@ class Solution:
         # the versions are equal
         return 0    
 
-# V2 
+# V2
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def compareVersion(self, version1, version2):
         version1_ = list(version1.split('.'))
@@ -206,7 +218,9 @@ class Solution(object):
                 pass
         return 0 
 
-# V3 
+# V3
+# time = O(n)
+# space = O(1)
 import itertools
 class Solution(object):
     def compareVersion(self, version1, version2):
@@ -232,9 +246,9 @@ class Solution(object):
 
         return 0
 
-# Time:  O(n)
-# Space: O(n)
-# V4 
+# V4
+# time = O(n)
+# space = O(n)
 def cmp(a, b):
     return (a > b) - (a < b) 
     
@@ -287,9 +301,9 @@ class Solution2(object):
         main2, _, rest2 = ('0' + version2).partition('.')
         return cmp(int(main1), int(main2)) or len(rest1 + rest2) and self.compareVersion4(rest1, rest2)
 
-# V5 
-# Time:  O(n)
-# Space: O(1)
+# V5
+# time = O(n)
+# space = O(1)
 import itertools
 class Solution(object):
     def compareVersion(self, version1, version2):
@@ -315,8 +329,8 @@ class Solution(object):
 
         return 0
 
-# Time:  O(n)
-# Space: O(n)
+# time = O(n)
+# space = O(n)
 class Solution2(object):
     def compareVersion(self, version1, version2):
         """

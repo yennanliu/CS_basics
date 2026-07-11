@@ -96,6 +96,8 @@ class Solution(object):
         """
         return chr(reduce(operator.xor, map(ord, s), 0) ^ reduce(operator.xor, map(ord, t), 0))
 
+    # time = O(n^2)  # n = len(s); list.remove is O(n) called n times
+    # space = O(n)
     def findTheDifference2(self, s, t):
         """
         :type s: str
@@ -108,12 +110,18 @@ class Solution(object):
             t.remove(i)
         return t[0]
 
+    # time = O(n)  # n = len(s) + len(t)
+    # space = O(n)  # s + t builds a new string
     def findTheDifference3(self, s, t):
         return chr(reduce(operator.xor, map(ord, s + t)))
 
+    # time = O(n)  # n = len(t)
+    # space = O(n)  # two Counter objects
     def findTheDifference4(self, s, t):
         return list((collections.Counter(t) - collections.Counter(s)))[0]
 
+    # time = O(n log n)  # n = len(s); sorted() on both strings
+    # space = O(n)
     def findTheDifference5(self, s, t):
         s, t = sorted(s), sorted(t)
         return t[-1] if s == t[:-1] else [x[1] for x in zip(s, t) if x[0] != x[1]][0]

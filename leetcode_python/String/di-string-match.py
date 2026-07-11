@@ -68,6 +68,8 @@ input:  s = "IDID"
 
 
 """
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def diStringMatch(self, s):
         n = len(s)
@@ -94,6 +96,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: 2 POINTERS (GEMINI)
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def diStringMatch(self, s):
         """
@@ -125,6 +129,8 @@ class Solution(object):
 
 # V0-2
 # IDEA: 2 POINTERS (gpt)
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def diStringMatch(self, s):
         low = 0
@@ -145,8 +151,10 @@ class Solution(object):
 
 
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/84206493
+# time = O(n)
+# space = O(n)
 class Solution:
     def diStringMatch(self, S):
         """
@@ -166,9 +174,9 @@ class Solution:
         res.append(ni)
         return res
         
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def diStringMatch(self, S):
         """

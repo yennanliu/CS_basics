@@ -1,7 +1,9 @@
 # V0 
 
-# V1 
+# V1
 # http://bookshadow.com/weblog/2015/11/26/leetcode-minimum-height-trees/
+# time = O(n)  # each node/edge removed once during leaf trimming
+# space = O(n)
 class Solution(object):
     def findMinHeightTrees(self, n, edges):
         """
@@ -25,6 +27,8 @@ class Solution(object):
 
 # V1'
 # http://bookshadow.com/weblog/2015/11/26/leetcode-minimum-height-trees/
+# time = O(n)  # each node/edge removed once during leaf trimming
+# space = O(n)
 class Solution(object):
     def findMinHeightTrees(self, n, edges):
         """
@@ -50,6 +54,8 @@ class Solution(object):
 
 # V1''
 # http://bookshadow.com/weblog/2015/11/26/leetcode-minimum-height-trees/
+# time = O(n^2)  # findHeight does a full O(n) DFS from every candidate node
+# space = O(n)
 class Solution(object):
     def findMinHeightTrees(self, n, edges):
         """
@@ -77,6 +83,8 @@ class Solution(object):
 
 # V1'''
 # https://www.jiuzhang.com/solution/minimum-height-trees/#tag-highlight-lang-python
+# time = O(n)  # each node/edge removed once during leaf trimming
+# space = O(n)
 class Solution(object):
     def findMinHeightTrees(self, n, edges):
         """
@@ -109,9 +117,9 @@ class Solution(object):
             leaves = new_leaves        
         return leaves
 
-# V2 
-# Time:  O(n)
-# Space: O(n)
+# V2
+# time = O(n)
+# space = O(n)
 import collections
 class Solution(object):
     def findMinHeightTrees(self, n, edges):

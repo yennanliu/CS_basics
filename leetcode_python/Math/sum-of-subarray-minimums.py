@@ -124,6 +124,8 @@ For each element arr[i], count:
 """
 # V0
 # IDEA: MONO STACK (Gemini)
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def sumSubarrayMins(self, arr):
         """
@@ -184,6 +186,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: MONO STACK
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def sumSubarrayMins(self, arr):
         """
@@ -264,6 +268,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: MONO STACK (INCREASING)
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def sumSubarrayMins(self, arr):
         """
@@ -305,6 +311,8 @@ class Solution(object):
 
 # V0
 # IDEA :  increasing stacks
+# time = O(n)
+# space = O(n)
 class Solution:
     def sumSubarrayMins(self, A):
         n, mod = len(A), 10**9 + 7
@@ -343,6 +351,8 @@ class Solution:
 # V1
 # IDEA :  increasing stacks
 # https://leetcode.com/problems/sum-of-subarray-minimums/discuss/284184/Python-Max-Histogram
+# time = O(n)
+# space = O(n)
 class Solution:
     def sumSubarrayMins(self, A):
         A.append(-1)
@@ -379,6 +389,8 @@ class Solution:
 # right + 1 = [1,3,2,1]
 # f = [1,6,2,1]
 # res = 3 * 1 + 1 * 6 + 2 * 2 + 4 * 1 = 17
+# time = O(n)
+# space = O(n)
 class Solution:
     def sumSubarrayMins(self, A):
         n, mod = len(A), 10**9 + 7
@@ -402,6 +414,8 @@ class Solution:
 # V1
 # IDEA :  increasing stacks + above improvement
 # https://leetcode.com/problems/sum-of-subarray-minimums/discuss/170750/JavaC%2B%2BPython-Stack-Solution
+# time = O(n)
+# space = O(n)
 class Solution:
      def sumSubarrayMins(self, A):
             res = 0
@@ -432,6 +446,8 @@ class Solution:
 #
 # two passes O(n)
 # plus a third to sigma and compute that cumulative sum
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def sumSubarrayMins(self, A):
         mod = 10 ** 9 + 7
@@ -463,6 +479,8 @@ class Solution(object):
 
 # V1
 # https://leetcode.com/problems/sum-of-subarray-minimums/discuss/170927/Python-Stack
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def sumSubarrayMins(self, A):
         an = 0
@@ -478,6 +496,8 @@ class Solution(object):
 
 # V1
 # https://leetcode.com/problems/sum-of-subarray-minimums/discuss/279705/python-solution
+# time = O(n)
+# space = O(n)
 class Solution:
     def sumSubarrayMins(self, A):
         n = len(A)
@@ -528,8 +548,10 @@ class Solution:
 #     return (int) (sum % 1000000007);
 # }
 
-# V1 
+# V1
 # https://blog.csdn.net/zjucor/article/details/82721781
+# time = O(n)
+# space = O(n)
 class Solution:
     def sumSubarrayMins(self, a):
         """
@@ -573,8 +595,8 @@ class Solution:
         return res
 
 # V2
-# Time:  O(n)
-# Space: O(n)
+# time = O(n)
+# space = O(n)
 import itertools
 # Ascending stack solution
 class Solution(object):

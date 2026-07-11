@@ -66,6 +66,8 @@ DP eq
         )
 
 """
+# time = O(n1 * n2)  # n1 = len(text1), n2 = len(text2)
+# space = O(n1 * n2)
 class Solution(object):
     def longestCommonSubsequence(self, text1, text2):
         # edge
@@ -118,6 +120,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: 2D DP
+# time = O(n1 * n2)  # n1 = len(text1), n2 = len(text2)
+# space = O(n1 * n2)
 class Solution(object):
     def longestCommonSubsequence(self, text1, text2):
         """
@@ -156,6 +160,8 @@ class Solution(object):
 # V1
 # IDEA : DP
 # https://leetcode.com/problems/longest-common-subsequence/discuss/794472/Simple-python
+# time = O(n1 * n2)  # n1 = len(s1), n2 = len(s2)
+# space = O(n1 * n2)
 class Solution:
       def longestCommonSubsequence(self, s1: str, s2: str) -> int:
             n1, n2 = len(s1), len(s2)
@@ -171,6 +177,8 @@ class Solution:
 # V1'
 # IDEA : Memoization
 # https://leetcode.com/problems/longest-common-subsequence/discuss/598739/Memoization-Python
+# time = O(n1 * n2)  # n1 = len(text1), n2 = len(text2)
+# space = O(n1 * n2)
 class Solution:
     def longestCommonSubsequence(self, text1: str, text2: str) -> int:
         self.cache = [[-1 for i in range(len(text2)+1)] for j in range(len(text1)+1)]
@@ -189,6 +197,8 @@ class Solution:
 # V1''
 # IDEA : 2D dynamic programming:
 # https://leetcode.com/problems/longest-common-subsequence/discuss/598687/Python-O(-m*n-)-2D-DP.-85%2B-w-Hint
+# time = O(n1 * n2)  # n1 = len(text1), n2 = len(text2)
+# space = O(n1 * n2)
 class Solution:
     def longestCommonSubsequence(self, text1: str, text2: str) -> int:
         
@@ -219,6 +229,8 @@ class Solution:
 # V1'''
 # IDEA : Memoization
 # https://leetcode.com/problems/longest-common-subsequence/solution/
+# time = O(n1 * n2^2)  # n1 = len(text1), n2 = len(text2); O(n1*n2) states, O(n2) per text2.find
+# space = O(n1 * n2)
 from functools import lru_cache
 class Solution:
     def longestCommonSubsequence(self, text1: str, text2: str) -> int:
@@ -249,6 +261,8 @@ class Solution:
 # V1'''''
 # IDEA : Improved Memoization
 # https://leetcode.com/problems/longest-common-subsequence/solution/
+# time = O(n1 * n2)  # n1 = len(text1), n2 = len(text2)
+# space = O(n1 * n2)
 from functools import lru_cache
 class Solution:
     def longestCommonSubsequence(self, text1: str, text2: str) -> int:
@@ -274,6 +288,8 @@ class Solution:
 # V1''''''
 # IDEA : DP
 # https://leetcode.com/problems/longest-common-subsequence/solution/
+# time = O(n1 * n2)  # n1 = len(text1), n2 = len(text2)
+# space = O(n1 * n2)
 class Solution:
     def longestCommonSubsequence(self, text1: str, text2: str) -> int:
         
@@ -297,6 +313,8 @@ class Solution:
 # V1'''''''
 # IDEA : DP WITH SPACE OPTIMIZATION
 # https://leetcode.com/problems/longest-common-subsequence/solution/
+# time = O(n1 * n2)  # n1 = len(text1), n2 = len(text2)
+# space = O(min(n1, n2))
 class Solution:
     def longestCommonSubsequence(self, text1: str, text2: str) -> int:
         
@@ -327,6 +345,8 @@ class Solution:
 # V1'''''''''
 # IDEA : DP
 # https://leetcode.com/problems/longest-common-subsequence/discuss/1496789/python
+# time = O(n1 * n2)  # n1 = len(text1), n2 = len(text2)
+# space = O(n1 * n2)
 class Solution:
     def longestCommonSubsequence(self, text1: str, text2: str) -> int:
             n=len(text1)

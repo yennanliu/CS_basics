@@ -34,6 +34,8 @@ Constraints:
 # V0
 # IDEA : dict
 # IDEA : NOTE : we only count "NUMBER OF PAIRS", instead get all pairs indexes
+# time = O(n)
+# space = O(1)  # at most 60 distinct remainders
 class Solution(object):
     def numPairsDivisibleBy60(self, time):
         d = {}
@@ -60,6 +62,8 @@ class Solution(object):
 # V1
 # IDEA : HASH TABLE
 # https://leetcode.com/problems/pairs-of-songs-with-total-durations-divisible-by-60/discuss/964284/Python-single-pass
+# time = O(n)
+# space = O(1)  # at most 60 distinct remainders
 from collections import defaultdict
 class Solution(object):
     def numPairsDivisibleBy60(self, time):
@@ -74,6 +78,8 @@ class Solution(object):
 # V1'
 # IDEA : HASH TABLE
 # https://leetcode.com/problems/pairs-of-songs-with-total-durations-divisible-by-60/discuss/847195/Python-hash-table
+# time = O(n)
+# space = O(1)  # at most 60 distinct remainders
 class Solution(object):
     def numPairsDivisibleBy60(self, time):
         table = defaultdict(int)
@@ -87,6 +93,8 @@ class Solution(object):
 # V1''
 # IDEA : HASH TABLE
 # https://leetcode.com/problems/pairs-of-songs-with-total-durations-divisible-by-60/discuss/257165/2-Sum-Python
+# time = O(n)
+# space = O(1)  # at most 60 distinct remainders
 class Solution(object):
     def numPairsDivisibleBy60(self, time):
         d = {}
@@ -118,6 +126,8 @@ class Solution(object):
 
 # V1'''
 # https://leetcode.com/problems/pairs-of-songs-with-total-durations-divisible-by-60/discuss/915768/Python-Solution
+# time = O(n)
+# space = O(1)  # fixed-size array of 60 buckets
 class Solution(object):
     def numPairsDivisibleBy60(self, time):
         import operator as op
@@ -144,6 +154,8 @@ class Solution(object):
 # V1'''''
 # IDEA : collections.Counter
 # https://leetcode.com/problems/pairs-of-songs-with-total-durations-divisible-by-60/discuss/313790/Python-3
+# time = O(n)  # Counter bounded to 60 keys; sum(range(...)) work amortizes to O(n) total
+# space = O(1)  # at most 60 distinct remainders
 class Solution:
     def numPairsDivisibleBy60(self, time):
         di = collections.Counter([60 if t % 60 == 0 else t % 60 for t in time])

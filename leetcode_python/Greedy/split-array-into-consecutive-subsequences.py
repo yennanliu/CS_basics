@@ -1,7 +1,9 @@
 # V0 
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/82185011
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def isPossible(self, nums):
         """
@@ -19,9 +21,9 @@ class Solution(object):
                 if v < 3:
                     return False
         return True
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def isPossible(self, nums):
         """

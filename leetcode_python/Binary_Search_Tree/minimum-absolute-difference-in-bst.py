@@ -1,6 +1,6 @@
 # V0 
 
-# V1 
+# V1
 # http://bookshadow.com/weblog/2017/02/26/leetcode-minimum-absolute-difference-in-bst/
 # Definition for a binary tree node.
 # class TreeNode(object):
@@ -9,6 +9,8 @@
 #         self.left = None
 #         self.right = None
 
+# time = O(n)
+# space = O(h)  # h = tree height (recursion stack)
 class Solution(object):
     def getMinimumDifference(self, root):
         """
@@ -35,6 +37,8 @@ class Solution(object):
 #         self.left = None
 #         self.right = None
 
+# time = O(n)  # amortized; each predecessor/successor walk contributes O(1) on average
+# space = O(h)  # h = tree height (recursion stack)
 class Solution(object):
     def getMinimumDifference(self, root):
         """
@@ -51,9 +55,9 @@ class Solution(object):
             ans = min(ans, right.val - root.val, self.getMinimumDifference(root.right))
         return ans
 
-# V2 
-# Time:  O(n)
-# Space: O(h)
+# V2
+# time = O(n)
+# space = O(h)
 class Solution(object):
     def getMinimumDifference(self, root):
         """

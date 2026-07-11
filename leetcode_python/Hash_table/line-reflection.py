@@ -2,6 +2,8 @@
 
 # V1 
 # https://www.jiuzhang.com/solution/line-reflection/#tag-highlight-lang-python
+# time = O(n)
+# space = O(n)
 class Solution:
     """
     @param points: n points on a 2D plane
@@ -43,8 +45,8 @@ class Solution:
 # }; 
 
 # V2 
-# Time:  O(n)
-# Space: O(n)
+# time = O(n)
+# space = O(n)
 import collections
 # Hash solution.
 class Solution(object):
@@ -67,8 +69,8 @@ class Solution(object):
                     return False
         return True
 
-# Time:  O(nlogn)
-# Space: O(n)
+# time = O(n log n)
+# space = O(n)
 # Two pointers solution.
 class Solution2(object):
     def isReflected(self, points):

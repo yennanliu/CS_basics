@@ -423,6 +423,8 @@ class Solution(object):
 #
 # In [43]: graph
 # Out[43]: defaultdict(dict, {0: {1: 100, 2: 500}, 1: {2: 100}})
+# time = O(n^K)  # brute-force DFS, branching factor n, depth K (TLE)
+# space = O(n)  # recursion depth K + visited array
 class Solution(object):
     def findCheapestPrice(self, n, flights, src, dst, K):
         graph = collections.defaultdict(dict)
@@ -453,6 +455,8 @@ class Solution(object):
 # V1''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/83307822
 # IDEA : BFS
+# time = O(n^K)  # no per-(node, stops) dedup, branching factor n, depth K (TLE)
+# space = O(n^K)  # queue can grow exponentially
 class Solution(object):
     def findCheapestPrice(self, n, flights, src, dst, K):
         """
@@ -487,6 +491,8 @@ class Solution(object):
 # V1''''''
 # https://leetcode.com/problems/cheapest-flights-within-k-stops/discuss/267200/Python-Dijkstra
 # IDEA : Dijkstra algorithm
+# time = O(n^K * log(n^K))  # no per-(node, stops) dedup, heap can hold exponentially many states (TLE)
+# space = O(n^K)
 class Solution(object):
     def findCheapestPrice(self,n, flights, src, dst, K):
         pq, g = [(0,src,K+1)], collections.defaultdict(dict)
@@ -502,6 +508,8 @@ class Solution(object):
 # V1'''''''
 # https://leetcode.com/problems/cheapest-flights-within-k-stops/discuss/317262/2-Clean-Python-Solution-(BFS-Dijkstra-Explained)
 # IDEA : Dijkstra algorithm
+# time = O(n^K * log(n^K))  # no per-(node, stops) dedup, heap can hold exponentially many states (TLE)
+# space = O(n^K)
 class Solution(object):
     def findCheapestPrice(self, n, flights, src, dst, K):
         graph = collections.defaultdict(list)
@@ -522,6 +530,8 @@ class Solution(object):
 # V1''''
 # https://leetcode.com/problems/cheapest-flights-within-k-stops/discuss/317262/2-Clean-Python-Solution-(BFS-Dijkstra-Explained)
 # IDEA : BFS
+# time = O(n^K)  # no per-(node, stops) dedup, branching factor n, depth K (TLE)
+# space = O(n^K)  # queue can grow exponentially
 class Solution(object):
     def findCheapestPrice(self, n, flights, src, dst, K):
         graph = collections.defaultdict(list)
@@ -546,6 +556,8 @@ class Solution(object):
 # V1'''''
 # https://leetcode.com/problems/cheapest-flights-within-k-stops/discuss/115541/JavaPython-Priority-Queue-Solution
 # IDEA : Priority Queue 
+# time = O(n^K * log(n^K))  # no per-(node, stops) dedup, heap can hold exponentially many states (TLE)
+# space = O(n^K)
 class Solution(object):
     def findCheapestPrice(self, n, flights, src, dst, k):
         f = collections.defaultdict(dict)
@@ -561,10 +573,10 @@ class Solution(object):
                     heapq.heappush(heap, (p + f[i][j], j, k - 1))
         return -1
 
-# V2 
-# Time:  O((|E| + |V|) * log|V|) = O(|E| * log|V|),
+# V2
+# time = O((|E| + |V|) * log|V|) = O(|E| * log|V|),
 #        if we can further to use Fibonacci heap, it would be O(|E| + |V| * log|V|)
-# Space: O(|E| + |V|) = O(|E|)
+# space = O(|E| + |V|) = O(|E|)
 import collections
 import heapq
 class Solution(object):

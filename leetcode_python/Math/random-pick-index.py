@@ -33,6 +33,8 @@ At most 104 calls will be made to pick.
 """
 
 # V0
+# time = O(n)  # n = len(nums), scan in pick()
+# space = O(n)  # idxs list can hold up to n indices
 class Solution(object):
 
     def __init__(self, nums):
@@ -46,6 +48,8 @@ class Solution(object):
         return idxs[random.randint(0, len(idxs) - 1)]
 
 # V0'
+# time = O(n)  # n = len(nums), scan in pick()
+# space = O(n)  # indexes list can hold up to n indices
 from random import randint
 import random 
 class Solution(object):
@@ -60,6 +64,8 @@ class Solution(object):
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79540576
+# time = O(n)  # n = len(nums), scan in pick()
+# space = O(n)  # idxs list can hold up to n indices
 class Solution(object):
 
     def __init__(self, nums):
@@ -86,6 +92,8 @@ class Solution(object):
 
 # V1'
 # http://bookshadow.com/weblog/2016/09/11/leetcode-random-pick-index/
+# time = O(n)  # __init__ builds linked list; pick worst-case walks O(n)
+# space = O(n)  # next/head arrays store n links
 class Solution(object):
 
     def __init__(self, nums):
@@ -118,6 +126,8 @@ class Solution(object):
         return idx - 1
 
 # V1''
+# time = O(n)  # n = len(nums), scan in pick()
+# space = O(n)  # indexes list can hold up to n indices
 from random import randint
 import random 
 class Solution(object):
@@ -139,8 +149,10 @@ class Solution(object):
 		# print ('randint(0, len(indexes)) :', randint(0, len(indexes)))
 		return indexes[randint(0, len(indexes)-1)]
          
-# V2 
+# V2
 # https://blog.csdn.net/fuxuemingzhu/article/details/79540576
+# time = O(n)  # n = len(nums), scan in pick()
+# space = O(n)  # idxs list can hold up to n indices
 class Solution(object):
 
     def __init__(self, nums):
@@ -163,8 +175,8 @@ class Solution(object):
         return idxs[random.randint(0, len(idxs) - 1)]
 
 # V3
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 from random import randint
 class Solution(object):
 

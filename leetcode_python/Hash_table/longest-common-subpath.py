@@ -49,6 +49,8 @@ The same city is not listed multiple times consecutively in paths[i].
 # V1
 # IDEA : ROLLING HASH + BINARY SEARCH
 # https://leetcode.com/problems/longest-common-subpath/discuss/1329957/Python-or-Rolling-hash(Robin_Karp)-andand-Binary-Search
+# time = O(N log(minLen))  # N = sum of len(paths[i]); binary search x rolling hash per length
+# space = O(N)  # hash sets sized by path lengths
 class Solution:
     def longestCommonSubpath(self, n: int, paths: List[List[int]]) -> int:
         #@lru_cache(None)
@@ -87,6 +89,8 @@ class Solution:
 # V1'
 # IDEA : Rolling Hash + Binary Search
 # https://leetcode.com/problems/longest-common-subpath/discuss/1673292/Python-Rolling-Hash-%2B-Binary-Search-oror-O(N*logN)
+# time = O(N log(minLen))  # N = sum of len(paths[i]); binary search x rolling hash via prefix hashes
+# space = O(N)  # prefix_hash arrays + hash sets sized by path lengths
 class Solution(object):
     def longestCommonSubpath(self, n, paths):
         BASE = 2 ** 46 - 1
@@ -126,6 +130,8 @@ class Solution(object):
 # V1''
 # IDEA : SUFFIX
 # https://leetcode.com/problems/longest-common-subpath/discuss/1314843/Suffix-automaton-solution-(multiple-languages)
+# time = O(N)  # N = sum of len(paths[i]); suffix automaton build + traversal (amortized)
+# space = O(L)  # L = max path length; automaton states
 class State:
     def __init__(self, length, link, nxt):
         self.len = length
@@ -206,6 +212,8 @@ class Solution:
 # V1'''
 # IDEA : Improved rolling hash by fully randomized prime modulus
 # https://leetcode.com/problems/longest-common-subpath/discuss/1314723/Improved-rolling-hash-by-fully-randomized-prime-modulus-(*add-math-proof)
+# time = O(N log(minLen))  # N = sum of len(paths[i]); binary search x rolling hash per length
+# space = O(N)  # hash sets sized by path lengths
 class Solution:
     def longestCommonSubpath(self, n, paths) -> int:
         def get_common_subpath_hashes(k):

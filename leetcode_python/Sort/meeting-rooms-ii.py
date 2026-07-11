@@ -26,6 +26,8 @@ Constraints:
 
 # V0
 # IDEA : SCANNING LINE
+# time = O(n log n)
+# space = O(n)
 class Solution:
     def minMeetingRooms(self, intervals):
         event_list = []
@@ -55,6 +57,8 @@ class Solution:
 
 # V0
 # IDEA : SCANNING LINE : Sort all time points and label the start and end points. Move a vertical line from left to right.
+# time = O(n log n)
+# space = O(n)
 class Solution:
      def minMeetingRooms(self, intervals):
             lst = []
@@ -77,6 +81,8 @@ class Solution:
 # V0'
 # IDEA : Chronological Ordering
 # https://leetcode.com/problems/meeting-rooms-ii/solution/
+# time = O(n log n)
+# space = O(n)
 class Solution:
     def minMeetingRooms(self, intervals):
         
@@ -116,6 +122,8 @@ class Solution:
 # Step 1 : split intervals to points, and label start, end point
 # Step 2 : reorder the points
 # Step 3 : go through every point, if start : result + 1, if end : result -1, and record the maximum result in every iteration
+# time = O(n log n)
+# space = O(n)
 class Solution:
     def minMeetingRooms(self, intervals):
         if intervals is None or len(intervals) == 0:
@@ -146,6 +154,8 @@ class Solution:
 # V0'''
 # IDEA : Priority Queues
 # https://leetcode.com/problems/meeting-rooms-ii/solution/
+# time = O(n log n)
+# space = O(n)
 class Solution:
     def minMeetingRooms(self, intervals):
         
@@ -214,6 +224,8 @@ class Solution:
 # V1
 # IDEA : Priority Queues
 # https://leetcode.com/problems/meeting-rooms-ii/solution/
+# time = O(n log n)
+# space = O(n)
 class Solution:
     def minMeetingRooms(self, intervals):
         
@@ -247,6 +259,8 @@ class Solution:
 # V1'
 # IDEA : Chronological Ordering
 # https://leetcode.com/problems/meeting-rooms-ii/solution/
+# time = O(n log n)
+# space = O(n)
 class Solution:
     def minMeetingRooms(self, intervals):
         
@@ -284,6 +298,8 @@ class Solution:
 # V1''
 # IDEA : Sort all time points and label the start and end points. Move a vertical line from left to right.
 # https://leetcode.com/problems/meeting-rooms-ii/discuss/322622/Simple-Python-solutions
+# time = O(n log n)
+# space = O(n)
 class Solution:
      def minMeetingRooms(self, intervals):
             lst = []
@@ -300,6 +316,8 @@ class Solution:
 # V1'''
 # IDEA : Priority Queues
 # https://leetcode.com/problems/meeting-rooms-ii/discuss/322622/Simple-Python-solutions
+# time = O(n log n)
+# space = O(n)
 class Solution:
     def minMeetingRooms(self, intervals):
             intervals.sort(key = lambda x: x[0])
@@ -316,6 +334,8 @@ class Solution:
 
 # V1''''
 # https://leetcode.com/problems/meeting-rooms-ii/discuss/67965/Concise-python-implementation
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def minMeetingRooms(self, intervals):
         stimes, etimes = sorted([i[0] for i in intervals]), sorted([i[1] for i in intervals])
@@ -327,6 +347,8 @@ class Solution(object):
 
 # V1'''''
 # https://leetcode.com/problems/meeting-rooms-ii/discuss/208109/Python-solution
+# time = O(n log n)
+# space = O(n)
 class Solution:
     def minMeetingRooms(self, intervals):
         if not intervals:
@@ -345,6 +367,8 @@ class Solution:
 # V1'''''''
 # IDEA : min-heap (priority queue)
 # https://leetcode.com/problems/meeting-rooms-ii/discuss/208109/Python-solution
+# time = O(n log n)
+# space = O(n)
 class Solution:
     def minMeetingRooms(self, intervals):
         """
@@ -370,6 +394,8 @@ class Solution:
 # V1''''''''
 # IDEA : min-heap (priority queue)
 # https://leetcode.com/problems/meeting-rooms-ii/discuss/1031292/Simple-Python-Solution
+# time = O(n log n)
+# space = O(n)
 class Solution:
     def minMeetingRooms(self, intervals):
         intervals.sort(key=lambda i: i[0])
@@ -412,6 +438,8 @@ class Solution:
 # [(0, 1), (30, -1), (5, 1), (10, -1)]
 # [(0, 1), (30, -1), (5, 1), (10, -1), (15, 1), (20, -1)]
 # Out[42]: 2
+# time = O(n log n)
+# space = O(n)
 class Solution:
     """
     @param intervals: an array of meeting time intervals
@@ -433,6 +461,8 @@ class Solution:
 
 # V1'''''''''
 # https://blog.csdn.net/yurenguowang/article/details/76665171
+# time = O(n log n)
+# space = O(n)
 class Solution:
     def minMeetingRooms(self, intervals):
         if intervals is None or len(intervals) == 0:
@@ -456,13 +486,15 @@ class Solution:
             max_num = max(n, max_num)
         return max_num
 
-# V2 
+# V2
 # https://blog.csdn.net/yurenguowang/article/details/76665171
 # Definition for an interval.
 # class Interval(object):
 #     def __init__(self, s=0, e=0):
 #         self.start = s
 #         self.end = e
+# time = O(n log n)
+# space = O(n)
 class Solution:
     def minMeetingRooms(self, intervals):
         if intervals is None or len(intervals) == 0:
@@ -491,8 +523,8 @@ class Solution:
         return max_num
 
 # V3
-# Time:  O(nlogn)
-# Space: O(n)
+# time = O(nlogn)
+# space = O(n)
 class Solution(object):
     # @param {Interval[]} intervals
     # @return {integer}
@@ -519,8 +551,8 @@ class Solution(object):
 
         return min_rooms
 
-# time: O(nlogn)
-# space: O(n)
+# time = O(nlogn)
+# space = O(n)
 from heapq import heappush, heappop
 # V4
 class Solution2(object):

@@ -36,6 +36,8 @@ The number of nodes in the list is in the range [0, 100].
 #   2) START THE PROCESS FROM "RIGHT HAND SIDE",
 #      i.e. : n1.next = n2.next ( connect n1 to next node) -> connect n2 to n1 (n2.next = n1) -> connect dummy to n2 (head.next = n2)
 #   3) THEN MOVE HEAD FORWARD (head = n1)
+# time = O(n)
+# space = O(1)
 class Solution:
     def swapPairs(self, head):
         if not head or not head.next:
@@ -74,6 +76,8 @@ class Solution:
 # if dummy.next and dummy.next.next exist
 #     dummy -> 2 -> 1 -> 3 -> 4 -> 5  =>  dummy -> 2 -> 1 -> 4 -> 3 -> 5
 #     # 3 as pre node, but no pre.next or pre.next.next, SO STOP THE PROCESS
+# time = O(n)
+# space = O(1)
 class Solution:
   def swapPairs(self, head):
     if not head or not head.next: return head
@@ -91,6 +95,8 @@ class Solution:
 # V1
 # IDEA : Recursive Approach
 # https://leetcode.com/problems/swap-nodes-in-pairs/solution/
+# time = O(n)
+# space = O(n)  # recursion call stack depth
 class Solution(object):
     def swapPairs(self, head: ListNode) -> ListNode:
         """
@@ -116,6 +122,8 @@ class Solution(object):
 # V1
 # IDEA : Iterative Approach
 # https://leetcode.com/problems/swap-nodes-in-pairs/solution/
+# time = O(n)
+# space = O(1)
 class Solution:
     def swapPairs(self, head: ListNode) -> ListNode:
         """
@@ -155,6 +163,8 @@ class Solution:
 #     def __init__(self, x):
 #         self.val = x
 #         self.next = None
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def swapPairs(self, head):
         """
@@ -181,6 +191,8 @@ class Solution(object):
 #     def __init__(self, x):
 #         self.val = x
 #         self.next = None
+# time = O(n)
+# space = O(n)  # recursion call stack depth
 class Solution(object):
     def swapPairs(self, head):
         """
@@ -194,8 +206,10 @@ class Solution(object):
         new_head.next = head
         return new_head
 
-# V1''' 
+# V1'''
 # https://www.jiuzhang.com/solution/swap-nodes-in-pairs/#tag-highlight-lang-python
+# time = O(n)
+# space = O(1)
 class Solution:
     # @param head, a ListNode
     # @return a ListNode
@@ -214,9 +228,9 @@ class Solution:
             p = p.next.next
         return dummy.next
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class ListNode(object):
     def __init__(self, x):
         self.val = x

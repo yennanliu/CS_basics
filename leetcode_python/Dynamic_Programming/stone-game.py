@@ -2,6 +2,8 @@
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/82390672
+# time = O(n^2), n = len(piles)
+# space = O(n^2)
 class Solution(object):
     
     def stoneGame(self, piles):
@@ -42,8 +44,8 @@ class Solution(object):
         return curr
 
 # V2
-# Time:  O(n^2)
-# Space: O(n)
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def stoneGame(self, piles):
         """

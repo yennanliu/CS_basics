@@ -53,6 +53,8 @@ class Solution(object):
         median = kthElement(nums, len(nums)/2 + 1)
         return sum(abs(num - median) for num in nums)
 
+    # time = O(n log n)  # sorted()
+    # space = O(n)
     def minMoves22(self, nums):
         """
         :type nums: List[int]

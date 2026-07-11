@@ -42,7 +42,9 @@ Constraints:
 
 """
 
-# V0 
+# V0
+# time = O(n * log R)  # n = R-L+1; bin(num) costs O(log R) per number
+# space = O(log R)  # bin(num) string
 class Solution(object):
     def countPrimeSetBits(self, L, R):
         primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31]
@@ -53,6 +55,8 @@ class Solution(object):
         return res
 
 # V0' : IDEA : check prime + brute force
+# time = O(n * log R)  # n = R-L+1; per number: O(log R) bin() + O(sqrt(log R)) primality check
+# space = O(log R)  # bin() string per iteration
 class Solution(object):
     def countPrimeSetBits(self, left, right):
         def check_prime(x):
@@ -76,6 +80,8 @@ class Solution(object):
 # SINCE THE MAX DIGIT OF BINARY NUMBER IS 32
 # SO WE ONLY SAVE ALL PRIME NUMBRS WITHIN 1 - 32  (primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31])
 # AND CHECK IF THE INPUT IN THE LIST 
+# time = O(n * log R)  # n = R-L+1; bin(num) costs O(log R) per number
+# space = O(log R)  # bin(num) string
 class Solution(object):
     def countPrimeSetBits(self, L, R):
         """
@@ -105,6 +111,8 @@ assert s.countPrimeSetBits(2,200) == 121
 # https://blog.csdn.net/fuxuemingzhu/article/details/79089092
 import math
 class Solution(object):
+    # time = O(sqrt(k))  # k = num argument (bit count, small)
+    # space = O(1)
     def isPrime(self, num):
         if num == 1:
             return 0
@@ -114,6 +122,8 @@ class Solution(object):
             if num % i == 0:
                 return 0
         return 1
+    # time = O(n * log R)  # n = R-L+1; bin() + isPrime call per number
+    # space = O(log R)  # bin(num) string per iteration
     def countPrimeSetBits(self, L, R):
         """
         :type L: int
@@ -122,8 +132,10 @@ class Solution(object):
         """
         return sum(self.isPrime(bin(num)[2:].count('1')) for num in xrange(L, R+1))
 
-# V1'' 
+# V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79089092
+# time = O(n * log R)  # n = R-L+1; bin() + inline primality check per number
+# space = O(log R)  # bin(num) string per iteration
 class Solution(object):
     def countPrimeSetBits(self, L, R):
         isPrime = lambda num : 0 if ((num == 1) or (num % 2 == 0 and num > 2)) else int(all(num % i for i in xrange(3, int(num ** 0.5) + 1, 2)))
@@ -132,6 +144,8 @@ class Solution(object):
 # V1'''
 # https://leetcode.com/problems/prime-number-of-set-bits-in-binary-representation/solution/
 # IDEA : DIRECT
+# time = O(n * log R)  # n = R-L+1; bin(x) costs O(log R); set lookup O(1)
+# space = O(log R)  # bin(x) string per iteration
 class Solution(object):
     def countPrimeSetBits(self, L, R):
         primes = {2, 3, 5, 7, 11, 13, 17, 19}
@@ -139,8 +153,8 @@ class Solution(object):
                    for x in range(L, R+1))
 
 # V2
-# Time:  O(log(R - L)) = O(1)
-# Space: O(1)
+# time = O(log(R - L)) = O(1)
+# space = O(1)
 class Solution(object):
     def countPrimeSetBits(self, L, R):
         """

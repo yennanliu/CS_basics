@@ -58,6 +58,8 @@ Note: The input sentence will always start with a letter and end with '#', and o
 # IDEA : DICT TRIE
 # http://bookshadow.com/weblog/2017/07/16/leetcode-design-search-autocomplete-system/
 class TrieNode:
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
         self.children = dict()
         self.sentences = set()
@@ -118,6 +120,8 @@ class AutocompleteSystem(object):
 # V1'
 # https://blog.csdn.net/Sengo_GWU/article/details/82948834
 class TrieNode():
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
         self.children = collections.defaultdict(TrieNode)
         self.isEnd = False

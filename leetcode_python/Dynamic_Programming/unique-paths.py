@@ -45,6 +45,8 @@ DP eq:
  dp[i][j] = 
       dp[i-1][j] + dp[i][j-1]
 """
+# time = O(m * n)
+# space = O(m * n)
 class Solution(object):
     def uniquePaths(self, m, n):
         # edge
@@ -73,6 +75,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: 2D DP
+# time = O(m * n)
+# space = O(m * n)
 class Solution(object):
     def uniquePaths(self, m, n):
         # edge cases
@@ -99,6 +103,8 @@ class Solution(object):
 
 # V0
 # IDEA : BFS + dp (memory)
+# time = O(m * n)
+# space = O(m * n)
 class Solution:
     def uniquePaths(self, m, n):
 
@@ -124,6 +130,8 @@ class Solution:
 
 # V0'
 # IDEA : DP
+# time = O(m * n)
+# space = O(m * n)
 class Solution:
     def uniquePaths(self, m: int, n: int) -> int:
         d = [[1] * n for _ in range(m)]
@@ -137,6 +145,8 @@ class Solution:
 # V1
 # IDEA : BFS + dp (memory)
 # https://leetcode.com/problems/unique-paths/discuss/1145339/Pyhon-Beats-98-BFS
+# time = O(m * n)
+# space = O(m * n)
 class Solution:
     def uniquePaths(self, m, n):
 
@@ -163,6 +173,8 @@ class Solution:
 # V1'
 # IDEA : DP
 # https://leetcode.com/problems/unique-paths/solution/
+# time = O(m * n)
+# space = O(m * n)
 class Solution:
     def uniquePaths(self, m: int, n: int) -> int:
         d = [[1] * n for _ in range(m)]
@@ -176,6 +188,8 @@ class Solution:
 # V1''
 # IDEA : MATH
 # https://leetcode.com/problems/unique-paths/solution/
+# time = O(m + n)  # factorial computation over m+n-2 terms
+# space = O(1)
 from math import factorial
 class Solution:
     def uniquePaths(self, m: int, n: int) -> int:
@@ -184,6 +198,8 @@ class Solution:
 # V1'''
 # IDEA : DP
 # https://leetcode.com/problems/unique-paths/discuss/162333/Python-solution
+# time = O(m * n)
+# space = O(m * n)
 class Solution(object):
     def uniquePaths(self, m, n):
         """
@@ -204,6 +220,8 @@ class Solution(object):
 # V1'''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79337352
 # IDEA : DP 
+# time = O(m * n)
+# space = O(m * n)
 class Solution(object):
     def uniquePaths(self, m, n):
         """
@@ -224,6 +242,8 @@ class Solution(object):
 # V1''''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79337352
 # IDEA : DP 
+# time = O(m * n)
+# space = O(m * n)
 class Solution(object):
     def uniquePaths(self, m, n):
         """
@@ -242,6 +262,8 @@ class Solution(object):
 # V1''''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79337352
 # IDEA : Permutations
+# time = O(min(m, n))
+# space = O(1)
 class Solution(object):
     def uniquePaths(self, m, n):
         total = m + n - 2
@@ -259,6 +281,8 @@ class Solution(object):
 # V1'''''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79337352
 # IDEA : MEMORY SEARCH
+# time = O(m * n)
+# space = O(m * n)
 class Solution(object):
     def uniquePaths(self, m, n):
         """
@@ -279,10 +303,12 @@ class Solution(object):
         memo[m][n] = up + left
         return memo[m][n]
 
-# V2 
+# V2
 # https://blog.csdn.net/Lu_gee/article/details/76938597
 # DP status equation :
 # matrix[i][j] = matrix[i - 1][j] + matrix[i][j - 1]
+# time = O(m * n)
+# space = O(m * n)
 class Solution(object):
     def uniquePaths(self, m, n):
         """
@@ -299,9 +325,9 @@ class Solution(object):
                     matrix[i][j] = matrix[i - 1][j] + matrix[i][j - 1]
         return matrix[m - 1][n - 1]
 
-# V3 
-# Time:  O(m * n)
-# Space: O(m + n)
+# V3
+# time = O(m * n)
+# space = O(m + n)
 class Solution(object):
     # @return an integer
     def uniquePaths(self, m, n):

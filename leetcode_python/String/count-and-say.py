@@ -55,6 +55,8 @@ n = 6  ->  312211   ( there is 3 "1" and 2 "2" and 1 "1" when n = 6 )
 
 # V0
 # IDEA : ITERATION
+# time = O(2^n)  # n = input count; result string length grows exponentially (~1.3^n, Conway's constant)
+# space = O(2^n)  # to store the resulting string
 class Solution:
     def countAndSay(self, n: int) -> str:
         
@@ -74,7 +76,7 @@ class Solution:
             val = ""
         return res
 
-# V0 
+# V0
 # IDEA : RECURSION
 # for example : 
 # n = 4 --> s = self.countAndSay(3) 
@@ -102,6 +104,8 @@ class Solution:
 # s :  31131211131221
 # res :  13211311123113112211
 # 13211311123113112211
+# time = O(2^n)  # n = input count; result string length grows exponentially (~1.3^n, Conway's constant)
+# space = O(2^n)  # to store the resulting string
 class Solution(object):
     def countAndSay(self, n):  # recursion 
         if n == 1: return '1'  # end loop of recursion 
@@ -118,6 +122,8 @@ class Solution(object):
 # V1
 # IDEA : ITERATION
 # https://leetcode.com/problems/count-and-say/discuss/962795/My-Python-Solution-40ms
+# time = O(2^n)  # n = input count; result string length grows exponentially (~1.3^n, Conway's constant)
+# space = O(2^n)  # to store the resulting string
 class Solution:
     def countAndSay(self, n: int) -> str:
         
@@ -140,6 +146,8 @@ class Solution:
 # V1'
 # https://blog.csdn.net/XX_123_1_RJ/article/details/80957046
 # IDEA : RECURSION  
+# time = O(2^n)  # n = input count; result string length grows exponentially (~1.3^n, Conway's constant)
+# space = O(2^n)  # to store the resulting string
 class Solution(object):
     def countAndSay(self, n):  # recursion 
         if n == 1: return '1'  # end loop of recursion 
@@ -153,9 +161,11 @@ class Solution(object):
                 count = 0
         return res
 
-# V1' 
+# V1'
 # https://blog.csdn.net/XX_123_1_RJ/article/details/80957046
 # IDEA : ITERATION 
+# time = O(2^n)  # n = input count; result string length grows exponentially (~1.3^n, Conway's constant)
+# space = O(2^n)  # to store the resulting string
 class Solution(object):
     def countAndSay1(self, n):  # iteration 
         if n == 1: return '1'
@@ -173,6 +183,8 @@ class Solution(object):
 
 # V1''
 # https://www.jiuzhang.com/solution/count-and-say/#tag-highlight-lang-python
+# time = O(2^n)  # n = input count; result string length grows exponentially (~1.3^n, Conway's constant)
+# space = O(2^n)  # to store the resulting string
 class Solution:
     # @return a string
     def count(self,s):
@@ -193,7 +205,9 @@ class Solution:
             s=self.count(s)
         return s
         
-# V2 
+# V2
+# time = O(2^n)  # n = input count; result string length grows exponentially (~1.3^n, Conway's constant)
+# space = O(2^n)  # to store the resulting string
 class Solution:
     # @return a string
     def countAndSay(self, n):

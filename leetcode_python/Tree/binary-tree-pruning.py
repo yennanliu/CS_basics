@@ -9,6 +9,8 @@
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)  # n = number of tree nodes
+# space = O(h)  # h = tree height (recursion stack)
 class Solution(object):
     def pruneTree(self, root):
         """
@@ -24,6 +26,8 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/binary-tree-pruning/#tag-highlight-lang-python
+# time = O(n)  # n = number of tree nodes
+# space = O(h)  # h = tree height (recursion stack)
 class Solution:
     """
     @param root: the root
@@ -41,6 +45,8 @@ class Solution:
 
 # V1''
 # http://bookshadow.com/weblog/2018/04/09/leetcode-binary-tree-pruning/
+# time = O(n)  # n = number of tree nodes
+# space = O(h)  # h = tree height (recursion stack)
 class Solution(object):
     def pruneTree(self, root):
         """
@@ -52,9 +58,9 @@ class Solution(object):
         root.right = self.pruneTree(root.right)
         return root if root.left or root.right or root.val else None
         
-# V2 
-# Time:  O(n)
-# Space: O(h)
+# V2
+# time = O(n)
+# space = O(h)
 class Solution(object):
     def pruneTree(self, root):
         """

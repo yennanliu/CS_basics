@@ -72,8 +72,8 @@ https://leetcode.ca/2016-08-27-271-Encode-and-Decode-Strings/
 
 # V0
 # IDEA: 2 POINTERS + STR OP
-# Time: O(N)
-# Space: O(N)
+# time = O(n)
+# space = O(n)
 class Codec:
 
     def encode(self, strs):
@@ -130,8 +130,8 @@ class Codec:
 
 
 # V0-1
-# Time: O(N)
-# Space: O(N)
+# time = O(n)
+# space = O(n)
 class Codec:
 
     def encode(self, strs):
@@ -161,8 +161,8 @@ class Codec:
 
 
 # V0-2
-# Time: O(N)
-# Space: O(N)
+# time = O(n)
+# space = O(n)
 class Codec:
     def encode(self, strs):
         if strs is None:
@@ -207,6 +207,8 @@ class Codec:
 # >>> print info.find('3')    # if can't find, return -1
 # -1
 # >>>
+# time = O(n)
+# space = O(n)
 class Codec:
     def encode(self, strs):
         s = ""
@@ -224,8 +226,10 @@ class Codec:
             i = sharp + l + 1
         return str
 
-# V1 
+# V1
 # http://www.voidcn.com/article/p-hpbzcdjd-zo.html
+# time = O(n)
+# space = O(n)
 class Codec:
     def encode(self, strs):
         """Encodes a list of strings to a single string.
@@ -317,9 +321,9 @@ class Codec:
 #         return ret;
 #     }
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Codec(object):
 
     def encode(self, strs):

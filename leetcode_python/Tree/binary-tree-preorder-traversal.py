@@ -1,8 +1,10 @@
 # V0
 
-# V1 
+# V1
 # https://blog.csdn.net/qqxx6661/article/details/76602162
 # Recursion 
+# time = O(n)  # n = number of tree nodes
+# space = O(h)  # h = tree height (recursion stack)
 class Solution(object):
     def _preorderTraversal(self, root, result):
         if root:
@@ -23,6 +25,8 @@ class Solution(object):
 # V1'
 # https://blog.csdn.net/qqxx6661/article/details/76602162
 # Iteration 
+# time = O(n)  # n = number of tree nodes
+# space = O(h)  # h = tree height (stack)
 class Solution(object):
     def preorderTraversal(self, root):
         """
@@ -41,9 +45,9 @@ class Solution(object):
                     stack.append(node.left)
         return ret
         
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class TreeNode(object):
     def __init__(self, x):
         self.val = x
@@ -78,9 +82,9 @@ class Solution(object):
 
         return result
 
-# V2' 
-# Time:  O(n)
-# Space: O(h)
+# V2'
+# time = O(n)
+# space = O(h)
 # Stack Solution
 class Solution2(object):
     def preorderTraversal(self, root):

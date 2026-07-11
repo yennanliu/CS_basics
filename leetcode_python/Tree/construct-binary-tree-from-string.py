@@ -70,6 +70,8 @@ class Solution(object):
 
 # V0'
 # IDEA : tree property + recursive
+# time = O(n)
+# space = O(h)  # h = tree height (recursion stack); index-based, no string slicing
 class TreeNode(object):
     def __init__(self, x):
         self.val = x

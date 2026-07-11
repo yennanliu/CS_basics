@@ -49,6 +49,8 @@ Constraints:
 
 # V0
 # IDEA : DEQUE
+# time = O(n)  # each index pushed/popped from deque at most once
+# space = O(k)  # deque holds at most k indices
 class Solution:
     def maxSlidingWindow(self, nums, k):
         q = collections.deque()
@@ -66,6 +68,8 @@ class Solution:
 # V1
 # http://bookshadow.com/weblog/2015/07/18/leetcode-sliding-window-maximum/
 # IDEA : DEQUE
+# time = O(n)  # each index pushed/popped from deque at most once
+# space = O(k)  # deque holds at most k indices
 class Solution:
     # @param {integer[]} nums
     # @param {integer} k
@@ -88,6 +92,8 @@ class Solution:
 # V1'
 # IDEA : heapq
 # https://leetcode.com/problems/sliding-window-maximum/discuss/65957/Python-solution-with-detailed-explanation
+# time = O(n log n)  # each element pushed/popped from heap a bounded number of times
+# space = O(n)  # heap may hold stale entries before being popped
 import heapq as h
 class Solution(object):
     def get_next_max(self, heap, start):
@@ -120,6 +126,8 @@ class Solution(object):
 # V1''
 # IDEA : heapq
 # https://leetcode.com/problems/sliding-window-maximum/discuss/65957/Python-solution-with-detailed-explanation
+# time = O(n)  # each index pushed/popped from deque at most once
+# space = O(k)  # deque holds at most k indices
 from collections import deque
 class Solution(object):
     def add_to_dq(self, dq, nums, i):
@@ -155,6 +163,8 @@ class Solution(object):
 # V1'''
 # IDEA : Use a Hammer (Bruteforce)
 # https://leetcode.com/problems/sliding-window-maximum/solution/
+# time = O(n * k)  # for each of n-k+1 windows, scan k elements for max
+# space = O(n)  # output list
 class Solution:
     def maxSlidingWindow(self, nums: 'List[int]', k: 'int') -> 'List[int]':
         n = len(nums)
@@ -166,6 +176,8 @@ class Solution:
 # V1''''
 # IDEA : Deque
 # https://leetcode.com/problems/sliding-window-maximum/solution/
+# time = O(n)  # each index pushed/popped from deque at most once
+# space = O(k)  # deque holds at most k indices
 from collections import deque
 class Solution:
     def maxSlidingWindow(self, nums: 'List[int]', k: 'int') -> 'List[int]':
@@ -207,6 +219,8 @@ class Solution:
 # V1''''''
 # IDEA : Dynamic programming
 # https://leetcode.com/problems/sliding-window-maximum/solution/
+# time = O(n)  # single pass to build left/right max arrays, then O(1) per window
+# space = O(n)  # left, right, and output arrays
 class Solution:
     def maxSlidingWindow(self, nums: 'List[int]', k: 'int') -> 'List[int]':
         n = len(nums)
@@ -243,6 +257,8 @@ class Solution:
 # V1'''''''
 # IDEA : DEQUE
 # https://leetcode.com/problems/sliding-window-maximum/discuss/823635/Python-Intuitive-Solution
+# time = O(n)  # each index pushed/popped from deque at most once
+# space = O(k)  # deque holds at most k indices
 from collections import deque
 class Solution:
     def maxSlidingWindow(self, nums, k):
@@ -270,6 +286,8 @@ class Solution:
 # V1''''''''''''
 # IDEA : monoclic queue
 # https://leetcode.com/problems/sliding-window-maximum/discuss/952539/Python-mono-queue
+# time = O(n)  # each index pushed/popped from deque at most once
+# space = O(k)  # deque holds at most k indices
 from collections import deque
 class Solution:
     def maxSlidingWindow(self, nums, k):
@@ -288,6 +306,8 @@ class Solution:
 # V1'''''''''''
 # https://blog.csdn.net/PKU_Jade/article/details/77934644
 # IDEA : DEQUE
+# time = O(n)  # each index pushed/popped from deque at most once
+# space = O(k)  # deque holds at most k indices
 class Solution(object):
     def maxSlidingWindow(self, nums, k):
         """
@@ -328,6 +348,8 @@ class Solution(object):
 # V1''''''''''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/100828798
 # IDEA : DEQUE
+# time = O(n)  # each index pushed/popped from deque at most once
+# space = O(k)  # deque holds at most k indices
 class Solution(object):
     def maxSlidingWindow(self, nums, k):
         """

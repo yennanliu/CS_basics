@@ -1,7 +1,9 @@
 # V0 
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/81118328
+# time = O(r * c)
+# space = O(r)
 class Solution(object):
     def matrixScore(self, A):
         """
@@ -30,8 +32,10 @@ class Solution(object):
     def toggle_col(self, col_array):
         return [0 if x == 1 else 1 for x in col_array]
 
-# V1' 
+# V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/81118328
+# time = O(r * c)
+# space = O(1)
 class Solution(object):
     def matrixScore(self, A):
         """
@@ -52,9 +56,9 @@ class Solution(object):
             res += (1 << N - 1- j) * max(count1, M - count1)
         return res
         
-# V2 
-# Time:  O(r * c)
-# Space: O(1)
+# V2
+# time = O(r * c)
+# space = O(1)
 class Solution(object):
     def matrixScore(self, A):
         """

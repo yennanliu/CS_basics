@@ -39,6 +39,8 @@ At most 104 calls will be made to add and find.
 
 # V0
 # IDEA : hashmap + 2 sum
+# time = O(1) add, O(n) find  # n = number of distinct values stored
+# space = O(n)
 class TwoSum(object):
 
     def __init__(self):
@@ -61,6 +63,8 @@ class TwoSum(object):
 # V1
 # IDEA : SORTED LIST
 # https://leetcode.com/problems/two-sum-iii-data-structure-design/solution/
+# time = O(1) add (amortized), O(n log n) find (sort) + O(n) two pointers
+# space = O(n)
 class TwoSum(object):
 
     def __init__(self):
@@ -114,6 +118,8 @@ class TwoSum(object):
 # V1'
 # IDEA : HASHMAP
 # https://leetcode.com/problems/two-sum-iii-data-structure-design/solution/
+# time = O(1) add, O(n) find  # n = number of distinct values stored
+# space = O(n)
 class TwoSum(object):
 
     def __init__(self):
@@ -152,6 +158,8 @@ class TwoSum(object):
 
 # V1''
 # http://www.voidcn.com/article/p-qhmcmxvf-qp.html
+# time = O(1) add, O(n) find  # n = number of distinct values stored
+# space = O(n)
 class TwoSum(object):
 
     def __init__(self):
@@ -182,7 +190,9 @@ class TwoSum(object):
                 return True
         return False
 
-# V2 
+# V2
+# time = O(1) add, O(n) find  # n = number of distinct values stored
+# space = O(n)
 from collections import defaultdict
 class TwoSum(object):
 
@@ -214,9 +224,9 @@ class TwoSum(object):
                 return True
         return False
 
-# V3 
-# Time:  O(n)
-# Space: O(n)
+# V3
+# time = O(n)
+# space = O(n)
 from collections import defaultdict
 class TwoSum(object):
 

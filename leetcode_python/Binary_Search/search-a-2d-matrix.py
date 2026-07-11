@@ -214,6 +214,8 @@ class Solution:
 # V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79459314
 # https://blog.csdn.net/fuxuemingzhu/article/details/79459200
+# time = O(m + n)
+# space = O(1)
 class Solution(object):
     def searchMatrix(self, matrix, target):
         """
@@ -237,9 +239,11 @@ class Solution(object):
             else:
                 return False
 
-# V1' 
+# V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79459314
 # https://blog.csdn.net/fuxuemingzhu/article/details/79459200
+# time = O(m*n)
+# space = O(1)
 class Solution(object):
     def searchMatrix(self, matrix, target):
         """
@@ -249,10 +253,10 @@ class Solution(object):
         """
         return any(target in row for row in matrix)
         
-# V2 
+# V2
 # IDEA : BINARY SEARCH
-# Space: O(1)
-# Time:  O(logm + logn)
+# space = O(1)
+# time = O(log m + log n)
 class Solution(object):
     def searchMatrix(self, matrix, target):
         """

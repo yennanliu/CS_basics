@@ -44,7 +44,8 @@ root is guaranteed to be a valid binary search tree.
 """
 
 # V0
-
+# time = O(n)
+# space = O(h), h is height of binary tree (recursion stack)
 class Solution(object):
     def trimBST(self, root, low, high):
         # edge
@@ -89,6 +90,8 @@ class Solution(object):
 
 # V0
 # IDEA: BST PROPERTY + DFS (POST ORDER) (GEMINI)
+# time = O(n)
+# space = O(h), h is height of binary tree (recursion stack)
 class Solution(object):
     def trimBST(self, root, low, high):
         """
@@ -124,6 +127,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: BST PROPERTY + DFS (POST ORDER) (GPT)
+# time = O(n)
+# space = O(h), h is height of binary tree (recursion stack)
 class Solution(object):
     def trimBST(self, root, low, high):
         # Base case:
@@ -185,6 +190,8 @@ class Solution(object):
 # -> USE ABOVE PROPERTY FOR BST TRIMMING
 # NOTE : Trimming the tree should not change the relative structure of the elements that will remain in the tree (i.e., any node's descendant should remain a descendant)
 #    -> e.g. if there is a node outside of (L,R), we have to NOT ONLY delete that node,  BUT ALSO append all of the sub tree of that node
+# time = O(n)
+# space = O(h), h is height of binary tree (recursion stack)
 class Solution:
     def trimBST(self, root, L, R):
         if not root:
@@ -223,6 +230,8 @@ class Solution:
 
 # V0'
 # IDEA : DFS
+# time = O(n)
+# space = O(h), h is height of binary tree (recursion stack)
 class Solution(object):
     def trimBST(self, root, low, high):
         def dfs(root):
@@ -249,8 +258,10 @@ class Solution(object):
         print ("-> _root = " + str(_root))
         return _root
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/83869684
+# time = O(n)
+# space = O(h), h is height of binary tree (recursion stack)
 class Solution:
     def trimBST(self, root, L, R):
         """
@@ -280,6 +291,8 @@ class Solution:
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)
+# space = O(h), h is height of binary tree (recursion stack)
 class Solution:
     def trimBST(self, root, L, R):
         """
@@ -300,8 +313,8 @@ class Solution:
 
 # V1''
 # https://leetcode.com/problems/trim-a-binary-search-tree/discuss/107051/Python-Easy-to-Understand
-# Time: O(n)
-# Space: O(lgn)
+# time = O(n)
+# space = O(lgn)
 class Solution(object):
     def trimBST(self, root, L, R):
         def trim(node):
@@ -318,6 +331,8 @@ class Solution(object):
 # V1'''
 # IDEA : RECURSION
 # https://leetcode.com/problems/trim-a-binary-search-tree/solution/
+# time = O(n)
+# space = O(h), h is height of binary tree (recursion stack)
 class Solution(object):
     def trimBST(self, root, L, R):
         def trim(node):
@@ -335,6 +350,8 @@ class Solution(object):
 
 # V1''''
 # https://leetcode.com/problems/trim-a-binary-search-tree/discuss/107056/Python-Straightforward-with-Explanation
+# time = O(n)
+# space = O(h), h is height of binary tree (recursion stack)
 class Solution(object):
     def trimBST(self, root, L, R):
         def trim(node):
@@ -350,8 +367,8 @@ class Solution(object):
         return trim(root)
 
 # V2
-# Time:  O(n)
-# Space: O(h)
+# time = O(n)
+# space = O(h)
 class Solution(object):
     def trimBST(self, root, L, R):
         """

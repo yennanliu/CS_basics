@@ -40,6 +40,8 @@ The BST is always valid and each node’s value is different.
 
 # V0
 # IDEA : BST properties (left < root < right) + recursion (GEMINI)
+# time = O(h)  # h = tree height, BST-guided single-branch recursion
+# space = O(h)  # recursion stack
 class Solution(object):
     def splitBST(self, root, V):
         """
@@ -76,6 +78,8 @@ class Solution(object):
 
 # V0-1
 # IDEA : BST properties (left < root < right) + recursion (GPT)
+# time = O(h)  # h = tree height, BST-guided single-branch recursion
+# space = O(h)  # recursion stack
 class Solution(object):
     def splitBST(self, root, V):
         return self.helper(root, V)
@@ -108,6 +112,8 @@ class Solution(object):
 #           - NO NEED TO MODIFY ALL LEFT SUB TREE
 #           - BUT NEED TO re-connect nodes in RIGHT SUB TREE WHICH IS SMALLER THAN V (root.right = left)
 # -> 2) return result
+# time = O(h)  # h = tree height, BST-guided single-branch recursion
+# space = O(h)  # recursion stack
 class Solution(object):
     def splitBST(self, root, V):
         if not root: return [None, None]
@@ -124,6 +130,8 @@ class Solution(object):
 
 # V0'
 # IDEA : BST properties (left < root < right) + recursion
+# time = O(h)  # h = tree height, BST-guided single-branch recursion
+# space = O(h)  # recursion stack
 class Solution(object):
     def splitBST(self, root, V):
         if not root:
@@ -140,6 +148,8 @@ class Solution(object):
             return result[0], root
 
 # V0'
+# time = O(h)  # h = tree height, BST-guided single-branch recursion
+# space = O(h)  # recursion stack
 class Solution(object):
     def splitBST(self, root, V):
         if not root:
@@ -154,6 +164,8 @@ class Solution(object):
             return result[0], root
 
 # V0''
+# time = O(h)  # h = tree height, BST-guided single-branch recursion
+# space = O(h)  # recursion stack
 class Solution(object):
     def splitBST(self, root, V):
         if not root: return [None, None]
@@ -165,7 +177,7 @@ class Solution(object):
         root.right = left
         return [root, right]
 
-# V1 
+# V1
 # http://bookshadow.com/weblog/2018/02/04/leetcode-split-bst/
 # https://blog.csdn.net/magicbean2/article/details/79679927
 # https://www.itdaan.com/tw/d58594b92742689b5769f9827365e8b4
@@ -175,6 +187,8 @@ class Solution(object):
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(h)  # h = tree height, BST-guided single-branch recursion
+# space = O(h)  # recursion stack
 class Solution(object):
     def splitBST(self, root, V):
         """
@@ -282,9 +296,9 @@ class Solution(object):
 #
 # }
 
-# V2 
-# Time:  O(n)
-# Space: O(h)
+# V2
+# time = O(n)
+# space = O(h)
 class Solution(object):
     def splitBST(self, root, V):
         """

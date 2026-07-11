@@ -40,6 +40,8 @@ Constraints:
 # -> Iterate by xx from 1 to N/2:
 # -> If x is a divisor of NN, decrease kk by one. Return x if k == 0
 # -> Return N if k == 1 and -1  otherwise.
+# time = O(n)
+# space = O(1)
 class Solution:
     def kthFactor(self, n, k):
         for x in range(1, n // 2 + 1):
@@ -54,6 +56,8 @@ class Solution:
 # IDEA : HEAP
 # Initialize max heap. Use PriorityQueue in Java and heap in Python. heap is a min-heap. Hence, to implement max heap, change the sign of divisor before pushing it into the heap.
 # https://leetcode.com/problems/the-kth-factor-of-n/solution/
+# time = O(sqrt(n) * log(k))
+# space = O(k)
 class Solution:
     def kthFactor(self, n, k):
         # push into heap
@@ -78,6 +82,8 @@ class Solution:
 # V1''
 # IDEA : MATH
 # https://leetcode.com/problems/the-kth-factor-of-n/solution/
+# time = O(sqrt(n))
+# space = O(sqrt(n))
 class Solution:
     def kthFactor(self, n, k):
         divisors, sqrt_n = [], int(n**0.5)

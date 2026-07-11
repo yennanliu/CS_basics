@@ -38,6 +38,8 @@ Constraints:
 # -> ### acc DEMO : given array a = [1,2,3,4,5] ###
 # -> acc_list = [1,3,6,10,15]
 # -> so sum(a[1:3]) = 9 = acc_list[3] - acc_list[1-1] = 10 - 1 = 9 
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def maxSubArrayLen(self, nums, k):
 
@@ -58,6 +60,8 @@ class Solution(object):
 # V0'
 # IDEA : BRUTE FORCE 
 # time complexity : O(N^2) | space complexity : O(N)
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def maxSubArrayLen(self, nums, k):
         # O(n^2)
@@ -71,6 +75,8 @@ class Solution(object):
 # V1
 # IDEA :  Prefix Sum + Hash Map
 # https://leetcode.com/problems/maximum-size-subarray-sum-equals-k/solution/
+# time = O(n)
+# space = O(n)
 class Solution:
     def maxSubArrayLen(self, nums: List[int], k: int) -> int:
         prefix_sum = longest_subarray = 0
@@ -107,6 +113,8 @@ class Solution:
 # acc + sth = k ---> acc - k = sth, so if acc - k already in dict ---> acc + sth = k MUST EXIST
 # SO IF ABOVE CASE EXIST, THEN WE DO max(result, i - dic[acc-k]) : TO RETURN THE MAX LENGTH OF SUB ARRAY
 # i - dic[acc-k] : GET THE LENGTH BETWEEN i and sth (sth = dic[acc-k] )
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def maxSubArrayLen(self, nums, k):
 
@@ -123,6 +131,8 @@ class Solution(object):
 
 # V1''
 # https://www.jiuzhang.com/solution/maximum-size-subarray-sum-equals-k/#tag-highlight-lang-python
+# time = O(n)
+# space = O(n)
 class Solution:
     """
     @param nums: an array
@@ -145,8 +155,8 @@ class Solution:
         return ans
         
 # V2 
-# Time:  O(n)
-# Space: O(n)
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def maxSubArrayLen(self, nums, k):
         """

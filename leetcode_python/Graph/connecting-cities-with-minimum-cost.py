@@ -111,6 +111,8 @@ class Solution(object):
 # V1
 # IDEA : UNION FIND
 # https://leetcode.com/problems/connecting-cities-with-minimum-cost/discuss/511197/Fast-Python-with-explanation
+# time = O(E log E)  # E = len(connections); heapify + pops dominate
+# space = O(N + E)  # union-find array O(N), edge heap O(E)
 from heapq import heapify, heappush, heappop
 class Solution:
     def find(self, cur, my_union):
@@ -150,6 +152,8 @@ class Solution:
 # V1
 # IDEA : prime
 # https://leetcode.com/problems/connecting-cities-with-minimum-cost/discuss/1629009/Prims-Algo-Python
+# time = O(E log E)  # E = len(connections); Prim's with heap
+# space = O(V + E)  # adjacency list + heap
 class Solution:
     def minimumCost(self, n: int, connections: List[List[int]]) -> int:
         adj_list= defaultdict(list) 
@@ -174,6 +178,8 @@ class Solution:
 # V1
 # IDEA : Kruskal
 # https://leetcode.com/problems/connecting-cities-with-minimum-cost/discuss/1711108/Python-Kruskal
+# time = O(E log E)  # E = len(connections); sort dominates union-find by rank
+# space = O(N)  # N = number of cities (parent/rank arrays)
 class UnionFind:
     def __init__(self, n):
         self.p = list(range(n))
@@ -221,6 +227,8 @@ class Solution:
 
 # V1
 # https://www.shangmayuan.com/a/9938a545153b42b58dbc675c.html
+# time = O(E log E)  # E = len(connections); heap-based Prim-like MST
+# space = O(V + E)  # graph adjacency dict + heap
 class Solution:
     def minimumCost(self, n: int, connections: List[List[int]]) -> int:
         min_idx, min_val = (-1, -1), float("inf")

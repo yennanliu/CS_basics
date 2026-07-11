@@ -43,6 +43,8 @@ grid1[i][j] and grid2[i][j] are either 0 or 1.
 
 # V0
 # IDEA: 2 PASS DFS (gpt)
+# time = O(m * n)  # 2 passes over the grid, each cell sunk at most once
+# space = O(m * n)  # recursion stack worst case
 class Solution(object):
     def countSubIslands(self, grid1, grid2):
         rows = len(grid1)
@@ -96,6 +98,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: 2 PASS DFS (gemini)
+# time = O(m * n)  # 2 passes over the grid, each cell sunk at most once
+# space = O(m * n)  # recursion stack worst case
 class Solution(object):
     def countSubIslands(self, grid1, grid2):
         """
@@ -146,6 +150,8 @@ class Solution(object):
 # V2-1
 # IDEA: BFS
 # https://leetcode.com/problems/count-sub-islands/editorial/
+# time = O(m * n)  # each cell visited at most once across all BFS calls
+# space = O(m * n)  # visited matrix + queue
 class Solution:
     # Directions in which we can traverse inside the grids.
     directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
@@ -225,6 +231,8 @@ class Solution:
 # V2-2
 # IDEA: DFS
 # https://leetcode.com/problems/count-sub-islands/editorial/
+# time = O(m * n)  # each cell visited at most once across all DFS calls
+# space = O(m * n)  # visited matrix + recursion stack
 class Solution:
     # Directions in which we can traverse inside the grids.
     directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
@@ -296,6 +304,8 @@ class Solution:
 # V2-3
 # IDEA: UNION FIND
 # https://leetcode.com/problems/count-sub-islands/editorial/
+# time = O(m * n * α(m * n))  # union-find with path compression + union by rank
+# space = O(m * n)  # union-find parent/rank arrays
 class Solution:
     # Directions in which we can traverse inside the grids.
     directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]

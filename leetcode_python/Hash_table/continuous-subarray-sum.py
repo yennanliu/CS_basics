@@ -43,6 +43,8 @@ Constraints:
 #   ->  then sum(nums[:j]) % k == sum(nums[:i]) % k  !!!!
 #   -> So we just need to use a dict to keep track of sum(nums[:i]) % k 
 #   -> and the corresponding index i. Once some later sum(nums[:i']) % k == sum(nums[:i]) % k and i' - i > 1, so we return True.
+# time = O(n)
+# space = O(min(n, k))
 class Solution(object):
     def checkSubarraySum(self, nums, k):
         """
@@ -91,6 +93,8 @@ class Solution(object):
 # num  =  2 lookup : {0: -1, 5: 0}
 # num  =  4 lookup : {0: -1, 5: 0, 1: 1}
 # True
+# time = O(n)
+# space = O(min(n, k))
 class Solution(object):
     def checkSubarraySum(self, nums, k):
         count = 0
@@ -116,6 +120,8 @@ class Solution(object):
 
 # V0''
 # IDEA : BRUTE FROCE (TIME OUT ERROR)
+# time = O(n^2)
+# space = O(1)
 class Solution(object):
     def checkSubarraySum(self, nums, k):
         for i in range(len(nums)):
@@ -130,8 +136,10 @@ class Solution(object):
                     return True
         return False
     
-# V1 
+# V1
 # http://bookshadow.com/weblog/2017/02/26/leetcode-continuous-subarray-sum/
+# time = O(n)
+# space = O(min(n, k))
 class Solution(object):
     def checkSubarraySum(self, nums, k):
         """
@@ -156,6 +164,8 @@ class Solution(object):
 # -> then sum(nums[:j]) % k == sum(nums[:i]) % k. 
 # -> So we just need to use a dictionary to keep track of sum(nums[:i]) % k 
 # -> and the corresponding index i. Once some later sum(nums[:i']) % k == sum(nums[:i]) % k and i' - i > 1, so we return True.
+# time = O(n)
+# space = O(min(n, k))
 class Solution():
     def checkSubarraySum(self, nums, k):
         dic = {0:-1}
@@ -174,6 +184,8 @@ class Solution():
 
 # V1''
 # https://www.jiuzhang.com/solution/continuous-subarray-sum/#tag-highlight-lang-python
+# time = O(n)
+# space = O(1)
 class Solution:
     # @param {int[]} A an integer array
     # @return {int[]}  A list of integers includes the index of the 
@@ -196,9 +208,9 @@ class Solution:
                 result = [start, end]
         return result
 
-# V2 
-# Time:  O(n)
-# Space: O(k)
+# V2
+# time = O(n)
+# space = O(k)
 class Solution(object):
     def checkSubarraySum(self, nums, k):
         count = 0

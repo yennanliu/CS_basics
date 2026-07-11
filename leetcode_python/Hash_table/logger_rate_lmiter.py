@@ -10,6 +10,8 @@ https://leetcode.com/problems/logger-rate-limiter/description/
 
 # V1
 # https://leetcode.ca/2016-11-23-359-Logger-Rate-Limiter/
+# time = O(1)  # per call
+# space = O(1)  # per call; dict grows up to O(m) total messages, m = distinct messages
 class Logger:
     def __init__(self):
         """
@@ -36,6 +38,8 @@ class Logger:
 
 ############
 
+# time = O(1)  # per call
+# space = O(1)  # per call; dict grows up to O(m) total messages, m = distinct messages
 class Logger(object):
 
   def __init__(self):

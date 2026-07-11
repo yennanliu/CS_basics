@@ -59,6 +59,8 @@ class Solution(object):
 
 # V0-1
 # IDEA 1) DFS
+# time = O(n)
+# space = O(h)  # h = tree height (recursion stack)
 class Solution(object):
     def lowestCommonAncestor(self, root, p, q):
         # edge
@@ -90,6 +92,8 @@ class Solution(object):
 # IDEA : LC 236
 # V0
 # IDEA : RECURSION + POST ORDER TRANSVERSAL
+# time = O(n)
+# space = O(h)  # h = tree height (recursion stack)
 class Solution(object):
     def lowestCommonAncestor(self, root, p, q):
 
@@ -121,6 +125,8 @@ class Solution(object):
 ### NOTE : we need POST ORDER TRANSVERSAL for this problem
 #          -> left -> right -> root
 #          -> we can make sure that if p == q, then the root must be p and q's "common ancestor"
+# time = O(h)  # h = tree height, BST-guided descent
+# space = O(h)  # recursion stack
 class Solution:
     def lowestCommonAncestor(self, root, p, q):
         ### NOTE : we need to assign root.val, p, q to other var first (before they are changed)
@@ -151,6 +157,8 @@ class Solution:
 ### NOTE : we need POST ORDER TRANSVERSAL for this problem
 #          -> left -> right -> root
 #          -> we can make sure that if p == q, then the root must be p and q's "common ancestor"
+# time = O(h)  # h = tree height, BST-guided descent
+# space = O(h)  # recursion stack
 class Solution(object):
     def lowestCommonAncestor(self, root, p, q):
         if not root:
@@ -170,6 +178,8 @@ class Solution(object):
 
 # V0''
 # IDEA : TREE property + recursive (same code as LC 236)
+# time = O(n)
+# space = O(h)  # h = tree height (recursion stack)
 class Solution(object):
     def lowestCommonAncestor(self, root, p, q):
         if not root or root == p or root == q:
@@ -184,6 +194,8 @@ class Solution(object):
 # V0''
 # IDEA : ITERATION
 # https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/solution/
+# time = O(h)  # h = tree height, BST-guided descent
+# space = O(1)
 class Solution:
     def lowestCommonAncestor(self, root, p, q):
         """
@@ -221,6 +233,8 @@ class Solution:
 # V0''
 # IDEA : GO THROUGH ALL BST (no need to use BFS, or DFS, can just use BST property)
 # THIS METHOD IS MORE GENERAL
+# time = O(h)  # h = tree height; two BST-guided path lookups
+# space = O(h)  # each path list stores up to h nodes
 class Solution(object):
     def lowestCommonAncestor(self, root, p, q):
         pathp = self.findPath(root, p)
@@ -252,6 +266,8 @@ class Solution(object):
 
 # V0'''
 # IDEA : BST PROPERTY
+# time = O(h)  # h = tree height, BST-guided descent
+# space = O(1)
 class Solution(object):
     def lowestCommonAncestor(self, root, p, q):
         """
@@ -271,6 +287,8 @@ class Solution(object):
 
 # V0''''
 # IDEA : BST PROPERTY
+# time = O(h)  # h = tree height, BST-guided descent
+# space = O(h)  # recursion stack
 class Solution(object):
     def lowestCommonAncestor(self, root, p, q):
         if not root or root == q or root == p:
@@ -284,6 +302,8 @@ class Solution(object):
 # V1
 # IDEA : RECURSION
 # https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/solution/
+# time = O(h)  # h = tree height, BST-guided descent
+# space = O(h)  # recursion stack
 class Solution:
     def lowestCommonAncestor(self, root, p, q):
         """
@@ -314,6 +334,8 @@ class Solution:
 # V1''
 # IDEA : ITERATION
 # https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/solution/
+# time = O(h)  # h = tree height, BST-guided descent
+# space = O(1)
 class Solution:
     def lowestCommonAncestor(self, root, p, q):
         """
@@ -356,6 +378,8 @@ class Solution:
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(h)  # h = tree height, BST-guided descent
+# space = O(1)
 class Solution(object):
     def lowestCommonAncestor(self, root, p, q):
         """
@@ -375,6 +399,8 @@ class Solution(object):
                 
 # V1''
 # https://blog.csdn.net/coder_orz/article/details/51498796
+# time = O(h)  # h = tree height, BST-guided descent
+# space = O(h)  # recursion stack
 class Solution(object):
     def lowestCommonAncestor(self, root, p, q):
         """
@@ -394,6 +420,8 @@ class Solution(object):
 
 # V1'''
 # https://blog.csdn.net/coder_orz/article/details/51498796
+# time = O(h)  # h = tree height; two BST-guided path lookups
+# space = O(h)  # each path list stores up to h nodes
 class Solution(object):
     def lowestCommonAncestor(self, root, p, q):
         """
@@ -422,9 +450,9 @@ class Solution(object):
         path.append(p)
         return path
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     # @param {TreeNode} root
     # @param {TreeNode} p

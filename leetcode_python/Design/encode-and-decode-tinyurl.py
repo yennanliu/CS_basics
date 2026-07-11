@@ -34,13 +34,19 @@ url is guranteed to be a valid URL.
 
 # V0 : ARRAY
 class Codec:
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
         self.urls = []
 
+    # time = O(1)  # amortized
+    # space = O(1)
     def encode(self, longUrl):
         self.urls.append(longUrl)
         return "http://tinyurl.com/" + str(len(self.urls) - 1)
         
+    # time = O(L)  # L = len(shortUrl)
+    # space = O(L)
     def decode(self, shortUrl):
         return self.urls[int(shortUrl.split('/')[-1])]
 
@@ -49,17 +55,23 @@ class Codec:
 # https://leetcode.com/discuss/interview-question/124658/Design-a-URL-Shortener-(-TinyURL-)-System/
 # IDEA : DICT 
 class Codec:
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
         self.prefix = "http://tinyurl.com/"
         self.short_long = {}
         self.long_short = {}
 
+    # time = O(1)
+    # space = O(1)
     def encode(self, longUrl):
         if longUrl not in self.long_short:
             self.long_short[longUrl] = self.prefix + str(len(longUrl))
             self.short_long[self.prefix + str(len(longUrl))] = longUrl
             return self.prefix + str(len(longUrl))
         
+    # time = O(1)
+    # space = O(1)
     def decode(self, shortUrl):
         if shortUrl in self.short_long:
             return self.short_long[shortUrl]
@@ -80,6 +92,8 @@ class Codec:
     full_tiny = {}
     tiny_full = {}
     global_counter = 0
+    # time = O(log n)  # n = self.global_counter
+    # space = O(log n)
     def encode(self, longUrl):
         def decto62(dec):
             ans = ""
@@ -97,6 +111,8 @@ class Codec:
             self.global_counter += 1
         return "http://tinyurl.com/" + suffix
         
+    # time = O(L)  # L = len(shortUrl)
+    # space = O(L)
     def decode(self, shortUrl):
         idx = shortUrl.split('/')[-1]
         if idx in self.tiny_full:
@@ -107,30 +123,42 @@ class Codec:
 # V0''
 # IDEA : DICT 
 class Codec:
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
         self.count = 0
         self.d = dict()
     
+    # time = O(1)
+    # space = O(1)
     def encode(self, longUrl):
         self.count += 1
         self.d[self.count] = longUrl
         return str(self.count)
 
+    # time = O(1)
+    # space = O(1)
     def decode(self, shortUrl):
         return self.d[int(shortUrl)]
 
 # V0''
 import random
 class Codec:
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
         self.dic = {}
         self.dic2 = {}
+    # time = O(1)
+    # space = O(1)
     def encode(self, longUrl):
         # Encodes a URL to a shortened URL.
         self.dic[longUrl] = str(random.randint(1,100))
         self.dic2["https://tinyurl.com/" + self.dic[longUrl]] = longUrl
         return "https://tinyurl.com/" + self.dic[longUrl]
 
+    # time = O(1)
+    # space = O(1)
     def decode(self, shortUrl):
         # Decodes a shortened URL to its original URL.
         return self.dic2[shortUrl]
@@ -182,9 +210,13 @@ class Codec:
 # IDEA : ARRAY
 class Codec:
 
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
         self.urls = []
 
+    # time = O(1)  # amortized
+    # space = O(1)
     def encode(self, longUrl):
         """Encodes a URL to a shortened URL.
 
@@ -194,6 +226,8 @@ class Codec:
         self.urls.append(longUrl)
         return "http://tinyurl.com/" + str(len(self.urls) - 1)
         
+    # time = O(L)  # L = len(shortUrl)
+    # space = O(L)
     def decode(self, shortUrl):
         """Decodes a shortened URL to its original URL.
         
@@ -206,10 +240,14 @@ class Codec:
 # https://blog.csdn.net/fuxuemingzhu/article/details/79264976
 # IDEA : DICT  
 class Codec:
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
         self.count = 0
         self.d = dict()
     
+    # time = O(1)
+    # space = O(1)
     def encode(self, longUrl):
         """Encodes a URL to a shortened URL.
         
@@ -220,6 +258,8 @@ class Codec:
         self.d[self.count] = longUrl
         return str(self.count)
 
+    # time = O(1)
+    # space = O(1)
     def decode(self, shortUrl):
         """Decodes a shortened URL to its original URL.
         
@@ -232,15 +272,21 @@ class Codec:
 # https://www.jiuzhang.com/solution/encode-and-decode-tinyurl/#tag-highlight-lang-python
 import random
 class Solution:
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
         self.dic = {}
         self.dic2 = {}
+    # time = O(1)
+    # space = O(1)
     def encode(self, longUrl):
         # Encodes a URL to a shortened URL.
         self.dic[longUrl] = str(random.randint(1,100))
         self.dic2["https://tinyurl.com/" + self.dic[longUrl]] = longUrl
         return "https://tinyurl.com/" + self.dic[longUrl]
 
+    # time = O(1)
+    # space = O(1)
     def decode(self, shortUrl):
         # Decodes a shortened URL to its original URL.
         return self.dic2[shortUrl]
@@ -261,6 +307,8 @@ class Codec:
     full_tiny = {}
     tiny_full = {}
     global_counter = 0
+    # time = O(log n)  # n = self.global_counter
+    # space = O(log n)
     def encode(self, longUrl):
         """Encodes a URL to a shortened URL.
         
@@ -283,6 +331,8 @@ class Codec:
             self.global_counter += 1
         return "http://tinyurl.com/" + suffix
         
+    # time = O(L)  # L = len(shortUrl)
+    # space = O(L)
     def decode(self, shortUrl):
         """Decodes a shortened URL to its original URL.
         

@@ -65,6 +65,8 @@ words[i] consists of only lowercase English letters.
 # V1
 # http://bookshadow.com/weblog/2016/12/18/leetcode-concatenated-words/
 # IDEA : DFS 
+# time = O(n * 2^L)  # n = len(words), L = max word length; unmemoized recursive search, worst case
+# space = O(L)  # recursion depth
 class Solution(object):
     def findAllConcatenatedWordsInADict(self, words):
         """
@@ -91,6 +93,8 @@ class Solution(object):
 # V1'
 # http://bookshadow.com/weblog/2016/12/18/leetcode-concatenated-words/
 # IDEA : TRIE
+# time = O(n * 2^L)  # n = len(words), L = max word length; unmemoized recursive search, worst case
+# space = O(n * L)  # trie storage + recursion depth
 class Solution(object):
     def findAllConcatenatedWordsInADict(self, words):
         """
@@ -147,6 +151,8 @@ class Trie:
 # V1'''
 # IDEA : DFS
 # https://leetcode.com/problems/concatenated-words/discuss/224015/Python-DFS
+# time = O(n * L^2)  # n = len(words), L = max word length; each index visited once via `seen`
+# space = O(L)  # stack + seen set
 class Solution:
     def findAllConcatenatedWordsInADict(self, words):
         words_set = set(words)
@@ -174,6 +180,8 @@ class Solution:
 # V1'''
 # IDEA : TRIE + DFS
 # https://leetcode.com/problems/concatenated-words/discuss/322444/Python-solutions%3A-top-down-DP-Trie-%2B-DFS
+# time = O(n * L^2)  # n = len(words), L = max word length; trie build O(n*L), dfs branches only at word boundaries
+# space = O(n * L)  # trie storage
 class TrieNode():
     def __init__(self):
         self.children = {}
@@ -217,6 +225,8 @@ class Solution:
 # V1''''
 # IDEA : TRIE + DFS
 # https://leetcode.com/problems/concatenated-words/discuss/118917/Python-Trie%2BDFS
+# time = O(n * L^2)  # n = len(words), L = max word length; sort + trie check per word
+# space = O(n * L)  # trie storage
 class Solution(object):
     def findAllConcatenatedWordsInADict(self, words):
         """
@@ -266,6 +276,8 @@ class Solution:
     @param words: List[str]
     @return: return List[str]
     """
+    # time = O(L^2)  # L = len(word)
+    # space = O(L)
     def wordBreak(self, word, cands):
         if not cands:
             return False
@@ -280,6 +292,8 @@ class Solution:
                     break
         return dp[-1]
     
+    # time = O(n * L^2)  # n = len(words), L = max word length
+    # space = O(n * L)  # cands set
     def findAllConcatenatedWordsInADict(self, words):
         # write your code here
         words.sort(key=lambda x: -len(x))
@@ -293,6 +307,8 @@ class Solution:
 
 # V1''''''''
 class Solution:
+    # time = O(n * L^2)  # n = len(words), L = max word length
+    # space = O(n * L)  # trie storage
     def findAllConcatenatedWordsInADict(self, words):
         words.sort(key=len)
         if not words or not words[-1]: return []
@@ -307,6 +323,8 @@ class Solution:
             temp["#"]=word
             #print(wordDict)
         return ans
+    # time = O(L^2)  # L = len(word)
+    # space = O(L)  # recursion depth
     def valid(self, word, wordDict):
         if not word: return True
         temp=wordDict
@@ -316,9 +334,9 @@ class Solution:
             if "#" in temp and self.valid(word[i+1:], wordDict): #dfs
                 return True
 
-# V2 
-# Time:  O(n * l^2)
-# Space: O(n * l)
+# V2
+# time = O(n * l^2)
+# space = O(n * l)
 class Solution(object):
     def findAllConcatenatedWordsInADict(self, words):
         """

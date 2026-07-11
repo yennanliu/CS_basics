@@ -46,6 +46,8 @@ nums is sorted in ascending order.
 # V1'
 # IDEA : GREEDY
 # https://leetcode.com/problems/patching-array/discuss/1432712/Python-greedy
+# time = O(m + log n)   # m = len(nums); curr_end at least doubles per patch
+# space = O(1)
 class Solution:
     def minPatches(self, nums: List[int], n: int) -> int:
         # assume that we have an array covers from 0 to n
@@ -68,6 +70,8 @@ class Solution:
 # V1'
 # IDEA : GREEDY WINDOW
 # https://leetcode.com/problems/patching-array/discuss/266608/Python-greedy-window
+# time = O(m + log n)   # m = len(nums); reach at least doubles per patch
+# space = O(1)
 class Solution:
     def minPatches(self, nums: List[int], n: int) -> int:
         reach = 0
@@ -89,6 +93,8 @@ class Solution:
 # IDEA :
 # I used a greedy algorithm. When traversing through the given number list, consider each number as a goal and resource. When in the for loop for the ith number, try to add some numbers so that you can represent every number in the range [ 1, nums[i] ). Then, add the ith number to your source for further loops.
 # To reach the goal, suppose all the resource (the numbers smaller than the goal) sums to a number sum, then, sum+1 is what we don't have. So we need to add a sum+1 to our resource. And now you can represent all the numbers not bigger than sum+sum+1
+# time = O(m + log n)   # m = len(nums); sum at least doubles per patch
+# space = O(1)
 class Solution(object):
 
     def minPatches(self, nums, n):
@@ -115,6 +121,8 @@ class Solution(object):
 
 # V1''''
 # https://leetcode.com/problems/patching-array/discuss/78514/Python-solution
+# time = O(m + log n)   # m = len(nums); s at least doubles per patch
+# space = O(1)
 class Solution(object):
     def minPatches(self, nums, n):
         i=0

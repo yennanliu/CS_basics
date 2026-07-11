@@ -35,6 +35,8 @@ It is guaranteed such an s exists for the given a and b.
 """
 
 # V0
+# time = O(1)   # stub, no-op
+# space = O(1)
 class Solution(object):
     def strWithout3a3b(self, a, b):
     	pass
@@ -42,6 +44,8 @@ class Solution(object):
 
 # V1-1
 # IDEA: GREEDY (GPT)
+# time = O(n)   # n = a + b
+# space = O(n)
 class Solution(object):
     def strWithout3a3b(self, a, b):
         ans = []
@@ -84,6 +88,8 @@ class Solution(object):
 
 # V1-2
 # IDEA: GREEDY (GPT)
+# time = O(n)   # n = a + b
+# space = O(n)
 class Solution(object):
     def strWithout3a3b(self, a, b):
         """
@@ -125,6 +131,8 @@ class Solution(object):
 # V2
 # IDEA: GREEDY
 # https://leetcode.com/problems/string-without-aaa-or-bbb/editorial/
+# time = O(n)   # n = A + B
+# space = O(n)
 class Solution(object):
     def strWithout3a3b(self, A, B):
         ans = []

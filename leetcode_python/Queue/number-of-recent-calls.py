@@ -31,6 +31,8 @@
 #         return i
 #     return None
 
+# time = O(log m) per ping  # m = total calls so far; bisect_left binary search
+# space = O(m)  # nums list never shrinks, grows with total ping calls
 class RecentCounter:
 
     def __init__(self):
@@ -51,8 +53,10 @@ class RecentCounter:
 # obj = RecentCounter()
 # param_1 = obj.ping(t)
 
-# V3 
+# V3
 # https://blog.csdn.net/fuxuemingzhu/article/details/83714891
+# time = O(1) amortized per ping  # each element pushed/popped from deque at most once
+# space = O(w)  # w = number of calls within the 3000ms window
 import collections
 class RecentCounter:
 
@@ -70,8 +74,8 @@ class RecentCounter:
         return len(self.que)
 
 # V4
-# Time:  O(1) on average
-# Space: O(w), w means the size of the last milliseconds.
+# time = O(1) on average
+# space = O(w), w means the size of the last milliseconds.
 import collections
 class RecentCounter(object):
 

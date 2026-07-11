@@ -68,6 +68,8 @@ class Node(object):
 
 # V0
 # IDEA: DFS + node class
+# time = O(V + E)  # V = number of nodes, E = number of edges
+# space = O(V)
 class Solution(object):
     def cloneGraph(self, node):
         if not node:
@@ -106,6 +108,8 @@ class Solution(object):
 #     def __init__(self, val = 0, neighbors = None):
 #         self.val = val
 #         self.neighbors = neighbors if neighbors is not None else []
+# time = O(V + E)  # V = number of nodes, E = number of edges
+# space = O(V)
 class Solution(object):
     def cloneGraph(self, node):
         if not node:
@@ -137,6 +141,8 @@ class Solution(object):
 
 # V0
 # IDEA : BFS
+# time = O(V + E)  # V = number of nodes, E = number of edges
+# space = O(V)
 class Solution(object):
     def cloneGraph(self, node):
         if not node:
@@ -184,6 +190,8 @@ class Solution(object):
 # NOTE :
 #  -> 1) we init node via : node_copy = Node(node.val, [])
 #  -> 2) we copy graph via dict
+# time = O(V + E)  # V = number of nodes, E = number of edges
+# space = O(V)
 class Solution(object):
     def cloneGraph(self, node):
         """
@@ -206,6 +214,8 @@ class Solution(object):
 
 # V0'
 # IDEA : BFS
+# time = O(V + E)  # V = number of nodes, E = number of edges
+# space = O(V)
 class Solution(object):
     def cloneGraph(self, node):
         # edge case
@@ -228,6 +238,8 @@ class Solution(object):
 
 # V0''
 # IDEA : BFS
+# time = O(V + E)  # V = number of nodes, E = number of edges
+# space = O(V)
 class Solution:
 
     def __init__(self):
@@ -252,6 +264,8 @@ class Solution:
 
 # V0''
 # IDEA : BFS
+# time = O(V + E)  # V = number of nodes, E = number of edges
+# space = O(V)
 class Solution(object):
     def cloneGraph(self, node):
         """
@@ -274,7 +288,7 @@ class Solution(object):
                 hashd[t].neighbors.append(hashd[n])
         return node_copy
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/88363919
 # IDEA : DFS 
 """
@@ -284,6 +298,8 @@ class Node(object):
         self.val = val
         self.neighbors = neighbors
 """
+# time = O(V + E)  # V = number of nodes, E = number of edges
+# space = O(V)
 class Solution(object):
     def cloneGraph(self, node):
         """
@@ -306,7 +322,7 @@ class Solution(object):
 
 ### Test case : dev
 
-# V1' 
+# V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/88363919
 # IDEA : BFS 
 """
@@ -316,6 +332,8 @@ class Node(object):
         self.val = val
         self.neighbors = neighbors
 """
+# time = O(V + E)  # V = number of nodes, E = number of edges
+# space = O(V)
 class Solution(object):
     def cloneGraph(self, node):
         """
@@ -348,6 +366,8 @@ class Node(object):
         self.val = val
         self.neighbors = neighbors
 """
+# time = O(V + E)  # V = number of nodes, E = number of edges
+# space = O(V)
 class Solution(object):
 
     def __init__(self):
@@ -393,6 +413,8 @@ class Node(object):
         self.neighbors = neighbors
 """
 from collections import deque
+# time = O(V + E)  # V = number of nodes, E = number of edges
+# space = O(V)
 class Solution(object):
 
     def cloneGraph(self, node):
@@ -440,6 +462,8 @@ class UndirectedGraphNode:
         self.label = x
         self.neighbors = []
 """
+# time = O(V + E)  # V = number of nodes, E = number of edges
+# space = O(V)
 class Solution:
 
     def __init__(self):
@@ -465,6 +489,8 @@ class Solution:
 # V1''' 
 # https://www.jiuzhang.com/solution/clone-graph/#tag-highlight-lang-python
 # IDEA : BFS 
+# time = O(V + E)  # V = number of nodes, E = number of edges
+# space = O(V)
 class Solution:
     def cloneGraph(self, node):
         root = node
@@ -499,9 +525,9 @@ class Solution:
                     q.append(neighbor)
         return result
 
-# V2 
-# Time:  O(n)
-# Space: O(n)
+# V2
+# time = O(n)
+# space = O(n)
 class UndirectedGraphNode(object):
     def __init__(self, x):
         self.label = x

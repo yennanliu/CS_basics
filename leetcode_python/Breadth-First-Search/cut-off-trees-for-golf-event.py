@@ -3,6 +3,8 @@
 # V1
 # https://leetcode.com/problems/cut-off-trees-for-golf-event/discuss/107396/Python-solution-based-on-wufangjie's-(Hadlock's-algorithm)
 # IDEA : wufangjie's (Hadlock's algorithm?)
+# time = O(T * m * n), T = number of trees, m*n = grid size
+# space = O(m * n)
 class Solution:
     def cutOffTree(self, forest):
 
@@ -52,6 +54,8 @@ class Solution:
 
 # V1'
 # https://leetcode.com/problems/cut-off-trees-for-golf-event/discuss/107415/my-python-solution-inspired-by-A*-algorithm
+# time = O(T * m * n), T = number of trees, m*n = grid size
+# space = O(m * n)
 class Solution(object):
     def cutOffTree(self, forest):
         """
@@ -141,6 +145,8 @@ class Solution(object):
 # https://leetcode.com/problems/cut-off-trees-for-golf-event/discuss/107416/Very-simple-Python-BFS-But-Why-TLE
 # TO SOLVE : TIME OUT ERROR
 import collections
+# time = O(T * m * n), T = number of trees, m*n = grid size
+# space = O(m * n)
 class Solution(object):
     def cutOffTree(self, G):
         """

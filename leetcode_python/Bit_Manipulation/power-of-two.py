@@ -33,8 +33,10 @@ Follow up: Could you solve it without loops/recursion?
 
 """
 
-# V0 
+# V0
 # IDEA : BRUTE FORCE
+# time = O(log n)  # n; loop halves n until 1
+# space = O(1)
 class Solution(object):
     def isPowerOfTwo(self, n):
         if n < 1:
@@ -54,6 +56,8 @@ class Solution(object):
 #    -> so for x - 1, it will become
 #        -> (x-1) binary : "11111", "11", "0"
 #    -> so x & (x-1) ALWAYS == 0 (if x is power of 2)
+# time = O(1)
+# space = O(1)
 class Solution(object):
     def isPowerOfTwo(self, n):
         if n == 0:
@@ -66,6 +70,8 @@ class Solution(object):
 # -> IF n is power of 2 
 # -> binary(n) must in the form like this : "10000" or "100" or "1000000"...
 # -> so we can know that n & (n-1) == 0 when n > 0 by BIT MANIPULATION 
+# time = O(1)
+# space = O(1)
 class Solution:
     def isPowerOfTwo(self, n):
         return n > 0 and (n & (n - 1)) == 0
@@ -73,6 +79,8 @@ class Solution:
 # V1
 # IDEA : Bitwise Operators : Get the Rightmost 1-bit
 # https://leetcode.com/problems/power-of-two/solution/
+# time = O(1)
+# space = O(1)
 class Solution(object):
     def isPowerOfTwo(self, n):
         if n == 0:
@@ -82,6 +90,8 @@ class Solution(object):
 # V1'
 # IDEA : Bitwise operators : Turn off the Rightmost 1-bit
 # https://leetcode.com/problems/power-of-two/solution/
+# time = O(1)
+# space = O(1)
 class Solution(object):
     def isPowerOfTwo(self, n):
         if n == 0:
@@ -91,6 +101,8 @@ class Solution(object):
 # V1''
 # https://blog.csdn.net/coder_orz/article/details/51322908
 # IDEA : GREEDY 
+# time = O(log n)  # n; loop halves n until 1
+# space = O(1)
 class Solution:
     def isPowerOfTwo(self,n):
         if n < 1:
@@ -124,12 +136,16 @@ assert s.isPowerOfTwo(2**100)==True
 # https://www.tutorialspoint.com/python/bitwise_operators_example
 # & Binary AND  Operator copies a bit to the result if it exists in both operands   (a & b) (means 0000 1100)
 # e.g. : x& y = 0 (0000 0000)
+# time = O(1)
+# space = O(1)
 class Solution:
     # @param {integer} n
     # @return {boolean}
     def isPowerOfTwo(self, n):
         return n > 0 and (n & (n - 1)) == 0
 
+# time = O(n)  # loop runs up to n times
+# space = O(1)
 class Solution:
     def isPowerOfTwo(self,n):
         for k in range(n):
@@ -141,14 +157,16 @@ class Solution:
         return False
 
 # V2
-# Time:  O(1)
-# Space: O(1)
+# time = O(1)
+# space = O(1)
 class Solution(object):
     # @param {integer} n
     # @return {boolean}
     def isPowerOfTwo(self, n):
         return n > 0 and (n & (n - 1)) == 0
 
+# time = O(1)
+# space = O(1)
 class Solution2(object):
     # @param {integer} n
     # @return {boolean}

@@ -1,5 +1,5 @@
-# Time:  O((m + n) * l), m is the size of list1, n is the size of list2
-# Space: O(m * l), l is the average length of string
+# time = O((m + n) * l)  # m = size of list1, n = size of list2
+# space = O(m * l)  # l = average length of string
 # Suppose Andy and Doris want to choose a restaurant for dinner,
 # and they both have a list of favorite restaurants represented by strings.
 #
@@ -26,6 +26,8 @@
 # No duplicates in both lists.
 
 # V0 
+# time = O(m * n)  # m = len(list1), n = len(list2); list.index() is O(n)
+# space = O(1)
 class Solution:
     """
     @param list1: a list of strings
@@ -51,6 +53,8 @@ class Solution:
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79138621
+# time = O(m * n)  # m = len(list1), n = len(list2); list.index() is O(n)
+# space = O(m)  # commons list bounded by min(m, n)
 class Solution(object):
     def findRestaurant(self, list1, list2):
         """
@@ -74,6 +78,8 @@ class Solution(object):
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79138621
+# time = O(m + n)
+# space = O(m + n)
 class Solution(object):
     def findRestaurant(self, list1, list2):
         """
@@ -97,6 +103,8 @@ class Solution(object):
 
 # V1''
 # http://bookshadow.com/weblog/2017/05/28/leetcode-minimum-index-sum-of-two-lists/
+# time = O(m + n)
+# space = O(m)
 class Solution(object):
     def findRestaurant(self, list1, list2):
         """
@@ -120,6 +128,8 @@ class Solution(object):
 
 # V1'''
 # https://www.jiuzhang.com/solution/minimum-index-sum-of-two-lists/#tag-highlight-lang-python
+# time = O(m * n)  # m = len(list1), n = len(list2); list.index() is O(n)
+# space = O(1)
 class Solution:
     """
     @param list1: a list of strings
@@ -144,8 +154,8 @@ class Solution:
         return s
 
 # V2 
-# Time:  O((m + n) * l), m is the size of list1, n is the size of list2
-# Space: O(m * l), l is the average length of string
+# time = O((m + n) * l)  # m = size of list1, n = size of list2
+# space = O(m * l)  # l = average length of string
 class Solution(object):
     def findRestaurant(self, list1, list2):
         """

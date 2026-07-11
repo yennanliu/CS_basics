@@ -40,6 +40,8 @@ The number of nodes in the list is in the range [0, 1000].
 
 # V0
 # IDEA : LINKED LIST OP + mod op
+# time = O(n + k)  # n = length of linked list
+# space = O(1)  # excluding output list of k head pointers
 class Solution(object):
     def splitListToParts(self, head, k):
         # NO need to deal with edge case !!!
@@ -92,6 +94,8 @@ class Solution(object):
         return res
 
 # V0'
+# time = O(n + k)  # n = length of linked list
+# space = O(1)  # excluding output list of k head pointers
 class Solution(object):
     def splitListToParts(self, head, k):
         # NO need to deal with edge case !!!
@@ -123,6 +127,8 @@ class Solution(object):
 
 # V0'
 # IDEA : LINKED LIST OP
+# time = O(n + k)  # n = length of linked list
+# space = O(1)  # excluding output list of k head pointers
 class Solution:
     def splitListToParts(self, root, k):
         def get_length(root):
@@ -151,6 +157,8 @@ class Solution:
 
 # V1
 # https://leetcode.com/problems/split-linked-list-in-parts/discuss/109284/Elegant-Python-with-Explanation-45ms
+# time = O(n + k)  # n = length of linked list
+# space = O(1)  # excluding output list of k head pointers
 class Solution(object):
     def splitListToParts(self, root, k):
         # Count the length of the linked list
@@ -174,6 +182,8 @@ class Solution(object):
 
 # V1'
 # https://leetcode.com/problems/split-linked-list-in-parts/discuss/139360/Simple-pythonic-solution.-Beats-100
+# time = O(n + k)  # n = length of linked list
+# space = O(1)  # excluding output list of k head pointers
 def get_length(root):
     ans = 0
     while root is not None:
@@ -204,6 +214,8 @@ class Solution:
 
 # V1''
 # https://leetcode.com/problems/split-linked-list-in-parts/discuss/237516/python-solution-beat-100
+# time = O(n + k)  # n = length of linked list
+# space = O(1)  # excluding output list of k head pointers
 class Solution:
     def splitListToParts(self, root: 'ListNode', k: 'int') -> 'List[ListNode]':
         n, p, res = 0, root, []
@@ -225,12 +237,16 @@ class Solution:
 # V1'''
 # http://bookshadow.com/weblog/2017/11/13/leetcode-split-linked-list-in-parts/
 class Solution(object):
+    # time = O(n)  # n = number of parts (k), builds a list of size n
+    # space = O(n)  # returns a list of size n
     def splitNum(self, m, n):
         q, r = m / n, m % n
         if r > 0: return [q + 1] * r + [q] * (n - r)
         if r < 0: return [q] * (n + r) + [q - 1] * -r
         return  [q] * n
 
+    # time = O(n)  # n = length of linked list
+    # space = O(1)
     def listLength(self, root):
         ans = 0
         while root:
@@ -238,6 +254,8 @@ class Solution(object):
             root = root.next
         return ans
 
+    # time = O(n + k)  # n = length of linked list
+    # space = O(1)  # excluding output list of k head pointers
     def splitListToParts(self, root, k):
         """
         :type root: ListNode
@@ -261,6 +279,8 @@ class Solution(object):
 
 # V1''''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79543931
+# time = O(n + k)  # n = length of linked list
+# space = O(n)  # creates brand new ListNode objects for the result
 class Solution(object):
     def splitListToParts(self, root, k):
         """
@@ -298,6 +318,8 @@ class Solution(object):
 # IDEA : CREATE NEW LISTS
 # time complexity : O(N+K)
 # spce complexity : O(N,K)
+# time = O(n + k)  # n = length of linked list
+# space = O(n)  # creates brand new ListNode objects for the result
 class Solution(object):
     def splitListToParts(self, root, k):
         cur = root
@@ -321,6 +343,8 @@ class Solution(object):
 # IDEA : SPLIT INPUT LIST 
 # time complexity : O(N+K)
 # spce complexity : O(K)
+# time = O(n + k)  # n = length of linked list
+# space = O(1)  # excluding output list of k head pointers
 class Solution(object):
     def splitListToParts(self, root, k):
         cur = root

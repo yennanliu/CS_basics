@@ -36,6 +36,8 @@ Note: -1e7 <= x <= 1e7 Number of operations won't exceed 10000. The last four op
 # https://poopcode.com/max-stack-leetcode-challenge-python-solution/
 class MaxStack(object):
 
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
         """
         initialize your data structure here.
@@ -105,12 +107,16 @@ class MaxStack(object):
 # IDEA : linked list
 # https://codereview.stackexchange.com/questions/210914/leetcode-maxstack-in-python
 class Node:
+    # time = O(1)
+    # space = O(1)
     def __init__(self, x):
         self.val = x
         self.next = None
 
 
 class MaxStack:
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
         """
         Initialize your data structure here.
@@ -206,6 +212,8 @@ class MaxStack:
 # https://blog.csdn.net/danspace1/article/details/88734584
 class MaxStack(object):
 
+	# time = O(1)
+	# space = O(1)
 	def __init__(self):
 		self.data = []
 

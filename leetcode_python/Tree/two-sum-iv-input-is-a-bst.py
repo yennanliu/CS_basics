@@ -47,6 +47,8 @@ root is guaranteed to be a valid binary search tree.
 # IDEA : DFS
 # In [1]: True or False
 # Out[1]: True
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def findTarget(self, root, k):
         s = set()
@@ -63,6 +65,8 @@ class Solution(object):
 
 # V0'
 # IDEA : DFS
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def findTarget(self, root, k):
         def dfs(root):
@@ -79,6 +83,8 @@ class Solution(object):
 
 # V0'
 # IDEA : BFS
+# time = O(n)
+# space = O(n)
 import collections
 class Solution(object):
     def findTarget(self, root, k):
@@ -107,6 +113,8 @@ class Solution(object):
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def findTarget(self, root, k):
         """
@@ -134,6 +142,8 @@ class Solution(object):
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def findTarget(self, root, k):
         """
@@ -166,6 +176,8 @@ class Solution(object):
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def findTarget(self, root, k):
         """
@@ -198,6 +210,8 @@ class Solution(object):
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def findTarget(self, root, k):
         """
@@ -216,8 +230,8 @@ class Solution(object):
         return inOrder(root)
 
 # V2 
-# Time:  O(n)
-# Space: O(h)
+# time = O(n)
+# space = O(h)
 class Solution(object):
     def findTarget(self, root, k):
         """

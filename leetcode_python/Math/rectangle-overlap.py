@@ -35,6 +35,8 @@ rec1 and rec2 represent a valid rectangle with a non-zero area.
 """
 
 # V0
+# time = O(1)
+# space = O(1)
 class Solution(object):
     def isRectangleOverlap(self, rec1, rec2):
         [A, B, C, D], [E, F, G, H] = rec1, rec2
@@ -42,6 +44,8 @@ class Solution(object):
         return x > 0 and y > 0
 
 # V0'
+# time = O(1)
+# space = O(1)
 class Solution:
     def isRectangleOverlap(self, rec1, rec2):
         rec1_x1, rec1_y1, rec1_x2, rec1_y2 = rec1
@@ -55,6 +59,8 @@ class Solution:
 # and (x2, y2) are the coordinates of its top-right corner.
 # --> so x2 is always > x1  and y2 is always > y1 
 # find out  --> if the overlap x and y are all > 0 ---> these 2 rectangles are overlap 
+# time = O(1)
+# space = O(1)
 class Solution(object):
     def isRectangleOverlap(self, rec1, rec2):
         """
@@ -76,6 +82,8 @@ assert s.isRectangleOverlap([1,1,1,1],[1,1,1,1])==False
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/80472764
+# time = O(1)
+# space = O(1)
 class Solution:
     def isRectangleOverlap(self, rec1, rec2):
         """
@@ -88,8 +96,8 @@ class Solution:
         return not (rec1_x1 >= rec2_x2 or rec1_x2 <= rec2_x1 or rec1_y1 >= rec2_y2 or rec1_y2 <= rec2_y1)
 
 # V2
-# Time:  O(1)
-# Space: O(1)
+# time = O(1)
+# space = O(1)
 class Solution(object):
     def isRectangleOverlap(self, rec1, rec2):
         """

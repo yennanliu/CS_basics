@@ -65,6 +65,8 @@ Follow-up: Can you come up with an algorithm that is less than O(n2) time comple
 # {2: 0, 0: 1, 100: 2, 3: 3}
 # {2: 4, 0: 1, 100: 2, 3: 3}
 # Out[2]: [1, 5]
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def twoSum(self, nums, target):
         lookup = {}
@@ -76,6 +78,8 @@ class Solution(object):
 
 # V0'
 # IDEA : dict
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def twoSum(self, nums, target):
         d = {}
@@ -86,9 +90,11 @@ class Solution(object):
                 if nums[i] not in d:
                     d[nums[i]] = i
 
-# V1 
+# V1
 # https://blog.csdn.net/coder_orz/article/details/52039233
 # IDEA : LINEAR SCAN
+# time = O(n^2)
+# space = O(1)
 class Solution(object):
     def twoSum(self, nums, target):
         """
@@ -102,6 +108,8 @@ class Solution(object):
                     return [i, j]
 # V1'
 # https://www.jiuzhang.com/solution/two-sum/#tag-highlight-lang-python
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def twoSum(self, nums, target):
         # hash for index-value mapping 
@@ -114,10 +122,12 @@ class Solution(object):
         # in case if there is no solution (two sum)
         return [-1, -1]
 
-# V2 
+# V2
 # example :
 # nums = [3,3] , target = 6 -> return [0, 1]
 # nums = [0,3,3] , target = 6 -> return [1, 2]
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def twoSum(self, nums, target):
         for i,num in enumerate(nums):
@@ -126,8 +136,10 @@ class Solution(object):
             else:
                 pass
 
-# V3 
+# V3
 class Solution(object):
+    # time = O(n)
+    # space = O(n)
     def twoSum(self, nums, target):
         """
         :type nums: List[int]
@@ -140,6 +152,8 @@ class Solution(object):
                 return [lookup[target - num], i]
             lookup[num] = i
 
+    # time = O(n^2)
+    # space = O(n)
     def twoSum2(self, nums, target):
         """
         :type nums: List[int]

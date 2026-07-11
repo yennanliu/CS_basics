@@ -36,6 +36,8 @@ Constraints:
 
 # V0
 # IDEA: PREFIX + SET + greedy (reset) (gpt)
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def maxNonOverlapping(self, nums, target):
         ans = 0
@@ -82,6 +84,8 @@ class Solution(object):
 
 # V0
 # IDEA: PREFIX + HAHSMAP + greedy (reset) (gpt)
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def maxNonOverlapping(self, nums, target):
         ans = 0
@@ -133,6 +137,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: PREFIX + SET + greedy (reset) (gemini)
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def maxNonOverlapping(self, nums, target):
         """
@@ -221,6 +227,8 @@ run
 
 
 """
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def maxNonOverlapping(self, nums, target):
         seen = set([0])
@@ -272,6 +280,8 @@ keep a running prefix sum and look for `prefix - target` in your tracking set.
 
 
 """
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def maxNonOverlapping(self, nums, target):
 
@@ -305,6 +315,8 @@ class Solution(object):
 # V2
 # IDEA: HASHMAP
 # https://leetcode.com/problems/maximum-number-of-non-overlapping-subarrays-with-sum-equals-target/solutions/780954/python-simple-solution-2-sum-variant-by-ihtfh/
+# time = O(n)
+# space = O(n)
 class Solution:
     def maxNonOverlapping(self, nums: List[int], target: int) -> int:
         ## RC ##

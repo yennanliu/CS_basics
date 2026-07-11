@@ -29,8 +29,10 @@ Therefore, f(3) = (k-1)*k + k*(k-1)*k = (k-1)(k+k*k)
 #         return dp[3]
 
 
-# V2 
+# V2
 # http://www.voidcn.com/article/p-cqzythcg-qp.html
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def numWays(self, n, k):
         """
@@ -53,10 +55,10 @@ class Solution(object):
         return sameColor + diffColor
 
 
-# V3 
-# Time:  O(n)
-# Space: O(1)
-# V2 
+# V3
+# time = O(n)
+# space = O(1)
+# V2
 # DP solution with rolling window.
 class Solution(object):
     def numWays(self, n, k):
@@ -76,9 +78,9 @@ class Solution(object):
             ways[i % 3] = (k - 1) * (ways[(i - 1) % 3] + ways[(i - 2) % 3])
         return ways[(n - 1) % 3]
 
-# V4 
-# Time:  O(n)
-# Space: O(n)
+# V4
+# time = O(n)
+# space = O(n)
 # DP solution.
 class Solution2(object):
     def numWays(self, n, k):

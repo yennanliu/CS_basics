@@ -9,7 +9,9 @@
 
 
 
-# V2 
+# V2
+# time = O(n * 4^n / n^(3/2)), n = number of operators; interval DP w/ memoization, Catalan-number bound
+# space = O(n * 4^n / n^(3/2)), memoization table size
 import operator
 import re
 class Solution(object):
@@ -34,6 +36,8 @@ class Solution(object):
 
         return diffWaysToComputeRecu(0, len(nums) - 1)
 
+# time = O(n * 4^n / n^(3/2)), n = number of operators; interval DP w/ memoization, Catalan-number bound
+# space = O(n * 4^n / n^(3/2)), memoization table size
 class Solution2(object):
     # @param {string} input
     # @return {integer[]}

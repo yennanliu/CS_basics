@@ -45,6 +45,8 @@ There are no repeated edges.
 
 
 # V0
+# time = O(1)  # stub, not implemented
+# space = O(1)  # stub, not implemented
 class Solution(object):
     def countPairs(self, n, edges):
         """
@@ -56,6 +58,8 @@ class Solution(object):
 
 # V1-2
 # IDEA: UNION FIND (GPT)
+# time = O((n + e) * a(n))  # n = nodes, e = len(edges), a = inverse Ackermann (union-find w/ path compression)
+# space = O(n)
 class MyUF:
 
     def __init__(self, n):
@@ -122,6 +126,8 @@ class Solution(object):
 
 # V1-1
 # IDEA: UNION FIND (gemini)
+# time = O((n + e) * a(n))  # n = nodes, e = len(edges), a = inverse Ackermann (union-find w/ union-by-size + path compression)
+# space = O(n)
 class MyUF:
     def __init__(self, n):
         # Every node starts as its own parent

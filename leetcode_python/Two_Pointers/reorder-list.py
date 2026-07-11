@@ -46,6 +46,8 @@ LC 021 Merge Two Sorted Lists.
 # V0
 # IDEA:  MIDDLE OF LINLED LIST,  Reverse the second half, Merge the two halves
 # https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/LinkedList/ReorderList.java#L61
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def reorderList(self, head):
         """
@@ -158,6 +160,8 @@ class Solution(object):
 
 # V0
 # IDEA : Reverse the Second Part of the List and Merge Two Sorted Lists
+# time = O(n)
+# space = O(1)
 class Solution:
     def reorderList(self, head):
         if not head:
@@ -202,6 +206,8 @@ class Solution:
 
 
 # V0-2
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def reorderList(self, head):
         if not head or not head.next:
@@ -237,6 +243,8 @@ class Solution(object):
 
 # V0'
 # IDEA : Reverse the Second Part of the List and Merge Two Sorted Lists (simplified code from V1)
+# time = O(n)
+# space = O(1)
 class Solution:
     def reorderList(self, head):
         if not head:
@@ -264,6 +272,8 @@ class Solution:
             second.next, second = first, second.next
 
 # V0'''
+# time = O(n)
+# space = O(1)
 class Solution:
     def reorderList(self, head):
         if head is None:
@@ -313,6 +323,8 @@ class Solution:
 #     def __init__(self, x):
 #         self.val = x
 #         self.next = None
+# time = O(n)
+# space = O(1)
 class Solution:
     # @param head, a ListNode
     # @return nothing
@@ -360,6 +372,8 @@ class Solution:
 # V1'
 # IDEA : Reverse the Second Part of the List and Merge Two Sorted Lists
 # https://leetcode.com/problems/reorder-list/solution/
+# time = O(n)
+# space = O(1)
 class Solution:
     def reorderList(self, head):
         if not head:
@@ -398,6 +412,8 @@ class Solution:
 # V1''
 # IDEA : Reverse the Second Part of the List and Merge Two Sorted Lists (simplified code from V1)
 # https://leetcode.com/problems/reorder-list/solution/
+# time = O(n)
+# space = O(1)
 class Solution:
     def reorderList(self, head: ListNode) -> None:
         if not head:
@@ -426,6 +442,8 @@ class Solution:
 
 # V1''
 # https://www.jiuzhang.com/solution/reorder-list/#tag-highlight-lang-python
+# time = O(n)
+# space = O(1)
 from lintcode import ListNode
 # Definition of ListNode
 # class ListNode(object):
@@ -469,8 +487,8 @@ class Solution:
         return head
 
 # V2
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 class ListNode(object):
     def __init__(self, x):
         self.val = x

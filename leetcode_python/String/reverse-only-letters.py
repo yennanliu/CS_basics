@@ -4,6 +4,8 @@
 # https://blog.csdn.net/fuxuemingzhu/article/details/82956271
 # IDEA : STACK 
 # STACK : FIRST IN, LAST OUT (LILO)
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def reverseOnlyLetters(self, S):
         """
@@ -26,6 +28,8 @@ class Solution(object):
 # V1' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/82956271
 # IDEA : SINGLE POINTER 
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def reverseOnlyLetters(self, S):
         """
@@ -48,6 +52,8 @@ class Solution(object):
 # V1'' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/82956271
 # IDEA : DOUBLE POINTER   
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def reverseOnlyLetters(self, S):
         """
@@ -68,8 +74,8 @@ class Solution(object):
         return "".join(slist)
 
 # V2 
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def reverseOnlyLetters(self, S):
         """

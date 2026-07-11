@@ -27,6 +27,8 @@ Explanation: T is "aa" which its length is 2.
 # TODO : validate this approach
 # IDEA : SLIDING WINDOW
 # https://leetcode.jp/leetcode-340-longest-substring-with-at-most-k-distinct-characters-%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF%E5%88%86%E6%9E%90/
+# time = O(n)
+# space = O(k)
 from collections import Counter
 class Solution:
     def lengthOfLongestSubstringKDistinct(self, s, k):
@@ -63,6 +65,8 @@ class Solution:
 
 # V1'
 # https://www.acwing.com/file_system/file/content/whole/index/content/1783600/
+# time = O(n)
+# space = O(k)
 class Solution:
     def lengthOfLongestSubstringKDistinct(self, s, k):
         Dict = {}

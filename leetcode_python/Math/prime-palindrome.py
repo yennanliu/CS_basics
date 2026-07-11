@@ -32,6 +32,8 @@
 # V2
 # https://www.kancloud.cn/kancloud/data-structure-and-algorithm-notes/73059
 ### DFS algorithm ###
+# time = O(n * 2^n)  # n = len(s), enumerate all partitions
+# space = O(n)  # recursion stack depth
 class Solution:
     # @param s, a string
     # @return a list of lists of string
@@ -64,8 +66,8 @@ class Solution:
         return s == s[::-1]
 
 # V3
-# Time:  O(n^(1/2) * (logn + n^(1/2)))
-# Space: O(logn)
+# time = O(n^(1/2) * (logn + n^(1/2)))
+# space = O(logn)
 class Solution(object):
     def primePalindrome(self, N):
         """

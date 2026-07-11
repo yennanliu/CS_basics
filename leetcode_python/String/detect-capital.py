@@ -15,8 +15,10 @@
 # Output: False
 # Note: The input will be a non-empty word consisting of uppercase and lowercase latin letters.
 
-# V0 
+# V0
 #  http://bookshadow.com/weblog/2017/02/19/leetcode-detect-capital/
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def detectCapitalUse(self, word):
         """
@@ -25,7 +27,9 @@ class Solution(object):
         """
         return word[1:].islower() or word.islower() or word.isupper()
 
-# V1 
+# V1
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def detectCapitalUse(self, word):
         capital_len = len([x for x in word if x.isupper()])
@@ -37,9 +41,9 @@ class Solution(object):
         else:
             return False
         
-# V2 
-# Time:  O(l)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def detectCapitalUse(self, word):
         """

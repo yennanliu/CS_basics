@@ -35,6 +35,8 @@ root is a binary search tree.
 # V1
 # IDEA : RECURSION + BST property
 # https://leetcode.com/problems/search-in-a-binary-search-tree/solution/
+# time = O(h)  # h = tree height, BST-guided descent
+# space = O(h)  # recursion stack
 class Solution:
     def searchBST(self, root: TreeNode, val: int) -> TreeNode:
         if root is None or val == root.val:
@@ -46,6 +48,8 @@ class Solution:
 # V1'
 # IDEA : ITERATION
 # https://leetcode.com/problems/search-in-a-binary-search-tree/solution/
+# time = O(h)  # h = tree height, BST-guided descent
+# space = O(1)
 class Solution:
     def searchBST(self, root: TreeNode, val: int) -> TreeNode:
         while root is not None and root.val != val:
@@ -55,6 +59,8 @@ class Solution:
 # V1''
 # IDEA : ITERATION
 # https://leetcode.com/problems/search-in-a-binary-search-tree/discuss/171663/Python-solution
+# time = O(h)  # h = tree height, BST-guided descent
+# space = O(1)
 class Solution(object):
     def searchBST(self, root, val):
         trav = root

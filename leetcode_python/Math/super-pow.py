@@ -14,6 +14,8 @@
 
 # https://www.hrwhisper.me/leetcode-super-pow/
 # http://bookshadow.com/weblog/2016/07/07/leetcode-super-pow/
+# time = O(n)  # n = len(b)
+# space = O(1)
 class Solution(object):
     def superPow(self, a, b):
         """
@@ -28,9 +30,9 @@ class Solution(object):
             a = a ** 10 % mod
         return ans
 
-# V3 
-# Time:  O(n), n is the size of b.
-# Space: O(1)
+# V3
+# time = O(n)  # n is the size of b
+# space = O(1)
 class Solution(object):
     def superPow(self, a, b):
         """

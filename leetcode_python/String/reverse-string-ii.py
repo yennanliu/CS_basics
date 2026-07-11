@@ -1,6 +1,6 @@
 
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 
 # Given a string and an integer k, you need to reverse the first k characters
 # for every 2k characters counting from the start of the string.
@@ -19,6 +19,8 @@
 
 # V1 
 # http://bookshadow.com/weblog/2017/03/12/leetcode-reverse-string-ii/
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def reverseStr(self, s, k):
         """
@@ -34,6 +36,8 @@ class Solution(object):
         return ans
 
 # V2
+# time = O(n)
+# space = O(n)
 class Solution:
     def reverseStr(self, s, k):
         list_s = list(s)
@@ -42,6 +46,8 @@ class Solution:
         return ''.join( str(j) for  j in list_s)
     
 # V2' 
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def reverseStr(self, s, k):
         """

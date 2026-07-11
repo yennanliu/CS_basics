@@ -45,6 +45,8 @@ Submissions
 #   -> all we need to do : min(3,4) = 3. e.g. ("01", "0011", "000111")
 #   -> since for every "cross" sub string (e.g. 0 then 1 or 1 then 0),
 #   -> we can the "number of same continuous 0 and 1"  by min(groups[i-1], groups[i])
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def countBinarySubstrings(self, s):
         groups = [1]
@@ -62,6 +64,8 @@ class Solution(object):
 # V0'
 # IDEA : LINEAR SCAN
 # # https://leetcode.com/problems/count-binary-substrings/solution/
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def countBinarySubstrings(self, s):
         ans, prev, cur = 0, 0, 1
@@ -102,6 +106,8 @@ class Solution(object):
 # V1
 # IDEA :  Group By Character
 # https://leetcode.com/problems/count-binary-substrings/solution/
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def countBinarySubstrings(self, s):
         groups = [1]
@@ -119,6 +125,8 @@ class Solution(object):
 # V1'
 # IDEA : Group By Character (Alternate Implentation as above (same idea))
 # https://leetcode.com/problems/count-binary-substrings/solution/
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def countBinarySubstrings(self, s):
         groups = [len(list(v)) for _, v in itertools.groupby(s)]
@@ -127,6 +135,8 @@ class Solution(object):
 # V1''
 # IDEA :  Linear Scan
 # https://leetcode.com/problems/count-binary-substrings/solution/
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def countBinarySubstrings(self, s):
         ans, prev, cur = 0, 0, 1
@@ -141,6 +151,8 @@ class Solution(object):
 
 # V1'''
 # https://leetcode.com/problems/count-binary-substrings/discuss/176153/Python-solution
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def countBinarySubstrings(self, s):
         res = 0
@@ -156,9 +168,11 @@ class Solution(object):
         res += min(prev, tmp)
         return res
 
-# V1''''  
+# V1''''
 # https://blog.csdn.net/wenqiwenqi123/article/details/78462141
 # https://blog.csdn.net/fuxuemingzhu/article/details/79183556
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def countBinarySubstrings(self, s):
         groups = [1]
@@ -173,7 +187,9 @@ class Solution(object):
             ans += min(groups[i-1], groups[i])
         return ans
 
-# V2 
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def countBinarySubstrings(self, s):
         result, prev, curr = 0, 0, 1

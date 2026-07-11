@@ -9,6 +9,8 @@
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)
+# space = O(n)  # vals list holds all n node values
 class Solution(object):
     def minDiffInBST(self, root):
         """
@@ -25,8 +27,10 @@ class Solution(object):
         inOrder(root)
         return min([vals[i + 1] - vals[i] for i in range(len(vals) - 1)])
 
-# V1' 
+# V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79402127
+# time = O(n)
+# space = O(h)  # h = tree height (recursion stack)
 class Solution:
     def minDiffInBST(self, root):
         """
@@ -46,9 +50,9 @@ class Solution:
         self.prev = root
         self.inOrder(root.right)
 
-# V2 
-# Time:  O(n)
-# Space: O(h)
+# V2
+# time = O(n)
+# space = O(h)
 class Solution(object):
     def minDiffInBST(self, root):
         """

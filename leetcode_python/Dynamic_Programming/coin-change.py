@@ -413,6 +413,8 @@ class Solution:
 # V1''''''
 # https://leetcode.com/problems/coin-change/discuss/114993/Four-kinds-of-solutions%3A-DP-BFS-DFS-improved-DFS
 # IDEA : DFS
+# time = O(n^(amount/min_coin))  # n = len(coins), exponential worst case, pruned by early termination
+# space = O(amount/min_coin)  # recursion depth
 class Solution:
     def coinChange(self, coins, amount):
         # improved dfs, use division first
@@ -445,6 +447,8 @@ class Solution:
 # V1'''''''
 # https://leetcode.com/problems/coin-change/discuss/77416/Python-11-line-280ms-DFS-with-early-termination-99-up
 # IDEA : DFS
+# time = O(n^(amount/min_coin))  # n = len(coins), exponential worst case, pruned by early termination
+# space = O(amount/min_coin)  # recursion depth
 class Solution(object):
     def coinChange(self, coins, amount):
         # help func
@@ -462,9 +466,9 @@ class Solution(object):
             dfs(i, amount, 0)
         return self.res if self.res < 2**31-1 else -1
 
-# V2 
-# Time:  O(n * k), n is the number of coins, k is the amount of money
-# Space: O(k)
+# V2
+# time = O(n * k)  # n is the number of coins, k is the amount of money
+# space = O(k)
 class Solution(object):
     def coinChange(self, coins, amount):
         """

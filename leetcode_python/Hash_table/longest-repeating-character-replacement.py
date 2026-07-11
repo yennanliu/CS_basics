@@ -109,6 +109,8 @@ class Solution(object):
 
 # V0-0-1
 # IDEA : SLIDING WINDOW + MAP + MAX_FREQ_CNT
+# time = O(n)  # max(cnt_map.values()) bounded by 26
+# space = O(1)  # bounded alphabet
 from collections import Counter
 
 class Solution(object):
@@ -151,6 +153,8 @@ class Solution(object):
 
 # V0
 # IDEA : SLIDING WINDOW + DICT + 2 POINTERS
+# time = O(n)  # max(table.values()) bounded by 26
+# space = O(1)  # bounded alphabet
 from collections import Counter
 class Solution(object):
     def characterReplacement(self, s, k):
@@ -190,6 +194,8 @@ class Solution(object):
         return res
     
 # V0'
+# time = O(n)  # max(cnt.values()) bounded by 26
+# space = O(1)  # bounded alphabet
 from collections import defaultdict
 class Solution:
     def characterReplacement(self, s, k):
@@ -216,6 +222,8 @@ class Solution:
 # -> EACH TIME WHEN RIGHT POINT MOVE (RIGHT), IF THE CURRENT WINDOW CAN BE ALL REPLACED BY THE LEGT POINT ELEMENT
 # -> THEN WE UPDATE THE MAX LENGTH,
 # -> IF NOT, MOVE LEFT POINT (RIGHT) AND UPDATE char2count
+# time = O(n)  # max(char2count.values()) bounded by 26
+# space = O(1)  # bounded alphabet
 from collections import defaultdict
 class Solution:
     def characterReplacement(self, s, k):
@@ -240,6 +248,8 @@ class Solution:
 # V1' 
 # http://bookshadow.com/weblog/2016/10/16/leetcode-longest-repeating-character-replacement/
 # IDEA : SLIDING WINDOW 
+# time = O(n)  # max(table.values()) bounded by 26
+# space = O(1)  # bounded alphabet
 class Solution(object):
     def characterReplacement(self, s, k):
         table = collections.Counter()
@@ -257,6 +267,8 @@ class Solution(object):
 # V1'' 
 # https://blog.csdn.net/fuxuemingzhu/article/details/79527303
 # IDEA : SLIDING WINDOW 
+# time = O(n)  # count.most_common(1) bounded by 26
+# space = O(1)  # bounded alphabet
 class Solution(object):
     def characterReplacement(self, s, k):
         """
@@ -278,6 +290,8 @@ class Solution(object):
 
 # V1''' 
 # http://bookshadow.com/weblog/2016/10/16/leetcode-longest-repeating-character-replacement/
+# time = O(n)  # n = len(s); interval bookkeeping bounded by total string length
+# space = O(n)  # cdict interval lists cover entire string
 class Solution(object):
     def characterReplacement(self, s, k):
         """
@@ -317,6 +331,8 @@ class Solution(object):
 
 # V1''''
 # https://leetcode.com/problems/longest-repeating-character-replacement/discuss/558076/Python-solution-without-library
+# time = O(n)  # max(counter) bounded by 26
+# space = O(1)  # fixed-size 26 array
 class Solution:
     def characterReplacement(self, s, k):
         if k > len(s):
@@ -335,6 +351,8 @@ class Solution:
 
 # V1''''
 # https://leetcode.com/problems/longest-repeating-character-replacement/discuss/867755/python-solution
+# time = O(n)  # max(cnt.values()) bounded by 26
+# space = O(1)  # bounded alphabet
 class Solution:
     def characterReplacement(self, s, k):        
         cnt = collections.defaultdict(int)
@@ -351,6 +369,8 @@ class Solution:
 # V1'''''
 # https://leetcode.com/problems/longest-repeating-character-replacement/discuss/535734/Python-two-pointers
 # IDEA : 2 POINTERS
+# time = O(n)  # max(seen) bounded by 26
+# space = O(1)  # fixed-size 26 array
 class Solution:
     def characterReplacement(self, s: str, k: int) -> int:
         seen = [0] * 26
@@ -365,8 +385,8 @@ class Solution:
         return res
 
 # V2 
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def characterReplacement(self, s, k):
         """

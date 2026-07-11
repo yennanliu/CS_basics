@@ -30,6 +30,8 @@ The answer for the given input will fit in a 32-bit integer.
 
 # V0 -> TIME OUT ERROR
 class Solution(object):
+    # time = O(1)  # bit-length of a,b is bounded (~32), constant work per call
+    # space = O(1)
     def get_dis(self, a, b):
         if a == b:
             return 0
@@ -44,6 +46,8 @@ class Solution(object):
             r += diff
         return r
       
+    # time = O(n^2)  # n = len(nums); get_dis called for every pair
+    # space = O(1)
     def totalHammingDistance(self, nums):
         r = 0
         for i in range(len(nums)-1):
@@ -57,6 +61,8 @@ class Solution(object):
 
 # V1
 # https://leetcode.com/problems/total-hamming-distance/discuss/96252/Python-O(nlogV)-time
+# time = O(n)  # n = len(nums); 32 * n work
+# space = O(1)
 class Solution(object):
     def totalHammingDistance(self, nums):
         ans = 0
@@ -74,6 +80,8 @@ class Solution(object):
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79494653
+# time = O(n)  # n = len(nums); 32 * n work
+# space = O(1)
 class Solution(object):
     def totalHammingDistance(self, nums):
         """
@@ -90,6 +98,8 @@ class Solution(object):
 
 # V1'
 # http://bookshadow.com/weblog/2016/12/18/leetcode-total-hamming-distance/
+# time = O(n)  # n = len(nums); 32 * n work
+# space = O(1)
 class Solution(object):
     def totalHammingDistance(self, nums):
         ans = 0
@@ -104,9 +114,9 @@ class Solution(object):
             ans += zero * one
         return ans
         
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def totalHammingDistance(self, nums):
         """

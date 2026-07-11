@@ -46,6 +46,8 @@ n == machines.length
 
 # V1
 # http://bookshadow.com/weblog/2017/02/19/leetcode-super-washing-machines/
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def findMinMoves(self, machines):
         """
@@ -65,6 +67,8 @@ class Solution(object):
 
 # V1'
 # http://bookshadow.com/weblog/2017/02/19/leetcode-super-washing-machines/
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def findMinMoves(self, machines):
         """
@@ -93,6 +97,8 @@ class Solution(object):
 
 # V1''
 # https://leetcode.com/problems/super-washing-machines/discuss/99187/JavaC%2B%2BPython-O(1)-Space
+# time = O(n)
+# space = O(1)
 class Solution:
     def findMinMoves(self, machines):
         total, n = sum(machines), len(machines)

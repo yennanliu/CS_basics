@@ -102,6 +102,8 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/nested-list-weight-sum/#tag-highlight-lang-python
+# time = O(n), n = total number of integers/lists in nestedList
+# space = O(n)
 class Solution(object):
     # @param {NestedInteger[]} nestedList a list of NestedInteger Object
     # @return {int} an integer

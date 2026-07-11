@@ -50,6 +50,8 @@ Note:
 # V1''
 # IDEA : DP
 # https://leetcode.com/discuss/interview-question/383669/Amazon-or-OAA-2019-or-Max-Min-Path-Value
+# time = O(m * n)
+# space = O(m * n)
 class Solution(object):
     def minPathSum(self, grid):
 
@@ -90,6 +92,8 @@ class Solution(object):
 # V1'
 # IDEA : DP
 # https://leetcode.com/discuss/interview-question/383669/Amazon-or-OAA-2019-or-Max-Min-Path-Value
+# time = O(m * n)
+# space = O(m * n)
 class Solution:
     def sol(self, nums):
         

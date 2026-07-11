@@ -2,7 +2,9 @@
 # Given an unsorted array nums, reorder it in-place such that nums[0] <= nums[1] >= nums[2] <= nums[3]....
 # For example, given nums = [3, 5, 2, 1, 6, 4], one possible answer is [1, 6, 2, 5, 3, 4].
 
-# V0 
+# V0
+# time = O(n)
+# space = O(1)
 class Solution:
     def wiggleSort(self, nums):
         """
@@ -20,6 +22,8 @@ class Solution:
 # IDEA : GO THROUGH THE LIST
 # FOR EVEN INDEX : SWAP n, n+1 IF nums(i) > nums(i+1)
 # FOR ODD INDEX : SWAP n, n+1 IF nums(i) < nums(i+1)
+# time = O(n)
+# space = O(1)
 class Solution:
     def wiggleSort(self, nums):
         """
@@ -34,6 +38,8 @@ class Solution:
 
 # V1''
 # https://www.jiuzhang.com/solution/wiggle-sort/#tag-highlight-lang-python
+# time = O(n)
+# space = O(1)
 class Solution:
     """
     @param: nums: A list of integers
@@ -48,9 +54,9 @@ class Solution:
             if should_swap:
                 nums[i], nums[i - 1] = nums[i - 1], nums[i]
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def wiggleSort(self, nums):
         """
@@ -63,9 +69,9 @@ class Solution(object):
                 # Swap unordered elements.
                 nums[i - 1], nums[i] = nums[i], nums[i - 1]
 
-# V3 
-# time: O(nlogn)
-# space: O(n)
+# V3
+# time = O(nlogn)
+# space = O(n)
 class Solution2(object):
     def wiggleSort(self, nums):
         """

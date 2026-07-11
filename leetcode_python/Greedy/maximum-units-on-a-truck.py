@@ -39,6 +39,8 @@ Constraints:
 
 # V0
 # IDEA: GREEDY (GEMINI)
+# time = O(n log n)
+# space = O(1)
 class Solution(object):
     def maximumUnits(self, boxTypes, truckSize):
         """
@@ -69,6 +71,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: GREEDY (GPT)
+# time = O(n log n)
+# space = O(1)
 from typing import List
 
 class Solution:
@@ -91,6 +95,8 @@ class Solution:
 
 # V0
 # IDEA : GREEDY + sorting
+# time = O(n log n)
+# space = O(1)
 class Solution(object):
     def maximumUnits(self, boxTypes, truckSize):
         # boxTypes[i] = [numberOfBoxesi, numberOfUnitsPerBoxi]:
@@ -121,6 +127,8 @@ class Solution(object):
 
 # V1
 # IDEA : GREEDY
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def maximumUnits(self, boxTypes, truckSize):
         res = 0
@@ -136,6 +144,8 @@ class Solution(object):
 # V1
 # IDEA : GREEDY
 # https://leetcode.com/problems/maximum-units-on-a-truck/discuss/1045318/Python-solution
+# time = O(n log n)
+# space = O(1)
 class Solution(object):
     def maximumUnits(self, boxTypes, truckSize):
         boxTypes.sort(key = lambda x: -x[1])
@@ -153,6 +163,8 @@ class Solution(object):
 
 # V1'
 # https://leetcode.com/problems/maximum-units-on-a-truck/discuss/1000278/Python-sort.-Short-and-fast-(100)
+# time = O(n log n)
+# space = O(1)
 class Solution:
     def maximumUnits(self, boxTypes, truckSize):
         boxTypes.sort(reverse=True, key=itemgetter(1))

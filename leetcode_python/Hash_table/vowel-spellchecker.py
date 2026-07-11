@@ -1,7 +1,9 @@
 # V0 
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/85389781
+# time = O(w + q)  # w = total chars in wordlist, q = total chars in queries
+# space = O(w)
 class Solution(object):
     def spellchecker(self, wordlist, queries):
         """
@@ -25,8 +27,8 @@ class Solution(object):
         return res
         
 # V2 
-# Time:  O(n)
-# Space: O(w)
+# time = O(n)
+# space = O(w)
 class Solution(object):
     def spellchecker(self, wordlist, queries):
         """

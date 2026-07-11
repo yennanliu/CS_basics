@@ -1,7 +1,9 @@
 # V0 
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/84206638
+# time = O(n * l)  # n = len(A[0]), l = len(A); sorted(col) per column
+# space = O(l)
 class Solution:
     def minDeletionSize(self, A):
         """
@@ -16,9 +18,9 @@ class Solution:
                 res += 1
         return res
         
-# V2 
-# Time:  O(n * l)
-# Space: O(1)
+# V2
+# time = O(n * l)
+# space = O(1)
 class Solution(object):
     def minDeletionSize(self, A):
         """
@@ -33,8 +35,8 @@ class Solution(object):
                     break
         return result
 
-# Time:  O(n * l)
-# Space: O(n)
+# time = O(n * l)
+# space = O(n)
 import itertools
 class Solution2(object):
     def minDeletionSize(self, A):

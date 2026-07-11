@@ -15,7 +15,9 @@
 #   3. Each word in str is separated by a single space.
 #   4. Each letter in pattern must map to a word with length that is at least 1.
 
-# V0 
+# V0
+# time = O(n)  # n = length of pattern / number of words
+# space = O(c)  # c = number of unique pattern chars
 class Solution(object):
     def wordPattern(self, pattern, str):
         """
@@ -48,6 +50,8 @@ class Solution(object):
 # {'a': 'dog', 'b': 'cat'} {'dog': 'a', 'cat': 'b'}
 # {'a': 'dog', 'b': 'cat'} {'dog': 'a', 'cat': 'b'}
 # Out[14]: True
+# time = O(n)  # n = length of pattern / number of words
+# space = O(c)  # c = number of unique pattern chars
 class Solution(object):
     def wordPattern(self, pattern, str):
         """
@@ -70,6 +74,8 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/word-pattern/#tag-highlight-lang-python
+# time = O(n)  # n = length of str
+# space = O(c)  # c = number of unique pattern/word tokens
 class Solution:
     """
     @param pattern: a string,denote pattern string
@@ -99,9 +105,9 @@ class Solution:
                 tmp += str[i]
         return True
 
-# V2 
-# Time:  O(n)
-# Space: O(c), c is unique count of pattern
+# V2
+# time = O(n)
+# space = O(c)  # c is unique count of pattern
 from itertools import izip  # Generator version of zip.
 class Solution(object):
     def wordPattern(self, pattern, str):
@@ -142,8 +148,8 @@ class Solution(object):
                 w += c
         yield w
 
-# Time:  O(n)
-# Space: O(n)
+# time = O(n)
+# space = O(n)
 class Solution2(object):
     def wordPattern(self, pattern, str):
         """

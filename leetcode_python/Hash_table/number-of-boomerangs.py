@@ -1,5 +1,5 @@
-# Time:  O(n^2)
-# Space: O(n)
+# time = O(n^2)
+# space = O(n)
 # Given n points in the plane that are all pairwise distinct,
 # a "boomerang" is a tuple of points (i, j, k) such that the distance
 # between i and j equals the distance between i and k (the order of the tuple matters).
@@ -32,6 +32,8 @@
 
 
 # V0 
+# time = O(n^2)
+# space = O(n)
 import collections
 class Solution(object):
     def numberOfBoomerangs(self, points):
@@ -52,6 +54,8 @@ class Solution(object):
 # IDEA : collections.defaultdict
 # http://bookshadow.com/weblog/2016/11/06/leetcode-number-of-boomerangs/
 # https://blog.csdn.net/fuxuemingzhu/article/details/54379349
+# time = O(n^2)
+# space = O(n)
 import collections
 class Solution(object):
     def numberOfBoomerangs(self, points):
@@ -70,6 +74,8 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/number-of-boomerangs/#tag-highlight-lang-python
+# time = O(n^2)
+# space = O(n)  # disCount dict bounded by n
 class Solution(object):
     def getDistance(self, a, b):
         dx = a[0] - b[0]
@@ -101,6 +107,8 @@ class Solution(object):
 # DEV 
 
 # V2 
+# time = O(n^2)
+# space = O(n)
 import collections
 class Solution(object):
     def numberOfBoomerangs(self, points):

@@ -56,6 +56,8 @@ dp[i][j] =
 
 
 """
+# time = O(m * n)
+# space = O(m * n)
 class Solution(object):
     def minDistance(self, word1, word2):
         n1 = len(word1)
@@ -101,6 +103,8 @@ class Solution(object):
 
 # V1
 # IDEA: 2D DP
+# time = O(m * n)
+# space = O(m * n)
 class Solution(object):
     def minDistance(self, word1, word2):
         """
@@ -136,6 +140,8 @@ class Solution(object):
 # V1
 # http://bookshadow.com/weblog/2017/05/15/leetcode-delete-operation-for-two-strings/
 # IDEA : DP + Longest Common Subsequence
+# time = O(m * n)
+# space = O(m * n)
 class Solution(object):
     def minDistance(self, word1, word2):
         """
@@ -162,6 +168,8 @@ class Solution(object):
 # dp[x][y] = x + y     if x == 0 or y == 0
 # dp[x][y] = dp[x - 1][y - 1]     if word1[x] == word2[y]
 # dp[x][y] = min(dp[x - 1][y], dp[x][y - 1]) + 1     otherwise
+# time = O(m * n)
+# space = O(m * n)
 class Solution(object):
     def minDistance(self, word1, word2):
         """
@@ -184,6 +192,8 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/delete-operation-for-two-strings/#tag-highlight-lang-python
+# time = O(m * n)
+# space = O(m * n)
 class Solution:
     """
     @param word1: a string
@@ -201,8 +211,8 @@ class Solution:
 
 
 # V2
-# Time:  O(m * n)
-# Space: O(n)
+# time = O(m * n)
+# space = O(n)
 class Solution(object):
     def minDistance(self, word1, word2):
         """

@@ -8,6 +8,8 @@
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)
+# space = O(h)  # h = tree height, worst O(n)
 class Solution(object):
     def flipEquiv(self, root1, root2):
         """
@@ -24,9 +26,9 @@ class Solution(object):
                 (self.flipEquiv(root1.left, root2.left) and 
                  self.flipEquiv(root1.right, root2.right))
                 
-# V2 
-# Time:  O(n)
-# Space: O(h)
+# V2
+# time = O(n)
+# space = O(h)
 # Definition for a binary tree node.
 class TreeNode(object):
     def __init__(self, x):

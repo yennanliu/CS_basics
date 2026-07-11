@@ -35,6 +35,8 @@ All the characters of order are unique.
 
 # V0
 # IDEA : COUNTER
+# time = O(n)
+# space = O(n)
 from collections import Counter
 class Solution(object):
     def customSortString(self, order, s):
@@ -50,6 +52,8 @@ class Solution(object):
 
 # V0'
 # IDEA : COUNTER
+# time = O(n)
+# space = O(n)
 from collections import Counter
 class Solution(object):
     def customSortString(self, order, s):
@@ -74,6 +78,8 @@ class Solution(object):
 
 # V0''
 # IDEA : COUNTER 
+# time = O(n)
+# space = O(n)
 from collections import Counter
 class Solution(object):
     def customSortString(self, S, T):
@@ -88,6 +94,8 @@ class Solution(object):
         
 # V0'''
 # IDEA : COUNTER + SORT KEY LAMBDA 
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def customSortString(self, S, T):
         """
@@ -101,9 +109,11 @@ class Solution(object):
         res = sorted(T, key = lambda x : pos[x])
         return "".join(res)
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79378688
 # IDEA : COUNTER 
+# time = O(n)
+# space = O(n)
 from collections import Counter
 class Solution(object):
     def customSortString(self, S, T):
@@ -121,9 +131,11 @@ class Solution(object):
             answer += c * count[c]
         return answer
 
-# V1' 
+# V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/79378688
 # IDEA : SORT
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def customSortString(self, S, T):
         """
@@ -139,6 +151,8 @@ class Solution(object):
 
 # V1''
 # https://www.jiuzhang.com/solution/custom-sort-string/#tag-highlight-lang-python
+# time = O(n)
+# space = O(n)
 class Solution:
     """
     @param S: The given string S
@@ -160,9 +174,9 @@ class Solution:
                 res += chr(ord('a') + i)
         return res
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 import collections
 class Solution(object):
     def customSortString(self, S, T):

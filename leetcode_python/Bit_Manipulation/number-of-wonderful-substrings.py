@@ -65,6 +65,8 @@ word consists of lowercase English letters from 'a' to 'j'.
 # We find the number of wonderful string with all even number of characters.
 # Then we flip each of bits, 10 at most, and doing this again.
 # This will help to find string with at most one odd number of characters.
+# time = O(n)
+# space = O(1)
 class Solution:
       def wonderfulSubstrings(self, word):
             count = [1] + [0] * 1024
@@ -77,6 +79,8 @@ class Solution:
             return res
 # V1'
 # https://leetcode-cn.com/problems/number-of-wonderful-substrings/solution/zui-mei-zi-zi-fu-chuan-de-shu-mu-by-leet-2j7g/
+# time = O(n)
+# space = O(1)
 class Solution:
     def wonderfulSubstrings(self, word: str) -> int:
         freq = Counter([0])
@@ -98,6 +102,8 @@ class Solution:
 # V1''
 # IDEA : bit op (bit mask)
 # https://leetcode.com/problems/number-of-wonderful-substrings/discuss/1301408/Bitmask-with-pictures-or-Python-or-O(N)
+# time = O(n)
+# space = O(1)
 class Solution:
     def wonderfulSubstrings(self, word: str) -> int:
         # count is a bitmask where each bit represent the count of a character from a-j % 2
@@ -123,6 +129,8 @@ class Solution:
 
 # V1'''
 # https://leetcode.com/problems/number-of-wonderful-substrings/discuss/1301195/python-easiest-soln-bit-masking
+# time = O(n)
+# space = O(1)
 class Solution:
     def wonderfulSubstrings(self, word: str) -> int:
         dp=defaultdict(int)
@@ -152,6 +160,8 @@ class Solution:
 # Now coming to this problem, let's say we want a subarray which gives 1000000000 and we have a "curr" value( similar to running sum mentioned above ) so we should check if dp[ curr - 1000000000] . But since these are binary numbers dp[ curr - 1000000000] is equivalent to dp[ curr ^ 1000000000] --> dp[ curr^(1<<pos)] here pos=10.
 # The reason for checking curr^1000000000 was curr ^ (curr^1000000000) = 1000000000.
 # Similarily we want to check all other possibilities like 0100000000, 0010000000,... etc. All these cases corresponds to having one character with odd count and others with even count
+# time = O(n)
+# space = O(1)
 class Solution:
     def wonderfulSubstrings(self, word: str) -> int:
         # we are representing each char with a bit, 0 for count being even and 1 for odd
@@ -191,6 +201,8 @@ class Solution:
 # V1'''''
 # IDEA : bit mask
 # https://leetcode.com/problems/number-of-wonderful-substrings/discuss/1299556/Python3.-One-pass.-O(N).-Bit-masks.
+# time = O(n)
+# space = O(1)
 class Solution:
     # idea: we don't need to know exact substring to define if it's "wonderful" or not
     #   but rather if number of occurrences of each letter is odd/even;
@@ -240,6 +252,8 @@ class Solution:
 # V1''''''
 # IDEA : prefix bit mask
 # https://leetcode.com/problems/number-of-wonderful-substrings/discuss/1300891/Python-3-Prefix-bit-mask
+# time = O(n)
+# space = O(1)
 class Solution:
     def wonderfulSubstrings(self, word: str) -> int:
         n = len(word)
@@ -261,6 +275,8 @@ class Solution:
 # V1''''''''
 # IDEA : prefix sum (TLE)
 # https://leetcode.com/problems/number-of-wonderful-substrings/discuss/1412294/Python-or-Prefix-Sum-No-Bit-Vector-or-Slow-but-easy-to-understand
+# time = O(n)
+# space = O(1)
 class Solution:
     def wonderfulSubstrings(self, word: str) -> int:
         prefix = collections.defaultdict(int)

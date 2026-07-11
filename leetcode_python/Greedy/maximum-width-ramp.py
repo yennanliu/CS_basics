@@ -1,8 +1,10 @@
 # V0 
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/85223568
 # IDEA : STACK 
+# time = O(n^2)  # worst case: inner while doesn't pop, can rescan full stack per index
+# space = O(n)
 class Solution(object):
     def maxWidthRamp(self, A):
         """
@@ -22,9 +24,9 @@ class Solution(object):
                     x -= 1
         return res
 
-# V2 
-# Time:  O(n)
-# Space: O(n)
+# V2
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def maxWidthRamp(self, A):
         """

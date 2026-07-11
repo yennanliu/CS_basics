@@ -1,8 +1,10 @@
 # V0 
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/82902655
 # IDEA : DP 
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def wiggleMaxLength(self, nums):
         """
@@ -21,9 +23,11 @@ class Solution(object):
                     dec[x] = max(dec[x], inc[y] + 1)
         return max(inc[-1], dec[-1])
 
-# V1' 
+# V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/82902655
 # IDEA : DP 
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def wiggleMaxLength(self, nums):
         """
@@ -46,9 +50,11 @@ class Solution(object):
                 dec[x] = dec[x - 1]
         return max(inc[-1], dec[-1])
 
-# V1'' 
+# V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/82902655
 # IDEA : DP 
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def wiggleMaxLength(self, nums):
         """
@@ -66,9 +72,9 @@ class Solution(object):
                 dec = inc + 1
         return max(inc, dec)
        
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def wiggleMaxLength(self, nums):
         """

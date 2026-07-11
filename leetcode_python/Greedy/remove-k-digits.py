@@ -66,6 +66,8 @@ Answer:
 1219
 
 """
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def removeKdigits(self, num, k):
 
@@ -123,6 +125,8 @@ Answer:
 1219
 
 """
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def removeKdigits(self, num, k):
         stack = []
@@ -157,6 +161,8 @@ class Solution(object):
 
 # V0-2
 # IDEA: STACK (GEMINI)
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def removeKdigits(self, num, k):
         """
@@ -191,9 +197,11 @@ class Solution(object):
         return res if res else "0"
 
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/81034522
 # IDEA : STACK 
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def removeKdigits(self, num, k):
         """
@@ -216,9 +224,9 @@ class Solution(object):
             return '0'
         return str(int("".join(stack)))
        
-# V2 
-# Time:  O(n)
-# Space: O(n)
+# V2
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def removeKdigits(self, num, k):
         """

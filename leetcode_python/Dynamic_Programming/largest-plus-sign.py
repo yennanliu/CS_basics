@@ -2,6 +2,8 @@
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/82725695
+# time = O(n^2)
+# space = O(n^2)
 class Solution:
     def orderOfLargestPlusSign(self, N, mines):
         """
@@ -37,6 +39,8 @@ class Solution:
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/82725695
+# time = O(n^2)
+# space = O(n^2)
 class Solution:
     def orderOfLargestPlusSign(self, N, mines):
         """
@@ -67,6 +71,8 @@ class Solution:
         
 # V1''
 # https://www.jiuzhang.com/solution/largest-plus-sign/#tag-highlight-lang-python
+# time = O(n^2)
+# space = O(n^2)
 class Solution(object):
     def orderOfLargestPlusSign(self, N, mines):
         """
@@ -115,8 +121,8 @@ class Solution(object):
         return (MaxK)
 
 # V2
-# Time:  O(n^2)
-# Space: O(n^2)
+# time = O(n^2)
+# space = O(n^2)
 class Solution(object):
     def orderOfLargestPlusSign(self, N, mines):
         """

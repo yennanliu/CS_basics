@@ -2,6 +2,8 @@
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/82997932
+# time = O(1)  # N capped at 5600 by early return, so states are bounded
+# space = O(1)
 class Solution:
     def soupServings(self, N):
         """
@@ -24,8 +26,8 @@ class Solution:
         return prob
         
 # V2
-# Time:  O(1)
-# Space: O(1)
+# time = O(1)
+# space = O(1)
 class Solution(object):
     def soupServings(self, N):
         """

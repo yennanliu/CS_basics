@@ -1,7 +1,9 @@
 # V0 
 
-# V1 
+# V1
 # https://blog.csdn.net/zjucor/article/details/84927488
+# time = O(n * l^2)  # n = len(A), l = len(A[0]); per-column string concat + sort
+# space = O(n * l)
 class Solution(object):
     def minDeletionSize(self, A):
         """
@@ -18,9 +20,9 @@ class Solution(object):
                 res+=1
         return res
         
-# V2 
-# Time:  O(n * l)
-# Space: O(n)
+# V2
+# time = O(n * l)
+# space = O(n)
 class Solution(object):
     def minDeletionSize(self, A):
         """
@@ -36,8 +38,8 @@ class Solution(object):
                 unsorted -= set(i for i in unsorted if A[i][j] < A[i+1][j])
         return result
 
-# Time:  O(n * m)
-# Space: O(n)
+# time = O(n * m)
+# space = O(n)
 class Solution2(object):
     def minDeletionSize(self, A):
         """

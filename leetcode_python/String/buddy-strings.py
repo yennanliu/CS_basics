@@ -2,6 +2,8 @@
 
 # V1
 # https://blog.csdn.net/XX_123_1_RJ/article/details/80984277
+# time = O(n)
+# space = O(n)
 class Solution:
     def buddyStrings(self, A, B):
         if len(A) != len(B): return False  # if len(A) != len(B)
@@ -21,6 +23,8 @@ class Solution:
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/80916203
+# time = O(n)
+# space = O(n)
 class Solution:
     def buddyStrings(self, A, B):
         """
@@ -47,9 +51,9 @@ class Solution:
             return False
         return A[idxs[0]] == B[idxs[1]] and A[idxs[1]] == B[idxs[0]]
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 import itertools
 class Solution(object):
     def buddyStrings(self, A, B):

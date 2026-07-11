@@ -39,6 +39,8 @@ Constraints:
 
 # V0
 # IDEA : DP
+# time = O(k * n^2)  # n = N, k = K
+# space = O(n^2)
 class Solution(object):
     def knightProbability(self, N, K, r, c):
         dp = [[0 for i in range(N)] for j in range(N)]
@@ -60,6 +62,8 @@ class Solution(object):
 # https://blog.csdn.net/fuxuemingzhu/article/details/82747623
 # IDEA : DP
 # DP (dp[i][j]) hear means "how many times the horse can get to this place (i,j) in this round"
+# time = O(k * n^2)  # n = N, k = K
+# space = O(n^2)
 class Solution(object):
     def knightProbability(self, N, K, r, c):
         """
@@ -94,6 +98,8 @@ class Solution:
     @param c: int
     @return: the probability
     """
+    # time = O(k * n^2)  # n = N, k = K
+    # space = O(n^2)
     def knightProbability(self, N, K, r, c):
         # Write your code here.
         next = [[-1, -2], [1, -2], [2, -1], [2, 1], [1, 2], [-1, 2], [-2, 1], [-2, -1]]
@@ -115,8 +121,8 @@ class Solution:
         return res
 
 # V2
-# Time:  O(k * n^2)
-# Space: O(n^2)
+# time = O(k * n^2)
+# space = O(n^2)
 class Solution(object):
     def knightProbability(self, N, K, r, c):
         """

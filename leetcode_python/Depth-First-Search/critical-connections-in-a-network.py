@@ -38,6 +38,8 @@ There are no repeated connections.
 # V1
 # IDEA : Depth First Search for Cycle Detection
 # https://leetcode.com/problems/critical-connections-in-a-network/solution/
+# time = O(V + E)  # V = n servers, E = len(connections); Tarjan-style DFS
+# space = O(V + E)  # graph adjacency + rank/conn_dict + recursion depth
 class Solution:
     
     rank = {}
@@ -108,6 +110,8 @@ class Solution:
 # IDEA : DFS
 # IDEA : Inspired by tarjan, but simplified to just do what is requested in a problem, i.e. find the critical paths (and not strongly connected components):
 # https://leetcode.com/problems/critical-connections-in-a-network/discuss/1082197/Python-DFS
+# time = O(V + E)  # V = n servers, E = len(connections); Tarjan-style DFS
+# space = O(V + E)  # graph adjacency + low map + recursion depth
 class Solution(object):
     def criticalConnections(self, n, connections):
         # help func
@@ -143,6 +147,8 @@ class Solution(object):
 # V1'
 # IDEA : GRAPH
 # https://leetcode.com/problems/critical-connections-in-a-network/discuss/571964/Python-Solution
+# time = O(V + E)  # V = n servers, E = len(connections); Tarjan-style DFS
+# space = O(V + E)  # graph adjacency + ids/lows arrays + recursion depth
 class Solution(object):
         def criticalConnections(self, n, connections):
             def graph(connections):
@@ -186,6 +192,8 @@ class Solution(object):
 # V1''
 # IDEA : tarjans algorithm
 # https://leetcode.com/problems/critical-connections-in-a-network/discuss/832441/Python-Tarjans-Implementation
+# time = O(V + E)  # V = n servers, E = len(edges); Tarjan's bridge-finding DFS
+# space = O(V + E)  # graph adjacency + seen/low/time arrays + recursion depth
 class Solution:
     def criticalConnections(self, n, edges):
         #tarjans algorithm - cut edge (Articulation edges)

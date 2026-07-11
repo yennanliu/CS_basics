@@ -201,6 +201,8 @@ class Solution(object):
 # V1''''''
 # IDEA : 2 PASS
 # https://leetcode.com/problems/subarrays-with-k-different-integers/discuss/348984/Different-Python-two-pointer-solutions
+# time = O(n)
+# space = O(k)
 class Solution:
     def subarraysWithKDistinct(self, A, K):
         return self.atMostK(A, K) - self.atMostK(A, K - 1)

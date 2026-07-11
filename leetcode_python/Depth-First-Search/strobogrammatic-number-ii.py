@@ -1,4 +1,6 @@
-# V0 
+# V0
+# time = O(n^2 * 5^(n/2))
+# space = O(n)  # recursion depth (excludes O(5^(n/2)) output storage)
 class Solution:
     """
     @param n: the length of strobogrammatic number
@@ -31,6 +33,8 @@ class Solution:
 # n = 4 -> ans =   11??11, 11??69, 11??88 .... for ?? in [11, 69, 88, 96, 00]
 # .
 # .
+# time = O(n^2 * 5^(n/2))
+# space = O(n)  # recursion depth (excludes O(5^(n/2)) output storage)
 class Solution:
     """
     @param n: the length of strobogrammatic number
@@ -55,9 +59,11 @@ class Solution:
         premid = ( n - 1 ) / 2
         return [p[:premid] + c + p[premid:] for c in midCandidate for p in pre]
 
-# V1' 
+# V1'
 # https://www.cnblogs.com/grandyang/p/5200919.html
 # http://www.voidcn.com/article/p-rltfcrmu-zo.html
+# time = O(n^2 * 5^(n/2))
+# space = O(n * 5^(n/2))  # ret1 stores up to 5^(n/2) strings of length n
 from copy import copy
 class Solution(object):
     def findStrobogrammatic(self, n):
@@ -93,9 +99,9 @@ class Solution(object):
                     
         return ret1
 
-# V2 
-# Time:  O(n^2 * 5^(n/2))
-# Space: O(n)
+# V2
+# time = O(n^2 * 5^(n/2))
+# space = O(n)
 class Solution(object):
     lookup = {'0':'0', '1':'1', '6':'9', '8':'8', '9':'6'}
 

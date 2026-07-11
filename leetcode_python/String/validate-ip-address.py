@@ -265,6 +265,8 @@ class Solution(object):
 
 # V1'''''
 # https://www.jiuzhang.com/solution/validate-ip-address/#tag-highlight-lang-python
+# time = O(1)
+# space = O(1)
 class Solution(object):
     def validIPAddress(self, IP):
         """
@@ -299,9 +301,9 @@ class Solution(object):
                 return 'IPv6'
         return 'Neither'
 
-# V2 
-# Time:  O(1)
-# Space: O(1)
+# V2
+# time = O(1)
+# space = O(1)
 import string
 class Solution(object):
     def validIPAddress(self, IP):

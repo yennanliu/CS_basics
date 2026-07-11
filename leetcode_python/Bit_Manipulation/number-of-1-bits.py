@@ -39,6 +39,8 @@ Follow up: If this function is called many times, how would you optimize it?
 
 # V0
 # The bin() method returns the binary string equivalent to the given integer.
+# time = O(log n)  # n = value; bin(n) has O(log n) bits
+# space = O(log n)  # bin(n) string
 class Solution(object):
     def hammingWeight(self, n):
         """
@@ -50,6 +52,8 @@ class Solution(object):
 # V0'
 # IDEA : bit manipulation : n&(n-1) CAN REMOVE LAST 1 PER LOOP
 # https://github.com/labuladong/fucking-algorithm/blob/master/%E7%AE%97%E6%B3%95%E6%80%9D%E7%BB%B4%E7%B3%BB%E5%88%97/%E5%B8%B8%E7%94%A8%E7%9A%84%E4%BD%8D%E6%93%8D%E4%BD%9C.md
+# time = O(log n)  # loop runs once per set bit, bounded by bit length
+# space = O(1)
 class Solution:
     def hammingWeight(self, n: int) -> int:
         
@@ -79,6 +83,8 @@ class Solution:
 # 1 & 0 = 0
 # 1 & 1 = 1
 # 0 & 0 = 0 
+# time = O(log n)
+# space = O(1)
 class Solution:
     # @param n, an integer
     # @return an integer
@@ -91,6 +97,8 @@ class Solution:
 
 # V1' 
 # http://bookshadow.com/weblog/2015/03/10/leetcode-number-1-bits/
+# time = O(log n)
+# space = O(1)
 class Solution:
     # @param n, an integer
     # @return an integer
@@ -105,6 +113,8 @@ class Solution:
 # https://blog.csdn.net/coder_orz/article/details/51323188
 # IDEA 
 # The bin() method returns the binary string equivalent to the given integer.
+# time = O(log n)  # n = value; bin(n) has O(log n) bits
+# space = O(log n)  # bin(n) string
 class Solution(object):
     def hammingWeight(self, n):
         """
@@ -114,8 +124,8 @@ class Solution(object):
         return bin(n).count('1')
 
 # V2 
-# Time:  O(logn) = O(32)
-# Space: O(1)
+# time = O(logn) = O(32)
+# space = O(1)
 class Solution(object):
     # @param n, an integer
     # @return an integer

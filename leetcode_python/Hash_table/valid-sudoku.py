@@ -55,6 +55,8 @@ board[i][j] is a digit 1-9 or '.'.
 
 
 # V0
+# time = O(9^2)  # board is fixed at 9x9
+# space = O(9)
 class Solution(object):
     def isValidSudoku(self, board):
         n = 9
@@ -108,6 +110,8 @@ class Solution(object):
 
 
 # V0
+# time = O(9^2)  # board is fixed at 9x9
+# space = O(9)
 class Solution(object):
     def isValidSudoku(self, board):
         """
@@ -149,6 +153,8 @@ class Solution(object):
 
 
 # V0-1
+# time = O(9^2)  # board is fixed at 9x9
+# space = O(9^2)
 class Solution(object):
     def isValidSudoku(self, board):
         rows = [set() for _ in range(9)]
@@ -176,9 +182,11 @@ class Solution(object):
         return True
 
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/82813653
 # IDEA : GREEDY 
+# time = O(9^2)  # board is fixed at 9x9
+# space = O(9)
 class Solution(object):
     def isValidSudoku(self, board):
         """
@@ -221,6 +229,8 @@ class Solution(object):
 # V1'
 # https://blog.csdn.net/coder_orz/article/details/51596499
 # IDEA : HASH TABLE 
+# time = O(9^2)  # board is fixed at 9x9
+# space = O(9^2)
 class Solution(object):
     def isValidSudoku(self, board):
         """
@@ -236,6 +246,8 @@ class Solution(object):
 
 # V1''
 # https://www.jiuzhang.com/solution/valid-sudoku/#tag-highlight-lang-python
+# time = O(9^2)  # board is fixed at 9x9
+# space = O(9^2)
 class Solution:
     # @param board, a 9x9 2D array
     # @return a boolean
@@ -261,7 +273,9 @@ class Solution:
                 col[c].add(board[r][c])
         return True
 
-# V2 
+# V2
+# time = O(9^2)  # board is fixed at 9x9
+# space = O(9)
 class Solution(object):
     def isValidSudoku(self, board):
         """
@@ -297,8 +311,8 @@ class Solution(object):
 
 
 # V3
-# Time:  O(9^2)
-# Space: O(9)
+# time = O(9^2)
+# space = O(9)
 class Solution(object):
     def isValidSudoku(self, board):
         """

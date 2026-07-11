@@ -41,6 +41,8 @@ n == pairs.length
 # -> loop over pairts
 # -> if j == 0 or pairs[j][0] > pairs[i][1]
 #    -> make i = j, and cnt += 1
+# time = O(n log n)
+# space = O(1)
 class Solution(object):
     def findLongestChain(self, pairs):
         pairs.sort(key=lambda x: x[1])
@@ -82,6 +84,8 @@ class Solution(object):
 # x = 9 y = 10
 #  currTime = 9 ans = 4
 # 4
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def findLongestChain(self, pairs):
         pairs = sorted(pairs, key=lambda x : x[1])
@@ -94,10 +98,12 @@ class Solution(object):
                 ans += 1
         return ans
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79826524
 # http://bookshadow.com/weblog/2017/07/24/leetcode-maximum-length-of-pair-chain/
 # IDEA : GREEDY
+# time = O(n log n)
+# space = O(1)
 class Solution(object):
     def findLongestChain(self, pairs):
         """
@@ -128,6 +134,8 @@ assert s.findLongestChain([[i, i+1] for i in range(10)]) == 5
 # IDEA : DP 
 # time complexity : O(N^2)
 # space complexity : O(N)
+# time = O(n^2)
+# space = O(n)
 class Solution(object): #Time Limit Exceeded
     def findLongestChain(self, pairs):
         pairs.sort()
@@ -143,6 +151,8 @@ class Solution(object): #Time Limit Exceeded
 # V1''
 # https://leetcode.com/problems/maximum-length-of-pair-chain/solution/
 # IDEA : GREEDY
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def findLongestChain(self, pairs):
         cur, ans = float('-inf'), 0
@@ -155,6 +165,8 @@ class Solution(object):
 # V1'''
 # https://leetcode.com/problems/maximum-length-of-pair-chain/discuss/105608/Python-DP-solution
 # IDEA : DP
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def findLongestChain(self, pairs):
         """
@@ -173,6 +185,8 @@ class Solution(object):
 # V1''''
 # https://leetcode.com/problems/maximum-length-of-pair-chain/discuss/105640/O(nlogn)-Python-solution-binary-search-easy-to-understand
 # IDEA : BINARY SEARCH
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def findLongestChain(self, pairs):
         """
@@ -192,9 +206,9 @@ class Solution(object):
         
         return bisect.bisect_left(min_end_y, float('inf'))
 
-# V2 
-# Time:  O(nlogn)
-# Space: O(1)
+# V2
+# time = O(nlogn)
+# space = O(1)
 class Solution(object):
     def findLongestChain(self, pairs):
         """

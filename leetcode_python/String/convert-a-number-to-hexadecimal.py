@@ -47,6 +47,8 @@
 # https://www.jianshu.com/p/2d57cec55393
 # divmod(17, 16) = (1,1)
 # divmod(3, 1) = (3,0)
+# time = O(log n)
+# space = O(log n)
 def toHex(num):
     ret = ''
     map = ('0', '1','2','3','4','5','6','7','8','9','a','b','c','d','e','f')
@@ -60,8 +62,8 @@ def toHex(num):
     return ret[::-1]
 
 # V2
-# Time:  O(logn)
-# Space: O(1)
+# time = O(log n)
+# space = O(1)
 class Solution(object):
     def toHex(self, num):
         """

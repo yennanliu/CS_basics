@@ -40,6 +40,8 @@ equations[i][3] is a lowercase letter.
 
 # V0
 # IDEA: DFS (gpt)
+# time = O(n)  # n = len(equations); graph bounded by 26 variable nodes
+# space = O(n)
 class Solution(object):
     def equationsPossible(self, equations):
 
@@ -196,6 +198,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: DFS (gemini)
+# time = O(n)  # n = len(equations); graph bounded by 26 variable nodes
+# space = O(n)
 class Solution(object):
     def equationsPossible(self, equations):
         """
@@ -260,6 +264,8 @@ class Solution(object):
 # V2
 # IDEA: HASHMAP
 # https://leetcode.com/problems/satisfiability-of-equality-equations/solutions/2625908/on-solution-using-hashmap-by-namanxk-2dkh/
+# time = O(n * α(n))  # n = len(equations); union-find with path compression
+# space = O(n)
 class Solution:
     def equationsPossible(self, equations: List[str]) -> bool:
         unionFind = {}

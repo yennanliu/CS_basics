@@ -63,6 +63,8 @@ input may contain lowercase or uppercase English letters, a new line character '
 
 # V0
 # IDEA : dict + replae, split
+# time = O(n * d)  # n = len(input), d = max depth (directory levels seen so far)
+# space = O(d)  # d = max depth of the paths
 class Solution(object):
     def lengthLongestPath(self, input):
         # NOTE : we maintain a dict for collecting key and the length till now
@@ -86,6 +88,8 @@ class Solution(object):
 
 # V0'
 # IDEA : HASH TABLE
+# time = O(n)
+# space = O(d)  # d = max depth of the paths
 class Solution(object):
     def lengthLongestPath(self, input):
         maxlen = 0
@@ -102,6 +106,8 @@ class Solution(object):
 
 # V0''
 # IDEA : stack + string op
+# time = O(n)  # n = len(input); amortized stack push/pop
+# space = O(d)  # d = max depth of the paths
 class Solution:
     def lengthLongestPath(self, input):
         parts = input.split('\n')
@@ -123,6 +129,8 @@ class Solution:
 # V1
 # IDEA :STACK
 # https://leetcode.com/problems/longest-absolute-file-path/discuss/812407/Python-3-or-Stack-or-Explanation
+# time = O(n)  # n = len(input); amortized stack push/pop
+# space = O(d)  # d = max depth of the paths
 class Solution:
     def lengthLongestPath(self, s: str) -> int:
         paths, stack, ans = s.split('\n'), [], 0
@@ -143,6 +151,8 @@ class Solution:
 # V1
 # IDEA : dict + replae, split
 # https://leetcode.com/problems/longest-absolute-file-path/discuss/86640/python-solution-easy-to-understand
+# time = O(n * d)  # n = len(input), d = max depth (directory levels seen so far)
+# space = O(d)  # d = max depth of the paths
 class Solution(object):
     def lengthLongestPath(self, input):
         dict={}
@@ -162,6 +172,8 @@ class Solution(object):
 
 # V1'
 # http://bookshadow.com/weblog/2016/08/21/leetcode-longest-absolute-file-path/
+# time = O(n)  # n = len(input); amortized stack push/pop
+# space = O(d)  # d = max depth of the paths
 class Solution(object):
     def lengthLongestPath(self, input):
         """
@@ -189,6 +201,8 @@ class Solution(object):
 # https://leetcode.com/problems/longest-absolute-file-path/discuss/86619/Simple-Python-solution
 # IDEA : lstrip() : Remove spaces to the left of the string:
 # https://www.w3schools.com/python/ref_string_lstrip.asp
+# time = O(n)
+# space = O(d)  # d = max depth of the paths
 class Solution(object):
     def lengthLongestPath(self, input):
         maxlen = 0
@@ -206,6 +220,8 @@ class Solution(object):
 
 # V1'''
 # http://bookshadow.com/weblog/2016/08/21/leetcode-longest-absolute-file-path/
+# time = O(n)
+# space = O(d)  # d = max depth of the paths
 class Solution(object):
     def lengthLongestPath(self, input):
         """
@@ -225,6 +241,8 @@ class Solution(object):
 
 # V1''''
 # https://www.jiuzhang.com/solution/longest-absolute-file-path/#tag-highlight-lang-python
+# time = O(n^2)  # worst case: cumulative path strings rebuilt via concatenation per line
+# space = O(n)  # dict stores full cumulative path strings per depth level
 import re, collections
 class Solution:
     # @param {string} input an abstract file system
@@ -248,6 +266,8 @@ class Solution:
 
 # V1'''''
 # https://leetcode.com/problems/longest-absolute-file-path/discuss/266896/Simple-(Python)-solution-with-detailed-explanation
+# time = O(n)
+# space = O(d)  # d = max depth of the paths
 class Solution:
     def lengthLongestPath(self, input: str) -> int:
         # return value
@@ -294,6 +314,8 @@ class Solution:
 
 # V1'''''''
 # https://leetcode.com/problems/longest-absolute-file-path/discuss/328592/python3-beats-99
+# time = O(n)  # n = len(input); amortized stack push/pop
+# space = O(d)  # d = max depth of the paths
 class Solution:
     def lengthLongestPath(self, input):
         parts = input.split('\n')
@@ -312,8 +334,8 @@ class Solution:
         return ans
 
 # V2
-# Time:  O(n)
-# Space: O(d), d is the max depth of the paths
+# time = O(n)
+# space = O(d)  # d = max depth of the paths
 class Solution(object):
     def lengthLongestPath(self, input):
         """

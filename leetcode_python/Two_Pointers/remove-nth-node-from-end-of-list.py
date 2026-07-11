@@ -37,6 +37,8 @@ Follow up: Could you do this in one pass?
 
 
 # V0
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def removeNthFromEnd(self, head, n):
         # Dummy node to handle edge cases (like deleting head)
@@ -71,6 +73,8 @@ class Solution(object):
 #   step 2) we move fast, and slow pointers till fast pointer meet the end
 #   step 3) then we point slow.next to slow.next.next (same as we remove n node)
 #   step 4) we return new_head.next as final result
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def removeNthFromEnd(self, head, n):
         new_head = ListNode(0)
@@ -87,6 +91,8 @@ class Solution(object):
 # V1
 # IDEA : FAST-SLOW POINTERS
 # https://blog.csdn.net/coder_orz/article/details/51691267
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def removeNthFromEnd(self, head, n):
         new_head = ListNode(0)
@@ -147,6 +153,8 @@ class Solution(object):
 
 # V1'''
 # https://www.jiuzhang.com/solution/remove-nth-node-from-end-of-list/#tag-highlight-lang-python
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def removeNthFromEnd(self, head, n):
         res = ListNode(0)
@@ -162,6 +170,8 @@ class Solution(object):
 
 # V1''''
 # https://leetcode.com/problems/remove-nth-node-from-end-of-list/discuss/287711/Solution-in-Python
+# time = O(n)
+# space = O(1)
 class Solution:
     def removeNthFromEnd(self, head, n):
         if head.next == None:
@@ -187,6 +197,8 @@ class Solution:
 # V1'''''
 # IDEA : DICT
 # https://leetcode.com/problems/remove-nth-node-from-end-of-list/discuss/1524633/Runtime-24-ms-python-solution-with-dict
+# time = O(n)
+# space = O(n)
 class Solution:
     def removeNthFromEnd(self, head, n):
         curr = head
@@ -210,6 +222,8 @@ class Solution:
 # V1''''''
 # IDEA : Value-Shifting 
 # https://leetcode.com/problems/remove-nth-node-from-end-of-list/discuss/8802/3-short-Python-solutions
+# time = O(n)
+# space = O(n)  # recursion stack
 class Solution:
     def removeNthFromEnd(self, head, n):
         def index(node):
@@ -225,6 +239,8 @@ class Solution:
 # V1'''''''
 # IDEA : Index and Remove
 # https://leetcode.com/problems/remove-nth-node-from-end-of-list/discuss/8802/3-short-Python-solutions
+# time = O(n)
+# space = O(n)  # recursion stack
 class Solution:
     def removeNthFromEnd(self, head, n):
         def remove(head):
@@ -237,6 +253,8 @@ class Solution:
 # V1''''''''
 # IDEA : n ahead
 # https://leetcode.com/problems/remove-nth-node-from-end-of-list/discuss/8802/3-short-Python-solutions
+# time = O(n)
+# space = O(1)
 class Solution:
     def removeNthFromEnd(self, head, n):
         fast = slow = head
@@ -253,6 +271,8 @@ class Solution:
 # V1'''''''''
 # IDEA : MOVE last ~ n node
 # https://blog.csdn.net/coder_orz/article/details/51691267
+# time = O(n)
+# space = O(n)  # recursion stack
 class Solution(object):
     def removeNthFromEnd(self, head, n):
         def getIndex(node):
@@ -267,6 +287,8 @@ class Solution(object):
 
 # V1''''''''' 
 # https://blog.csdn.net/coder_orz/article/details/51691267
+# time = O(n)
+# space = O(n)  # recursion stack
 class Solution(object):
     def removeNthFromEnd(self, head, n):
         def remove(node):
@@ -290,6 +312,8 @@ class ListNode:
         else:
             return "{} -> {}".format(self.val, repr(self.__next__))
 
+# time = O(n)
+# space = O(n)
 class Solution:
     # @return a ListNode
     def removeNthFromEnd(self, head, n):
@@ -308,6 +332,8 @@ class Solution:
 # then move p1 only for n steps 
 # then move p1 and p2 on the same time 
 # when p1.next == None  --->  p2.next is the to-delete node 
+# time = O(n)
+# space = O(1)
 class Solution:
     # @return a ListNode
     def removeNthFromEnd(self, head, n):
@@ -332,6 +358,8 @@ class ListNode:
         else:
             return "{} -> {}".format(self.val, repr(self.__next__))
 
+# time = O(n)
+# space = O(1)
 class Solution:
     # @return a ListNode
     def removeNthFromEnd(self, head, n):

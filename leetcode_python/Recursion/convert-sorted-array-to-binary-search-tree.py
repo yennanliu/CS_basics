@@ -1,4 +1,6 @@
 # V0
+# time = O(n log n), slicing costs O(n) total per level, O(log n) levels
+# space = O(n), slices along recursion path sum to O(n)
 class Solution(object):
     def sortedArrayToBST(self, nums):
         """
@@ -13,7 +15,7 @@ class Solution(object):
         root.right = self.sortedArrayToBST(nums[mid+1:])
         return root
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/70665213
 # IDEA : BST 
 # Definition for a binary tree node.
@@ -22,6 +24,8 @@ class Solution(object):
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n log n), slicing costs O(n) total per level, O(log n) levels
+# space = O(n), slices along recursion path sum to O(n)
 class Solution(object):
     def sortedArrayToBST(self, nums):
         """
@@ -38,6 +42,8 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/convert-sorted-list-to-binary-search-tree/#tag-highlight-lang-python
+# time = O(n log n), finding middle via slow/fast pointer costs O(n) per level, O(log n) levels
+# space = O(log n), recursion stack depth
 class Solution:
     """
     @param head: The first node of linked list.
@@ -69,9 +75,9 @@ class Solution:
         parent.right = self.dfs(temp.next)      
         return parent
 
-# V2 
-# Time:  O(n)
-# Space: O(logn)
+# V2
+# time = O(n)
+# space = O(logn)
 class TreeNode(object):
     def __init__(self, x):
         self.val = x
@@ -111,8 +117,8 @@ class Solution(object):
             return n - x // 2  # case 2 == n - (x//2 - 1) - 1 : the left subtree of the root
                                # has more nodes and the right subtree is perfect.
 
-# Time:  O(n)
-# Space: O(logn)
+# time = O(n)
+# space = O(logn)
 class Solution2(object):
     def sortedArrayToBST(self, nums):
         """

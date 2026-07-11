@@ -1,7 +1,9 @@
 # V0 
 
-# V1 
+# V1
 # https://www.jiuzhang.com/solution/largest-sum-of-averages/#tag-highlight-lang-python
+# time = O(k * n^2)  # n = len(A)
+# space = O(k * n)
 class Solution:
     """
     @param A: an array
@@ -24,6 +26,8 @@ class Solution:
 
 # V1'
 # https://www.jiuzhang.com/solution/largest-sum-of-averages/#tag-highlight-lang-python
+# time = O(k * n^2)  # n = len(A)
+# space = O(k * n)
 class Solution:
     """
     @param A: an array
@@ -44,9 +48,9 @@ class Solution:
                     dp[i][j] = max(dp[i][j], dp[i - 1][k] + (sums[j]-sums[k]) / (j-k))
         return dp[K][n]
 
-# V2 
-# Time:  O(k * n^2)
-# Space: O(n)
+# V2
+# time = O(k * n^2)
+# space = O(n)
 class Solution(object):
     def largestSumOfAverages(self, A, K):
         """

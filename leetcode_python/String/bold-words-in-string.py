@@ -140,8 +140,8 @@ class Solution(object):
                 result.append("</b>")
         return "".join(result)
 
-# Time:  O(n * d * l), l is the average length of words
-# Space: O(n)
+# time = O(n * d * l)  # l is the average length of words
+# space = O(n)
 class Solution2(object):
     def boldWords(self, words, S):
         """

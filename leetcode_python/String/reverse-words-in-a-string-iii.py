@@ -1,5 +1,5 @@
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 # Given a string, you need to reverse the order of characters in each word within a sentence
 # while still preserving whitespace and initial word order.
 #
@@ -14,6 +14,8 @@
 # V1 
 # http://bookshadow.com/weblog/2017/04/09/leetcode-reverse-words-in-a-string-iii/
 # IDEA : SPLIT + REVERSE 
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def reverseWords(self, s):
         """
@@ -23,6 +25,8 @@ class Solution(object):
         return ' '.join(w[::-1] for w in s.split())
 # V1' 
 # http://bookshadow.com/weblog/2017/04/09/leetcode-reverse-words-in-a-string-iii/
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def reverseWords(self, s):
         """
@@ -39,6 +43,8 @@ class Solution(object):
         return ''.join(clist)
 
 # V2  
+# time = O(n)
+# space = O(n)
 class Solution:
     def reverseWords(self, s):
         output= []
@@ -49,6 +55,8 @@ class Solution:
         return ''.join( str(x) + ' ' for x in output ).strip()
 
 # V3 
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def reverseWords(self, s):
         """
@@ -66,6 +74,8 @@ class Solution(object):
                 i = j + 1
         return "".join(s)
 
+# time = O(n)
+# space = O(n)
 class Solution2(object):
     def reverseWords(self, s):
         reversed_words = [word[::-1] for word in s.split(' ')]

@@ -20,6 +20,8 @@
     DP eq
         dp[i] = max(dp[i-2] + nums[i], dp[i-1])
 """
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def rob(self, nums):
         # edge
@@ -44,6 +46,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: 1D DP
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def rob(self, nums):
         if not nums:
@@ -64,6 +68,8 @@ class Solution(object):
 
 
 # V0
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def rob(self, nums: List[int]):
             if not nums:
@@ -97,6 +103,8 @@ class Solution(object):
 # V1
 # http://bookshadow.com/weblog/2015/04/01/leetcode-house-robber/
 # IDEA : DP
+# time = O(n)
+# space = O(n)
 class Solution:
     # @param num, a list of integer
     # @return an integer
@@ -127,6 +135,8 @@ assert s.rob([99,100,3,7,4]) == 107
 # V1'
 # http://bookshadow.com/weblog/2015/04/01/leetcode-house-robber/
 # IDEA : DP
+# time = O(n)
+# space = O(1)
 class Solution:
     # @param num, a list of integer
     # @return an integer
@@ -154,6 +164,8 @@ class Solution:
 # Varibles: rob = max money if rob the current house
 # not_rob = max money if not rob the current house.
 # Both variables are initially set to 0
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def rob(self, nums):
         rob, not_rob = 0, 0
@@ -164,6 +176,8 @@ class Solution(object):
 # V1'''
 # https://leetcode.com/problems/house-robber/discuss/341554/Python-Dynamic-Progranming
 # IDEA : DP
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def rob(self, nums: List[int]):
             if not nums:
@@ -178,8 +192,8 @@ class Solution(object):
             return nums[-1]
 
 # V1''''
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 class Solution(object):
     # @param num, a list of integer
     # @return an integer
@@ -193,7 +207,9 @@ class Solution(object):
             last, now = now, max(last + i, now)
         return now
 
-# V2 
+# V2
+# time = O(n)
+# space = O(1)
 class Solution:
     # @param num, a list of integer
     # @return an integer

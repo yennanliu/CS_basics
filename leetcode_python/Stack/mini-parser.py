@@ -29,9 +29,9 @@ class Solution(object):
                     else: return top
         return NestedInteger((sigma or 0) * negmul)
 
-# V2 
-# Time:  O(n)
-# Space: O(h)
+# V2
+# time = O(n)
+# space = O(h)
 class NestedInteger(object):
    def __init__(self, value=None):
        """

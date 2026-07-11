@@ -44,6 +44,8 @@ The recursive approach is fine. You may assume implicit stack space does not cou
 
 # V0
 # IDEA: BFS by layer + prev node (gpt) (LC 116)
+# time = O(n)
+# space = O(n), BFS queue can hold up to O(n) nodes
 from collections import deque
 
 class Solution(object):
@@ -83,6 +85,8 @@ class Solution(object):
 
 # V0
 # IDEA : BFS
+# time = O(n)
+# space = O(n), BFS queue can hold up to O(n) nodes
 class Solution:
     def connect(self, root):
         if not root: return
@@ -103,6 +107,8 @@ class Solution:
 
 # V0'
 # IDEA : BFS 
+# time = O(n)
+# space = O(n), BFS queue can hold up to O(n) nodes
 class Solution:
     def connect(self, root: Optional['Node']) -> Optional['Node']:
         
@@ -148,6 +154,8 @@ class Solution:
 # V1
 # IDEA : Level Order Traversal
 # https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii/solution/
+# time = O(n)
+# space = O(n), BFS queue can hold up to O(n) nodes
 class Solution:
     def connect(self, root: Optional['Node']) -> Optional['Node']:
         
@@ -193,6 +201,8 @@ class Solution:
 # V1'
 # IDEA : Using previously established next pointers
 # https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii/solution/
+# time = O(n)
+# space = O(1), no extra data structure, only existing tree pointers used
 class Solution:
     
     def processChild(self, childNode, prev, leftmost):
@@ -252,6 +262,8 @@ class Solution:
 # V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79560379
 # IDEA : BFS
+# time = O(n)
+# space = O(n), BFS queue can hold up to O(n) nodes
 class Solution:
     def connect(self, root):
         if not root: return
@@ -273,6 +285,8 @@ class Solution:
 # V1'''
 # IDEA BFS
 # https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii/discuss/389389/Simply-Simple-Python-Solutions-Level-order-traversal-and-O(1)-space-both-approach
+# time = O(n)
+# space = O(n), queue can hold up to O(n) nodes
 class Solution(object):
     def connect(self, root):
         if not root: return root
@@ -294,6 +308,8 @@ class Solution(object):
 
 # V1'''''
 # https://www.bbsmax.com/A/pRdBoNL2zn/
+# time = O(n)
+# space = O(h), h = number of levels (recursion stack via self.connect)
 class Solution(object):
      def connect(self, root):
          """

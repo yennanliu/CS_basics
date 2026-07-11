@@ -27,11 +27,13 @@ Constraints:
 
 """
 
-# V0 
+# V0
 # IDEA : HEAP
 # using brute force is too slow -> time out error
 # -> so here we generate "ugly number" by ourself, and order them via heap (heappush)
 # -> and return the i-th element as request
+# time = O(n log n)
+# space = O(n)
 import heapq
 class Solution(object):
     def nthUglyNumber(self, n):
@@ -54,6 +56,8 @@ class Solution(object):
 # -> so here we generate "ugly number" by ourself, and order them via heap (heappush)
 # -> and return the i-th element as request
 # https://leetcode.com/problems/ugly-number-ii/discuss/337790/Python-Heap
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def nthUglyNumber(self, n):
         heap = [1]
@@ -70,6 +74,8 @@ class Solution(object):
 # V1'
 # IDEA : 3 INDEX
 # https://leetcode.com/problems/ugly-number-ii/discuss/719826/Python-3-index
+# time = O(n)
+# space = O(n)
 class Solution:
     def nthUglyNumber(self, n):
         U = [1]
@@ -100,6 +106,8 @@ class Solution:
 # https://blog.csdn.net/fuxuemingzhu/article/details/49231615
 # https://blog.csdn.net/weixin_37725502/article/details/79424819
 # https://blog.51cto.com/u_15302258/3083799
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def nthUglyNumber(self, n):
         if n < 0:
@@ -116,6 +124,8 @@ class Solution(object):
 # V1'''
 # IDEA : DP
 # https://leetcode.com/problems/ugly-number-ii/discuss/69467/Python-solution-using-dp.
+# time = O(n)
+# space = O(n)
 class Solution:
     def nthUglyNumber(self, n):
         ugly = [0] * n
@@ -136,9 +146,9 @@ class Solution:
                 nxt5 = ugly[i5]*5
         return nxt # ugly[-1]
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 import heapq
 class Solution(object):
     # @param {integer} n
@@ -162,6 +172,8 @@ class Solution(object):
 
         return ugly_number
 
+    # time = O(n)
+    # space = O(n)
     def nthUglyNumber2(self, n):
         ugly = [1]
         i2 = i3 = i5 = 0
@@ -172,6 +184,8 @@ class Solution(object):
             ugly.append(min(ugly[i2] * 2, ugly[i3] * 3, ugly[i5] * 5))
         return ugly[-1]
 
+    # time = O(n log n)
+    # space = O(n)
     def nthUglyNumber3(self, n):
         q2, q3, q5 = [2], [3], [5]
         ugly = 1
@@ -185,6 +199,8 @@ class Solution(object):
                 q3 += 3 * u,
                 q5 += 5 * u,
 
+# time = O(1) per call (fixed-size ~8960-entry table precomputed at class load)
+# space = O(1) (table size is a constant independent of n)
 class Solution2(object):
     ugly = sorted(2**a * 3**b * 5**c
                   for a in range(32) for b in range(20) for c in range(14))

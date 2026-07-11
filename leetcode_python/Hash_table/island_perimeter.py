@@ -37,7 +37,9 @@ There is exactly one island in grid.
 
 """
 
-# V0 
+# V0
+# time = O(m * n)
+# space = O(1)
 class Solution:
     def islandPerimeter(self, grid):
         """
@@ -62,6 +64,8 @@ class Solution:
 # IDEA :
 # -> Go through every cell on the grid and whenever you are at cell 1 (land cell), look for surrounding (UP, RIGHT, DOWN, LEFT) cells. A land cell without any surrounding land cell will have a perimeter of 4. Subtract 1 for each surrounding land cell.
 # -> When you are at cell 0 (water cell), you don't need to do anything. Just proceed to another cell.
+# time = O(m * n)
+# space = O(1)
 class Solution:
     def islandPerimeter(self, grid):
         
@@ -99,6 +103,8 @@ class Solution:
 # -> Go through every cell on the grid and whenever you are at cell 1 (land cell), look for surrounding (UP, RIGHT, DOWN, LEFT) cells. A land cell without any surrounding land cell will have a perimeter of 4. Subtract 1 for each surrounding land cell.
 # -> When you are at cell 0 (water cell), you don't need to do anything. Just proceed to another cell.
 # https://leetcode.com/problems/island-perimeter/solution/
+# time = O(m * n)
+# space = O(1)
 class Solution:
     def islandPerimeter(self, grid: List[List[int]]) -> int:
         
@@ -134,6 +140,8 @@ class Solution:
 # V1'
 # IDEA : BETTER COUNTING
 # https://leetcode.com/problems/island-perimeter/solution/
+# time = O(m * n)
+# space = O(1)
 class Solution:
     def islandPerimeter(self, grid: List[List[int]]) -> int:
         rows = len(grid)
@@ -156,6 +164,8 @@ class Solution:
 
 # V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/83868905
+# time = O(m * n)
+# space = O(1)
 class Solution:
     def islandPerimeter(self, grid):
         """
@@ -179,6 +189,8 @@ class Solution:
 
 # V1'''
 # https://www.jiuzhang.com/solution/island-perimeter/#tag-highlight-lang-python
+# time = O(m * n)
+# space = O(m * n)
 class Solution:
     """
     @param grid: a 2D array

@@ -42,6 +42,8 @@ Follow-up: If the string data type is mutable in your language, can you solve it
 
 # V0
 # IDEA : py string op
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def reverseWords(self, s):
         _s = s.strip().split(" ")
@@ -50,6 +52,8 @@ class Solution(object):
 
 # V1 
 # http://bookshadow.com/weblog/2014/10/16/leetcode-reverse-words-string/
+# time = O(n)
+# space = O(n)
 class Solution:
     # @param s, a string
     # @return a string
@@ -59,8 +63,8 @@ class Solution:
         return " ".join(words)
         
 # V2
-# Time:  O(n)
-# Space: O(n)
+# time = O(n)
+# space = O(n)
 class Solution(object):
     # @param s, a string
     # @return a string

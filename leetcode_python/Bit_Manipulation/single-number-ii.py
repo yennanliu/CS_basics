@@ -11,7 +11,9 @@
 # Output: 99
 
 
-# V0 
+# V0
+# time = O(n)
+# space = O(n)  # set(nums)
 class Solution:
     def singleNumber(self, nums):
         """
@@ -24,6 +26,8 @@ class Solution:
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79554959
+# time = O(32 * n) = O(n)
+# space = O(1)
 class Solution(object):
     def singleNumber(self, nums):
         """
@@ -44,6 +48,8 @@ class Solution(object):
         return res
 
 # V1'
+# time = O(n)
+# space = O(n)  # set(nums)
 class Solution:
     def singleNumber(self, nums):
         """
@@ -54,7 +60,9 @@ class Solution:
         # 3*(a+b) - (a+a+b+a) = 2b
         return int((3*(sum(set(nums))) - sum(nums))/2)
  
-# V2 
+# V2
+# time = O(n)
+# space = O(n)
 import collections
 class Solution3(object):
     def singleNumber(self, nums):

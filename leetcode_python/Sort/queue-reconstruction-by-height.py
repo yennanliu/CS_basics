@@ -36,7 +36,9 @@ It is guaranteed that the queue can be reconstructed.
 
 """
 
-# V0 
+# V0
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def reconstructQueue(self, people):
         ### NOTE : the sort logic :
@@ -76,6 +78,8 @@ class Solution(object):
 # In [29]: p
 # Out[29]: [[7, 0], [6, 1], [7, 1], [6, 1], [5, 0], [5, 2], [4, 4]]
 # In [30]: 
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def reconstructQueue(self, people):
         """
@@ -93,8 +97,10 @@ class Solution(object):
 
 ### Test case : dev
 
-# V2 
+# V2
 # https://leoeatle.github.io/techBlog/2017/01/11/LeetCode-406-Queue-Reconstruction-by-Height/
+# time = O(n^2)
+# space = O(n)
 class Solution(object):
     def reconstructQueue(self, people):
         """
@@ -108,9 +114,9 @@ class Solution(object):
             queue.insert(k, [h , k])
         return queue
 
-# V3 
-# Time:  O(n * sqrt(n))
-# Space: O(n)
+# V3
+# time = O(n * sqrt(n))
+# space = O(n)
 class Solution(object):
     def reconstructQueue(self, people):
         """
@@ -135,9 +141,9 @@ class Solution(object):
 
         return [p for block in blocks for p in block]
 
-# V4 
-# Time:  O(n^2)
-# Space: O(n)
+# V4
+# time = O(n^2)
+# space = O(n)
 class Solution2(object):
     def reconstructQueue(self, people):
         """

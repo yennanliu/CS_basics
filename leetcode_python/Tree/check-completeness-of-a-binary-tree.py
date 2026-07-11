@@ -1,4 +1,6 @@
-# V0 
+# V0
+# time = O(n)  # n = number of tree nodes
+# space = O(n)  # queue holds up to a full level (up to O(n))
 from collections import deque
 class Solution:
     def isCompleteTree(self, root):
@@ -32,6 +34,8 @@ class Solution:
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)  # n = number of tree nodes
+# space = O(n)  # queue holds up to a full level (up to O(n))
 import  collections
 class Solution(object):
     def isCompleteTree(self, root):
@@ -60,6 +64,8 @@ class Solution(object):
 # V1'
 # https://www.jiuzhang.com/solution/check-completeness-of-a-binary-tree/#tag-other-lang-python
 # IDEA : BFS 
+# time = O(n)  # n = number of tree nodes
+# space = O(n)  # queue holds up to a full level (up to O(n))
 from collections import deque
 class Solution:
     def isCompleteTree(self, root: TreeNode) -> bool:
@@ -87,6 +93,8 @@ class Solution:
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)  # n = number of tree nodes
+# space = O(n)  # res holds all node values across levels, plus O(h) recursion stack
 class Solution(object):
     def isCompleteTree(self, root):
         """
@@ -123,9 +131,9 @@ class Solution(object):
             self.getlevel(res, level + 1, root.left)
             self.getlevel(res, level + 1, root.right)
 
-# V2 
-# Time:  O(n)
-# Space: O(w)
+# V2
+# time = O(n)
+# space = O(w)
 # Definition for a binary tree node.
 class TreeNode(object):
     def __init__(self, x):
@@ -155,8 +163,8 @@ class Solution(object):
             current = next_level
         return  True
 
-# Time:  O(n)
-# Space: O(w)
+# time = O(n)
+# space = O(w)
 class Solution2(object):
     def isCompleteTree(self, root):
         """

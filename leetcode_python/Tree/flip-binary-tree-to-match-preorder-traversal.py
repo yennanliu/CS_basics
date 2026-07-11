@@ -2,6 +2,8 @@
 
 # V1
 # https://buptwc.com/2019/01/09/Leetcode-971-Flip-Binary-Tree-to-Match-Preorder-Traversal/
+# time = O(n)
+# space = O(h)  # h = tree height, worst O(n)
 class Solution(object):
     def flipMatchVoyage(self, root, voyage):
         self.index = 0
@@ -25,6 +27,8 @@ class Solution(object):
 # V1'  
 # https://zxi.mytechroad.com/blog/tree/leetcode-971-flip-binary-tree-to-match-preorder-traversal/
 # https://zhanghuimeng.github.io/post/leetcode-971-flip-binary-tree-to-match-preorder-traversal/
+# time = O(n)
+# space = O(h)  # h = tree height, worst O(n)
 class Solution:
   def flipMatchVoyage(self, root, voyage):
     self.pos = 0
@@ -43,9 +47,9 @@ class Solution:
     solve(root)
     return self.flips
 
-# V2 
-# Time:  O(n)
-# Space: O(h)
+# V2
+# time = O(n)
+# space = O(h)
 
 # Definition for a binary tree node.
 class TreeNode(object):

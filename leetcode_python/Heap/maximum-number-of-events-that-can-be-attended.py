@@ -40,6 +40,8 @@ events[i].length == 2
 # NOTE !!!
 # We just need to attend d where startTimei <= d <= endTimei, then we CAN attend the meeting
 # startTimei <= d <= endTimei. You can only attend one event at any time d.
+# time = O(D + n log n), D = day range (100000), n = len(events)
+# space = O(n)
 class Solution:
     def maxEvents(self, events: List[List[int]]) -> int:
         # algorithm: greedy+heap
@@ -179,6 +181,8 @@ class Solution:
 # V1'''''
 # IDEA : HEAP + GREEDY
 # https://leetcode.com/problems/maximum-number-of-events-that-can-be-attended/discuss/1414435/Python-Greedy%2BHeap
+# time = O(D + n log n), D = day range, n = len(events)
+# space = O(n)
 class Solution:
     def maxEvents(self, events: List[List[int]]) -> int:
         # algorithm: greedy+heap

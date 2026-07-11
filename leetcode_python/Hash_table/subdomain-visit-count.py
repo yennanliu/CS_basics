@@ -39,6 +39,8 @@ The answer output can be returned in any order.
 """
 
 # V0
+# time = O(n)  # n = total chars across counts
+# space = O(n)
 class Solution(object):
     def subdomainVisits(self, counts):
         r = dict()
@@ -57,6 +59,8 @@ class Solution(object):
  
 # V0'
 # IDEA : DEFAULT DICT
+# time = O(n)  # n = total chars across counts
+# space = O(n)
 import collections
 class Solution(object):
     def subdomainVisits(self, counts):
@@ -74,6 +78,8 @@ class Solution(object):
 # V1 
 # http://bookshadow.com/weblog/2018/04/02/leetcode-subdomain-visit-count/
 import collections
+# time = O(n)  # n = total chars across cpdomains
+# space = O(n)
 class Solution(object):
     def subdomainVisits(self, cpdomains):
         """
@@ -90,6 +96,8 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/subdomain-visit-count/#tag-highlight-lang-python
+# time = O(n)  # n = total chars across cpdomains
+# space = O(n)
 class Solution:
     def subdomainVisits(self, cpdomains):
         count = {}
@@ -105,8 +113,8 @@ class Solution:
         return [str(v) + ' ' + k for k,v in count.items()]
 
 # V2 
-# Time:  O(n), is the length of cpdomains (assuming the length of cpdomains[i] is fixed)
-# Space: O(n)
+# time = O(n)  # n is the length of cpdomains (assuming the length of cpdomains[i] is fixed)
+# space = O(n)
 import collections
 class Solution(object):
     def subdomainVisits(self, cpdomains):

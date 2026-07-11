@@ -46,6 +46,8 @@ Accepted
 # V1
 # IDEA : MATH + problem understanding
 # https://leetcode.com/problems/number-of-ways-to-split-a-string/discuss/830601/Python-O(n)-%2B-Explanation
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def numWays(self, s):
         mod = 10**9+7
@@ -59,6 +61,8 @@ class Solution(object):
 
 # V1'
 # https://leetcode.com/problems/number-of-ways-to-split-a-string/discuss/830485/python-solution
+# time = O(n)
+# space = O(1)
 class Solution:
 	def numWays(self, s):
 		idx = []
@@ -78,6 +82,8 @@ class Solution:
 
 # V1''
 # https://leetcode.com/problems/number-of-ways-to-split-a-string/discuss/1202856/Python-detail-explanation
+# time = O(n)
+# space = O(1)
 class Solution:
     def numWays(self, s):
         oneCount = 0
@@ -111,6 +117,8 @@ class Solution:
 
 # V1''
 # https://leetcode.com/problems/number-of-ways-to-split-a-string/discuss/830431/Solution-with-python-Code
+# time = O(n)
+# space = O(1)
 class Solution:
     def numWays(self, s):
             n = len(s)

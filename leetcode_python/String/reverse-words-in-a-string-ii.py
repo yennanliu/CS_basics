@@ -33,6 +33,8 @@ All the words in s are guaranteed to be separated by a single space.
 
 # V0 
 # IDEA : REVERSE WHOLE STRING -> REVERSE EACH WORD 
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def reverseWords(self, s):
         s_ =  s[::-1]
@@ -40,6 +42,8 @@ class Solution(object):
         return " ".join([ i[::-1] for  i in s_list])
 
 # V0'
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def reverseWords(self, s):
         res = "".join(x).split(" ")[::-1]   
@@ -48,6 +52,8 @@ class Solution(object):
 # V1
 # IDEA : Reverse the Whole String and Then Reverse Each Word
 # https://leetcode.com/problems/reverse-words-in-a-string-ii/solution/
+# time = O(n)
+# space = O(1)
 class Solution:
     def reverse(self, l: list, left: int, right: int) -> None:
         while left < right:
@@ -80,6 +86,8 @@ class Solution:
 
 # V1 
 # http://www.voidcn.com/article/p-eggrnnob-zo.html
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def reverseWords(self, s):
         """
@@ -99,8 +107,8 @@ class Solution(object):
             i = j + 1
             
 # V2 
-# Time: O(n)
-# Space:O(1)
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def reverseWords(self, s):
         """

@@ -49,15 +49,21 @@ from collections import defaultdict
 from heapq import merge
 class Twitter(object):
     
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
         self.follower_followees_map = defaultdict(set)
         self.user_tweets_map = defaultdict(list)
         self.time_stamp = 0
 
+    # time = O(1)
+    # space = O(1)
     def postTweet(self, userId, tweetId):
         self.user_tweets_map[userId].append((self.time_stamp, tweetId))
         self.time_stamp -= 1
 
+    # time = O(T log u)  # T = total tweets among followees, u = number of followees (fully materialized merge)
+    # space = O(T)
     def getNewsFeed(self, userId):
         # get the followees list
         followees = self.follower_followees_map[userId]
@@ -93,9 +99,13 @@ class Twitter(object):
                 break
         return tweets
 
+    # time = O(1)
+    # space = O(1)
     def follow(self, followerId, followeeId):
         self.follower_followees_map[followerId].add(followeeId)
 
+    # time = O(1)
+    # space = O(1)
     def unfollow(self, followerId, followeeId):
         self.follower_followees_map[followerId].discard(followeeId)
 
@@ -104,6 +114,8 @@ from collections import defaultdict
 
 class Twitter(object):
 
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
 
          self.users = []
@@ -112,11 +124,15 @@ class Twitter(object):
          # {'id_1' : [twitter_1, 2...], 'id_2' : [twitter_3, 4...]..}
          self.user_tweets = defaultdict(list)
 
+    # time = O(1)  # amortized
+    # space = O(1)
     def postTweet(self, userId, tweetId):
 
         self.user_tweets[userId].append(tweetId)
         
     #TODO : fix this
+    # time = O(f)  # f = number of followees
+    # space = O(f)
     def getNewsFeed(self, userId):
 
         res = []
@@ -129,10 +145,14 @@ class Twitter(object):
                 break
         return res[::-1]
         
+    # time = O(1)
+    # space = O(1)
     def follow(self, followerId, followeeId):
 
         self.follower_followees[followeeId].add(followeeId)
         
+    # time = O(1)
+    # space = O(1)
     def unfollow(self, followerId, followeeId):
 
         if followeeId in self.follower_followees[followerId]:
@@ -143,21 +163,31 @@ class Twitter(object):
 import collections, itertools, heapq
 class Twitter(object):
 
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
         self.timer = itertools.count(step=-1)
         self.tweets = collections.defaultdict(collections.deque)
         self.followees = collections.defaultdict(set)
 
+    # time = O(1)
+    # space = O(1)
     def postTweet(self, userId, tweetId):
         self.tweets[userId].appendleft((next(self.timer), tweetId))
 
+    # time = O(f + k log f)  # f = number of followees, k = 10 (constant)
+    # space = O(f)
     def getNewsFeed(self, userId):
         tweets = heapq.merge(*(self.tweets[u] for u in self.followees[userId] | {userId}))
         return [t for _, t in itertools.islice(tweets, 10)]
 
+    # time = O(1)
+    # space = O(1)
     def follow(self, followerId, followeeId):
         self.followees[followerId].add(followeeId)
 
+    # time = O(1)
+    # space = O(1)
     def unfollow(self, followerId, followeeId):
         self.followees[followerId].discard(followeeId)
 
@@ -168,6 +198,8 @@ class Twitter(object):
 from collections import defaultdict
 from heapq import merge
 class Twitter(object):
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
         """
         Initialize your data structure here.
@@ -176,6 +208,8 @@ class Twitter(object):
         self.user_tweets_map = defaultdict(list)
         self.time_stamp = 0
 
+    # time = O(1)
+    # space = O(1)
     def postTweet(self, userId, tweetId):
         """
         Compose a new tweet.
@@ -186,6 +220,8 @@ class Twitter(object):
         self.user_tweets_map[userId].append((self.time_stamp, tweetId))
         self.time_stamp -= 1
 
+    # time = O(u + k log u)  # u = number of followees, k = 10 (constant)
+    # space = O(u)
     def getNewsFeed(self, userId):
         """
         Retrieve the 10 most recent tweet ids in the user's news feed. Each item in the news feed must be posted by users who the user followed or by the user herself. Tweets must be ordered from most recent to least recent.
@@ -206,6 +242,8 @@ class Twitter(object):
                 break
         return tweets
 
+    # time = O(1)
+    # space = O(1)
     def follow(self, followerId, followeeId):
         """
         Follower follows a followee. If the operation is invalid, it should be a no-op.
@@ -215,6 +253,8 @@ class Twitter(object):
         """
         self.follower_followees_map[followerId].add(followeeId)
 
+    # time = O(1)
+    # space = O(1)
     def unfollow(self, followerId, followeeId):
         """
         Follower unfollows a followee. If the operation is invalid, it should be a no-op.
@@ -294,21 +334,31 @@ class Twitter(object):
 import collections, itertools, heapq
 class Twitter(object):
 
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
         self.timer = itertools.count(step=-1)
         self.tweets = collections.defaultdict(collections.deque)
         self.followees = collections.defaultdict(set)
 
+    # time = O(1)
+    # space = O(1)
     def postTweet(self, userId, tweetId):
         self.tweets[userId].appendleft((next(self.timer), tweetId))
 
+    # time = O(f + k log f)  # f = number of followees, k = 10 (constant)
+    # space = O(f)
     def getNewsFeed(self, userId):
         tweets = heapq.merge(*(self.tweets[u] for u in self.followees[userId] | {userId}))
         return [t for _, t in itertools.islice(tweets, 10)]
 
+    # time = O(1)
+    # space = O(1)
     def follow(self, followerId, followeeId):
         self.followees[followerId].add(followeeId)
 
+    # time = O(1)
+    # space = O(1)
     def unfollow(self, followerId, followeeId):
         self.followees[followerId].discard(followeeId)
 
@@ -319,6 +369,8 @@ class User(object):
     """
     User structure
     """
+    # time = O(1)
+    # space = O(1)
     def __init__(self, userId):
         self.userId = userId
         self.tweets = set()
@@ -328,17 +380,23 @@ class Tweet(object):
     """
     Tweet structure
     """
+    # time = O(1)
+    # space = O(1)
     def __init__(self, tweetId, userId, ts):
         self.tweetId = tweetId
         self.userId = userId
         self.ts = ts
         
+    # time = O(1)
+    # space = O(1)
     def __cmp__(self, other):
         #call global(builtin) function cmp for int
         return cmp(other.ts, self.ts)
 
 class Twitter(object):
     
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
         """
         Initialize your data structure here.
@@ -347,6 +405,8 @@ class Twitter(object):
         self.userMap = dict()
         
 
+    # time = O(1)  # amortized
+    # space = O(1)
     def postTweet(self, userId, tweetId):
         """
         Compose a new tweet.
@@ -360,6 +420,8 @@ class Twitter(object):
         self.userMap[userId].tweets.add(tweet)
         self.ts += 1
 
+    # time = O(T log T)  # T = total tweets among the user and followees
+    # space = O(T)
     def getNewsFeed(self, userId):
         """
         Retrieve the 10 most recent tweet ids in the user's news feed. Each item in the news feed must be posted by users who the user followed or by the user herself. Tweets must be ordered from most recent to least recent.
@@ -382,6 +444,8 @@ class Twitter(object):
             n += 1
         return res
 
+    # time = O(1)
+    # space = O(1)
     def follow(self, followerId, followeeId):
         """
         Follower follows a followee. If the operation is invalid, it should be a no-op.
@@ -398,6 +462,8 @@ class Twitter(object):
         followee = self.userMap[followeeId]
         self.userMap[followerId].following.add(followee)
 
+    # time = O(1)
+    # space = O(1)
     def unfollow(self, followerId, followeeId):
         """
         Follower unfollows a followee. If the operation is invalid, it should be a no-op.
@@ -414,6 +480,8 @@ class Twitter(object):
 # V1'''
 # https://www.hrwhisper.me/leetcode-design-twitter/
 class Twitter(object):
+    # time = O(1)
+    # space = O(1)
     def __init__(self):
         """
         Initialize your data structure here.
@@ -422,6 +490,8 @@ class Twitter(object):
         self.tweets = collections.defaultdict(list)
         self.follower_ship = collections.defaultdict(set)
 
+    # time = O(1)  # amortized
+    # space = O(1)
     def postTweet(self, userId, tweetId):
         """
         Compose a new tweet.
@@ -432,6 +502,8 @@ class Twitter(object):
         self.tweets[userId].append([tweetId, self.tweets_cnt])
         self.tweets_cnt += 1
 
+    # time = O(f)  # f = number of followees (10 is a constant factor)
+    # space = O(f)
     def getNewsFeed(self, userId):
         """
         Retrieve the 10 most recent tweet ids in the user's news feed. Each item in the news feed must be posted by users who the user followed or by the user herself. Tweets must be ordered from most recent to least recent.
@@ -456,6 +528,8 @@ class Twitter(object):
 
         return recent_tweets
 
+    # time = O(1)
+    # space = O(1)
     def follow(self, followerId, followeeId):
         """
         Follower follows a followee. If the operation is invalid, it should be a no-op.
@@ -466,6 +540,8 @@ class Twitter(object):
         if followerId != followeeId:
             self.follower_ship[followerId].add(followeeId)
 
+    # time = O(1)
+    # space = O(1)
     def unfollow(self, followerId, followeeId):
         """
         Follower unfollows a followee. If the operation is invalid, it should be a no-op.
@@ -482,10 +558,8 @@ class Twitter(object):
 
 # V2 
 # https://github.com/kamyu104/LeetCode-Solutions/blob/master/Python/design-twitter.py
-# Time:  O(klogu), k is most recently number of tweets,
-#                  u is the number of the user's following.
-# Space: O(t + f), t is the total number of tweets,
-#                  f is the total number of followings.
+# time = O(k log u)  # k = most recent number of tweets, u = number of the user's following
+# space = O(t + f)  # t = total number of tweets, f = total number of followings
 import collections
 import heapq
 class Twitter(object):

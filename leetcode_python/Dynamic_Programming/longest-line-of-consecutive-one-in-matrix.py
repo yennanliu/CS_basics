@@ -9,6 +9,8 @@
 # v[x][y] = M[x][y] * (v[x][y - 1]  + 1)
 # d[x][y] = M[x][y] * (d[x - 1][y - 1]  + 1)
 # a[x][y] = M[x][y] * (a[x + 1][y - 1]  + 1)
+# time = O(m*n)  # m = len(M), n = len(M[0])
+# space = O(m*n)
 class Solution(object):
     def longestLine(self, M):
         """
@@ -39,8 +41,10 @@ class Solution(object):
                 ans = max(ans, cnt, adiag[y][x])
         return ans
 
-# V1' 
+# V1'
 # https://www.jiuzhang.com/solution/longest-line-of-consecutive-one-in-matrix/#tag-highlight-lang-python
+# time = O(m*n)  # m = len(M), n = len(M[0])
+# space = O(m*n)
 class Solution:
     """
     @param M: the 01 matrix
@@ -71,9 +75,9 @@ class Solution:
                 ans = max(ans, max(dp[i][j][2], dp[i][j][3]))
         return ans
 
-# V2 
-# Time:  O(m * n)
-# Space: O(n)
+# V2
+# time = O(m * n)
+# space = O(n)
 class Solution(object):
     def longestLine(self, M):
         """

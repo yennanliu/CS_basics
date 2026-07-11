@@ -30,6 +30,8 @@ s consists of lowercase English letters.
 # V0
 # IDEA: PQ + HASHMAP
 # https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Greedy/ReorganizeString.java#L40
+# time = O(n log n)
+# space = O(n)
 from collections import Counter
 import heapq
 
@@ -96,6 +98,8 @@ class Solution(object):
 # V0-1
 # IDEA: PQ + HASHMAP
 # https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Greedy/ReorganizeString.java#L40
+# time = O(n log n)
+# space = O(n)
 import heapq
 from collections import Counter
 
@@ -161,6 +165,8 @@ class Solution(object):
 
 # V0-3
 # IDEA: prev char, cnt, PQ, hashmap
+# time = O(n log n)
+# space = O(n)
 import heapq
 from collections import Counter
 
@@ -198,6 +204,8 @@ class Solution(object):
 
 
 # V0-4
+# time = O(n log n)
+# space = O(n)
 import heapq
 from collections import Counter
 
@@ -243,12 +251,14 @@ class Solution(object):
             
         return "".join(res)
 
-# V0 
+# V0
 # IDEA : GREEDY + COUNTER
 # IDEA : 
 #  step 1) order exists count (big -> small)
 #  step 2) select the element which is "most remaining" and DIFFERENT from last ans element and append such element to the end of ans
 #  step 3) if can't find such element, return ""
+# time = O(n)   # bounded alphabet (<=26): most_common() cost is O(1) amortized
+# space = O(n)
 class Solution(object):
     def reorganizeString(self, S):
         cnt = collections.Counter(S)
@@ -286,6 +296,8 @@ class Solution(object):
 #  step 1) order exists count (big -> small)
 #  step 2) select the element which is "most remaining" and DIFFERENT from last ans element and append such element to the end of ans
 #  step 3) if can't find such element, return ""
+# time = O(n)   # bounded alphabet (<=26): most_common() cost is O(1) amortized
+# space = O(n)
 from collections import Counter
 class Solution(object):
     def reorganizeString(self, s):
@@ -320,6 +332,8 @@ class Solution(object):
         return ans[1:] if (len(ans) - 1 == len(s)) else ""
 
 # V0''
+# time = O(n)
+# space = O(n)
 class Solution(object):
      def reorganizeString(self, S):
         count = collections.Counter(S)
@@ -347,6 +361,8 @@ class Solution(object):
 #   -> fill the most common chars into the even-indexed column if possible,
 #   -> fill the remaining chars into the even-indexed column, then odd-indexed column.
 # https://leetcode.com/problems/reorganize-string/discuss/442993/Python-greedy-solution-(24ms-beat-98.17)
+# time = O(n)
+# space = O(n)
 class Solution(object):
      def reorganizeString(self, S):
         count = collections.Counter(S)
@@ -365,13 +381,15 @@ class Solution(object):
                 i += 2
         return ''.join(res)
 
-# V1 
+# V1
 # http://bookshadow.com/weblog/2018/01/21/leetcode-reorganize-string/
 # IDEA : GREEDY
 # IDEA : 
 #  step 1) order exists count (big -> small)
 #  step 2) select the element which is "most remaining" and DIFFERENT from last ans element and append such element to the end of ans
 #  step 3) if can't find such element, return ""
+# time = O(n)   # bounded alphabet (<=26): most_common() cost is O(1) amortized
+# space = O(n)
 class Solution(object):
     def reorganizeString(self, S):
         """
@@ -394,6 +412,8 @@ class Solution(object):
 
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/80680454
+# time = O(n)   # bounded alphabet (<=26): most_common() cost is O(1) amortized
+# space = O(n)
 class Solution(object):
     def reorganizeString(self, S):
         """
@@ -417,6 +437,8 @@ class Solution(object):
 
 # V1''
 # https://blog.csdn.net/fuxuemingzhu/article/details/80680454
+# time = O(n log n)
+# space = O(n)
 class Solution(object):
     def reorganizeString(self, S):
         """
@@ -445,6 +467,8 @@ class Solution(object):
 
 # V1''
 # https://www.jiuzhang.com/solution/reorganize-string/#tag-highlight-lang-python
+# time = O(n)
+# space = O(n)
 class Solution:
     """
     @param S: a string
@@ -468,9 +492,9 @@ class Solution:
                 begin += count
         return "".join("".join(bucket) for bucket in buckets) #4 
 
-# V2 
-# Time:  O(nloga) = O(n), a is the size of alphabet
-# Space: O(a) = O(1)
+# V2
+# time = O(n log a)   # a = size of alphabet, a <= 26
+# space = O(1)   # a = size of alphabet, a <= 26
 import collections
 import heapq
 class Solution(object):

@@ -2,6 +2,8 @@
 
 # V1
 # http://bookshadow.com/weblog/2017/12/03/leetcode-delete-and-earn/
+# time = O(n + maxn)  # n = len(nums), maxn = max(nums)
+# space = O(maxn)
 import collections
 class Solution(object):
     def deleteAndEarn(self, nums):
@@ -18,6 +20,8 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/delete-and-earn/#tag-highlight-lang-python
+# time = O(n)  # n = len(nums), fixed 10001-size DP loop
+# space = O(1)  # fixed-size arrays independent of input
 class Solution:
     """
     @param nums: a list of integers
@@ -36,8 +40,8 @@ class Solution:
         return dp[10000]
 
 # V2
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def deleteAndEarn(self, nums):
         """

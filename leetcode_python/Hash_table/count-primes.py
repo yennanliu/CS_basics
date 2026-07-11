@@ -45,6 +45,8 @@ Submissions
 #-----------------
 # python 3
 #-----------------
+# time = O(n log log n)
+# space = O(n)
 class Solution:
     def countPrimes(self, n):
         # using sieve of eretosthenes algorithm
@@ -67,6 +69,8 @@ class Solution:
 # V0'
 # python 2
 # TIME OUT ERROR (but logic is OK)
+# time = O(n * sqrt(n))
+# space = O(1)
 class Solution(object):
     def countPrimes(self, n):
         def check(x):
@@ -82,6 +86,8 @@ class Solution(object):
 
 # V0''
 # python2 
+# time = O(n log log n)
+# space = O(n)
 class Solution(object):
     def countPrimes(self, n):
         if n <= 2:
@@ -144,6 +150,8 @@ class Solution(object):
 # prinme(3) = 1
 # prinme(4) = 2
 # prinme(5) = 3
+# time = O(n log log n)
+# space = O(n)
 class Solution:
     def countPrimes(self, n):
         # using sieve of eretosthenes algorithm
@@ -158,6 +166,8 @@ class Solution:
 # V1'
 # IDEA : DICT
 # https://leetcode.com/problems/count-primes/discuss/1343795/python%3A-sieve-of-eretosthenes
+# time = O(n log log n)
+# space = O(n)
 class Solution:
     def countPrimes(self, n):
         # using sieve of eretosthenes algorithm
@@ -172,6 +182,8 @@ class Solution:
 # V1''
 # IDEA : python style
 # https://leetcode.com/problems/count-primes/discuss/1343795/python%3A-sieve-of-eretosthenes
+# time = O(n log log n)
+# space = O(n)
 class Solution:
     def countPrimes(self, n):
         # using sieve of eretosthenes algorithm
@@ -229,6 +241,8 @@ class Solution:
 # Out[31]: [4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30]
 # In [32]: x[3*3 :: 3]
 # Out[32]: [9, 12, 15, 18, 21, 24, 27, 30]
+# time = O(n log log n)
+# space = O(n)
 class Solution:
 # @param {integer} n
 # @return {integer}
@@ -242,9 +256,11 @@ class Solution:
                 primes[i * i:: i] = [False] * len(primes[i * i:: i])
         return sum(primes)
         
-# V1' 
+# V1'
 # https://blog.csdn.net/github_39261590/article/details/73864039
 # IDEA : GREEDY (TLE, time out exception)
+# time = O(n * sqrt(n))
+# space = O(1)
 import math
 class Solution:
     def countPrimes(self, n):
@@ -262,6 +278,8 @@ class Solution:
 
 # V1''
 # https://www.jiuzhang.com/solution/count-primes/#tag-highlight-lang-python
+# time = O(n log log n)
+# space = O(n)
 class Solution:
     """
     @param n: a integer
@@ -282,9 +300,9 @@ class Solution:
                     not_prime[j * i] = True
         return res
 
-# V2 
-# Time:  O(n)
-# Space: O(n)
+# V2
+# time = O(n)
+# space = O(n)
 class Solution(object):
     # @param {integer} n
     # @return {integer}
@@ -310,6 +328,8 @@ class Solution(object):
 
         return num
 
+    # time = O(n log log n)
+    # space = O(n)
     def countPrimes2(self, n):
         """
         :type n: int

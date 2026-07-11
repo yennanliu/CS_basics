@@ -9,6 +9,8 @@
 #     for x in range(m, zero - 1, -1):
 #         for y in range(n, one - 1, -1):
 #             dp[x][y] = max(dp[x - zero][y - one] + 1, dp[x][y])        
+# time = O(s * m * n)  # s = len(strs)
+# space = O(m * n)
 class Solution(object):
     def findMaxForm(self, strs, m, n):
         """
@@ -27,6 +29,8 @@ class Solution(object):
         
 # V1'
 # https://blog.csdn.net/fuxuemingzhu/article/details/82825032
+# time = O(s * m * n)  # s = len(strs)
+# space = O(m * n)
 class Solution(object):
     def findMaxForm(self, strs, m, n):
         """
@@ -52,6 +56,8 @@ class Solution(object):
 # V1''
 # https://www.jiuzhang.com/solution/ones-and-zeroes/#tag-highlight-lang-python
 # IDEA : DP
+# time = O(s * m * n)  # s = len(strs)
+# space = O(m * n)
 class Solution:
     """
     @param strs: an array with strings include only 0 and 1
@@ -76,9 +82,9 @@ class Solution:
                         dp[i][j] = dp[i - one][j - zero] + 1
         return dp[-1][-1]
 
-# V2 
-# Time:  O(s * m * n), s is the size of the array.
-# Space: O(m * n)
+# V2
+# time = O(s * m * n), s is the size of the array.
+# space = O(m * n)
 class Solution(object):
     def findMaxForm(self, strs, m, n):
         """

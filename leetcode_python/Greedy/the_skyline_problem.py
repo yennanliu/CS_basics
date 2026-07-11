@@ -46,6 +46,8 @@ buildings is sorted by lefti in non-decreasing order.
 # V1
 # IDEA : BRUTE FORCE
 # https://leetcode.com/problems/the-skyline-problem/solutions/2375781/the-skyline-problem/
+# time = O(n^2)   # n = len(buildings); inner loop over position range per building
+# space = O(n)
 class Solution:
     def getSkyline(self, buildings: List[List[int]]) -> List[List[int]]:
         # Sort the unique positions of all the edges.
@@ -83,6 +85,8 @@ class Solution:
 # V1'
 # IDEA : Brute Force II, Sweep Line
 # https://leetcode.com/problems/the-skyline-problem/solutions/2375781/the-skyline-problem/
+# time = O(n^2)   # n = len(buildings); for each position scan all buildings
+# space = O(n)
 class Solution:
     def getSkyline(self, buildings: List[List[int]]) -> List[List[int]]:
         # Collect and sort the unique positions of all the edges.
@@ -113,6 +117,8 @@ class Solution:
 # V1
 # IDEA : Sweep Line + Priority Queue
 # https://leetcode.com/problems/the-skyline-problem/solutions/2375781/the-skyline-problem/
+# time = O(n log n)   # n = len(buildings); sort edges + heap ops
+# space = O(n)
 class Solution:
     def getSkyline(self, buildings: List[List[int]]) -> List[List[int]]:
         # Iterate over all buildings, for each building i,
@@ -169,6 +175,8 @@ class Solution:
 # V1
 # IDEA :  Sweep Line + Two Priority Queue
 # https://leetcode.com/problems/the-skyline-problem/solutions/2375781/the-skyline-problem/
+# time = O(n log n)   # n = len(buildings); sort edges + heap ops
+# space = O(n)
 class Solution(object):
     def getSkyline(self, buildings: List[List[int]]) -> List[List[int]]:
         # Iterate over the left and right edges of all the buildings, 
@@ -226,6 +234,8 @@ class Solution(object):
 # V1
 # IDEA : Union Find
 # https://leetcode.com/problems/the-skyline-problem/solutions/2375781/the-skyline-problem/
+# time = O(n log n)   # n = len(buildings); sorting dominates; union-find is ~O(n a(n))
+# space = O(n)
 
 # Define the disjoint-set structure.
 class UnionFind():
@@ -286,6 +296,8 @@ class Solution:
 # V1
 # IDEA : Divide-and-Conquer
 # https://leetcode.com/problems/the-skyline-problem/solutions/2375781/the-skyline-problem/
+# time = O(n log n)   # n = len(A); T(n) = 2T(n/2) + O(n) merge
+# space = O(n)
 class Solution:
     def getSkyline(self, A: List[List[int]]) -> List[List[int]]:
         n = len(A)

@@ -78,10 +78,14 @@ Follow-up: Could you do better than O(n2) per move() operation?
 # IDEA : optimize from V0'
 class TicTacToe:
 
+    # time = O(n^2)
+    # space = O(n^2)
     def __init__(self, n):
         self.n = n
         self.grid = [[i for i in range(n)] for j in range(n)]
 
+    # time = O(n)
+    # space = O(1)
     def check(self, row, col, player, mark):
         n = self.n
         sum_of_row = sum([self.grid[row][c] == mark for c in range(n)])
@@ -92,6 +96,8 @@ class TicTacToe:
         if sum_of_row == n or sum_of_col == n or sum_of_left_d== n or sum_of_right_d == n:
             return player  
         
+    # time = O(n)
+    # space = O(1)
     def move(self, row, col, player):
         if player == 1:
             mark = 'X'
@@ -111,6 +117,8 @@ class TicTacToe:
 # https://github.com/yennanliu/utility_Python/blob/master/game/tic_tac_toe.py
 class TicTacToe:
 
+    # time = O(n^2)
+    # space = O(n^2)
     def __init__(self, n):
         """
         Initialize your data structure here.
@@ -119,6 +127,8 @@ class TicTacToe:
         self.grid = [[' ']*n for i in range(n)]       
         
 
+    # time = O(n)
+    # space = O(1)
     def move(self, row, col, player):
         """
         Player {player} makes a move at ({row}, {col}).
@@ -159,10 +169,14 @@ class TicTacToe:
 # TODO : validate/fix below
 class TicTacToe(object):
 
+    # time = O(n^2)
+    # space = O(n^2)
     def __init__(self, n):
         self.n = n
         self.board = [ [None for i in range(n)] for j in range(n) ]
         
+    # time = O(n)
+    # space = O(n)
     def check(self, x, y, player):
         # check col
         tmp = []
@@ -185,6 +199,8 @@ class TicTacToe(object):
         
         return False
         
+    # time = O(n)
+    # space = O(1)
     def move(self, row, col, player):
         print ("-> self.board = " + str(self.board))
         self.board[row][col] = player
@@ -211,6 +227,8 @@ class TicTacToe(object):
 # https://blog.csdn.net/danspace1/article/details/86616981
 class TicTacToe:
 
+    # time = O(n^2)
+    # space = O(n^2)
     def __init__(self, n):
         """
         Initialize your data structure here.
@@ -219,6 +237,8 @@ class TicTacToe:
         self.grid = [[' ']*n for i in range(n)]       
         
 
+    # time = O(n)
+    # space = O(1)
     def move(self, row, col, player):
         """
         Player {player} makes a move at ({row}, {col}).
@@ -363,6 +383,8 @@ class TicTacToe:
 # https://blog.csdn.net/danspace1/article/details/86616981
 class TicTacToe:
 
+    # time = O(n)
+    # space = O(n)
     def __init__(self, n):
         """
         Initialize your data structure here.
@@ -371,6 +393,8 @@ class TicTacToe:
         self.row, self.col, self.diag1, self.diag2, self.n = [0]*n, [0]*n, 0, 0, n 
         
 
+    # time = O(1)
+    # space = O(1)
     def move(self, row, col, player):
         """
         Player {player} makes a move at ({row}, {col}).
@@ -543,8 +567,8 @@ class TicTacToe:
 # }
 
 # V2
-# Time:  O(1), per move.
-# Space: O(n^2)
+# time = O(1)  # per move
+# space = O(n^2)
 class TicTacToe(object):
 
     def __init__(self, n):

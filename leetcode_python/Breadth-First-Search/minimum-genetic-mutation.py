@@ -1,8 +1,10 @@
 # V0 
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/82903720
 import collections
+# time = O(b * L), b = size of bank, L = length of gene string
+# space = O(b)
 class Solution(object):
     def minMutation(self, start, end, bank):
         """
@@ -29,6 +31,8 @@ class Solution(object):
 # V1'
 # https://www.jiuzhang.com/solution/minimum-genetic-mutation/#tag-highlight-lang-python
 from collections import deque
+# time = O(b * L), b = size of bank, L = length of gene string
+# space = O(b)
 class Solution:
     """
     @param start: 
@@ -55,9 +59,9 @@ class Solution:
                         bank.remove(new_seq)
         return -1
 
-# V2 
-# Time:  O(n * b), n is the length of gene string, b is size of bank
-# Space: O(b)
+# V2
+# time = O(n * b), n is the length of gene string, b is size of bank
+# space = O(b)
 from collections import deque
 class Solution(object):
     def minMutation(self, start, end, bank):

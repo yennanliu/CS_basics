@@ -468,8 +468,8 @@ class MinStack2:
 #     print([stack.top(), stack.getMin()])
 
 # V1'''''''''
-# Time:  O(n)
-# Space: O(1)
+# time = O(n)
+# space = O(1)
 class MinStack(object):
     def __init__(self):
         self.min = None
@@ -504,9 +504,9 @@ class MinStack(object):
     def getMin(self):
         return self.min
 
-# V2 
-# Time:  O(n)
-# Space: O(n)
+# V2
+# time = O(n)
+# space = O(n)
 class MinStack2(object):
     def __init__(self):
         self.stack, self.minStack = [], []
@@ -539,8 +539,8 @@ class MinStack2(object):
         return self.minStack[-1][0]
 
 # V3
-# time: O(1)
-# space: O(n)
+# time = O(1)
+# space = O(n)
 class MinStack3(object):
 
     def __init__(self):
@@ -562,9 +562,9 @@ class MinStack3(object):
     def getMin(self):
         return self.stack[-1][0]
 
-# V8 
-# Time:  O(1), amortized
-# Space: O(n)
+# V8
+# time = O(1)  # amortized
+# space = O(n)
 class Queue(object):
     # initialize your data structure here.
     def __init__(self):

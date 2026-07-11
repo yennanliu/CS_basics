@@ -139,6 +139,8 @@ class Solution(object):
             z &= z - 1
         return distance
 
+    # time = O(log(max(x, y)))
+    # space = O(log(max(x, y)))  # bin() builds a string
     def hammingDistance2(self, x, y):
         """
         :type x: int

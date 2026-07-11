@@ -33,6 +33,8 @@ Sorted and then use two pointers technique.
 
 # V1
 # https://goodtecher.com/leetcode-1099-two-sum-less-than-k/
+# time = O(n log n)
+# space = O(n)
 class Solution:
     def twoSumLessThanK(self, nums, k):    
         nums = sorted(nums)
@@ -51,6 +53,8 @@ class Solution:
 
 # V1'
 # https://blog.51cto.com/u_15344287/3647641
+# time = O(n log n)
+# space = O(1)
 class Solution:
     def twoSumLessThanK(self, nums: List[int], k: int) -> int:
         nums.sort()

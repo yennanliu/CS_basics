@@ -51,6 +51,8 @@ xi and yi consist of English letters.
 # V0
 # IDEA: DFS + HASHMAP (GPT)
 # TODO: VALIDATE
+# time = O(n * p)  # n = len(sentence1), p = len(similarPairs)
+# space = O(p)
 class Solution(object):
     def areSentencesSimilarTwo(self, sentence1, sentence2, similarPairs):
 
@@ -112,6 +114,8 @@ class Solution(object):
 # V0-1
 # IDEA: DFS + HASHMAP (GEMINI)
 # TODO: VALIDATE
+# time = O(n * p)  # n = len(sentence1), p = len(similarPairs)
+# space = O(p)
 class Solution(object):
     def areSentencesSimilarTwo(self, sentence1, sentence2, similarPairs):
         """
@@ -172,6 +176,8 @@ class Solution(object):
 
 # V0
 # IDEA : DFS
+# time = O(n * p)  # n = len(sentence1), p = len(similarPairs)
+# space = O(p)
 from collections import defaultdict
 class Solution(object):
     def areSentencesSimilarTwo(self, sentence1, sentence2, similarPairs):
@@ -203,6 +209,8 @@ class Solution(object):
 
 # V0'
 # IDEA : BFS
+# time = O(n * p)  # n = len(words1), p = len(pairs)
+# space = O(p)
 class Solution:
     def areSentencesSimilarTwo(self, words1, words2, pairs):
         # Problem tells us this case will mean not similar. 
@@ -240,6 +248,8 @@ class Solution:
 
 # V0'''
 # IDEA : UNION FIND
+# time = O((n + p) * α(p))  # n = len(words1), p = len(pairs); α = inverse Ackermann
+# space = O(p)
 class Solution(object):
     def areSentencesSimilarTwo(self, words1, words2, pairs):
         if len(words1) != len(words2):
@@ -290,6 +300,8 @@ class Solution(object):
 # STEPS :
 # -> 1) MAKE A GRAPH (w1 -> w2, w2 -> w1)
 # -> 2) DFS GO THROUGH EVERY WORD IN words1, words2 AND CHECK IF THEY ARE IN THE SAME connected components
+# time = O(n * p)  # n = len(words1), p = len(pairs)
+# space = O(p)
 import collections
 class Solution(object):
     def areSentencesSimilarTwo(self, words1, words2, pairs):
@@ -317,6 +329,8 @@ class Solution(object):
 # V1
 # IDEA : BFS
 # https://leetcode.com/problems/sentence-similarity-ii/discuss/928878/Easy-%2B-Straightforward-Python-BFS-with-Explaination-and-Comments!
+# time = O(n * p)  # n = len(words1), p = len(pairs)
+# space = O(p)
 class Solution:
     def areSentencesSimilarTwo(self, words1, words2, pairs):
         # Problem tells us this case will mean not similar. 
@@ -356,6 +370,8 @@ class Solution:
 # IDEA : DICT + HASH TABLE + BFS/DFS 
 # http://bookshadow.com/weblog/2017/11/26/leetcode-sentence-similarity-ii/
 # https://zxi.mytechroad.com/blog/hashtable/leetcode-737-sentence-similarity-ii/
+# time = O(n * p)  # n = len(words1), p = len(pairs)
+# space = O(p)
 import collections
 class Solution(object):
     def areSentencesSimilarTwo(self, words1, words2, pairs):
@@ -386,6 +402,8 @@ class Solution(object):
 # V1'''
 # IDEA : DFS (queue format)
 # https://leetcode.com/problems/sentence-similarity-ii/solution/
+# time = O(n * p)  # n = len(words1), p = len(pairs)
+# space = O(p)
 class Solution(object):
     def areSentencesSimilarTwo(self, words1, words2, pairs):
         if len(words1) != len(words2): return False
@@ -410,6 +428,8 @@ class Solution(object):
 # V1''''
 # IDEA : UnionFind
 # https://leetcode.com/problems/sentence-similarity-ii/discuss/725681/Python-Union-Find-solution
+# time = O((n + p) * α(p))  # n = len(words1), p = len(pairs); α = inverse Ackermann
+# space = O(p)
 class Solution(object):
     def areSentencesSimilarTwo(self, words1, words2, pairs):
         if len(words1) != len(words2):
@@ -453,6 +473,8 @@ class Solution(object):
 # V1''''''
 # IDEA : UnionFind
 # https://leetcode.com/problems/sentence-similarity-ii/discuss/304988/Python-Solution%3A-standard-union-find
+# time = O((n + p) * α(p))  # n = len(words1), p = len(pairs); α = inverse Ackermann
+# space = O(p)
 class UnionFind:
 
     def __init__(self, capacity):
@@ -513,6 +535,8 @@ class Solution:
 # V1''''''''
 # IDEA : Union-Find
 # https://leetcode.com/problems/sentence-similarity-ii/solution/
+# time = O((n + p) * α(p))  # n = len(words1), p = len(pairs); α = inverse Ackermann
+# space = O(p)
 class DSU:
     def __init__(self, N):
         self.par = range(N)
@@ -545,6 +569,8 @@ class Solution(object):
 # V1''''''''
 # IDEA : UNION FIND
 # https://leetcode.com/problems/sentence-similarity-ii/discuss/304988/Python-Solution%3A-standard-union-find
+# time = O((n + p) * α(p))  # n = len(words1), p = len(pairs); α = inverse Ackermann
+# space = O(p)
 class Solution:
     def areSentencesSimilarTwo(self, words1, words2, pairs):
         def make_set(x):
@@ -584,6 +610,8 @@ class Solution:
 # V1''''''''
 # IDEA : UNION FIND
 # https://leetcode.com/problems/sentence-similarity-ii/discuss/574395/Python-Union-Find
+# time = O((n + p) * α(p))  # n = len(words1), p = len(pairs); α = inverse Ackermann
+# space = O(p)
 class Solution:
     def areSentencesSimilarTwo(self, words1, words2, pairs):
         if len(words1) != len(words2): return False
@@ -603,6 +631,8 @@ class Solution:
 # V1'''''''''''
 # https://www.jiuzhang.com/solution/sentence-similarity-ii/#tag-highlight-lang-python
 # IDEA : UNION FIND
+# time = O(n * p)  # n = len(words1), p = len(pairs)
+# space = O(p)
 class Solution():
     def areSentencesSimilarTwo(self, words1, words2, pairs):
         if len(words1) != len(words2): 
@@ -628,6 +658,8 @@ class Solution():
 # V1'''''''''''''''
 # IDEA : DFS
 # https://leetcode.com/problems/sentence-similarity-ii/discuss/109755/SHORT-Python-DFS-with-explanation
+# time = O(n + p)  # n = len(words1), p = len(pairs)
+# space = O(p)
 class Solution(object):
     def areSentencesSimilarTwo(self, words1, words2, pairs):
         from collections import defaultdict
@@ -644,6 +676,8 @@ class Solution(object):
 # V1'''''''''''''''
 # IDEA : DFS
 # https://leetcode.com/problems/sentence-similarity-ii/discuss/109755/SHORT-Python-DFS-with-explanation
+# time = O(n + p)  # n = len(words1), p = len(pairs)
+# space = O(p)
 class Solution(object):
     def areSentencesSimilarTwo(self, words1, words2, pairs):
         from collections import defaultdict
@@ -671,6 +705,8 @@ class Solution(object):
 # V1''''''''''''''
 # IDEA : DFS
 # https://leetcode.com/problems/sentence-similarity-ii/discuss/221015/Python-solution
+# time = O(n + p)  # n = len(words1), p = len(pairs)
+# space = O(p)
 class Solution:
     def areSentencesSimilarTwo(self, words1, words2, pairs):
         """
@@ -716,8 +752,8 @@ class Solution:
         return True
 
 # V2
-# Time:  O(n + p)
-# Space: O(p)
+# time = O(n + p)
+# space = O(p)
 # IDEA : UnionFind
 import itertools
 class UnionFind(object):

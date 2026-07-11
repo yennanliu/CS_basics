@@ -1,8 +1,10 @@
 # V0 
 
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/81977433
 # https://blog.csdn.net/qq_26440803/article/details/84261151
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def decodeAtIndex(self, S, K):
         """
@@ -26,9 +28,9 @@ class Solution(object):
             else:
                 size -= 1
 
-# V2 
-# Time:  O(n)
-# Space: O(1)
+# V2
+# time = O(n)
+# space = O(1)
 class Solution(object):
     def decodeAtIndex(self, S, K):
         """

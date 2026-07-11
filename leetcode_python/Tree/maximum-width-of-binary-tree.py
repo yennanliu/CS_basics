@@ -57,6 +57,8 @@ how to find the left and right children ?
 
 
 """
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def widthOfBinaryTree(self, root):
         """
@@ -108,6 +110,8 @@ how to find the left and right children ?
 
 
 """
+# time = O(n)
+# space = O(n)
 class Solution(object):
 
     def widthOfBinaryTree(self, root):
@@ -145,6 +149,8 @@ class Solution(object):
 # V0
 # IDEA : defaultdict + DFS
 # IDEA : GIVEN index = idx -> its left tree index = idx*2 ; its right tree index = idx*2 + 1
+# time = O(n)
+# space = O(n)
 from collections import defaultdict
 class Solution:
     def widthOfBinaryTree(self, root):
@@ -162,6 +168,8 @@ class Solution:
 
 # V0-1
 # IDEA: BST + DFS (GEMINI)
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def widthOfBinaryTree(self, root):
         """
@@ -202,6 +210,8 @@ class Solution(object):
 # IDEA : BFS
 # IDEA : GIVEN index = idx -> its left tree index = idx*2 ; its right tree index = idx*2 + 1
 #        -> SO GO THROUGH ALL LAYERS IN THE TREE, CALCULATE THEIR WIDTH, AND RETRUN THE MAX WIDTH WHICH IS THE NEEDED RESPONSE
+# time = O(n)
+# space = O(n)
 from collections import defaultdict
 class Solution(object):
     def widthOfBinaryTree(self, root):
@@ -249,6 +259,8 @@ class Solution(object):
 # # add new key "color" and its value white
 # print (car.setdefault("color", "white"))
 # print (car)
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def widthOfBinaryTree(self, root):
         self.ans = 0
@@ -265,6 +277,8 @@ class Solution(object):
 
 # V0'''
 # IDEA : DFS 
+# time = O(n)
+# space = O(h)
 class Solution(object):
     def widthOfBinaryTree(self, root):
         def dfs(node, i, depth, leftmosts):
@@ -305,6 +319,8 @@ class Solution(object):
 #       0     1
 #      / \     \  
 #     0   1     3 
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def widthOfBinaryTree(self, root):
         queue = [(root, 0, 0)]
@@ -324,6 +340,8 @@ class Solution(object):
 # V1'
 # IDEA : defaultdict + DFS
 # https://leetcode.com/problems/maximum-width-of-binary-tree/discuss/325426/python-dfs
+# time = O(n)
+# space = O(n)
 from collections import defaultdict
 class Solution:
     def widthOfBinaryTree(self, root):
@@ -346,6 +364,8 @@ class Solution:
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def widthOfBinaryTree(self, root):
         """
@@ -369,6 +389,8 @@ class Solution(object):
 # IDEA : BFS 
 # Time Complexity: O(N)
 # Space Complexity: O(N)
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def widthOfBinaryTree(self, root):
         queue = [(root, 0, 0)]
@@ -388,6 +410,8 @@ class Solution(object):
 # IDEA : DFS 
 # Time Complexity: O(N)
 # Space Complexity: O(N)
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def widthOfBinaryTree(self, root):
         self.ans = 0
@@ -410,6 +434,8 @@ class Solution(object):
 #         self.val = x
 #         self.left = None
 #         self.right = None
+# time = O(n)
+# space = O(n)
 class Solution(object):
     def widthOfBinaryTree(self, root):
         """
@@ -429,8 +455,8 @@ class Solution(object):
         return res
 
 # V3 
-# Time:  O(n)
-# Space: O(h)
+# time = O(n)
+# space = O(h)
 class Solution(object):
     def widthOfBinaryTree(self, root):
         """

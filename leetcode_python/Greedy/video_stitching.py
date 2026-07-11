@@ -50,6 +50,8 @@ Note:
 
 # V1
 # https://www.twblogs.net/a/5caba212bd9eee59d33379d6
+# time = O(T^2)   # T = event length; nested scan over [prev, cur] each iteration
+# space = O(n)   # n = len(clips)
 class Solution(object):
     def videoStitching(self, clips, T):
         """
@@ -86,6 +88,8 @@ class Solution(object):
         
 # V1'
 # https://www.cnblogs.com/seyjs/p/10673798.html
+# time = O(n^2)   # n = len(clips); sort + repeated list.pop(0)
+# space = O(1)
 class Solution(object):
     def videoStitching(self, clips, T):
         """

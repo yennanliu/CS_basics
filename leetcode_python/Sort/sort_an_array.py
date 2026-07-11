@@ -33,6 +33,8 @@ Constraints:
 # V1
 # IDEA : merge sort
 # https://leetcode.com/problems/sort-an-array/discuss/568255/Python-Merge-Sort
+# time = O(n log n)
+# space = O(n)
 class Solution:
     def sortArray(self, nums: List[int]) -> List[int]:
         self.mergeSort(nums)
@@ -69,6 +71,8 @@ class Solution:
 
 # V1'
 # IDEA : quick sort
+# time = O(n log n)  # average case; O(n^2) worst case
+# space = O(log n)
 class Solution(object):
     def sortArray(self, nums):
         self.quickSort(nums, 0, len(nums)-1)

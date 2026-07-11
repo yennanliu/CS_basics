@@ -43,7 +43,7 @@ class Solution(object):
             ans = '-' + ans
         return ans
 
-# V3 
+# V3
 # time = O(logn), where logn is the length of result strings
 # space = O(1)
 

@@ -35,6 +35,8 @@ There are no repeated edges.
 
 # V0
 # IDEA: UNION FIND
+# time = O((N + E) * α(N)) ≈ O(N + E)  # N = n nodes, E = len(edges); union-find w/ path compression
+# space = O(N)
 class Solution:
     def countComponents(self, n, edges):
 
@@ -93,6 +95,8 @@ class MyUF:
 
 # V0-1
 # IDEA: UNION FIND
+# time = O((N + E) * α(N)) ≈ O(N + E)  # N = n nodes, E = len(edges); union-find w/ path compression
+# space = O(N)
 class Solution:
     def countComponents(self, n: int, edges: list[list[int]]) -> int:
         # Edge case: If there are no edges, every node is its own isolated component
@@ -145,6 +149,8 @@ class MyUF:
 
 # V0'
 # IDEA : DFS
+# time = O(N + E)  # N = n nodes, E = len(edges); DFS visits each node/edge once
+# space = O(N + E)  # graph adjacency + visited set + recursion stack
 from collections import defaultdict
 class Solution:
     def countComponents(self, n, edges):
@@ -184,6 +190,8 @@ class Solution:
 # V0'
 # IDEA : UNION FIND
 # union find basic algorithm
+# time = O((N + E) * α(N)) ≈ O(N + E)  # N = n nodes, E = len(edges); union-find w/ path compression
+# space = O(N)
 class UnionFind:
 
     def __init__(self, n):
@@ -232,6 +240,8 @@ class Solution:
 
 # V0''
 # IDEA : UNION FIND
+# time = O((N + E) * α(N)) ≈ O(N + E)  # N = n nodes, E = len(edges); union-find w/ path compression
+# space = O(N)
 class UnionFind(object):
 
     def __init__(self, n):
@@ -286,6 +296,8 @@ class Solution(object):
 
 # V0'''
 # IDEA : DFS + GRAPH
+# time = O(N + E)  # N = n nodes, E = len(edges); DFS visits each node/edge once
+# space = O(N + E)  # graph adjacency + visited set + recursion stack
 from collections import defaultdict
 class Solution:
     def countComponents(self, n, edges):
@@ -315,6 +327,8 @@ class Solution:
 # V1
 # IDEA : DFS
 # https://blog.csdn.net/qq_37821701/article/details/104371911
+# time = O(N + E)  # N = n nodes, E = len(edges); DFS visits each node/edge once
+# space = O(N + E)  # graph adjacency + visited set + recursion stack
 class Solution:
     def countComponents(self, n, edges):
         def helper(u):
@@ -339,6 +353,8 @@ class Solution:
 # V1
 # IDEA : BFS
 # https://www.jiuzhang.com/solution/number-of-connected-components-in-an-undirected-graph/#tag-other-lang-python
+# time = O(N + E)  # N = n nodes, E = len(edges); BFS visits each node/edge once
+# space = O(N + E)  # graph adjacency + visited list + queue
 import collections
 class Solution:
     def countComponents(self, n, edges):
@@ -381,8 +397,8 @@ class Solution:
 # V1'
 # IDEA : UNION FIND
 # https://www.cnblogs.com/lightwindy/p/8487160.html
-# Time:  O(nlog*n) ~= O(n), n is the length of the positions
-# Space: O(n)
+# time = O(nlog*n) ~= O(n), n is the length of the positions
+# space = O(n)
 class UnionFind(object):
     def __init__(self, n):
         self.set = range(n)
@@ -414,6 +430,8 @@ class Solution(object):
 # V1''
 # IDEA : UNION FIND
 # https://blog.csdn.net/qq_37821701/article/details/104371911
+# time = O((N + E) * α(N)) ≈ O(N + E)  # N = n nodes, E = len(edges); union-find w/ path compression
+# space = O(N)
 class Solution:
     def countComponents(self, n, edges):
         def unionfind(p1,p2):
@@ -530,9 +548,9 @@ class Solution:
 #     }
 # }
 
-# V2 
-# Time:  O(nlog*n) ~= O(n), n is the length of the positions
-# Space: O(n)
+# V2
+# time = O(nlog*n) ~= O(n), n is the length of the positions
+# space = O(n)
 class UnionFind(object):
     def __init__(self, n):
         self.set = range(n)
