@@ -1,4 +1,6 @@
-# V0 
+# V0
+# time = O(n * x)  # n = total number of files, x = avg length of path/content string
+# space = O(n * x)
 import collections
 class Solution(object):
     def findDuplicate(self, paths):
@@ -16,10 +18,12 @@ class Solution(object):
                 contentDict[content].append(dir + '/' + name + '.txt')
         return [g for g in contentDict.values() if len(g) > 1]
         
-# V1 
+# V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/79434941
 # http://bookshadow.com/weblog/2017/06/04/leetcode-find-duplicate-file-in-system/
 # IDEA : collections.defaultdict 
+# time = O(n * x)  # n = total number of files, x = avg length of path/content string
+# space = O(n * x)
 import collections
 class Solution(object):
     def findDuplicate(self, paths):
@@ -39,6 +43,8 @@ class Solution(object):
 
 # V1'
 # https://www.jiuzhang.com/solution/find-duplicate-file-in-system/#tag-highlight-lang-python
+# time = O(n * x)  # n = total number of files, x = avg length of path/content string
+# space = O(n * x)
 import collections
 class Solution:
     def findDuplicate(self, paths):
@@ -50,9 +56,9 @@ class Solution:
                 dic[content] += root + "/" + txt,
         return [dic[key] for key in dic if len(dic[key]) > 1]
 
-# V2 
-# Time:  O(n * l), l is the average length of file content
-# Space: O(n * l)
+# V2
+# time = O(n * l)  # l is the average length of file content
+# space = O(n * l)
 import collections
 class Solution(object):
     def findDuplicate(self, paths):

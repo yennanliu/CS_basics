@@ -50,6 +50,8 @@ class Solution(object):
         return result
 
 
+# time = O(m * n)  # m = rows, n = cols; count/index scan per column
+# space = O(m * n)  # zip(*picture) materializes all columns
 class Solution2(object):
     def findLonelyPixel(self, picture):
         """

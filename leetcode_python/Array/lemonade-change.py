@@ -163,6 +163,8 @@ class Solution(object):
                 return False
         return True
 
+# time = O(n)
+# space = O(1)
 class Solution2(object):
     def lemonadeChange(self, bills):
         """

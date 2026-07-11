@@ -33,6 +33,8 @@ The number of nodes in both trees is in the range [0, 2000].
 
 # V0
 # IDEA : recursive
+# time = O(min(m, n))  # m, n = number of nodes in root1, root2
+# space = O(min(m, n))  # recursion stack depth in the worst case (skewed tree)
 class Solution(object):
     def mergeTrees(self, root1, root2):
         def help(root1, root2):
@@ -50,6 +52,8 @@ class Solution(object):
 
 # V0'
 # IDEA : ITERATION, BFS
+# time = O(min(m, n))  # m, n = number of nodes in t1, t2
+# space = O(min(m, n))  # stack storage in the worst case
 class Solution(object):
      def mergeTrees(self, t1, t2):
             dummy = TreeNode(0)
@@ -70,6 +74,8 @@ class Solution(object):
 
 # V0
 # IDEA : recursive
+# time = O(min(m, n))  # m, n = number of nodes in t1, t2
+# space = O(min(m, n))  # recursion stack depth in the worst case (skewed tree)
 class Solution:
     def mergeTrees(self, t1, t2):
         return self.dfs(t1,t2)
@@ -77,7 +83,7 @@ class Solution:
     def dfs(self, t1, t2):
         if not t1 and not t2:
             return
-        
+
         if t1 and t2:
             ### NOTE here
             newT = TreeNode(t1.val +  t2.val)
@@ -91,6 +97,8 @@ class Solution:
 
 # V0'
 # IDEA : DFS + BACKTRACK
+# time = O(min(m, n))  # m, n = number of nodes in t1, t2
+# space = O(min(m, n))  # recursion stack depth in the worst case (skewed tree)
 class Solution:
     def mergeTrees(self, t1, t2):
         return self.dfs(t1,t2)
@@ -105,6 +113,8 @@ class Solution:
             return t1 or t2
 
 # V0'
+# time = O(min(m, n))  # m, n = number of nodes in t1, t2
+# space = O(min(m, n))  # recursion stack depth in the worst case (skewed tree)
 class Solution:
     def mergeTrees(self, t1, t2):
         if t1 and t2:
@@ -116,8 +126,10 @@ class Solution:
             return t1 or t2
 
 # V1
-# IDEA : DFS 
+# IDEA : DFS
 # https://blog.csdn.net/fuxuemingzhu/article/details/79052953
+# time = O(min(m, n))  # m, n = number of nodes in t1, t2
+# space = O(min(m, n))  # recursion stack depth in the worst case (skewed tree)
 class Solution:
     def mergeTrees(self, t1, t2):
         """
@@ -136,6 +148,8 @@ class Solution:
 # V1
 # https://leetcode.com/problems/merge-two-binary-trees/discuss/159138/Python-solution
 # IDEA : resursive
+# time = O(min(m, n))  # m, n = number of nodes in t1, t2
+# space = O(min(m, n))  # recursion stack depth in the worst case (skewed tree)
 class Solution(object):
     def mergeTrees(self, t1, t2):
         if t1 == None and t2 == None:
@@ -155,6 +169,8 @@ class Solution(object):
 # V1
 # IDEA : iterative
 # https://leetcode.com/problems/merge-two-binary-trees/discuss/121170/Python-iterative
+# time = O(min(m, n))  # m, n = number of nodes in t1, t2
+# space = O(min(m, n))  # stack storage in the worst case
 class Solution(object):
      def mergeTrees(self, t1, t2):
             dummy = TreeNode(0)
@@ -245,6 +261,8 @@ class Solution(object):
 
 # V1'
 # https://www.polarxiong.com/archives/LeetCode-617-merge-two-binary-trees.html
+# time = O(min(m, n))  # m, n = number of nodes in t1, t2
+# space = O(min(m, n))  # recursion stack depth in the worst case (skewed tree)
 class Solution:
     def mergeTrees(self, t1, t2):
         """
@@ -261,6 +279,8 @@ class Solution:
 
 # V1''
 # https://www.jiuzhang.com/solution/merge-two-binary-trees/#tag-highlight-lang-python
+# time = O(min(m, n))  # m, n = number of nodes in t1, t2
+# space = O(min(m, n))  # recursion stack depth in the worst case (skewed tree)
 class Solution:
     """
     @param t1: the root of the first tree
@@ -280,7 +300,9 @@ class Solution:
 
 # V1'''
 # https://leetcode.com/problems/merge-two-binary-trees/discuss/124537/Python-recursive-iterative-DFS-BFS-solutions
-# IDEA : BFS 
+# IDEA : BFS
+# time = O(min(m, n))  # m, n = number of nodes in t1, t2
+# space = O(min(m, n))  # queue storage in the worst case
 from collections import deque
 class Solution:
     def mergeTrees(self, t1, t2):
@@ -332,6 +354,8 @@ class Solution:
 # V1'''''''
 # https://leetcode.com/problems/merge-two-binary-trees/discuss/124537/Python-recursive-iterative-DFS-BFS-solutions
 # IDEA : RECURSION PRE-ORDER
+# time = O(min(m, n))  # m, n = number of nodes in t1, t2
+# space = O(min(m, n))  # recursion stack depth in the worst case (skewed tree)
 class Solution:
     def mergeTrees(self, t1, t2):
         """
@@ -354,6 +378,8 @@ class Solution:
 # V1''''''''
 # https://leetcode.com/problems/merge-two-binary-trees/discuss/124537/Python-recursive-iterative-DFS-BFS-solutions
 # IDEA : Recursion in-order
+# time = O(min(m, n))  # m, n = number of nodes in t1, t2
+# space = O(min(m, n))  # recursion stack depth in the worst case (skewed tree)
 class Solution:
     def mergeTrees(self, t1, t2):
         """
@@ -379,6 +405,8 @@ class Solution:
 # V1''''''''
 # https://leetcode.com/problems/merge-two-binary-trees/discuss/124537/Python-recursive-iterative-DFS-BFS-solutions
 # IDEA : Recursion post-order
+# time = O(min(m, n))  # m, n = number of nodes in t1, t2
+# space = O(min(m, n))  # recursion stack depth in the worst case (skewed tree)
 class Solution:
     def mergeTrees(self, t1, t2):
         """
@@ -404,6 +432,8 @@ class Solution:
 # V1''''''''''
 # https://leetcode.com/problems/merge-two-binary-trees/discuss/124537/Python-recursive-iterative-DFS-BFS-solutions
 # Iterative in-order
+# time = O(min(m, n))  # m, n = number of nodes in t1, t2
+# space = O(min(m, n))  # stack storage in the worst case
 class Solution:
     def mergeTrees(self, t1, t2):
         """
@@ -454,6 +484,8 @@ class Solution:
 # V1'''''''''''''''
 # https://leetcode.com/problems/merge-two-binary-trees/discuss/124537/Python-recursive-iterative-DFS-BFS-solutions
 # IDEA : Iterative pre-order
+# time = O(min(m, n))  # m, n = number of nodes in t1, t2
+# space = O(min(m, n))  # stack storage in the worst case
 class Solution:
     def mergeTrees(self, t1, t2):
         """
@@ -502,8 +534,8 @@ class Solution:
         return tRoot
 
 # V2 
-# Time:  O(n)
-# Space: O(h)
+# time = O(n)
+# space = O(h)
 class Solution(object):
     def mergeTrees(self, t1, t2):
         """

@@ -63,6 +63,8 @@ class Solution(object):
         return result
 
 
+# time = O(m * n)  # m = rows, n = cols
+# space = O(m * n)
 class Solution2(object):
     def findBlackPixel(self, picture, N):
         """

@@ -46,6 +46,8 @@ for r in range(len(s)):
 return res
 
 """
+# time = O(n)
+# space = O(min(n, m))  # m = charset size, cnt_map holds at most distinct chars in window
 class Solution(object):
     def lengthOfLongestSubstring(self, s):
         max_len = 0
@@ -78,6 +80,8 @@ class Solution(object):
 
 # V0-1
 # IDEA: SLIDE WINDOW + SET
+# time = O(n)
+# space = O(min(n, m))  # m = charset size, seen holds at most distinct chars in window
 class Solution(object):
     def lengthOfLongestSubstring(self, s):
         seen = set()
@@ -104,6 +108,8 @@ class Solution(object):
 
 # V0
 # IDEA : brute force : SLIDING WINDOW + DICT
+# time = O(n^2)  # nested loop restarts scan on each duplicate found
+# space = O(min(n, m))  # m = charset size, Counter holds current window chars
 from collections import Counter
 class Solution(object):
     def lengthOfLongestSubstring(self, s):
@@ -131,6 +137,8 @@ class Solution(object):
 # IDEA : TWO POINTER + SLIDING WINDOW + DICT (NOTE this method !!!!)
 #       -> use a hash table (d) record visited "element" (e.g. : a,b,c,...)
 #          (but NOT sub-string)
+# time = O(n)
+# space = O(min(n, m))  # m = charset size, d holds at most distinct chars
 class Solution(object):
     def lengthOfLongestSubstring(self, s):
         d = {}
@@ -159,6 +167,8 @@ class Solution(object):
 
 # V0'
 # IDEA : SLIDING WINDOW + defaultdict (brute force)
+# time = O(n^2)  # nested loop restarts scan on each duplicate found
+# space = O(min(n, m))  # m = charset size, tmp holds current window chars
 from collections import defaultdict
 class Solution(object):
     def lengthOfLongestSubstring(self, s):

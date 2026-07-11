@@ -263,6 +263,8 @@ class Solution(object):
         return result
 
 
+# time = O(k * C(n, k))
+# space = O(k * C(n, k))
 class Solution2(object):
     def combine(self, n, k):
         """

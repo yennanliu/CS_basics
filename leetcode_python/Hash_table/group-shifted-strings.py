@@ -49,6 +49,8 @@ class Solution:
 
 # V1'
 # http://www.voidcn.com/article/p-znzuctot-qp.html
+# time = O(n^2)  # n = len(strings); insertStr does a linear-time insertion into a sorted list for each string
+# space = O(n * k)  # k = avg string length, dic stores hashed keys and string values
 class Solution(object):
     def groupStrings(self, strings):
         """
@@ -66,10 +68,14 @@ class Solution(object):
 
         return dic.values()
 
+    # time = O(k)  # k = len(astring)
+    # space = O(k)
     def shiftHash(self, astring):
         hashlist = [(ord(i) - ord(astring[0])) % 26 for i in astring]
         return tuple(hashlist)
 
+    # time = O(m)  # m = current size of alist (linear scan + slicing insert)
+    # space = O(m)  # slicing creates a new list
     def insertStr(self, alist, astring):
         i = 0
         while i < len(alist) and ord(astring[0]) > ord(alist[i][0]):
@@ -80,8 +86,8 @@ class Solution(object):
             alist[:] = alist[0:i] + [astring] + alist[i:]
                        
 # V2
-# Time:  O(nlogn)
-# Space: O(n)
+# time = O(n log n)  # n = len(strings), dominated by sorting each group
+# space = O(n)
 import collections
 class Solution(object):
     # @param {string[]} strings
@@ -97,6 +103,8 @@ class Solution(object):
 
         return result
 
+    # time = O(k)  # k = len(s)
+    # space = O(k)
     def hashStr(self, s):
         base = ord(s[0])
         hashcode = ""
