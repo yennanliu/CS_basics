@@ -38,6 +38,118 @@ Could you do it in-place with O(1) extra space?
 """
 
 # V0
+# IDEA: MATH (GPT)
+"""
+KEY IDEA:
+
+
+(O(n) solution)
+
+
+->
+
+F(0) = Σ(i * nums[i])
+
+total = Σ(nums)
+
+F(k) = F(k-1) + total - n * nums[n-k]
+
+
+"""
+class Solution(object):
+    def maxRotateFunction(self, nums):
+        n = len(nums)
+
+        if n == 1:
+            return 0
+
+        cache = [0] * n
+
+        cache[0] = self.helper(nums)
+        res = cache[0]
+
+        total = sum(nums)
+
+        for i in range(1, n):
+            cache[i] = cache[i - 1] + total - n * nums[n - i]
+            res = max(res, cache[i])
+
+        return res
+
+    def helper(self, nums):
+        res = 0
+        for i in range(len(nums)):
+            res += i * nums[i]
+        return res
+
+
+# V0
+# IDEA: BRUTE FORCE (TLE) (GPT)
+class Solution(object):
+    def maxRotateFunction(self, nums):
+        if len(nums) == 1:
+            return 0
+
+        rotations = []
+
+        n = len(nums)
+
+        for _ in range(n):
+            nums.insert(0, nums[-1])
+            nums.pop()
+            rotations.append(nums[:])
+
+        res = float("-inf")
+
+        for arr in rotations:
+            res = max(res, self.helper(arr))
+
+        return res
+
+    def helper(self, x):
+        res = 0
+        for i in range(len(x)):
+            res += i * x[i]
+        return res
+
+
+# V0-1
+# IDEA: MATH (GEMINI)
+class Solution(object):
+    def maxRotateFunction(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        if len(nums) == 1:
+            return 0
+            
+        n = len(nums)
+        cache = [0] * n
+        
+        # Calculate F(0) using the helper
+        cache[0] = self.helper(nums)
+        
+        # Initialize res to the first calculated sum, NOT 0
+        res = cache[0]
+        total = sum(nums)
+        
+        # Start loop from 1
+        for i in range(1, n):
+            cache[i] = cache[i-1] + total - n * nums[n - i]
+            res = max(res, cache[i])
+            
+        return res
+        
+    def helper(self, x):
+        res = 0
+        for i in range(len(x)):
+            # Access the integer from the list directly
+            res += i * x[i]
+        return res
+
+
+# V0
 # IDEA: SPLIT + MOD
 # time = O(n)
 # space = O(n)
