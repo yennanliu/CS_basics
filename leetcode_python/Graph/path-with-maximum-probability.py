@@ -67,7 +67,117 @@ class Solution(object):
 
 
 
-# V1
+# V1-1
+# IDEA: Dijkstra (gpt)
+# build a graph + use a priority queue (Dijkstra).
+import heapq
+class Solution(object):
+    def maxProbability(self, n, edges, succProb, start_node, end_node):
+
+        if start_node == end_node:
+            return 1.0
+
+        graph = {}
+
+        for i in range(len(edges)):
+            u, v = edges[i]
+            p = succProb[i]
+
+            graph.setdefault(u, []).append((v, p))
+            graph.setdefault(v, []).append((u, p))
+
+        # max heap (implemented using negative probabilities)
+        pq = [(-1.0, start_node)]
+
+        best = [0.0] * n
+        best[start_node] = 1.0
+
+        while pq:
+
+            neg_prob, node = heapq.heappop(pq)
+            prob = -neg_prob
+
+            if node == end_node:
+                return prob
+
+            # stale entry
+            if prob < best[node]:
+                continue
+
+            for nxt, edge_prob in graph.get(node, []):
+
+                new_prob = prob * edge_prob
+
+                if new_prob > best[nxt]:
+                    best[nxt] = new_prob
+                    heapq.heappush(pq, (-new_prob, nxt))
+
+        return 0.0
+
+
+
+# V1-2
+# IDEA: Dijkstra (gemini)
+# build a graph + use a priority queue (Dijkstra).
+import collections
+import heapq
+
+class Solution(object):
+    def maxProbability(self, n, edges, succProb, start_node, end_node):
+        """
+        :type n: int
+        :type edges: List[List[int]]
+        :type succProb: List[float]
+        :type start_node: int
+        :type end_node: int
+        :rtype: float
+        """
+        # 1. Build the Graph cleanly using defaultdict
+        graph = collections.defaultdict(list)
+        for i in range(len(edges)):
+            u = edges[i][0]
+            v = edges[i][1]
+            prob = succProb[i]
+            
+            graph[u].append((v, prob))
+            graph[v].append((u, prob))
+            
+        # 2. Track the maximum probability found to reach each node
+        # Initialize all to 0.0
+        max_probs = [0.0] * n
+        max_probs[start_node] = 1.0
+        
+        # 3. Initialize Max-Heap
+        # Store tuples of (probability, node). 
+        # We make the probability negative to trick Python's Min-Heap into acting like a Max-Heap!
+        pq = [(-1.0, start_node)]
+        
+        while pq:
+            # Pop the path with the highest probability
+            cur_prob, cur_node = heapq.heappop(pq)
+            
+            # Flip it back to a positive fraction
+            cur_prob = -cur_prob
+            
+            # If we reached the end, we are guaranteed this is the max probability
+            if cur_node == end_node:
+                return cur_prob
+                
+            # If we already found a better way to reach this node earlier, skip processing it again
+            if cur_prob < max_probs[cur_node]:
+                continue
+                
+            # Check all neighbors
+            for nxt_node, edge_prob in graph[cur_node]:
+                new_prob = cur_prob * edge_prob
+                
+                # If this new path gives us a higher probability to reach 'nxt_node', update and push
+                if new_prob > max_probs[nxt_node]:
+                    max_probs[nxt_node] = new_prob
+                    heapq.heappush(pq, (-new_prob, nxt_node))
+                    
+        # If we exit the loop, the end_node is unreachable
+        return 0.0
 
 
 # V2-1
