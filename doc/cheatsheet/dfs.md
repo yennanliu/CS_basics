@@ -3276,6 +3276,72 @@ public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
 }
 ```
 
+### 2-17') Sum Root to Leaf Numbers — LC 129
+
+**Pattern:**
+Each root-to-leaf path represents a number formed by concatenating digits top-to-bottom (e.g. `1 -> 2 -> 3` = `123`). Recognize this as a **path-encoding DFS**: instead of collecting the path into a list/string and joining it only at the leaf (like LC 113 does with `sum`/`+`), carry a **running accumulated value** down the recursion and update it in O(1) per node — no post-processing needed at the leaf.
+
+**Core Idea:**
+Concatenating a digit `d` onto a number `curr` is just `curr * 10 + d` (same idea as building an integer from a string of digits). Pass this accumulator as a function argument so each recursive call is naturally scoped — no explicit backtrack (`path.pop()`) is needed, since each stack frame holds its own `curr` by value, not a shared mutable list:
+
+```
+curr = 0
+depth 1 (root=1):  curr = 0*10 + 1 = 1
+depth 2 (node=2):   curr = 1*10 + 2 = 12
+depth 3 (node=3):   curr = 12*10 + 3 = 123   <- leaf, add 123 to running total
+```
+
+At a leaf (`not root.left and not root.right`), `curr` already holds the full number for that path — just return it. Sum the leaf values returned by the left and right subtrees.
+
+```python
+# LC 129. Sum Root to Leaf Numbers
+# time = O(n), space = O(h) — h = tree height (recursion stack)
+class Solution(object):
+    def sumNumbers(self, root):
+        def dfs(node, curr):
+            if not node:
+                return 0
+            curr = curr * 10 + node.val
+            if not node.left and not node.right:
+                return curr
+            return dfs(node.left, curr) + dfs(node.right, curr)
+
+        return dfs(root, 0)
+```
+
+**Path-list variant (equivalent, but needs explicit backtrack):**
+```python
+# Building path as a list instead of an accumulator — requires path.pop() to backtrack
+class Solution(object):
+    def sumNumbers(self, root):
+        self.res = 0
+        self.dfs(root, [])
+        return self.res
+
+    def dfs(self, root, path):
+        if not root:
+            return
+        path.append(root.val)
+        if not root.left and not root.right:
+            self.res += int("".join(map(str, path)))
+            path.pop()          # backtrack before returning
+            return
+        self.dfs(root.left, path)
+        self.dfs(root.right, path)
+        path.pop()              # backtrack
+```
+
+**Why the accumulator form is preferred:** passing `curr` as an immutable argument (`curr * 10 + node.val`) means every recursive branch gets its own independent copy for free — no shared mutable state, so no backtrack bookkeeping is needed. This is the same trade-off as LC 113's `path + [val]` (new list per call, no pop needed) vs. `path.append/pop` (shared list, needs explicit undo).
+
+**Similar LC problems (root-to-leaf path-encoding via accumulator):**
+| Problem | Pattern |
+|---------|---------|
+| LC 129 - Sum Root to Leaf Numbers | `curr = curr * 10 + val` — decimal digit concatenation |
+| LC 257 - Binary Tree Paths | accumulate path as string `"->"`-joined, collect at leaf |
+| LC 112 - Path Sum | accumulate remaining target via subtraction (`sum - root.val`) instead of building upward |
+| LC 113 - Path Sum II | same as 112 but collects the actual path list at each valid leaf |
+| LC 988 - Smallest String Starting From Leaf | accumulate path as string bottom-up (leaf-to-root), compare lexicographically |
+
 ### 2-7) Clone graph — LC 133 — LC 133
 ```python
 # 133 Clone graph
