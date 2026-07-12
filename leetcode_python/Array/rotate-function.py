@@ -81,6 +81,54 @@ class Solution(object):
 
 # V0-1
 # IDEA : MATH (GEMINI)
+"""
+NOTE !!!
+
+KEY:
+
+F(k) = F(k-1) + total - n * nums[n-k]
+
+or
+
+F_next = F_cur + total - n * moved_element
+
+
+
+->
+
+
+Why ?
+
+
+->
+
+Suppose
+
+nums = [4,3,2,6]
+n = 4
+F(0) = 0*4 + 1*3 + 2*2 + 3*6 = 25
+
+Rotate once:
+
+[6,4,3,2]
+
+The element that moved is 6 (nums[3]).
+
+Rotate again:
+
+[2,6,4,3]
+
+Now the moved element is 2 (nums[2]).
+
+So the moved element changes as
+
+nums[n-1]
+nums[n-2]
+nums[n-3]
+...
+
+
+"""
 class Solution(object):
     def maxRotateFunction(self, nums):
         """
