@@ -52,6 +52,25 @@ class Solution(object):
 
 # V1-1
 # IDEA: MATH (gpt)
+"""
+NOTE !!!
+
+how to check a `valid` squre?
+
+
+->
+
+A valid square has:
+
+4 equal sides
+2 equal diagonals
+diagonal > side
+side > 0
+
+There are exactly 6 distances among 4 points.
+
+
+"""
 class Solution(object):
     def validSquare(self, p1, p2, p3, p4):
         points = [p1, p2, p3, p4]
