@@ -50,6 +50,8 @@ class Solution(object):
         pass
 
 
+
+
 # V1-1
 # IDEA: MATH (gpt)
 """
@@ -68,6 +70,69 @@ diagonal > side
 side > 0
 
 There are exactly 6 distances among 4 points.
+
+
+"""
+
+"""
+NOTE !!!
+
+### Why this works
+
+Suppose the square is
+
+```
+A ----- B
+|       |
+|       |
+D ----- C
+```
+
+The six distances are
+
+```
+AB = side
+BC = side
+CD = side
+DA = side
+AC = diagonal
+BD = diagonal
+```
+
+After sorting:
+
+```
+side
+side
+side
+side
+diag
+diag
+```
+
+For example:
+
+```
+(0,0)
+(1,0)
+(1,1)
+(0,1)
+```
+
+Squared distances become
+
+```
+1
+1
+1
+1
+2
+2
+```
+
+which satisfies the conditions.
+
+This is the shortest and most common accepted solution for LC 593, running in **O(1)** time since there are always exactly four points.
 
 
 """
@@ -120,6 +185,26 @@ class Solution(object):
         # Calculate distances between all 6 possible pairs
         for i in range(4):
             for j in range(i + 1, 4):
+                """
+                NOTE  !!!
+
+
+                the loop is like below:
+
+                ```
+
+                i, j = (0, 1)
+                i, j = (0, 2)
+                i, j = (0, 3)
+
+                i, j = (1, 2)
+                i, j = (1, 3)
+
+                i, j = (2, 3)
+
+               ```
+
+                """
                 d = get_dist(points[i], points[j])
                 
                 # If distance is 0, points overlap, so it cannot be a square
