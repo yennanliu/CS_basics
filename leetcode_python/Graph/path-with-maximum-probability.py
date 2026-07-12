@@ -63,7 +63,7 @@ class Solution(object):
         :type end_node: int
         :rtype: float
         """
-       	pass
+        pass
 
 
 
@@ -89,6 +89,46 @@ class Solution(object):
         # max heap (implemented using negative probabilities)
         pq = [(-1.0, start_node)]
 
+        """ 
+        Q :  Why we need `best[]` 
+
+
+        ->
+
+
+         Suppose
+
+            ```
+            0 --0.5--> 1
+             \         ^
+              \       /
+               0.9   0.8
+                 \   /
+                   2
+            ```
+
+            From node `0`:
+
+            ```
+            0 -> 1 = 0.5
+            ```
+
+            Later you discover
+
+            ```
+            0 -> 2 -> 1
+
+            0.9 × 0.8 = 0.72
+            ```
+
+            which is better.
+
+            If you don't store the best probability for each node, you'll either:
+
+            * process the same node many unnecessary times, or
+            * miss a better path.
+
+        """
         best = [0.0] * n
         best[start_node] = 1.0
 
@@ -100,7 +140,7 @@ class Solution(object):
             if node == end_node:
                 return prob
 
-            # stale entry
+            # stale (陳舊) entry
             if prob < best[node]:
                 continue
 
