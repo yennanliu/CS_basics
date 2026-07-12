@@ -78,6 +78,58 @@ class Solution(object):
             ans = max(ans, sumn)
         return ans
 
+
+# V0-1
+# IDEA : MATH (GEMINI)
+class Solution(object):
+    def maxRotateFunction(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        n = len(nums)
+        total = sum(nums)
+        f_list = [0] * n 
+        
+        # 1. Calculate F(0)
+        tmp = 0
+        for i in range(n):
+            tmp += (i * nums[i])
+        f_list[0] = tmp
+        
+        # 2. Initialize max_sum to the first valid state, NOT 0
+        max_sum = f_list[0]
+        
+        # 3. Calculate F(1) through F(N-1) using the dynamic index (n - i)
+        for i in range(1, n):
+            # Formula: Previous F + Total Sum - (N * element moving to the front)
+            f_list[i] = f_list[i-1] + total - (n * nums[n - i])
+            max_sum = max(max_sum, f_list[i])
+            
+        return max_sum
+
+
+# V0-2
+# IDEA : MATH (GPT)
+class Solution(object):
+    def maxRotateFunction(self, nums):
+
+        n = len(nums)
+
+        total = sum(nums)
+
+        f = 0
+        for i in range(n):
+            f += i * nums[i]
+
+        ans = f
+
+        for k in range(1, n):
+            f = f + total - n * nums[n - k]
+            ans = max(ans, f)
+
+        return ans
+
 # V0'
 # IDEA : BRUTE FORCE (TLE)
 # time = O(n^2)
