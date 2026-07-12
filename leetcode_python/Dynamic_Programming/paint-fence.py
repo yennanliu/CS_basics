@@ -1,32 +1,89 @@
-"""
+# https://leetcode.ca/all/276.html
 
-There is a fence with n posts, each post can be painted with one of the k colors. You have to paint all the posts such that no more than two adjacent fence posts have the same color. Return the total number of ways you can paint the fence.
-
-Java Solution
-The key to solve this problem is finding this relation.
-
-f(n) = (k-1)(f(n-1)+f(n-2))
-
-Assuming there are 3 posts,
-if the first one and the second one has the same color, 
-then the third one has k-1 options. The first and second together has k options.
-If the first and the second do not have same color, the total is k * (k-1), 
-then the third one has k options.
-Therefore, f(3) = (k-1)*k + k*(k-1)*k = (k-1)(k+k*k)
 
 """
 
-# # V1  : dev 
-# # https://www.programcreek.com/2014/05/leetcode-pain-fence-java/
+276. Paint Fence
+There is a fence with n posts, each post can be painted with one of the k colors.
 
-# class Solution(object):
-#     def numWays(self, n, k):
-#         for i in range(2,n):
-#             dp[3] = (k-1)*(dp(1) + dp(2))
-#             dp[1] = dp[2]
-#             dp[2] = dp[3]
+You have to paint all the posts such that no more than two adjacent fence posts have the same color.
 
-#         return dp[3]
+Return the total number of ways you can paint the fence.
+
+Note:
+n and k are non-negative integers.
+
+Example:
+
+Input: n = 3, k = 2
+Output: 6
+Explanation: Take c1 as color 1, c2 as color 2. All possible ways are:
+
+            post1  post2  post3
+ -----      -----  -----  -----
+   1         c1     c1     c2
+   2         c1     c2     c1
+   3         c1     c2     c2
+   4         c2     c1     c1 
+   5         c2     c1     c2
+   6         c2     c2     c1
+Difficulty:
+Easy
+Lock:
+Prime
+Company:
+Google
+Problem Solution
+276-Paint-Fence
+
+
+
+"""
+
+# V0
+class Solution(object):
+  def numWays(self, n, k):
+        pass
+
+
+
+# V1-1
+# https://leetcode.ca/2016-09-01-276-Paint-Fence/
+class Solution:
+    def numWays(self, n: int, k: int) -> int:
+        # `dp[i][0]` same color
+        # `dp[i][1]` different color
+        dp = [[0] * 2 for _ in range(n)]
+        dp[0][1] = k
+        for i in range(1, n):
+            dp[i][0] = dp[i - 1][1] # same as previous, or else 3-posts the same color
+            dp[i][1] = (dp[i - 1][0] + dp[i - 1][1]) * (k - 1) # not the same as previous
+        return sum(dp[-1])
+
+
+
+# V1-2
+# https://leetcode.ca/2016-09-01-276-Paint-Fence/
+class Solution(object):
+  def numWays(self, n, k):
+    """
+    :type n: int
+    :type k: int
+    :rtype: int
+    """
+    if n > 2 and k == 1:
+      return 0
+    if n < 2:
+      return n * k
+    pre = k * k
+    ppre = k
+    for i in range(2, n):
+      tmp = pre
+      pre = (k - 1) * (pre + ppre)
+      ppre = tmp
+    return pre
+
+
 
 
 # V2
