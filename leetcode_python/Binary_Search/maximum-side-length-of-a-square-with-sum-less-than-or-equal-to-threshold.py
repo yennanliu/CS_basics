@@ -51,7 +51,102 @@ class Solution(object):
 
 # V0
 
-# V1
+# V1-1
+# IDEA: PREFIX + BINARY SEARCH (gpt)
+class Solution(object):
+    def maxSideLength(self, mat, threshold):
+        m, n = len(mat), len(mat[0])
+
+        # 1-based prefix sum
+        prefix = [[0] * (n + 1) for _ in range(m + 1)]
+
+        for i in range(m):
+            for j in range(n):
+                prefix[i + 1][j + 1] = (
+                    mat[i][j]
+                    + prefix[i][j + 1]
+                    + prefix[i + 1][j]
+                    - prefix[i][j]
+                )
+
+        # Returns True if there exists a square of side k
+        # whose sum <= threshold.
+        def check(k):
+            if k == 0:
+                return True
+
+            for i in range(m - k + 1):
+                for j in range(n - k + 1):
+                    total = (
+                        prefix[i + k][j + k]
+                        - prefix[i][j + k]
+                        - prefix[i + k][j]
+                        + prefix[i][j]
+                    )
+
+                    if total <= threshold:
+                        return True
+
+            return False
+
+        left, right = 0, min(m, n)
+
+        while left < right:
+            mid = (left + right + 1) // 2
+
+            if check(mid):
+                left = mid
+            else:
+                right = mid - 1
+
+        return left
+
+
+# V1-2
+# IDEA: PREFIX + BINARY SEARCH (gpt)
+class Solution(object):
+    def maxSideLength(self, mat, threshold):
+        """
+        :type mat: List[List[int]]
+        :type threshold: int
+        :rtype: int
+        """
+        m = len(mat)
+        n = len(mat[0])
+        
+        # Create a 2D prefix sum array (1-indexed to prevent out-of-bounds issues)
+        prefix = [[0] * (n + 1) for _ in range(m + 1)]
+        
+        # Build the prefix sum matrix
+        for i in range(1, m + 1):
+            for j in range(1, n + 1):
+                prefix[i][j] = (mat[i-1][j-1] 
+                              + prefix[i-1][j] 
+                              + prefix[i][j-1] 
+                              - prefix[i-1][j-1])
+        
+        max_len = 0
+        
+        # Iterate through the matrix, treating (i, j) as the bottom-right corner of a potential square
+        for i in range(1, m + 1):
+            for j in range(1, n + 1):
+                # We only check if a square of size max_len + 1 is valid.
+                # If it is, we increment max_len. We do not need to check smaller squares.
+                k = max_len + 1
+                
+                # Ensure the square of size 'k' doesn't go out of bounds on the top or left
+                if i - k >= 0 and j - k >= 0:
+                    # Calculate the sum of the k x k square in O(1) time
+                    square_sum = (prefix[i][j] 
+                                - prefix[i - k][j] 
+                                - prefix[i][j - k] 
+                                + prefix[i - k][j - k])
+                                
+                    # If it fits the threshold, increase our maximum length
+                    if square_sum <= threshold:
+                        max_len = k
+                        
+        return max_len
 
 
 # V2-1
@@ -123,4 +218,3 @@ class Solution:
                     else:
                         break
         return ans
-        
