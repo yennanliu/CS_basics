@@ -48,15 +48,34 @@ The depth of the tree will not exceed 10.
 
 
 # V0
+# IDEA: DFS + PATH
 class Solution(object):
     def sumNumbers(self, root):
-        """
-        :type root: Optional[TreeNode]
-        :rtype: int
-        """
+        if not root:
+            return 0
+
+        self.total = 0
+        self.helper(root, [])
+
+        return self.total
+
+    def helper(self, root, cur_sum):
+        if not root:
+            return
+
+        cur_sum.append(str(root.val))
+
+        if not root.left and not root.right:
+            num = int("".join(cur_sum))
+            self.total += num
+        else:
+            self.helper(root.left, cur_sum)
+            self.helper(root.right, cur_sum)
+
+        # backtrack
+        cur_sum.pop()
         
-        pass
-        
+
 # V0-1
 # IDEA: DFS + PATH (gpt)
 class Solution(object):
