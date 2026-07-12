@@ -53,6 +53,8 @@ There is at most one edge between every two nodes.
 
 
 # V0
+# time = O(1) (unimplemented stub)
+# space = O(1)
 class Solution(object):
     def maxProbability(self, n, edges, succProb, start_node, end_node):
         """
@@ -70,6 +72,8 @@ class Solution(object):
 # V1-1
 # IDEA: Dijkstra (gpt)
 # build a graph + use a priority queue (Dijkstra).
+# time = O(E log V), E = len(edges), V = n
+# space = O(V + E)
 import heapq
 class Solution(object):
     def maxProbability(self, n, edges, succProb, start_node, end_node):
@@ -167,6 +171,8 @@ class Solution(object):
 # V1-2
 # IDEA: Dijkstra (gemini)
 # build a graph + use a priority queue (Dijkstra).
+# time = O(E log V), E = len(edges), V = n
+# space = O(V + E)
 import collections
 import heapq
 
@@ -231,6 +237,8 @@ class Solution(object):
 # V2-1
 # IDEA: Bellman-Ford Algorithm
 # https://leetcode.com/problems/path-with-maximum-probability/editorial/
+# time = O(V * E), V = n, E = len(edges)
+# space = O(V)
 class Solution:
     def maxProbability(
         self,
@@ -265,6 +273,8 @@ class Solution:
 # V2-2
 # IDEA:  Shortest Path Faster Algorithm
 # https://leetcode.com/problems/path-with-maximum-probability/editorial/
+# time = O(V * E) worst case, V = n, E = len(edges)
+# space = O(V + E)
 class Solution:
     def maxProbability(
         self,
@@ -298,6 +308,8 @@ class Solution:
 # V2-3
 # IDEA: Dijkstra's Algorithm
 # https://leetcode.com/problems/path-with-maximum-probability/editorial/
+# time = O(E log V), E = len(edges), V = n
+# space = O(V + E)
 class Solution:
     def maxProbability(
         self,

@@ -39,6 +39,8 @@ n == mat[i].length
 
 
 # V0
+# time = O(1) (unimplemented stub)
+# space = O(1)
 class Solution(object):
     def maxSideLength(self, mat, threshold):
         """
@@ -87,6 +89,8 @@ total = (
 where prefix is a 1-based prefix sum array.
 
 """
+# time = O(m*n*log(min(m,n)))
+# space = O(m*n)
 class Solution(object):
     def maxSideLength(self, mat, threshold):
         m, n = len(mat), len(mat[0])
@@ -96,23 +100,23 @@ class Solution(object):
 
         for i in range(m):
             for j in range(n):
-            	"""
-            	NOTE !!!
+                """
+                NOTE !!!
 
-            	This is the `standard` way to 
+                This is the `standard` way to
 
-            	build a `2D prefix sum`. 
+                build a `2D prefix sum`.
 
 
-            	-> The key idea is:
+                -> The key idea is:
 
-						prefix[i+1][j+1] 
+                    prefix[i+1][j+1]
 
-						stores the sum of the 
-						rectangle
+                    stores the sum of the
+                    rectangle
 
-						from `(0,0)` to (i,j) inclusive.
-            	"""
+                    from `(0,0)` to (i,j) inclusive.
+                """
                 prefix[i + 1][j + 1] = (
                     mat[i][j]
                     + prefix[i][j + 1]
@@ -155,6 +159,8 @@ class Solution(object):
 
 # V1-2
 # IDEA: PREFIX + BINARY SEARCH (gpt)
+# time = O(m*n)
+# space = O(m*n)
 class Solution(object):
     def maxSideLength(self, mat, threshold):
         """
@@ -203,6 +209,8 @@ class Solution(object):
 # V2-1
 # IDEA: BINARY SEARCH
 # https://leetcode.com/problems/maximum-side-length-of-a-square-with-sum-less-than-or-equal-to-threshold/editorial/
+# time = O(m*n*log(min(m,n)))
+# space = O(m*n)
 class Solution:
     def maxSideLength(self, mat: List[List[int]], threshold: int) -> int:
         m, n = len(mat), len(mat[0])
@@ -240,6 +248,8 @@ class Solution:
 # V2-2
 # IDEA: Enumeration + Optimization
 # https://leetcode.com/problems/maximum-side-length-of-a-square-with-sum-less-than-or-equal-to-threshold/editorial/
+# time = O(m*n*min(m,n))
+# space = O(m*n)
 class Solution:
     def maxSideLength(self, mat: List[List[int]], threshold: int) -> int:
         m, n = len(mat), len(mat[0])
