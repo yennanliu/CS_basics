@@ -342,6 +342,64 @@ class Solution(object):
         return 0 not in lookup and len(lookup) == 2
 ```
 
+#### 1-1-5) Weighted Rotation Sum — Telescoping Recurrence (avoid O(n²) brute force)
+
+**Pattern:**
+Brute-force recomputing `F(k) = sum(i * arr_k[i])` for every rotation `k` costs O(n) per rotation → O(n²) total. Instead, derive an **O(1) transition** from `F(k-1)` to `F(k)` and slide through all `n` rotations in O(n).
+
+**Core Idea:**
+Write out a few rotations by hand and compare term by term (`nums = [A, B, C, D]`, `n = 4`):
+
+```
+F(0) = 0*A + 1*B + 2*C + 3*D
+F(1) = 0*D + 1*A + 2*B + 3*C
+F(2) = 0*C + 1*D + 2*A + 3*B
+F(3) = 0*B + 1*C + 2*D + 3*A
+```
+
+Every element's weight goes up by 1 when you rotate — **except** the element that just wrapped from the back to the front, whose weight drops from `n-1` down to `0`. So:
+
+```
+sum = A + B + C + D                 # total sum, weight-independent
+
+F(1) = F(0) + sum - 4*D             # D's weight: 3 -> 0, i.e. -4*D; everything else: +1 each -> +sum
+F(2) = F(1) + sum - 4*C
+F(3) = F(2) + sum - 4*B
+```
+
+Generalizing, the element that wraps into position 0 for `F(k)` is `nums[n-k]`, giving the recurrence:
+
+```
+F(k) = F(k-1) + sum(nums) - n * nums[n-k]
+```
+
+This is the same "**maintain a running aggregate instead of recomputing from scratch**" philosophy as prefix sums — just applied to a *weighted* sum instead of a plain sum.
+
+```python
+# LC 396. Rotate Function
+# time = O(n), space = O(1)
+class Solution(object):
+    def maxRotateFunction(self, nums):
+        size = len(nums)
+        total = sum(nums)
+        f = sum(i * x for i, x in enumerate(nums))  # F(0)
+
+        ans = f
+        for i in range(size - 1, 0, -1):
+            # nums[i] is the element wrapping to front: weight n-1 -> 0
+            f += total - size * nums[i]
+            ans = max(ans, f)
+        return ans
+```
+
+**Similar LC problems (same "O(1) transition between states" idea):**
+| Problem | Pattern |
+|---------|---------|
+| LC 396 - Rotate Function | telescoping weighted-sum recurrence: `F(k) = F(k-1) + sum - n*nums[n-k]` |
+| LC 238 - Product of Array Except Self | running prefix/suffix product instead of recomputing per index |
+| LC 303 - Range Sum Query - Immutable | precomputed prefix sum instead of recomputing per query |
+| LC 189 - Rotate Array | actual physical rotation (reverse trick) — contrast: no aggregate formula, just rearranges elements |
+
 ## 2) LC Example
 
 ### 2-1) Excel Sheet Column Title — LC 168
