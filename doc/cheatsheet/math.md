@@ -264,6 +264,84 @@ public int smallestRepunitDivByK(int k) {
 }
 ```
 
+#### 1-1-4) Check if 4 points form a valid square (Pairwise Distance Trick)
+
+**Core Idea:**
+Given 4 points in any order, checking angles/slopes directly is messy (division by zero, floating point). Instead, compute the **6 pairwise squared distances** among the 4 points and reason about them as a multiset.
+
+**Why 6 distances?**
+4 points → C(4,2) = 6 pairs. For a square:
+
+```
+A ----- B
+|       |
+|       |
+D ----- C
+```
+
+```
+AB = side
+BC = side
+CD = side
+DA = side
+AC = diagonal
+BD = diagonal
+```
+
+So after sorting the 6 squared distances, you always get **4 equal (smaller) values + 2 equal (larger) values**.
+
+**Pattern — a valid square has:**
+- side > 0 (no overlapping points)
+- 4 equal sides
+- 2 equal diagonals
+- diagonal > side
+
+```python
+# LC 593. Valid Square
+class Solution(object):
+    def validSquare(self, p1, p2, p3, p4):
+        points = [p1, p2, p3, p4]
+        dists = []
+
+        for i in range(4):
+            for j in range(i + 1, 4):
+                dists.append(self.get_len(
+                    points[i][0], points[i][1],
+                    points[j][0], points[j][1]
+                ))
+
+        dists.sort()
+
+        return (
+            dists[0] > 0 and                 # no overlapping points
+            dists[0] == dists[1] ==
+            dists[2] == dists[3] and         # four equal sides
+            dists[4] == dists[5] and         # two equal diagonals
+            dists[4] > dists[0]              # diagonal longer than side
+        )
+
+    def get_len(self, x1, y1, x2, y2):
+        # use squared distance -> avoid float/sqrt precision issues
+        return (x1 - x2) ** 2 + (y1 - y2) ** 2
+```
+
+**Alternative (set-based) form:**
+Since a valid square has exactly 2 distinct distance values (side², diagonal²), and diagonal is always > side for a real square, you can just check `len(set(distances)) == 2` (plus the `0 not in distances` guard for overlapping points):
+
+```python
+class Solution(object):
+    def validSquare(self, p1, p2, p3, p4):
+        def dist(a, b):
+            return (a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2
+
+        points = [p1, p2, p3, p4]
+        lookup = set(
+            dist(points[i], points[j])
+            for i in range(4) for j in range(i + 1, 4)
+        )
+        return 0 not in lookup and len(lookup) == 2
+```
+
 ## 2) LC Example
 
 ### 2-1) Excel Sheet Column Title — LC 168
