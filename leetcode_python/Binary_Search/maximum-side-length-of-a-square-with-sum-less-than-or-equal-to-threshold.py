@@ -53,6 +53,40 @@ class Solution(object):
 
 # V1-1
 # IDEA: PREFIX + BINARY SEARCH (gpt)
+"""
+NOTE !!!
+
+
+For a square whose 
+  top-left corner is (i, j)
+  and side length k:
+
+```
+
+(i, j) -------------------- (i, j+k-1)
+  |                              |
+  |                              |
+  |                              |
+(i+k-1, j) ------------ (i+k-1, j+k-1)
+
+```
+
+
+-> sum is
+
+```
+total = (
+    prefix[i + k][j + k]
+    - prefix[i][j + k]
+    - prefix[i + k][j]
+    + prefix[i][j]
+)
+```
+
+
+where prefix is a 1-based prefix sum array.
+
+"""
 class Solution(object):
     def maxSideLength(self, mat, threshold):
         m, n = len(mat), len(mat[0])
@@ -62,6 +96,23 @@ class Solution(object):
 
         for i in range(m):
             for j in range(n):
+            	"""
+            	NOTE !!!
+
+            	This is the `standard` way to 
+
+            	build a `2D prefix sum`. 
+
+
+            	-> The key idea is:
+
+						prefix[i+1][j+1] 
+
+						stores the sum of the 
+						rectangle
+
+						from `(0,0)` to (i,j) inclusive.
+            	"""
                 prefix[i + 1][j + 1] = (
                     mat[i][j]
                     + prefix[i][j + 1]
