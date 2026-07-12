@@ -366,7 +366,40 @@ class UnionFind {
 - **Option A: dist[][]** → Check `if (newCost < dist[r][c])` before processing
 - **Option B: visited[]** → Mark as visited after first pop from PQ
 
-Both prevent reprocessing the same cell. Pick whichever feels clearer.
+Both prevent reprocessing the same cell. Pick whichever feels clearer — but they are **not** always interchangeable. See below for when `best[]`/`dist[]` is actually *required* vs. when you can simplify to comparing the next candidate path directly against the current (just-popped) path.
+
+### best[] (a.k.a dist[]) vs. "just compare next path to cur path" (visited[]-only)
+
+There are two different comparisons a Dijkstra implementation can make when it looks at a candidate edge `cur_node -> nxt_node`:
+
+| | **Type 1: compare vs. `best[]`** | **Type 2: compare next path vs. cur (popped) path** |
+|---|---|---|
+| **What is compared** | `candidate_value` vs. `best[nxt_node]` (the best value *ever recorded* for that node/state) | Nothing stored — `candidate_value` is derived straight from `cur_node`'s already-finalized value; no lookup table |
+| **When the check happens** | **Before pushing** to the heap (relaxation step) | **After popping** — a `visited[node]` boolean gate, no value comparison at all |
+| **Why it's needed / why it works** | The same node (or node+constraint state) can be reached many times over the run with different values; you must remember the best one seen so far to know if a new path is actually an improvement | Dijkstra's min-heap invariant guarantees the **first pop of a node is already globally optimal**, so once popped there is nothing left to compare against — any later, worse duplicate is simply skipped by the visited check |
+| **Persists across multiple updates?** | ✅ Yes — `best[node]` can be overwritten several times before the node is finalized | ❌ No — a node is written once (`visited[node] = true`) and never touched again |
+| **Required when...** | State has an extra dimension (`(node, constraint)` — same node can be legitimately "reached" at several different constraint values, each valid), OR you need to detect *ties* (e.g. counting paths), OR you want to prune the heap early by rejecting non-improving pushes | State is a single scalar per node, non-negative edge weights, no extra constraint dimension — the plain single-source case |
+| **Fails silently if misused** | N/A (always correct, just uses more memory) | ❌ Using `visited[]`-only on a **constrained** problem (LC 787-style) is **WRONG** — it wipes out the extra dimension and discards valid paths (see 2-2 above for the concrete trace) |
+
+**Key concept in one line:**
+> `best[]` answers *"is this candidate better than anything I've seen before for this state?"* — needed whenever a state can be legitimately revisited with a different value.
+> `visited[]`-only answers *"has this state already been finalized?"* — sufficient only when the heap's pop-order guarantee (first pop = optimal) fully covers the state, i.e. no extra constraint dimension.
+
+**Classic Dijkstra problems by type:**
+
+| Type | LC # | Problem | Why |
+|------|------|---------|-----|
+| **Type 1 — needs best[]/dist[]** | 743 | Network Delay Time | Standard single-source relaxation before push |
+| | 1514 | Path with Maximum Probability | `best[]`/`max_prob[]` tracks max product seen so far per node |
+| | 1976 | Number of Ways to Arrive at Destination | Needs `dist[]` **and** `ways[]` — must detect exact ties (`==`), impossible without a persisted value |
+| | 787 | Cheapest Flights Within K Stops | **Must** be 2D `best[(node, stops)]` — `visited[node]`-only is provably wrong (see 2-2 trace) |
+| | 1293 / 864 / 2093 | Constrained-state Dijkstra variants | Same reason as 787 — extra constraint dimension means a node has multiple valid finalized states |
+| **Type 2 — visited[]-only suffices** | 1631 | Path With Minimum Effort | Variant 2 (`visited[][]`) — scalar per-cell state, first pop = optimal effort |
+| | 778 | Swim in Rising Water | `visited[][]` marks cells finalized; next path value = `max(cur path value, next cell height)` |
+| | 743 | Network Delay Time (alt. impl.) | The "visited-set variant" shown in 2-1 above — equivalent to `dist[]`, just checked after pop instead of before push |
+| | 2290 | Minimum Obstacle Removal | Weights are only 0/1 → 0-1 BFS with a deque + `visited[]` also works, no value table needed |
+
+**Rule of thumb**: if you can answer "is `node` alone a complete description of where you are in the search?" with **yes**, `visited[]`-only is safe. The moment the answer becomes "no — I also need to know how many stops/keys/obstacles I've used," you must upgrade to a `best[]`/`dist[]` map keyed by `(node, constraint)`.
 
 ### Q2: Why can't I use DP for LC 1631 like I do for LC 64?
 **A**: Because of **movement direction**:
@@ -1042,6 +1075,26 @@ public int minimumEffortPath_0_1(int[][] heights) {
 
 > Max-heap Dijkstra multiplying edge probabilities; start at 1.0, maximize reach-probability.
 
+**Core Idea — why we need `best[]` (a.k.a `max_prob[]`):**
+```
+Suppose:
+  0 --0.5--> 1
+   \         ^
+    \       /
+    0.9   0.8
+      \   /
+        2
+
+From node 0 directly: 0 -> 1 = 0.5
+
+Later we discover: 0 -> 2 -> 1 = 0.9 × 0.8 = 0.72   ← better!
+
+If we don't store the best probability found so far per node, we'll either:
+  - reprocess the same node many unnecessary times, or
+  - miss a better path entirely (if we stop at the first probability found).
+```
+This mirrors the `dist[node]` pruning of standard Dijkstra, just inverted: instead of `dist[u] + w < dist[v]` (minimize sum), we check `prob[u] * edge_prob > prob[v]` (maximize product). Use a **max-heap** (negate the probability, since `heapq` is a min-heap by default), and stale/negative-updated heap entries are skipped via `if prob < best[node]: continue`.
+
 ```java
 // java
 // LC 1514
@@ -1125,6 +1178,67 @@ class Solution:
 
         return 0.0
 ```
+
+**Alternative Approaches (LC 1514 also solvable without a priority queue):**
+
+Since edge weights (probabilities) are non-negative and we're maximizing a product instead of minimizing a sum, this problem also admits **Bellman-Ford** and **SPFA** solutions — useful if the interviewer asks for approaches beyond Dijkstra.
+
+```python
+# V2-1: Bellman-Ford — relax all edges (both directions since undirected) up to n-1 times
+# time = O(V * E), space = O(V)
+class Solution:
+    def maxProbability(self, n, edges, succProb, start, end):
+        max_prob = [0] * n
+        max_prob[start] = 1
+
+        for i in range(n - 1):
+            has_update = 0
+            for j in range(len(edges)):
+                u, v = edges[j]
+                path_prob = succProb[j]
+                if max_prob[u] * path_prob > max_prob[v]:
+                    max_prob[v] = max_prob[u] * path_prob
+                    has_update = 1
+                if max_prob[v] * path_prob > max_prob[u]:
+                    max_prob[u] = max_prob[v] * path_prob
+                    has_update = 1
+            # early exit: no larger probability found this round -> converged
+            if not has_update:
+                break
+
+        return max_prob[end]
+```
+
+```python
+# V2-2: SPFA (Shortest Path Faster Algorithm) — queue-based Bellman-Ford variant
+# time = O(V * E) worst case, often much faster in practice, space = O(V + E)
+class Solution:
+    def maxProbability(self, n, edges, succProb, start, end):
+        graph = defaultdict(list)
+        for i, (a, b) in enumerate(edges):
+            graph[a].append([b, succProb[i]])
+            graph[b].append([a, succProb[i]])
+
+        max_prob = [0.0] * n
+        max_prob[start] = 1.0
+
+        queue = deque([start])
+        while queue:
+            cur_node = queue.popleft()
+            for nxt_node, path_prob in graph[cur_node]:
+                # only enqueue nxt_node if this path IMPROVES its probability
+                if max_prob[cur_node] * path_prob > max_prob[nxt_node]:
+                    max_prob[nxt_node] = max_prob[cur_node] * path_prob
+                    queue.append(nxt_node)
+
+        return max_prob[end]
+```
+
+| Approach | Time | Space | Notes |
+|----------|------|-------|-------|
+| **Dijkstra (max-heap)** | O((V+E) log V) | O(V+E) | Best general choice; early-exits once `end` is popped |
+| **Bellman-Ford** | O(V·E) | O(V) | Simple nested loops, no heap; good fallback if PQ not allowed |
+| **SPFA** | O(V·E) worst, faster typical | O(V+E) | Queue instead of heap; same idea as 0-1 BFS but for weighted relax |
 
 ### 2-5) Number of Ways to Arrive at Destination (LC 1976) — Dijkstra + Path Count
 

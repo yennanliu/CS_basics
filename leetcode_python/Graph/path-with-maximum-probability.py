@@ -89,6 +89,14 @@ class Solution(object):
         # max heap (implemented using negative probabilities)
         pq = [(-1.0, start_node)]
 
+
+        """
+        NOTE !!!
+
+
+        we need `best[]`  setting !!!
+        """
+
         """ 
         Q :  Why we need `best[]` 
 
