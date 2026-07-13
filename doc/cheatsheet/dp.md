@@ -6042,6 +6042,90 @@ dp[i]:  1  1  2  4  6  9 12 18 27 36
 | Maximum Product Subarray | 152 | Maximize product with DP |
 | Partition to K Equal Sum Subsets | 698 | Partition integer into parts with constraint |
 
+### 2-8) Paint Fence (LC 276) — Two-State DP (same / different color)
+
+> Paint `n` posts with `k` colors such that **no more than 2 adjacent posts share a color**. Split each post into two states — "same as previous" vs "different from previous" — and roll them forward.
+
+#### 1. Core Idea
+
+Track two states for the last post `i`:
+
+- `same[i]` = # ways where post `i` has the **same** color as post `i-1`
+- `diff[i]` = # ways where post `i` has a **different** color from post `i-1`
+
+The "no more than 2 adjacent same" rule means: **you can only paint the same color if the previous two posts were different** (otherwise you'd create 3-in-a-row). This is exactly why `same[i]` depends on `diff[i-1]`.
+
+```
+same[i] = diff[i - 1]                        # only extend a "different" run, else 3 in a row
+diff[i] = (same[i-1] + diff[i-1]) * (k - 1)  # pick any of the other (k-1) colors
+
+Base: same[0] = 0, diff[0] = k   (first post: k choices, "different" by convention)
+Answer = same[n-1] + diff[n-1]
+```
+
+#### 2. Pattern
+
+**Two-state linear DP with rolling variables** — same family as the stock state-machine problems (LC 309/714), but the states here encode a *local adjacency constraint* rather than buy/sell. Because each state only needs the previous step, collapse the array into two scalars → **O(n) time, O(1) space**.
+
+```python
+# python — LC 276 Paint Fence
+# time = O(n), space = O(n) (array version, mirrors the state definition)
+class Solution:
+    def numWays(self, n: int, k: int) -> int:
+        if n == 0:
+            return 0
+        # dp[i][0] = same color as prev, dp[i][1] = different color
+        dp = [[0] * 2 for _ in range(n)]
+        dp[0][1] = k                       # first post: k ways, treated as "different"
+        for i in range(1, n):
+            dp[i][0] = dp[i - 1][1]                          # same -> prev must be different
+            dp[i][1] = (dp[i - 1][0] + dp[i - 1][1]) * (k - 1)  # different -> any other color
+        return sum(dp[-1])
+```
+
+```python
+# python — O(1) space (rolling two variables)
+class Solution:
+    def numWays(self, n: int, k: int) -> int:
+        if n == 0:
+            return 0
+        if n == 1:
+            return k
+        same, diff = k, k * (k - 1)        # base for first 2 posts
+        for _ in range(3, n + 1):
+            same, diff = diff, (same + diff) * (k - 1)
+        return same + diff
+```
+
+```java
+// java — LC 276 Paint Fence
+// time = O(n), space = O(1)
+public int numWays(int n, int k) {
+    if (n == 0) return 0;
+    if (n == 1) return k;
+    int same = k, diff = k * (k - 1);      // base for first 2 posts
+    for (int i = 3; i <= n; i++) {
+        int prevDiff = diff;
+        diff = (same + diff) * (k - 1);    // different from previous
+        same = prevDiff;                   // same requires previous two differ
+    }
+    return same + diff;
+}
+```
+
+**Edge case**: if `n > 2 && k == 1`, the answer is `0` (can't avoid 3-in-a-row with only one color).
+
+#### 3. Similar LeetCode Problems
+
+| Problem | LC # | Similarity |
+|---------|------|-----------|
+| Climbing Stairs | 70 | Fibonacci-like rolling recurrence, O(1) space |
+| House Robber | 198 | Two implicit states (rob / skip) rolled forward |
+| Best Time to Buy/Sell with Cooldown | 309 | Multi-state machine with adjacency-style constraint |
+| Best Time to Buy/Sell with Fee | 714 | Two rolling states (hold/cash) |
+| Delete and Earn | 740 | Take/skip state DP on values |
+| Domino and Tromino Tiling | 790 | Count tilings via rolling state transitions |
+
 ## Decision Framework
 
 ### Pattern Selection Strategy
