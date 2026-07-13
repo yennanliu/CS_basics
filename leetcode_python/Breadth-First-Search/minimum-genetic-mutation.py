@@ -80,6 +80,12 @@ class Solution(object):
                     if ch == cur_gene[i]:
                         continue
 
+                    """
+                    NOTE !!!
+
+
+                    how we update string by idx
+                    """
                     new_gene = (
                         cur_gene[:i] +
                         ch +
@@ -87,6 +93,16 @@ class Solution(object):
                     )
 
                     if new_gene in bank and new_gene not in visited:
+                        """
+                        NOTE !!!
+
+
+                        we need to update `visited` immediately,
+                        or another bfs call will visit the same `new_gene` again
+
+
+                        (e.g. Otherwise multiple parents may enqueue the same gene.)
+                        """
                         visited.add(new_gene)
                         q.append((new_gene, steps + 1))
 
