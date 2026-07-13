@@ -38,16 +38,56 @@ p1.length == p2.length == p3.length == p4.length == 2
 """
 
 # V0
+# IDEA: MATH + `6 sides check valid square`
+"""
+NOTE !!!
+
+how to check a `valid` squre?
+
+
+->
+
+A valid square has:
+
+4 equal sides
+2 equal diagonals
+diagonal > side
+side > 0
+
+There are exactly 6 distances among 4 points.
+
+
+"""
 class Solution(object):
     def validSquare(self, p1, p2, p3, p4):
-        """
-        :type p1: List[int]
-        :type p2: List[int]
-        :type p3: List[int]
-        :type p4: List[int]
-        :rtype: bool
-        """
-        pass
+        points = [p1, p2, p3, p4]
+
+        dist_list = []
+
+        # Compute all 6 pairwise squared distances
+        for i in range(4):
+            for j in range(i + 1, 4):
+                dist = ((points[i][0] - points[j][0]) ** 2 +
+                        (points[i][1] - points[j][1]) ** 2)
+                dist_list.append(dist)
+
+        # Sort: 4 sides followed by 2 diagonals
+        dist_list.sort()
+
+        # Side length must be non-zero
+        if dist_list[0] == 0:
+            return False
+
+        # First 4 distances (sides) must be equal
+        for i in range(4):
+            if dist_list[i] != dist_list[0]:
+                return False
+
+        # Last 2 distances (diagonals) must be equal
+        if dist_list[4] != dist_list[5]:
+            return False
+
+        return True
 
 
 
