@@ -53,20 +53,62 @@ There is at most one edge between every two nodes.
 
 
 # V0
+# IDEA: Dijkstra (gpt)
 # time = O(1) (unimplemented stub)
 # space = O(1)
+import heapq
+
 class Solution(object):
     def maxProbability(self, n, edges, succProb, start_node, end_node):
-        """
-        :type n: int
-        :type edges: List[List[int]]
-        :type succProb: List[float]
-        :type start_node: int
-        :type end_node: int
-        :rtype: float
-        """
-        pass
+        if start_node == end_node:
+            return 1.0
 
+        # Build graph: node -> [(neighbor, probability)]
+        graph = {}
+
+        for i in range(len(edges)):
+            u, v = edges[i]
+            p = succProb[i]
+
+            graph.setdefault(u, []).append((v, p))
+            graph.setdefault(v, []).append((u, p))
+
+        # best[i] = maximum probability of reaching i
+        best = [0.0] * n
+        """
+        NOTE !!! below
+        """
+        best[start_node] = 1.0
+
+        # Max heap using negative probabilities
+        pq = [(-1.0, start_node)]
+        heapq.heapify(pq)
+
+        while pq:
+            neg_prob, cur_node = heapq.heappop(pq)
+            prob = -neg_prob
+
+            # Ignore stale entries
+            """
+            NOTE !!! below
+            """
+            if prob < best[cur_node]:
+                continue
+
+            if cur_node == end_node:
+                return prob
+
+            for next_node, edge_prob in graph.get(cur_node, []):
+                new_prob = prob * edge_prob
+
+                """
+                NOTE !!! below
+                """
+                if new_prob > best[next_node]:
+                    best[next_node] = new_prob
+                    heapq.heappush(pq, (-new_prob, next_node))
+
+        return 0.0
 
 
 # V1-1
