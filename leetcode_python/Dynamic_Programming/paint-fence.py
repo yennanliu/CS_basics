@@ -41,10 +41,63 @@ Problem Solution
 """
 
 # V0
-class Solution(object):
-  def numWays(self, n, k):
-        pass
+"""
+DP def:
 
+
+
+   dp[i][0] = the number of ways to paint fence posts 0...i
+            where post i has the `same` color as post i-1.
+
+
+   dp[i][1] = the number of ways to paint fence posts 0...i 
+           where post i has a `different` color from post i-1.
+
+
+DP eq:
+
+    
+    case 1) Last two posts have the same color
+        
+        dp[i][0] = dp[i - 1][1]
+
+
+    case 2) Last two posts have different colors
+
+         dp[i][1] = (dp[i - 1][0] + dp[i - 1][1]) * (k - 1)
+
+"""
+class Solution:
+    def numWays(self, n: int, k: int) -> int:
+        # `dp[i][0]` same color
+        # `dp[i][1]` different color
+
+        """
+        NOTE !!!
+
+        example dp:
+
+        ```
+        >>> n = 5
+
+        >>> dp = [[0] * 2 for _ in range(n)]
+        >>> dp
+        [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0]]
+        >>>
+
+
+        >>> dp[-1]
+        [0, 0]
+        ```
+
+
+        """
+        dp = [[0] * 2 for _ in range(n)]
+        dp[0][1] = k
+        for i in range(1, n):
+            dp[i][0] = dp[i - 1][1] # same as previous, or else 3-posts the same color
+            dp[i][1] = (dp[i - 1][0] + dp[i - 1][1]) * (k - 1) # not the same as previous
+        return sum(dp[-1])
 
 # V-1
 # IDEA: DP (GPT)
