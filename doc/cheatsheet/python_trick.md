@@ -372,6 +372,60 @@ x_ = _sort(x)
 print (x_)
 ```
 
+### 1-7') update / replace a char in a string BY INDEX (slice + concat)
+
+**Key point: Python strings are IMMUTABLE** — you CANNOT do `s[i] = ch`
+(that raises `TypeError: 'str' object does not support item assignment`).
+To "change the char at index `i`", rebuild a **new** string by slicing around `i`.
+
+```python
+# ── The idiom ──
+#   s[:i]      -> everything BEFORE index i   (i excluded)
+#   ch         -> the new character to place at index i
+#   s[i+1:]    -> everything AFTER index i    (i excluded, i.e. drop old s[i])
+new_s = s[:i] + ch + s[i+1:]
+```
+
+```python
+# demo
+In [1]: s = "AACCGGTT"
+
+In [2]: s[:3] + "X" + s[3+1:]     # replace index 3 ('C') with 'X'
+Out[2]: 'AACXGGTT'
+
+# original is untouched (immutable) — a NEW string is returned
+In [3]: s
+Out[3]: 'AACCGGTT'
+```
+
+**Why the `i+1`?** `s[i+1:]` starts *after* `i`, so the old char `s[i]` is
+dropped and replaced by `ch`. Using `s[i:]` instead would keep the old char
+(insert rather than replace):
+
+```python
+s = "abc"
+s[:1] + "X" + s[1+1:]   # 'aXc'  ← REPLACE index 1  (skip old 'b')
+s[:1] + "X" + s[1:]     # 'aXbc' ← INSERT before index 1 (old 'b' kept)
+```
+
+**Classic LC use — LC 433 Minimum Genetic Mutation** (BFS, mutate one gene char at a time):
+
+```python
+# for each position i, try each candidate char ch
+for i in range(len(cur_gene)):
+    for ch in "ACGT":
+        if ch == cur_gene[i]:
+            continue
+        # build the neighbor gene with position i mutated to ch
+        new_gene = cur_gene[:i] + ch + cur_gene[i+1:]
+        ...
+```
+
+> **Alternatives**: if you mutate many positions, convert to a `list` first
+> (`arr = list(s); arr[i] = ch; s = "".join(arr)`) — lists ARE mutable, so
+> in-place index assignment works and avoids repeated string rebuilds.
+> For a single edit, the slice idiom above is the cleanest.
+
 ### 1-8) get Quotient, Remainder of a integer with dividend
 ```python
 In [1]: x,y = divmod(100, 3)
