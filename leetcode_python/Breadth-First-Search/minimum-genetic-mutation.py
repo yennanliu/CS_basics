@@ -50,6 +50,102 @@ class Solution(object):
         pass
 
 
+# V0-1
+# IDEA: BFS (gpt)
+from collections import deque
+
+class Solution(object):
+    def minMutation(self, startGene, endGene, bank):
+        if startGene == endGene:
+            return 0
+
+        # Only endGene must exist in the bank.
+        if endGene not in bank:
+            return -1
+
+        bank = set(bank)          # O(1) lookup
+        q = deque([(startGene, 0)])
+        visited = {startGene}
+
+        genes = ['A', 'C', 'G', 'T']
+
+        while q:
+            cur_gene, steps = q.popleft()
+
+            if cur_gene == endGene:
+                return steps
+
+            for i in range(len(cur_gene)):
+                for ch in genes:
+                    if ch == cur_gene[i]:
+                        continue
+
+                    new_gene = (
+                        cur_gene[:i] +
+                        ch +
+                        cur_gene[i + 1:]
+                    )
+
+                    if new_gene in bank and new_gene not in visited:
+                        visited.add(new_gene)
+                        q.append((new_gene, steps + 1))
+
+        return -1
+
+
+# V0-2
+# IDEA: BFS (GEMINI)
+import collections
+
+class Solution(object):
+    def minMutation(self, startGene, endGene, bank):
+        """
+        :type startGene: str
+        :type endGene: str
+        :type bank: List[str]
+        :rtype: int
+        """
+        # Convert bank to a set for O(1) lookups
+        bank_set = set(bank)
+        
+        # Edge case: if endGene isn't in the bank, it's impossible
+        if endGene not in bank_set:
+            return -1
+            
+        # Queue stores: [current_gene, mutation_count]
+        q = collections.deque([[startGene, 0]])
+        
+        # Visited set prevents infinite loops. Add startGene immediately.
+        visited = set([startGene])
+        
+        # Renamed to avoid overwriting variables
+        chars = ["A", "C", "G", "T"]
+        
+        # Because we store 'steps' in the queue, we don't need the `for _ in range(size)` layer loop!
+        while q:
+            cur_node, steps = q.popleft()
+            
+            if cur_node == endGene:
+                return steps 
+                
+            # Try mutating each of the 8 characters
+            for i in range(len(cur_node)):
+                for c in chars:
+                    # Minor optimization: skip if the character is the same
+                    if c == cur_node[i]:
+                        continue
+                        
+                    # Create the new mutated gene
+                    new_node = cur_node[:i] + c + cur_node[i+1:]
+                    
+                    # If valid and unvisited, queue it up
+                    if new_node in bank_set and new_node not in visited:
+                        visited.add(new_node)
+                        q.append([new_node, steps + 1])
+                        
+        return -1
+
+
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/82903720
 import collections
