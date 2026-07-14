@@ -54,6 +54,87 @@ class Solution(object):
         """
         pass
 
+
+# V0-1
+# IDEA: DP (GPT)
+class Solution:
+    def knightDialer(self, n: int) -> int:
+        MOD = 10 ** 9 + 7
+
+        moves = [
+            [4, 6],        # 0
+            [6, 8],        # 1
+            [7, 9],        # 2
+            [4, 8],        # 3
+            [0, 3, 9],     # 4
+            [],            # 5
+            [0, 1, 7],     # 6
+            [2, 6],        # 7
+            [1, 3],        # 8
+            [2, 4]         # 9
+        ]
+
+        dp = [1] * 10
+
+        for _ in range(n - 1):
+            nxt = [0] * 10
+
+            for digit in range(10):
+                for nei in moves[digit]:
+                    nxt[nei] = (nxt[nei] + dp[digit]) % MOD
+
+            dp = nxt
+
+        return sum(dp) % MOD
+
+
+# V0-2
+# IDEA: DP (GEMINI)
+class Solution(object):
+    def knightDialer(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        if n == 1:
+            return 10
+            
+        MOD = 10**9 + 7
+        
+        # Pre-defined knight moves from each digit 0-9
+        moves = [
+            [4, 6],    # from 0
+            [6, 8],    # from 1
+            [7, 9],    # from 2
+            [4, 8],    # from 3
+            [0, 3, 9], # from 4
+            [],        # from 5 (no outgoing moves)
+            [0, 1, 7], # from 6
+            [2, 6],    # from 7
+            [1, 3],    # from 8
+            [2, 4]     # from 9
+        ]
+        
+        # dp[i] represents the number of valid sequences ending on digit `i`.
+        # Base case for n = 1: 1 way to end on each digit.
+        dp = [1] * 10
+        
+        # We already have length 1, so we do n - 1 hops
+        for _ in range(n - 1):
+            next_dp = [0] * 10
+            
+            # For each digit, look at where it can jump to
+            for current_digit in range(10):
+                for next_digit in moves[current_digit]:
+                    next_dp[next_digit] = (next_dp[next_digit] + dp[current_digit]) % MOD
+                    
+            # Move to the next sequence length
+            dp = next_dp
+            
+        return sum(dp) % MOD
+
+
+
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/83716573
 # time = O(n)
