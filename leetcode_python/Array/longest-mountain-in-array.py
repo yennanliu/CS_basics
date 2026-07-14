@@ -71,6 +71,41 @@ class Solution(object):
         return max_len
 
 
+# V0-0-1
+# IDEA: Single pass (two pointers) (GPT)
+class Solution(object):
+    def longestMountain(self, arr):
+        n = len(arr)
+        ans = 0
+        i = 1
+
+        while i < n - 1:
+
+            # Is arr[i] a peak?
+            if arr[i - 1] < arr[i] > arr[i + 1]:
+
+                left = i - 1
+                while left > 0 and arr[left - 1] < arr[left]:
+                    left -= 1
+
+                right = i + 1
+                while right < n - 1 and arr[right] > arr[right + 1]:
+                    right += 1
+
+                ans = max(ans, right - left + 1)
+
+                """
+                NOTE !!!
+
+                below optimization
+                """
+                # Skip the processed mountain
+                i = right
+            else:
+                i += 1
+
+        return ans
+
 
 # V0-1
 # IDEA: 2 POINTERS + EXPAND (GEMINI)
@@ -103,6 +138,56 @@ class Solution(object):
                 max_len = max(max_len, right - left + 1)
 
         return max_len
+
+
+# V0-2
+# IDEA: Two arrays (up[] and down[]) (GPT)
+"""
+
+The idea is:
+
+up[i] = length of the increasing run ending at i.
+down[i] = length of the decreasing run starting at i.
+
+A valid mountain peak at i must satisfy:
+
+up[i] > 0
+down[i] > 0
+
+Then the mountain length is
+
+up[i] + down[i] + 1
+
+"""
+class Solution(object):
+    def longestMountain(self, arr):
+        n = len(arr)
+        if n < 3:
+            return 0
+
+        # up[i] = length of the increasing run ending at i.
+        up = [0] * n
+        
+        # down[i] = length of the decreasing run starting at i.
+        down = [0] * n
+
+        # Increasing lengths
+        for i in range(1, n):
+            if arr[i] > arr[i - 1]:
+                up[i] = up[i - 1] + 1
+
+        # Decreasing lengths
+        for i in range(n - 2, -1, -1):
+            if arr[i] > arr[i + 1]:
+                down[i] = down[i + 1] + 1
+
+        ans = 0
+        for i in range(n):
+            if up[i] and down[i]:
+                ans = max(ans, up[i] + down[i] + 1)
+
+        return ans
+
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/83422260
