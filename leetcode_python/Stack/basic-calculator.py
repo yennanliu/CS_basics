@@ -35,6 +35,109 @@ Every number and running calculation will fit in a signed 32-bit integer.
 
 """
 
+ 
+# V0
+class Solution(object):
+    def calculate(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        pass
+
+
+# V0-1
+# IDEA: STACK (GPT)
+class Solution(object):
+    def calculate(self, s):
+        result = 0
+        num = 0
+        sign = 1
+        stack = []
+
+        for ch in s:
+            if ch.isdigit():
+                num = num * 10 + int(ch)
+
+            elif ch == '+':
+                result += sign * num
+                num = 0
+                sign = 1
+
+            elif ch == '-':
+                result += sign * num
+                num = 0
+                sign = -1
+
+            elif ch == '(':
+                stack.append(result)
+                stack.append(sign)
+
+                result = 0
+                sign = 1
+
+            elif ch == ')':
+                result += sign * num
+                num = 0
+
+                prev_sign = stack.pop()
+                prev_result = stack.pop()
+
+                result = prev_result + prev_sign * result
+
+        return result + sign * num
+
+
+
+# V0-2
+# IDEA: STACK (GEMINI)
+class Solution(object):
+    def calculate(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        st = []
+        val = 0
+        res = 0
+        sign = 1
+        
+        for char in s:
+            if char.isdigit():
+                # Build the multi-digit number
+                val = 10 * val + int(char)
+                
+            elif char in "+-":
+                # Apply the current number to the running total
+                res += sign * val
+                # Reset val and update the sign for the next number
+                val = 0
+                sign = 1 if char == '+' else -1
+                
+            elif char == "(":
+                # Save the current total and sign to the stack
+                st.append(res)
+                st.append(sign)
+                # Reset for the new scope inside the parentheses
+                res = 0
+                sign = 1
+                
+            elif char == ")":
+                # Add the last number inside the parentheses to the scoped result
+                res += sign * val
+                val = 0
+                
+                # Pop the sign from before the '(' and multiply
+                res *= st.pop()
+                # Pop the result from before the '(' and add it
+                res += st.pop()
+                
+        # Add the very last number (if the string didn't end with a parenthesis)
+        res += sign * val
+        
+        return res
+
+
 # V0
 # IDEA : STACK
 # time = O(n)
@@ -363,7 +466,7 @@ class Solution:
                 total += signs.pop() * int(s[start:i])
                 continue
             if c in '+-(':
-                signs += signs[-1] * (1, -1)[c == '-'],
+                signs += signs[-1] * (1, -1)[c == '-']
             elif c == ')':
                 signs.pop()
             i += 1
