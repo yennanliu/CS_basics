@@ -1493,6 +1493,80 @@ class Solution:
         return sum(stack)
 ```
 
+### 2-5'') Universal Calculator — LC 224 / 227 / 772 ⭐⭐⭐⭐⭐
+
+> **One algorithm for all three calculator problems**: `+-` only (224), `+-*/` no parens (227), and `+-*/()` combined (772). Handles operator **precedence** with a stack and **parentheses** with recursion.
+
+**Core Idea** — combine two independent tricks that each solve half the problem:
+
+| Sub-problem | Trick | How it shows up |
+|-------------|-------|-----------------|
+| **Precedence** (`*` / `/` bind tighter than `+` / `-`) | **Delay-Insert on `pre_op`** (see [1-1-4](#1-1-4-delay-insert-to-stack-act-on-pre_op-not-current-op----lc-227)) | `+`/`-` push the signed number onto the stack (defer); `*`/`/` immediately pop-and-combine with the top. Final answer = `sum(stack)`. |
+| **Parentheses** (a sub-expression evaluated first) | **Recursion** — a `(` opens a fresh scope, a `)` closes it | On `(`, recurse on the *same* queue; the recursive call consumes up to its matching `)` and returns the sub-total, which is treated as a plain `curr_num`. |
+
+**Why the stack handles precedence for free:** additive terms are deferred as signed values (`+num` → push `num`, `-num` → push `-num`), while multiplicative operators eat the previous term on the spot (`stack[-1] *= num`). Because `*`/`/` mutate the top *before* it is ever summed, `sum(stack)` at the end naturally respects precedence — e.g. `2 + 3 * 4` builds `[2, 12]` → `14`, not `20`.
+
+**Why we act on `pre_op`, not the current char:** when we read an operator (or hit `)` / end-of-input) it marks the *end* of the number we were building, so we apply the operator that came *before* that number. `pre_op` is initialized to `'+'` so the very first number is simply pushed.
+
+**Why a `deque` + recursion cleanly handles parens:** `popleft()` consumes characters left-to-right and the queue is **shared across recursive calls**. When `helper` recurses on `(`, the child keeps popping from the *same* queue and `break`s on `)`, so the parent resumes exactly after the matching `)`. This is what upgrades the LC 227 delay-insert solution into a full LC 772 solver.
+
+```python
+# python
+# LC 224 / 227 / 772 — universal basic calculator
+# IDEA: deque + recursion (parentheses) + delay-insert on pre_op (precedence)
+# time = O(n), space = O(n)  (stack + recursion depth)
+import collections
+
+class Solution(object):
+    def calculate(self, s):
+        # strip spaces, scan left-to-right with a shared queue
+        queue = collections.deque(s.replace(" ", ""))
+
+        def helper(q):
+            stack = []
+            curr_num = 0
+            op = '+'                     # operator that precedes curr_num; '+' by default
+
+            while q:
+                char = q.popleft()
+
+                if char.isdigit():
+                    curr_num = curr_num * 10 + int(char)   # build multi-digit number
+                elif char == '(':
+                    curr_num = helper(q)   # RECURSE: fully evaluate the parenthesised scope
+
+                # flush when we see an operator, a ')', or run out of input
+                if char in "+-*/" or char == ')' or not q:
+                    if op == '+':
+                        stack.append(curr_num)
+                    elif op == '-':
+                        stack.append(-curr_num)
+                    elif op == '*':
+                        stack.append(stack.pop() * curr_num)
+                    elif op == '/':
+                        # truncate toward zero (Python // floors, so divide as float)
+                        stack.append(int(float(stack.pop()) / curr_num))
+                    curr_num = 0
+                    op = char            # remember this operator for the next number
+
+                if char == ')':
+                    break                # end of this scope → return sub-total to caller
+
+            return sum(stack)
+
+        return helper(queue)
+```
+
+**How it degrades to each problem:**
+
+| LC | Chars present | What the algo does |
+|----|---------------|--------------------|
+| 224 | `+ - ( )` | recursion + push/negate only; `*`/`/` branches never fire |
+| 227 | `+ - * / ` | never recurses (no `(`); pure delay-insert precedence |
+| 772 | `+ - * / ( )` | both mechanisms active — the general case |
+
+**Gotcha — integer division truncates toward zero:** Python's `//` floors (`-7 // 2 == -4`), but these problems require truncation toward zero (`-7 / 2 == -3`). Using `int(float(stack.pop()) / curr_num)` gives the correct behavior for negative intermediates.
+
 ### 2-5) Sum of Subarray Minimums — LC 907
 ```python
 # LC 907. Sum of Subarray Minimums
