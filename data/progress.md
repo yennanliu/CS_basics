@@ -1,7 +1,7 @@
 # Progress
 
 
-# 2026-07-14
+# 2026-07-15
 
 
 - review `all recent updated cheatsheets`
@@ -50,6 +50,8 @@
 - `MUST LC problems`
 	- todo
 
+- `must_lc_list.md` (doing)
+	- array
 
 - Blind 75
 
