@@ -574,6 +574,62 @@ class Solution(object):
 
 
 
+# V0-1
+# IDEA: `universal code`
+# https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Stack/basic-calculator.py#L50
+import collections
+
+class Solution(object):
+    def calculate(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        # Remove spaces and convert to a queue for easy left-to-right parsing
+        queue = collections.deque(s.replace(" ", ""))
+        
+        def helper(q):
+            stack = []
+            curr_num = 0
+            op = '+' # Default first operation
+            
+            while q:
+                char = q.popleft()
+                
+                if char.isdigit():
+                    # Build the multi-digit number
+                    curr_num = curr_num * 10 + int(char)
+                    
+                elif char == '(':
+                    # RECURSION: (Used in LC 224/772, safely ignored in LC 227)
+                    curr_num = helper(q)
+                    
+                # If we hit an operator, a closing parenthesis, or the queue is empty
+                if char in "+-*/" or char == ')' or not q:
+                    if op == '+':
+                        stack.append(curr_num)
+                    elif op == '-':
+                        stack.append(-curr_num)
+                    elif op == '*':
+                        stack.append(stack.pop() * curr_num)
+                    elif op == '/':
+                        # Safely truncate toward zero for Python division
+                        stack.append(int(float(stack.pop()) / curr_num))
+                        
+                    # Reset the current number and update the operator
+                    curr_num = 0
+                    op = char
+                    
+                if char == ')':
+                    # End of this scope (Used in LC 224/772, safely ignored in LC 227)
+                    break
+                    
+            # All * and / are resolved. Just sum up the + and - values!
+            return sum(stack)
+            
+        return helper(queue)
+
+
 # V0
 # IDEA : STACK
 # NOTE !!! 
