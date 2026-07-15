@@ -1,4 +1,4 @@
-20260715: 772(todo),must_lc_list,31(again),370(todo),670(todo)
+20260715: 772(todo),must_lc_list,31(again!!),370(todo),670(todo)
 20260714: 845,935,227(again, with univeral algo),224(again, with univeral algo),276
 20260713: 276(again),433(again),1937(todo),1143(todo),593(ok),1514(ok)
 20260712: 1292(again),593(again),1514(again),396(again),129

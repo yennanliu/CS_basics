@@ -62,6 +62,225 @@ Core idea:
 5. Reverse the suffix starting at i+1.
 
 """
+
+"""
+Dry run:
+
+
+
+We'll use a simple example:
+
+```text
+nums = [1, 2, 7, 4, 3, 1]
+```
+
+Think of the algorithm as doing **three things**:
+
+1. Find the number to change (**pivot**).
+2. Replace it with the next bigger number.
+3. Make everything after it as small as possible.
+
+---
+
+## Step 1: Find the pivot
+
+Start from the **right** and look
+ for the first place where the numbers stop decreasing.
+
+```
+1  2  7  4  3  1
+         ↓  ↓  ↓
+         decreasing
+```
+
+Compare from right to left:
+
+```
+3 >= 1   ✓
+4 >= 3   ✓
+7 >= 4   ✓
+2 < 7    ← stop!
+```
+
+So the pivot is: !!!!
+
+```
+1 [2] 7 4 3 1
+   ↑
+```
+
+Why?
+
+Because this is the first number that can be increased.
+
+---
+
+## Step 2: Find the next larger number
+
+Now look from the **right** again.
+
+We need the **smallest number larger than 2**.
+
+```
+1 2 7 4 3 1
+          ↑ 1  (too small)
+        ↑ 3    (good!)
+```
+
+Swap them.
+
+Before:
+
+```
+1 2 7 4 3 1
+```
+
+After:
+
+```
+1 3 7 4 2 1
+```
+
+Notice we increased the number **just a little** (2 → 3), not all the way to 7.
+
+---
+
+## Step 3: Make the rest as small as possible
+
+The part after the pivot is
+
+```
+7 4 2 1
+```
+
+It is in **descending** order.
+
+To get the **next** permutation (not a much larger one), we want this part to be as small as possible.
+
+Reverse it:
+
+```
+7 4 2 1
+↓
+1 2 4 7
+```
+
+Result:
+
+```
+1 3 1 2 4 7
+```
+
+This is the answer.
+
+---
+
+# Another example
+
+```
+nums = [1,3,2]
+```
+
+### Step 1: Find the pivot
+
+Start from the right.
+
+```
+3 >= 2 ✓
+1 < 3  ← stop
+```
+
+Pivot:
+
+```
+[1] 3 2
+ ↑
+```
+
+---
+
+### Step 2: Find the next larger number
+
+Search from the right.
+
+```
+2 > 1
+```
+
+Swap.
+
+```
+1 3 2
+↓
+2 3 1
+```
+
+---
+
+### Step 3: Reverse the suffix
+
+Current suffix:
+
+```
+3 1
+```
+
+Reverse it:
+
+```
+1 3
+```
+
+Final answer:
+
+```
+2 1 3
+```
+
+---
+
+# Why do we reverse?
+
+Suppose after swapping we have
+
+```
+1 3 | 7 4 2 1
+```
+
+The left side (`1 3`) is fixed.
+
+Now we want the **smallest possible ending**.
+
+The smallest ordering is ascending:
+
+```
+1 2 4 7
+```
+
+So we turn
+
+```
+7 4 2 1
+```
+
+into
+
+```
+1 2 4 7
+```
+
+Since the suffix is **already in descending order**, simply reversing it gives the ascending order.
+
+---
+
+## One-sentence summary
+
+* **Find the first number that can be increased.**
+* **Swap it with the smallest larger number on its right.**
+* **Reverse everything after it to make the result as small as possible.**
+
+
+"""
 class Solution(object):
     def nextPermutation(self, nums):
         n = len(nums)
