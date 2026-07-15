@@ -1496,6 +1496,11 @@ Key invariant:
 - Picking the smallest successor ensures the minimum possible increase at position `i`.
 - Reversing the suffix ensures the tail is as small as possible.
 
+**One-sentence mnemonic (3 moves):**
+> 1. **Find the first number that can be increased** (the pivot).
+> 2. **Swap it with the smallest larger number on its right** (the successor).
+> 3. **Reverse everything after it** to make the result as small as possible.
+
 ---
 
 #### Visual Trace

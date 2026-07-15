@@ -307,6 +307,49 @@ class Solution(object):
         return nums
 
 
+# V0-0-1
+# IDEA: 2 POINTERS
+class Solution(object):
+    def nextPermutation(self, nums):
+        # edge
+
+        n = len(nums)
+
+        # step 1) find `pivot`
+        p_idx = -1
+
+        for i in range(n-2, -1, -1):
+            if nums[i] < nums[i+1]:
+                # ???
+                p_idx = i
+                break
+
+        if p_idx == -1:
+            nums.sort()
+            return nums
+
+
+        # step 2) find first element > `pivot` (from right)
+        for i in range(n-1, -1, -1):
+            if nums[i] > nums[p_idx]:
+                # swap
+                nums[i], nums[p_idx] = nums[p_idx], nums[i]
+                break
+
+
+        # step 3) reverse the nums[pivot+1:]
+        #nums[p_idx + 1:] = nums[p_idx + 1:][::-1]
+        l = p_idx + 1
+        r = n - 1
+        while r > l:
+            nums[l], nums[r] = nums[r], nums[l]
+            l += 1
+            r -= 1
+
+
+        return nums
+
+
 
 # V0-1
 # IDEA: 2 POINTERS (GEMINI)
