@@ -1,8 +1,10 @@
 # Progress
 
 
-# 2026-07-15
+# 2026-07-16
 
+- `must_lc_list.md` (doing)
+	- Slide Window
 
 - review `all recent updated cheatsheets`
 	- git commit
@@ -49,9 +51,6 @@
 
 - `MUST LC problems`
 	- todo
-
-- `must_lc_list.md` (doing)
-	- array
 
 - Blind 75
 
