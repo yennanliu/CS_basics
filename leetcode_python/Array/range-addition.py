@@ -1,3 +1,6 @@
+# https://leetcode.ca/all/370.html
+
+
 """
 
 370. Range Addition
@@ -30,6 +33,66 @@ Constraints:
 -1000 <= inci <= 1000
 
 """
+
+# V0
+# IDEA: PREFIX SUM (GPT)
+class Solution(object):
+    def getModifiedArray(self, length, updates):
+        diff = [0] * length
+
+        # Record range updates
+        for start, end, inc in updates:
+            diff[start] += inc
+
+            if end + 1 < length:
+                diff[end + 1] -= inc
+
+        # Prefix sum
+        res = [0] * length
+        running = 0
+
+        """
+        NOTE !!!
+
+
+        1. we update `running` first
+        2. then we update res
+        """
+        for i in range(length):
+            running += diff[i]
+            res[i] = running
+
+        return res
+
+
+# V0-1
+# IDEA: PREFIX SUM (GEMINI)
+class Solution(object):
+    def getModifiedArray(self, length, updates):
+        """
+        :type length: int
+        :type updates: List[List[int]]
+        :rtype: List[int]
+        """
+        res = [0] * length
+        
+        # 1. Build the difference array
+        for start, end, inc in updates:
+            # Add 'inc' at the start index
+            res[start] += inc
+            
+            # Subtract 'inc' right after the end index (if it's within bounds)
+            if end + 1 < length:
+                res[end + 1] -= inc
+                
+        # 2. Compute the prefix sum to apply the updates across the ranges
+        current_sum = 0
+        for i in range(length):
+            current_sum += res[i]
+            res[i] = current_sum
+            
+        return res
+
 
 # V0
 # IDEA: DIFF ARRAY + PREFIX SUM (GPT)
