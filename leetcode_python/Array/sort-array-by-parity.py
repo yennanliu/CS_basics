@@ -32,13 +32,49 @@ Constraints:
 
 
 # V0
+# IDEA: CUSTOM SORT
+class Solution(object):
+    def sortArrayByParity(self, nums):
+        # edge
+        if len(nums) == 1:
+            return nums
+        nums.sort(key = lambda x: self.sort_helper(x))
+
+        return nums
+
+    def sort_helper(self, x):
+        """
+        NOTE !!!
+
+        even val come first
+        """
+        if x == 0 or x % 2 == 0:
+            return 0
+
+        return 1
+
+
+# V0-1
+# IDEA: CUSTOM SORT (GPT)
+class Solution(object):
+    def sortArrayByParity(self, nums):
+        nums.sort(key=lambda x: x % 2)
+        return nums
+
+
+# V0-2
+# IDEA: CUSTOM SORT (GEMINI)
 class Solution(object):
     def sortArrayByParity(self, nums):
         """
         :type nums: List[int]
         :rtype: List[int]
         """
-        pass
+        # x % 2 is 0 for evens, 1 for odds.
+        # Sorting by this naturally puts 0s (evens) before 1s (odds).
+        nums.sort(key=lambda x: x % 2)
+        return nums
+
 
 # V1
 # https://blog.csdn.net/fuxuemingzhu/article/details/82732066 
