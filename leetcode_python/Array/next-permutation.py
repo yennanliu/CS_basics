@@ -49,6 +49,14 @@ Core idea:
 1. Scan from the right to find the first 
    index i where nums[i] < nums[i+1] (the pivot).
 
+    -> The pivot is chosen because everything to 
+        its right is already the 
+        `largest` possible arrangement of those numbers.
+
+            -> Therefore, the `only way` to obtain a `larger `
+               overall number is to change 
+               something before this suffix.
+
 
 2. If no such i exists, reverse the whole array.
 
