@@ -96,6 +96,8 @@
 			- delete op
 				- https://yennj12.js.org/CS_basics/cheatsheets/trie.html#template-6-trie-with-delete-operation
 		- lazy_bst_in_order(todo),173(todo),2616(todo, compare PQ)
+		- 2 pointers (similar to LC 31)
+			- table with LC 31, 1053, 556, 60, 46, 47, 3348
 		- topo_sort
 		- `Combinations VS Permutations` in DP
 			- https://github.com/yennanliu/CS_basics/blob/master/leetcode_python/Dynamic_Programming/coin_change_2.py#L125
