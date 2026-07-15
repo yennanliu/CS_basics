@@ -40,6 +40,89 @@ Constraints:
 """
 
 
+# V0
+# IDEA: 2 POINTERS (GPT)
+"""
+
+Core idea:
+
+1. Scan from the right to find the first 
+   index i where nums[i] < nums[i+1] (the pivot).
+
+
+2. If no such i exists, reverse the whole array.
+
+
+3. Scan from the right to find the first element larger than nums[i].
+
+
+4. Swap them.
+
+
+5. Reverse the suffix starting at i+1.
+
+"""
+class Solution(object):
+    def nextPermutation(self, nums):
+        n = len(nums)
+
+        # 1. Find first decreasing element from the right
+        i = n - 2
+        while i >= 0 and nums[i] >= nums[i + 1]:
+            i -= 1
+
+        # 2. If found, swap with next larger element
+        if i >= 0:
+            j = n - 1
+            while nums[j] <= nums[i]:
+                j -= 1
+            nums[i], nums[j] = nums[j], nums[i]
+
+        # 3. Reverse the suffix
+        left, right = i + 1, n - 1
+        while left < right:
+            nums[left], nums[right] = nums[right], nums[left]
+            left += 1
+            right -= 1
+
+        return nums
+
+
+
+# V0-1
+# IDEA: 2 POINTERS (GEMINI)
+class Solution(object):
+    def nextPermutation(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: None Do not return anything, modify nums in-place instead.
+        """
+        n = len(nums)
+        
+        # 1. Find the pivot (first element from the right that is smaller than its right neighbor)
+        i = n - 2
+        while i >= 0 and nums[i] >= nums[i + 1]:
+            i -= 1
+            
+        # 2. If we found a valid pivot, find the successor to swap with
+        if i >= 0:
+            j = n - 1
+            # Find the first element from the right that is greater than nums[i]
+            while nums[j] <= nums[i]:
+                j -= 1
+            # Swap them
+            nums[i], nums[j] = nums[j], nums[i]
+            
+        # 3. Reverse the suffix (everything to the right of the pivot i)
+        # If no pivot was found (i == -1), the whole array is reversed (e.g., [3,2,1] -> [1,2,3])
+        left = i + 1
+        right = n - 1
+        
+        while left < right:
+            nums[left], nums[right] = nums[right], nums[left]
+            left += 1
+            right -= 1
+
 
 # V0
 # IDEA: 2 POINTERS (GPT)
