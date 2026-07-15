@@ -984,6 +984,9 @@ def longestDupSubstring(s: str) -> str:
 - Check with `letest existed idx`
     - LC 763 Partition Labels 
 
+- `{digit/value: last index}` + greedy scan
+    - LC 670 Maximum Swap **[See detailed pattern](#2-17-maximum-swap-lc-670--lc-670)**
+
 - Top `k` element (with PQ)
     - LC 347, 215, 692
 
@@ -2807,6 +2810,156 @@ each level costs O(n log n) (sorting) instead of O(n²).
 | Minimum Swaps to Group All 1's Together | 1151 / 2134 | Sliding window variant |
 | Couples Holding Hands | 765 | Cycle/union-find min swaps |
 | First Missing Positive | 41 | Index-placement swap idea |
+
+---
+
+### 2-17) Maximum Swap (LC 670) — LC 670
+
+**Core Pattern: `{digit: last index}` HashMap + greedy left-to-right scan**
+
+> LC 670 - Maximum Swap
+> https://leetcode.com/problems/maximum-swap/
+> Given an integer, swap two digits **at most once** to get the maximum value.
+
+#### Core Idea
+
+To maximize the number with a single swap, we want to bring the **largest possible
+digit as far left as possible**. Scanning left-to-right, at the **first** position
+whose digit can be beaten by a larger digit appearing **later**, swap it with the
+**last (rightmost) occurrence** of that larger digit — and stop.
+
+The hashmap is the enabler: precompute `{digit: last index}` for digits `0-9` so
+that "does a larger digit exist to my right, and where is its rightmost copy?" is an
+O(1) lookup instead of an O(n) scan.
+
+```
+Why LAST occurrence of the larger digit?
+  - Moving a big digit further LEFT raises the most significant place → biggest gain.
+  - Among equal large digits, taking the RIGHTMOST one leaves larger digits to the
+    left untouched, keeping the tail as large as possible.
+
+Why the FIRST improvable position (and stop)?
+  - The leftmost place we can increase dominates all lower places → one swap there
+    beats any swap further right. Only one swap is allowed, so return immediately.
+```
+
+Since there are only 10 distinct digits, the map has ≤ 10 keys → effectively O(1) space.
+
+#### Visual Trace — `num = 2736`
+
+```
+digits = [2, 7, 3, 6]
+
+Step 1 — build {digit: last index}:
+  {2:0, 7:1, 3:2, 6:3}
+
+Step 2 — scan left→right, for each digit look for a larger digit later:
+  i=0, cur=2: check d=9..3 → d=7 exists at last[7]=1 > 0  ✓
+              swap digits[0] and digits[1] → [7, 2, 3, 6]
+              return 7236   (stop — only one swap allowed)
+
+Result: 7236
+```
+
+`num = 9973` → every digit already has no larger digit to its right → no swap → `9973`.
+
+#### Pattern (Python)
+
+```python
+# python
+# LC 670 - Maximum Swap
+# IDEA: {digit: last index} hashmap + greedy left scan
+# time = O(n)  (n = number of digits), space = O(1)  (<= 10 keys)
+class Solution(object):
+    def maximumSwap(self, num):
+        digits = list(str(num))
+
+        # last occurrence index of each digit
+        last = {int(d): i for i, d in enumerate(digits)}
+
+        for i in range(len(digits)):
+            cur = int(digits[i])
+            # try the biggest digit (9..cur+1) that appears LATER
+            for d in range(9, cur, -1):
+                if last.get(d, -1) > i:
+                    j = last[d]
+                    digits[i], digits[j] = digits[j], digits[i]
+                    return int("".join(digits))   # only ONE swap → stop
+
+        return num   # already maximal
+```
+
+#### Pattern (Java)
+
+```java
+// java
+// LC 670 - Maximum Swap
+// time = O(n), space = O(1)  (<= 10 keys)
+public int maximumSwap(int num) {
+    char[] digits = String.valueOf(num).toCharArray();
+
+    // last occurrence index of each digit 0-9
+    int[] last = new int[10];
+    for (int i = 0; i < digits.length; i++) {
+        last[digits[i] - '0'] = i;
+    }
+
+    for (int i = 0; i < digits.length; i++) {
+        int cur = digits[i] - '0';
+        // try the biggest digit (9..cur+1) that appears LATER
+        for (int d = 9; d > cur; d--) {
+            if (last[d] > i) {
+                // swap and return (only one swap allowed)
+                char tmp = digits[i];
+                digits[i] = digits[last[d]];
+                digits[last[d]] = tmp;
+                return Integer.parseInt(new String(digits));
+            }
+        }
+    }
+    return num; // already maximal
+}
+```
+
+#### Alternative — 3 pointers (no hashmap)
+
+Track `max_idx` (rightmost index of the largest digit seen so far) while scanning
+**right-to-left**, and remember the best `(left, right)` pair to swap. Same O(n) time,
+O(1) space, but the hashmap version reads more directly.
+
+```python
+# python — 3-pointer variant
+def maximumSwap(num):
+    digits = list(str(num))
+    left = right = 0
+    max_idx = len(digits) - 1
+    for i in range(len(digits) - 1, -1, -1):
+        if digits[i] > digits[max_idx]:
+            max_idx = i                 # new largest digit to the right
+        elif digits[i] < digits[max_idx]:
+            left, right = i, max_idx    # candidate swap (keep the leftmost such i)
+    digits[left], digits[right] = digits[right], digits[left]
+    return int("".join(digits))
+```
+
+#### Approach Comparison
+
+| Approach | Time | Space | Note |
+|----------|------|-------|------|
+| Brute force (try every pair) | O(n²) | O(n) | Simple, keep max candidate |
+| `{digit: last index}` hashmap | O(n) | O(1) | Greedy: first improvable pos → last-larger digit |
+| 3 pointers (`left/right/max_idx`) | O(n) | O(1) | Right-to-left, no map |
+
+#### Similar Problems
+
+| Problem | LC# | Relation |
+|---------|-----|----------|
+| Maximum Swap | 670 | `{digit: last index}` + greedy left scan |
+| Next Greater Element III | 556 | Digit rearrangement for next larger number |
+| Next Permutation | 31 | Pivot + successor + reverse suffix (adjacent idea) |
+| Remove K Digits | 402 | Greedy monotonic stack on digits |
+| Largest Number | 179 | Custom sort of number strings |
+| Create Maximum Number | 321 | Greedy digit selection across arrays |
 
 ---
 

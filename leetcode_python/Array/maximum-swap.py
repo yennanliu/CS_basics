@@ -27,6 +27,133 @@ Constraints:
 
 """
 
+
+# V0
+# IDEA: LAST IDX + HASHMAP (GPT)
+"""
+
+CORE IDEA:
+
+O(n) idea
+
+For every digit, know the last occurrence of every digit 0–9.
+
+Example
+
+2736
+
+Last positions:
+
+0 : -
+1 : -
+2 : 0
+3 : 2
+4 : -
+5 : -
+6 : 3
+7 : 1
+8 : -
+9 : -
+
+Now scan from left.
+
+First digit = 2.
+
+Is there a larger digit later?
+
+Check
+
+9
+8
+7  ← yes
+
+Swap with the last 7.
+
+7236
+
+Done.
+
+
+"""
+class Solution(object):
+    def maximumSwap(self, num):
+        digits = list(str(num))
+
+        # last occurrence of each digit
+        last = {}
+
+        for i, d in enumerate(digits):
+            last[int(d)] = i
+
+        # Try to improve each position
+        for i in range(len(digits)):
+            cur = int(digits[i])
+
+            # Look for a larger digit
+            for d in range(9, cur, -1):
+                if d in last and last[d] > i:
+                    j = last[d]
+                    digits[i], digits[j] = digits[j], digits[i]
+                    return int("".join(digits))
+
+        return num
+
+
+
+# V0-1
+# IDEA: LAST IDX + HASHMAP (GEMINI)
+class Solution(object):
+    def maximumSwap(self, num):
+        """
+        :type num: int
+        :rtype: int
+        """
+        # 1. Convert integer to a list of characters so we can swap them
+        digits = list(str(num))
+        
+        # 2. Record the last seen index of every digit (0-9)
+        # e.g., for 2736, last_seen = {2:0, 7:1, 3:2, 6:3}
+        last_seen = {int(val): i for i, val in enumerate(digits)}
+        
+        # 3. Scan from left to right
+        for i, val in enumerate(digits):
+            
+            # Look for a larger digit (from 9 down to current_digit + 1)
+            for d in range(9, int(val), -1):
+                
+                # If a larger digit exists AND it appears further to the right
+                if last_seen.get(d, -1) > i:
+                    
+                    # Swap the current digit with that larger digit
+                    digits[i], digits[last_seen[d]] = digits[last_seen[d]], digits[i]
+                    
+                    # We only get ONE swap, so the first one we do is guaranteed 
+                    # to be the maximum possible result. Return immediately.
+                    return int("".join(digits))
+                    
+        # If no swap could make the number larger, return the original number
+        return num
+
+
+# V0-2
+# IDEA: BRUTE FORCE (GPT)
+class Solution(object):
+    def maximumSwap(self, num):
+        digits = list(str(num))
+        n = len(digits)
+
+        candidates = [num]
+
+        for l in range(n):
+            for r in range(l + 1, n):
+                if digits[l] < digits[r]:
+                    tmp = digits[:]
+                    tmp[l], tmp[r] = tmp[r], tmp[l]
+                    candidates.append(int("".join(tmp)))
+
+        return max(candidates)
+
+
 # V0
 # IDEA : 3 pointers + array op
 # IDEA : 3 pointers + array op
