@@ -38,6 +38,37 @@ n == nums.length
 """
 
 # V0
+# IDEA: MATH
+"""
+CORE IDEA:
+
+
+=> F(i) = F(i-1) + sum - n*A[n-i]
+"""
+class Solution(object):
+    def maxRotateFunction(self, nums):
+        total = sum(nums)
+        n = len(nums)
+
+        f_k = [0] * n
+
+        # F(0)
+        tmp = 0
+        for i in range(n):
+            tmp += i * nums[i]
+
+        f_k[0] = tmp
+        max_val = f_k[0]
+
+        # F(1) ... F(n-1)
+        for i in range(1, n):
+            f_k[i] = f_k[i-1] + total - n * nums[n-i]
+            max_val = max(max_val, f_k[i])
+
+        return max_val
+
+
+# V0
 # IDEA : MATH
 # first, we represent the F(1) op as below:
 #
