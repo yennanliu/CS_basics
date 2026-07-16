@@ -34,6 +34,58 @@ Constraints:
 """
 
 # V0
+# IDEA: PREFIX CNT + HASHMAP (gpt)
+class Solution(object):
+    def numberOfSubarrays(self, nums, k):
+        total_cnt = 0
+
+        cnt_map = {0: 1}
+        prefix_cnt = 0
+
+        for val in nums:
+            if val % 2 == 1:
+                prefix_cnt += 1
+
+            total_cnt += cnt_map.get(prefix_cnt - k, 0)
+
+            cnt_map[prefix_cnt] = cnt_map.get(prefix_cnt, 0) + 1
+
+        return total_cnt
+
+
+# V0-1
+# IDEA: PREFIX CNT + HASHMAP (GEMINI)
+class Solution(object):
+    def numberOfSubarrays(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: int
+        """
+        total_cnt = 0
+        prefix_cnt = 0
+        
+        # map: { odd_cnt : frequency }
+        # Base case: A prefix with 0 odd numbers has occurred exactly 1 time (the empty prefix)
+        cnt_map = {0: 1} 
+        
+        for val in nums:
+            # 1. Update the running count of odd numbers
+            if val % 2 == 1:
+                prefix_cnt += 1
+                
+            # 2. Check if chopping off a valid prefix leaves us with exactly k odds
+            if prefix_cnt - k in cnt_map:
+                # Add the number of times we've seen that prefix
+                total_cnt += cnt_map[prefix_cnt - k]
+                
+            # 3. Add the current prefix count to our map for future elements to use
+            cnt_map[prefix_cnt] = cnt_map.get(prefix_cnt, 0) + 1
+            
+        return total_cnt
+
+
+# V0
 # IDEA : cumsum + dict (Prefix sum)
 # time = O(n)
 # space = O(n)
