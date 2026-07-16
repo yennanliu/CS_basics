@@ -90,6 +90,10 @@
 		- Dijkstra
 			- 1631
 			- 1976
+		- heap
+			- 1353
+			- 264
+			- 373
 		- trie
 			- 1268
 			- delete op
