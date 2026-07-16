@@ -1346,6 +1346,60 @@ private int helper(int[] prefix, int L, int M) {
 }
 ```
 
+**Python (prefix sum + running max):**
+```python
+# python
+# LC 1031 — Prefix Sum + Running Max
+# time: O(N), space: O(N)
+# ref: leetcode_python/Array/maximum-sum-of-two-non-overlapping-subarrays.py
+class Solution:
+    def maxSumTwoNoOverlap(self, nums, firstLen, secondLen):
+        n = len(nums)
+
+        # prefix[i] = sum(nums[:i])   (size n+1, prefix[0] = 0 sentinel)
+        prefix = [0] * (n + 1)
+        for i in range(n):
+            prefix[i + 1] = prefix[i] + nums[i]
+
+        # maxSum(L, M): best combined sum when the L-window is BEFORE the M-window
+        def maxSum(L, M):
+            # bestL = best L-window seen so far, ending before the current M-window
+            bestL = prefix[L] - prefix[0]
+            ans = 0
+
+            # i = starting index of the M-window
+            for i in range(L, n - M + 1):
+                # update best L-window ending at index i (i.e. nums[i-L:i])
+                bestL = max(bestL, prefix[i] - prefix[i - L])
+                # current M-window = nums[i:i+M]
+                currM = prefix[i + M] - prefix[i]
+                ans = max(ans, bestL + currM)
+
+            return ans
+
+        # try BOTH orders: L-before-M and M-before-L
+        return max(maxSum(firstLen, secondLen),
+                   maxSum(secondLen, firstLen))
+```
+
+**Why this is correct (core idea recap):**
+```
+1. Core idea
+   - Two fixed-length windows (L and M) that must NOT overlap.
+   - One window is always fully to the left of the other, so enumerate
+     both orderings and take the max.
+   - Within one ordering, freeze the M-window's start (i), then the best
+     L-window is any L-window ending at/before i — track it as a running
+     max `bestL` so each i costs O(1).
+
+2. Pattern
+   - Prefix Sum (O(1) window sum) + Running Maximum (best left window so far).
+   - Single left-to-right sweep per ordering → 2 sweeps total, O(n) each.
+   - window_sum for length W ending at index i:  prefix[i] - prefix[i - W]
+
+3. Similar LC  → see table below
+```
+
 **Similar LCs:**
 | Problem | LC # | Similarity |
 |---------|------|------------|
