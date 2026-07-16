@@ -89,23 +89,52 @@ class Solution(object):
 
 # V1-1
 # IDEA: PREFIX SUM (gpt)
+"""
+
+Core idea:
+
+
+-> `precompute prefix sums`, then scan the array `twice`:
+
+L before M: the firstLen subarray comes 
+            before the secondLen subarray.
+
+M before L: the reverse order.
+
+During each scan, maintain the maximum sum 
+of the left subarray seen so far,
+then combine it with the current right subarray.
+
+
+"""
 class Solution:
     def maxSumTwoNoOverlap(self, nums, firstLen, secondLen):
         n = len(nums)
-        pre = [0]
-        for x in nums:
-            pre.append(pre[-1] + x)
 
-        def solve(L, M):
-            best = 0
+        # prefix[i] = sum(nums[:i])
+        prefix = [0] * (n + 1)
+        for i in range(n):
+            prefix[i + 1] = prefix[i] + nums[i]
+
+        def maxSum(L, M):
+            # Best L-length window before current M window
+            bestL = prefix[L] - prefix[0]
             ans = 0
+
+            # i = starting index of M window
             for i in range(L, n - M + 1):
-                best = max(best, pre[i] - pre[i - L])
-                ans = max(ans, best + pre[i + M] - pre[i])
+                # Update best L window ending before i
+                bestL = max(bestL, prefix[i] - prefix[i - L])
+
+                # Current M window
+                currM = prefix[i + M] - prefix[i]
+
+                ans = max(ans, bestL + currM)
+
             return ans
 
-        return max(solve(firstLen, secondLen),
-                   solve(secondLen, firstLen))
+        return max(maxSum(firstLen, secondLen),
+                   maxSum(secondLen, firstLen))
 
 
 
@@ -157,6 +186,29 @@ class Solution(object):
             max_total = max(max_total, max_L + sum_M, max_M + sum_L)
             
         return max_total
+
+
+
+# V1-3
+# IDEA: PREFIX SUM (gpt)
+class Solution:
+    def maxSumTwoNoOverlap(self, nums, firstLen, secondLen):
+        n = len(nums)
+        pre = [0]
+        for x in nums:
+            pre.append(pre[-1] + x)
+
+        def solve(L, M):
+            best = 0
+            ans = 0
+            for i in range(L, n - M + 1):
+                best = max(best, pre[i] - pre[i - L])
+                ans = max(ans, best + pre[i + M] - pre[i])
+            return ans
+
+        return max(solve(firstLen, secondLen),
+                   solve(secondLen, firstLen))
+
 
 
 # V2
