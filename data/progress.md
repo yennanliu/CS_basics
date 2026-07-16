@@ -11,7 +11,7 @@
 
 - heap
 	- LC example
-		- `2-7) Maximum Number of Events That Can Be Attended — LC 1353`
+		- `2-10) Find K Pairs with Smallest Sums — LC 373`
 
 - intervals.md
 
