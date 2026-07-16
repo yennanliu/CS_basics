@@ -46,8 +46,27 @@ class Solution(object):
             if val % 2 == 1:
                 prefix_cnt += 1
 
+            """
+            NOTE !!!
+
+
+            we do ` cnt_map.get(prefix_cnt - k, 0)`,
+
+            but NOT
+
+            ```
+            total_cnt += 1
+            ```
+
+
+            -> since we may have `multiple visited sub array` that
+               have odd cnt == `k`
+            """
             total_cnt += cnt_map.get(prefix_cnt - k, 0)
 
+            """
+            NOTE !!!
+            """
             cnt_map[prefix_cnt] = cnt_map.get(prefix_cnt, 0) + 1
 
         return total_cnt

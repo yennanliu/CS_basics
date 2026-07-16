@@ -1868,6 +1868,39 @@ public int numberOfSubarrays(int[] nums, int k) {
 }
 ```
 
+```python
+# python - LC 1248
+# IDEA: prefix ODD-count + hashmap (same shape as LC 560)
+# time: O(n), space: O(n)
+# ref: leetcode_python/Array/count-number-of-nice-subarrays.py
+class Solution:
+    def numberOfSubarrays(self, nums, k):
+        total_cnt = 0
+        prefix_cnt = 0                 # running count of odd numbers so far
+
+        cnt_map = {0: 1}              # {odd_count : frequency}; base case 0 odds seen once
+
+        for val in nums:
+            if val % 2 == 1:          # treat odd as +1 (even contributes 0)
+                prefix_cnt += 1
+
+            # NOTE: += get(prefix_cnt - k), NOT += 1
+            #   there may be MULTIPLE earlier prefixes with the same odd count,
+            #   each one gives a distinct valid subarray ending here
+            total_cnt += cnt_map.get(prefix_cnt - k, 0)
+
+            # record current prefix count AFTER checking (avoid self-count)
+            cnt_map[prefix_cnt] = cnt_map.get(prefix_cnt, 0) + 1
+
+        return total_cnt
+```
+
+> **Why `+= cnt_map.get(prefix_cnt - k, 0)` and not `+= 1`?**
+> `prefix_cnt - k` (the "complement" odd-count) may have been reached at several
+> earlier indices. Each of those start positions pairs with the current index to
+> form a subarray with exactly `k` odds, so we add the full frequency — the same
+> "2-sum on prefix values" trick as LC 560.
+
 #### Alternative: Sliding Window (atMost trick)
 
 ```java
