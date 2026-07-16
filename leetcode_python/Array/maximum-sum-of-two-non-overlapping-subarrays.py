@@ -46,6 +46,71 @@ firstLen + secondLen <= nums.length <= 1000
 
 
 # V0
+# IDEA: BRUTE FORCE + `Try both orders` (gpt)
+# https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Array/MaximumSumOfTwoNonOverlappingSubarrays.java#L50
+"""
+CORE IDEA:
+
+
+ ```
+ Try both orders:
+
+ 1. firstLen before secondLen
+ 2. secondLen before firstLen
+
+ For each order:
+ - maintain best L-window seen so far
+ - combine with current M-window
+ ```
+"""
+class Solution(object):
+    def maxSumTwoNoOverlap(self, nums, firstLen, secondLen):
+        n = len(nums)
+        max_sum = 0
+
+        # firstLen before secondLen
+        for i in range(n - firstLen + 1):
+            f_window = nums[i:i + firstLen]
+
+            for j in range(i + firstLen, n - secondLen + 1):
+                s_window = nums[j:j + secondLen]
+                max_sum = max(max_sum, sum(f_window) + sum(s_window))
+
+        # secondLen before firstLen
+        for i in range(n - secondLen + 1):
+            f_window = nums[i:i + secondLen]
+
+            for j in range(i + secondLen, n - firstLen + 1):
+                s_window = nums[j:j + firstLen]
+                max_sum = max(max_sum, sum(f_window) + sum(s_window))
+
+        return max_sum
+
+
+# V1-1
+# IDEA: PREFIX SUM (gpt)
+class Solution:
+    def maxSumTwoNoOverlap(self, nums, firstLen, secondLen):
+        n = len(nums)
+        pre = [0]
+        for x in nums:
+            pre.append(pre[-1] + x)
+
+        def solve(L, M):
+            best = 0
+            ans = 0
+            for i in range(L, n - M + 1):
+                best = max(best, pre[i] - pre[i - L])
+                ans = max(ans, best + pre[i + M] - pre[i])
+            return ans
+
+        return max(solve(firstLen, secondLen),
+                   solve(secondLen, firstLen))
+
+
+
+# V1-2
+# IDEA: PREFIX SUM (gemini)
 class Solution(object):
     def maxSumTwoNoOverlap(self, nums, firstLen, secondLen):
         """
@@ -54,10 +119,44 @@ class Solution(object):
         :type secondLen: int
         :rtype: int
         """
-        pass
-
-
-# V1
+        n = len(nums)
+        
+        # 1. Build a prefix sum array to instantly calculate subarray sums
+        # prefix[i] represents the sum of nums[0] to nums[i-1]
+        prefix = [0] * (n + 1)
+        for i in range(n):
+            prefix[i + 1] = prefix[i] + nums[i]
+            
+        max_L = 0  # Maximum sum of a firstLen subarray seen so far
+        max_M = 0  # Maximum sum of a secondLen subarray seen so far
+        max_total = 0
+        
+        L = firstLen
+        M = secondLen
+        
+        # 2. Iterate starting from the point where BOTH subarrays can fit (L + M)
+        for i in range(L + M, n + 1):
+            
+            # --- Scenario A: L comes before M ---
+            # Sum of the L-length subarray that ends exactly where the current M-length subarray starts
+            curr_L = prefix[i - M] - prefix[i - M - L]
+            max_L = max(max_L, curr_L)
+            
+            # Sum of the current M-length subarray ending at index i
+            sum_M = prefix[i] - prefix[i - M]
+            
+            # --- Scenario B: M comes before L ---
+            # Sum of the M-length subarray that ends exactly where the current L-length subarray starts
+            curr_M = prefix[i - L] - prefix[i - L - M]
+            max_M = max(max_M, curr_M)
+            
+            # Sum of the current L-length subarray ending at index i
+            sum_L = prefix[i] - prefix[i - L]
+            
+            # Update the global maximum using the best combination from either scenario
+            max_total = max(max_total, max_L + sum_M, max_M + sum_L)
+            
+        return max_total
 
 
 # V2
