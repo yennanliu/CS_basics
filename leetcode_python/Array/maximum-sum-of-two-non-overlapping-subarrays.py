@@ -46,6 +46,146 @@ firstLen + secondLen <= nums.length <= 1000
 
 
 # V0
+# IDEA: PREFIX SUM (gpt)
+"""
+
+Core idea:
+
+
+-> `precompute prefix sums`, then scan the array `twice`:
+
+L before M: the firstLen subarray comes 
+            before the secondLen subarray.
+
+M before L: the reverse order.
+
+During each scan, maintain the maximum sum 
+of the left subarray seen so far,
+then combine it with the current right subarray.
+
+
+"""
+class Solution(object):
+    def maxSumTwoNoOverlap(self, nums, firstLen, secondLen):
+        n = len(nums)
+
+        """
+        NOTE !!!
+
+
+        prefix size = `n+1`
+        """
+        prefix = [0] * (n + 1)
+        for i in range(n):
+            """
+            NOTE !!!
+
+
+            how we prepare prefix array:
+
+            https://yennj12.js.org/CS_basics/cheatsheets/prefix_sum.html
+
+
+            -> prefix[i+1] = prefix[i] + nums[i]
+            """
+            prefix[i + 1] = prefix[i] + nums[i]
+
+        return max(
+            self.helper(nums, prefix, firstLen, secondLen),
+            self.helper(nums, prefix, secondLen, firstLen)
+        )
+
+    
+    def helper(self, nums, prefix, firstLen, secondLen):
+        n = len(nums)
+
+        # NOTE !!!
+        # we get cur `bestFirst` first
+        bestFirst = prefix[firstLen] - prefix[0]
+        ans = 0
+
+        """
+        NOTE !!!
+
+        
+        1. 
+          ONLY 1 loop:
+            range(firstLen + secondLen, n + 1)
+
+
+        2. we get updated  `bestFirst`
+
+        3. we get second
+
+        4. we get cur max ans
+        """
+        for i in range(firstLen + secondLen, n + 1):
+            bestFirst = max(
+                bestFirst,
+                prefix[i - secondLen] - prefix[i - secondLen - firstLen]
+            )
+
+            second = prefix[i] - prefix[i - secondLen]
+
+            ans = max(ans, bestFirst + second)
+
+        return ans
+
+
+
+# V0-0-1
+# IDEA: PREFIX SUM (gemini)
+class Solution(object):
+    def maxSumTwoNoOverlap(self, nums, firstLen, secondLen):
+        """
+        :type nums: List[int]
+        :type firstLen: int
+        :type secondLen: int
+        :rtype: int
+        """
+        n = len(nums)
+        
+        # Build an N+1 sized prefix sum array.
+        # prefix[i] will store the sum of all elements before index i.
+        prefix = [0] * (n + 1)
+        for i in range(n):
+            prefix[i + 1] = prefix[i] + nums[i]
+            
+        # Scenario 1: firstLen comes BEFORE secondLen
+        v1 = self.helper(prefix, n, firstLen, secondLen)
+        
+        # Scenario 2: secondLen comes BEFORE firstLen
+        v2 = self.helper(prefix, n, secondLen, firstLen)
+        
+        return max(v1, v2)
+        
+
+    # NOTE !!!!
+    # below helper using `double loop`
+    def helper(self, prefix, n, len1, len2):
+        max_sum = 0
+        
+        # i is the start index of the first window
+        # It can go up to n - len1 - len2 (to leave room for the second window)
+        for i in range(n - len1 - len2 + 1):
+            
+            # The sum of nums[i : i + len1] using our prefix array
+            sum1 = prefix[i + len1] - prefix[i]
+            
+            # j is the start index of the second window
+            # It must start strictly after the first window ends (i + len1)
+            for j in range(i + len1, n - len2 + 1):
+                
+                # The sum of nums[j : j + len2]
+                sum2 = prefix[j + len2] - prefix[j]
+                
+                # Keep track of the maximum combined sum
+                max_sum = max(max_sum, sum1 + sum2)
+                
+        return max_sum
+
+
+# V0
 # IDEA: BRUTE FORCE + `Try both orders` (gpt)
 # https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Array/MaximumSumOfTwoNonOverlappingSubarrays.java#L50
 """
