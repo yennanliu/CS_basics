@@ -40,6 +40,90 @@ Follow Up: Could you solve it in-place?
 
 
 # V0
+# IDEA: CUSTOM SORT, LC 905
+class Solution(object):
+    def sortArrayByParityII(self, nums):
+        # edge
+        nums.sort(key = lambda x: self.sort_helper(x))
+
+        #print(">>>> nums =" + str(nums))
+
+        half = len(nums) // 2
+
+        even = nums[:half]
+        odd = nums[half:]
+
+        res = []
+
+        for i in range(half):
+            res.append(even[i])
+            res.append(odd[i])
+
+        return res
+
+    def sort_helper(self, x):
+        """
+        NOTE !!!
+
+        even val come first
+        """
+        if x == 0 or x % 2 == 0:
+            return 0
+
+        return 1
+
+
+# V0-0-1
+# IDEA: CUSTOM SORT (gpt)
+class Solution(object):
+    def sortArrayByParityII(self, nums):
+        nums.sort(key=self.sort)
+
+        half = len(nums) // 2
+
+        even = nums[:half]
+        odd = nums[half:]
+
+        res = []
+
+        for i in range(half):
+            res.append(even[i])
+            res.append(odd[i])
+
+        return res
+
+    def sort(self, num):
+        return num % 2
+
+
+
+# V0-1
+# IDEA: 2 POINTERS (swap in place) (gemini)
+class Solution(object):
+    def sortArrayByParityII(self, nums):
+        even = 0
+        odd = 1
+        n = len(nums)
+        
+        while even < n and odd < n:
+            # If the even pointer is looking at a correct (even) number, just move forward
+            if nums[even] % 2 == 0:
+                even += 2
+                
+            # If the odd pointer is looking at a correct (odd) number, just move forward
+            elif nums[odd] % 2 == 1:
+                odd += 2
+                
+            # If BOTH are looking at the wrong type of number, swap them!
+            else:
+                nums[even], nums[odd] = nums[odd], nums[even]
+                even += 2
+                odd += 2
+                
+        return nums
+
+
+# V0
 # time = O(n log n)
 # space = O(n)
 class Solution:
