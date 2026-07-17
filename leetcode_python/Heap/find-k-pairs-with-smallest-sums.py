@@ -54,6 +54,13 @@ class Solution(object):
 
         # Start with (nums1[i], nums2[0])
         for i in range(min(len(nums1), k)):
+
+            """
+            NOTE !!!
+
+
+            PQ: [ [sum, idx_1, idx_2], ... ]
+            """
             heapq.heappush(heap, (nums1[i] + nums2[0], i, 0))
 
         res = []
@@ -62,6 +69,16 @@ class Solution(object):
             _, i, j = heapq.heappop(heap)
             res.append([nums1[i], nums2[j]])
 
+            """
+            NOTE !!!
+
+
+            instead of `loop over nums2`,
+
+            -> we do below:
+                -> check if `next idx_2` is still in boundary (e.g. if j + 1 < len(nums2) )
+                    -> if yes, get the sum, idx of that case, and insert to PQ
+            """
             # Push the next pair using nums2[j+1]
             if j + 1 < len(nums2):
                 heapq.heappush(
