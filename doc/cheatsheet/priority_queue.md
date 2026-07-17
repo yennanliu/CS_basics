@@ -1955,6 +1955,92 @@ public int lastStoneWeight(int[] stones) {
 }
 ```
 
+### 2-16) Find K Pairs with Smallest Sums (LC 373) — LC 373 — K-Way Merge on a Sorted Grid
+
+Given two **sorted** arrays `nums1`, `nums2`, return the `k` pairs `(u, v)` with the smallest sums `u + v`.
+
+#### 1) Core Idea
+- Think of all possible pairs as a **conceptual sorted matrix** `M[i][j] = nums1[i] + nums2[j]`.
+  Because both arrays are sorted, each **row** (fix `i`, increase `j`) and each **column** (fix `j`, increase `i`) is non-decreasing.
+- Brute force builds all `m*n` pairs → too slow. Instead, use a **min-heap to explore only the frontier** of candidates, popping the global minimum `k` times.
+- **Key pruning**: the smallest pairs must involve small indices, so we only ever seed the first `min(k, len(nums1))` rows — `nums1[k] + nums2[0]` can never be in the top `k`.
+- This is the exact same skeleton as **LC 378 (Kth Smallest in Sorted Matrix)** — the pairs form a virtual sorted grid.
+
+#### 2) Pattern — Seed rows, then walk right (K-Way Merge)
+- **Seed**: push `(nums1[i] + nums2[0], i, 0)` for `i` in `[0, min(k, len(nums1)))`. Each entry is the head of a "row/list" starting at column `0`.
+- **Expand**: pop the smallest `(sum, i, j)`, record `[nums1[i], nums2[j]]`, then push its **right neighbor** `(nums1[i] + nums2[j+1], i, j+1)` if it exists.
+- Only pushing `(i, j+1)` (not `(i+1, j)`) is enough because every column-0 head was already seeded — this keeps the heap size bounded by `min(k, len(nums1))` and avoids needing a `visited` set.
+- **Why it works**: the heap always holds exactly one "next candidate" per active row, so each pop yields the next-globally-smallest sum, just like merging `k` sorted lists.
+
+```python
+# python
+# LC 373 - Find K Pairs with Smallest Sums
+# IDEA: K-way merge — seed first min(k, m) rows, pop min, push right neighbor
+# time = O(k * log(min(k, m))), space = O(min(k, m))
+import heapq
+class Solution:
+    def kSmallestPairs(self, nums1, nums2, k):
+        if not nums1 or not nums2 or k == 0:
+            return []
+
+        # PQ holds: (pair_sum, idx_1, idx_2)
+        heap = []
+        # seed: pair each of first min(k, m) nums1 values with nums2[0]
+        for i in range(min(len(nums1), k)):
+            heapq.heappush(heap, (nums1[i] + nums2[0], i, 0))
+
+        res = []
+        while heap and len(res) < k:
+            _, i, j = heapq.heappop(heap)
+            res.append([nums1[i], nums2[j]])
+            # only advance j (right neighbor); column-0 heads already seeded
+            if j + 1 < len(nums2):
+                heapq.heappush(heap, (nums1[i] + nums2[j + 1], i, j + 1))
+
+        return res
+```
+
+```java
+// java
+// LC 373 - Find K Pairs with Smallest Sums
+// IDEA: K-way merge — seed first min(k, m) rows, pop min, push right neighbor
+// time = O(k * log(min(k, m))), space = O(min(k, m))
+public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
+    List<List<Integer>> res = new ArrayList<>();
+    if (nums1.length == 0 || nums2.length == 0 || k == 0) return res;
+
+    // min-heap: [sum, i, j]
+    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+    for (int i = 0; i < Math.min(nums1.length, k); i++) {
+        pq.offer(new int[]{nums1[i] + nums2[0], i, 0});
+    }
+
+    while (!pq.isEmpty() && res.size() < k) {
+        int[] cur = pq.poll();
+        int i = cur[1], j = cur[2];
+        res.add(Arrays.asList(nums1[i], nums2[j]));
+        if (j + 1 < nums2.length) {
+            pq.offer(new int[]{nums1[i] + nums2[j + 1], i, j + 1});
+        }
+    }
+    return res;
+}
+```
+
+**Alternative seeding** (see `find-k-pairs-with-smallest-sums.py` V2): seed only `(0, 0)` and push **both** `(i+1, j)` and `(i, j+1)` on each pop, guarding with a `visited` set. Equivalent result; the row-seeding version above avoids the `visited` set and is the more common template.
+
+#### 3) Similar LC Problems
+| Problem | LC # | Relation to LC 373 | Key Difference |
+|---------|------|--------------------|----------------|
+| Kth Smallest Element in a Sorted Matrix | 378 | Same virtual sorted-grid + heap frontier | Grid is given explicitly; return the k-th, not first k |
+| Merge k Sorted Lists | 23 | Same k-way-merge heap skeleton | Merge real lists via `(val, list_idx, node)` |
+| Ugly Number II / Super Ugly Number | 264 / 313 | Generate values in sorted order via heap frontier | Next candidates = current × prime factors |
+| Kth Smallest Prime Fraction | 786 | Sorted pairs `(num[i], num[j])` explored by heap | Order by fraction value instead of sum |
+| Smallest Range Covering K Lists | 632 | Multi-pointer + heap over sorted lists | Track a covering range, not smallest sums |
+| Find K-th Smallest Pair Distance | 719 | "K-th smallest over all pairs" | Uses binary search on answer (heap too slow) |
+
+**Common signal for this pattern**: *"k smallest / k-th smallest combination of two (or more) sorted sequences"* → seed a heap with the minimal frontier, pop `k` times, push each popped element's successor(s).
+
 ---
 
 ## Quick Reference: PQ Pattern → Problem Mapping
