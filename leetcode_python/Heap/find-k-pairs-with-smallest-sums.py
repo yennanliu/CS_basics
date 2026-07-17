@@ -42,7 +42,78 @@ k <= nums1.length * nums2.length
 # V0 
 
 
-# V1
+# V1-1
+# IDEA: HEAP (gpt)
+import heapq
+class Solution(object):
+    def kSmallestPairs(self, nums1, nums2, k):
+        if not nums1 or not nums2 or k == 0:
+            return []
+
+        heap = []
+
+        # Start with (nums1[i], nums2[0])
+        for i in range(min(len(nums1), k)):
+            heapq.heappush(heap, (nums1[i] + nums2[0], i, 0))
+
+        res = []
+
+        while heap and len(res) < k:
+            _, i, j = heapq.heappop(heap)
+            res.append([nums1[i], nums2[j]])
+
+            # Push the next pair using nums2[j+1]
+            if j + 1 < len(nums2):
+                heapq.heappush(
+                    heap,
+                    (nums1[i] + nums2[j + 1], i, j + 1)
+                )
+
+        return res
+
+
+
+# V1-2
+# IDEA: HEAP (gemini)
+import heapq
+
+class Solution(object):
+    def kSmallestPairs(self, nums1, nums2, k):
+        """
+        :type nums1: List[int]
+        :type nums2: List[int]
+        :type k: int
+        :rtype: List[List[int]]
+        """
+        # Edge case check
+        if not nums1 or not nums2:
+            return []
+            
+        pq = []
+        res = []
+        
+        # 1. Initialize the heap.
+        # We only need to pair nums2[0] with the first 'k' elements of nums1. 
+        # (Because both arrays are sorted, nums1[k] + nums2[0] can't possibly be in the top k)
+        for i in range(min(k, len(nums1))):
+            # Store tuple: (sum, index_in_nums1, index_in_nums2)
+            heapq.heappush(pq, (nums1[i] + nums2[0], i, 0))
+            
+        # 2. Extract the smallest pairs k times (or until heap is empty)
+        while pq and len(res) < k:
+            # Pop the absolute smallest sum currently in the heap
+            curr_sum, i, j = heapq.heappop(pq)
+            
+            # Add the actual numbers to our result
+            res.append([nums1[i], nums2[j]])
+            
+            # 3. Push the NEXT possible pair for this specific nums1[i]
+            # Since we just used nums2[j], the next smallest option is nums2[j + 1]
+            if j + 1 < len(nums2):
+                heapq.heappush(pq, (nums1[i] + nums2[j + 1], i, j + 1))
+                
+        return res
+
 
 
 # V2
