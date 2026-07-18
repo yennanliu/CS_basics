@@ -5,6 +5,62 @@
 # https://leetcode.com/problems/create-grid-with-exactly-one-path/description/
 
 
+->
+
+Return any grid such that there is exactly one 
+valid path from the top-left cell to the bottom-right cell.
+
+
+
+m, n: grid size
+
+
+can ONLY move right, down
+
+starts from (0,0)
+
+ends at (m-1, n-1)
+
+
+. .
+. .
+
+
+`exactly one valid path `
+
+
+# idea 1) math + matrix op ??
+
+class Solution(object):
+    def createGrid(self, m, n):
+    	# edge
+    	if n == 1:
+    		# ??
+    		return ["." for i in range(n)]
+
+    	res = [ [] * n for _ in range(m) ]
+    	
+    	if n == 2:
+    		res[0][1] = "#"
+    		return res
+
+    	# ??
+    	res[0][n-1] = "#"
+    	#res[m][0] = "#"
+
+    	for y in range(1, m-1):
+    		res[y][0] = "#"
+
+    	for x in range(0, n-1):
+    		res[m-1][x] = "#"
+
+
+    	return res
+
+
+
+
+
 # LC 3964
 # https://leetcode.com/problems/minimum-lights-to-illuminate-a-road/description/
 
