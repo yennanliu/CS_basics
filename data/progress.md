@@ -11,7 +11,7 @@
 
 - heap
 	- LC example
-		- `2-10) Find K Pairs with Smallest Sums — LC 373`
+		- `2-16) Divide Intervals Into Minimum Number of Groups — LC 2406`
 
 - intervals.md
 
@@ -64,8 +64,8 @@
 
 - LC weekly
 	- `data/lc_weekly/lc_weekly_gpt.md`
-		- Weekly Contest 508 (OK)
-			- https://leetcode.com/contest/weekly-contest-508/
+		- Weekly Contest 185 (doing)
+			- https://leetcode.com/contest/biweekly-contest-185/
 
 - Others
 	- DP - `0/1 Knapsack and` -> revisit
@@ -93,7 +93,7 @@
 		- heap
 			- 1353
 			- 264
-			- 373
+			- 1647
 		- trie
 			- 1268
 			- delete op
