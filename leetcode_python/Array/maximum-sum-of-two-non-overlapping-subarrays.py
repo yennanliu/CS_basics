@@ -46,6 +46,81 @@ firstLen + secondLen <= nums.length <= 1000
 
 
 # V0
+# IDEA: PREFIX SUM + `2 cases` (first->second or second->first)
+"""
+
+Core idea:
+
+
+-> `precompute prefix sums`, then scan the array `twice`:
+
+L before M: the firstLen subarray comes 
+            before the secondLen subarray.
+
+M before L: the reverse order.
+
+During each scan, maintain the maximum sum 
+of the left subarray seen so far,
+then combine it with the current right subarray.
+
+
+"""
+class Solution(object):
+    def maxSumTwoNoOverlap(self, nums, firstLen, secondLen):
+        n = len(nums)
+
+        # prefix sum
+        prefix = [0] * (n + 1)
+        for i in range(n):
+            prefix[i + 1] = prefix[i] + nums[i]
+
+        return max(
+            self.helper(prefix, firstLen, secondLen),
+            self.helper(prefix, secondLen, firstLen)
+        )
+
+    def helper(self, prefix, firstLen, secondLen):
+        n = len(prefix) - 1
+
+        # first subarray starts at 0
+        best_first = prefix[firstLen] - prefix[0]
+        ans = 0
+
+        # i = start index of second subarray
+                """
+        NOTE !!!
+
+         `i` is the start idx of second sub array
+
+        
+        1. 
+          ONLY 1 loop:
+            range(firstLen + secondLen, n + 1)
+
+
+        2. get bestFirst (base case)
+
+        3. loop over i (start_idx of second array)
+            - update bestFirst
+            - get second
+            - get updated ans
+
+        4. return max ans
+        """
+        
+        for i in range(firstLen, n - secondLen + 1):
+            # update best first subarray ending before i
+            best_first = max(
+                best_first,
+                prefix[i] - prefix[i - firstLen]
+            )
+
+            second = prefix[i + secondLen] - prefix[i]
+            ans = max(ans, best_first + second)
+
+        return ans
+
+# V0
 # IDEA: PREFIX SUM (gpt)
 """
 
@@ -101,11 +176,20 @@ class Solution(object):
 
         # NOTE !!!
         # we get cur `bestFirst` first
+        """
+        NOTE !!!
+
+        prefix sum pattern:
+
+            -> sum(l...r) = prefix[r+1] - prefix[l]
+        """
         bestFirst = prefix[firstLen] - prefix[0]
         ans = 0
 
         """
         NOTE !!!
+
+         `i` is the start idx of second sub array
 
         
         1. 
@@ -113,18 +197,26 @@ class Solution(object):
             range(firstLen + secondLen, n + 1)
 
 
-        2. we get updated  `bestFirst`
+        2. get bestFirst (base case)
 
-        3. we get second
+        3. loop over i (start_idx of second array)
+            - update bestFirst
+            - get second
+            - get updated ans
 
-        4. we get cur max ans
+        4. return max ans
         """
+
+        # `i` is the start idx of second sub array
         for i in range(firstLen + secondLen, n + 1):
+            
+            # update bestFirst
             bestFirst = max(
                 bestFirst,
                 prefix[i - secondLen] - prefix[i - secondLen - firstLen]
             )
 
+            # get second
             second = prefix[i] - prefix[i - secondLen]
 
             ans = max(ans, bestFirst + second)
