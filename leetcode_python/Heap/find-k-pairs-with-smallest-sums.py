@@ -39,7 +39,80 @@ k <= nums1.length * nums2.length
 """
 
 
-# V0 
+# V0
+# IDEA: HEAP (gpt) 
+import heapq
+
+class Solution(object):
+    def kSmallestPairs(self, nums1, nums2, k):
+        if not nums1 or not nums2 or k == 0:
+            return []
+
+        """
+        NOTE !!!
+
+
+        PQ: [ [sum, idx_1, idx_2], ... ]
+        """
+        pq = []
+        n1 = len(nums1)
+        n2 = len(nums2)
+
+        """
+        NOTE !!!   `min(n1, k)`
+
+        since both nums1, and nums2 are in `increasing order`
+
+
+        -> so we are sure the first `k` combinations of above are smallest
+
+        -> and since we ONLY want k smallest part (with sum)
+
+        -> so we ONLY loop on min(n1, k)
+        """
+        # Initialize heap with the first element from nums2
+        for i in range(min(n1, k)):
+            heapq.heappush(pq, (nums1[i] + nums2[0], i, 0))
+
+        ans = []
+
+        """
+        NOTE !!!
+
+
+        DON'T do below:
+
+        ```
+        for j in range(n2):
+            # ...
+        ```
+
+        instead, we do `while loop`
+
+        -> `while pq and len(ans) < k`
+
+            -> if ans == k,
+                we should STOP, since k smalles pair is collected
+
+        """
+        while pq and len(ans) < k:
+            cur_sum, i, j = heapq.heappop(pq)
+            ans.append([nums1[i], nums2[j]])
+
+            # Push the next pair in the same row
+            """
+            NOTE !!!
+
+            `j` is the idx, NOT val
+            """
+            if j + 1 < n2:
+                heapq.heappush(
+                    pq,
+                    (nums1[i] + nums2[j + 1], i, j + 1)
+                )
+
+        return ans
+
 
 
 # V1-1
