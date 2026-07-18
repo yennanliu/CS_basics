@@ -162,10 +162,112 @@ class Solution(object):
 # https://leetcode.com/problems/finish-time-of-tasks-i/
 
 
+-> 
+
+Return the `finish` time of the root task 0.
+
+
+edges[i] = [ui, vi] 
+
+-> `ui` is parent of `vi`
+
+->  that task ui is the parent of task vi.
+
+
+
+baseTime: arr
+
+where baseTime[i] represents 
+the `time` to complete task i.
+
+
+Leaf task: 
+	- finish time = baseTime[i].
+
+
+NON Leaf task: 
+	- finish time = latest + ownDuration.
+
+	ownDuration = (latest - earliest) + baseTime[i].
+
+	earliest be the minimum finish time among its children
+
+	latest be the maximum finish time among its children.
+
+
+
+# IDEA 1) dfs (post-order)
+
+# left -> right -> root
+
+
+class Solution(object):
+    def finishTime(self, n, edges, baseTime):
+    	# edge
+
+    	# map
+    	# {node: [child_1, child_2, ...]}
+    	"""
+    	edges[i] = [ui, vi] 
+
+			-> `ui` is parent of `vi`
+    	"""
+    	self.node_map = {}
+
+    	for u,v in edges:
+    		if u not in self.node_map:
+    			self.node_map[u] = []
+    		self.node_map[u].append(v)
+
+    	self.total_time = 0
+
+    	for node in self.node_map:
+    		self.dfs_helper(self, node, baseTime, latest, earliest)
+
+    	return self.total_time
+
+
+
+    def dfs_helper(self, node, baseTime, latest, earliest):
+    	if not node:
+    		# ???
+    		return 0
+    	# ??
+    	if not node.left and not node.right:
+    		time = baseTime[node]
+    		self.total_time += time
+    		# ??
+    		if time < earliest:
+    			#return earliest
+    			earliest = time
+    		elif time > latest:
+    			#return time
+    			latest = time
+
+    		return earliest, latest
+
+    	# ???
+    	_l_earliest,  _l_latest = self.dfs_helper(node.left, baseTime, latest, earliest)
+    	_r_earliest,  _r_latest = self.dfs_helper(node.right, baseTime, latest, earliest)
+
+    	_latest = max(_l_latest, _r_latest)
+    	_own_duration = _latest - min(_l_earliest, _r_earliest) + baseTime[node]
+    	
+    	self.total_time += _latest + _own_duration
+
+
+
 
 
 # LC 3966
 # https://leetcode.com/problems/count-good-integers-in-a-range/description/
+
+
+
+
+
+
+
 
 
 
