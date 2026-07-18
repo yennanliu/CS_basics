@@ -1,5 +1,6 @@
 # https://leetcode.com/contest/biweekly-contest-185/
 
+# 2.20 -> 3.20 pm
 
 # LC 3963
 # https://leetcode.com/problems/create-grid-with-exactly-one-path/description/
@@ -64,9 +65,108 @@ class Solution(object):
 # LC 3964
 # https://leetcode.com/problems/minimum-lights-to-illuminate-a-road/description/
 
+
+->
+
+Return the `minimum` number of additional bulbs  燈泡
+required to make `every` position on the road `visible.`
+
+
+
+illuminates 照亮
+ 
+
+
+
+if  lights[i] = v (v > 0)
+	-> a working bulb at i
+	can `bright` every idx
+	from 
+
+ max(0, i - v) to 
+ min(n - 1, i + v),
+  inclusive.
+
+
+
+
+A position is `visible` 
+
+if it is illuminated by 
+`at least one working bulb`.
+
+
+
+lights[i] = v:
+
+max(0, i - v) 
+min(n - 1, i + v)
+
+inclusive.
+
+
+[0,0,0,0]
+   i
+
+max(0, 1-0)
+
+min(4-1, 1+0)
+
+
+
+
+
+
+# idea 1) greedy
+
+class Solution(object):
+    def minLights(self, lights):
+    	# edge
+    	zero_cnt = 0
+    	for i, val in enumerate(lights):
+    		if val == 0:
+    			zero_cnt += 1
+    		else:
+    			# update
+    			self.update(lights, i, val)
+
+    	if zero_cnt == 0:
+    		return 0
+
+    	n = len(lights)
+    	state = [0] * n
+
+    	op = 0
+
+    	# ??? update from right
+    	for j in range(n-1, -1, -1):
+    		if lights[j] == 0:
+    			lights[j] = 1
+    			# ???
+    			self.update(lights, j, lights[j])
+    			op += 1
+
+
+    	return op
+
+
+    def update(lights, i, val):
+    	pass
+
+
+
+
+
+
 # LC 3965
 # https://leetcode.com/problems/finish-time-of-tasks-i/
 
 
+
+
 # LC 3966
 # https://leetcode.com/problems/count-good-integers-in-a-range/description/
+
+
+
+
