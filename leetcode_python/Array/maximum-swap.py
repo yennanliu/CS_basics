@@ -29,6 +29,68 @@ Constraints:
 
 
 # V0
+# IDEA: LAST IDX + double loop
+"""
+
+CORE IDEA:
+
+O(n) idea
+
+
+1. For every digit, know the last occurrence of every digit 0–9.
+2. loop over digit in num
+    loop from 9 to 0 (inverse order)
+        -> and find if we can `swap`
+
+"""
+class Solution(object):
+    def maximumSwap(self, num):
+        s = list(str(num))
+
+
+        """
+
+        last_idx: `last idx` of digit in num
+        """
+        # last occurrence of each digit
+        last_idx = [-1] * 10
+        for i, ch in enumerate(s):
+            last_idx[int(ch)] = i
+
+
+        """
+
+        NOTE !!!
+
+
+        we have `double loop` below
+        """
+        for i, ch in enumerate(s):
+            cur = int(ch)
+
+            """
+
+            NOTE !!!
+
+
+            we try val from `9` to `cur + 1`
+                -> try if we can `swap`
+            """
+            # Try larger digits from 9 down to cur+1
+            for d in range(9, cur, -1):
+                if last_idx[d] > i:
+                    j = last_idx[d]
+                    s[i], s[j] = s[j], s[i]
+
+                    # NOTE !!!
+                    # if can swap, 
+                    # -> return ans directly
+                    return int("".join(s))
+
+        return num
+
+
+# V0-0-1
 # IDEA: LAST IDX + HASHMAP (GPT)
 """
 
