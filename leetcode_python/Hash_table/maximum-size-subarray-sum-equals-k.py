@@ -30,9 +30,49 @@ Constraints:
 """
 
 # V0
+# IDEA : HASH TBALE
 class Solution(object):
     def maxSubArrayLen(self, nums, k):
-        pass
+
+        """
+        NOTE !!!
+
+
+        we init hashmap
+        as {0: -1}
+        """
+        # { prefix_sum : earliest_index }
+        sum_map = {0: -1}
+
+        tmp_sum = 0
+        max_len = 0
+
+        """
+        Steps:
+
+        1. loop over nums (r idx)
+        
+        2. update tmp_sum 
+
+        3. check if `tmp_sum - k` in map
+            - if yes, update max_len
+
+        4. ONLY update map `with earliest tmp_sum idx`
+        """
+
+        for r in range(len(nums)):
+            tmp_sum += nums[r]
+
+            if tmp_sum - k in sum_map:
+                # NOTE !!! below
+                max_len = max(max_len, r - sum_map[tmp_sum - k])
+
+            # NOTE !!! below
+            # Only keep the `earliest` occurrence
+            if tmp_sum not in sum_map:
+                sum_map[tmp_sum] = r
+
+        return max_len
 
 # V0 
 # time complexity : O(N) | space complexity : O(N)
