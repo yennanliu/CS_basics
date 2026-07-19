@@ -328,6 +328,8 @@ NON Leaf task:
 # left -> right -> root
 
 
+from collections import defaultdict
+
 class Solution(object):
     def finishTime(self, n, edges, baseTime):
         # edge
@@ -339,7 +341,15 @@ class Solution(object):
 
             -> `ui` is parent of `vi`
         """
-        self.node_map = {}
+        #self.node_map = {}
+
+        graph = defaultdict(list)
+
+        # 1. Build an adjacency list for our N-ary tree
+        graph = defaultdict(list)
+        for u, v in edges:
+            graph[u].append(v)
+
 
         for u,v in edges:
             if u not in self.node_map:
@@ -348,8 +358,13 @@ class Solution(object):
 
         self.total_time = 0
 
-        for node in self.node_map:
-            self.dfs_helper(self, node, baseTime, latest, earliest)
+        #for node in self.node_map:
+        #    self.dfs_helper(self, node, baseTime, latest, earliest)
+
+
+        # NOTE !!! tree starts from `0 node`
+        # -> DON'T need to for loop over nodes
+        self.dfs_helper(self, 0)
 
         return self.total_time
 

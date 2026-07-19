@@ -1186,6 +1186,11 @@ claude
 2685| [Count the Number of Complete Components](https://leetcode.com/problems/count-the-number-of-complete-components) |  [Java](./leetcode_java/src/main/java/LeetCodeJava/DFS/CountTheNumberOfCompleteComponents.java) | _O(q + r)_ | _O(q + r)_   | Medium |good trick, dfs, bfs, union find, LC weekly 345| AGAIN*** (2)
 2872| [Maximum Number of K-Divisible Components](https://leetcode.com/problems/maximum-number-of-k-divisible-components) |  [Java](./leetcode_java/src/main/java/LeetCodeJava/DFS/MaximumNumberOfKDivisibleComponents.java) | _O(q + r)_    | _O(q + r)_   | Hard |DFS, BFS, topological sort, good trick, post order| AGAIN*** (2)
 3319| [K-th Largest Perfect Subtree Size in Binary Tree](https://leetcode.com/problems/k-th-largest-perfect-subtree-size-in-binary-tree) |  [Java](./leetcode_java/src/main/java/LeetCodeJava/DFS/KthLargestPerfectSubtreeSizeInBinaryTree.java) | _O(q + r)_    | _O(q + r)_   | Medium |DFS, good trick, binary-tree, post order| AGAIN*** (2)
+3965| [Finish Time of Tasks I](https://leetcode.com/problems/finish-time-of-tasks-i/description/) |  [Python](./leetcode_python/Depth-First-Search/finish-time-of-tasks-i.py) | _O(q + r)_    | _O(q + r)_   | Medium |DFS, LC bi-weekly| AGAIN******** (3)(MUST)
+
+
+
+
 
 ## Backtracking
 
