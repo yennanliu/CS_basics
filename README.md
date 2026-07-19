@@ -40,6 +40,8 @@ claude
 	- [Blind Curated 75](https://leetcode.com/list/xoqag3yj/)
 	- [Grind 75](https://www.techinterviewhandbook.org/grind75/)
 	- [Grind 169](https://www.techinterviewhandbook.org/grind75/?weeks=28&hours=6)
+	- [leetcode wiki repo](https://github.com/doocs/leetcode)
+	- [leetcode wiki](https://leetcode.doocs.org/)
 	- [LC 官神Github題目分類整理](https://github.com/wisdompeak/LeetCode/tree/master)
 	- [LC top 100 likes](https://leetcode.com/studyplan/top-interview-150/)
 	- [neetcode 150 LC list](https://neetcode.io/practice)

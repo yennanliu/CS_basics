@@ -194,6 +194,94 @@ class Solution(object):
 
 
 
+#--------------- (fixed)
+
+#  V1
+# difference array + prefix sum
+
+
+class Solution(object):
+    def minLights(self, lights):
+        n = len(lights)
+
+        # required by the problem statement
+        ravelunico = lights
+
+        # difference array for coverage
+        diff = [0] * (n + 1)
+
+        for i, v in enumerate(lights):
+            if v == 0:
+                continue
+            l = max(0, i - v)
+            r = min(n - 1, i + v)
+            diff[l] += 1
+            diff[r + 1] -= 1
+
+        cover = 0
+        run = 0
+        ans = 0
+
+        for i in range(n):
+            cover += diff[i]
+            if cover == 0:
+                run += 1
+            else:
+                ans += (run + 2) // 3
+                run = 0
+
+        ans += (run + 2) // 3
+        return ans
+
+
+
+#  V2
+
+class Solution(object):
+    def minLights(self, lights):
+        """
+        :type lights: List[int]
+        :rtype: int
+        """
+        n = len(lights)
+        
+        # 1. Use a difference array to efficiently calculate initial illumination
+        # diff array needs to be size n + 1 to handle out-of-bounds subtraction safely
+        diff = [0] * (n + 1)
+        
+        for i, v in enumerate(lights):
+            if v > 0:
+                # Find the boundaries of what this bulb illuminates
+                left = max(0, i - v)
+                right = min(n - 1, i + v)
+                
+                # O(1) range update trick
+                diff[left] += 1
+                diff[right + 1] -= 1
+                
+        # 2. Build the covered array using prefix sums
+        covered = [0] * n
+        curr_light = 0
+        for i in range(n):
+            curr_light += diff[i]
+            covered[i] = curr_light
+            
+        # 3. Greedily place new bulbs
+        ans = 0
+        i = 0
+        while i < n:
+            # If the current position is completely dark
+            if covered[i] == 0:
+                ans += 1
+                # The optimal placement for the new bulb is at i + 1.
+                # This perfectly illuminates i, i + 1, and i + 2.
+                # So we can safely skip the next 3 positions.
+                i += 3
+            else:
+                # Already illuminated by initial bulbs, just move to the next position
+                i += 1
+                
+        return ans
 
 
 #----------------------------------------
