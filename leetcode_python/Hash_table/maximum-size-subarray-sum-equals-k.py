@@ -1,3 +1,5 @@
+# https://leetcode.ca/all/325.html
+
 """
 
 325. Maximum Size Subarray Sum Equals k
@@ -26,6 +28,11 @@ Constraints:
 -109 <= k <= 109
 
 """
+
+# V0
+class Solution(object):
+    def maxSubArrayLen(self, nums, k):
+        pass
 
 # V0 
 # time complexity : O(N) | space complexity : O(N)
@@ -56,6 +63,23 @@ class Solution(object):
             if acc - k in dic:
                 result = max(result, i - dic[acc-k])
         return result
+
+
+# V2
+# https://leetcode.ca/2016-10-20-325-Maximum-Size-Subarray-Sum-Equals-k/
+# IDEA: HASHMAP
+class Solution:
+    def maxSubArrayLen(self, nums: List[int], k: int) -> int:
+        d = {0: -1}
+        ans = s = 0
+        for i, x in enumerate(nums):
+            s += x
+            if s - k in d:
+                ans = max(ans, i - d[s - k])
+            if s not in d:
+                d[s] = i
+        return ans
+
 
 # V0'
 # IDEA : BRUTE FORCE 
