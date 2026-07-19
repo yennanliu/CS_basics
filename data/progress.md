@@ -9,10 +9,6 @@
 - review `all recent updated cheatsheets`
 	- git commit
 
-- heap
-	- LC example
-		- `2-16) Divide Intervals Into Minimum Number of Groups — LC 2406`
-
 - intervals.md
 
 - python_trick.md
@@ -48,6 +44,7 @@
   - greedy.md
   - difference_array.md
   - Dijkstra.md
+  - heap.md
 
 - `MUST LC problems`
 	- todo
@@ -94,6 +91,8 @@
 			- 1353
 			- 264
 			- 1647
+			- 2406
+			- 621
 		- trie
 			- 1268
 			- delete op
