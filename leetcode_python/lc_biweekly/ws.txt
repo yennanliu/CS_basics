@@ -84,6 +84,20 @@ class Solution(object):
         return res
 
 
+# -> Dry run
+
+"""
+
+# Let's dry run this with a grid 
+where M = 4 (rows) and N = 5 (columns).
+
+
+Row 0:  . . . . .
+Row 1:  # # # # .
+Row 2:  # # # # .
+Row 3:  # # # # .    <-- Grid complete!
+
+"""
 
 
 #----------------------------------------
