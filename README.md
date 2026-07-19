@@ -358,6 +358,7 @@ claude
 2644 | [Find the Maximum Divisibility Score](https://leetcode.com/problems/find-the-maximum-divisibility-score) |  [Java](./leetcode_java/src/main/java/LeetCodeJava/Array/FindTheMaximumDivisibilityScore.java)| _O(n^2)_ | _O(1)_  | Easy | array, sort| Again (1)
 2553 | [Separate the Digits in an Array](https://leetcode.com/problems/separate-the-digits-in-an-array) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Array/SeparateTheDigitsInAnArray.java) | | | Easy |weekly 97| OK
 3195 | [Find the Minimum Area to Cover All Ones I](https://leetcode.com/problems/find-the-minimum-area-to-cover-all-ones-i/description/) | [Java](./leetcode_java/src/main/java/LeetCodeJava/Array/findTheMinimumAreaToCoverAllOnesI.java)  | | | Medium |array, LC weekly| AGAIN (1)
+3964 | [Minimum Lights to Illuminate a Road](https://leetcode.com/problems/minimum-lights-to-illuminate-a-road/description/) | [Python](./leetcode_python/Array/minimum-lights-to-illuminate-a-road.py)   | | | Medium |diff array, LC bi weekly| AGAIN (1)
 
 
 ## Set
