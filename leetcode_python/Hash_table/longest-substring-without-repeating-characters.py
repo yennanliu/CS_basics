@@ -31,8 +31,53 @@ Constraints:
 
 """
 
+#  V0
+# IDEA: SLIDE WINDOW + HASHMAP
+"""
+SLIDE WINDOW template:
 
-# V0
+for r in range(len(s)):
+    while some_conditons():
+        l += 1
+
+    res = do_sth
+
+return res
+
+"""
+class Solution(object):
+    def lengthOfLongestSubstring(self, s):
+        # edge
+        if not s:
+            return 0
+        if len(s) == 1:
+            return 1
+
+        # { char : count }
+        cnt_map = {}
+
+        ans = 0
+        l = 0
+
+        for r in range(len(s)):
+            val = s[r]
+            cnt_map[val] = cnt_map.get(val, 0) + 1
+
+            while cnt_map[val] > 1:
+                
+                left_val = s[l]
+                cnt_map[left_val] -= 1
+                
+                if cnt_map[left_val] == 0:
+                    del cnt_map[left_val]
+                l += 1
+
+            ans = max(ans, r - l + 1)
+
+        return ans
+
+
+# V0-0-1
 # IDEA: SLIDE WINDOW + HASHMAP
 """
 SLIDE WINDOW template:
