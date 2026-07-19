@@ -39,6 +39,12 @@ class Solution(object):
     def numberOfSubarrays(self, nums, k):
         total_cnt = 0
 
+        """
+        # NOTE !!
+        # DON'T forget to init map as `{0:1}`
+
+        -> map: {prefix_odd_count: frequency}
+        """
         cnt_map = {0: 1}
         prefix_cnt = 0
 
