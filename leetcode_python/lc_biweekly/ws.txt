@@ -384,6 +384,46 @@ class Solution(object):
 
 
 
+#------------------ (fixed)
+
+
+from collections import defaultdict
+
+class Solution(object):
+    def finishTime(self, n, edges, baseTime):
+        """
+        :type n: int
+        :type edges: List[List[int]]
+        :type baseTime: List[int]
+        :rtype: int
+        """
+        # 1. Build an adjacency list for our N-ary tree
+        graph = defaultdict(list)
+        for u, v in edges:
+            graph[u].append(v)
+            
+        def dfs(node):
+            # Base Case: Leaf node (has no children in the graph)
+            if not graph[node]:
+                return baseTime[node]
+                
+            # Recursive Step: Non-leaf node
+            earliest = float('inf')
+            latest = float('-inf')
+            
+            # Traverse all children to find their earliest and latest finish times
+            for child in graph[node]:
+                child_finish_time = dfs(child)
+                earliest = min(earliest, child_finish_time)
+                latest = max(latest, child_finish_time)
+                
+            # Calculate own duration and total finish time for this parent node
+            own_duration = (latest - earliest) + baseTime[node]
+            return latest + own_duration
+            
+        # 2. The tree is rooted at 0, so we just start the DFS from 0
+        return dfs(0)
+
 
 #----------------------------------------
 # LC 3966
