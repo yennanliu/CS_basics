@@ -2,6 +2,8 @@
 
 # 2.20 -> 3.20 pm
 
+
+#----------------------------------------
 # LC 3963
 # https://leetcode.com/problems/create-grid-with-exactly-one-path/description/
 
@@ -34,34 +36,57 @@ ends at (m-1, n-1)
 
 class Solution(object):
     def createGrid(self, m, n):
-    	# edge
-    	if n == 1:
-    		# ??
-    		return ["." for i in range(n)]
+        # edge
+        if n == 1:
+            # ??
+            return ["." for i in range(n)]
 
-    	res = [ [] * n for _ in range(m) ]
-    	
-    	if n == 2:
-    		res[0][1] = "#"
-    		return res
+        res = [ [] * n for _ in range(m) ]
+        
+        if n == 2:
+            res[0][1] = "#"
+            return res
 
-    	# ??
-    	res[0][n-1] = "#"
-    	#res[m][0] = "#"
+        # ??
+        res[0][n-1] = "#"
+        #res[m][0] = "#"
 
-    	for y in range(1, m-1):
-    		res[y][0] = "#"
+        for y in range(1, m-1):
+            res[y][0] = "#"
 
-    	for x in range(0, n-1):
-    		res[m-1][x] = "#"
-
-
-    	return res
+        for x in range(0, n-1):
+            res[m-1][x] = "#"
 
 
+        return res
+
+
+#------------------- (fixed) (gpt)
 
 
 
+class Solution(object):
+    def createGrid(self, m, n):
+        """
+        :type m: int
+        :type n: int
+        :rtype: List[str]
+        """
+        res = []
+        for i in range(m):
+            # For the first row, the path goes all the way to the right
+            if i == 0:
+                res.append("." * n)
+            # For all other rows, block everything except the very last column
+            else:
+                res.append("#" * (n - 1) + ".")
+                
+        return res
+
+
+
+
+#----------------------------------------
 # LC 3964
 # https://leetcode.com/problems/minimum-lights-to-illuminate-a-road/description/
 
@@ -79,9 +104,9 @@ illuminates 照亮
 
 
 if  lights[i] = v (v > 0)
-	-> a working bulb at i
-	can `bright` every idx
-	from 
+    -> a working bulb at i
+    can `bright` every idx
+    from 
 
  max(0, i - v) to 
  min(n - 1, i + v),
@@ -121,43 +146,43 @@ min(4-1, 1+0)
 
 class Solution(object):
     def minLights(self, lights):
-    	# edge
-    	zero_cnt = 0
-    	for i, val in enumerate(lights):
-    		if val == 0:
-    			zero_cnt += 1
-    		else:
-    			# update
-    			self.update(lights, i, val)
+        # edge
+        zero_cnt = 0
+        for i, val in enumerate(lights):
+            if val == 0:
+                zero_cnt += 1
+            else:
+                # update
+                self.update(lights, i, val)
 
-    	if zero_cnt == 0:
-    		return 0
+        if zero_cnt == 0:
+            return 0
 
-    	n = len(lights)
-    	state = [0] * n
+        n = len(lights)
+        state = [0] * n
 
-    	op = 0
+        op = 0
 
-    	# ??? update from right
-    	for j in range(n-1, -1, -1):
-    		if lights[j] == 0:
-    			lights[j] = 1
-    			# ???
-    			self.update(lights, j, lights[j])
-    			op += 1
+        # ??? update from right
+        for j in range(n-1, -1, -1):
+            if lights[j] == 0:
+                lights[j] = 1
+                # ???
+                self.update(lights, j, lights[j])
+                op += 1
 
 
-    	return op
+        return op
 
 
     def update(lights, i, val):
-    	pass
+        pass
 
 
 
 
 
-
+#----------------------------------------
 # LC 3965
 # https://leetcode.com/problems/finish-time-of-tasks-i/
 
@@ -182,17 +207,17 @@ the `time` to complete task i.
 
 
 Leaf task: 
-	- finish time = baseTime[i].
+    - finish time = baseTime[i].
 
 
 NON Leaf task: 
-	- finish time = latest + ownDuration.
+    - finish time = latest + ownDuration.
 
-	ownDuration = (latest - earliest) + baseTime[i].
+    ownDuration = (latest - earliest) + baseTime[i].
 
-	earliest be the minimum finish time among its children
+    earliest be the minimum finish time among its children
 
-	latest be the maximum finish time among its children.
+    latest be the maximum finish time among its children.
 
 
 
@@ -203,62 +228,62 @@ NON Leaf task:
 
 class Solution(object):
     def finishTime(self, n, edges, baseTime):
-    	# edge
+        # edge
 
-    	# map
-    	# {node: [child_1, child_2, ...]}
-    	"""
-    	edges[i] = [ui, vi] 
+        # map
+        # {node: [child_1, child_2, ...]}
+        """
+        edges[i] = [ui, vi] 
 
-			-> `ui` is parent of `vi`
-    	"""
-    	self.node_map = {}
+            -> `ui` is parent of `vi`
+        """
+        self.node_map = {}
 
-    	for u,v in edges:
-    		if u not in self.node_map:
-    			self.node_map[u] = []
-    		self.node_map[u].append(v)
+        for u,v in edges:
+            if u not in self.node_map:
+                self.node_map[u] = []
+            self.node_map[u].append(v)
 
-    	self.total_time = 0
+        self.total_time = 0
 
-    	for node in self.node_map:
-    		self.dfs_helper(self, node, baseTime, latest, earliest)
+        for node in self.node_map:
+            self.dfs_helper(self, node, baseTime, latest, earliest)
 
-    	return self.total_time
+        return self.total_time
 
 
 
     def dfs_helper(self, node, baseTime, latest, earliest):
-    	if not node:
-    		# ???
-    		return 0
-    	# ??
-    	if not node.left and not node.right:
-    		time = baseTime[node]
-    		self.total_time += time
-    		# ??
-    		if time < earliest:
-    			#return earliest
-    			earliest = time
-    		elif time > latest:
-    			#return time
-    			latest = time
+        if not node:
+            # ???
+            return 0
+        # ??
+        if not node.left and not node.right:
+            time = baseTime[node]
+            self.total_time += time
+            # ??
+            if time < earliest:
+                #return earliest
+                earliest = time
+            elif time > latest:
+                #return time
+                latest = time
 
-    		return earliest, latest
+            return earliest, latest
 
-    	# ???
-    	_l_earliest,  _l_latest = self.dfs_helper(node.left, baseTime, latest, earliest)
-    	_r_earliest,  _r_latest = self.dfs_helper(node.right, baseTime, latest, earliest)
+        # ???
+        _l_earliest,  _l_latest = self.dfs_helper(node.left, baseTime, latest, earliest)
+        _r_earliest,  _r_latest = self.dfs_helper(node.right, baseTime, latest, earliest)
 
-    	_latest = max(_l_latest, _r_latest)
-    	_own_duration = _latest - min(_l_earliest, _r_earliest) + baseTime[node]
-    	
-    	self.total_time += _latest + _own_duration
-
-
+        _latest = max(_l_latest, _r_latest)
+        _own_duration = _latest - min(_l_earliest, _r_earliest) + baseTime[node]
+        
+        self.total_time += _latest + _own_duration
 
 
 
+
+#----------------------------------------
 # LC 3966
 # https://leetcode.com/problems/count-good-integers-in-a-range/description/
 
