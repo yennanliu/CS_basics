@@ -36,6 +36,74 @@ Constraints:
 
 """
 
+
+# V0
+# IDEA : HASH TABLE (gemini)
+# SAME IDEA AS LC 525 !!!!
+"""
+Core idea:
+
+
+if 
+
+    (prefix[j] - prefix[i]) mod k = 0
+
+
+    ->
+
+     prefix[j] mod k = prefix[i] mod k
+
+
+
+    -> so all we need to do is:
+        get `prefix x mod k` within looping,
+        and chekc if another `prefix x mod k` 
+        already existed in hashmap 
+        (when meet cur `prefix x mod k`)
+
+"""
+class Solution(object):
+    def checkSubarraySum(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: bool
+        """
+        # Base case: A remainder of 0 exists at index -1
+        sub_map = {0: -1}
+        
+        cum_sum = 0
+        
+        for i in range(len(nums)):
+            cum_sum += nums[i]
+            
+            # We only care about the remainder of the prefix sum
+            remainder = cum_sum % k
+            
+
+            """
+            CORE:
+
+
+                (prefix[j] - prefix[i]) mod k = 0
+
+
+                    -> prefix[j] mod k = prefix[i] mod k
+            """
+            # If we've seen this remainder before, the subarray between 
+            # that past index and our current index is a multiple of k!
+            if remainder in sub_map:
+                # The subarray size must be at least 2
+                if i - sub_map[remainder] >= 2:
+                    return True
+            else:
+                # Only add the remainder if it's NOT already in the map.
+                # This ensures we keep the earliest index, making it easier 
+                # to satisfy the "length >= 2" requirement.
+                sub_map[remainder] = i
+                
+        return False
+
 # V0
 # IDEA : HASH TABLE
 # SAME IDEA AS LC 525 !!!!
