@@ -51,8 +51,32 @@ class Solution(object):
             r_val = s[r]
             cnt_map[r_val] = cnt_map.get(r_val, 0) + 1
 
+            """
+            NOTE !!!
+
+
+            key:
+
+            max_freq = maximum frequency of any character in the window
+
+
+            -> via `max_freq`, we can know if the op can still update cur substring
+               as `repeating` substring
+            """
             max_freq = max(max_freq, cnt_map[r_val])
 
+            """
+            NOTE !!!
+
+
+            window_size - max_freq = cnt of op
+
+
+            -> so we can know if the `cnt of op` still <= k
+
+            -> If this is greater than k, 
+               the window is invalid and must shrink.
+            """
             while (r - l + 1) - max_freq > k:
                 l_val = s[l]
                 cnt_map[l_val] -= 1
