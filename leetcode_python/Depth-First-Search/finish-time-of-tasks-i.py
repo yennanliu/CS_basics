@@ -103,15 +103,62 @@ The finish time of every task is guaranteed to be less than 253.
 
 
 # V0
+# IDEA: DFS (post order) (GEMINI)
 class Solution(object):
     def finishTime(self, n, edges, baseTime):
+
         """
-        :type n: int
-        :type edges: List[List[int]]
-        :type baseTime: List[int]
-        :rtype: int
+
+        graph: {node: [child_1, child_2, ...]}
         """
-       	pass
+        self.graph = {}
+        for i in range(n):
+            self.graph[i] = []
+            
+        for u, v in edges:
+            """
+            NOTE !!!!
+
+
+            edges[i] = [ui, vi]
+
+            ->  that task ui is 
+                the parent of task vi.
+            """
+            self.graph[u].append(v)
+            
+        # The DFS returns the finish time of the node passed into it.
+        # We just need the finish time of the root (node 0).
+        return self.dfs(0, baseTime)
+
+    def dfs(self, node, baseTime):
+        # NOTE !!!
+        # Base case: Leaf node (no children in the graph)
+        # We check if the list of children is empty
+        if not self.graph[node]:
+            return baseTime[node]
+            
+        _min = float('inf')
+        _max = float('-inf')
+        
+        # NOTE !!!
+        # -> we loop childs, but NOT node.left, node.right (NOT a regular tree)
+        # Recursive step: Find min and max child finish times
+        for next_node in self.graph[node]:
+
+            # NOTE !!!
+            # we get val as dfs return val
+            _val = self.dfs(next_node, baseTime)
+            _min = min(_min, _val)
+            _max = max(_max, _val)
+            
+        # Calculate duration and final finish time for THIS node
+        ownDuration = (_max - _min) + baseTime[node]
+        val = _max + ownDuration
+        
+        # NOTE !!!
+        # we return `val` as dfs return val
+        return val
 
 
 # V1-1
