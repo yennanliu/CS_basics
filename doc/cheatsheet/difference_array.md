@@ -44,6 +44,12 @@
 - **Examples**: LC 2132, LC 2536
 - **Template**: Use 2D Difference Array Template
 
+### **Pattern 5: Coverage Map + Greedy Fill (Diff Array → Prefix Sum → Greedy)**
+- **Description**: First use a difference array to compute which positions are already covered by pre-existing intervals, then greedily fill the remaining uncovered gaps
+- **Recognition**: "Minimum number of X to cover everything", "already-covered ranges given, add the fewest new ones", "illuminate / paint / patch the whole line"
+- **Examples**: LC 3964 (Minimum Lights to Illuminate a Road)
+- **Template**: Use Coverage + Greedy Template (Template 6)
+
 ## Templates & Algorithms
 
 ### Template Comparison Table
@@ -256,6 +262,52 @@ def difference_array_compressed(updates):
     return result
 ```
 
+### Template 6: Coverage Map + Greedy Fill (LC 3964)
+```python
+# python — LC 3964 Minimum Lights to Illuminate a Road
+#
+# core idea (3 phases):
+#   1. DIFF ARRAY  -> mark every range an existing bulb covers in O(1) each
+#   2. PREFIX SUM  -> turn diff into a `covered[i]` map (0 == dark spot)
+#   3. GREEDY      -> walk left->right; at each dark spot drop 1 new bulb and
+#                     jump ahead 3 (a new bulb at i+1 lights i, i+1, i+2)
+#
+# time  = O(n)   diff build + prefix sum + single greedy pass
+# space = O(n)   difference array + coverage map
+def minLights(lights):
+    n = len(lights)
+
+    # 1) difference array (size n+1 so `right+1` never overflows)
+    diff = [0] * (n + 1)
+    for i, v in enumerate(lights):
+        if v > 0:
+            left  = max(0, i - v)
+            right = min(n - 1, i + v)
+            diff[left]      += 1        # +1 where coverage starts
+            diff[right + 1] -= 1        # -1 right AFTER it ends
+
+    # 2) prefix sum -> covered[i] > 0 means position i is already lit
+    covered = [0] * n
+    running = 0
+    for i in range(n):
+        running += diff[i]
+        covered[i] = running
+
+    # 3) greedy fill of the dark gaps
+    ans = 0
+    i = 0
+    while i < n:
+        if covered[i] == 0:             # dark spot found
+            ans += 1
+            # best move: put bulb at i+1 -> covers i, i+1, i+2 -> jump 3
+            i += 3
+        else:
+            i += 1                      # already lit -> next position
+    return ans
+```
+
+> **Alternative greedy (count dark runs):** instead of the jump-by-3 loop, accumulate the length of each maximal dark run and add `(run + 2) // 3` bulbs per run (ceil-divide by a bulb's width of 3). Same O(n), avoids index juggling — see V1-2 / V2 in the solution file.
+
 ## 1) General form
 
 ```java
@@ -375,6 +427,14 @@ return Arrays.copyOfRange(tmp, 1, n+1);
 |---------|------|------------|---------------|----------|
 | Stamping the Grid | 2132 | Hard | 2D range update | Template 4 |
 | Increment Submatrices by One | 2536 | Medium | Rectangle updates | Template 4 |
+
+#### **Pattern 5: Coverage Map + Greedy Fill Problems**
+| Problem | LC # | Difficulty | Key Technique | Template |
+|---------|------|------------|---------------|----------|
+| Minimum Lights to Illuminate a Road | 3964 | Medium | Diff coverage + greedy gap fill | Template 6 |
+| Count Positions on Street With Required Brightness | 2021 | Medium | Diff coverage map (query, no fill) | Template 3 |
+| Video Stitching | 1024 | Medium | Interval coverage + greedy jump | Greedy |
+| Minimum Number of Taps to Open to Water a Garden | 1326 | Hard | Coverage ranges + greedy min-taps | Greedy |
 
 ### Complete Problem List by Difficulty
 
@@ -532,6 +592,70 @@ class Solution {
         return true;
     }
 }
+```
+
+### 2-4) Minimum Lights to Illuminate a Road — LC 3964
+
+**Core idea:** three phases — (1) a **difference array** records every range the *existing* bulbs already cover in O(1) each, (2) a **prefix sum** turns that into a `covered[]` map where `0` = dark spot, (3) a **greedy** left→right pass drops one new bulb at each dark spot. Since a new bulb placed at `i+1` illuminates `i, i+1, i+2`, we can safely **jump ahead 3** after placing one.
+
+**Why greedy is optimal:** the first dark position must be covered by *some* new bulb, and placing that bulb as far right as still covers it (`i+1`) maximizes forward reach — never worse than any other placement.
+
+```python
+# python
+# LC 3964
+class Solution(object):
+    def minLights(self, lights):
+        n = len(lights)
+
+        # 1) difference array (size n+1 so right+1 is always safe)
+        diff = [0] * (n + 1)
+        for i, v in enumerate(lights):
+            if v > 0:
+                left  = max(0, i - v)
+                right = min(n - 1, i + v)
+                diff[left]      += 1
+                diff[right + 1] -= 1
+
+        # 2) prefix sum -> coverage map
+        covered = [0] * n
+        run = 0
+        for i in range(n):
+            run += diff[i]
+            covered[i] = run
+
+        # 3) greedy fill
+        ans = 0
+        i = 0
+        while i < n:
+            if covered[i] == 0:
+                ans += 1
+                i += 3          # new bulb at i+1 covers i, i+1, i+2
+            else:
+                i += 1
+        return ans
+```
+
+```python
+# python — compact variant: count dark runs, ceil-divide by bulb width 3
+class Solution(object):
+    def minLights(self, lights):
+        n = len(lights)
+        diff = [0] * (n + 1)
+        for i, v in enumerate(lights):
+            if v > 0:
+                diff[max(0, i - v)]          += 1
+                diff[min(n - 1, i + v) + 1]  -= 1
+
+        cover = run = ans = 0
+        for i in range(n):
+            cover += diff[i]
+            if cover == 0:
+                run += 1                     # extend current dark run
+            else:
+                ans += (run + 2) // 3        # ceil(run / 3) bulbs for the run
+                run = 0
+        ans += (run + 2) // 3                # flush trailing dark run
+        return ans
 ```
 
 ## Pattern Selection Strategy
