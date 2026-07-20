@@ -35,6 +35,71 @@ s consists of only uppercase English letters.
 
 """
 
+
+# V0
+# IDEA : SLIDING WINDOW + MAP + MAX_FREQ_CNT
+class Solution(object):
+    def characterReplacement(self, s, k):
+        l = 0
+        max_len = 0
+
+        # {char : count}
+        cnt_map = {}
+        max_freq = 0
+
+        for r in range(len(s)):
+            r_val = s[r]
+            cnt_map[r_val] = cnt_map.get(r_val, 0) + 1
+
+            max_freq = max(max_freq, cnt_map[r_val])
+
+            while (r - l + 1) - max_freq > k:
+                l_val = s[l]
+                cnt_map[l_val] -= 1
+                l += 1
+
+            max_len = max(max_len, r - l + 1)
+
+        return max_len
+
+
+# V0-1
+# IDEA : SLIDING WINDOW + MAP + MAX_FREQ_CNT
+class Solution(object):
+    def characterReplacement(self, s, k):
+        """
+        :type s: str
+        :type k: int
+        :rtype: int
+        """
+        cnt_map = {}
+        l = 0
+        max_len = 0
+        max_freq = 0
+        
+        for r in range(len(s)):
+            r_val = s[r]
+            
+            # 1. Add the new character to the window
+            cnt_map[r_val] = cnt_map.get(r_val, 0) + 1
+            
+            # 2. Update the highest frequency we've seen
+            max_freq = max(max_freq, cnt_map[r_val])
+            
+            # 3. Check if the window is valid.
+            # Current window length is (r - l + 1).
+            # If we keep the 'max_freq' characters, how many do we have to replace?
+            while (r - l + 1) - max_freq > k:
+                l_val = s[l]
+                cnt_map[l_val] -= 1
+                l += 1  # Shrink the window from the left
+                
+            # 4. If we made it here, the window is valid. Record its length.
+            max_len = max(max_len, r - l + 1)
+            
+        return max_len
+
+
 # V0
 # IDEA : SLIDING WINDOW + MAP + MAX_FREQ_CNT
 # time = O(n), n = len(s)
