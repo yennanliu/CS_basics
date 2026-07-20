@@ -58,14 +58,72 @@ Constraints:
 
 
 # V0
+# IDEA: PREFIX + DIFF ARRAY (GEMINI)
 class Solution(object):
     def minLights(self, lights):
         """
         :type lights: List[int]
         :rtype: int
         """
-        pass
+        n = len(lights)
+        
+        # `Difference array` must be size `n + 1` 
+        # so we can safely subtract at _right + 1
+        prefix_list = [0] * (n + 1)
+        
+        """
+        # 1. Build the difference array
+        """
+        for i in range(n):
+            v = lights[i]
+            
+            if v > 0:
+                _left = max(0, i - v)
+                _right = min(n - 1, i + v)
+                
+                # Add 1 at the start of the illumination
+                prefix_list[_left] += 1
+                
+                # Subtract 1 immediately AFTER the illumination ends
+                prefix_list[_right + 1] -= 1
+        
+        state = [0] * n
+        prefix = 0
+        
+        """
+        # 2. Update state using the prefix sum
+        """
+        for i in range(n):
+            prefix += prefix_list[i]
+            state[i] = prefix
+            
+        # 3. Greedily place new bulbs
+        cnt = 0
+        i = 0  # Use a while loop so we can skip indices when we place a bulb
+        
+        while i < n:
+            if state[i] == 0:
+                # We found a dark spot! Place a new bulb.
+                cnt += 1
 
+                """
+                NOTE !!!
+
+                trick below,
+
+                -> if put a new buld, after `new buld is applied`,
+                   it can cover `i, i + 1, and i + 2` rante
+                   -> we can jump to `j+3`
+                        -> so `i += 3`
+                """
+                # A new bulb has range 1. The best place to put it is at i + 1.
+                # This covers i, i + 1, and i + 2. So we can safely jump ahead 3 spots.
+                i += 3
+            else:
+                # Already illuminated, just move to the next spot
+                i += 1
+                
+        return cnt
 
 
 # V1-1

@@ -285,6 +285,76 @@ class Solution:
 
 ---
 
+### **Pattern 16: N-ary Tree Post-Order Value Aggregation (Child Min/Max Rollup)** — LC 3965
+
+**a. Core idea**
+
+Compute a value for the **root of an N-ary tree** where each node's value depends **only on aggregates of its children's computed values** (typically `min` / `max`), never on the node's own left/right. A single **post-order DFS** returns each node's value up to its parent:
+
+- **Leaf** → return its base value directly (base case: no children).
+- **Non-leaf** → recurse into *all* children, track `earliest = min(child values)` and `latest = max(child values)`, then combine with the node's own base value via the problem's formula and return that up.
+
+For LC 3965 the formula is:
+```
+ownDuration = (latest - earliest) + baseTime[node]
+finishTime  = latest + ownDuration
+```
+
+**Two things that make this an N-ary (not binary) tree pattern:**
+1. Build an **adjacency list** `graph[parent] = [child, ...]` from the `edges` array — you loop `for child in graph[node]`, *not* `node.left / node.right`.
+2. `edges[i] = [u, v]` means **u is the parent of v** → append `v` to `graph[u]` (direction matters; don't build it undirected).
+
+**b. Pattern**
+
+```python
+# python — N-ary tree post-order child min/max rollup (LC 3965)
+# time  = O(N)   visit each node once
+# space = O(N)   adjacency list + recursion depth
+from collections import defaultdict
+
+class Solution:
+    def finishTime(self, n, edges, baseTime):
+        graph = defaultdict(list)
+        for u, v in edges:          # u is PARENT of v
+            graph[u].append(v)
+
+        def dfs(node):
+            # base case: leaf = no children in the graph
+            if not graph[node]:
+                return baseTime[node]
+
+            earliest, latest = float('inf'), float('-inf')
+            for child in graph[node]:        # loop ALL children (N-ary)
+                t = dfs(child)               # value bubbles up from child
+                earliest = min(earliest, t)
+                latest   = max(latest, t)
+
+            own_duration = (latest - earliest) + baseTime[node]
+            return latest + own_duration     # return THIS node's value to parent
+
+        return dfs(0)                        # tree rooted at task 0
+```
+
+**Recognition signals**
+- Tree given as **`edges` + rooted at 0** (N-ary / general tree), not a `TreeNode` with `.left/.right`.
+- A node's answer is a pure function of its **children's returned values** (min/max/sum) plus its own weight → classic **bottom-up post-order**.
+- You only need the **root's** result → let DFS return the value; no global variable needed.
+
+> **Contrast with binary bottom-up (Pattern 6 / 15):** same "return a value up, combine at parent" shape, but children are an arbitrary-length list from an adjacency list rather than fixed `left`/`right`. Watch the edge direction when building the graph.
+
+**c. Similar LC**
+
+| Problem | LC # | Link to this pattern |
+|---------|------|----------------------|
+| Finish Time of Tasks I | 3965 | canonical N-ary post-order min/max child rollup |
+| Sum of Nodes with Even-Valued Grandparent | 1315 | post-order over tree, aggregate from descendants |
+| Maximum Depth of N-ary Tree | 559 | `1 + max(child depths)` — N-ary post-order max rollup |
+| N-ary Tree Postorder Traversal | 590 | canonical post-order visit of an N-ary tree |
+| Time Needed to Inform All Employees | 1376 | rooted tree via manager array, `max(child times) + own` |
+| Count Nodes With the Highest Score | 2049 | post-order subtree aggregation ([Pattern 13](#pattern-13-subtree-size-aggregation-remove-node-scoring--lc-2049)) |
+
+---
+
 ## Templates & Algorithms
 
 ### Template Comparison Table
