@@ -41,6 +41,11 @@ class Solution(object):
         if nums is None:
             return 0
 
+        """
+        NOTE !!!
+
+        we init map as {0:1}
+        """
         count_map = {0: 1}  # prefix sum frequency
         prefix = 0
         res = 0
