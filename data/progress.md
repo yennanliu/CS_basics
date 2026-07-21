@@ -1,10 +1,10 @@
 # Progress
 
 
-# 2026-07-21
+# 2026-07-22
 
 - `must_lc_list.md` (doing)
-	- Hash Table
+	- Linked list
 
 - review `all recent updated cheatsheets`
 	- git commit
