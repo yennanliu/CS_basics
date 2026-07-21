@@ -61,6 +61,7 @@ Hash Map (Hash Table/Dictionary) is a fundamental data structure that provides e
 **Key Insight**: Hash map maintains window state efficiently.
 **Examples**:
 - Longest substring without repeating characters
+- Longest repeating character replacement (window_size - max_freq ≤ k)
 - Minimum window substring
 - Find all anagrams in string
 - Permutation in string
@@ -2996,6 +2997,122 @@ def maximumSwap(num):
 
 ---
 
+### 2-18) Longest Repeating Character Replacement (LC 424) — LC 424
+
+**Core Pattern: Sliding Window + HashMap (frequency count) + `max_freq` tracking**
+
+#### Key Concept
+Given string `s` and integer `k`, you may replace **at most `k`** characters. Return the length of the longest substring made of a single repeating letter you can achieve.
+
+**Key Insight**: For any window, the number of characters we must replace is:
+```
+replacements_needed = window_size - (count of the most frequent char)
+                    = (r - l + 1) - max_freq
+```
+A window is **valid** when `replacements_needed <= k`. Keep the largest valid window.
+
+#### Pattern Breakdown
+
+1. **Expand `r`**, update `cnt_map[s[r]] += 1`.
+2. **Track `max_freq`** = highest single-char count seen in the window.
+3. **Shrink `l`** while `(r - l + 1) - max_freq > k` (too many replacements needed).
+4. **Record** `max_len = max(max_len, r - l + 1)`.
+
+> **Order matters**: update the hash map **first**, then validate with the `while` loop.
+> This differs from prefix-sum hashmap problems (LC 523, 525) where you check *before* updating.
+
+#### Two Variants of the Validity Check
+
+| Variant | Check | Cost | Note |
+|---------|-------|------|------|
+| **`max_freq` tracker** ⭐ | `(r-l+1) - max_freq > k` | O(1) per step | Preferred — no scan of map values |
+| `max(cnt_map.values())` | `(r-l+1) - max(cnt_map.values()) > k` | O(26) per step | Simpler to reason about; still O(n) since values bounded by 26 |
+
+> **Why we don't need to *decrease* `max_freq` when shrinking**: `max_freq` only ever reflects the best window found so far. Even if it becomes "stale" (larger than the true current max), the answer stays correct — `max_len` can only grow when a genuinely longer valid window appears, which requires a new, higher `max_freq`.
+
+#### Implementation Template
+
+```python
+# Python — Sliding Window + max_freq  (from leetcode_python/Hash_table/longest-repeating-character-replacement.py)
+# time = O(n), space = O(1)  (only 26 uppercase letters)
+class Solution:
+    def characterReplacement(self, s, k):
+        cnt_map = {}       # {char: count in current window}
+        l = 0
+        max_freq = 0       # highest single-char freq seen in the window
+        max_len = 0
+
+        for r in range(len(s)):
+            # 1. update hash map FIRST
+            cnt_map[s[r]] = cnt_map.get(s[r], 0) + 1
+
+            # 2. track max frequency
+            max_freq = max(max_freq, cnt_map[s[r]])
+
+            # 3. shrink while replacements needed exceed k
+            #    (no need to update max_freq here — removing s[l] can't raise it)
+            while (r - l + 1) - max_freq > k:
+                cnt_map[s[l]] -= 1
+                l += 1
+
+            # 4. record best valid window
+            max_len = max(max_len, r - l + 1)
+
+        return max_len
+```
+
+```java
+// Java — Sliding Window + maxFreq
+// time = O(n), space = O(1)  (26 letters)
+public int characterReplacement(String s, int k) {
+    int[] cnt = new int[26];
+    int l = 0, maxFreq = 0, maxLen = 0;
+
+    for (int r = 0; r < s.length(); r++) {
+        cnt[s.charAt(r) - 'A']++;
+        maxFreq = Math.max(maxFreq, cnt[s.charAt(r) - 'A']);
+
+        // shrink window when too many replacements needed
+        while ((r - l + 1) - maxFreq > k) {
+            cnt[s.charAt(l) - 'A']--;
+            l++;
+        }
+        maxLen = Math.max(maxLen, r - l + 1);
+    }
+    return maxLen;
+}
+```
+
+#### Complexity
+```
+Time  = O(n)   -> r moves n times; l only moves forward (at most n times total)
+Space = O(1)   -> hash map holds at most 26 uppercase letters
+```
+
+#### Why O(n) — the two-pointer argument
+```
+r advances 0 -> n-1 exactly once.
+l NEVER moves backward; across the whole run it advances at most n times.
+Total work = O(n + n) = O(n).
+```
+
+#### Contrast with Other Sliding-Window Hash Map Problems
+
+| Problem | LC# | Window valid when | Map role |
+|---------|-----|-------------------|----------|
+| Longest Repeating Char Replacement | 424 | `size - max_freq <= k` | Frequency of window chars |
+| Longest Substring w/o Repeating | 3 | no duplicate char | `{char: last index}` |
+| Max Consecutive Ones III | 1004 | zeros in window `<= k` | Count of zeros (same idea, binary) |
+| Min Window Substring | 76 | window covers target | Need vs. have counts |
+
+#### Related Problems (Same Pattern)
+- **LC 424**: Longest Repeating Character Replacement (this pattern)
+- **LC 1004**: Max Consecutive Ones III (binary special case: `size - ones <= k`)
+- **LC 1493**: Longest Subarray of 1's After Deleting One Element
+- **LC 340**: Longest Substring with At Most K Distinct Characters
+
+---
+
 ## Problem Classification Table
 
 ### Category 1: Counting and Frequency (25 problems)
@@ -3081,7 +3198,7 @@ def maximumSwap(num):
 | Longest Substring with At Most Two Distinct Characters | 159 | Medium | Sliding Window | Track character count |
 | Longest Substring with At Most K Distinct Characters | 340 | Medium | Sliding Window | Generalize distinct limit |
 | Fruit Into Baskets | 904 | Medium | Sliding Window | At most 2 types |
-| Longest Repeating Character Replacement | 424 | Medium | Sliding Window | Track max frequency |
+| Longest Repeating Character Replacement | 424 | Medium | Sliding Window | Track max frequency — [detailed pattern](#2-18-longest-repeating-character-replacement-lc-424--lc-424) |
 | Get Equal Substrings Within Budget | 1208 | Medium | Sliding Window | Cost constraint |
 | Max Consecutive Ones III | 1004 | Medium | Sliding Window | Flip at most K zeros |
 | Substring with Concatenation of All Words | 30 | Hard | Sliding Window | Multiple word matching |
