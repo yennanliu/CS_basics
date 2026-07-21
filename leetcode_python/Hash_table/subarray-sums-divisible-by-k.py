@@ -35,6 +35,37 @@ Constraints:
 2 <= k <= 104
 """
 
+
+# V0
+# time = O(n)
+# space = O(k)
+class Solution(object):
+    def subarraysDivByK(self, nums, k):
+        # edge
+        if len(nums) == 1:
+            return 1 if nums[0] % k == 0 else 0
+
+        # {remain: cnt}
+        remain_map = {0: 1} # ??
+
+        cnt = 0
+        remain = 0
+
+        for i in range(len(nums)):
+
+            val = nums[i]
+
+            remain += val
+            remain = (remain % k)
+
+            if remain in remain_map:
+                cnt += remain_map.get(remain)
+
+            remain_map[remain] = remain_map.get(remain, 0) + 1
+
+        return cnt
+
+
 # V0
 # time = O(n)
 # space = O(k)
