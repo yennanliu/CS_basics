@@ -48,7 +48,20 @@ class Solution(object):
         max_freq = 0
 
         for r in range(len(s)):
-            r_val = s[r]
+            r_val = s[r]\
+
+            """
+            NOTE !!!
+
+
+            we `update hash map` first
+
+            then do validation (while loop)
+
+
+            -> this is different from standard prefix hashmap LC
+                -> e.g. LC 523, 525
+            """
             cnt_map[r_val] = cnt_map.get(r_val, 0) + 1
 
             """
@@ -77,9 +90,38 @@ class Solution(object):
             -> If this is greater than k, 
                the window is invalid and must shrink.
             """
+
+            # V1: while (r - l + 1) - max(cnt_map.values()) > k:
+            # V2
             while (r - l + 1) - max_freq > k:
                 l_val = s[l]
                 cnt_map[l_val] -= 1
+                l += 1
+
+            max_len = max(max_len, r - l + 1)
+
+        return max_len
+
+
+
+# V0-0-1
+# IDEA : SLIDING WINDOW + MAP + `op = (r-l+1) - max(cnt_map.values())`
+class Solution(object):
+    def characterReplacement(self, s, k):
+        cnt_map = {}
+
+        l = 0
+        max_len = 0
+
+        for r in range(len(s)):
+            r_val = s[r]
+            cnt_map[r_val] = cnt_map.get(r_val, 0) + 1
+
+            while (r - l + 1) - max(cnt_map.values()) > k:
+                l_val = s[l]
+                cnt_map[l_val] -= 1
+                if cnt_map[l_val] == 0:
+                    del cnt_map[l_val]
                 l += 1
 
             max_len = max(max_len, r - l + 1)
