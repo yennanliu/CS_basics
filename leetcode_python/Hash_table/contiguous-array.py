@@ -36,6 +36,11 @@ class Solution(object):
         if not nums or len(nums) <= 1:
             return 0
         
+        """
+        NOTE !!!
+
+        we init map as `{0: -1}`
+        """
         # map: {prefix: idx}
         prefix_map = {0: -1}
         
