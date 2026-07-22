@@ -41,7 +41,22 @@ class Solution(object):
         cnt = 0
 
         for t in time:
+
+            """
+            NOTE !!!
+
+        
+            remain = val % 60
+
+            target = (60 - remain) % 60
+
+            if target in my_map:
+                # ...
+
+            """
+
             r = t % 60
+            
             need = (60 - r) % 60
 
             if need in my_map:
@@ -66,6 +81,19 @@ class Solution(object):
         cnt = 0
         
         for val in time:
+
+            """
+            NOTE !!!
+
+        
+            remain = val % 60
+
+            target = (60 - remain) % 60
+
+            if target in my_map:
+                # ...
+
+            """
             # 1. Get the remainder of the current song
             remain = val % 60
             
