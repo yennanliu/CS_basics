@@ -1,4 +1,4 @@
-20260722: 974(ok),1010(again),1726(again),729(todo),772(todo),must_lc_list
+20260722: 974(ok),1010(again),1726(again),729(ok),772(todo),must_lc_list
 20260721: 523(again),525(ok),560(ok),772(todo),must_lc_list,424(again)
 20260720: 3(ok),325(again),424(again!!),3965(again),3964(again)
 20260719: 3964(again),3965(again),1248(ok),670(again)
