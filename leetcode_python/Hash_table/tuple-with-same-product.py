@@ -51,7 +51,102 @@ class Solution(object):
         pass
 
 
-# V1
+# V1-1
+# IDEA: product, math, brute force (gpt)
+"""
+CORE:
+
+We want
+
+```
+a * b = c * d
+
+```
+
+
+where all four indices are distinct.
+
+So:
+
+1. Compute the product of every pair.
+
+
+2. Count how many pairs produce the same product.
+
+
+3. If a product appears m times, then we can choose any two pairs:
+
+   Cm2 (pick 2 elements from m elements)
+
+
+4. Each choice of two pairs corresponds to 8 tuples because the order matters.
+(a,b,c,d)
+(a,b,d,c)
+(b,a,c,d)
+(b,a,d,c)
+(c,d,a,b)
+(c,d,b,a)
+(d,c,a,b)
+(d,c,b,a)
+
+
+
+-> Hence:
+
+     answer += C(m, 2) * 8
+
+"""
+class Solution(object):
+    def tupleSameProduct(self, nums):
+        # product -> number of pairs
+        prod_map = {}
+
+        n = len(nums)
+
+        for i in range(n):
+            for j in range(i + 1, n):
+                prod = nums[i] * nums[j]
+                prod_map[prod] = prod_map.get(prod, 0) + 1
+
+        ans = 0
+
+        for cnt in prod_map.values():
+            if cnt >= 2:
+                ans += cnt * (cnt - 1) // 2 * 8
+
+        return ans
+
+
+
+# V1-2
+# IDEA: product, math, brute force (gemini)
+class Solution(object):
+    def tupleSameProduct(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        # {product: count_of_pairs_with_this_product}
+        prod_map = {}
+        ans = 0
+        n = len(nums)
+        
+        # Check every possible pair of numbers
+        for i in range(n):
+            for j in range(i + 1, n):
+                
+                prod = nums[i] * nums[j]
+                
+                # If we've seen this product before, we can form valid tuples!
+                if prod in prod_map:
+                    # The current pair can form 8 tuples with EVERY previous 
+                    # pair that shared this exact product.
+                    ans += 8 * prod_map[prod]
+                    
+                # Update the map to include our newly found pair
+                prod_map[prod] = prod_map.get(prod, 0) + 1
+                
+        return ans
 
 
 # V2-1
