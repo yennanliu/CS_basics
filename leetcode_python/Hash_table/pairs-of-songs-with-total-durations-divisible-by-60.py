@@ -32,6 +32,58 @@ Constraints:
 """
 
 # V0
+# IDEA: HASH MAP (GPT)
+class Solution(object):
+    def numPairsDivisibleBy60(self, time):
+        # remainder -> count
+        my_map = {}
+
+        cnt = 0
+
+        for t in time:
+            r = t % 60
+            need = (60 - r) % 60
+
+            if need in my_map:
+                cnt += my_map[need]
+
+            my_map[r] = my_map.get(r, 0) + 1
+
+        return cnt
+
+
+
+# V0-1
+# IDEA: HASH MAP (GEMINI)
+class Solution(object):
+    def numPairsDivisibleBy60(self, time):
+        """
+        :type time: List[int]
+        :rtype: int
+        """
+        # {remainder: count}
+        my_map = {}
+        cnt = 0
+        
+        for val in time:
+            # 1. Get the remainder of the current song
+            remain = val % 60
+            
+            # 2. Calculate what remainder we need to pair with it to reach 60.
+            # We use % 60 at the end so that if remain == 0, target becomes 0 (instead of 60).
+            target = (60 - remain) % 60
+            
+            # 3. If we've seen this needed remainder before, add its count to our total pairs
+            if target in my_map:
+                cnt += my_map[target]
+                
+            # 4. Add the current remainder to our map for future songs to pair with
+            my_map[remain] = my_map.get(remain, 0) + 1
+            
+        return cnt
+
+
+# V0
 # IDEA : dict
 # IDEA : NOTE : we only count "NUMBER OF PAIRS", instead get all pairs indexes
 # time = O(n)
