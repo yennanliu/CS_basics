@@ -103,6 +103,11 @@ class Solution(object):
 
         n = len(nums)
 
+        """
+        NOTE !!!
+
+        we use double loop (brute force)
+        """
         for i in range(n):
             for j in range(i + 1, n):
                 prod = nums[i] * nums[j]
@@ -112,6 +117,12 @@ class Solution(object):
 
         for cnt in prod_map.values():
             if cnt >= 2:
+
+            	"""
+            	 C(m, 2) =  m! / (2! * (m-2)!)
+
+            	         = ((m) * (m-1) // 2)
+            	"""
                 ans += cnt * (cnt - 1) // 2 * 8
 
         return ans
