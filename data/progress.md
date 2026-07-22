@@ -10,6 +10,7 @@
 	- git commit
 
 - intervals.md
+	- `2-1) Merge Intervals (LC 56) — Sort + Merge`
 
 - python_trick.md
 	- 2) LC Example
@@ -95,6 +96,10 @@
 			- 1647
 			- 2406
 			- 621
+		- interval
+			- 729
+			- 731
+			- 732
 		- trie
 			- 1268
 			- delete op
