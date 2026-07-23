@@ -30,6 +30,16 @@ Follow up: Could you do it in one pass?
 
 """
 
+
+"""
+NOTE !!!
+
+
+left and right are `index`, NOT node val.
+"""
+
+
+
 # V0
 class Solution(object):
     def reverseBetween(self, head, left, right):

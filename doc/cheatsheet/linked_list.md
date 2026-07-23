@@ -655,6 +655,185 @@ put(3,3): evict head.next=[2]
 
 ---
 
+#### **Reverse K Nodes Helper Pattern** ⭐⭐⭐⭐⭐
+
+**Core Idea**: Almost every "reverse a *segment*" problem (LC 92, LC 25, LC 24, LC 206) is the **same primitive** — reverse `k` nodes starting from a `head`, then reconnect. Factor that primitive into a single reusable helper so the outer solution only worries about **locating the segment** and **stitching the ends back together**.
+
+The helper reverses `k` nodes and returns **three handles** you need to reconnect cleanly:
+
+```python
+# python — reusable helper: reverse k nodes starting at `head`
+# time = O(k), space = O(1)
+def reverse_helper(self, head, k):
+    prev = None
+    curr = head
+
+    while curr and k > 0:
+        nxt = curr.next     # 1) cache next
+        curr.next = prev    # 2) reverse the link
+        prev = curr         # 3) advance prev
+        curr = nxt          # 4) advance curr
+        k -= 1
+
+    # prev = new head of reversed list   (was the k-th node)
+    # head = new tail  (original head, now points forward to `curr`)
+    # curr = first node AFTER the reversed segment
+    return prev, head, curr
+```
+
+**Why return 3 things?** After reversing an *inner* segment you must re-wire **both boundaries**:
+
+| Returned | What it is | Used to reconnect |
+|----------|-----------|-------------------|
+| `prev` (`new_head`) | new **head** of the reversed chunk | `prev_of_segment.next = new_head` |
+| `head` (`new_tail`) | new **tail** (the original first node) | `new_tail.next = next_node` |
+| `curr` (`next_node`) | first node **after** the segment | the tail must point here |
+
+**When to Use**:
+- Reverse a sub-range `[left, right]` (LC 92) → reverse `right - left + 1` nodes
+- Reverse every k-group (LC 25) → call helper in a loop until fewer than `k` remain
+- Reverse whole list (LC 206) → call helper once with `k = length` (or `k = ∞`)
+
+**Template — apply helper to LC 92 (Reverse Linked List II)**:
+```python
+# python
+# LC 92 - reverse nodes from position `left` to `right`
+# time = O(n), space = O(1)
+class Solution(object):
+    def reverseBetween(self, head, left, right):
+        # edge case
+        if not head or left == right:
+            return head
+
+        dummy = ListNode(0)
+        dummy.next = head
+
+        # 1) walk `prev` to the node BEFORE position `left`
+        prev = dummy
+        for _ in range(left - 1):
+            prev = prev.next
+
+        # 2) `start` = first node of the segment to reverse
+        start = prev.next
+
+        # 3) reverse (right - left + 1) nodes via the helper
+        new_head, new_tail, next_node = self.reverse_helper(
+            start, right - left + 1
+        )
+
+        # 4) reconnect both boundaries
+        prev.next = new_head       # front:  prev -> new head of reversed chunk
+        new_tail.next = next_node  # back:   old head (now tail) -> rest of list
+
+        return dummy.next
+
+    def reverse_helper(self, head, k):
+        prev = None
+        curr = head
+        while curr and k > 0:
+            nxt = curr.next
+            curr.next = prev
+            prev = curr
+            curr = nxt
+            k -= 1
+        return prev, head, curr
+```
+
+**Visualization** (`[1,2,3,4,5]`, `left=2`, `right=4` → reverse 3 nodes `2,3,4`):
+
+```
+dummy -> 1 -> 2 -> 3 -> 4 -> 5
+              └──── reverse these 3 ────┘
+
+Step 1) walk prev (left-1 = 1 step) to node before segment
+   dummy -> 1 -> 2 -> 3 -> 4 -> 5
+            ^prev  ^start
+                   (start = prev.next = node 2)
+
+Step 2) reverse_helper(start=2, k=3)
+   -- reverses links of 2,3,4 in isolation --
+   before:   2 -> 3 -> 4 -> 5
+   after:    2 <- 3 <- 4      5
+             |              |
+          new_tail       new_head
+   returns:
+     new_head  = 4   (was k-th node, now front of chunk)
+     new_tail  = 2   (was `start`, now points nowhere yet)
+     next_node = 5   (first node after the reversed part)
+
+Step 3) reconnect boundaries
+   (C1) prev.next = new_head
+        node1.next -> 4
+   (C2) new_tail.next = next_node
+        node2.next -> 5
+
+Final:
+   dummy -> 1 -> 4 -> 3 -> 2 -> 5
+                 └── reversed ──┘
+   return dummy.next  =>  [1, 4, 3, 2, 5]  ✓
+```
+
+**The 3 boundary handles, visually**:
+```
+        prev        new_head → ... → new_tail        next_node
+          |             |                 |               |
+   ... -> 1             4 -> 3 -> 2         (dangling)      5 -> ...
+          |_____________|                 |_______________|
+             (C1) prev.next = new_head        (C2) new_tail.next = next_node
+```
+
+**Reusing the helper for LC 25 (Reverse Nodes in k-Group)**:
+```python
+# python
+# LC 25 - reverse every k nodes; leave the tail (< k) as-is
+# time = O(n), space = O(1)
+class Solution(object):
+    def reverseKGroup(self, head, k):
+        # count if >= k nodes remain
+        def has_k(node, k):
+            cnt = 0
+            while node and cnt < k:
+                node = node.next
+                cnt += 1
+            return cnt == k
+
+        dummy = ListNode(0)
+        dummy.next = head
+        prev = dummy               # node before current group
+
+        while has_k(prev.next, k):
+            start = prev.next
+            new_head, new_tail, next_node = self.reverse_helper(start, k)
+            prev.next = new_head        # front of group
+            new_tail.next = next_node   # tail of group -> rest
+            prev = new_tail             # move `prev` to end of this group
+        return dummy.next
+
+    def reverse_helper(self, head, k):
+        prev = None
+        curr = head
+        while curr and k > 0:
+            nxt = curr.next
+            curr.next = prev
+            prev = curr
+            curr = nxt
+            k -= 1
+        return prev, head, curr
+```
+
+> **Key insight**: the *same* `reverse_helper` powers LC 206 / 92 / 25. Only the surrounding logic differs — **206** calls it once, **92** locates one segment then calls it once, **25** loops and calls it per group. Master the 3-handle return (`new_head, new_tail, next_node`) and all three collapse into "locate → reverse → reconnect".
+
+**Similar LC Problems**:
+| # | Problem | How the helper applies |
+|---|---------|------------------------|
+| 206 | Reverse Linked List | One call, `k = length` — only `new_head` matters |
+| 92  | Reverse Linked List II | Locate segment, one call with `k = right - left + 1`, reconnect both ends |
+| 25  | Reverse Nodes in k-Group | Loop the helper per group; skip the final `< k` tail |
+| 24  | Swap Nodes in Pairs | Special case `k = 2` per group |
+| 61  | Rotate List | Different op, but same "locate boundary + re-stitch" discipline |
+
+---
+
 ## 1) General form
 ```java
 // java
@@ -1387,6 +1566,46 @@ class Solution(object):
 ```
 
 ### 2-4) Reverse Linked List II — LC 92
+
+> **Core idea**: *locate* the node before position `left`, *reverse* `right - left + 1` nodes, then *reconnect* both boundaries. See the reusable [Reverse K Nodes Helper Pattern](#reverse-k-nodes-helper-pattern) above.
+
+```python
+# python
+# LC 92 — reuse the reverse_helper primitive (cleanest)
+# time = O(n), space = O(1)
+class Solution(object):
+    def reverseBetween(self, head, left, right):
+        if not head or left == right:
+            return head
+
+        dummy = ListNode(0)
+        dummy.next = head
+
+        prev = dummy
+        for _ in range(left - 1):        # walk to node BEFORE `left`
+            prev = prev.next
+
+        start = prev.next                # first node of segment
+        new_head, new_tail, next_node = self.reverse_helper(
+            start, right - left + 1
+        )
+
+        prev.next = new_head             # reconnect front
+        new_tail.next = next_node        # reconnect back
+        return dummy.next
+
+    def reverse_helper(self, head, k):
+        prev = None
+        curr = head
+        while curr and k > 0:
+            nxt = curr.next
+            curr.next = prev
+            prev = curr
+            curr = nxt
+            k -= 1
+        # prev=new head, head=new tail, curr=node after segment
+        return prev, head, curr
+```
 
 ```java
 // java
