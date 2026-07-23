@@ -43,7 +43,13 @@ class Solution(object):
 
 
 # V1-1
-# IDEA: LINKED LIST (gpt)
+# IDEA: LINKED LIST + helper func (gpt)
+"""
+NOTE !!!
+
+
+left and right are `index`, NOT node val.
+"""
 class Solution(object):
     def reverseBetween(self, head, left, right):
         # edge
