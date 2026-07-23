@@ -1958,30 +1958,141 @@ class Solution:
 ```
 
 ### 2-9) Swap Nodes in Pairs — LC 24
+
+> Swap **every two adjacent nodes**, without touching the values — only re-wire the `next` pointers.
+> `1 -> 2 -> 3 -> 4`  becomes  `2 -> 1 -> 4 -> 3`
+
+#### **1. Core Idea**
+
+Every swap really involves **3 anchors**, not 2:
+
+```
+prev -> first -> second -> (rest...)
+```
+
+- `prev`   — the node **before** the pair (a `dummy` on the first iteration). It owns the incoming link.
+- `first`  — the **1st** node of the pair (will become the 2nd).
+- `second` — the **2nd** node of the pair (will become the 1st, i.e. the new front).
+
+After the swap the pair is flipped and `prev` points to the new front:
+
+```
+prev -> second -> first -> (rest...)
+```
+
+The reason we need `prev` (hence the **dummy head**, see the [Dummy Head Technique](#dummy-head-technique)) is that **the node in front of the pair must be re-pointed too** — otherwise the previous pair stays glued to the old front (`first`) instead of the new front (`second`).
+
+#### **2. Pattern — how we `reconnect` the nodes**
+
+There are **3 pointers to re-wire**, and **order matters**. Think of it as *"detach from the right, then re-attach leftward"*:
+
 ```python
-# LC 24. Swap Nodes in Pairs
-# V0 
-# IDEA : LINKED LIST
-# NOTE : 
-#   1) define 2 node via : n1, n2 = head.next, head.next.next
-#   2) START THE PROCESS FROM "RIGHT HAND SIDE",
-#      i.e. : n1.next = n2.next ( connect n1 to next node) -> connect n2 to n1 (n2.next = n1) -> connect dummy to n2 (head.next = n2)
-#   3) THEN MOVE HEAD FORWARD (head = n1)
+# LC 24. Swap Nodes in Pairs  (the version we walk through)
+# time = O(n), space = O(1)
+class Solution(object):
+    def swapPairs(self, head):
+        if not head or not head.next:
+            return head
+
+        dummy = ListNode(0)
+        dummy.next = head
+        prev = dummy                 # node BEFORE the current pair
+
+        while head and head.next:
+            first  = head            # 1st node of the pair
+            second = head.next        # 2nd node of the pair
+
+            # ---- reconnect (3 links) ----
+            first.next  = second.next  # (A) first jumps OVER second, to the rest
+            second.next = first        # (B) second now points back to first  -> pair flipped
+            prev.next   = second       # (C) prev adopts second as the new front
+
+            # ---- advance ----
+            prev = first             # first is now the tail of this pair -> becomes next `prev`
+            head = first.next         # move head to the start of the next pair
+        return dummy.next
+```
+
+**Why this exact order?** Each link overwrites a pointer we still need, so we save it *before* overwriting:
+
+| Step | Link written | Why it must come here |
+|------|--------------|------------------------|
+| **(A)** `first.next = second.next` | Grab a handle to `rest` **before** step (B) destroys `second.next`. `first` (the future tail) now correctly points past the pair. |
+| **(B)** `second.next = first` | Now safe to flip: `second` points back to `first`. The pair is internally reversed. |
+| **(C)** `prev.next = second` | Finally hook the front: the node before the pair now points to `second`, the new front. |
+
+> ⚠️ If you did **(C)** or **(B)** *before* **(A)**, you'd overwrite `second.next` and **lose the reference to `rest`** — the tail of the list would be dropped.
+
+#### **Visualization** (`dummy -> 1 -> 2 -> 3 -> 4`, first iteration)
+
+```
+Start:   prev=dummy, first=1, second=2
+         dummy -> [1] -> [2] -> 3 -> 4
+          prev   first  second  rest=3
+
+(A) first.next = second.next   # 1.next = 3   (1 jumps over 2, onto 3)
+         dummy -> [1] --------> 3 -> 4
+                  [2] -> 3           (2 still points at 3 for now)
+          prev=dummy, second=2 dangling in front
+
+(B) second.next = first        # 2.next = 1   (flip: 2 -> 1)
+         dummy    [2] -> [1] -> 3 -> 4
+          prev
+
+(C) prev.next = second         # dummy.next = 2   (front adopts new head)
+         dummy -> [2] -> [1] -> 3 -> 4   ✓ pair swapped!
+
+Advance: prev = first(1) ;  head = first.next = 3
+         dummy -> 2 -> [1] -> [3] -> 4
+                       prev  head  ...   → next loop swaps (3,4)
+```
+
+Second iteration swaps `(3,4)` the same way, giving `dummy -> 2 -> 1 -> 4 -> 3`; return `dummy.next = 2`.
+
+> **Equivalent pointer-walk variant** (`head` itself walks on the dummy, using `head.next` / `head.next.next` as the pair). Same 3 reconnections, just addressed relative to `head`:
+```python
+# V0' — same idea, `head` acts as `prev`
 class Solution:
     def swapPairs(self, head):
         if not head or not head.next:
             return head
         dummy = ListNode(0)
         dummy.next = head
-        head = dummy
+        head = dummy                 # head plays the `prev` role
         while head.next and head.next.next:
-            n1, n2 = head.next, head.next.next
-            n1.next = n2.next
-            n2.next = n1
-            head.next = n2      
-            head = n1
+            n1, n2 = head.next, head.next.next   # n1=first, n2=second
+            n1.next   = n2.next   # (A) first over second
+            n2.next   = n1        # (B) flip
+            head.next = n2        # (C) prev -> second
+            head = n1             # advance prev to tail of swapped pair
         return dummy.next
 ```
+
+#### **Recursive view** (same reconnection, top-down)
+
+```python
+# time = O(n), space = O(n)  (call stack)
+class Solution(object):
+    def swapPairs(self, head):
+        if not head or not head.next:      # base: 0 or 1 node -> nothing to swap
+            return head
+        first, second = head, head.next
+        first.next  = self.swapPairs(second.next)  # (A) first -> swapped rest
+        second.next = first                        # (B) flip pair
+        return second                              # (C) second is the new head of this segment
+```
+The recursion returns the **new front** of each swapped segment, which the caller wires in — exactly the job `prev.next = second` does in the iterative version.
+
+#### **3. Similar LC**
+
+| # | Problem | Relationship to LC 24 |
+|---|---------|------------------------|
+| 206 | Reverse Linked List | Swap-in-pairs is a **k=2, segment-wise reversal**; 206 reverses the whole list. See [1-1-3](#1-1-3-reverse-linked-list-iteration--lc-206) |
+| 25  | Reverse Nodes in k-Group | **Generalization**: LC 24 is exactly the `k=2` case. Same "reconnect front + internal reverse". See [1-1-6](#1-1-6-reverse-nodes-in-k-group--linked-list-iteration--lc-25) |
+| 92  | Reverse Linked List II | Reverse a **sub-range** `[m, n]`; reuses "hook `prev` to the new front, tail to the rest". See [2-4](#2-4-reverse-linked-list-ii--lc-92) |
+| 143 | Reorder List | Interleaves two halves — another "re-wire `next` pointers pairwise" merge. See [2-8](#2-8-reorder-list--lc-143) |
+| 1721 | Swapping Nodes in a Linked List | Simpler — usually swap **values**; but node-swap needs the same 3-anchor care |
+| 61  | Rotate List | Re-connects a cut point; same pointer-bookkeeping discipline |
 
 ### 2-10) Plus One Linked List — LC 369
 ```java
