@@ -43,52 +43,6 @@ class Solution(object):
 
 
 # V1-1
-# IDEA: LINKED LIST (gemini)
-class Solution(object):
-    def reverseBetween(self, head, left, right):
-        """
-        :type head: ListNode
-        :type left: int
-        :type right: int
-        :rtype: ListNode
-        """
-        # Edge case: Empty list or no reversal needed
-        if not head or left == right:
-            return head
-            
-        dummy = ListNode(0)
-        dummy.next = head
-        
-        # 'prev' will be the node immediately BEFORE the reversed section
-        prev = dummy
-        
-        # 1. Walk 'prev' forward (left - 1) steps
-        for _ in range(left - 1):
-            prev = prev.next
-            
-        # 'curr' is the first node that will be reversed.
-        # It will eventually become the tail of the reversed section!
-        curr = prev.next
-        
-        # 2. Reverse the sublist using the "insertion" method
-        for _ in range(right - left):
-            # The node we are about to move to the front
-            next_node = curr.next 
-            
-            # Step A: 'curr' skips over 'next_node' to point to the rest of the list
-            curr.next = next_node.next
-            
-            # Step B: 'next_node' points backwards to the current front of the sublist
-            next_node.next = prev.next
-            
-            # Step C: 'prev' locks 'next_node' in as the new front of the sublist
-            prev.next = next_node
-            
-        return dummy.next
-
-
-
-# V1-2
 # IDEA: LINKED LIST (gpt)
 class Solution(object):
     def reverseBetween(self, head, left, right):
@@ -133,6 +87,51 @@ class Solution(object):
         # head = new tail (original head)
         # curr = first node after reversed segment
         return prev, head, curr
+
+
+# V1-2
+# IDEA: LINKED LIST (gemini)
+class Solution(object):
+    def reverseBetween(self, head, left, right):
+        """
+        :type head: ListNode
+        :type left: int
+        :type right: int
+        :rtype: ListNode
+        """
+        # Edge case: Empty list or no reversal needed
+        if not head or left == right:
+            return head
+            
+        dummy = ListNode(0)
+        dummy.next = head
+        
+        # 'prev' will be the node immediately BEFORE the reversed section
+        prev = dummy
+        
+        # 1. Walk 'prev' forward (left - 1) steps
+        for _ in range(left - 1):
+            prev = prev.next
+            
+        # 'curr' is the first node that will be reversed.
+        # It will eventually become the tail of the reversed section!
+        curr = prev.next
+        
+        # 2. Reverse the sublist using the "insertion" method
+        for _ in range(right - left):
+            # The node we are about to move to the front
+            next_node = curr.next 
+            
+            # Step A: 'curr' skips over 'next_node' to point to the rest of the list
+            curr.next = next_node.next
+            
+            # Step B: 'next_node' points backwards to the current front of the sublist
+            next_node.next = prev.next
+            
+            # Step C: 'prev' locks 'next_node' in as the new front of the sublist
+            prev.next = next_node
+            
+        return dummy.next
 
 
 
