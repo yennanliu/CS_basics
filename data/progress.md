@@ -10,7 +10,7 @@
 	- git commit
 
 - intervals.md
-	- `2-1) Merge Intervals (LC 56) — Sort + Merge`
+	- `2-12) Meeting Rooms I (LC 252) — Sort + Adjacent Check`
 
 - python_trick.md
 	- 2) LC Example
@@ -100,6 +100,7 @@
 			- 729
 			- 731
 			- 732
+			- 1024
 		- trie
 			- 1268
 			- delete op
