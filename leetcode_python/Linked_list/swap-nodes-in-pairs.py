@@ -29,6 +29,70 @@ The number of nodes in the list is in the range [0, 100].
 
 """
 
+# V0
+# IDEA : LINKED LIST (gpt)
+class Solution(object):
+    def swapPairs(self, head):
+        if not head or not head.next:
+            return head
+
+        dummy = ListNode(0)
+        dummy.next = head
+        prev = dummy
+
+        while head and head.next:
+            first = head
+            second = head.next
+
+            # swap
+            first.next = second.next
+            second.next = first
+            prev.next = second
+
+            # advance
+            prev = first
+            head = first.next
+
+        return dummy.next
+
+
+# V0-1
+# IDEA : LINKED LIST (gemini)
+class Solution(object):
+    def swapPairs(self, head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        # Edge cases: 0 or 1 node
+        if not head or not head.next:
+            return head
+            
+        _prev = None
+        
+        # Save the 2nd node. It will permanently become the new head of the list.
+        _next_ = head.next 
+        
+        while head and head.next:
+            _next = head.next
+            _next2 = head.next.next # This can be None, which is perfectly fine!
+            
+            # 1. Reverse the pair itself
+            _next.next = head
+            head.next = _next2
+            
+            # 2. Glue the previous pair to the front of this newly swapped pair
+            if _prev:
+                _prev.next = _next
+                
+            # 3. Slide pointers forward for the next loop
+            # The current 'head' (node 1) is now at the end of the pair, so it becomes _prev
+            _prev = head
+            head = _next2
+            
+        return _next_
+
+
 # V0 
 # IDEA : LINKED LIST
 # NOTE : 
