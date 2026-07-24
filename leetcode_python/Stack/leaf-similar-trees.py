@@ -38,14 +38,36 @@ Both of the given trees will have values in the range [0, 200].
 """
 
 # V0
+# IDEA: DFS
 class Solution(object):
     def leafSimilar(self, root1, root2):
-        """
-        :type root1: Optional[TreeNode]
-        :type root2: Optional[TreeNode]
-        :rtype: bool
-        """
-        pass
+        # edge
+        if not root1 and not root2:
+            return True
+
+        if not root1 or not root2:
+            return False
+
+        seq_1 = []
+        seq_2 = []
+        self.get_leaf_seq(root1, seq_1)
+        self.get_leaf_seq(root2, seq_2)
+
+        # ???
+        return seq_1 == seq_2
+
+
+    def get_leaf_seq(self, root, seq):
+        # edge
+        if not root:
+            return
+        if not root.left and not root.right:
+            seq.append(root.val)
+
+        # ??
+        self.get_leaf_seq(root.left, seq)
+        self.get_leaf_seq(root.right, seq)
+
 
 # V1 
 # https://blog.csdn.net/fuxuemingzhu/article/details/81748617
