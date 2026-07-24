@@ -45,6 +45,100 @@ Follow-up: Can you implement the queue such that each operation is amortized O(1
 
 """
 
+
+# V0
+# IDEA : STACK (in_stack, out_stack ) (gpt)
+class MyQueue(object):
+
+    def __init__(self):
+        """
+        NOTE !!!
+
+        in_stack, out_stack 
+        """
+        self.in_stack = []
+        self.out_stack = []
+
+    def push(self, x):
+        """
+        :type x: int
+        :rtype: None
+        """
+        self.in_stack.append(x)
+
+    def pop(self):
+        """
+        :rtype: int
+        """
+        """
+        NOTE !!!
+
+        below
+        """
+        if not self.out_stack:
+            while self.in_stack:
+                self.out_stack.append(self.in_stack.pop())
+        return self.out_stack.pop()
+
+    def peek(self):
+        """
+        :rtype: int
+        """
+        if not self.out_stack:
+            while self.in_stack:
+                self.out_stack.append(self.in_stack.pop())
+        return self.out_stack[-1]
+
+    def empty(self):
+        """
+        :rtype: bool
+        """
+        return not self.in_stack and not self.out_stack
+
+
+# V0-1
+# IDEA : STACK (in_stack, out_stack ) (GEMINI)
+class MyQueue(object):
+
+    def __init__(self):
+        # in_stack handles all incoming pushed elements
+        self.in_stack = []
+        # out_stack holds elements in reverse (FIFO) order for popping/peeking
+        self.out_stack = []
+
+    def push(self, x):
+        """
+        :type x: int
+        :rtype: None
+        """
+        self.in_stack.append(x)
+
+    def pop(self):
+        """
+        :rtype: int
+        """
+        # peek() handles moving the elements if out_stack is empty
+        self.peek()
+        return self.out_stack.pop()
+
+    def peek(self):
+        """
+        :rtype: int
+        """
+        # Pour all elements from in_stack to out_stack to reverse their order
+        if not self.out_stack:
+            while self.in_stack:
+                self.out_stack.append(self.in_stack.pop())
+                
+        return self.out_stack[-1]
+
+    def empty(self):
+        """
+        :rtype: bool
+        """
+        # The queue is only empty if both stacks have no elements
+        return not self.in_stack and not self.out_stack
+
 # V0
 # IDEA : STACK
 # time = O(n) for push (re-stack all elements), O(1) for pop/peek/empty
