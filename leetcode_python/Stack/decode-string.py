@@ -40,6 +40,97 @@ All the integers in s are in the range [1, 300].
 
 """
 
+
+
+# V0
+# IDEA : STACK (2 stack) (GPT)
+"""
+NOTE:
+
+d_st: stack for storage `digit`
+s_st: stack for storage `string`
+
+"""
+class Solution(object):
+    def decodeString(self, s):
+        d_st = []
+        s_st = []
+
+        prev_digit = 0
+        prev_str = ""
+
+        for x in s:
+            if x.isdigit():
+                prev_digit = prev_digit * 10 + int(x)
+
+            elif x.isalpha():
+                prev_str += x
+
+            elif x == "[":
+                d_st.append(prev_digit)
+                s_st.append(prev_str)
+                prev_digit = 0
+                prev_str = ""
+
+            else:  # x == "]"
+                repeat = d_st.pop()
+                prev = s_st.pop()
+                prev_str = prev + repeat * prev_str
+
+        return prev_str
+
+
+# V0-1
+# IDEA : STACK (2 stack) (gemini)
+"""
+NOTE:
+
+d_st: stack for storage `digit`
+s_st: stack for storage `string`
+
+"""
+class Solution(object):
+    def decodeString(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+        d_st = []
+        s_st = []
+        
+        prev_digit = 0
+        prev_str = ""
+        
+        for x in s:
+            if x.isdigit():
+                # Build the multi-digit number
+                prev_digit = prev_digit * 10 + int(x)
+                
+            elif x.isalpha():
+                # Build the current string
+                prev_str += x
+                
+            elif x == "[":
+                # Push the current state to the stacks
+                d_st.append(prev_digit)
+                s_st.append(prev_str)
+                
+                # Reset them for the new bracket level
+                prev_digit = 0
+                prev_str = ""
+                
+            else: # This handles the "]" character
+                # Pop the previous string and the multiplier
+                tmp_str = s_st.pop()
+                tmp_int = d_st.pop()
+                
+                # The new string is: (what came before) + (multiplier * what was inside)
+                prev_str = tmp_str + (tmp_int * prev_str)
+                
+        # By the end, all brackets are closed and the full string is in prev_str
+        return prev_str
+
+
 # V0
 # IDEA : STACK (GPT)
 """
