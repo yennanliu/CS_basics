@@ -34,6 +34,28 @@ Constraints:
 # space = O(n)
 class Solution(object):
     def dailyTemperatures(self, temperatures):
+        n = len(temperatures)
+        res = [0] * n
+
+        st = []   # stack of indices
+
+        for i in range(n):
+            val = temperatures[i]
+
+            while st and temperatures[st[-1]] < val:
+                prev_idx = st.pop()
+                res[prev_idx] = i - prev_idx
+
+            st.append(i)
+
+        return res
+
+# V0
+# IDEA: STACK
+# time = O(n)
+# space = O(n)
+class Solution(object):
+    def dailyTemperatures(self, temperatures):
         # edge
         if not temperatures or len(temperatures) == 0:
             return []
