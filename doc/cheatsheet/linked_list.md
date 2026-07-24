@@ -2268,6 +2268,91 @@ Advance: prev = first(1) ;  head = first.next = 3
 
 Second iteration swaps `(3,4)` the same way, giving `dummy -> 2 -> 1 -> 4 -> 3`; return `dummy.next = 2`.
 
+#### **Full dry run** (`[1, 2, 3, 4]`, every iteration of the loop)
+
+We trace the exact loop below, tracking the 4 pointers (`prev`, `first`, `second`, `head`) and the list after each of the 3 reconnections `(A)(B)(C)`:
+
+```python
+while head and head.next:
+    first  = head
+    second = head.next
+    first.next  = second.next   # (A)
+    second.next = first         # (B)
+    prev.next   = second        # (C)
+    prev = first                # advance
+    head = first.next           # advance
+```
+
+**Initial state** (after `dummy.next = head`, `prev = dummy`):
+```
+dummy -> 1 -> 2 -> 3 -> 4 -> None
+ prev   head
+```
+
+---
+
+**Iteration 1** — `head=1`, `head.next=2` → enter loop
+
+```
+cache:  first = 1 ,  second = 2 ,  (second.next = 3 = "rest")
+
+(A) first.next  = second.next   # 1.next = 3
+        dummy -> 1 -> 3 -> 4        (2 temporarily off to the side, still 2->3)
+(B) second.next = first         # 2.next = 1
+        2 -> 1 -> 3 -> 4           (pair flipped internally)
+(C) prev.next   = second        # dummy.next = 2
+        dummy -> 2 -> 1 -> 3 -> 4  ✓ (1,2) swapped
+
+advance: prev = first  = 1
+         head = first.next = 3
+```
+State after iter 1:
+```
+dummy -> 2 -> 1 -> 3 -> 4 -> None
+              prev head
+```
+
+---
+
+**Iteration 2** — `head=3`, `head.next=4` → enter loop
+
+```
+cache:  first = 3 ,  second = 4 ,  (second.next = None = "rest")
+
+(A) first.next  = second.next   # 3.next = None
+        ... 1 -> 3 -> None
+(B) second.next = first         # 4.next = 3
+        4 -> 3 -> None
+(C) prev.next   = second        # (prev=1).next = 4
+        ... 1 -> 4 -> 3 -> None  ✓ (3,4) swapped
+
+advance: prev = first  = 3
+         head = first.next = None
+```
+State after iter 2:
+```
+dummy -> 2 -> 1 -> 4 -> 3 -> None
+                   prev head=None
+```
+
+---
+
+**Iteration 3** — `head = None` → loop condition `head and head.next` is `False` → **exit**
+
+```
+return dummy.next  =>  2 -> 1 -> 4 -> 3   ✓
+```
+
+**Pointer summary table:**
+
+| iter | `first` | `second` | after (A) `first.next=` | after (B) `second.next=` | after (C) `prev.next=` | new `prev` | new `head` |
+|------|---------|----------|--------------------------|---------------------------|-------------------------|------------|------------|
+| 1 | `1` | `2` | `3` | `1` | `2` (dummy→2) | `1` | `3` |
+| 2 | `3` | `4` | `None` | `3` | `4` (1→4) | `3` | `None` |
+| — | stop: `head=None` | | | | | | return `dummy.next=2` |
+
+> **Odd-length note** — for `[1, 2, 3]` the loop runs once (swaps `1,2` → `2 -> 1 -> 3`), then `head=3` but `head.next=None`, so the condition fails and the lone tail `3` is left untouched: result `2 -> 1 -> 3`.
+
 > **Equivalent pointer-walk variant** (`head` itself walks on the dummy, using `head.next` / `head.next.next` as the pair). Same 3 reconnections, just addressed relative to `head`:
 ```python
 # V0' — same idea, `head` acts as `prev`

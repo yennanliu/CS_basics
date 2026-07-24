@@ -41,8 +41,11 @@ class Solution(object):
         prev = dummy
 
         while head and head.next:
+            # NOTE !!!  
+            # we cache node as first, second
             first = head
             second = head.next
+
 
             # swap
             first.next = second.next
