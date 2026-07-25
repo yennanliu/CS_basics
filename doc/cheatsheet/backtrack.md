@@ -1,8 +1,52 @@
-# Bracktrack 
+# Backtracking
 
-## Time Complexity
+## Overview
 
-> Backtracking is an **algorithm** (brute-force search over a decision tree), not a data structure — so the per-operation table used for data structures doesn't apply. Complexity is summarized **by problem type** instead.
+Backtracking is a **brute-force search over a decision tree**: at each step we make a
+choice, recurse deeper, then **undo** the choice ("backtrack") to try the next one. It is
+the go-to pattern for generating **all** subsets / permutations / combinations, or finding
+**any/one** valid configuration under constraints (N-Queens, Sudoku, word search).
+
+### Key Properties
+
+- **Core idea**: `choose → explore (recurse) → un-choose (undo)`
+- **Time Complexity**: exponential — `O(b^d)`, where `b` = branching factor, `d` = decision-tree depth
+- **Space Complexity**: `O(d)` recursion depth (excluding the output list)
+- **When to Use**: the problem asks for *all* / *every* / *how many* configurations, or to *place / fill / partition* under constraints
+- **Optimization path**: Backtrack (brute force) → add **pruning** → often → **DP** (memoize overlapping subproblems)
+
+### The 3 things every backtrack tracks
+
+| Element | Meaning |
+| ------- | ------- |
+| **Route** (路徑) | choices made so far (the current path) |
+| **Choice list** (選擇清單) | choices available right now |
+| **End condition** | leaf of the decision tree — record the route and return |
+
+<p align="center"><img src="../pic/backtrack1.png"></p>
+
+### Universal Template
+
+```python
+# python
+result = []
+
+def backtrack(route, choices):
+    if end_condition:          # reached a leaf
+        result.append(route[:])  # snapshot (copy!) the route
+        return
+
+    for choice in choices:
+        route.append(choice)   # 1) make choice
+        backtrack(route, choices)  # 2) explore
+        route.pop()            # 3) undo choice (backtrack)
+```
+
+Two knobs turn this template into every variant:
+- **`start_idx`** — controls the search space (combinations/subsets vs permutations)
+- **early quit / pruning** — cut branches that cannot lead to a valid answer
+
+### Time Complexity by Problem Type
 
 | Problem type      | Typical Time      | Space (excl. output) | Example      |
 | ----------------- | ----------------- | -------------------- | ------------ |
@@ -13,68 +57,24 @@
 | Partitioning      | O(2^n · n)        | O(n)                 | LC 131       |
 | N-Queens          | O(n!)             | O(n)                 | LC 51        |
 
-> Time is generally **exponential** — `O(b^d)`, where `b` = branching factor and `d` = decision-tree depth. The trailing `· n` / `· k` is the cost of copying each valid path into the result. Space (excluding the output list) is the recursion depth ≈ O(n). **Pruning** trims branches and the constant factor but does not change the worst-case class.
+> The trailing `· n` / `· k` is the cost of copying each valid path into the result.
+> **Pruning** trims branches and the constant factor but does **not** change the worst-case class.
 
-> Brute force via  `decision tree process`
+### References
 
-- [Algorithm ref : BackTrack](https://labuladong.online/algo/essential-technique/backtrack-framework/#%E4%B8%80%E3%80%81%E5%85%A8%E6%8E%92%E5%88%97%E9%97%AE%E9%A2%98)
-- [Algorithm ref : BackTrack different view](https://labuladong.online/algo/practice-in-action/two-views-of-backtrack/)
-    - https://labuladong.online/algo/practice-in-action/sudoku/
-    - https://labuladong.online/algo/practice-in-action/generate-parentheses/
-    - https://labuladong.online/algo/practice-in-action/partition-to-k-equal-sum-subsets/
-- [BackTrack Java LC General approach](https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/)
+- [labuladong — Backtracking framework](https://labuladong.online/algo/essential-technique/backtrack-framework/#%E4%B8%80%E3%80%81%E5%85%A8%E6%8E%92%E5%88%97%E9%97%AE%E9%A2%98)
+- [labuladong — Two views of backtracking](https://labuladong.online/algo/practice-in-action/two-views-of-backtrack/)
+    - [Sudoku](https://labuladong.online/algo/practice-in-action/sudoku/)
+    - [Generate parentheses](https://labuladong.online/algo/practice-in-action/generate-parentheses/)
+    - [Partition to k equal sum subsets](https://labuladong.online/algo/practice-in-action/partition-to-k-equal-sum-subsets/)
+- [LeetCode — A general approach to backtracking (Java)](https://leetcode.com/problems/subsets/solutions/27281/a-general-approach-to-backtracking-questions-in-java-subsets-permutations-combination-sum-palindrome-partitioning/)
 
-- Backtrack (brute force) -> DP (dynamic programming)
-- optimization:
-    - remove duplicated sub cases
-    - have a cache (e.g. hash table) list finished cases (not re-compute them)
-    - "cut the sub-tree" via conditions such as `contains`, `start`
+## 0) Concept
 
-- <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/backtrack1.png" ></p>
-
-
-- pattern
-
-```
-# pseudo code 
-
-result = []
-
-def backtrack(路徑, 選擇清單):
- if 滿足結束條件:
-     result.add(路徑)
-     return
-
- for 選擇 in 選擇清單:
-     做選擇
-     backtrack(路徑, 選擇列表)
-     撤銷選擇
-
-
-- start_idx
-- early quit
-```
-
-## 0) Concept  
-
-- 3 things to consider : 
- - `Route` : The choices have made
- - `Choice list` : The choices we can select currently
- - `End condition` : bottom of decision tree, meet this point then can't do any other choise 
-
-- Algorithm
-    - dfs
-    - recursive
-
-- Data structure
-    - dict
-    - set
-    - array
-
+- **Algorithm**: DFS + recursion
+- **Common data structures**: `dict` (counter for dedup), `set` (visited / constraints), `array`/`list` (the route)
 
 ### 0-0) `start_idx` — When & Why?
-
-## 
 
 `start_idx` (or `index`, or similar) is **used to control the search space** — to **avoid duplicates** and maintain order in the generated result.
 
@@ -145,122 +145,36 @@ These are often **permutation problems**, where:
 ---
 
 
-### 0-1) `i+1` or `i` as start_idx in recursion call ?
+### 0-1) `i` vs `i + 1` as the next `start_idx` in the recursive call
 
-- LC 39, 78, 518
+Once you've decided you need a `start_idx`, the next question is **what to pass as the
+next start index** — `i` (reuse the current element) or `i + 1` (move past it).
 
-Let's walk through it systematically by comparing well-known **Leetcode problems** where this pattern matters.
+| Pass | Meaning | Analogy | Examples |
+| ---- | ------- | ------- | -------- |
+| `i`     | Reuse the **same element again** | **Unbounded knapsack** (infinite supply) | LC 39 (Combination Sum), LC 518 (Coin Change II), LC 377 |
+| `i + 1` | Use **each element at most once** | **0/1 knapsack**, subsets | LC 40 (Combination Sum II), LC 78/90 (Subsets), LC 131, LC 494 |
 
----
-
-## 🧭 **Core Difference Between `i` and `i + 1` in Recursion**
-
-| Pattern | Meaning                       | Use Case                                |
-| ------- | ----------------------------- | --------------------------------------- |
-| `i`     | Reuse the **same item again** | **Unbounded Knapsack** (`infinite` items) |
-| `i + 1` | Use **each item once only**   | **0/1 Knapsack**, subsets               |
-
----
-
-## 🔍 Problem Comparison by Recursion Pattern
-
-See Quick Reference Table below.
-
----
-
-## 🎯 Rules of Thumb
-
-| Situation                       | Use `i` | Use `i + 1`          |
-| ------------------------------- | ------- | -------------------- |
-| Reuse allowed (infinite supply) | ✅       | ❌                    |
-| Use item only once              | ❌       | ✅                    |
-| Generating combinations         | ✅       | ✅ (depends)          |
-| Generating permutations         | ❌       | ✅ (with `visited[]`) |
-
----
-
-## 🔧 Quick Example
-
-### Example 1: **Coin Change II** (518) — LC 518
+> Permutations use neither — they revisit earlier elements, so they track a `visited[]`
+> array / `contains` check instead of a `start_idx` (see [0-2) Problem Types](#0-2-problem-types)).
 
 ```java
-// Unlimited coin usage
-for (int i = start; i < coins.length; i++) {
-    backtrack(i, currentSum + coins[i]); // use coin[i] again
-}
-```
-
-### Example 2: **Combination Sum II** (40) — LC 40
-
-```java
-// Use each number at most once
+// LC 39 Combination Sum — reuse allowed → pass i
 for (int i = start; i < candidates.length; i++) {
-    backtrack(i + 1, currentSum + candidates[i]); // can't reuse candidates[i]
+    backtrack(i, remain - candidates[i]);      // can pick candidates[i] again
+}
+
+// LC 40 Combination Sum II — each used once → pass i + 1
+for (int i = start; i < candidates.length; i++) {
+    backtrack(i + 1, remain - candidates[i]);  // move past candidates[i]
 }
 ```
 
----
-
-## 🧠 Key Takeaway
-
-> **Use `i` when repetition is allowed (unbounded knapsack style)**
-> **Use `i + 1` when repetition is not allowed (0/1 knapsack, subset style)**
-
+> **Key takeaway**: reuse allowed → `i`; use once → `i + 1`.
 
 ---
 
-## 🧠 Visual Guide: Recursion Index Patterns in LeetCode Problems
-
-### 🔄 **Unbounded Knapsack (Reuse Items)**
-
-* **Recursion Pattern:** `i`
-* **Use Case:** Items can be used multiple times.
-* **Examples:**
-
-  * **518. Coin Change II**: ([AlgoMonster][1])
-  * **377. Combination Sum IV**
-  * **39. Combination Sum**
-  * **322. Coin Change (Minimum Coins)**
-
-### 🔒 **0/1 Knapsack (Use Each Item Once)**
-
-* **Recursion Pattern:** `i + 1`
-* **Use Case:** Each item can be used at most once.
-* **Examples:**
-
-  * **40. Combination Sum II**: ([AlgoMonster][2])
-  * **78. Subsets**
-  * **90. Subsets II**
-  * **46. Permutations**
-  * **47. Permutations II (with duplicates)**
-  * **494. Target Sum**
-
----
-
-## 📊 Quick Reference Table
-
-| Problem # | Problem Name                      | Recursion Index | Coin Usage       | Notes                                          |
-| --------- | --------------------------------- | --------------- | ---------------- | ---------------------------------------------- |
-| 518       | Coin Change II                    | `i`             | Infinite         | Reuse coins; loop from `i`                     |
-| 377       | Combination Sum IV                | `i`             | Infinite         | Order matters; loop from `i`                   |
-| 39        | Combination Sum                   | `i`             | Infinite         | Reuse elements; loop from `i`                  |
-| 40        | Combination Sum II                | `i + 1`         | Once per element | Use each element once; loop from `i + 1`       |
-| 78        | Subsets                           | `i + 1`         | Once per element | Classic inclusion/exclusion; loop from `i + 1` |
-| 90        | Subsets II                        | `i + 1`         | Once per element | Handle duplicates; loop from `i + 1`           |
-| 46        | Permutations                      | `visited[]`     | Once per element | Full permutations; use visited array           |
-| 47        | Permutations II (with duplicates) | `visited[]`     | Once per element | Handle duplicates; use visited array           |
-| 494       | Target Sum                        | `i + 1`         | Once per element | Only one + or - per number; loop from `i + 1`  |
-
----
-
-## 🧭 Summary
-
-See Quick Reference Table above.
-
----
-
-
-### 0-1) Types
+### 0-2) Problem Types
 
 - Conclusion:
     -  `NO` NEED `start idx` : 全排列 (`Permutations`)
@@ -355,51 +269,8 @@ See Quick Reference Table above.
 
     - `Subsets I`
         - LC 78
-        - start idx + backtrack
-        ```java
-        // java
-        // LC 78
-        public void getSubSet(int start_idx, int[] nums, List<Integer> cur, List<List<Integer>> res){
-
-                if (!res.contains(cur)){
-                    // NOTE !!! init new list via below
-                    res.add(new ArrayList<>(cur));
-                }
-
-                if (cur.size() > nums.length){
-                    return;
-                }
-
-                for (int i = start_idx; i < nums.length; i++){
-                    /**
-                     * NOTE !!!
-                     *
-                     *  for subset,
-                     *  we need "!cur.contains(nums[i])"
-                     *  -> to NOT add duplicated element
-                     */
-                    if (!cur.contains(nums[i])){
-                        cur.add(nums[i]);
-                        /**
-                         *  NOTE !!!
-                         *
-                         *   at LC 78 subset, we need to use `i+1` idx
-                         *   in recursive call
-                         *
-                         *   while at LC 39 Combination Sum,
-                         *   we use `i` directly
-                         *
-                         *
-                         *   e.g. next start_idx is ` i+1`
-                         */
-                        this.getSubSet(i+1, nums, cur, res);
-                        // undo
-                        cur.remove(cur.size()-1);
-                    }
-                }
-            }
-
-        ```
+        - start idx + backtrack (see the `Type 1) Subsets` Java code above, and the full
+          walkthrough in [2-4) Subsets — LC 78](#2-4-subsets--lc-78))
 
     - `Subsets II`
         - LC 90
@@ -537,13 +408,9 @@ See Quick Reference Table above.
                 cur.pop(-1)
         # ...
         ```
-   
 
-    - Combination sum
+    - Type 4) : `Others`
 
-
-    - Type 3) : Others
-    
     - Parentheses (括弧)
         - LC 20, LC 22
 
@@ -639,7 +506,7 @@ See Quick Reference Table above.
         ```
 
 
-### 0-2) Pattern
+### 0-3) Pruning & Partitioning Patterns
 
 #### **Pruning Techniques**
 
@@ -993,7 +860,7 @@ def optimized_partition(nums, k):
 | **Equal Sum Partition** | Divide into equal groups | Subset sum problems | Exponential to polynomial |
 | **String Partition** | Split by criteria | String segmentation | O(2^n) worst case |
 
-### 0-3) Advanced Backtracking Patterns
+### 0-4) Advanced Backtracking Patterns
 
 ```python
 # python pseudo code 1
@@ -1043,6 +910,38 @@ def backtrack(route, choice_list):
 
 ### 1-1) Basic OP
 
+The canonical `choose → explore → un-choose` skeleton, ready to adapt:
+
+```python
+# python
+def backtrack(start_idx, path):
+    if end_condition:            # e.g. len(path) == k, or start_idx == len(s)
+        res.append(path[:])      # NOTE: copy the path, not the reference
+        return
+    for i in range(start_idx, n):
+        path.append(nums[i])         # 1) choose
+        backtrack(i + 1, path)       # 2) explore  (i -> reuse, i+1 -> use once)
+        path.pop()                   # 3) un-choose (undo)
+
+res = []
+backtrack(0, [])
+```
+
+```java
+// java
+private void backtrack(int startIdx, List<Integer> path, int[] nums, List<List<Integer>> res) {
+    if (endCondition) {                       // e.g. path.size() == k
+        res.add(new ArrayList<>(path));       // NOTE: copy the path, not the reference
+        return;
+    }
+    for (int i = startIdx; i < nums.length; i++) {
+        path.add(nums[i]);                    // 1) choose
+        backtrack(i + 1, path, nums, res);    // 2) explore (i -> reuse, i+1 -> use once)
+        path.remove(path.size() - 1);         // 3) un-choose (undo)
+    }
+}
+```
+
 ### 1-2) Trick
 
 
@@ -1055,7 +954,8 @@ def backtrack(route, choice_list):
 def help(s, res, path):
     if not s:
         res.append(path)
-    for i in range(1, len(s)):
+        return
+    for i in range(1, len(s) + 1):   # NOTE: +1 so the whole remaining string can be the last piece
         if s[:i] == s[:i][::-1]:
             """
             NOTE below !!!
@@ -1421,16 +1321,18 @@ class Solution(object):
             for alpha in d[digits[idx]]:
                 """
                 NOTE !!!!
-                idex+1 : for loop to next number
-                tmp+j : for collect cur update
+                idx+1     : move to next digit
+                tmp+alpha : collect current update
                 """
-                print ("digits = " + str(digits), " tmp = " + str(tmp) + " alpha = " + str(alpha))
-                dfs(idx+1, tmp + alpha)
+                dfs(idx + 1, tmp + alpha)
 
+        # edge case
+        if not digits:
+            return []
         d = {'2' : "abc", '3' : "def", '4' : "ghi", '5' : "jkl", '6' : "mno", '7' : "pqrs", '8' : "tuv", '9' : "wxyz"}
         res = []
-        dfs(0,"")
-        return 
+        dfs(0, "")
+        return res   # NOTE: return res (not None)
 
 # V1 
 # idea : for loop
@@ -1449,9 +1351,14 @@ class Solution(object):
 ```
 
 ### 2-2) combination-sum — LC 39
+
+> **V0** below is correct but **wasteful**: with no `start_idx` it explores every *ordering*
+> (e.g. `[2,3]` and `[3,2]`), then dedups via `sort()` + `tmp not in res`.
+> Prefer **V1** (start_idx, pass `i` to allow reuse) — it never generates duplicates.
+
 ```python
-# LC 039, LC 040 combination-sum
-# V0
+# LC 039 combination-sum
+# V0 (brute + dedup — correct but slow)
 # IDEA : DFS + BACKTRACK
 class Solution(object):
     def combinationSum(self, candidates, target):
@@ -1470,6 +1377,27 @@ class Solution(object):
         res = []
         tmp = []
         dfs(tmp)
+        return res
+
+# V1 (start_idx — preferred)
+# IDEA : DFS + BACKTRACK + start_idx (pass `i` to allow reuse)
+class Solution(object):
+    def combinationSum(self, candidates, target):
+
+        def dfs(start, tmp, total):
+            if total == target:
+                res.append(tmp[:])
+                return
+            if total > target:
+                return
+            for i in range(start, len(candidates)):
+                tmp.append(candidates[i])
+                # NOTE: pass `i` (NOT i+1) -> candidates[i] can be reused
+                dfs(i, tmp, total + candidates[i])
+                tmp.pop()
+
+        res = []
+        dfs(0, [], 0)
         return res
 ``` 
 
@@ -1810,7 +1738,7 @@ vector<vector<int>> res;
 /* main func */
 vector<vector<int>> subsets(vector<int> & nums){
     // record visited routes
-    vector<int> tracks;
+    vector<int> track;
     backtrack(nums, 0, track);
     return res;
 }
@@ -1999,24 +1927,28 @@ class Solution(object):
         #print ("res = " + str(res))
         return res
 
-# V0 
+# V0' (visited[] variant)
+# IDEA : BACKTRACK with a `visited` array (instead of `contains`)
 class Solution(object):
     def permute(self, nums):
-        visited = [0] * len(nums)
         res = []
-        path = []
-        self.dfs(path)
-        return res
-        
-    def dfs(self, path):
-        if len(path) == len(nums):
-            res.append(path)
-        else:
+        visited = [False] * len(nums)
+
+        def dfs(path):
+            if len(path) == len(nums):
+                res.append(path[:])          # NOTE: copy the path
+                return
             for i in range(len(nums)):
-                if not visited[i]:
-                    visited[i] = 1
-                    dfs(path + [nums[i]])
-                    visited[i] = 0    ### to check if "visited[i] = 0" is necessary
+                if visited[i]:
+                    continue
+                visited[i] = True            # choose
+                path.append(nums[i])
+                dfs(path)                    # explore
+                path.pop()                   # un-choose
+                visited[i] = False
+
+        dfs([])
+        return res
 ```
 ```java
 // LC 46. Permutations
@@ -2133,13 +2065,13 @@ class Solution(object):
         if left < right:
             self.dfs(res, left, right - 1, path + ')')
 ```
-```java
-// java
+```c++
+// c++
 // LC 022 Generate Parentheses
 // (algorithm book (labu) p.316)
 
 /* main func */
-vector<String> generateParentheses(int n){
+vector<string> generateParentheses(int n){
     if (n == 0) return {};
     // record all legal collections
     vector<string> res;
@@ -2366,7 +2298,7 @@ class Solution(object):
                 self.dfs(s[i:], path + [s[:i]], res)
 ```
 
-### 2-9) Word Break — LC 139
+### 2-10) Word Break — LC 139
 ```python
 # LC 139 Word Break
 # V0
@@ -2389,7 +2321,7 @@ class Solution:
                 visited[i]=True
 ```
 
-### 2-10) Word Break II — LC 140
+### 2-11) Word Break II — LC 140
 ```python
 # LC 140 Word Break II
 # NOTE : there is also dfs, dp approaches
@@ -2467,7 +2399,7 @@ class Solution:
         return res
 ```
 
-### 2-11) Course Schedule — LC 207
+### 2-12) Course Schedule — LC 207
 ```java
 // java
 // LC 207
@@ -2568,7 +2500,7 @@ private boolean dfs(int crs, Map<Integer, List<Integer>> preMap, Set<Integer> vi
 }
 ```
 
-### 2-12) Path Sum II — LC 113
+### 2-13) Path Sum II — LC 113
 
 - Tree DFS that collects **all root-to-leaf paths** whose sum equals `targetSum`.
 - Great example of **why backtrack (`cache.pop()`) is needed for a mutable list, but NOT for the primitive `cur_sum`**.
@@ -2656,9 +2588,9 @@ cache.pop()
 
 ---
 
-## Missing Google Patterns
+## 3) Constraint-Satisfaction Patterns (Interview Favorites)
 
-### N-Queens — LC 51 (Complete Solution)
+### 3-1) N-Queens — LC 51
 Classic backtracking with O(n!) search space, pruned by column/diagonal tracking.
 
 ```python
@@ -2687,7 +2619,7 @@ def solveNQueens(n):
 
 **Key pruning**: Three O(1) sets replace the O(n) column/diagonal scans. Time: O(n!), Space: O(n).
 
-### Sudoku Solver — LC 37
+### 3-2) Sudoku Solver — LC 37
 Backtrack cell by cell; prune using row/col/box sets.
 
 ```python
@@ -2720,7 +2652,7 @@ def solveSudoku(board):
     backtrack(0)
 ```
 
-### Constraint Propagation (Early Termination)
+### 3-3) Constraint Propagation (Early Termination)
 Beyond simple bound-checking, propagate constraints forward before recursing. This is the key insight separating O(n!) brute force from practical backtracking.
 
 ```
@@ -2730,7 +2662,7 @@ With propagation:        try → propagate constraints → if valid: recurse →
 
 Example: In Sudoku, after placing a digit, immediately eliminate it from peer cells. If any cell has zero candidates, backtrack immediately without reaching deeper levels.
 
-### Backtracking Complexity Cheat Sheet
+### 3-4) Backtracking Complexity Cheat Sheet
 | Problem | Branching Factor | Depth | Pruning | Worst Case |
 |---------|----------------|-------|---------|------------|
 | Subsets | 2 | n | None | O(2^n) |
@@ -2739,8 +2671,8 @@ Example: In Sudoku, after placing a digit, immediately eliminate it from peer ce
 | N-Queens | n | n | 3 sets | O(n!) → much better in practice |
 | Sudoku | 9 | 81 | Row/col/box | O(9^81) → O(1) per board in practice |
 
-### Termination Condition Patterns
-```
+### 3-5) Termination Condition Patterns
+```python
 if len(current) == target_length:   # fixed-size result (permutations, combinations of size k)
     result.append(current[:])
     return
@@ -2755,8 +2687,8 @@ if index == len(input):             # exhausted input (string partition, IP addr
     return
 ```
 
-### Google Interview Tips for Backtracking
-| Signal | Pattern |
+### 3-6) Interview Signal → Pattern
+| When you hear… | Reach for… |
 |--------|---------|
 | "all possible combinations/permutations" | Standard backtracking + result.append(copy) |
 | "place N non-attacking queens" | N-Queens with 3 pruning sets |

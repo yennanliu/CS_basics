@@ -63,8 +63,8 @@
 
 - LC weekly
 	- `data/lc_weekly/lc_weekly_gpt.md`
-		- Weekly Contest 185 (ok)
-			- https://leetcode.com/contest/biweekly-contest-185/
+		- Weekly Contest 511 (doing)
+			- https://leetcode.com/contest/biweekly-contest-511/
 	- LC docs contest
 		- https://leetcode.doocs.org/contest/
 
