@@ -15,7 +15,7 @@
 
 ### 3. Explain the Apache Flink Job Execution Architecture?
 
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/flink-job-exe-architecture.png" width="500" height="300">
+<p align="center"><img src="../../pic/flink-job-exe-architecture.png"></p>
 
 - Program
 	- It is a piece of code that is executed on the Flink Cluster.
@@ -58,7 +58,7 @@
 
 ### 10. What are the differences between Apache Hadoop, Apache Spark and Apache Flink?
 
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic//compare_hadoop_spark_flink.png" width="500" height="300">
+<p align="center"><img src="../../pic/compare_hadoop_spark_flink.png"></p>
 
 ### 11. What are the key programming constructs of a Flink streaming application?
 - A Flink streaming application consists of four key programming constructs.
@@ -129,7 +129,7 @@ Apache Flink can be deployed and configured in below ways.
 		- KeyedState status : e.g. : MapState、ListState、ValueState
 - make sure flink can auto-recover when error/exception during running
 - example : if flink failed on chk-5, then it will try to recover from chk-4
-	<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/checkpoint1.jpeg">
+	<p align="center"><img src="../../pic/checkpoint1.jpeg"></p>
 - managed/op by flink. Users only need to define parameter
 - Auto op by flink
 - default `concurrent = 1` -> there is ONLY ONE runs per flink app
@@ -140,8 +140,8 @@ Apache Flink can be deployed and configured in below ways.
 		- in HA, checkpoint will be saved in ZK as well
 		- CheckpointBarrier is a special event, will flow to downstream operator, ONLY when skink operator receive it, we say checkpoint completed
 		- NOTE : CheckpointBarrier sync time also need to be considered
-	<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/checkpoint2.png">
-	<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/checkpoint3.png">
+	<p align="center"><img src="../../pic/checkpoint2.png"></p>
+	<p align="center"><img src="../../pic/checkpoint3.png"></p>
 - `CheckpointCoordinator` is an important class in Checkpoint op
 	- it has below important methods
 		- triggerCheckpoint
@@ -149,8 +149,8 @@ Apache Flink can be deployed and configured in below ways.
 		- restoreSavepoint
 		- restoreLatestCheckpointedState
 		- receiveAcknowledgeMessage
-	<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/checkpoint4.png">
-	<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/checkpoint5.png">
+	<p align="center"><img src="../../pic/checkpoint4.png"></p>
+	<p align="center"><img src="../../pic/checkpoint5.png"></p>
 - Disable checkpoint via `CheckpointConfig` setting
 	- DELETE_ON_CANCELLATION : delete checkpoint when program canceled
 	- RETAIN_ON_CANCELLATION : keep checkpoint when program canceled
@@ -159,7 +159,6 @@ Apache Flink can be deployed and configured in below ways.
 		- e.g. json parse error, time out, exception on sink system
 	- freqent GC, Not enough memory -> cause OOM
 	- internet issues, machine issues
-- Things to care when set up checkpoint
 - Ref
 	- https://tech.youzan.com/flink_checkpoint_mechanism/
 	- https://zhuanlan.zhihu.com/p/79526638
@@ -214,16 +213,14 @@ Apache Flink can be deployed and configured in below ways.
 	- can automatically deal with `Failover on various roles`
 		- JobManager, TaskManager error/exception... can automatically retry/rerun by Yarn
 - Pic
-	<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/flink_yarn_1.png">
+	<p align="center"><img src="../../pic/flink_yarn_1.png"></p>
 - Ref
 	- https://blog.csdn.net/penriver/article/details/120221565
 	- https://blog.csdn.net/lb812913059/article/details/86601150
 	- https://blog.51cto.com/u_15478540/4911346
 	- https://cloud.tencent.com/developer/article/1708704
 
-### 20. Explain how flink parallelism ?
-
-### 21. Explain flink watermark ?
+### 20. Explain flink watermark ?
 - `watermark` is a `timestamp` (event happened time, NOT processed time)
 - `watermark` tells Flink `since when it DOES NOT need to wait for delay event`
 - Stream frameworks use it for "evaluate if there is still a event not arrived"
@@ -247,7 +244,7 @@ Apache Flink can be deployed and configured in below ways.
 	- http://chris-liu.cn/Flink-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E2%80%94%E2%80%94%E2%80%94-WaterMark-%E6%B0%B4%E5%8D%B0.html
 	- https://www.gushiciku.cn/pl/pRWT/zh-tw
 
-### 22. Explain flink EvenTime, IngestionTime, ProcessingTime ?
+### 21. Explain flink EvenTime, IngestionTime, ProcessingTime ?
 - `EvenTime`
 	- "event happened time". The most accurate time when things happended
 - `IngestionTime`

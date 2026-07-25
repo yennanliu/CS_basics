@@ -1,6 +1,6 @@
 # Hadoop FAQ
 
-# Ref 
+## Ref 
 - Hadoop Architecture
 	- https://www.edureka.co/blog/apache-hadoop-hdfs-architecture/
 - Top 50 Hadoop interview questions 
@@ -9,4 +9,4 @@
 	- https://www.edureka.co/blog/how-to-set-up-hadoop-cluster-with-hdfs-high-availability/
 
 - Commissioning and decommissioning nodes in Hadoop clusters (commission (Add) and decommission (Remove) “Data Nodes”)
-	-https://www.edureka.co/blog/commissioning-and-decommissioning-nodes-in-a-hadoop-cluster/
+	- https://www.edureka.co/blog/commissioning-and-decommissioning-nodes-in-a-hadoop-cluster/

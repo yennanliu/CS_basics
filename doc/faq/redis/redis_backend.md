@@ -2,7 +2,7 @@
 
 
 ### Redis data structure
-<p><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/redis_data_structure.jpg"></p>
+<p align="center"><img src="../../pic/redis_data_structure.jpg"></p>
 - 5 種基礎資料類型：String（字串）、List（列表）、Set（集合）、Hash（雜湊）、Zset（有序集合）
 - 3 種特殊資料類型：HyperLogLog（基數統計）、Bitmap （點陣圖）、Geospatial (地理位置)
 

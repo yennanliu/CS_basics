@@ -24,8 +24,8 @@
 			- ordering : keep the same ordering in producer's data and data read by consumer
 		- partition defines the MAX "con-current" consumer in the same consumer group
 		- So, we can raise consuming speed, if we have more partition
-		<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/partition1.png">
-		<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/partition2.png">
+		<p align="center"><img src="../../pic/partition1.png"></p>
+		<p align="center"><img src="../../pic/partition2.png"></p>
 	-  Partition replicas
 		- replication-factor
 			- define how many replicas (on different brokers).
@@ -36,7 +36,7 @@
 			- NOTE !!! : `producer and consumer` BOTH `read and write` data from `leader replica`, NOT interact with follower replica
 			- For data reliability when data I/O
 			- if leader down, then will raise the other follower as new leader
-		<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/partition_replicas.png">
+		<p align="center"><img src="../../pic/partition_replicas.png"></p>
 	- `Segment`
 		- each partition has `multiple` segments.
 			- Each segment has 2 parts:
@@ -68,7 +68,7 @@
 			-rw-r--r--. 1 root root  10M  1月  17  18:03   00000000000000077894.index
 			-rw-r--r--. 1 root root 127M  1月  17  18:03   00000000000000077894.log
 			```
-		<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/index_log_file1.png">
+		<p align="center"><img src="../../pic/index_log_file1.png"></p>
 	- `Producer`
 		- msg producer, send msg to kafka broker
 		- write data to `leader replica`
@@ -84,7 +84,7 @@
 		- each consumer has a ID (group ID). All consumers can subscribe all partition under a topic
 		- each partition CAN ONLY be consumed by A consumer under a consumer group
 - Pic
-	<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/kafka_architecture1.png">
+	<p align="center"><img src="../../pic/kafka_architecture1.png"></p>
 
 - Ref
 	- https://www.gushiciku.cn/pl/g6Tu/zh-tw
@@ -92,7 +92,7 @@
 ### 1') Kafka message structure ?
 - As below, every msg sent from producer will be pre-processed via kafka, then saved as below structure (in kafka broker). Only last field is the actual data from broker
 - Pic
-	<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/kafka_msg.png">
+	<p align="center"><img src="../../pic/kafka_msg.png"></p>
 
 ### 1'') How kafka find .log file via index ?
 
@@ -212,7 +212,7 @@
 			- phase 2 : modify all events written by Transaction Marker to committed or aborted
 		- once Transaction Marker complete writing, TC will write final status to Transaction log and mark such transaction is completed
 - pic
-	<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/TransactionCoordinator1.png">
+	<p align="center"><img src="../../pic/TransactionCoordinator1.png"></p>
 - Ref
 	- https://blog.csdn.net/zc19921215/article/details/108466393#:~:text=Kafka%E5%B9%82%E7%AD%89%E6%80%A7%EF%BC%9A,number%E8%BF%99%E4%B8%A4%E4%B8%AA%E6%A6%82%E5%BF%B5%E3%80%82
 
@@ -268,7 +268,7 @@
 
 
 
-### 14) streaming model ?
+### 15) streaming model ?
 
 - Msg queue (e.g. rebbitMQ)
 	- each serve can only read part of msg fro queue

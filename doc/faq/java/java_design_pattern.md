@@ -1,4 +1,4 @@
-# Java Design Patter
+# Java Design Pattern
 
 ## 1) DI (Dependency Injection)
 

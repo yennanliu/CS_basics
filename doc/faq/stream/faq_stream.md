@@ -1,7 +1,7 @@
 # Stream FAQ
 
 ## Simple stream from scratch
-- via socker
+- via socket
 	- https://pythonprogramming.net/buffering-streaming-data-sockets-tutorial-python-3/
 
 - via open file default module
@@ -14,6 +14,3 @@
 	- https://databricks.com/blog/2018/03/13/introducing-stream-stream-joins-in-apache-spark-2-3.html
 	- https://spark.apache.org/docs/2.2.0/streaming-programming-guide.html
 	
-- via default module 
-
-## Ref

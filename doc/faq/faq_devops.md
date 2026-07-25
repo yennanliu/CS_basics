@@ -121,7 +121,7 @@ volumes:
 
 ### 架構概覽
 
-```
+```text
 Cluster
 ├── Control Plane（主節點）
 │   ├── API Server      ← 所有操作的入口
@@ -278,19 +278,19 @@ kubectl delete pod my-pod -n production --grace-period=0 --force
 
 ### 核心公式
 
-```
+```text
 總 CPU    ≈ QPS × 每次請求的 CPU 消耗
 總 Memory ≈ 基礎記憶體 + (並發數 × 每次請求的記憶體)
 ```
 
 ### 步驟一：估算並發數（Little's Law）
 
-```
+```text
 並發數 = QPS × 平均回應時間（秒）
 ```
 
 範例：QPS = 500，平均延遲 = 200ms
-```
+```text
 並發數 = 500 × 0.2 = 100 個同時進行的請求
 ```
 
@@ -298,14 +298,14 @@ kubectl delete pod my-pod -n production --grace-period=0 --force
 
 用 k6 / Locust / JMeter 進行負載測試，再推算：
 
-```
+```text
 CPU per request    = 負載測試時總 CPU 使用量 / QPS
 Memory per request ≈ (峰值記憶體 - 基礎記憶體) / 並發數
 ```
 
 ### 步驟三：計算總資源需求
 
-```
+```text
 總 CPU    = QPS × CPU per request  × 安全係數（1.5～2）
 總 Memory = (基礎記憶體 + 並發數 × Memory per request) × 安全係數（1.3～1.5）
 ```
@@ -355,7 +355,7 @@ resources:
 
 ### 標準 Pipeline 階段
 
-```
+```text
 程式碼提交（PR）
   → Lint / Static Analysis（程式碼品質）
   → Unit Test（單元測試）
@@ -517,7 +517,7 @@ groups:
 
 ### 錯誤預算（Error Budget）
 
-```
+```text
 錯誤預算 = 100% - SLO
 
 SLO = 99.9% 可用性
@@ -540,7 +540,7 @@ SLO = 99.9% 可用性
 
 ### 事故應對流程（Incident Response）
 
-```
+```text
 偵測（Detection）
   → 告警觸發 or 用戶回報
   
@@ -584,7 +584,7 @@ SRE 原則：`Toil < 50%` 的工作時間
 
 ### DNS 解析流程
 
-```
+```text
 瀏覽器輸入 www.example.com
   → 查本地 Cache（/etc/hosts、瀏覽器）
   → 查本地 DNS Resolver（通常是路由器或 ISP）
@@ -609,7 +609,7 @@ SRE 原則：`Toil < 50%` 的工作時間
 
 ### Kubernetes 網路模型
 
-```
+```text
 外部流量
   → LoadBalancer Service / Ingress Controller
   → Service（ClusterIP，kube-proxy 做 DNAT）
@@ -726,7 +726,7 @@ tar -czf backup.tar.gz /etc/nginx/         # 壓縮備份
 ### 常見 Linux 概念
 
 **Load Average（系統負載）：**
-```
+```text
 uptime 輸出：load average: 1.23, 0.95, 0.88
               最近1分鐘  最近5分鐘  最近15分鐘
 
@@ -845,7 +845,7 @@ spec:
 
 ### GitOps vs 傳統 CI/CD
 
-```
+```text
 傳統 CI/CD（Push 模式）：
 CI Pipeline → kubectl apply → Cluster
 （CI 有 K8s 憑證，安全風險較高）
@@ -886,7 +886,7 @@ spec:
 
 ### GitOps 實踐流程
 
-```
+```text
 1. 開發者修改應用程式碼
    → 觸發 CI Pipeline（測試、建立 Docker Image、推送到 Registry）
    → CI 自動更新 Config Repo 中的 image tag
@@ -1078,7 +1078,7 @@ helm uninstall my-redis -n production                     # 卸載
 
 ### Q2：K8s 中 Deployment、Pod、ReplicaSet 的關係？
 
-```
+```text
 Deployment（管理更新策略與版本）
   └── ReplicaSet（確保指定數量的 Pod 在運行）
        └── Pod（實際執行的容器，最小部署單位）

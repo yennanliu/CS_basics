@@ -88,7 +88,7 @@ JWT 由三部分組成，以 `.` 分隔：`xxxxx.yyyyy.zzzzz`
 2. **Payload（負載）**：存放非敏感使用者資料（如 `userId`、`role`、`exp` 過期時間）
 3. **Signature（簽章）**：伺服器用私鑰對前兩部分進行雜湊運算
 
-```
+```text
 Signature = HMACSHA256(base64(Header) + "." + base64(Payload), SecretKey)
 ```
 

@@ -55,14 +55,14 @@
 
 	- https://docs.aws.amazon.com/en_us/redshift/latest/dg/tutorial-tuning-tables-distribution.html
 
-- 5) Review Compression Encodings
+- 6) Review Compression Encodings
 	- Compression is a column-level operation that reduces the size of data when it is stored. Compression conserves storage space and reduces the size of data that is read from storage, which reduces the amount of disk I/O and therefore improves query performance.
 
 	- By default, Amazon Redshift stores data in its raw, uncompressed format. When you create tables in an Amazon Redshift database, you can define a compression type, or encoding, for the columns. For more information, see Compression Encodings.
 
 	- You can apply compression encodings to columns in tables manually when you create the tables, or you can use the COPY command to analyze the load data and apply compression encodings automatically.
 
-	- Type of compresison encodings
+	- Type of compression encodings
 		- Raw
 		- Bytedict
 		- LZO

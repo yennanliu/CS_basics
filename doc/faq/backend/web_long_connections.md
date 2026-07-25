@@ -26,12 +26,12 @@ In HTTP, a "long connection" usually refers to keeping a TCP connection open for
 * Reduces latency and overhead from repeatedly opening/closing connections.
 
 **Header example:**
-```
+```text
 Connection: keep-alive
 ```
 
 **Flow:**
-```
+```text
 Client ──── request 1 ────▶ Server
 Client ◀─── response 1 ─── Server
 Client ──── request 2 ────▶ Server   (same TCP connection)
@@ -47,7 +47,7 @@ Client ◀─── response 2 ─── Server
 * Rarely used today due to **head-of-line blocking** issues.
 
 **Flow:**
-```
+```text
 Client ──── request 1 ────▶
 Client ──── request 2 ────▶ Server
 Client ──── request 3 ────▶
@@ -64,7 +64,7 @@ Client ◀─── response 1, 2, 3 (in order)
 * Common for near–real-time updates (older technique).
 
 **Flow:**
-```
+```text
 Client ──── request ─────────────────────▶ Server
                                            (server waits for new data)
 Client ◀─── response (when data ready) ── Server
@@ -81,7 +81,7 @@ Client ──── reconnect immediately ───────▶ Server
 * Useful for logs, live feeds, progress updates.
 
 **Header:**
-```
+```text
 Transfer-Encoding: chunked
 ```
 
@@ -101,7 +101,7 @@ setInterval(() => res.write('data chunk\n'), 1000);
 * Automatically reconnects on disconnect.
 
 **Header:**
-```
+```text
 Content-Type: text/event-stream
 ```
 
@@ -127,7 +127,7 @@ source.onmessage = (e) => console.log(e.data);
 * Best for chat, gaming, live collaboration.
 
 **Upgrade headers:**
-```
+```text
 Upgrade: websocket
 Connection: Upgrade
 ```

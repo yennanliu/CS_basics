@@ -1,7 +1,7 @@
 # SQL FAQ
 
 
-#### 1. Given 2 table a (3k rows), b (4k rows), what's the 
+### 1. Given 2 table a (3k rows), b (4k rows), what's the 
    result count of `select a.Color, b.Size from a cross join b` ?
 
 - 3k * 4k = 12k  
@@ -9,15 +9,15 @@
 - http://www.sqlservertutorial.net/sql-server-basics/sql-server-cross-join/
 - (cross join pic)
 
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/cross_join.png" width="500" height="300">
+<p align="center"><img src="../../pic/cross_join.png" width="500" height="300"></p>
 
-#### 2. Difference between `full outer Join` And `Union` in SQL ? 
+### 2. Difference between `full outer Join` And `Union` in SQL ? 
 - Full outer Join: Joins two table, and gives the 1) Matched record + 2) Unmatched Record from Right table + 3) Unmatched Record from left table
 	- i.e. table A (a,b,c), table B (c,d).
 
 - Full outer join : return all columns in table A, table B (no depulicate)
 	- -> `select A*, B.* from A full outer join B on A.c = B.c`
-```sql     
+```text
  		# output : 
 			 a | b | c1 | c2 | d
 			 a1  b1  c11  c21   d1
@@ -25,12 +25,12 @@
 			 a3  b3  c13  c23   d3
 			 .......             
 ```
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/full_outer_join.gif" width="500" height="300">
+<p align="center"><img src="../../pic/full_outer_join.gif" width="500" height="300"></p>
 
 - Union : Consolidate the result of two queries and returns as single result set.
 	- i.e. table A (a,b,c), table B (c,d).
 	- -> `select A.a, A.b from A union select B.c, B.d from B `
-```sql 
+```text
 		# output :   
 		  	  col1 | col2
 		  	   a1     b1
@@ -40,7 +40,7 @@
 		  	   ..........
 ```
 
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/union_sql.png" width="500" height="300">
+<p align="center"><img src="../../pic/union_sql.png" width="500" height="300"></p>
 
 - In short :   
 	- Full outer join : Join all `columns` (No matter if table A, B has same  columns )
@@ -49,7 +49,7 @@
 - https://www.quora.com/What-is-the-difference-between-full-outer-join-and-union-in-SQL
 - https://www.solutionfactory.in/posts/Difference-between-Join-And-Union-in-SQL 
 
-#### 3. Find the orders in Quater ? (no hard-code)
+### 3. Find the orders in Quater ? (no hard-code)
 
 ```sql
 -- postgre
@@ -73,7 +73,7 @@ GROUP BY 1;
 
 ```
 
-#### 4. Select value, and max value with conditions in one query?
+### 4. Select value, and max value with conditions in one query?
 
 ```sql
 -- postgre
@@ -92,7 +92,7 @@ LIMIT 10 ;
 
 ```
 
-#### 5. Select data with value larger than average value?
+### 5. Select data with value larger than average value?
 
 ```sql
 -- postgre
@@ -179,7 +179,7 @@ WHERE a.id = b.id
 ```sql
 
 -- build the table 
-CREATE TABLE IF NOT EXIST test( id int, age int);
+CREATE TABLE IF NOT EXISTS test( id int, age int);
 TRUNCATE TABLE test; 
 INSERT INTO test VALUES (1,1);
 INSERT INTO test VALUES (2,2);
@@ -534,7 +534,7 @@ SELECT COUNT(id), COUNT(*) ,COUNT(1) FROM user;
 ->
 - The `having` clause works on aggregated data
 - Apart from SELECT queries, you can use WHERE clause with UPDATE and DELETE clause but HAVING clause can only be used with SELECT query.
-- `WHERE` clause is used for filtering rows and it applies on each and every `ow`, while `HAVING` clause is used to filter `groups` in SQL.
+- `WHERE` clause is used for filtering rows and it applies on each and every `row`, while `HAVING` clause is used to filter `groups` in SQL.
 - One syntax level difference between WHERE and HAVING clause is that, former is used before GROUP BY clause, while later is used after GROUP BY clause.
 - When WHERE and HAVING clause are used together in a SELECT query with aggregate function,  WHERE clause is applied first on individual rows and only rows which pass the condition is included for creating groups. Once group is created, HAVING clause is used to filter groups based upon condition specified.
 
@@ -589,7 +589,7 @@ ORDER BY
 
 ### 19. When to use `right`, `left`, `inner`, `full outer` join?
 
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/sql_join.jpg" width="700" height="500">
+<p align="center"><img src="../../pic/sql_join.jpg" width="700" height="500"></p>
 
 - OUTER join : extends that functionality and also include unmatched rows in the final result
 - LEFT outer : join includes unmatched rows from table written on the left of join predicate. On the other hand, RIGHT OUTER join
@@ -605,7 +605,7 @@ ORDER BY
 - https://www.geeksforgeeks.org/aggregate-functions-in-sql/
 
 - Example 
-```
+```text
 1) Count()
 2) Sum()
 3) Avg()
@@ -660,7 +660,7 @@ expression <> expression
 - CHAR :
   - is fixed-length: MySQL always allocates enough space for the specified number of characters. When storing a CHAR value, MySQL removes any trailing spaces. (This was also true of VARCHAR in MySQL 4.1 and older versions—CHAR and VAR CHAR were logically identical and differed only in storage format.) Values are padded with spaces as needed for comparisons.
 
-### 26. `lead` VS `load`?
+### 26. `lead` VS `lag`?
 - https://riptutorial.com/sql/example/27455/lag-and-lead
 - The LEAD function provides data on rows after the current row in the row set. For example, in a SELECT statement, you can compare values in the current row with values in the following row.
 - example :
@@ -694,8 +694,8 @@ ORDER BY user_id
   - -> i.e. we need to do the op on `ALL the tables with same fk constraint` at once
 
 ### 28. Explain difference between Data mart, data warehouse ?
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/dm_dw2.png" width="700" height="300">
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/dm_dw.png" width="700" height="500">
+<p align="center"><img src="../../pic/dm_dw2.png" width="700" height="300"></p>
+<p align="center"><img src="../../pic/dm_dw.png" width="700" height="500"></p>
 
 - https://aws.amazon.com/data-warehouse/?nc1=h_ls
 
@@ -749,7 +749,7 @@ FROM table_name1
 JOIN table_name2;
 ```
 
-### 33. Left join example ?
+### 32. Left join example ?
 - Note : Should use `IS NULL` (rather than "= null")
 ```sql
 # LC 0183
@@ -767,7 +767,7 @@ WHERE
 o.CustomerId is NULL -- note this condition
 ```
 
-### 34. where in multiple cols
+### 33. where in multiple cols
 ```sql
 -- LC 184 Department Highest Salary
 /* V0 */
@@ -785,11 +785,11 @@ WHERE (e.DepartmentId,
 BY DepartmentId)
 ```
 
-### 35. The Best Medium-Hard Data Analyst SQL Interview Questions
+### 34. The Best Medium-Hard Data Analyst SQL Interview Questions
 - https://quip.com/2gwZArKuWk7W
 - Self-Join Practice Problems
   - MoM (month over month)Percent Change : Find the month-over-month percentage change for monthly active users (MAU).  
-```sql
+```text
 -- data
 | user_id | date       |
 |---------|------------|
@@ -846,7 +846,7 @@ WITH mau AS
 - Window Function Practice Problems
 - Other Medium/Hard SQL Practice Problems
 
-### 36. SQL sort by desc and asc (on different columns)
+### 35. SQL sort by desc and asc (on different columns)
 ```sql
 -- LC 580 Count Student Number in Departments
 # V1

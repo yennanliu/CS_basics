@@ -7,7 +7,7 @@
 - https://github.com/yennanliu/JavaHelloWorld/tree/main/doc/java_interview_guide_PDF-main
 - https://javabetter.cn/sidebar/sanfene/javase.html#_25-final%E3%80%81finally%E3%80%81finalize-%E7%9A%84%E5%8C%BA%E5%88%AB
 
-### Java memoery model
+### Java memory model
 
 ### a++ VS ++a ?
 
@@ -22,7 +22,7 @@ b = ++a;
 
 ### Java basic data type (基本數據類型) VS reference data type (引用數據類型) **** ?
 
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/basic_ref_data_type.jpeg" width="500" height="300">
+<p align="center"><img src="../../pic/basic_ref_data_type.jpeg" width="500" height="300"></p>
 
 - basic data type : byte, short, int, long, float, dobule, char, boolean ...
 - reference data type : Class, interface, Array
@@ -205,7 +205,7 @@ Variables may be marked transient to indicate that they are not part of the pers
 
 總之，java 的transient關鍵字為我們提供了便利，你只需要實現Serilizable接口，將不需要序列化的屬性前添加關鍵字transient，序列化對象的時候，這個屬性就不會序列化到指定的目的 地中。
 
-- https://www.cnblogs.com/huzi007/p/6600559.htmls
+- https://www.cnblogs.com/huzi007/p/6600559.html
 
 ### try-with-resource VS try-catch-final ?
 
@@ -224,7 +224,7 @@ Variables may be marked transient to indicate that they are not part of the pers
 
 - https://learn.lianglianglee.com/%E6%96%87%E7%AB%A0/%E9%9D%A2%E8%AF%95%E6%9C%80%E5%B8%B8%E8%A2%AB%E9%97%AE%E7%9A%84%20Java%20%E5%90%8E%E7%AB%AF%E9%A2%98.md
 
-### How many ways Java create a new instance ?s
+### How many ways Java create a new instance ?
 
 - new、反射、clone 拷貝、反序列化
 - https://learn.lianglianglee.com/%E6%96%87%E7%AB%A0/%E9%9D%A2%E8%AF%95%E6%9C%80%E5%B8%B8%E8%A2%AB%E9%97%AE%E7%9A%84%20Java%20%E5%90%8E%E7%AB%AF%E9%A2%98.md
@@ -287,7 +287,7 @@ LinkedList
 
 - 載入、驗證、準備、解析、初始化
 
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/class_load_step.jpeg">
+<p align="center"><img src="../../pic/class_load_step.jpeg"></p>
 
 ### New ㄧ個Class(類)步驟
 
@@ -297,16 +297,16 @@ LinkedList
 - 對對象進行其他相關設置
 - 執行 init 方法
 
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/new_class_step.jpeg">
+<p align="center"><img src="../../pic/new_class_step.jpeg"></p>
 
 
 ### Class(類) 生命週期
 
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/class_life_cycle.jpeg">
+<p align="center"><img src="../../pic/class_life_cycle.jpeg"></p>
 
 ### MyBatis 常見設計模式
 
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/mybatis_design_pattern.jpeg">
+<p align="center"><img src="../../pic/mybatis_design_pattern.jpeg"></p>
 
 
  ### Throw vs throws

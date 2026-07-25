@@ -19,7 +19,7 @@
     - more memory consumption
 - Snowflake Schema
     - `normalized` -> no redundant data -> easy to maintain
-    - query is a bit complext (join), run slower (compared to star)
+    - query is a bit complex (join), run slower (compared to star)
     - do more of dimension analysis. e.g. :  “how many subscribers are tied to a particular plan which is currently active?” 
     - less memory consumption
 
@@ -71,7 +71,7 @@
     - example :  suppose you are maintaining an employee attendance record system, you can have a factless fact table having three keys.
     - You can see that below table does not contain any measure. Now, if you want to answer the below question, you can do easily using the above single factless fact table rather than having two separate fact tables:
         - “How many employees of a particular department were present on a particular day?”
-```
+```text
 # sql schema
 EMPLOYEE_ID
 DEPARTMENT_ID
@@ -85,7 +85,7 @@ TIME_ID
     - star schema
 - OLAP
     - `Online Analytical Processing System`
-    - OLAP is for `analysis and reporting` purposes & it is in `denormalized`form.
+    - OLAP is for `analysis and reporting` purposes & it is in `denormalized` form.
     - snowflake schema
 - extra
     - MPP (massively parallel processing)
@@ -102,7 +102,7 @@ TIME_ID
 - It is not mandatory for a database to be in 3NF. However, if your purpose is the easy maintenance of data, less redundancy, and efficient access then you should go with a de-normalized database.
 
 
-### 10) Explain 1NF, 2ND, 3NF, 4NF, 5NF?
+### 10) Explain 1NF, 2NF, 3NF, 4NF, 5NF?
 - 1NF: 
     - The domain of each attribute contains only atomic values, and the value of each attribute contains only a single value from that domain.
 - 2NF: 

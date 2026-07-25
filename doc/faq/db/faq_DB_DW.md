@@ -37,9 +37,9 @@
 		- Supports materialized views and temporary tables.
 
 	- MySQL VS PostgreSQL
-		- Architecutre
-			<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/mysql_architecutre.png" width="500" height="300">
-			<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/postgre_architecutre.png" width="500" height="300">
+		- Architecture
+			<p align="center"><img src="../../pic/mysql_architecutre.png"></p>
+			<p align="center"><img src="../../pic/postgre_architecutre.png"></p>
 		- License
 		- Development style
 			- MySQL : 
@@ -91,7 +91,7 @@
 - STAR SCHEMA 
 	- With star shape, `FACT table` as the star center, while others are `dimension table` which give describe the attribution of FACT table.  
 	- `Dimension tables` are independent with each other 
-	<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/star_schema.png" width="500" height="300">
+	<p align="center"><img src="../../pic/star_schema.png"></p>
 
 - SNOWFLAKE SCHEMA
 	- Is an extension of STAR SHEMA actually
@@ -99,12 +99,12 @@
 	can track multiples `dimension table` together 
 	- Pro : Can split the data count at each dimension table -> fast operation like `join`
 	- Con : Have to maintain extra tables 
-	<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/snowflake_schema.jpg" width="500" height="300">
+	<p align="center"><img src="../../pic/snowflake_schema.jpg"></p>
 
 
 - GALAXY SCHEMA
 	- Galaxy schema contains many fact tables with some common dimensions (conformed dimensions). This schema is a combination of many data marts.
-	<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/galaxy_schema.jpg" width="500" height="300">
+	<p align="center"><img src="../../pic/galaxy_schema.jpg"></p>
 
 
 - Example 
@@ -138,23 +138,23 @@
 	- https://blog.sqlauthority.com/2007/03/30/sql-server-index-seek-vs-index-scan-table-scan/
 
 - Type of index  ? 
-	- Culstered index 
+	- Clustered index 
 		- Only one per table
 		- Saved in the `DB hard disk`
 		- Use "B-Tree" (Balanced Tree) as data structure with components : Root/intermediate/leaf node  
 		- Heap (when no index, data is non-ordering) ->  B-tree (when index, data is ordering)
-		- If `primary key` already set, DB will set primary key as culstered index by default 
-		- ***AVOID*** set `frequent updated`column as culstered index, since the system has to spend time on data reordering when every time data updated 
-		- ***AVOID*** set `unique data` column as culstered index, since this index is not an `effieicnt filter` for `where` sql syntax
-		- ***AVOID*** set `too long/much` column as culstered index, since it will give system heavy loading where reordering 
-	- Non-Culstered index 
+		- If `primary key` already set, DB will set primary key as clustered index by default 
+		- ***AVOID*** set `frequent updated`column as clustered index, since the system has to spend time on data reordering when every time data updated 
+		- ***AVOID*** set `unique data` column as clustered index, since this index is not an `effieicnt filter` for `where` sql syntax
+		- ***AVOID*** set `too long/much` column as clustered index, since it will give system heavy loading where reordering 
+	- Non-Clustered index 
 		- Can be many per table  (but < 5 ideally)
-		- point to data with culstered index in DB hard disk
+		- point to data with clustered index in DB hard disk
 		- Use "B-Tree" data structure for ordering 
-		- Supplement of culstered index 
+		- Supplement of clustered index 
 	- Covering Index
 		- One index on `multiple` columns 
-		- Leverage the `existing` non-Culstered index, copy the column (with covering Index) to the leaf node, so index scan/seek can be processed via balanced tree as well 
+		- Leverage the `existing` non-Clustered index, copy the column (with covering Index) to the leaf node, so index scan/seek can be processed via balanced tree as well 
 		- `Hight densidy` column is a good choice 
 		- Not include more than 3 columns ideally 
 	- Index with include
@@ -165,8 +165,8 @@
 
 	- https://en.wikipedia.org/wiki/Database_index
 
-	- (culstered index pic) 
-	<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/cluster_index.png" width="700" height="200">
+	- (clustered index pic) 
+	<p align="center"><img src="../../pic/cluster_index.png"></p>
 
 - Trade off between using index and not
 	- Main concern : The ***COST of INDEX MAINTENANCE*** when data get updated
@@ -179,19 +179,19 @@
 
 ### 5) DB tuning 
 
-### 6) DB managment 
+### 6) DB management 
 
 ### 7) Case study 
 - NeoDDL on gcloud 
 	- https://medium.com/traveloka-engineering/data-modelling-and-processing-in-travel-super-app-8011a6ecafe6
 
-### 10) Clustered indexing
+### 8) Clustered indexing
 
-### 11) Indexing
+### 9) Indexing
 
-### 13) normalization, denormalization
+### 10) normalization, denormalization
 
-### 14) SQL performance tuning
+### 11) SQL performance tuning
 - ref
 	- https://docs.aws.amazon.com/redshift/latest/dg/c-optimizing-query-performance.html
 	- http://udayarumilli.com/sql-server-performance-tuning-interview-questions-part-1/
@@ -200,7 +200,7 @@
 	- https://www.mssqltips.com/sqlservertip/1429/sql-server-dba-performance-tuning-interview-questions/
 	- https://aws.amazon.com/tw/blogs/big-data/top-10-performance-tuning-techniques-for-amazon-redshift/
 
-### 15) Data model examples ?
+### 12) Data model examples ?
 - Data models of major corps :  `Netflix, linkedin , yelp, uber, ads, e-commerce`
 -  Kimball - Star schema
 	- Inmon = bottom up approach.
@@ -213,25 +213,25 @@
 	- https://www.teamblind.com/post/Facebook-DE-decision-wzQRWoCS
 	- https://github.com/yennanliu/CS_basics/tree/master/doc/faq/faq_data_model.md
 
-### 16) What do you understand by data mart?
+### 13) What do you understand by data mart?
 -  Data marts are for the most part intended for a solitary branch of business. They are designed for the individual departments.
 - We had a data warehouse that was holding the information pertaining to all these departments and then we have few data marts built on top of this data warehouse. These DataMart were specific to each department. In simple words, you can say that a DataMart is a subset of a data warehouse.
 - e.g. :  I used to work for a health insurance provider company that had different departments in it like Finance, Reporting, Sales and so forth.
 
-### 17) Explain SQL keys ?
+### 14) Explain SQL keys ?
 - Ref
 	- https://begriffs.com/posts/2018-01-01-sql-keys-in-depth.html
 
-### 18) DB normalization VS Denormalization
+### 15) DB normalization VS Denormalization
  - https://www.explainthis.io/zh-hant/swe/database-denormalization
 
 
-### 19) Index pros and cons
+### 16) Index pros and cons
 
 - https://learn.lianglianglee.com/%E6%96%87%E7%AB%A0/%E9%9D%A2%E8%AF%95%E6%9C%80%E5%B8%B8%E8%A2%AB%E9%97%AE%E7%9A%84%20Java%20%E5%90%8E%E7%AB%AF%E9%A2%98.md
 
 
-### 20) Mysql Index
+### 17) Mysql Index
 
 
 ## Ref

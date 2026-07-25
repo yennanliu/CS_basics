@@ -154,12 +154,12 @@ new_list = [expression(i) for i in old_list if filter(i)]
 
 - https://www.pythonforbeginners.com/basics/list-comprehensions-in-python
 
-### 5) In python, select from which data structure is faster?
+#### 5) In python, select from which data structure is faster?
 `select item from a list` or `select key from a dict`
 -> `select key from a dict` is faster
 
 
-### 6) Explain `cursor` in python?
+#### 6) Explain `cursor` in python?
 e.g. explain why `open(my_file.txt)` can only fetch file once?
 ->
 

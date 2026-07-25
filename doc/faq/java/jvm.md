@@ -18,10 +18,10 @@
 		- java heap
 		- method area (Non-heap memory)
 	- `part 3) Direct memory (not managed by JVM GC)`
-	<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/jvm_storage_1.jpeg">
-    <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/jvm_storage_2.jpeg">
-    <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/jvm_storage_3.png">
-     <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/jvm_storage_4.jpeg">
+	<img src ="../../pic/jvm_storage_1.jpeg">
+    <img src ="../../pic/jvm_storage_2.jpeg">
+    <img src ="../../pic/jvm_storage_3.png">
+     <img src ="../../pic/jvm_storage_4.jpeg">
 - Ref
 	- https://copyfuture.com/blogs-details/20210918043412580m
 	- https://cloud.tencent.com/developer/article/1648836
@@ -41,7 +41,7 @@
 
 ### 3) Explain JVM GC ? GC strategy ? algorithm ?
 
-- <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic//gc1.png">
+- <img src ="../../pic/gc1.png">
 
 - 5W1H
 	- Where ? 
@@ -62,7 +62,7 @@
 			- cons:
 				- low efficiency
 				- will cause "space fragments" -> hard to maintain the "continuous storage space"
-			<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic//mark_sweep.png">
+			<img src ="../../pic/mark_sweep.png">
 
 		- `Mark-Compact`
 			- mark the to-clean area, merge/move them altogether, then clean
@@ -70,7 +70,7 @@
 				- can keep "continuous storage space"
 			- cons:
 				- spend extra time/resource on "merge/move" op
-			<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic//mark_compact.png">
+			<img src ="../../pic/mark_compact.png">
 
 		- `Mark-Copy`
 			- split memory space to 50%, 50%. Only use 50% each time, move "to-clean instance" to the other 50% when clean
@@ -79,7 +79,7 @@
 			- cons:
 				- Only 50% of memory space can be used everytime
 				- will cause more frequent GC
-			<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic//mark_copy.png">
+			<img src ="../../pic/mark_copy.png">
 
 		- `Generation collection`
 			- implement above algorithm to young, old generation seperately
@@ -174,14 +174,14 @@
 		- class init:
 			- if there is parent class which is not init yet -> init this parent class first
 			- init "init code" in class in order
-		<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic//class_load_step.jpeg">
+		<img src ="../../pic/class_load_step.jpeg">
 - Important methods
 	- loadClass() : load target class, will check if current ClassLoader or its parent already have it. If not, will call findClass()
 	- findClass() : can load user-defined class
 	- defineClass() : when findClass() get class, defineClass() will transfrom such class to .class instance
 - Pics
-	<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic//classloader1.png">
-	<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic//classloader2.png">
+	<img src ="../../pic/classloader1.png">
+	<img src ="../../pic/classloader2.png">
 - Ref
 	- https://www.baeldung.com/java-classloaders
 	- https://www.javatpoint.com/classloader-in-java
@@ -264,7 +264,7 @@
 
 ### 17) What's int length in 64 bit JVM ?
 
-- Not relative to platform. `Int length is a fixed value. It's always 34 bit`
+- Not relative to platform. `Int length is a fixed value. It's always 32 bit`
 
 ### 18) Difference between WeakReference and SoftReference  and PhantomReference ?
 

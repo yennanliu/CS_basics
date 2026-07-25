@@ -14,11 +14,11 @@
 
 - https://www.quora.com/What-is-the-difference-between-a-file-system-and-a-file-format
 
-#### 2.  Differene between `Cluster` and `Node`?
+#### 2. Difference between `Cluster` and `Node`?
 
 - In Hadoop distributed system, Node is a single system which is responsible to store and process data. Whereas Cluster is a collection of multiple nodes which communicates with each other to perform set of operation.
 
-- Multiple nodes are configured to perform a set of operations we call it Cluster. A Hadoop cluster includes a single Master node and multiple Slave nodes. Master node that is Namenode which contains the metadata of the actual data and Slave nodes that is the Datanode whicih contains actual data.
+- Multiple nodes are configured to perform a set of operations we call it Cluster. A Hadoop cluster includes a single Master node and multiple Slave nodes. Master node that is Namenode which contains the metadata of the actual data and Slave nodes that is the Datanode which contains actual data.
 
 - In short, a Cluster is a set of Nodes
 

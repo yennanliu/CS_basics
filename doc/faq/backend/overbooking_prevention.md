@@ -4,7 +4,7 @@
 
 In high-concurrency booking systems (flash sales, ticket booking, hotel reservations), multiple requests can simultaneously read the same available count and all proceed — leading to **overselling/overbooking**.
 
-```
+```text
 Thread A: reads stock=1 → proceeds
 Thread B: reads stock=1 → proceeds   ← race condition
 Both confirm → stock goes to -1
@@ -29,7 +29,7 @@ return 1  -- success
 ```
 
 **Flow:**
-```
+```text
 Client → Redis DECR → if result >= 0: proceed to DB write
                      if result < 0:  rollback INCR, reject
 ```
@@ -131,7 +131,7 @@ try {
 
 In practice, combine all three layers:
 
-```
+```text
 Request
   │
   ▼

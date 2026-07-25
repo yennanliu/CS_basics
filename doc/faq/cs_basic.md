@@ -22,13 +22,13 @@
 | **進程（Process）** | 程式載入記憶體後的執行實例，有獨立的記憶體空間 |
 | **執行緒（Thread）** | 進程內的執行單位，同一進程的執行緒**共享**記憶體空間 |
 
-```
+```text
 程式（Program）= 食譜
 進程（Process）= 廚師照著食譜煮菜的過程（獨立的鍋碗瓢盆）
 執行緒（Thread）= 多個廚師同時在同一廚房裡合作
 ```
 
-<img src="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/diff_process_thread.png">
+<p align="center"><img src="../pic/diff_process_thread.png"></p>
 
 ### 進程 vs 執行緒
 
@@ -43,7 +43,7 @@
 
 ### 執行緒的三種狀態
 
-```
+```text
 新建（New）→ 就緒（Runnable）→ 執行（Running）
                    ↑                    ↓
                喚醒/解鎖          等待 IO / 鎖 / sleep
@@ -62,7 +62,7 @@
 
 ### 記憶體區域劃分
 
-```
+```text
 高位址
 ┌───────────────┐
 │  Stack（堆疊） │ ← 自動管理；函數呼叫、區域變數；後進先出；容量有限
@@ -148,7 +148,7 @@ CPU 從一個進程/執行緒切換到另一個的過程：
 
 | 方式 | 說明 | 適用場景 |
 |------|------|---------|
-| **Pipe（管道）** | 單向、親子進程間 | `ls | grep foo` |
+| **Pipe（管道）** | 單向、親子進程間 | `ls \| grep foo` |
 | **Message Queue** | 消息佇列，非同步 | 解耦服務 |
 | **Shared Memory** | 最快的 IPC，需要同步機制 | 高效能資料交換 |
 | **Socket** | 可跨機器通訊 | 網路通訊、本地進程 |
@@ -179,7 +179,7 @@ CPU 從一個進程/執行緒切換到另一個的過程：
 
 ### TCP 三次握手
 
-```
+```text
 Client              Server
   |── SYN ──────────→|   (1) Client 說：我想連線
   |← SYN-ACK ────────|   (2) Server 說：好，我準備好了
@@ -188,7 +188,7 @@ Client              Server
 
 **四次揮手（斷線）：**
 
-```
+```text
 Client              Server
   |── FIN ──────────→|   (1) Client：我要關閉了
   |← ACK ────────────|   (2) Server：收到，但我還有資料要傳
@@ -215,7 +215,7 @@ Client              Server
 
 ### HTTPS 與 TLS 握手
 
-```
+```text
 Client                          Server
   |─── ClientHello ────────────→|   支援的 TLS 版本、加密套件
   |←── ServerHello + 憑證 ──────|   選定的加密套件、伺服器公鑰

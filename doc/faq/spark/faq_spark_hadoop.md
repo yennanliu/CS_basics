@@ -22,7 +22,7 @@
 
   - http://web.stanford.edu/class/cs246/slides/01-intro.pdf
 
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/spark_vs_hadoop.png" width="500" height="300">
+<p align="center"><img src="../../pic/spark_vs_hadoop.png" width="500" height="300"></p>
 
 1'. What's `Map-Reduce` programming model?
 
@@ -44,13 +44,13 @@
 	- have to keep grab-release data when do `sequence` map-reduce tasks 
 	- doesn't offer RDD features : lazy execution, call back ...
 
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/map_reduce_overview.png" width="500" height="300">  
+<p align="center"><img src="../../pic/map_reduce_overview.png" width="500" height="300"></p>  
 
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/map_reduce_diagram.png" width="500" height="300">  
+<p align="center"><img src="../../pic/map_reduce_diagram.png" width="500" height="300"></p>  
 
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/map_reduce_parallel.png" width="500" height="300">  
+<p align="center"><img src="../../pic/map_reduce_parallel.png" width="500" height="300"></p>  
 
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/map_reduce_pattern.png" width="500" height="300">  
+<p align="center"><img src="../../pic/map_reduce_pattern.png" width="500" height="300"></p>  
 
 2. Things happen after `spark-submit`?
 	- step 1) This program invokes the main() method that is specified in the spark-submit command, which launches the driver program.
@@ -71,7 +71,7 @@
 ./bin/spark-submit \
   --master <master-url> \
   --deploy-mode <deploy-mode> \
-  --conf <key<=<value> \
+  --conf <key>=<value> \
   --driver-memory <amount of memory> \
   --executor-memory <amount of memory> \
   --executor-cores <number of cores>  \
@@ -131,7 +131,7 @@
 
 4. Explain spark  `master node`,`worker node` ,`executor`, `receiver`,`driver`...?
 
-	<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/spark_driver_workder_executor.png" width="500" height="300">
+	<p align="center"><img src="../../pic/spark_driver_workder_executor.png" width="500" height="300"></p>
 
 	- Driver 
 		- The program that runs on the master node of the machine and declares transformations and actions on data RDDs. In simple terms, a driver in Spark creates `SparkContext`, connected to a given Spark Master. The driver also delivers the RDD graphs to Master, where the standalone cluster manager runs.
@@ -322,9 +322,9 @@ rdd.groupByKey().mapValue(_.sum)
 
 - https://www.youtube.com/watch?v=pEWrWdt60nY&list=PLmOn9nNkQxJF-qlCCDx9WsdAe6x5hhH77&index=56
 
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/spark_stage_task.png" width="500" height="300"> 
+<p align="center"><img src="../../pic/spark_stage_task.png" width="500" height="300"></p> 
 
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/spark_stage_task2.png" width="500" height="300"> 
+<p align="center"><img src="../../pic/spark_stage_task2.png" width="500" height="300"></p> 
 
 
 35. Explain `shuffle`?
@@ -340,7 +340,7 @@ rdd.groupByKey().mapValue(_.sum)
 - It can be processed by a single Executor core.
 - e.g.: If you have 4 data partitions and you have 4 executor cores, you can process everything in parallel, in a single pass.
 
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/rdd_partiiton.png" width="500" height="300"> 
+<p align="center"><img src="../../pic/rdd_partiiton.png" width="500" height="300"></p> 
 
 
 37. Explain spark `cache`?
@@ -368,7 +368,7 @@ rdd.groupByKey().mapValue(_.sum)
 		- [ref2](https://www.coursera.org/lecture/scala-spark-big-data/wide-vs-narrow-dependencies-shGAX)
 		- [ref3](https://youtu.be/ha6vTXJ9BMQ?t=707)
 
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/package_nego.png" width="500" height="300"> 
+<p align="center"><img src="../../pic/package_nego.png" width="500" height="300"></p> 
 
 40. Cache/Persist VS Checkpoint ?
 	- Cache/Persist
