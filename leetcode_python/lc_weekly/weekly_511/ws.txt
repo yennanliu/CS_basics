@@ -59,7 +59,7 @@ class Solution(object):
 
     	self.helper(node)
 
-    	return sefl.cnt
+    	return self.cnt
 
     def helper(self, node):
     	if not node:
@@ -82,8 +82,75 @@ class Solution(object):
 # https://leetcode.com/problems/transform-binary-string-using-subsequence-sort/description/
 
 
+->
+
+Return a `boolean` array `ans`, 
+
+where ans[i] is true if it's possible to replace all '?' in strs[i] with '0' or '1' 
+
+and transform s into the resulting string using the allowed operation above
+
+
+
+NOTE:
+
+s: binary strint (only 0, 1)
+
+strs: strs[i] has same len as s
+	- 0 or 1 or ?
+	- ? can be replaced by 0 or 1
+
+can perform below op (any # of times, 0 as well)
+
+	- choose any sub seq of s
+	- sort sub in increasing order
+	- replace  chosen subsequence in s
+	  with the sorted sub, keeping 
+	  all other characters unchanged.
+
+
+
+# idea 1) brute force
+
+# idea 2) dp /??
+
+
+class Solution(object):
+    def transformStr(self, s, strs):
+    	# edge
+
+    	n = len(strs)
+
+    	ans = [False] * n
+
+    	for i in range(n):
+    		x = str[i]
+    		if can_form(x, s):
+    			ans[i] = True
+
+    	return ans
+
+    def can_form(self, x, s):
+    	pass
+
+
+
+
+
+
+
 
 # LC 3999
+
+
+
+
+
+
+
+
+
+
 
 
 
