@@ -26,11 +26,25 @@ start, target
 
 # idea 2) brute force
 
+# idea 3) math
+
+
+# ???
 class Solution(object):
     def canReach(self, start, target):
-    	pass
-        
+    	# edge ??
+    	if start[0] == target[0] and start[1] == target[1]:
+    		return True
 
+    	diff_x = target[0] - start[0]
+    	diff_y = target[1] - start[1]
+
+    	if start[0] == start[1] and diff_x == diff_y:
+    		return True
+
+    	return False
+
+       
 
 
 
