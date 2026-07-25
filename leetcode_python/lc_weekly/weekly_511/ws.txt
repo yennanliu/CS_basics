@@ -1,0 +1,17 @@
+# https://leetcode.com/contest/weekly-contest-511/
+
+
+# LC 3996
+# https://leetcode.com/problems/even-number-of-knight-moves/
+
+
+# LC 3997
+# https://leetcode.com/problems/count-dominant-nodes-in-a-binary-tree/
+
+
+# LC 3998
+# https://leetcode.com/problems/transform-binary-string-using-subsequence-sort/description/
+
+
+
+# LC 3999
