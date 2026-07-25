@@ -131,10 +131,24 @@ class Solution(object):
     	return ans
 
     def can_form(self, x, s):
-    	pass
+    	# if "?" not in x:
+    		# ??
+    		x.sort()
+    		return x == s
+
+    	# replace ? with 1
+    	tmp1 = x
+    	tmp1.replace("?", "1")
+    	tmp1.sort()
 
 
+    	# replace ? with 0
+    	tmp2 = x
+    	tmp2.replace("?", "0")
+    	tmp2.sort()
 
+
+    	reteurn tmp1 == s or tmp2 == s
 
 
 
