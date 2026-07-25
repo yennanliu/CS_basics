@@ -20,16 +20,6 @@
     - LC 445 : Add Two Numbers II.
 
 
-## 0) Concept  
-
-### 0-1) Types
-
-### 0-2) Pattern
-
-## 1) General form
-
-### 1-1) Basic OP
-
 ## 2) LC Example
 
 ### 2-1) Add Binary — LC 67
@@ -65,7 +55,7 @@ class Solution(object):
         else: 
             return result[::-1] ### NOTE WE NEED TO REVERSE IT!
 
-# V0
+# V0'
 class Solution(object):
     def addBinary(self, a, b):
         """
@@ -207,7 +197,7 @@ class Solution(object):
 # LC 371 : Sum of Two Integers
 # V0
 # https://leetcode.com/problems/sum-of-two-integers/discuss/1214257/Python-1-line%3A-91-faster
-class Souluton:
+class Solution:
     def getSum(self, a, b):
         tmp = math.exp(a) * math.exp(b)
         r = int(math.log(tmp))

@@ -1,4 +1,4 @@
-# Sliding Window 
+# Sliding Window
 
 ## Overview
 
@@ -45,11 +45,11 @@
 4. **Validity Condition**: Define when window is valid/invalid
 
 
-<p align="center"><img src ="../pic/slide_window.png" ></p>
+<p align="center"><img src="../pic/slide_window.png"></p>
 
-<p align="center"><img src ="../pic/slide_window_2.png" ></p>
+<p align="center"><img src="../pic/slide_window_2.png"></p>
 
-<p align="center"><img src ="../pic/slide_window_3.png" ></p>
+<p align="center"><img src="../pic/slide_window_3.png"></p>
 
 
 ### 0-1) Problem Categories
@@ -1678,36 +1678,6 @@ class Solution(object):
             d[s[r]] = r
             res = max(res, r -l + 1)
         return res
-
-# V0'
-# IDEA : SLIDING WINDOW + DICT
-#       -> use a hash table (d) record visited "element" (e.g. : a,b,c,...)
-#          (but NOT sub-string)
-class Solution(object):
-    def lengthOfLongestSubstring(self, s):
-        d = {}
-        # left pointer
-        l = 0
-        res = 0
-        # right pointer
-        for r in range(len(s)):
-            """
-            ### NOTE : we deal with "s[r] in d" case first 
-            ### NOTE : if already visited, means "repeating"
-            #      -> then we need to update left pointer (l)
-            """
-            if s[r] in d:
-                """
-                NOTE !!! this
-                -> via max(l, d[s[r]] + 1) trick,
-                   we can get the "latest" idx of duplicated s[r], and start from that one
-                """
-                l = max(l, d[s[r]] + 1)
-            # if not visited yet, record the alphabet
-            # and re-calculate the max length
-            d[s[r]] = r
-            res = max(res, r -l + 1)
-        return res
 ```
 
 ```java
@@ -1791,7 +1761,7 @@ class Solution(object):
 
 **Why `del` matters**: `len(basket)` is the number of distinct fruit types. If you only decrement counts without deleting zero-count keys, `len(basket)` stays inflated and the `while` loop shrinks the window too aggressively (or never exits correctly). Always remove a key once its count hits 0.
 
-**Generalization**: swap the `> 2` for `> K` and this template solves **LC 340 (Longest Substring with At Most K Distinct Characters)** verbatim — LC 904 is just the `K = 2` special case. See [At-Most K → Exactly K](#13-at-most-k--exactly-k-general-pattern--lc-992-lc-1248) for turning this into an *exactly-K* counter.
+**Generalization**: swap the `> 2` for `> K` and this template solves **LC 340 (Longest Substring with At Most K Distinct Characters)** verbatim — LC 904 is just the `K = 2` special case. See [At-Most K → Exactly K](#at-most-k--exactly-k-general-pattern--lc-992-lc-1248) for turning this into an *exactly-K* counter.
 
 | Piece | Role |
 |-------|------|
@@ -2061,7 +2031,7 @@ public List<Integer> partitionLabels_0_2(String s) {
 }
 ```
 
-### LC 1838 Frequency of the Most Frequent Element — LC 1838
+#### LC 1838: Frequency of the Most Frequent Element (Template: Variable Max — Sort + Window)
 
 ```java
     public int maxFrequency_0_1(int[] nums, int k) {

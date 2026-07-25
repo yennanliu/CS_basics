@@ -257,7 +257,7 @@ def floyd_warshall_optimized(n, edges):
 
 ### When to Use Which Algorithm
 
-```
+```text
 Algorithm Selection Flowchart:
 
 1. Need all-pairs shortest paths?

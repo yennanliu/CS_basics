@@ -1,6 +1,6 @@
 # Prefix Sum (前缀和)
 
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/prefix_sum.png"></p>
+<p align="center"><img src="../pic/prefix_sum.png"></p>
 
 ## Overview
 
@@ -64,17 +64,17 @@
 - **Pattern**: Convert elements to 0/1, then apply prefix sum with conditions
 - **Key Insight**: Transform problem to simpler prefix sum problem
 
-### **Pattern 8: Prefix Maximum (Greedy Chunk / Partition)** — LC 769
-- **Description**: Track the running maximum of the array. When `maxSoFar == i`, the prefix `[0..i]` contains exactly the elements `{0, 1, ..., i}` and can form an independent sorted chunk.
-- **Examples**: LC 769 - Max Chunks To Make Sorted, LC 768 - Max Chunks To Make Sorted II
-- **Pattern**: Single pass with a `maxSoFar` variable; increment chunk count whenever `maxSoFar == currentIndex`
-- **Key Insight**: Because the array is a permutation of `[0, n-1]`, if the max value seen so far equals the current index, all values needed for positions `0..i` are already present in `arr[0..i]`
-
 ### **Pattern 7: Sum of Distances (Left-Right Split)** — LC 2615
 - **Description**: Calculate sum of absolute differences between indices efficiently
 - **Examples**: LC 2615 - Sum of Distances, LC 2121 - Intervals Between Identical Elements, LC 1685 - Sum of Absolute Differences
 - **Pattern**: Split into left/right parts, use `count * value - sum` formula
 - **Key Insight**: For index `i`, distance = `(i * countLeft - sumLeft) + (sumRight - i * countRight)`
+
+### **Pattern 8: Prefix Maximum (Greedy Chunk / Partition)** — LC 769
+- **Description**: Track the running maximum of the array. When `maxSoFar == i`, the prefix `[0..i]` contains exactly the elements `{0, 1, ..., i}` and can form an independent sorted chunk.
+- **Examples**: LC 769 - Max Chunks To Make Sorted, LC 768 - Max Chunks To Make Sorted II
+- **Pattern**: Single pass with a `maxSoFar` variable; increment chunk count whenever `maxSoFar == currentIndex`
+- **Key Insight**: Because the array is a permutation of `[0, n-1]`, if the max value seen so far equals the current index, all values needed for positions `0..i` are already present in `arr[0..i]`
 
 ## 0) Concept
 
@@ -135,7 +135,7 @@ prefix = list(accumulate(cnt, initial=0))   # [0, 1, 1, 2, 3, 4]
 
 ### Why `sum(l, r) = prefix[r+1] - prefix[l]`
 
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/prefix_sum_2.png"></p>
+<p align="center"><img src="../pic/prefix_sum_2.png"></p>
 
 ```
 Given nums:    [ a,  b,  c,  d,  e ]
@@ -714,13 +714,6 @@ def sum_of_distances_optimized(nums):
 | Max Chunks To Make Sorted | 769 | Sum comparison | Medium | Template 6 |
 | Longest Arithmetic Subsequence | 1027 | Transform differences | Medium | Template 6 |
 
-#### **Pattern 8: Prefix Maximum Problems**
-| Problem | LC # | Key Technique | Difficulty | Template |
-|---------|------|---------------|------------|----------|
-| Max Chunks To Make Sorted | 769 | Prefix max == index | Medium | Template 8 |
-| Max Chunks To Make Sorted II | 768 | PrefixMax + SuffixMin arrays | Hard | Template 8 |
-| Find the Longest Turbulent Subarray | 978 | Running state tracking | Medium | Modified Template 8 |
-
 #### **Pattern 7: Sum of Distances Problems**
 | Problem | LC # | Key Technique | Difficulty | Template |
 |---------|------|---------------|------------|----------|
@@ -729,6 +722,13 @@ def sum_of_distances_optimized(nums):
 | Sum of Absolute Differences in a Sorted Array | 1685 | Sorted array variant | Medium | Template 7 |
 | Sum of Distances in Tree | 834 | Tree version (DFS + reroot) | Hard | Template 7 + DFS |
 | Minimum Total Distance Traveled | 2463 | DP + distance calculation | Hard | Template 7 + DP |
+
+#### **Pattern 8: Prefix Maximum Problems**
+| Problem | LC # | Key Technique | Difficulty | Template |
+|---------|------|---------------|------------|----------|
+| Max Chunks To Make Sorted | 769 | Prefix max == index | Medium | Template 8 |
+| Max Chunks To Make Sorted II | 768 | PrefixMax + SuffixMin arrays | Hard | Template 8 |
+| Find the Longest Turbulent Subarray | 978 | Running state tracking | Medium | Modified Template 8 |
 
 #### **Advanced/Mixed Pattern Problems**
 | Problem | LC # | Key Technique | Difficulty | Template |
@@ -943,13 +943,9 @@ for (int i = 1; i < prefixSum.length; i++) {
 ```
 
 
-## 1) General form
+## 1) LC Example
 
-### 1-1) Basic OP
-
-## 2) LC Example
-
-### 2-1) Flip String to Monotone Increasing — LC 926
+### 1-1) Flip String to Monotone Increasing — LC 926
 
 ```python
 # LC 926. Flip String to Monotone Increasing
@@ -982,7 +978,7 @@ class Solution(object):
                    for j in range(len(P)))
 ```
 
-### 2-2) Range Addition — LC 370
+### 1-2) Range Addition — LC 370
 ```python
 # LC 370. Range Addition
 # V0
@@ -1053,7 +1049,7 @@ class Solution(object):
         return ret[0:-1]
 ```
 
-### 2-3) Count Number of Nice Subarrays — LC 1248 — LC 1248
+### 1-3) Count Number of Nice Subarrays — LC 1248
 ```python
 # 1248. Count Number of Nice Subarrays
 # NOTE : there are also array, window, deque.. approaches
@@ -1092,7 +1088,7 @@ class Solution:
         return res
 ```
 
-### 2-4) Maximum Size Subarray Sum Equals k — LC 325 — LC 325
+### 1-4) Maximum Size Subarray Sum Equals k — LC 325
 ```python
 # LC 325. Maximum Size Subarray Sum Equals k
 # V0 
@@ -1124,7 +1120,7 @@ class Solution(object):
         return result
 ```
 
-### 2-5) Subarray Sum Equals K — LC 560 — LC 560
+### 1-5) Subarray Sum Equals K — LC 560
 
 ```java
 // java
@@ -1168,7 +1164,7 @@ public int subarraySum(int[] nums, int k) {
 }
 ```
 
-### 2-6) Continuous Subarray Sum — LC 523 — LC 523
+### 1-6) Continuous Subarray Sum — LC 523
 
 ```java
 // java
@@ -1203,7 +1199,7 @@ public boolean checkSubarraySum_1(int[] nums, int k) {
 }
 ```
 
-### 2-7) Max Chunks To Make Sorted — LC 769 — LC 769
+### 1-7) Max Chunks To Make Sorted — LC 769
 
 ```java
 // java
@@ -1263,7 +1259,7 @@ public int maxChunksToSorted_1_1(int[] arr) {
 }
 ```
 
-### 2-8) Maximum Sum of Two Non-Overlapping Subarrays — LC 1031 — LC 1031
+### 1-8) Maximum Sum of Two Non-Overlapping Subarrays — LC 1031
 
 **Core Idea (LC 1031):**
 ```
@@ -1409,7 +1405,7 @@ class Solution:
 | Subarray Sum Equals K | 560 | Prefix sum + HashMap |
 | Maximum Average Subarray II | 644 | Fixed/variable window with prefix sum |
 
-### 2-9) Maximum Side Length of a Square with Sum ≤ Threshold — LC 1292
+### 1-9) Maximum Side Length of a Square with Sum ≤ Threshold — LC 1292
 
 **Pattern:** 2D Prefix Sum + Binary Search **or** 2D Prefix Sum + Greedy
 
@@ -1486,7 +1482,7 @@ public int maxSideLength(int[][] mat, int threshold) {
 | Maximal Square | 221 | Max square in matrix (DP approach) |
 | Largest 1-Bordered Square | 1139 | Max square with border condition |
 
-### 2-10) Longest Well-Performing Interval — LC 1124
+### 1-10) Longest Well-Performing Interval — LC 1124
 
 **Pattern:** HashMap + Prefix Sum — Longest Subarray with Positive Sum
 
@@ -1546,7 +1542,7 @@ public int longestWPI(int[] hours) {
 | Subarray Sum Equals K | 560 | Count variant (store count, not index) |
 | Binary Subarrays With Sum | 930 | Count subarrays with binary-transformed sum = k |
 
-### 2-11) Sum of Distances — LC 2615 — LC 2615
+### 1-11) Sum of Distances — LC 2615
 
 ```java
 // java

@@ -37,7 +37,7 @@
 
 ### 0-1) Conversion Strategy
 
-```
+```text
 Recursion (Exponential)
     ↓
 Top-Down DP (Memoization)
@@ -99,7 +99,7 @@ public int fibRecursive(int n) {
 ```
 
 **Problem:** Massive redundant calculations!
-```
+```text
 fib(5)
 ├── fib(4)
 │   ├── fib(3)
@@ -256,7 +256,7 @@ public int fibOptimized(int n) {
 
 ---
 
-### 1-2) Climbing Stairs (LC 70) — LC 70
+### 1-2) Climbing Stairs (LC 70)
 
 **Problem:** Climbing n stairs, can climb 1 or 2 steps. How many distinct ways?
 
@@ -335,7 +335,7 @@ public int climbStairsOptimized(int n) {
 
 ---
 
-### 1-3) House Robber (LC 198) — LC 198
+### 1-3) House Robber (LC 198)
 
 **Problem:** Array of house values. Can't rob adjacent houses. Maximum robbery amount?
 
@@ -429,7 +429,7 @@ public int robOptimized(int[] nums) {
 
 ---
 
-### 1-4) Coin Change (LC 322) — LC 322
+### 1-4) Coin Change (LC 322)
 
 **Problem:** Array of coin denominations, target amount. Minimum coins needed?
 
@@ -624,9 +624,9 @@ public int coinChange(int[] coins, int amount) {
 
 **Key Insight:** Every DP problem can be solved recursively first, then optimized with memoization/tabulation.
 
-## LC Examples
+## 5) LC Examples
 
-### 2-1) House Robber (LC 198) — Recursion → Memoization → DP
+### 5-1) House Robber (LC 198) — Recursion → Memoization → DP
 > Cannot rob two adjacent houses; dp[i] = max(dp[i-1], dp[i-2] + nums[i]).
 
 ```java
@@ -645,7 +645,7 @@ public int rob(int[] nums) {
 }
 ```
 
-### 2-2) Word Break (LC 139) — Top-down Recursion → DP
+### 5-2) Word Break (LC 139) — Top-down Recursion → DP
 > dp[i] = true if s[0..i] can be segmented using wordDict.
 
 ```java
@@ -667,7 +667,7 @@ public boolean wordBreak(String s, List<String> wordDict) {
 }
 ```
 
-### 2-3) Edit Distance (LC 72) — 2D DP (String → String)
+### 5-3) Edit Distance (LC 72) — 2D DP (String → String)
 > dp[i][j] = min operations to convert s1[0..i] to s2[0..j].
 
 ```java
@@ -689,7 +689,7 @@ public int minDistance(String word1, String word2) {
 }
 ```
 
-### 2-4) Fibonacci Number (LC 509) — Recursion → Memoization → DP → O(1)
+### 5-4) Fibonacci Number (LC 509) — Recursion → Memoization → DP → O(1)
 > Classic example showing all 4 levels of optimization from naive recursion.
 
 ```java
@@ -708,7 +708,7 @@ public int fib(int n) {
 }
 ```
 
-### 2-5) Unique Paths (LC 62) — 2D Recursion → DP
+### 5-5) Unique Paths (LC 62) — 2D Recursion → DP
 > Recursion `f(i,j) = f(i-1,j) + f(i,j-1)` → bottom-up DP with row compression.
 
 ```java
@@ -725,7 +725,7 @@ public int uniquePaths(int m, int n) {
 }
 ```
 
-### 2-6) Triangle (LC 120) — Top-Down Recursion → Bottom-Up DP
+### 5-6) Triangle (LC 120) — Top-Down Recursion → Bottom-Up DP
 > dp[i][j] = min path sum from (i,j) to bottom; convert triangle recursion bottom-up.
 
 ```java
@@ -743,7 +743,7 @@ public int minimumTotal(List<List<Integer>> triangle) {
 }
 ```
 
-### 2-7) Longest Palindromic Subsequence (LC 516) — Interval DP
+### 5-7) Longest Palindromic Subsequence (LC 516) — Interval DP
 > `dp[i][j]` = LPS length in s[i..j]; recursion `f(i,j)` → bottom-up by increasing length.
 
 ```java
@@ -764,7 +764,7 @@ public int longestPalindromeSubseq(String s) {
 }
 ```
 
-### 2-8) Coin Change (LC 322) — Recursion with Pruning → DP
+### 5-8) Coin Change (LC 322) — Recursion with Pruning → DP
 > Recursion `f(amount) = 1 + min(f(amount-coin))` → bottom-up unbounded knapsack DP.
 
 ```java
@@ -782,7 +782,7 @@ public int coinChange(int[] coins, int amount) {
 }
 ```
 
-### 2-9) Combination Sum IV (LC 377) — Recursion → DP (Order Matters)
+### 5-9) Combination Sum IV (LC 377) — Recursion → DP (Order Matters)
 > dp[i] = number of ordered combinations summing to i; unlike knapsack, order of adding matters.
 
 ```java
@@ -799,7 +799,7 @@ public int combinationSum4(int[] nums, int target) {
 }
 ```
 
-### 2-10) Minimum Cost to Cut a Stick (LC 1547) — Interval DP
+### 5-10) Minimum Cost to Cut a Stick (LC 1547) — Interval DP
 > dp[i][j] = min cost to make all cuts between cut[i] and cut[j]; try each middle cut.
 
 ```java
@@ -824,7 +824,7 @@ public int minCost(int n, int[] cuts) {
 }
 ```
 
-### 2-11) Partition Array for Maximum Sum (LC 1043) — 1D DP
+### 5-11) Partition Array for Maximum Sum (LC 1043) — 1D DP
 > dp[i] = max sum of partitioning array up to index i; try all sub-partitions of size 1..k.
 
 ```java

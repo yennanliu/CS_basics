@@ -15,11 +15,16 @@
 - tree + dict
     - `put Node into dict` (e.g. defaultdict(Node))
 
-<p><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/trie_1.png" ></p>
+<p align="center"><img src="../pic/trie_1.png"></p>
 
-<p><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/trie_2.png" ></p>
+<p align="center"><img src="../pic/trie_2.png"></p>
 
 ### 0-1) Types
+
+- **HashMap-based trie** — `children` is a dict/`Map`; flexible alphabet (see Pattern below).
+- **Array-based trie** — `children` is a fixed `[None] * 26` / `TrieNode[26]`; fastest for lowercase-only (Template 2).
+- **Wildcard trie** — supports `.` matching via DFS over all children (Template 3, LC 211).
+- **Binary (XOR) trie** — children are bits `0/1`; used for max-XOR / bitwise problems (Template 5, LC 421).
 
 ### 0-2) Pattern
 
@@ -61,8 +66,10 @@ class Trie:
                 return False
             node = node.children[char]
         return True
+```
 
-# Java version
+```java
+// Java version
 class TrieNode {
     Map<Character, TrieNode> children;
     boolean isEnd;
@@ -153,8 +160,10 @@ class Trie:
                 return None
             node = node.children[idx]
         return node
+```
 
-# Java version
+```java
+// Java version
 class TrieNode {
     TrieNode[] children;
     boolean isEnd;
@@ -201,8 +210,10 @@ class WildcardTrie:
             if char not in node.children:
                 return False
             return self._dfs_search(word, index + 1, node.children[char])
+```
 
-# Java version
+```java
+// Java version
 public boolean search(String word) {
     return dfsSearch(word, 0, root);
 }
@@ -269,8 +280,10 @@ class AutocompleteTrie:
         # Traverse in lexicographical order
         for char in sorted(node.children.keys()):
             self._dfs_collect(node.children[char], results, limit)
+```
 
-# Java version with priority queue for top suggestions
+```java
+// Java version with priority queue for top suggestions
 class AutocompleteTrie {
     class TrieNode {
         Map<Character, TrieNode> children = new HashMap<>();
@@ -347,8 +360,10 @@ class BinaryTrie:
             bit = (num >> i) & 1
             node = node.children[bit]
             node.count -= 1
+```
 
-# Java version
+```java
+// Java version
 class BinaryTrie {
     class Node {
         Node[] children = new Node[2];
@@ -399,7 +414,7 @@ class BinaryTrie {
 
 **Key invariant**: only delete a node if it has no remaining children AND is not the end of a different word. Shared prefixes must be preserved.
 
-```
+```text
 Example: trie contains "apple" and "app"
 
 delete("apple"):
@@ -542,7 +557,7 @@ class Trie {
 ```
 
 **Trace — `delete("apple")` when trie also contains `"app"`:**
-```
+```text
 depth=0  ch='a'  → recurse
 depth=1  ch='p'  → recurse
 depth=2  ch='p'  → recurse
@@ -559,8 +574,10 @@ Result: "app" intact, "apple" gone ✓
 
 ## 1) General form
 
-
 ### 1-1) Basic OP
+
+See the `insert` / `search` / `startsWith` skeletons in [0-2) Pattern](#0-2-pattern) and the
+variant templates above (array-based, wildcard, autocomplete, binary/XOR, delete).
 
 ## 2) LC Example
 
@@ -1221,7 +1238,7 @@ def delete(self, word: str) -> bool:
             del node.children[ch]
             return len(node.children) == 0 and not node.is_end
         return False
-    _delete(self.root, word, 0)
+    return _delete(self.root, word, 0)
 ```
 
 ### Prefix-Suffix Trie — LC 745

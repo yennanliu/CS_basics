@@ -230,9 +230,6 @@ System.out.println(Arrays.toString(arr2));      // 1D: [1, 2, 3, 4, 5]
 System.out.println(Arrays.deepToString(result)); // 2D: [[0, 1], [2, 3], [0, 0], [0, 0]]
 ```
 
-### 2.2) Array Initialization Patterns
-
-
 ### 2.2-1) Array / Collection Copying ⭐
 
 > **Core Rule**: `arr2 = arr` copies the **reference**, not the data. Both variables point to the same array — mutating one mutates the other.
@@ -579,7 +576,7 @@ res.get(depth).add(curRoot.val);
 // ...
 ```
 
-### 1-0-3) Reverse List
+### 1-0-3-1) Reverse List
 ```java
 // java
 // LC 107
@@ -739,7 +736,7 @@ return 0;  // All revisions equal
 ```
 
 **Key Tricks:**
-```
+```text
 1. Leading zeros handled automatically:
    Integer.parseInt("001") == 1  ✅  (no manual stripping needed)
 
@@ -1135,9 +1132,6 @@ System.out.println("After Arrays.sort: " + Arrays.deepToString(intervals));
 - **`Arrays.sort()`** → For arrays (primitive & object types)
 - **`Collections.sort()`** → For collections (List, etc.)
 
-#### List Sorting Examples
-
-
 #### Array Sorting (Object Types)
 ```java
 Integer[] numbers = {5, 5, 7, 8, 9, 0};
@@ -1276,7 +1270,7 @@ public int[] sortArrayByParity(int[] nums) {
 ```
 
 #### Comparator Mental Model
-```
+```text
 compare(o1, o2):
   return NEGATIVE  →  keep o1 before o2   (o1 is "smaller")
   return POSITIVE  →  move o1 after  o2   (o1 is "larger")
@@ -1644,8 +1638,6 @@ int r = Arrays.stream(piles).max().getAsInt();
 ```
 
 
-### 1-12) Get most freq element in an array
-
 ### 1-13) Pair data structure
 
 - Pair offers a (key, value) structure
@@ -1728,7 +1720,7 @@ ans.add(new ArrayList<>(cur));
 
 #### The Rule
 
-```
+```text
 ==        → compares memory addresses (reference identity)
 equals()  → compares logical content (value equality)
 ```
@@ -1806,7 +1798,7 @@ i == j          // ✅ correct — primitives have no .equals()
 
 #### Interview Quick Rule
 
-```
+```text
 Q: "Should I use == or equals()?"
 
 → Is it a primitive (int, long, boolean, char, double)?
@@ -1996,7 +1988,7 @@ map.put(key, map.getOrDefault(key,0)+1);
 map.getOrDefault(key,0)
 ```
 
-# 2) Other tricks
+## 6) Other tricks
 
 ### 2-1) Init var, modify it in another method, and use it — Pass-by-Reference Pattern ⭐
 
@@ -2056,7 +2048,7 @@ private void dfs(int[][] grid, int r, int c, StringBuilder path, char direction)
 ```
 
 **Memory Model:**
-```
+```text
 Main thread:
 pathSignature = StringBuilder{} at memory address 0x1000
 
@@ -2170,7 +2162,7 @@ private void helperFunction(SomeRefType data, OtherParams...) {
 | `String` | N/A (immutable) | ❌ No | Use StringBuilder instead |
 
 **When to Backtrack:**
-```
+```text
 Rule: If the parameter is a reference type that gets MODIFIED, you must UNDO the modification.
 
 Path/List building:  path.add(val) → must do path.remove(...)
@@ -2299,7 +2291,7 @@ return check_(root, smallest_val, biggest_val);
 
 - A Queue is an `interface`, which means you `cannot` construct a Queue directly.
 - Consinder use one of below implementation:
-```
+```text
 AbstractQueue, ArrayBlockingQueue, ArrayDeque, ConcurrentLinkedQueue, DelayQueue, LinkedBlockingQueue, LinkedList, PriorityBlockingQueue, PriorityQueue, or SynchronousQueue.
 ```
 
@@ -2630,6 +2622,7 @@ for (int num : nums) {
 ```java
 // LC 104
 // https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Recursion/MaximumDepthOfBinaryTree.java
+```
 
 **Important Concept**: In Java, primitives are **passed by value** (creates copies).
 
@@ -2676,7 +2669,7 @@ public int maxDepth(TreeNode root) {
 
 #### The Rule
 
-```
+```text
 Primitive param (int, long, double...)  →  copy per call  →  NO backtrack needed
 Reference param (List, int[], HashMap)  →  shared object  →  MUST backtrack (add + remove)
 Global / instance variable              →  shared state   →  MUST backtrack
@@ -2731,7 +2724,7 @@ private void getPathHelper(TreeNode root, Integer curSum) {
 ```
 
 **Memory model:**
-```
+```text
 Stack frame:  getPathHelper(node=4, curSum=5)
               ├── newSum = 9     ← local to THIS frame
               ├── calls getPathHelper(node.left, newSum=9)
@@ -2885,7 +2878,7 @@ private void dfs(TreeNode node, StringBuilder sb) {
 
 #### Interview Tips
 
-```
+```text
 Q: "Do I need to backtrack this variable?"
 
 Decision tree:
@@ -3195,9 +3188,9 @@ s.charAt(i) - '0'         // ✅ gives actual digit (e.g. 3)
 
 ---
 
-## 9) Integer Math: Ceil, Floor, and Rounding ⭐
+## 10) Integer Math: Ceil, Floor, and Rounding ⭐
 
-### 9.1) `ceil` vs `floor` — Definition
+### 10.1) `ceil` vs `floor` — Definition
 
 | Operation | Meaning | Example |
 |-----------|---------|---------|
@@ -3224,7 +3217,7 @@ int floorVal = (int) Math.floor((double) 7 / 3); // 2
 
 ---
 
-### 9.2) Integer Ceiling Division — No `double` Needed ⭐
+### 10.2) Integer Ceiling Division — No `double` Needed ⭐
 
 **Formula**: `ceil(a / b)` using only integers:
 
@@ -3233,7 +3226,7 @@ int ceilDiv = (a + b - 1) / b;
 ```
 
 **Why it works:**
-```
+```text
 ceil(a / b)  =  (a + b - 1) / b   (integer division, b > 0)
 
 Example: a=7, b=3
@@ -3273,7 +3266,7 @@ private boolean canDivide(int[] nums, int threshold, int d) {
 
 ---
 
-### 9.3) Integer Floor Division
+### 10.3) Integer Floor Division
 
 For positive integers, `/` already gives floor:
 ```java
@@ -3290,7 +3283,7 @@ Math.floorDiv(7, 3);    //  2  (same as 7/3 for positives)
 
 ---
 
-### 9.4) Quick Reference Table
+### 10.4) Quick Reference Table
 
 | Goal | Code | Notes |
 |------|------|-------|
@@ -3303,7 +3296,7 @@ Math.floorDiv(7, 3);    //  2  (same as 7/3 for positives)
 
 ---
 
-### 9.5) Classic LeetCode Problems Using Ceiling Division
+### 10.5) Classic LeetCode Problems Using Ceiling Division
 
 | LC | Problem | Ceiling Division Usage |
 |----|---------|----------------------|
@@ -3340,9 +3333,9 @@ private boolean check(int[] nums, int threshold, int d) {
 
 ---
 
-## 10) HashMap Key Pitfalls
+## 11) HashMap Key Pitfalls
 
-### 10.1) Arrays CANNOT Be Used as HashMap Keys ⭐
+### 11.1) Arrays CANNOT Be Used as HashMap Keys ⭐
 
 > **Core Rule**: Never use `int[]` or `Integer[]` as a `HashMap` key — they use memory address for `.equals()` and `.hashCode()`, not element values.
 

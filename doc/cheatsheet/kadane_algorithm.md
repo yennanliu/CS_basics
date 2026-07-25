@@ -278,7 +278,7 @@ public int maxProduct(int[] nums) {
 
 **Step-by-Step Example:** `nums = [2, 3, -2, 4]`
 
-```
+```text
 Index | nums[i] | maxProd              | minProd              | result
 ----------------------------------------------------------------------
   0   |    2    |     2                |     2                |   2
@@ -536,7 +536,7 @@ public int maximumSum(int[] arr) {
 
 #### Problem-Solving Framework:
 
-```
+```text
 1. Identify the optimization metric:
    ├─ Sum → Standard Kadane's
    ├─ Product → Track max and min
@@ -639,9 +639,9 @@ public int maximumSum(int[] arr) {
 - Know product variant requires min tracking
 - Master circular array approach (total - minimum)
 
-## LC Examples
+## 6) LC Examples
 
-### 2-1) Maximum Subarray (LC 53) — Kadane's Algorithm
+### 6-1) Maximum Subarray (LC 53) — Kadane's Algorithm
 > Track local max ending at each index; reset when local max drops below current element.
 
 ```java
@@ -658,7 +658,7 @@ public int maxSubArray(int[] nums) {
 }
 ```
 
-### 2-2) Maximum Product Subarray (LC 152) — Track Min & Max
+### 6-2) Maximum Product Subarray (LC 152) — Track Min & Max
 > Track both max and min product (min can become max when multiplied by negative).
 
 ```java
@@ -677,7 +677,7 @@ public int maxProduct(int[] nums) {
 }
 ```
 
-### 2-3) Maximum Sum Circular Subarray (LC 918) — Kadane + Total Sum Trick
+### 6-3) Maximum Sum Circular Subarray (LC 918) — Kadane + Total Sum Trick
 > Max circular subarray = max(normal max subarray, total sum - min subarray).
 
 ```java
@@ -698,7 +698,7 @@ public int maxSubarraySumCircular(int[] nums) {
 }
 ```
 
-### 2-4) Best Time to Buy and Sell Stock (LC 121) — Kadane Variant
+### 6-4) Best Time to Buy and Sell Stock (LC 121) — Kadane Variant
 > Track running minimum price; max profit = current price − running minimum.
 
 ```java
@@ -715,7 +715,7 @@ public int maxProfit(int[] prices) {
 }
 ```
 
-### 2-5) Maximum Subarray Sum with One Deletion (LC 1186) — Two DP States
+### 6-5) Maximum Subarray Sum with One Deletion (LC 1186) — Two DP States
 > dp0[i] = max sum ending at i (no deletion); dp1[i] = max sum with one deletion used.
 
 ```java
@@ -733,7 +733,7 @@ public int maximumSum(int[] arr) {
 }
 ```
 
-### 2-6) Longest Turbulent Subarray (LC 978) — Kadane Variant — LC 978
+### 6-6) Longest Turbulent Subarray (LC 978) — Kadane Variant — LC 978
 > Track lengths of increasing and decreasing alternating windows; reset on equality.
 
 ```java
@@ -752,7 +752,7 @@ public int maxTurbulenceSize(int[] arr) {
 }
 ```
 
-### 2-7) Gas Station (LC 134) — Greedy / Kadane on Circular — LC 134
+### 6-7) Gas Station (LC 134) — Greedy / Kadane on Circular — LC 134
 > If total gas >= total cost, a solution exists; start from the first surplus reset point.
 
 ```java
@@ -771,7 +771,7 @@ public int canCompleteCircuit(int[] gas, int[] cost) {
 }
 ```
 
-### 2-8) Maximum Length of Subarray with Positive Product (LC 1567) — Track Pos/Neg Product Lengths — LC 1567
+### 6-8) Maximum Length of Subarray with Positive Product (LC 1567) — Track Pos/Neg Product Lengths — LC 1567
 > Track lengths with positive and negative product separately; swap on negative number.
 
 ```java
@@ -790,7 +790,7 @@ public int getMaxLen(int[] nums) {
 }
 ```
 
-### 2-9) Maximum Score of Spliced Array (LC 2321) — Kadane on Difference — LC 2321
+### 6-9) Maximum Score of Spliced Array (LC 2321) — Kadane on Difference — LC 2321
 > Max gain from swapping subarray = max subarray sum of (nums2[i] - nums1[i]).
 
 ```java
@@ -812,7 +812,7 @@ private int maxGain(int[] a, int[] b) {  // max(b[i]-a[i]) subarray sum
 }
 ```
 
-### 2-10) K-Concatenation Maximum Sum (LC 1191) — Kadane + Math — LC 1191
+### 6-10) K-Concatenation Maximum Sum (LC 1191) — Kadane + Math — LC 1191
 > For k >= 2: answer = maxSubarray(2 copies) + max(0, totalSum) × (k − 2).
 
 ```java
@@ -835,7 +835,7 @@ private long kadane(int[] arr, int repeat) {
 }
 ```
 
-### 2-11) Find Maximum Sum of Almost Unique Subarray (LC 2841) — Sliding Window Kadane — LC 2841
+### 6-11) Find Maximum Sum of Almost Unique Subarray (LC 2841) — Sliding Window Kadane — LC 2841
 > Fixed-size window of length k; count distinct elements using HashMap; maximize sum.
 
 ```java

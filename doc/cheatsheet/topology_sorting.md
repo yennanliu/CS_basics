@@ -103,8 +103,10 @@ def topologicalSort_BFS(numNodes, edges):
     
     # Check for cycles
     return result if len(result) == numNodes else []
+```
 
-# Java version
+```java
+// Java version
 public List<Integer> topologicalSort_BFS(int numNodes, int[][] edges) {
     Map<Integer, List<Integer>> graph = new HashMap<>();
     int[] inDegree = new int[numNodes];
@@ -179,8 +181,10 @@ def topologicalSort_DFS(numNodes, edges):
             dfs(i)
     
     return [] if has_cycle else result[::-1]
+```
 
-# Java version
+```java
+// Java version
 public List<Integer> topologicalSort_DFS(int numNodes, int[][] edges) {
     Map<Integer, List<Integer>> graph = new HashMap<>();
     for (int i = 0; i < numNodes; i++) {
@@ -312,8 +316,10 @@ def topologicalSort_Lexicographical(numNodes, edges):
                 heapq.heappush(heap, neighbor)
     
     return result if len(result) == numNodes else []
+```
 
-# Java version
+```java
+// Java version
 public List<Integer> topologicalSort_Lexicographical(int numNodes, int[][] edges) {
     Map<Integer, List<Integer>> graph = new HashMap<>();
     int[] inDegree = new int[numNodes];
@@ -437,8 +443,10 @@ def parallelTaskScheduling(numTasks, edges, times):
                 queue.append(next_task)
     
     return max(completion_time)
+```
 
-# Java version
+```java
+// Java version
 public int parallelTaskScheduling(int numTasks, int[][] edges, int[] times) {
     Map<Integer, List<Integer>> graph = new HashMap<>();
     int[] inDegree = new int[numTasks];
@@ -534,8 +542,10 @@ def findMinHeightTrees(n, edges):
 
     # The remaining nodes (1 or 2) are the centroids
     return list(leaves)
+```
 
-# Java version
+```java
+// Java version
 public List<Integer> findMinHeightTrees(int n, int[][] edges) {
     // Edge case: single node
     if (n == 1) {
@@ -629,8 +639,10 @@ def findCircleNum(isConnected):
             if isConnected[i][j] == 1:
                 uf.union(i, j)
     return uf.count
+```
 
-# Java version
+```java
+// Java version
 class UnionFind {
     int[] parent;
     int[] rank;
@@ -817,7 +829,7 @@ START: Topological Sort Problem
 
 ## 2) LC Example
 
-### 2-2) Course Schedule II — LC 210
+### 2-1) Course Schedule II — LC 210
 
 ```java
 // java
@@ -1478,7 +1490,7 @@ class Solution:
         return provinces
 ```
 
-### 2-5) Alien Dictionary — LC 269
+### 2-4) Alien Dictionary — LC 269
 
 ```java
 // java
@@ -1684,10 +1696,10 @@ class Solution(object):
                     out_degree[word1[i]] = sets.Set()
                 in_degree[word2[i]].add(word1[i])
                 out_degree[word1[i]].add(word2[i])
-                break　　
+                break
 ```
 
-### 2-6) Sequence Reconstruction — LC 444
+### 2-5) Sequence Reconstruction — LC 444
 
 ```java
 // java
@@ -1756,7 +1768,7 @@ class Solution(object):
     }
 ```
 
-### 2-7) Parallel Courses — LC 1136
+### 2-6) Parallel Courses — LC 1136
 ```python
 # LC 1136
 def minimumSemesters(n, relations):
@@ -1796,7 +1808,7 @@ def minimumSemesters(n, relations):
     return semesters if studied == n else -1
 ```
 
-### 2-8) Find Eventual Safe States — LC 802
+### 2-7) Find Eventual Safe States — LC 802
 ```python
 # LC 802
 def eventualSafeNodes(graph):
@@ -1831,7 +1843,7 @@ def eventualSafeNodes(graph):
     return sorted(safe)
 ```
 
-### 2-9) Minimum Height Trees (LC 310) — LC 310
+### 2-8) Minimum Height Trees — LC 310
 
 ```java
 // java

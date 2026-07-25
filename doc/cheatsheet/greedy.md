@@ -75,6 +75,7 @@ def interval_scheduling(intervals):
 ### Template 2: Activity Selection with Heap — LC 621
 ```python
 import heapq
+import collections
 
 def activity_selection_heap(tasks):
     """Select activities using priority queue"""
@@ -719,7 +720,7 @@ if (running_prefix - target) in seen_prefixes:
 
 #### Visualization
 
-```
+```text
 nums = [-1, 3, 5, 1, 4, 2, -9],  target = 6
 
 Legend: prefix = running prefix sum
@@ -742,7 +743,7 @@ Legend: prefix = running prefix sum
 Answer: cnt = 2   (subarrays [5,1] and [4,2] are non-overlapping)
 ```
 
-```
+```text
 Why NOT wait for a bigger subarray?
 
 Full array [3,5,1,4,2,-9] also sums to 6, but choosing it would
@@ -809,7 +810,7 @@ class Solution(object):
 
 ### Pattern Selection Strategy
 
-```
+```text
 Greedy Algorithm Selection Flowchart:
 
 1. Can the problem be solved greedily?
@@ -856,7 +857,7 @@ Greedy Algorithm Selection Flowchart:
 ### Proof Template: Exchange Argument
 To verify a greedy choice, show that swapping the greedy pick with any other choice does not improve the result.
 
-```
+```text
 1. Assume optimal solution OPT differs from greedy solution G at some step.
 2. Show you can swap OPT's choice at that step with G's choice without making things worse.
 3. Repeat until OPT == G → greedy is optimal.

@@ -948,7 +948,7 @@ if (!bf.mightContain("https://new-site.com")) {
 
 #### Problem-Solving Framework:
 
-```
+```text
 1. Identify constraint: Memory vs Accuracy
    ├─ Exact answer needed? → Reservoir Sampling or Boyer-Moore
    └─ Approximate OK? → Count-Min Sketch or Bloom Filter

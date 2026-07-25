@@ -8,7 +8,7 @@
 
 > Insert = push, Delete = pop (both at the top, **O(1)**). Min/Max can be made **O(1)** with an auxiliary min/max-stack ([monotonic_stack.md](./monotonic_stack.md)).
 
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/stack.jpeg"></p>
+<p align="center"><img src="../pic/stack.jpeg"></p>
 
 **Stack** is a data structure with Last-In-First-Out (LIFO) property. Each operation adds/removes from the top of the stack.
 
@@ -18,7 +18,7 @@
 - **Core Principle**: Last element added is the first one removed
 - **Use Case**: Problems involving order reversal, pattern matching, or maintaining context
 
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/stack_101.png"></p>
+<p align="center"><img src="../pic/stack_101.png"></p>
 
 ### Quick Decision Guide
 
@@ -72,7 +72,7 @@
 # LC 739, LC 503 - Find next `big number`
 # ...
 stack = [] # [[idx, val]]
-for i, val in enumerate(len(tmp)):
+for i, val in enumerate(tmp):
     while stack and stack[-1][1] < val:
         _idx, _val = stack.pop(-1)
         res[tmp[_idx]] = i - _idx
@@ -133,7 +133,7 @@ for (int i = 0; i < n; i++) {
 
 - **Stack with Pair `[element, count]`** (adjacent duplicate removal with k)
 
-```
+```text
 Core Idea:
   - Instead of pushing raw elements, push [element, count] pairs
   - When current element == stack top element: increment count
@@ -223,7 +223,7 @@ for (int j = 0; j < temperatures.length; j++) {
 
 - **monotonic stack (greedy removal pattern - Remove K Digits)** ⭐⭐⭐⭐
 
-```
+```text
 Core Idea:
   - To make the SMALLEST number, a high-place digit weighs more than any
     low-place digit. So a bigger digit sitting BEFORE a smaller one is bad
@@ -648,7 +648,7 @@ if stack:
 ```
 
 
-### 1-1-2-2) next greater element 2 — LC 503
+### 1-3) next greater element 2 — LC 503
 
 ```python
 # V0
@@ -677,7 +677,7 @@ class Solution(object):
         return res
 ```
 
-### 1-1-3) get `non balanced` String — LC 1963
+### 1-4) get `non balanced` String — LC 1963
 ```python
 # LC 1963. Minimum Number of Swaps to Make the String Balanced
 
@@ -691,11 +691,11 @@ for i in range(len(s)):
     if stack and s[i] == "]":
         stack.pop(-1)
     else:
-        stack.append()
+        stack.append(s[i])
 print (stack)
 ```
 
-### 1-1-4) Delay-Insert to Stack (act on `pre_op`, not current op) — LC 227
+### 1-5) Delay-Insert to Stack (act on `pre_op`, not current op) — LC 227
 
 **Key Insight**: When scanning an expression left-to-right, we can't decide what to do with the current number until we see the **next** operator — so we **delay** the push until then, acting on `pre_op`.
 
@@ -708,7 +708,7 @@ print (stack)
 - `num` accumulates digits; trigger fires on operator or end-of-string
 
 **Visual trace — `"3+2*2"` → 7**:
-```
+```text
 char  num  trigger?  pre_op  action               stack
 '3'   3    no        '+'     —                    []
 '+'   3    YES       '+'     push(3)  → pre_op='+' [3]
@@ -1382,7 +1382,7 @@ class Solution:
 
 ### 2-5') Basic Calculator II — LC 227
 
-> **Pattern**: Delay-Insert (see [1-1-4](#1-1-4-delay-insert-to-stack-act-on-pre_op-not-current-op----lc-227)) — push `num` only when the *next* operator arrives; act on `pre_op` at that point.
+> **Pattern**: Delay-Insert (see [1-5](#1-5-delay-insert-to-stack-act-on-pre_op-not-current-op----lc-227)) — push `num` only when the *next* operator arrives; act on `pre_op` at that point.
 
 ```python
 # python
@@ -1501,7 +1501,7 @@ class Solution:
 
 | Sub-problem | Trick | How it shows up |
 |-------------|-------|-----------------|
-| **Precedence** (`*` / `/` bind tighter than `+` / `-`) | **Delay-Insert on `pre_op`** (see [1-1-4](#1-1-4-delay-insert-to-stack-act-on-pre_op-not-current-op----lc-227)) | `+`/`-` push the signed number onto the stack (defer); `*`/`/` immediately pop-and-combine with the top. Final answer = `sum(stack)`. |
+| **Precedence** (`*` / `/` bind tighter than `+` / `-`) | **Delay-Insert on `pre_op`** (see [1-5](#1-5-delay-insert-to-stack-act-on-pre_op-not-current-op----lc-227)) | `+`/`-` push the signed number onto the stack (defer); `*`/`/` immediately pop-and-combine with the top. Final answer = `sum(stack)`. |
 | **Parentheses** (a sub-expression evaluated first) | **Recursion** — a `(` opens a fresh scope, a `)` closes it | On `(`, recurse on the *same* queue; the recursive call consumes up to its matching `)` and returns the sub-total, which is treated as a plain `curr_num`. |
 
 **Why the stack handles precedence for free:** additive terms are deferred as signed values (`+num` → push `num`, `-num` → push `-num`), while multiplicative operators eat the previous term on the spot (`stack[-1] *= num`). Because `*`/`/` mutate the top *before* it is ever summed, `sum(stack)` at the end naturally respects precedence — e.g. `2 + 3 * 4` builds `[2, 12]` → `14`, not `20`.
@@ -1567,7 +1567,7 @@ class Solution(object):
 
 **Gotcha — integer division truncates toward zero:** Python's `//` floors (`-7 // 2 == -4`), but these problems require truncation toward zero (`-7 / 2 == -3`). Using `int(float(stack.pop()) / curr_num)` gives the correct behavior for negative intermediates.
 
-### 2-5) Sum of Subarray Minimums — LC 907
+### 2-6) Sum of Subarray Minimums — LC 907
 ```python
 # LC 907. Sum of Subarray Minimums
 # V0
@@ -1593,7 +1593,7 @@ class Solution:
         return sum(a * l * r for a, l, r in zip(A, left, right)) % mod
 ```
 
-### 2-6) Asteroid Collision — LC 735
+### 2-7) Asteroid Collision — LC 735
 ```python
 # LC 735. Asteroid Collision
 # V0
@@ -1613,7 +1613,7 @@ class Solution(object):
         return ans
 ```
 
-### 2-7) Remove All Adjacent Duplicates in String — LC 1047
+### 2-8) Remove All Adjacent Duplicates in String — LC 1047
 ```python
 # LC 1047. Remove All Adjacent Duplicates In String
 # V0
@@ -1655,7 +1655,7 @@ class Solution:
             return ''.join(a[: end + 1])
 ```
 
-### 2-8) Remove All Adjacent Duplicates in String II — LC 1209
+### 2-9) Remove All Adjacent Duplicates in String II — LC 1209
 
 **Pattern: Stack with Character-Count Pairs**
 
@@ -1948,7 +1948,7 @@ public String removeDuplicates_v1(String s, int k) {
  */
 ```
 
-### 2-9) Simplify Path — LC 71
+### 2-10) Simplify Path — LC 71
 ```python
 # LC 71. Simplify Path
 
@@ -1968,11 +1968,11 @@ class Solution:
         return "/"+"/".join(result)
 ```
 
-### 2-10) Min Stack — LC 155
+### 2-11) Min Stack — LC 155
 
 **Pattern: 2 Stacks (main stack + min-tracking stack)**
 
-```
+```text
 Key Insight:
   minStack does NOT store elements in sorted order.
   Instead, minStack[i] stores the minimum value seen
@@ -2049,7 +2049,7 @@ class MinStack(object):
         return self.stack[-1][1]
 ```
 
-### 2-11) Sum of Subarray Ranges — LC 2104
+### 2-12) Sum of Subarray Ranges — LC 2104
 ```python
 # LC 2104. Sum of Subarray Ranges
 # NOTE : there are also brute force, 2 pointers ... approaches
@@ -2073,7 +2073,7 @@ class Solution:
         return res 
 ```
 
-### 2-11) Largest Rectangle in Histogram — LC 84
+### 2-13) Largest Rectangle in Histogram — LC 84
 
 ```python
 # LC 84. Largest Rectangle in Histogram
@@ -2099,7 +2099,7 @@ class Solution:
         return max_area
 ```
 
-### 2-12) Remove Duplicate Letters — LC 316
+### 2-14) Remove Duplicate Letters — LC 316
 
 ```java
 // java
@@ -2244,7 +2244,7 @@ for (char c : s.toCharArray()) {
 }
 ```
 
-### 2-13) Remove K Digits — LC 402
+### 2-15) Remove K Digits — LC 402
 
 ```java
 // java
@@ -2336,7 +2336,7 @@ public String removeKdigits(String num, int k) {
  */
 ```
 
-### 2-14) Online Stock Span — LC 901
+### 2-16) Online Stock Span — LC 901
 
 ```java
 // java

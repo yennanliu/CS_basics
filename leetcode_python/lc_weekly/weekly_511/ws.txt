@@ -1,12 +1,81 @@
 # https://leetcode.com/contest/weekly-contest-511/
 
 
+2:51 - 3:58 pm
+
+
+->
+
+Return `true` if a knight can move from `start to 
+target` in an `even` number of moves. O
+
+therwise, return false.
+
+
+start, target
+
+[x,t]
+
+
+
+
 # LC 3996
 # https://leetcode.com/problems/even-number-of-knight-moves/
+
+# idea 1) greedy
+
+# idea 2) brute force
+
+class Solution(object):
+    def canReach(self, start, target):
+    	pass
+        
+
+
 
 
 # LC 3997
 # https://leetcode.com/problems/count-dominant-nodes-in-a-binary-tree/
+
+
+->
+
+Return the `number` of 
+`dominant` nodes in the tree.
+
+
+
+A node x is called `dominant` 
+   if its value is equal to the 
+   maximum value among all nodes in the subtree rooted at x.
+
+
+# idea 1) dfs (post order)
+
+class Solution(object):
+    def countDominantNodes(self, root):
+    	# edge
+    	self.cnt = 0
+
+    	self.helper(node)
+
+    	return sefl.cnt
+
+    def helper(self, node):
+    	if not node:
+    		return 0 # ??
+
+    	_left = self.helper(node.left)
+    	_right = self.helper(node.right)
+
+    	# ??
+    	_max = max(_left, _right)
+
+    	if node.val >= _max:
+    		self.cnt += 1
+
+    	return _max
+
 
 
 # LC 3998
@@ -15,3 +84,19 @@
 
 
 # LC 3999
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

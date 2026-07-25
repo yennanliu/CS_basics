@@ -30,15 +30,13 @@
         - left-right pointers
     - [sliding window](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/sliding_window.md)
     - [prefix sum](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/prefix_sum.md)
-    - [difference array](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/diffence_array.md)
+    - [difference array](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/difference_array.md)
     - [Kadane algo](https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/kadane_algo.md)
 
 - Data structure
     - dict
     - set
     - array
-
-### 0-2) Pattern
 
 ## 1) General form
 
@@ -246,7 +244,7 @@ class NestedIterator implements Iterator<Integer>{
 
     private Iterator<Integer> it;
 
-    public NestedInteger(List<NestedInteger> nestedList){
+    public NestedIterator(List<NestedInteger> nestedList){
         // save flatten result
         List<Integer> result = new LinkedList<>();
 
@@ -294,7 +292,7 @@ public class NestedIterator implements Iterator<Integer>{
 
     private LinkedList<NestedInteger> list;
 
-    public NestedInteger(List<NestedInteger> nestedList){
+    public NestedIterator(List<NestedInteger> nestedList){
         // use LinkedList, for good performance in below op
         list = new LinkedList<>(nestedList);
     }
@@ -1213,14 +1211,10 @@ class Solution(object):
     def reconstructQueue(self, people):
         people.sort(key = lambda x : (-x[0], x[1]))
         res = []
-        for p in people:
-        """
-        py insert syntax
-        # syntax : 
+        # py insert syntax:
         # https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/python_trick.md#1-6-insert-into-array-in-place
-
-        # arr.insert(<index>,<value>)
-        """
+        # arr.insert(<index>, <value>)
+        for p in people:
             res.insert(p[1], p)
         return res
 ```
@@ -1280,7 +1274,7 @@ class Solution(object):
         return int("".join(digits))
 ```
 
-### 2-7) Best Time to Buy and Sell Stock — LC 121
+### 2-4) Best Time to Buy and Sell Stock — LC 121
 ```python
 # LC 121 Best Time to Buy and Sell Stock
 # V0
@@ -1303,7 +1297,7 @@ class Solution(object):
         return maxProfit
 ```
 
-### 2-8) Bulb Switcher III — LC 1375
+### 2-5) Bulb Switcher III — LC 1375
 ```python
 # LC 1375. Bulb Switcher III
 # V0
@@ -1322,7 +1316,7 @@ class Solution:
         return count
 ```
 
-### 2-9) Robot Bounded In Circle — LC 1041
+### 2-6) Robot Bounded In Circle — LC 1041
 ```python
 # LC 1041. Robot Bounded In Circle
 # V0
@@ -1355,7 +1349,7 @@ class Solution:
         return (x == 0 and y ==0) or idx !=0
 ```
 
-### 2-10) Maximum Length of Subarray With Positive Product — LC 1567
+### 2-7) Maximum Length of Subarray With Positive Product — LC 1567
 ```python
 # LC 1567 Maximum Length of Subarray With Positive Product
 
@@ -1406,7 +1400,7 @@ class Solution:
         return res
 ```
 
-### 2-11) Corporate Flight Bookings — LC 1109
+### 2-8) Corporate Flight Bookings — LC 1109
 ```python
 # LC 1109. Corporate Flight Bookings
 # V1
@@ -1453,7 +1447,7 @@ class Solution:
         return ret
 ```
 
-### 2-12) First Missing Positive — LC 41
+### 2-9) First Missing Positive — LC 41
 ```python
 # LC 41. First Missing Positive
 # V1'
@@ -1555,7 +1549,7 @@ public int firstMissingPositive(int[] nums) {
 }
 ```
 
-### 2-13) Increasing Triplet Subsequence — LC 334
+### 2-10) Increasing Triplet Subsequence — LC 334
 ```python
 # LC 334 Increasing Triplet Subsequence
 # V0
@@ -1580,7 +1574,7 @@ class Solution(object):
         return False
 ```
 
-### 2-14) First Missing Positive — LC 41
+### 2-11) First Missing Positive — LC 41 (cyclic-sort variant)
 ```python
 # LC 41. First Missing Positive
 # V0
@@ -1602,7 +1596,7 @@ class Solution:
         return len(nums)+1
 ```
 
-### 2-15) Rotate Array — LC 189
+### 2-12) Rotate Array — LC 189
 ```python
 # LC 189. Rotate Array
 # V0
@@ -1683,7 +1677,7 @@ private void reverse(int[] nums, int start, int end) {
 }
 ```
 
-### 2-16) Flatten 2D Vector — LC 251
+### 2-13) Flatten 2D Vector — LC 251
 ```python
 # LC 251. Flatten 2D Vector
 # V0
@@ -1710,7 +1704,7 @@ class Vector2D:
         return self.position + 1 < len(self.nums)
 ```
 
-### 2-17) Maximize Distance to Closest Person — LC 849
+### 2-14) Maximize Distance to Closest Person — LC 849
 
 ```java
 // java

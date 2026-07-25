@@ -35,6 +35,7 @@ void traverse(TreeNode root) {
     // in-order traversal
     print(root.val);
     traverse(root.right);
+}
 ```
 
 ## Problem Categories
@@ -187,7 +188,7 @@ def find_min(node):
 
 #### **Core Idea**
 
-```
+```text
 Goal: keep ONLY nodes whose value lies in [low, high],
       WITHOUT changing the relative structure of the survivors.
 
@@ -206,7 +207,7 @@ Why return the recursive call (not None)?
   trimBST(child, ...) reconnects the next valid node to the parent.
 ```
 
-```
+```text
 Visual (low=1, high=3):
 
         3                 3
@@ -354,7 +355,7 @@ def kth_smallest_optimized(root, k):
 
 #### **Core Idea**
 
-```
+```text
 Pre-collect ALL nodes (eager):              Lazy traversal:
   O(n) space, O(n) init time                 O(h) space, O(1) amortized per call
 
@@ -363,7 +364,7 @@ Pre-collect ALL nodes (eager):              Lazy traversal:
 ```
 
 **Three-step pattern:**
-```
+```text
 1. INIT:    Push entire left spine from root into stack
              (leftmost path = smallest values on top)
 
@@ -375,7 +376,7 @@ Pre-collect ALL nodes (eager):              Lazy traversal:
 ```
 
 **Visual walkthrough:**
-```
+```text
 BST:          7
              / \
             3   15
@@ -460,7 +461,7 @@ class BSTIterator:
 | All Elements in Two BSTs | 1305 | Medium | Merge two lazy iterators |
 
 #### **Key Takeaways**
-```
+```text
 1. Push LEFT SPINE only — this gives smallest-first access
 2. On pop: expand right subtree's left spine lazily
 3. Stack depth = O(h), not O(n) — critical for tall/large trees
@@ -1437,7 +1438,7 @@ mid = left + (right - left) // 2
 
 #### **Why In-Order Traversal? ⭐**
 
-```
+```text
 Core Insight:
   Valid BST in-order traversal → strictly INCREASING sequence
 
@@ -1460,7 +1461,7 @@ Finding "drops" in sequence = finding swapped nodes!
 
 #### **Two Cases of Swapped Nodes**
 
-```
+```text
 Case 1: ADJACENT nodes swapped (1 drop)
   Valid:   [1, 2, 3, 4, 5]
   Swapped: [1, 3, 2, 4, 5]  ← swap 2 and 3
@@ -1567,7 +1568,7 @@ class Solution:
 
 #### **Why This Pattern Works**
 
-```
+```text
 The algorithm handles BOTH cases with ONE logic:
 
 1. "first" is set only ONCE at the first drop
@@ -1608,7 +1609,7 @@ Example (distant swap: 2 and 6):
 
 **🚫 Mistake 1: Trying to swap nodes instead of values**
 
-```
+```text
 Why swap VALUES, not NODE OBJECTS?
 
   Swapping node objects means rewiring parent/child pointers for BOTH nodes,
@@ -1676,7 +1677,7 @@ TreeNode prev = new TreeNode(Integer.MIN_VALUE);
 
 #### **Key Takeaways**
 
-```
+```text
 1. In-order traversal of valid BST = STRICTLY INCREASING sequence
    → This is the MOST IMPORTANT property for BST problems
 
@@ -1754,7 +1755,7 @@ boolean isSameTree(TreeNode root1, TreeNode root2){
         return false;
     }
 
-    return isSameTree(root1.left, root2.left) && isSameTree(root1.right, root2.right)
+    return isSameTree(root1.left, root2.left) && isSameTree(root1.right, root2.right);
 }
 ```
 
@@ -1776,7 +1777,7 @@ boolean isValidBST(TreeNode root, TreeNode min, TreeNode max){
     if (max != null && root.val >= max.val){
         return false;
     }
-    return isValidBST(root.left, min, root) && isValidBST(root.right, root, max)
+    return isValidBST(root.left, min, root) && isValidBST(root.right, root, max);
 }
 ```
 
@@ -1786,7 +1787,7 @@ boolean isValidBST(TreeNode root, TreeNode min, TreeNode max){
 // V1 : general (for tree and BST)
 boolean isInBST(TreeNode root, int target){
     if (root == null) return false;
-    if (root.val == target) return target;
+    if (root.val == target) return true;
 
     return isInBST(root.left, target) || isInBST(root.right, target);
 }
@@ -1794,15 +1795,14 @@ boolean isInBST(TreeNode root, int target){
 // V2 : optimization for BST
 boolean isInBST(TreeNode root, int target){
     if (root == null) return false;
-    if (root.val == target) return target;
+    if (root.val == target) return true;
 
     // optimize here
     if (root.val < target){
         return isInBST(root.right, target);
     }
-    if (root.val > target){
-        return isInBST(root.left, target);
-    }
+    // root.val > target
+    return isInBST(root.left, target);
 }
 
 ```
@@ -1908,7 +1908,7 @@ TreeNode deleteNode(TreeNode root, int key){
         // case 3)
         TreeNode minNode = getMin(root.right);
         root.val = minNode.val;
-        root.right = deleteNode(root.right, key);
+        root.right = deleteNode(root.right, minNode.val);
     }
     else if (root.val > key){
         // to left sub tree
@@ -2152,7 +2152,7 @@ Split a BST into two valid BSTs based on a target value. This is a **partition**
 
 #### Core Idea
 
-```
+```text
 Return value: TreeNode[2]
   res[0] → BST with all values ≤ target
   res[1] → BST with all values > target
@@ -2160,7 +2160,7 @@ Return value: TreeNode[2]
 
 **Two cases based on root.val vs target:**
 
-```
+```text
 Case 1: root.val <= target
   → root belongs to LEFT partition (res[0])
   → But root.right may contain nodes > target
@@ -2174,7 +2174,7 @@ Case 2: root.val > target
 
 #### Visual Walkthrough
 
-```
+```text
 Input:        target = 2
          4
         / \
@@ -2212,7 +2212,7 @@ Result:
 
 #### Key Insight: The Reconnection
 
-```
+```text
 When root.val <= target and we split root.right:
   split[0] = nodes from right subtree that are still <= target
   split[1] = nodes from right subtree that are > target
@@ -2562,7 +2562,7 @@ Trim a BST so all node values lie within `[L, R]`. This leverages BST property t
 
 #### Core Idea
 
-```
+```text
 Three cases based on root.val vs [L, R] range:
 
 Case 1: root.val < L
@@ -2580,7 +2580,7 @@ Case 3: L <= root.val <= R
 
 #### Visual Walkthrough
 
-```
+```text
 Input:        L=1, R=3
          3
         / \
@@ -2610,7 +2610,7 @@ Result:
 
 #### Key Insight: Why `return trimBST(root.right, L, R)` instead of `return null`?
 
-```
+```text
 When root.val < L:
 
   ❌ WRONG: return null
@@ -2735,20 +2735,16 @@ return root;
 - LC 938 Range Sum of BST (same "skip subtree" optimization using BST property)
 
 ### 2-10-1) Convert BST to Greater Tree — LC 538
-```python
-# LC 538
-```
+Use **reverse inorder** (right → root → left) with a running sum. See the
+[Reverse Inorder for Descending](#pattern-reverse-inorder-for-descending) pattern below for the implementation.
 
 ### 2-11) Binary Search Tree to Greater Sum Tree — LC 1038
-```python
-# LC 1038
-# Similar to LC 538 - Convert BST to Greater Tree
-# Uses reverse inorder traversal
-```
+Identical to LC 538 — reverse inorder traversal accumulating a running sum.
+See the [Reverse Inorder for Descending](#pattern-reverse-inorder-for-descending) pattern below.
 
 ## Pattern Selection Strategy
 
-```
+```text
 BST Problem Analysis Flowchart:
 
 1. Does the problem require finding/searching a value?
@@ -2956,7 +2952,7 @@ def inorder_generator(root):
 
 Use this flowchart to quickly identify which template to use for your BST problem:
 
-```
+```text
 ┌─────────────────────────────────────────────────┐
 │ START: Analyze the BST Problem                  │
 └──────────────────┬──────────────────────────────┘

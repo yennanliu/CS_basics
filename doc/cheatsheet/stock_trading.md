@@ -9,7 +9,7 @@
 - **Multiple Transactions**: Unlimited transactions (LC 122)
 - **K Transactions**: At most k transactions (LC 123, LC 188)
 - **With Constraints**: Cooldown period (LC 309), transaction fee (LC 714)
-- **Special Variants**: With jump game (LC 1235)
+- **Special Variants**: Weighted job scheduling (LC 1235)
 
 ### 0-2) Pattern
 
@@ -25,13 +25,13 @@
 ### 1-1) Basic OP
 
 #### State Definition
-```python
+```text
 # Basic states
 hold[i] = max profit when holding stock at day i
 sold[i] = max profit when not holding stock at day i
 
 # With transaction count
-buy[i][k] = max profit after at most k transactions, currently holding
+buy[i][k]  = max profit after at most k transactions, currently holding
 sell[i][k] = max profit after at most k transactions, currently not holding
 ```
 

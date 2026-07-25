@@ -10,7 +10,7 @@ Google interviews frequently test math/combinatorics reasoning — more than oth
 ## Pattern 1: Modular Arithmetic
 
 ### Basics
-```
+```text
 (a + b) % m = ((a % m) + (b % m)) % m
 (a * b) % m = ((a % m) * (b % m)) % m
 (a - b) % m = ((a % m) - (b % m) + m) % m   ← add m to avoid negative
@@ -38,7 +38,7 @@ long modPow(long base, long exp, long mod) {
 ```
 
 ### Modular Inverse (when mod is prime)
-```
+```text
 b^(-1) mod p = b^(p-2) mod p    (Fermat's little theorem)
 ```
 
@@ -130,7 +130,7 @@ def nCr(n, r):
 ```
 
 ### Catalan Numbers — LC 96
-```
+```text
 C(n) = C(2n, n) / (n+1) = (2n)! / ((n+1)! * n!)
 
 C(0)=1, C(1)=1, C(2)=2, C(3)=5, C(4)=14, C(5)=42
@@ -213,7 +213,7 @@ def cross(O, A, B):
 ```
 
 ### Distance & Line Formulas
-```
+```text
 Euclidean distance: sqrt((x2-x1)² + (y2-y1)²)
 Manhattan distance: |x2-x1| + |y2-y1|
 
@@ -230,20 +230,20 @@ Tip: Use long to avoid integer overflow in distance calculations.
 ## Pattern 7: Bit Counting & Number Theory
 
 ### Count Divisors
-```
+```text
 Number of divisors of n = product of (e_i + 1) for each prime factor p_i^e_i
 Example: 12 = 2² × 3¹ → (2+1)(1+1) = 6 divisors
 ```
 
 ### Euler's Totient
-```
+```text
 φ(n) = count of integers in [1, n] coprime to n
 φ(p) = p - 1  for prime p
 φ(p^k) = p^k - p^(k-1)
 ```
 
 ### Sum of Digits / Digital Root — LC 258
-```
+```text
 Digital root of n = 1 + (n-1) % 9  (for n > 0)
 ```
 

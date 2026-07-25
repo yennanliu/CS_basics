@@ -189,7 +189,7 @@ def linked_list_operation(head):
 
 **Without dummy** — works fine here:
 
-```
+```text
 fast = slow = head = [1]
 
 Step 1: move fast n=2 steps ahead
@@ -206,7 +206,7 @@ Step 3: slow.next = slow.next.next  →  removes [4]
 
 **With dummy** — also works, same logic:
 
-```
+```text
 fast = slow = dummy[0]
 
 Step 1: move fast n+1=3 steps ahead
@@ -227,7 +227,7 @@ Step 3: slow.next = slow.next.next  →  removes [4]
 
 **Without dummy** — BREAKS, needs special-case code:
 
-```
+```text
 fast = slow = head = [1]
 
 Step 1: move fast n=5 steps
@@ -249,7 +249,7 @@ Step 3: slow.next = slow.next.next
 
 **With dummy** — works uniformly, NO special case:
 
-```
+```text
 fast = slow = dummy[0]
 
 Step 1: move fast n+1=6 steps ahead
@@ -509,7 +509,7 @@ def removeElements(self, head: ListNode, val: int) -> ListNode:
 ```
 
 **Dry Run Example** (`[6,6,6,3]`, val=6):
-```
+```text
 Initial: dummy -> 6 -> 6 -> 6 -> 3, curr at dummy
 
 Step 1: curr.next.val = 6 (match!)
@@ -553,7 +553,7 @@ Return: dummy.next = [3]
 **Core Idea**: Combine a HashMap for O(1) key lookup with a doubly linked list for O(1) ordered eviction. Most-recently-used nodes sit near the **tail**; least-recently-used sits near the **head**. Sentinel dummy head/tail nodes eliminate all edge-case pointer checks.
 
 **Layout**:
-```
+```text
 head(dummy) <-> [LRU] <-> ... <-> [MRU] <-> tail(dummy)
 ```
 
@@ -630,7 +630,7 @@ class LRUCache:
 ```
 
 **Visual Trace** (capacity=2):
-```
+```text
 put(1,1): head <-> [1] <-> tail
 put(2,2): head <-> [1] <-> [2] <-> tail
 get(1):   head <-> [2] <-> [1] <-> tail   ← 1 moved to MRU
@@ -741,7 +741,7 @@ class Solution(object):
 
 **Visualization** (`[1,2,3,4,5]`, `left=2`, `right=4` → reverse 3 nodes `2,3,4`):
 
-```
+```text
 dummy -> 1 -> 2 -> 3 -> 4 -> 5
               └──── reverse these 3 ────┘
 
@@ -774,7 +774,7 @@ Final:
 ```
 
 **The 3 boundary handles, visually**:
-```
+```text
         prev        new_head → ... → new_tail        next_node
           |             |                 |               |
    ... -> 1             4 -> 3 -> 2         (dangling)      5 -> ...
@@ -1054,11 +1054,7 @@ slow.next = slow.next.next;
 // ...
 ```
 
-#### 1-1-1) transversal linked list
-
-#### 1-1-2) plus one on linked list — LC 369
-
-#### 1-1-3) Reverse linked list (iteration) — LC 206
+#### 1-1-1) Reverse linked list (iteration) — LC 206
 ```python
 # python
 #-------------------------
@@ -1132,7 +1128,7 @@ public ListNode reverseList(ListNode head) {
 }
 ```
 
-#### 1-1-4) Reverse linked list (recursion) — LC 206
+#### 1-1-2) Reverse linked list (recursion) — LC 206
 ```java
 // java
 //---------------------------
@@ -1146,7 +1142,7 @@ public ListNode reverseList(ListNode head) {
 // same as above 
 ```
 
-#### 1-1-5) Reverse *nodes in [a,b]*  linked list (iteration) — LC 92
+#### 1-1-3) Reverse *nodes in [a,b]*  linked list (iteration) — LC 92
 ```java
 // java
 //---------------------------
@@ -1173,7 +1169,7 @@ ListNode reverse(ListNode a, Listnode b){
 }
 ```
 
-#### 1-1-6) Reverse *nodes in k group*  linked list (iteration) — LC 25
+#### 1-1-4) Reverse *nodes in k group*  linked list (iteration) — LC 25
 ```java
 // java
 //---------------------------
@@ -1254,7 +1250,7 @@ class Solution:
         return d.next
 ```
 
-#### 1-1-7) Reverse *first N*  linked list (recursion)
+#### 1-1-5) Reverse *first N*  linked list (recursion)
 ```java
 //---------------------------
 // recursion
@@ -1283,7 +1279,7 @@ ListNode reverseN(ListNode head, int n){
 }
 ```
 
-#### 1-1-8) Reverse *middle N nodes* in linked list (*start, end* as interval) (recursion) — LC 92
+#### 1-1-6) Reverse *middle N nodes* in linked list (*start, end* as interval) (recursion) — LC 92
 ```java
 // java
 //---------------------------
@@ -1302,6 +1298,14 @@ ListNode reverseN(ListNode head, int n){
         return head;
     }
 
+    // set head.next as start point, return first n - 1 nodes
+    ListNode last = reverseN(head.next, n - 1);
+    head.next.next = head;
+    // connect reversed head node and following nodes
+    head.next = successor;
+    return last;
+}
+
 // reverse nodes in index = m to index = n
 ListNode reverseBetween(ListNode head, int m, int n){
     // base case
@@ -1313,13 +1317,10 @@ ListNode reverseBetween(ListNode head, int m, int n){
     // will trigger base case when when meet reverse start point
     head.next = reverseBetween(head.next, m - 1, n - 1);
     return head;
+}
 ```
 
-#### 1-1-9) delete node
-
-#### 1-1-10) swap node
-
-#### 1-1-11) add 2 linked list — LC 2
+#### 1-1-7) add 2 linked list — LC 2
 ```python
 # LC 002
 class Solution(object):
@@ -1402,7 +1403,7 @@ class Solution:
         return head.next
 ```
 
-#### 1-1-12) Find linked list middle point — LC 876
+#### 1-1-8) Find linked list middle point — LC 876
 ```java
 // algorithm book p. 286
 // java
@@ -1508,7 +1509,7 @@ class Solution(object):
 # LC 023 Merge k sorted lists
 # V0
 # IDEA : LC 021 Merge Two Sorted Lists + implement mergeTwoLists on every 2 linedlist
-# https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/linked_list.md#1-1-6-reverse-nodes-in-k-group--linked-list-iteration
+# https://github.com/yennanliu/CS_basics/blob/master/doc/cheatsheet/linked_list.md#1-1-4-reverse-nodes-in-k-group--linked-list-iteration
 class Solution(object):
     def mergeKLists(self, lists):
         if len(lists) == 0:
@@ -1845,7 +1846,7 @@ class Solution(object):
         return res
 ```
 
-### 2-7) Remove Nth Node From End of List — LC 19
+### 2-8) Remove Nth Node From End of List — LC 19
 ```python
 # LC 19. Remove Nth Node From End of List
 # NOTE : there is (two pass algorithm) approach
@@ -2004,7 +2005,7 @@ class Solution(object):
     }
 ```
 
-### 2-8) Reorder List — LC 143
+### 2-9) Reorder List — LC 143
 
 ```java
 // java
@@ -2176,7 +2177,7 @@ class Solution:
         return head
 ```
 
-### 2-9) Swap Nodes in Pairs — LC 24
+### 2-10) Swap Nodes in Pairs — LC 24
 
 > Swap **every two adjacent nodes**, without touching the values — only re-wire the `next` pointers.
 > `1 -> 2 -> 3 -> 4`  becomes  `2 -> 1 -> 4 -> 3`
@@ -2185,7 +2186,7 @@ class Solution:
 
 Every swap really involves **3 anchors**, not 2:
 
-```
+```text
 prev -> first -> second -> (rest...)
 ```
 
@@ -2195,7 +2196,7 @@ prev -> first -> second -> (rest...)
 
 After the swap the pair is flipped and `prev` points to the new front:
 
-```
+```text
 prev -> second -> first -> (rest...)
 ```
 
@@ -2244,7 +2245,7 @@ class Solution(object):
 
 #### **Visualization** (`dummy -> 1 -> 2 -> 3 -> 4`, first iteration)
 
-```
+```text
 Start:   prev=dummy, first=1, second=2
          dummy -> [1] -> [2] -> 3 -> 4
           prev   first  second  rest=3
@@ -2284,7 +2285,7 @@ while head and head.next:
 ```
 
 **Initial state** (after `dummy.next = head`, `prev = dummy`):
-```
+```text
 dummy -> 1 -> 2 -> 3 -> 4 -> None
  prev   head
 ```
@@ -2293,7 +2294,7 @@ dummy -> 1 -> 2 -> 3 -> 4 -> None
 
 **Iteration 1** — `head=1`, `head.next=2` → enter loop
 
-```
+```text
 cache:  first = 1 ,  second = 2 ,  (second.next = 3 = "rest")
 
 (A) first.next  = second.next   # 1.next = 3
@@ -2307,7 +2308,7 @@ advance: prev = first  = 1
          head = first.next = 3
 ```
 State after iter 1:
-```
+```text
 dummy -> 2 -> 1 -> 3 -> 4 -> None
               prev head
 ```
@@ -2316,7 +2317,7 @@ dummy -> 2 -> 1 -> 3 -> 4 -> None
 
 **Iteration 2** — `head=3`, `head.next=4` → enter loop
 
-```
+```text
 cache:  first = 3 ,  second = 4 ,  (second.next = None = "rest")
 
 (A) first.next  = second.next   # 3.next = None
@@ -2330,7 +2331,7 @@ advance: prev = first  = 3
          head = first.next = None
 ```
 State after iter 2:
-```
+```text
 dummy -> 2 -> 1 -> 4 -> 3 -> None
                    prev head=None
 ```
@@ -2339,7 +2340,7 @@ dummy -> 2 -> 1 -> 4 -> 3 -> None
 
 **Iteration 3** — `head = None` → loop condition `head and head.next` is `False` → **exit**
 
-```
+```text
 return dummy.next  =>  2 -> 1 -> 4 -> 3   ✓
 ```
 
@@ -2391,14 +2392,14 @@ The recursion returns the **new front** of each swapped segment, which the calle
 
 | # | Problem | Relationship to LC 24 |
 |---|---------|------------------------|
-| 206 | Reverse Linked List | Swap-in-pairs is a **k=2, segment-wise reversal**; 206 reverses the whole list. See [1-1-3](#1-1-3-reverse-linked-list-iteration--lc-206) |
-| 25  | Reverse Nodes in k-Group | **Generalization**: LC 24 is exactly the `k=2` case. Same "reconnect front + internal reverse". See [1-1-6](#1-1-6-reverse-nodes-in-k-group--linked-list-iteration--lc-25) |
+| 206 | Reverse Linked List | Swap-in-pairs is a **k=2, segment-wise reversal**; 206 reverses the whole list. See [1-1-1](#1-1-1-reverse-linked-list-iteration--lc-206) |
+| 25  | Reverse Nodes in k-Group | **Generalization**: LC 24 is exactly the `k=2` case. Same "reconnect front + internal reverse". See [1-1-4](#1-1-4-reverse-nodes-in-k-group--linked-list-iteration--lc-25) |
 | 92  | Reverse Linked List II | Reverse a **sub-range** `[m, n]`; reuses "hook `prev` to the new front, tail to the rest". See [2-4](#2-4-reverse-linked-list-ii--lc-92) |
-| 143 | Reorder List | Interleaves two halves — another "re-wire `next` pointers pairwise" merge. See [2-8](#2-8-reorder-list--lc-143) |
+| 143 | Reorder List | Interleaves two halves — another "re-wire `next` pointers pairwise" merge. See [2-9](#2-9-reorder-list--lc-143) |
 | 1721 | Swapping Nodes in a Linked List | Simpler — usually swap **values**; but node-swap needs the same 3-anchor care |
 | 61  | Rotate List | Re-connects a cut point; same pointer-bookkeeping discipline |
 
-### 2-10) Plus One Linked List — LC 369
+### 2-11) Plus One Linked List — LC 369
 ```java
 // java
 // LC 369
@@ -2450,7 +2451,7 @@ return prev;
 }
 ```
 
-### 2-11) Linked List Components — LC 817
+### 2-12) Linked List Components — LC 817
 
 ```java
 // java

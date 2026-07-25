@@ -764,7 +764,7 @@ PriorityQueue<int[]> customPQ = new PriorityQueue<>(
 
 ## Pattern Selection Strategy
 
-```
+```text
 Problem Analysis Flowchart:
 
 1. Do you need to find K largest/smallest elements?
@@ -1650,7 +1650,7 @@ public String rearrangeString(String s, int k) {
 ```
 
 **Walkthrough** — `s = "aabbcc", k = 3`:
-```
+```text
 t=0: pick 'a'(2), cooldown=[(a,1)]          → "a"
 t=1: pick 'b'(2), cooldown=[(a,1),(b,1)]    → "ab"
 t=2: pick 'c'(2), cooldown size=3=k → release 'a'(1) back to PQ
@@ -2058,7 +2058,7 @@ public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
 
 ## LC Examples
 
-### 2-1) Kth Largest Element in a Stream (LC 703) — LC 703 — Min-Heap of Size K
+### 2-17) Kth Largest Element in a Stream (LC 703) — LC 703 — Min-Heap of Size K
 > Maintain a min-heap of size k; the top is always the kth largest element.
 
 ```java
@@ -2081,7 +2081,7 @@ class KthLargest {
 }
 ```
 
-### 2-2) Top K Frequent Elements (LC 347) — LC 347 — Min-Heap with Frequency
+### 2-18) Top K Frequent Elements (LC 347) — LC 347 — Min-Heap with Frequency
 > Count frequencies with HashMap, then maintain min-heap of size k by frequency.
 
 ```java
@@ -2102,7 +2102,7 @@ public int[] topKFrequent(int[] nums, int k) {
 }
 ```
 
-### 2-3) Merge K Sorted Lists (LC 23) — LC 23 — Min-Heap
+### 2-19) Merge K Sorted Lists (LC 23) — LC 23 — Min-Heap
 > Use min-heap to always extract the global minimum node across all lists.
 
 ```java

@@ -11,9 +11,9 @@
 ## Overview
 **Heap** is a complete binary tree that satisfies the heap property, making it ideal for efficient access to the largest or smallest element in a dataset. It's the foundation for priority queues and heap sort algorithms.
 
-<p align="center"><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/heap_space_time_complexity.png" ></p>
+<p align="center"><img src="../pic/heap_space_time_complexity.png"></p>
 
-<p align="center"><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/heap_op_101.png" ></p>
+<p align="center"><img src="../pic/heap_op_101.png"></p>
 
 ### Key Properties
 - **Time Complexity**: 
@@ -29,7 +29,7 @@
 - **Min Heap**: Parent ≤ Children (root contains minimum)
 - **Max Heap**: Parent ≥ Children (root contains maximum)
 
-<p align="center"><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/type_of_heap.png" ></p>
+<p align="center"><img src="../pic/type_of_heap.png"></p>
 
 ### Priority Queue Relationship
 - **Priority Queue**: Abstract data type with priority-based access
@@ -727,9 +727,7 @@ Out[55]: [24, 4, 2, 1, 1]
 
 ```
 
-### 1-2) Heap VS Stack VS Queue
-
-### 1-3) Heap sort
+### 1-2) Heap sort
 ```python
 # https://docs.python.org/zh-tw/3/library/heapq.html
 def heapsort(iterable):
@@ -743,7 +741,7 @@ def heapsort(iterable):
 # >>> [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 ``` 
 
-### 1-4) Priority Queue
+### 1-3) Priority Queue
 ```java
 // java
 PriorityQueue pq
@@ -2423,7 +2421,7 @@ Tasks are stored as **negative** counts to fake a max-heap.
 
 ### Decision Framework Flowchart
 
-```
+```text
 Problem Analysis for Heap Usage:
 
 1. Do you need the kth largest/smallest element?

@@ -8,9 +8,9 @@
 
 > Insert = enqueue (rear), Delete = dequeue (front), both **O(1)**. Min/Max over a sliding window can be made **O(1)** amortized with a monotonic deque ([monotonic_queue.md](./monotonic_queue.md)).
 
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/queue2.png"></p>
+<p align="center"><img src="../pic/queue2.png"></p>
 
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/stack_vs_queue.png"></p>
+<p align="center"><img src="../pic/stack_vs_queue.png"></p>
 
 ## Overview
 **Queue** is a linear data structure that follows the First In First Out (FIFO) principle. Elements are added at the rear (enqueue) and removed from the front (dequeue), similar to a real-world queue or line.
@@ -639,7 +639,7 @@ class MovingAverage {
 
 ## Pattern Selection Strategy
 
-```
+```text
 Problem Analysis Flowchart:
 
 1. Is it a tree/graph traversal problem?

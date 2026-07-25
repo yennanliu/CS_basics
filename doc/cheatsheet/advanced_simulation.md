@@ -355,7 +355,10 @@ class Robot {
         return new int[]{0, 2*w + 2*h - 4 - pos};
     }
     public String getDir() {
-        if (pos == 0)             return pos == 0 ? "East" : "South"; // start facing East
+        // NOTE: at pos==0 this returns "East" (start dir). After a full loop back to the
+        // origin the true LC 2069 answer is "South"; distinguishing requires tracking whether
+        // step() was ever called. The Python version below tracks direction and handles this.
+        if (pos == 0)             return "East"; // start facing East
         if (pos < w)              return "East";
         if (pos < w + h - 1)     return "North";
         if (pos < 2*w + h - 2)   return "West";

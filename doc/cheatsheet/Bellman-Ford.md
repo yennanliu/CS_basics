@@ -326,7 +326,7 @@ def detect_arbitrage(n, exchange_rates):
 
 ### When to Use Each Algorithm
 
-```
+```text
 Shortest Path Algorithm Selection:
 
 1. Does graph have negative edge weights?

@@ -295,7 +295,7 @@ Compute a value for the **root of an N-ary tree** where each node's value depend
 - **Non-leaf** → recurse into *all* children, track `earliest = min(child values)` and `latest = max(child values)`, then combine with the node's own base value via the problem's formula and return that up.
 
 For LC 3965 the formula is:
-```
+```text
 ownDuration = (latest - earliest) + baseTime[node]
 finishTime  = latest + ownDuration
 ```
@@ -866,7 +866,7 @@ private void dfs(int[][] grid, boolean[][] seen, int r0, int c0, int r, int c, S
    - All coordinates are relative to this origin
 
 3. **Why Delimiters Matter**
-   ```
+   ```text
    Shape 1:  11      Shape 2:   1
               1                11
 
@@ -932,7 +932,7 @@ private void dfs(int[][] grid, boolean[][] seen, int r0, int c0, int r, int c, S
    ```
 
    **Why This Works:**
-   ```
+   ```text
    Memory Model:
 
    Main stack frame:
@@ -1112,7 +1112,7 @@ def count_sub_components(grid1, grid2):
 ```
 
 **Concrete Example: LC 1905 - Count Sub Islands**
-```
+```text
 Problem: Count islands in grid2 that are completely contained in grid1
 
 grid1: [[1,1,1,0,0],    grid2: [[1,1,1,0,0],
@@ -1283,7 +1283,7 @@ def min_reorder(n, connections):
    - Reverse direction gets flag=0 (already correct)
 
 2. **Why This Works**
-   ```
+   ```text
    Example: connections = [[0,1],[1,3],[2,3],[4,0],[4,5]]
 
    Original directed graph (edges point away from 0):
@@ -1591,7 +1591,7 @@ def count_unreachable_pairs_uf(n, edges):
 **Key Concepts:**
 
 1. **Two Counting Approaches**
-   ```
+   ```text
    Forward Counting (Approach 1):
    - Component 1 (size=3): 3 × 0 = 0
    - Component 2 (size=2): 2 × 3 = 6
@@ -1614,7 +1614,7 @@ def count_unreachable_pairs_uf(n, edges):
    - Avoid O(n²) brute force by tracking cumulative counts
 
 3. **Visualization**
-   ```
+   ```text
    Example: n=7, components=[3,2,2]
 
    Component A: {0,1,2}  (size=3)
@@ -2014,7 +2014,7 @@ def dfs(root, m, res):
 | answer is built bottom-up from children | **post-order** DFS |
 | need a delimiter (`,`) + null marker (`#`) | avoid signature ambiguity |
 
-```
+```text
 Encoding rules (why each piece matters):
   "#"   -> null child       (distinguishes shapes: a node w/ 1 child vs 2)
   ","   -> field delimiter  (so vals "1,12" never collide with "11,2")
@@ -2036,10 +2036,7 @@ Complexity: O(n) nodes, but each signature is O(n) long -> O(n^2) time / space w
 | 1948 | Delete Duplicate Folders in System | generalizes 652 — serialize subtrees, mark duplicates |
 
 
-- Grpah transversal (DFS)
-
-
-- Transversal in 4 directions (up, down, left, right)
+- Graph transversal (DFS): traversal in 4 directions (up, down, left, right)
 ```java
 // java
 // LC 200
@@ -2634,7 +2631,6 @@ class Solution(object):
             root.left = self.insertIntoBST(root.left, val);
         return(root)
 ```
-`
 
 ### 2-3) Delete Node in a BST — LC 450
 ```python
@@ -3354,7 +3350,7 @@ Each root-to-leaf path represents a number formed by concatenating digits top-to
 **Core Idea:**
 Concatenating a digit `d` onto a number `curr` is just `curr * 10 + d` (same idea as building an integer from a string of digits). Pass this accumulator as a function argument so each recursive call is naturally scoped — no explicit backtrack (`path.pop()`) is needed, since each stack frame holds its own `curr` by value, not a shared mutable list:
 
-```
+```text
 curr = 0
 depth 1 (root=1):  curr = 0*10 + 1 = 1
 depth 2 (node=2):   curr = 1*10 + 2 = 12
@@ -3412,7 +3408,7 @@ class Solution(object):
 | LC 113 - Path Sum II | same as 112 but collects the actual path list at each valid leaf |
 | LC 988 - Smallest String Starting From Leaf | accumulate path as string bottom-up (leaf-to-root), compare lexicographically |
 
-### 2-7) Clone graph — LC 133 — LC 133
+### 2-18) Clone Graph — LC 133
 ```python
 # 133 Clone graph
 # note : there is also a BFS solution
@@ -3442,7 +3438,7 @@ class Solution(object):
         return node_copy
 ```
 
-### 2-8) Sentence Similarity II — LC 737
+### 2-19) Sentence Similarity II — LC 737
 ```python
 # LC 737. Sentence Similarity II
 # NOTE : there is also union-find solution
@@ -3528,7 +3524,7 @@ def areSentencesSimilarTwo(s1, s2, pairs):
 | edges given as pairs, query many (x,y) reachability | prefer **Union-Find** (near O(1)/query) |
 | must seed `visited` with the start node | avoid infinite loop on cycles |
 
-```
+```text
 3 interchangeable engines (same idea, different machinery):
   DFS / BFS   -> per-query graph traversal      | O((V+E)) per query
   Union-Find  -> union all pairs, then find()    | ~O(α(n)) per query  <- best for many queries
@@ -3599,7 +3595,7 @@ returns to `helper(A)`'s loop, which then explores `C` normally. Nothing is cut 
 > One child returning `False` just advances the `for` loop; the whole DFS reports `False`
 > only when *all* branches are exhausted without reaching the target.
 
-### 2-9) Concatenated Words — LC 472
+### 2-20) Concatenated Words — LC 472
 ```python
 # LC 472. Concatenated Words
 # V1
@@ -3629,7 +3625,7 @@ class Solution(object):
         return False
 ```
 
-### 2-10) Maximum Product of Splitted Binary Tree — LC 1339
+### 2-21) Maximum Product of Splitted Binary Tree — LC 1339
 ```python
 # LC 1339. Maximum Product of Splitted Binary Tree
 # V0
@@ -3653,7 +3649,7 @@ class Solution(object):
         return best % (10 ** 9 + 7)
 ```
 
-### 2-11) Serialize and Deserialize Binary Tree — LC 297
+### 2-22) Serialize and Deserialize Binary Tree — LC 297
 ```python
 # LC 297. Serialize and Deserialize Binary Tree
 # V0
@@ -3730,7 +3726,7 @@ class Codec:
             return None
 ```
 
-### 2-12) Serialize and Deserialize BST — LC 449
+### 2-23) Serialize and Deserialize BST — LC 449
 ```python
 # LC 449. Serialize and Deserialize BST
 # V0
@@ -3823,7 +3819,7 @@ class Codec:
             return None
 ```
 
-### 2-12) Number of Closed Islands (2-Pass DFS) — LC 1254
+### 2-24) Number of Closed Islands (2-Pass DFS) — LC 1254
 ```java
 // java
 // LC 1254
@@ -3932,7 +3928,7 @@ def closedIsland(grid):
     return count
 ```
 
-### 2-13) Pacific Atlantic Water Flow — LC 417
+### 2-25) Pacific Atlantic Water Flow — LC 417
 
 ```java
 // java
@@ -4073,7 +4069,7 @@ private void dfs(int[][] heights, boolean[][] reachable, int y, int x) {
 } 
 ```
 
-### 2-12) Minesweeper — LC 529
+### 2-26) Minesweeper — LC 529
 
 ```java
 // java
@@ -4186,7 +4182,7 @@ if (x < 0 || x >= rows || y < 0 || y >= cols || board[x][y] != 'E') {
 }
 ```
 
-### 2-13) K-th Largest Perfect Subtree Size in Binary Tree — LC 3319
+### 2-27) K-th Largest Perfect Subtree Size in Binary Tree — LC 3319
 
 ```java
 // java
@@ -4286,7 +4282,7 @@ boolean isPerfect = left.isPerfect && right.isPerfect
 
 ## Pattern Selection Strategy
 
-```
+```text
 DFS Problem Analysis Flowchart:
 
 1. Is it a tree/graph traversal problem?
@@ -4490,7 +4486,7 @@ private boolean dfsPathVisitor(int node, int destination, Map<Integer, List<Inte
 ### 📊 Concrete Example: Why Early Return Matters
 
 **Test Case:**
-```
+```text
 Graph: 0 -- 1 -- 2 -- 3
        |         |
        4 -------- 5
@@ -4511,7 +4507,7 @@ Task: Find path from 0 to 3
 #### Scenario 1: ❌ WRONG (Without Early Return)
 
 **Call Stack Trace:**
-```
+```text
 1. dfsPathVisitor(0, 3, ..., visited=[])
    → visited = [0]
    → Loop neighbors: [1, 4]
@@ -4562,7 +4558,7 @@ Task: Find path from 0 to 3
 #### Scenario 2: ✅ CORRECT (With Early Return)
 
 **Call Stack Trace:**
-```
+```text
 1. dfsPathVisitor(0, 3, ..., visited=[])
    → visited = [0]
    → Loop neighbors: [1, 4]
@@ -4675,7 +4671,7 @@ private boolean dfsPathVisitor(int node, int destination,
 - **Union Find**: Alternative for connectivity
 - **Topological Sort**: DFS application for dependencies
 
-### 2-14) Number of Distinct Islands — LC 694
+### 2-28) Number of Distinct Islands — LC 694
 
 ```java
 // java
@@ -4884,7 +4880,7 @@ def numDistinctIslands(grid):
    - Same shape always produces same sequence of directions
 
 3. **Backtrack Delimiter ('O')**
-   ```
+   ```text
    Example showing why delimiter is needed:
 
    Shape A:  11     Path without 'O': SDRO
@@ -4944,7 +4940,7 @@ sys.setrecursionlimit(10000)
 
 ---
 
-### 2-15) Satisfiability of Equality Equations — LC 990
+### 2-29) Satisfiability of Equality Equations — LC 990
 
 > **Pattern 14** (Connectivity / Contradiction Check). Build an undirected graph from all `==` equations, then DFS to confirm no `!=` pair is actually connected.
 
@@ -5021,7 +5017,7 @@ class Solution:
 
 ---
 
-### 2-16) Print Binary Tree — LC 655
+### 2-30) Print Binary Tree — LC 655
 
 > **DFS + fixed-size matrix**. Pre-compute the tree height to size a `(height+1) × (2^(height+1)-1)` string grid, place the root at the middle column, then DFS placing each child at a **halving horizontal offset** `2^(height-row-1)`.
 
@@ -5086,7 +5082,7 @@ class Solution(object):
 
 ### Decision Flowchart
 
-```
+```text
 START: What are you trying to do with the graph/tree?
 │
 ├─ Need to VISIT ALL NODES in specific order?

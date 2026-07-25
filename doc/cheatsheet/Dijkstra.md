@@ -63,7 +63,7 @@
 **Answer**: It depends on **movement directions**:
 
 #### **LC 64: Minimum Path Sum** ✅ Pure DP is Sufficient
-```
+```text
 Movement: RIGHT only ↓ or DOWN only →
 ```
 - **Why DP works**: You can only reach cell `(i,j)` from `(i-1,j)` or `(i,j-1)`
@@ -97,7 +97,7 @@ public int minPathSum(int[][] grid) {
 ```
 
 #### **LC 1631: Path With Minimum Effort** ⚠️ Dijkstra + dist[][] Needed
-```
+```text
 Movement: UP, DOWN, LEFT, RIGHT (all 4 directions)
 ```
 - **Why Dijkstra needed**: You might reach a cell from multiple paths, and later find a better path
@@ -155,7 +155,7 @@ public int minimumEffortPath(int[][] heights) {
 | **LC 1263** | 4-directions | Additive cost | **Dijkstra** | ✅ Yes | ✅ Yes (via dist check) |
 
 ### The dist[][] Purpose
-```
+```text
 dist[r][c] = "What's the MINIMUM cost I've found SO FAR to reach (r,c)?"
 ```
 - **Initialize**: `dist[r][c] = Integer.MAX_VALUE` (unknown)
@@ -407,7 +407,7 @@ There are two different comparisons a Dijkstra implementation can make when it l
 - **LC 1631**: Can move UP/DOWN/LEFT/RIGHT → Cycles exist → DP fails ❌
 
 With 4-directional movement, you can have circular dependencies:
-```
+```text
 (1,1) → (1,2) → (2,2) → (2,1) → (1,1)
 ```
 DP requires dependencies to form a DAG (no cycles), so **Dijkstra or Binary Search required**.
@@ -525,7 +525,7 @@ def dijkstra_basic(n, edges, src):
 | **visited[node] works?** | ✅ Yes | ❌ No — same node valid at different stop counts |
 
 **Why `visited[node]` / `dist[node]` breaks:**
-```
+```text
 Example: src=0, dst=3, K=2
   Path A: 0→1→3  cost=900  stops=1  ← fewer stops but more expensive
   Path B: 0→1→2→3  cost=210  stops=2  ← more stops but cheaper
@@ -946,7 +946,7 @@ public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
 ```
 
 **Why `dist[node]` pruning fails (concrete trace):**
-```
+```text
 n=4, flights: 0→1(100), 0→2(500), 1→2(100), 2→3(10), 1→3(800), src=0, dst=3, K=2
 
 Standard dist[] approach:
@@ -1076,7 +1076,7 @@ public int minimumEffortPath_0_1(int[][] heights) {
 > Max-heap Dijkstra multiplying edge probabilities; start at 1.0, maximize reach-probability.
 
 **Core Idea — why we need `best[]` (a.k.a `max_prob[]`):**
-```
+```text
 Suppose:
   0 --0.5--> 1
    \         ^
@@ -1556,7 +1556,7 @@ public int minimumObstacles(int[][] grid) {
 
 ### Pattern Selection Strategy
 
-```
+```text
 Dijkstra Algorithm Selection Flowchart:
 
 1. Is it a shortest path problem?
@@ -1636,7 +1636,7 @@ Dijkstra Algorithm Selection Flowchart:
 
 ### When to Use Each Algorithm
 
-```
+```text
 Shortest Path Algorithm Selection:
 
 1. What type of problem?

@@ -98,7 +98,7 @@ def minDepth(root):
 
         - [MinimumDepthOfBinaryTree.java](https://github.com/yennanliu/CS_basics/blob/master/leetcode_java/src/main/java/LeetCodeJava/Recursion/MinimumDepthOfBinaryTree.java)
 
-<img src="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/tree_depth_vs_height.jpeg" width="500">
+<p align="center"><img src="../pic/tree_depth_vs_height.jpeg" width="500"></p>
 
 ##### Top-Down vs Bottom-Up DFS — Two Strategies for Tree Problems
 
@@ -1243,7 +1243,7 @@ public ResultType solveTreeProblem(TreeNode root, ParamType params) {
 2. **Breadth-First Search (BFS)** - Process level by level
    - **Level-order**: Process all nodes at depth d before depth d+1
 
-<img src="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/tree_traverse.png" width="600">
+<p align="center"><img src="../pic/tree_traverse.png" width="600"></p>
 
 ### 1.4) DFS Traversal Templates
 
@@ -2218,7 +2218,7 @@ private int getDepth(TreeNode root){
 }
 ```
 
-#### 1-1-3 -2) Get Max path
+#### 1-1-3 -3) Get Max path
 
 - LC 124
 
@@ -3869,9 +3869,9 @@ def isSubtree_v2(root, subRoot):
 - **Time**: O(N²) worst case (string concatenation), O(N) with StringBuilder
 - **Space**: O(N) for HashMap and recursion stack, O(N²) for all paths
 
-## 2) LC Example
+## 4) LC Example
 
-### 2-1) Binary Tree Right Side View — LC 199
+### 4-1) Binary Tree Right Side View — LC 199
 ```python 
 # LC 199 Binary Tree Right Side View
 # V0
@@ -3897,7 +3897,7 @@ class Solution(object):
         return [x[0] for x in res if len(x) > 0]
 ```
 
-### 2-2) Construct String from Binary Tree — LC 606
+### 4-2) Construct String from Binary Tree — LC 606
 ```python
 # LC 606. Construct String from Binary Tree
 # V0
@@ -3945,7 +3945,7 @@ class Solution(object):
         return s
 ```
 
-### 2-3) Maximum Width of Binary Tree — LC 662
+### 4-3) Maximum Width of Binary Tree — LC 662
 ```python
 # LC 662 Maximum Width of Binary Tree
 # V0
@@ -3992,7 +3992,7 @@ class Solution(object):
         return max(_res)
 ```
 
-### 2-4) Construct String from Binary Tree — LC 606
+### 4-4) Construct String from Binary Tree — LC 606
 ```python
 # LC 606 Construct String from Binary Tree
 # V0
@@ -4021,7 +4021,7 @@ class Solution(object):
         return res
 ```
 
-### 2-5) Closest Leaf in a Binary Tree (Move Parent Pattern) — LC 742
+### 4-5) Closest Leaf in a Binary Tree (Move Parent Pattern) — LC 742
 ```python
 # LeetCode 742. Closest Leaf in a Binary Tree
 # V0
@@ -4077,7 +4077,7 @@ class Solution:
                         q.append(node)
 ```
 
-### 2-7) Same Tree — LC 100
+### 4-6) Same Tree — LC 100
 ```python
 # LC 100 Same tree
 # V0
@@ -4101,7 +4101,7 @@ class Solution(object):
         return res
 ```
 
-### 2-9) Validate Binary Search Tree — LC 98
+### 4-7) Validate Binary Search Tree — LC 98
 ```python
 # 98. Validate Binary Search Tree
 # V0
@@ -4152,7 +4152,7 @@ class Solution(object):
         return self.valid(root.left, min_, root.val) and self.valid(root.right, root.val, max_)
 ```
 
-### 2-10) Construct Binary Tree from Preorder and Inorder Traversal — LC 105
+### 4-8) Construct Binary Tree from Preorder and Inorder Traversal — LC 105
 ```python
 #  Construct Binary Tree from Preorder and Inorder Traversal
 # V0
@@ -4175,7 +4175,7 @@ class Solution(object):
         return root
 ```
 
-### 2-11) Construct Binary Tree from String — LC 536
+### 4-9) Construct Binary Tree from String — LC 536
 ```python
 # LC 536 Construct Binary Tree from String
 # V0
@@ -4249,7 +4249,7 @@ class Solution(object):
         return str2treeHelper(s, 0)[0] if s else None
 ```
 
-### 2-12) Minimum Depth of Binary Tree — LC 111
+### 4-10) Minimum Depth of Binary Tree — LC 111
 ```python
 # LC 111 Minimum Depth of Binary Tree
 
@@ -4298,7 +4298,7 @@ class Solution(object):
             return 1 + min(self.minDepth(root.left), self.minDepth(root.right))
 ```
 
-### 2-13) Maximum Depth of Binary Tree — LC 104
+### 4-11) Maximum Depth of Binary Tree — LC 104
 ```python
 # LC 104 Maximum Depth of Binary Tree
 # V0
@@ -4331,7 +4331,7 @@ class Solution(object):
         return res + 1
 ```
 
-### 2-14) All Nodes Distance K in Binary Tree — LC 863
+### 4-12) All Nodes Distance K in Binary Tree — LC 863
 
 ```java
 // java
@@ -4454,7 +4454,7 @@ private void buildParentMap(TreeNode node, TreeNode parent) {
 }
 ```
 
-### 2-15) Boundary of Binary Tree — LC 545
+### 4-13) Boundary of Binary Tree — LC 545
 ```python
 # LC 545. Boundary of Binary Tree
 # V0
@@ -4551,7 +4551,7 @@ class Solution(object):
         return ans
 ```
 
-### 2-16) Binary Tree Maximum Path Sum — LC 124
+### 4-14) Binary Tree Maximum Path Sum — LC 124
 
 ```java
 // java
@@ -4659,7 +4659,7 @@ class Solution(object):
         return self.maximum
 ```
 
-### 2-17) Build Binary Expression Tree From Infix Expression — LC 1597
+### 4-15) Build Binary Expression Tree From Infix Expression — LC 1597
 ```python
 # LC 1597 Build Binary Expression Tree From Infix Expression
 # V0
@@ -4728,7 +4728,7 @@ class Solution:
         return rtNd
 ```
 
-### 2-18) Count Good Nodes in Binary Tree — LC 1448
+### 4-16) Count Good Nodes in Binary Tree — LC 1448
 ```java
 // java
 // LC 1448
@@ -4795,7 +4795,7 @@ class Solution:
     }
 ```
 
-### 2-19) Balanced Binary Tree — LC 110
+### 4-17) Balanced Binary Tree — LC 110
 ```java
 // java
 // LC 110
@@ -4861,7 +4861,7 @@ public boolean isBalanced(TreeNode root) {
 }
 ```
 
-### 2-20) Reverse Odd Levels of Binary Tree — LC 2415
+### 4-18) Reverse Odd Levels of Binary Tree — LC 2415
 
 ```java
 // java
@@ -4912,9 +4912,9 @@ private void reverseHelper(TreeNode left, TreeNode right, int level) {
 }
 ```
 
-## 4) Summary & Quick Reference
+## 5) Summary & Quick Reference
 
-### 4.1) Tree Algorithm Complexity Summary
+### 5.1) Tree Algorithm Complexity Summary
 
 | Operation | Balanced Tree | Unbalanced Tree | Space Complexity |
 |-----------|---------------|------------------|------------------|
@@ -4924,7 +4924,7 @@ private void reverseHelper(TreeNode left, TreeNode right, int level) {
 | **Traversal** | O(n) | O(n) | O(h) recursion |
 | **Height Calculation** | O(n) | O(n) | O(h) recursion |
 
-### 4.2) Traversal Quick Reference
+### 5.2) Traversal Quick Reference
 
 | Traversal | Order | Use Case | Key Characteristics |
 |-----------|-------|----------|-------------------|
@@ -4933,7 +4933,7 @@ private void reverseHelper(TreeNode left, TreeNode right, int level) {
 | **Postorder** | Left → Right → Root | Tree deletion, calculations | Process children before parent |
 | **Level-order** | Level by level | Tree printing, shortest path | Use queue, process by levels |
 
-### 4.3) Problem-Solving Templates
+### 5.3) Problem-Solving Templates
 
 #### **DFS Template (Most Common)**
 ```python
@@ -5005,7 +5005,7 @@ def solve_path_problem(root, target):
     return result
 ```
 
-### 4.4) Common Patterns & Tricks
+### 5.4) Common Patterns & Tricks
 
 #### **Height vs Depth Pattern**
 ```python
@@ -5049,7 +5049,7 @@ class Solution:
         return self.max_sum
 ```
 
-### 4.5) Common Mistakes & Tips
+### 5.5) Common Mistakes & Tips
 
 **🚫 Common Mistakes:**
 - Forgetting base cases in recursion
@@ -5066,7 +5066,7 @@ class Solution:
 - Use meaningful variable names (left_result, right_result)
 - Test with balanced and unbalanced trees
 
-### 4.6) Interview Tips
+### 5.6) Interview Tips
 
 1. **Clarify the Problem**: Ask about null inputs, tree structure, expected output format
 2. **Start with Recursive Solution**: Most tree problems have elegant recursive solutions
@@ -5075,7 +5075,7 @@ class Solution:
 5. **Analyze Complexity**: Always discuss time and space complexity
 6. **Handle Edge Cases**: Empty tree, single node, very deep trees
 
-### 4.7) Related Topics
+### 5.7) Related Topics
 - **Binary Search Trees**: Ordering property enables efficient operations
 - **Heaps**: Complete binary trees with heap property
 - **Tries**: Prefix trees for string operations  
@@ -5177,30 +5177,7 @@ class Codec:
 
 ### Morris Traversal (O(1) Space) — Compact Reference
 
-```python
-# In-order Morris Traversal — O(n) time, O(1) space
-def inorderMorris(root):
-    result = []
-    curr = root
-    while curr:
-        if not curr.left:
-            result.append(curr.val)
-            curr = curr.right
-        else:
-            # Find in-order predecessor
-            pred = curr.left
-            while pred.right and pred.right is not curr:
-                pred = pred.right
-            if not pred.right:          # Thread: set predecessor → curr
-                pred.right = curr
-                curr = curr.left
-            else:                        # Unthread: restore tree
-                pred.right = None
-                result.append(curr.val)
-                curr = curr.right
-    return result
-# Pre/post-order variants follow same threading; O(n) time, O(1) space.
-```
+See the full In-order Morris template (Python + Java) in [Template 5: Morris Traversal](#template-5-morris-traversal-o1-space-tree-traversal) above. Key idea: thread each node's empty `right` pointer to its in-order successor, then unthread on the second visit — O(n) time, O(1) space. Pre/post-order variants follow the same threading.
 
 ### Google Interview Tips for Trees
 | Signal | Pattern |

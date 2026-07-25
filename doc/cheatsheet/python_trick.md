@@ -524,7 +524,7 @@ def my_func(input):
         return key4, key5, key6....
 
 my_array=["a1 9 2 3 1","g1 act car","zo4 4 7","ab1 off key dog","a8 act zoo"]
-my_array.sort(key=lambda x : my_func)
+my_array.sort(key=lambda x : my_func(x))
 ```
 
 ### 1-11') Descending sort: `key=lambda x: -x[0]` vs `reverse=True` vs `[::-1]`
@@ -772,7 +772,7 @@ class Solution:
 ```
 
 
-### 1-13) array `extend`
+### 1-13') array `extend`
 ```python
 # LC 969. Pancake Sorting
 
@@ -851,7 +851,7 @@ math.floor(300.16) :  300
 math.floor(300.72) :  300
 ```
 
-### 1-15) for loop dict
+### 1-15') for loop dict
 ```python
 d = {'a':1, 'b':2, 'c': 3}
 # loop over key, value
@@ -3082,4 +3082,4 @@ h, s, p = info              # tuple unpacking also works
 
 > **Quick & dirty alternative**: for one-off DFS you can just `return (height, size, is_perfect)` and unpack — but a named class/`NamedTuple` is far more readable once you have 3+ fields. For LeetCode-style solutions, `@dataclass` is usually the cleanest replacement for a Java `private static class`.
 
-> **Rule of thumb:** if you *mutate* a shared container (`append`/`add`), you must undo it (`pop`/`remove`). If you create a *new* object each call (string concat, `tmp + [x]`, tuple), the copy IS the backtrack — there's nothing to undo. See also [1-1) assignment vs shallow/deep copy](#0-2-assignment-vs-shallow-copy-vs-deep-copy).
+> **Rule of thumb:** if you *mutate* a shared container (`append`/`add`), you must undo it (`pop`/`remove`). If you create a *new* object each call (string concat, `tmp + [x]`, tuple), the copy IS the backtrack — there's nothing to undo. See also [0-2) assignment vs shallow/deep copy](#0-2-assignment-vs-shallow-copy-vs-deep-copy).

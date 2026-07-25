@@ -116,7 +116,11 @@ class H2O {
     }
 
     public void oxygen(Runnable releaseOxygen) throws InterruptedException {
-        oSem.acquire();  // wait for 2 H first — actually, simpler approach below
+        // NOTE: sketch only — oSem is initialized to 0 permits and never released,
+        // so this acquire() blocks forever. A correct H2O gates O with its own
+        // Semaphore(1) (limit one O in flight) and lets the CyclicBarrier(3)
+        // rendezvous 2 H + 1 O; the barrier action then release(2)s hSem.
+        oSem.acquire();
         releaseOxygen.run();
         try { barrier.await(); } catch (BrokenBarrierException e) {}
     }

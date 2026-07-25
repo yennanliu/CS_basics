@@ -8,7 +8,7 @@
 
 > Average case shown. **Worst case (all elements collide): O(n).** Min/Max requires a full scan (hashing imposes no ordering).
 
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/set_operations.png"></p>
+<img src="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/set_operations.png">
 
 ## Overview
 **Set** is a collection data structure that stores unique elements with no duplicates. It provides efficient membership testing, insertion, and deletion operations.

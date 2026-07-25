@@ -6,7 +6,7 @@
 Key: transform `change` to `event`, so we can handle the `changed state` via program, instead of dealing with `continouous info`.
 
 
-<p align="center"><img src ="../pic/scanning_line.png" ></p>
+<p align="center"><img src="../pic/scanning_line.png"></p>
 
  
 ### Key Properties
@@ -53,15 +53,15 @@ Key: transform `change` to `event`, so we can handle the `changed state` via pro
 - **Examples**: LC 370, 1109, 1893, 2251
 - **Pattern**: Difference array with sweep line
 
-### **Pattern 7: Prefix Sum + Longest Positive-Sum Subarray**
-- **Description**: Find the longest subarray whose element sum > 0 after transforming values to +1/−1
-- **Examples**: LC 1124, 525, 560, 974
-- **Pattern**: Prefix sum with HashMap storing first-occurrence of each sum; if `prefix > 0` take full length; else look up `prefix - 1` in map
-
 ### **Pattern 6: Geometric Intersection**
 - **Description**: Finding intersections of geometric objects
 - **Examples**: LC 836, 223, 391, 850
 - **Pattern**: Sort by x-coordinate, track y-intervals
+
+### **Pattern 7: Prefix Sum + Longest Positive-Sum Subarray**
+- **Description**: Find the longest subarray whose element sum > 0 after transforming values to +1/−1
+- **Examples**: LC 1124, 525, 560, 974
+- **Pattern**: Prefix sum with HashMap storing first-occurrence of each sum; if `prefix > 0` take full length; else look up `prefix - 1` in map
 
 ## Templates & Algorithms
 
@@ -695,10 +695,10 @@ max_height = -heights[0]           # Get max
 ### Interview Tips
 
 1. **Problem Recognition**
-   - \"Maximum overlapping\" → Sweep line
-   - \"Skyline/outline\" → Height tracking
-   - \"Free time\" → Merge then find gaps
-   - \"Range updates\" → Difference array
+   - "Maximum overlapping" → Sweep line
+   - "Skyline/outline" → Height tracking
+   - "Free time" → Merge then find gaps
+   - "Range updates" → Difference array
 
 2. **Clarify Requirements**
    - Are intervals inclusive or exclusive?

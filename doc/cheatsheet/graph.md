@@ -21,7 +21,7 @@
 - **Adjacency Matrix**: Space O(V²), efficient for dense graphs
 - **Edge List**: Space O(E), simple but less efficient
 
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/graph_processing_problem.png"></p>
+<p align="center"><img src="../pic/graph_processing_problem.png"></p>
 
 ## Problem Categories
 
@@ -352,7 +352,7 @@ def is_bipartite_union_find(n, edges):
     return True
 ```
 
-# See BFS/DFS bipartite templates above.
+> See BFS/DFS bipartite templates above.
 
 #### **Related Problems & Examples**
 
@@ -508,9 +508,9 @@ def validate_bipartite_assignment(assignments, conflicts):
 - Self-loops (not bipartite if exists)
 - Disconnected components (check all)
 
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/graph_rep1.png"></p>
+<p align="center"><img src="../pic/graph_rep1.png"></p>
 
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/graph_rep2.png"></p>
+<p align="center"><img src="../pic/graph_rep2.png"></p>
 
 ---
 

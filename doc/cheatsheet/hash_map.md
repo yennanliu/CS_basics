@@ -23,7 +23,7 @@ Hash Map (Hash Table/Dictionary) is a fundamental data structure that provides e
 - **Poor Hash Function**: Many keys map to same bucket
 - **Java HashMap**: Converts linked list to red-black tree when length > 8
 
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/hash_op_101.png"></p>
+<p align="center"><img src="../pic/hash_op_101.png"></p>
 
 - [NC - HashMap under the hood](https://www.linkedin.com/posts/neetcodeio_how-do-hashmaps-work-under-the-hood-activity-7298370869301526530-DsIi?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAAA6fzw4BpOSBO1YeSrJwPZ-dNBhjC3jXTDE)
 
@@ -924,8 +924,8 @@ def longestDupSubstring(s: str) -> str:
                     - NOTE !!! use bit op (`int pos = (n - 1) & hash`), so this op can be O(1) time complexity. (find bucket address directly, NO need to loop over all items)
                 - loop over all elements under that key (if there is one element, then do once)
                 - return value
-        <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/hash_map1.png"></p>
-        <img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/hash_map2.jpeg"></p>
+        <p align="center"><img src="../pic/hash_map1.png"></p>
+        <p align="center"><img src="../pic/hash_map2.jpeg"></p>
         - [ref 1](https://blog.csdn.net/junqing_wu/article/details/104606619)
         - [ref 2](https://blog.csdn.net/john1337/article/details/104727895)
 - LC Ref
@@ -1118,8 +1118,6 @@ public int subarraySum(int[] nums, int k) {
 ---
 
 ## 1) General form
-
-- Definition 
 
 - When to use 
 	- Use case that need data IO with ~ O(1) time complexity
@@ -1433,7 +1431,7 @@ Count progression (0→-1, 1→+1): 0 → -1 → -2 → -3 → -4 → -3 → -2
 
 The count returns to **-2** at both index 2 and index 5. Length = 5 - 2 = **4**, which is the subarray `nums[3..5] = [0, 1, 1]` — wait, let's be precise: the subarray is `nums[index2+1 .. index5] = nums[3..5] = [0,1,1]`... actually the indices in the map represent where the running count was last seen, so length = `i - map[count]` = `5 - 1 = 4`, giving subarray `nums[2..5] = [0,0,1,1]` (4 elements, 2 zeros and 2 ones ✓).
 
-<p align="center"><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/lc_525_1.png" ></p>
+<p align="center"><img src="../pic/lc_525_1.png"></p>
 
 #### Mathematical Reasoning
 
@@ -1990,21 +1988,10 @@ class Solution(object):
 ```
 
 ### 2-3) Group Anagrams — LC 49
-```python
-# 049 Group Anagrams
-# V0
-# IDEA : HASH TABLE
-class Solution:
-    def groupAnagrams(self, strs):
-        res = {}
-        for item in strs:
-            k = ''.join(sorted(item))  # sort the string 
-            if k not in res:  #  check if exists in res 
-                res[k] = []
-            res[k].append(item)  # if same, put all the same string into dict k 
-        return [res[x] for x in res]  # output the result 
 
-```
+**Idea**: sort each string to build a canonical hash key; group strings sharing the key.
+
+> See the identical `HASH TABLE` solution (`dict values -> array`) in [1-1) Basic OP](#1-1-basic-op).
 
 ### 2-3') Longest Substring Without Repeating Characters — LC 3
 ```python
@@ -2160,7 +2147,7 @@ boolean backtrack(char[][] board, int i, int j){
     return false;
 }
 
-bollean isValid(char[][] board, int r, int c, char n){
+boolean isValid(char[][] board, int r, int c, char n){
     for (int i = 0; i < 9; i++){
         // check if row has duplicate
         if (board[r][i] == n) return false;

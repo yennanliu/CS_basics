@@ -1,10 +1,4 @@
-# Math 
-
-## 0) Concept  
-
-### 0-1) Types
-
-### 0-2) Pattern
+# Math
 
 ## 1) General form
 
@@ -13,7 +7,8 @@
 #### 1-1-0) transform `10 based interger to N based`
 - to 4 base
 - to 7 base ..
-- https://github.com/yennanliu/CS_basics/blob/master/doc/pic/convert_int_n_base.png
+
+<p align="center"><img src="../pic/convert_int_n_base.png"></p>
 ```python
 # python
 # 504. Base 7
@@ -73,7 +68,7 @@ s = Solution()
 r = s.convertToBase7(num)
 print (r)
 
-# V1
+# V2
 # https://www.itread01.com/content/1544603062.html
 # https://kknews.cc/code/jlv38qp.html
 class Solution(object):
@@ -163,7 +158,7 @@ int countPrimes(int n){
     for (int i = 2; i < n; i++){
         if (isPrime[i]){
             // if i is prime, then i's multiple is NOT prime
-            for (int j = 2; j = 2 * i; j += i){
+            for (int j = 2 * i; j < n; j += i){
                 isPrime[j] = false;
             }
         }
@@ -218,7 +213,7 @@ When building a number digit-by-digit (e.g. 1 → 11 → 111 → ...), the numbe
 Instead of storing the full number, **only keep the remainder mod k** at each step.
 
 This works because:
-```
+```text
 (a * 10 + 1) % k  ==  ((a % k) * 10 + 1) % k
 ```
 So the remainder after adding a new digit can always be computed from the *previous* remainder alone.
@@ -272,14 +267,14 @@ Given 4 points in any order, checking angles/slopes directly is messy (division 
 **Why 6 distances?**
 4 points → C(4,2) = 6 pairs. For a square:
 
-```
+```text
 A ----- B
 |       |
 |       |
 D ----- C
 ```
 
-```
+```text
 AB = side
 BC = side
 CD = side
@@ -350,7 +345,7 @@ Brute-force recomputing `F(k) = sum(i * arr_k[i])` for every rotation `k` costs 
 **Core Idea:**
 Write out a few rotations by hand and compare term by term (`nums = [A, B, C, D]`, `n = 4`):
 
-```
+```text
 F(0) = 0*A + 1*B + 2*C + 3*D
 F(1) = 0*D + 1*A + 2*B + 3*C
 F(2) = 0*C + 1*D + 2*A + 3*B
@@ -359,7 +354,7 @@ F(3) = 0*B + 1*C + 2*D + 3*A
 
 Every element's weight goes up by 1 when you rotate — **except** the element that just wrapped from the back to the front, whose weight drops from `n-1` down to `0`. So:
 
-```
+```text
 sum = A + B + C + D                 # total sum, weight-independent
 
 F(1) = F(0) + sum - 4*D             # D's weight: 3 -> 0, i.e. -4*D; everything else: +1 each -> +sum
@@ -369,7 +364,7 @@ F(3) = F(2) + sum - 4*B
 
 Generalizing, the element that wraps into position 0 for `F(k)` is `nums[n-k]`, giving the recurrence:
 
-```
+```text
 F(k) = F(k-1) + sum(nums) - n * nums[n-k]
 ```
 

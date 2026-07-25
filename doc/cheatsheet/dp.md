@@ -19,13 +19,13 @@
 - Core var: `state`, `transition`
 - NOTE !!! can put `everything` into `state`
 
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/dp_state_transition.png"></p>
+<p align="center"><img src="../pic/dp_state_transition.png"></p>
 
 ### Step
 
 Step 1. define `dp def`
 Step 2. define `dp eq`
-Step 3. check boundaru condition, req, edge case
+Step 3. check boundary condition, req, edge case
 Step 4. get the result
 
 ### References
@@ -5949,7 +5949,7 @@ class Solution:
  */
 ```
 
-### 2-6) Perfect Squares (LC 279) — Unbounded Knapsack (Min Count)
+### 2-9) Perfect Squares (LC 279) — Unbounded Knapsack (Min Count)
 
 > **Core Idea**: Treat each perfect square (1, 4, 9, 16, ...) as a "coin denomination." Find the minimum number of coins to make amount `n`. This is exactly the **Coin Change** pattern (LC 322).
 
@@ -5994,7 +5994,7 @@ public int numSquares(int n) {
 | Combination Sum IV | 377 | Same coins idea but counting permutations |
 | Climbing Stairs | 70 | Simpler version — steps of 1 or 2 |
 
-### 2-7) Integer Break (LC 343) — Linear DP (Break vs No-Break)
+### 2-10) Integer Break (LC 343) — Linear DP (Break vs No-Break)
 
 **Pattern**: Linear DP — for each integer `i`, try all split points `j` and decide whether to break `(i-j)` further or not.
 
@@ -6042,7 +6042,7 @@ dp[i]:  1  1  2  4  6  9 12 18 27 36
 | Maximum Product Subarray | 152 | Maximize product with DP |
 | Partition to K Equal Sum Subsets | 698 | Partition integer into parts with constraint |
 
-### 2-8) Paint Fence (LC 276) — Two-State DP (same / different color)
+### 2-11) Paint Fence (LC 276) — Two-State DP (same / different color)
 
 > Paint `n` posts with `k` colors such that **no more than 2 adjacent posts share a color**. Split each post into two states — "same as previous" vs "different from previous" — and roll them forward.
 

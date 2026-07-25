@@ -1,6 +1,6 @@
 # Sorting Algorithms & Techniques
 
-<img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/sort_cheatsheet.png"></p>
+<p align="center"><img src="../pic/sort_cheatsheet.png"></p>
 
 ## Overview
 **Sorting** is the process of arranging elements in a specific order (ascending or descending). It's fundamental to many algorithms and data structures, enabling efficient searching, data analysis, and problem-solving.
@@ -613,7 +613,7 @@ def topologicalSortDFS(numNodes, edges):
 
 ## Pattern Selection Strategy
 
-```
+```text
 Problem Analysis Flowchart:
 
 1. Need custom ordering rules?
@@ -821,7 +821,10 @@ class Solution(object):
             max_idx = arr.index(max(arr[0:cur]))
             res = res + [max_idx+1, cur] # idx is 1 based
             # step 2) Reverse from 0 to max_idx
-            #arr = arr[max_idx::-1] + arr[max_idx + 1 : len(arr)] # this is OK as well
+            # NOTE: `arr[:max_idx][::-1]` EXCLUDES arr[max_idx]; the commented
+            #       `arr[max_idx::-1]` INCLUDES it — they are NOT equivalent.
+            #       Prefer the commented form to keep the pivot element.
+            #arr = arr[max_idx::-1] + arr[max_idx + 1 : len(arr)] # includes pivot
             arr = arr[:max_idx][::-1] + arr[max_idx + 1 : len(arr)]
             # step 3) Reverse whole list
             #arr = arr[cur - 1 :: -1] + arr[cur : len(arr)] # this is OK as well
@@ -910,7 +913,7 @@ class Solution:
 // aAlgorithm book (labu) p. 347
 
 // record reverse op array
-LinkedList<Integer> res = new LinkedList<>{};
+LinkedList<Integer> res = new LinkedList<>();
 
 List<Integer> pancakeSort(int[] cakes){
 	sort(cakes, cakes.length);
@@ -955,7 +958,7 @@ void reverse(int[] arr, int i, int j){
 }
 ```
 
-### 2-1) Reorder Data in Log Files — LC 937
+### 2-2) Reorder Data in Log Files — LC 937
 ```python
 # LC 937. Reorder Data in Log Files
 # V0
@@ -1002,7 +1005,7 @@ class Solution:
         return sorted(logs, key=get_key)
 ```
 
-### 2-2) Meeting Rooms — LC 252
+### 2-3) Meeting Rooms — LC 252
 ```python
 # LC 252. Meeting Rooms
 # V0
@@ -1022,7 +1025,7 @@ class Solution:
         return True
 ```
 
-### 2-3) Custom Sort String — LC 791
+### 2-4) Custom Sort String — LC 791
 ```python
 # LC 791. Custom Sort String
 # V0
@@ -1041,7 +1044,7 @@ class Solution(object):
         return res
 ```
 
-### 2-4) Find K Closest Elements — LC 658
+### 2-5) Find K Closest Elements — LC 658
 ```python
 # LC 658. Find K Closest Elements
 # NOTE : there is also stack, binary search.. approaches
@@ -1061,7 +1064,7 @@ class Solution:
         return sorted(result)
 ```
 
-### 2-5) Largest Number — LC 179
+### 2-6) Largest Number — LC 179
 ```python
 # LC 179. Largest Number
 # V0
@@ -1079,7 +1082,7 @@ class Solution:
 ```
 
 
-### 2-6) Permutation in String — LC 567
+### 2-7) Permutation in String — LC 567
 ```python
 # LC 567 
 # V0
@@ -1129,7 +1132,7 @@ public String sort(String s) {
 } 
 ```
 
-### 2-7) Car Fleet — LC 853
+### 2-8) Car Fleet — LC 853
 
 ```java
 // java
@@ -1211,7 +1214,7 @@ public String sort(String s) {
 ```
 
 
-### 2-8) Minimize Maximum Pair Sum in Array — LC 1877
+### 2-9) Minimize Maximum Pair Sum in Array — LC 1877
 
 ```java
 // java
@@ -1246,7 +1249,7 @@ public int minPairSum(int[] nums) {
 | Boats to Save People | 881 | Minimize boats → greedy two pointers with weight limit |
 | Divide Players Into Teams | 2491 | Equal skill sum → pair 1st with last |
 
-### 2-7) TopK Frequent Words — LC 692
+### 2-10) TopK Frequent Words — LC 692
 
 ```java
 // java

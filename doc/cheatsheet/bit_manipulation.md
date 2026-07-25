@@ -1,4 +1,4 @@
-# Bit Manipulation 
+# Bit Manipulation
 
 ## 0) Concept
 - Base
@@ -22,16 +22,8 @@
     - [python-operators.html](https://www.runoob.com/python/python-operators.html)
     - [leetcode-easy-bitwise-xor-summary](https://steveyang.blog/2022/07/02/leetcode-easy-bitwise-xor-summary/)
 
-<p align="center"><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/bit_basic1.png" ></p>
-<p align="center"><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/bit_basic2.png" ></p>
-
-### 0-1) Types
-
-### 0-2) Pattern
-
-## 1) General form
-
-### 1-1) Basic OP
+<p align="center"><img src="../pic/bit_basic1.png"></p>
+<p align="center"><img src="../pic/bit_basic2.png"></p>
 
 ## 2) LC Example
 
@@ -212,13 +204,13 @@ class Solution:
         
         return ''.join(answer)
 
-# V0''''
+# V0'
 # IDEA : py default
 class Solution:
     def addBinary(self, a, b) -> str:
         return '{0:b}'.format(int(a, 2) + int(b, 2))
 
-# V0''''
+# V0''
 # IDEA : Bit Manipulation
 class Solution:
     def addBinary(self, a, b) -> str:
@@ -275,7 +267,7 @@ class Solution(object):
         # then get 32-bit positive's Python complement negative
         return a if a <= MAX else ~(a ^ mask)
 
-# V0'
+# V0''
 # https://blog.csdn.net/fuxuemingzhu/article/details/79379939
 class Solution():
     def getSum(self, a, b):

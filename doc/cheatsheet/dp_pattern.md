@@ -1193,6 +1193,7 @@ private int dfs(TreeNode node) {
 - **State Compression**: Use bitmask to compress states
 - **Monotonic Queue/Stack**: Optimize window-based DP (sliding window maximum)
 - **Matrix Exponentiation**: For linear recurrences with large n
+- **Convex Hull Trick**: For optimizing certain recurrence relations
 
 ## LC Examples
 
@@ -1257,7 +1258,7 @@ public int numDecodings(String s) {
         if (two >= 10 && two <= 26) curr += prev2;
         prev2 = prev1; prev1 = curr;
     }
-    return n == 1 ? prev1 : prev1;
+    return prev1;
 }
 ```
 
@@ -1360,7 +1361,6 @@ public int findTargetSumWays(int[] nums, int target) {
     return dp[pos];
 }
 ```
-- **Convex Hull Trick**: For optimizing certain recurrence relations
 
 ---
 

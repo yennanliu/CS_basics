@@ -1071,10 +1071,10 @@ i=3 (sentinel): flush
 
 max_sum = 1 + 2 + 12 = 15
 
-min pass (increasing stack) → min_sum = 9
+min pass (increasing stack) → min_sum = 10
 
-answer = 15 − 9 = 6  ✓  ([1,3]:2, [3,2]:1, [1,3,2]:2 → total = 2+1+2=... wait)
-actual: [1]=0,[3]=0,[2]=0,[1,3]=2,[3,2]=1,[1,3,2]=2 → sum=5  (small example, concept is correct)
+answer = 15 − 10 = 5  ✓
+verify: [1]=0,[3]=0,[2]=0,[1,3]=2,[3,2]=1,[1,3,2]=2 → sum = 5
 ```
 
 ---

@@ -1,4 +1,3 @@
-
 # Explanation of Overlapping Booking Logic in MyCalendar
 
 - (LC 729)
@@ -22,7 +21,7 @@ Imagine a timeline where each event has a start and an end time. The new event i
 
 ### 1. **No Overlap - New Event is Completely Before the Existing Event**
 
-```
+```text
 New:      |-----|   
 Existing:          |-----|
 ```
@@ -32,7 +31,7 @@ Existing:          |-----|
 
 ### 2. **No Overlap - New Event is Completely After the Existing Event**
 
-```
+```text
 New:              |-----|
 Existing:  |-----|
 ```
@@ -42,7 +41,7 @@ Existing:  |-----|
 
 ### 3. **Overlap - New Event Partially Overlaps with the Existing Event**
 
-```
+```text
 New:       |-------|
 Existing:     |------|
 ```
@@ -52,7 +51,7 @@ Existing:     |------|
 
 ### 4. **Complete Overlap - New Event Starts and Ends Inside the Existing Event**
 
-```
+```text
 New:         |---|
 Existing:   |-------|
 ```
@@ -62,7 +61,7 @@ Existing:   |-------|
 
 ### 5. **New Event Engulfs the Existing Event (Starts Before and Ends After)**
 
-```
+```text
 New:     |-----------|
 Existing:   |-----|
 ```

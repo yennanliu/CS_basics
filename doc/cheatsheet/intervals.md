@@ -143,8 +143,10 @@ def merge_intervals(intervals):
             last[1] = max(last[1], current[1])
     
     return merged
+```
 
-# Java version
+```java
+// Java version
 public int[][] merge(int[][] intervals) {
     if (intervals.length <= 1) return intervals;
     
@@ -189,8 +191,10 @@ def min_intervals_to_remove(intervals):
             prev_end = intervals[i][1]  # Update end time
     
     return count
+```
 
-# Java version
+```java
+// Java version
 public int eraseOverlapIntervals(int[][] intervals) {
     if (intervals.length <= 1) return 0;
     
@@ -266,8 +270,10 @@ def min_meeting_rooms(intervals):
         heapq.heappush(heap, end)
     
     return len(heap)
+```
 
-# Java version
+```java
+// Java version
 public int minMeetingRooms(int[][] intervals) {
     if (intervals.length == 0) return 0;
     
@@ -377,7 +383,7 @@ class MyCalendar:
 
 ### Decision Framework Flowchart
 
-```
+```text
 Problem Analysis for Interval Problems:
 
 1. Are you merging overlapping intervals?
@@ -447,7 +453,7 @@ def has_overlap(interval1, interval2):
 ```
 
 ### Overlap Visualization
-```
+```text
 Case 1 - No Overlap:
 |----| interval1
         |----| interval2
@@ -706,25 +712,7 @@ public int findMinArrowShots(int[][] points) {
 }
 ```
 
-### 2-6) Non-Overlapping Intervals (LC 435) — Greedy
-> Sort by end; keep interval with earliest end greedily; count how many must be removed.
-
-```java
-// LC 435 - Non-Overlapping Intervals
-// IDEA: Greedy — sort by end; skip (remove) overlapping intervals
-// time = O(N log N), space = O(1)
-public int eraseOverlapIntervals(int[][] intervals) {
-    Arrays.sort(intervals, (a, b) -> a[1] - b[1]);
-    int removals = 0, end = Integer.MIN_VALUE;
-    for (int[] iv : intervals) {
-        if (iv[0] >= end) end = iv[1];
-        else removals++;
-    }
-    return removals;
-}
-```
-
-### 2-7) Interval List Intersections (LC 986) — Two Pointers
+### 2-6) Interval List Intersections (LC 986) — Two Pointers
 > Advance the pointer whose interval ends first; record overlap when ranges intersect.
 
 ```java
@@ -745,7 +733,7 @@ public int[][] intervalIntersection(int[][] A, int[][] B) {
 }
 ```
 
-### 2-8) Remove Covered Intervals (LC 1288) — Sort + Greedy
+### 2-7) Remove Covered Intervals (LC 1288) — Sort + Greedy
 > Sort by start asc, end desc; interval is covered if its end ≤ current max end.
 
 ```java
@@ -761,7 +749,7 @@ public int removeCoveredIntervals(int[][] intervals) {
 }
 ```
 
-### 2-9) Video Stitching (LC 1024) — Greedy Interval Cover
+### 2-8) Video Stitching (LC 1024) — Greedy Interval Cover
 > Sort by start; at each frontier pick the clip extending coverage the furthest.
 
 ```java
@@ -782,7 +770,7 @@ public int videoStitching(int[][] clips, int time) {
 }
 ```
 
-### 2-10) Maximum Profit in Job Scheduling (LC 1235) — DP + Binary Search
+### 2-9) Maximum Profit in Job Scheduling (LC 1235) — DP + Binary Search
 > Sort jobs by end; dp[i] = max profit using first i jobs; binary search for last non-conflicting job.
 
 ```java
@@ -808,7 +796,7 @@ public int jobScheduling(int[] startTime, int[] endTime, int[] profit) {
 }
 ```
 
-### 2-11) My Calendar I (LC 729) — TreeMap Overlap Check
+### 2-10) My Calendar I (LC 729) — TreeMap Overlap Check
 > TreeMap floor/ceiling gives O(log N) overlap detection per booking.
 
 ```java
@@ -828,7 +816,7 @@ class MyCalendar {
 }
 ```
 
-### 2-12) Meeting Rooms I (LC 252) — Sort + Adjacent Check
+### 2-11) Meeting Rooms I (LC 252) — Sort + Adjacent Check
 > Sort by start time; if any meeting starts before previous ends, overlap exists.
 
 ```java

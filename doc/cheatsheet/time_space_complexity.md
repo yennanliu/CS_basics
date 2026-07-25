@@ -15,7 +15,7 @@
 
 ### How to Read Complexity (the 3 questions)
 
-```
+```text
 1. TIME  : how many primitive ops as input n grows?
            -> count loops, recursion calls, work-per-call
 2. SPACE : how much EXTRA memory (excludes the input itself)?
@@ -26,7 +26,7 @@
 
 ### The "n vs reasonable complexity" ruler ⭐⭐⭐⭐⭐
 
-```
+```text
 n ≤ 10        → O(n!) / O(2^n)     backtracking, permutations
 n ≤ 20        → O(2^n)             bitmask DP, subsets
 n ≤ 100       → O(n³)              Floyd-Warshall, 3-nested DP
@@ -585,7 +585,7 @@ collapsing space to **O(1)** while staying O(n) time.
 
 ## 12) Quick Reference — "How to argue complexity in an interview"
 
-```
+```text
 SINGLE LOOP over n           → O(n)
 TWO NESTED LOOPS (full)      → O(n²)
 LOOP that halves/doubles     → O(log n)
@@ -602,7 +602,7 @@ AMORTIZED (each item ≤1 push/pop) → O(n) even with an inner while-loop
 
 ### Space-complexity checklist
 
-```
+```text
 □ Did I count the recursion stack?      (DFS = O(height), not O(1))
 □ Is the output counted or excluded?    (usually excluded as "aux space")
 □ Can a 2D dp collapse to 1D rolling?   (dp[i] depends only on dp[i-1]?)
@@ -612,7 +612,7 @@ AMORTIZED (each item ≤1 push/pop) → O(n) even with an inner while-loop
 
 ### Final sanity checks
 
-```
+```text
 1. Two O(n) passes = still O(n)        (constants drop)
 2. heapify = O(n);  n× heappush = O(n log n)   ← NOT the same!
 3. Inner `while` ≠ automatically O(n²) — check amortized (sliding window, monotonic stack)

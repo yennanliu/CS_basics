@@ -110,14 +110,14 @@ Union Find achieves nearly O(1) performance through two critical optimizations:
 
 Without these optimizations, operations degrade to O(n). With both, time complexity becomes O(α(n)) where α is the inverse Ackermann function (effectively constant).
 
-### 0-1) Types
+### 0-2) Types
 - **Basic Connectivity**: Check if nodes are connected, count components
 - **Cycle Detection**: Determine if adding edge creates cycle
 - **Dynamic MST**: Kruskal's algorithm for minimum spanning trees
 - **Weighted Union Find**: Handle ratios/weights between nodes (LC 399)
 - **Grid Problems**: 2D grid connectivity (Number of Islands variants)
 
-### 0-2) Algorithm Pattern / Template
+### 0-3) Algorithm Pattern / Template
 
 **Core Operations:**
 - `find(x)`: Get root parent of x with path compression
@@ -227,7 +227,7 @@ class UnionFind {
 - Already connected nodes
 - Invalid indices
 
-### 0-3) Pattern-Specific Code Examples
+### 0-4) Pattern-Specific Code Examples
 
 #### Pattern 1: Basic Connectivity - Cycle Detection
 **Problem: LC 261 - Graph Valid Tree**

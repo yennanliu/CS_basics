@@ -11,7 +11,7 @@ I'll show the **universal template**, then how each problem plugs into it.
 
 ---
 
-# 1️⃣ Universal Tree Backtracking Template
+## 1️⃣ Universal Tree Backtracking Template
 
 ```java
 void dfs(TreeNode node, ...) {
@@ -32,14 +32,14 @@ void dfs(TreeNode node, ...) {
 
 For **path problems**, we typically maintain:
 
-```
+```text
 List<Integer> path
 some running state (sum / number / string)
 ```
 
 ---
 
-# 2️⃣ Full Generic Template
+## 2️⃣ Full Generic Template
 
 ```java
 void dfs(TreeNode node, List<Integer> path, int state) {
@@ -75,7 +75,7 @@ Key parts:
 
 ---
 
-# 3️⃣ Apply to LC 113 (Path Sum II)
+## 3️⃣ Apply to LC 113 (Path Sum II)
 
 For LeetCode 113 Path Sum II:
 
@@ -101,7 +101,7 @@ void dfs(TreeNode node, int remain, List<Integer> path) {
 
 ---
 
-# 4️⃣ Apply to LC 257 (Binary Tree Paths)
+## 4️⃣ Apply to LC 257 (Binary Tree Paths)
 
 For LeetCode 257 Binary Tree Paths:
 
@@ -128,13 +128,13 @@ void dfs(TreeNode node, String path) {
 
 ---
 
-# 5️⃣ Apply to LC 129 (Root → Leaf Numbers)
+## 5️⃣ Apply to LC 129 (Root → Leaf Numbers)
 
 For LeetCode 129 Sum Root to Leaf Numbers:
 
 State = **number**
 
-```
+```text
 123 means path: 1 → 2 → 3
 ```
 
@@ -157,7 +157,7 @@ void dfs(TreeNode node, int num) {
 
 ---
 
-# 6️⃣ Special Case: LC 437 (Path Sum III)
+## 6️⃣ Special Case: LC 437 (Path Sum III)
 
 LeetCode 437 Path Sum III is different because paths **can start anywhere**, not only root.
 
@@ -167,11 +167,11 @@ But the inner DFS still follows the same template.
 
 ---
 
-# 7️⃣ Mental Model (Very Important)
+## 7️⃣ Mental Model (Very Important)
 
 Whenever you see:
 
-```
+```text
 root → leaf
 path
 all paths
@@ -181,13 +181,13 @@ string of paths
 
 Think immediately:
 
-```
+```text
 DFS + Backtracking
 ```
 
 Template:
 
-```
+```text
 add node
 check leaf
 dfs children
@@ -196,7 +196,7 @@ remove node
 
 ---
 
-# 8️⃣ Interview Cheat Code ⭐
+## 8️⃣ Interview Cheat Code ⭐
 
 Just memorize this **5-line skeleton**:
 
@@ -220,7 +220,7 @@ You can solve **most root-to-leaf problems** with this.
 
 If a problem contains these words:
 
-```
+```text
 all paths
 root to leaf
 return list of paths

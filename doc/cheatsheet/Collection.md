@@ -4,8 +4,6 @@
 
 ### 0-1) Types
 
-- Types
-
 - Algorithm
     - dict/collections op
         - collections.Counter
@@ -21,11 +19,9 @@
     - set
     - array
 
-### 0-2) Pattern
-
 ## 1) General form
 
-#### 1-0) get element if existed in collecitons (custom sort)
+#### 1-0) get element if existed in collections (custom sort)
 ```python
 # LC 791. Custom Sort String
 # ...
@@ -88,7 +84,7 @@ print (count.values())
 print(count.items())
 ```  
 
-#### 1-3) collection.update()
+#### 1-4) collection.update()
 ```python
 # LC # 554 rick Wall
 import collections
@@ -113,7 +109,7 @@ In [94]: _counter
 Out[94]: Counter({1: 2, 2: 1})
 ```
 
-### 1-4) `OrderedDict ` ( hashmap + linked list) — LC 146
+#### 1-5) `OrderedDict` ( hashmap + linked list) — LC 146
 ```python
 # LC 146 LRU Cache
 

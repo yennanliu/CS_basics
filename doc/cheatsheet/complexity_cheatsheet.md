@@ -7,7 +7,7 @@
 
 ## 1. Big-O Quick Reference
 
-```
+```text
 O(1) < O(log N) < O(√N) < O(N) < O(N log N) < O(N²) < O(N³) < O(2^N) < O(N!)
 ```
 
@@ -233,7 +233,7 @@ O(1) < O(log N) < O(√N) < O(N) < O(N log N) < O(N²) < O(N³) < O(2^N) < O(N!)
 
 ### 3-1) Geometric Series — Why N + N/2 + N/4 + ... = 2N (NOT N log N!)
 
-```
+```text
 S = N + N/2 + N/4 + N/8 + ...
   = N × (1 + 1/2 + 1/4 + 1/8 + ...)
   = N × 1/(1 - 1/2)      ← geometric series formula: 1/(1-r) for |r| < 1
@@ -245,7 +245,7 @@ S = N + N/2 + N/4 + N/8 + ...
 
 **Why this matters in algorithms:**
 
-```
+```text
 Example: Heapify (build heap from array)
   - Leaf level (N/2 nodes): 0 swaps each   → N/2 × 0
   - Level above (N/4 nodes): 1 swap each   → N/4 × 1
@@ -258,7 +258,7 @@ Example: Heapify (build heap from array)
   → O(N)  ← This is why heapify is O(N), not O(N log N)!
 ```
 
-```
+```text
 Example: Segment tree build
   - Leaf nodes: N
   - Internal nodes: N - 1
@@ -266,7 +266,7 @@ Example: Segment tree build
   → Total: O(N)
 ```
 
-```
+```text
 Example: Amortized cost of dynamic array doubling
   Insert N elements:
   Copies at resizes: 1 + 2 + 4 + 8 + ... + N = 2N
@@ -277,7 +277,7 @@ Example: Amortized cost of dynamic array doubling
 
 ### 3-2) Why Merge Sort is O(N log N) — NOT the same as above
 
-```
+```text
 Level 0:   1 merge of size N     → N work
 Level 1:   2 merges of size N/2  → N work
 Level 2:   4 merges of size N/4  → N work
@@ -293,7 +293,7 @@ Total work   = N × log₂(N)
 - Geometric series: work **halves** each level → sum converges to 2N
 - Merge sort: work **stays the same** each level → sum = N × levels = N log N
 
-```
+```text
 Geometric (converging):     Merge Sort (constant per level):
 Level 0:  N                 Level 0:  N
 Level 1:  N/2               Level 1:  N/2 + N/2 = N
@@ -318,7 +318,7 @@ The algorithm does two things:
 
 **The expensive part:** finding the middle node scans from head every call.
 
-```
+```text
 N = 8, getNodeByIdx(head, mid) ≈ O(N) per call
 
 Level 0:  build(0..7)                             → scan ~N    = N
@@ -328,7 +328,7 @@ Level 3:  8 leaf calls                             → N/8×8      = N
 ```
 
 Visual:
-```
+```text
                 N
            /         \
         N/2           N/2
@@ -338,12 +338,12 @@ Visual:
 
 Each level = **N total work**. Number of levels = **log N** (balanced BST height).
 
-```
+```text
 Total = N + N + N + ... (log N times) = N × log N → O(N log N)
 ```
 
 **Compare to geometric series (heapify):**
-```
+```text
 Heapify:        N/2 + N/4 + N/8 + ... = N  →  O(N)      (work HALVES per level)
 BST from list:  N   + N   + N   + ... = N log N → O(N log N) (work CONSTANT per level)
 ```
@@ -351,7 +351,7 @@ BST from list:  N   + N   + N   + ... = N log N → O(N log N) (work CONSTANT pe
 #### Why Space = O(log N)  ← recursion stack depth, NOT number of nodes
 
 **Key Rule:**
-```
+```text
 Space complexity for DFS recursion = maximum recursion stack depth
                                     = tree height
 ```
@@ -359,7 +359,7 @@ Space complexity for DFS recursion = maximum recursion stack depth
 Recursion does NOT hold both branches on the stack simultaneously.
 It goes **one branch at a time** (depth-first):
 
-```
+```text
 build(root)           ← frame 1 on stack
   -> build(left)      ← frame 2 on stack
        -> build(left) ← frame 3 on stack
@@ -368,7 +368,7 @@ build(root)           ← frame 1 on stack
 
 **Visual for N = 7 (sorted list: 1→2→3→4→5→6→7):**
 
-```
+```text
 Balanced BST built:
         4
       /   \
@@ -397,7 +397,7 @@ Stack depth ≈ log₂(7) ≈ 3
 | 1,000,000 | ~20                  |
 
 **Why NOT O(N)?** O(N) stack only occurs with a **skewed** tree:
-```
+```text
 1
  \
   2
@@ -410,7 +410,7 @@ LC 109 always picks the **middle** → guaranteed balanced → stack depth = O(l
 
 #### Summary
 
-```
+```text
 Algorithm Variant              | Time        | Space    | How?
 -------------------------------|-------------|----------|--------------------------------------
 V0-1: getNodeByIdx (from head) | O(N log N)  | O(log N) | N scan × log N levels; balanced tree
@@ -421,7 +421,7 @@ V0-3: in-order simulation      | O(N)        | O(log N) | advance pointer once p
 > **Interview tip:** V0-3 (in-order simulation with a shared pointer) is the **optimal O(N)** approach.
 > It avoids re-scanning by advancing the list pointer in sync with BST in-order traversal.
 
-```
+```text
 Interview rule of thumb for recursion:
   Space = recursion stack depth
   Balanced tree → O(log N)
@@ -433,7 +433,7 @@ Interview rule of thumb for recursion:
 
 ### 3-3) Arithmetic Series — Why 1 + 2 + 3 + ... + N = N(N+1)/2 ≈ N²/2
 
-```
+```text
 S = 1 + 2 + 3 + ... + N
   = N(N+1)/2
   ≈ N²/2
@@ -441,7 +441,7 @@ S = 1 + 2 + 3 + ... + N
 ```
 
 **Where this appears:**
-```
+```text
 Bubble sort comparisons:
   Round 1: N-1 comparisons
   Round 2: N-2 comparisons
@@ -458,7 +458,7 @@ Counting all pairs in array:
 
 ### 3-4) Logarithm Identities (for complexity analysis)
 
-```
+```text
 log₂(N) ≈ ln(N) / 0.693           # log base conversion
 log₂(N²) = 2 log₂(N)              # power rule
 log₂(N·M) = log₂(N) + log₂(M)    # product rule
@@ -488,7 +488,7 @@ How many times can you double 1 before reaching N?
 | 2^31 - 1 | 2,147,483,647 | Integer.MAX_VALUE in Java |
 
 **Why this matters for complexity:**
-```
+```text
 N = 10^9 operations → too slow for 1 second (typical limit: 10^8 ops/sec)
 N = 10^6 → fine for O(N log N)
 N = 10^5 → fine for O(N²)... barely
@@ -500,12 +500,12 @@ N = 12   → OK for O(N!)
 
 ### 3-6) Harmonic Series — Why 1 + 1/2 + 1/3 + ... + 1/N ≈ ln(N)
 
-```
+```text
 H(N) = 1 + 1/2 + 1/3 + ... + 1/N ≈ ln(N) ≈ O(log N)
 ```
 
 **Where this appears:**
-```
+```text
 Sieve of Eratosthenes: O(N log log N)
   - Cross out multiples of 2: N/2 ops
   - Cross out multiples of 3: N/3 ops
@@ -519,7 +519,7 @@ Average case of Quick Sort partitioning ≈ O(N log N)
 
 ### 3-7) Counting Subsets and Permutations
 
-```
+```text
 Subsets of N elements:       2^N
 Permutations of N elements:  N!
 Combinations C(N, K):        N! / (K! × (N-K)!)
@@ -539,7 +539,7 @@ Stirling's approximation:    N! ≈ √(2πN) × (N/e)^N
 
 For `T(N) = a·T(N/b) + f(N)`:
 
-```
+```text
 Compare f(N) vs N^(log_b(a)):
 
 Case 1: f(N) = O(N^(log_b(a) - ε))  →  T(N) = O(N^log_b(a))
@@ -562,7 +562,7 @@ Case 3: f(N) = Ω(N^(log_b(a) + ε))  →  T(N) = O(f(N))
 
 ### 3-9) ASCII Tricks for Character Problems
 
-```
+```text
 'a' - 'A' = 32     (difference between lowercase and uppercase)
 'a' = 97,  'A' = 65
 'z' = 122, 'Z' = 90
@@ -634,14 +634,14 @@ Index in alphabet:
 ## 5. Space Complexity Patterns
 
 ### Stack Space (Recursion)
-```
+```text
 Balanced BST / heap:     O(log N)  ← tree height
 Skewed BST / linked list: O(N)     ← degenerates to linear
 General graph DFS:        O(V)
 ```
 
 ### When to Use In-Place Algorithms
-```
+```text
 O(1) extra space tricks:
   - Two pointers (reverse array, palindrome)
   - Floyd's cycle detection
@@ -651,7 +651,7 @@ O(1) extra space tricks:
 ```
 
 ### Space-Time Tradeoffs
-```
+```text
 Problem                 | Naive Space | Optimized Space | Time Trade-off
 ------------------------|-------------|-----------------|---------------
 DP (2D → 1D rolling)   | O(M·N)      | O(N)            | Same time
@@ -664,7 +664,7 @@ KMP vs Naive search     | O(M)        | —               | O(N+M) vs O(N·M)
 
 ## 6. Interview Decision Guide
 
-```
+```text
 Input Size → Reasonable Complexity:
 
 N ≤ 10        → O(N!) or O(2^N)     backtracking, all permutations
@@ -680,7 +680,7 @@ N ≤ 10^9      → O(log N) or O(√N)  binary search, math tricks
 
 ## 7. Quick Sanity Checks
 
-```
+```text
 1. O(N log N) sort first → enables O(N) or O(log N) operations after
 2. Two passes O(N) each = still O(N)
 3. Nested loops with early break ≠ necessarily O(N²)

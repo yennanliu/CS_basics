@@ -22,7 +22,7 @@
 
 For a problem F(X) where X is the input:
 
-```
+```text
 1. Break down into smaller scopes: x₀, x₁, ..., xₙ ∈ X
 2. Recursively solve: F(x₀), F(x₁), ..., F(xₙ)
 3. Combine results to solve F(X)
@@ -38,13 +38,11 @@ For a problem F(X) where X is the input:
 
 ## 1) Concepts
 
-### 1-1) Core Ideas
-
-### 1-2) Complexity Analysis
+### 1-1) Complexity Analysis
 
 **Time Complexity**:
 Think of recursion as a **tree structure**:
-```
+```text
         fib(5)
        /      \
     fib(4)    fib(3)
@@ -74,7 +72,7 @@ Given a recursion algorithm: **O(T) = R × O(S)**
 - Memoization cache (stores intermediate results)
 - **Important**: Count memoization space when analyzing overall complexity
 
-### 1-3) Related Concepts
+### 1-2) Related Concepts
 
 Recursion is used in:
 - **DFS** (Depth-First Search) — tree/graph traversal
@@ -361,7 +359,7 @@ private boolean isSameTree(TreeNode node1, TreeNode node2) {
 - Any problem where you partition a range and combine all sub-results
 
 **Pattern**:
-```
+```text
 1. Pick each element i in [start, end] as the "root" / split point
 2. Recursively build all left results from [start, i-1]
 3. Recursively build all right results from [i+1, end]
@@ -488,7 +486,7 @@ class Solution:
 ### 3-2) Divide & Conquer — LC 23
 
 **Template**:
-```
+```text
 1. Divide: Split problem into subproblems
 2. Conquer: Solve each subproblem recursively
 3. Combine: Merge subproblem results
@@ -531,7 +529,7 @@ def divide_and_conquer(problem):
 - Reduce function call overhead
 
 **How to Convert**:
-```
+```text
 1. Use a stack or queue to replace the system call stack
 2. At each recursion point, push parameters onto data structure
 3. Replace recursive chain with loop over the data structure
@@ -543,7 +541,7 @@ def divide_and_conquer(problem):
 
 ## 4) Complete LeetCode Examples
 
-### 4-1) Symmetric Tree (LC 101) — LC 101
+### 4-1) Symmetric Tree (LC 101)
 
 **Pattern**: Bottom-up recursion, comparing two subtrees in parallel.
 
@@ -564,7 +562,7 @@ class Solution:
 
 ---
 
-### 4-2) One Edit Distance (LC 161) — LC 161
+### 4-2) One Edit Distance (LC 161)
 
 **Pattern**: Pruning branches early (abs difference > 1), then checking each position.
 
@@ -586,7 +584,7 @@ class Solution:
 
 ---
 
-### 4-3) Merge Two Sorted Lists (LC 21) — LC 21
+### 4-3) Merge Two Sorted Lists (LC 21)
 
 **Pattern**: Simple recursion with local state update.
 
@@ -605,7 +603,7 @@ class Solution:
 
 ---
 
-### 4-4) Subtree of Another Tree (LC 572) — LC 572
+### 4-4) Subtree of Another Tree (LC 572)
 
 **Pattern**: Any-true status with recursive helper.
 

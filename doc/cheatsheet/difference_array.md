@@ -460,8 +460,6 @@ return Arrays.copyOfRange(tmp, 1, n+1);
 - LC 2132: Stamping the Grid - 2D stamp validation
 - LC 2251: Number of Flowers in Full Bloom - Point queries on timeline
 
-### 1-1) Basic OP
-
 ## 2) LC Example
 
 ### 2-1) Range Addition — LC 370

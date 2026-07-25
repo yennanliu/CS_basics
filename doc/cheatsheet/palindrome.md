@@ -81,8 +81,10 @@ def is_palindrome_two_pointers(s):
         right -= 1
     
     return True
+```
 
-# Java version
+```java
+// Java version
 class Solution {
     public boolean isPalindrome(String s) {
         int left = 0, right = s.length() - 1;
@@ -140,8 +142,10 @@ def longest_palindromic_substring(s):
             start = i - (current_max - 1) // 2
     
     return s[start:start + max_len]
+```
 
-# Java version
+```java
+// Java version
 class Solution {
     public String longestPalindrome(String s) {
         if (s == null || s.length() < 1) return "";
@@ -381,8 +385,10 @@ def is_palindrome_number(x):
     # For even length: x == reversed_half
     # For odd length: x == reversed_half // 10
     return x == reversed_half or x == reversed_half // 10
+```
 
-# Java version
+```java
+// Java version
 class Solution {
     public boolean isPalindrome(int x) {
         if (x < 0 || (x % 10 == 0 && x != 0)) {

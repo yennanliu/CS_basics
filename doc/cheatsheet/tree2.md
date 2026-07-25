@@ -1546,51 +1546,7 @@ public int minDepth(TreeNode root) {
 
 #### Template Code
 
-```python
-# Python - Balanced Binary Tree
-def is_balanced(root):
-    def check_height(node):
-        if not node:
-            return 0
-
-        left_height = check_height(node.left)
-        if left_height == -1:
-            return -1
-
-        right_height = check_height(node.right)
-        if right_height == -1:
-            return -1
-
-        if abs(left_height - right_height) > 1:
-            return -1
-
-        return 1 + max(left_height, right_height)
-
-    return check_height(root) != -1
-```
-
-```java
-// Java - Balanced Binary Tree
-public boolean isBalanced(TreeNode root) {
-    return checkHeight(root) != -1;
-}
-
-private int checkHeight(TreeNode node) {
-    if (node == null) return 0;
-
-    int leftHeight = checkHeight(node.left);
-    if (leftHeight == -1) return -1;
-
-    int rightHeight = checkHeight(node.right);
-    if (rightHeight == -1) return -1;
-
-    if (Math.abs(leftHeight - rightHeight) > 1) {
-        return -1;
-    }
-
-    return 1 + Math.max(leftHeight, rightHeight);
-}
-```
+> Identical to [2.3) Height Validation Template — LC 110](#23-height-validation-template--lc-110): compute height bottom-up and propagate `-1` upward once any subtree is unbalanced.
 
 #### LeetCode Problems
 - LC 110: Balanced Binary Tree (Easy)

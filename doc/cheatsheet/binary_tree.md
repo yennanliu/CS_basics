@@ -85,14 +85,14 @@
             - right children : n * 2 + 1
         - how to check if a node is leaf node ?
             - check if i > (# of nodes) / 2
-        - <p align="center"><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/complete_tree_to_array.png" ></p>
+        - <p align="center"><img src="../pic/complete_tree_to_array.png"></p>
 
 
 #### Example:
 
 Let's say you have a complete binary tree like this:
 
-```
+```text
         10
        /  \
      15    20
@@ -102,7 +102,7 @@ Let's say you have a complete binary tree like this:
 
 This tree as an **array (1-based)** would be:
 
-```
+```text
 # `n is an "index"` in array
 
 Index:   1   2   3   4   5   6
@@ -128,9 +128,9 @@ Relationships:
     - [wiki](https://en.wikipedia.org/wiki/Binary_tree#:~:text=A%20complete%20binary%20tree%20is,tree%20is%20not%20necessarily%20perfect.)
     - example :
         - complete binary tree
-        <p align="center"><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/complete_binary_tree1.png" ></p>
+        <p align="center"><img src="../pic/complete_binary_tree1.png"></p>
         - NOT complete binary tree
-        <p align="center"><img src ="https://github.com/yennanliu/CS_basics/blob/master/doc/pic/not_complete_binary_tree.png" ></p>
+        <p align="center"><img src="../pic/not_complete_binary_tree.png"></p>
 
 ## Templates & Algorithms
 
@@ -818,7 +818,7 @@ private int getHeight(TreeNode node) {
 
 ## Pattern Selection Strategy
 
-```
+```text
 Problem Analysis Flowchart:
 
 1. Does the problem require visiting nodes in specific order?

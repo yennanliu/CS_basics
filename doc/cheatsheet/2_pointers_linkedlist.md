@@ -8,7 +8,7 @@
 - Pointer types
     - `Fast - Slow pointers`
         - fast, slow pointers from `same start point`
-        - Usualy set
+        - Usually set
             - slow pointer moves 1 idx
             - fast pointer moves 2 idx
         - linked list
@@ -30,15 +30,15 @@
 boolean hasCycle(ListNode head){
     fast = slow = head;
     // NOTE : while loop condition
-    while (fast != null and fast.next != null){
+    while (fast != null && fast.next != null){
         /** NOTE : need to do move slow, fast pointer then compare them */
         slow = slow.next;
         fast = fast.next.next;
         if (fast == slow){
-            return True
+            return true;
         }
     }
-    return False;
+    return false;
 }
 ```
 
@@ -49,7 +49,7 @@ boolean hasCycle(ListNode head){
 ListNode detectCycle(ListNode head){
     ListNode fast, slow;
     fast = slow = head;
-    while (fast != null and fast.next != null){
+    while (fast != null && fast.next != null){
         /** NOTE !!! We move pointers first */
         fast = fast.next.next;
         slow = slow.next;

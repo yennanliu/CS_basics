@@ -1455,7 +1455,7 @@ return left;  // left == right
 - [Binary-Search-101-The-Ultimate-Binary-Search-Handbook](https://leetcode.com/problems/binary-search/discuss/423162/Binary-Search-101-The-Ultimate-Binary-Search-Handbook)
 - [Python Universal Binary Search Template](https://leetcode.com/discuss/general-discussion/786126/python-powerful-ultimate-binary-search-template-solved-many-problems)
 
-#### 0-2-0) Loop Exit Conditions Comparison
+#### 2.0) Loop Exit Conditions Comparison
 
 **Key Difference**: The exit condition determines when the loop terminates and affects boundary handling.
 
@@ -3369,9 +3369,11 @@ private boolean canSplit(int[] sweetness, int people, int minTarget) {
     }
     return pieces >= people;
 }
+```
+
 ---
 
-### 4.X) Check If a Number Is Majority Element in a Sorted Array (LC 1150) — LC 1150
+### 4.24) Check If a Number Is Majority Element in a Sorted Array (LC 1150) — LC 1150
 
 #### Core Idea
 
@@ -3529,7 +3531,7 @@ value:  2  4 [5] 5  5  5 [5] 6  6
 
 ---
 
-### 4.24) Find Right Interval (LC 436) ⭐⭐⭐⭐ — LC 436
+### 4.25) Find Right Interval (LC 436) ⭐⭐⭐⭐ — LC 436
 
 **Approach**: Sort starts + **lower-bound** binary search, mapping sorted position back to the **original index**.
 

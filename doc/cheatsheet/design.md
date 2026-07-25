@@ -80,7 +80,7 @@ class DesignName:
 - Use appropriate data structures for O(1) operations when needed
 - Consider lazy evaluation or caching
 
-## 1-2) Interview Tips
+### 1-2) Interview Tips
 
 ### Tip 1: Ask Clarifying Questions
 - "Should this support concurrent access?" (Usually no for LC problems)
@@ -113,7 +113,7 @@ class DesignName:
 - Consider SOLID principles (especially Single Responsibility)
 - Think about extensibility and maintainability
 
-## 1-3) Things to Notice
+### 1-3) Things to Notice
 
 ### Notice 1: OrderedDict in Python
 - Combines HashMap and LinkedList functionality
@@ -145,7 +145,7 @@ followers = defaultdict(set)  # Auto-creates empty set
 tweet_count = defaultdict(int)  # Auto-creates 0
 ```
 
-## 1-4) Classic LC Problems by Category
+### 1-4) Classic LC Problems by Category
 
 ### Category 1: Cache Design ⭐⭐⭐
 - **LC 146. LRU Cache** (Medium) - HashMap + DoublyLinkedList
@@ -248,6 +248,7 @@ class FileSystem(object):
         """
         node, type = self.getExistedNode(path)
         if type == 'dir':
+            # NOTE: `dict.keys() + dict.keys()` works only in Python 2; in Python 3 use `sorted(list(node['dirs'].keys()) + list(node['files'].keys()))`
             return sorted(node['dirs'].keys() + node['files'].keys())
         return [path.split('/')[-1]]
 

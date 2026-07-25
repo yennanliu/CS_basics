@@ -95,7 +95,7 @@
 - **Overwrite** (`nums[slow] = nums[fast]`): cleaner, preferred — array is already sorted so we just need to copy unique values forward
 - **Swap** (`swap(nums[slow], nums[fast])`): also correct but unnecessary for sorted arrays; used when original values need to be preserved elsewhere
 
-```
+```text
 Pointer movement rules:
   - fast: moves EVERY iteration (scans all elements)
   - slow: moves ONLY when a new unique value is found (after nums[fast] != nums[slow])
@@ -226,7 +226,7 @@ class Solution {
 - Since the array is sorted, if `nums[fast] == nums[slow - 2]`, writing it would create a 3rd consecutive duplicate → skip
 - Both `slow` and `fast` start at index 2 (first two elements always allowed)
 
-```
+```text
 Key condition: nums[fast] != nums[slow - 2]
   → write nums[fast] to nums[slow], slow++
   
@@ -674,7 +674,7 @@ class Solution {
 # python
 # pseudo code
 # ...
-for i in range(lens(s)):
+for i in range(len(s)):
 
     # NOTE !!!
     # NO NEED to have logic like `if i % 2 == 1`..
@@ -693,7 +693,7 @@ for i in range(lens(s)):
     
     #--------------------------------------
     # if even
-    # NOTE !!! if `odd`, left = i - 1, right = i
+    # NOTE !!! if `even`, left = i - 1, right = i
     #--------------------------------------
     left = i - 1
     right = i
@@ -715,7 +715,7 @@ Find a valid **peak** (a local maximum where both neighbors are strictly smaller
 
 After fully processing a mountain, jump `i` directly to `right` (the right base). Without this, the outer loop would re-examine every index on the descending slope — giving O(N²). With it, no index is ever revisited, so total work across all mountains is O(N).
 
-```
+```text
 Without skip: outer loop backtracks over already-visited slope indices → O(N²)
 With i = right: outer loop only ever moves forward → amortized O(N)
 ```
@@ -759,7 +759,7 @@ public int longestMountain(int[] arr) {
 
 **Dry-run — `arr = [2,1,4,7,3,2,5]`:**
 
-```
+```text
 i=1: arr[1]=1, 1 > 2? No → skip
 i=2: arr[2]=4, 4 > 1 && 4 > 7? No → skip
 i=3: arr[3]=7, 7 > 4 && 7 > 3? YES → peak found
@@ -998,7 +998,7 @@ For each `word`:
    pointer `j` only on a match. `j == len(word)` at the end ⇒ `word` is a subsequence.
 2. **Candidate selection**: keep `word` if it beats the current best on `(length, lexicographic)`.
 
-```
+```text
 s = "abpcplea",  word = "apple"
 
  a b p c p l e a       i=0 j=0  s[i]=a == a → j=1, i=1
@@ -1144,7 +1144,7 @@ public boolean isOneEditDistance(String s, String t) {
 Once we find the first mismatch, there is only ONE valid repair move. Checking the suffix via `substring.equals()` resolves this in O(n) without needing extra flags or pointer bookkeeping.
 
 **Pointer movement summary:**
-```
+```text
 Both i and j advance together while chars match.
 At FIRST mismatch:
   - Same length  → advance both (replace): check suffix
@@ -1340,7 +1340,7 @@ def camelMatch(queries, pattern):
 
 **Visualization:**
 
-```
+```text
 Pattern = "FB"
 
 Query 1: "FooBar"
@@ -1393,7 +1393,7 @@ Compare two strings **group by group**, where a group is a maximal run of the sa
 2. The source group count `cntS` must be **≥** query group count `cntW` (can only expand, not shrink)
 3. If counts differ (`cntS != cntW`), `cntS` must be **≥ 3** — otherwise the source can't have been "extended" from the query
 
-```
+```text
 Key invariant:
   cntS < cntW          → impossible (word has more chars than s)
   cntS != cntW && cntS < 3  → impossible (s has too few to be an extension)
@@ -1484,7 +1484,7 @@ private boolean isStretchy(String s, String word) {
 3. **Swap** `nums[i]` and `nums[j]`. The suffix is still descending after the swap.
 4. **Reverse suffix** `nums[i+1:]` — descending → ascending, giving the smallest possible tail.
 
-```
+```text
 Key invariant:
   suffix after pivot is ALWAYS descending when we find the pivot.
   After the swap it's still descending (we swapped the smallest-greater element in).
@@ -1505,7 +1505,7 @@ Key invariant:
 
 #### Visual Trace
 
-```
+```text
 nums = [1, 2, 5, 4, 3]
 
 Step 1 — Find pivot (right-to-left, first nums[i] < nums[i+1]):
@@ -1623,7 +1623,7 @@ Reconstruct a permutation of `[0, n]` from a `"I"`/`"D"` string. Keep two pointe
 
 **Why it's always valid:** picking `low` for `"I"` guarantees whatever comes next is bigger (all remaining values are `> low`); picking `high` for `"D"` guarantees whatever comes next is smaller. We never "use up" a value we needed, so any greedy choice produces one valid answer.
 
-```
+```text
 Pointer roles:
   low  — smallest value not yet placed (consumed on "I")
   high — largest value not yet placed  (consumed on "D")
@@ -1637,7 +1637,7 @@ Invariant: after k chars processed, exactly (n+1) - k values remain,
 
 #### Visual Trace
 
-```
+```text
 s = "IDID"   →   n = 4,  low = 0, high = 4
 
 | Step  | char | Action          | ans         | low | high |
@@ -1707,13 +1707,13 @@ public int[] diStringMatch(String s) {
 | Valid Permutations for DI Sequence | 903 | Count (not construct) DI permutations via DP |
 | Score After Flipping Matrix | 861 | Greedy per-position optimal choice |
 
-### 0-2-3) QuickSelect (Partition Algorithm for Kth Element) — LC 215
+### 0-2-10) QuickSelect (Partition Algorithm for Kth Element) — LC 215
 
 **Pattern Overview:**
 QuickSelect is a selection algorithm to find the Kth smallest/largest element in an unordered list. It's related to QuickSort but only recurses into one side of the partition. This makes it **O(n) average time** instead of O(n log n).
 
 **Core Concept:**
-```
+```text
 Given array: [3, 2, 1, 5, 6, 4], find 2nd largest (k=2)
 
 QuickSort: Sorts entire array → O(n log n)
@@ -1860,7 +1860,7 @@ class Solution {
 
 #### Visual Example: Finding 2nd Largest in [3, 2, 1, 5, 6, 4]
 
-```
+```text
 Target: k = 2 (2nd largest)
 Array: [3, 2, 1, 5, 6, 4]
 n = 6, so we need (n - k) = 4th smallest element (0-indexed)
@@ -2143,7 +2143,7 @@ def partition_lomuto(nums, left, right):
 - **Tail recursion**: Only recurse into smaller partition
 
 **3. Complexity Analysis:**
-```
+```text
 Best/Average Case: O(n + n/2 + n/4 + ... + 1) = O(2n) = O(n)
 
 Worst Case (bad pivots every time):
@@ -2219,7 +2219,7 @@ def findKthLargest_median_of_medians(nums, k):
 void reverse(int[] nums){
 
     int left = 0;
-    int right = nums.length - 1
+    int right = nums.length - 1;
 
     while (left < right){
 
@@ -2761,7 +2761,7 @@ class Solution(object):
             if num[i] > num[k]:
                 l = i
         num[k], num[l] = num[l], num[k]
-        num[k + 1:] = num[:k:-1] ### dounle check here ###
+        num[k + 1:] = num[:k:-1] ### double check here ###
 ```
 
 ### 2-10) Valid Palindrome II (Palindrome with One Deletion) — LC 680
@@ -3167,7 +3167,7 @@ public List<List<Integer>> threeSum(int[] nums) {
 - `sum > target` → `r--`  (reduce sum, need smaller right value)
 - `sum < target` → `l++`  (increase sum, need larger left value)
 
-```
+```text
 Key invariant:
   closest always holds the best (minimum-distance) sum seen so far
   
@@ -3318,24 +3318,24 @@ public void reverseString(char[] s) {
 - If `j < n`, recurse on `s[0..j]` and sandwich the non-palindrome suffix around it
 
 **Dry Run — `s = "aacecaaa"`:**
-```
+```text
 i scans right-to-left, j starts at 0
 
 i=7 s[7]='a' == s[0]='a'  -> j=1
 i=6 s[6]='a' == s[1]='a'  -> j=2
 i=5 s[5]='a' != s[2]='c'  -> skip
 i=4 s[4]='c' == s[2]='c'  -> j=3
-i=3 s[3]='e' != s[3]='e'  -> j=4  (wait — equal!) -> j=4
-i=2 s[2]='c' != s[4]='c'  -> j=5  -> j=5
-i=1 s[1]='a' != s[5]='a'  -> j=6
-i=0 s[0]='a' != s[6]='a'  -> j=7
+i=3 s[3]='e' == s[3]='e'  -> j=4
+i=2 s[2]='c' == s[4]='c'  -> j=5
+i=1 s[1]='a' == s[5]='a'  -> j=6
+i=0 s[0]='a' == s[6]='a'  -> j=7
 
 j == n? No (j=7 < 8). suffix = s.substring(7) = "a"
 reversed("a") + shortestPalindrome("aacecaa") + "a"
 ```
 
 **Key Insight — why does `j` track the prefix?**
-```
+```text
 Scanning i from right to left acts like a "sieve":
 - Every time s[i] matches s[j], j advances one step right
 - After the full scan, s[0..j-1] is the longest possible palindromic prefix
@@ -3479,7 +3479,7 @@ The key idea: encode each string as `len(s) + "#" + s`. Decoding uses two pointe
 
 This differs from normal two-pointer patterns because the jump distance is **variable** and **encoded in the string itself** — no fixed window size.
 
-```
+```text
 Pointer roles:
   i  — "header start": marks the beginning of each encoded block
   j  — "separator finder": scans forward until s[j] == "#"
@@ -3534,7 +3534,7 @@ class Codec:
 
 **Dry Run — `strs = ["Hello", "World"]`:**
 
-```
+```text
 encode → "5#Hello5#World"
 
 decode:

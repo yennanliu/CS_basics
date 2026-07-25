@@ -8,7 +8,7 @@
 		- range of number
 	- limitation
 		- boundary of the questions
-		- expected space & time compliexity
+		- expected space & time complexity
 - 3) Come up with V1 approaches
 	- Algorithm ideas 
 	- brute force is fine, but explain the ideas

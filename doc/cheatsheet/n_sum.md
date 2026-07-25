@@ -28,8 +28,6 @@
     - array
     - Treenode
 
-### 0-2) Pattern
-
 ## 1) General form
 
 ```c++
@@ -38,7 +36,7 @@
 // 2 SUM general form (target = 0)
 //---------------------------------
 // (algorithm book (labu) p.329)
-vector<vector<int>> twoSumTarget(vector<int> & nums, int integer){
+vector<vector<int>> twoSumTarget(vector<int> & nums, int target){
     // need to sort nums first !
     sort(nums.begin(), nums.end());
 
@@ -55,10 +53,10 @@ vector<vector<int>> twoSumTarget(vector<int> & nums, int integer){
         }else if (sum > target){
             while (lo < hi && nums[hi] == right) hi--;
         }else{
-            res.push_back((left, right));
+            res.push_back({left, right});
             /** AVOID ADDING duplicated combinations */
             while (lo < hi && nums[lo] == left) lo++;
-            while (lo < hi && nums[hi] == right) hi++;
+            while (lo < hi && nums[hi] == right) hi--;
         }
     }
     return res;
@@ -87,10 +85,10 @@ vector<vector<int>> twoSumTarget(vector<int> & nums, int start, int target){ // 
         }else if (sum > target){
             while (lo < hi && nums[hi] == right) hi--;
         }else{
-            res.push_back((left, right));
+            res.push_back({left, right});
             /** AVOID ADDING duplicated combinations */
             while (lo < hi && nums[lo] == left) lo++;
-            while (lo < hi && nums[hi] == right) hi++;
+            while (lo < hi && nums[hi] == right) hi--;
         }
     }
     return res;
@@ -146,22 +144,22 @@ vector<vector<int>> nSumTarget(vector<int> & nums, int n, int start, int target)
         int lo = start, hi = sz - 1;
         while (lo < hi){
             int sum = nums[lo] + nums[hi];
-            int left = nums[lo], int right = nums[hi];
+            int left = nums[lo], right = nums[hi];
             if (sum < target){
                 while (lo < hi && nums[lo] == left) lo ++;
             }else if (sum > target){
                 while (lo < hi && nums[hi] == right) hi --;
             }else{
-                res.push_back((left, right));
+                res.push_back({left, right});
                 /** AVOID ADDING duplicated combinations */
                 while (lo < hi && nums[lo] == left) lo++;
-                while (lo < hi && nums[hi] == right) hi++;
+                while (lo < hi && nums[hi] == right) hi--;
             }
         }
     }else{
         /** n > 2, recursive get (n-1) Sum result */
         for (int i = start; i < sz; i++){
-            vector<vector<int>>;
+            vector<vector<int>>
             sub = nSumTarget(nums, n-1, i+1, target - nums[i]);
             for (vector<int> & arr : sub){
                 // (n-1) Sum plus nums[i] is nSum
@@ -174,8 +172,6 @@ vector<vector<int>> nSumTarget(vector<int> & nums, int n, int start, int target)
     return  res;
 }
 ```
-
-### 1-1) Basic OP
 
 ## 2) LC Example
 
@@ -262,7 +258,7 @@ class Solution(object):
                     d[x] = j
         return res
 
-# V0
+# V0'
 # IDEA : 2 SUM -> 3 SUM
 class Solution(object):
     def threeSum(self, nums):
@@ -296,7 +292,7 @@ class Solution(object):
                     d[nums[j]] = j
         return res
 
-# V0'
+# V0''
 # IDEA : 2 SUM -> 3 SUM
 class Solution(object):
     def threeSum(self, nums):

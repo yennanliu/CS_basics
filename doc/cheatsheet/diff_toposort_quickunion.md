@@ -13,7 +13,7 @@
 
 ---
 
-# 🏩 Conceptual Difference
+## 🏩 Conceptual Difference
 
 | | Topological Sort | Quick Union |
 |:-|:-|:-|
@@ -23,9 +23,9 @@
 
 ---
 
-# ⚙️ Algorithm Core Ideas
+## ⚙️ Algorithm Core Ideas
 
-## ➔ Topological Sort (for DAGs)
+### ➔ Topological Sort (for DAGs)
 - Think **assembly line**:  
   - Can't assemble a car until frame is ready.
 - Process nodes with no incoming edges first.
@@ -37,7 +37,7 @@ Two common ways:
 
 ---
 
-## ➔ Quick Union (Disjoint Set Union)
+### ➔ Quick Union (Disjoint Set Union)
 - Think **friend groups**:
   - If Alice knows Bob, Bob knows Charlie → one group.
 - Each node points to a *parent*.
@@ -48,7 +48,7 @@ Two common ways:
 
 ---
 
-# 🚀 Visual Example
+## 🚀 Visual Example
 
 Imagine the same input:
 
@@ -64,7 +64,7 @@ Courses: 0 -> 1 -> 2
 
 ---
 
-# 🧪 Analogy
+## 🧪 Analogy
 
 - **Topological Sort** is like **building a skyscraper**:  
   - Must finish floors **bottom-up** respecting the order.
@@ -74,7 +74,7 @@ Courses: 0 -> 1 -> 2
 
 ---
 
-# 📜 Summary
+## 📜 Summary
 
 | Question | Answer |
 |:---|:---|
@@ -86,7 +86,7 @@ Courses: 0 -> 1 -> 2
 
 ---
 
-# ✅ Final Mental Model
+## ✅ Final Mental Model
 
 | | Topological Sort | Quick Union |
 |:-|:-|:-|

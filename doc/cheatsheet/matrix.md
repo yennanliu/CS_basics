@@ -426,7 +426,7 @@ def unique_paths(m, n):
 - **Direction**: Top-left → Bottom-right (same as primary diagonal family)
 - **Use case**: Group, sort, or process each diagonal independently (LC 1329, LC 766)
 
-```
+```text
 Example (3×4 matrix) — diagonal keys (i - j):
        j=0   j=1   j=2   j=3
 i=0  [  0 ] [ -1 ] [ -2 ] [ -3 ]
@@ -713,7 +713,7 @@ def is_valid(row, col, rows, cols):
 
 ### Pattern Selection Strategy
 
-```
+```text
 Matrix Problem Analysis Flowchart:
 
 1. Is the problem about traversing matrix in a specific order?
@@ -1503,7 +1503,7 @@ public int[][] matrixBlockSum(int[][] mat, int k) {
 ```
 
 **Visual Explanation of 2D Prefix Sum Query:**
-```
+```text
 For rectangle (r1,c1) to (r2,c2):
 
      0    c1        c2   n
@@ -1620,7 +1620,7 @@ public int[] findDiagonalOrder(int[][] mat) {
 
 **Dry-run — `mat = [[1,2,3],[4,5,6],[7,8,9]]`:**
 
-```
+```text
 Step | (r,c) | val | r+c | direction  | boundary/move
 -----|-------|-----|-----|------------|---------------------
   0  | (0,0) |  1  |  0  | UP-RIGHT   | r==0  → c++ (right)

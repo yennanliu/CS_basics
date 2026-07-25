@@ -1229,7 +1229,7 @@ Without visitedStops: Every stop would re-check all its routes
 
 ---
 
-### Pattern 8: BFS + DFS (Find All Shortest Paths - DAG Enumeration) — LC 126
+### Pattern 8.5: BFS + DFS (Find All Shortest Paths - DAG Enumeration) — LC 126
 ```java
 /**
  * Pattern: BFS to build shortest-path DAG, then DFS to enumerate all paths
@@ -1545,7 +1545,7 @@ Final result: 2 paths found ✓
 
 **Comparison with Pattern 7 (BFS + Backtracking):**
 
-| Aspect | Pattern 7 (BFS + Backtracking) | Pattern 8 (BFS + DFS) |
+| Aspect | Pattern 7 (BFS + Backtracking) | Pattern 8.5 (BFS + DFS) |
 |--------|---|---|
 | **Goal** | Find ONE shortest path | Find ALL shortest paths |
 | **Graph Building** | On-the-fly neighbor generation | Explicit parent map construction |
@@ -2437,11 +2437,11 @@ Calculate shortest distance from each cell to ANY source cell in a grid.
 | Easy | LC 102 | Level-order traversal | Pattern 2 (Level-by-Level) |
 | **Medium** | **LC 127** | **Shortest path transformation - Word Ladder** | **Pattern 7 (BFS + Backtracking)** |
 | Medium | LC 200 | Connected components | Pattern 3 (Graph BFS) |
-| Medium | LC 742 | Closest leaf (tree → undirected graph) | §2-14 (Tree → Graph + BFS) |
+| Medium | LC 742 | Closest leaf (tree → undirected graph) | §2-15 (Tree → Graph + BFS) |
 | **Medium** | **LC 542** | **Simultaneous multi-source - 01 Matrix** | **Pattern 4 (Simultaneous Multi-Source)** |
 | Medium | LC 934 | DFS + Multi-source BFS (island expansion) | Pattern 4.5 (DFS + Multi-Source) |
 | Medium | LC 1162 | As Far from Land as Possible | Pattern 4 (Simultaneous Multi-Source) |
-| **Hard** | **LC 126** | **Find ALL shortest paths - Word Ladder II** | **Pattern 8 (BFS + DFS DAG Enumeration)** |
+| **Hard** | **LC 126** | **Find ALL shortest paths - Word Ladder II** | **Pattern 8.5 (BFS + DFS DAG Enumeration)** |
 | Hard | LC 286 | Walls and Gates | Pattern 4 (Simultaneous Multi-Source) |
 | **Hard** | **LC 317** | **Independent BFS runs (sum of distances)** | **Pattern 4.6 (Independent BFS Runs)** |
 | Hard | LC 675 | Sort + Repeated BFS (sequential targets) | Pattern 6 (Sort + Repeated BFS) |
@@ -2605,7 +2605,7 @@ private void dfsEnumerate(String word, String beginWord, Map<String, List<String
 
 **Key Differences from LC 127:**
 - **LC 127 (Pattern 7)**: BFS + Backtracking → Find ONE shortest path, early exit
-- **LC 126 (Pattern 8)**: BFS + DFS → Find ALL shortest paths, use parent map, DFS enumeration
+- **LC 126 (Pattern 8.5)**: BFS + DFS → Find ALL shortest paths, use parent map, DFS enumeration
 - **Critical Detail**: `levelVisited` allows multiple parents from same BFS level (essential for finding all paths)
 
 ---
@@ -2640,7 +2640,7 @@ public int shortestPathBinaryMatrix(int[][] grid) {
 }
 ```
 
-### 2-4) 01 Matrix (LC 542) — Multi-source BFS from All Zeros
+### 2-5) 01 Matrix (LC 542) — Multi-source BFS from All Zeros
 > Start BFS from all 0-cells simultaneously; distance propagates outward.
 
 ```java
@@ -2671,7 +2671,7 @@ public int[][] updateMatrix(int[][] mat) {
 }
 ```
 
-### 2-5) Open the Lock (LC 752) — BFS on State Space
+### 2-6) Open the Lock (LC 752) — BFS on State Space
 > Model each lock combination as a node; BFS finds minimum turns to reach target.
 
 ```java
@@ -2711,7 +2711,7 @@ public int openLock(String[] deadends, String target) {
 }
 ```
 
-### 2-6) Surrounded Regions (LC 130) — BFS from Border
+### 2-7) Surrounded Regions (LC 130) — BFS from Border
 > BFS from all border 'O' cells; mark reachable ones safe; flip the rest.
 
 ```java
@@ -2741,7 +2741,7 @@ public void solve(char[][] board) {
 }
 ```
 
-### 2-7) Course Schedule (LC 207) — BFS Topological Sort (Kahn's)
+### 2-8) Course Schedule (LC 207) — BFS Topological Sort (Kahn's)
 > Build in-degree array; BFS processes nodes with zero in-degree iteratively.
 
 ```java
@@ -2769,7 +2769,7 @@ public boolean canFinish(int numCourses, int[][] prerequisites) {
 }
 ```
 
-### 2-8) Walls and Gates (LC 286) — Multi-source BFS
+### 2-9) Walls and Gates (LC 286) — Multi-source BFS
 > Start BFS from all gates (0s) simultaneously; fill rooms with shortest distance.
 
 ```java
@@ -2797,7 +2797,7 @@ public void wallsAndGates(int[][] rooms) {
 }
 ```
 
-### 2-9) Minimum Height Trees (LC 310) — BFS Leaf Trimming
+### 2-10) Minimum Height Trees (LC 310) — BFS Leaf Trimming
 > Repeatedly remove leaf nodes; the remaining 1-2 nodes are the roots of MHTs.
 
 **Core Idea — BFS / Layer Trimming (Onion Peeling):**
@@ -2909,7 +2909,7 @@ public List<Integer> findMinHeightTrees_set(int n, int[][] edges) {
 | 994 | Rotting Oranges | Multi-source BFS (same layer-by-layer pattern) |
 | 542 | 01 Matrix | Multi-source BFS from all zeros |
 
-### 2-10) Snakes and Ladders (LC 909) — BFS on Board
+### 2-11) Snakes and Ladders (LC 909) — BFS on Board
 > Model board as graph; BFS finds minimum dice rolls to reach final square.
 
 ```java
@@ -2943,7 +2943,7 @@ public int snakesAndLadders(int[][] board) {
 }
 ```
 
-### 2-11) Bus Routes (LC 815) — Route-Level BFS
+### 2-12) Bus Routes (LC 815) — Route-Level BFS
 > Map stops to routes; BFS on route IDs counts minimum buses to reach target.
 
 ```java
@@ -2990,7 +2990,7 @@ public int numBusesToDestination(int[][] routes, int source, int target) {
 }
 ```
 
-### 2-12) Pacific Atlantic Water Flow (LC 417) — BFS from Both Oceans
+### 2-13) Pacific Atlantic Water Flow (LC 417) — BFS from Both Oceans
 > BFS backward from Pacific and Atlantic borders; cells in both sets can flow to both.
 
 ```java
@@ -3030,7 +3030,7 @@ private void bfs(int[][] h, Queue<int[]> q, boolean[][] visited, int m, int n) {
 }
 ```
 
-### 2-13) Perfect Squares (LC 279) — BFS on Abstract Graph (Number Decomposition)
+### 2-14) Perfect Squares (LC 279) — BFS on Abstract Graph (Number Decomposition)
 > BFS from `n` toward `0`; each level subtracts a perfect square. First time we reach 0 = minimum count.
 
 ```java
@@ -3078,7 +3078,7 @@ public int numSquares(int n) {
 }
 ```
 
-### 2-14) Closest Leaf in a Binary Tree (LC 742) — Tree → Graph + BFS ⭐⭐⭐⭐
+### 2-15) Closest Leaf in a Binary Tree (LC 742) — Tree → Graph + BFS ⭐⭐⭐⭐
 > "Closest" = fewest **edges** on a binary tree. The catch: from the target you may need
 > to walk **upward** (to a parent) as well as downward (to children). A plain tree only
 > has child pointers, so first **convert the tree into an undirected graph** (each node ↔
@@ -3167,7 +3167,7 @@ Tree (k=2):                 As undirected graph, BFS from 2:
 > convert it to an **undirected graph** (add parent links via DFS) and switch to graph BFS/DFS.
 > This "tree → graph" reframing is the key to LC 742 and LC 863.
 
-### 2-15) Populating Next Right Pointers (LC 116 / 117) — Level BFS wires the `next` links ⭐⭐⭐⭐
+### 2-16) Populating Next Right Pointers (LC 116 / 117) — Level BFS wires the `next` links ⭐⭐⭐⭐
 
 > Each node has a `next` pointer that should point to the node **immediately to its right on
 > the same level** (or `NULL` if it's the rightmost). This is just a **level-order BFS**: while
