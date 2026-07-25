@@ -9,16 +9,17 @@
 - review `all recent updated cheatsheets`
 	- git commit
 
-- intervals.md
-	- `2-12) Meeting Rooms I (LC 252) — Sort + Adjacent Check`
+
+- backtrack.md
+	- todo: `Combination Sum II`
+
 
 - python_trick.md
 	- 2) LC Example
 
 - stack.md
 
-- backtrack.md
-	- todo: `Type 2) : Permutations (排列組合) (全排列)`
+
 - dp.md
 	- todo: `Template 7-1: One Edit Distance (LC 161) — Exactly-1-Edit Variant`
 
