@@ -1,4 +1,5 @@
-20260725: 1047(todo),1209(todo),772(todo),must_lc_list
+20260726: 1047(todo),1209(todo),772(todo),must_lc_list
+20260725: must_lc_list
 20260724: 232(again),394(again),739(ok),872(ok),24(again),92(again)
 20260723: 206(ok*),24(again),92(again),772(todo),must_lc_list
 20260722: 974(ok),1010(again),1726(again),729(ok)
