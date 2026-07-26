@@ -30,7 +30,14 @@ n == grid[i].length
 
 """
 
-# V0 : DEV 
+# V0
+class Solution(object):
+    def minPathSum(self, grid):
+        """
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+        pass
 
 # V1
 # https://blog.csdn.net/xx_123_1_rj/article/details/84571645
