@@ -46,6 +46,14 @@ class Solution:
           NOTE !!! below op
           """
           for i in range(len(x)):
+
+                """
+                NOTE !!!
+
+                a simple `if - else` logic
+                is enough for this LC
+                """
+
                # NOTE !!! : trick here : if stack last element == current x's element
                #       -> we pop last stack element
                #       -> and NOT add current element
@@ -56,6 +64,31 @@ class Solution:
                else:
                     stack.append(x[i])
           return "".join(stack)
+
+
+# V0-1
+# IDEA : STACK
+class Solution(object):
+    def removeDuplicates(self, s):
+        if len(s) <= 1:
+            return s
+
+        st = []
+
+        for c in s:
+            """
+            NOTE !!!
+
+            a simple `if - else` logic
+            is enough for this LC
+            """
+            if st and st[-1] == c:
+                st.pop()
+            else:
+                st.append(c)
+
+        return "".join(st)
+
 
 # V0'
 # IDEA : TWO POINTERS
