@@ -1,10 +1,10 @@
 # Progress
 
 
-# 2026-07-26
+# 2026-07-27
 
 - `must_lc_list.md` (doing)
-	- Stack
+	- Tree
 
 - review `all recent updated cheatsheets`
 	- git commit
